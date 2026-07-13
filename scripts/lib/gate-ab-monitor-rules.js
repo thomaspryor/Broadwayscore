@@ -12,13 +12,19 @@
  *   - Weekly peeks are guardrails only; the monitor NEVER judges the primary
  *     metric and NEVER touches flag rollout (A/B guardrails memory).
  *
- * Alert kinds:
- *   experiment-live   (email) first real-arm impressions seen — test started
- *   power-reached     (email) both arms >= POWER_FLOOR — time to judge
- *   duration-reached  (email) 8 weeks elapsed — judge or extend
- *   bounce-breach     (email) site mobile bounce > baseline + 3pts (7d cooldown)
- *   dismissal-skew    (email) arms' dismissal rates differ > 15pts w/ >=200 shown each (7d cooldown)
- *   weekly-summary    (discord only) whenever the experiment is live
+ * Alert kinds (every emailed alert carries stampKey — the state field that
+ * records it as sent; the runner REVERTS that field if delivery fails so the
+ * alert retries next week instead of being lost forever):
+ *   experiment-live    (email) first real-arm impressions seen — test started
+ *   power-reached      (email) both arms >= POWER_FLOOR — time to judge
+ *   duration-reached   (email) 8 weeks elapsed — judge or extend
+ *   bounce-breach      (email) recent mobile bounce > baseline + 3pts (7d cooldown)
+ *   dismissal-skew     (email) arms' dismissal rates differ > 15pts w/ >=200 shown each (7d cooldown)
+ *   experiment-stalled (email) experiment had started but a week shows ZERO real-arm
+ *                      impressions — flag off / ingestion broken (7d cooldown)
+ *   weekly-summary     LOG-ONLY: Discord was removed repo-wide (discord-notify.js
+ *                      routes email-only); this lands in run logs + the state file,
+ *                      and the run itself appears in the BSC Daily digest.
  */
 
 const POWER_FLOOR = 950;
@@ -40,33 +46,60 @@ function dismissRate(summary, arm) {
 }
 
 /**
- * @param {object} summary  analyze-gate-ab.js --json output
+ * @param {object} windows  { recent, cumulative } — two analyze-gate-ab.js --json
+ *   summaries. POWER/duration/live/skew use CUMULATIVE (whole-experiment counts —
+ *   a 7-day window vs the 950 cumulative floor was a unit-mismatch bug that would
+ *   have made power-reached unfireable, caught 2026-07-13). The bounce guardrail
+ *   uses RECENT (week-over-week drift is the signal, not the 10-week average).
  * @param {object} state    persisted monitor state (may be {})
  * @param {number} nowMs    Date.now()
  * @returns {{ alerts: Array<{kind:string,severity:string,email:boolean,title:string,description:string}>, state: object }}
  */
-function decideGateAlerts(summary, state = {}, nowMs = 0) {
+function decideGateAlerts(windows, state = {}, nowMs = 0) {
+  const cumulative = windows?.cumulative || {};
+  const recent = windows?.recent || {};
+  const summary = cumulative; // arm counts below are whole-experiment
   const next = { ...state };
   const alerts = [];
 
   const realShown = REAL_ARMS.map((a) => armShown(summary, a));
   const experimentLive = realShown.some((n) => n > 0);
 
-  // Pre-flag (or fallback-only traffic): stay silent, but keep a bounce
-  // baseline rolling so the post-launch comparison uses fresh pre-launch data.
   if (!experimentLive) {
-    if (typeof summary?.mobileBouncePct === 'number') next.baselineBouncePct = summary.mobileBouncePct;
+    if (!next.startedAt) {
+      // Pre-flag: stay silent, keep the bounce baseline rolling so the
+      // post-launch comparison uses fresh pre-launch data.
+      if (typeof recent?.mobileBouncePct === 'number') next.baselineBouncePct = recent.mobileBouncePct;
+      return { alerts, state: next };
+    }
+    // Experiment HAD started but this window shows zero real-arm impressions —
+    // flag toggled off or event ingestion broke. Do NOT touch the baseline
+    // (in-experiment data must not overwrite the pre-launch reference).
+    const cooled = !next.lastStalledAlertAt || nowMs - next.lastStalledAlertAt >= BREACH_COOLDOWN_MS;
+    if (cooled) {
+      next.lastStalledAlertAt = nowMs;
+      alerts.push({
+        kind: 'experiment-stalled', severity: 'error', email: true, stampKey: 'lastStalledAlertAt',
+        title: 'Mobile gate A/B appears STALLED',
+        description: 'The experiment had started but the cumulative window now shows zero real-arm impressions. ' +
+          'Check the PostHog flag is still active and gate events are flowing (node scripts/analyze-gate-ab.js).',
+      });
+    }
     return { alerts, state: next };
   }
 
-  // First real-arm impressions → experiment officially started.
+  // First real-arm impressions → experiment officially started. startedAt is
+  // FACTUAL (never reverted); liveAlertedAt is the delivery stamp.
   if (!next.startedAt) {
     next.startedAt = nowMs;
-    if (typeof next.baselineBouncePct !== 'number' && typeof summary?.mobileBouncePct === 'number') {
-      next.baselineBouncePct = summary.mobileBouncePct;
+    if (typeof next.baselineBouncePct !== 'number' && typeof recent?.mobileBouncePct === 'number') {
+      next.baselineBouncePct = recent.mobileBouncePct;
     }
+  }
+  if (!next.liveAlertedAt) {
+    next.liveAlertedAt = nowMs;
     alerts.push({
-      kind: 'experiment-live', severity: 'error', email: true,
+      kind: 'experiment-live', severity: 'error', email: true, stampKey: 'liveAlertedAt',
       title: 'Mobile gate A/B is LIVE',
       description: `First real-arm impressions detected (control: ${realShown[0]}, end-of-content: ${realShown[1]}). ` +
         `Weekly guardrail monitoring is on. Power floor: ${POWER_FLOOR}/arm; duration ceiling: 8 weeks. ` +
@@ -78,7 +111,7 @@ function decideGateAlerts(summary, state = {}, nowMs = 0) {
   if (!next.powerAlertedAt && realShown.every((n) => n >= POWER_FLOOR)) {
     next.powerAlertedAt = nowMs;
     alerts.push({
-      kind: 'power-reached', severity: 'error', email: true,
+      kind: 'power-reached', severity: 'error', email: true, stampKey: 'powerAlertedAt',
       title: 'Mobile gate A/B has reached statistical power — time to judge',
       description: `Both arms passed the pre-registered floor of ${POWER_FLOOR} impressions ` +
         `(control: ${realShown[0]}, end-of-content: ${realShown[1]}). ` +
@@ -91,7 +124,7 @@ function decideGateAlerts(summary, state = {}, nowMs = 0) {
   if (!next.durationAlertedAt && next.startedAt && nowMs - next.startedAt >= DURATION_MS) {
     next.durationAlertedAt = nowMs;
     alerts.push({
-      kind: 'duration-reached', severity: 'error', email: true,
+      kind: 'duration-reached', severity: 'error', email: true, stampKey: 'durationAlertedAt',
       title: 'Mobile gate A/B hit the 8-week checkpoint',
       description: `8 weeks since first impressions. Arms: control ${realShown[0]}, end-of-content ${realShown[1]} ` +
         `(floor ${POWER_FLOOR}/arm${realShown.every((n) => n >= POWER_FLOOR) ? ' — met' : ' — NOT met; judge with caution or extend'}). ` +
@@ -100,15 +133,15 @@ function decideGateAlerts(summary, state = {}, nowMs = 0) {
   }
 
   // Guardrail: site-wide mobile bounce vs pre-launch baseline (+3pts), 7d cooldown.
-  if (typeof next.baselineBouncePct === 'number' && typeof summary?.mobileBouncePct === 'number') {
-    const delta = summary.mobileBouncePct - next.baselineBouncePct;
+  if (typeof next.baselineBouncePct === 'number' && typeof recent?.mobileBouncePct === 'number') {
+    const delta = recent.mobileBouncePct - next.baselineBouncePct;
     const cooled = !next.lastBounceAlertAt || nowMs - next.lastBounceAlertAt >= BREACH_COOLDOWN_MS;
     if (delta > BOUNCE_BREACH_PTS && cooled) {
       next.lastBounceAlertAt = nowMs;
       alerts.push({
-        kind: 'bounce-breach', severity: 'error', email: true,
+        kind: 'bounce-breach', severity: 'error', email: true, stampKey: 'lastBounceAlertAt',
         title: 'Mobile gate A/B guardrail: bounce rate up',
-        description: `Site-wide mobile bounce ${summary.mobileBouncePct}% vs ${next.baselineBouncePct}% pre-launch baseline ` +
+        description: `Site-wide mobile bounce (7d) ${recent.mobileBouncePct}% vs ${next.baselineBouncePct}% pre-launch baseline ` +
           `(+${delta.toFixed(1)}pts > ${BOUNCE_BREACH_PTS}pt guardrail). Investigate before letting the test run on.`,
       });
     }
@@ -122,7 +155,7 @@ function decideGateAlerts(summary, state = {}, nowMs = 0) {
     if (skew > SKEW_PTS && cooled) {
       next.lastSkewAlertAt = nowMs;
       alerts.push({
-        kind: 'dismissal-skew', severity: 'error', email: true,
+        kind: 'dismissal-skew', severity: 'error', email: true, stampKey: 'lastSkewAlertAt',
         title: 'Mobile gate A/B guardrail: dismissal rates diverging',
         description: `control ${dr[0].toFixed(1)}% vs end-of-content ${dr[1].toFixed(1)}% dismissal ` +
           `(${skew.toFixed(1)}pt gap > ${SKEW_PTS}pt guardrail). One arm may be annoying users — review with the user.`,
@@ -130,13 +163,15 @@ function decideGateAlerts(summary, state = {}, nowMs = 0) {
     }
   }
 
-  // Weekly Discord-only summary whenever live (severity below the email policy line).
+  // Weekly summary — LOG-ONLY (Discord removed repo-wide; sendAlert email:false
+  // just logs). Lands in run logs + state; the run's success/failure shows in
+  // the BSC Daily digest either way.
   alerts.push({
-    kind: 'weekly-summary', severity: 'warning', email: false,
+    kind: 'weekly-summary', severity: 'warning', email: false, logOnly: true,
     title: 'Mobile gate A/B — weekly guardrail summary',
     description: `control: ${armShown(summary, 'control')} shown / ${dismissRate(summary, 'control')?.toFixed(1) ?? '–'}% dismissed · ` +
       `end-of-content: ${armShown(summary, 'end-of-content')} shown / ${dismissRate(summary, 'end-of-content')?.toFixed(1) ?? '–'}% dismissed · ` +
-      `fallback (excluded): ${armShown(summary, 'fallback')} · mobile bounce ${summary.mobileBouncePct ?? '–'}% (baseline ${next.baselineBouncePct ?? '–'}%) · ` +
+      `fallback (excluded): ${armShown(summary, 'fallback')} · mobile bounce 7d ${recent.mobileBouncePct ?? '–'}% (baseline ${next.baselineBouncePct ?? '–'}%) · ` +
       `power floor ${POWER_FLOOR}/arm.`,
   });
 
