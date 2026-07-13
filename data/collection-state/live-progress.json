@@ -1,18 +1,63 @@
 {
-  "updatedAt": "2026-07-13T17:49:51.472Z",
-  "processed": 2,
-  "failed": 14,
-  "successRate": "12.5%",
+  "updatedAt": "2026-07-13T17:57:51.431Z",
+  "processed": 46,
+  "failed": 8,
+  "successRate": "85.2%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 27,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 1
+    "scrapingbee": 5,
+    "brightdata": 7,
+    "archiveToday": 3,
+    "archive": 4
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-07-13T17:43:32.680Z",
+      "event": "bb-session",
+      "session": "78305f5e",
+      "url": "https://deadline.com/2025/04/andrew-scott-vanya-recoups-1236381055/"
+    },
+    {
+      "t": "2026-07-13T17:43:33.685Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-13T17:48:31.991Z",
+      "event": "bb-session",
+      "session": "869a344e",
+      "url": "https://www.wsj.com/articles/between-two-knees-review-indigenous-irreverence-per"
+    },
+    {
+      "t": "2026-07-13T17:48:33.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-13T17:54:58.371Z",
+      "event": "bb-session",
+      "session": "31fa5578",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9401E5DF1738F931A35756C0"
+    },
+    {
+      "t": "2026-07-13T17:54:59.292Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-13T17:55:14.383Z",
+      "event": "bb-session",
+      "session": "e3c8e4d1",
+      "url": "https://variety.com/2001/legit/news/king-hedley-ii-2-1200468606/"
+    },
+    {
+      "t": "2026-07-13T17:55:15.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
