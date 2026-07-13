@@ -1,52 +1,30 @@
 {
-  "updatedAt": "2026-07-13T05:00:01.218Z",
-  "processed": 15,
-  "failed": 765,
-  "successRate": "1.9%",
+  "updatedAt": "2026-07-13T05:20:23.591Z",
+  "processed": 8,
+  "failed": 11,
+  "successRate": "42.1%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 2,
-    "brightdata": 3,
-    "archiveToday": 28,
+    "brightdata": 1,
+    "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-07-12T22:07:10.216Z",
+      "t": "2026-07-13T05:17:40.062Z",
       "event": "bb-session",
-      "session": "627db674",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+      "session": "65ab904c",
+      "url": "https://www.wsj.com/arts-culture/theater/carmen-review-metropolitan-opera-bizet-"
     },
     {
-      "t": "2026-07-12T22:07:11.243Z",
+      "t": "2026-07-13T05:17:41.136Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-12T23:11:35.017Z",
-      "event": "bb-session",
-      "session": "35e34ba2",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
-    },
-    {
-      "t": "2026-07-12T23:11:36.135Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-12T23:58:44.330Z",
-      "event": "bb-session",
-      "session": "f3f15b28",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
-    },
-    {
-      "t": "2026-07-12T23:58:45.213Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "wsj.com"
     }
   ]
 }
