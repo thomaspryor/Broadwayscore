@@ -143,8 +143,9 @@ async function main() {
     if (status === 0) {
       verdict = 'probe_error';
       reason = 'curl failed';
-    } else if (status === 404 || status === 410) {
-      // Only statuses that positively mean "this listing is gone" count as broken.
+    } else if (status === 404 || status === 410 || status === 451) {
+      // Only statuses that positively mean "this listing is gone" count as
+      // broken (451 = legal takedown — deterministic, unlike bot-blocks).
       verdict = 'broken';
       reason = `HTTP ${status}`;
     } else if (status >= 400) {

@@ -74,20 +74,26 @@ runs:
             const workflowFile = fileMatch ? fileMatch[1] : workflowName;
 
             if (minConsecutive > 1) {
-              // Streak mode (high-frequency crons): page exactly when the streak of
-              // consecutive failed runs reaches minConsecutive — one page per streak.
-              // A one-off failure that self-resolves on the next run never pages;
-              // shorter streak = grace, longer streak = already paged earlier.
-              // The time cooldown below is NOT also applied: it counts failures that
-              // may never have alerted (the graced first one), so combining the two
+              // Streak mode (high-frequency crons): a one-off failure that
+              // self-resolves on the next run never pages. Page when the streak of
+              // consecutive failed runs reaches minConsecutive, then re-page every
+              // 4th failure past it (reminder for long outages; also self-corrects
+              // if the threshold-hitting run's notify was cancelled or raced —
+              // "page exactly at ==threshold" can go permanently dark in those
+              // cases, so periodic re-arm is deliberate).
+              // The time cooldown below is NOT also applied: it counts failures
+              // that never alerted (the graced first one), so combining the two
               // would suppress every page of a real streak.
+              // NO inner .catch here: an API error must fall through to the outer
+              // catch and alert (fail open) — swallowing it would suppress pages
+              // for entire outages whenever the API is rate-limited.
               const recent = await github.rest.actions.listWorkflowRuns({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 workflow_id: workflowFile,
                 status: 'completed',
                 per_page: 30,
-              }).catch(() => ({ data: { workflow_runs: [] } }));
+              });
               // Cancelled/skipped runs say nothing about health — they neither
               // extend nor reset the streak.
               const prior = (recent.data.workflow_runs || [])
@@ -99,13 +105,14 @@ runs:
                 if (r.conclusion === 'failure') streak++;
                 else break;
               }
-              if (streak === minConsecutive) {
+              const pastThreshold = streak - minConsecutive;
+              if (pastThreshold >= 0 && pastThreshold % 4 === 0) {
                 console.log(`[Streak] ${streak} consecutive failure(s) — threshold ${minConsecutive} reached, alerting.`);
                 core.setOutput('suppressed', 'false');
               } else {
                 const why = streak < minConsecutive
                   ? `first failure in streak — pages if the next run also fails`
-                  : `streak already paged when it reached ${minConsecutive}`;
+                  : `streak paged at ${minConsecutive} — next reminder at ${streak + (4 - pastThreshold % 4)} consecutive failures`;
                 console.log(`[Streak] ${streak} consecutive failure(s) (threshold ${minConsecutive}) — suppressing: ${why}.`);
                 if (process.env.GITHUB_STEP_SUMMARY) {
                   require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY,

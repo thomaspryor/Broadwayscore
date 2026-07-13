@@ -25,6 +25,7 @@ jobs:
           # Format: "workflow_filename|max_hours|friendly_name[|active_months]"
           # active_months (optional, e.g. "4-6"): seasonal crons are only checked
           # during those months — outside the window staleness is by design.
+          # LO-HI only, no wrap-around ranges (e.g. "11-2" would never match).
           CRITICAL_CRONS=(
             "opening-night-broadcast.yml|36|Opening Night Broadcast"
             "monitor-gate-ab.yml|184|Monitor Gate A/B"
