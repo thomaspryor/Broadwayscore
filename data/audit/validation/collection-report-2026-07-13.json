@@ -1,48 +1,48 @@
 {
-  "runDate": "2026-07-13T17:42:40.974Z",
+  "runDate": "2026-07-13T17:41:32.210Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-guilty-west-end-2026",
+    "showFilter": "allegra-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 11,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 2,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 2,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 11,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -50,30 +50,20 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
-  "failed": [
-    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
-    "the-guilty-west-end-2026/hollywood-reporter--lily-ford.json",
-    "the-guilty-west-end-2026/deadline--denise-petski.json",
-    "the-guilty-west-end-2026/deadline--max-goldbart.json",
-    "the-guilty-west-end-2026/deadline--zac-ntim.json",
-    "the-guilty-west-end-2026/guardian-uk--unknown.json",
-    "the-guilty-west-end-2026/monstagigz--unknown.json",
-    "the-guilty-west-end-2026/plays-international--unknown.json",
-    "the-guilty-west-end-2026/rollingstone--charisma-madarang.json",
-    "the-guilty-west-end-2026/thestage--unknown.json",
-    "the-guilty-west-end-2026/times-uk--unknown.json"
+  "processed": [
+    "allegra-west-end-2026/whatsonstage--aliya-al.json"
   ],
+  "failed": [],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "allegra-west-end-2026/whatsonstage--aliya-al.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
-    ],
+    "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
