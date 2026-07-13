@@ -102,13 +102,18 @@ async function handle(req: NextRequest, method: 'GET' | 'POST'): Promise<Respons
     .digest('hex');
 
   let sigValid = false;
-  try {
-    const sigBuf = Buffer.from(sig, 'hex');
-    const expectedBuf = Buffer.from(expected, 'hex');
-    sigValid = sigBuf.length === expectedBuf.length &&
-      crypto.timingSafeEqual(sigBuf, expectedBuf);
-  } catch {
-    // invalid hex
+  // Require exactly 64 lowercase hex chars: Buffer.from(_, 'hex') silently
+  // TRUNCATES at the first non-hex char, so "<validsig>JUNK" would otherwise
+  // decode back to the valid signature and pass (ship-check 2026-07-13).
+  if (/^[0-9a-f]{64}$/.test(sig)) {
+    try {
+      const sigBuf = Buffer.from(sig, 'hex');
+      const expectedBuf = Buffer.from(expected, 'hex');
+      sigValid = sigBuf.length === expectedBuf.length &&
+        crypto.timingSafeEqual(sigBuf, expectedBuf);
+    } catch {
+      // invalid hex
+    }
   }
   if (!sigValid) {
     return html('Invalid Link',

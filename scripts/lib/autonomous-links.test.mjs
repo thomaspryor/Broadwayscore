@@ -73,3 +73,13 @@ test('junk sigs return false without throwing', () => {
     assert.equal(verifySignature({ ...BASE, sig: junk }), false, `junk sig: ${JSON.stringify(junk)}`);
   }
 });
+
+// Buffer.from(_, 'hex') truncates at the first non-hex char, so a valid sig
+// with trailing junk must NOT validate (ship-check 2026-07-13).
+test('valid sig with appended non-hex chars is rejected', () => {
+  const sig = buildSignature(BASE);
+  assert.equal(verifySignature({ ...BASE, sig }), true, 'baseline valid');
+  assert.equal(verifySignature({ ...BASE, sig: sig + 'TAMPER' }), false, 'trailing non-hex');
+  assert.equal(verifySignature({ ...BASE, sig: sig + '00' }), false, 'trailing hex (wrong length)');
+  assert.equal(verifySignature({ ...BASE, sig: sig.toUpperCase() }), false, 'uppercase hex not accepted');
+});
