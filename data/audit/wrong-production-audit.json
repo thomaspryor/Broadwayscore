@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-13T17:44:20.343Z",
+  "timestamp": "2026-07-13T18:06:19.845Z",
   "stats": {
-    "totalReviews": 39980,
-    "alreadyFlagged": 17533,
+    "totalReviews": 39978,
+    "alreadyFlagged": 17544,
     "dateGuardCatches": 48,
     "directorMismatch": 910,
-    "tvFilmSignals": 1096,
+    "tvFilmSignals": 1097,
     "londonSignals": 742,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3838
+    "noPublishDate": 3795
   },
   "findings": [
     {
@@ -26458,6 +26458,20 @@
       "score": 86,
       "publishDate": "November 20th, 2025",
       "url": "https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "thewrap--robert-hofler.json",
+      "score": 63,
+      "publishDate": "2025-03-19",
+      "url": "https://www.thewrap.com/vanya-off-broadway-review-andrew-scott/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
