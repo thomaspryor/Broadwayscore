@@ -409,6 +409,14 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Requires:** ANTHROPIC_API_KEY, REVIEW_TEXTS_TOKEN
 - **Chain:** scoring → rebuild → consensus (rebuild dispatches consensus when scoring doesn't fire)
 
+## `detect-ob-closings.yml`
+- **Runs:** Weekly on Mondays at 11 AM UTC, or manually (`gh workflow run detect-ob-closings.yml`)
+- **Does:** Alert-only Off-Broadway closing detector. Two signals, no new scraping: (1) review-text sweep — regex-scans `data/review-texts/<show>/*.json` fullText for closing boilerplate ("runs through <date>", "closes <date>", …), year resolved from publishDate context, proposes when 2+ reviews agree (high) or 1 review implies a 1–10wk run (medium); (2) TodayTix staleness — open OB shows whose todaytixId vanishes from `data/todaytix-showtimes.json` for 2+ consecutive checks. Suppression guards (`shouldSuppressCandidate`): shows that already have a closingDate (extensions supersede review boilerplate) and proposals >365d past (extended/open-ended, e.g. Little Shop 2019).
+- **NEVER writes shows.json** — commits `data/audit/ob-closing-candidates.json` only; `health-check.js` (`obClosingBacklogResults`) surfaces candidates in the daily digest. Graduation path to auto-write is documented in PR #425.
+- **Why it exists:** OB closings had zero automation (update-show-status.yml is Broadway.org-only); Misterman closed 2026-07-05 and sat open until its producer emailed (GH #393, 2026-07-12).
+- **Scripts:** `scripts/detect-ob-closings.js` (CLI, `--dry-run` default), `scripts/lib/ob-closing-detector.js` (pure decision fns + colocated tests)
+- **Requires:** `REVIEW_TEXTS_TOKEN` (core-data + review-texts checkout)
+
 ## `process-feedback.yml`
 - **Runs:** Every 10 minutes (`*/10 * * * *`) — GitHub throttles high-frequency schedules, so effective cadence is often ~90 min. Monitored by `check-cron-health.yml` (state-check catches `disabled_manually`; 12h recency band).
 - **Does:** Fetches Formspree submissions, AI-categorizes feedback, auto-diagnoses bugs/content errors, creates GitHub issue digest + separate bug-diagnosis issues
