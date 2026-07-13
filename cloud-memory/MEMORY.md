@@ -26,8 +26,8 @@
 - [Notion cards need context](feedback_notion_card_context.md) — paths, commands, root cause, repro; on create read FULL output, never pipe to grep, avoid "rejected" word ([[feedback_notion_create_verify.md]], [[feedback_notion_create_hook_false_rejection.md]])
 
 ## 🌳 Worktrees & git
-- [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; prefix paths .claude/worktrees/ ([[feedback_worktree_edit_paths.md]])
-- [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ BEFORE writing; plan "parallel" = subagents ([[feedback_plan_parallel_means_subagents.md]]); same-name worktree may be another session's LIVE locked one, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
+- [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; launch bg watchers from MAIN repo cwd ([[feedback_background_watchers_worktree_cwd.md]])
+- [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ BEFORE writing; plan "parallel" = subagents; same-name worktree may be another session's LIVE one, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
 - [Dual repo data files](feedback_dual_repo_data_files.md) — private repo authoritative, fix BOTH; review-texts NOT a symlink ([[feedback_review_texts_not_symlink.md]]); NEVER rebuild-all-reviews.js locally ([[feedback_local_rebuild_stale_clone_hazard.md]])
 - [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; use listShowDirs()
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction
@@ -41,7 +41,7 @@
 - [Vercel build config](feedback_vercel_env_block_required.md) — NEXT_PUBLIC_* must go in build step env: block; no dynamic paths in server code, grep src/ before outputFileTracingExcludes ([[feedback_vercel_nft_dynamic_paths.md]])
 - [Conservative default = common case](feedback_conservative_default_can_be_common_case.md) — "unknown → assume X" breaks when unknown IS common
 - [GHA cron reliability](feedback_github_cron_delays.md) — fire 30min-3h late, shift earlier + launchd backup; ~60d inactive → silently disabled HTTP 422 ([[feedback_github_auto_disable_workflows.md]])
-- [GHA step gotchas](feedback_gha_secrets_in_if.md) — secrets unusable in step if:; `if: always()` gets ~5min on cancel, raise timeout-minutes ([[feedback_if_always_does_not_run_on_cancel.md]]); cache@v4 skips save on key hit, use run_id key + restore-keys ([[feedback_actions_cache_no_save_on_hit.md]])
+- [GHA step gotchas](feedback_gha_secrets_in_if.md) — secrets unusable in step if:; `if: always()` ~5min on cancel ([[feedback_if_always_does_not_run_on_cancel.md]]); cache@v4 no save on key hit ([[feedback_actions_cache_no_save_on_hit.md]])
 - [Silent workflow failures](feedback_silent_workflow_failures.md) — never || true on git push; git add ||true may stage NOTHING ([[feedback_silent_git_add_failures.md]]); pipefail or pipe masks exit ([[feedback_pipe_masks_exit_code.md]])
 - [Test extraction pattern](feedback_test_extraction_pattern.md) — extract to scripts/lib/ + require(); .mjs node:test, register in test.yml ([[feedback_test_format_node_not_jest.md]])
 - [Branch protection: direct pushes not gated](feedback_branch_protection_direct_push.md) — required checks gate PR merges only; direct pushes land red
@@ -120,10 +120,10 @@
 - [Design system reference](design-system.md) — surfaces, score tiers, shared components, banned patterns
 - [Local preview before push](feedback_local_preview_before_push.md) — /visual-qa local, APPROVED:<hash> required; worktree gotchas ([[feedback_visual_qa_dev_server_in_worktree.md]]); preserve parallel colors ([[feedback_preserve_parallel_session_colors.md]])
 - [Mobile link min-height](feedback_mobile_link_min_height.md) — a{min-height:44px}; .performer-row/.craft-row opt out; e2e-guarded
-- [App Router rendering](feedback_react_lazy_for_app_router_split.md) — next/dynamic from server = no-op, use 'use client' Loader + Suspense; above-fold renders in page.tsx BEFORE HomePageClient ([[feedback_page_tsx_renders_before_homepageclient.md]]); demo flags client-only ([[feedback_demo_flags_client_only.md]])
+- [App Router rendering](feedback_react_lazy_for_app_router_split.md) — next/dynamic from server = no-op, use 'use client' Loader + Suspense; above-fold renders in page.tsx BEFORE HomePageClient; demo flags client-only ([[feedback_demo_flags_client_only.md]])
 - [A/B tests](feedback_ab_test_guardrails.md) — PostHog filters/exclusions/stat-sig thresholds
 - [Modal + Next-chunk singletons](feedback_css_contain_traps_fixed_modals.md) — Modal portals to body; module singletons split across chunks → coordinate via DOM
-- [UGC Supabase auth](feedback_supabase_freetier_pause.md) — free-tier pauses 7d idle → NXDOMAIN kills all sign-in/read/write; Management API status + Restore workflow; round-trip keep-alive. Test patterns [[feedback_ugc_test_patterns.md]] [[feedback_playwright_evaluate_click_hydration.md]]
+- [UGC Supabase auth](feedback_supabase_freetier_pause.md) — free-tier pauses 7d idle → NXDOMAIN; Restore workflow + keep-alive. Tests [[feedback_ugc_test_patterns.md]] [[feedback_playwright_evaluate_click_hydration.md]]
 
 ## 💼 Commercial / features
 - [Commercial slug keys](feedback_commercial_slug_keys.md) — commercial.json keyed by slug not ID
