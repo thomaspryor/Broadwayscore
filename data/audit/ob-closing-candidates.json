@@ -1,20 +1,30 @@
 {
-  "generatedAt": "2026-07-12T22:57:07.607Z",
+  "generatedAt": "2026-07-13T12:50:49.591Z",
   "mode": "dry-run",
   "reviewTextSweep": {
-    "scanned": 35,
+    "scanned": 34,
     "showsWithNoTexts": 9,
     "candidates": [
       {
-        "showId": "clara-sex-love-and-classical-off-broadway-2026",
-        "proposedClosingDate": "2026-05-10",
-        "confidence": "medium",
-        "reason": "single review, 2.6wk implied run length",
+        "showId": "my-joy-is-heavy-off-broadway-2025",
+        "proposedClosingDate": "2026-04-05",
+        "confidence": "high",
+        "reason": "3 reviews agree",
         "evidence": [
           {
-            "reviewId": "clara-sex-love-and-classical-off-broadway-2026/theater-pizzazz--alix-cohen.json",
-            "isoDate": "2026-05-10",
-            "quote": "Through May 10, 2026"
+            "reviewId": "my-joy-is-heavy-off-broadway-2025/culturesauce--thom-geier.json",
+            "isoDate": "2026-04-05",
+            "quote": "through April 5"
+          },
+          {
+            "reviewId": "my-joy-is-heavy-off-broadway-2025/off-off-online--deirdre-donovan.json",
+            "isoDate": "2026-04-05",
+            "quote": "through April 5"
+          },
+          {
+            "reviewId": "my-joy-is-heavy-off-broadway-2025/vulture--sara-holdren.json",
+            "isoDate": "2026-04-05",
+            "quote": "through April 5"
           }
         ]
       }
@@ -193,11 +203,6 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "girl-interrupted-off-broadway-2026",
-        "proposedClosingDate": "2026-07-12",
-        "reason": "already-has-closing-date"
-      },
-      {
         "showId": "birthright-off-broadway-2026",
         "proposedClosingDate": "2026-07-26",
         "reason": "already-has-closing-date"
@@ -252,6 +257,27 @@
   "todaytixStaleness": {
     "checked": 33,
     "skipped": false,
-    "candidates": []
+    "candidates": [
+      {
+        "showId": "drunk-shakespeare-off-broadway-2022",
+        "consecutiveMissingChecks": 2,
+        "firstMissingDate": "2026-07-12"
+      },
+      {
+        "showId": "age-is-a-feeling-off-broadway-2024",
+        "consecutiveMissingChecks": 2,
+        "firstMissingDate": "2026-07-12"
+      },
+      {
+        "showId": "gotta-dance-off-broadway-2026",
+        "consecutiveMissingChecks": 2,
+        "firstMissingDate": "2026-07-12"
+      },
+      {
+        "showId": "the-black-mirror-experience-off-broadway-2026",
+        "consecutiveMissingChecks": 2,
+        "firstMissingDate": "2026-07-12"
+      }
+    ]
   }
 }
