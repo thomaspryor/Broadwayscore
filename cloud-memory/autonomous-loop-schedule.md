@@ -221,3 +221,11 @@ Within the repo's 7–9 AM ET broadcast-quality-bar convention (transactional ow
 - **Any new cron added between 06:45–08:15 UTC** (or a new local launchd job between 2:30–4:30 AM ET) — re-run the gap scan in section 4.
 - **Sunday worktree-gc at 4:00 AM ET** runs while the loop (which works in a worktree) is active — confirm the GC script skips locked/active worktrees before first Sunday run.
 - Orchestrator schedule changes in `opening-night-orchestrator.yml` (5 entries today) — the loop's 30-min clearance to the 08:00 UTC Broadway-morning entry is the tightest orchestrator margin.
+
+## 5. Sprint-2 install record (2026-07-13)
+Installed on the Mac Studio (both loaded via `launchctl bootstrap gui/$UID`):
+- `com.broadwayscore.autonomous-nightly` — 03:30 ET → scripts/autonomous-nightly.sh (triage → executor → owner email). Plist template: scripts/launchd/.
+- `com.broadwayscore.autonomous-deadman` — 09:00 ET → scripts/autonomous-deadman.js (alerts if ledger silent >24h; armed = plist exists AND job actually loaded, so `launchctl bootout` silences it).
+First live night config: $5 / S-only / max 3 (.claude/autonomous-config.json; ownerEmail comes from OWNER_EMAIL in .env — committed config keeps null, public repo).
+Kill switches: `launchctl bootout gui/$UID/com.broadwayscore.autonomous-nightly` (and .autonomous-deadman). Ledger: data/audit/autonomous-ledger.jsonl (gitignored, Mac-Studio-local).
+Note: email send time is currently the tail of the 03:30 nightly run, NOT a separate 7:30 AM plist — revisit in Sprint 3 if the owner wants the email at wake-up time instead of at run-end.
