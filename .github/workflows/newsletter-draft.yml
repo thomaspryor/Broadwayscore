@@ -250,9 +250,11 @@ jobs:
       # effect, so a run that later FAILS a gate (pre-send-check, overflow,
       # edition/audience guard) must not advance the de-dup memory — the issue
       # never drafted, and next week's run would wrongly suppress its movers/
-      # closings as "already featured".
+      # closings as "already featured". Same reason for the skipBroadcastDraft
+      # condition: a preview-only dispatch skips the draft step (skipped ≠
+      # failed, so success() alone still passes) yet no issue was drafted.
       - name: Commit newsletter de-dup state
-        if: success()
+        if: success() && github.event.inputs.skipBroadcastDraft != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
