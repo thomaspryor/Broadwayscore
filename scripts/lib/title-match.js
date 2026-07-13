@@ -209,6 +209,13 @@ const VENUE_ALIASES = [
     canonical: 'pac nyc',
     matches: [/perelman\s*performing\s*arts/i, /\bpac\s*nyc\b/i],
   },
+  // 245 W 52nd St — the Virginia Theatre was renamed August Wilson in 2005.
+  // shows.json uses the era-accurate name (King Hedley II 2001 = Virginia);
+  // Playbill vault pages retro-name it August Wilson. Same building.
+  {
+    canonical: 'august wilson',
+    matches: [/august\s*wilson\s*theat/i, /virginia\s*theat/i],
+  },
 ];
 
 /**

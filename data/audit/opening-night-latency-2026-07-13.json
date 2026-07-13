@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-13T17:57:42.677Z",
+  "generatedAt": "2026-07-13T18:50:27.280Z",
   "date": "2026-07-13",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 282379,
+  "entryCount": 289401,
   "shows": [
     {
       "showId": "dukes-off-broadway-2026",
@@ -6351,12 +6351,12 @@
     },
     {
       "showId": "kyoto-off-broadway-2025",
-      "reviewCount": 2,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1880626,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -6366,12 +6366,12 @@
     },
     {
       "showId": "vanya-off-broadway-2025",
-      "reviewCount": 4,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 714811,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -6381,12 +6381,12 @@
     },
     {
       "showId": "between-two-knees-off-broadway-2024",
-      "reviewCount": 3,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1580456,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -6396,12 +6396,27 @@
     },
     {
       "showId": "primary-trust-off-broadway-2023",
-      "reviewCount": 1,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1369326,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "king-hedley-ii-2001",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 1279614,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
