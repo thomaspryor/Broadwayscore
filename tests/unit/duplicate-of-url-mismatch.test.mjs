@@ -92,7 +92,7 @@ test('self-referential duplicateTextOf IS flagged and --fix clears only that fie
 
   fix(mismatches);
   const after = JSON.parse(fs.readFileSync(path.join(FIXTURE, 'self-ref-2026', 'timeout-london--andrzej-lukowski.json'), 'utf-8'));
-  assert.equal(after.duplicateTextOf, null, 'self-ref cleared');
+  assert.equal('duplicateTextOf' in after, false, 'self-ref cleared (field absent, not null)');
   assert.equal(after.duplicateTextOfCleared, undefined, 'must NOT block future re-dedup');
   assert.ok(after.duplicateClearReason, 'clear reason recorded');
 });

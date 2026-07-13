@@ -201,7 +201,8 @@ function fix(mismatches) {
     if (field === 'duplicateTextOf') {
       // No duplicateTextOfCleared: the content-fingerprint pass must stay free
       // to re-flag this file with a CORRECT pointer if a genuine dupe exists.
-      data.duplicateTextOf = null;
+      // Delete rather than null — validate-data flags null as "should be string".
+      delete data.duplicateTextOf;
     } else {
       data.duplicateOf = null;
       data.duplicateReason = null;
