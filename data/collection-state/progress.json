@@ -9,9 +9,20 @@
     "vanya-off-broadway-2025/nytimes--jesse-green.json",
     "vanya-off-broadway-2025/vulture--sara-holdren.json",
     "vanya-off-broadway-2025/deadline--unknown.json",
-    "vanya-off-broadway-2025/theatermania--dan-rubins.json"
+    "vanya-off-broadway-2025/theatermania--dan-rubins.json",
+    "vanya-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+    "vanya-off-broadway-2025/thewrap--robert-hofler.json",
+    "vanya-off-broadway-2025/timeout--adam-feldman.json",
+    "vanya-off-broadway-2025/theatrely--unknown.json",
+    "vanya-off-broadway-2025/amny--unknown.json",
+    "vanya-off-broadway-2025/latimes--unknown.json",
+    "vanya-off-broadway-2025/playbill--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "vanya-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
+    "vanya-off-broadway-2025/broadwayworld--unknown.json",
+    "vanya-off-broadway-2025/theater-scene--deirdre-donovan.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -20,7 +31,10 @@
       "kyoto-off-broadway-2025/playbill--unknown.json",
       "kyoto-off-broadway-2025/stageandcinema--unknown.json",
       "vanya-off-broadway-2025/nytg--gillian-russo.json",
-      "vanya-off-broadway-2025/theatermania--dan-rubins.json"
+      "vanya-off-broadway-2025/theatermania--dan-rubins.json",
+      "vanya-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+      "vanya-off-broadway-2025/timeout--adam-feldman.json",
+      "vanya-off-broadway-2025/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -29,17 +43,24 @@
     ],
     "directCookies": [],
     "scrapingbee": [
-      "vanya-off-broadway-2025/nytimes--jesse-green.json"
+      "vanya-off-broadway-2025/nytimes--jesse-green.json",
+      "vanya-off-broadway-2025/theatrely--unknown.json"
     ],
-    "brightdata": [],
-    "archiveToday": [],
+    "brightdata": [
+      "vanya-off-broadway-2025/thewrap--robert-hofler.json",
+      "vanya-off-broadway-2025/amny--unknown.json",
+      "vanya-off-broadway-2025/latimes--unknown.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/vanya-off-broadway-2025/theater-scene--deirdre-donovan.json"
+    ],
     "archive": [
       "kyoto-off-broadway-2025/vulture--unknown.json",
       "vanya-off-broadway-2025/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-07-13T17:41:44.062Z",
-  "lastProcessed": "vanya-off-broadway-2025/theatermania--dan-rubins.json",
+  "lastProcessed": "vanya-off-broadway-2025/theater-scene--deirdre-donovan.json",
   "log": [
     {
       "t": "2026-07-13T17:43:32.680Z",
