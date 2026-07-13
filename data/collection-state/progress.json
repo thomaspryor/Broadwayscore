@@ -16,12 +16,22 @@
     "vanya-off-broadway-2025/theatrely--unknown.json",
     "vanya-off-broadway-2025/amny--unknown.json",
     "vanya-off-broadway-2025/latimes--unknown.json",
-    "vanya-off-broadway-2025/playbill--unknown.json"
+    "vanya-off-broadway-2025/playbill--unknown.json",
+    "vanya-off-broadway-2025/theater-scene--joel-benjamin.json",
+    "between-two-knees-off-broadway-2024/nytimes--naveen-kumar.json",
+    "between-two-knees-off-broadway-2024/nytimes--unknown.json",
+    "between-two-knees-off-broadway-2024/this-week-in-new-york--mark-rifkin.json",
+    "between-two-knees-off-broadway-2024/wsj--by-charles-isherwood.json",
+    "between-two-knees-off-broadway-2024/culturesauce--thom-geier.json",
+    "between-two-knees-off-broadway-2024/theater-scene--victor-gluck.json",
+    "primary-trust-off-broadway-2023/nyt-theater--jonathan-mandell.json",
+    "primary-trust-off-broadway-2023/nytg--amelia-merrill.json"
   ],
   "failed": [
     "vanya-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
     "vanya-off-broadway-2025/broadwayworld--unknown.json",
-    "vanya-off-broadway-2025/theater-scene--deirdre-donovan.json"
+    "vanya-off-broadway-2025/theater-scene--deirdre-donovan.json",
+    "vanya-off-broadway-2025/washpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -34,17 +44,27 @@
       "vanya-off-broadway-2025/theatermania--dan-rubins.json",
       "vanya-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
       "vanya-off-broadway-2025/timeout--adam-feldman.json",
-      "vanya-off-broadway-2025/playbill--unknown.json"
+      "vanya-off-broadway-2025/playbill--unknown.json",
+      "vanya-off-broadway-2025/theater-scene--joel-benjamin.json",
+      "between-two-knees-off-broadway-2024/this-week-in-new-york--mark-rifkin.json",
+      "between-two-knees-off-broadway-2024/culturesauce--thom-geier.json",
+      "between-two-knees-off-broadway-2024/theater-scene--victor-gluck.json",
+      "primary-trust-off-broadway-2023/nyt-theater--jonathan-mandell.json",
+      "primary-trust-off-broadway-2023/nytg--amelia-merrill.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/vanya-off-broadway-2025/deadline--unknown.json",
-      "vanya-off-broadway-2025/deadline--unknown.json"
+      "vanya-off-broadway-2025/deadline--unknown.json",
+      "data/review-texts/between-two-knees-off-broadway-2024/wsj--by-charles-isherwood.json",
+      "between-two-knees-off-broadway-2024/wsj--by-charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "vanya-off-broadway-2025/nytimes--jesse-green.json",
-      "vanya-off-broadway-2025/theatrely--unknown.json"
+      "vanya-off-broadway-2025/theatrely--unknown.json",
+      "between-two-knees-off-broadway-2024/nytimes--naveen-kumar.json",
+      "between-two-knees-off-broadway-2024/nytimes--unknown.json"
     ],
     "brightdata": [
       "vanya-off-broadway-2025/thewrap--robert-hofler.json",
@@ -60,7 +80,7 @@
     ]
   },
   "startTime": "2026-07-13T17:41:44.062Z",
-  "lastProcessed": "vanya-off-broadway-2025/theater-scene--deirdre-donovan.json",
+  "lastProcessed": "primary-trust-off-broadway-2023/nytg--amelia-merrill.json",
   "log": [
     {
       "t": "2026-07-13T17:43:32.680Z",
@@ -72,6 +92,17 @@
       "t": "2026-07-13T17:43:33.685Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-13T17:48:31.991Z",
+      "event": "bb-session",
+      "session": "869a344e",
+      "url": "https://www.wsj.com/articles/between-two-knees-review-indigenous-irreverence-per"
+    },
+    {
+      "t": "2026-07-13T17:48:33.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

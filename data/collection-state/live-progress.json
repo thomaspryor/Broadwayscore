@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-13T17:47:35.446Z",
-  "processed": 17,
-  "failed": 3,
-  "successRate": "85.0%",
+  "updatedAt": "2026-07-13T17:49:37.652Z",
+  "processed": 26,
+  "failed": 4,
+  "successRate": "86.7%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 15,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 4,
     "brightdata": 3,
     "archiveToday": 1,
     "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-07-13T17:43:32.680Z",
@@ -25,6 +25,17 @@
       "t": "2026-07-13T17:43:33.685Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-13T17:48:31.991Z",
+      "event": "bb-session",
+      "session": "869a344e",
+      "url": "https://www.wsj.com/articles/between-two-knees-review-indigenous-irreverence-per"
+    },
+    {
+      "t": "2026-07-13T17:48:33.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
