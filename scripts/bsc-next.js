@@ -102,6 +102,21 @@ function completedLaunchGuard(task, opts) {
     `If you really want to relaunch it, re-run with --force.`;
 }
 
+// Duplicate-dispatch guard: a live (non-✅) workspace whose title matches this
+// task's launch title means a session is already on it — launching another
+// splits the work (near-miss 2026-07-13: task #46 dispatched while
+// workspace:37 was still open on it). Titles get activity-glyph prefixes in
+// list output and may be truncated, so compare glyph-stripped prefixes.
+function findLiveWorkspaceForTask(task, workspaces, isDone) {
+  const launchTitle = task.subject.slice(0, 50);
+  return workspaces.find(w => {
+    if (isDone(w.title)) return false;      // finished — sweep will close it
+    const t = String(w.title).replace(/^[^\p{L}\p{N}[]+/u, '');
+    const n = Math.min(t.length, launchTitle.length);
+    return n >= 20 && t.slice(0, n) === launchTitle.slice(0, n);
+  }) || null;
+}
+
 function notionIdOf(task) {
   const m = /\[notion:([a-f0-9-]+)\]/i.exec(task.description || '');
   return m ? m[1] : null;
@@ -282,6 +297,19 @@ function main() {
         console.log(`[bsc-next] left ${skipped.length} ✅ workspace(s) with claude still running: ${skipped.map(w => w.ref).join(', ')}`);
       }
     } catch (e) { console.error(`[bsc-next] prune sweep failed (continuing): ${e.message}`); }
+
+    // Duplicate-dispatch guard (post-sweep so a just-pruned ✅ twin can't block).
+    if (!args.force) {
+      try {
+        const dup = findLiveWorkspaceForTask(task, cmuxws.listWorkspaces(), cmuxws.isDoneTitle);
+        if (dup) {
+          console.error(`[bsc-next] a live workspace already matches task #${task.id}: ${dup.ref}  "${dup.title}".`);
+          console.error(`  Another session may be on this task. Check it (cmux read-screen --workspace ${dup.ref}),`);
+          console.error(`  or re-run with --force to launch a second workspace anyway.`);
+          process.exit(1);
+        }
+      } catch (e) { console.error(`[bsc-next] duplicate check failed (continuing): ${e.message}`); }
+    }
   }
 
   const res = launchCmux(task, seed);
@@ -299,4 +327,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, notionIdOf, buildSeed, launchCmux, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES };
+module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES };
