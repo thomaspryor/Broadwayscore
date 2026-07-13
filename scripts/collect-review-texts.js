@@ -350,7 +350,6 @@ const CONFIG = {
     'bloomberg.com',      // PerimeterX anti-bot
     'ft.com',             // hCaptcha on login
     'talkinbroadway.com', // Cloudflare managed challenge — BD/SB/Playwright all fail
-    'bachtrack.com',      // review body only renders in a real browser (registration-wall JS) — BD/SB return page shell with meta description only (2026-07-13, Met opera backfill)
     'seenandheard-international.com', // Cloudflare managed challenge — BD/SB/Playwright all fail (2026-07-13)
   ],
 

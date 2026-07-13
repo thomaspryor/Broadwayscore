@@ -274,9 +274,16 @@ const PATTERNS = [
   ['parterre.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<(?:footer|aside|div[^>]+class="[^"]*(?:sharedaddy|jp-relatedposts))/, 300],
   // operawire.com — WordPress, entry-content (similar pattern)
   ['operawire.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<(?:footer|aside|div[^>]+class="[^"]*(?:sharedaddy|jp-relatedposts))/, 300],
-  // bachtrack.com — paywalled; .ar-main contains carousel + meta + (paywalled body).
-  // Best-effort: capture meta description as fullText since body itself isn't free.
-  // The S6 star-rating skip handles ensemble bypass for these.
+  // bachtrack.com — body (.pcm-walled-full > .article-body, 11+ <p>) renders only in a
+  // real browser (registration-wall JS unlocks it; 5 free articles/session). bachtrack is
+  // in PLAYWRIGHT_FIRST_DOMAINS so rendered HTML contains .article-body; try it first,
+  // stopping at the trailing star-rating / social-share blocks. Class anchor must be
+  // EXACT ("article-body") — a substring match also hits the outer
+  // .article-body-wrapper, whose first <p> is the registration banner. Verified
+  // 2026-07-13 (Madama Butterfly review → 11 paragraphs, ~4300 chars).
+  ['bachtrack.com', /<div[^>]+class="article-body"[^>]*>([\s\S]*?)<div[^>]+class="[^"]*(?:article-rating|social-holder)/, 300],
+  // Fallback for shell HTML (BD/SB fetches): meta description only. The S6
+  // star-rating skip handles ensemble bypass for these stubs.
   ['bachtrack.com', /<meta[^>]+name="description"[^>]+content="([^"]+)"/, 100],
   // seenandheard-international.com — WordPress, entry-content
   ['seenandheard-international.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<(?:footer|aside|div[^>]+class="[^"]*(?:sharedaddy|jp-relatedposts))/, 300],
