@@ -137,7 +137,7 @@ test('second-opinion verdict only counts for small diffs', (t) => {
 test('non-code paths (data/, docs) never gate', (t) => {
   const repo = makeRepo();
   t.after(() => rmSync(repo, { recursive: true, force: true }));
-  commitLines(repo, 'data/shows.json', 500, 'data churn');
+  commitLines(repo, 'data/scratch-fixture.json', 500, 'data churn');
   writeFileSync(join(repo, 'README.md'), 'x\n'.repeat(200));
   git(repo, 'add', '-A');
   git(repo, 'commit', '-q', '-m', 'docs');
