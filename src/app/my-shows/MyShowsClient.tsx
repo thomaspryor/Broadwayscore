@@ -648,7 +648,12 @@ export default function MyShowsClient() {
                   <p className="text-xs text-gray-500 mb-3">You saw these shows — how were they?</p>
                   <div className="space-y-2">
                     {toBeRatedEntries.map(entry => (
-                      <ToBeRatedCard key={`rate-${entry.id}`} entry={entry} show={showMap[entry.show_id]} />
+                      <ToBeRatedCard
+                        key={`rate-${entry.id}`}
+                        entry={entry}
+                        show={showMap[entry.show_id]}
+                        onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed — no rating needed.', 'info'); }}
+                      />
                     ))}
                   </div>
                 </div>
@@ -697,6 +702,10 @@ export default function MyShowsClient() {
                                 </p>
                               )}
                             </div>
+                            <RowRemoveButton
+                              onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from watchlist.', 'info'); }}
+                              label={`Remove ${entryTitle} from watchlist`}
+                            />
                           </div>
                         );
                       })}
@@ -988,6 +997,41 @@ export default function MyShowsClient() {
   );
 }
 
+/**
+ * Trailing ✕ for list rows (watchlist/to-be-rated) with the same two-tap
+ * confirm pattern as the grid cards — "sold my tickets / didn't go" needs a
+ * removal path that doesn't require opening the show page (owner, 2026-07-13).
+ */
+function RowRemoveButton({ onRemove, label }: { onRemove: () => void; label: string }) {
+  const [confirm, setConfirm] = useState(false);
+  useEffect(() => {
+    if (!confirm) return;
+    const timer = setTimeout(() => setConfirm(false), 4000);
+    return () => clearTimeout(timer);
+  }, [confirm]);
+
+  if (confirm) {
+    return (
+      <span className="relative z-[2] flex items-center gap-1 text-xs flex-shrink-0 pointer-events-auto">
+        <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }} className="text-red-400 hover:text-red-300 font-medium">Remove?</button>
+        <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirm(false); }} className="text-gray-500 hover:text-white">No</button>
+      </span>
+    );
+  }
+  return (
+    <button
+      type="button"
+      onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirm(true); }}
+      aria-label={label}
+      className="relative z-[2] flex-shrink-0 p-1.5 rounded-full text-gray-600 hover:text-red-400 transition-colors pointer-events-auto"
+    >
+      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  );
+}
+
 function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: ShowLookup; onDelete?: () => void }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   // Auto-dismiss delete confirmation after 4 seconds
@@ -1033,16 +1077,19 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
         )}
       </div>
 
-      {/* Rating + actions — single row */}
-      <div className="relative z-[1] pointer-events-none flex-shrink-0 flex items-center gap-1.5">
+      {/* Rating — same md stars as the To Be Rated rows above (a smaller size
+          here read as "worse" stars; edit/delete moved to the top-right corner
+          so the stars don't have to shrink for them — owner, 2026-07-13) */}
+      <div className="relative z-[1] pointer-events-none flex-shrink-0 flex items-center">
         {/* Single star + number on mobile, full stars on desktop */}
         <span className="md:hidden flex items-center gap-1">
           <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
           <span className="text-base font-bold text-amber-400">{review.rating % 1 === 0 ? review.rating.toFixed(0) : review.rating.toFixed(1)}</span>
         </span>
-        <span className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></span>
-        {/* Edit + delete icons — inline next to rating */}
-        <div className="flex items-center gap-0.5 opacity-100 sm:opacity-0 sm:group-hover/diary:opacity-100 transition-opacity pointer-events-auto">
+        <span className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="md" readOnly hideLabel /></span>
+      </div>
+      {/* Edit + delete — top-right corner, out of the star row */}
+      <div className="absolute top-1.5 right-1.5 z-[2] flex items-center gap-0.5 opacity-100 sm:opacity-0 sm:group-hover/diary:opacity-100 transition-opacity pointer-events-auto">
           <Link
             href={`${href}?edit=1`}
             className="p-1 rounded-full text-gray-600 hover:text-white transition-colors"
@@ -1070,7 +1117,6 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
               <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmDelete(false); }} className="text-gray-500 hover:text-white">No</button>
             </span>
           )}
-        </div>
       </div>
     </div>
   );
@@ -1137,6 +1183,15 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
             <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl">🎭</div>
           )}
         </div>
+        {/* Written-note preview on hover (desktop) — grid view otherwise hides
+            the note entirely (owner request, 2026-07-13) */}
+        {review.review_text && (
+          <div className="absolute inset-x-0 bottom-0 z-[1] hidden sm:block opacity-0 group-hover/grid:opacity-100 transition-opacity pointer-events-none">
+            <div className="bg-gradient-to-t from-black/95 via-black/80 to-transparent px-2.5 pt-10 pb-2.5">
+              <p className="text-xs text-gray-200 italic leading-snug line-clamp-4">{review.review_text}</p>
+            </div>
+          </div>
+        )}
         {/* Delete button — hidden on mobile, visible on hover on desktop */}
         {onDelete && (
           <button
@@ -1151,11 +1206,17 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
           </button>
         )}
       </Link>
-      {/* Stars below image — centered, filled only (Mezzanine-style) */}
+      {/* Stars below image — centered, filled only (Mezzanine-style), with the
+          date seen directly beneath (owner placement call, 2026-07-13) */}
       <div className="px-2 py-1.5">
         <div className="flex justify-center gap-0.5 min-h-[18px]">
           {review.rating > 0 && <MiniStars rating={review.rating} size="md" filledOnly />}
         </div>
+        {review.date_seen && (
+          <p className="mt-0.5 text-xs text-amber-400/80 text-center truncate">
+            {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -1515,7 +1576,7 @@ function AddShowSearch({
 }
 
 /** "To Be Rated" card with inline interactive stars */
-function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLookup }) {
+function ToBeRatedCard({ entry, show, onRemove }: { entry: WatchlistEntry; show?: ShowLookup; onRemove: () => void }) {
   const router = useRouter();
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
@@ -1567,6 +1628,8 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
           </span>
         </div>
       </div>
+      {/* Didn't go / sold tickets — remove without opening the show page */}
+      <RowRemoveButton onRemove={onRemove} label={`Remove ${title} — didn't see it`} />
     </div>
   );
 }

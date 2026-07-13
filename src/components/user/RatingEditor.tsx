@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import Modal from '@/components/show-cards/Modal';
 import StarRating from './StarRating';
 
@@ -14,8 +14,6 @@ export interface RatingEditorSaveData {
 
 interface RatingEditorProps {
   showTitle: string;
-  /** Latest allowable date_seen (closing date). Capped further to today (local). */
-  closingDate?: string | null;
   /** Existing review id when editing/replacing; omit to append a new viewing. */
   reviewId?: string;
   /** Stars to open with (the star the user tapped, or an existing review's rating). */
@@ -70,7 +68,6 @@ const HEADER_COPY: Record<NonNullable<RatingEditorProps['mode']>, string> = {
 
 export default function RatingEditor({
   showTitle,
-  closingDate,
   reviewId,
   initialRating,
   initialReviewText,
@@ -84,8 +81,12 @@ export default function RatingEditor({
   presentation = 'auto',
 }: RatingEditorProps) {
   const today = localToday();
-  // Cap to today; for a closed show that has already closed, cap to the closing date.
-  const maxDate = closingDate && closingDate < today ? closingDate : today;
+  // Cap only at today. Do NOT cap at the show's closing date: users log return
+  // engagements/Encores runs against the same entry, and diary imports can map
+  // a viewing to an earlier production — the closing-date cap anchored the
+  // native picker years in the past and read as "completely locked"
+  // (La Cage aux Folles report, 2026-07-13).
+  const maxDate = today;
 
   const [rating, setRating] = useState<number>(() => sanitizeRating(initialRating));
   const [reviewText, setReviewText] = useState<string>(initialReviewText || '');
@@ -99,6 +100,23 @@ export default function RatingEditor({
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Live hover value from the stars — previewed in the big number so half-star
+  // targeting is legible before the click (owner report, 2026-07-13).
+  const [hoverValue, setHoverValue] = useState<number | null>(null);
+  const dateInputRef = useRef<HTMLInputElement>(null);
+
+  const openDatePicker = useCallback(() => {
+    const el = dateInputRef.current;
+    if (!el) return;
+    try {
+      el.showPicker();
+    } catch {
+      // Pre-showPicker browsers (old Safari): focusing the input opens the
+      // native wheel on iOS; desktop fallback is click.
+      el.focus();
+      el.click();
+    }
+  }, []);
 
   const [isDesktop, setIsDesktop] = useState<boolean>(
     () => typeof window !== 'undefined' && window.matchMedia('(min-width: 640px)').matches,
@@ -148,11 +166,18 @@ export default function RatingEditor({
         <span className="text-sm font-semibold text-white truncate min-w-0">{showTitle}</span>
       </div>
 
-      {/* Adjustable stars — the core fix (editor no longer opens locked at 5.0) */}
+      {/* Adjustable stars — the core fix (editor no longer opens locked at 5.0).
+          While hovering, the big number previews the would-be value (slightly
+          dimmer) so left-half = X.5 / right-half = X.0 is legible pre-click. */}
       <div className="flex items-center gap-3 mb-4">
-        <StarRating rating={rating > 0 ? rating : null} onRatingChange={setRating} size="lg" hideLabel />
-        {rating >= 0.5 ? (
-          <span className="text-lg font-bold text-amber-400 tabular-nums">{rating.toFixed(1)}</span>
+        <StarRating rating={rating > 0 ? rating : null} onRatingChange={setRating} onHoverChange={setHoverValue} size="lg" hideLabel />
+        {(hoverValue ?? rating) >= 0.5 ? (
+          <span
+            className={`text-lg font-bold tabular-nums ${hoverValue !== null ? 'text-amber-300/80' : 'text-amber-400'}`}
+            data-testid="rating-value"
+          >
+            {(hoverValue ?? rating).toFixed(1)}
+          </span>
         ) : (
           <span className="text-xs text-gray-500" data-testid="pick-stars-hint">Tap a star to rate</span>
         )}
@@ -163,19 +188,51 @@ export default function RatingEditor({
         <label className="block text-xs font-medium text-gray-400 mb-1">
           Date Seen <span className="text-gray-600">(optional)</span>
         </label>
-        <input
-          type="date"
-          autoComplete="off"
-          data-1p-ignore
-          data-lpignore="true"
-          data-bwignore="true"
-          value={dateSeen}
-          onChange={e => setDateSeen(e.target.value)}
-          onFocus={e => { try { e.currentTarget.showPicker(); } catch {} }}
-          min="1950-01-01"
-          max={maxDate}
-          className="w-full sm:w-48 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 [color-scheme:dark] cursor-pointer"
-        />
+        {/* Structural password-manager fix: the tabbable control is a BUTTON —
+            managers only attach to focusable text-entry fields, and the
+            data-1p-ignore attribute route proved advisory-only in the wild
+            (owner's manager ignored it, 2026-07-13). The real date input is
+            visually hidden underneath purely to anchor the native picker. */}
+        <div className="relative w-full sm:w-48">
+          <input
+            ref={dateInputRef}
+            type="date"
+            aria-hidden="true"
+            tabIndex={-1}
+            value={dateSeen}
+            onChange={e => setDateSeen(e.target.value)}
+            min="1950-01-01"
+            max={maxDate}
+            className="absolute inset-0 w-full h-full opacity-0 pointer-events-none [color-scheme:dark]"
+          />
+          <button
+            type="button"
+            onClick={openDatePicker}
+            aria-label="Date seen"
+            className={`w-full flex items-center gap-2 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 transition-colors ${dateSeen ? 'text-white' : 'text-gray-500'} ${dateSeen ? 'pr-9' : ''}`}
+          >
+            <svg className="w-4 h-4 shrink-0 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span data-testid="date-seen-display">
+              {dateSeen
+                ? new Date(dateSeen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                : 'Add a date'}
+            </span>
+          </button>
+          {dateSeen && (
+            <button
+              type="button"
+              onClick={() => setDateSeen('')}
+              aria-label="Clear date"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1 rounded-full text-gray-500 hover:text-white transition-colors"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Private notes */}

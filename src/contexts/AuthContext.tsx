@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
 import { saveReturnUrl, clearReturnUrl } from '@/lib/deferred-auth';
+import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
 import type { UserProfile } from '@/types/user';
 import SignInModal from '@/components/auth/SignInModal';
 import { signInWithAppleSDK } from '@/lib/apple-auth';
@@ -48,6 +49,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (session?.user) {
         setUser({ id: session.user.id, email: session.user.email || '' });
         loadProfile(session.user.id);
+        // Restored sessions too (not just fresh SIGNED_IN): users who signed
+        // up before auto-subscribe shipped must still land on the list.
+        // Fire-and-forget; internally idempotent.
+        if (session.user.email) autoSubscribeOnSignIn(session.user.email);
       }
       setLoading(false);
     });
@@ -61,6 +66,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // but getSession() awaits initializePromise — creating a deadlock.
         // Fire-and-forget is safe; loadProfile has its own error handling.
         loadProfile(session.user.id);
+        // Signing in = joining the main mailing list (owner decision 2026-07-13).
+        // Also fire-and-forget — never await inside this callback (deadlock note above).
+        if (session.user.email) autoSubscribeOnSignIn(session.user.email);
         setModalOpen(false);
         setSignInLoading(false);
 
