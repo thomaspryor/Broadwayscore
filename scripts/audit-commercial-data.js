@@ -102,6 +102,33 @@ const commercialEntries = Object.entries(commercial.shows);
 const commercialKeys = new Set(Object.keys(commercial.shows));
 
 // ============================================
+// Shared predicates (canonical definitions -- reused by
+// --list-unsourced-recouped, --list-chatgpt-sources, and --strict)
+// ============================================
+
+const BANNED_URL_SUBSTRINGS = ['chatgpt.com', 'openai.com', 'bard.google.com', 'claude.ai'];
+
+// True when an entry claims recouped=true but has no citation: no
+// recoupedSource, and no sources[] entry with a non-empty url.
+function isUnsourcedRecouped(data) {
+  if (data.recouped !== true) return false;
+  if (data.recoupedSource) return false;
+  const hasUrlSource = Array.isArray(data.sources) &&
+    data.sources.some(s => s && typeof s.url === 'string' && s.url.trim().length > 0);
+  return !hasUrlSource;
+}
+
+// Returns the list of sources[] entries whose url points at a banned
+// LLM-tool domain (ChatGPT/OpenAI/Bard/Claude), for a given entry.
+function getBannedSources(data) {
+  if (!Array.isArray(data.sources)) return [];
+  return data.sources.filter(src =>
+    src && typeof src.url === 'string' &&
+    BANNED_URL_SUBSTRINGS.some(domain => src.url.includes(domain))
+  );
+}
+
+// ============================================
 // CLI reporting flags (exit before the full audit runs)
 // ============================================
 
@@ -110,11 +137,7 @@ const cliArgs = process.argv.slice(2);
 if (cliArgs.includes('--list-unsourced-recouped')) {
   let count = 0;
   for (const [key, data] of commercialEntries) {
-    if (data.recouped !== true) continue;
-    if (data.recoupedSource) continue;
-    const hasUrlSource = Array.isArray(data.sources) &&
-      data.sources.some(s => s && typeof s.url === 'string' && s.url.trim().length > 0);
-    if (hasUrlSource) continue;
+    if (!isUnsourcedRecouped(data)) continue;
     console.log(key);
     count++;
   }
@@ -123,19 +146,37 @@ if (cliArgs.includes('--list-unsourced-recouped')) {
 }
 
 if (cliArgs.includes('--list-chatgpt-sources')) {
-  const BANNED_URL_SUBSTRINGS = ['chatgpt.com', 'openai.com', 'bard.google.com', 'claude.ai'];
   let count = 0;
   for (const [key, data] of commercialEntries) {
-    if (!Array.isArray(data.sources)) continue;
-    for (const src of data.sources) {
-      if (!src || typeof src.url !== 'string') continue;
-      if (BANNED_URL_SUBSTRINGS.some(domain => src.url.includes(domain))) {
-        console.log(`${key}\t${src.url}`);
-        count++;
-      }
+    for (const src of getBannedSources(data)) {
+      console.log(`${key}\t${src.url}`);
+      count++;
     }
   }
   console.error(`${count} chatgpt-source entries`);
+  process.exit(0);
+}
+
+if (cliArgs.includes('--strict')) {
+  let violationCount = 0;
+
+  for (const [key, data] of commercialEntries) {
+    if (isUnsourcedRecouped(data)) {
+      console.error(`${key}: recouped=true with no recoupedSource and no sourced sources[].url`);
+      violationCount++;
+    }
+    for (const src of getBannedSources(data)) {
+      console.error(`${key}: sources[].url contains a banned LLM-tool domain: ${src.url}`);
+      violationCount++;
+    }
+  }
+
+  if (violationCount > 0) {
+    console.error(`\n--strict FAILED: ${violationCount} violation(s) found.`);
+    process.exit(1);
+  }
+
+  console.error('--strict PASSED: 0 violations.');
   process.exit(0);
 }
 
