@@ -33,7 +33,11 @@ const EXCLUDED_CATEGORIES = new Set(['marketing', 'partnerships']);
 
 // Second layer: Admin/Product cards that are still human ACTIONS (emailing
 // people, reconnecting accounts, posting) — category can't see these.
-const HUMAN_ACTION_RE = /^(send|reply|follow up|email|recruit|post|repost|meet|reschedule|reconnect|call|text|dm|share|announce|pitch|ask)\b/i;
+// (?=\s|$) not \b: an imperative verb takes an object after whitespace, while
+// a hyphen right after the verb is a compound technical noun ("Post-Tonys
+// rollout", "Reply-to header parsing bug") that \b wrongly matched — task #108
+// sat in the human-territory list because of this.
+const HUMAN_ACTION_RE = /^(send|reply|follow up|email|recruit|post|repost|meet|reschedule|reconnect|call|text|dm|share|announce|pitch|ask)(?=\s|$)/i;
 
 // Domains where an unattended mistake is expensive or externally visible.
 // Tag names are compared lowercased.
@@ -41,9 +45,13 @@ const DENY_TAGS = new Set(['email', 'commercial', 'scoring', 'ios-app']);
 
 // Category is the trailing meta segment of the mirrored task description's
 // first line ("[notion:<id>] P0 Now · In progress · Marketing") written by
-// notion-tasks-sync (fmt:2).
+// notion-tasks-sync (fmt:2). Only a genuine bridge line ([notion: prefix) may
+// vouch a category: without that check, any native description whose first
+// line happens to contain 2+ '·' characters would fabricate a category and
+// bypass the fail-closed null branch below.
 function categoryOf(task) {
   const firstLine = (task.description || '').split('\n')[0];
+  if (!/^\[notion:/i.test(firstLine)) return null;
   const parts = firstLine.split('·').map(s => s.trim());
   return parts.length >= 3 ? parts[parts.length - 1].toLowerCase() : null;
 }
@@ -57,9 +65,19 @@ function isHumanActionSubject(subject) {
 }
 
 // Task-mirror shape ({subject, description}) — used by bsc-next.
+// Unknown category = fail CLOSED: apply the human-action verb filter WITHOUT
+// the ≤5-word bound, since no category vouches for a long verb-led subject
+// being a product card ("Email gate conversion critically low" stays pickable
+// only when a bridge line says Product). Unknown covers BOTH null (no fmt-2
+// meta line: native TaskCreate, or pre-fmt:2 legacy) AND the literal
+// 'no-category' that notion-tasks-sync writes when the Notion card's category
+// is empty ("Ask Dennis T to mentor…" was default-pickable through that gap).
+// Explicit --id still reaches anything this excludes (--pick indexes the
+// already-filtered list, so it can't).
 function isExcludedCategory(task) {
   const c = categoryOf(task);
-  if (c !== null && EXCLUDED_CATEGORIES.has(c)) return true;
+  if (c === null || c === 'no-category') return HUMAN_ACTION_RE.test((task.subject || '').trim());
+  if (EXCLUDED_CATEGORIES.has(c)) return true;
   return isHumanActionSubject(task.subject);
 }
 
