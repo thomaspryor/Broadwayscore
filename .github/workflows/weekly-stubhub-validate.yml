@@ -34,13 +34,28 @@ jobs:
           if [ "${{ inputs.apply }}" = "true" ]; then
             APPLY_FLAG="--apply"
           fi
-          node scripts/validate-stubhub-urls.js $APPLY_FLAG > /tmp/stubhub-report.txt 2>&1 || true
+          NODE_EXIT=0
+          node scripts/validate-stubhub-urls.js $APPLY_FLAG > /tmp/stubhub-report.txt 2>&1 || NODE_EXIT=$?
           cat /tmp/stubhub-report.txt
           # Extract summary counts for email subject line
           BROKEN=$(grep -oE 'broken: *[0-9]+' /tmp/stubhub-report.txt | tail -1 | grep -oE '[0-9]+' || echo "?")
-          OK=$(grep -oE 'ok: *[0-9]+' /tmp/stubhub-report.txt | tail -1 | grep -oE '[0-9]+' || echo "?")
+          OK=$(grep -oE '\bok: *[0-9]+' /tmp/stubhub-report.txt | tail -1 | grep -oE '[0-9]+' || echo "?")
           echo "broken=$BROKEN" >> $GITHUB_OUTPUT
           echo "ok=$OK" >> $GITHUB_OUTPUT
+          # Full report always lands in the run's step summary (FYI channel).
+          {
+            echo "### StubHub URL Validator"
+            echo '```'
+            cat /tmp/stubhub-report.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          # A crashed validator must FAIL the run (surfaces via digest/notify) —
+          # with the all-OK email gone, a silent crash would otherwise report
+          # nowhere at all.
+          if [ "$NODE_EXIT" -ne 0 ] || [ "$BROKEN" = "?" ]; then
+            echo "::error::Validator crashed or produced no summary (exit=$NODE_EXIT, broken=$BROKEN)"
+            exit 1
+          fi
 
       - name: Commit & push fixes (if --apply and broken found)
         if: inputs.apply == true && steps.validator.outputs.broken != '0' && steps.validator.outputs.broken != '?'
@@ -53,7 +68,11 @@ jobs:
         if: inputs.apply == true && steps.validator.outputs.broken != '0' && steps.validator.outputs.broken != '?'
         uses: ./.github/actions/dispatch-deploy
 
+      # Actionable-only email policy (2026-07-11): all-OK and inconclusive
+      # (bot-blocked) runs are FYI — step summary only, no inbox. Email only when
+      # confirmed-broken URLs (404/410 or wrong-show redirects) need action.
       - name: Send email via Resend
+        if: steps.validator.outputs.broken != '0' && steps.validator.outputs.broken != '?'
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
@@ -63,11 +82,7 @@ jobs:
           if [ "${{ inputs.apply }}" = "true" ]; then
             APPLIED_TAG=" (auto-fixed)"
           fi
-          if [ "$BROKEN" = "0" ]; then
-            SUBJECT="StubHub URL Validator — All $OK URLs OK · $(date -u +'%b %d, %Y')"
-          else
-            SUBJECT="StubHub URL Validator — $BROKEN broken / $OK OK${APPLIED_TAG} · $(date -u +'%b %d, %Y')"
-          fi
+          SUBJECT="StubHub URL Validator — $BROKEN broken / $OK OK${APPLIED_TAG} · $(date -u +'%b %d, %Y')"
           jq -n \
             --arg from "Broadway Scorecard <notifications@broadwayscorecard.com>" \
             --arg to "thomas.pryor@gmail.com" \

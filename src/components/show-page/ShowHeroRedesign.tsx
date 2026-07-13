@@ -545,15 +545,6 @@ function Inner({
         </div>
       )}
 
-      {/* Your rating card (rated state, render only when not actively editing inline) */}
-      {userFeaturesEnabled && hasRating && latestReview && !ratePanelOpen && (
-        <YourRatingInline
-          reviews={sortedReviews}
-          userAvg={userAvg}
-          onEditReview={(r) => { setEditingReview(r); setRatePanelOpen(true); }}
-        />
-      )}
-
       {/* Action buttons row — Want to See / Rate it (icon stacked vertical) */}
       {userFeaturesEnabled && (
         <div className="grid grid-cols-2 gap-2.5">
@@ -614,6 +605,17 @@ function Inner({
         </p>
       )}
 
+      {/* Your rating card — BELOW the action buttons, where the editor opens,
+          so a fresh save doesn't "jump" above the button that created it
+          (owner feedback 2026-07-13). Hidden while actively editing inline. */}
+      {userFeaturesEnabled && hasRating && latestReview && !ratePanelOpen && (
+        <YourRatingInline
+          reviews={sortedReviews}
+          userAvg={userAvg}
+          onEditReview={(r) => { setEditingReview(r); setRatePanelOpen(true); }}
+        />
+      )}
+
       {/* Rating editor — bottom-sheet on mobile, inline card on desktop. Adjustable
           stars live inside; a failed save keeps the panel open with the note intact.
           suggestedDateSeen: watchlist planned-date prefills Date Seen for any
@@ -623,7 +625,6 @@ function Inner({
         <RatingEditor
           key={editingReview?.id ?? pendingDraft?.reviewId ?? 'new-viewing'}
           showTitle={show.title}
-          closingDate={show.closingDate}
           reviewId={editingReview?.id ?? pendingDraft?.reviewId}
           initialRating={editingReview?.rating ?? pendingDraft?.rating ?? 0}
           initialReviewText={editingReview?.review_text ?? pendingDraft?.reviewText ?? null}

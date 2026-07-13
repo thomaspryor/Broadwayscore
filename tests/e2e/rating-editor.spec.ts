@@ -77,10 +77,45 @@ for (const vp of VIEWPORTS) {
       await expect(page.locator('input[type="date"]')).toHaveValue(localToday());
     });
 
-    test('date is capped to the closing date when the show has closed', async ({ page }) => {
-      await goToEditor(page, '?closing=2020-01-01');
-      // closing (2020) is before today → max is the closing date.
-      await expect(page.locator('input[type="date"]')).toHaveAttribute('max', '2020-01-01');
+    test('date max is today — never the closing date (closed shows stay pickable)', async ({ page }) => {
+      // Regression: capping at closingDate anchored the native picker years in
+      // the past and read as locked (La Cage aux Folles, 2026-07-13).
+      await goToEditor(page);
+      await expect(page.locator('input[type="date"]')).toHaveAttribute('max', localToday());
+    });
+
+    test('date control is a button — nothing focusable for password managers', async ({ page }) => {
+      // Regression: managers ignored data-1p-ignore on the visible date input
+      // and popped autofill over the picker (2026-07-13). The real input must
+      // be untabbable/hidden; the user-facing control is a plain button.
+      await goToEditor(page);
+      const dateInput = page.locator('input[type="date"]');
+      await expect(dateInput).toHaveAttribute('tabindex', '-1');
+      await expect(dateInput).toHaveAttribute('aria-hidden', 'true');
+      const trigger = page.getByRole('button', { name: 'Date seen' });
+      await expect(trigger).toBeVisible();
+      // Clear ✕ empties the value; trigger falls back to placeholder copy.
+      await page.getByRole('button', { name: 'Clear date' }).click();
+      await expect(dateInput).toHaveValue('');
+      await expect(trigger).toContainText('Add a date');
+    });
+
+    test('hovering star halves previews the exact value in the number', async ({ page }) => {
+      // Regression: production registered left-half hovers as whole stars and
+      // gave no feedback on what a click would commit (2026-07-13).
+      await goToEditor(page);
+      const editor = page.locator('[data-testid="rating-editor"]');
+      const star3 = editor.getByRole('button', { name: '3 stars' });
+      const box = (await star3.boundingBox())!;
+      await page.mouse.move(box.x + box.width * 0.25, box.y + box.height / 2);
+      await expect(editor.locator('[data-testid="rating-value"]')).toHaveText('2.5');
+      await page.mouse.move(box.x + box.width * 0.75, box.y + box.height / 2);
+      await expect(editor.locator('[data-testid="rating-value"]')).toHaveText('3.0');
+      // Click commits the previewed half value.
+      await page.mouse.move(box.x + box.width * 0.25, box.y + box.height / 2);
+      await page.mouse.down();
+      await page.mouse.up();
+      await expect(editor.locator('[data-testid="rating-value"]')).toHaveText('2.5');
     });
 
     test('modal presentation escapes .card containment — Save reachable', async ({ page }) => {

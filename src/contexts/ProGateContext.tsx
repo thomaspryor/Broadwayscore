@@ -25,6 +25,7 @@ import {
 } from '@/lib/gate-logic';
 import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
 import { isLondonPath } from '@/hooks/useCurrentMarket';
+import { useAuth } from '@/contexts/AuthContext';
 
 const EmailCaptureModal = dynamic(() => import('@/components/EmailCaptureModal'), { ssr: false });
 
@@ -75,6 +76,13 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   // form routing (EmailCaptureModal computes the same isLondonPath check).
   const pathname = usePathname();
   const market = pathname && isLondonPath(pathname) ? 'west-end' : 'broadway';
+
+  // Signed-in users NEVER see capture pop-ups: sign-in auto-subscribes them to
+  // the main list (src/lib/auto-subscribe.ts), and this gate also covers new
+  // devices where localStorage has no subscribed flag yet (owner, 2026-07-13).
+  // Safe when the userAccounts flag is off — useAuth falls back to
+  // isAuthenticated:false defaults outside an AuthProvider.
+  const { isAuthenticated } = useAuth();
 
   // Initialize hasEmail synchronously from the CURRENT market's subscription, so an
   // already-subscribed user is never transiently treated as hasEmail=false on the
@@ -147,6 +155,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   const [gateFireMeta, setGateFireMeta] = useState<GateFireMeta>({});
 
   const triggerGate = useCallback((trigger: GateTrigger, meta: GateFireMeta = {}) => {
+    if (isAuthenticated) return; // Signed-in users are auto-subscribed — never nag
     if (hasEmail) return; // Don't show if already have email
     if (modalOpen) return; // Don't stack modals
     // Don't trigger on excluded pages (feedback, submit-review, etc.)
@@ -169,7 +178,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     setModalTrigger(trigger);
     setModalBlocking(blocking);
     setModalOpen(true);
-  }, [hasEmail, modalOpen]);
+  }, [isAuthenticated, hasEmail, modalOpen]);
 
   const handleModalClose = useCallback(() => {
     if (modalBlocking) return; // Can't close blocking modals
@@ -185,7 +194,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
 
   // Recapture: fire non-blocking modal after 4s for pre-fix users who need re-submission to Formspree
   useEffect(() => {
-    if (!needsRecapture || !isClient) return;
+    if (!needsRecapture || !isClient || isAuthenticated) return;
     const timer = setTimeout(() => {
       setModalTrigger('recapture');
       setModalBlocking(false);
@@ -193,7 +202,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       setNeedsRecapture(false);
     }, 4000);
     return () => clearTimeout(timer);
-  }, [needsRecapture, isClient]);
+  }, [needsRecapture, isClient, isAuthenticated]);
 
   // Listen for mid-session subscriptions from inline forms (FooterEmailCapture, etc.)
   useEffect(() => {

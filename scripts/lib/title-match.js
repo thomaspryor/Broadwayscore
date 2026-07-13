@@ -170,6 +170,23 @@ const VENUE_ALIASES = [
     canonical: 'irish rep',
     matches: [/irish\s*repertory/i, /^irish\s*rep/i],
   },
+  // Roundabout's OB stage — listed with/without the company prefix and with
+  // the full Steinberg Center name
+  {
+    canonical: 'laura pels',
+    matches: [/laura\s*pels/i, /steinberg\s*center/i],
+  },
+  // Lincoln Center Theater's OB stage — Playbill omits the LCT prefix
+  {
+    canonical: 'mitzi newhouse',
+    matches: [/mitzi\s*e?\.?\s*newhouse/i],
+  },
+  // PAC NYC — listed both bare and with the "(PAC NYC)" suffix. Must not
+  // match Carnegie Hall's "Perelman Stage".
+  {
+    canonical: 'pac nyc',
+    matches: [/perelman\s*performing\s*arts/i, /\bpac\s*nyc\b/i],
+  },
 ];
 
 /**
