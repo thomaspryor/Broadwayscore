@@ -86,7 +86,9 @@
     "the-producers-west-end-2025/west-end-best-friend--unknown.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "just-in-time-2025/newyorker--conde-nast.json",
-    "stranger-things-2024/hollywood-reporter--caitlin-huston.json"
+    "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+    "buena-vista-social-club-2025/nysr--unknown.json",
+    "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json"
   ],
   "failed": [
     "carmen-off-broadway-2025/guardian--unknown.json",
@@ -1006,7 +1008,15 @@
     "operation-mincemeat-2025/musical-theatre-review--unknown.json",
     "operation-mincemeat-2025/thereviewshub--unknown.json",
     "operation-mincemeat-2025/all-that-dazzles-uk--unknown.json",
-    "operation-mincemeat-2025/british-theatre--unknown.json"
+    "operation-mincemeat-2025/british-theatre--unknown.json",
+    "operation-mincemeat-2025/londontheatre1--unknown.json",
+    "operation-mincemeat-2025/standard--nick-curtis.json",
+    "buena-vista-social-club-2025/observer--david-cote.json",
+    "my-neighbour-totoro-west-end-2025/timeout--tom-wicker.json",
+    "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
+    "my-neighbour-totoro-west-end-2025/financialtimes--sarah-hemming.json",
+    "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json",
+    "my-neighbour-totoro-west-end-2025/nottingham-confidential--west-end-theatre-editorial.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1068,7 +1078,8 @@
       "oh-mary-west-end-2025/theatermania--zachary-stewart.json",
       "oh-mary-west-end-2025/timeout--adam-feldman.json",
       "the-producers-west-end-2025/west-end-best-friend--unknown.json",
-      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "buena-vista-social-club-2025/nysr--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1089,7 +1100,9 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/stranger-things-2024/hollywood-reporter--caitlin-huston.json",
-      "stranger-things-2024/hollywood-reporter--caitlin-huston.json"
+      "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+      "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1154,7 +1167,7 @@
     ]
   },
   "startTime": "2026-07-13T05:15:55.218Z",
-  "lastProcessed": "operation-mincemeat-2025/british-theatre--unknown.json",
+  "lastProcessed": "my-neighbour-totoro-west-end-2025/nottingham-confidential--west-end-theatre-editorial.json",
   "log": [
     {
       "t": "2026-07-13T05:17:40.062Z",
@@ -1293,6 +1306,17 @@
       "t": "2026-07-13T12:19:28.961Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-13T12:22:07.260Z",
+      "event": "bb-session",
+      "session": "f0a04b76",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-07-13T12:22:07.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
