@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-13T12:19:08.991Z",
-  "processed": 85,
-  "failed": 910,
-  "successRate": "8.5%",
+  "updatedAt": "2026-07-13T12:21:16.513Z",
+  "processed": 87,
+  "failed": 918,
+  "successRate": "8.7%",
   "tierBreakdown": {
     "playwright": 58,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 8,
+    "scrapingbee": 9,
     "brightdata": 4,
     "archiveToday": 26,
     "archive": 8
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-07-13T08:26:47.476Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-13T08:35:55.331Z",
-      "event": "bb-session",
-      "session": "ff44c1e8",
-      "url": "https://www.inkl.com/news/the-guilty-review-russell-tovey-is-commanding-in-cop-t"
-    },
     {
       "t": "2026-07-13T09:18:06.652Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-07-13T12:10:44.698Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-13T12:19:28.516Z",
+      "event": "bb-session",
+      "session": "cfd69b89",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
+    },
+    {
+      "t": "2026-07-13T12:19:28.961Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
