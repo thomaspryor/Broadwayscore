@@ -77,6 +77,20 @@ function mapCardToTask(card, taskId) {
   };
 }
 
+// Never downgrade a live session's local progress: a session that claimed
+// the task (in_progress) or finished it (completed) outranks the mapped
+// Notion status, which can lag behind (2026-07-12 ship-check finding — a
+// pull could un-claim active work and cause duplicate pickup). This is also
+// what protects the autonomous executor's claim: the loop flips the card's
+// Status to "In progress" (notion-tasks-sync deliberately ignores the Auto
+// property), so a claimed card mirrors as in_progress and a pull must never
+// re-offer it as pending. Regression-tested — Sprint-2 carry-forward #1.
+function mergeStatus(existingStatus, mappedStatus) {
+  if (existingStatus === 'completed') return 'completed';
+  if (existingStatus === 'in_progress' && mappedStatus === 'pending') return 'in_progress';
+  return mappedStatus;
+}
+
 // Decide what a pull should do given the eligible cards and the existing map.
 // Returns { toCreate:[{card}], toUpdate:[{card, taskId}], unchanged:[pageId] }.
 // Pure: no filesystem or network access, so it is unit-testable.
@@ -249,13 +263,8 @@ function cmdPull(args) {
     for (const { card, taskId } of plan.toUpdate) {
       if (!dry && !taskBelongsTo(dir, taskId, card.id)) { doCreate(card); continue; }
       const existing = readTask(dir, taskId) || {};
-      // Never downgrade a live session's local progress: a session that claimed
-      // the task (in_progress) or finished it (completed) outranks the mapped
-      // Notion status, which can lag behind (2026-07-12 ship-check finding —
-      // a pull could un-claim active work and cause duplicate pickup).
       const mapped = mapCardToTask(card, taskId);
-      if (existing.status === 'completed') mapped.status = 'completed';
-      else if (existing.status === 'in_progress' && mapped.status === 'pending') mapped.status = 'in_progress';
+      mapped.status = mergeStatus(existing.status, mapped.status);
       const task = { ...mapped, blocks: existing.blocks || [], blockedBy: existing.blockedBy || [] };
       if (!dry) writeTask(dir, task);
       map[card.id].syncedStatus = card.status;
@@ -333,4 +342,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, mapStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm };
+module.exports = { parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm };

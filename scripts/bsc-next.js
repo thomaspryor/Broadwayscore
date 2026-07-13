@@ -113,6 +113,12 @@ function buildSeed(task, card) {
     ``,
     notes,
     ``,
+    // Standing anti-stale-seed instruction (chain break #1, 2026-07-12): a
+    // launched session's seed is a snapshot — directives added to the card
+    // after launch (e.g. "dispatch the next sprint yourself") are invisible
+    // unless the session re-reads the card before wrapping up.
+    `Before wrap-up, RE-READ this card via notion-brain get — directives may have been added since launch. If the card instructs chaining, dispatch the next workspace yourself; never end by telling the user to paste a prompt.`,
+    ``,
     `Start by confirming your understanding and a short plan, then proceed.`,
   ].filter(v => v !== null).join('\n');
 }

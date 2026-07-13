@@ -404,6 +404,23 @@ on:
       - 'scripts/autonomous-calibrate.js'
       - 'scripts/autonomous-run.js'
       - 'scripts/autonomous-probe.js'
+      # Autonomous nightly loop (Sprint 2). scripts/lib *.test.mjs run in the
+      # lib-test glob; path-listed so solo edits trigger CI.
+      - 'scripts/lib/autonomous-ledger.js'
+      - 'scripts/lib/autonomous-ledger.test.mjs'
+      - 'scripts/lib/autonomous-budget.js'
+      - 'scripts/lib/autonomous-budget.test.mjs'
+      - 'scripts/lib/autonomous-run-core.js'
+      - 'scripts/lib/autonomous-run-core.test.mjs'
+      - 'scripts/lib/autonomous-email-render.js'
+      - 'scripts/lib/autonomous-email-render.test.mjs'
+      - 'scripts/lib/autonomous-links.js'
+      - 'scripts/lib/autonomous-links.test.mjs'
+      - 'scripts/autonomous-email.js'
+      - 'scripts/autonomous-deadman.js'
+      - 'scripts/autonomous-nightly.sh'
+      - 'scripts/launchd/**'
+      - '.claude/autonomous-config.json'
   pull_request:
     branches: [main]
   schedule:
