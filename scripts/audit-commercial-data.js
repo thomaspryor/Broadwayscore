@@ -894,6 +894,39 @@ function checkRecoupmentCitations() {
 }
 
 // ============================================
+// CHECK: Model false-negatives vs announced recoupment (regression metric)
+// ============================================
+// Producer announcements are ground truth (owner decision 2026-07-13, task #140).
+// Every recouped=true show where modelRecouped=false is a model false-negative:
+// the render layer suppresses the model on that show's card, and the same
+// failure mode degrades estimates on shows with no announcement. Baseline is
+// 2 known disagreements (our-town, leopoldstadt-2022, as of 2026-07-13);
+// anything above that flags HIGH so growth surfaces loudly in the digest.
+
+const MODEL_FALSE_NEGATIVE_BASELINE = 2;
+
+function checkModelFalseNegatives() {
+  const disagreements = commercialEntries.filter(([, d]) =>
+    d.recouped === true && d.modelRecouped === false);
+  const severity = disagreements.length > MODEL_FALSE_NEGATIVE_BASELINE ? 'high' : 'low';
+  for (const [key, d] of disagreements) {
+    const range = Array.isArray(d.modelRecoupmentPct) ? d.modelRecoupmentPct.join('–') + '%' : 'n/a';
+    addIssue(
+      'model-false-negative',
+      severity,
+      key,
+      `Announced recouped (${d.recoupedDate || 'no date'}) but modelRecouped=false (range ${range}). ` +
+      `Count ${disagreements.length} vs baseline ${MODEL_FALSE_NEGATIVE_BASELINE} — diagnose model inputs if this grows.`
+    );
+  }
+  return {
+    count: disagreements.length,
+    baseline: MODEL_FALSE_NEGATIVE_BASELINE,
+    shows: disagreements.map(([key]) => key),
+  };
+}
+
+// ============================================
 // RUN ALL CHECKS
 // ============================================
 
@@ -915,6 +948,7 @@ const coverageStats = checkOpenShowCoverage();
 checkTourStopConsistency();
 checkDeprecatedFields();
 checkRecoupmentCitations();
+const modelFnStats = checkModelFalseNegatives();
 
 // ============================================
 // Build summary
@@ -962,6 +996,7 @@ const report = {
       notRecouped: notRecoupedCount,
       nullOrMissing: recoupedNullCount,
     },
+    modelFalseNegatives: modelFnStats,
     dataCompleteness: {
       hasCapitalization,
       hasWeeklyRunningCost,
@@ -1039,6 +1074,13 @@ console.log('--- Open Show Coverage ---');
 console.log(`  Open/previews shows: ${coverageStats.total}`);
 console.log(`  With commercial data: ${coverageStats.covered} (${report.summary.openShowCoverage.coveragePct}%)`);
 console.log(`  Missing commercial data: ${coverageStats.missing}`);
+console.log('');
+
+console.log('--- Model vs Announced Recoupment ---');
+console.log(`  Model false negatives (recouped=true, modelRecouped=false): ${modelFnStats.count} (baseline ${modelFnStats.baseline})`);
+if (modelFnStats.shows.length > 0) {
+  console.log(`  Shows: ${modelFnStats.shows.join(', ')}`);
+}
 console.log('');
 
 console.log('--- Issues ---');
