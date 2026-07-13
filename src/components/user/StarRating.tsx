@@ -26,20 +26,20 @@ const STAR_PATH = 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25
 function StarShape({ fill, clipId }: { fill: '0%' | '50%' | '100%'; clipId: string }) {
   if (fill === '100%') {
     return (
-      <svg viewBox="0 0 24 24" fill="none" className="w-full h-full">
+      <svg viewBox="0 0 24 24" fill="none" className="w-full h-full pointer-events-none">
         <path d={STAR_PATH} fill="#FFD700" />
       </svg>
     );
   }
   if (fill === '0%') {
     return (
-      <svg viewBox="0 0 24 24" fill="none" className="w-full h-full">
+      <svg viewBox="0 0 24 24" fill="none" className="w-full h-full pointer-events-none">
         <path d={STAR_PATH} fill="none" stroke="#6B7280" strokeWidth="1.5" strokeLinejoin="round" />
       </svg>
     );
   }
   return (
-    <svg viewBox="0 0 24 24" fill="none" className="absolute inset-0 w-full h-full">
+    <svg viewBox="0 0 24 24" fill="none" className="absolute inset-0 w-full h-full pointer-events-none">
       <defs>
         <clipPath id={clipId}>
           <rect x="0" y="0" width="12" height="24" />
