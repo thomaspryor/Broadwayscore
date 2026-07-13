@@ -38,7 +38,7 @@ const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 const { createNightBudget, checkSharedDailyCap, pickModel, ENVELOPES } = require('./lib/autonomous-budget.js');
 const ledger = require('./lib/autonomous-ledger.js');
 const {
-  buildImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks, cardCheckArgv, shouldThrottle,
+  buildImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks, cardCheckArgv, shouldThrottle, preflightVerdict,
 } = require('./lib/autonomous-run-core.js');
 
 const REPO = path.join(__dirname, '..');
@@ -295,6 +295,28 @@ function runImplementer(item, card, workdir, model, maxWallMin, mockScript) {
 
 function pickUsage(p) { return { usd: p.usd, tokensIn: p.tokensIn, tokensOut: p.tokensOut }; }
 
+// Auth pre-flight (night-1 fix #3): one cheap ping through the same claude
+// CLI + env the implementer will use. An overnight OAuth expiry otherwise
+// surfaces as N per-card implementer failures; this makes it ONE explicit
+// run-skip ledger line the email can report. Retries once on infra flake —
+// a transient network blip must not skip a whole night — but an auth verdict
+// is final (it won't heal on retry).
+function preflightAuth() {
+  const model = pickModel(1, null);
+  let verdict = null;
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    const r = spawnSync('claude', [
+      '-p', 'Reply with exactly: pong',
+      '--model', model,
+      '--output-format', 'json',
+    ], { cwd: REPO, encoding: 'utf8', timeout: 90e3, maxBuffer: 4 * 1024 * 1024, env: implementerEnv() });
+    verdict = preflightVerdict({ error: r.error, status: r.status, stdout: r.stdout, stderr: r.stderr });
+    if (verdict.ok || verdict.kind === 'auth') return verdict;
+    console.error(`[run] preflight attempt ${attempt} failed (${verdict.kind}): ${verdict.detail}`);
+  }
+  return verdict;
+}
+
 function runChecks(workdir, changedFiles, checkableDone) {
   const results = [];
   const checks = decideChecks(changedFiles, f => fs.existsSync(path.join(workdir, f)));
@@ -474,14 +496,17 @@ async function live(args, cfg) {
     console.log(`[run] already running (pid ${lock.holder?.pid}, started ${lock.holder?.startedAt}) — exiting`);
     process.exit(0);
   }
-  const runId = `run-${new Date().toISOString().replace(/[:.]/g, '-')}`;
-
   try {
     const cap = checkSharedDailyCap(nightUSD);
     if (!cap.ok) { console.error(`[run] ${cap.message}`); process.exit(1); }
     if (cap.warning) console.error(`[run] WARN ${cap.warning}`);
 
     const queue = readQueue(args);
+    // Adopt the runId triage stamped into the queue, so triage's own ledger
+    // lines (its Sonnet spend) roll into this run's "Tonight" stats.
+    const runId = typeof queue.runId === 'string' && /^run-/.test(queue.runId)
+      ? queue.runId
+      : `run-${new Date().toISOString().replace(/[:.]/g, '-')}`;
     let plan = queue.plan;
     if (args.card) plan = plan.filter(p => p.id === args.card || p.id.replace(/-/g, '') === String(args.card).replace(/-/g, ''));
 
@@ -496,6 +521,22 @@ async function live(args, cfg) {
       ledger.appendEntry({ event: 'run-end', runId, note: `throttled: ${why}` });
       console.log(`[run] THROTTLED — ${why}. No new attempts tonight.`);
       return;
+    }
+
+    // Auth pre-flight — only when there's real work and a real implementer
+    // (the mock never touches claude CLI; an empty plan spends nothing).
+    if (plan.length && !mockScript) {
+      console.error('[run] preflight: pinging claude CLI (auth check)');
+      const pf = preflightAuth();
+      if (!pf.ok) {
+        const note = pf.kind === 'auth'
+          ? `auth: claude CLI login expired on Mac Studio — run skipped, no cards attempted (${pf.detail})`
+          : `preflight failed: ${pf.detail} — run skipped, no cards attempted`;
+        ledger.appendEntry({ event: 'run-skip', runId, note });
+        ledger.appendEntry({ event: 'run-end', runId, note: `skipped: ${pf.kind}` });
+        console.error(`[run] RUN SKIPPED — ${note}`);
+        return;
+      }
     }
 
     const budget = createNightBudget({ nightUSD, maxItems, sizes, weeklyUSD: cfg.weeklyUSD ?? null });
@@ -529,4 +570,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { planCard, branchNameFor, attemptCard, runRecovery, readQueue };
+module.exports = { planCard, branchNameFor, attemptCard, runRecovery, readQueue, preflightAuth };
