@@ -262,6 +262,56 @@ jobs:
           # See scripts/lib/opening-night-budget.js + memory/opening-night-budget-tuning.md.
           node scripts/opening-night-budget-preflight.js --shows="$SHOWS"
 
+      - name: Enroll commercial stubs (Broadway)
+        id: commercial-stubs
+        if: steps.find.outputs.has_shows == 'true'
+        # S2-T4 (Notion 39b637c5-416f-815f): new Broadway opens were never
+        # enrolled in commercial.json — 7 spring-2026 shows were missing
+        # entirely. Enrollment here is LLM-free and idempotent (stub script
+        # exits 0 when the entry exists); a human/research pass fills numbers
+        # later. continue-on-error: enrollment must never block review polling.
+        continue-on-error: true
+        env:
+          SHOWS: ${{ steps.find.outputs.shows }}
+        run: |
+          if [ ! -f data/commercial.json ]; then
+            # checkout-core-data only hard-fails on shows.json/reviews.json —
+            # surface the gap loudly instead of throwing inside node (which
+            # continue-on-error would swallow into an invisible forever-skip).
+            echo "::warning::data/commercial.json missing from core-data checkout — skipping stub enrollment this run"
+            echo "enrolled=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          SLUGS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const commercial = require('./data/commercial.json').shows || {};
+            const ids = (process.env.SHOWS || '').split(',').filter(Boolean);
+            const slugs = ids
+              .map(id => shows.find(s => s.id === id))
+              .filter(Boolean)
+              .filter(s => (s.category || 'broadway') === 'broadway')
+              .map(s => s.slug)
+              .filter(slug => !commercial[slug]);
+            console.log(slugs.join(' '));
+          ")
+          if [ -z "$SLUGS" ]; then
+            echo "All Broadway shows in window already enrolled"
+            echo "enrolled=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          ARGS=""
+          for s in $SLUGS; do ARGS="$ARGS --show=$s"; done
+          node scripts/initialize-commercial-stub.js $ARGS
+          echo "enrolled=true" >> $GITHUB_OUTPUT
+
+      - name: Push commercial stub enrollment
+        if: steps.commercial-stubs.outputs.enrolled == 'true'
+        continue-on-error: true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Enroll commercial stubs for opening-night shows'
+
       - name: Refresh audience data (opening night)
         if: steps.find.outputs.has_shows == 'true'
         env:

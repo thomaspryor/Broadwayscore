@@ -42,6 +42,10 @@ jobs:
             # scripts/audit-cron-health-coverage.js (TIGHT_BY_DESIGN).
             "data-health-check.yml|26|Daily Data Health Check (digest carrier)"
             "commercial-weekly.yml|192|Commercial Weekly Orchestrator"
+            # Friday 22:00 UTC weekly. Feeds fresh recoupment data to the Sunday
+            # newsletter and carries the S1-T5 strict data gate. 192h = weekly
+            # cadence + 24h cron-lag cushion (same as commercial-weekly).
+            "commercial-friday.yml|192|Commercial Friday Refresh"
             # Daily 07:00 UTC. If this cron silently dies, pending-review holds go
             # invisible again — the exact failure mode it was built to fix (S1-T4,
             # Notion 39c637c5-416f-8112). 36h = daily cadence + 12h cron-lag cushion.
