@@ -261,6 +261,35 @@ async function downloadImageDirect(url) {
 // /images/shows/<id>/ paths (the persist step keeps those verbatim).
 // ---------------------------------------------------------------------------
 
+/**
+ * Portrait card (poster/thumbnail) from arbitrary key art. Venue og:images
+ * are usually landscape title-art; a straight 2:3 attention-crop amputates
+ * the title ("BLACK SWAN" → "BLAC SWA", user report 2026-07-12). Strategy:
+ *   - trim uniform borders (white-background promo shoots read as whitespace
+ *     in small cards otherwise);
+ *   - portrait-ish source (w/h ≤ 0.85) → tight cover/attention crop;
+ *   - landscape/square source → CONTAIN the full art over a blurred,
+ *     darkened cover of itself (the standard letterbox-poster treatment) so
+ *     no text is ever cut.
+ */
+async function portraitCardFromKeyArt(sharpLib, buffer, w, h, quality) {
+  let src = buffer;
+  try {
+    const trimmed = await sharpLib(buffer).trim({ threshold: 25 }).toBuffer({ resolveWithObject: true });
+    // Only adopt the trim when it kept a meaningful image (guards against
+    // aggressive trims of low-contrast art collapsing to slivers).
+    if (trimmed.info.width > 200 && trimmed.info.height > 200) src = trimmed.data;
+  } catch { /* keep original */ }
+  const meta = await sharpLib(src).metadata();
+  const ratio = (meta.width || 1) / (meta.height || 1);
+  if (ratio <= 0.85) {
+    return sharpLib(src).resize(w, h, { fit: 'cover', position: 'attention' }).webp({ quality }).toBuffer();
+  }
+  const bg = await sharpLib(src).resize(w, h, { fit: 'cover' }).blur(30).modulate({ brightness: 0.5, saturation: 1.15 }).toBuffer();
+  const fg = await sharpLib(src).resize(w - 24, h - 24, { fit: 'inside' }).toBuffer();
+  return sharpLib(bg).composite([{ input: fg, gravity: 'centre' }]).webp({ quality }).toBuffer();
+}
+
 async function fetchFromRegionalVenue(show, verifyCtx) {
   let sharpLib;
   try { sharpLib = require('sharp'); } catch { console.log('   ⚠ sharp unavailable — cannot process regional venue images'); return null; }
@@ -336,8 +365,8 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
       const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
       const dir = path.join(outputBase, show.id);
       fs.mkdirSync(dir, { recursive: true });
-      await sharpLib(buffer).resize(600, 900, { fit: 'cover', position: 'attention' }).webp({ quality: 82 }).toFile(path.join(dir, 'poster.webp'));
-      await sharpLib(buffer).resize(300, 450, { fit: 'cover', position: 'attention' }).webp({ quality: 80 }).toFile(path.join(dir, 'thumbnail.webp'));
+      fs.writeFileSync(path.join(dir, 'poster.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 600, 900, 82));
+      fs.writeFileSync(path.join(dir, 'thumbnail.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 300, 450, 80));
       await sharpLib(buffer).resize(1600, 1000, { fit: 'cover', position: 'attention' }).webp({ quality: 82 }).toFile(path.join(dir, 'hero.webp'));
       console.log(`   ✓ regional images written (poster/thumbnail/hero) from ${src.label}${dryRunMode ? ' [dry-run dir]' : ''}`);
       return { ...localPaths, _source: `regional-venue:${src.label}` };

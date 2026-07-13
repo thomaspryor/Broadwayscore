@@ -912,6 +912,13 @@ async function main() {
         continue;
       }
 
+      // Operator-verified reviews never re-enter classification — skipping at
+      // selection (not just apply) saves the LLM call every full run.
+      if (data.nonReviewManualClear === true) {
+        lockedSkipCount++;
+        continue;
+      }
+
       // In incremental mode, skip files already classified (have classifiedAt timestamp)
       if (INCREMENTAL && data.classifiedAt) {
         stats.skippedAlreadyClassified = (stats.skippedAlreadyClassified || 0) + 1;
@@ -1121,6 +1128,15 @@ async function main() {
         const fullPath = path.join(REVIEW_TEXTS_DIR, nr.file);
         try {
           const data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+          // Operator-verified reviews are exempt: nonReviewManualClear means a
+          // human confirmed this IS a review (audit-non-reviews honors the same
+          // flag). Without this, unconventional formats (ShowRiz Q&A reviews)
+          // get re-flagged by every incremental run forever (2026-07-12).
+          if (data.nonReviewManualClear === true) {
+            console.log(`  [LOCKED] ${nr.file} — nonReviewManualClear, skipping`);
+            lockedSkipCount++;
+            continue;
+          }
           data.isNonReview = true;
           data.nonReviewType = nr.contentType;
           data.nonReviewClassifiedBy = PROVIDER;
