@@ -133,3 +133,10 @@ test('Steinberg Black Box stage does not collapse onto Laura Pels key', () => {
     canonicalVenue('Black Box Theatre at the Harold and Miriam Steinberg Center for Theatre'),
   );
 });
+
+test('Virginia Theatre (pre-2005 name) collapses with August Wilson Theatre', () => {
+  assert.equal(
+    canonicalVenue('Virginia Theatre'),
+    canonicalVenue('August Wilson Theatre'),
+  );
+});
