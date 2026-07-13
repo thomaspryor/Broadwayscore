@@ -936,6 +936,7 @@ jobs:
           bash scripts/lib/push-with-retry.sh || echo "::warning::Quota ledger push failed"
 
       - name: Notify on failure
+        id: notify
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
@@ -947,7 +948,9 @@ jobs:
           owner_email: ${{ secrets.OWNER_EMAIL }}
 
       - name: Trigger investigation
-        if: failure()
+        # Only when the failure actually paged (2h cooldown) — a repeat failure
+        # inside the cooldown shouldn't send a second investigation email.
+        if: failure() && steps.notify.outputs.suppressed != 'true'
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |

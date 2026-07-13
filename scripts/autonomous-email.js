@@ -29,11 +29,13 @@ const { execFileSync } = require('child_process');
 
 const ledger = require('./lib/autonomous-ledger.js');
 const { buildActionUrl } = require('./lib/autonomous-links.js');
-const { renderEmail, extractWhy } = require('./lib/autonomous-email-render.js');
+const { renderEmail, extractWhy, summarizeQueue } = require('./lib/autonomous-email-render.js');
 
 const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
+const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
 const MAX_EMAIL_ITEMS = 3;
+const QUEUE_SUMMARY_MAX_AGE_H = 24; // stale queues describe a different night
 
 for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.env']) {
   if (!fs.existsSync(envPath)) continue;
@@ -186,18 +188,37 @@ async function main() {
     });
   }
 
-  const runEntries = stats.runId ? ledger.entriesForRun(entries, stats.runId) : [];
+  // Per-execution facts come from the LAST segment of the run: a runId can
+  // span several executions (preflight skip → manual re-run adopts the same
+  // queue.runId), and a stale skip banner or fail count must not outlive a
+  // successful re-run (ship-check finding).
+  const runEntries = stats.runId ? ledger.entriesForLastSegment(entries, stats.runId) : [];
   const failedCount = runEntries.filter(e => e.event === 'card-fail').length;
   const runEnd = runEntries.find(e => e.event === 'run-end');
   const throttled = runEnd && /^throttled:/.test(runEnd.note || '') ? runEnd.note.replace(/^throttled:\s*/, '') : null;
+  // Auth pre-flight skip (night-1 fix #3): surface the run-skip note verbatim
+  // so an expired login is never a silent no-op night.
+  const runSkip = runEntries.find(e => e.event === 'run-skip');
+  const runSkipped = runSkip ? runSkip.note || 'run skipped (see ledger)' : null;
   const lastTs = ledger.lastEntryTs(entries);
   const lastRunNote = lastTs ? `last run activity ${new Date(lastTs).toISOString().slice(0, 16).replace('T', ' ')} UTC` : 'no runs recorded yet';
+
+  // 0-planned skip breakdown (night-1 fix #2) — fail-soft: a missing or
+  // stale queue just omits the section, never blocks the morning email.
+  let queueSummary = null;
+  try {
+    const queue = JSON.parse(fs.readFileSync(QUEUE_PATH, 'utf8'));
+    const ageH = (Date.now() - new Date(queue.generatedAt).getTime()) / 3600e3;
+    if (ageH < QUEUE_SUMMARY_MAX_AGE_H) queueSummary = summarizeQueue(queue);
+  } catch { /* no queue on this machine — skip the section */ }
 
   const admin = await fetchAdminUsage();
   const html = renderEmail({
     items,
     moreAwaiting: Math.max(0, awaiting.length - items.length),
     failedCount,
+    runSkipped,
+    queueSummary,
     throttled: listingFailed
       ? 'could not read the approval queue from Notion — items below may be incomplete; check the cards directly'
       : missingEvidence
@@ -210,11 +231,18 @@ async function main() {
     awaitingTotal: awaiting.length,
   });
 
-  const subject = listingFailed
-    ? `Overnight: ⚠️ could not read the approval queue`
-    : items.length
-      ? `Overnight: ${items.length} item${items.length > 1 ? 's' : ''} awaiting your tap — ${items.map(i => i.name).join(' · ').slice(0, 80)}`
-      : `Overnight: no items to approve (${failedCount} failed)`;
+  // A skipped run outranks everything in the subject — stale approvals from
+  // earlier nights must not hide an expired login (ship-check finding).
+  const skipLabel = runSkipped ? (/^auth:/.test(runSkipped) ? 'login expired on Mac Studio' : 'preflight failed') : null;
+  const subject = runSkipped
+    ? `Overnight: ⛔ run skipped — ${skipLabel}${items.length ? ` (+${items.length} still awaiting your tap)` : ''}`
+    : listingFailed
+      ? `Overnight: ⚠️ could not read the approval queue`
+      : items.length
+        ? `Overnight: ${items.length} item${items.length > 1 ? 's' : ''} awaiting your tap — ${items.map(i => i.name).join(' · ').slice(0, 80)}`
+        : queueSummary
+          ? `Overnight: no items to approve (${queueSummary.total} triaged, 0 workable)`
+          : `Overnight: no items to approve (${failedCount} failed)`;
 
   if (dryRun) {
     const out = path.join(REPO, 'data', 'audit', 'autonomous-email-preview.html');

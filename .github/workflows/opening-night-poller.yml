@@ -638,18 +638,26 @@ jobs:
           done
 
       - name: Notify on failure
+        id: notify
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening Night Poller Failed'
           severity: 'critical'
           email: 'true'
+          # Poller runs every ~30-45 min; a one-off failure (push contention,
+          # scraper blip) self-resolves on the next run. Page on the 2nd
+          # consecutive failure, once per streak. (2026-07-13: 3 transient
+          # overnight failures → 5-email thread, self-recovered by 08:05.)
+          min_consecutive_failures: '2'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 
       - name: Trigger investigation
-        if: failure()
+        # Gate on the page actually firing — otherwise every graced transient
+        # still sends an investigation email (the 2026-07-13 5-email storm).
+        if: failure() && steps.notify.outputs.suppressed != 'true'
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |

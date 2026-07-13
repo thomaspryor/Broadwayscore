@@ -75,14 +75,35 @@ function entriesForRun(entries, runId) {
   return entries.filter(e => e.runId === runId);
 }
 
+// The slice of a run's entries belonging to its LAST execution: everything
+// from the final run-start onward (or all of them when no run-start exists —
+// e.g. triage ledgered but the executor never fired). A runId can span
+// several executions — the executor adopts queue.runId, so a preflight-
+// skipped run manually re-run the same night shares the id. Per-execution
+// facts (run-skip, card-fail, throttle) must come from this segment, or a
+// stale skip banner outlives a successful re-run.
+function entriesForLastSegment(entries, runId) {
+  const run = entriesForRun(entries, runId);
+  let start = 0;
+  for (let i = run.length - 1; i >= 0; i--) {
+    if (run[i].event === 'run-start') { start = i; break; }
+  }
+  return run.slice(start);
+}
+
 function entriesSince(entries, sinceTs) {
   const cutoff = new Date(sinceTs).getTime();
   return entries.filter(e => new Date(e.ts).getTime() >= cutoff);
 }
 
+// Triage counts as a run opener too: it ledgers its spend under the night's
+// runId BEFORE the executor writes run-start. If the executor then never
+// fires (launchd miss, stale-queue exit), "tonight" must be the triage-only
+// night — not yesterday's run resurfacing its skip/throttle banners.
 function lastRunId(entries) {
   for (let i = entries.length - 1; i >= 0; i--) {
-    if (entries[i].event === 'run-start') return entries[i].runId || null;
+    const e = entries[i];
+    if (e.event === 'run-start' || e.event === 'triage') return e.runId || null;
   }
   return null;
 }
@@ -144,7 +165,10 @@ function usageStats(entries, now = new Date()) {
 // kill-switch periods never page.
 function deadmanStatus(entries, now = new Date(), { maxAgeH = 24, armed = true } = {}) {
   if (!armed) return { ok: true, armed: false, message: 'autonomous loop not armed — dead-man check idle' };
-  const last = lastEntryTs(entries);
+  // Triage ledgers its own spend (night-1 fix #4) but proves nothing about
+  // the executor — exclude it so a broken executor behind a healthy triage
+  // cron still trips the dead-man (Codex ship-check finding).
+  const last = lastEntryTs(entries.filter(e => e.event !== 'triage'));
   if (!last) return { ok: false, armed: true, ageH: null, message: 'autonomous loop is armed but the ledger has NO entries — the nightly run has never fired' };
   const ageH = (now.getTime() - new Date(last).getTime()) / 3600e3;
   if (ageH > maxAgeH) {
@@ -241,6 +265,7 @@ module.exports = {
   readEntries,
   sumUSD,
   entriesForRun,
+  entriesForLastSegment,
   entriesSince,
   lastRunId,
   lastEntryTs,
