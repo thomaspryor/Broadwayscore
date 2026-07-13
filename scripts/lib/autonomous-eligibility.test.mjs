@@ -62,6 +62,37 @@ test('null-category tasks (native TaskCreate, no fmt-2 line) fail closed on huma
   assert.equal(isExcludedCategory(nativeTech), false);
 });
 
+test("'no-category' bridge value (empty Notion category) also fails closed", () => {
+  // notion-tasks-sync writes `category || 'no-category'` — a categoryless
+  // Notion card must get the same fail-closed treatment as a native task.
+  const ask = { subject: 'Ask Dennis T to mentor (Tony voter + coproducer path)', description: '[notion:a] P2 · Not started · no-category' };
+  const meet = { subject: 'Meet with Kevin McCollum (lead producer, Two Strangers)', description: '[notion:b] P2 · Not started · no-category' };
+  const tech = { subject: 'Fix stage-latency rotation cron', description: '[notion:c] P2 · Not started · no-category' };
+  assert.equal(categoryOf(ask), 'no-category');
+  assert.equal(isExcludedCategory(ask), true);
+  assert.equal(isExcludedCategory(meet), true);
+  assert.equal(isExcludedCategory(tech), false);
+});
+
+test('categoryOf refuses to parse a category from a non-bridge line ("·" in native text)', () => {
+  // Without the [notion: anchor, this description fabricates category "notes"
+  // and bypasses the fail-closed branch entirely.
+  const sneaky = { subject: 'Email everyone about the launch timeline change', description: 'Priority: P0 · Key files: x · notes' };
+  assert.equal(categoryOf(sneaky), null);
+  assert.equal(isExcludedCategory(sneaky), true);
+});
+
+test('hyphenated compound nouns after a verb are NOT human actions (whitespace lookahead)', () => {
+  // Trailing \b treated the hyphen as a boundary: "Post-Tonys … rollout"
+  // (bridge Product, 4 words, real task #108) sat in the human-territory list.
+  const postTonys = { subject: 'Post-Tonys Broadway anchored-bands rollout', description: '[notion:a] P1 Next · Not started · Product' };
+  const nativeHyphen = { subject: 'Reply-to header parsing bug', description: 'native task' };
+  const nativeVerb = { subject: 'Post revivals thread on Reddit', description: 'native task' };
+  assert.equal(isExcludedCategory(postTonys), false);
+  assert.equal(isExcludedCategory(nativeHyphen), false);  // null category, but hyphen ≠ imperative
+  assert.equal(isExcludedCategory(nativeVerb), true);     // real imperative still caught
+});
+
 // ── Path level ──────────────────────────────────────────────────────────────
 
 test('scoring-delta watchlist files are refused', () => {

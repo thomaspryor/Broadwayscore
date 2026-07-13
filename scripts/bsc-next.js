@@ -253,10 +253,12 @@ function main() {
   if (args.list) {
     const list = actionable(tasks);
     console.log(`Top workable tasks in '${LIST_ID}' (launch with --pick N):`);
-    // [uncategorized] = no fmt-2 bridge line (native TaskCreate / legacy) —
-    // these pass the filter only because their subject isn't a human-action verb.
+    // [uncategorized] = unknown category (no fmt-2 bridge line, or Notion
+    // category left empty) — these pass the filter only because their subject
+    // isn't a human-action verb (fail-closed check, no word bound).
+    const unknownCat = t => { const c = categoryOf(t); return c === null || c === 'no-category'; };
     list.slice(0, 10).forEach((t, i) => console.log(
-      `  ${i + 1}. #${t.id} [${t.status}]${categoryOf(t) === null ? ' [uncategorized]' : ''} ${t.subject}`));
+      `  ${i + 1}. #${t.id} [${t.status}]${unknownCat(t) ? ' [uncategorized]' : ''} ${t.subject}`));
     const excluded = actionable(tasks, true).filter(isExcludedCategory);
     if (excluded.length) {
       console.log(`\nHuman-territory (${excluded.length} — never auto-picked; use --id N deliberately):`);
