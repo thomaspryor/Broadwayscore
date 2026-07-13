@@ -320,6 +320,11 @@ on:
       - 'src/contexts/ProGateContext.tsx'
       - 'src/components/EmailCaptureModal.tsx'
       - 'tests/unit/gate-logic.test.mjs'
+      # Gate A/B weekly monitor (pure rules + runner; colocated test runs in the lib glob).
+      - 'scripts/lib/gate-ab-monitor-rules.js'
+      - 'scripts/lib/gate-ab-monitor-rules.test.mjs'
+      - 'scripts/monitor-gate-ab.js'
+      - 'scripts/analyze-gate-ab.js'
       - 'scripts/lib/email-templates-headline.test.mjs'
       # Score-tier label display/data decoupling contract (Skippable wire key vs Mixed display).
       - 'scripts/lib/score-tier-label-contract.test.mjs'

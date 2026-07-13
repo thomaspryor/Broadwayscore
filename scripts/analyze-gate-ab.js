@@ -30,6 +30,7 @@
 const PROJECT_ID = '332742';
 const FLAG_PREFIX = 'flag:mobile-gate-timing,timing:';
 const DAYS = parseInt((process.argv.find(a => a.startsWith('--days=')) || '--days=30').split('=')[1], 10);
+const JSON_OUT = process.argv.includes('--json'); // machine-readable summary for monitor-gate-ab.js
 
 const API_KEY = process.env.POSTHOG_PERSONAL_API_KEY;
 if (!API_KEY) { console.error('POSTHOG_PERSONAL_API_KEY not set'); process.exit(1); }
@@ -53,7 +54,9 @@ async function hogql(query) {
 function pct(n, d) { return d > 0 ? `${((n / d) * 100).toFixed(2)}%` : 'n/a'; }
 
 async function main() {
-  console.log(`Mobile gate timing A/B — last ${DAYS} days (real users)\n${'='.repeat(56)}`);
+  const summary = { days: DAYS, tagged: false, arms: {}, mobileVisitors: 0, mobileBouncePct: null };
+  const say = (...a) => { if (!JSON_OUT) console.log(...a); };
+  say(`Mobile gate timing A/B — last ${DAYS} days (real users)\n${'='.repeat(56)}`);
 
   // Per-arm funnel: shown / dismissed / captured, events + distinct persons
   const funnel = await hogql(`
@@ -70,9 +73,11 @@ async function main() {
     GROUP BY arm, event ORDER BY arm, event`);
 
   if (funnel.length === 0) {
-    console.log('\nNo ab_variant-tagged gate events yet.');
-    console.log('Expected before the PostHog flag is created, or within the first hours after.');
-    console.log('Baseline (untagged) events still flow — this script only reads tagged ones.');
+    say('\nNo ab_variant-tagged gate events yet.');
+    say('Expected before the PostHog flag is created, or within the first hours after.');
+    say('Baseline (untagged) events still flow — this script only reads tagged ones.');
+  } else {
+    summary.tagged = true;
   }
 
   const arms = {};
@@ -93,18 +98,20 @@ async function main() {
       AND timestamp > now() - INTERVAL ${DAYS} DAY
       AND ${REAL_USERS}`);
   const perArmVisitors = mobileVisitors / 2;
-  console.log(`\nMobile/tablet visitors (ITT denominator): ${mobileVisitors} total → ~${Math.round(perArmVisitors)}/arm (50/50 sticky assumption)`);
+  summary.mobileVisitors = mobileVisitors;
+  say(`\nMobile/tablet visitors (ITT denominator): ${mobileVisitors} total → ~${Math.round(perArmVisitors)}/arm (50/50 sticky assumption)`);
 
   for (const [arm, ev] of Object.entries(arms)) {
     const shown = ev.gate_modal_shown || { events: 0, people: 0 };
     const dismissed = ev.gate_modal_dismissed || { events: 0, people: 0 };
     const captured = ev.email_captured || { events: 0, people: 0 };
     const excluded = arm === 'fallback';
-    console.log(`\n— ${arm}${excluded ? '  [EXCLUDED from comparison: flags never resolved]' : ''}`);
-    console.log(`  shown: ${shown.people} people (${shown.events} events) | dismissed: ${dismissed.people} (${pct(dismissed.people, shown.people)}) | captured: ${captured.people}`);
+    summary.arms[arm] = { shown: shown.people, dismissed: dismissed.people, captured: captured.people };
+    say(`\n— ${arm}${excluded ? '  [EXCLUDED from comparison: flags never resolved]' : ''}`);
+    say(`  shown: ${shown.people} people (${shown.events} events) | dismissed: ${dismissed.people} (${pct(dismissed.people, shown.people)}) | captured: ${captured.people}`);
     if (!excluded) {
-      console.log(`  PRIMARY captures/mobile-visitor: ${pct(captured.people, perArmVisitors)}`);
-      console.log(`  captures/impression: ${pct(captured.people, shown.people)}`);
+      say(`  PRIMARY captures/mobile-visitor: ${pct(captured.people, perArmVisitors)}`);
+      say(`  captures/impression: ${pct(captured.people, shown.people)}`);
     }
   }
 
@@ -120,13 +127,16 @@ async function main() {
         AND timestamp > now() - INTERVAL ${DAYS} DAY
         AND ${REAL_USERS}
       GROUP BY person_id)`);
-  console.log(`\nGUARDRAIL mobile bounce (site-wide, both arms): ${bouncers}/${mobileVisitors} single-page visitors (${pct(bouncers, mobileVisitors)})`);
-  console.log('  Compare week-over-week after flag launch; per-arm bounce needs $feature/ person-level join — escalate if site-wide moves >3pts.');
+  summary.mobileBouncePct = mobileVisitors > 0 ? +((bouncers / mobileVisitors) * 100).toFixed(2) : null;
+  say(`\nGUARDRAIL mobile bounce (site-wide, both arms): ${bouncers}/${mobileVisitors} single-page visitors (${pct(bouncers, mobileVisitors)})`);
+  say('  Compare week-over-week after flag launch; per-arm bounce needs $feature/ person-level join — escalate if site-wide moves >3pts.');
 
   const shownTotal = Object.entries(arms).filter(([a]) => a !== 'fallback')
-    .reduce((s, [, ev]) => s + (ev.gate_modal_shown?.people || 0), 0);
-  console.log(`\nSample progress: ${shownTotal} non-fallback impressions (pre-registered floor: 950/arm ≈ 1,900 total).`);
-  console.log('Reminder: weekly peeks = guardrails only. Do not judge the primary early, do not touch flag rollout without user approval.');
+    .reduce((s2, [, ev]) => s2 + (ev.gate_modal_shown?.people || 0), 0);
+  summary.nonFallbackShown = shownTotal;
+  say(`\nSample progress: ${shownTotal} non-fallback impressions (pre-registered floor: 950/arm ≈ 1,900 total).`);
+  say('Reminder: weekly peeks = guardrails only. Do not judge the primary early, do not touch flag rollout without user approval.');
+  if (JSON_OUT) console.log(JSON.stringify(summary));
 }
 
 main().catch(err => { console.error('Fatal:', err.message); process.exit(1); });
