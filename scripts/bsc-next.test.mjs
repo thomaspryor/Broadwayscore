@@ -66,6 +66,19 @@ test('buildSeed falls back to task.description when no Notion card fetched', () 
   assert.match(seed, /fallback body/);
 });
 
+// Chain break #1 (2026-07-12): a stale seed ended Sprint 1 by telling the
+// user to paste the next prompt. EVERY seed must carry the re-read-the-card
+// instruction so post-launch card directives (like chaining) are honored.
+test('buildSeed always appends the re-read-before-wrap-up instruction', () => {
+  const withCard = buildSeed(TASKS[1], { url: 'https://n/x', notes: 'n', priority: 'P1' });
+  const withoutCard = buildSeed({ id: '9', subject: 'S', status: 'pending', description: 'd' }, null);
+  for (const seed of [withCard, withoutCard]) {
+    assert.match(seed, /RE-READ this card via notion-brain get/);
+    assert.match(seed, /dispatch the next workspace yourself/);
+    assert.match(seed, /never end by telling the user to paste a prompt/);
+  }
+});
+
 test('category filter: Marketing/Partnerships never default-picked, --id still works', () => {
   const { categoryOf, isExcludedCategory } = require('./bsc-next.js');
   const T = [
