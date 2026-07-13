@@ -13,6 +13,7 @@ import { getBroadwayDuration, getRunLength, formatOpeningDate, getDurationSuffix
 import { getMarketLabel, isLondonMarket } from '@/lib/market-utils';
 import { isOperaShow, OPERA_DURATION_SUFFIX, OPERA_MARKET_LABEL } from '@/lib/show-market';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
+import HoverRateStars from '@/components/user/HoverRateStars';
 import { sortTicketLinks } from '@/lib/ticket-utils';
 import type { ShowCardShow, ScoreModeParam } from './types';
 
@@ -341,6 +342,7 @@ const ShowListCard = memo(function ShowListCard({
   const thumbnail = (
     <div className={`relative flex-shrink-0 ${thumbnailSize} rounded-lg overflow-hidden bg-surface-overlay`}>
       <ShowPageBookmark showId={show.id} size="sm" />
+      <HoverRateStars showId={show.id} showHref={cardHref} />
       <ShowImage
         sources={usePosterLayout ? [
           show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,

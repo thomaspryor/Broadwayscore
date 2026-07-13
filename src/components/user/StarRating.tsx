@@ -8,6 +8,8 @@ interface StarRatingProps {
   size?: 'xs' | 'sm' | 'md' | 'lg';
   readOnly?: boolean;
   hideLabel?: boolean;
+  /** Live hover preview (null on leave) — lets the parent echo the would-be value. */
+  onHoverChange?: (value: number | null) => void;
 }
 
 const SIZE_MAP = {
@@ -64,7 +66,7 @@ function fillFor(displayRating: number, starIndex: number): '0%' | '50%' | '100%
  * is the whole point — the previous isTouchDevice/synthetic-mousemove heuristic
  * broke half-stars on real phones.
  */
-export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false }: StarRatingProps) {
+export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false, onHoverChange }: StarRatingProps) {
   const [hoverRating, setHoverRating] = useState<number | null>(null);
   const { star: starSize, gap } = SIZE_MAP[size];
   const uid = useId();
@@ -72,33 +74,43 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
   const displayRating = hoverRating ?? rating ?? 0;
 
   const valueFromPointer = (e: React.MouseEvent, starIndex: number): number => {
-    // Keyboard activation (Enter/Space) fires a click with detail 0 and no real
+    // Keyboard activation (Enter/Space) fires a CLICK with detail 0 and no real
     // coordinates — treat it as the whole star, not a position-derived half.
-    if (e.detail === 0) return starIndex;
-    // offsetX/offsetWidth are in the element's local (untransformed) space —
-    // getBoundingClientRect is post-transform, so any scale/animation on the
-    // button made the left/right-half math flicker at the midline (the "buggy
-    // desktop half-star" report, 2026-07-12).
-    const el = e.currentTarget as HTMLElement;
-    const isLeftHalf = e.nativeEvent.offsetX < el.offsetWidth / 2;
+    // The e.type guard is load-bearing: detail is ALWAYS 0 on mousemove (it
+    // only counts clicks), so a bare detail check made every hover snap to the
+    // whole star while clicks computed halves — hover said 3.0, click saved
+    // 2.5 (the "buggy desktop half-stars" report, fixed 2026-07-13).
+    if (e.type === 'click' && e.detail === 0) return starIndex;
+    // clientX vs getBoundingClientRect: both viewport-space, so the comparison
+    // is exact. offsetX (target-local) misreported halves in production even
+    // with pointer-events-none children — verified live 2026-07-13. rect math
+    // is safe here only because the button has no transform (hover scale was
+    // removed in the same fix cycle); don't reintroduce scale animations.
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const isLeftHalf = e.clientX - rect.left < rect.width / 2;
     return isLeftHalf ? starIndex - 0.5 : starIndex;
   };
 
+  const setHover = useCallback((value: number | null) => {
+    setHoverRating(value);
+    onHoverChange?.(value);
+  }, [onHoverChange]);
+
   const handleMouseMove = useCallback((e: React.MouseEvent, starIndex: number) => {
     if (readOnly) return;
-    setHoverRating(valueFromPointer(e, starIndex));
-  }, [readOnly]);
+    setHover(valueFromPointer(e, starIndex));
+  }, [readOnly, setHover]);
 
   const handleMouseLeave = useCallback(() => {
     if (readOnly) return;
-    setHoverRating(null);
-  }, [readOnly]);
+    setHover(null);
+  }, [readOnly, setHover]);
 
   const handleClick = useCallback((e: React.MouseEvent, starIndex: number) => {
     if (readOnly) return;
-    setHoverRating(null);
+    setHover(null);
     onRatingChange(valueFromPointer(e, starIndex));
-  }, [readOnly, onRatingChange]);
+  }, [readOnly, setHover, onRatingChange]);
 
   // Arrow keys adjust in half-star steps — Enter/Space on a star can only give
   // whole values, so without this, keyboard users can't reach 3.5 etc. (audit P2).
