@@ -133,6 +133,21 @@ const VENUE_ALIASES = [
     canonical: 'second stage uptown',
     matches: [/second\s*stage\s*uptown/i, /mcginn[\s\/]*cazale/i],
   },
+  // Roundabout's OB stage at the Steinberg Center. shows.json says "The Laura
+  // Pels Theatre at the Harold and Miriam Steinberg Center for Theatre";
+  // Playbill says "Roundabout Theatre Company - Laura Pels Theatre". Keyed on
+  // "laura pels" only — the Steinberg Center also houses the Black Box, so a
+  // bare /steinberg/ match would falsely merge those stages.
+  {
+    canonical: 'laura pels',
+    matches: [/laura\s*pels/i],
+  },
+  // Lincoln Center's OB stage. shows.json says "Lincoln Center Theater -
+  // Mitzi E. Newhouse Theater"; Playbill says "Mitzi E. Newhouse Theatre".
+  {
+    canonical: 'mitzi newhouse',
+    matches: [/mitzi\s*(e\.?\s*)?newhouse/i],
+  },
   {
     canonical: 'second stage hayes',
     matches: [/hayes\s*theater/i, /second\s*stage.*hayes/i],
