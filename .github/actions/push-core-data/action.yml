@@ -41,22 +41,56 @@ runs:
       if: steps.refusal-check.outputs.skip != 'true'
       shell: bash
       run: |
-        # Always copy all core data files from working dir to checkout.
-        # git diff --staged in the next step handles "no changes" correctly.
-        # Previous diff-based optimization silently missed changes (e.g.,
-        # _meta.lastUpdated updates) for unknown reasons — removing it.
-        COPIED=""
-        for f in shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json; do
-          if [ -f "data/$f" ]; then
-            cp -f "data/$f" /tmp/core-data-checkout/
-            COPIED="$COPIED $f"
-          elif [ -f "/tmp/core-data-snapshot/$f" ]; then
-            # data/$f missing (reverted by git checkout -- .) — use snapshot
-            cp -f "/tmp/core-data-snapshot/$f" /tmp/core-data-checkout/
-            COPIED="$COPIED $f(snapshot)"
-          fi
-        done
-        echo "Synced core data files:$COPIED"
+        # Copy ONLY files this workflow actually modified during the run.
+        # Baseline: /tmp/core-data-snapshot/ — written by checkout-core-data at
+        # checkout time (checkout-core-data/action.yml, "Copy core data to data/").
+        # A file identical to its snapshot was NOT touched by this workflow;
+        # copying it back would push content that is stale by the workflow's
+        # entire runtime, silently reverting any concurrent push that landed
+        # mid-run. Incident 2026-07-13: fetch-guardian-reviews reverted a
+        # just-pushed commercial.json fix ~25 min after it landed — a file that
+        # workflow never writes. (An earlier diff-based version was removed for
+        # "silently missing changes" — it diffed against the wrong baseline.
+        # The snapshot IS the correct baseline.)
+        #
+        # Decision table is mirrored + pinned in
+        # scripts/lib/core-data-sync-decision.js and
+        # tests/unit/core-data-sync-decision.test.mjs — change both together.
+        CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json"
+        if [ ! -d "/tmp/core-data-snapshot" ]; then
+          # Failsafe: no snapshot dir means we can't tell which files this
+          # workflow modified (checkout-core-data predates snapshotting, or was
+          # bypassed). Fall back to legacy copy-all rather than silently
+          # pushing nothing — but warn, because copy-all can revert concurrent
+          # pushes of files this workflow didn't touch.
+          echo "::warning::/tmp/core-data-snapshot missing — cannot detect workflow-modified files; falling back to copy-all (may revert concurrent data pushes). Ensure checkout-core-data ran in this job."
+          COPIED=""
+          for f in $CORE_FILES; do
+            if [ -f "data/$f" ]; then
+              cp -f "data/$f" /tmp/core-data-checkout/
+              COPIED="$COPIED $f"
+            fi
+          done
+          echo "Synced core data files (copy-all fallback):$COPIED"
+        else
+          for f in $CORE_FILES; do
+            if [ ! -f "data/$f" ]; then
+              # Missing from data/ (e.g. reverted by `git checkout -- .`).
+              # Hard skip — never restore from snapshot: a point-in-time
+              # snapshot copied over the fresh checkout can also revert
+              # concurrent pushes, and is a content no-op at best.
+              echo "skipped (missing): $f"
+            elif [ ! -f "/tmp/core-data-snapshot/$f" ]; then
+              cp -f "data/$f" /tmp/core-data-checkout/
+              echo "copied (new): $f"
+            elif cmp -s "data/$f" "/tmp/core-data-snapshot/$f"; then
+              echo "skipped (unchanged): $f"
+            else
+              cp -f "data/$f" /tmp/core-data-checkout/
+              echo "copied (changed): $f"
+            fi
+          done
+        fi
 
     - name: Commit and push core data
       if: steps.refusal-check.outputs.skip != 'true'
