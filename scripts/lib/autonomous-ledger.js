@@ -135,6 +135,24 @@ function usageStats(entries, now = new Date()) {
   };
 }
 
+// ── Dead-man check (S2-T7, pure) ────────────────────────────────────────────
+
+// The loop is expected to write ledger lines every night. Silence >24h means
+// the launchd job died, hung, or the machine slept through the slot — the
+// one failure mode nothing else would surface. armed=false (loop not yet
+// installed / deliberately disabled) is always ok so pre-install days and
+// kill-switch periods never page.
+function deadmanStatus(entries, now = new Date(), { maxAgeH = 24, armed = true } = {}) {
+  if (!armed) return { ok: true, armed: false, message: 'autonomous loop not armed — dead-man check idle' };
+  const last = lastEntryTs(entries);
+  if (!last) return { ok: false, armed: true, ageH: null, message: 'autonomous loop is armed but the ledger has NO entries — the nightly run has never fired' };
+  const ageH = (now.getTime() - new Date(last).getTime()) / 3600e3;
+  if (ageH > maxAgeH) {
+    return { ok: false, armed: true, ageH, message: `autonomous loop silent for ${ageH.toFixed(1)}h (last ledger line ${last}) — nightly run is not firing` };
+  }
+  return { ok: true, armed: true, ageH, message: `last ledger activity ${ageH.toFixed(1)}h ago` };
+}
+
 // ── Crash recovery policy (pure) ────────────────────────────────────────────
 
 // autoCards: [{ id, auto }] — every non-terminal Auto-stamped card found at
@@ -224,6 +242,7 @@ module.exports = {
   statsByModel,
   spentTonight,
   usageStats,
+  deadmanStatus,
   recoveryActions,
   acquireSingleton,
   releaseSingleton,

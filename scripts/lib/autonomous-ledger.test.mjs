@@ -156,3 +156,23 @@ test('releaseSingleton only removes our own pidfile', () => {
   assert.equal(releaseSingleton({ pidfilePath: pf, pid: 111 }), true);
   assert.ok(!fs.existsSync(pf));
 });
+
+// ── Dead-man check (S2-T7) ──────────────────────────────────────────────────
+
+test('deadman: stale ledger alerts, fresh ledger is silent, unarmed never alerts', () => {
+  const { deadmanStatus } = require('./autonomous-ledger.js');
+  const now = new Date('2026-07-14T12:00:00Z');
+  const stale = [{ ts: '2026-07-13T07:30:00Z', event: 'run-end' }]; // 28.5h old
+  const fresh = [{ ts: '2026-07-14T07:30:00Z', event: 'run-end' }]; // 4.5h old
+  const staleR = deadmanStatus(stale, now);
+  assert.equal(staleR.ok, false);
+  assert.match(staleR.message, /silent for 28\.5h/);
+  assert.equal(deadmanStatus(fresh, now).ok, true);
+  // armed with an EMPTY ledger = the run never fired — that alerts too
+  const empty = deadmanStatus([], now);
+  assert.equal(empty.ok, false);
+  assert.match(empty.message, /never fired/);
+  // not armed → always ok (pre-install days, kill-switch periods)
+  assert.equal(deadmanStatus(stale, now, { armed: false }).ok, true);
+  assert.equal(deadmanStatus([], now, { armed: false }).ok, true);
+});
