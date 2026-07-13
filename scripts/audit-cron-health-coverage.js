@@ -98,13 +98,21 @@ function extractCrons(wfPath) {
 
 function main() {
   const ch = fs.readFileSync(CHECK_FILE, 'utf8');
-  const entries = [...ch.matchAll(/"([a-z0-9-]+\.yml)\|(\d+)\|([^"]+)"/g)];
+  // Entry format: "file.yml|max_hours|Friendly Name[|active_months]" — the
+  // optional 4th field (e.g. "4-6") marks seasonal crons checked only in
+  // those months.
+  const entries = [...ch.matchAll(/"([a-z0-9-]+\.yml)\|(\d+)\|([^"|]+)(?:\|(\d+-\d+))?"/g)];
 
   let failures = 0, warnings = 0, skipped = 0;
   console.log(`Auditing ${entries.length} check-cron-health entries (cushion: ${CUSHION_HOURS}h)\n`);
 
-  for (const [, wf, maxStr, name] of entries) {
+  for (const [, wf, maxStr, name, activeMonths] of entries) {
     const maxHours = parseInt(maxStr, 10);
+    if (activeMonths) {
+      console.log(`  \u23ed  ${name.padEnd(42)} seasonal (months ${activeMonths}) — recency checked in-season only`);
+      skipped++;
+      continue;
+    }
     const crons = extractCrons(path.join(WORKFLOWS_DIR, wf));
     if (!crons.length) {
       console.log(`  ⏭  ${name.padEnd(42)} (${wf}): no cron found, manual-trigger only?`);

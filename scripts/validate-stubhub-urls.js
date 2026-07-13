@@ -143,9 +143,18 @@ async function main() {
     if (status === 0) {
       verdict = 'probe_error';
       reason = 'curl failed';
-    } else if (status >= 400) {
+    } else if (status === 404 || status === 410 || status === 451) {
+      // Only statuses that positively mean "this listing is gone" count as
+      // broken (451 = legal takedown — deterministic, unlike bot-blocks).
       verdict = 'broken';
       reason = `HTTP ${status}`;
+    } else if (status >= 400) {
+      // 403/405/429 are StubHub bot-blocking the probe (2026-07-13: 43/54 URLs
+      // reported "broken" via HTTP 403 from a GitHub runner — all false
+      // positives), and 5xx is transient. Inconclusive: the URL may be fine for
+      // real users, so never auto-replace or alert on these.
+      verdict = 'blocked';
+      reason = `HTTP ${status} (probe blocked/inconclusive — not proof the link is broken)`;
     } else if (finalUrl) {
       landingSlug = extractSlugFromStubhubUrl(finalUrl);
       if (!landingSlug) {
@@ -176,11 +185,18 @@ async function main() {
   // Summary
   const broken = results.filter(r => r.verdict === 'broken');
   const ok = results.filter(r => r.verdict === 'ok');
+  const blocked = results.filter(r => r.verdict === 'blocked');
   const errored = results.filter(r => r.verdict === 'probe_error');
   console.log(`\n=== SUMMARY ===`);
-  console.log(`  ok:     ${ok.length}`);
-  console.log(`  broken: ${broken.length}`);
-  console.log(`  errors: ${errored.length}`);
+  console.log(`  ok:      ${ok.length}`);
+  console.log(`  broken:  ${broken.length}`);
+  console.log(`  blocked: ${blocked.length} (bot-blocked/transient probes — inconclusive, not counted as broken)`);
+  console.log(`  errors:  ${errored.length}`);
+  if (blocked.length + errored.length > results.length / 2 && results.length > 0) {
+    console.log(`\n⚠️  Over half the probes were blocked or errored — StubHub is likely`);
+    console.log(`   blocking this runner. Results are unreliable; broken counts may be missing`);
+    console.log(`   real breakage. Do not draw conclusions from this run.`);
+  }
 
   if (broken.length > 0) {
     console.log(`\n=== BROKEN ===`);
