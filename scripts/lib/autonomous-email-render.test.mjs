@@ -76,7 +76,7 @@ test('failed count renders only when nonzero; throttle note appears', () => {
   assert.doesNotMatch(none, /failed overnight/);
   const some = renderEmail({ items: [], stats: STATS, failedCount: 2, throttled: '9 items already await approval (max 8)', awaitingTotal: 9 });
   assert.match(some, /2 cards failed overnight/);
-  assert.match(some, /Throttled: 9 items already await approval/);
+  assert.match(some, /⚠️ 9 items already await approval/);
 });
 
 test('extractWhy pulls the first sentence of the Problem section', () => {

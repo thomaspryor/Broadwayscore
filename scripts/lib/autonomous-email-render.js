@@ -103,7 +103,10 @@ function renderEmail(data) {
   parts.push(`<h2 style="font-size:18px;margin:0 0 14px;">Overnight work — ${items.length ? `${items.length} item${items.length > 1 ? 's' : ''} awaiting your tap` : 'nothing to approve'}</h2>`);
 
   if (throttled) {
-    parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">Throttled: ${esc(throttled)}</p>`);
+    // `throttled` is a generic banner string — it may carry an actual
+    // throttle, a Notion listing failure, or a missing-evidence notice, each
+    // self-describing, so use a neutral marker not a hardcoded "Throttled:".
+    parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(throttled)}</p>`);
   }
   for (const item of items) parts.push(renderItem(item));
   if (moreAwaiting > 0) {
