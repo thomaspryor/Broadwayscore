@@ -40,10 +40,11 @@ const ROLE_TO_CATEGORIES: Record<string, CreativeCategory[]> = {
   'Book Writers': ['playwright'],
 };
 
-// Roles to exclude even if they contain "Director"
+// Roles to exclude even if they contain "Director" (checked lowercase — the LLM
+// pipeline emits arbitrary case, see ROLE_TO_CATEGORIES_LOWER below)
 const EXCLUDED_DIRECTOR_ROLES = new Set([
-  'Music Director', 'Music Direction', 'Artistic Director',
-  'Associate Director', 'Resident Director',
+  'music director', 'music direction', 'artistic director',
+  'associate director', 'resident director',
 ]);
 
 // Build a lowercase lookup so case-drift ("Book writer" vs "Book Writer") still maps.
@@ -62,7 +63,8 @@ export function getCategoriesForRole(role: string): CreativeCategory[] {
   const lowerMatch = ROLE_TO_CATEGORIES_LOWER[role.toLowerCase()];
   if (lowerMatch) return lowerMatch;
 
-  if (EXCLUDED_DIRECTOR_ROLES.has(role)) return [];
+  const roleLower = role.toLowerCase();
+  if (EXCLUDED_DIRECTOR_ROLES.has(roleLower)) return [];
 
   // Compound roles: split on comma/ampersand/slash/"and" and map each part.
   // Handles "Director & Choreographer", "Book, Music, and Lyrics", "Composer/Lyricist",
@@ -71,11 +73,14 @@ export function getCategoriesForRole(role: string): CreativeCategory[] {
   // don't match, so excluded roles can't leak in through splitting.
   const parts = role.split(/\s*(?:[,&/]|\band\b)\s*/i).map(p => p.trim()).filter(Boolean);
   if (parts.length > 1) {
+    // Music-context guard: in "Music Supervisor & Director"-style credits the
+    // "Director" part is the music department's, not the show's stage director.
+    const isMusicContext = roleLower.includes('music');
     const cats = new Set<CreativeCategory>();
     for (const part of parts) {
-      if (EXCLUDED_DIRECTOR_ROLES.has(part)) continue;
+      if (EXCLUDED_DIRECTOR_ROLES.has(part.toLowerCase())) continue;
       const mapped = ROLE_TO_CATEGORIES_LOWER[part.toLowerCase()];
-      if (mapped) mapped.forEach(c => cats.add(c));
+      if (mapped) mapped.forEach(c => { if (!(c === 'director' && isMusicContext)) cats.add(c); });
     }
     if (cats.size > 0) return Array.from(cats);
   }
