@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-13T06:16:59.842Z",
+  "timestamp": "2026-07-13T06:41:21.950Z",
   "stats": {
-    "totalReviews": 39888,
-    "alreadyFlagged": 17546,
+    "totalReviews": 39891,
+    "alreadyFlagged": 17540,
     "dateGuardCatches": 48,
     "directorMismatch": 910,
     "tvFilmSignals": 1093,
-    "londonSignals": 742,
+    "londonSignals": 741,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3776
+    "noPublishDate": 3781
   },
   "findings": [
     {
@@ -8131,7 +8131,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "standard--tim-bano.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "2024-09-27",
       "url": "https://www.standard.co.uk/culture/theatre/giant-royal-court-review-john-lithgow-romola-garai-b1184513.html",
       "findings": [
@@ -23502,7 +23502,7 @@
     {
       "showId": "the-guilty-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 88,
+      "score": 80,
       "publishDate": "2026-07-01",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/guilty-donmar-warehouse-review/",
       "findings": [
@@ -28042,7 +28042,7 @@
     {
       "showId": "1536-west-end-2026",
       "file": "broadwayworld--debbie-gilpin.json",
-      "score": 90,
+      "score": 97,
       "publishDate": "2026-05-14",
       "url": "https://www.broadwayworld.com/westend/article/Review-1536-The-Ambassadors-Theatre-20260514",
       "findings": [
@@ -31685,7 +31685,7 @@
     {
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 74,
+      "score": 60,
       "publishDate": "2026-02-25",
       "url": "https://www.theguardian.com/stage/2026/feb/25/evening-all-afternoon-review-donmar-warehouse-london",
       "findings": [
@@ -34066,7 +34066,7 @@
     {
       "showId": "inter-alia-west-end-2026",
       "file": "broadwayworld--harlan-clementine-scott.json",
-      "score": 73,
+      "score": 93,
       "publishDate": "2026-04-07",
       "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
       "findings": [
@@ -43658,19 +43658,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "white-rabbit-red-rabbit-west-end-2026",
-      "file": "broadwayworld--mica-blackwell.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
