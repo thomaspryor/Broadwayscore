@@ -2,7 +2,21 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { actionable, pickTask, completedLaunchGuard, notionIdOf, buildSeed } = require('./bsc-next.js');
+const { actionable, pickTask, completedLaunchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed } = require('./bsc-next.js');
+const { isDoneTitle } = require('./lib/cmux-workspaces.js');
+
+test('findLiveWorkspaceForTask: matches glyph-prefixed and truncated titles, skips ✅ and unrelated', () => {
+  const task = { id: '46', subject: 'Triage 27 open needs-manual-review feedback issues' };
+  const ws = (title, ref = 'workspace:1') => ({ ref, title, selected: false });
+  // exact launch title (subject.slice(0,50)) with activity glyph prefix
+  assert.equal(findLiveWorkspaceForTask(task, [ws('⠂ Triage 27 open needs-manual-review feedback issu')], isDoneTitle).ref, 'workspace:1');
+  // cmux-truncated title (shorter than launch title, >=20 chars)
+  assert.equal(findLiveWorkspaceForTask(task, [ws('Triage 27 open needs-manual-review')], isDoneTitle).ref, 'workspace:1');
+  // ✅-finished twin does NOT block (sweep closes it)
+  assert.equal(findLiveWorkspaceForTask(task, [ws('✅ Triage 27 open needs-manual-review feedback issu')], isDoneTitle), null);
+  // unrelated + too-short prefixes don't match
+  assert.equal(findLiveWorkspaceForTask(task, [ws('Redesign show pages'), ws('Triage 27')], isDoneTitle), null);
+});
 
 const TASKS = [
   { id: '1', subject: 'P0 task', status: 'in_progress', description: '[notion:aaa] x' },
