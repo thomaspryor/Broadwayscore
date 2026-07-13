@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-13T14:01:11.320Z",
+  "generatedAt": "2026-07-13T15:17:11.819Z",
   "date": "2026-07-13",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 273095,
+  "entryCount": 275408,
   "shows": [
     {
       "showId": "dukes-off-broadway-2026",
@@ -51,7 +51,7 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -881,7 +881,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1315019,
+        "collected-to-scored": 2278104,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
