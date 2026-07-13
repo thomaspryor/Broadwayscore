@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-07-13T17:49:51.472Z",
-  "processed": 2,
-  "failed": 14,
-  "successRate": "12.5%",
+  "updatedAt": "2026-07-13T17:43:59.068Z",
+  "processed": 10,
+  "failed": 0,
+  "successRate": "100.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 6,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 1
+    "archiveToday": 0,
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-13T17:43:32.680Z",
+      "event": "bb-session",
+      "session": "78305f5e",
+      "url": "https://deadline.com/2025/04/andrew-scott-vanya-recoups-1236381055/"
+    },
+    {
+      "t": "2026-07-13T17:43:33.685Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }

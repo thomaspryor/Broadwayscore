@@ -1,44 +1,56 @@
 {
   "processed": [
-    "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json"
-  ],
-  "failed": [
-    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
-    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
-    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
-    "to-kill-a-mockingbird-west-end-2026/timeout--adam-feldman.json",
-    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
-    "to-kill-a-mockingbird-west-end-2026/british-theatre--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
-    "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
-    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/the-morning-star--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/theupcoming--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
-    "to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json"
+    "kyoto-off-broadway-2025/nytg--unknown.json",
+    "kyoto-off-broadway-2025/vulture--unknown.json",
+    "kyoto-off-broadway-2025/theatermania--unknown.json",
+    "kyoto-off-broadway-2025/playbill--unknown.json",
+    "kyoto-off-broadway-2025/stageandcinema--unknown.json",
+    "vanya-off-broadway-2025/nytg--gillian-russo.json",
+    "vanya-off-broadway-2025/nytimes--jesse-green.json",
+    "vanya-off-broadway-2025/vulture--sara-holdren.json",
+    "vanya-off-broadway-2025/deadline--unknown.json",
+    "vanya-off-broadway-2025/theatermania--dan-rubins.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
+      "kyoto-off-broadway-2025/nytg--unknown.json",
+      "kyoto-off-broadway-2025/theatermania--unknown.json",
+      "kyoto-off-broadway-2025/playbill--unknown.json",
+      "kyoto-off-broadway-2025/stageandcinema--unknown.json",
+      "vanya-off-broadway-2025/nytg--gillian-russo.json",
+      "vanya-off-broadway-2025/theatermania--dan-rubins.json"
     ],
     "amp": [],
-    "browserbase": [],
-    "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
-      "data/review-texts/to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json"
+    "browserbase": [
+      "data/review-texts/vanya-off-broadway-2025/deadline--unknown.json",
+      "vanya-off-broadway-2025/deadline--unknown.json"
     ],
+    "directCookies": [],
+    "scrapingbee": [
+      "vanya-off-broadway-2025/nytimes--jesse-green.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [],
     "archive": [
-      "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json"
+      "kyoto-off-broadway-2025/vulture--unknown.json",
+      "vanya-off-broadway-2025/vulture--sara-holdren.json"
     ]
   },
-  "startTime": "2026-07-13T17:44:47.607Z",
-  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json",
-  "log": []
+  "startTime": "2026-07-13T17:41:44.062Z",
+  "lastProcessed": "vanya-off-broadway-2025/theatermania--dan-rubins.json",
+  "log": [
+    {
+      "t": "2026-07-13T17:43:32.680Z",
+      "event": "bb-session",
+      "session": "78305f5e",
+      "url": "https://deadline.com/2025/04/andrew-scott-vanya-recoups-1236381055/"
+    },
+    {
+      "t": "2026-07-13T17:43:33.685Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
