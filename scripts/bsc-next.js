@@ -92,6 +92,15 @@ function pickTask(tasks, opts) {
   return list[idx] || null;
 }
 
+// --id deliberately reaches completed tasks (pickTask keeps that reach for
+// inspection via --dry-run), but LAUNCHING on one is almost always a typo'd
+// task # relaunching finished work. Require --force to actually launch.
+function completedLaunchGuard(task, opts) {
+  if (task.status !== 'completed' || opts.force || opts['dry-run'] || opts['print-prompt']) return null;
+  return `task #${task.id} is already completed (${task.subject}). ` +
+    `If you really want to relaunch it, re-run with --force.`;
+}
+
 function notionIdOf(task) {
   const m = /\[notion:([a-f0-9-]+)\]/i.exec(task.description || '');
   return m ? m[1] : null;
@@ -171,6 +180,8 @@ function main() {
 
   const task = pickTask(tasks, args);
   if (!task) { console.error('[bsc-next] no matching actionable task.'); process.exit(1); }
+  const guardErr = completedLaunchGuard(task, args);
+  if (guardErr) { console.error(`[bsc-next] ${guardErr}`); process.exit(1); }
 
   const pid = notionIdOf(task);
   const card = pid ? fetchCard(pid) : null;
@@ -201,4 +212,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, actionable, pickTask, notionIdOf, buildSeed, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES };
+module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, notionIdOf, buildSeed, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES };
