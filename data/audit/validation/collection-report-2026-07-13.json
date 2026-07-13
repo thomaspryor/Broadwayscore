@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-07-13T17:42:01.210Z",
+  "runDate": "2026-07-13T17:43:36.234Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "tender-off-west-end-2026",
+    "showFilter": "a-midsummer-nights-dream-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 7,
+    "processed": 1,
+    "failed": 22,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "4.3%"
   },
   "tierBreakdown": {
     "playwright": 1,
@@ -27,43 +27,60 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 5,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 2,
     "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 7,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 22,
+    "scrapingBeePageCredits": 30,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 6,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 16,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json"
+  ],
   "failed": [
-    "tender-off-west-end-2026/guardian--arifa-akbar.json",
-    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
-    "tender-off-west-end-2026/daily-mail--unknown.json",
-    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
-    "tender-off-west-end-2026/times-uk--richard-morrison.json",
-    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
-    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
+    "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/loureviews--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/observer--kate-kellaway.json",
+    "a-midsummer-nights-dream-west-end-2026/bloomberg--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/east-midlands-theatre--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/financialtimes--julianna-barnaby.json",
+    "a-midsummer-nights-dream-west-end-2026/financialtimes--sarah-hemming.json",
+    "a-midsummer-nights-dream-west-end-2026/huffpost--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--dominic-cavendish.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--nick-curtis.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/telegraph--claire-allfree.json",
+    "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--holly-o.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--dominic-maxwell.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--rachel-halliburton.json",
+    "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json"
   ],
   "failed": [],
   "tierDetails": {
     "playwright": [
-      "allegra-west-end-2026/whatsonstage--aliya-al.json"
+      "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json"
     ],
     "amp": [],
     "browserbase": [
@@ -73,10 +90,18 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
