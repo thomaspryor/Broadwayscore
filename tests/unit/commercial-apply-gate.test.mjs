@@ -43,6 +43,17 @@ describe('commercial-apply-gate', () => {
     });
   });
 
+  describe('isReviewHold — holds are never appliable', () => {
+    it('detects entry._reviewHold === true', () => {
+      assert.equal(gate.isReviewHold({ _reviewHold: true, recouped: true }), true);
+    });
+    it('returns false for ordinary pending entries (incl. recouped claims)', () => {
+      assert.equal(gate.isReviewHold({ recouped: true, _recoupedClaim: true }), false);
+      assert.equal(gate.isReviewHold({}), false);
+      assert.equal(gate.isReviewHold({ _reviewHold: false }), false);
+    });
+  });
+
   describe('isAutoApplyableClaim — Friday scraper hot path', () => {
     const goodEntry = {
       recouped: true,

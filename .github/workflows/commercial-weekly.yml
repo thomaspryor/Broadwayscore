@@ -275,6 +275,14 @@ jobs:
           if ! node scripts/audit-commercial-data.js --strict; then
             echo "commercial strict audit failed (unsourced recouped or LLM-tool source URL) — blocking core-data push" \
               > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+            # Make the failure atomic: the auto-apply above already mutated
+            # commercial.json AND deleted the applied entries from
+            # pending-review. The always()-gated public commit below would
+            # otherwise record those entries as consumed while the sentinel
+            # blocks the commercial.json push — losing the pending data.
+            # Restore both so the next Saturday run retries the same pending.
+            cp /tmp/core-data-snapshot/commercial.json data/commercial.json 2>/dev/null || true
+            git checkout -- data/commercial-pending-review.json 2>/dev/null || true
             exit 1
           fi
 

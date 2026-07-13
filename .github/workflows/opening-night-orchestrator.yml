@@ -274,6 +274,14 @@ jobs:
         env:
           SHOWS: ${{ steps.find.outputs.shows }}
         run: |
+          if [ ! -f data/commercial.json ]; then
+            # checkout-core-data only hard-fails on shows.json/reviews.json —
+            # surface the gap loudly instead of throwing inside node (which
+            # continue-on-error would swallow into an invisible forever-skip).
+            echo "::warning::data/commercial.json missing from core-data checkout — skipping stub enrollment this run"
+            echo "enrolled=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
           SLUGS=$(node -e "
             const shows = require('./data/shows.json').shows;
             const commercial = require('./data/commercial.json').shows || {};

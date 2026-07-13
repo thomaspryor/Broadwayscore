@@ -36,6 +36,15 @@ function hasRecoupedClaim(entry) {
   return entry.recouped === true || entry._recoupedClaim === true;
 }
 
+// Review holds are review REQUESTS about data already in commercial.json —
+// never appliable, even via --show. Applying one would clobber the rich
+// existing entry with the hold's sparse placeholder fields. The reviewer
+// verifies per entry.notes, edits commercial.json directly, then deletes
+// the hold. (Sprint 2 ship-check, 2026-07-13.)
+function isReviewHold(entry) {
+  return entry._reviewHold === true;
+}
+
 // Recouped-claim entries normally require manual --show=SLUG. This bypass lets
 // trusted Friday-pipeline sources auto-apply when ALL hold:
 //   - autoApplyClaimsFrom (a non-empty array) contains entry.detectedBy
@@ -104,6 +113,7 @@ module.exports = {
   cleanNullish,
   meetsConfidenceThreshold,
   hasRecoupedClaim,
+  isReviewHold,
   isAutoApplyableClaim,
   buildCommercialEntry,
 };
