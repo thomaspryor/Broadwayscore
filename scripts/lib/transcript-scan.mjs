@@ -13,6 +13,7 @@
 //     reference-attached           true iff any user message in transcript has an image attachment
 //     visual-claim-language        true iff last assistant TEXT block contains banned visual-correctness
 //                                  claim AND no "NO-VERIFY:" in same block
+//     bypass-token --token=<T>     true iff in-flight assistant turn has a line "<T>: <reason ≥15 chars>"
 //     override-active-for-push     true iff last user msg contains "ship immediately for: <reason>"
 //                                  AND no consume marker exists for current session
 //                                  (caller writes marker via --consume after using)
@@ -330,7 +331,30 @@ export function queryVisualClaimLanguage(events, { toolUseId } = {}) {
   };
 }
 
-export function queryOverrideActiveForPush(events, { sessionId, consume = false } = {}) {
+// Generic in-flight bypass-token detection (2026-07-12, Notion 39c637c5):
+// true iff the in-flight assistant turn (or last assistant text) contains a
+// line starting `<TOKEN>: <reason>` with a reason of ≥15 chars — the same bar
+// finish-line-gate.sh sets for NO-SHIP-CHECK. Line-anchored so a quoted
+// mention of the token mid-sentence doesn't count. Used by
+// pre-push-review-gate.sh for its NO-SHIP-CHECK escape hatch.
+export function queryBypassToken(events, { token, toolUseId } = {}) {
+  const safe = String(token || '').replace(/[^A-Z0-9-]/gi, '');
+  if (!safe) return { hasBypass: false, reason: 'invalid token' };
+  const { texts, scope } = findRelevantAssistantTexts(events, toolUseId);
+  if (texts.length === 0) return { hasBypass: false, reason: 'no assistant text', scope };
+  const concatenated = texts.map(e => e.text || '').join('\n');
+  // Strip fenced code blocks so a quoted example can't satisfy the bypass
+  // (same defense finish-line-gate.sh applies to its tokens).
+  const stripped = concatenated.replace(/```[\s\S]*?```/g, '');
+  const m = new RegExp(`^\\s*${safe}:\\s*(.{15,})`, 'm').exec(stripped);
+  return {
+    hasBypass: !!m,
+    line: m ? m[0].trim().slice(0, 200) : null,
+    scope,
+  };
+}
+
+export function queryOverrideActiveForPush(events, { sessionId, consume = false, markerNs = null } = {}) {
   // Find LAST user_text. Check for "ship immediately for: <reason>".
   // Per /ship-check round 2 P0-3, reject matches that are negated in the same
   // line ("do NOT ship immediately for: X"). The OVERRIDE_RE requires the
@@ -360,7 +384,7 @@ export function queryOverrideActiveForPush(events, { sessionId, consume = false 
   }
   if (!matched) return { override: false, reason: 'no override phrase in last user text (or matched but negated)' };
   if (!sessionId) return { override: true, reason: 'matched but no sessionId — caller must scope per-session' };
-  const marker = markerPath(sessionId);
+  const marker = markerPath(sessionId, markerNs);
   if (existsSync(marker)) return { override: false, reason: 'override already consumed for this session', marker };
   if (consume) {
     // Atomic create: open with O_CREAT|O_EXCL so two simultaneous consumers
@@ -378,9 +402,14 @@ export function queryOverrideActiveForPush(events, { sessionId, consume = false 
   return { override: true, consumed: false, marker, preview };
 }
 
-function markerPath(sessionId) {
+// markerNs gives each gate its own one-shot consume marker: without it, the
+// visual gate (runs first in the hook list) would consume the user's single
+// "ship immediately for:" and the review gate would then see it as spent and
+// block the very push the user just authorized.
+function markerPath(sessionId, markerNs = null) {
   const safe = String(sessionId).replace(/[^a-zA-Z0-9_-]/g, '_');
-  return join(tmpdir(), `visual-qa-override-consumed-${safe}`);
+  const ns = markerNs ? String(markerNs).replace(/[^a-zA-Z0-9_-]/g, '_') + '-' : '';
+  return join(tmpdir(), `visual-qa-override-consumed-${ns}${safe}`);
 }
 
 // ── CLI ──────────────────────────────────────────────────────────────────────
@@ -415,8 +444,12 @@ Queries:
   visual-claim-language             check if assistant msg makes visual-correctness claim
     --tool-use-id=<id>                scope to the in-flight turn containing this tool_use
                                        (otherwise: last assistant_text in transcript)
+  bypass-token                      check in-flight turn for a "<TOKEN>: <reason ≥15 chars>" line
+    --token=<TOKEN>                   e.g. NO-SHIP-CHECK
+    --tool-use-id=<id>                scope to the in-flight turn containing this tool_use
   override-active-for-push          check for "ship immediately for: <reason>"
     --session-id=<id>                 required for override scoping
+    --marker-ns=<ns>                  namespace the consume marker (one per gate)
     --consume                         write the consume marker if matched
 
 All queries print JSON to stdout. Exit 0 success / 1 bad args / 2 transcript missing.`);
@@ -455,9 +488,14 @@ async function main() {
     case 'visual-claim-language':
       result = queryVisualClaimLanguage(events, { toolUseId: args['tool-use-id'] });
       break;
+    case 'bypass-token':
+      if (!args.token) { console.error('ERROR: bypass-token needs --token='); process.exit(1); }
+      result = queryBypassToken(events, { token: args.token, toolUseId: args['tool-use-id'] });
+      break;
     case 'override-active-for-push':
       result = queryOverrideActiveForPush(events, {
         sessionId: args['session-id'],
+        markerNs: args['marker-ns'] || null,
         consume: args.consume === '' || args.consume === 'true' || (args.consume !== undefined && args.consume !== 'false'),
       });
       break;
