@@ -43,7 +43,14 @@ If applicable, check whether the new feature needs a corresponding update in the
 Check for:
 1. **Unstaged changes**: `git status` — are there modified files that should be committed or discarded?
 2. **Running processes**: Any dev servers, background tasks, or watchers still running? Kill them (`kill $(lsof -ti:3456)` etc.)
-3. **Failed tests**: Run `npx tsc --noEmit 2>&1 | head -20` — are there TypeScript errors?
+3. **Failed tests** (skip if no `.ts`/`.tsx` files changed this session):
+   ```bash
+   if git log --name-only --since="3 hours ago" --pretty=format: | grep -q '\.tsx\?$'; then
+     npx tsc --noEmit 2>&1 | head -20
+   else
+     echo "No TypeScript files changed this session — skipping tsc"
+   fi
+   ```
 4. **Async operation gate (MANDATORY — blocks wrap-up until clear):**
    Check for ANY pending async operations from this session:
    ```bash
@@ -77,7 +84,7 @@ Check for:
 3. **Write the Outcome using the MANDATORY template below.** Check the card's **Type** field and use the matching variant. Every section must be filled — no placeholders, no "N/A", no skipping. If a section truly doesn't apply, write "None identified" with a one-sentence explanation.
 
    **Type-specific additions** (add these sections AFTER the standard 4):
-   - **Fix:** Add `### Root cause` and `### Prevention added` (prevention = a code/test/hook/CI change; a memory file alone doesn't count — CLAUDE.md rule 16)
+   - **Fix:** Add `### Root cause` and `### Prevention added` (prevention = a code/test/hook/CI change; a memory file alone doesn't count)
    - **New Feature:** Add `### User-facing changes` and `### How to verify`
    - **Market Expansion:** Add `### Shows affected` and `### Aggregators used`
    - **Data Quality:** Add `### Data before/after` and `### Validation added`
@@ -222,14 +229,13 @@ This phase combines documentation updates with lessons learned. For each item be
 - It's not already covered by existing rules
 - It can be stated in one imperative sentence with brief context
 
-**Memory-entry criteria (CLAUDE.md rule 16 — encode first, write rarely):** a memory file must pass all three: (1) the lesson could NOT be encoded as code/test/hook/CI gate — if you already encoded the fix, the memory is redundant, skip it; (2) you can name the specific future action that changes; (3) a future session hitting the same mistake would plausibly recall the file from its description. **"No new learnings worth saving" is the normal outcome — say that and move on.** Never offer to commit memory files to the repo; the session-stop hook auto-syncs them to `cloud-memory/`.
+**Memory-entry criteria (encode first, write rarely):** a memory file must pass all three: (1) the lesson could NOT be encoded as code/test/hook/CI gate — if you already encoded the fix, the memory is redundant, skip it; (2) you can name the specific future action that changes; (3) a future session hitting the same mistake would plausibly recall the file from its description. **"No new learnings worth saving" is the normal outcome — say that and move on.** Never offer to commit memory files to the repo (in Broadwayscore the session-stop hook auto-syncs local memory to `cloud-memory/`).
 
-**MEMORY.md size check** — if you touched MEMORY.md this session, verify it's still under cap:
+**MEMORY.md size** — the index cap is now ENFORCED at write time, so you normally do nothing. `memory-index-cap-guard.sh` (PreToolUse) blocks any Edit/Write/bash-redirect that would grow the index past **180 lines / 20KB**; `memory-index-cap-postcheck.sh` (PostToolUse) flags it if something writes it over cap by another path. If a hook blocks an index edit, follow its message: merge or drop an entry (the file stays on disk and recall still surfaces it), or just don't index the new memory. To eyeball size:
 ```bash
-wc -l ~/.claude/projects/-Users-tompryor-Broadwayscore/memory/MEMORY.md   # cap: 180
-( cd ~/Broadwayscore && node scripts/rebuild-memory-index.js --enforce-limit=180 2>&1 >/dev/null )
+wc -lc ~/.claude/projects/-Users-tompryor-Broadwayscore/memory/MEMORY.md   # caps: 180 lines / 20000 bytes
 ```
-If over 180, trim or archive (`archived: true` frontmatter) before the session ends. The harness silently truncates at ~200 — `claude-sync push` will block hard at >200.
+Do **NOT** run `node scripts/rebuild-memory-index.js > MEMORY.md` — it regenerates verbose auto-gen lines that clobber the curated short hooks (and the redirect is hook-blocked anyway). The script is read-only-safe with `--diff` only. The harness silently truncates the index at ~200 lines; `claude-sync push` blocks hard at >200.
 
 ### Phase 6: Final Report
 
@@ -252,21 +258,60 @@ Present a summary to the user:
 - [anything that truly can't be done now, with context for next session]
 ```
 
-**Before listing any loose end, ask: can I just do this now?** If a loose end would take <5 minutes to fix, fix it instead of listing it. The user should never have to read a loose end and tell you to go do it. Only list items that genuinely require a separate session (blocked, different repo, would take >15 minutes, needs user decision).
+**Before listing any loose end, ask: can I just do this now?** If a loose end would take <5 minutes to fix, fix it instead of listing it. The user should never have to read a loose end and tell you to go do it. Only list items that hit a real deferral bar (blocked on the user, missing credentials, different repo, or >2 hours of work — the same bars the finish-line gate and global CLAUDE.md use).
 
-**Every deferred loose end must carry its own handoff.** Format (the finish-line gate enforces this):
+**Every deferred loose end must be dispatched or carry its own handoff** (the finish-line gate enforces this).
+
+**Dispatch-first (the default).** If the item is technical + self-contained + carded (a Notion card / task-list entry exists — Phase 4 step 8 should have created one), do NOT hand the user a paste-prompt. Dispatch it yourself:
+```bash
+node scripts/bsc-next.js --list        # find the task # for the card
+node scripts/bsc-next.js --id <task#>  # launch a seeded Cmux workspace on it
 ```
-DEFERRED: <what> — <which deferral bar it hits and why>
+Verify the output shows a workspace actually launched, then report it as a plain line of prose — NOT inside a code fence, the finish-line gate strips fenced text and won't see it:
+
+DISPATCHED: workspace <name> — <task subject>
+
+The card IS the handoff — bsc-next seeds the new workspace with its full Notion context. Gotchas:
+- **Card exists but isn't in the task list yet:** run `node scripts/notion-tasks-sync.js pull` (only P0/P1 cards mirror), then `--list` again to get the task #.
+- **Item isn't carded at all:** card it first (Phase 4 template, Priority P1), sync, then dispatch. A dispatch without a card has no context to seed.
+- **Launch fails** (Cmux missing/errored): fall back to the DEFERRED + HANDOFF PROMPT format below and say the dispatch failed.
+- The gate verifies a bsc-next command actually ran this session — a DISPATCHED line without the launch gets blocked.
+
+**Paste-prompt fallback (exception only).** Reserved for items that need a user decision first, or access this session lacks (different machine, missing credentials). Format:
+```
+DEFERRED: <what> — <which deferral bar it hits and why it can't be dispatched>
 HANDOFF PROMPT:
 <complete paste-ready prompt: task, key files, context, what was already tried, acceptance criteria>
 ```
-The user pastes the prompt into a fresh session and it works with zero extra context. A Notion card ID alone is NOT a handoff.
+The user pastes the prompt into a fresh session and it works with zero extra context. A Notion card ID alone is NOT a handoff, and a paste-prompt for a fully-specified technical task is a process failure — dispatch it instead.
 
 **End the report with a mandatory `### Next` section** that triages EVERY Notion card created this session and every recommendation you made, each into exactly one bucket:
 - **DONE-NOW** — you did it before ending (say what happened)
-- **DEFERRED** — with the deferral bar it hits + HANDOFF PROMPT (format above)
+- **DISPATCHED** — you launched it via bsc-next (workspace name + task)
+- **DEFERRED** — user-decision or different-machine items ONLY, with the deferral bar + HANDOFF PROMPT (format above)
 - **BACKLOG** — one line on why it can safely wait; no user action needed
 
-Close with exactly one line: `Your next action: <nothing | paste the handoff prompt above into a new session | answer the DECISION NEEDED above>`.
+Close with exactly one line: `Your next action: <nothing | answer the DECISION NEEDED above | paste the handoff prompt above into a new session (non-dispatchable items only)>`.
 
 Only say "Clean exit, no loose ends" when you are ALSO not recommending any next-session work — a "recommended next session" IS a loose end and belongs in `### Next`, triaged. Never make the user ask "what's required next?"
+
+### Phase 7: Workspace self-marking & self-close (Cmux sessions only)
+
+**Skip unless this session runs inside a Cmux workspace** — check with `/Applications/cmux.app/Contents/Resources/bin/cmux identify` (succeeds and returns your `workspace_ref`). Finished workspaces must be visually distinct so pruning is at-a-glance (owner rule, 2026-07-12).
+
+**Precondition:** the Notion card Outcome is written and Status is set (Phase 4 done). The Notion record IS the session record — scrollback is redundant once it exists. If the Notion update failed, mark ✅ but do NOT self-close (keep the workspace for forensics).
+
+After delivering the final report:
+```bash
+CMUX=/Applications/cmux.app/Contents/Resources/bin/cmux
+WS=$($CMUX identify | python3 -c "import sys,json;print(json.load(sys.stdin)['caller']['workspace_ref'])")
+$CMUX workspace-action --action rename --workspace "$WS" --title "✅ <short session title>"
+$CMUX workspace-action --action set-color --workspace "$WS" --color Green
+```
+
+Then, as the LITERALLY LAST tool call of the session (it kills this terminal — nothing can run after it, so if anything remains in your plan you ordered it wrong):
+```bash
+$CMUX close-workspace --workspace "$WS"
+```
+
+Sessions that die before self-closing still get swept: `bsc-next` closes ✅-marked workspaces before every launch, and `bsc-prune` (alias) / `node scripts/bsc-prune.js` is the manual sweep — it also lists idle un-marked workspaces without closing them.

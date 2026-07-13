@@ -105,6 +105,14 @@ These flows have state — a screenshot can't catch a broken mutation.
 - Verify output files are written where expected
 - If modifying existing logic: run old version on same inputs first, diff against new output
 
+**For scoring-logic changes (MANDATORY gate — non-negotiable):**
+If any of these files appear in the diff — `src/lib/scoring.ts`, `src/lib/engine.ts`, `src/lib/data-core.ts`, `scripts/lib/rebuild-helpers.js`, `scripts/lib/score-extractors.js`, `scripts/lib/review-normalization.js`, `scripts/lib/review-guards.js` — run BOTH before the TESTED block:
+```bash
+node scripts/scoring-delta.js
+node scripts/test-temporal-override-regression.js
+```
+Paste the summary output. If `scoring-delta.js` shows bucket shift >5% or mean drift >5pts, that is a blocker — do not proceed. Also grep for stale hardcoded weight values in non-canonical files: `grep -r "0\.35\|0\.75\|1\.0" src/ scripts/ --include="*.ts" --include="*.js" | grep -v "scoring\.ts\|outlet-tiers\.js\|node_modules"`.
+
 **For data changes:**
 - Query the affected data: `npm run db:build && node scripts/query.js "SELECT ..."`
 - Spot-check 3 specific records against source
@@ -174,4 +182,4 @@ The only valid reasons to not fix something now:
 - Genuinely blocked: needs a user decision between real alternatives, missing credentials, requires a different repo, would push the session past ~2 hours
 - In all other cases: **fix it.** A "30-minute derail" is not a blocker — that's just the work.
 
-For anything truly blocked, add a self-contained Notion card (per `feedback_notion_card_context.md`) and KEEP WORKING on what you can. Never end the loop with a question to the user when there is more work you can do.
+For anything truly blocked, add a self-contained Notion card (per `feedback_notion_card_context.md`) — and if it's technical + self-contained, dispatch it yourself (`node scripts/bsc-next.js --id <task#>` in Broadwayscore, ending with a `DISPATCHED:` line) instead of leaving a paste-prompt — then KEEP WORKING on what you can. Never end the loop with a question to the user when there is more work you can do.
