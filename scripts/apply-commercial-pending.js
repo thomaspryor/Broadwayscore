@@ -107,9 +107,23 @@ function main() {
   let applied = 0;
   let skipped = 0;
 
+  // Track keys that were ACTUALLY applied this run. The cleanup loop below
+  // must delete only these — key-existence in commercial.json is NOT a proxy
+  // for "was applied": review-hold entries are deliberately keyed to existing
+  // commercial entries and were being deleted unreviewed (ship-check P0,
+  // Sprint 2 2026-07-13).
+  const appliedIds = new Set();
+
   for (const showId of showIds) {
     const entry = pending.shows[showId];
     if (!entry) continue;
+
+    // Review holds are never appliable — see gate.isReviewHold rationale.
+    if (gate.isReviewHold(entry)) {
+      console.log(`  🛑 "${showId}" — review hold, never appliable. See entry.notes; edit commercial.json directly.`);
+      skipped++;
+      continue;
+    }
 
     // Confidence filter
     if (!meetsConfidenceThreshold(entry)) {
@@ -138,7 +152,13 @@ function main() {
     // a manual "Ragtime is enhancement-deal recouped" correction can be
     // clobbered the next Saturday when deep-research returns a 'low'-conf
     // contradicting result.
-    const existing = commercial.shows[showId];
+    // commercial.json is keyed by SLUG (memory: feedback_commercial_slug_keys)
+    // while pending entries are keyed by show ID. Resolve via entry.slug so an
+    // ID-keyed pending entry (e.g. appropriate-2023) updates the existing
+    // slug-keyed commercial entry (appropriate) instead of creating an
+    // unsourced duplicate that the strict gate would then fail on.
+    const commercialKey = entry.slug || showId;
+    const existing = commercial.shows[commercialKey];
     if (existing && existing.humanReviewedDesignation === true && !SINGLE_SHOW) {
       console.log(`  🔒 "${showId}" — humanReviewedDesignation:true, skipping auto-apply`);
       skipped++;
@@ -180,9 +200,10 @@ function main() {
     if (DRY_RUN) {
       console.log(`  [DRY RUN] Would apply "${showId}" → ${JSON.stringify(commercialEntry, null, 2).slice(0, 200)}...`);
     } else {
-      commercial.shows[showId] = commercialEntry;
-      console.log(`  ✅ Applied "${showId}" → ${commercialEntry.designation || 'TBD'}`);
+      commercial.shows[commercialKey] = commercialEntry;
+      console.log(`  ✅ Applied "${showId}" → commercial.shows["${commercialKey}"] (${commercialEntry.designation || 'TBD'})`);
     }
+    appliedIds.add(showId);
     applied++;
   }
 
@@ -209,9 +230,10 @@ function main() {
       process.exit(1);
     }
 
-    // Remove applied shows from pending
-    for (const showId of showIds) {
-      if (!commercial.shows[showId]) continue; // wasn't applied
+    // Remove applied shows from pending — ONLY the ones actually applied this
+    // run (appliedIds). The old key-existence check deleted review-hold and
+    // skipped entries whose keys happened to exist in commercial.json.
+    for (const showId of appliedIds) {
       delete pending.shows[showId];
     }
     if (Object.keys(pending.shows).length > 0) {
