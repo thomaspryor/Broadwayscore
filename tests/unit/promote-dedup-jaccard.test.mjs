@@ -122,3 +122,14 @@ test('venue aliases: producer-prefix variants collapse to one key (Pels, Newhous
     canonicalVenue('Perelman Performing Arts Center'),
   );
 });
+
+test('Steinberg Black Box stage does not collapse onto Laura Pels key', () => {
+  assert.notEqual(
+    canonicalVenue('Black Box Theatre at the Harold and Miriam Steinberg Center for Theatre'),
+    canonicalVenue('The Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre'),
+  );
+  assert.equal(
+    canonicalVenue('Roundabout Black Box Theatre'),
+    canonicalVenue('Black Box Theatre at the Harold and Miriam Steinberg Center for Theatre'),
+  );
+});
