@@ -43,7 +43,9 @@
     "primary-trust-off-broadway-2023/theater-life--samuel-l-leiter.json",
     "primary-trust-off-broadway-2023/theater-pizzazz--carol-rocamora.json",
     "primary-trust-off-broadway-2023/theater-scene--darryl-reilly.json",
-    "primary-trust-off-broadway-2023/theater-scene--joel-benjamin.json"
+    "primary-trust-off-broadway-2023/theater-scene--joel-benjamin.json",
+    "king-hedley-ii-2001/variety--unknown.json",
+    "king-hedley-ii-2001/talkinbroadway--unknown.json"
   ],
   "failed": [
     "vanya-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
@@ -51,7 +53,9 @@
     "vanya-off-broadway-2025/theater-scene--deirdre-donovan.json",
     "vanya-off-broadway-2025/washpost--unknown.json",
     "primary-trust-off-broadway-2023/broadwayworld--unknown.json",
-    "primary-trust-off-broadway-2023/culturesauce--unknown.json"
+    "primary-trust-off-broadway-2023/culturesauce--unknown.json",
+    "king-hedley-ii-2001/nytimes--ben-brantley.json",
+    "king-hedley-ii-2001/curtainup--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -89,7 +93,10 @@
       "data/review-texts/vanya-off-broadway-2025/deadline--unknown.json",
       "vanya-off-broadway-2025/deadline--unknown.json",
       "data/review-texts/between-two-knees-off-broadway-2024/wsj--by-charles-isherwood.json",
-      "between-two-knees-off-broadway-2024/wsj--by-charles-isherwood.json"
+      "between-two-knees-off-broadway-2024/wsj--by-charles-isherwood.json",
+      "data/review-texts/king-hedley-ii-2001/nytimes--ben-brantley.json",
+      "data/review-texts/king-hedley-ii-2001/variety--unknown.json",
+      "king-hedley-ii-2001/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -105,11 +112,13 @@
       "vanya-off-broadway-2025/latimes--unknown.json",
       "primary-trust-off-broadway-2023/thewrap--robert-hofler.json",
       "primary-trust-off-broadway-2023/cititour--brian-scott-lipton.json",
-      "primary-trust-off-broadway-2023/dailybeast--unknown.json"
+      "primary-trust-off-broadway-2023/dailybeast--unknown.json",
+      "king-hedley-ii-2001/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/vanya-off-broadway-2025/theater-scene--deirdre-donovan.json",
-      "data/review-texts/primary-trust-off-broadway-2023/broadwayworld--unknown.json"
+      "data/review-texts/primary-trust-off-broadway-2023/broadwayworld--unknown.json",
+      "data/review-texts/king-hedley-ii-2001/curtainup--unknown.json"
     ],
     "archive": [
       "kyoto-off-broadway-2025/vulture--unknown.json",
@@ -119,7 +128,7 @@
     ]
   },
   "startTime": "2026-07-13T17:41:44.062Z",
-  "lastProcessed": "primary-trust-off-broadway-2023/theater-scene--joel-benjamin.json",
+  "lastProcessed": "king-hedley-ii-2001/curtainup--unknown.json",
   "log": [
     {
       "t": "2026-07-13T17:43:32.680Z",
@@ -142,6 +151,28 @@
       "t": "2026-07-13T17:48:33.052Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-13T17:54:58.371Z",
+      "event": "bb-session",
+      "session": "31fa5578",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9401E5DF1738F931A35756C0"
+    },
+    {
+      "t": "2026-07-13T17:54:59.292Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-13T17:55:14.383Z",
+      "event": "bb-session",
+      "session": "e3c8e4d1",
+      "url": "https://variety.com/2001/legit/news/king-hedley-ii-2-1200468606/"
+    },
+    {
+      "t": "2026-07-13T17:55:15.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

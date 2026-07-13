@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-13T17:54:49.011Z",
-  "processed": 44,
-  "failed": 6,
-  "successRate": "88.0%",
+  "updatedAt": "2026-07-13T17:57:51.431Z",
+  "processed": 46,
+  "failed": 8,
+  "successRate": "85.2%",
   "tierBreakdown": {
     "playwright": 27,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 7,
     "directCookies": 0,
     "scrapingbee": 5,
-    "brightdata": 6,
-    "archiveToday": 2,
+    "brightdata": 7,
+    "archiveToday": 3,
     "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-07-13T17:43:32.680Z",
@@ -36,6 +36,28 @@
       "t": "2026-07-13T17:48:33.052Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-13T17:54:58.371Z",
+      "event": "bb-session",
+      "session": "31fa5578",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9401E5DF1738F931A35756C0"
+    },
+    {
+      "t": "2026-07-13T17:54:59.292Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-13T17:55:14.383Z",
+      "event": "bb-session",
+      "session": "e3c8e4d1",
+      "url": "https://variety.com/2001/legit/news/king-hedley-ii-2-1200468606/"
+    },
+    {
+      "t": "2026-07-13T17:55:15.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
