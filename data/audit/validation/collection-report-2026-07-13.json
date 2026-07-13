@@ -1,118 +1,69 @@
 {
-  "runDate": "2026-07-13T05:20:28.733Z",
+  "runDate": "2026-07-13T06:35:20.683Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "carmen-off-broadway-2025",
+    "showFilter": "allegra-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 11,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "42.1%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 2,
-    "brightdata": 1,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 3,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 3,
-    "tier2Success": 2,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 11,
-    "scrapingBeePageCredits": 30,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.3,
-    "urlDiscoveryAttempts": 13,
-    "urlDiscoverySuccess": 3,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "carmen-off-broadway-2025/nytimes--unknown.json",
-    "carmen-off-broadway-2025/nytimes--zachary-woolfe.json",
-    "carmen-off-broadway-2025/vulture--justin-davidson.json",
-    "carmen-off-broadway-2025/new-york-classical-review--richard-sasanow.json",
-    "carmen-off-broadway-2025/theatermania--unknown.json",
-    "carmen-off-broadway-2025/wsj--justin-davidson.json",
-    "carmen-off-broadway-2025/broadwayworld--richard-sasanow.json",
-    "carmen-off-broadway-2025/financialtimes--richard-sasanow.json"
-  ],
+  "processed": [],
   "failed": [
-    "carmen-off-broadway-2025/guardian--unknown.json",
-    "carmen-off-broadway-2025/new-york-classical-review--rick-perdian.json",
-    "carmen-off-broadway-2025/observer--christopher-corwin.json",
-    "carmen-off-broadway-2025/wsj--heidi-waleson.json",
-    "carmen-off-broadway-2025/operawire--david-salazar.json",
-    "carmen-off-broadway-2025/parterre-box--david-salazar.json",
-    "carmen-off-broadway-2025/thestage--unknown.json",
-    "carmen-off-broadway-2025/times-uk--unknown.json",
-    "carmen-off-broadway-2025/washpost--andor-brodeur.json",
-    "carmen-off-broadway-2025/washpost--justin-davidson.json",
-    "carmen-off-broadway-2025/washpost--michael-andor-brodeur.json"
+    "allegra-west-end-2026/whatsonstage--aliya-al.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "carmen-off-broadway-2025/theatermania--unknown.json",
-      "carmen-off-broadway-2025/broadwayworld--richard-sasanow.json",
-      "carmen-off-broadway-2025/financialtimes--richard-sasanow.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/carmen-off-broadway-2025/wsj--justin-davidson.json",
-      "carmen-off-broadway-2025/wsj--justin-davidson.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "carmen-off-broadway-2025/nytimes--unknown.json",
-      "carmen-off-broadway-2025/nytimes--zachary-woolfe.json"
-    ],
-    "brightdata": [
-      "carmen-off-broadway-2025/vulture--justin-davidson.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "carmen-off-broadway-2025/new-york-classical-review--richard-sasanow.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "carmen-off-broadway-2025/nytimes--unknown.json",
-      "oldUrl": "https://www.nytimes.com/2024/01/01/arts/music/carmen-bizet-met-opera-review.html",
-      "newUrl": "https://www.nytimes.com/2025/11/21/arts/music/protesters-met-opera-carmen.html"
-    },
-    {
-      "reviewId": "carmen-off-broadway-2025/nytimes--zachary-woolfe.json",
-      "oldUrl": "https://www.nytimes.com/2024/01/01/arts/music/carmen-bizet-met-opera-review.html",
-      "newUrl": "https://www.nytimes.com/2025/11/21/arts/music/protesters-met-opera-carmen.html"
-    },
-    {
-      "reviewId": "carmen-off-broadway-2025/broadwayworld--richard-sasanow.json",
-      "oldUrl": "https://www.broadwayworld.com/bwwopera/article/Review-When-Akhmetshinas-On-Stage-Dont-Fence-The-Mets-New-CARMEN-In-20240106",
-      "newUrl": "https://www.broadwayworld.com/westend/article/Guest-Blog-Its-Such-An-Iconic-Opera-Conductor-Olivia-Clarke-on-Taking-on-ENOs-CARMEN-20251008"
-    }
-  ]
+  "urlDiscoveries": []
 }
