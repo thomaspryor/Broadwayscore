@@ -1,0 +1,243 @@
+import { NextRequest } from 'next/server';
+import crypto from 'crypto';
+
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+export const maxDuration = 15;
+
+function htmlPage(title: string, body: string): string {
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>${title} - Broadway Scorecard</title>
+<style>body{margin:0;padding:40px 20px;background:#0f0f14;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;text-align:center;}
+h1{font-size:24px;margin-bottom:16px;}p{color:rgba(255,255,255,0.7);font-size:16px;line-height:1.6;max-width:480px;margin:0 auto 16px;}
+a{color:#d4a574;}</style></head><body>${body}</body></html>`;
+}
+
+/** Strip HTML-significant characters and cap length for safe echoing into pages. */
+function sanitize(input: string, maxLen = 200): string {
+  return input.replace(/[<>&]/g, '').slice(0, maxLen);
+}
+
+const NOTION_BASE = 'https://api.notion.com/v1';
+
+async function notionApi(
+  path: string,
+  method: string,
+  apiKey: string,
+  body?: object
+): Promise<{ ok: boolean; status: number; json: Record<string, unknown> }> {
+  const res = await fetch(`${NOTION_BASE}${path}`, {
+    method,
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Notion-Version': '2022-06-28',
+      'Content-Type': 'application/json',
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  let json: Record<string, unknown> = {};
+  try {
+    json = await res.json();
+  } catch {
+    // non-JSON body; leave empty
+  }
+  return { ok: res.ok, status: res.status, json };
+}
+
+const VALID_ACTIONS = ['approve', 'reject', 'revert'] as const;
+type AutoAction = (typeof VALID_ACTIONS)[number];
+
+export async function GET(req: NextRequest): Promise<Response> {
+  const searchParams = req.nextUrl.searchParams;
+  const card = searchParams.get('card');
+  const branch = searchParams.get('branch');
+  const action = searchParams.get('action');
+  const exp = searchParams.get('exp');
+  const sig = searchParams.get('sig');
+  const reason = sanitize(searchParams.get('reason') || 'owner tap');
+
+  const html = (title: string, body: string, status = 200) =>
+    new Response(htmlPage(title, body), { status, headers: { 'Content-Type': 'text/html' } });
+
+  if (!card || !branch || !action || !exp || !sig) {
+    return html('Invalid Link',
+      '<h1>Invalid Link</h1><p>This action link is incomplete or malformed.</p>', 400);
+  }
+
+  if (!(VALID_ACTIONS as readonly string[]).includes(action)) {
+    return html('Invalid Link',
+      '<h1>Invalid Link</h1><p>This action link requests an unknown action.</p>', 400);
+  }
+  const autoAction = action as AutoAction;
+
+  const expMs = parseInt(exp) * 1000;
+  if (isNaN(expMs) || Date.now() > expMs) {
+    return html('Link Expired',
+      '<h1>Link Expired</h1><p>This action link has expired — nothing was changed.</p>' +
+      '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>', 410);
+  }
+
+  const secret = process.env.APPROVAL_HMAC_SECRET;
+  if (!secret) {
+    return html('Configuration Error',
+      '<h1>Server Error</h1><p>The autonomous-action system is not configured. Please contact the admin.</p>', 500);
+  }
+
+  // HMAC message must match scripts/lib/autonomous-links.js — change them together.
+  const expected = crypto
+    .createHmac('sha256', secret)
+    .update(`auto:${autoAction}:${card}:${branch}:${exp}`)
+    .digest('hex');
+
+  let sigValid = false;
+  try {
+    const sigBuf = Buffer.from(sig, 'hex');
+    const expectedBuf = Buffer.from(expected, 'hex');
+    sigValid = sigBuf.length === expectedBuf.length &&
+      crypto.timingSafeEqual(sigBuf, expectedBuf);
+  } catch {
+    // invalid hex
+  }
+  if (!sigValid) {
+    return html('Invalid Link',
+      '<h1>Invalid Link</h1><p>This action link could not be verified.</p>', 403);
+  }
+
+  // revert flow ships in Sprint 3 — signature is valid, but no writes yet.
+  if (autoAction === 'revert') {
+    return html('Revert Not Available Yet',
+      '<h1>Revert Arrives in Sprint 3</h1><p>Nothing was changed. If this is urgent, revert manually.</p>' +
+      '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>');
+  }
+
+  const notionKey = process.env.NOTION_API_KEY;
+  if (!notionKey) {
+    return html('Configuration Error',
+      '<h1>Server Error</h1><p>Notion integration is not configured. Please contact the admin.</p>', 500);
+  }
+
+  // Read the card's current automation state (Auto select property).
+  let currentState: string | null = null;
+  try {
+    const page = await notionApi(`/pages/${encodeURIComponent(card)}`, 'GET', notionKey);
+    if (!page.ok) {
+      console.error(`Notion GET page failed: ${page.status}`);
+      return html('Update Failed',
+        '<h1>Could Not Update the Card</h1><p>Tap the link again in a minute.</p>', 502);
+    }
+    const props = page.json.properties as Record<string, { select?: { name?: string } | null }> | undefined;
+    currentState = props?.Auto?.select?.name ?? null;
+  } catch (err) {
+    console.error('Notion GET page error:', (err as Error).message);
+    return html('Update Failed',
+      '<h1>Could Not Update the Card</h1><p>Tap the link again in a minute.</p>', 502);
+  }
+
+  const backLink = '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>';
+  const safeState = sanitize(currentState ?? 'none', 50);
+
+  const patchAuto = async (name: string): Promise<boolean> => {
+    try {
+      const res = await notionApi(`/pages/${encodeURIComponent(card)}`, 'PATCH', notionKey, {
+        properties: { Auto: { select: { name } } },
+      });
+      if (!res.ok) console.error(`Notion PATCH failed: ${res.status}`);
+      return res.ok;
+    } catch (err) {
+      console.error('Notion PATCH error:', (err as Error).message);
+      return false;
+    }
+  };
+
+  if (autoAction === 'approve') {
+    if (currentState === 'approved') {
+      return html('Already Approved',
+        '<h1>Already Approved</h1><p>This card was already approved — nothing further was changed.</p>' + backLink);
+    }
+    if (currentState === 'merged') {
+      return html('Already Merged',
+        '<h1>Already Merged</h1><p>This card has already been merged — nothing further was changed.</p>' + backLink);
+    }
+    if (currentState === 'rejected') {
+      return html('Card Was Rejected',
+        '<h1>Card Was Rejected</h1><p>This card was rejected — a fresh nightly run is needed before it can be approved.</p>' + backLink, 409);
+    }
+    if (currentState !== 'needs-approval') {
+      return html('Not Awaiting Approval',
+        `<h1>Not Awaiting Approval</h1><p>This card is not awaiting approval (state: ${safeState}).</p>` + backLink, 409);
+    }
+
+    if (!(await patchAuto('approved'))) {
+      return html('Update Failed',
+        '<h1>Could Not Update the Card</h1><p>Tap the link again in a minute.</p>', 502);
+    }
+
+    // Guarded dispatch: autonomous-merge.yml does not exist until Sprint 3,
+    // so any dispatch failure still counts as a recorded approval.
+    let dispatched = false;
+    const ghToken = process.env.GH_DISPATCH_TOKEN;
+    const repo = process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore';
+    if (ghToken) {
+      try {
+        const res = await fetch(
+          `https://api.github.com/repos/${repo}/actions/workflows/autonomous-merge.yml/dispatches`,
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `token ${ghToken}`,
+              'User-Agent': 'BroadwayScorecard-AutonomousAction',
+              'Content-Type': 'application/json',
+              'Accept': 'application/vnd.github.v3+json',
+            },
+            body: JSON.stringify({
+              ref: 'main',
+              inputs: { card_id: card, branch, action: 'approve' },
+            }),
+          }
+        );
+        dispatched = res.ok;
+        if (!res.ok) {
+          console.error(`Merge dispatch failed: ${res.status} ${(await res.text()).slice(0, 200)}`);
+        }
+      } catch (err) {
+        console.error('Merge dispatch error:', (err as Error).message);
+      }
+    }
+
+    return html('Approved',
+      '<h1>Approved!</h1>' +
+      (dispatched
+        ? '<p>Approval recorded and the merge is underway. You\'ll see the result on the card.</p>'
+        : '<p>Approval recorded. CI merge goes live in Sprint 3 — this approval is stored on the card.</p>') +
+      backLink);
+  }
+
+  // autoAction === 'reject'
+  if (currentState === 'rejected') {
+    return html('Already Rejected',
+      '<h1>Already Rejected</h1><p>This card was already rejected — nothing further was changed.</p>' + backLink);
+  }
+  if (currentState !== 'needs-approval' && currentState !== 'approved') {
+    return html('Cannot Reject',
+      `<h1>Cannot Reject</h1><p>This card is not in a rejectable state (state: ${safeState}).</p>` + backLink, 409);
+  }
+
+  if (!(await patchAuto('rejected'))) {
+    return html('Update Failed',
+      '<h1>Could Not Update the Card</h1><p>Tap the link again in a minute.</p>', 502);
+  }
+
+  // Leave an audit comment on the card; comment failure is non-fatal.
+  try {
+    const res = await notionApi('/comments', 'POST', notionKey, {
+      parent: { page_id: card },
+      rich_text: [{ text: { content: `[auto] rejected via signed tap: ${reason}` } }],
+    });
+    if (!res.ok) console.error(`Notion comment failed: ${res.status}`);
+  } catch (err) {
+    console.error('Notion comment error:', (err as Error).message);
+  }
+
+  return html('Rejected',
+    '<h1>Rejected</h1><p>The branch will not merge.</p>' + backLink);
+}
