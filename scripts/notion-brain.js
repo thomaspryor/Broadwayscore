@@ -813,6 +813,20 @@ async function listCards(args) {
     if (dueFilter) filters.push(dueFilter);
   }
 
+  // Autonomous-loop queries: --auto <state> filters on the Auto select
+  // ("any" = any non-empty Auto). Used by the executor's crash recovery and
+  // the morning email to enumerate queued/attempted/needs-approval cards.
+  if (args.auto !== undefined) {
+    if (args.auto === 'any') {
+      filters.push({ property: 'Auto', select: { is_not_empty: true } });
+    } else {
+      const states = String(args.auto).split(',').map(s => s.trim()).filter(Boolean);
+      filters.push(states.length === 1
+        ? { property: 'Auto', select: { equals: states[0] } }
+        : { or: states.map(s => ({ property: 'Auto', select: { equals: s } })) });
+    }
+  }
+
   const filter = filters.length === 1
     ? filters[0]
     : filters.length > 1

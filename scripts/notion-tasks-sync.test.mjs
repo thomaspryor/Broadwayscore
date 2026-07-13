@@ -105,3 +105,23 @@ test('planPull upgrades pre-fmt2 entries even when status unchanged', () => {
   assert.equal(planPull(cards, oldMap).toUpdate.length, 1);  // format upgrade
   assert.equal(planPull(cards, newMap).unchanged.length, 1); // idempotent after
 });
+
+// ── Autonomous-loop claim protection (Sprint-2 carry-forward #1) ────────────
+// notion-tasks-sync deliberately ignores the Auto property; the executor's
+// Status→"In progress" flip is the ONLY thing keeping a claimed card from
+// being double-picked via the task mirror. Lock both halves of that contract.
+
+test('executor claim: a card flipped to In progress mirrors as in_progress, never pending', () => {
+  const { mergeStatus } = require('./notion-tasks-sync.js');
+  // The claimed card syncs with Notion status "In progress"
+  const task = mapCardToTask({ id: 'c', name: 'Claimed card', status: 'In progress', category: 'Product' }, 7);
+  assert.equal(task.status, 'in_progress');
+  // and a pull can never downgrade an in-progress task back to pending
+  assert.equal(mergeStatus('in_progress', 'pending'), 'in_progress');
+  assert.equal(mergeStatus('completed', 'pending'), 'completed');
+  assert.equal(mergeStatus('completed', 'in_progress'), 'completed');
+  // forward progress still flows
+  assert.equal(mergeStatus('pending', 'in_progress'), 'in_progress');
+  assert.equal(mergeStatus('pending', 'completed'), 'completed');
+  assert.equal(mergeStatus(undefined, 'pending'), 'pending');
+});
