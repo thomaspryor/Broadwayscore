@@ -57,9 +57,17 @@ function isHumanActionSubject(subject) {
 }
 
 // Task-mirror shape ({subject, description}) — used by bsc-next.
+// Null category = unknown provenance: no fmt-2 meta line means the task was
+// created natively via TaskCreate (or predates fmt:2) rather than mirrored
+// from Notion. Fail CLOSED for those: apply the human-action verb filter
+// WITHOUT the ≤5-word bound, since there's no category to vouch for a long
+// verb-led subject being a product card ("Email gate conversion critically
+// low" stays pickable only when a bridge line says Product). Explicit
+// --id/--pick still reaches anything this excludes.
 function isExcludedCategory(task) {
   const c = categoryOf(task);
-  if (c !== null && EXCLUDED_CATEGORIES.has(c)) return true;
+  if (c === null) return HUMAN_ACTION_RE.test((task.subject || '').trim());
+  if (EXCLUDED_CATEGORIES.has(c)) return true;
   return isHumanActionSubject(task.subject);
 }
 

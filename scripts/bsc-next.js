@@ -253,11 +253,14 @@ function main() {
   if (args.list) {
     const list = actionable(tasks);
     console.log(`Top workable tasks in '${LIST_ID}' (launch with --pick N):`);
-    list.slice(0, 10).forEach((t, i) => console.log(`  ${i + 1}. #${t.id} [${t.status}] ${t.subject}`));
+    // [uncategorized] = no fmt-2 bridge line (native TaskCreate / legacy) —
+    // these pass the filter only because their subject isn't a human-action verb.
+    list.slice(0, 10).forEach((t, i) => console.log(
+      `  ${i + 1}. #${t.id} [${t.status}]${categoryOf(t) === null ? ' [uncategorized]' : ''} ${t.subject}`));
     const excluded = actionable(tasks, true).filter(isExcludedCategory);
     if (excluded.length) {
-      console.log(`\nHuman-territory (${excluded.length} marketing/partnerships — never auto-picked; use --id N deliberately):`);
-      excluded.slice(0, 6).forEach(t => console.log(`     #${t.id} [${categoryOf(t)}] ${t.subject}`));
+      console.log(`\nHuman-territory (${excluded.length} — never auto-picked; use --id N deliberately):`);
+      excluded.slice(0, 6).forEach(t => console.log(`     #${t.id} [${categoryOf(t) || 'uncategorized'}] ${t.subject}`));
     }
     return;
   }

@@ -144,3 +144,29 @@ test('verb layer word-bound: "Email gate conversion..." (product) allowed, "Emai
   assert.equal(isExcludedCategory(gate), false);
   assert.equal(isExcludedCategory(vols), true);
 });
+
+// Card #139: tasks created NATIVELY via TaskCreate have no fmt-2 bridge line →
+// categoryOf()=null. That must fail CLOSED (verb filter without the ≤5-word
+// bound), not fall through to the bounded product-card carve-out.
+test('native (null-category) tasks fail closed: human-action verbs excluded regardless of length', () => {
+  const { categoryOf, isExcludedCategory } = require('./bsc-next.js');
+  const nativeEmail = { id: '1', subject: 'Email volunteers', status: 'pending', description: 'reach out to the volunteer list' };
+  const nativeLongVerb = { id: '2', subject: 'Email gate conversion critically low at 0.9%', status: 'pending', description: 'no bridge line here' };
+  const nativeTech = { id: '3', subject: 'Fix bsc-next category filter fail-open hole', status: 'pending', description: 'native task, plain description' };
+  assert.equal(categoryOf(nativeEmail), null);
+  assert.equal(isExcludedCategory(nativeEmail), true);       // the card's exact scenario
+  assert.equal(isExcludedCategory(nativeLongVerb), true);    // no word bound without a category vouching Product
+  assert.equal(isExcludedCategory(nativeTech), false);       // technical native task stays pickable
+  // default pick lands on the technical task, never the native human actions
+  assert.equal(pickTask([nativeEmail, nativeLongVerb, nativeTech], {}).id, '3');
+  // explicit --id still reaches an excluded native task
+  assert.equal(pickTask([nativeEmail, nativeLongVerb, nativeTech], { id: '1' }).id, '1');
+});
+
+test('bridge tasks with a category keep the ≤5-word product-card carve-out (unchanged behavior)', () => {
+  const { isExcludedCategory } = require('./bsc-next.js');
+  const bridgeGate = { subject: 'Email gate conversion critically low at 0.9%', description: '[notion:a] P0 Now · In progress · Product' };
+  const bridgeTech = { subject: 'Fix rage clicks', description: '[notion:b] P1 Next · Not started · Product\n' };
+  assert.equal(isExcludedCategory(bridgeGate), false);
+  assert.equal(isExcludedCategory(bridgeTech), false);
+});

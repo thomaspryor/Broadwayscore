@@ -53,6 +53,15 @@ test('task-mirror helpers parse the fmt:2 meta line', () => {
   assert.equal(isExcludedCategory(product), false);
 });
 
+test('null-category tasks (native TaskCreate, no fmt-2 line) fail closed on human-action verbs', () => {
+  const nativeEmail = { subject: 'Email volunteers', description: 'plain native description' };
+  const nativeLongVerb = { subject: 'Email gate conversion critically low at 0.9%', description: 'no bridge line' };
+  const nativeTech = { subject: 'Fix scraper retry logic', description: 'native task' };
+  assert.equal(isExcludedCategory(nativeEmail), true);
+  assert.equal(isExcludedCategory(nativeLongVerb), true);  // ≤5-word bound does NOT apply without a category
+  assert.equal(isExcludedCategory(nativeTech), false);
+});
+
 // ── Path level ──────────────────────────────────────────────────────────────
 
 test('scoring-delta watchlist files are refused', () => {
