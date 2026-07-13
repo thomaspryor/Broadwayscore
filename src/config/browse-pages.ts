@@ -33,6 +33,8 @@ export interface BrowsePageConfig {
   dataFilter?: (show: ComputedShow, ctx: BrowseFilterContext) => boolean; // Data-dependent filter (used instead of filter when defined)
   customSort?: (shows: ComputedShow[], ctx: BrowseFilterContext) => ComputedShow[]; // Mutually exclusive with sort
   sort?: 'score' | 'opening-date' | 'opening-date-asc' | 'closing-date' | 'title' | 'performances';
+  /** Suppress the left-hand rank badges — for pages that are a catalog, not a ranking. */
+  hideRanks?: boolean;
   limit?: number;
   relatedPages: string[]; // Slugs of related browse pages
   source?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end' | 'regional'; // Data source (default: broadway)
@@ -254,6 +256,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return (b.openingDate || '').localeCompare(a.openingDate || '');
     }),
     source: 'regional',
+    hideRanks: true, // catalog of tryouts, not a ranking — no left-hand numbers
     sectionGroup: (show) => {
       if (show.status === 'open' || show.status === 'previews') return 'On Stage Now';
       if (show.transferredTo) return 'Transferred to Broadway';

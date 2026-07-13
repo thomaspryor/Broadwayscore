@@ -238,7 +238,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
         {/* Interactive Show List */}
         <BrowseListClient
           shows={serializedShows}
-          showRanks={config.limit !== 1 && config.sort !== 'opening-date-asc' && config.sort !== 'opening-date' && config.sort !== 'closing-date'}
+          showRanks={!config.hideRanks && config.limit !== 1 && config.sort !== 'opening-date-asc' && config.sort !== 'opening-date' && config.sort !== 'closing-date'}
           isMixedType={isMixedType}
           isMixedStatus={isMixedStatus}
           defaultSort={config.customSort ? 'custom' : (config.sort || 'score')}

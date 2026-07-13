@@ -269,12 +269,6 @@ export default function HomePage() {
 
   const featuredRows: FeaturedRowData[] = [
     { title: 'Best Off-Broadway', shows: bestOffBroadwayList, viewAllHref: '/off-broadway' },
-    // Pre-Broadway tryouts — differentiating coverage nobody else aggregates;
-    // grouped with the market shelves at the top. Closed tryouts included by
-    // design (the score IS the pre-Broadway signal). Spread-gated on the
-    // regional flag so a flag-off build emits nothing (not even the row title
-    // in the RSC payload) — the /browse page and /show pages 404 when off.
-    ...(featureFlags.regional ? [{ title: 'Pre-Broadway: Out-of-Town Shows', shows: preBroadwayList, viewAllHref: '/browse/pre-broadway-out-of-town-shows', minCount: 2 }] : []),
     // Opera shelf \u2014 Met universe is small (3-4 productions running), so minCount 2.
     // Positioned right after Off-Broadway so opera coverage is visible without
     // scrolling past 3 sections (acceptance criterion on Notion 362637c5-416f-8183).
@@ -287,6 +281,12 @@ export default function HomePage() {
     { title: 'Most Sold Out', shows: mostSoldOutList, viewAllHref: '/box-office' },
     { title: 'Shows Starting Soon', shows: startingSoonList, viewAllHref: '/browse/upcoming-broadway-shows' },
     { title: 'Best of the West End', shows: bestWestEndList, viewAllHref: '/west-end' },
+    // Pre-Broadway tryouts — differentiating coverage nobody else aggregates;
+    // lower-shelf placement per user (2026-07-12). Closed tryouts included by
+    // design (the score IS the pre-Broadway signal). Spread-gated on the
+    // regional flag so a flag-off build emits nothing (not even the row title
+    // in the RSC payload) — the /browse page and /show pages 404 when off.
+    ...(featureFlags.regional ? [{ title: 'Pre-Broadway: Out-of-Town Shows', shows: preBroadwayList, viewAllHref: '/browse/pre-broadway-out-of-town-shows', minCount: 2 }] : []),
     { title: 'Tony Winning Shows', shows: tonyWinnersShows, viewAllHref: '/browse/tony-winners-on-broadway' },
     { title: 'Perfect for Date Night', shows: dateNightShowsList, viewAllHref: '/browse/broadway-shows-for-date-night' },
     { title: 'Great for Kids', shows: kidsShowsList, viewAllHref: '/browse/broadway-shows-for-kids' },
