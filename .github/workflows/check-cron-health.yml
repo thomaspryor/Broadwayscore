@@ -42,6 +42,10 @@ jobs:
             # scripts/audit-cron-health-coverage.js (TIGHT_BY_DESIGN).
             "data-health-check.yml|26|Daily Data Health Check (digest carrier)"
             "commercial-weekly.yml|192|Commercial Weekly Orchestrator"
+            # Daily 07:00 UTC. If this cron silently dies, pending-review holds go
+            # invisible again — the exact failure mode it was built to fix (S1-T4,
+            # Notion 39c637c5-416f-8112). 36h = daily cadence + 12h cron-lag cushion.
+            "commercial-pending-review-notify.yml|36|Commercial Pending Review Notify"
             "fetch-todaytix-showtimes.yml|36|Fetch TodayTix Showtimes"
             "audit-closing-dates.yml|36|Audit Closing Dates"
             "audit-opening-dates.yml|36|Audit Opening Dates"

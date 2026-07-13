@@ -387,6 +387,9 @@ on:
       - 'scripts/notion-tasks-sync.test.mjs'
       - 'scripts/bsc-next.js'
       - 'scripts/bsc-next.test.mjs'
+      - 'scripts/bsc-prune.js'
+      - 'scripts/lib/cmux-workspaces.js'
+      - 'scripts/lib/cmux-workspaces.test.mjs'
       # Autonomous nightly loop (Sprint 1, Notion 39b637c5). Colocated
       # *.test.mjs run in the lib-test glob; path-listed so a solo edit
       # triggers CI (feedback_test_yml_push_path_allowlist). notion-brain.js
