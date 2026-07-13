@@ -175,7 +175,10 @@ jobs:
     needs: [prepare, outlet-serp]
     if: always() && needs.prepare.result == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 55 not 30: multi-show batches hit the 30m ceiling and GitHub cancels the
+    # job at timeout, dropping un-pushed progress (3 of 5 runs on 2026-07-13
+    # ended cancelled; if: always() steps do NOT run on timeout-cancel).
+    timeout-minutes: 55
     strategy:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
       fail-fast: false  # Don't cancel other batches if one fails
