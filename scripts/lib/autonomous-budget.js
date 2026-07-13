@@ -51,6 +51,25 @@ const MODELS = Object.freeze({
 // future alias of it). Checked on OUTPUT so a bad table edit can't leak one.
 const FORBIDDEN_MODEL_RE = /fable|mythos/i;
 
+// $/MTok (input, output) by model family — for ledgering raw-API calls
+// (triage) whose responses carry token counts but no cost field. Matched by
+// substring so date-suffixed ids ("claude-sonnet-5-2026…") still price.
+// claude CLI calls don't need this: they report total_cost_usd directly.
+const MODEL_PRICES = Object.freeze([
+  Object.freeze({ re: /opus/i, inUSD: 5, outUSD: 25 }),
+  Object.freeze({ re: /sonnet/i, inUSD: 3, outUSD: 15 }),
+  Object.freeze({ re: /haiku/i, inUSD: 1, outUSD: 5 }),
+]);
+
+// Conservative estimate: unknown model families price at 0 (tokens are still
+// ledgered, so the gap is visible) rather than guessing a tier.
+function estimateUSD(model, tokensIn, tokensOut) {
+  const p = MODEL_PRICES.find(x => x.re.test(String(model || '')));
+  if (!p) return 0;
+  const usd = ((Number(tokensIn) || 0) / 1e6) * p.inUSD + ((Number(tokensOut) || 0) / 1e6) * p.outUSD;
+  return Math.round(usd * 10000) / 10000; // 4dp — triage calls are fractions of a cent
+}
+
 /**
  * @param {number} attempt - 1 or 2
  * @param {'content'|'infra'|null} [failureKind] - why attempt 1 failed
@@ -154,6 +173,8 @@ module.exports = {
   DEFAULTS,
   MODELS,
   FORBIDDEN_MODEL_RE,
+  MODEL_PRICES,
+  estimateUSD,
   pickModel,
   createNightBudget,
   checkSharedDailyCap,

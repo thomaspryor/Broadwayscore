@@ -17,9 +17,15 @@ jobs:
         id: check
         env:
           GH_TOKEN: ${{ github.token }}
+          # Self-heal redispatches use the PAT so the redispatched run can trigger
+          # its own downstream workflow_run/dispatch chains (github.token can't).
+          DISPATCH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           # Critical cron workflows and their max allowed gap (hours)
-          # Format: "workflow_filename|max_hours|friendly_name"
+          # Format: "workflow_filename|max_hours|friendly_name[|active_months]"
+          # active_months (optional, e.g. "4-6"): seasonal crons are only checked
+          # during those months — outside the window staleness is by design.
+          # LO-HI only, no wrap-around ranges (e.g. "11-2" would never match).
           CRITICAL_CRONS=(
             "opening-night-broadcast.yml|36|Opening Night Broadcast"
             "monitor-gate-ab.yml|184|Monitor Gate A/B"
@@ -84,8 +90,10 @@ jobs:
             "check-show-metadata-consensus.yml|200|Check Show Metadata Consensus"
             # Daily April-June cron — Tony Awards data refresh during ceremony
             # season. 36h gap during Apr-Jun = 1 missed day + grace, alert needed.
-            # User-facing data feeds /awards-scorecard.
-            "update-tony-awards.yml|36|Update Tony Awards"
+            # User-facing data feeds /awards-scorecard. Seasonal: the cron doesn't
+            # fire Jul-Mar, so only check during Apr-Jun (was chronic-stale noise
+            # in the digest every day of July 2026 before the seasonal field).
+            "update-tony-awards.yml|36|Update Tony Awards|4-6"
             # Drift detector runs every 30 min; 2h gap = 4 missed runs = alert needed
             "check-opening-night-drift.yml|2|Check Opening Night Drift"
             # Opening night checklist fires hourly; 3h = 2 missed runs = needs paging
@@ -123,8 +131,22 @@ jobs:
               --jq '.workflows[] | "\(.path | split("/") | last)|\(.state)"' 2>/dev/null
           )
 
+          # friendly_name → workflow file, for self-heal redispatch below.
+          declare -A WF_FILE
+
+          CURRENT_MONTH=$(date -u +%-m)
           for entry in "${CRITICAL_CRONS[@]}"; do
-            IFS='|' read -r workflow max_hours name <<< "$entry"
+            IFS='|' read -r workflow max_hours name months <<< "$entry"
+            WF_FILE["$name"]="$workflow"
+
+            # 0. Seasonal window — skip checks outside the cron's active months.
+            if [ -n "$months" ]; then
+              LO=${months%-*}; HI=${months#*-}
+              if [ "$CURRENT_MONTH" -lt "$LO" ] || [ "$CURRENT_MONTH" -gt "$HI" ]; then
+                echo "⏸  ${name}: out of season (active months ${months}) — skipping"
+                continue
+              fi
+            fi
 
             # 1. State check — fast, catches disabled_manually immediately.
             STATE=$(echo "$WF_STATES" | grep -F "${workflow}|" | head -1 | cut -d'|' -f2)
@@ -184,35 +206,67 @@ jobs:
           CHRONIC_COUNT=$(printf '%s' "$CURRENT_STALE" | grep -c . || true)
           CHRONIC_COUNT=$(( CHRONIC_COUNT - NEWLY_COUNT ))
 
-          # Persist current state for next run's diff.
+          # Self-heal before paging: a stale cron is usually a missed/cancelled
+          # schedule, and the manual fix has always been "redispatch it". Do that
+          # automatically: newly-stale crons get ONE redispatch (no page). If the
+          # same cron is still stale at the NEXT check after a redispatch, the
+          # self-heal failed — page then. Redispatch failures (disabled workflow,
+          # no dispatch trigger) page immediately.
+          PREV_REDISPATCHED=""
+          if [ -f "$STATE_FILE" ]; then
+            PREV_REDISPATCHED=$(jq -r '.redispatched[]?' "$STATE_FILE" 2>/dev/null | sort -u)
+          fi
+          PAGE_LIST=""
+          REDISPATCHED_NOW=""
+          # Still stale despite last check's redispatch → self-heal failed, page.
+          STILL_STALE_AFTER_HEAL=$(comm -12 <(printf '%s\n' "$CURRENT_STALE") <(printf '%s\n' "$PREV_REDISPATCHED") | sed '/^$/d')
+          while IFS= read -r name; do
+            [ -z "$name" ] && continue
+            PAGE_LIST="${PAGE_LIST}${name} (still stale after auto-redispatch)"$'\n'
+          done <<< "$STILL_STALE_AFTER_HEAL"
+          while IFS= read -r name; do
+            [ -z "$name" ] && continue
+            wf="${WF_FILE[$name]:-}"
+            if [ -n "$wf" ] && GH_TOKEN="${DISPATCH_TOKEN:-$GH_TOKEN}" gh workflow run "$wf" >/dev/null 2>&1; then
+              echo "🔁 Self-heal: redispatched ${wf} for '${name}' — pages only if still stale at next check"
+              REDISPATCHED_NOW="${REDISPATCHED_NOW}${name}"$'\n'
+            else
+              echo "🚨 Self-heal FAILED for '${name}' (${wf:-no workflow file mapped}) — paging"
+              PAGE_LIST="${PAGE_LIST}${name} (auto-redispatch failed — workflow disabled or undispatchable)"$'\n'
+            fi
+          done <<< "$NEWLY_STALE"
+          PAGE_COUNT=$(printf '%s' "$PAGE_LIST" | grep -c . || true)
+
+          # Persist current state for next run's diff (stale set + one-shot
+          # redispatch ledger; an entry gets a single self-heal attempt per streak).
           mkdir -p "$(dirname "$STATE_FILE")"
           NOW_ISO=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-          if [ -n "$CURRENT_STALE" ]; then
-            printf '%s\n' "$CURRENT_STALE" | jq -R . | jq -s --arg ts "$NOW_ISO" '{stale: ., updatedAt: $ts}' > "$STATE_FILE"
-          else
-            printf '{"stale":[],"updatedAt":"%s"}\n' "$NOW_ISO" > "$STATE_FILE"
-          fi
+          jq -n --arg ts "$NOW_ISO" \
+            --arg stale "$CURRENT_STALE" \
+            --arg redispatched "$REDISPATCHED_NOW" \
+            '{stale: ($stale | split("\n") | map(select(length > 0))),
+              redispatched: ($redispatched | split("\n") | map(select(length > 0))),
+              updatedAt: $ts}' > "$STATE_FILE"
 
           # Emit step outputs the notify-failure step reads to toggle severity/email.
           echo "newly_stale_count=${NEWLY_COUNT}" >> "$GITHUB_OUTPUT"
           echo "chronic_stale_count=${CHRONIC_COUNT}" >> "$GITHUB_OUTPUT"
-          if [ "$NEWLY_COUNT" -gt 0 ]; then
-            {
-              echo "newly_stale<<EOF"
-              printf '%s\n' "$NEWLY_STALE"
-              echo "EOF"
-            } >> "$GITHUB_OUTPUT"
-          fi
+          echo "page_count=${PAGE_COUNT}" >> "$GITHUB_OUTPUT"
+          echo "page_list=$(printf '%s' "$PAGE_LIST" | paste -sd ';' - | sed 's/;/; /g')" >> "$GITHUB_OUTPUT"
           if [ -n "$RECOVERED" ]; then
             echo "✅ Recovered crons (no longer stale):"
             printf '%s\n' "$RECOVERED" | sed 's/^/  /'
           fi
-          if [ "$NEWLY_COUNT" -gt 0 ]; then
-            echo "🚨 NEWLY STALE (paging — newly-stale email + critical severity):"
-            printf '%s\n' "$NEWLY_STALE" | sed 's/^/  /'
+          if [ -n "$REDISPATCHED_NOW" ]; then
+            echo "🔁 Self-healed this check (redispatched, no page):"
+            printf '%s' "$REDISPATCHED_NOW" | sed 's/^/  /'
+          fi
+          if [ "$PAGE_COUNT" -gt 0 ]; then
+            echo "🚨 PAGING (self-heal failed or impossible — email + critical severity):"
+            printf '%s' "$PAGE_LIST" | sed 's/^/  /'
           fi
           if [ "$CHRONIC_COUNT" -gt 0 ]; then
-            echo "⏳ Chronic stale ($CHRONIC_COUNT entries — Discord only, expected to keep firing until fixed):"
+            echo "⏳ Chronic stale ($CHRONIC_COUNT entries — digest only, expected to keep firing until fixed):"
             comm -12 <(printf '%s\n' "$CURRENT_STALE") <(printf '%s\n' "$PREV_STALE") | sed 's/^/  /'
           fi
 
@@ -362,14 +416,18 @@ jobs:
               url: runUrl,
             }).catch(e => console.error('Warning alert failed:', e.message));
 
-      # State-diff dispatch: newly-stale crons page (critical+email); chronic stale
-      # falls through to digest (warning, Discord-only — and the notify-failure
-      # action is a no-op for warning per workflows/CLAUDE.md, intentionally).
-      - name: Notify — newly-stale critical crons (paging)
-        if: failure() && steps.check.outputs.newly_stale_count != '0' && steps.check.outputs.newly_stale_count != ''
+      # State-diff dispatch: pages only when self-heal failed (redispatch errored,
+      # or the cron is still stale a check AFTER being redispatched). Newly-stale
+      # crons that redispatch cleanly do NOT page — the redispatch IS the fix the
+      # page used to ask the owner to perform. Chronic stale falls through to the
+      # digest (warning, Discord-only — notify-failure is a no-op for warning per
+      # workflows/CLAUDE.md, intentionally).
+      - name: Notify — stale critical crons self-heal failed (paging)
+        if: failure() && steps.check.outputs.page_count != '0' && steps.check.outputs.page_count != ''
         uses: ./.github/actions/notify-failure
         with:
-          title: ${{ format('🚨 {0} NEWLY-stale critical cron(s) — see run log', steps.check.outputs.newly_stale_count) }}
+          title: ${{ format('🚨 {0} critical cron(s) stale, self-heal failed — see run log', steps.check.outputs.page_count) }}
+          description: ${{ steps.check.outputs.page_list }}
           severity: 'critical'
           email: 'true'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
@@ -377,7 +435,7 @@ jobs:
           owner_email: ${{ secrets.OWNER_EMAIL }}
 
       - name: Notify — chronic stale (digest only)
-        if: failure() && (steps.check.outputs.newly_stale_count == '0' || steps.check.outputs.newly_stale_count == '')
+        if: failure() && (steps.check.outputs.page_count == '0' || steps.check.outputs.page_count == '')
         uses: ./.github/actions/notify-failure
         with:
           title: 'Cron Health Check Failed (chronic stale crons or deploy regression)'

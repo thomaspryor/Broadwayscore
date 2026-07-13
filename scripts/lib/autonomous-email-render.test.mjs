@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { renderEmail, renderUsageBlock, extractWhy } = require('./autonomous-email-render.js');
+const { renderEmail, renderUsageBlock, extractWhy, summarizeQueue } = require('./autonomous-email-render.js');
 
 const STATS = {
   runId: 'run-x',
@@ -98,4 +98,59 @@ test('html-escapes card-sourced strings', () => {
   assert.doesNotMatch(html, /<script>alert/);
   assert.match(html, /XSS &lt;script&gt;/);
   assert.match(html, /a &amp; b/);
+});
+
+// ── 0-planned skip breakdown (night-1 fix #2) ───────────────────────────────
+
+// Mirrors the real 2026-07-13 night-1 queue shape: 30 triaged, 0 planned.
+const ZERO_PLAN_QUEUE = {
+  generatedAt: '2026-07-13T07:31:58.758Z',
+  counts: { total: 6, fetched: 24, candidates: 3, attempt: 0, split: 0, skip: 6, failed: 0 },
+  plan: [],
+  entries: [
+    { card: { name: 'a' }, preFilter: { eligible: false, reason: 'category "Marketing" is human territory' }, decision: 'skip' },
+    { card: { name: 'b' }, preFilter: { eligible: false, reason: 'category "Partnerships" is human territory' }, decision: 'skip' },
+    { card: { name: 'c' }, preFilter: { eligible: false, reason: 'title is a human action ("Email volunteers")' }, decision: 'skip' },
+    { card: { name: 'd' }, preFilter: { eligible: false, reason: 'deny-tag "scoring"' }, decision: 'skip' },
+    { card: { name: 'e' }, preFilter: { eligible: true, reason: null }, triage: { eligible: false, size: 'S', reason: 'requires editing src/' }, decision: 'skip' },
+    { card: { name: 'f' }, preFilter: { eligible: true, reason: null }, triage: { eligible: false, size: 'M', reason: 'requires editing data/shows.json' }, decision: 'skip' },
+  ],
+};
+
+test('summarizeQueue buckets skip reasons and produces the unlock line', () => {
+  const qs = summarizeQueue(ZERO_PLAN_QUEUE);
+  assert.equal(qs.total, 6);
+  assert.equal(qs.fetched, 24);
+  const byReason = Object.fromEntries(qs.buckets.map(b => [b.reason, b.n]));
+  assert.equal(byReason['human territory (marketing/partnerships)'], 2);
+  assert.equal(byReason['human-action title (emailing, posting, meeting)'], 1);
+  assert.equal(byReason['deny-tagged domain (email/commercial/scoring/ios)'], 1);
+  assert.equal(byReason['out of Tier-1 scope (needs src/, data/, or CI changes)'], 2);
+  assert.match(qs.unlock, /Tier-1 paths/);
+});
+
+test('summarizeQueue is null when work WAS planned or the queue is unusable', () => {
+  assert.equal(summarizeQueue({ ...ZERO_PLAN_QUEUE, counts: { ...ZERO_PLAN_QUEUE.counts, attempt: 2 } }), null);
+  assert.equal(summarizeQueue(null), null);
+  assert.equal(summarizeQueue({}), null);
+});
+
+test('0-planned email renders the breakdown; planned email omits it', () => {
+  const qs = summarizeQueue(ZERO_PLAN_QUEUE);
+  const html = renderEmail({ items: [], stats: STATS, queueSummary: qs, awaitingTotal: 0 });
+  assert.match(html, /Why nothing was planned — 6 triaged \(of 24 fetched\), 0 workable/);
+  assert.match(html, /human territory \(marketing\/partnerships\)/);
+  assert.match(html, /What would unlock work/);
+  const withItems = renderEmail({ items: [ITEM], stats: STATS, queueSummary: qs, awaitingTotal: 1 });
+  assert.doesNotMatch(withItems, /Why nothing was planned/);
+});
+
+// ── run-skip banner (auth pre-flight, night-1 fix #3) ───────────────────────
+
+test('run-skipped note renders as the top red banner', () => {
+  const note = 'auth: claude CLI login expired on Mac Studio — run skipped, no cards attempted (401 authentication_error)';
+  const html = renderEmail({ items: [], stats: STATS, runSkipped: note, awaitingTotal: 0 });
+  assert.match(html, /⛔ auth: claude CLI login expired on Mac Studio/);
+  const clean = renderEmail({ items: [], stats: STATS, awaitingTotal: 0 });
+  assert.doesNotMatch(clean, /⛔/);
 });
