@@ -557,14 +557,15 @@ function safeWriteReview(filePath, newData, options = {}) {
   if (newData.duplicateTextOf && newData.duplicateTextOf === path.basename(filePath)) {
     console.warn(`[review-write-guard] clearing self-referential duplicateTextOf in ${path.basename(filePath)}`);
     newData.duplicateClearReason = `auto-cleared at write: self-referential duplicateTextOf (pointed at own filename)`;
-    newData.duplicateTextOf = null;
+    // Delete rather than null — validate-data flags null as "should be string".
+    delete newData.duplicateTextOf;
   }
   if (newData.duplicateTextOf && typeof newData.duplicateTextOf === 'string' && newData.duplicateTextOf.endsWith('.json')) {
     try {
       if (!fs.existsSync(path.join(path.dirname(filePath), newData.duplicateTextOf))) {
         console.warn(`[review-write-guard] clearing dangling duplicateTextOf in ${path.basename(filePath)}: sibling ${newData.duplicateTextOf} no longer exists`);
         newData.duplicateClearReason = `auto-cleared at write: duplicateTextOf sibling ${newData.duplicateTextOf} no longer exists`;
-        newData.duplicateTextOf = null;
+        delete newData.duplicateTextOf;
       }
     } catch { /* silent — best-effort self-heal */ }
   }

@@ -145,6 +145,54 @@ test('does not modify the file about to be deleted', () => {
   }
 });
 
+test('clears dangling duplicateTextOf by deleting the field (not nulling)', () => {
+  const dir = mkdir();
+  try {
+    writeJson(path.join(dir, 'the-sun--dominic-maxwell.json'), { url: 'https://x.com/a' });
+    writeJson(path.join(dir, 'the-sun--thea-jacobs.json'), {
+      url: 'https://x.com/b',
+      criticName: 'Thea Jacobs',
+      duplicateTextOf: 'the-sun--dominic-maxwell.json',
+    });
+
+    const cleared = cascadeClearDuplicateRefs(dir, 'the-sun--dominic-maxwell.json');
+    assert.deepStrictEqual(cleared, ['the-sun--thea-jacobs.json']);
+
+    const written = readJson(path.join(dir, 'the-sun--thea-jacobs.json'));
+    // Field must be ABSENT — validate-data flags `null` as "should be string, got object".
+    assert.equal('duplicateTextOf' in written, false);
+    assert.match(written.duplicateClearReason, /cascade-cleared: sibling the-sun--dominic-maxwell\.json was deleted/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('clears both duplicateOf and duplicateTextOf when both dangle in one sibling', () => {
+  const dir = mkdir();
+  try {
+    writeJson(path.join(dir, 'gone.json'), { url: 'shared' });
+    writeJson(path.join(dir, 'both.json'), {
+      url: 'shared',
+      duplicateOf: 'gone.json',
+      duplicateReason: 'url-collision-detected-at-write',
+      duplicateTextOf: 'gone.json',
+    });
+    writeJson(path.join(dir, 'text-only.json'), { url: 'other', duplicateTextOf: 'gone.json' });
+    writeJson(path.join(dir, 'unrelated.json'), { url: 'z', duplicateTextOf: 'other.json' });
+
+    const cleared = cascadeClearDuplicateRefs(dir, 'gone.json').sort();
+    assert.deepStrictEqual(cleared, ['both.json', 'text-only.json']);
+    const both = readJson(path.join(dir, 'both.json'));
+    assert.equal(both.duplicateOf, null);
+    assert.equal(both.duplicateReason, null);
+    assert.equal('duplicateTextOf' in both, false);
+    assert.equal('duplicateTextOf' in readJson(path.join(dir, 'text-only.json')), false);
+    assert.equal(readJson(path.join(dir, 'unrelated.json')).duplicateTextOf, 'other.json');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('persistence injection — custom writeFile lets tests stub disk writes', () => {
   const dir = mkdir();
   try {
