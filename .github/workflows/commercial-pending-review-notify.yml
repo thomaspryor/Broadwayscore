@@ -1,0 +1,64 @@
+name: Commercial Pending Review Notify
+
+# Surfaces data/commercial-pending-review.json to the owner as a single,
+# always-current Notion card. The commercial-data pipeline (batch/deep
+# research) writes low-confidence findings to this file instead of applying
+# them, but until this workflow existed, nothing ever notified the owner —
+# holds sat invisible forever. See scripts/sync-pending-review-to-notion.js
+# for the sync logic (create/update/mark-done, idempotent).
+#
+# Not the same mechanism as scripts/notify-pending-commercial-notion.js
+# (invoked from commercial-weekly.yml), which creates one card PER
+# recouped-claim entry from a sweep report. This workflow is a single-card
+# digest of the whole pending-review file, run independently on its own
+# daily cadence.
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # Daily 07:00 UTC
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no Notion writes)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: commercial-pending-review-notify
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Sync pending review to Notion
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            node scripts/sync-pending-review-to-notion.js --dry-run
+          else
+            node scripts/sync-pending-review-to-notion.js
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Commercial Pending Review Notify Failed'
+          severity: 'warning'
