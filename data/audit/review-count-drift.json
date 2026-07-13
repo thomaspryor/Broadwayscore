@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-12T06:53:32.157Z",
+  "generatedAt": "2026-07-13T07:02:05.370Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-07-12T06:29:40.954Z",
-    "reviewsJsonAgeHours": 0.4,
+    "reviewsJsonLastUpdated": "2026-07-13T06:32:21.933Z",
+    "reviewsJsonAgeHours": 0.5,
     "freshnessBreach": false,
     "showsScanned": 9,
-    "filesScanned": 133,
+    "filesScanned": 140,
     "showsOverThreshold": 0,
     "orphanReviews": 1
   },
@@ -24,32 +24,40 @@
   "perShow": [
     {
       "showDir": "allegra-west-end-2026",
-      "actual": 11,
-      "scanned": 14,
+      "actual": 12,
+      "scanned": 13,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
-      "actual": 10,
-      "scanned": 15,
-      "suppressedCount": 0,
-      "suppressed": [],
+      "actual": 12,
+      "scanned": 17,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "amny--matt-windman.json",
+          "outletId": "amny",
+          "criticName": "Matt Windman",
+          "publishDate": "2026-07-12",
+          "url": "https://www.amny.com/news/jennifer-nettles-giulia-poison-musical/"
+        }
+      ],
       "overThreshold": false
     },
     {
       "showDir": "jesus-christ-superstar-west-end-2026",
-      "actual": 19,
-      "scanned": 72,
+      "actual": 22,
+      "scanned": 73,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "tender-off-west-end-2026",
-      "actual": 1,
-      "scanned": 11,
+      "actual": 2,
+      "scanned": 16,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
