@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-07-13T14:19:30.298Z",
+  "timestamp": "2026-07-13T14:57:03.782Z",
   "stats": {
     "totalReviews": 39906,
-    "alreadyFlagged": 17537,
-    "dateGuardCatches": 47,
+    "alreadyFlagged": 17536,
+    "dateGuardCatches": 48,
     "directorMismatch": 911,
     "tvFilmSignals": 1094,
     "londonSignals": 741,
@@ -28841,6 +28841,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "allegra-west-end-2026",
+      "file": "whatsonstage--aliya-al.json",
+      "publishDate": "2026-05-21",
+      "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/allegra_1722344/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 48d before show (2026-05-21 vs 2026-07-08)"
         }
       ]
     },
