@@ -1,11 +1,36 @@
 {
   "processed": [
-    "iceboy-regional-2026/chicago-reader--unknown.json",
-    "iceboy-regional-2026/suntimes--unknown.json"
+    "carmen-off-broadway-2025/nytimes--unknown.json",
+    "carmen-off-broadway-2025/nytimes--zachary-woolfe.json",
+    "carmen-off-broadway-2025/vulture--justin-davidson.json",
+    "carmen-off-broadway-2025/new-york-classical-review--richard-sasanow.json",
+    "carmen-off-broadway-2025/theatermania--unknown.json",
+    "carmen-off-broadway-2025/wsj--justin-davidson.json",
+    "carmen-off-broadway-2025/broadwayworld--richard-sasanow.json",
+    "carmen-off-broadway-2025/financialtimes--richard-sasanow.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
   ],
   "failed": [
-    "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
-    "iceboy-regional-2026/one-minute-critic--matthew-wexler.json"
+    "carmen-off-broadway-2025/guardian--unknown.json",
+    "carmen-off-broadway-2025/new-york-classical-review--rick-perdian.json",
+    "carmen-off-broadway-2025/observer--christopher-corwin.json",
+    "carmen-off-broadway-2025/wsj--heidi-waleson.json",
+    "carmen-off-broadway-2025/operawire--david-salazar.json",
+    "carmen-off-broadway-2025/parterre-box--david-salazar.json",
+    "carmen-off-broadway-2025/thestage--unknown.json",
+    "carmen-off-broadway-2025/times-uk--unknown.json",
+    "carmen-off-broadway-2025/washpost--andor-brodeur.json",
+    "carmen-off-broadway-2025/washpost--justin-davidson.json",
+    "carmen-off-broadway-2025/washpost--michael-andor-brodeur.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "tender-off-west-end-2026/guardian--arifa-akbar.json",
+    "allegra-west-end-2026/whatsonstage--aliya-al.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -16,12 +41,30 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "carmen-off-broadway-2025/nytimes--unknown.json",
+      "carmen-off-broadway-2025/nytimes--zachary-woolfe.json",
+      "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+    ],
+    "brightdata": [
+      "carmen-off-broadway-2025/vulture--justin-davidson.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-13T06:37:59.076Z",
-  "lastProcessed": "iceboy-regional-2026/suntimes--unknown.json",
-  "log": []
+  "startTime": "2026-07-13T05:15:55.218Z",
+  "lastProcessed": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+  "log": [
+    {
+      "t": "2026-07-13T05:17:40.062Z",
+      "event": "bb-session",
+      "session": "65ab904c",
+      "url": "https://www.wsj.com/arts-culture/theater/carmen-review-metropolitan-opera-bizet-"
+    },
+    {
+      "t": "2026-07-13T05:17:41.136Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }

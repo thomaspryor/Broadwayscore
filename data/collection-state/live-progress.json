@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-07-13T06:39:11.301Z",
-  "processed": 2,
-  "failed": 2,
-  "successRate": "50.0%",
+  "updatedAt": "2026-07-13T06:03:03.922Z",
+  "processed": 9,
+  "failed": 20,
+  "successRate": "31.0%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingbee": 3,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-07-13T05:17:40.062Z",
+      "event": "bb-session",
+      "session": "65ab904c",
+      "url": "https://www.wsj.com/arts-culture/theater/carmen-review-metropolitan-opera-bizet-"
+    },
+    {
+      "t": "2026-07-13T05:17:41.136Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
