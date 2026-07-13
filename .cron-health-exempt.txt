@@ -117,3 +117,5 @@ dedupe-same-url-bylines.yml
 # 2026-07-12: weekly WE newsletter DRAFT dispatcher — human reviews before send;
 # a missed draft is noticed at send time, not user-facing staleness
 we-newsletter-draft.yml
+# monitor-gate-ab.yml: weekly A/B guardrail monitor — failures surface in daily digest; staleness not user-facing
+monitor-gate-ab.yml
