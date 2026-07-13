@@ -44,7 +44,11 @@ const UI_PATH_PATTERNS = [
 //  - absolute path: `/usr/bin/git push` → match git regardless of leading path
 //  - node wrapper scripts: `node scripts/push-foo.js`
 //  - python/ruby/etc. wrappers
-const PUSH_INGRESS_RE = /(^|[\s;&|])(?:[^\s]*\/)?(?:git\s+push|gh\s+pr\s+merge|gh\s+pr\s+create\s+[^\n]*--auto|(?:bash|sh|zsh|env|python3?|ruby)\s+\.?\/?scripts\/[^\s]*push[^\s]*|node\s+\.?\/?scripts\/[^\s]*push[^\s]*|\.?\/scripts\/[^\s]*push[^\s]*|gh\s+workflow\s+run\s+["']?(?:[^\s"']*deploy|[Dd]eploy)|(?:npm|pnpm|yarn)\s+(?:run\s+)?(?:deploy|push|publish))/i;
+// Bypass caught in /ship-check round 3 (2026-07-12, review-gate P0-2):
+//  - `git -C <path> push` / `git --git-dir=… push` / `git -c k=v push` — agent
+//    sessions use -C habitually because cwd resets between Bash calls.
+const GIT_GLOBAL_OPTS = String.raw`(?:-C\s+[^\s;&|]+\s+|-c\s+[^\s;&|]+\s+|--git-dir=[^\s;&|]+\s+|--work-tree=[^\s;&|]+\s+|--no-pager\s+)*`;
+const PUSH_INGRESS_RE = new RegExp(String.raw`(^|[\s;&|(])(?:[^\s]*\/)?(?:git\s+${GIT_GLOBAL_OPTS}push|gh\s+pr\s+merge|gh\s+pr\s+create\s+[^\n]*--auto|(?:bash|sh|zsh|env|python3?|ruby)\s+\.?\/?scripts\/[^\s]*push[^\s]*|node\s+\.?\/?scripts\/[^\s]*push[^\s]*|\.?\/scripts\/[^\s]*push[^\s]*|gh\s+workflow\s+run\s+["']?(?:[^\s"']*deploy|[Dd]eploy)|(?:npm|pnpm|yarn)\s+(?:run\s+)?(?:deploy|push|publish))`, 'i');
 
 // Visual-claim-language: phrases the agent uses when claiming UI work is done
 // without actually proving it. Each was observed in real failure transcripts.

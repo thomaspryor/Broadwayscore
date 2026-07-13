@@ -100,16 +100,37 @@ export function resolveBase(repoRoot) {
   return null;
 }
 
+// Diff args for base vs ref. ref === 'WORKTREE' means "the working tree as it
+// stands" — used when the gated command is a compound `git commit … && git
+// push` / `git merge … && git push`, where the pushed state doesn't exist as a
+// commit yet at hook time (ship-check round 3 P0-1: the mandated
+// merge-then-push flow was evaluated pre-merge and always passed).
+function diffRangeArgs(repoRoot, base, ref, twoDot) {
+  if (ref === 'WORKTREE') {
+    // Working tree vs merge-base(base, HEAD) — the three-dot equivalent.
+    let mb = base;
+    try { mb = git(repoRoot, ['merge-base', base, 'HEAD']).trim() || base; } catch { /* keep base */ }
+    return [twoDot ? base : mb];
+  }
+  return [twoDot ? `${base}..${ref}` : `${base}...${ref}`];
+}
+
+// Force prefixes/no-ext-diff: user git config (diff.noprefix, external diff)
+// must not change what we hash or parse (ship-check round 3 P1-5: with
+// diff.noprefix=true every hash collapsed to the 'empty' sentinel, so one
+// recorded verdict would rubber-stamp all future pushes).
+const DIFF_STABLE_FLAGS = ['--no-ext-diff', '--src-prefix=a/', '--dst-prefix=b/'];
+
 // Gated files + added/deleted line totals for base...ref (three-dot: what this
 // push adds relative to the merge-base with main). `twoDot` is used for drift
 // (verdict.head..ref where verdict.head is a known ancestor).
 export function gatedDiffStats(repoRoot, base, ref, { twoDot = false } = {}) {
-  const range = twoDot ? `${base}..${ref}` : `${base}...${ref}`;
+  const range = diffRangeArgs(repoRoot, base, ref, twoDot);
   let out;
   try {
-    out = git(repoRoot, ['diff', '--numstat', range, '--', 'src', 'scripts', '.github/workflows']);
+    out = git(repoRoot, ['diff', '--numstat', ...range, '--', 'src', 'scripts', '.github/workflows']);
   } catch {
-    return { files: [], totalLines: 0, error: `git diff failed for ${range}` };
+    return { files: [], totalLines: 0, error: `git diff failed for ${range.join(' ')}` };
   }
   const files = [];
   let totalLines = 0;
@@ -141,13 +162,14 @@ export function gatedDiffStats(repoRoot, base, ref, { twoDot = false } = {}) {
 export function computeDiffHash(repoRoot, base, ref) {
   let patch;
   try {
-    patch = git(repoRoot, ['diff', `${base}...${ref}`, '--', 'src', 'scripts', '.github/workflows']);
+    patch = git(repoRoot, ['diff', ...DIFF_STABLE_FLAGS, ...diffRangeArgs(repoRoot, base, ref, false), '--', 'src', 'scripts', '.github/workflows']);
   } catch {
     return null;
   }
   // Keep only hunks belonging to gated files: split on "diff --git" headers.
+  // Paths with spaces/unicode are C-quoted (`diff --git "a/x y" "b/x y"`).
   const chunks = patch.split(/^(?=diff --git )/m).filter(c => {
-    const m = c.match(/^diff --git a\/.* b\/(.+)$/m);
+    const m = c.match(/^diff --git "?a\/.* "?b\/(.+?)"?$/m);
     return m && GATED_PATH_RE.test(m[1]);
   });
   if (chunks.length === 0) return 'empty';
@@ -231,13 +253,17 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
     const light = LIGHT_REVIEWERS.has(e.reviewer);
     if (light && stats.totalLines > SECOND_OPINION_MAX_LINES) continue;
     if (!light && !STRONG_REVIEWERS.has(e.reviewer)) continue;
-    if (e.diffHash && e.diffHash === currentHash) {
+    // 'empty' is a no-gated-hunks sentinel, not a content hash — it must never
+    // satisfy an exact match (a hash-degradation bug on either side would
+    // otherwise turn one old verdict into a permanent rubber stamp).
+    if (e.diffHash && e.diffHash !== 'empty' && currentHash && currentHash !== 'empty'
+        && e.diffHash === currentHash) {
       return {
         gated: true, allowed: true, via: 'exact-hash', verdict: e,
         gatedLines: stats.totalLines, diffHash: currentHash,
       };
     }
-    if (e.head && isAncestor(repoRoot, e.head, ref)) {
+    if (e.head && isAncestor(repoRoot, e.head, ref === 'WORKTREE' ? 'HEAD' : ref)) {
       // Drift = gated changes since the reviewed head, restricted to files this
       // push actually changes. verdict.head..ref also spans the OTHER parent of
       // any merge (e.g. main merged into the branch after review) — those files
