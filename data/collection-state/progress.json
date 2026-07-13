@@ -1,40 +1,27 @@
 {
-  "processed": [],
+  "processed": [
+    "iceboy-regional-2026/chicago-reader--unknown.json",
+    "iceboy-regional-2026/suntimes--unknown.json"
+  ],
   "failed": [
-    "tender-off-west-end-2026/guardian--arifa-akbar.json",
-    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
-    "tender-off-west-end-2026/daily-mail--unknown.json",
-    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
-    "tender-off-west-end-2026/times-uk--richard-morrison.json",
-    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
-    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
+    "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
+    "iceboy-regional-2026/one-minute-critic--matthew-wexler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "amp": [],
-    "browserbase": [
-      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+    "playwright": [
+      "iceboy-regional-2026/chicago-reader--unknown.json",
+      "iceboy-regional-2026/suntimes--unknown.json"
     ],
+    "amp": [],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-13T06:39:09.366Z",
-  "lastProcessed": "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
-  "log": [
-    {
-      "t": "2026-07-13T06:40:42.614Z",
-      "event": "bb-session",
-      "session": "b33ac790",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
-    },
-    {
-      "t": "2026-07-13T06:40:43.074Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    }
-  ]
+  "startTime": "2026-07-13T06:37:59.076Z",
+  "lastProcessed": "iceboy-regional-2026/suntimes--unknown.json",
+  "log": []
 }
