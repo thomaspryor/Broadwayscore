@@ -36,6 +36,8 @@ const ROLE_TO_CATEGORIES: Record<string, CreativeCategory[]> = {
   // Less common variants
   'Co-Writer': ['playwright'],
   'English Lyrics': ['lyricist'],
+  'Co-Director': ['director'],
+  'Book Writers': ['playwright'],
 };
 
 // Roles to exclude even if they contain "Director"
@@ -52,7 +54,7 @@ for (const [k, v] of Object.entries(ROLE_TO_CATEGORIES)) {
   ROLE_TO_CATEGORIES_LOWER[k.toLowerCase()] = v;
 }
 
-function getCategoriesForRole(role: string): CreativeCategory[] {
+export function getCategoriesForRole(role: string): CreativeCategory[] {
   // Direct match first (preserves any case-sensitive lookup callers may rely on)
   if (ROLE_TO_CATEGORIES[role]) return ROLE_TO_CATEGORIES[role];
 
@@ -60,12 +62,22 @@ function getCategoriesForRole(role: string): CreativeCategory[] {
   const lowerMatch = ROLE_TO_CATEGORIES_LOWER[role.toLowerCase()];
   if (lowerMatch) return lowerMatch;
 
-  // Fuzzy match for Director (but exclude Music Director etc.)
-  if (role.toLowerCase().includes('director') && !EXCLUDED_DIRECTOR_ROLES.has(role)) {
-    // Only match if it's primarily a director role
-    if (role === 'Director' || role === 'Directors' || role === 'Co-Director') {
-      return ['director'];
+  if (EXCLUDED_DIRECTOR_ROLES.has(role)) return [];
+
+  // Compound roles: split on comma/ampersand/slash/"and" and map each part.
+  // Handles "Director & Choreographer", "Book, Music, and Lyrics", "Composer/Lyricist",
+  // "Book & Director" — the unmatched parts (Choreographer, Sound Design, …) drop out.
+  // Multi-word parts like "Music Direction" or "Sound Design" stay whole and simply
+  // don't match, so excluded roles can't leak in through splitting.
+  const parts = role.split(/\s*(?:[,&/]|\band\b)\s*/i).map(p => p.trim()).filter(Boolean);
+  if (parts.length > 1) {
+    const cats = new Set<CreativeCategory>();
+    for (const part of parts) {
+      if (EXCLUDED_DIRECTOR_ROLES.has(part)) continue;
+      const mapped = ROLE_TO_CATEGORIES_LOWER[part.toLowerCase()];
+      if (mapped) mapped.forEach(c => cats.add(c));
     }
+    if (cats.size > 0) return Array.from(cats);
   }
 
   return [];
