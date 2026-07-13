@@ -25,6 +25,7 @@ const { execFileSync, spawnSync } = require('child_process');
 
 const REPO = '/Users/tompryor/Broadwayscore';
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
+const cmuxws = require('./lib/cmux-workspaces.js');
 const LIST_ID = process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore';
 const TASKS_DIR = path.join(os.homedir(), '.claude', 'tasks', LIST_ID);
 
@@ -114,6 +115,12 @@ function buildSeed(task, card) {
     card && card.keyFiles ? `Key files: ${card.keyFiles}` : null,
   ].filter(Boolean).join(' · ');
   return [
+    // First line = card identity: /resume lists sessions by opening prompt,
+    // so this line is the session's visible name (scope add 2, task #48).
+    // No native programmatic session-rename exists in Claude Code 2.1.207
+    // (checked: only --remote-control-session-name-prefix).
+    `[#${task.id}] ${task.subject} —`,
+    ``,
     `Work on this card as this session's focus. First claim its task in the shared task list (mark task #${task.id} in_progress via TaskUpdate), then implement it per CLAUDE.md rules — worktree before any code edit, /ship-check before you claim it's done.`,
     ``,
     `CARD: ${task.subject}`,
@@ -141,19 +148,81 @@ function fetchCard(pageId) {
   } catch { return null; }
 }
 
-function launchCmux(task, seed) {
+function sleepSec(s) { spawnSync('sleep', [String(s)]); }
+
+// Poll fn() every second until it returns truthy or timeoutSec elapses.
+function pollUntil(fn, timeoutSec) {
+  const deadline = Date.now() + timeoutSec * 1000;
+  for (;;) {
+    const v = fn();
+    if (v) return v;
+    if (Date.now() >= deadline) return null;
+    sleepSec(1);
+  }
+}
+
+function launchCmux(task, seed, commandOverride) {
   const seedFile = path.join(os.tmpdir(), `bsc-seed-${task.id}.txt`);
   fs.writeFileSync(seedFile, seed);
   const title = task.subject.slice(0, 50);
-  // The workspace shell expands $(cat …) so the multi-line prompt survives
+  // The wrapper script expands $(cat …) so the multi-line prompt survives
   // without brittle inline quoting. `claude "<prompt>"` opens interactive on it.
   // --dangerously-skip-permissions: launched sessions must never permission-ping
   // (user rule 2026-07-12); explicit permissions.deny rules still outrank bypass.
-  const command = `claude --dangerously-skip-permissions "$(cat ${seedFile})"`;
+  // commandOverride is a test seam (kill test, scope add 3) — never set in real use.
+  const command = commandOverride || `claude --dangerously-skip-permissions "$(cat ${seedFile})"`;
+  // Shell-init race (real failure 2026-07-12): new-workspace TYPES the command
+  // into the pane while zsh/direnv may still be initializing, so leading
+  // keystrokes get swallowed ('nclaude' → command not found) and the session
+  // never starts. Shrink the typed surface to a short constant string by
+  // putting the real command in a script file.
+  const cmdFile = path.join(os.tmpdir(), `bsc-cmd-${task.id}.sh`);
+  fs.writeFileSync(cmdFile, `#!/bin/bash\n${command}\n`);
+  const typed = ` bash ${cmdFile}`; // leading space additionally survives a swallowed first key
   if (!fs.existsSync(CMUX)) return { ok: false, reason: 'cmux CLI not found', seedFile, command };
-  const r = spawnSync(CMUX, ['new-workspace', '--name', title, '--cwd', REPO, '--command', command, '--focus', 'true'],
-    { stdio: 'inherit' });
-  return { ok: r.status === 0, reason: r.status === 0 ? null : `cmux exited ${r.status}`, seedFile, command };
+
+  let lastWs = null;
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    const before = new Set(cmuxws.listWorkspaces().map(w => w.ref));
+    const r = spawnSync(CMUX, ['new-workspace', '--name', title, '--cwd', REPO, '--command', typed, '--focus', 'true'],
+      { encoding: 'utf8' });
+    if (r.stdout) process.stdout.write(r.stdout);
+    if (r.status !== 0) {
+      if (r.stderr) process.stderr.write(r.stderr);
+      if (attempt === 1) { sleepSec(2); continue; }
+      return { ok: false, reason: `cmux exited ${r.status}`, seedFile, command };
+    }
+    // Resolve the created workspace: new-workspace prints "OK workspace:N"
+    // (cmux 0.64.6); fall back to a before/after list diff if that changes.
+    const m = /workspace:\d+/.exec(String(r.stdout || ''));
+    const ws = m ? { ref: m[0] } : pollUntil(
+      () => cmuxws.listWorkspaces().find(w => !before.has(w.ref)), 5);
+    lastWs = ws || lastWs;
+    // VERIFY the launch (scope add 3): a workspace whose command was mangled
+    // never starts claude and never self-marks ✅, so nothing would notice.
+    // Poll for a running claude_code process. 30s window: shell init (direnv)
+    // + claude cold start can exceed 15s post-reboot, and a false timeout
+    // kills a healthy launch (ship-check reviewer finding, 2026-07-12).
+    if (ws && pollUntil(() => cmuxws.claudeRunningIn(ws.ref), 30)) {
+      return { ok: true, ref: ws.ref, seedFile, command };
+    }
+    if (attempt === 1) {
+      // Verify-before-close: one last check after a beat, so a claude that
+      // registered at the buzzer isn't killed as a corpse.
+      sleepSec(2);
+      if (ws && cmuxws.claudeRunningIn(ws.ref)) {
+        return { ok: true, ref: ws.ref, seedFile, command };
+      }
+      if (ws) { try { cmuxws.closeWorkspace(ws.ref); } catch { /* already gone */ } }
+      sleepSec(2);
+    }
+  }
+  return {
+    ok: false,
+    reason: `no running claude in ${lastWs ? lastWs.ref : 'the new workspace'} after 2 attempts`,
+    workspaceRef: lastWs ? lastWs.ref : null,
+    seedFile, command,
+  };
 }
 
 // ── main ───────────────────────────────────────────────────────────────────
@@ -200,16 +269,34 @@ function main() {
     process.exit(r.status == null ? 1 : r.status); // null = killed by signal → non-zero
   }
 
+  // Backstop auto-prune (scope add 2, task #48): sessions that die before
+  // self-closing leave ✅-marked workspaces behind — sweep them at every
+  // dispatch so the workspace list stays honest even without manual bsc-prune.
+  if (cmuxws.cmuxAvailable()) {
+    try {
+      const { closed, skipped } = cmuxws.pruneDone();
+      if (closed.length) {
+        console.log(`[bsc-next] pruned ${closed.length} finished ✅ workspace(s): ${closed.map(w => w.ref).join(', ')}`);
+      }
+      if (skipped.length) {
+        console.log(`[bsc-next] left ${skipped.length} ✅ workspace(s) with claude still running: ${skipped.map(w => w.ref).join(', ')}`);
+      }
+    } catch (e) { console.error(`[bsc-next] prune sweep failed (continuing): ${e.message}`); }
+  }
+
   const res = launchCmux(task, seed);
   if (res.ok) {
-    console.log(`[bsc-next] opened Cmux workspace on #${task.id}: ${task.subject}`);
+    console.log(`[bsc-next] opened Cmux workspace ${res.ref} on #${task.id}: ${task.subject} (claude verified running)`);
   } else {
-    console.error(`[bsc-next] could not open Cmux workspace (${res.reason}). Run this yourself:`);
-    console.error(`  claude "$(cat ${res.seedFile})"`);
+    console.error(`[bsc-next] LAUNCH NOT VERIFIED (${res.reason}).`);
+    if (res.workspaceRef) console.error(`  dead workspace: ${res.workspaceRef} (left open for inspection)`);
+    console.error(`  command that should have run:`);
+    console.error(`  ${res.command}`);
+    console.error(`  Run it yourself in a workspace, or retry: claude "$(cat ${res.seedFile})"`);
     process.exit(1);
   }
 }
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, notionIdOf, buildSeed, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES };
+module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, notionIdOf, buildSeed, launchCmux, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES };
