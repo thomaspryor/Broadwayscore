@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-13T15:51:41.314Z",
+  "timestamp": "2026-07-13T16:16:22.599Z",
   "stats": {
-    "totalReviews": 39914,
+    "totalReviews": 39947,
     "alreadyFlagged": 17530,
     "dateGuardCatches": 48,
-    "directorMismatch": 911,
-    "tvFilmSignals": 1094,
-    "londonSignals": 741,
+    "directorMismatch": 910,
+    "tvFilmSignals": 1096,
+    "londonSignals": 742,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3793
+    "noPublishDate": 3813
   },
   "findings": [
     {
@@ -2614,6 +2614,32 @@
       ]
     },
     {
+      "showId": "between-two-knees-off-broadway-2024",
+      "file": "nyt-theater--jonathan.json",
+      "publishDate": "2024-02-14",
+      "url": "https://newyorktheater.me/2024/02/13/between-two-knees-theater-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "between-two-knees-off-broadway-2024",
+      "file": "theatermania--unknown.json",
+      "publishDate": "2024-02-14",
+      "url": "https://www.theatermania.com/news/review-between-two-knees-is-church-masquerading-as-comedy_1729921/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "bigfoot-off-broadway-2026",
       "file": "times-square-chronicles--suzanna-bowling.json",
       "score": 88,
@@ -3867,20 +3893,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-2026",
-      "file": "nytimes--jesse-green.json",
-      "score": 92,
-      "publishDate": "2026-04-08",
-      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
         }
       ]
     },
@@ -43310,6 +43322,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "publishDate": "2025-03-19",
+      "url": "https://nystagereview.com/2025/03/18/vanya-one-man-nine-characters-considerable-tragicomedy/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
