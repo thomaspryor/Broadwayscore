@@ -53,13 +53,19 @@ test('readEntries on a missing file is empty, not fatal', () => {
 
 // ── Spend math from fixture lines (VERIFY line) ─────────────────────────────
 
+// Real shape: spend (usd) lives on per-attempt `implement` lines; terminal
+// card-pass/card-fail lines carry `totalUSD` which aggregations must NOT
+// re-count (the email's per-item cost tag reads it).
 const FIXTURE = [
   { ts: '2026-07-10T07:30:00Z', event: 'run-start', runId: 'r1' },
-  { ts: '2026-07-10T07:40:00Z', event: 'card-pass', runId: 'r1', cardId: 'a', model: 'claude-sonnet-5', tokensIn: 10000, tokensOut: 2000, usd: 0.8 },
-  { ts: '2026-07-10T07:55:00Z', event: 'card-fail', runId: 'r1', cardId: 'b', model: 'claude-sonnet-5', tokensIn: 5000, tokensOut: 800, usd: 0.35 },
+  { ts: '2026-07-10T07:40:00Z', event: 'implement', runId: 'r1', cardId: 'a', model: 'claude-sonnet-5', tokensIn: 10000, tokensOut: 2000, usd: 0.8 },
+  { ts: '2026-07-10T07:41:00Z', event: 'card-pass', runId: 'r1', cardId: 'a', totalUSD: 0.8 },
+  { ts: '2026-07-10T07:55:00Z', event: 'implement', runId: 'r1', cardId: 'b', model: 'claude-sonnet-5', tokensIn: 5000, tokensOut: 800, usd: 0.35 },
+  { ts: '2026-07-10T07:56:00Z', event: 'card-fail', runId: 'r1', cardId: 'b', totalUSD: 0.35 },
   { ts: '2026-07-10T08:00:00Z', event: 'run-end', runId: 'r1' },
   { ts: '2026-07-12T07:30:00Z', event: 'run-start', runId: 'r2' },
-  { ts: '2026-07-12T07:45:00Z', event: 'card-pass', runId: 'r2', cardId: 'c', model: 'claude-opus-4-8', tokensIn: 8000, tokensOut: 3000, usd: 1.25, attempt: 2 },
+  { ts: '2026-07-12T07:45:00Z', event: 'implement', runId: 'r2', cardId: 'c', model: 'claude-opus-4-8', tokensIn: 8000, tokensOut: 3000, usd: 1.25, attempt: 2 },
+  { ts: '2026-07-12T07:46:00Z', event: 'card-pass', runId: 'r2', cardId: 'c', totalUSD: 1.25, attempt: 2 },
 ];
 
 test('spentTonight sums only the given run', () => {

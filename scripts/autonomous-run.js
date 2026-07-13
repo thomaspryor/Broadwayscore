@@ -326,7 +326,9 @@ function attemptCard(item, budget, cfg, runId, opts) {
   const fail = (stage, reason) => {
     transition('attempted', 'run.fail', { reason });
     try { notionUpdate(item.id, ['--auto', 'failed']); } catch (e) { console.error(`[run] WARN could not flip ${item.id} to failed: ${e.message.slice(0, 120)}`); }
-    ledger.appendEntry({ event: 'card-fail', runId, cardId: item.id, name: item.name, usd: round2(totalUSD), note: `${stage}: ${String(reason).slice(0, 300)}` });
+    // totalUSD (not usd): spend is ledgered on the per-attempt implement
+    // lines — a terminal line carrying usd would double-count the night.
+    ledger.appendEntry({ event: 'card-fail', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), note: `${stage}: ${String(reason).slice(0, 300)}` });
     console.error(`[run] FAIL ${item.name} [${stage}] ${reason}`);
   };
 
@@ -395,7 +397,7 @@ function attemptCard(item, budget, cfg, runId, opts) {
         if (attempt === 1) budget.refundAttempt2(item.id, item.size); // carry-forward #3
         transition('attempted', 'run.pass');
         notionUpdate(item.id, ['--auto', 'needs-approval']);
-        ledger.appendEntry({ event: 'card-pass', runId, cardId: item.id, name: item.name, usd: round2(totalUSD), attempt, evidence });
+        ledger.appendEntry({ event: 'card-pass', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), attempt, evidence });
         console.error(`[run] PASS ${item.name} → ${branch} ($${totalUSD.toFixed(2)})`);
         return;
       }

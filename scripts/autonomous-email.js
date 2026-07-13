@@ -169,7 +169,7 @@ async function main() {
       why,
       summary: evd.summary || null,
       branch,
-      usd: ev.usd || 0,
+      usd: ev.totalUSD || 0,
       checks: evd.checks || [],
       approveUrl: buildActionUrl({ action: 'approve', cardId: row.id, branch, exp, secret, baseUrl }),
       rejectUrl: buildActionUrl({ action: 'reject', cardId: row.id, branch, exp, secret, baseUrl }),
