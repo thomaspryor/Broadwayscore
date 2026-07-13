@@ -170,8 +170,15 @@ const VENUE_ALIASES = [
     canonical: 'irish rep',
     matches: [/irish\s*repertory/i, /^irish\s*rep/i],
   },
-  // Roundabout's OB stage — listed with/without the company prefix and with
-  // the full Steinberg Center name
+  // Roundabout's Steinberg Center houses TWO stages: the Laura Pels and the
+  // Black Box. Black Box must be checked FIRST (aliases scan in order) or the
+  // bare /steinberg center/ fallback collapses it onto the Pels key.
+  {
+    canonical: 'roundabout black box',
+    matches: [/black\s*box.*steinberg/i, /steinberg.*black\s*box/i, /roundabout.*black\s*box/i],
+  },
+  // Roundabout's OB mainstage — listed with/without the company prefix and
+  // with the full Steinberg Center name
   {
     canonical: 'laura pels',
     matches: [/laura\s*pels/i, /steinberg\s*center/i],
