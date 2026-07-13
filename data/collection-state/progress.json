@@ -846,7 +846,17 @@
     "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+    "tender-off-west-end-2026/guardian--arifa-akbar.json",
+    "allegra-west-end-2026/whatsonstage--aliya-al.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+    "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -898,6 +908,7 @@
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
     ],
     "directCookies": [],
@@ -946,7 +957,7 @@
     ]
   },
   "startTime": "2026-07-13T05:15:55.218Z",
-  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+  "lastProcessed": "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
   "log": [
     {
       "t": "2026-07-13T05:17:40.062Z",
@@ -1006,6 +1017,17 @@
     },
     {
       "t": "2026-07-13T10:53:33.762Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-13T11:43:57.052Z",
+      "event": "bb-session",
+      "session": "e6333226",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-13T11:43:58.175Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
