@@ -127,6 +127,17 @@ function main() {
 
   const keys = SINGLE ? [SINGLE] : Object.keys(commercial.shows);
 
+  // On any fall-back to ai-estimated, stale weekly-model fields from a prior
+  // run must not survive — a stale modelRecouped=false would sit in the
+  // model-false-negative audit metric forever.
+  const clearStaleModelFields = (comm) => {
+    delete comm.modelRecoupmentPct;
+    delete comm.modelRecouped;
+    delete comm.modelBreakeven;
+    delete comm.modelCategory;
+    delete comm.modelWarnings;
+  };
+
   for (const key of keys) {
     const comm = commercial.shows[key];
     if (!comm) continue;
@@ -135,6 +146,7 @@ function main() {
     const show = showBySlug[key] || showBySlug[comm.slug] || showBySlug[key.replace(/-\d{4}$/, '')];
     if (!show) {
       // Orphan in commercial.json — no shows.json match
+      clearStaleModelFields(comm);
       comm.modelMethod = 'ai-estimated';
       comm.modelLastRun = today;
       tier3++;
@@ -151,6 +163,7 @@ function main() {
       result = calculateRecoupment(show, comm, grossAllTime, weeklyData);
       if (result.error) {
         // Fall back to ai-estimated
+        clearStaleModelFields(comm);
         comm.modelMethod = 'ai-estimated';
         comm.modelLastRun = today;
         tier3++;
@@ -160,6 +173,7 @@ function main() {
     } else if (tier === 'simplified-lifetime') {
       result = calculateLifetimeRecoupment(show, comm, grossAllTime);
       if (result.error) {
+        clearStaleModelFields(comm);
         comm.modelMethod = 'ai-estimated';
         comm.modelLastRun = today;
         tier3++;
@@ -168,6 +182,7 @@ function main() {
       tier2++;
     } else {
       // ai-estimated passthrough
+      clearStaleModelFields(comm);
       comm.modelMethod = 'ai-estimated';
       comm.modelRecoupmentPct = comm.estimatedRecoupmentPct || null;
       comm.modelRecouped = comm.recouped != null ? comm.recouped : null;
