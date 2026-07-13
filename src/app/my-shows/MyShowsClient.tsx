@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useUserLists } from '@/hooks/useUserLists';
+import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import StarRating from '@/components/user/StarRating';
 
 import { useToastSafe } from '@/components/ui/Toast';
@@ -137,6 +138,7 @@ export default function MyShowsClient() {
   const handleDeleteReviewWithToast = useCallback(async (reviewId: string) => {
     try {
       await effectiveDeleteReview(reviewId);
+      invalidateRatingsCache(); // browse-card ★chips must not outlive the rating
       showToast?.('Rating deleted.', 'info');
     } catch {
       showToast?.('Delete failed — please try again.', 'error');
@@ -336,7 +338,14 @@ export default function MyShowsClient() {
           <div className="space-y-3">
             <button
               type="button"
-              onClick={() => signIn('google')}
+              onClick={(e) => {
+                // Guard double-taps (two OAuth popups) but re-enable in case the
+                // user cancels the provider popup and wants to retry.
+                const btn = e.currentTarget as HTMLButtonElement;
+                btn.disabled = true;
+                setTimeout(() => { btn.disabled = false; }, 4000);
+                signIn('google');
+              }}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white text-gray-800 font-semibold text-sm rounded-lg hover:bg-gray-100 transition-colors"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -349,7 +358,14 @@ export default function MyShowsClient() {
             </button>
             <button
               type="button"
-              onClick={() => signIn('apple')}
+              onClick={(e) => {
+                // Guard double-taps (two OAuth popups) but re-enable in case the
+                // user cancels the provider popup and wants to retry.
+                const btn = e.currentTarget as HTMLButtonElement;
+                btn.disabled = true;
+                setTimeout(() => { btn.disabled = false; }, 4000);
+                signIn('apple');
+              }}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-black text-white font-semibold text-sm rounded-lg border border-white/20 hover:bg-surface-raised transition-colors"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">

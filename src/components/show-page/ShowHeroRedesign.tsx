@@ -338,9 +338,10 @@ function Inner({
       // so drop any watchlist entry (owner rule 2026-07-12 — replaces the old
       // "watchlist and rating are independent" decision). Non-fatal: the rating
       // itself already saved.
-      if (isWatchlisted(show.id)) {
-        try { await removeFromWatchlist(show.id); } catch { /* rating saved; watchlist cleanup is best-effort */ }
-      }
+      // Unconditional: isWatchlisted reads this instance's async-loaded state and
+      // can be stale on fast deep-link saves; deleting a non-existent row is a
+      // harmless no-op (slight watchlist_remove analytics noise accepted).
+      try { await removeFromWatchlist(show.id); } catch { /* rating saved; watchlist cleanup is best-effort */ }
     }
     await getReviewsForShow(show.id);
     invalidateRatingsCache();
@@ -756,7 +757,7 @@ function YourRatingInline({
             </button>
           </div>
           {review.review_text && (
-            <p className="text-sm text-gray-400 italic leading-snug">
+            <p className="text-sm text-gray-400 italic leading-snug line-clamp-4">
               {`\u201C${review.review_text}\u201D`}
             </p>
           )}
