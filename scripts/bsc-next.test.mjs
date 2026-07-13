@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { actionable, pickTask, notionIdOf, buildSeed } = require('./bsc-next.js');
+const { actionable, pickTask, completedLaunchGuard, notionIdOf, buildSeed } = require('./bsc-next.js');
 
 const TASKS = [
   { id: '1', subject: 'P0 task', status: 'in_progress', description: '[notion:aaa] x' },
@@ -44,6 +44,15 @@ test('pickTask --pick with no value (true) or non-numeric defaults to top task',
 test('pickTask --id selects that task even if completed', () => {
   assert.equal(pickTask(TASKS, { id: '3' }).id, '3');
   assert.equal(pickTask(TASKS, { id: 'nope' }), null);
+});
+
+test('completedLaunchGuard blocks launching a completed task without --force', () => {
+  const done = TASKS[2]; // id 3, completed
+  assert.match(completedLaunchGuard(done, {}), /already completed/);
+  assert.equal(completedLaunchGuard(done, { force: true }), null);
+  assert.equal(completedLaunchGuard(done, { 'dry-run': true }), null);     // inspection stays open
+  assert.equal(completedLaunchGuard(done, { 'print-prompt': true }), null);
+  assert.equal(completedLaunchGuard(TASKS[1], {}), null);                  // non-completed unaffected
 });
 
 test('notionIdOf extracts the embedded page id, null when absent', () => {
