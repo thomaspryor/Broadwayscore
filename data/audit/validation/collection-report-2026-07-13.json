@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-07-13T17:42:32.238Z",
+  "runDate": "2026-07-13T17:42:01.210Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "dukes-off-broadway-2026",
+    "showFilter": "tender-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,14 +12,14 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 3,
+    "failed": 7,
     "skipped": 0,
     "successRate": "100.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -31,30 +31,34 @@
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
     "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 7,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 6,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [],
   "failed": [
-    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
-    "dukes-off-broadway-2026/theatermania--unknown.json",
-    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    "tender-off-west-end-2026/guardian--arifa-akbar.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
   ],
   "failed": [],
   "tierDetails": {
@@ -62,7 +66,9 @@
       "allegra-west-end-2026/whatsonstage--aliya-al.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
