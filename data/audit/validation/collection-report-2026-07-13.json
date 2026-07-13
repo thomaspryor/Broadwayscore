@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-07-13T06:40:22.651Z",
+  "runDate": "2026-07-13T06:39:17.526Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "dukes-off-broadway-2026",
+    "showFilter": "iceboy-regional-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 3,
+    "processed": 2,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,37 +27,42 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 3,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "iceboy-regional-2026/chicago-reader--unknown.json",
+    "iceboy-regional-2026/suntimes--unknown.json"
+  ],
   "failed": [
-    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
-    "dukes-off-broadway-2026/theatermania--unknown.json",
-    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
+    "iceboy-regional-2026/one-minute-critic--matthew-wexler.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "iceboy-regional-2026/chicago-reader--unknown.json",
+      "iceboy-regional-2026/suntimes--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
