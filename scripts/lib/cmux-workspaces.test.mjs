@@ -52,3 +52,15 @@ test('hasRunningClaude: detects the claude_code Running tag row', () => {
   assert.equal(hasRunningClaude(TOP_IDLE), false);
   assert.equal(hasRunningClaude(''), false);
 });
+
+test('hasRunningClaude: column-exact — no substring false positives', () => {
+  // Status other than exactly "Running" on the tag row
+  const notRunning = `5.8\t1\t1\ttag\tworkspace:X:tag:claude_code\tworkspace:9\tNotRunning`;
+  assert.equal(hasRunningClaude(notRunning), false);
+  // Workspace TITLE containing "Running" + claude_code elsewhere in line
+  const titleTrap = `5.9\t1\t2\tworkspace\tworkspace:9\twindow:1\tRunning tag:claude_code experiments`;
+  assert.equal(hasRunningClaude(titleTrap), false);
+  // Trailing whitespace after Running still matches (cmux pads tsv)
+  const padded = `5.8\t1\t1\ttag\tworkspace:X:tag:claude_code\tworkspace:9\tRunning\t\t`;
+  assert.equal(hasRunningClaude(padded), true);
+});
