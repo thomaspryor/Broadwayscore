@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-13T16:59:19.838Z",
+  "timestamp": "2026-07-13T17:44:20.343Z",
   "stats": {
-    "totalReviews": 39959,
-    "alreadyFlagged": 17532,
+    "totalReviews": 39980,
+    "alreadyFlagged": 17533,
     "dateGuardCatches": 48,
     "directorMismatch": 910,
-    "tvFilmSignals": 1097,
+    "tvFilmSignals": 1096,
     "londonSignals": 742,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3816
+    "noPublishDate": 3838
   },
   "findings": [
     {
@@ -2615,7 +2615,7 @@
     },
     {
       "showId": "between-two-knees-off-broadway-2024",
-      "file": "nyt-theater--jonathan.json",
+      "file": "nyt-theater--jonathan-mandell.json",
       "score": 67,
       "publishDate": "2024-02-14",
       "url": "https://newyorktheater.me/2024/02/13/between-two-knees-theater-review/",
@@ -2629,7 +2629,7 @@
     },
     {
       "showId": "between-two-knees-off-broadway-2024",
-      "file": "theatermania--unknown.json",
+      "file": "theatermania--zachary-stewart.json",
       "score": 24,
       "publishDate": "2024-02-14",
       "url": "https://www.theatermania.com/news/review-between-two-knees-is-church-masquerading-as-comedy_1729921/",
@@ -26458,19 +26458,6 @@
       "score": 86,
       "publishDate": "November 20th, 2025",
       "url": "https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "vanya-off-broadway-2025",
-      "file": "thewrap--robert-hofler.json",
-      "publishDate": "2025-03-19",
-      "url": "https://www.thewrap.com/vanya-off-broadway-review-andrew-scott/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
