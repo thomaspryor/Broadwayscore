@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-13T08:20:35.283Z",
+  "timestamp": "2026-07-13T08:45:20.847Z",
   "stats": {
     "totalReviews": 39892,
-    "alreadyFlagged": 17539,
-    "dateGuardCatches": 47,
+    "alreadyFlagged": 17540,
+    "dateGuardCatches": 48,
     "directorMismatch": 910,
     "tvFilmSignals": 1093,
     "londonSignals": 741,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3780
+    "noPublishDate": 3779
   },
   "findings": [
     {
@@ -28288,6 +28288,17 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
         }
       ]
     },
