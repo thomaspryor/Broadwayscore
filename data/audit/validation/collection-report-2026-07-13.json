@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-13T20:14:39.445Z",
+  "runDate": "2026-07-13T21:27:41.748Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -12,42 +12,42 @@
   },
   "summary": {
     "processed": 86,
-    "failed": 268,
+    "failed": 318,
     "skipped": 0,
-    "successRate": "24.3%"
+    "successRate": "21.3%"
   },
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 58,
     "amp": 0,
-    "browserbase": 9,
-    "directCookies": 1,
-    "scrapingbee": 8,
-    "brightdata": 10,
-    "archiveToday": 3,
-    "archive": 9
+    "browserbase": 8,
+    "directCookies": 0,
+    "scrapingbee": 6,
+    "brightdata": 9,
+    "archiveToday": 7,
+    "archive": 10
   },
   "statistics": {
-    "tier1Attempts": 34,
-    "tier1Success": 30,
+    "tier1Attempts": 27,
+    "tier1Success": 27,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 5,
-    "tier2Success": 3,
-    "tier3Attempts": 4,
-    "tier3Success": 4,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
+    "tier3Success": 3,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 20,
-    "tier4Success": 3,
-    "totalFailed": 259,
-    "scrapingBeePageCredits": 13,
+    "tier4Attempts": 18,
+    "tier4Success": 2,
+    "totalFailed": 264,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.3,
-    "urlDiscoveryAttempts": 265,
-    "urlDiscoverySuccess": 10,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 268,
+    "urlDiscoverySuccess": 6,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -98,15 +98,17 @@
     "king-hedley-ii-2001/variety--unknown.json",
     "king-hedley-ii-2001/talkinbroadway--unknown.json",
     "allegra-west-end-2026/whatsonstage--aliya-al.json",
+    "jesus-christ-superstar-west-end-2026/independent--alice-saville.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--matt-barton.json",
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
+    "a-midsummer-nights-dream-west-end-2026/telegraph--claire-allfree.json",
     "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
-    "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
     "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
     "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
     "pride-west-end-2026/londontheatre1--terry-eastham.json",
-    "birthright-off-broadway-2026/nytimes--helen-shaw.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
     "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
     "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "birthright-off-broadway-2026/the-recs--unknown.json",
@@ -115,19 +117,16 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
     "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
     "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
-    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
     "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
     "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
     "small-off-broadway-2026/culturesauce--thom-geier.json",
     "celebrity-autobiography-2026/one-minute-critic--matthew-wexler.json",
     "celebrity-autobiography-2026/playbill--unknown.json",
-    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/nytg--unknown.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
     "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
     "mercury-off-broadway-2026/washpost--doug-feinberg.json",
     "the-lost-boys-2026/playbill--unknown.json",
-    "joe-turners-come-and-gone-2026/broadwaynews--unknown.json",
     "joe-turners-come-and-gone-2026/ny1--spectrum-news-staff.json",
     "joe-turners-come-and-gone-2026/playbill--unknown.json",
     "the-rocky-horror-show-2026/ew--dalton-ross.json",
@@ -136,7 +135,8 @@
     "the-balusters-2026/broadwayworld--unknown.json",
     "the-balusters-2026/playbill--unknown.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
-    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
   ],
   "failed": [
     "vanya-off-broadway-2025/this-week-in-new-york--mark-rifkin.json",
@@ -147,6 +147,52 @@
     "primary-trust-off-broadway-2023/culturesauce--unknown.json",
     "king-hedley-ii-2001/nytimes--ben-brantley.json",
     "king-hedley-ii-2001/curtainup--unknown.json",
+    "tender-off-west-end-2026/guardian--arifa-akbar.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+    "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
+    "jesus-christ-superstar-west-end-2026/newsday--linda-winer.json",
+    "jesus-christ-superstar-west-end-2026/newsday--unknown.json",
+    "jesus-christ-superstar-west-end-2026/observer--kate-kellaway.json",
+    "jesus-christ-superstar-west-end-2026/oxfordshire-guardian--samuel-macgregor.json",
+    "jesus-christ-superstar-west-end-2026/theatre-reviews-limited--unknown.json",
+    "jesus-christ-superstar-west-end-2026/about-entertainment--charles-isherwood.json",
+    "jesus-christ-superstar-west-end-2026/ap--mark-kennedy.json",
+    "jesus-christ-superstar-west-end-2026/artsdesk--rachel-halliburton.json",
+    "jesus-christ-superstar-west-end-2026/backstage--david-sheward.json",
+    "jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
+    "jesus-christ-superstar-west-end-2026/express-uk--neil-norman.json",
+    "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json",
+    "jesus-christ-superstar-west-end-2026/nottingham-confidential--unknown.json",
+    "jesus-christ-superstar-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
+    "jesus-christ-superstar-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
+    "jesus-christ-superstar-west-end-2026/usatoday--elysa-gardner.json",
+    "jesus-christ-superstar-west-end-2026/west-end-wilma--unknown.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--alex-wood.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--alun-hood.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--judi-herman.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--matt-trueman.json",
+    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
+    "the-guilty-west-end-2026/hollywood-reporter--lily-ford.json",
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
+    "the-guilty-west-end-2026/deadline--denise-petski.json",
+    "the-guilty-west-end-2026/deadline--max-goldbart.json",
+    "the-guilty-west-end-2026/deadline--zac-ntim.json",
+    "the-guilty-west-end-2026/guardian-uk--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
+    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
+    "to-kill-a-mockingbird-west-end-2026/timeout--adam-feldman.json",
+    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
+    "the-guilty-west-end-2026/monstagigz--unknown.json",
+    "the-guilty-west-end-2026/plays-international--unknown.json",
+    "the-guilty-west-end-2026/rollingstone--charisma-madarang.json",
+    "the-guilty-west-end-2026/thestage--unknown.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
@@ -175,8 +221,6 @@
     "jesus-christ-superstar-west-end-2026/theatreandtonic--emmie-newitt.json",
     "jesus-christ-superstar-west-end-2026/usatoday--elysa-gardner.json",
     "jesus-christ-superstar-west-end-2026/west-end-wilma--unknown.json",
-    "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json",
-    "jesus-christ-superstar-west-end-2026/whatsonstage--matt-barton.json",
     "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
     "the-guilty-west-end-2026/hollywood-reporter--lily-ford.json",
     "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -205,7 +249,6 @@
     "a-midsummer-nights-dream-west-end-2026/standard--dominic-cavendish.json",
     "a-midsummer-nights-dream-west-end-2026/standard--nick-curtis.json",
     "a-midsummer-nights-dream-west-end-2026/standard--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/telegraph--claire-allfree.json",
     "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json",
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
     "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
@@ -253,7 +296,6 @@
     "relics-west-end-2026/nytimes--unknown.json",
     "sinatra-the-musical-west-end-2026/variety--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
     "sinatra-the-musical-west-end-2026/front-row-center--unknown.json",
     "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
     "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
@@ -315,6 +357,7 @@
     "white-rabbit-red-rabbit-west-end-2026/nytimes--charles-isherwood.json",
     "white-rabbit-red-rabbit-west-end-2026/guardian--david-jays.json",
     "white-rabbit-red-rabbit-west-end-2026/timeout-london--caroline-mcginn.json",
+    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
     "white-rabbit-red-rabbit-west-end-2026/telegraph--marianka-swain.json",
     "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
     "war-horse-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -395,6 +438,7 @@
     "the-lost-boys-2026/bloomberg--chris-rovzar.json",
     "joe-turners-come-and-gone-2026/broadwaynews--jonah-de-forest-for-broadwaycom.json",
     "joe-turners-come-and-gone-2026/broadwaynews--jonah-de-forest.json",
+    "joe-turners-come-and-gone-2026/broadwaynews--unknown.json",
     "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
     "the-rocky-horror-show-2026/thereviewshub--unknown.json",
     "the-rocky-horror-show-2026/british-theatre--unknown.json",
@@ -406,7 +450,13 @@
     "avenue-q-west-end-2026/variety--david-rooney.json",
     "avenue-q-west-end-2026/theatermania--andy-propst.json",
     "proof-2026/680newscom--gloria-martin.json",
-    "avenue-q-west-end-2026/1883-magazine--nick-barr.json"
+    "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
+    "avenue-q-west-end-2026/backstage--david-sheward.json",
+    "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+    "avenue-q-west-end-2026/theupcoming--sunny-morgan.json",
+    "avenue-q-west-end-2026/valentine-dsides--unknown.json",
+    "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -438,10 +488,14 @@
       "primary-trust-off-broadway-2023/theater-scene--darryl-reilly.json",
       "primary-trust-off-broadway-2023/theater-scene--joel-benjamin.json",
       "allegra-west-end-2026/whatsonstage--aliya-al.json",
+      "jesus-christ-superstar-west-end-2026/independent--alice-saville.json",
+      "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json",
+      "jesus-christ-superstar-west-end-2026/whatsonstage--matt-barton.json",
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
       "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
       "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
       "pride-west-end-2026/londontheatre1--terry-eastham.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
       "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
       "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "birthright-off-broadway-2026/the-recs--unknown.json",
@@ -449,11 +503,10 @@
       "sinatra-the-musical-west-end-2026/theatre-vibe--lizzie-loveridge.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
       "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
-      "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
       "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
       "celebrity-autobiography-2026/one-minute-critic--matthew-wexler.json",
       "celebrity-autobiography-2026/playbill--unknown.json",
-      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/nytg--unknown.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
@@ -475,21 +528,16 @@
       "data/review-texts/king-hedley-ii-2001/nytimes--ben-brantley.json",
       "data/review-texts/king-hedley-ii-2001/variety--unknown.json",
       "king-hedley-ii-2001/variety--unknown.json",
-      "data/review-texts/birthright-off-broadway-2026/nytimes--helen-shaw.json",
-      "birthright-off-broadway-2026/nytimes--helen-shaw.json"
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
     ],
-    "directCookies": [
-      "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json"
-    ],
+    "directCookies": [],
     "scrapingbee": [
       "vanya-off-broadway-2025/nytimes--jesse-green.json",
       "vanya-off-broadway-2025/theatrely--unknown.json",
       "between-two-knees-off-broadway-2024/nytimes--naveen-kumar.json",
       "between-two-knees-off-broadway-2024/nytimes--unknown.json",
       "primary-trust-off-broadway-2023/nytimes--naveen-kumar.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
-      "joe-turners-come-and-gone-2026/broadwaynews--unknown.json"
+      "a-midsummer-nights-dream-west-end-2026/telegraph--claire-allfree.json"
     ],
     "brightdata": [
       "vanya-off-broadway-2025/thewrap--robert-hofler.json",
@@ -499,14 +547,17 @@
       "primary-trust-off-broadway-2023/cititour--brian-scott-lipton.json",
       "primary-trust-off-broadway-2023/dailybeast--unknown.json",
       "king-hedley-ii-2001/talkinbroadway--unknown.json",
-      "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json"
     ],
     "archiveToday": [
       "data/review-texts/vanya-off-broadway-2025/theater-scene--deirdre-donovan.json",
       "data/review-texts/primary-trust-off-broadway-2023/broadwayworld--unknown.json",
-      "data/review-texts/king-hedley-ii-2001/curtainup--unknown.json"
+      "data/review-texts/king-hedley-ii-2001/curtainup--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/artsdesk--rachel-halliburton.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json"
     ],
     "archive": [
       "kyoto-off-broadway-2025/vulture--unknown.json",
@@ -517,7 +568,8 @@
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
       "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
       "small-off-broadway-2026/culturesauce--thom-geier.json",
-      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
     ]
   },
   "failuresByOutlet": {
@@ -531,54 +583,34 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json",
-      "oldUrl": "https://www.whatsonstage.com/news/did-sam-ryder-reach-for-the-stars-jesus-christ-superstar-review-round-up_1726870/",
-      "newUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-begins-performances-at-the-london-palladium_1725578/"
-    },
-    {
-      "reviewId": "jesus-christ-superstar-west-end-2026/whatsonstage--matt-barton.json",
-      "oldUrl": "https://www.whatsonstage.com/news/did-sam-ryder-reach-for-the-stars-jesus-christ-superstar-review-round-up_1726870/",
-      "newUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-begins-performances-at-the-london-palladium_1725578/"
-    },
-    {
-      "reviewId": "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/cyrano-de-bergerac-review-adrian-lester-7dvdf8zqt",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/cyrano-de-bergerac-review-adrian-lester-7dvdf8zqt?eafs_enabled=false"
-    },
-    {
-      "reviewId": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/production/henry-vi-a-trilogy-in-two-parts-off-broadway-public-theater-newman-theater-2026",
-      "newUrl": "https://playbill.com/article/get-a-1st-look-at-naatcos-henry-vi-a-trilogy-in-two-parts"
-    },
-    {
       "reviewId": "celebrity-autobiography-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/get-a-1st-look-at-celebrity-autobiography-on-broadway",
-      "newUrl": "https://playbill.com/article/reviews-did-critics-think-celebrity-autobiography-on-broadway-was-a-novel-idea"
+      "oldUrl": "https://playbill.com/article/reviews-did-critics-think-celebrity-autobiography-on-broadway-was-a-novel-idea",
+      "newUrl": "https://playbill.com/article/get-a-1st-look-at-celebrity-autobiography-on-broadway"
     },
     {
       "reviewId": "the-lost-boys-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-lost-boys-on-broadway",
-      "newUrl": "https://playbill.com/article/a-three-story-set-a-65-foot-fly-rig-the-lost-boys-promises-a-true-broadway-spectacle"
+      "oldUrl": "https://playbill.com/article/a-three-story-set-a-65-foot-fly-rig-the-lost-boys-promises-a-true-broadway-spectacle",
+      "newUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-lost-boys-on-broadway"
     },
     {
       "reviewId": "joe-turners-come-and-gone-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/video-cast-of-joe-turners-come-and-gone-discuss-doing-august-wilsons-favorite-play",
-      "newUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-joe-turners-come-and-gone-on-broadway"
+      "oldUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-joe-turners-come-and-gone-on-broadway",
+      "newUrl": "https://playbill.com/article/video-cast-of-joe-turners-come-and-gone-discuss-doing-august-wilsons-favorite-play"
     },
     {
       "reviewId": "the-rocky-horror-show-2026/ew--dalton-ross.json",
-      "oldUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOoqZoSXPagnhzfLSrPnXNjLxBzc776IXdQ3LmlB-lFvLhZLfyyxA",
-      "newUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOorea6Vv7LjoJx51ZLVQz8Slr-iku7f5lczAuKQuGxEifpPkTOfw"
+      "oldUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOorea6Vv7LjoJx51ZLVQz8Slr-iku7f5lczAuKQuGxEifpPkTOfw",
+      "newUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOop2yPP5KtBNx7czt7j1kbUHnbhVmDhWcDbsrh6uur0bkOIqR0cu"
     },
     {
       "reviewId": "the-rocky-horror-show-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/reviews-did-critics-find-the-rocky-horror-show-revival-worth-the-antici-pation",
-      "newUrl": "https://playbill.com/article/the-rocky-horror-show-extends-on-broadway"
+      "oldUrl": "https://playbill.com/article/the-rocky-horror-show-extends-on-broadway",
+      "newUrl": "https://playbill.com/article/reviews-did-critics-find-the-rocky-horror-show-revival-worth-the-antici-pation"
     },
     {
       "reviewId": "the-balusters-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/watch-a-scene-from-the-balusters-on-broadway",
-      "newUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-balusters-on-broadway"
+      "oldUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-balusters-on-broadway",
+      "newUrl": "https://playbill.com/article/the-balusters-gets-a-2nd-extension-on-broadway"
     }
   ]
 }
