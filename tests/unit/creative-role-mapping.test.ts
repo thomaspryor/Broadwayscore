@@ -80,6 +80,15 @@ describe('music-department roles never leak into director', () => {
   test('Associate Director maps to nothing', () => {
     assert.deepStrictEqual(sorted('Associate Director'), []);
   });
+  test('excluded roles are case-insensitive (music direction lowercase)', () => {
+    assert.deepStrictEqual(sorted('music direction'), []);
+  });
+  test('Music Supervisor & Director maps to nothing (music-context Director part)', () => {
+    assert.deepStrictEqual(sorted('Music Supervisor & Director'), []);
+  });
+  test('Music Supervision/Director maps to nothing', () => {
+    assert.deepStrictEqual(sorted('Music Supervision/Director'), []);
+  });
 });
 
 describe('unknown roles', () => {
