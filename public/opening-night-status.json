@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T08:13:53.473Z",
+  "generatedAt": "2026-07-13T08:20:40.200Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1321,6 +1321,31 @@
       "slug": "the-oresteia-west-end",
       "thumbnail": "/images/shows/the-oresteia-west-end-2026/thumbnail.jpg",
       "daysUntil": 1,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-smile-of-her-off-west-end-2026",
+      "title": "The Smile Of Her",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-07-16",
+      "status": "announced",
+      "slug": "the-smile-of-her-off-west-end",
+      "thumbnail": "/images/shows/the-smile-of-her-off-west-end-2026/thumbnail.jpg",
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
