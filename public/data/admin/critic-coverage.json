@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-07-13T10:13:56.973Z",
+  "generatedAt": "2026-07-13T13:05:01.597Z",
   "current": {
-    "totalCritics": 79,
-    "totalGaps": 807,
+    "totalCritics": 80,
+    "totalGaps": 772,
     "gapsByBucket": {
-      "A": 29,
-      "B": 9,
-      "C": 765,
-      "D": 4,
+      "A": 36,
+      "B": 17,
+      "C": 709,
+      "D": 10,
       "E": 0
     },
     "gapsBySource": {
-      "muckrack": 807
+      "muckrack": 772
     }
   },
   "history": [
@@ -501,6 +501,59 @@
         "Michael Musto": 1,
         "Marianka Swain": 1
       }
+    },
+    {
+      "date": "2026-07-13",
+      "timestamp": "2026-07-13T10:43:53.027Z",
+      "totalCritics": 80,
+      "totalGaps": 772,
+      "gapsByBucket": {
+        "A": 36,
+        "B": 17,
+        "C": 709,
+        "D": 10,
+        "E": 0
+      },
+      "gapsBySource": {
+        "muckrack": 772
+      },
+      "perCritic": {
+        "Chris Jones": 120,
+        "Elysa Gardner": 109,
+        "Jesse Green": 77,
+        "Steven Suskin": 63,
+        "Melissa Rose Bernardo": 38,
+        "Austin Fimmano": 29,
+        "David Finkle": 28,
+        "Tim Bano": 28,
+        "Sarah Hemming": 27,
+        "Juan A. Ramirez": 23,
+        "Bob Verini": 22,
+        "Helen Shaw": 19,
+        "Patrick Marmion": 17,
+        "Sara Holdren": 16,
+        "Hayley Levitt": 16,
+        "Pete Hempstead": 14,
+        "Laura Collins-Hughes": 14,
+        "Anya Ryan": 14,
+        "Joey Sims": 13,
+        "Johnny Oleksinski": 11,
+        "Matt Wolf": 11,
+        "Kyle Turner": 10,
+        "Christopher Kelly": 8,
+        "Sam Marlowe": 8,
+        "Charles Isherwood": 7,
+        "Arifa Akbar": 6,
+        "Tim Teeman": 5,
+        "Mark Kennedy": 5,
+        "Frank Rizzo": 5,
+        "Alice Saville": 4,
+        "Jonathan Mandell": 1,
+        "Robert Hofler": 1,
+        "Michael Musto": 1,
+        "Dominic Maxwell": 1,
+        "Marianka Swain": 1
+      }
     }
   ],
   "topCriticsByGap": [
@@ -508,8 +561,8 @@
       "name": "Chris Jones",
       "outlet": "chicagotribune",
       "tier": 2,
-      "missingCount": 123,
-      "lastDate": "2026-05-19"
+      "missingCount": 120,
+      "lastDate": "2026-06-30"
     },
     {
       "name": "Elysa Gardner",
@@ -522,57 +575,57 @@
       "name": "Jesse Green",
       "outlet": "vulture",
       "tier": 1,
-      "missingCount": 80,
+      "missingCount": 77,
       "lastDate": "2025-06-25"
     },
     {
-      "name": "Dan Rubins",
-      "outlet": "slantmagazine",
+      "name": "Steven Suskin",
+      "outlet": "nysr",
       "tier": 2,
-      "missingCount": 52,
-      "lastDate": "2026-06-12"
+      "missingCount": 63,
+      "lastDate": "2026-06-24"
     },
     {
-      "name": "Juan A. Ramirez",
-      "outlet": "theatrely",
+      "name": "Melissa Rose Bernardo",
+      "outlet": "nysr",
       "tier": 2,
-      "missingCount": 50,
-      "lastDate": "2026-06-19"
-    },
-    {
-      "name": "Laura Collins-Hughes",
-      "outlet": "nytimes",
-      "tier": 1,
-      "missingCount": 41,
-      "lastDate": "2026-06-16"
-    },
-    {
-      "name": "David Rooney",
-      "outlet": "hollywood-reporter",
-      "tier": 1,
-      "missingCount": 32,
-      "lastDate": "2026-04-15"
-    },
-    {
-      "name": "Joey Sims",
-      "outlet": "theatrely",
-      "tier": 2,
-      "missingCount": 32,
-      "lastDate": "2026-04-25"
+      "missingCount": 38,
+      "lastDate": "2026-06-30"
     },
     {
       "name": "Austin Fimmano",
       "outlet": "nytg",
       "tier": 2,
-      "missingCount": 30,
-      "lastDate": "2026-06-05"
+      "missingCount": 29,
+      "lastDate": "2026-07-10"
     },
     {
-      "name": "Roma Torre",
-      "outlet": "ny1",
+      "name": "David Finkle",
+      "outlet": "nysr",
       "tier": 2,
-      "missingCount": 29,
-      "lastDate": "2026-06-12"
+      "missingCount": 28,
+      "lastDate": "2026-06-29"
+    },
+    {
+      "name": "Tim Bano",
+      "outlet": "financialtimes",
+      "tier": 1,
+      "missingCount": 28,
+      "lastDate": "2026-05-20"
+    },
+    {
+      "name": "Sarah Hemming",
+      "outlet": "financialtimes",
+      "tier": 1,
+      "missingCount": 27,
+      "lastDate": "2026-07-08"
+    },
+    {
+      "name": "Juan A. Ramirez",
+      "outlet": "theatrely",
+      "tier": 2,
+      "missingCount": 23,
+      "lastDate": "2026-06-19"
     }
   ]
 }

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-13T10:14:28.473Z",
+  "timestamp": "2026-07-13T13:05:30.268Z",
   "stats": {
-    "totalReviews": 39892,
-    "alreadyFlagged": 17540,
+    "totalReviews": 39905,
+    "alreadyFlagged": 17538,
     "dateGuardCatches": 48,
-    "directorMismatch": 910,
-    "tvFilmSignals": 1093,
+    "directorMismatch": 911,
+    "tvFilmSignals": 1094,
     "londonSignals": 741,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3779
+    "noPublishDate": 3785
   },
   "findings": [
     {
@@ -589,6 +589,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
+        }
+      ]
+    },
+    {
+      "showId": "a-walk-on-the-moon-off-broadway-2026",
+      "file": "the-interested-bystander--cary-wong.json",
+      "score": 67,
+      "publishDate": null,
+      "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -1743,20 +1757,6 @@
       ]
     },
     {
-      "showId": "avenue-q-west-end-2026",
-      "file": "telegraph--marianka-swain.json",
-      "score": 82,
-      "publishDate": "2026-04-17",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "back-to-the-future-2023",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 78,
@@ -2666,6 +2666,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "birthright-off-broadway-2026",
+      "file": "theater-pizzazz--unknown.json",
+      "score": 96,
+      "publishDate": "2026-07-12",
+      "url": "https://theaterpizzazz.com/dialogue-sings-in-jonathan-spectors-new-play-birthright/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -3853,6 +3867,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "nytimes--jesse-green.json",
+      "score": 92,
+      "publishDate": "2026-04-08",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
         }
       ]
     },
