@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-07-12T21:54:17.121Z",
+    "lastUpdated": "2026-07-13T04:06:31.347Z",
     "version": "2.1.0",
-    "lastChange": "T3->T4 demotion of 38 long-tail/stale outlets"
+    "lastChange": "Fold 5 registry-duplicate outlet IDs (no-domain dupes) into domain-owning canonical entries (card 39c637c5)"
   },
   "outlets": {
     "westendtheatre": {
@@ -3347,7 +3347,10 @@
       "aliases": [
         "minneapolis-star-tribune",
         "star tribune",
-        "startribune"
+        "startribune",
+        "the-minnesota-star-tribune",
+        "minnesota star tribune",
+        "the minnesota star tribune"
       ],
       "domain": "startribune.com",
       "accessModel": "paywalled",
@@ -3601,7 +3604,9 @@
         "albany-times-union",
         "the-albany-times-union",
         "the albany times-union",
-        "albany times-union"
+        "albany times-union",
+        "times-union",
+        "times union"
       ],
       "domain": "timesunion.com",
       "accessModel": "paywalled",
@@ -4033,14 +4038,6 @@
       ],
       "accessModel": "free"
     },
-    "the-minnesota-star-tribune": {
-      "displayName": "The Minnesota Star Tribune",
-      "tier": 3,
-      "aliases": [
-        "the-minnesota-star-tribune"
-      ],
-      "accessModel": "paywalled"
-    },
     "the-oakland-press": {
       "displayName": "The Oakland Press",
       "tier": 3,
@@ -4172,15 +4169,6 @@
         "dallas-voice"
       ],
       "accessModel": "free"
-    },
-    "datebook": {
-      "displayName": "Datebook",
-      "tier": 3,
-      "aliases": [
-        "datebook"
-      ],
-      "accessModel": "paywalled",
-      "defaultCritic": "Lily Janiak"
     },
     "el-paso-times": {
       "displayName": "El Paso Times",
@@ -4346,15 +4334,6 @@
       "accessModel": "free",
       "domain": "theprospectordaily.com"
     },
-    "times-union": {
-      "displayName": "Times Union",
-      "tier": 3,
-      "aliases": [
-        "times-union"
-      ],
-      "accessModel": "paywalled",
-      "defaultCritic": "Katherine Kiessling"
-    },
     "tulsa-world": {
       "displayName": "Tulsa World",
       "tier": 3,
@@ -4447,14 +4426,6 @@
       "tier": 3,
       "aliases": [
         "pioneer-press"
-      ],
-      "accessModel": "paywalled"
-    },
-    "the-orange-county-register": {
-      "displayName": "The Orange County Register",
-      "tier": 3,
-      "aliases": [
-        "the-orange-county-register"
       ],
       "accessModel": "paywalled"
     },
@@ -4766,7 +4737,10 @@
       "displayName": "OC Register",
       "tier": 3,
       "aliases": [
-        "oc-register"
+        "oc-register",
+        "the-orange-county-register",
+        "the orange county register",
+        "orange county register"
       ],
       "domain": "ocregister.com",
       "accessModel": "paywalled",
@@ -4884,14 +4858,6 @@
       ],
       "accessModel": "free",
       "defaultCritic": "Rita Kohn"
-    },
-    "buffalo-rising": {
-      "displayName": "Buffalo Rising",
-      "tier": 3,
-      "aliases": [
-        "buffalo-rising"
-      ],
-      "accessModel": "paywalled"
     },
     "new-haven-independent": {
       "displayName": "New Haven Independent",
@@ -8019,10 +7985,14 @@
         "san francisco chronicle",
         "sf chronicle",
         "sfchronicle",
-        "the-san-francisco-chronicle-lily-janiak"
+        "the-san-francisco-chronicle-lily-janiak",
+        "datebook"
       ],
       "domain": "sfchronicle.com",
-      "accessModel": "paywalled"
+      "accessModel": "paywalled",
+      "domainAliases": [
+        "datebook.sfchronicle.com"
+      ]
     },
     "the-patriot-news": {
       "displayName": "The Patriot-News",
@@ -9937,10 +9907,12 @@
       "region": "us"
     },
     "buffalorising": {
-      "displayName": "Buffalorising",
+      "displayName": "Buffalo Rising",
       "tier": 3,
       "aliases": [
-        "buffalorising"
+        "buffalorising",
+        "buffalo-rising",
+        "buffalo rising"
       ],
       "domain": "buffalorising.com"
     },
