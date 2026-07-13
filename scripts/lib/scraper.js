@@ -85,6 +85,7 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
   // Playwright (headless, even with stealth) cannot solve it. BrightData goes first.
   'stagebuddy.com',     // WordPress blog — free Playwright works reliably
   'londontheatre.co.uk', // React SPA (Material-UI) — BD returns empty, Playwright renders JS
+  'bachtrack.com',      // review body (.pcm-walled-full) renders only in a real browser; BD/SB (even render_js) get a shell with meta description only. Verified Playwright renders full body 2026-07-13 (Met opera backfill)
 ]);
 
 // --- Domains where ScrapingBee MUST use render_js=true (JS-rendered content) ---
