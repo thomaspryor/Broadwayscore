@@ -25,10 +25,15 @@ const OPENING_HOT_DAYS = 2;
 // Just under the hourly cron interval so consecutive runs never skip.
 const OPENING_WINDOW_FRESHNESS_MS = 55 * 60 * 1000;
 const OPENING_WARM_FRESHNESS_MS = 3 * 60 * 60 * 1000;
+// Talkin' Broadway (and occasionally others) publish up to 24h before the
+// official opening (CLAUDE.md rule 14) — cover the eve-of-opening day too.
+const PRE_OPENING_GRACE_MS = 24 * 60 * 60 * 1000;
 
 function inOpeningPriorityWindow(show, now = Date.now()) {
-  return (show?.status !== 'closed')
-    && inOpeningWindow(show, now, OPENING_PRIORITY_WINDOW_DAYS);
+  if (show?.status === 'closed') return false;
+  if (inOpeningWindow(show, now, OPENING_PRIORITY_WINDOW_DAYS)) return true;
+  const opening = Date.parse(show?.openingDate);
+  return Number.isFinite(opening) && opening > now && (opening - now) <= PRE_OPENING_GRACE_MS;
 }
 
 // How long to skip a show after auditing it. Closed shows that came back clean

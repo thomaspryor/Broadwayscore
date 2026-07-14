@@ -26,9 +26,18 @@ test('opened-today show is in the opening priority window', () => {
   assert.equal(inOpeningPriorityWindow(openedToday, NOW), true);
 });
 
-test('pre-opening and month-old shows are not in the window', () => {
-  assert.equal(inOpeningPriorityWindow(preOpening, NOW), false);
+test('far-pre-opening and month-old shows are not in the window', () => {
+  assert.equal(inOpeningPriorityWindow(preOpening, NOW), false); // opens in 3 days
   assert.equal(inOpeningPriorityWindow(openedLastMonth, NOW), false);
+});
+
+test('show opening within 24h is prioritized (Talkin Broadway publishes early)', () => {
+  const opensTomorrow = { id: 'opens-tomorrow', status: 'previews', openingDate: new Date(NOW + 20 * 60 * 60 * 1000).toISOString().slice(0, 10) };
+  // date-only strings parse to midnight UTC; build one inside the 24h grace
+  const opensSoon = { id: 'opens-soon', status: 'previews', openingDate: new Date(NOW + 12 * 60 * 60 * 1000).toISOString() };
+  assert.equal(inOpeningPriorityWindow(opensSoon, NOW), true);
+  // pre-opening shows get the warm cadence, not the hot one
+  assert.equal(freshnessMsFor(opensSoon, { gaps: 0 }, { now: NOW }), OPENING_WARM_FRESHNESS_MS);
 });
 
 test('closed show never gets opening-window freshness even if opened recently', () => {
