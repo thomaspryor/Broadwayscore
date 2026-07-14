@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  buildImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks,
+  buildImplementerPrompt, buildDataImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks,
   cardCheckArgv, shouldThrottle, preflightVerdict, resolveOwnerEmail,
 } = require('./autonomous-run-core.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
@@ -21,6 +21,26 @@ test('implementer prompt carries card, ground rules, and the named check', () =>
   assert.match(p, /node --test scripts\/bsc-next\.test\.mjs/);
   assert.match(p, /Do NOT push/);
   assert.match(p, /Tier-1-allowed paths/);
+});
+
+// ── buildDataImplementerPrompt (Sprint 4) ───────────────────────────────────
+
+test('data-card prompt names the class-specific allowed path, not Tier-1 paths', () => {
+  const p = buildDataImplementerPrompt(
+    { name: 'Byline recovery: outlet--unknown entries...', priority: 'P1 Next', notes: 'fix bylines' },
+    {},
+    { repoKey: 'review-texts', dataClass: 'byline-recovery' },
+  );
+  assert.match(p, /CARD: Byline recovery/);
+  assert.match(p, /Class: byline-recovery — private repo: review-texts/);
+  assert.match(p, /criticName and file renames/);
+  assert.match(p, /Never hand-edit or locally rebuild reviews\.json/);
+  assert.doesNotMatch(p, /Tier-1-allowed paths/);
+});
+
+test('data-card prompt falls back to a generic path description for an unknown class', () => {
+  const p = buildDataImplementerPrompt({ name: 'X', notes: 'n' }, {}, { repoKey: 'scorecard-data', dataClass: undefined });
+  assert.match(p, /data\/\*\* only/);
 });
 
 // ── parseClaudeJson ─────────────────────────────────────────────────────────

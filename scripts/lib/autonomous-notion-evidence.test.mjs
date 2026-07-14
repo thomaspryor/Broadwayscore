@@ -14,7 +14,7 @@ test('round-trips branch, files, checkableDone, checks through the comment text'
   };
   const text = evidenceCommentText(evidence);
   assert.ok(text.startsWith(MARKER));
-  assert.deepEqual(parseEvidenceComment(text), evidence);
+  assert.deepEqual(parseEvidenceComment(text), { ...evidence, repoKey: null, dataClass: null, showIds: [] });
 });
 
 test('checkableDone defaults to null when absent', () => {
@@ -22,6 +22,30 @@ test('checkableDone defaults to null when absent', () => {
   const parsed = parseEvidenceComment(text);
   assert.equal(parsed.checkableDone, null);
   assert.deepEqual(parsed.checks, []);
+});
+
+test('Tier-2 evidence (Sprint 4) round-trips repoKey, dataClass, showIds', () => {
+  const evidence = {
+    branch: 'auto/byline-recovery-abc123',
+    files: ['hamilton-2015/nytg--austin-fimmano.json'],
+    checks: ['verify-review-recovery --show=hamilton-2015 --pre-merge: PASS'],
+    repoKey: 'review-texts',
+    dataClass: 'byline-recovery',
+    showIds: ['hamilton-2015'],
+  };
+  const parsed = parseEvidenceComment(evidenceCommentText(evidence));
+  assert.equal(parsed.repoKey, 'review-texts');
+  assert.equal(parsed.dataClass, 'byline-recovery');
+  assert.deepEqual(parsed.showIds, ['hamilton-2015']);
+});
+
+test('a Tier-1 (pre-Sprint-4) comment shape still parses — repoKey/dataClass/showIds default safely', () => {
+  // Simulates an OLD comment written before this field existed.
+  const legacyText = `${MARKER} ${JSON.stringify({ branch: 'auto/old-card', files: ['tests/a.test.mjs'], checkableDone: null, checks: [] })}`;
+  const parsed = parseEvidenceComment(legacyText);
+  assert.equal(parsed.repoKey, null);
+  assert.equal(parsed.dataClass, null);
+  assert.deepEqual(parsed.showIds, []);
 });
 
 test('parseEvidenceComment rejects non-marker, malformed JSON, and missing branch', () => {

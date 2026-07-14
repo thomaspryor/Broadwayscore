@@ -26,7 +26,8 @@ const os = require('os');
 const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
-const { triageCard, decide, orderQueue, isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
+const { triageCard, decide, orderQueue, isSafeCheckCommand, priorityRank } = require('./lib/autonomous-triage-core.js');
+const { classifyDataCard } = require('./lib/autonomous-eligibility.js');
 const { estimateUSD } = require('./lib/autonomous-budget.js');
 const ledger = require('./lib/autonomous-ledger.js');
 
@@ -235,6 +236,12 @@ async function main() {
     size: e.triage.size, checkableDone: e.triage.checkableDone,
   }));
 
+  // Tier-2 (Sprint 4): cards Tier-1 correctly skipped for touching data/, but
+  // whose class the deterministic predicate recognizes. Consumed by
+  // autonomous-run.js's data-card path (verified against the private repos'
+  // own verifier scripts, never checkableDone — see scripts/lib/autonomous-data-verify.js).
+  const dataPlan = buildDataPlan(entries);
+
   const queue = {
     generatedAt: new Date().toISOString(),
     mode: dryRun ? 'dry-run' : 'live',
@@ -248,8 +255,10 @@ async function main() {
       split: entries.filter(e => e.decision === 'split').length,
       skip: entries.filter(e => e.decision === 'skip').length,
       failed: entries.filter(e => e.decision === 'failed').length,
+      dataPlan: dataPlan.length,
     },
     plan,
+    dataPlan,
     entries,
   };
 
@@ -305,6 +314,43 @@ async function main() {
   }
 }
 
+// Tier-2 post-pass (Sprint 4): the Tier-1 LLM prompt only knows Tier-1 paths,
+// so every data-pipeline card correctly comes back eligible:false ("touches
+// data/") and lands in `decide()`'s 'skip' bucket. classifyDataCard() is a
+// deterministic, tag/title predicate (autonomous-eligibility.js) — no second
+// LLM call needed — but its `size` estimate is REUSED from the Tier-1 triage
+// response when one exists: size is explicitly independent of eligibility in
+// that prompt (a card can be well-scoped work that's simply out of Tier-1's
+// allowed paths), so re-asking the LLM would just re-derive the same number.
+// A pre-filter skip (deny-tag/human-action) never reaches the LLM at all —
+// 'M' is a deliberately mid conservative default for that rarer case, not a
+// data class's true complexity estimate.
+// A skip's reason distinguishes a POLICY exclusion (deny-tag, human-action
+// title, marketing/partnerships category — none of these are Tier-2-specific,
+// so a data card is still a fair Tier-2 candidate) from a CLAIM exclusion
+// (findClaimedTask in autonomous-triage-core.js: an interactive session
+// already has this card in_progress right now). Requeuing a claimed card as
+// a Tier-2 candidate would undo that protection and race a live session
+// (ship-check finding) — the prefix is triageCard's own exact wording, not a
+// free-text guess.
+const CLAIMED_IN_FLIGHT_RE = /^claimed in-flight/;
+
+function buildDataPlan(entries) {
+  const items = [];
+  for (const e of entries) {
+    if (e.decision !== 'skip' || !e.card || !e.card.id || e.transient) continue;
+    if (e.preFilter && CLAIMED_IN_FLIGHT_RE.test(e.preFilter.reason || '')) continue;
+    const cls = classifyDataCard(e.card);
+    if (!cls) continue;
+    const size = e.triage && e.triage.size ? e.triage.size : 'M';
+    items.push({ id: e.card.id, name: e.card.name, priority: e.card.priority, size, class: cls });
+  }
+  return items.sort((a, b) =>
+    priorityRank(a.priority) - priorityRank(b.priority) ||
+    ({ S: 0, M: 1, L: 2 }[a.size] ?? 9) - ({ S: 0, M: 1, L: 2 }[b.size] ?? 9) ||
+    String(a.name).localeCompare(String(b.name)));
+}
+
 function slim(card) {
   return {
     id: card.id, url: card.url, name: card.name, status: card.status,
@@ -319,4 +365,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { callSonnet, notionBrain, slim, MODEL, QUEUE_PATH };
+module.exports = { callSonnet, notionBrain, slim, buildDataPlan, MODEL, QUEUE_PATH };
