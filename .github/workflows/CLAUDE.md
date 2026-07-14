@@ -95,7 +95,7 @@ Structural workflow linting runs in `test.yml` (`lint-workflows` job). Shellchec
 
 | Workflow | Modifies review-texts | Rebuilds reviews.json | Notes |
 |----------|----------------------|----------------------|-------|
-| `rebuild-reviews.yml` | ❌ | ✅ | **PRIMARY sync** - daily + manual trigger. LLM enrichment moved to `enrich-reviews.yml` 2026-04-30. |
+| `rebuild-reviews.yml` | ✅ | ✅ | **PRIMARY sync** - daily + manual trigger. Pre-rebuild flag-setters (flag-wrong-production-by-date, cleanup-phantom-outlets, etc.) write review-texts, pushed via push-review-texts (line 375). LLM enrichment moved to `enrich-reviews.yml` 2026-04-30. |
 | `enrich-reviews.yml` | ✅ | ❌ | LLM enrichment of review-text flags (isNonReview, wrongProduction, wrongShow, criticName backfill). Every 6h. |
 | `review-refresh.yml` | ✅ | ✅ | Weekly extraction + rebuild |
 | `gather-reviews.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline, **dispatches deploy** |

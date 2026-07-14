@@ -63,7 +63,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { shouldTakeUrlOwnership } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview } = require('./lib/review-guards');
 const { isWithinPriorRun, hasDeclaredPriorRuns } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
@@ -2952,6 +2952,19 @@ function createReviewFile(showId, reviewData, options = {}) {
         return 'nonReviewPath';
       }
     } catch { /* malformed URL — let through for downstream handling */ }
+
+    // ROUNDUP URL GUARD: reject site-specific aggregator/roundup PAGES (e.g. BWW's
+    // /reviews/{slug} critics-average widget) at discovery time — the show-not-
+    // mentioned-recovery / serp-discovery path doesn't route through
+    // review-file-writer's Guard E1, so it needs its own check. Gated on
+    // outletId (not URL alone) via isRoundupPageAsReview so a review legitimately
+    // SOURCED from a roundup page under a different outlet still gets through —
+    // same policy the rebuild-time gate already applies (see isRoundupPageAsReview).
+    if (isRoundupPageAsReview({ url: reviewData.url, outletId: reviewData.outletId || normalizedOutletId })) {
+      const roundupReason = isRoundupUrl(reviewData.url).reason;
+      console.log(`    ✗ Skipping ${filename}: roundup URL (${roundupReason})`);
+      return 'roundupUrl';
+    }
   }
 
   // TOUR/REGIONAL GUARD: Reject regional BWW and local paper tour reviews
@@ -3721,7 +3734,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     lbo: { found: false, extracted: 0, skipped: false },
     serp: { calls: 0, hits: 0, skipped: false },
     wrongUrlRetry: { found: 0, retried: 0, fixed: 0, skipped: false },
-    rejections: { junkOutlet: 0, suspiciousOutlet: 0, nonBroadway: 0, tourReview: 0, crossMarketBroadway: 0, nonReviewPath: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, crossShowUrl: 0, domainMismatch: 0, aggregatorUrlMismatch: 0, nullUrl: 0 },
+    rejections: { junkOutlet: 0, suspiciousOutlet: 0, nonBroadway: 0, tourReview: 0, crossMarketBroadway: 0, nonReviewPath: 0, roundupUrl: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, crossShowUrl: 0, domainMismatch: 0, aggregatorUrlMismatch: 0, nullUrl: 0 },
     urlValidation: { checked: 0, nulled: 0 },
   };
 
