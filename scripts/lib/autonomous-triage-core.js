@@ -75,8 +75,13 @@ const REPO_ROOT = path.join(__dirname, '..', '..');
 // missing path is a fact about the filesystem, not a model mistake worth a
 // retry). Only meaningful for eligible verdicts — an ineligible card's check
 // never executes. tests/unit/<basename> is the one "obvious near-match" this
-// repo's layout actually produces (every *.test.mjs lives there); anything
-// else fails closed to ineligible rather than guessing further.
+// repo's layout actually produces (every *.test.mjs lives there) — but only
+// within the tests/ family: a missing scripts/*.test.mjs or docs/*.md path
+// must NOT be "corrected" against an unrelated tests/unit/ file that merely
+// shares a basename (ship-check finding — SAFE_CHECK_FORMS explicitly allows
+// scripts/ and docs/|memory/ targets too, so cross-directory guessing risks
+// silently validating the wrong file). Anything else fails closed to
+// ineligible rather than guessing further.
 function resolveCheckPaths(checkableDone, opts = {}) {
   const repoRoot = opts.repoRoot || REPO_ROOT;
   const paths = extractCheckPaths(checkableDone);
@@ -86,13 +91,13 @@ function resolveCheckPaths(checkableDone, opts = {}) {
   let anyCorrection = false;
   for (const p of paths) {
     if (exists(p)) continue;
-    const nearMatch = `tests/unit/${path.basename(p)}`;
-    if (nearMatch !== p && exists(nearMatch)) {
+    const nearMatch = p.startsWith('tests/') ? `tests/unit/${path.basename(p)}` : null;
+    if (nearMatch && nearMatch !== p && exists(nearMatch)) {
       corrected = corrected.replace(p, nearMatch);
       anyCorrection = true;
       continue;
     }
-    return { ok: false, reason: `checkableDone references a path that does not exist on disk: ${p} (tried near-match ${nearMatch})` };
+    return { ok: false, reason: `checkableDone references a path that does not exist on disk: ${p}${nearMatch ? ` (tried near-match ${nearMatch})` : ''}` };
   }
   return { ok: true, checkableDone: corrected, corrected: anyCorrection };
 }

@@ -135,6 +135,17 @@ test('resolveCheckPaths: tsc/lint forms carry no path args → pass through', ()
   assert.deepEqual(resolveCheckPaths('npx tsc --noEmit', { repoRoot: root }), { ok: true, checkableDone: 'npx tsc --noEmit' });
 });
 
+test('resolveCheckPaths: never guesses across directory families — a missing scripts/ path is not "corrected" against a same-basename tests/unit/ file', () => {
+  const root = mkFixtureRepo();
+  // foo.test.mjs exists at tests/unit/foo.test.mjs (from mkFixtureRepo), but
+  // the command names scripts/foo.test.mjs — a different, unrelated file
+  // that happens to share a basename. Must fail closed, not cross-correct.
+  const r = resolveCheckPaths('node --test scripts/foo.test.mjs', { repoRoot: root });
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /scripts\/foo\.test\.mjs/);
+  assert.doesNotMatch(r.reason, /tried near-match/);
+});
+
 test('resolveCheckPaths against the REAL repo tree: reproduces the exact card #171 incident', () => {
   // tests/review-write-guard.test.mjs never existed; the real file is
   // tests/unit/review-write-guard.test.mjs — this is the literal phantom
