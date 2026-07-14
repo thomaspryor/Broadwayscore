@@ -93,7 +93,12 @@ test('legacy AI research estimate is NOT a fallback when the model is floored', 
 });
 
 test('editorial keeps (Q3) are labeled, announced shows are not', () => {
-  // Sweeney Todd 2023 shape — owner editorial keep, no producer announcement.
+  // The flag alone decides — recoupedSource is prose and is never parsed.
+  // All three Q3 owner keeps (Sweeney Todd, Appropriate, Into the Woods)
+  // carry humanReviewedDesignation:true and none has a producer
+  // announcement, so all three must read "editorial assessment". The
+  // ship-check reviewers caught the earlier regex version rendering
+  // "Producers announced recoupment in 2022" for Into the Woods — false.
   const editorial = {
     ...base,
     recouped: true,
@@ -104,25 +109,26 @@ test('editorial keeps (Q3) are labeled, announced shows are not', () => {
   assert.equal(isEditorialRecoupment(editorial), true);
   assert.equal(getRecoupmentDisplayMode(editorial), 'announced');
 
-  // Appropriate shape — "No public announcement" variant.
+  // into-the-woods-2022 shape: trade listing, no announcement phrase —
+  // still editorial because the owner flagged it.
   assert.equal(
-    isEditorialRecoupment({ ...editorial, recoupedSource: 'No public announcement. Kept per owner review.' }),
+    isEditorialRecoupment({
+      ...editorial,
+      recoupedSource: 'Broadway Journal (Aug 25 2023) lists Into the Woods among 2022-23 commercial winners.',
+    }),
     true
   );
 
-  // into-the-woods-2022 shape: humanReviewedDesignation (date precision fix)
-  // but a real trade citation — NOT editorial.
-  const cited = {
-    ...base,
-    recouped: true,
-    humanReviewedDesignation: true,
-    recoupedSource: 'Broadway Journal (Aug 25 2023) lists Into the Woods among 2022-23 commercial winners.',
-  };
-  assert.equal(isEditorialRecoupment(cited), false);
-
-  // Plain announced show.
+  // Plain announced show (no flag) — announced copy.
   assert.equal(
     isEditorialRecoupment({ ...base, recouped: true, recoupedSource: 'Variety (Mar 2016)' }),
+    false
+  );
+
+  // Flag without recouped:true never labels (e.g. leopoldstadt-2022
+  // designation lock with recouped:false).
+  assert.equal(
+    isEditorialRecoupment({ ...base, recouped: false, humanReviewedDesignation: true }),
     false
   );
 });

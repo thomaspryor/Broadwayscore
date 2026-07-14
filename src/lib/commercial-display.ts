@@ -49,17 +49,19 @@ export function getRecoupmentDisplayMode(
 }
 
 /**
- * Editorial keeps (Q3 owner review) are recouped:true WITHOUT a producer
- * announcement — flagged humanReviewedDesignation:true and a recoupedSource
- * that states no announcement exists. The card labels these honestly
- * instead of implying producers announced.
+ * Editorial keeps (Q3 owner review) are recouped:true entries that survived
+ * owner review WITHOUT a clean producer announcement — flagged
+ * humanReviewedDesignation:true (Sweeney Todd, Appropriate, Into the Woods).
+ * The card labels these "Scorecard editorial assessment" instead of claiming
+ * producers announced. Keyed off the flag alone — recoupedSource is prose and
+ * must never be parsed for meaning; if a future announced show also carries
+ * the flag, the label under-claims (safe direction) rather than fabricating
+ * an announcement.
  */
 export function isEditorialRecoupment(commercial: ShowCommercial): boolean {
   return (
     commercial.recouped === true &&
-    commercial.humanReviewedDesignation === true &&
-    typeof commercial.recoupedSource === 'string' &&
-    /no (producer|public) announcement/i.test(commercial.recoupedSource)
+    commercial.humanReviewedDesignation === true
   );
 }
 
