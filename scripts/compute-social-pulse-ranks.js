@@ -39,7 +39,7 @@ function parseArgs(argv) {
 }
 
 /**
- * Reads all data/social-pulse/*.json files (skipping _budget.json and any
+ * Reads all data/social-pulse/*.json files (skipping _meta.json and any
  * other leading-underscore metadata files). Returns parsed objects with
  * the showId attached.
  */
@@ -105,11 +105,17 @@ const MIN_SHOWS_FOR_RANK_DISPLAY = 10;
  * hides the "#N/M" line. Tier still gets recomputed regardless.
  */
 function assignRanksAndTiers(groups) {
+  // Ranking strength: effectiveVolume (schema v3 Pulse Index — the
+  // relevance-adjusted uncapped-counter blend) when the file has it,
+  // legacy capped-sample volume otherwise. Mixed v2/v3 markets only occur
+  // mid-migration; after the first v3 run every file has effectiveVolume.
+  const strength = (d) => (Number.isFinite(d.effectiveVolume) ? d.effectiveVolume : (d.volume || 0));
+
   for (const [, entries] of groups) {
     // Sort by composite (blended) score, not raw volume
     entries.sort((a, b) => {
-      const aScore = computeCompositeScore(a.data.volume || 0, a.data.positivePct || 0);
-      const bScore = computeCompositeScore(b.data.volume || 0, b.data.positivePct || 0);
+      const aScore = computeCompositeScore(strength(a.data), a.data.positivePct || 0);
+      const bScore = computeCompositeScore(strength(b.data), b.data.positivePct || 0);
       return bScore - aScore;
     });
 
@@ -117,6 +123,7 @@ function assignRanksAndTiers(groups) {
     const peerStats = computePeerStats(
       entries.map((e) => ({
         volume: e.data.volume || 0,
+        effectiveVolume: strength(e.data),
         positivePct: e.data.positivePct || 0,
       })),
     );
@@ -141,13 +148,14 @@ function assignRanksAndTiers(groups) {
       // Re-tier using peer-relative rules
       entry.newTier = derivePeerTier({
         volume: entry.data.volume || 0,
+        effectiveVolume: strength(entry.data),
         positivePct: entry.data.positivePct || 0,
         peerStats,
       });
 
       // Composite score is useful as a debug field too
       entry.newCompositeScore = computeCompositeScore(
-        entry.data.volume || 0,
+        strength(entry.data),
         entry.data.positivePct || 0,
       );
     });

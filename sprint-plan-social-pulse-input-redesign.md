@@ -1,8 +1,25 @@
 # Sprint Plan: Social Pulse Input Redesign (Replace Apify)
 
-**Status:** Design — not yet implemented
+**Status:** IMPLEMENTED (Option 1, revised per 6-reviewer /plan-review) — this PR
 **Date:** 2026-07-14
 **Owner card:** Notion `39d637c5-416f-81f1-89a4-dd21d33ab243`
+
+## Post-review revisions (what changed from the original design below)
+
+The 6-reviewer plan-review (GPT-4o, Gemini, 4 Claude lenses) drove these changes — all implemented:
+
+1. **Windowed Bluesky counts.** Unwindowed `hitsTotal` is an ALL-TIME count (verified: MHE all-time 1015 vs 7-day 2) — it would have measured show age, not buzz. All queries pass `since` (7-day window). Consequence: Bluesky weekly volumes are small (Hamilton=44), so it's a 0.2-weight signal, not a headline source.
+2. **BSKY secrets are REQUIRED in CI** (`BSKY_HANDLE` + `BSKY_APP_PASSWORD`, fail-fast step in the workflow). The public AppView 403s from GitHub datacenter IPs; an "optional" fallback would be decorative and the run would silently lose Bluesky fleet-wide. **ACTION BEFORE FIRST CI RUN: create a Bluesky app password and add both GH secrets.**
+3. **Counters are relevance-scaled.** Raw query-hit counts never pass the LLM filter, so common-word titles (Chicago, Six, Cats) would rank on garbage. Each platform's counter is scaled by its classified-sample relevance rate (verified live: Chicago 8/32 relevant → effVol discounted ~2× vs Hamilton).
+4. **Fleet coverage guards** (exit 6): >50% shows missing the Bluesky counter, or >90% with Reddit=0, aborts the run instead of publishing an index silently reweighted onto surviving signals. Plus a per-show weight-coverage floor (`MIN_WEIGHT_COVERAGE=0.5`) so a wiki-only show can't score its raw pageviews.
+5. **Relativization happens once.** Fetch writes raw counters; `computeEffectiveVolume` (weighted geometric blend, log-scaled, frozen `SIGNAL_WEIGHTS` map with renormalization) produces mention-scale ranking strength; the existing composite → `derivePeerTier` → ranks pass is unchanged. No percentile-on-percentile.
+6. **Displayed volume stays honest.** Card `v` = true weekly mention total (Reddit+Bluesky+X counts, "N mentions this week"); ranking uses `effectiveVolume`; sentiment bar hides below 10 opinion-bearing sample posts (`os`); methodology tooltip on the card footer.
+7. **Names/shapes per design review:** no "Buzz Index" (collides with Audience Buzz) — it's effectiveVolume/Pulse everywhere; `apify-fetchers.js` → `social-pulse-sources.js`; shared `searchBlueskyPosts` primitive in `brand-mention-sources.js` (brand monitor contract untouched); counters in a separate `c:{}` schema key (the `xv` precedent); Wikipedia mapping in `data/wikipedia-title-map.json` (dtli-slug-map pattern), NOT shows.json; flat `scripts/lib/wikipedia-pageviews.js`.
+8. **Cadence tiering deleted** (biweekly tail would poison same-week peer percentiles; free sources make it pointless anyway). Weekly for all running shows; workflow timeout 300→90 min.
+9. **v2→v3 baseline reset is explicit:** prior files with `_v<3` are ignored for baseline/WoW; peer tiers work week 1; WoW returns week 2. `_budget.json` (Apify cap machinery) replaced by `_meta.json` run stamp (health-check freshness updated).
+10. **Known limitations (accepted):** Reddit's counter caps at 100/query (rarely binds); shared Wikipedia articles across productions (Hadestown WE + Broadway) and film adaptations (Wicked) contaminate the 0.15-weight wiki signal; X counter dies whenever X finishes its pay-per-use migration (weights renormalize, level shifts uniformly, peer tiers unaffected).
+
+**First-run checklist (after merge):** add BSKY secrets → `gh workflow run update-social-pulse.yml` (or wait for Monday 06:00 UTC) → review tier distribution + top-10 vs the last Apify ranking + recalibrate `MIN_TRENDING_VOLUME=50` if /trending thins out → after 2 sane weekly runs, cancel the Apify subscription.
 
 ## Why
 
