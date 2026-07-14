@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isRoundupUrl, shouldSkipRoundupAudit } = require('./lib/review-guards');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
@@ -79,9 +80,12 @@ if (!APPLY) {
 
 let written = 0;
 for (const item of toFlag) {
-  item.data.isRoundupArticle = true;
-  item.data.roundupArticleReason = 'auto: sweep — URL matches BWW /reviews/ critics-aggregation page pattern (Notion 39d637c5-416f-81eb)';
-  fs.writeFileSync(item.filePath, JSON.stringify(item.data, null, 2));
+  // safeWriteReview re-reads the file fresh at write time and merges — protects
+  // against a concurrent CI commit touching this file between scan and apply.
+  safeWriteReview(item.filePath, {
+    isRoundupArticle: true,
+    roundupArticleReason: 'auto: sweep — URL matches BWW /reviews/ critics-aggregation page pattern (Notion 39d637c5-416f-81eb)',
+  });
   written++;
 }
 console.log(`\nFlagged ${written} file(s).`);

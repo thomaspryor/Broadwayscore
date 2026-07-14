@@ -35,7 +35,7 @@ const {
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
-const { pickRerouteTarget, shouldSkipRoundupAudit } = require('./review-guards');
+const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview } = require('./review-guards');
 const { detectRoundupDigest } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
@@ -407,7 +407,10 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // IS a BWW-authored review). Ingested as a 13th T1 review on
   // the-whoopi-monologues-off-broadway-2026 (2026-07-14): score came from the
   // average widget, criticName from a quoted outlet's JSON-LD Person markup.
-  if (input.url && /broadwayworld\.com\/reviews\/[^/?#]+\/?(?:[?#]|$)/i.test(input.url)) {
+  // Gated on outletId (via isRoundupPageAsReview), not URL alone, so a review
+  // legitimately SOURCED from this page under a different outlet still writes —
+  // same policy the rebuild-time gate already applies to WOS/Stage/LBO/WET.
+  if (isRoundupPageAsReview({ url: input.url, outletId })) {
     fields.isRoundupArticle = true;
     fields.roundupArticleReason = 'auto: URL matches BWW /reviews/ critics-aggregation page pattern';
   }
