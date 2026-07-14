@@ -47,7 +47,8 @@
     "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "proof-2026/playbill--unknown.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -572,7 +573,16 @@
     "avenue-q-west-end-2026/backstage--david-sheward.json",
     "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
     "avenue-q-west-end-2026/talkinbroadway--unknown.json",
-    "avenue-q-west-end-2026/telegraph--marianka-swain.json"
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+    "avenue-q-west-end-2026/theupcoming--sunny-morgan.json",
+    "avenue-q-west-end-2026/valentine-dsides--unknown.json",
+    "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json",
+    "proof-2026/the-globe-and-mail--j-kelly-nestruck.json",
+    "proof-2026/toronto-star--richard-ouzounian.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--brent-lang.json",
+    "titanique-2026/nytg--gillian-russo.json",
+    "titanique-2026/variety--marc-malkin.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -613,12 +623,14 @@
       "the-balusters-2026/playbill--unknown.json",
       "the-whoopi-monologues-off-broadway-2026/broadwayworld--luka-vonier.json",
       "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "proof-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-whoopi-monologues-off-broadway-2026/wsj--unknown.json",
-      "the-whoopi-monologues-off-broadway-2026/wsj--unknown.json"
+      "the-whoopi-monologues-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/titanique-2026/variety--marc-malkin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -643,6 +655,18 @@
     ]
   },
   "startTime": "2026-07-14T09:49:09.110Z",
-  "lastProcessed": "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-  "log": []
+  "lastProcessed": "titanique-2026/variety--marc-malkin.json",
+  "log": [
+    {
+      "t": "2026-07-14T13:25:13.351Z",
+      "event": "bb-session",
+      "session": "dbd42959",
+      "url": "https://variety.com/2026/tv/columns/dance-moms-parody-musical-titanique-tye-blue"
+    },
+    {
+      "t": "2026-07-14T13:25:14.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
