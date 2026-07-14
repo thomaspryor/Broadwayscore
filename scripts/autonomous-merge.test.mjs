@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const {
-  DATA_REPO_URLS, cloneDataRepo, verifyRebaseData, countPriorMerges,
+  DATA_REPO_URLS, cloneDataRepo, verifyRebaseData, countPriorMerges, redactSecrets,
 } = require('./autonomous-merge.js');
 
 function git(cwd, args) {
@@ -99,21 +99,48 @@ test('verifyRebaseData: refuses when the branch cannot rebase cleanly onto origi
 });
 
 test('verifyRebaseData: review-texts class runs one verify-review-recovery --pre-merge per touched show', () => {
-  const { clone } = makeFixtureRepo({ 'hamilton-2015/nytg--fixture.json': '{"showId":"hamilton-2015"}' });
+  // assignedScore is required — a live-fire dispatch (2026-07-14) found
+  // verify-review-recovery.js Step 4 (LLM scoring) fails any fixture that has
+  // content but no score, which made an earlier version of this test flake
+  // between {ok:true} and {ok:false} depending on unrelated live-repo state.
+  // With a score present, steps 1-4 are deterministic file-level checks (no
+  // network, no live reviews.json dependency) so this asserts a fixed PASS.
+  const { clone } = makeFixtureRepo({
+    'hamilton-2015/nytg--fixture.json': JSON.stringify({ showId: 'hamilton-2015', assignedScore: 75, contentTier: 'complete', fullText: 'x'.repeat(200) }),
+  });
   git(clone, ['checkout', '-b', 'auto/fixture-byline-recovery']);
-  fs.writeFileSync(path.join(clone, 'hamilton-2015/nytg--fixture.json'), '{"showId":"hamilton-2015","criticName":"Fixture Critic"}');
+  fs.writeFileSync(path.join(clone, 'hamilton-2015/nytg--fixture.json'), JSON.stringify({ showId: 'hamilton-2015', criticName: 'Fixture Critic', assignedScore: 75, contentTier: 'complete', fullText: 'x'.repeat(200) }));
   git(clone, ['add', '-A']);
   git(clone, ['commit', '-q', '-m', 'byline recovery fixture edit']);
 
   const result = verifyRebaseData(clone, 'review-texts', 'byline-recovery', {});
-  // hamilton-2015 is a real show in this repo's public data; --pre-merge
-  // skips the rebuild-inclusion checks that would otherwise require a real
-  // reviews.json, so this only exercises steps 1-4 (file-level integrity) —
-  // the same contract scripts/autonomous-run.js's attemptDataCard() already
-  // relies on. We assert the plumbing RAN (a verdict came back), not a fixed
-  // pass/fail, since step 1-4 outcomes depend on the live repo's fixtures.
-  assert.ok(result.ok === true || typeof result.reason === 'string');
+  assert.equal(result.ok, true, JSON.stringify(result));
   assert.deepEqual(result.showIds, ['hamilton-2015']);
+});
+
+test('redactSecrets strips a live REVIEW_TEXTS_TOKEN out of any error text before it can reach a log or Notion note', () => {
+  const prior = process.env.REVIEW_TEXTS_TOKEN;
+  process.env.REVIEW_TEXTS_TOKEN = 'ghp_supersecrettoken123';
+  try {
+    const msg = 'Command failed: git clone https://x-access-token:ghp_supersecrettoken123@github.com/thomaspryor/broadway-review-texts.git /tmp/x';
+    const redacted = redactSecrets(msg);
+    assert.ok(!redacted.includes('ghp_supersecrettoken123'));
+    assert.match(redacted, /\*\*\*REDACTED\*\*\*/);
+  } finally {
+    if (prior === undefined) delete process.env.REVIEW_TEXTS_TOKEN;
+    else process.env.REVIEW_TEXTS_TOKEN = prior;
+  }
+});
+
+test('redactSecrets is a no-op when REVIEW_TEXTS_TOKEN is unset (never throws on a missing env var)', () => {
+  const prior = process.env.REVIEW_TEXTS_TOKEN;
+  delete process.env.REVIEW_TEXTS_TOKEN;
+  try {
+    assert.equal(redactSecrets('plain error text'), 'plain error text');
+    assert.equal(redactSecrets(null), '');
+  } finally {
+    if (prior !== undefined) process.env.REVIEW_TEXTS_TOKEN = prior;
+  }
 });
 
 test('countPriorMerges scopes the oscillation grep to the given cwd, not the main repo', () => {

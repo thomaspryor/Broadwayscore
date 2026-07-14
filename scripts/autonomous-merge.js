@@ -102,12 +102,39 @@ const DATA_REPO_URLS = {
 // against an out-of-date origin/main for a repo other workflows commit to
 // every ~30min. Mirrors the token-embed-in-remote-url pattern push-core-data
 // and mirror-data-to-gitlab.yml already use for these same two repos.
+// Redacts an embedded PAT out of an error message before it reaches a log or
+// a Notion outcome note. Node's execFileSync puts the FULL argv (including a
+// literal token in a clone/remote-set-url URL) into err.message on failure —
+// confirmed live (ship-check finding, 2026-07-14): "Command failed: git
+// clone https://x-access-token:<TOKEN>@github.com/..." — git's own stderr on
+// an auth failure can also embed the credentialed URL. Applied at every exit
+// point that could carry a raw error (the top-level fatal handler, and any
+// Notion outcome note built from a caught error), not just inside
+// cloneDataRepo, since the token stays live on the clone's remote for the
+// rest of the run (fetch/push errors can surface it too).
+function redactSecrets(text) {
+  const token = process.env.REVIEW_TEXTS_TOKEN;
+  const s = String(text == null ? '' : text);
+  return token ? s.split(token).join('***REDACTED***') : s;
+}
+
 function cloneDataRepo(repoKey, token) {
   const url = DATA_REPO_URLS[repoKey];
   if (!url) throw new Error(`cloneDataRepo: unknown repoKey "${repoKey}"`);
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), `auto-merge-data-${repoKey}-`));
   const authedUrl = url.replace('https://', `https://x-access-token:${token}@`);
-  execFileSync('git', ['clone', authedUrl, dir], { stdio: ['ignore', 'pipe', 'pipe'] });
+  try {
+    // --filter=blob:none (partial clone): keeps the FULL commit graph — the
+    // oscillation breaker (countPriorMerges) greps origin/main history for a
+    // trailer and would go blind past a shallow --depth cutoff — while
+    // deferring file *content* fetch to on-demand. review-texts is a 39k-file
+    // private repo; a plain full clone hung past a 2-minute timeout live
+    // (ship-check finding), where a blob:none clone of the same repo
+    // completed in ~40s with identical history depth.
+    execFileSync('git', ['clone', '--filter=blob:none', authedUrl, dir], { stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (err) {
+    throw new Error(redactSecrets(err.message));
+  }
   git(['remote', 'set-url', 'origin', authedUrl], { cwd: dir });
   // A fresh clone has no committer identity — `git rebase` needs one even on
   // a clean fast-forward replay (no conflicts), unlike a plain checkout.
@@ -257,7 +284,7 @@ function verifyRebaseData(dir, repoKey, cls, evidence) {
   try { git(['rebase', 'origin/main'], { cwd: dir }); }
   catch (err) {
     gitOrNull(['rebase', '--abort'], { cwd: dir });
-    return { ok: false, reason: `branch would not rebase cleanly onto ${repoKey}'s origin/main: ${String(err.message).slice(0, 300)}` };
+    return { ok: false, reason: `branch would not rebase cleanly onto ${repoKey}'s origin/main: ${redactSecrets(String(err.message).slice(0, 300))}` };
   }
   const files = git(['diff', '--name-only', 'origin/main...HEAD'], { cwd: dir }).trim().split('\n').filter(Boolean);
   if (!files.length) return { ok: false, reason: 'rebased diff is empty — nothing to merge' };
@@ -279,7 +306,7 @@ function verifyRebaseData(dir, repoKey, cls, evidence) {
     try {
       execFileSync(v.argv[0], v.argv.slice(1), { cwd: scratchRoot, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8', env });
     } catch (err) {
-      return { ok: false, reason: `${v.name}: ${String(err.stderr || err.stdout || err.message).slice(0, 400)}` };
+      return { ok: false, reason: `${v.name}: ${redactSecrets(String(err.stderr || err.stdout || err.message).slice(0, 400))}` };
     }
   }
   return { ok: true, files, showIds };
@@ -522,7 +549,7 @@ async function approveDataCard(cardId, branch, card, evidence) {
     try {
       git(['push', 'origin', 'main'], { cwd: dir });
     } catch (err) {
-      if (attempt === MAX_MERGE_ATTEMPTS) { reverifyFail(`push to ${repoKey} failed after a clean fast-forward merge: ${String(err.message).slice(0, 300)}`); return; }
+      if (attempt === MAX_MERGE_ATTEMPTS) { reverifyFail(`push to ${repoKey} failed after a clean fast-forward merge: ${redactSecrets(String(err.message).slice(0, 300))}`); return; }
       console.error(`[merge] attempt ${attempt} push race on ${repoKey} — retrying`);
       git(['checkout', 'auto-merge-work'], { cwd: dir });
       continue;
@@ -546,40 +573,62 @@ async function revertDataCard(cardId, evidence) {
   }
 
   const dir = cloneDataRepo(repoKey, token);
-  git(['fetch', 'origin', 'main'], { cwd: dir });
   const trailer = oscillationTrailerFor(cardId);
-  const mergeSha = (gitOrNull(['log', '--fixed-strings', '--grep', trailer, '--format=%H', '-1', 'origin/main'], { cwd: dir }) || '').trim();
-  if (!mergeSha) {
-    console.error(`[merge] REVERT FAILED (data/${repoKey}): no commit on origin/main carries "${trailer}" — cannot safely locate the merge to revert`);
-    process.exitCode = 1;
-    return;
-  }
-  const mergeMsg = git(['log', '-1', '--format=%B', mergeSha], { cwd: dir });
-  const baseSha = parseBaseTrailer(mergeMsg);
-
-  git(['checkout', 'main'], { cwd: dir });
-  git(['reset', '--hard', 'origin/main'], { cwd: dir });
-  let revertSha;
-  try {
-    if (baseSha && gitOrNull(['cat-file', '-e', baseSha], { cwd: dir })) {
-      git(['revert', '--no-commit', `${baseSha}..${mergeSha}`], { cwd: dir });
-      git(['commit', '-m', `Revert autonomous merge for card ${cardId} (${baseSha.slice(0, 7)}..${mergeSha.slice(0, 7)})`], { cwd: dir });
-    } else {
-      console.error(`[merge] WARN no valid Auto-merge-base trailer found on ${mergeSha} (data/${repoKey}) — falling back to single-commit revert`);
-      git(['revert', '--no-edit', mergeSha], { cwd: dir });
+  // Retried, unlike a single unguarded push (ship-check finding, 2026-07-14):
+  // these private repos take commits from ~200 other automated pipelines
+  // roughly every 30 minutes, so a race between our reset+revert and the
+  // push is plausible, not theoretical — the same reasoning that already
+  // gates approveDataCard's push behind MAX_MERGE_ATTEMPTS. On a push race,
+  // refetch and re-derive everything (mergeSha/baseSha/the revert commit)
+  // against the NEW origin/main rather than retrying a stale push.
+  for (let attempt = 1; attempt <= MAX_MERGE_ATTEMPTS; attempt++) {
+    git(['fetch', 'origin', 'main'], { cwd: dir });
+    const mergeSha = (gitOrNull(['log', '--fixed-strings', '--grep', trailer, '--format=%H', '-1', 'origin/main'], { cwd: dir }) || '').trim();
+    if (!mergeSha) {
+      console.error(`[merge] REVERT FAILED (data/${repoKey}): no commit on origin/main carries "${trailer}" — cannot safely locate the merge to revert`);
+      process.exitCode = 1;
+      return;
     }
-    revertSha = git(['rev-parse', 'HEAD'], { cwd: dir }).trim();
-  } catch (err) {
-    gitOrNull(['revert', '--abort'], { cwd: dir });
-    console.error(`[merge] REVERT FAILED (data/${repoKey}): reverting ${mergeSha} conflicted: ${String(err.message).slice(0, 300)}`);
-    process.exitCode = 1;
+    const mergeMsg = git(['log', '-1', '--format=%B', mergeSha], { cwd: dir });
+    const baseSha = parseBaseTrailer(mergeMsg);
+
+    git(['checkout', 'main'], { cwd: dir });
+    git(['reset', '--hard', 'origin/main'], { cwd: dir });
+    let revertSha;
+    try {
+      if (baseSha && gitOrNull(['cat-file', '-e', baseSha], { cwd: dir })) {
+        git(['revert', '--no-commit', `${baseSha}..${mergeSha}`], { cwd: dir });
+        git(['commit', '-m', `Revert autonomous merge for card ${cardId} (${baseSha.slice(0, 7)}..${mergeSha.slice(0, 7)})`], { cwd: dir });
+      } else {
+        console.error(`[merge] WARN no valid Auto-merge-base trailer found on ${mergeSha} (data/${repoKey}) — falling back to single-commit revert`);
+        git(['revert', '--no-edit', mergeSha], { cwd: dir });
+      }
+      revertSha = git(['rev-parse', 'HEAD'], { cwd: dir }).trim();
+    } catch (err) {
+      gitOrNull(['revert', '--abort'], { cwd: dir });
+      console.error(`[merge] REVERT FAILED (data/${repoKey}): reverting ${mergeSha} conflicted: ${redactSecrets(String(err.message).slice(0, 300))}`);
+      process.exitCode = 1;
+      return;
+    }
+
+    try {
+      git(['push', 'origin', 'main'], { cwd: dir });
+    } catch (err) {
+      if (attempt === MAX_MERGE_ATTEMPTS) {
+        console.error(`[merge] REVERT FAILED (data/${repoKey}): push failed after ${MAX_MERGE_ATTEMPTS} attempts (${repoKey}'s main kept advancing during the revert window): ${redactSecrets(String(err.message).slice(0, 300))}`);
+        process.exitCode = 1;
+        return;
+      }
+      console.error(`[merge] attempt ${attempt} revert push race on ${repoKey} — retrying against fresh origin/main`);
+      continue;
+    }
+
+    transition('merged', 'tap.revert');
+    notionUpdate(cardId, ['--auto', 'reverted', '--status', 'Not started', '--outcome', buildRevertOutcomeNote({ revertSha, mergeSha })]);
+    console.log(`[merge] REVERTED card ${cardId} (data/${repoKey}): ${mergeSha} → ${revertSha}`);
+    if (repoKey === 'review-texts') dispatchRebuildFast(cardId);
     return;
   }
-  git(['push', 'origin', 'main'], { cwd: dir });
-  transition('merged', 'tap.revert');
-  notionUpdate(cardId, ['--auto', 'reverted', '--status', 'Not started', '--outcome', buildRevertOutcomeNote({ revertSha, mergeSha })]);
-  console.log(`[merge] REVERTED card ${cardId} (data/${repoKey}): ${mergeSha} → ${revertSha}`);
-  if (repoKey === 'review-texts') dispatchRebuildFast(cardId);
 }
 
 async function main() {
@@ -596,10 +645,11 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch(err => { console.error(`[merge] fatal: ${err.message}`); process.exit(1); });
+  main().catch(err => { console.error(`[merge] fatal: ${redactSecrets(err.message)}`); process.exit(1); });
 }
 
 module.exports = {
   approve, revert, verifyRebase, countPriorMerges, runChecks,
   approveDataCard, revertDataCard, verifyRebaseData, cloneDataRepo, dispatchRebuildFast, DATA_REPO_URLS,
+  redactSecrets,
 };
