@@ -258,6 +258,14 @@ on:
       # (workflow hygiene + lint + colocated batches), not ZERO coverage.
       - 'scripts/lib/run-budget.js'
       - 'scripts/lib/run-budget.test.mjs'
+      # Gap-audit freshness/ordering policy (opening-week shows re-audit every
+      # hourly run and sort ahead of the back-catalogue grind — Whoopi
+      # Monologues NYT-review starvation, 2026-07-14). Colocated
+      # scripts/lib/*.test.mjs step covers the test; audit-show-review-gap.js
+      # is path-listed so a solo edit still triggers CI.
+      - 'scripts/lib/gap-audit-freshness.js'
+      - 'scripts/lib/gap-audit-freshness.test.mjs'
+      - 'scripts/audit-show-review-gap.js'
       # Reddit audience-buzz contamination filters (generic-title / roundup guard).
       # Colocated scripts/lib/*.test.mjs step covers reddit-post-filters.test.mjs;
       # without these entries a solo edit triggers ZERO CI (allow-list gate).
