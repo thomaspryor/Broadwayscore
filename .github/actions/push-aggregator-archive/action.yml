@@ -39,12 +39,22 @@ runs:
         # snapshot baseline but the destination already differs (i.e. exactly
         # the concurrent-push case this fix exists to protect), it deletes
         # the destination file outright instead of leaving it alone.
+        #
+        # --allow-delete: unlike push-core-data's core files, data/aggregator-
+        # archive/ is entirely gitignored in the public repo (0 tracked files),
+        # so there is no `git checkout -- .` collateral-damage vector — a file
+        # missing from data/ here always means THIS run deleted it. That matters
+        # because scripts/lib/lbo-roundup-discover.js quarantines a bad archive
+        # page by renaming it to `.mismatch` on validation failure; without
+        # delete propagation the stale file would never leave the private repo
+        # and would keep resurrecting on every checkout, silently defeating the
+        # quarantine (adversarial review finding, 2026-07-14).
         mkdir -p /tmp/aggregator-archive-checkout/aggregator-archive
         if [ ! -d "/tmp/aggregator-archive-snapshot" ]; then
-          echo "::warning::/tmp/aggregator-archive-snapshot missing — cannot detect workflow-modified files; falling back to copy-all (may revert concurrent data pushes). Ensure checkout-aggregator-archive ran in this job."
-          cp -r data/aggregator-archive/. /tmp/aggregator-archive-checkout/aggregator-archive/ 2>/dev/null || true
+          echo "::warning::/tmp/aggregator-archive-snapshot missing — cannot detect workflow-modified files; falling back to copy-all with deletion (may revert concurrent data pushes). Ensure checkout-aggregator-archive ran in this job."
+          rsync -a --delete data/aggregator-archive/ /tmp/aggregator-archive-checkout/aggregator-archive/
         else
-          bash scripts/lib/sync-changed-files.sh \
+          bash scripts/lib/sync-changed-files.sh --allow-delete \
             data/aggregator-archive \
             /tmp/aggregator-archive-snapshot \
             /tmp/aggregator-archive-checkout/aggregator-archive
