@@ -25,8 +25,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { selectRows, updateRows } = require('./lib/supabase-service-rest.js');
-const { findProductionsForShow, findShowsByTitle, getObject, sleep } = require('./lib/mezzanine-parse-client.js');
+const { selectRows, updateRows, deleteRows } = require('./lib/supabase-service-rest.js');
+const { findProductionsForShow, findShowsByTitle, getObject, queryParse, sleep } = require('./lib/mezzanine-parse-client.js');
 const { productionToDiaryEntry, buildDiarySlug } = require('./lib/mezzanine-classify.js');
 const { normalizeTitle } = require('./lib/title-match.js');
 
@@ -91,7 +91,12 @@ async function resolveRow(row, ctx) {
     if (!show) return { outcome: 'no-show' };
     productions = await findProductionsForShow(row.mezz_show_id);
   } else {
-    const normalized = normalizeTitle(row.title).replace(/\s+/g, '');
+    // Mezzanine's searchableName field keeps a single space between words
+    // (verified live 2026-07-14 while building card 174: 'cocktailmagique'
+    // finds 0 shows, 'cocktail magique' finds 10) — stripping all whitespace
+    // here silently broke every multi-word Show Score title resolution
+    // since #170 shipped.
+    const normalized = normalizeTitle(row.title);
     if (!normalized) return { outcome: 'no-title' };
     const candidateShows = await findShowsByTitle(normalized);
     if (candidateShows.length === 0) return { outcome: 'no-match' };
@@ -124,6 +129,42 @@ async function resolveRow(row, ctx) {
   ctx.existingMezzIds.add(entry.mezzanineId);
 
   return { outcome: 'resolved', showId: slug };
+}
+
+/**
+ * Drain user_show_stubs (card 174 Phase 2): a live-search "add this show"
+ * click already wrote its id/title/venue to a stub row for instant
+ * rendering. This turns it into a permanent diary-shows.json entry by
+ * re-fetching the Production from Mezzanine (fresh ratingsCount/averageRating
+ * for tierSearchResults ranking, rather than trusting client-supplied
+ * numbers) and reusing the SAME id the stub was created with — any
+ * review/watchlist row a user already wrote against that id keeps resolving
+ * after promotion. Mutates `ctx` the same way resolveRow does.
+ */
+async function drainStub(row, ctx) {
+  if (ctx.existingMezzIds.has(row.mezz_prod_id)) {
+    return { outcome: 'already-cataloged' }; // another row/import already added this production
+  }
+  const res = await queryParse('Production', {
+    where: { objectId: row.mezz_prod_id },
+    include: 'show,theater',
+    limit: 1,
+    _method: 'GET',
+  });
+  const production = res.results?.[0];
+  if (!production) return { outcome: 'no-production' };
+
+  const entry = productionToDiaryEntry(production);
+  if (!entry) return { outcome: 'broadway-skip' }; // defensive — mezzanine-search already filters these out
+
+  entry.id = row.id;
+  entry.slug = row.id;
+
+  ctx.diaryShows.push(entry);
+  ctx.usedSlugs.add(entry.id);
+  ctx.existingMezzIds.add(entry.mezzanineId);
+
+  return { outcome: 'resolved' };
 }
 
 async function main() {
@@ -190,13 +231,41 @@ async function main() {
     await sleep(200); // be polite to theaterdiary.com
   }
 
+  stats.stubsDrained = 0;
+  stats.stubsSkipped = 0;
+  if (!authFailed) {
+    const stubs = await selectRows('user_show_stubs', 'select=*&order=created_at.asc&limit=200');
+    console.log(`\nFetched ${stubs.length} pending user_show_stubs row(s)\n`);
+    for (const row of stubs) {
+      try {
+        const result = await drainStub(row, ctx);
+        if (verbose) console.log(`  [stub ${row.id}] -> ${result.outcome}`);
+        if (result.outcome === 'resolved' || result.outcome === 'already-cataloged') {
+          stats.stubsDrained++;
+          if (!dryRun) await deleteRows('user_show_stubs', `id=eq.${encodeURIComponent(row.id)}`);
+        } else {
+          stats.stubsSkipped++; // left in place — retried next run, never silently dropped
+        }
+      } catch (err) {
+        stats.error++;
+        console.error(`  [stub ${row.id}] ERROR: ${err.message}`);
+        if (err.authFailed) {
+          console.error('AUTH_FAILURE: Mezzanine session token expired.');
+          authFailed = true;
+          break;
+        }
+      }
+      await sleep(200);
+    }
+  }
+
   console.log('\n=== Stats ===');
   console.log(JSON.stringify(stats, null, 2));
 
-  if (stats.resolved > 0 && !dryRun) {
+  if ((stats.resolved > 0 || stats.stubsDrained > 0) && !dryRun) {
     const output = { shows: diaryShows, lastUpdated: new Date().toISOString() };
     fs.writeFileSync(diaryShowsPath, JSON.stringify(output, null, 2));
-    console.log(`\nWrote ${diaryShowsPath} (${diaryShows.length} total shows, +${stats.resolved} new)`);
+    console.log(`\nWrote ${diaryShowsPath} (${diaryShows.length} total shows, +${stats.resolved} resolved, +${stats.stubsDrained} stubs promoted)`);
   } else if (dryRun) {
     console.log('\n[DRY RUN] No writes to diary-shows.json or Supabase.');
   } else {
