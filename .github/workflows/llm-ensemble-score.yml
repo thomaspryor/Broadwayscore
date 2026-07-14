@@ -492,6 +492,20 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: LLM ensemble scoring"
 
+      # Wall-clock time AFTER the push attempt finished — NOT the local commit's
+      # committer timestamp. push-review-texts can commit locally then spend
+      # several retry/rebase cycles (random 5-15s backoff, up to 5 attempts)
+      # before `git push origin main` actually lands. A rebuild-reviews.yml run
+      # dispatched in that gap has already checked out a ref that predates the
+      # push, even though it's "after" our local commit time — using commit
+      # time there would wrongly mark that run as safe. This timestamp is a
+      # safe upper bound: any run dispatched before it definitely couldn't see
+      # the push (ship-check finding, Notion 39d637c5-416f-81039).
+      - name: Record score-push timestamp
+        if: always()
+        id: score-push-time
+        run: echo "timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+
       - name: Commit and push changes
         if: always() && steps.check-changes.outputs.has_changes == 'true'
         run: |
@@ -587,11 +601,15 @@ jobs:
             # cron (up to 4h on opening night). Only matters if we actually
             # scored something this run (has_scored_reviews) — otherwise there's
             # nothing to strand. Compare the oldest active run's createdAt
-            # against our score-commit timestamp; if uncertain, dispatch anyway
-            # (fail safe). rebuild-fast.yml has PER-RUN concurrency so this can
-            # never collide with the in-flight rebuild-reviews run.
+            # against the score-push-time step's timestamp (captured AFTER the
+            # push attempt, not the local commit time — push-review-texts can
+            # retry for tens of seconds before landing, so commit time would
+            # wrongly clear a run dispatched in that gap); if uncertain,
+            # dispatch anyway (fail safe). rebuild-fast.yml has PER-RUN
+            # concurrency so this can never collide with the in-flight
+            # rebuild-reviews run.
             if [ "${{ steps.check-changes.outputs.has_scored_reviews }}" = "true" ]; then
-              SCORE_COMMIT_TIME=$(git -C data/review-texts log -1 --format=%cI 2>/dev/null || echo "")
+              SCORE_COMMIT_TIME="${{ steps.score-push-time.outputs.timestamp }}"
               OLDEST_RUNNING=$(gh run list --workflow="$REBUILD_WF" --status=in_progress --json createdAt --jq 'sort_by(.createdAt) | .[0].createdAt // empty' 2>/dev/null || echo "")
               OLDEST_QUEUED=$(gh run list --workflow="$REBUILD_WF" --status=queued --json createdAt --jq 'sort_by(.createdAt) | .[0].createdAt // empty' 2>/dev/null || echo "")
               OLDEST_WAITING=$(gh run list --workflow="$REBUILD_WF" --status=waiting --json createdAt --jq 'sort_by(.createdAt) | .[0].createdAt // empty' 2>/dev/null || echo "")
