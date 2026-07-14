@@ -119,6 +119,7 @@ const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps } = require('./lib/browserbase-caps');
 const { logExclusion } = require('./lib/exclusion-logger');
+const { recordSbCall } = require('./lib/bd-telemetry');
 const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
 
 /**
@@ -428,7 +429,7 @@ const UNCOLLECTABLE_OUTLETS = (() => {
 })();
 
 // Domain alias matching — imported from shared lib (scraper.js)
-const { domainMatchesExpected, checkScrapingBeeCredits } = require('./lib/scraper');
+const { domainMatchesExpected, checkScrapingBeeCredits, fetchWithScrapingdog: sdFetch } = require('./lib/scraper');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
@@ -2288,6 +2289,7 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     const response = await axios.get('https://app.scrapingbee.com/api/v1/', requestConfig);
 
     stats.scrapingBeePageCredits += credits;
+    recordSbCall({ url, fn: proxyType, success: true, status: 200, credits });
 
     const html = response.data;
 
@@ -2316,6 +2318,7 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     if (error.response) {
       const status = error.response.status;
       const message = error.response.data?.message || error.message;
+      recordSbCall({ url, fn: proxyType, success: false, status, credits: 0 });
 
       if (status === 401) {
         throw new Error(`ScrapingBee auth failed: ${message}`);
@@ -2327,6 +2330,32 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     }
     throw error;
   }
+}
+
+// ============================================================================
+// TIER 1.9: Scrapingdog API (cheap tier ahead of ScrapingBee)
+// ============================================================================
+
+/**
+ * Fetch via Scrapingdog before spending ScrapingBee credits. Mirrors the SB
+ * tier's cost model (plain=1cr, JS=5cr, premium=10cr) at ~1/4 the per-credit
+ * price. Uses scraper.js's fetchWithScrapingdog (flag-gated, budget-guarded,
+ * telemetered). Throws on miss so the chain falls through to SB/BD.
+ */
+async function fetchWithScrapingdogTier(url) {
+  const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; } })();
+  const needsPremium = SB_PREMIUM_DOMAINS.has(hostname);
+  const result = await sdFetch(url, { premium: needsPremium });
+  if (!result || !result.content) throw new Error('Scrapingdog returned no content');
+
+  const html = result.content;
+  if (isBlocked(html)) throw new Error('Scrapingdog: blocked/challenge page');
+
+  const text = extractTextFromHtml(html, url);
+  if (text && text.length > 500) {
+    return { html, text };
+  }
+  throw new Error(`Scrapingdog: insufficient text (${text?.length || 0} chars)`);
 }
 
 // ============================================================================
@@ -3176,6 +3205,25 @@ function buildTierChain(ctx, review) {
           }
           console.warn(`  ⚠ COOKIE EXPIRED: ${ctx.url} — falling back to lower tiers`);
         }
+      },
+    },
+
+    // TIER 1.9: Scrapingdog (flag-gated cheap tier — spends SD credits before SB's)
+    {
+      id: 'scrapingdog',
+      tierNumber: 1.9,
+      method: 'scrapingdog',
+      label: 'Scrapingdog API',
+      shouldRun: () => {
+        if (ctx.skipDirectScrapers) return false;
+        // Cookie-forwarding domains stay on SB — its Spb-Cookie forwarding is
+        // proven for paywalled sites; SD cookie support is untested there.
+        if (buildCookieHeaderForUrl(url)) return false;
+        return process.env.SCRAPER_USE_SCRAPINGDOG === '1' && !!process.env.SCRAPINGDOG_API_KEY;
+      },
+      execute: (url) => fetchWithScrapingdogTier(url),
+      onFailure: (error) => {
+        ctx.anyTierFailed = true;
       },
     },
 
@@ -5133,7 +5181,7 @@ function loadState() {
         state = saved;
         // Ensure tierBreakdown and all sub-arrays exist (older state files may be missing keys)
         if (!state.tierBreakdown) {
-          state.tierBreakdown = { playwright: [], amp: [], browserbase: [], directCookies: [], scrapingbee: [], brightdata: [], archiveToday: [], archive: [] };
+          state.tierBreakdown = { playwright: [], amp: [], browserbase: [], directCookies: [], scrapingdog: [], scrapingbee: [], brightdata: [], archiveToday: [], archive: [] };
         } else {
           for (const key of ['playwright', 'amp', 'browserbase', 'scrapingbee', 'brightdata', 'archiveToday', 'archive']) {
             if (!state.tierBreakdown[key]) state.tierBreakdown[key] = [];
@@ -6591,6 +6639,7 @@ function generateReport() {
       amp: state.tierBreakdown.amp?.length || 0,
       browserbase: state.tierBreakdown.browserbase?.length || 0,
       directCookies: state.tierBreakdown.directCookies?.length || 0,
+      scrapingdog: state.tierBreakdown.scrapingdog?.length || 0,
       scrapingbee: state.tierBreakdown.scrapingbee?.length || 0,
       brightdata: state.tierBreakdown.brightdata?.length || 0,
       archiveToday: state.tierBreakdown.archiveToday?.length || 0,
@@ -6858,8 +6907,13 @@ async function main() {
   generateReport();
 }
 
-// Run
-main().catch(error => {
-  console.error('Fatal error:', error);
-  closeBrowser().finally(() => process.exit(1));
-});
+// Run (require-guarded so tests can require the tier helpers without
+// kicking off a full collection run)
+if (require.main === module) {
+  main().catch(error => {
+    console.error('Fatal error:', error);
+    closeBrowser().finally(() => process.exit(1));
+  });
+}
+
+module.exports = { fetchWithScrapingdogTier };

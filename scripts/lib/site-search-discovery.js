@@ -1021,6 +1021,7 @@ function fetchJSON(url, options = {}, timeoutMs = 15000) {
  * Fetch with ScrapingBee (for JS-rendered search pages)
  */
 function fetchWithScrapingBee(url, timeoutMs = 30000) {
+  const { recordSbCall } = require('./bd-telemetry');
   return new Promise((resolve, reject) => {
     if (!SCRAPINGBEE_KEY) return reject(new Error('No ScrapingBee key'));
     const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
@@ -1028,8 +1029,14 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
-        if (res.statusCode === 200) resolve(data);
-        else reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
+        if (res.statusCode === 200) {
+          recordSbCall({ url, fn: 'site-search-render', success: true, status: 200, credits: 5 });
+          resolve(data);
+        } else {
+          // SB only charges successful (2xx/404) requests; 404 still costs credits.
+          recordSbCall({ url, fn: 'site-search-render', success: false, status: res.statusCode, credits: res.statusCode === 404 ? 5 : 0 });
+          reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
+        }
       });
       res.on('error', reject);
     });

@@ -147,13 +147,17 @@ function fetchViaScrapingBeeSingle(url) {
 
     const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&premium_proxy=true&wait=3000`;
 
+    const { recordSbCall } = require('./lib/bd-telemetry');
     https.get(apiUrl, { timeout: 60000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
         if (res.statusCode === 200) {
+          // render_js (5) × premium_proxy (5) = 25 credits per page
+          recordSbCall({ url, fn: 'render-premium', success: true, status: 200, credits: 25 });
           resolve(data);
         } else {
+          recordSbCall({ url, fn: 'render-premium', success: false, status: res.statusCode, credits: res.statusCode === 404 ? 25 : 0 });
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
@@ -240,6 +244,23 @@ function fetchViaBrightData(url) {
  * Returns HTML string or throws if all methods fail.
  */
 async function fetchWithFallback(url, retries = 2) {
+  // Scrapingdog first (flag-gated) — ~1/4 the credit price of SB's render_js +
+  // premium_proxy (25 credits/page). Only accept a payload with extractable
+  // data: an unrendered SPA shell would otherwise read as "show has no score"
+  // and skip the update instead of falling through to ScrapingBee.
+  if (process.env.SCRAPER_USE_SCRAPINGDOG === '1' && process.env.SCRAPINGDOG_API_KEY) {
+    try {
+      const { fetchWithScrapingdog } = require('./lib/scraper');
+      const sd = await fetchWithScrapingdog(url, { renderJs: true, premium: true });
+      if (sd && sd.content && (sd.content.includes('aggregateRating') || /class="[^"]*score/i.test(sd.content))) {
+        return sd.content;
+      }
+      if (verbose) console.log('  Scrapingdog returned no extractable payload — falling back to ScrapingBee...');
+    } catch (error) {
+      if (verbose) console.log(`  Scrapingdog failed: ${error.message} — falling back to ScrapingBee...`);
+    }
+  }
+
   // Try ScrapingBee first (with retries) — best for Show Score (render_js + premium_proxy)
   if (SCRAPINGBEE_KEY) {
     for (let attempt = 1; attempt <= retries + 1; attempt++) {

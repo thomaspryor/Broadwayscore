@@ -18,7 +18,7 @@ const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filter
 const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
-const { recordBdCall, recordSdCall } = require('./bd-telemetry');
+const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
 
 // Scrapingdog SERP — flag-gated cheap primary ahead of BD/SB SERP. Google Light
 // Search = 5 credits (~$0.45/1k) vs BD SERP (~$1.50/1k). Default OFF.
@@ -324,6 +324,7 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
       });
       const data = response.data;
       _recordSerpResult(true);
+      recordSbCall({ host: 'serp.scrapingbee', fn: 'serp', success: true, status: 200, credits: 25 });
       return (data.organic_results || data.results || []).map(r => ({
         url: r.url || r.link,
         title: r.title || '',
@@ -333,6 +334,7 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
       const status = error.response?.status;
       if (status === 401 || status === 403 || status === 429) {
         _scrapingBeeSerpExhausted = true;
+        recordSbCall({ host: 'serp.scrapingbee', fn: 'serp', success: false, status, credits: 0 });
         log(`    ⚠ ScrapingBee SERP exhausted (${status}) — falling back to Bright Data`);
         return null;
       }
@@ -343,6 +345,7 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
         continue;
       }
       _recordSerpResult(false);
+      recordSbCall({ host: 'serp.scrapingbee', fn: 'serp', success: false, status: status || (error.message || 'error').slice(0, 80), credits: 0 });
       const failCount = _scrapingBeeSerpResults.filter(r => !r).length;
       log(`    ✗ ScrapingBee SERP error (${failCount}/${ROLLING_WINDOW_SIZE} recent failures): ${error.message}`);
       if (_scrapingBeeSerpExhausted) {
@@ -574,11 +577,17 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     return { results: cached.results, provider: `${cached.provider}-cached` };
   }
 
-  // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). On null/empty it
-  // falls through to the existing BD/SB chain, which stays as the safety net.
+  // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). Only a null
+  // (HTTP error / circuit-breaker open / flag off) falls through to the BD/SB
+  // chain. An empty-but-successful result IS the answer ("no results") —
+  // cascading it to BD/SB re-asks the same question for up to 25 SB credits,
+  // every poll cycle on the opening-night path where empties are never cached
+  // (2026-07-05 SB burn incident: ~2,800 invisible SB SERP calls/day).
+  // Escape hatch: SD_EMPTY_CASCADE=1 restores the old cascade if SD empties
+  // turn out to hide real results on some query class.
   if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY) {
     const sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo);
-    if (sdResults && sdResults.length > 0) {
+    if (sdResults && (sdResults.length > 0 || process.env.SD_EMPTY_CASCADE !== '1')) {
       if (!(preferSpeed && sdResults.length === 0)) {
         _serpCache.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
       }
