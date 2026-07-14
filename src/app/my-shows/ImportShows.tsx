@@ -261,8 +261,17 @@ export default function ImportShows({
   const unmatchedDiary = useMemo(() => diaryEntries.filter(e => !e.match || e.matchScore <= 0.7).length, [diaryEntries]);
   const unmatchedWatchlist = useMemo(() => watchlistEntries.filter(e => !e.match || e.matchScore <= 0.7).length, [watchlistEntries]);
   const unmatchedCount = unmatchedDiary + unmatchedWatchlist;
-  const alreadyOwnedCount = useMemo(
-    () => entries.filter(e => e.alreadyOwned && e.match && e.matchScore > 0.7).length,
+  // The summary must PARTITION matched entries — selected + skipped-owned +
+  // manually-unticked + unmatched = total — under every toggle state, or the
+  // headline numbers stop adding up (second-opinion review, 2026-07-13):
+  // a re-ticked owned row must leave the skipped count, and a manually
+  // unticked row must land in a visible bucket instead of vanishing.
+  const skippedOwnedCount = useMemo(
+    () => entries.filter(e => e.alreadyOwned && !e.selected && e.match && e.matchScore > 0.7).length,
+    [entries],
+  );
+  const untickedCount = useMemo(
+    () => entries.filter(e => !e.alreadyOwned && !e.selected && e.match && e.matchScore > 0.7).length,
     [entries],
   );
 
@@ -459,7 +468,8 @@ export default function ImportShows({
                   "is it adding 37 shows, or 8?"). */}
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm mb-2">
                 <span className="text-green-400">{selectedDiary.length + selectedWatchlist.length} selected to import</span>
-                {alreadyOwnedCount > 0 && <span className="text-gray-400">{alreadyOwnedCount} skipped — already in your shows</span>}
+                {skippedOwnedCount > 0 && <span className="text-gray-400">{skippedOwnedCount} skipped — already in your shows</span>}
+                {untickedCount > 0 && <span className="text-gray-400">{untickedCount} not selected</span>}
                 {unmatchedCount > 0 && <span className="text-yellow-400">{unmatchedCount} not on Broadway Scorecard</span>}
               </div>
               {notices.map((n, i) => (
