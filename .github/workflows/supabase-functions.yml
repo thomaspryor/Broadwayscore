@@ -57,6 +57,13 @@ jobs:
           npx supabase functions deploy show-score-proxy \
             --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
 
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Supabase Functions deploy failed'
+          severity: 'warning'
+
   parser-canary:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -90,3 +97,9 @@ jobs:
               process.exit(1);
             }
           '
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Show Score parser canary failed (DOM drift?)'
+          severity: 'warning'
