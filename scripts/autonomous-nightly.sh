@@ -36,4 +36,10 @@ node scripts/autonomous-triage.js --limit 30 || echo "[nightly] WARN triage fail
 echo "--- executor (sends the morning email itself) ---"
 node scripts/autonomous-run.js --live || echo "[nightly] WARN executor failed"
 
+# Mornings start visually clean (Sprint 3 setup item): close ✅-marked cmux
+# workspaces left over from finished sessions. Never fatal — a missing cmux
+# CLI or a bad night must not fail the loop.
+echo "--- workspace sweep ---"
+node scripts/bsc-prune.js || echo "[nightly] WARN bsc-prune failed (non-fatal)"
+
 echo "=== night done $(date -u +%FT%TZ) ==="

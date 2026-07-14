@@ -32,8 +32,9 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
 
+const https = require('https');
 const { transition } = require('./lib/autonomous-state.js');
-const { isDiffAllowed } = require('./lib/autonomous-eligibility.js');
+const { isDiffAllowed, isDiffDeterministicGreen } = require('./lib/autonomous-eligibility.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 const { createNightBudget, checkSharedDailyCap, pickModel, ENVELOPES } = require('./lib/autonomous-budget.js');
 const ledger = require('./lib/autonomous-ledger.js');
@@ -41,6 +42,10 @@ const {
   buildImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks, cardCheckArgv, shouldThrottle, preflightVerdict,
   resolveOwnerEmail,
 } = require('./lib/autonomous-run-core.js');
+const { evidenceCommentText } = require('./lib/autonomous-notion-evidence.js');
+const {
+  isIncrementalSize, classifyLCardOutcome, nightNumberFor, buildResumeNote, buildFirstNightNote, buildCheckpointNote,
+} = require('./lib/autonomous-checkpoint.js');
 
 const REPO = path.join(__dirname, '..');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
@@ -98,6 +103,65 @@ function notionUpdate(id, flags) {
 
 function git(cwd, args, opts = {}) {
   return execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts });
+}
+
+// Durable evidence for the CI merge path (Sprint 3): the ledger is
+// Mac-Studio-local and gitignored (S2-T7), so autonomous-merge.yml (which
+// runs in GitHub Actions) has no other way to read a passed card's
+// checkableDone. Posted as a Notion comment — non-fatal on failure (the
+// merge workflow falls back to tsc+colocated-tests only; card-pass already
+// happened either way).
+function postEvidenceComment(cardId, evidence) {
+  const notionKey = process.env.NOTION_API_KEY;
+  if (!notionKey) { console.error('[run] WARN NOTION_API_KEY not set — cannot post evidence comment'); return; }
+  const body = JSON.stringify({
+    parent: { page_id: cardId },
+    rich_text: [{ text: { content: evidenceCommentText(evidence) } }],
+  });
+  try {
+    const req = require('https').request({
+      hostname: 'api.notion.com', path: '/v1/comments', method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${notionKey}`, 'Notion-Version': '2022-06-28',
+        'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body),
+      },
+    }, res => { res.resume(); if (res.statusCode >= 300) console.error(`[run] WARN evidence comment POST returned ${res.statusCode}`); });
+    req.on('error', err => console.error(`[run] WARN evidence comment POST failed: ${err.message}`));
+    req.write(body);
+    req.end();
+  } catch (err) { console.error(`[run] WARN evidence comment POST threw: ${err.message}`); }
+}
+
+// Dispatch autonomous-merge.yml and wait for it (Sprint 3 deterministic-green
+// path: the executor itself triggers the merge, no human tap). Returns
+// { dispatched, runId } — runId is null if we couldn't resolve it (dispatch
+// may still have gone through; the card's Auto state is the source of truth
+// either way, checked by the caller after this returns).
+function dispatchAndWaitMerge(cardId, branch, action, timeoutMin) {
+  const dispatch = spawnSync('gh', [
+    'workflow', 'run', 'autonomous-merge.yml',
+    '-f', `card_id=${cardId}`, '-f', `branch=${branch}`, '-f', `action=${action}`,
+  ], { cwd: REPO, encoding: 'utf8', timeout: 30e3 });
+  if (dispatch.status !== 0) {
+    console.error(`[run] WARN gh workflow run dispatch failed: ${String(dispatch.stderr || '').slice(0, 200)}`);
+    return { dispatched: false, runId: null };
+  }
+  // Bounded one-time lookup for the run's own id (NOT a polling loop — see
+  // CLAUDE.md's gh-polling guidance). The run may take a moment to appear.
+  let runId = null;
+  for (let i = 0; i < 5 && !runId; i++) {
+    if (i > 0) spawnSync('sleep', ['3']);
+    const list = spawnSync('gh', [
+      'run', 'list', '--workflow=autonomous-merge.yml', '--limit', '1',
+      '--json', 'databaseId,status', '--jq', '.[0].databaseId',
+    ], { cwd: REPO, encoding: 'utf8', timeout: 15e3 });
+    const id = (list.stdout || '').trim();
+    if (/^\d+$/.test(id)) runId = id;
+  }
+  if (!runId) { console.error('[run] WARN could not resolve autonomous-merge.yml run id after dispatch'); return { dispatched: true, runId: null }; }
+  const wait = spawnSync('bash', [path.join(__dirname, 'lib', 'wait-for-run.sh'), runId, String(timeoutMin)], { cwd: REPO, encoding: 'utf8', timeout: (timeoutMin + 2) * 60e3 });
+  console.error(`[run] merge run ${runId} finished with wait-for-run exit ${wait.status}`);
+  return { dispatched: true, runId };
 }
 
 function branchNameFor(card) {
@@ -267,7 +331,7 @@ function checksEnv() {
   return env;
 }
 
-function runImplementer(item, card, workdir, model, maxWallMin, mockScript) {
+function runImplementer(item, card, workdir, model, maxWallMin, mockScript, promptPrefix) {
   const t0 = Date.now();
   if (mockScript) {
     const r = spawnSync('node', [path.resolve(String(mockScript))], {
@@ -278,7 +342,9 @@ function runImplementer(item, card, workdir, model, maxWallMin, mockScript) {
     return { ok: true, usd: 0, tokensIn: 0, tokensOut: 0, resultText: String(r.stdout || '').trim().slice(0, 500) || 'mock implementer ran', wallMin: (Date.now() - t0) / 60e3 };
   }
 
-  const prompt = buildImplementerPrompt(card, item);
+  // promptPrefix (Sprint 3, L cards): resume/first-night checkpoint note,
+  // prepended ahead of the normal card prompt — see scripts/lib/autonomous-checkpoint.js.
+  const prompt = (promptPrefix ? `${promptPrefix}\n\n---\n\n` : '') + buildImplementerPrompt(card, item);
   const r = spawnSync('claude', [
     '--dangerously-skip-permissions',
     '--settings', SETTINGS_PATH,
@@ -399,6 +465,8 @@ function attemptCard(item, budget, cfg, runId, opts) {
   const branch = branchNameFor(item);
   const workdir = path.join(WORKTREE_ROOT, `auto-${branch.split('/')[1]}`);
   const env = ENVELOPES[item.size];
+  const incremental = isIncrementalSize(item.size); // Sprint 3, S3-T4
+  let resuming = false;
   let totalUSD = 0;
   let failureKind = null;
 
@@ -423,9 +491,12 @@ function attemptCard(item, budget, cfg, runId, opts) {
     // NEVER delete a pre-existing branch or workdir — it may belong to a
     // previous pending attempt or a live interactive session (ship-check P0;
     // same refusal pattern as auto-fix-friction-card.js branchExists).
+    // EXCEPTION (Sprint 3, S3-T4): an incremental (L) card's own checkpoint
+    // branch from a prior night is EXPECTED to already exist on origin — that
+    // is the resume signal, not a collision. Only L cards get this carve-out.
     let remoteBranch = '';
     try { remoteBranch = git(REPO, ['ls-remote', '--heads', 'origin', branch]).trim(); } catch { /* treat as absent */ }
-    if (remoteBranch) {
+    if (remoteBranch && !incremental) {
       budget.settle(item.id, 0);
       fail('branch-error', `branch ${branch} already exists on origin (pending previous attempt?) — refusing to overwrite`);
       return;
@@ -435,23 +506,41 @@ function attemptCard(item, budget, cfg, runId, opts) {
       fail('branch-error', `workdir ${workdir} already exists (another session?) — refusing to remove it`);
       return;
     }
-    git(REPO, ['worktree', 'add', '-B', branch, workdir, 'origin/main']);
+    if (remoteBranch && incremental) {
+      resuming = true;
+      git(REPO, ['fetch', 'origin', branch]);
+      git(REPO, ['worktree', 'add', workdir, branch]);
+      try { git(workdir, ['rebase', 'origin/main']); }
+      catch (err) {
+        try { git(workdir, ['rebase', '--abort']); } catch { /* nothing to abort */ }
+        try { git(REPO, ['worktree', 'remove', '--force', workdir]); } catch { /* best effort */ }
+        budget.settle(item.id, 0);
+        fail('branch-error', `checkpoint branch ${branch} would not rebase cleanly onto origin/main: ${err.message.slice(0, 150)}`);
+        return;
+      }
+    } else {
+      git(REPO, ['worktree', 'add', '-B', branch, workdir, 'origin/main']);
+    }
   } catch (err) {
     budget.settle(item.id, 0);
     fail('branch-error', err.message.slice(0, 200));
     return;
   }
 
+  // Incremental (L) cards get exactly ONE attempt per night — the checkpoint
+  // IS the retry, next night, not a same-night Opus escalation (S3-T4).
+  const maxAttempts = incremental ? 1 : 2;
   try {
-    for (let attempt = 1; attempt <= 2; attempt++) {
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       if (attempt === 2) {
         // Retry starts clean — attempt 1's bad diff must not contaminate it.
         git(workdir, ['reset', '--hard', 'origin/main']);
         git(workdir, ['clean', '-fd']);
       }
       const model = pickModel(attempt, failureKind);
-      console.error(`[run] ${item.name}: attempt ${attempt} (${opts.mockScript ? 'mock' : model})`);
-      const imp = runImplementer(item, card, workdir, model, env.maxWallMin, opts.mockScript);
+      console.error(`[run] ${item.name}: attempt ${attempt} (${opts.mockScript ? 'mock' : model}${resuming ? ', resuming checkpoint' : ''})`);
+      const promptPrefix = incremental ? (resuming ? buildResumeNote(card, card.outcome) : buildFirstNightNote()) : null;
+      const imp = runImplementer(item, card, workdir, model, env.maxWallMin, opts.mockScript, promptPrefix);
       totalUSD = round2(totalUSD + imp.usd);
       ledger.appendEntry({
         event: 'implement', runId, cardId: item.id, name: item.name, attempt,
@@ -459,7 +548,7 @@ function attemptCard(item, budget, cfg, runId, opts) {
         note: imp.ok ? `ok in ${imp.wallMin.toFixed(1)}min` : `${imp.stage}: ${String(imp.error).slice(0, 200)}`,
       });
 
-      let stage = null, detail = null, evidence = null;
+      let stage = null, detail = null, evidence = null, checkpoint = null;
       if (!imp.ok) { stage = imp.stage; detail = imp.error; }
       else {
         const cut = budget.shouldAbort(item.size, { elapsedMin: imp.wallMin, attemptUSD: imp.usd });
@@ -481,32 +570,76 @@ function attemptCard(item, budget, cfg, runId, opts) {
             else {
               const checks = runChecks(workdir, files, item.checkableDone);
               const failed = checks.filter(c => !c.pass);
-              if (failed.length) { stage = 'checks-failed'; detail = failed.map(c => `${c.name}: ${c.detail}`).join(' | ').slice(0, 500); }
-              else evidence = { branch, files, checks: checks.map(c => `${c.name}: PASS`), summary: (imp.resultText || '').slice(0, 600) };
+              if (!failed.length) {
+                evidence = { branch, files, checks: checks.map(c => `${c.name}: PASS`), summary: (imp.resultText || '').slice(0, 600), checkableDone: item.checkableDone || null };
+              } else if (incremental && classifyLCardOutcome(checks) === 'checkpoint') {
+                // Safe, incomplete progress — nothing broke, the card just
+                // isn't done yet. NOT a failure (S3-T4).
+                checkpoint = { branch, files, summary: (imp.resultText || '').slice(0, 600) };
+              } else {
+                stage = 'checks-failed'; detail = failed.map(c => `${c.name}: ${c.detail}`).join(' | ').slice(0, 500);
+              }
             }
           }
         } catch (err) { stage = 'git-error'; detail = err.message.slice(0, 200); }
       }
 
-      if (evidence) {
-        // Plain push: the branch was refused above if it pre-existed, so a
-        // rejection here means something else claimed it mid-run — fail, don't force.
-        try { git(workdir, ['push', '-u', 'origin', branch]); }
-        catch (err) { stage = 'push-error'; detail = err.message.slice(0, 200); }
+      if (evidence || checkpoint) {
+        // A resumed checkpoint branch was rebased onto origin/main above,
+        // rewriting its history — the remote tip needs --force-with-lease.
+        // A brand-new branch (first push) uses a plain push.
+        try {
+          if (resuming) git(workdir, ['push', '--force-with-lease', '-u', 'origin', branch]);
+          else git(workdir, ['push', '-u', 'origin', branch]);
+        } catch (err) { stage = 'push-error'; detail = err.message.slice(0, 200); evidence = null; checkpoint = null; }
       }
 
-      if (!stage) {
+      if (evidence) {
         if (attempt === 1) budget.refundAttempt2(item.id, item.size); // carry-forward #3
-        transition('attempted', 'run.pass');
-        notionUpdate(item.id, ['--auto', 'needs-approval']);
-        ledger.appendEntry({ event: 'card-pass', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), attempt, evidence });
-        console.error(`[run] PASS ${item.name} → ${branch} ($${totalUSD.toFixed(2)})`);
+        // Durable evidence for the CI merge path (Sprint 3) — the ledger is
+        // Mac-local and unreachable from GitHub Actions.
+        postEvidenceComment(item.id, evidence);
+        if (isDiffDeterministicGreen(evidence.files)) {
+          // Mechanical file-path predicate, not a model judgment call — see
+          // scripts/lib/autonomous-eligibility.js isDiffDeterministicGreen.
+          transition('attempted', 'run.auto-approve');
+          notionUpdate(item.id, ['--auto', 'approved']);
+          ledger.appendEntry({ event: 'auto-approve', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), note: 'deterministic-green diff — skipping human tap' });
+          const merge = dispatchAndWaitMerge(item.id, branch, 'approve', 15);
+          let finalCard = null;
+          try { finalCard = notionBrain(['get', item.id]); } catch { /* leave finalCard null */ }
+          if (finalCard && finalCard.auto === 'merged') {
+            ledger.appendEntry({ event: 'auto-merge', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), note: `merged via autonomous-merge.yml (run ${merge.runId || '?'})` });
+            console.error(`[run] AUTO-MERGED ${item.name} → ${branch}`);
+          } else {
+            ledger.appendEntry({ event: 'auto-merge-pending', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), note: `merge not confirmed (card auto=${finalCard ? finalCard.auto : 'unknown'}, run ${merge.runId || '?'})` });
+            console.error(`[run] auto-merge NOT confirmed for ${item.name} (auto=${finalCard ? finalCard.auto : 'unknown'})`);
+          }
+        } else {
+          transition('attempted', 'run.pass');
+          notionUpdate(item.id, ['--auto', 'needs-approval']);
+          ledger.appendEntry({ event: 'card-pass', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), attempt, evidence });
+          console.error(`[run] PASS ${item.name} → ${branch} ($${totalUSD.toFixed(2)})`);
+        }
+        return;
+      }
+
+      if (checkpoint) {
+        const night = nightNumberFor(card.outcome);
+        const note = buildCheckpointNote({ night, summary: checkpoint.summary, branch });
+        // Auto → clear (not 'queued' directly): triage skips any card whose
+        // Auto is already set, so clearing is what lets tomorrow's triage
+        // re-evaluate and re-plan this card — same pattern as crash recovery.
+        try { notionUpdate(item.id, ['--auto', 'clear', '--status', 'Not started', '--outcome', note]); }
+        catch (e) { console.error(`[run] WARN could not write checkpoint note for ${item.id}: ${e.message.slice(0, 120)}`); }
+        ledger.appendEntry({ event: 'checkpoint', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), attempt, note: `night ${night}: ${checkpoint.summary.slice(0, 200)}` });
+        console.error(`[run] CHECKPOINT ${item.name} → ${branch} (night ${night}, $${totalUSD.toFixed(2)})`);
         return;
       }
 
       failureKind = classifyFailure(stage);
       const cutOff = budget.shouldAbort(item.size, { attemptUSD: totalUSD });
-      if (attempt === 2 || stage === 'budget' || cutOff.abort) { fail(stage, detail); return; }
+      if (attempt === maxAttempts || stage === 'budget' || cutOff.abort) { fail(stage, detail); return; }
       console.error(`[run] attempt 1 failed [${stage}] (${failureKind}) — retrying${failureKind === 'content' ? ' on Opus' : ''}`);
     }
   } finally {

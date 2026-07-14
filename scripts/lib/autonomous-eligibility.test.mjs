@@ -14,6 +14,8 @@ const {
   isCardEligible,
   isPathAllowed,
   isDiffAllowed,
+  isDeterministicGreenPath,
+  isDiffDeterministicGreen,
 } = require('./autonomous-eligibility.js');
 
 // ── Card level ──────────────────────────────────────────────────────────────
@@ -227,4 +229,42 @@ test('growth round 1: outlet-canonicalize + auto-triage-cross-production allowed
   assert.equal(isPathAllowed('scripts/auto-triage-cross-production.js'), true);
   assert.equal(isPathAllowed('scripts/lib/scraper.js'), false);        // still excluded
   assert.equal(isPathAllowed('scripts/gather-reviews.js'), false);     // not granted by sibling growth
+});
+
+// ── Deterministic-green class (Sprint 3) ────────────────────────────────────
+
+test('all-test-only diff is deterministic-green', () => {
+  assert.equal(isDiffDeterministicGreen(['tests/unit/provisional-outlet-onboarding.test.mjs']), true);
+  assert.equal(isDiffDeterministicGreen([
+    'scripts/bsc-next.test.mjs',
+    'tests/unit/foo.test.mjs',
+    'docs/some-note.md',
+  ]), true);
+});
+
+test('tonight\'s real garbage-slugs diff classifies deterministic-green (fixture from Sprint-2 live-fire)', () => {
+  assert.equal(isDiffDeterministicGreen(['tests/unit/provisional-outlet-onboarding.test.mjs']), true);
+});
+
+test('a diff adding one non-test file is never deterministic-green', () => {
+  assert.equal(isDiffDeterministicGreen(['scripts/lib/outlet-canonicalize.js']), false);
+  assert.equal(isDiffDeterministicGreen([
+    'tests/unit/foo.test.mjs',
+    'scripts/lib/outlet-canonicalize.js',
+  ]), false);
+  // memory/** is Tier-1-allowed but deliberately NOT deterministic-green —
+  // it's prose a human should skim, not inert test code.
+  assert.equal(isDiffDeterministicGreen(['memory/autonomous-loop-runbook.md']), false);
+});
+
+test('empty diff is never deterministic-green', () => {
+  assert.equal(isDiffDeterministicGreen([]), false);
+  assert.equal(isDiffDeterministicGreen(null), false);
+});
+
+test('isDeterministicGreenPath matches the same set isDiffDeterministicGreen requires whole', () => {
+  assert.equal(isDeterministicGreenPath('tests/fixtures/some.json'), true);
+  assert.equal(isDeterministicGreenPath('docs/runbook.md'), true);
+  assert.equal(isDeterministicGreenPath('src/app/page.tsx'), false);
+  assert.equal(isDeterministicGreenPath('data/shows.json'), false);
 });

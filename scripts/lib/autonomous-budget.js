@@ -27,9 +27,16 @@ const { DEFAULT_CAPS } = require('./opening-night-budget.js');
 
 // Per-card envelopes. maxUSD/maxWallMin are hard per-attempt kill limits the
 // executor enforces cooperatively; estUSD/estAttempt2USD drive admission.
+//
+// L (Sprint 3, S3-T4): "incremental — never admitted whole" means never
+// admitted as ONE worst-case-2-attempts reservation like S/M. estAttempt2USD
+// is 0 on purpose: an L card gets exactly one S-sized slice per night; if it
+// doesn't finish, tomorrow night's slice IS the retry (a checkpoint branch,
+// not a second same-night attempt) — see scripts/lib/autonomous-checkpoint.js.
 const ENVELOPES = Object.freeze({
   S: Object.freeze({ maxUSD: 1.5, maxWallMin: 30, estUSD: 0.8, estAttempt2USD: 1.6 }),
   M: Object.freeze({ maxUSD: 3.0, maxWallMin: 90, estUSD: 2.5, estAttempt2USD: 5.0 }),
+  L: Object.freeze({ maxUSD: 1.5, maxWallMin: 30, estUSD: 0.8, estAttempt2USD: 0, incremental: true }),
 });
 
 const DEFAULTS = Object.freeze({
