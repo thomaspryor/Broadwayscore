@@ -54,6 +54,7 @@ const { classifyArticle } = require('./lib/recoupment-classify');
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./lib/trusted-recoupment-domains');
 const gate = require('./lib/commercial-apply-gate');
 const { normalizeSources } = require('./lib/commercial-sources');
+const { isCommercialScope, resolveScopeShow } = require('./lib/commercial-scope');
 const {
   MAX_VERIFY_ATTEMPTS,
   isStaleDuplicate,
@@ -178,7 +179,10 @@ async function main() {
   const allShows = loadJSON(SHOWS_PATH, { shows: [] });
   const showsArr = allShows.shows || allShows;
   const showsBySlug = {};
-  for (const s of showsArr) showsBySlug[s.slug] = s;
+  for (const s of showsArr) {
+    if (s.slug) showsBySlug[s.slug] = s;
+    if (s.id) showsBySlug[s.id] = s;
+  }
 
   pending.shows = pending.shows || {};
   commercial.shows = commercial.shows || {};
@@ -211,6 +215,15 @@ async function main() {
     const slug = resolveSlug(key, entry);
     const title = entry.title || showsBySlug[slug]?.title || slug;
     log(`— ${key} (slug: ${slug}) —`);
+
+    // Scope guard — this path writes commercial.json directly, bypassing
+    // apply-commercial-pending's guard. Off-Broadway/West End entries must
+    // never land (Broadway-only feature); the Sunday sweep archives them.
+    const scopeShow = resolveScopeShow(showsBySlug, key, entry);
+    if (scopeShow && !isCommercialScope(scopeShow)) {
+      log(`  ⛔ out of commercial scope (${scopeShow.category}) — skipping; sweep will archive.`);
+      continue;
+    }
 
     if (touchedSlugsThisRun.has(slug)) {
       log(`  ⏭️  slug "${slug}" already touched by another pending entry this run — deferring to next run.`);

@@ -753,6 +753,11 @@ function attemptDataCard(item, budget, cfg, runId) {
     try {
       notionUpdate(item.id, ['--auto', 'failed', '--status', 'Not started',
         '--outcome', `## Autonomous attempt failed (${new Date().toISOString().slice(0, 10)})\n${stage}: ${String(reason).slice(0, 400)}\n\nBranch (private repo: ${repoKey}) was not merged; the loop will not retry this card (Auto=failed) — clear Auto to re-queue it.`]);
+      // Same claim-then-fail cycle as attemptCard's fail() (see
+      // releaseStaleTaskClaim's header comment) — Tier-2 data cards claim
+      // via the identical Status→"In progress" flip above, so they leave
+      // the same permanent stale shared-task claim on failure without this.
+      releaseStaleTaskClaim(item.id);
     } catch (e) { console.error(`[run] WARN could not flip ${item.id} to failed: ${e.message.slice(0, 120)}`); }
     ledger.appendEntry({ event: 'card-fail', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), note: `${stage}: ${String(reason).slice(0, 300)}` });
     console.error(`[run] FAIL ${item.name} [${stage}] ${reason}`);

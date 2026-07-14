@@ -15,6 +15,8 @@ interface SearchShow {
   od?: string;
   images?: { thumbnail?: string };
   category?: string;
+  /** True for diary-only (unscored) catalog entries — no /show page, no critic score. */
+  dy?: boolean;
 }
 
 interface ShowSearchDropdownProps {
@@ -25,6 +27,9 @@ interface ShowSearchDropdownProps {
   isDisabled?: (show: SearchShow) => boolean;
   align?: 'left' | 'right';
   autoFocus?: boolean;
+  /** Also search the diary-only catalog (regional/international/historical
+   *  shows with no critic score) — lazily merged in on first open. */
+  includeDiary?: boolean;
 }
 
 export default function ShowSearchDropdown({
@@ -35,8 +40,11 @@ export default function ShowSearchDropdown({
   isDisabled,
   align = 'left',
   autoFocus = true,
+  includeDiary = false,
 }: ShowSearchDropdownProps) {
-  const { query, setQuery, results, ensureData } = useShowSearch<SearchShow>();
+  const { query, setQuery, results, ensureData } = useShowSearch<SearchShow>({
+    mergeDataUrl: includeDiary ? '/data/diary-search.json' : undefined,
+  });
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -117,6 +125,9 @@ export default function ShowSearchDropdown({
                        show.category === 'regional' ? 'Regional' : 'Broadway'}
                     </span>
                     {show.od && <span className="text-gray-500">{show.od.slice(0, 4)}</span>}
+                    {show.dy && (
+                      <span className="px-1 py-0.5 rounded font-medium bg-gray-500/20 text-gray-400">No critic score</span>
+                    )}
                   </div>
                 </div>
                 <div className="flex-shrink-0 text-[10px] text-gray-500">

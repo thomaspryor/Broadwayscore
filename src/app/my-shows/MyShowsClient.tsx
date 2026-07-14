@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef, useCallback, useId } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback, useId, type ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
@@ -10,6 +10,8 @@ import { useWatchlist } from '@/hooks/useWatchlist';
 import { useUserLists } from '@/hooks/useUserLists';
 import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import StarRating from '@/components/user/StarRating';
+import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
+import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 
 import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
@@ -47,11 +49,15 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
     closingDate: (raw.cd as string) || null,
     compositeScore: null,
     posterUrl: (raw.p as string) || null,
+    diaryOnly: !!raw.dy,
   };
 }
 
-function getShowHref(slug: string, _category: string) {
-  // All shows use /show/[slug] — no separate routes for west-end or off-broadway
+// Diary-only shows (regional/international/historical, Mezzanine-sourced) have
+// no /show/[slug] page — linking there 404s. Callers must render a non-link
+// card instead of a Link when this returns null.
+function getShowHref(slug: string, diaryOnly?: boolean): string | null {
+  if (diaryOnly) return null;
   return `/show/${slug}`;
 }
 
@@ -112,6 +118,23 @@ export default function MyShowsClient() {
   // rows once per page view — cheap, and the badge works without visiting the tab).
   const { lists: realLists, getLists } = useUserLists(user?.id || null);
   const { showToast } = useToastSafe();
+
+  // Inline rating modal — diary-only shows (regional/international/historical
+  // catalog, no critic score) have no /show/[slug] page to deep-link ?rate=1
+  // into, so rating them happens entirely within My Shows (owner, 2026-07-14).
+  const [ratingTarget, setRatingTarget] = useState<{
+    id: string;
+    title: string;
+    reviewId?: string;
+    initialRating?: number;
+    initialReviewText?: string | null;
+    initialDateSeen?: string | null;
+  } | null>(null);
+  const openRatingEditor = useCallback((show: { id: string; title: string }, opts?: {
+    reviewId?: string; initialRating?: number; initialReviewText?: string | null; initialDateSeen?: string | null;
+  }) => {
+    setRatingTarget({ id: show.id, title: show.title, ...opts });
+  }, []);
 
   // In mock mode, bypass loading/auth and inject fake data
   const [mockData, setMockData] = useState<{ reviews: UserReview[]; watchlist: WatchlistEntry[]; showMap: ShowMap } | null>(null);
@@ -178,6 +201,39 @@ export default function MyShowsClient() {
     }
   }, [effectiveUpdatePlannedDate, showToast]);
   const effectiveAddToWatchlist = isMockMode ? mockAddToWatchlist : addToWatchlist;
+
+  // Save handler for the inline rating modal (diary-only shows). Simpler than
+  // ShowHeroRedesign's handleSaveReview — no auth-gating needed since /my-shows
+  // already requires sign-in to reach this component at all.
+  const handleInlineRatingSave = useCallback(async (data: RatingEditorSaveData) => {
+    if (isMockMode) { setRatingTarget(null); return; }
+    if (!user || !ratingTarget) return;
+    if (data.reviewId) {
+      const filters = `id=eq.${data.reviewId}&user_id=eq.${user.id}`;
+      const { data: updated, error } = await supabaseRestUpdate<{ id: string }>('reviews', filters, {
+        rating: data.rating,
+        review_text: data.reviewText || null,
+        date_seen: data.dateSeen || null,
+        updated_at: new Date().toISOString(),
+      });
+      if (error) throw new Error(error.message);
+      if (!updated) throw new Error('This rating no longer exists — it may have been deleted elsewhere.');
+    } else {
+      const { error } = await supabaseRestInsert('reviews', {
+        user_id: user.id,
+        show_id: ratingTarget.id,
+        rating: data.rating,
+        review_text: data.reviewText || null,
+        date_seen: data.dateSeen || null,
+      });
+      if (error) throw new Error(error.message);
+      // Rating a show means you've seen it — drop any watchlist entry (parity
+      // with ShowHeroRedesign.handleSaveReview). Best-effort: rating already saved.
+      try { await effectiveRemoveFromWatchlist(ratingTarget.id); } catch { /* non-fatal */ }
+    }
+    await getAllReviews();
+    invalidateRatingsCache();
+  }, [isMockMode, user, ratingTarget, effectiveRemoveFromWatchlist, getAllReviews]);
 
   // Load show lookup data (abort if mock mode activates mid-flight)
   useEffect(() => {
@@ -479,11 +535,26 @@ export default function MyShowsClient() {
               if (!isMockMode) await getWatchlist(true);
               showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
             }}
+            onRateDiaryOnly={(show) => openRatingEditor(show)}
             existingWatchlistIds={new Set(watchlist.map(w => w.show_id))}
             existingReviewIds={new Set(reviews.map(r => r.show_id))}
           />
         )}
       </div>
+
+      {ratingTarget && (
+        <RatingEditor
+          showTitle={ratingTarget.title}
+          reviewId={ratingTarget.reviewId}
+          initialRating={ratingTarget.initialRating ?? 0}
+          initialReviewText={ratingTarget.initialReviewText}
+          initialDateSeen={ratingTarget.initialDateSeen}
+          presentation="modal"
+          onSave={handleInlineRatingSave}
+          onSaved={() => setRatingTarget(null)}
+          onCancel={() => setRatingTarget(null)}
+        />
+      )}
 
       {/* Stats bar — tab badges carry the seen/watchlist/lists counts now, so
           only the two signals WITHOUT a badge live here (owner: the duplicate
@@ -712,6 +783,7 @@ export default function MyShowsClient() {
                         entry={entry}
                         show={showMap[entry.show_id]}
                         onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed — no rating needed.', 'info'); }}
+                        onRate={openRatingEditor}
                       />
                     ))}
                   </div>
@@ -731,8 +803,7 @@ export default function MyShowsClient() {
                         const entryShow = showMap[entry.show_id];
                         const entryTitle = entryShow?.title || entry.show_id;
                         const entrySlug = entryShow?.slug || entry.show_id;
-                        const entryCategory = entryShow?.category || 'broadway';
-                        const entryHref = getShowHref(entrySlug, entryCategory);
+                        const entryHref = getShowHref(entrySlug, entryShow?.diaryOnly);
                         const daysUntil = entry.planned_date
                           ? Math.ceil((new Date(entry.planned_date + 'T00:00:00').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
                           : null;
@@ -741,7 +812,7 @@ export default function MyShowsClient() {
                           : null;
                         return (
                           <div key={`wl-${entry.id}`} className="relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
-                            <Link href={entryHref} className="absolute inset-0 z-0" aria-label={`View ${entryTitle}`} />
+                            {entryHref && <Link href={entryHref} className="absolute inset-0 z-0" aria-label={`View ${entryTitle}`} />}
                             <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
                               <Poster url={entryShow?.posterUrl} iconClass="text-xl" />
                             </div>
@@ -765,7 +836,7 @@ export default function MyShowsClient() {
                         );
                       })}
                       {upcomingReviews.map(review => (
-                        <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} />
+                        <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} onRate={openRatingEditor} />
                       ))}
                     </div>
                   ) : (
@@ -773,8 +844,7 @@ export default function MyShowsClient() {
                       {upcomingWatchlistEntries.map(entry => {
                         const entryShow = showMap[entry.show_id];
                         const entrySlug = entryShow?.slug || entry.show_id;
-                        const entryCategory = entryShow?.category || 'broadway';
-                        const entryHref = getShowHref(entrySlug, entryCategory);
+                        const entryHref = getShowHref(entrySlug, entryShow?.diaryOnly);
                         const entryFormattedDate = entry.planned_date
                           ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
                           : null;
@@ -789,7 +859,7 @@ export default function MyShowsClient() {
                         );
                       })}
                       {upcomingReviews.map(review => (
-                        <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} />
+                        <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} onRate={openRatingEditor} />
                       ))}
                     </div>
                   )}
@@ -812,7 +882,7 @@ export default function MyShowsClient() {
                       {diaryView === 'list' ? (
                         <div className="space-y-2">
                           {pastReviews.map(review => (
-                            <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} />
+                            <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} onRate={openRatingEditor} />
                           ))}
                           <AddShowCard context="diary" variant="list" onOpen={() => {
                             const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
@@ -822,7 +892,7 @@ export default function MyShowsClient() {
                       ) : (
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                           {pastReviews.map(review => (
-                            <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} />
+                            <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} onRate={openRatingEditor} />
                           ))}
                           <AddShowCard context="diary" onOpen={() => {
                             const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
@@ -880,7 +950,7 @@ export default function MyShowsClient() {
                         {diaryView === 'list' ? (
                           <div className="space-y-2">
                             {reviewsByYear[year].map(review => (
-                              <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} />
+                              <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} onRate={openRatingEditor} />
                             ))}
                             {yearIdx === sortedYears.length - 1 && (
                               <AddShowCard context="diary" variant="list" onOpen={() => {
@@ -892,7 +962,7 @@ export default function MyShowsClient() {
                         ) : (
                           <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                             {reviewsByYear[year].map(review => (
-                              <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} />
+                              <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} onRate={openRatingEditor} />
                             ))}
                             {yearIdx === sortedYears.length - 1 && (
                               <AddShowCard context="diary" onOpen={() => {
@@ -935,6 +1005,7 @@ export default function MyShowsClient() {
                     show={showMap[entry.show_id]}
                     onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                     onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                    onRate={openRatingEditor}
                   />
                 ))}
                 <AddShowCard context="watchlist" onOpen={() => {
@@ -951,6 +1022,7 @@ export default function MyShowsClient() {
                     show={showMap[entry.show_id]}
                     onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                     onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                    onRate={openRatingEditor}
                   />
                 ))}
                 <AddShowCard context="watchlist" variant="list" onOpen={() => {
@@ -976,6 +1048,7 @@ export default function MyShowsClient() {
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRate={openRatingEditor}
                         />
                       ))}
                       <AddShowCard context="watchlist" onOpen={() => {
@@ -992,6 +1065,7 @@ export default function MyShowsClient() {
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRate={openRatingEditor}
                         />
                       ))}
                       <AddShowCard context="watchlist" variant="list" onOpen={() => {
@@ -1016,6 +1090,7 @@ export default function MyShowsClient() {
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRate={openRatingEditor}
                         />
                       ))}
                       {unbookedWatchlist.length === 0 && (
@@ -1034,6 +1109,7 @@ export default function MyShowsClient() {
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRate={openRatingEditor}
                         />
                       ))}
                       {unbookedWatchlist.length === 0 && (
@@ -1096,7 +1172,7 @@ function RowRemoveButton({ onRemove, label }: { onRemove: () => void; label: str
   );
 }
 
-function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: ShowLookup; onDelete?: () => void }) {
+function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; show?: ShowLookup; onDelete?: () => void; onRate?: (show: { id: string; title: string }, opts: { reviewId: string; initialRating: number; initialReviewText: string | null; initialDateSeen: string | null }) => void }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   // Auto-dismiss delete confirmation after 4 seconds
   useEffect(() => {
@@ -1106,13 +1182,12 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
   }, [confirmDelete]);
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
-  const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, show?.diaryOnly);
 
   return (
     <div className="group/diary relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
-      {/* Link overlay for the whole card */}
-      <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
+      {/* Link overlay for the whole card — omitted for diary-only shows (no /show page) */}
+      {href && <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />}
 
       {/* Poster — square thumbnail to match homepage cards */}
       <div className="relative z-[1] pointer-events-none flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay">
@@ -1150,15 +1225,28 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
       </div>
       {/* Edit + delete — top-right corner, out of the star row */}
       <div className="absolute top-1.5 right-1.5 z-[2] flex items-center gap-0.5 opacity-100 sm:opacity-0 sm:group-hover/diary:opacity-100 transition-opacity pointer-events-auto">
-          <Link
-            href={`${href}?edit=1`}
-            className="p-1 rounded-full text-gray-600 hover:text-white transition-colors"
-            aria-label="Edit rating"
-          >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-            </svg>
-          </Link>
+          {href ? (
+            <Link
+              href={`${href}?edit=1`}
+              className="p-1 rounded-full text-gray-600 hover:text-white transition-colors"
+              aria-label="Edit rating"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </Link>
+          ) : onRate && (
+            <button
+              type="button"
+              onClick={() => onRate({ id: review.show_id, title }, { reviewId: review.id, initialRating: review.rating, initialReviewText: review.review_text, initialDateSeen: review.date_seen })}
+              className="p-1 rounded-full text-gray-600 hover:text-white transition-colors"
+              aria-label="Edit rating"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </button>
+          )}
           {onDelete && !confirmDelete && (
             <button
               type="button"
@@ -1182,7 +1270,7 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
   );
 }
 
-function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string; posterUrl?: string; date: string | null; onRemove: () => void }) {
+function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string | null; posterUrl?: string; date: string | null; onRemove: () => void }) {
   const [confirmRemove, setConfirmRemove] = useState(false);
   useEffect(() => {
     if (!confirmRemove) return;
@@ -1192,7 +1280,7 @@ function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string; p
 
   return (
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <Link href={href} className="relative">
+      <CardLinkOrDiv href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay">
           <Poster url={posterUrl} iconClass="text-3xl" />
         </div>
@@ -1207,7 +1295,7 @@ function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string; p
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
         </button>
-      </Link>
+      </CardLinkOrDiv>
       {date && (
         <div className="px-2 py-1.5 text-center">
           <p className="text-xs font-medium text-amber-400 truncate">{date}</p>
@@ -1217,6 +1305,15 @@ function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string; p
   );
 }
 
+
+/** Wraps card content in a Link when href is set, plain div otherwise —
+ *  diary-only shows have no /show page to link to (getShowHref returns null). */
+function CardLinkOrDiv({ href, className, children }: { href: string | null; className?: string; children: ReactNode }) {
+  if (href) {
+    return <Link href={href} className={className}>{children}</Link>;
+  }
+  return <div className={className}>{children}</div>;
+}
 
 /** Poster image that degrades to the 🎭 placeholder when the URL is missing
  *  OR fails to load — a stored poster path that 404s otherwise renders as a
@@ -1230,7 +1327,7 @@ function Poster({ url, iconClass = 'text-3xl' }: { url: string | null | undefine
   return <img src={url} alt="" className="w-full h-full object-cover" onError={() => setBroken(true)} />;
 }
 
-function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: ShowLookup; onDelete?: () => void }) {
+function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview; show?: ShowLookup; onDelete?: () => void; onRate?: (show: { id: string; title: string }, opts: { reviewId: string; initialRating: number; initialReviewText: string | null; initialDateSeen: string | null }) => void }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   useEffect(() => {
     if (!confirmDelete) return;
@@ -1239,12 +1336,11 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
   }, [confirmDelete]);
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
-  const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, show?.diaryOnly);
 
   return (
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <Link href={href} className="relative">
+      <CardLinkOrDiv href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay">
           <Poster url={show?.posterUrl} iconClass="text-3xl" />
         </div>
@@ -1256,6 +1352,20 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
               <p className="text-xs text-gray-200 italic leading-snug line-clamp-4">{review.review_text}</p>
             </div>
           </div>
+        )}
+        {/* Edit button — diary-only shows have no /show page, so grid view
+            (the default) needs its own edit affordance too, not just list view. */}
+        {!href && onRate && (
+          <button
+            type="button"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRate({ id: review.show_id, title }, { reviewId: review.id, initialRating: review.rating, initialReviewText: review.review_text, initialDateSeen: review.date_seen }); }}
+            className="absolute top-2 left-2 z-[2] w-7 h-7 hidden sm:flex items-center justify-center rounded-full bg-black/70 text-gray-400 hover:text-white opacity-0 group-hover/grid:opacity-100 transition-opacity"
+            aria-label="Edit rating"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          </button>
         )}
         {/* Delete button — hidden on mobile, visible on hover on desktop */}
         {onDelete && (
@@ -1270,7 +1380,7 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
             </svg>
           </button>
         )}
-      </Link>
+      </CardLinkOrDiv>
       {/* Stars below image — centered, filled only (Mezzanine-style), with the
           date seen directly beneath (owner placement call, 2026-07-13) */}
       <div className="px-2 py-1.5">
@@ -1287,11 +1397,12 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
   );
 }
 
-function WatchlistCard({ entry, show, onDateChange, onRemove }: {
+function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
   entry: WatchlistEntry;
   show?: ShowLookup;
   onDateChange: (date: string | null) => void;
   onRemove: () => void;
+  onRate: (show: { id: string; title: string }) => void;
 }) {
   const [confirmRemove, setConfirmRemove] = useState(false);
   useEffect(() => {
@@ -1301,8 +1412,12 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
   }, [confirmRemove]);
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
-  const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, show?.diaryOnly);
+  const rateHref = href ? `${href}?rate=1` : null;
+  const handleRateClick = () => {
+    if (rateHref) window.location.href = rateHref;
+    else onRate({ id: entry.show_id, title });
+  };
 
   const isClosingSoon = show?.closingDate && (() => {
     const closing = new Date(show.closingDate!);
@@ -1317,7 +1432,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
 
   return (
     <div className="group/wl flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <Link href={href} className="relative">
+      <CardLinkOrDiv href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay relative">
           <Poster url={show?.posterUrl} iconClass="text-3xl" />
           {isClosingSoon && (
@@ -1326,13 +1441,14 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
             </span>
           )}
         </div>
-        {/* Rate overlay — navigates to show page with ?rate=1 to auto-open rating */}
+        {/* Rate overlay — navigates to show page with ?rate=1 (or opens the
+            inline rating modal for diary-only shows with no /show page) */}
         {/* On mobile: "Rate" button at bottom; on desktop: 5 empty stars on hover */}
         <div
           role="button"
           tabIndex={0}
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `${href}?rate=1`; }}
-          onKeyDown={(e) => { if (e.key === 'Enter') { window.location.href = `${href}?rate=1`; } }}
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRateClick(); }}
+          onKeyDown={(e) => { if (e.key === 'Enter') handleRateClick(); }}
           className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 sm:group-hover/wl:opacity-100 transition-opacity z-[1] cursor-pointer"
         >
           <span className="hidden sm:flex items-center gap-0.5">
@@ -1348,8 +1464,8 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
           <span
             role="button"
             tabIndex={0}
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `${href}?rate=1`; }}
-            onKeyDown={(e) => { if (e.key === 'Enter') { window.location.href = `${href}?rate=1`; } }}
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRateClick(); }}
+            onKeyDown={(e) => { if (e.key === 'Enter') handleRateClick(); }}
             className="text-xs font-semibold text-white/90 flex items-center gap-1 cursor-pointer"
           >
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1369,7 +1485,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
         </button>
-      </Link>
+      </CardLinkOrDiv>
       <div className="px-2 py-1.5">
         <DatePickerButton
           value={entry.planned_date || ''}
@@ -1446,11 +1562,12 @@ function DatePickerButton({ value, label, hasDate, onChange }: { value: string; 
   );
 }
 
-function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
+function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
   entry: WatchlistEntry;
   show?: ShowLookup;
   onDateChange: (date: string | null) => void;
   onRemove: () => void;
+  onRate: (show: { id: string; title: string }) => void;
 }) {
   const [confirmRemove, setConfirmRemove] = useState(false);
   useEffect(() => {
@@ -1460,8 +1577,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
   }, [confirmRemove]);
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
-  const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, show?.diaryOnly);
 
   const isClosingSoon = show?.closingDate && (() => {
     const closing = new Date(show.closingDate!);
@@ -1476,7 +1592,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
 
   return (
     <div className="group/wl relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
-      <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
+      {href && <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />}
 
       <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay">
         <Poster url={show?.posterUrl} iconClass="text-xl" />
@@ -1504,15 +1620,28 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
         />
         {/* Rate + Remove row */}
         <div className="flex items-center gap-2">
-          <Link
-            href={`${href}?rate=1`}
-            className="relative z-[1] text-xs sm:text-xs text-gray-500 hover:text-amber-400 transition-colors flex items-center gap-1"
-          >
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-            </svg>
-            Rate
-          </Link>
+          {href ? (
+            <Link
+              href={`${href}?rate=1`}
+              className="relative z-[1] text-xs sm:text-xs text-gray-500 hover:text-amber-400 transition-colors flex items-center gap-1"
+            >
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+              Rate
+            </Link>
+          ) : (
+            <button
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRate({ id: entry.show_id, title }); }}
+              className="relative z-[1] text-xs sm:text-xs text-gray-500 hover:text-amber-400 transition-colors flex items-center gap-1"
+            >
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+              Rate
+            </button>
+          )}
           {confirmRemove ? (
             <span className="relative z-[1] flex items-center gap-1 text-xs">
               <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }} className="text-red-400 hover:text-red-300 font-medium">Remove?</button>
@@ -1546,16 +1675,22 @@ interface SearchShow {
   od?: string; // openingDate (YYYY-MM-DD)
   images?: { thumbnail?: string };
   category?: string;
+  /** True for diary-only (unscored) catalog entries — no /show page. */
+  dy?: boolean;
 }
 
 function AddShowSearch({
   context,
   onAddToWatchlist,
+  onRateDiaryOnly,
   existingWatchlistIds,
   existingReviewIds,
 }: {
   context: 'diary' | 'watchlist';
   onAddToWatchlist: (showId: string) => Promise<void>;
+  /** Diary-only shows have no /show page to deep-link ?rate=1 into — open the
+   *  inline rating modal instead. */
+  onRateDiaryOnly: (show: { id: string; title: string }) => void;
   existingWatchlistIds: Set<string>;
   existingReviewIds: Set<string>;
 }) {
@@ -1576,7 +1711,7 @@ function AddShowSearch({
     return () => document.removeEventListener('mousedown', handleClick);
   }, [isOpen]);
 
-  const handleSelect = async (show: { id: string; slug: string }) => {
+  const handleSelect = async (show: { id: string; slug: string; title: string; dy?: boolean }) => {
     if (context === 'watchlist') {
       if (!existingWatchlistIds.has(show.id)) {
         setAddingId(show.id);
@@ -1586,6 +1721,8 @@ function AddShowSearch({
           setAddingId(null);
         }
       }
+    } else if (show.dy) {
+      onRateDiaryOnly(show);
     } else {
       router.push(`/show/${show.slug}?rate=1`);
     }
@@ -1616,6 +1753,7 @@ function AddShowSearch({
         onSelect={handleSelect}
         onClose={() => setIsOpen(false)}
         align="right"
+        includeDiary
         isDisabled={(show) => addingId === show.id}
         renderAction={(show) => {
           if (context === 'diary') {
@@ -1633,16 +1771,19 @@ function AddShowSearch({
 }
 
 /** "To Be Rated" card with inline interactive stars */
-function ToBeRatedCard({ entry, show, onRemove }: { entry: WatchlistEntry; show?: ShowLookup; onRemove: () => void }) {
+function ToBeRatedCard({ entry, show, onRemove, onRate }: { entry: WatchlistEntry; show?: ShowLookup; onRemove: () => void; onRate: (show: { id: string; title: string }, opts: { initialRating: number }) => void }) {
   const router = useRouter();
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
-  const category = show?.category || 'broadway';
-  const href = getShowHref(slug, category);
+  const href = getShowHref(slug, show?.diaryOnly);
+  const handleStarRate = (rating: number) => {
+    if (href) router.push(`${href}?rate=1&stars=${rating}`);
+    else onRate({ id: entry.show_id, title }, { initialRating: rating });
+  };
 
   return (
     <div className="relative flex items-center gap-3 px-3 sm:px-5 py-3 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/20 hover:bg-amber-500/[0.06] transition-colors">
-      <Link href={href} className="absolute inset-0 z-0" aria-label={`Rate ${title}`} />
+      {href && <Link href={href} className="absolute inset-0 z-0" aria-label={`Rate ${title}`} />}
       <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
         <Poster url={show?.posterUrl} iconClass="text-xl" />
       </div>
@@ -1664,18 +1805,14 @@ function ToBeRatedCard({ entry, show, onRemove }: { entry: WatchlistEntry; show?
           <span className="sm:hidden">
             <StarRating
               rating={null}
-              onRatingChange={(rating) => {
-                router.push(`${href}?rate=1&stars=${rating}`);
-              }}
+              onRatingChange={handleStarRate}
               size="sm"
             />
           </span>
           <span className="hidden sm:inline-flex">
             <StarRating
               rating={null}
-              onRatingChange={(rating) => {
-                router.push(`${href}?rate=1&stars=${rating}`);
-              }}
+              onRatingChange={handleStarRate}
               size="md"
             />
           </span>
