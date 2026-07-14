@@ -46,7 +46,13 @@ type SortDirection = 'asc' | 'desc';
 
 /** Profit multiple for the Return column — investorMultiple when reported,
  *  else the model's central estimate (only above the quality floor). Blank
- *  for anything not confirmed recouped. */
+ *  for anything not confirmed recouped.
+ *
+ *  This is the same ratio the shared RecoupmentProgressBar already uses to
+ *  render "~Nx returned to investors" once modelRecoupmentPct crosses 200%
+ *  (see src/components/RecoupmentProgressBar.tsx) — percent-of-capitalization
+ *  recouped and multiple-of-capital-returned are the same number at
+ *  different scales, not two different metrics. */
 function getProfitMultiple(show: ShowData): number | null {
   if (!show.recouped) return null;
   if (show.investorMultiple != null) return show.investorMultiple;
@@ -54,6 +60,18 @@ function getProfitMultiple(show: ShowData): number | null {
     return show.modelRecoupmentPct[1] / 100;
   }
   return null;
+}
+
+/** Sort key for the % Recouped column — mirrors what RecoupedCell actually
+ *  renders (via getRecoupmentDisplayMode/meetsModelQualityFloor) so a row
+ *  showing "—" never sorts as if it had a real number. No fallback to the
+ *  legacy AI-estimated `estimatedRecoupmentPct` — that value is exactly
+ *  what the quality floor excludes from display. */
+function getRecoupedSortValue(show: ShowData): number {
+  const mode = getRecoupmentDisplayMode(show);
+  if (mode === 'announced') return show.modelRecoupmentPct?.[1] ?? 100;
+  if (mode === 'model') return show.modelRecoupmentPct![1];
+  return -Infinity;
 }
 
 function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
@@ -152,12 +170,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
           comparison = (a.totalGross ?? -Infinity) - (b.totalGross ?? -Infinity);
           break;
         case 'recoupment': {
-          // Recouped shows rank by actual model magnitude when known (so
-          // Hamilton sorts above a show that just crossed 100%); recouped
-          // shows with no model data fall back to a 100%-recouped floor.
-          const aVal = a.recouped ? (a.modelRecoupmentPct?.[1] ?? 100) : (a.modelRecoupmentPct?.[1] ?? a.estimatedRecoupmentPct?.[1] ?? -Infinity);
-          const bVal = b.recouped ? (b.modelRecoupmentPct?.[1] ?? 100) : (b.modelRecoupmentPct?.[1] ?? b.estimatedRecoupmentPct?.[1] ?? -Infinity);
-          comparison = aVal - bVal;
+          comparison = getRecoupedSortValue(a) - getRecoupedSortValue(b);
           break;
         }
         case 'return': {

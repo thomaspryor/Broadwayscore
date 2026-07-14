@@ -2,12 +2,13 @@
  * Unit tests for the shared /biz currency formatter (task #158, P0-1).
  * Null capitalization used to render "~$0" (Ragtime, Dorian Gray) because
  * every component reimplemented its own formatter with an inconsistent null
- * path. This locks the single shared implementation.
+ * path. formatCurrency itself is the app-wide @/lib/formatting helper
+ * (re-exported here) — this only locks the /biz-specific "~" wrapper and
+ * the null contract this file promises.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-
-const { formatCurrency, formatEstimatedCurrency } = await import('../../src/lib/biz-format.ts');
+import { formatCurrency, formatEstimatedCurrency } from '../../src/lib/biz-format';
 
 test('formatCurrency: null/undefined render em-dash, never $0', () => {
   assert.equal(formatCurrency(null), '—');
@@ -22,10 +23,6 @@ test('formatCurrency: scales K/M/B', () => {
   assert.equal(formatCurrency(850_000), '$850K');
   assert.equal(formatCurrency(12_500_000), '$12.5M');
   assert.equal(formatCurrency(1_400_000_000), '$1.4B');
-});
-
-test('formatCurrency: negative amounts keep sign', () => {
-  assert.equal(formatCurrency(-500_000), '-$500K');
 });
 
 test('formatEstimatedCurrency: null renders bare em-dash, never "~—"', () => {

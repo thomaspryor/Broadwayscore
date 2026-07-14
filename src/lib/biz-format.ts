@@ -1,17 +1,13 @@
 // Shared currency formatting for the /biz Investment Tracker.
 // Single source of truth so a missing data point renders "—" everywhere
 // instead of drifting per-component (the null → "~$0" credibility bug).
+//
+// Re-exports the app-wide formatCurrency from @/lib/formatting rather than
+// reimplementing it — the /biz components previously each had their own
+// ad-hoc copy; this file was almost a third fork of the same K/M/B logic.
 
-/** "$1.2M" / "$450K" / "$800" style formatting. "—" for null/undefined. */
-export function formatCurrency(amount: number | null | undefined): string {
-  if (amount === null || amount === undefined) return '—';
-  const sign = amount < 0 ? '-' : '';
-  const abs = Math.abs(amount);
-  if (abs >= 1_000_000_000) return `${sign}$${(abs / 1_000_000_000).toFixed(1)}B`;
-  if (abs >= 1_000_000) return `${sign}$${(abs / 1_000_000).toFixed(1)}M`;
-  if (abs >= 1_000) return `${sign}$${(abs / 1_000).toFixed(0)}K`;
-  return `${sign}$${abs}`;
-}
+import { formatCurrency } from './formatting';
+export { formatCurrency };
 
 /**
  * For figures that are always estimates when present (capitalization, break-even).

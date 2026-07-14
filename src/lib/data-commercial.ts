@@ -410,6 +410,14 @@ export function getSeasonGrossTrend(): SeasonGrossTrend {
   return { totalWoW, avgCapacity, showCount };
 }
 
+// Gate threshold (%) for excluding a show from "Approaching Recoupment" on
+// trend alone. Deliberately coarser than the display badge's default (2%):
+// at 2%, ordinary seasonal softness (summer, post-Tony) flags 'declining'
+// on nearly every open show at once, which silently zeroed out this whole
+// section regardless of how strong the underlying recoupment estimate was.
+// 8% requires an actual flop trajectory, not a slow week.
+const APPROACHING_RECOUPMENT_SHARP_DECLINE_THRESHOLD_PCT = 8;
+
 /**
  * Get shows approaching recoupment (TBD with 40%+ recoupment estimate, not declining)
  */
@@ -429,11 +437,7 @@ export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
     const show = rawShows.find(s => s.slug === slug);
     if (!show || show.status !== 'open') continue;
 
-    // Use a coarser threshold here than the display badge (2%): a normal
-    // seasonal dip (summer, post-Tony) trips the default 'declining' label
-    // on almost every open show at once, which was silently zeroing out this
-    // entire section. Only exclude shows on a genuine downward trajectory.
-    const isSharpDecline = getRecoupmentTrend(slug, 8) === 'declining';
+    const isSharpDecline = getRecoupmentTrend(slug, APPROACHING_RECOUPMENT_SHARP_DECLINE_THRESHOLD_PCT) === 'declining';
     if (isSharpDecline) continue;
 
     const trend = getRecoupmentTrend(slug);
@@ -689,6 +693,9 @@ export function getShowsBySeasonWithCommercial(season: string): Array<{
   estimatedRecoupmentPct: [number, number] | null;
   modelRecoupmentPct?: [number, number, number] | null;
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
+  modelDataQuality?: 'high' | 'medium' | 'low';
+  investorMultiple?: number | null;
+  recoupedSource?: string | null;
   trend: RecoupmentTrend;
   recouped: boolean | null;
   recoupedWeeks: number | null;
@@ -704,6 +711,9 @@ export function getShowsBySeasonWithCommercial(season: string): Array<{
     estimatedRecoupmentPct: [number, number] | null;
     modelRecoupmentPct?: [number, number, number] | null;
     modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
+    modelDataQuality?: 'high' | 'medium' | 'low';
+    investorMultiple?: number | null;
+    recoupedSource?: string | null;
     trend: RecoupmentTrend;
     recouped: boolean | null;
     recoupedWeeks: number | null;
@@ -729,6 +739,9 @@ export function getShowsBySeasonWithCommercial(season: string): Array<{
       estimatedRecoupmentPct: data.estimatedRecoupmentPct || null,
       modelRecoupmentPct: data.modelRecoupmentPct || null,
       modelMethod: data.modelMethod || null,
+      modelDataQuality: data.modelDataQuality,
+      investorMultiple: data.investorMultiple,
+      recoupedSource: data.recoupedSource,
       trend: getRecoupmentTrend(slug),
       recouped: data.recouped,
       recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate),

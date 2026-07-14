@@ -9,16 +9,24 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getRecoupmentTrend, getShowsApproachingRecoupment } from '../../src/lib/data-commercial';
+import { getRecoupmentTrend, getShowsApproachingRecoupment, getAllCommercialSlugs } from '../../src/lib/data-commercial';
 
-test('getRecoupmentTrend: a wider threshold can turn a mild dip from declining to steady', () => {
-  // buena-vista-social-club sits in the real dataset with a ~-4% avg WoW
-  // (ordinary summer softness) — 'declining' at the default 2% badge
-  // threshold, but not a sharp decline at the coarser 8% gate threshold.
-  const badgeTrend = getRecoupmentTrend('buena-vista-social-club', 2);
-  const gateTrend = getRecoupmentTrend('buena-vista-social-club', 8);
-  assert.equal(badgeTrend, 'declining');
-  assert.notEqual(gateTrend, 'declining');
+test('getRecoupmentTrend: a coarser threshold is never MORE likely to call a show declining', () => {
+  // Property test rather than a live-data-value assertion (the previous
+  // version hard-coded one show's current trend, which would silently pass
+  // or fail as tomorrow's grosses land — not a real regression signal
+  // either way). The threshold comparison is `avgChange < -threshold`, so a
+  // larger threshold can only ever be as-or-less likely to trigger
+  // 'declining' for the same underlying data. Checked across every show
+  // with commercial data so it holds regardless of which shows are
+  // currently soft.
+  for (const slug of getAllCommercialSlugs()) {
+    const narrow = getRecoupmentTrend(slug, 2);
+    const wide = getRecoupmentTrend(slug, 8);
+    if (wide === 'declining') {
+      assert.equal(narrow, 'declining', `${slug}: wide threshold flagged declining but narrow threshold didn't`);
+    }
+  }
 });
 
 test('getShowsApproachingRecoupment: does not silently zero out during seasonal softness', () => {
