@@ -164,14 +164,21 @@ const ShowListCard = memo(function ShowListCard({
                 {getBroadwayDuration(show.openingDate, durationSuffix) && '·'} Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </span>
             )}
-            {(show.status === 'previews' || show.status === 'upcoming') && show.openingDate && (
+            {(show.status === 'previews' || show.status === 'upcoming' || show.status === 'announced') && show.openingDate && (
               <span className="text-purple-400">
                 Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </span>
             )}
+            {(show.status === 'announced' || show.status === 'upcoming' || show.status === 'previews') && !show.openingDate && (
+              <span className="text-blue-400">
+                {show.previewsStartDate
+                  ? `Previews ${new Date(show.previewsStartDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+                  : show.status === 'announced' ? 'Announced — dates TBA' : null}
+              </span>
+            )}
           </>
         )}
-        {isMixedStatus && !isOpen && (
+        {isMixedStatus && !isOpen && show.status !== 'announced' && (
           <span className="text-orange-400">
             {(() => {
               if (!show.closingDate) return 'Closed';
@@ -204,6 +211,8 @@ const ShowListCard = memo(function ShowListCard({
       <p className="text-sm text-gray-400 mt-2.5 truncate">
         {show.status === 'previews' || show.status === 'upcoming' ? (
           <>Opens {formatOpeningDate(show.openingDate)}</>
+        ) : show.status === 'announced' ? (
+          <span className="text-blue-400">{show.openingDate ? <>Opens {formatOpeningDate(show.openingDate)}</> : 'Announced — dates TBA'}</span>
         ) : show.status === 'closed' ? (
           <span className="text-orange-400">{(() => {
             if (!show.closingDate) return 'Closed';

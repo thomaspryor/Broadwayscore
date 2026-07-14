@@ -7,7 +7,8 @@
  *
  * Validates:
  * 1. Is it a valid URL?
- * 2. Is it a Broadway review (not Off-Broadway, tour, etc.)?
+ * 2. Is it a review of a show in a market we cover — NYC (Broadway or
+ *    Off-Broadway) or London (West End or Off-West-End)?
  * 3. Is the show in our database?
  * 4. Is it from a legitimate outlet?
  * 5. Is it already in our reviews?
@@ -136,7 +137,7 @@ async function validateWithClaude(submissionData) {
   const showsList = shows.map(s => `- ${s.title} (${s.id})`).join('\n');
 
   const today = new Date().toISOString().split('T')[0];
-  const prompt = `You are validating a Broadway review submission for our database. Analyze the following submission and determine if it's valid.
+  const prompt = `You are validating a theater review submission for Broadway Scorecard. We cover all professional theater in New York City (Broadway AND Off-Broadway) and London (West End AND Off-West-End). Analyze the following submission and determine if it's valid.
 
 TODAY'S DATE: ${today} — use this when evaluating publication dates in URLs or metadata. Review URLs with dates in 2025 or 2026 are expected and valid.
 
@@ -153,9 +154,14 @@ ${showsList}
 VALIDATION CRITERIA:
 1. Is this a valid, accessible URL?
 2. Based on the URL domain and path, is this likely a professional theater review (not a news article, listicle, or aggregator page)?
-3. Is this specifically a BROADWAY show review (not Off-Broadway, regional, touring, or international)?
-4. Is the show in our database? If so, which one?
+3. Is this a review of a production in a market we cover — New York City (Broadway or Off-Broadway) OR London (West End or Off-West-End)? A London/West End review is fully in scope. Reject only productions outside these markets (e.g. US regional theater, touring productions, or international productions elsewhere).
+4. Is the show in our database? If so, which one? Match on the show title regardless of market — database IDs may include a market suffix such as "off-west-end" or "off-broadway"; that suffix does NOT disqualify the submission. Set showInDatabase to true whenever the production matches a database entry.
 5. Is the outlet a legitimate theater publication or major media outlet?
+
+RECOMMENDATION GUIDANCE:
+- "approve" when the URL is a valid professional review from a legitimate outlet, the production is in a covered market (NYC or London), AND the show is in our database.
+- "needs-manual-review" when it's a valid covered-market review from a legitimate outlet but the show is NOT yet in our database (we may need to add the show first).
+- "reject" when the URL is not a review, the outlet is illegitimate, the production is outside our covered markets, or the review already exists.
 
 Respond in this JSON format:
 {
@@ -163,7 +169,7 @@ Respond in this JSON format:
   "validationDetails": {
     "isValidUrl": true/false,
     "isReview": true/false,
-    "isBroadway": true/false,
+    "isCoveredMarket": true/false,
     "isLegitimateOutlet": true/false,
     "showInDatabase": true/false
   },

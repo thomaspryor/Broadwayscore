@@ -422,6 +422,113 @@ test('Globe guard: existing entry with null category not matched (avoids spuriou
   assertEqual(twin, null, 'existing with null category not matched');
 });
 
+// ---------- regression: long-closed twin carve-out (2026-07-14 incident) ----------
+// The guard was permanently blocking real revivals: Seven Guitars (LCT 2026)
+// vs seven-guitars-1996, An American Daughter (Signature 2026) vs 1997, etc.
+// A candidate currently on sale cannot be the same production as a show that
+// closed 18+ months ago.
+
+test('Long-closed twin: revival of decades-closed show → guard skipped (added, not blocked)', () => {
+  const sevenGuitars1996 = {
+    id: 'seven-guitars-1996',
+    title: 'Seven Guitars',
+    venue: 'Walter Kerr Theatre',
+    category: 'broadway',
+    status: 'closed',
+    openingDate: '1996-03-28',
+    closingDate: '1996-09-08',
+  };
+  const candidate = {
+    title: 'Seven Guitars',
+    venue: 'Lincoln Center Theater - Mitzi E. Newhouse Theater',
+    category: 'off-broadway',
+    openingDate: null,
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [sevenGuitars1996]);
+  assertEqual(twin, null, 'twin closed in 1996 → new production allowed');
+});
+
+test('Long-closed twin: closed show with no closingDate but old openingDate → guard skipped', () => {
+  const anAmericanDaughter1997 = {
+    id: 'an-american-daughter-1997',
+    title: 'An American Daughter',
+    venue: 'Cort Theatre',
+    category: 'broadway',
+    status: 'closed',
+    openingDate: '1997-04-13',
+    closingDate: null,
+  };
+  const candidate = {
+    title: 'An American Daughter',
+    venue: 'Pershing Square Signature Center',
+    category: 'off-broadway',
+    openingDate: null,
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [anAmericanDaughter1997]);
+  assertEqual(twin, null, 'closed 1997, dated by openingDate → new production allowed');
+});
+
+test('Recently-closed twin: closed <18 months ago → still a twin (blocked)', () => {
+  const recentClose = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
+    .toISOString().split('T')[0];
+  const justClosed = {
+    id: 'some-play-2026',
+    title: 'Some Play',
+    venue: 'Public Theater',
+    category: 'off-broadway',
+    status: 'closed',
+    openingDate: null,
+    closingDate: recentClose,
+  };
+  const candidate = {
+    title: 'Some Play',
+    venue: 'The Public',
+    category: 'off-broadway',
+    openingDate: null,
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [justClosed]);
+  assertEqual(twin?.id, justClosed.id, 'closed 3 months ago → still twin');
+});
+
+test('Open twin from years ago → still a twin (long-running show, Globe protection intact)', () => {
+  const hamiltonBw = {
+    id: 'hamilton-2015',
+    title: 'Hamilton',
+    venue: 'Richard Rodgers Theatre',
+    category: 'broadway',
+    status: 'open',
+    openingDate: '2015-08-06',
+  };
+  const candidate = {
+    title: 'Hamilton',
+    venue: 'Richard Rodgers',
+    category: 'broadway',
+    openingDate: null,
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [hamiltonBw]);
+  assertEqual(twin?.id, hamiltonBw.id, 'open show is never long-closed → still twin');
+});
+
+test('Closed twin with no dates at all → still a twin (conservative)', () => {
+  const undatable = {
+    id: 'mystery-1990s',
+    title: 'Mystery Play',
+    venue: '',
+    category: 'broadway',
+    status: 'closed',
+    openingDate: null,
+    closingDate: null,
+  };
+  const candidate = {
+    title: 'Mystery Play',
+    venue: 'Somewhere',
+    category: 'broadway',
+    openingDate: null,
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [undatable]);
+  assertEqual(twin?.id, undatable.id, 'undatable closed show → conservative, still twin');
+});
+
 // ---------- run ----------
 
 console.log('Running deduplication tests...\n');

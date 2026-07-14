@@ -6,20 +6,20 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.
 
 export const metadata: Metadata = {
   title: 'Submit a Missing Broadway Review',
-  description: 'Help us expand our database by submitting missing Broadway reviews from professional critics.',
+  description: 'Help us expand our database by submitting missing Broadway and West End reviews from professional critics.',
   alternates: {
     canonical: `${BASE_URL}/submit-review`,
   },
   openGraph: {
     title: 'Submit a Missing Review — Broadway Scorecard',
-    description: 'Help us expand our database by submitting missing Broadway reviews from professional critics.',
+    description: 'Help us expand our database by submitting missing Broadway and West End reviews from professional critics.',
     url: `${BASE_URL}/submit-review`,
     images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary',
     title: 'Submit a Missing Review — Broadway Scorecard',
-    description: 'Help us expand our database by submitting missing Broadway reviews from professional critics.',
+    description: 'Help us expand our database by submitting missing Broadway and West End reviews from professional critics.',
   },
 };
 
@@ -52,7 +52,7 @@ export default function SubmitReviewPage() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-emerald-400 font-bold mt-1">&#10003;</span>
-                <span><strong className="text-white">Broadway shows only</strong> (not Off-Broadway, touring, or regional productions)</span>
+                <span><strong className="text-white">New York or London shows</strong> (Broadway, Off-Broadway, West End, or Off-West-End). No touring or regional productions.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-emerald-400 font-bold mt-1">&#10003;</span>
@@ -121,7 +121,7 @@ export default function SubmitReviewPage() {
                 What if my submission is rejected?
               </h3>
               <p className="text-gray-400">
-                Common reasons include: the review is already in our database, the show is not a Broadway production, or the source is not a recognized professional outlet.
+                Common reasons include: the review is already in our database, the show is not a New York or London production we cover, or the source is not a recognized professional outlet.
               </p>
             </div>
 

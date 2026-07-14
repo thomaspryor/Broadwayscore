@@ -140,7 +140,8 @@ jobs:
                 r.ambiguous.forEach(a => {
                   if (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
                     const evidence = a.missingScheduleKind === 'title_mismatch' ? 'page removed/mismatched' : 'schedule empty';
-                    console.log('- ' + a.id + ': stored ' + a.stored + ' but broadway.com ' + evidence + ' — possibly closed earlier');
+                    const storedDesc = a.stored ? ('stored ' + a.stored) : 'no stored closingDate';
+                    console.log('- ' + a.id + ': ' + storedDesc + ' but broadway.com ' + evidence + ' — possibly closed');
                   } else {
                     console.log('- ' + a.id + ': stored ' + a.stored + ', schedule cuts at ' + a.latestScheduled + ' (' + a.delta + 'd)');
                   }
