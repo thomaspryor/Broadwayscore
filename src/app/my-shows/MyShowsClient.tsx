@@ -450,7 +450,7 @@ export default function MyShowsClient() {
             context={activeTab}
             onAddToWatchlist={async (showId: string) => {
               await effectiveAddToWatchlist(showId);
-              if (!isMockMode) await getWatchlist();
+              if (!isMockMode) await getWatchlist(true);
               showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
             }}
             existingWatchlistIds={new Set(watchlist.map(w => w.show_id))}
@@ -478,7 +478,7 @@ export default function MyShowsClient() {
             userId={user.id}
             existingReviewShowIds={new Set(reviews.map(r => r.show_id))}
             existingWatchlistShowIds={new Set(watchlist.map(w => w.show_id))}
-            onImportComplete={() => { getAllReviews(); getWatchlist(); }}
+            onImportComplete={() => { getAllReviews(); getWatchlist(true); }}
           />
         </div>
       )}
