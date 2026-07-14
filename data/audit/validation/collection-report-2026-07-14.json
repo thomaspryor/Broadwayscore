@@ -1,92 +1,86 @@
 {
-  "runDate": "2026-07-14T17:13:21.138Z",
+  "runDate": "2026-07-14T17:13:29.628Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "to-kill-a-mockingbird-west-end-2026",
+    "showFilter": "the-guilty-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 14,
+    "processed": 1,
+    "failed": 11,
     "skipped": 0,
-    "successRate": "12.5%"
+    "successRate": "8.3%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 1
+    "archiveToday": 1,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 4,
+    "tier1Attempts": 4,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
     "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 0,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 14,
-    "scrapingBeePageCredits": 2,
+    "tier4Success": 0,
+    "totalFailed": 11,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 9,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 8,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json"
+    "the-guilty-west-end-2026/deadline--ted-johnson.json"
   ],
   "failed": [
-    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
-    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
-    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
-    "to-kill-a-mockingbird-west-end-2026/timeout--adam-feldman.json",
-    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
-    "to-kill-a-mockingbird-west-end-2026/british-theatre--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
-    "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
-    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/the-morning-star--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/theupcoming--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
-    "to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json"
+    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
+    "the-guilty-west-end-2026/hollywood-reporter--lily-ford.json",
+    "the-guilty-west-end-2026/deadline--denise-petski.json",
+    "the-guilty-west-end-2026/deadline--max-goldbart.json",
+    "the-guilty-west-end-2026/deadline--zac-ntim.json",
+    "the-guilty-west-end-2026/guardian-uk--unknown.json",
+    "the-guilty-west-end-2026/monstagigz--unknown.json",
+    "the-guilty-west-end-2026/plays-international--unknown.json",
+    "the-guilty-west-end-2026/rollingstone--charisma-madarang.json",
+    "the-guilty-west-end-2026/thestage--unknown.json",
+    "the-guilty-west-end-2026/times-uk--unknown.json"
   ],
   "failed": [],
   "tierDetails": {
-    "playwright": [
-      "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-guilty-west-end-2026/deadline--ted-johnson.json",
+      "the-guilty-west-end-2026/deadline--ted-johnson.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
-      "data/review-texts/to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json"
+      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
     ],
-    "archive": [
-      "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
