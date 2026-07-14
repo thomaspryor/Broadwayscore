@@ -28,8 +28,13 @@ on:
         type: choice
         options: [approve, revert]
 
+# GLOBAL concurrency group (not per-card): two cards merging at once could
+# race on main in ways push-with-retry.sh's data-file conflict auto-resolution
+# doesn't safely cover for code changes (ship-check finding, 2026-07-14).
+# Serializing means the second dispatch just queues briefly — the loop caps
+# at 3 items/night, so throughput is a non-issue.
 concurrency:
-  group: autonomous-merge-${{ github.event.inputs.card_id }}
+  group: autonomous-merge
   cancel-in-progress: false
 
 permissions:

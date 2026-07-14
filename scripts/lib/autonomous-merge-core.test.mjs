@@ -4,8 +4,8 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  oscillationTrailerFor, shouldEscalateOscillation, buildEscalationNote,
-  buildMergeOutcomeNote, buildReverifyFailNote, buildRevertOutcomeNote,
+  BASE_TRAILER_PREFIX, oscillationTrailerFor, stripTrailers, parseBaseTrailer, shouldEscalateOscillation,
+  buildEscalationNote, buildMergeOutcomeNote, buildReverifyFailNote, buildRevertOutcomeNote,
 } = require('./autonomous-merge-core.js');
 
 test('oscillationTrailerFor embeds the card id verbatim (grep target for git log)', () => {
@@ -49,4 +49,39 @@ test('buildRevertOutcomeNote references both shas and reopens the card', () => {
   assert.match(note, /cafe1/);
   assert.match(note, /deadbeef/);
   assert.match(note, /reopened/i);
+});
+
+// ── Trailer round-trip (Sprint-3 ship-check fix: multi-commit revert) ──────
+
+test('stripTrailers removes the card trailer and base trailer, leaves the rest', () => {
+  const trailer = oscillationTrailerFor('abc-123');
+  const msg = `auto: fix the thing\n\n${trailer}\n${BASE_TRAILER_PREFIX}deadbeef`;
+  assert.equal(stripTrailers(msg, trailer), 'auto: fix the thing');
+});
+
+test('stripTrailers is idempotent — re-stripping an already-clean message is a no-op', () => {
+  const trailer = oscillationTrailerFor('abc-123');
+  const clean = 'auto: fix the thing';
+  assert.equal(stripTrailers(clean, trailer), clean);
+  assert.equal(stripTrailers(stripTrailers(clean, trailer), trailer), clean);
+});
+
+test('stripTrailers handles a message that was stamped twice (defense in depth)', () => {
+  const trailer = oscillationTrailerFor('abc-123');
+  const doubled = `auto: fix the thing\n\n${trailer}\n${BASE_TRAILER_PREFIX}oldsha\n\n${trailer}\n${BASE_TRAILER_PREFIX}newsha`;
+  assert.equal(stripTrailers(doubled, trailer), 'auto: fix the thing');
+});
+
+test('parseBaseTrailer extracts the sha, or null when absent', () => {
+  const trailer = oscillationTrailerFor('abc-123');
+  const msg = `auto: fix the thing\n\n${trailer}\n${BASE_TRAILER_PREFIX}deadbeef1234`;
+  assert.equal(parseBaseTrailer(msg), 'deadbeef1234');
+  assert.equal(parseBaseTrailer('auto: fix the thing (no trailers)'), null);
+  assert.equal(parseBaseTrailer(''), null);
+  assert.equal(parseBaseTrailer(null), null);
+});
+
+test('parseBaseTrailer takes the FIRST match — callers must strip before re-stamping to avoid stale reads', () => {
+  const doubled = `msg\n${BASE_TRAILER_PREFIX}old\n${BASE_TRAILER_PREFIX}new`;
+  assert.equal(parseBaseTrailer(doubled), 'old');
 });

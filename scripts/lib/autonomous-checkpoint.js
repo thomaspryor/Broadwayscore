@@ -26,11 +26,18 @@ function isIncrementalSize(size) {
 // (i.e. nothing the implementer touched broke, it just isn't done yet), the
 // night is a checkpoint. Any other failing check (colocated tests, tsc) is a
 // genuine failure — an L card gets no special leniency for broken tests.
-function classifyLCardOutcome(checks) {
+//
+// hasCheckableDone (opts): an L card with NO checkableDone at all has no
+// signal that proves it's actually finished — tsc/colocated-tests merely
+// passing doesn't mean "done" for a card explicitly sized too-big-for-one-
+// night. Without this, a large card could be marked complete after a single
+// harmless commit (ship-check finding, 2026-07-14). Default true preserves
+// prior behavior for callers that don't pass it (normal-size cards always do).
+function classifyLCardOutcome(checks, { hasCheckableDone = true } = {}) {
   const list = checks || [];
   if (!list.length) return 'failed'; // no checks ran at all — treat as broken, not incomplete
   const failed = list.filter(c => !c.pass);
-  if (!failed.length) return 'done';
+  if (!failed.length) return hasCheckableDone ? 'done' : 'checkpoint';
   const onlyCardCheckFailed = failed.length === 1 && /^card-check\b/.test(failed[0].name || '');
   return onlyCardCheckFailed ? 'checkpoint' : 'failed';
 }

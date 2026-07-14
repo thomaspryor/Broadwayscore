@@ -44,6 +44,18 @@ test('classifyLCardOutcome: no checks at all is treated as broken, not incomplet
   assert.equal(classifyLCardOutcome(null), 'failed');
 });
 
+test('classifyLCardOutcome: no checkableDone + all other checks pass → checkpoint, not done (ship-check fix)', () => {
+  const checks = [{ name: 'colocated-tests', pass: true }, { name: 'tsc', pass: true }];
+  assert.equal(classifyLCardOutcome(checks), 'done'); // default hasCheckableDone:true preserves old behavior
+  assert.equal(classifyLCardOutcome(checks, { hasCheckableDone: true }), 'done');
+  assert.equal(classifyLCardOutcome(checks, { hasCheckableDone: false }), 'checkpoint');
+});
+
+test('classifyLCardOutcome: hasCheckableDone:false has no effect when checks actually failed', () => {
+  const checks = [{ name: 'colocated-tests', pass: false, detail: 'broke a test' }];
+  assert.equal(classifyLCardOutcome(checks, { hasCheckableDone: false }), 'failed');
+});
+
 test('nightNumberFor counts prior checkpoint headers and increments', () => {
   assert.equal(nightNumberFor(''), 1);
   assert.equal(nightNumberFor(null), 1);
