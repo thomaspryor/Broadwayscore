@@ -192,7 +192,8 @@ function describeAmbiguous(a) {
     const evidence = a.missingScheduleKind === 'title_mismatch'
       ? 'broadway.com page removed/mismatched'
       : 'broadway.com schedule empty';
-    return `${a.id}: stored ${a.stored} (${Math.abs(a.delta)}d out) but ${evidence} — possibly closed earlier`;
+    const storedDesc = a.stored ? `stored ${a.stored} (${Math.abs(a.delta)}d out)` : 'no stored closingDate';
+    return `${a.id}: ${storedDesc} but ${evidence} — possibly closed`;
   }
   return `${a.id}: stored ${a.stored}, schedule cuts off at ${a.latestScheduled} (${a.delta}d)`;
 }
@@ -260,7 +261,8 @@ async function notifyNotion(ambiguous, todayStr) {
       const evidence = a.missingScheduleKind === 'title_mismatch'
         ? "broadway.com page no longer matches this show (removed after closing, or slug collision — if the show is running, add a SLUG_OVERRIDE)"
         : 'broadway.com lists NO future performances';
-      let row = `- **${a.id}** (POSSIBLY-CLOSED): stored=${a.stored} (${Math.abs(a.delta)}d out) but ${evidence} — likely closed earlier than stored. ${a.url}`;
+      const storedDesc = a.stored ? `stored=${a.stored} (${Math.abs(a.delta)}d out)` : 'no stored closingDate';
+      let row = `- **${a.id}** (POSSIBLY-CLOSED): ${storedDesc} but ${evidence} — likely closed. ${a.url}`;
       if (a.tripleSignalConflict) {
         const c = a.tripleSignalConflict;
         const sourceLinks = c.sources.slice(0, 3).map(s => s.url).join(', ');
@@ -391,8 +393,9 @@ async function main() {
             continue;
           }
           ambiguous.push({
-            id: show.id, name: show.name, stored: show.closingDate,
-            latestScheduled: null, url: r.url, delta: -verdict.daysUntilStored,
+            id: show.id, name: show.name, stored: show.closingDate || null,
+            latestScheduled: null, url: r.url,
+            delta: verdict.daysUntilStored == null ? null : -verdict.daysUntilStored,
             action: 'POSSIBLY_CLOSED_NEEDS_REVIEW',
             missingScheduleKind: kind,
           });
