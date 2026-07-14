@@ -10,6 +10,14 @@ name: Autonomous Merge
 # scripts/autonomous-merge.js so it's testable via its colocated
 # scripts/lib/autonomous-merge-core.js unit tests — this workflow is a thin
 # wrapper.
+#
+# Sprint 4 (S4-T4): a Tier-2 data card's branch lives on a PRIVATE repo's own
+# origin (broadway-scorecard-data or broadway-review-texts), not this repo's —
+# scripts/autonomous-merge.js detects this from the branch's Notion evidence
+# comment (repoKey) and clones/merges that repo directly using
+# REVIEW_TEXTS_TOKEN (the same PAT push-core-data/push-review-texts already
+# use). No new workflow_dispatch input needed — approve/revert stay the same
+# two actions either way.
 
 on:
   workflow_dispatch:
@@ -39,6 +47,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   merge:
@@ -75,6 +84,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GH_TOKEN: ${{ github.token }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           node scripts/autonomous-merge.js \
             --card "${{ github.event.inputs.card_id }}" \
