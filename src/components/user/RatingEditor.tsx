@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import Modal from '@/components/show-cards/Modal';
 import StarRating from './StarRating';
+import { sanitizeRating } from '@/lib/rating';
 
 export interface RatingEditorSaveData {
   rating: number;
@@ -49,15 +50,6 @@ function localToday(): string {
   return new Date(d.getTime() - offsetMs).toISOString().split('T')[0];
 }
 
-/**
- * Sanitize a rating that may come from an untrusted source (?stars= deep link):
- * NaN/Infinity → 0 (unrated), clamp to [0, 5], snap to half-star steps. The DB
- * has no CHECK constraint yet (Phase 4), so this is the write-path guard.
- */
-function sanitizeRating(r: number): number {
-  if (!Number.isFinite(r)) return 0;
-  return Math.min(5, Math.max(0, Math.round(r * 2) / 2));
-}
 
 const HEADER_COPY: Record<NonNullable<RatingEditorProps['mode']>, string> = {
   new: 'Your rating for',
