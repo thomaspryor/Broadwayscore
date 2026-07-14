@@ -11,6 +11,13 @@ import {
   type ImportAcquireResult,
   type RawImportEntry,
 } from '@/lib/show-import';
+import {
+  searchMezzanineCatalog,
+  resolveMezzanineShow,
+  stubRowFromCandidate,
+  MEZZANINE_SEARCH_ERROR_COPY,
+  type MezzanineCandidate,
+} from '@/lib/mezzanine-search';
 
 // Our search-shows.json shape (also covers diary-search.json grouped entries)
 interface SearchShow {
@@ -49,7 +56,13 @@ interface MatchedEntry {
   alreadyOwned: boolean;
   type: 'diary' | 'watchlist';
   listName?: string;
+  /** Mezzanine Show class objectId, when the source export carried one —
+   *  lets the per-row live-lookup "find it" button resolve exactly instead
+   *  of falling back to a fuzzy title search. */
+  sourceMezzShowId?: string;
 }
+
+type LiveResolveState = { status: 'searching' } | { status: 'results'; candidates: MezzanineCandidate[] } | { status: 'empty' } | { status: 'error'; message: string };
 
 type ImportSourceId = 'mezzanine' | 'show-score';
 type ImportStep = 'closed' | 'source' | 'matching' | 'preview' | 'importing' | 'done';
@@ -249,6 +262,7 @@ export default function ImportShows({
         alreadyOwned: alreadyReviewed,
         dateSuspect,
         type: 'diary',
+        sourceMezzShowId: raw.mezzShowId,
       });
       if (showId) diaryShowIds.add(showId);
       if (!match || (score <= 0.7 && !dateSuspect)) unmatchedRows.push({ raw, matchScore: score, dateSuspect });
@@ -279,6 +293,7 @@ export default function ImportShows({
         dateSuspect,
         type: 'watchlist',
         listName: raw.listName,
+        sourceMezzShowId: raw.mezzShowId,
       });
       if (!match || (score <= 0.7 && !dateSuspect)) unmatchedRows.push({ raw, matchScore: score, dateSuspect });
     }
@@ -363,6 +378,37 @@ export default function ImportShows({
   const toggleEntry = (index: number) => {
     setEntries(prev => prev.map((e, i) => i === index ? { ...e, selected: !e.selected } : e));
   };
+
+  // Per-row "find it" live lookup for rows that missed the local catalog
+  // match (card 174): Mezzanine-source rows carry sourceMezzShowId for exact
+  // resolution; Show Score rows fall back to a normalized-title search.
+  const [liveResolve, setLiveResolve] = useState<Record<number, LiveResolveState>>({});
+
+  const findItForRow = useCallback(async (index: number) => {
+    const entry = entries[index];
+    if (!entry) return;
+    setLiveResolve(prev => ({ ...prev, [index]: { status: 'searching' } }));
+    try {
+      const candidates = entry.sourceMezzShowId
+        ? await resolveMezzanineShow(entry.sourceMezzShowId)
+        : await searchMezzanineCatalog(entry.sourceTitle);
+      setLiveResolve(prev => ({ ...prev, [index]: candidates.length > 0 ? { status: 'results', candidates } : { status: 'empty' } }));
+    } catch (err) {
+      setLiveResolve(prev => ({ ...prev, [index]: { status: 'error', message: err instanceof Error ? err.message : MEZZANINE_SEARCH_ERROR_COPY.internal } }));
+    }
+  }, [entries]);
+
+  const pickCandidateForRow = useCallback((index: number, candidate: MezzanineCandidate) => {
+    supabaseRestInsert('user_show_stubs', stubRowFromCandidate(candidate, userId)).catch(() => {});
+    setEntries(prev => prev.map((e, i) => i === index ? {
+      ...e,
+      match: { id: candidate.id, title: candidate.title, slug: candidate.id, status: 'closed', dy: true },
+      matchScore: 1,
+      selected: true,
+      dateSuspect: false,
+    } : e));
+    setLiveResolve(prev => { const next = { ...prev }; delete next[index]; return next; });
+  }, [userId]);
 
   const handleImport = useCallback(async () => {
     setStep('importing');
@@ -601,9 +647,17 @@ export default function ImportShows({
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
                     Not on Broadway Scorecard ({unmatchedRows.length})
                   </h4>
-                  <div className="space-y-1 max-h-32 overflow-y-auto">
+                  <div className="space-y-1 max-h-64 overflow-y-auto">
                     {unmatchedRows.map(({ entry, idx }) => (
-                      <ImportEntryRow key={`u-${idx}`} entry={entry} index={idx} onToggle={toggleEntry} />
+                      <ImportEntryRow
+                        key={`u-${idx}`}
+                        entry={entry}
+                        index={idx}
+                        onToggle={toggleEntry}
+                        liveResolve={liveResolve[idx]}
+                        onFindIt={findItForRow}
+                        onPickCandidate={pickCandidateForRow}
+                      />
                     ))}
                   </div>
                 </div>
@@ -685,9 +739,18 @@ export default function ImportShows({
   );
 }
 
-function ImportEntryRow({ entry, index, onToggle }: { entry: MatchedEntry; index: number; onToggle: (i: number) => void }) {
+function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickCandidate }: {
+  entry: MatchedEntry;
+  index: number;
+  onToggle: (i: number) => void;
+  /** Only present on rows rendered in the "Not on Broadway Scorecard" list. */
+  liveResolve?: LiveResolveState;
+  onFindIt?: (index: number) => void;
+  onPickCandidate?: (index: number, candidate: MezzanineCandidate) => void;
+}) {
   const noMatch = !entry.match || (entry.matchScore <= 0.7 && !entry.dateSuspect);
   return (
+    <div>
     <label className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-colors ${
       noMatch ? 'opacity-50' : entry.selected ? 'bg-white/5' : 'opacity-60'
     }`}>
@@ -729,5 +792,41 @@ function ImportEntryRow({ entry, index, onToggle }: { entry: MatchedEntry; index
         <span className="text-xs text-gray-600 flex-shrink-0">{entry.listName}</span>
       )}
     </label>
+    {noMatch && onFindIt && (
+      <div className="pl-8 pb-1.5 -mt-1">
+        {(!liveResolve) && (
+          <button type="button" onClick={() => onFindIt(index)} className="text-xs text-brand hover:underline">
+            Find it
+          </button>
+        )}
+        {liveResolve?.status === 'searching' && (
+          <p className="text-xs text-gray-500">Searching the wider catalog...</p>
+        )}
+        {liveResolve?.status === 'empty' && (
+          <p className="text-xs text-gray-500">Not found in the wider catalog either.</p>
+        )}
+        {liveResolve?.status === 'error' && (
+          <div>
+            <p className="text-xs text-red-400">{liveResolve.message}</p>
+            <button type="button" onClick={() => onFindIt(index)} className="text-xs text-brand hover:underline">Try again</button>
+          </div>
+        )}
+        {liveResolve?.status === 'results' && (
+          <div className="space-y-1 mt-1">
+            {liveResolve.candidates.map(candidate => (
+              <button
+                key={candidate.id}
+                type="button"
+                onClick={() => onPickCandidate?.(index, candidate)}
+                className="block w-full text-left text-xs text-gray-300 hover:text-white hover:bg-white/5 rounded px-1.5 py-1"
+              >
+                {candidate.title}{candidate.venue ? ` — ${candidate.venue}` : ''}{candidate.openingDate ? ` (${candidate.openingDate.slice(0, 4)})` : ''}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    )}
+    </div>
   );
 }

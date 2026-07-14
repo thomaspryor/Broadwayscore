@@ -12,6 +12,7 @@ import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import StarRating from '@/components/user/StarRating';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
+import { stubRowFromCandidate, type MezzanineCandidate } from '@/lib/mezzanine-search';
 
 import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
@@ -51,6 +52,47 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
     posterUrl: (raw.p as string) || null,
     diaryOnly: !!raw.dy,
   };
+}
+
+// Fetch stub metadata directly from user_show_stubs (public SELECT, no auth
+// needed) for ids a fresh diary-lookup.json fetch still doesn't know about —
+// i.e. shows added via live Mezzanine search since the last nightly resolver
+// run (card 174). Returns a partial ShowMap; a failed/empty fetch is not an
+// error — those ids simply keep rendering degraded until the next resolver
+// pass regenerates diary-lookup.json.
+async function fetchShowStubs(ids: string[]): Promise<ShowMap> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key || ids.length === 0) return {};
+  try {
+    const res = await fetch(
+      `${url}/rest/v1/user_show_stubs?id=in.(${ids.map(id => encodeURIComponent(id)).join(',')})&select=id,title,venue,category,opening_date,poster_url`,
+      { headers: { apikey: key, Authorization: `Bearer ${key}` } },
+    );
+    if (!res.ok) return {};
+    const rows: { id: string; title: string; venue: string | null; category: string; opening_date: string | null; poster_url: string | null }[] = await res.json();
+    const additions: ShowMap = {};
+    for (const r of rows) {
+      additions[r.id] = {
+        id: r.id,
+        title: r.title,
+        slug: r.id,
+        venue: r.venue || '',
+        type: 'play',
+        status: 'closed',
+        category: r.category,
+        previewDate: null,
+        openingDate: r.opening_date,
+        closingDate: null,
+        compositeScore: null,
+        posterUrl: r.poster_url,
+        diaryOnly: true,
+      };
+    }
+    return additions;
+  } catch {
+    return {};
+  }
 }
 
 // Diary-only shows (regional/international/historical, Mezzanine-sourced)
@@ -278,24 +320,43 @@ export default function MyShowsClient() {
     const missing = Array.from(referenced).filter(id => !showMap[id]);
     if (missing.length === 0) return;
     diaryLookupTriedRef.current = true;
-    fetch('/data/diary-lookup.json')
-      .then(res => res.json())
-      .then((data: Record<string, unknown>[]) => {
-        const missingSet = new Set(missing);
-        const additions: ShowMap = {};
+    const missingSet = new Set(missing);
+
+    (async () => {
+      let diaryLookupFailed = false;
+      const additions: ShowMap = {};
+      try {
+        const res = await fetch('/data/diary-lookup.json');
+        const data: Record<string, unknown>[] = await res.json();
         for (const raw of data) {
           const show = decodeShow(raw);
           if (missingSet.has(show.id)) additions[show.id] = show;
         }
-        if (Object.keys(additions).length > 0) {
-          setShowMap(prev => ({ ...additions, ...prev }));
-        }
-      })
-      .catch(() => {
-        // Transient fetch failure: allow the next effect run to retry rather
-        // than stranding raw-ID rows until a full reload (ship-check P1).
-        diaryLookupTriedRef.current = false;
-      });
+        if (Object.keys(additions).length > 0) setShowMap(prev => ({ ...additions, ...prev }));
+      } catch {
+        diaryLookupFailed = true;
+      }
+
+      // Live-lookup stubs (card 174): a show added THIS session via the
+      // "search the wider catalog" affordance won't be in diary-lookup.json
+      // until tomorrow's nightly resolver run — fetch it straight from
+      // user_show_stubs (public SELECT, no auth needed) so a fresh page
+      // load (e.g. a different tab) still renders it correctly. Runs
+      // regardless of whether the diary-lookup.json fetch above succeeded —
+      // a stub id predates that file's next regen by design, so this must
+      // not be gated on that fetch (ship-check finding: it originally was,
+      // silently disabling the stub fallback whenever diary-lookup.json
+      // failed to load).
+      const stillMissing = Array.from(missingSet).filter(id => !additions[id]);
+      const stubAdditions = stillMissing.length > 0 ? await fetchShowStubs(stillMissing) : {};
+      if (Object.keys(stubAdditions).length > 0) setShowMap(prev => ({ ...stubAdditions, ...prev }));
+
+      // Transient diary-lookup.json failure: allow the next effect run to
+      // retry rather than stranding raw-ID rows until a full reload
+      // (ship-check P1). A stub-fetch failure doesn't reset the ref — it's
+      // best-effort and retries naturally next time missing IDs change.
+      if (diaryLookupFailed) diaryLookupTriedRef.current = false;
+    })();
   }, [isMockMode, showMapLoaded, reviews, watchlist, showMap]);
 
   // Load user data when authenticated
@@ -531,6 +592,7 @@ export default function MyShowsClient() {
         ) : (
           <AddShowSearch
             context={activeTab}
+            userId={isMockMode ? null : (user?.id ?? null)}
             onAddToWatchlist={async (showId: string) => {
               await effectiveAddToWatchlist(showId);
               if (!isMockMode) await getWatchlist(true);
@@ -539,6 +601,7 @@ export default function MyShowsClient() {
             onRateDiaryOnly={(show) => openRatingEditor(show)}
             existingWatchlistIds={new Set(watchlist.map(w => w.show_id))}
             existingReviewIds={new Set(reviews.map(r => r.show_id))}
+            onLiveShowAdded={(show) => setShowMap(prev => ({ ...prev, [show.id]: show }))}
           />
         )}
       </div>
@@ -1686,18 +1749,27 @@ interface SearchShow {
 
 function AddShowSearch({
   context,
+  userId,
   onAddToWatchlist,
   onRateDiaryOnly,
   existingWatchlistIds,
   existingReviewIds,
+  onLiveShowAdded,
 }: {
   context: 'diary' | 'watchlist';
+  /** Gates the live Mezzanine catalog search — signed out / mock mode never
+   *  offers it (the edge function is JWT-gated anyway). */
+  userId: string | null;
   onAddToWatchlist: (showId: string) => Promise<void>;
   /** Diary-only shows have no /show page to deep-link ?rate=1 into — open the
    *  inline rating modal instead. */
   onRateDiaryOnly: (show: { id: string; title: string }) => void;
   existingWatchlistIds: Set<string>;
   existingReviewIds: Set<string>;
+  /** A live-search selection writes a user_show_stubs row and needs its
+   *  metadata in showMap immediately (before the nightly resolver promotes
+   *  it) so the card the user just added renders correctly right away. */
+  onLiveShowAdded: (show: ShowLookup) => void;
 }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -1734,6 +1806,33 @@ function AddShowSearch({
     setIsOpen(false);
   };
 
+  // A show in neither catalog: write the stub row (best-effort — the
+  // nightly resolver re-derives everything from Mezzanine on promotion, so
+  // a failed insert here just means the card renders from local state only
+  // until the user retries), inject it into showMap so the card the user
+  // just picked renders immediately, then proceed exactly like a normal
+  // diary-only selection.
+  const handleLiveSelect = async (candidate: MezzanineCandidate) => {
+    if (!userId) return;
+    supabaseRestInsert('user_show_stubs', stubRowFromCandidate(candidate, userId)).catch(() => {});
+    onLiveShowAdded({
+      id: candidate.id,
+      title: candidate.title,
+      slug: candidate.id,
+      venue: candidate.venue || '',
+      type: 'play',
+      status: 'closed',
+      category: candidate.category,
+      previewDate: null,
+      openingDate: candidate.openingDate,
+      closingDate: null,
+      compositeScore: null,
+      posterUrl: candidate.posterUrl,
+      diaryOnly: true,
+    });
+    await handleSelect({ id: candidate.id, slug: candidate.id, title: candidate.title, dy: true });
+  };
+
   if (!isOpen) {
     return (
       <button
@@ -1759,6 +1858,8 @@ function AddShowSearch({
         onClose={() => setIsOpen(false)}
         align="right"
         includeDiary
+        enableLiveLookup={!!userId}
+        onLiveSelect={handleLiveSelect}
         isDisabled={(show) => addingId === show.id}
         renderAction={(show) => {
           if (context === 'diary') {
