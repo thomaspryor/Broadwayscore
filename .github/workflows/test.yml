@@ -388,6 +388,13 @@ on:
       - 'scripts/detect-ob-closings.js'
       - 'scripts/lib/ob-closing-detector.js'
       - 'scripts/lib/ob-closing-detector.test.mjs'
+      # Broadway closing-date audit possibly-closed routing (title_mismatch =
+      # removed page must not drop to silent errors — Celebrity Autobiography
+      # class). Colocated *.test.mjs runs in the lib-test glob; path-listed so
+      # a solo edit triggers CI.
+      - 'scripts/audit-closing-dates.js'
+      - 'scripts/lib/closing-audit-classify.js'
+      - 'scripts/lib/closing-audit-classify.test.mjs'
       - 'package.json'
       - 'package-lock.json'
       - 'next.config.*'
