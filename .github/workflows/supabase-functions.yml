@@ -37,24 +37,33 @@ jobs:
       - name: Type-check edge functions
         # supabase/ is excluded from the app's tsconfig (Deno globals), so
         # this is the only typed gate the function code gets.
-        run: deno check supabase/functions/show-score-proxy/index.ts
+        run: |
+          deno check supabase/functions/show-score-proxy/index.ts
+          deno check supabase/functions/mezzanine-search/index.ts
       - name: Verify required schema exists in prod
-        # The function hard-depends on import_fetch_log (rate limiter fails
-        # closed without it). Migrations are applied via the Management API,
-        # not this workflow — fail the deploy loudly if the schema is missing
-        # rather than shipping a function that 500s on every call.
+        # Both functions hard-depend on their rate-limit log tables (fail
+        # closed without them). Migrations are applied via the Management
+        # API, not this workflow — fail the deploy loudly if the schema is
+        # missing rather than shipping a function that 500s on every call.
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
-          RES=$(curl -s -X POST "https://api.supabase.com/v1/projects/${{ secrets.SUPABASE_PROJECT_REF }}/database/query" \
-            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" -H "Content-Type: application/json" \
-            -d '{"query":"SELECT 1 FROM pg_class WHERE relname = '"'"'import_fetch_log'"'"';"}')
-          echo "$RES" | grep -q '"?column?":1' || { echo "::error::import_fetch_log table missing in prod — apply supabase/migrations/20260713_import_fetch_log.sql before deploying"; exit 1; }
+          check_table() {
+            RES=$(curl -s -X POST "https://api.supabase.com/v1/projects/${{ secrets.SUPABASE_PROJECT_REF }}/database/query" \
+              -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" -H "Content-Type: application/json" \
+              -d "{\"query\":\"SELECT 1 FROM pg_class WHERE relname = '$1';\"}")
+            echo "$RES" | grep -q '"?column?":1' || { echo "::error::$1 table missing in prod — apply $2 before deploying"; exit 1; }
+          }
+          check_table import_fetch_log supabase/migrations/20260713_import_fetch_log.sql
+          check_table mezzanine_search_log supabase/migrations/20260714f_mezzanine_search_log.sql
+          check_table user_show_stubs supabase/migrations/20260714e_user_show_stubs.sql
       - name: Deploy edge functions
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
           npx supabase functions deploy show-score-proxy \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
+          npx supabase functions deploy mezzanine-search \
             --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
 
       - name: Notify on failure
