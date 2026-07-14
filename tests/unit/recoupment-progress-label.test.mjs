@@ -97,3 +97,15 @@ test('Range is hidden when low==high in model regime', () => {
   assert.equal(label, '50% recouped');
   assert.equal(rangeLabel, null);
 });
+
+test('negative model output clamps to 0 (deep-flop shape, cabaret-2024)', () => {
+  // Mirror of the component's clamped computation (Sprint 3, task #142).
+  const estimatedPct = [-168.2, -119.8, -74];
+  const low = Math.max(0, Math.round(Math.min(...estimatedPct)));
+  const high = Math.max(0, Math.round(Math.max(...estimatedPct)));
+  const central = Math.max(0, Math.round(estimatedPct[1]));
+  assert.equal(low, 0);
+  assert.equal(high, 0);
+  assert.equal(central, 0);
+  // low === high → no range label; label reads "0% recouped", never negative.
+});

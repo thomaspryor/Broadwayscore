@@ -115,6 +115,11 @@ const TIER1_ALLOW_PREFIXES = ['tests/', 'docs/', 'memory/'];
 // exclusion list below (exclusions win anyway), shared pipeline libs, or
 // files whose breakage is silent.
 const TIER1_ALLOW_FILES = new Set([
+  // Growth round 1 (2026-07-14, owner-approved via growth card): unlocks real
+  // backlog cards #72 (garbage slugs) + #69 (lint violator). Implementers must
+  // add colocated tests per repo convention — neither file has one yet.
+  'scripts/lib/outlet-canonicalize.js',
+  'scripts/auto-triage-cross-production.js',
   'scripts/bsc-next.js',
   'scripts/bsc-next.test.mjs',
 ]);
