@@ -184,6 +184,36 @@ function isDiffAllowed(files) {
   return { allowed: refused.length === 0, refused };
 }
 
+// ── Deterministic-green class (Sprint 3, owner spec refinement 2026-07-14) ──
+//
+// NOT a model judgment call ("confident prose ≠ safety" — the owner's exact
+// objection to auto-approving on an LLM's say-so). This is a pure, mechanical
+// predicate over the file list: a diff is deterministic-green iff EVERY file
+// is a test, doc, or fixture — paths that cannot change site/data behavior no
+// matter what they contain. autonomous-merge.yml merges these WITHOUT a human
+// tap; every other diff (anything touching a "real" file) keeps the human
+// tap even if every check passed, because passing checks describe today's
+// tests, not tomorrow's behavior change.
+//
+// Deliberately narrower than TIER1_ALLOW_PREFIXES: memory/** (runbooks, notes)
+// is Tier-1-allowed but is prose a human should skim, not inert test code —
+// it stays in the judged/tap-required class.
+const DETERMINISTIC_GREEN_PREFIXES = ['tests/', 'docs/'];
+
+function isDeterministicGreenPath(file) {
+  const f = normalizePath(file);
+  if (!f) return false;
+  if (/\.test\.mjs$/.test(f)) return true;
+  return DETERMINISTIC_GREEN_PREFIXES.some(p => f.startsWith(p));
+}
+
+// Empty diff is never green (nothing to merge); every file must qualify.
+function isDiffDeterministicGreen(files) {
+  const list = (files || []).map(normalizePath).filter(Boolean);
+  if (!list.length) return false;
+  return list.every(isDeterministicGreenPath);
+}
+
 module.exports = {
   EXCLUDED_CATEGORIES,
   HUMAN_ACTION_RE,
@@ -192,10 +222,13 @@ module.exports = {
   TIER1_ALLOW_FILES,
   EXCLUDED_FILES,
   EXCLUDED_PREFIXES,
+  DETERMINISTIC_GREEN_PREFIXES,
   categoryOf,
   isHumanActionSubject,
   isExcludedCategory,
   isCardEligible,
   isPathAllowed,
   isDiffAllowed,
+  isDeterministicGreenPath,
+  isDiffDeterministicGreen,
 };

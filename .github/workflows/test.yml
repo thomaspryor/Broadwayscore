@@ -438,6 +438,16 @@ on:
       - 'scripts/autonomous-nightly.sh'
       - 'scripts/launchd/**'
       - '.claude/autonomous-config.json'
+      # Autonomous nightly loop (Sprint 3: CI merge path + deterministic-green
+      # + multi-night checkpointing). Colocated *.test.mjs run in the lib-test
+      # glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/autonomous-merge-core.js'
+      - 'scripts/lib/autonomous-merge-core.test.mjs'
+      - 'scripts/lib/autonomous-notion-evidence.js'
+      - 'scripts/lib/autonomous-notion-evidence.test.mjs'
+      - 'scripts/lib/autonomous-checkpoint.js'
+      - 'scripts/lib/autonomous-checkpoint.test.mjs'
+      - 'scripts/autonomous-merge.js'
   pull_request:
     branches: [main]
   schedule:
