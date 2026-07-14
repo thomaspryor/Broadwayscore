@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-14T09:57:29.505Z",
+  "timestamp": "2026-07-14T10:32:57.889Z",
   "stats": {
-    "totalReviews": 40012,
-    "alreadyFlagged": 17544,
+    "totalReviews": 40021,
+    "alreadyFlagged": 17552,
     "dateGuardCatches": 49,
     "directorMismatch": 911,
-    "tvFilmSignals": 1100,
-    "londonSignals": 742,
+    "tvFilmSignals": 1099,
+    "londonSignals": 744,
     "offBroadwaySignals": 469,
     "yearMismatch": 85,
-    "noPublishDate": 3810
+    "noPublishDate": 3809
   },
   "findings": [
     {
@@ -6021,20 +6021,6 @@
       "score": 42,
       "publishDate": "November 17, 2021",
       "url": "https://newyorktheater.me/2021/11/17/diana-the-musical-review-3-ways-its-better-on-broadway-3-ways-its-not/#more-80621",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "diana-the-musical-2021",
-      "file": "nytimes--jesse-green.json",
-      "score": 25,
-      "publishDate": "2021-11-17T19:32:08-05:00",
-      "url": "https://www.nytimes.com/2021/11/17/theater/diana-the-musical-review.html?smid=tw-nyttheater&amp;smtyp=cur",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -34525,6 +34511,19 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
+      "file": "timeout--unknown.json",
+      "publishDate": "2026-07-08",
+      "url": "https://www.westendtheatre.com/359762/news/jesus-christ-superstar-reviews/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 59,
       "publishDate": "2026-07-07",
@@ -37541,6 +37540,19 @@
       "score": 39,
       "publishDate": "2026-06-26",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/pride-the-national-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "timeout--ghenet-pinderhughes-randall.json",
+      "publishDate": "2026-06-26",
+      "url": "https://www.westendtheatre.com/359178/news/reviews/pride-national-theatre-reviews/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
