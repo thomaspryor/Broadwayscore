@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-14T22:39:13.069Z",
+  "timestamp": "2026-07-14T23:00:26.857Z",
   "stats": {
     "totalReviews": 40042,
-    "alreadyFlagged": 17545,
+    "alreadyFlagged": 17544,
     "dateGuardCatches": 49,
     "directorMismatch": 910,
-    "tvFilmSignals": 1100,
+    "tvFilmSignals": 1101,
     "londonSignals": 744,
     "offBroadwaySignals": 469,
     "yearMismatch": 85,
@@ -3937,6 +3937,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "publishDate": "2026-04-10",
+      "url": "https://t2conline.com/cats-the-jellicle-ball-roars-back-reinvented-rewired-and-voguing-its-way-into-broadway-history/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
