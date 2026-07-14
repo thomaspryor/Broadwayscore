@@ -47,6 +47,7 @@ const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { discoverAnnouncedClosingDate } = require('./lib/closing-date-discovery');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
+const { classifyMissingSchedule, possiblyClosedPressAgreement } = require('./lib/closing-audit-classify');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const AUDIT_FILE = path.join(__dirname, '..', 'data', 'audit', 'closing-date-discrepancies.json');
@@ -58,16 +59,19 @@ const argv = process.argv.slice(2);
 const DRY_RUN = argv.includes('--dry-run');
 const SHOWS_FILTER = (argv.find(a => a.startsWith('--shows=')) || '').replace('--shows=', '').split(',').filter(Boolean);
 const AMBIGUOUS_DELTA_THRESHOLD_DAYS = 30;
-// "Possibly closed early" signal: broadway.com page matched the show by title
-// but lists ZERO future performances, while the stored closingDate claims the
-// show still runs for at least this many more days. A genuinely-running show
-// would have those near-term performances on its calendar — their total absence
-// means it almost certainly closed earlier than stored. This is the Burnout
-// Paradise class (stored 2026-06-28, actually closed 2026-05-23): an OB show
-// that was never audited AND whose empty calendar was silently dropped to
-// `errors`. Flag for human review instead. Threshold of 5 days avoids
-// false-positives on shows in their final days (calendars can legitimately go
-// empty when the last performances sell out / drop off the on-sale window).
+// "Possibly closed early" signal: broadway.com gives us no future performances
+// for a show whose stored closingDate claims it still runs for at least this
+// many more days. Two shapes, both routed through classifyMissingSchedule():
+//   empty_schedule — page matched by title but ZERO future performances
+//     (Burnout Paradise class: stored 2026-06-28, actually closed 2026-05-23).
+//   title_mismatch — the page no longer mentions the show at all. broadway.com
+//     REMOVES show pages shortly after closing, so this is at least as strong
+//     a closed signal (Celebrity Autobiography class: closed 2026-06-21, page
+//     removed, sat silently in `errors` for 3+ weeks while stored said 9/6).
+// Flag for human review + triple-signal rescue instead of dropping to
+// `errors`. Threshold of 5 days avoids false-positives on shows in their
+// final days (calendars can legitimately go empty when the last performances
+// sell out / drop off the on-sale window).
 const POSSIBLY_CLOSED_MIN_DAYS = 5;
 // Cap auto-applied extensions per run. Broadway.com calendar windows
 // expand in ~3-month chunks, so any single observed jump > 180d is more
@@ -229,10 +233,19 @@ async function notifyNotion(ambiguous, todayStr) {
   // the same SERP search the audit just did.
   const rows = ambiguous.map(a => {
     if (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
-      // Empty calendar while stored date is still days/weeks out → likely
-      // already closed (no latestScheduled to report). |delta| = days the
-      // stored date is still in the future.
-      return `- **${a.id}** (POSSIBLY-CLOSED): stored=${a.stored} (${Math.abs(a.delta)}d out) but broadway.com lists NO future performances — likely closed earlier than stored. ${a.url}`;
+      // Empty calendar (or removed page) while stored date is still
+      // days/weeks out → likely already closed (no latestScheduled to
+      // report). |delta| = days the stored date is still in the future.
+      const evidence = a.missingScheduleKind === 'title_mismatch'
+        ? "broadway.com page no longer matches this show (removed after closing, or slug collision — if the show is running, add a SLUG_OVERRIDE)"
+        : 'broadway.com lists NO future performances';
+      let row = `- **${a.id}** (POSSIBLY-CLOSED): stored=${a.stored} (${Math.abs(a.delta)}d out) but ${evidence} — likely closed earlier than stored. ${a.url}`;
+      if (a.tripleSignalConflict) {
+        const c = a.tripleSignalConflict;
+        const sourceLinks = c.sources.slice(0, 3).map(s => s.url).join(', ');
+        row += `\n  📰 Press cluster: **${c.pressDate}** (${c.sources.length} source${c.sources.length > 1 ? 's' : ''}: ${sourceLinks}) — at/after stored date, contradicts possibly-closed; review.`;
+      }
+      return row;
     }
     const action = a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' ? 'EXTENSION-CAP' : 'EARLIER';
     let line = `- **${a.id}** (${action}): stored=${a.stored}, broadway.com schedule ends ${a.latestScheduled} (${a.delta}d). ${a.url}`;
@@ -324,28 +337,40 @@ async function main() {
     const slug = slugFor(show);
     try {
       const r = await fetchLatestSchedule(show, slug);
-      if (r.error === 'title_mismatch') {
-        errors.push({ id: show.id, reason: 'broadway_com_title_mismatch', url: r.url, hint: 'Slug may resolve to a different production — add a SLUG_OVERRIDE in data/closing-date-audit-config.json or add to openRunSkip.' });
-        continue;
-      }
-      if (!r.latest) {
-        // Title matched the broadway.com page but it lists ZERO future
-        // performances. If the show claims to still be running for a clear
-        // stretch (stored close is a future date >= POSSIBLY_CLOSED_MIN_DAYS
-        // out), it almost certainly closed earlier than stored — the Burnout
-        // Paradise class. Flag for human review rather than dropping silently
-        // to errors. Allowlisted human-verified dates short-circuit.
-        const daysUntilStored = show.closingDate
-          ? Math.round((new Date(show.closingDate) - new Date(TODAY)) / 86400000)
-          : null;
-        if (show.closingDate && daysUntilStored >= POSSIBLY_CLOSED_MIN_DAYS && !isAllowlisted(show.id, show.closingDate)) {
+      if (r.error === 'title_mismatch' || !r.latest) {
+        // No usable future dates. Two kinds:
+        //   title_mismatch — the slug's page no longer mentions this show.
+        //     broadway.com REMOVES a show's page shortly after it closes, so
+        //     for a show still stored as running this is a strong closed
+        //     signal (Celebrity Autobiography class: closed 6/21, page
+        //     removed, sat in `errors` for 3+ weeks). It can also be a slug
+        //     collision on a running show — the review card / SLUG_OVERRIDE
+        //     path resolves that.
+        //   empty_schedule — title matched but ZERO future performances
+        //     (the Burnout Paradise class).
+        // Either way: if the show claims to still be running for a clear
+        // stretch (stored close >= POSSIBLY_CLOSED_MIN_DAYS out), flag
+        // POSSIBLY_CLOSED for review + triple-signal rescue instead of
+        // dropping silently to errors. Allowlisted dates short-circuit.
+        const kind = r.error === 'title_mismatch' ? 'title_mismatch' : 'empty_schedule';
+        const verdict = classifyMissingSchedule({
+          closingDate: show.closingDate,
+          todayStr: TODAY,
+          minDays: POSSIBLY_CLOSED_MIN_DAYS,
+          allowlisted: isAllowlisted(show.id, show.closingDate),
+          kind,
+        });
+        if (verdict.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
           ambiguous.push({
             id: show.id, name: show.name, stored: show.closingDate,
-            latestScheduled: null, url: r.url, delta: -daysUntilStored,
+            latestScheduled: null, url: r.url, delta: -verdict.daysUntilStored,
             action: 'POSSIBLY_CLOSED_NEEDS_REVIEW',
+            missingScheduleKind: kind,
           });
+        } else if (kind === 'title_mismatch') {
+          errors.push({ id: show.id, reason: verdict.reason, url: r.url, hint: 'Slug may resolve to a different production — add a SLUG_OVERRIDE in data/closing-date-audit-config.json or add to openRunSkip.' });
         } else {
-          errors.push({ id: show.id, reason: 'no_future_dates_on_schedule', url: r.url });
+          errors.push({ id: show.id, reason: verdict.reason, url: r.url });
         }
         continue;
       }
@@ -410,11 +435,14 @@ async function main() {
   // the most-urgent retractions (closing soonest) get the auto-fix budget.
   const autoFixedTripleSignal = [];
   if (process.env.ANTHROPIC_API_KEY && ambiguous.length > 0) {
-    // Run discovery for BOTH earlier-than-stored (NEEDS_HUMAN_REVIEW) and
+    // Run discovery for earlier-than-stored (NEEDS_HUMAN_REVIEW),
     // suspicious-large-jump extensions (EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW) —
-    // a real 200-day extension shouldn't be locked out of the LLM rescue path.
+    // a real 200-day extension shouldn't be locked out of the LLM rescue path —
+    // and POSSIBLY_CLOSED (empty/removed page): those have no schedule date to
+    // corroborate, so they use possiblyClosedPressAgreement() below instead of
+    // the ±7d schedule check.
     const byUrgency = ambiguous
-      .filter(a => a.action === 'NEEDS_HUMAN_REVIEW' || a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW')
+      .filter(a => a.action === 'NEEDS_HUMAN_REVIEW' || a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' || a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW')
       .sort((a, b) => new Date(a.stored) - new Date(b.stored))
       .slice(0, MAX_TRIPLE_SIGNAL_ATTEMPTS);
     console.log(`\nTriple-signal auto-fix: attempting ${byUrgency.length} ambiguous show(s)`);
@@ -435,17 +463,34 @@ async function main() {
       }
       if (!discovery) continue;
 
-      const dayDelta = Math.abs((new Date(discovery.date) - new Date(a.latestScheduled)) / 86400000);
-      if (dayDelta > TRIPLE_SIGNAL_TOLERANCE_DAYS) {
-        // Press article disagrees with broadway.com schedule. Don't apply;
-        // log for human review (the Notion card will surface it).
-        a.tripleSignalConflict = {
-          pressDate: discovery.date,
-          scheduleDate: a.latestScheduled,
-          dayDelta,
-          sources: discovery.sources,
-        };
-        continue;
+      let dayDelta = null;
+      if (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
+        // No schedule date exists (page empty or removed) — the missing page
+        // is itself the corroborating signal. Auto-apply only when the press
+        // cluster announces a close EARLIER than stored, confirming the
+        // possibly-closed hypothesis; anything else goes to human review.
+        if (!possiblyClosedPressAgreement(a.stored, discovery.date)) {
+          a.tripleSignalConflict = {
+            pressDate: discovery.date,
+            scheduleDate: null,
+            dayDelta: null,
+            sources: discovery.sources,
+          };
+          continue;
+        }
+      } else {
+        dayDelta = Math.abs((new Date(discovery.date) - new Date(a.latestScheduled)) / 86400000);
+        if (dayDelta > TRIPLE_SIGNAL_TOLERANCE_DAYS) {
+          // Press article disagrees with broadway.com schedule. Don't apply;
+          // log for human review (the Notion card will surface it).
+          a.tripleSignalConflict = {
+            pressDate: discovery.date,
+            scheduleDate: a.latestScheduled,
+            dayDelta,
+            sources: discovery.sources,
+          };
+          continue;
+        }
       }
 
       // All three signals agree (stored disagrees by definition since this
@@ -472,8 +517,11 @@ async function main() {
         // Cite ALL corroborating sources, not just the first — preserves
         // the audit trail when reviewing a wrong auto-fix later.
         const sourceList = discovery.sources.map(s => s.url).join(', ');
+        const scheduleSignal = a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW'
+          ? `broadway.com page ${a.missingScheduleKind === 'title_mismatch' ? 'removed' : 'empty'}`
+          : 'broadway.com';
         writeClosingDate(targetShow, newDate,
-          `triple-signal audit (${TODAY}): broadway.com + ${sourceList}`,
+          `triple-signal audit (${TODAY}): ${scheduleSignal} + ${sourceList}`,
           { todayStr: TODAY });
       }
       autoFixedTripleSignal.push({
