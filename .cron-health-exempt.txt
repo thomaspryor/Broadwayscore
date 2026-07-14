@@ -116,3 +116,6 @@ dedupe-same-url-bylines.yml
 # 2026-07-12: weekly WE newsletter DRAFT dispatcher — human reviews before send;
 # a missed draft is noticed at send time, not user-facing staleness
 we-newsletter-draft.yml
+# 2026-07-13: weekly Show Score parser canary — drift surfaces in daily digest
+# via notify-failure; deploy job is push-triggered, not cron. Not user-facing latency.
+supabase-functions.yml
