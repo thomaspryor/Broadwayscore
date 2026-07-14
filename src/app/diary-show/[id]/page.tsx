@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getDiaryShowById } from '@/lib/diary-show';
+import { getDiaryShowById, getShowStubById } from '@/lib/diary-show';
 import DiaryShowClient from './DiaryShowClient';
 
 // Never prerender — the diary catalog is 32k+ shows and would blow up the
@@ -11,8 +11,8 @@ export function generateStaticParams() {
 export const dynamicParams = true;
 export const revalidate = 86400;
 
-export function generateMetadata({ params }: { params: { id: string } }): Metadata {
-  const show = getDiaryShowById(params.id);
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const show = getDiaryShowById(params.id) || await getShowStubById(params.id);
   if (!show) return { title: 'Show Not Found' };
   return {
     // Root layout's title template already appends " | Broadway Scorecard".
@@ -24,8 +24,11 @@ export function generateMetadata({ params }: { params: { id: string } }): Metada
   };
 }
 
-export default function DiaryShowPage({ params }: { params: { id: string } }) {
-  const show = getDiaryShowById(params.id);
+export default async function DiaryShowPage({ params }: { params: { id: string } }) {
+  // Fall back to a live-search stub (card 174) not yet promoted into
+  // diary-lookup.json by the nightly resolver — a show added minutes ago
+  // must still resolve, not 404 until tomorrow.
+  const show = getDiaryShowById(params.id) || await getShowStubById(params.id);
   if (!show) notFound();
   return <DiaryShowClient show={show} />;
 }
