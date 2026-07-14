@@ -71,6 +71,14 @@ function pickBestProduction(productions, row) {
     if (best) return best;
   }
 
+  // Multiple candidates, no venue or date signal to disambiguate them --
+  // unlike ImportShows.tsx's interactive matcher (which shows the user a
+  // preview to confirm), this runs unattended overnight. Guessing productions[0]
+  // (arbitrary API order) risks silently cataloging the wrong revival/market;
+  // leaving it unresolved for a human/re-import to sort out is the safer
+  // failure mode (ship-check finding).
+  return null;
+
   return productions[0];
 }
 
@@ -140,6 +148,7 @@ async function main() {
   console.log(`Fetched ${rows.length} pending unmatched_imports row(s)\n`);
 
   const stats = { resolved: 0, alreadyCataloged: 0, noMatch: 0, error: 0 };
+  let authFailed = false;
 
   for (const row of rows) {
     try {
@@ -170,7 +179,12 @@ async function main() {
       console.error(`  [${row.id}] ERROR: ${err.message}`);
       if (err.authFailed) {
         console.error('AUTH_FAILURE: Mezzanine session token expired.');
-        process.exit(2);
+        // Break instead of exiting immediately -- rows resolved earlier in
+        // this loop already had resolved_at written to Supabase (so they'll
+        // never be re-queried), so diary-shows.json MUST be persisted below
+        // before the process exits, or those entries vanish permanently.
+        authFailed = true;
+        break;
       }
     }
     await sleep(200); // be polite to theaterdiary.com
@@ -188,6 +202,8 @@ async function main() {
   } else {
     console.log('\nNo new entries -- diary-shows.json unchanged.');
   }
+
+  if (authFailed) process.exit(2);
 }
 
 main().catch((err) => {

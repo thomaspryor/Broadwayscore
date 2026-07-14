@@ -39,6 +39,7 @@ const path = require('path');
 const { TRACK_RECOUPMENT_FEEDS, parseFeedItems, titleMatchesShow, fetchUrl } = require('./lib/rss-discovery');
 const { fetchPage } = require('./lib/scraper');
 const { classifyArticle } = require('./lib/recoupment-classify');
+const { isCommercialScope } = require('./lib/commercial-scope');
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./lib/trusted-recoupment-domains');
 
 // ---- args ----
@@ -135,7 +136,7 @@ function pickCandidates(allShows, commercial) {
     const age = daysBetween(opened);
     if (age < 28 || age > 365) return false;
     if (!['open', 'closed', 'closing'].includes(s.status)) return false;
-    if (s.market && s.market !== 'broadway') return false;
+    if (!isCommercialScope(s)) return false; // Broadway-only — gate on category, never market
     return true;
   });
 }
