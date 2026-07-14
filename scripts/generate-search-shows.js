@@ -88,6 +88,12 @@ const searchShows = visibleShows.map(show => {
     if (idYear) entry.year = idYear[1];
   }
 
+  // Run dates for date-aware import matching: a Mezzanine/Show Score diary
+  // entry with a 2025 date must not match a production that closed in 2006
+  // (my-shows import mismatches, 2026-07-14).
+  if (show.openingDate) entry.od = show.openingDate;
+  if (show.closingDate) entry.cd = show.closingDate;
+
   return entry;
 });
 
