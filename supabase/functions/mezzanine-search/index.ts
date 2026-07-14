@@ -105,6 +105,14 @@ Deno.serve(async (req) => {
     if (!exactShowId && (query.length < 2 || query.length > MAX_QUERY_LEN)) {
       return json(req, { ok: false, error: 'invalid_query' });
     }
+    // Mezzanine's searchableName field keeps a single space between words
+    // (verified live 2026-07-14: 'cocktailmagique' finds nothing,
+    // 'cocktail magique' does) — do NOT strip spaces before the regex.
+    // Validated (and rejected if empty) BEFORE the rate-limit check below —
+    // a punctuation-only raw query ("!!", length 2) would otherwise still
+    // burn a rate-limit slot before normalizing down to nothing.
+    const normalized = exactShowId ? null : normalizeQuery(query);
+    if (!exactShowId && !normalized) return json(req, { ok: false, error: 'invalid_query' });
 
     const userId = userIdFromJwt(req);
     if (!userId) return json(req, { ok: false, error: 'unauthorized' });
@@ -116,12 +124,7 @@ Deno.serve(async (req) => {
     if (exactShowId) {
       productions = await findProductionsForShow(exactShowId, appId, sessionToken);
     } else {
-      // Mezzanine's searchableName field keeps a single space between words
-      // (verified live 2026-07-14: 'cocktailmagique' finds nothing,
-      // 'cocktail magique' does) — do NOT strip spaces before the regex.
-      const normalized = normalizeQuery(query);
-      if (!normalized) return json(req, { ok: false, error: 'invalid_query' });
-      const shows = await findShowsByTitle(normalized, appId, sessionToken);
+      const shows = await findShowsByTitle(normalized as string, appId, sessionToken);
       // Cap fan-out: each show needs its own Productions query, so a broad
       // regex hit (common short titles) can't turn one search into dozens of
       // upstream calls per request.
