@@ -62,12 +62,17 @@ export default function ShowSearchDropdown({
   const [liveCandidates, setLiveCandidates] = useState<MezzanineCandidate[]>([]);
   const [liveError, setLiveError] = useState<string | null>(null);
   const liveQueryRef = useRef('');
+  // Unlike local results (isDisabled/renderAction let the caller show its own
+  // "Adding..." state), a live pick fires an uncontrolled onLiveSelect with
+  // no built-in guard — track it here so a rapid double-click can't fire the
+  // stub-write + add twice (ship-check finding).
+  const [addingLiveId, setAddingLiveId] = useState<string | null>(null);
 
   // A fresh keystroke invalidates any live-search results shown for the
   // previous query — otherwise "Cocktail Magique" results would linger
   // under a query the user has since edited to something else.
   useEffect(() => {
-    if (query !== liveQueryRef.current) setLiveState('idle');
+    if (query !== liveQueryRef.current) { setLiveState('idle'); setAddingLiveId(null); }
   }, [query]);
 
   const runLiveSearch = async () => {
@@ -201,8 +206,9 @@ export default function ShowSearchDropdown({
           {enableLiveLookup && liveState === 'results' && liveCandidates.map(candidate => (
             <button
               key={candidate.id}
-              onClick={() => onLiveSelect?.(candidate)}
-              className="w-full flex items-center gap-2.5 px-3 py-2 text-left hover:bg-white/5 transition-colors"
+              onClick={() => { if (addingLiveId) return; setAddingLiveId(candidate.id); onLiveSelect?.(candidate); }}
+              disabled={!!addingLiveId}
+              className="w-full flex items-center gap-2.5 px-3 py-2 text-left hover:bg-white/5 transition-colors disabled:opacity-50"
             >
               {candidate.posterUrl ? (
                 <img src={candidate.posterUrl} alt="" className="w-9 h-9 rounded object-cover flex-shrink-0" />
@@ -218,7 +224,7 @@ export default function ShowSearchDropdown({
                   <span className="px-1 py-0.5 rounded font-medium bg-gray-500/20 text-gray-400 flex-shrink-0">No critic score</span>
                 </div>
               </div>
-              <div className="flex-shrink-0 text-[10px] text-brand">+ Add</div>
+              <div className="flex-shrink-0 text-[10px] text-brand">{addingLiveId === candidate.id ? 'Adding...' : '+ Add'}</div>
             </button>
           ))}
         </div>

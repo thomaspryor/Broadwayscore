@@ -155,7 +155,13 @@ async function drainStub(row, ctx) {
   if (!production) return { outcome: 'no-production' };
 
   const entry = productionToDiaryEntry(production);
-  if (!entry) return { outcome: 'broadway-skip' }; // defensive — mezzanine-search already filters these out
+  // Defensive — mezzanine-search already filters Broadway candidates out of
+  // search results, so this should be unreachable in practice. But if
+  // Mezzanine's own classification of the production changes between
+  // candidate-time and drain-time, this stub can NEVER resolve to a diary
+  // entry — treat it like 'already-cataloged' (safe to delete) instead of
+  // leaving it to be silently re-fetched and re-skipped every night forever.
+  if (!entry) return { outcome: 'broadway-skip' };
 
   entry.id = row.id;
   entry.slug = row.id;
@@ -233,6 +239,14 @@ async function main() {
 
   stats.stubsDrained = 0;
   stats.stubsSkipped = 0;
+  // Ids to delete from user_show_stubs ONLY after diary-shows.json is
+  // durably written below — deleting per-row inside this loop (the original
+  // approach) meant a crash between a DELETE and the batched write below
+  // destroyed the source row with nothing on disk to show for it (ship-check
+  // finding). Deferring the delete makes a mid-loop crash safe: undeleted
+  // stub rows just get re-drained (and re-deduped via existingMezzIds) next
+  // run, same recovery story as unmatched_imports' resolved_at pattern.
+  const stubIdsToDelete = [];
   if (!authFailed) {
     const stubs = await selectRows('user_show_stubs', 'select=*&order=created_at.asc&limit=200');
     console.log(`\nFetched ${stubs.length} pending user_show_stubs row(s)\n`);
@@ -240,9 +254,9 @@ async function main() {
       try {
         const result = await drainStub(row, ctx);
         if (verbose) console.log(`  [stub ${row.id}] -> ${result.outcome}`);
-        if (result.outcome === 'resolved' || result.outcome === 'already-cataloged') {
+        if (result.outcome === 'resolved' || result.outcome === 'already-cataloged' || result.outcome === 'broadway-skip') {
           stats.stubsDrained++;
-          if (!dryRun) await deleteRows('user_show_stubs', `id=eq.${encodeURIComponent(row.id)}`);
+          if (!dryRun) stubIdsToDelete.push(row.id);
         } else {
           stats.stubsSkipped++; // left in place — retried next run, never silently dropped
         }
@@ -266,6 +280,15 @@ async function main() {
     const output = { shows: diaryShows, lastUpdated: new Date().toISOString() };
     fs.writeFileSync(diaryShowsPath, JSON.stringify(output, null, 2));
     console.log(`\nWrote ${diaryShowsPath} (${diaryShows.length} total shows, +${stats.resolved} resolved, +${stats.stubsDrained} stubs promoted)`);
+    // Only now is it safe to delete the drained stub rows — the entries
+    // they produced are durably on disk.
+    for (const id of stubIdsToDelete) {
+      try {
+        await deleteRows('user_show_stubs', `id=eq.${encodeURIComponent(id)}`);
+      } catch (err) {
+        console.error(`  [stub ${id}] delete failed (will retry next run as 'already-cataloged'): ${err.message}`);
+      }
+    }
   } else if (dryRun) {
     console.log('\n[DRY RUN] No writes to diary-shows.json or Supabase.');
   } else {
