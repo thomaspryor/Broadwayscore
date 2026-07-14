@@ -135,7 +135,14 @@ interface MezzEntry {
 
 interface MezzExport {
   appVersion?: string;
-  data: { diaryEntries: MezzEntry[]; lists: { name: string; shows: { name: string }[] }[] };
+  data: {
+    diaryEntries: MezzEntry[];
+    // `id` is optional here defensively — list-derived shows are the same
+    // underlying Mezzanine Show objects as diaryEntries' `show.id`, but
+    // unconfirmed against a real list export, so this must degrade to the
+    // pre-existing title-only behavior (undefined) rather than assume shape.
+    lists: { name: string; shows: { name: string; id?: string }[] }[];
+  };
 }
 
 /** Parse a Mezzanine JSON export (Settings → Export Data → JSON). */
@@ -178,6 +185,7 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
         reviewText: null,
         kind: 'watchlist',
         listName: list.name,
+        ...(show.id ? { mezzShowId: show.id } : {}),
       });
     }
   }

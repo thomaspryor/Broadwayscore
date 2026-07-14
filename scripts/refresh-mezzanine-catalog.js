@@ -45,10 +45,14 @@ function loadJson(p, fallback) {
 function loadWatermark() {
   const state = loadJson(watermarkPath, null);
   if (state?.updatedAt) return state.updatedAt;
-  // No prior watermark — the historical backfill already covers everything up
-  // to its snapshot date, so bootstrap from 24h ago rather than re-walking
-  // Mezzanine's full history through this delta path.
-  return new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  // No prior watermark — this only happens on the very first run or if the
+  // state file was lost/reset. Bootstrapping from "24h ago" would silently
+  // convert a lost-state event into "skip everything older than yesterday"
+  // (ship-check finding) with no visible symptom. 8 days covers a full missed
+  // weekly run plus a buffer, and we log loudly so a lost watermark is at
+  // least visible in the run output instead of a silent scope-narrowing.
+  console.warn('No prior watermark found — bootstrapping from 8 days ago (safe default, not a normal steady-state path).');
+  return new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString();
 }
 
 async function fetchUpdatedProductions(sinceIso) {
