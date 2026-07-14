@@ -7,13 +7,14 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { formatEstimatedCurrency } from '@/lib/biz-format';
 
 interface RecoupmentShow {
   slug: string;
   title: string;
   season: string;
   weeksToRecoup: number;
-  capitalization: number;
+  capitalization: number | null;
   recoupDate: string;
 }
 
@@ -23,16 +24,6 @@ interface RecoupmentTableProps {
 
 type SortColumn = 'title' | 'weeks' | 'capitalization' | 'date';
 type SortDirection = 'asc' | 'desc';
-
-function formatCurrency(amount: number): string {
-  if (amount >= 1_000_000) {
-    return `$${(amount / 1_000_000).toFixed(1)}M`;
-  }
-  if (amount >= 1_000) {
-    return `$${(amount / 1_000).toFixed(0)}K`;
-  }
-  return `$${amount}`;
-}
 
 function formatDate(dateStr: string): string {
   // Input: "2025-01", "2024-06", or "2026" (year-only when exact month unknown)
@@ -81,7 +72,7 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
           comparison = a.weeksToRecoup - b.weeksToRecoup;
           break;
         case 'capitalization':
-          comparison = a.capitalization - b.capitalization;
+          comparison = (a.capitalization ?? -Infinity) - (b.capitalization ?? -Infinity);
           break;
         case 'date':
           comparison = new Date(a.recoupDate).getTime() - new Date(b.recoupDate).getTime();
@@ -160,7 +151,7 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
                 <td className="py-3 px-4 text-emerald-400 font-semibold">
                   ~{show.weeksToRecoup}
                 </td>
-                <td className="py-3 px-4">~{formatCurrency(show.capitalization)}</td>
+                <td className="py-3 px-4">{formatEstimatedCurrency(show.capitalization)}</td>
                 <td className="py-3 px-4 text-gray-500 hidden sm:table-cell">
                   {formatDate(show.recoupDate)}
                 </td>

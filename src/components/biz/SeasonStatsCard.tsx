@@ -4,6 +4,7 @@
  */
 
 import Link from 'next/link';
+import { formatEstimatedCurrency } from '@/lib/biz-format';
 
 interface SeasonStatsCardProps {
   season: string;
@@ -13,15 +14,11 @@ interface SeasonStatsCardProps {
   recoupedShows: string[];
 }
 
-function formatCurrency(amount: number): string {
-  if (amount >= 1_000_000) {
-    return `$${(amount / 1_000_000).toFixed(1)}M`;
-  }
-  if (amount >= 1_000) {
-    return `$${(amount / 1_000).toFixed(0)}K`;
-  }
-  return `$${amount}`;
-}
+// Below this many tracked shows, a "N of M recouped" / "$X at risk" stat is
+// a single- or near-single-datapoint average — statistically misleading
+// rather than informative (P0-2: a season with 1 show read "~$0 at risk,
+// 0 of 1 recouped", which looks like a data bug, not "too early to tell").
+const MIN_TRACKED_SHOWS = 5;
 
 export default function SeasonStatsCard({
   season,
@@ -30,6 +27,23 @@ export default function SeasonStatsCard({
   totalShows,
   recoupedShows,
 }: SeasonStatsCardProps) {
+  if (totalShows > 0 && totalShows < MIN_TRACKED_SHOWS) {
+    return (
+      <Link
+        href={`/biz/season/${season}`}
+        className="block bg-surface-overlay rounded-xl p-4 border border-white/5 hover:border-brand/30 hover:bg-surface-overlay/80 transition-all cursor-pointer group"
+      >
+        <div className="text-xs text-gray-500 uppercase tracking-wide mb-2 group-hover:text-gray-400">
+          {season} Season
+          <span className="ml-2 text-brand opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+        </div>
+        <div className="text-sm text-gray-400">
+          Season just started — {totalShows} show{totalShows === 1 ? '' : 's'} tracked so far
+        </div>
+      </Link>
+    );
+  }
+
   return (
     <Link
       href={`/biz/season/${season}`}
@@ -42,7 +56,7 @@ export default function SeasonStatsCard({
       <div className="flex justify-between items-end">
         <div>
           <div className="text-xl font-bold text-white">
-            ~{formatCurrency(capitalAtRisk)}
+            {formatEstimatedCurrency(capitalAtRisk)}
           </div>
           <div className="text-xs text-gray-500">Capital at Risk</div>
         </div>
