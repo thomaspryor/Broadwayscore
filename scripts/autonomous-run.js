@@ -570,11 +570,12 @@ function attemptCard(item, budget, cfg, runId, opts) {
             else {
               const checks = runChecks(workdir, files, item.checkableDone);
               const failed = checks.filter(c => !c.pass);
-              if (!failed.length) {
+              const outcome = incremental ? classifyLCardOutcome(checks, { hasCheckableDone: !!item.checkableDone }) : null;
+              if (!failed.length && outcome !== 'checkpoint') {
                 evidence = { branch, files, checks: checks.map(c => `${c.name}: PASS`), summary: (imp.resultText || '').slice(0, 600), checkableDone: item.checkableDone || null };
-              } else if (incremental && classifyLCardOutcome(checks) === 'checkpoint') {
+              } else if (incremental && outcome === 'checkpoint') {
                 // Safe, incomplete progress — nothing broke, the card just
-                // isn't done yet. NOT a failure (S3-T4).
+                // isn't done yet (or has no way to prove it is). NOT a failure (S3-T4).
                 checkpoint = { branch, files, summary: (imp.resultText || '').slice(0, 600) };
               } else {
                 stage = 'checks-failed'; detail = failed.map(c => `${c.name}: ${c.detail}`).join(' | ').slice(0, 500);

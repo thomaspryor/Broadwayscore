@@ -18,13 +18,25 @@
  *   scripts/lib/autonomous-state.js merge.reverify-fail) — a fresh tap is
  *   required to try again; the branch itself is left untouched.
  *
- * revert: only legal from Auto=merged. Locates the merge commit by its
- *   "Auto-merge-card: <id>" trailer, `git revert`s it, pushes, reopens the card.
+ *   Re-verification is re-run (rebase + gate + checks) on EVERY merge
+ *   attempt, not just the first — this repo pushes to main constantly from
+ *   ~200 other workflows, so a fast-forward race is common, not theoretical
+ *   (ship-check finding). The autonomous-merge.yml concurrency group is a
+ *   single GLOBAL key (not per-card) so two cards' merges never run at the
+ *   same time either — the remaining race is only against the rest of main's
+ *   traffic, which the retry loop below re-verifies against each time.
+ *
+ * revert: only legal from Auto=merged. Locates the merge commit via its
+ *   "Auto-merge-card: <id>" trailer and reverts the FULL range back to the
+ *   "Auto-merge-base: <sha>" trailer stamped alongside it (a branch can carry
+ *   more than one commit — reverting only the last one would silently leave
+ *   earlier commits on main). Pushes, reopens the card.
  */
 
 'use strict';
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const https = require('https');
 const { execFileSync, spawnSync } = require('child_process');
@@ -35,12 +47,13 @@ const { decideChecks, cardCheckArgv } = require('./lib/autonomous-run-core.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 const { latestEvidenceForBranch } = require('./lib/autonomous-notion-evidence.js');
 const {
-  oscillationTrailerFor, shouldEscalateOscillation, buildEscalationNote,
-  buildMergeOutcomeNote, buildReverifyFailNote, buildRevertOutcomeNote,
+  BASE_TRAILER_PREFIX, oscillationTrailerFor, stripTrailers, parseBaseTrailer, shouldEscalateOscillation,
+  buildEscalationNote, buildMergeOutcomeNote, buildReverifyFailNote, buildRevertOutcomeNote,
 } = require('./lib/autonomous-merge-core.js');
 
 const REPO = path.join(__dirname, '..');
 const CHECK_TIMEOUT_MS = 5 * 60 * 1000;
+const MAX_MERGE_ATTEMPTS = 2;
 
 function parseArgs(argv) {
   const a = {};
@@ -91,13 +104,26 @@ function httpsJson(method, hostname, apiPath, headers, body) {
   });
 }
 
+// Paginated: a long-lived card can accumulate more than one page of comments
+// (100/page) across retries and nights — stopping at page 1 would silently
+// miss the real evidence and fall back to a weaker re-verify (ship-check).
+// Hard cap of 10 pages (1000 comments) as a runaway backstop.
 async function fetchEvidenceForBranch(cardId, branch) {
   const notionKey = process.env.NOTION_API_KEY;
   if (!notionKey) return null;
-  const res = await httpsJson('GET', 'api.notion.com', `/v1/comments?block_id=${encodeURIComponent(cardId)}&page_size=100`,
-    { Authorization: `Bearer ${notionKey}`, 'Notion-Version': '2022-06-28' });
-  if (res.status !== 200 || !res.json || !Array.isArray(res.json.results)) return null;
-  return latestEvidenceForBranch(res.json.results, branch);
+  const all = [];
+  let cursor = null;
+  for (let page = 0; page < 10; page++) {
+    const qs = `block_id=${encodeURIComponent(cardId)}&page_size=100${cursor ? `&start_cursor=${encodeURIComponent(cursor)}` : ''}`;
+    const res = await httpsJson('GET', 'api.notion.com', `/v1/comments?${qs}`,
+      { Authorization: `Bearer ${notionKey}`, 'Notion-Version': '2022-06-28' });
+    if (res.status !== 200 || !res.json || !Array.isArray(res.json.results)) break;
+    all.push(...res.json.results);
+    if (!res.json.has_more || !res.json.next_cursor) break;
+    cursor = res.json.next_cursor;
+  }
+  if (!all.length) return null;
+  return latestEvidenceForBranch(all, branch);
 }
 
 // Rule 17: transactional only, direct POST to one explicit owner address —
@@ -113,14 +139,38 @@ async function sendEscalationEmail(subject, text) {
   if (res.status < 200 || res.status >= 300) console.error(`[merge] WARN escalation email send failed: ${res.status}`);
 }
 
+// Checks execute implementer-AUTHORED code (a test file from a card the loop
+// implemented) — deterministic-green diffs merge with NO human ever reading
+// this content. The workflow env carries NOTION_API_KEY / RESEND_API_KEY /
+// a contents:write GH token; none of that may be reachable from the check
+// process. Mirrors scripts/autonomous-run.js checksEnv() (same threat, same
+// fix) — ship-check P0 2026-07-14: this CI-side re-verify had inherited the
+// full secret env while the Mac-side executor was already sandboxed.
+function checksEnv() {
+  const keep = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', 'NODE_ENV'];
+  const env = {};
+  for (const k of keep) if (process.env[k] !== undefined) env[k] = process.env[k];
+  const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-merge-checks-home-'));
+  env.HOME = fakeHome;
+  env.GIT_TERMINAL_PROMPT = '0';
+  return env;
+}
+
 function runChecks(files, checkableDone) {
   const results = [];
   const checks = decideChecks(files, f => fs.existsSync(path.join(REPO, f)));
-  const cardArgv = cardCheckArgv(checkableDone, isSafeCheckCommand);
-  if (cardArgv) checks.push({ name: `card-check (${checkableDone})`, argv: cardArgv });
+  if (checkableDone) {
+    const cardArgv = cardCheckArgv(checkableDone, isSafeCheckCommand);
+    if (cardArgv) checks.push({ name: `card-check (${checkableDone})`, argv: cardArgv });
+    // Unsafe/invalid checkableDone must FAIL closed, not silently vanish —
+    // the Mac-side executor already does this (autonomous-run.js runChecks);
+    // this CI-side path had been dropping it instead (ship-check finding).
+    else results.push({ name: 'card-check', pass: false, detail: `checkableDone failed safe-form validation: ${String(checkableDone).slice(0, 120)}` });
+  }
+  const env = checksEnv();
   for (const c of checks) {
     try {
-      execFileSync(c.argv[0], c.argv.slice(1), { cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8' });
+      execFileSync(c.argv[0], c.argv.slice(1), { cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8', env });
       results.push({ name: c.name, pass: true });
     } catch (err) {
       results.push({ name: c.name, pass: false, detail: String(err.stderr || err.stdout || err.message).slice(0, 400) });
@@ -131,6 +181,32 @@ function runChecks(files, checkableDone) {
 
 function pushMain() {
   execFileSync('bash', [path.join(__dirname, 'lib', 'push-with-retry.sh'), '7', 'main'], { cwd: REPO, stdio: 'inherit' });
+}
+
+function countPriorMerges(cardId) {
+  const trailer = oscillationTrailerFor(cardId);
+  return (gitOrNull(['log', '--fixed-strings', '--grep', trailer, '--format=%H', 'origin/main']) || '')
+    .trim().split('\n').filter(Boolean).length;
+}
+
+// Rebase auto-merge-work onto the CURRENT origin/main, then re-run the full
+// gate: diff eligibility + checks. Called fresh on every merge attempt (not
+// just the first) so a rebase from attempt 1 can never be reused to verify
+// a DIFFERENT tree after main has advanced again (ship-check finding).
+function verifyRebase(evidence) {
+  try { git(['rebase', 'origin/main']); }
+  catch (err) {
+    gitOrNull(['rebase', '--abort']);
+    return { ok: false, reason: `branch would not rebase cleanly onto origin/main: ${String(err.message).slice(0, 300)}` };
+  }
+  const files = git(['diff', '--name-only', 'origin/main...HEAD']).trim().split('\n').filter(Boolean);
+  if (!files.length) return { ok: false, reason: 'rebased diff is empty — nothing to merge' };
+  const gate = isDiffAllowed(files);
+  if (!gate.allowed) return { ok: false, reason: `rebased diff touches ineligible paths: ${gate.refused.join(', ')}` };
+  const checks = runChecks(files, evidence ? evidence.checkableDone : null);
+  const failed = checks.filter(c => !c.pass);
+  if (failed.length) return { ok: false, reason: failed.map(c => `${c.name}: ${c.detail}`).join(' | ').slice(0, 500) };
+  return { ok: true, files };
 }
 
 async function approve(cardId, branch) {
@@ -144,7 +220,7 @@ async function approve(cardId, branch) {
   // unreachable-from-CI) ledger — see scripts/lib/autonomous-merge-core.js.
   git(['fetch', 'origin', 'main']);
   const trailer = oscillationTrailerFor(cardId);
-  const priorMerges = (gitOrNull(['log', '--fixed-strings', '--grep', trailer, '--format=%H', 'origin/main']) || '').trim().split('\n').filter(Boolean).length;
+  const priorMerges = countPriorMerges(cardId);
   if (shouldEscalateOscillation(priorMerges)) {
     transition('approved', 'merge.oscillation');
     notionUpdate(cardId, ['--auto', 'failed', '--outcome', buildEscalationNote(cardId, priorMerges)]);
@@ -163,55 +239,51 @@ async function approve(cardId, branch) {
 
   git(['fetch', 'origin', branch]);
   git(['checkout', '-B', 'auto-merge-work', `origin/${branch}`]);
-  try {
-    git(['rebase', 'origin/main']);
-  } catch (err) {
-    gitOrNull(['rebase', '--abort']);
-    reverifyFail(`branch ${branch} would not rebase cleanly onto origin/main: ${String(err.message).slice(0, 300)}`);
-    return;
-  }
-
-  const files = git(['diff', '--name-only', 'origin/main...HEAD']).trim().split('\n').filter(Boolean);
-  if (!files.length) { reverifyFail('rebased diff is empty — nothing to merge'); return; }
-  const gate = isDiffAllowed(files);
-  if (!gate.allowed) { reverifyFail(`rebased diff touches ineligible paths: ${gate.refused.join(', ')}`); return; }
 
   const evidence = await fetchEvidenceForBranch(cardId, branch);
   if (!evidence) console.error('[merge] WARN no Notion evidence comment found for this branch — re-verifying with tsc + colocated tests only (no card-specific check)');
-  const checks = runChecks(files, evidence ? evidence.checkableDone : null);
-  const failed = checks.filter(c => !c.pass);
-  if (failed.length) {
-    reverifyFail(failed.map(c => `${c.name}: ${c.detail}`).join(' | ').slice(0, 500));
+
+  for (let attempt = 1; attempt <= MAX_MERGE_ATTEMPTS; attempt++) {
+    if (attempt > 1) {
+      git(['fetch', 'origin', 'main']);
+      git(['checkout', 'auto-merge-work']);
+    }
+    const verified = verifyRebase(evidence);
+    if (!verified.ok) {
+      if (attempt === MAX_MERGE_ATTEMPTS) { reverifyFail(verified.reason); return; }
+      console.error(`[merge] attempt ${attempt} verify failed (${verified.reason.slice(0, 120)}) — retrying against fresh origin/main`);
+      continue;
+    }
+
+    // Stamp trailers on the last commit right before merging: the card id
+    // (oscillation grep) and the base sha this rebase verified against (so
+    // revert() can undo the FULL range, not just this one commit). Cleaned
+    // first so a retry's re-stamp is idempotent (see stripTrailers above).
+    const baseSha = git(['rev-parse', 'origin/main']).trim();
+    const priorMsg = stripTrailers(git(['log', '-1', '--pretty=%B']).trim(), trailer);
+    git(['commit', '--amend', '-m', `${priorMsg}\n\n${trailer}\n${BASE_TRAILER_PREFIX}${baseSha}`]);
+    const sha = git(['rev-parse', 'HEAD']).trim();
+
+    git(['checkout', 'main']);
+    git(['reset', '--hard', 'origin/main']);
+    try {
+      git(['merge', '--ff-only', 'auto-merge-work']);
+    } catch {
+      if (attempt === MAX_MERGE_ATTEMPTS) {
+        reverifyFail('main advanced repeatedly during the merge window and a clean fast-forward was not possible after retrying');
+        return;
+      }
+      console.error(`[merge] attempt ${attempt} fast-forward lost a race against origin/main — retrying`);
+      git(['checkout', 'auto-merge-work']);
+      continue;
+    }
+
+    pushMain();
+    transition('approved', 'merge.success');
+    notionUpdate(cardId, ['--auto', 'merged', '--status', 'Done', '--outcome', buildMergeOutcomeNote({ sha, branch, files: verified.files })]);
+    console.log(`[merge] MERGED card ${cardId} (${sha}) from ${branch}`);
     return;
   }
-
-  // Stamp the oscillation trailer on the last commit before merging.
-  const priorMsg = git(['log', '-1', '--pretty=%B']).trim();
-  git(['commit', '--amend', '-m', `${priorMsg}\n\n${trailer}`]);
-  const sha = git(['rev-parse', 'HEAD']).trim();
-
-  git(['checkout', 'main']);
-  git(['reset', '--hard', 'origin/main']);
-  let merged = false;
-  for (let i = 0; i < 2 && !merged; i++) {
-    try { git(['merge', '--ff-only', 'auto-merge-work']); merged = true; }
-    catch {
-      if (i === 0) {
-        git(['fetch', 'origin', 'main']);
-        git(['checkout', 'auto-merge-work']);
-        try { git(['rebase', 'origin/main']); } catch { break; }
-        git(['checkout', 'main']);
-        git(['reset', '--hard', 'origin/main']);
-      }
-    }
-  }
-  if (!merged) { reverifyFail('main advanced during the merge window and a clean fast-forward was not possible after one retry'); return; }
-
-  pushMain();
-
-  transition('approved', 'merge.success');
-  notionUpdate(cardId, ['--auto', 'merged', '--status', 'Done', '--outcome', buildMergeOutcomeNote({ sha, branch, files })]);
-  console.log(`[merge] MERGED card ${cardId} (${sha}) from ${branch}`);
 }
 
 async function revert(cardId, branch) {
@@ -228,15 +300,27 @@ async function revert(cardId, branch) {
     process.exitCode = 1;
     return;
   }
+  const mergeMsg = git(['log', '-1', '--format=%B', mergeSha]);
+  const baseSha = parseBaseTrailer(mergeMsg);
+
   git(['checkout', 'main']);
   git(['reset', '--hard', 'origin/main']);
   let revertSha;
   try {
-    git(['revert', '--no-edit', mergeSha]);
+    if (baseSha && gitOrNull(['cat-file', '-e', baseSha])) {
+      // Range revert: undoes EVERY commit the merge brought in (a branch can
+      // carry more than one commit), not just the last one — a single-commit
+      // revert would silently leave earlier commits on main (ship-check finding).
+      git(['revert', '--no-commit', `${baseSha}..${mergeSha}`]);
+      git(['commit', '-m', `Revert autonomous merge for card ${cardId} (${baseSha.slice(0, 7)}..${mergeSha.slice(0, 7)})`]);
+    } else {
+      console.error(`[merge] WARN no valid Auto-merge-base trailer found on ${mergeSha} — falling back to single-commit revert (older merge, or corrupted trailer)`);
+      git(['revert', '--no-edit', mergeSha]);
+    }
     revertSha = git(['rev-parse', 'HEAD']).trim();
   } catch (err) {
     gitOrNull(['revert', '--abort']);
-    console.error(`[merge] REVERT FAILED: git revert ${mergeSha} conflicted (later commits touched the same lines): ${String(err.message).slice(0, 300)}`);
+    console.error(`[merge] REVERT FAILED: reverting ${mergeSha} conflicted (later commits touched the same lines): ${String(err.message).slice(0, 300)}`);
     process.exitCode = 1;
     return;
   }
@@ -263,4 +347,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[merge] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { approve, revert };
+module.exports = { approve, revert, verifyRebase, countPriorMerges, runChecks };

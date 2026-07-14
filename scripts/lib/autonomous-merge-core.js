@@ -14,8 +14,32 @@
 
 'use strict';
 
+const BASE_TRAILER_PREFIX = 'Auto-merge-base: ';
+
 function oscillationTrailerFor(cardId) {
   return `Auto-merge-card: ${cardId}`;
+}
+
+// Strip any trailer lines a PRIOR (failed/retried) amend on this same commit
+// already appended, so re-stamping on a later merge attempt is idempotent —
+// without this, a second amend would append a second trailer block
+// underneath the first, and a revert()'s search for Auto-merge-base would
+// find the STALE (attempt-1) base sha instead of the one that actually merged.
+function stripTrailers(message, trailer) {
+  return String(message || '').split('\n')
+    .filter(l => l !== trailer && !l.startsWith(BASE_TRAILER_PREFIX))
+    .join('\n')
+    .replace(/\n+$/, '')
+    .trim();
+}
+
+// Parse the "Auto-merge-base: <sha>" trailer out of a commit message, if
+// present. Returns null when absent (older merges predating this trailer, or
+// a corrupted message) — callers fall back to a conservative single-commit
+// revert in that case.
+function parseBaseTrailer(message) {
+  const line = String(message || '').split('\n').find(l => l.startsWith(BASE_TRAILER_PREFIX));
+  return line ? line.slice(BASE_TRAILER_PREFIX.length).trim() : null;
 }
 
 function shouldEscalateOscillation(priorMergeCount) {
@@ -42,7 +66,10 @@ function buildRevertOutcomeNote({ revertSha, mergeSha }) {
 }
 
 module.exports = {
+  BASE_TRAILER_PREFIX,
   oscillationTrailerFor,
+  stripTrailers,
+  parseBaseTrailer,
   shouldEscalateOscillation,
   buildEscalationNote,
   buildMergeOutcomeNote,
