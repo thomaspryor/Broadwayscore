@@ -3,6 +3,7 @@
 // These are richer than browse pages: LLM editorial intros, critic consensus, ticket CTAs
 
 import { ComputedShow } from '@/lib/engine';
+import { isAnnouncedCurrent } from '@/config/browse-pages';
 
 export interface GuidePageConfig {
   slug: string;
@@ -445,7 +446,9 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     metaDescriptionTemplate: '{count} new Broadway shows coming soon in {year}. Preview dates, opening nights, and what to expect.',
     introFallback: 'Exciting new productions are headed to Broadway. These {count} shows are in previews or about to begin performances — get ahead of the crowd and book early.',
     filter: (show) => {
-      if (show.status !== 'previews' && show.status !== 'upcoming') return false;
+      // Keep in sync with the upcoming-broadway-shows browse page: current
+      // announced shows (selling tickets, dates TBD) count as upcoming too.
+      if (show.status !== 'previews' && show.status !== 'upcoming' && !isAnnouncedCurrent(show)) return false;
       return true;
     },
     sort: 'opening-date',
