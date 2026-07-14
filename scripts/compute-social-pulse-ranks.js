@@ -43,6 +43,10 @@ function parseArgs(argv) {
  * other leading-underscore metadata files). Returns parsed objects with
  * the showId attached.
  */
+/** Max age for a pulse file to participate in ranks/tiers. Mirrors
+ *  MAX_SOCIAL_PULSE_AGE_DAYS in src/lib/data-social-pulse.ts. */
+const MAX_RANKABLE_AGE_DAYS = 14;
+
 function loadAllPulseFiles() {
   if (!fs.existsSync(SOCIAL_PULSE_DIR)) {
     console.error(`No ${SOCIAL_PULSE_DIR} directory — run fetch-social-pulse.js first`);
@@ -60,7 +64,31 @@ function loadAllPulseFiles() {
       console.warn(`Skipping ${filename}: ${err.message}`);
     }
   }
-  return pulseData;
+
+  // Freshness filter: the fetcher only rewrites RUNNING shows, so files
+  // for closed/upcoming shows freeze at their last fetch forever (the
+  // School Girls precedent). Pooling frozen files with fresh ones skews
+  // peer percentiles and inflates "#N/M" rank denominators with dead
+  // shows. /trending already excludes them via isFreshPulse — this makes
+  // the ranks/tiers written back into per-show files consistent with it.
+  const cutoff = Date.now() - MAX_RANKABLE_AGE_DAYS * 24 * 60 * 60 * 1000;
+  const fresh = pulseData.filter((e) => {
+    const t = Date.parse(e.data.fetchedAt || '');
+    return !Number.isNaN(t) && t >= cutoff;
+  });
+
+  // Schema-mix guard: v2 volumes are capped-sample counts, v3 volumes are
+  // true counters — different units. Once ANY v3 file exists, v2 files
+  // must not share the peer pool (they'd deflate percentiles and over-tier
+  // v3 shows). Before the first v3 run, all-v2 pools rank as before.
+  const hasV3 = fresh.some((e) => (e.data._v || 1) >= 3);
+  const pool = hasV3 ? fresh.filter((e) => (e.data._v || 1) >= 3) : fresh;
+
+  const dropped = pulseData.length - pool.length;
+  if (dropped > 0) {
+    console.log(`Excluding ${dropped} stale${hasV3 ? '/legacy-schema' : ''} pulse file(s) from ranking (kept ${pool.length}).`);
+  }
+  return pool;
 }
 
 /**

@@ -328,10 +328,18 @@ async function searchBlueskyPosts({ query, limit = 100, since = null, until = nu
   if (since) params.set('since', since);
   if (until) params.set('until', until);
 
+  // Bluesky omits hitsTotal on zero-hit responses (0 is correct there),
+  // but if it were ever omitted alongside a non-empty posts array, 0 would
+  // silently undercount — fall back to the sample size instead.
+  const shape = (data) => ({
+    posts: data.posts || [],
+    hitsTotal: data.hitsTotal ?? (data.posts && data.posts.length ? data.posts.length : 0),
+  });
+
   // 1) Public AppView, no auth
   try {
     const data = await fetchJson(`https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?${params}`);
-    return { posts: data.posts || [], hitsTotal: data.hitsTotal ?? 0 };
+    return shape(data);
   } catch (publicErr) {
     // 2) Authenticated fallback (required path on datacenter IPs)
     const jwt = await getBlueskySessionJwt().catch((e) => {
@@ -343,7 +351,7 @@ async function searchBlueskyPosts({ query, limit = 100, since = null, until = nu
     const data = await fetchJson(`https://bsky.social/xrpc/app.bsky.feed.searchPosts?${params}`, {
       headers: { Authorization: `Bearer ${jwt}` },
     });
-    return { posts: data.posts || [], hitsTotal: data.hitsTotal ?? 0 };
+    return shape(data);
   }
 }
 

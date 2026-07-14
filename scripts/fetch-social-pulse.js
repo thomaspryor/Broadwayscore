@@ -370,15 +370,9 @@ async function main() {
 
   // ---------- Fleet health guards ----------
   // Only meaningful for multi-show runs; a single-show run can't establish
-  // fleet-level coverage.
-  if (!args.dryRun) {
-    writeRunMeta({
-      shows: results.length,
-      failures: failed,
-      tierBreakdown: byTier,
-    });
-  }
-
+  // fleet-level coverage. NOTE: the _meta.json freshness stamp is written
+  // AFTER the guards — a guard-failed run must look stale to
+  // health-check.js, not freshly updated.
   if (ok.length >= 10) {
     // Guard 6a: Bluesky counter coverage. Bluesky returns hitsTotal >= 0 on
     // success; null means the fetch failed (403 from datacenter IP without
@@ -416,6 +410,16 @@ async function main() {
       );
       process.exit(4);
     }
+  }
+
+  // Freshness stamp — only reached on a healthy run (guards above exit
+  // before this on fleet-level failure).
+  if (!args.dryRun) {
+    writeRunMeta({
+      shows: results.length,
+      failures: failed,
+      tierBreakdown: byTier,
+    });
   }
 
   process.exit(0);

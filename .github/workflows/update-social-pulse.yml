@@ -114,7 +114,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Stage only the files this workflow is responsible for:
-          #   - data/social-pulse/*.json (canonical per-show files + _budget.json)
+          #   - data/social-pulse/*.json (canonical per-show files + _meta.json)
           #   - public/data/shows/*.social.json (sibling public files)
           # We do NOT touch the main public/data/shows/{id}.json files — those
           # are owned by rebuild-all-reviews.js (see CLAUDE.md "Public Show
