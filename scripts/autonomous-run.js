@@ -29,6 +29,7 @@
 'use strict';
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
 
@@ -440,6 +441,41 @@ function runChecks(workdir, changedFiles, checkableDone) {
   return results;
 }
 
+// The claim step below flips the card's Notion Status to "In progress",
+// which notion-tasks-sync.js mirrors into the shared task list as in_progress
+// — and a pull deliberately never downgrades in_progress→pending (that's
+// what protects a live human's claim from being un-claimed underneath them,
+// see notion-tasks-sync.js mergeStatus). But that same protection fires
+// against the autonomous loop's OWN claim-then-fail cycle: when a card
+// fails, fail() reverts Status to "Not started" so a human can retry it, but
+// the mirrored task stays in_progress forever with no other release path —
+// autonomous-triage-core.js's findClaimedTask() then treats the card as
+// claimed in-flight permanently, so a cleared Auto never actually re-queues
+// it (card #171 follow-on, 2026-07-14: this is what silently blocked the
+// lint-violator card from retrying after Auto=failed was cleared). Mirrors
+// the same identity read findClaimedTask uses (.notion-map.json → task file,
+// [notion:<cardId>] marker) rather than trusting the numeric id alone, since
+// that id namespace is shared with live sessions and can be reused.
+function releaseStaleTaskClaim(cardId) {
+  const dir = path.join(os.homedir(), '.claude', 'tasks', process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore');
+  let notionMap;
+  try { notionMap = JSON.parse(fs.readFileSync(path.join(dir, '.notion-map.json'), 'utf8')); } catch { return; }
+  const entry = notionMap[cardId];
+  if (!entry || !entry.taskId) return;
+  const taskPath = path.join(dir, `${entry.taskId}.json`);
+  let task;
+  try { task = JSON.parse(fs.readFileSync(taskPath, 'utf8')); } catch { return; }
+  if (task.status !== 'in_progress') return;
+  if (typeof task.description !== 'string' || !task.description.includes(`[notion:${cardId}]`)) return;
+  task.status = 'pending';
+  try {
+    const tmp = `${taskPath}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(task, null, 2));
+    fs.renameSync(tmp, taskPath);
+    console.error(`[run] released stale shared-task claim (#${entry.taskId}) for ${cardId} so it can be re-triaged`);
+  } catch (e) { console.error(`[run] WARN could not release stale task claim for ${cardId}: ${e.message.slice(0, 120)}`); }
+}
+
 function attemptCard(item, budget, cfg, runId, opts) {
   // Freshness guard BEFORE admission so skipped cards never consume the
   // night's item slots or reservations (ship-check finding): a human or a
@@ -487,6 +523,12 @@ function attemptCard(item, budget, cfg, runId, opts) {
     try {
       notionUpdate(item.id, ['--auto', 'failed', '--status', 'Not started',
         '--outcome', `## Autonomous attempt failed (${new Date().toISOString().slice(0, 10)})\n${stage}: ${String(reason).slice(0, 400)}\n\nBranch was not merged; the loop will not retry this card (Auto=failed) — clear Auto to re-queue it.`]);
+      // Only release the shared-task claim once Notion itself confirms the
+      // revert (ship-check finding): releasing unconditionally would let a
+      // failed notionUpdate leave Notion showing "In progress"/attempted
+      // while the shared task goes pending — a second session could then
+      // pick up a card Notion still says is claimed.
+      releaseStaleTaskClaim(item.id);
     } catch (e) { console.error(`[run] WARN could not flip ${item.id} to failed: ${e.message.slice(0, 120)}`); }
     // totalUSD (not usd): spend is ledgered on the per-attempt implement
     // lines — a terminal line carrying usd would double-count the night.
@@ -939,4 +981,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { planCard, branchNameFor, attemptCard, attemptDataCard, runRecovery, readQueue, preflightAuth, sendMorningEmail };
+module.exports = { planCard, branchNameFor, attemptCard, attemptDataCard, runRecovery, readQueue, preflightAuth, sendMorningEmail, releaseStaleTaskClaim };
