@@ -204,7 +204,13 @@ export default function ImportShows({
         // must match venue 'Metropolitan Opera House'.
         const vnorm = (v: string) => v.toLowerCase().replace(/theatre|theater/gi, '').replace(/^the\s+/, '').trim();
         const venueNorm = vnorm(venue);
-        const venueMatch = exactAll.find(s => s.venue && vnorm(s.venue).includes(venueNorm));
+        // Short normalized names must match exactly — substring matching let
+        // 'The Duke' (→'duke') claim "Duke of York's" (review finding).
+        const venueMatch = exactAll.find(s => {
+          if (!s.venue) return false;
+          const cand = vnorm(s.venue);
+          return venueNorm.length < 5 || cand.length < 5 ? cand === venueNorm : cand.includes(venueNorm);
+        });
         if (venueMatch) return withSanity(venueMatch, tierScore);
         // No venue agreement — the date is the next-best disambiguator among
         // same-title productions (falling through to Fuse here re-picked
