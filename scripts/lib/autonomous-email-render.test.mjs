@@ -3,7 +3,10 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { renderEmail, renderUsageBlock, extractWhy, summarizeQueue } = require('./autonomous-email-render.js');
+const {
+  renderEmail, renderUsageBlock, extractWhy, summarizeQueue,
+  buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
+} = require('./autonomous-email-render.js');
 
 const STATS = {
   runId: 'run-x',
@@ -77,6 +80,61 @@ test('failed count renders only when nonzero; throttle note appears', () => {
   const some = renderEmail({ items: [], stats: STATS, failedCount: 2, throttled: '9 items already await approval (max 8)', awaitingTotal: 9 });
   assert.match(some, /2 cards failed overnight/);
   assert.match(some, /⚠️ 9 items already await approval/);
+});
+
+// ── Plain-language item copy (owner scope-add 2026-07-14) ──────────────────
+
+test('renderItem: plainText present becomes the primary text, technical detail demotes', () => {
+  const html = renderEmail({
+    items: [{ ...ITEM, plainText: 'Some outlets were showing junk names like "co" instead of the real publication. This fix adds test coverage only, nothing changes on the live site today.' }],
+    stats: STATS, awaitingTotal: 1,
+  });
+  assert.match(html, /Some outlets were showing junk names/);
+  // technical detail still present, but demoted (no longer the bold Why:/Done: labels)
+  assert.match(html, /Why: Sort order was wrong/);
+  assert.match(html, /Done: Reordered the comparator/);
+  assert.doesNotMatch(html, /<b>Why:<\/b>/);
+  assert.doesNotMatch(html, /<b>Done:<\/b>/);
+  // primary text renders before the demoted technical block
+  assert.ok(html.indexOf('Some outlets were showing junk names') < html.indexOf('Why: Sort order was wrong'));
+});
+
+test('renderItem: no plainText falls back to the old bold Why/Done layout (backward compat)', () => {
+  const html = renderEmail({ items: [ITEM], stats: STATS, awaitingTotal: 1 });
+  assert.match(html, /<b>Why:<\/b> Sort order was wrong/);
+  assert.match(html, /<b>Done:<\/b> Reordered the comparator/);
+});
+
+test('renderItem: plainText is html-escaped like every other card-sourced field', () => {
+  const html = renderEmail({
+    items: [{ ...ITEM, plainText: 'Uses <script>alert(1)</script> & other stuff' }],
+    stats: STATS, awaitingTotal: 1,
+  });
+  assert.doesNotMatch(html, /<script>alert/);
+  assert.match(html, /&lt;script&gt;/);
+});
+
+test('buildPlainLanguageItemPrompt: carries card context, forbids jargon, asks for exactly 2 sentences', () => {
+  const p = buildPlainLanguageItemPrompt({ name: 'Fix garbage slugs', why: 'co.uk hosts produce junk outlet ids', summary: 'Added regression fixtures to provisional-outlet-onboarding.test.mjs' });
+  assert.match(p, /Fix garbage slugs/);
+  assert.match(p, /co\.uk hosts produce junk outlet ids/);
+  assert.match(p, /EXACTLY 2 short sentences/);
+  assert.match(p, /no em dashes/);
+  assert.match(p, /never function names, file paths/);
+});
+
+test('buildPlainLanguageItemPrompt: tolerates missing why/summary', () => {
+  const p = buildPlainLanguageItemPrompt({ name: 'X' });
+  assert.match(p, /none given/);
+});
+
+test('sanitizePlainLanguageText: strips em/en dashes, collapses whitespace, never throws on garbage input', () => {
+  assert.equal(sanitizePlainLanguageText('Reviews were wrong — now fixed'), 'Reviews were wrong, now fixed');
+  assert.equal(sanitizePlainLanguageText('a  b   c'), 'a b c');
+  assert.equal(sanitizePlainLanguageText('trailing space , here'), 'trailing space, here');
+  assert.equal(sanitizePlainLanguageText(null), '');
+  assert.equal(sanitizePlainLanguageText(undefined), '');
+  assert.equal(sanitizePlainLanguageText('  '), '');
 });
 
 test('extractWhy pulls the first sentence of the Problem section', () => {

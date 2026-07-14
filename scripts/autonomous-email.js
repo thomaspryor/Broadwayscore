@@ -29,13 +29,16 @@ const { execFileSync } = require('child_process');
 
 const ledger = require('./lib/autonomous-ledger.js');
 const { buildActionUrl } = require('./lib/autonomous-links.js');
-const { renderEmail, extractWhy, summarizeQueue } = require('./lib/autonomous-email-render.js');
+const { renderEmail, extractWhy, summarizeQueue, buildPlainLanguageItemPrompt, sanitizePlainLanguageText } = require('./lib/autonomous-email-render.js');
 
 const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
 const MAX_EMAIL_ITEMS = 3;
 const QUEUE_SUMMARY_MAX_AGE_H = 24; // stale queues describe a different night
+// Cheap model for the plain-language item copy (owner scope-add 2026-07-14)
+// — one short call per item, ≤3 items/night.
+const PLAIN_LANGUAGE_MODEL = process.env.AUTONOMOUS_EMAIL_COPY_MODEL || 'claude-haiku-4-5-20251001';
 
 for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.env']) {
   if (!fs.existsSync(envPath)) continue;
@@ -91,6 +94,29 @@ function httpsJson(method, url, headers, body) {
     if (data) req.write(data);
     req.end();
   });
+}
+
+// ── Plain-language item copy (owner scope-add 2026-07-14) ──────────────────
+// One cheap LLM call per item so the owner can decide approve/reject from
+// plain language alone, instead of the card's own Why/Done text (function
+// names, file paths, test commands — "I don't follow this at all" verdict on
+// the first real email). Fail-soft: no ANTHROPIC_API_KEY, a non-200, or a
+// network error just means renderItem() falls back to the old technical
+// layout — a broken copy call must never block the email itself.
+async function generatePlainLanguageText(item) {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) return null;
+  try {
+    const res = await httpsJson('POST', 'https://api.anthropic.com/v1/messages',
+      { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+      { model: PLAIN_LANGUAGE_MODEL, max_tokens: 300, messages: [{ role: 'user', content: buildPlainLanguageItemPrompt(item) }] });
+    if (res.status !== 200 || !res.json) return null;
+    const text = (res.json.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    const clean = sanitizePlainLanguageText(text);
+    return clean || null;
+  } catch {
+    return null;
+  }
 }
 
 // ── Admin API (real account numbers) — fail-soft ────────────────────────────
@@ -176,7 +202,7 @@ async function main() {
     // an approve tap must always refer to a branch the executor pushed.
     if (!evd.branch) { missingEvidence++; continue; }
     const branch = evd.branch;
-    items.push({
+    const newItem = {
       name: row.name,
       why,
       summary: evd.summary || null,
@@ -185,7 +211,12 @@ async function main() {
       checks: evd.checks || [],
       approveUrl: buildActionUrl({ action: 'approve', cardId: row.id, branch, exp, secret, baseUrl }),
       rejectUrl: buildActionUrl({ action: 'reject', cardId: row.id, branch, exp, secret, baseUrl }),
-    });
+    };
+    // Plain-language primary text (owner scope-add 2026-07-14) — fail-soft,
+    // never blocks the email; renderItem() falls back to the old technical
+    // layout if this comes back null.
+    newItem.plainText = await generatePlainLanguageText(newItem);
+    items.push(newItem);
   }
 
   // Per-execution facts come from the LAST segment of the run: a runId can
