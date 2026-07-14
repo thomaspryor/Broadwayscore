@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-13T07:02:05.370Z",
+  "generatedAt": "2026-07-14T06:41:37.776Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-07-13T06:32:21.933Z",
-    "reviewsJsonAgeHours": 0.5,
+    "reviewsJsonLastUpdated": "2026-07-14T06:18:45.951Z",
+    "reviewsJsonAgeHours": 0.4,
     "freshnessBreach": false,
     "showsScanned": 9,
-    "filesScanned": 140,
+    "filesScanned": 74,
     "showsOverThreshold": 0,
     "orphanReviews": 1
   },
@@ -24,32 +24,16 @@
   "perShow": [
     {
       "showDir": "allegra-west-end-2026",
-      "actual": 12,
-      "scanned": 13,
+      "actual": 13,
+      "scanned": 14,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
-      "actual": 12,
-      "scanned": 17,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "amny--matt-windman.json",
-          "outletId": "amny",
-          "criticName": "Matt Windman",
-          "publishDate": "2026-07-12",
-          "url": "https://www.amny.com/news/jennifer-nettles-giulia-poison-musical/"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
-      "showDir": "jesus-christ-superstar-west-end-2026",
-      "actual": 22,
-      "scanned": 73,
+      "actual": 14,
+      "scanned": 19,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -60,6 +44,29 @@
       "scanned": 16,
       "suppressedCount": 0,
       "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-whoopi-monologues-off-broadway-2026",
+      "actual": 2,
+      "scanned": 4,
+      "suppressedCount": 2,
+      "suppressed": [
+        {
+          "file": "theatermania--kenji-fujishima.json",
+          "outletId": "theatermania",
+          "criticName": "Kenji Fujishima",
+          "publishDate": "2026-07-14",
+          "url": "https://www.theatermania.com/news/review-the-whoopi-monologues-shines-even-without-whoopi-goldberg_1845713/"
+        },
+        {
+          "file": "thewrap--robert-hofler.json",
+          "outletId": "thewrap",
+          "criticName": "Robert Hofler",
+          "publishDate": "2026-07-14",
+          "url": "https://www.thewrap.com/creative-content/theater/the-whoopi-monologues-off-broadway-review-kerry-washington/"
+        }
+      ],
       "overThreshold": false
     }
   ]
