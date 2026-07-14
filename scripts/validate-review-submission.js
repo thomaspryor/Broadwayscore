@@ -161,7 +161,7 @@ VALIDATION CRITERIA:
 RECOMMENDATION GUIDANCE:
 - "approve" when the URL is a valid professional review from a legitimate outlet, the production is in a covered market (NYC or London), AND the show is in our database.
 - "needs-manual-review" when it's a valid covered-market review from a legitimate outlet but the show is NOT yet in our database (we may need to add the show first).
-- "reject" when the URL is not a review, the outlet is illegitimate, the production is outside our covered markets, or the review already exists.
+- "reject" when the URL is not a review, the outlet is illegitimate, or the production is outside our covered markets.
 
 Respond in this JSON format:
 {
@@ -261,6 +261,30 @@ async function validateSubmission(issueBody) {
   const claudeValidation = await validateWithClaude(submissionData);
 
   console.log('Claude validation result:', JSON.stringify(claudeValidation, null, 2));
+
+  // Guard: an 'approve' recommendation must resolve to a real database show id,
+  // otherwise the downstream scrape job (which gates on approve and needs a
+  // showId to ingest) fails AFTER the submitter already got an approval email.
+  // Fall back to the deterministic title match; if neither resolves, downgrade
+  // to manual review rather than approving a review we can't attach.
+  if (claudeValidation.recommendation === 'approve') {
+    const llmShowId = claudeValidation.extractedData?.showId;
+    const resolvedId =
+      (llmShowId && shows.some(s => s.id === llmShowId) && llmShowId) ||
+      matchedShow?.id ||
+      null;
+    if (resolvedId) {
+      if (claudeValidation.extractedData) {
+        claudeValidation.extractedData.showId = resolvedId;
+      }
+    } else {
+      claudeValidation.recommendation = 'needs-manual-review';
+      claudeValidation.reasoning =
+        `Approved as a covered-market review, but could not resolve a matching show id in our database` +
+        `${llmShowId ? ` (extracted "${llmShowId}" is not a known show id)` : ''}. ` +
+        `Routing to manual review so the show can be added or matched before ingest.`;
+    }
+  }
 
   // Combine results
   return {
