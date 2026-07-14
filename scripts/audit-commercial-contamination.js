@@ -30,6 +30,8 @@
  *   CATEGORY_TYPE_MISMATCH   (warn) — modelCategory musical/play disagrees with shows.json type
  *   SHOW_NOT_IN_DB           (warn) — key doesn't resolve to any shows.json id
  *                                       (prefix-match aware for shorthand commercial keys)
+ *   OUT_OF_MARKET_SCOPE      (warn) — resolved show is Off-Broadway/West End; commercial
+ *                                       research is Broadway-only (scripts/lib/commercial-scope.js)
  *
  * Thresholds chosen against live data (2026-05-24, 183 commercial records):
  *   - Floor/ceiling produce zero baseline hits with margin (live cap range
@@ -42,6 +44,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isCommercialScope } = require('./lib/commercial-scope');
 
 const ROOT = path.join(__dirname, '..');
 const COMMERCIAL_FILE = path.join(ROOT, 'data', 'commercial.json');
@@ -116,6 +119,12 @@ function audit() {
     if (shows) {
       resolvedShow = resolveShow(key, shows, idIndex);
       if (!resolvedShow) flags.push('SHOW_NOT_IN_DB');
+    }
+
+    // OUT_OF_MARKET_SCOPE — commercial data is Broadway-only; OB/WE entries
+    // leaked via `market`-based queue filters (2026-07-14, 28 entries purged).
+    if (resolvedShow && !isCommercialScope(resolvedShow)) {
+      flags.push(`OUT_OF_MARKET_SCOPE:${resolvedShow.category}`);
     }
 
     // CATEGORY_TYPE_MISMATCH — only flag the strict musical/play contradiction;
