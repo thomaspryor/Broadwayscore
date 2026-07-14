@@ -82,9 +82,18 @@ export function useWatchlist(userId: string | null) {
     setError(null);
     try {
       if (force) invalidateWatchlistCache();
-      const result = await getWatchlistCached(userId);
-      setWatchlist(result);
-      broadcastWatchlist(userId, result);
+      const promise = getWatchlistCached(userId);
+      const result = await promise;
+      // Commit only if this fetch is still the current cache entry. A mutation
+      // (or a forced refresh) that invalidated the cache mid-flight has already
+      // broadcast fresher, post-write state; letting this now-superseded fetch
+      // run setWatchlist/broadcast would silently clobber that truth back to the
+      // pre-write snapshot it captured. Stale in-flight commits were possible in
+      // the pre-cache per-instance fetches too; the shared promise lets us fix it.
+      if (watchlistCache?.promise === promise) {
+        setWatchlist(result);
+        broadcastWatchlist(userId, result);
+      }
       return result;
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to load watchlist';
