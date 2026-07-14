@@ -82,3 +82,23 @@ test('press agreement: missing or invalid dates → no auto-apply', () => {
   assert.equal(possiblyClosedPressAgreement('2026-09-06', null), false);
   assert.equal(possiblyClosedPressAgreement('not-a-date', '2026-06-21'), false);
 });
+
+test('press agreement, title_mismatch: past press date → auto-apply (removed page = show already closed)', () => {
+  assert.equal(possiblyClosedPressAgreement('2026-09-06', '2026-06-21', { kind: 'title_mismatch', todayStr: TODAY }), true);
+});
+
+test('press agreement, title_mismatch: FUTURE press date → no auto-apply (could be slug collision on a running show)', () => {
+  assert.equal(possiblyClosedPressAgreement('2026-10-04', '2026-08-02', { kind: 'title_mismatch', todayStr: TODAY }), false);
+});
+
+test('press agreement, title_mismatch: press date = today → auto-apply (closing tonight, page already pulled)', () => {
+  assert.equal(possiblyClosedPressAgreement('2026-09-06', TODAY, { kind: 'title_mismatch', todayStr: TODAY }), true);
+});
+
+test('press agreement, title_mismatch without todayStr → no auto-apply (fail closed)', () => {
+  assert.equal(possiblyClosedPressAgreement('2026-09-06', '2026-06-21', { kind: 'title_mismatch' }), false);
+});
+
+test('press agreement, empty_schedule: future press date earlier than stored still auto-applies (title confirmed on page)', () => {
+  assert.equal(possiblyClosedPressAgreement('2026-10-04', '2026-08-02', { kind: 'empty_schedule', todayStr: TODAY }), true);
+});

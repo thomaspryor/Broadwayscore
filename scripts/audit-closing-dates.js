@@ -89,6 +89,13 @@ const TRIPLE_SIGNAL_TOLERANCE_DAYS = 7;
 // caps a runaway audit (e.g., 50 ambiguous after a broadway.com layout
 // change) at ~$1. Excess flows through to the Notion card path normally.
 const MAX_TRIPLE_SIGNAL_ATTEMPTS = 10;
+// Flood guard: shows genuinely disappear from broadway.com one at a time.
+// If MANY title-mismatch possibly-closed flags appear in a single run, the
+// far more likely cause is pageMatchesShow() breaking against a broadway.com
+// layout change — routing the whole slate into review + SERP discovery would
+// spam the Notion card and burn the triple-signal budget on a parser bug.
+// Overflow beyond this cap goes to `errors` with an explicit reason.
+const TITLE_MISMATCH_FLOOD_CAP = 5;
 
 const CONFIG = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
 const SLUG_OVERRIDES = CONFIG.slugOverrides;
@@ -176,6 +183,20 @@ async function fetchLatestSchedule(show, slug) {
   return { url, latest: dates.length ? dates[dates.length - 1] : null, count: dates.length, source: r.source };
 }
 
+// One-line description of an ambiguous row, shared by the console and
+// Discord renderings (Notion has its own richer format). POSSIBLY_CLOSED
+// rows have latestScheduled=null — without this branch they render as
+// "schedule cuts off at null (-54d earlier)".
+function describeAmbiguous(a) {
+  if (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
+    const evidence = a.missingScheduleKind === 'title_mismatch'
+      ? 'broadway.com page removed/mismatched'
+      : 'broadway.com schedule empty';
+    return `${a.id}: stored ${a.stored} (${Math.abs(a.delta)}d out) but ${evidence} — possibly closed earlier`;
+  }
+  return `${a.id}: stored ${a.stored}, schedule cuts off at ${a.latestScheduled} (${a.delta}d)`;
+}
+
 async function notifyDiscord(message) {
   const webhook = process.env.DISCORD_WEBHOOK_ALERTS;
   if (!webhook) return;
@@ -243,7 +264,9 @@ async function notifyNotion(ambiguous, todayStr) {
       if (a.tripleSignalConflict) {
         const c = a.tripleSignalConflict;
         const sourceLinks = c.sources.slice(0, 3).map(s => s.url).join(', ');
-        row += `\n  📰 Press cluster: **${c.pressDate}** (${c.sources.length} source${c.sources.length > 1 ? 's' : ''}: ${sourceLinks}) — at/after stored date, contradicts possibly-closed; review.`;
+        row += `\n  📰 Press cluster: **${c.pressDate}** (${c.sources.length} source${c.sources.length > 1 ? 's' : ''}: ${sourceLinks}) — did not meet the possibly-closed auto-apply bar (must be earlier than stored, and already past for removed pages); review.`;
+      } else if (a.tripleSignalWriteFailed) {
+        row += `\n  ⚠️ Triple-signal would have applied ${a.tripleSignalWriteFailed.newDate} but write was skipped (${a.tripleSignalWriteFailed.reason}). Apply manually.`;
       }
       return row;
     }
@@ -361,6 +384,12 @@ async function main() {
           kind,
         });
         if (verdict.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
+          const titleMismatchFlags = ambiguous.filter(x => x.missingScheduleKind === 'title_mismatch').length;
+          if (kind === 'title_mismatch' && titleMismatchFlags >= TITLE_MISMATCH_FLOOD_CAP) {
+            console.warn(`  ⚠️ ${show.id}: title_mismatch possibly-closed flood cap (${TITLE_MISMATCH_FLOOD_CAP}) reached — suspected pageMatchesShow() breakage; routing to errors`);
+            errors.push({ id: show.id, reason: 'possibly_closed_flood_suspected_parser_breakage', url: r.url });
+            continue;
+          }
           ambiguous.push({
             id: show.id, name: show.name, stored: show.closingDate,
             latestScheduled: null, url: r.url, delta: -verdict.daysUntilStored,
@@ -469,7 +498,7 @@ async function main() {
         // is itself the corroborating signal. Auto-apply only when the press
         // cluster announces a close EARLIER than stored, confirming the
         // possibly-closed hypothesis; anything else goes to human review.
-        if (!possiblyClosedPressAgreement(a.stored, discovery.date)) {
+        if (!possiblyClosedPressAgreement(a.stored, discovery.date, { kind: a.missingScheduleKind, todayStr: TODAY })) {
           a.tripleSignalConflict = {
             pressDate: discovery.date,
             scheduleDate: null,
@@ -497,6 +526,9 @@ async function main() {
       // is ambiguous). Auto-apply the press date — it's the authoritative
       // announcement; broadway.com schedule is just the lower-bound proof.
       const newDate = discovery.date;
+      const scheduleSignal = a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW'
+        ? `broadway.com page ${a.missingScheduleKind === 'title_mismatch' ? 'removed' : 'empty'}`
+        : 'broadway.com';
       const targetShow = !DRY_RUN ? data.shows.find(s => s.id === a.id) : null;
       if (!DRY_RUN && !targetShow) {
         // Found in `candidates` but missing in `data.shows`: this means the
@@ -517,9 +549,6 @@ async function main() {
         // Cite ALL corroborating sources, not just the first — preserves
         // the audit trail when reviewing a wrong auto-fix later.
         const sourceList = discovery.sources.map(s => s.url).join(', ');
-        const scheduleSignal = a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW'
-          ? `broadway.com page ${a.missingScheduleKind === 'title_mismatch' ? 'removed' : 'empty'}`
-          : 'broadway.com';
         writeClosingDate(targetShow, newDate,
           `triple-signal audit (${TODAY}): ${scheduleSignal} + ${sourceList}`,
           { todayStr: TODAY });
@@ -529,6 +558,7 @@ async function main() {
         previousStored: a.stored,
         newClosingDate: newDate,
         scheduleDate: a.latestScheduled,
+        scheduleSignal,
         pressDate: discovery.date,
         dayDelta,
         sources: discovery.sources,
@@ -579,9 +609,9 @@ async function main() {
   console.log(`  ❌ Errors:                     ${errors.length}`);
 
   for (const e of extensions) console.log(`  EXT  ${e.id}: ${e.stored} → ${e.latestScheduled} (+${e.delta}d)`);
-  for (const f of autoFixedTripleSignal) console.log(`  AUTO ${f.id}: ${f.previousStored} → ${f.newClosingDate} (3-signal: broadway.com + ${f.sources.length} press source(s))`);
+  for (const f of autoFixedTripleSignal) console.log(`  AUTO ${f.id}: ${f.previousStored} → ${f.newClosingDate} (3-signal: ${f.scheduleSignal || 'broadway.com'} + ${f.sources.length} press source(s))`);
   for (const n of newClosings) console.log(`  NEW  ${n.id}: null → schedule ends ${n.latestScheduled} (review — may be open run)`);
-  for (const a of ambiguous) console.log(`  AMB  ${a.id}: stored=${a.stored} schedule=${a.latestScheduled} (${a.delta}d)`);
+  for (const a of ambiguous) console.log(`  AMB  ${describeAmbiguous(a)}`);
 
   const changed = extensions.length + autoFixedTripleSignal.length;
   if (changed > 0 && !DRY_RUN) {
@@ -590,7 +620,7 @@ async function main() {
   }
 
   if (ambiguous.length > 0) {
-    const lines = ambiguous.map(a => `• ${a.id}: stored ${a.stored}, schedule cuts off at ${a.latestScheduled} (${a.delta}d earlier)`).join('\n');
+    const lines = ambiguous.map(a => `• ${describeAmbiguous(a)}`).join('\n');
     await notifyDiscord(`⚠️ Closing-date audit found ${ambiguous.length} show(s) where stored closingDate is >30d after schedule end. Verify whether stored is correct (calendar window short) or stale.\n\n${lines}`);
     await notifyNotion(ambiguous, TODAY);
   }

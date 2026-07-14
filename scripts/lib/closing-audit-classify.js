@@ -53,16 +53,35 @@ function classifyMissingSchedule({ closingDate, todayStr, minDays, allowlisted, 
  * A press date at/after stored contradicts it (page removal was probably a
  * broadway.com quirk or slug change) → human review instead.
  *
+ * For kind='title_mismatch' the bar is higher: the page didn't confirm the
+ * show at all, so it could be a slug collision on a RUNNING production
+ * (e.g. a revival whose slug now resolves to another staging). A same-title
+ * press cluster could then auto-retract a healthy show. Requiring the press
+ * date to also be in the PAST (<= todayStr) restricts auto-apply to the
+ * removed-page pattern — broadway.com only deletes the page after the final
+ * performance, so a genuine hit always has a past close. Future-dated
+ * announcements fall through to the Notion review card.
+ *
  * @param {string} stored - stored YYYY-MM-DD closingDate
  * @param {string} pressDate - discovered YYYY-MM-DD announced close
+ * @param {object} [opts]
+ * @param {'title_mismatch'|'empty_schedule'} [opts.kind='empty_schedule']
+ * @param {string} [opts.todayStr] - YYYY-MM-DD; required for title_mismatch
  * @returns {boolean} true when it is safe to auto-apply pressDate
  */
-function possiblyClosedPressAgreement(stored, pressDate) {
+function possiblyClosedPressAgreement(stored, pressDate, opts = {}) {
   if (!stored || !pressDate) return false;
   const s = new Date(stored);
   const p = new Date(pressDate);
   if (isNaN(s.getTime()) || isNaN(p.getTime())) return false;
-  return p < s;
+  if (!(p < s)) return false;
+  if (opts.kind === 'title_mismatch') {
+    if (!opts.todayStr) return false;
+    const t = new Date(opts.todayStr);
+    if (isNaN(t.getTime())) return false;
+    return p <= t;
+  }
+  return true;
 }
 
 module.exports = { classifyMissingSchedule, possiblyClosedPressAgreement };
