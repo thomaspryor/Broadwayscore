@@ -44,4 +44,13 @@ async function updateRows(table, filters, patch) {
   if (!res.ok) throw new Error(`updateRows ${table}: HTTP ${res.status} ${await res.text().catch(() => '')}`);
 }
 
-module.exports = { selectRows, updateRows };
+/** DELETE rows matching `filters` (query-string form). */
+async function deleteRows(table, filters) {
+  const res = await fetch(`${baseUrl()}/rest/v1/${table}?${filters}`, {
+    method: 'DELETE',
+    headers: headers('return=minimal'),
+  });
+  if (!res.ok) throw new Error(`deleteRows ${table}: HTTP ${res.status} ${await res.text().catch(() => '')}`);
+}
+
+module.exports = { selectRows, updateRows, deleteRows };
