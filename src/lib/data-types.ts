@@ -434,6 +434,8 @@ export interface ShowCommercial {
   recoupedDate: string | null;
   recoupedWeeks: number | null;
   recoupedSource?: string | null;
+  /** Owner-reviewed editorial keep (Q3 policy) — survives CI merges. */
+  humanReviewedDesignation?: boolean;
   nonprofitOrg?: string;
   notes?: string;
   estimatedRecoupmentPct?: [number, number] | null;
