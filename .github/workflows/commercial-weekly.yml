@@ -302,6 +302,7 @@ jobs:
             # Restore both so the next Saturday run retries the same pending.
             cp /tmp/core-data-snapshot/commercial.json data/commercial.json 2>/dev/null || true
             git checkout -- data/commercial-pending-review.json 2>/dev/null || true
+            git checkout -- data/recoupment-calibration-anchors.json 2>/dev/null || true
             exit 1
           fi
 

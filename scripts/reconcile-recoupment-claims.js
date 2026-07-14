@@ -14,15 +14,20 @@
  *
  *   1. STALE DUPLICATE — commercial.json already has recouped:true with a
  *      real sources[].url citation (prose-only recoupedSource doesn't
- *      count — see recoupment-reconcile-gate.js) for this slug → delete the
- *      pending entry. No new verification needed; some prior pipeline
- *      already resolved and cited this.
- *   2. VERIFY — SERP-search "<title> Broadway recoups" restricted to
- *      TRUSTED_RECOUPMENT_HOSTS, fetchPage() the top candidate(s), classify
- *      with the shared LLM verdict lib. An exact + high-confidence match from
- *      a trusted host applies recouped:true + date + source via the same
- *      commercial-apply-gate merge logic the Friday scraper uses, then
- *      clears the pending entry.
+ *      count), and the pending claim's own recoupedDate (if any) doesn't
+ *      name a different year — see recoupment-reconcile-gate.js. Deletes the
+ *      pending entry with no new verification; some prior pipeline already
+ *      resolved and cited this. A year mismatch is NOT auto-closed (could be
+ *      a correction) — it falls through to independent SERP verification.
+ *   2. VERIFY — SERP-search restricted to TRUSTED_RECOUPMENT_HOSTS (generic
+ *      + site-restricted BWW/Playbill queries, mirroring
+ *      scrape-recoupment-announcements.js since neither publishes a
+ *      working RSS feed), fetchPage() the top candidates, classify with the
+ *      shared LLM verdict lib (title disambiguated with the show's opening
+ *      year to help reject same-title revivals). An exact + high-confidence
+ *      match with a clean parseable date from a trusted host applies
+ *      recouped:true + date + source via the same commercial-apply-gate
+ *      merge logic the Friday scraper uses, then clears the pending entry.
  *   3. UNVERIFIABLE — after MAX_VERIFY_ATTEMPTS (2) failed verification
  *      passes, stamp verifyAttempts and leave for human review. The manual
  *      queue then contains only genuinely unverifiable claims.
@@ -106,23 +111,44 @@ function resolveSlug(key, entry) {
   return entry.slug || key;
 }
 
-async function verifyClaim(title, existingUrls) {
-  const query = `"${title}" Broadway recoups`;
-  let results;
-  try {
-    results = await serpQuery(query, { nbResults: 8, preferSpeed: true });
-  } catch (e) {
-    log(`      ✗ SERP error: ${e.message}`);
-    return null;
+// Mirrors scrape-recoupment-announcements.js's buildQueries: generic queries
+// rank by whatever Google surfaces highest (usually NYT/Deadline/Variety).
+// BroadwayWorld and Playbill are both in TRUSTED_RECOUPMENT_HOSTS but have no
+// working RSS feed, so site-restricted queries are the only way to guarantee
+// their coverage independent of generic-query ranking.
+function buildQueries(title) {
+  return [
+    `"${title}" Broadway recoups`,
+    `"${title}" recoupment announcement`,
+    `"${title}" earned back investment`,
+    `"${title}" recoups site:broadwayworld.com`,
+    `"${title}" recoups site:playbill.com`,
+  ];
+}
+
+async function verifyClaim(title, disambiguatedTitle, existingUrls) {
+  const seen = new Set();
+  const candidates = [];
+  for (const query of buildQueries(title)) {
+    let results;
+    try {
+      results = await serpQuery(query, { nbResults: 8, preferSpeed: true });
+    } catch (e) {
+      log(`      ✗ SERP error (${query}): ${e.message}`);
+      continue;
+    }
+    if (!results) continue;
+    for (const r of results) {
+      if (seen.has(r.url)) continue;
+      seen.add(r.url);
+      const host = hostnameOf(r.url);
+      if (host && TRUSTED_RECOUPMENT_HOSTS.has(host) && !existingUrls.has(r.url)) {
+        candidates.push(r);
+      }
+    }
   }
-  if (!results) return null;
 
-  const candidates = results.filter(r => {
-    const host = hostnameOf(r.url);
-    return host && TRUSTED_RECOUPMENT_HOSTS.has(host) && !existingUrls.has(r.url);
-  });
-
-  for (const c of candidates.slice(0, 3)) {
+  for (const c of candidates.slice(0, 4)) {
     const host = hostnameOf(c.url);
     log(`      📰 ${host} :: ${(c.title || '').slice(0, 80)}`);
     let html;
@@ -133,7 +159,11 @@ async function verifyClaim(title, existingUrls) {
       log(`        ✗ fetch failed: ${e.message}`);
       continue;
     }
-    const verdict = await classifyArticle(title, c.url, html);
+    // disambiguatedTitle folds in the show's opening year (e.g. "Wicked
+    // (2003 Broadway production)") to help the classifier reject same-title
+    // revivals — classifyArticle's productionMatch check otherwise has no
+    // year/venue context to work from (feedback_same_title_disambiguation.md).
+    const verdict = await classifyArticle(disambiguatedTitle, c.url, html);
     log(`        → recouped=${verdict.recouped} match=${verdict.productionMatch} conf=${verdict.confidence}`);
     if (isConfirmingVerdict(verdict, host)) {
       return { verdict, url: c.url, host };
@@ -164,77 +194,105 @@ async function main() {
   let closedStale = 0;
   let verifiedApplied = 0;
   let stillUnverifiable = 0;
+  let skippedError = 0;
   let verifyCallsUsed = 0;
   const calibrationAnchors = [];
   const staleDupSlugs = [];
   const verifiedSlugs = [];
+  // Guard against two pending keys resolving to the same slug in one run: if
+  // slug A was already closed/applied this run, a second entry for the same
+  // slug must not be evaluated against the just-mutated in-memory
+  // commercial.shows[slug] (it would look like a trivially-confirmed stale
+  // duplicate of our OWN write, with no independent verification). Defer it
+  // to the next run instead.
+  const touchedSlugsThisRun = new Set();
 
   for (const [key, entry] of entries) {
     const slug = resolveSlug(key, entry);
     const title = entry.title || showsBySlug[slug]?.title || slug;
-    const existing = commercial.shows[slug];
     log(`— ${key} (slug: ${slug}) —`);
 
-    if (isStaleDuplicate(existing)) {
-      log(`  ✅ stale duplicate — commercial.json already has recouped:true, cited. Closing pending entry.`);
-      closedStale++;
-      staleDupSlugs.push(slug);
-      if (!DRY_RUN) delete pending.shows[key];
-      if (existing.recoupedDate && existing.capitalization != null) {
-        calibrationAnchors.push({
-          slug,
-          recoupedDate: existing.recoupedDate,
-          capitalization: existing.capitalization,
-          source: 'stale-duplicate-reconcile',
-        });
-      }
+    if (touchedSlugsThisRun.has(slug)) {
+      log(`  ⏭️  slug "${slug}" already touched by another pending entry this run — deferring to next run.`);
       continue;
     }
 
-    if (!shouldAttemptVerification(entry)) {
-      log(`  🛑 verifyAttempts=${entry.verifyAttempts || 0} — at cap (${MAX_VERIFY_ATTEMPTS}), leaving for human review.`);
-      stillUnverifiable++;
-      continue;
-    }
+    try {
+      const existing = commercial.shows[slug];
 
-    if (verifyCallsUsed >= MAX_VERIFY_CALLS) {
-      log(`  ⏭️  verify-call budget (${MAX_VERIFY_CALLS}) exhausted this run — deferring to next run.`);
-      continue;
-    }
-    verifyCallsUsed++;
+      if (isStaleDuplicate(existing, entry)) {
+        log(`  ✅ stale duplicate — commercial.json already has recouped:true, cited. Closing pending entry.`);
+        closedStale++;
+        staleDupSlugs.push(slug);
+        touchedSlugsThisRun.add(slug);
+        if (!DRY_RUN) delete pending.shows[key];
+        if (existing.recoupedDate && existing.capitalization != null) {
+          calibrationAnchors.push({
+            slug,
+            recoupedDate: existing.recoupedDate,
+            capitalization: existing.capitalization,
+            source: 'stale-duplicate-reconcile',
+          });
+        }
+        continue;
+      }
 
-    const existingUrls = new Set(
-      (Array.isArray(entry.sources) ? entry.sources.map(s => s.url) : []).filter(Boolean)
-    );
-    const result = await verifyClaim(title, existingUrls);
+      if (!shouldAttemptVerification(entry)) {
+        log(`  🛑 verifyAttempts=${entry.verifyAttempts || 0} — at cap (${MAX_VERIFY_ATTEMPTS}), leaving for human review.`);
+        stillUnverifiable++;
+        continue;
+      }
 
-    if (result) {
-      log(`  ✅ verified via ${result.host} — applying recouped:true.`);
-      verifiedApplied++;
-      verifiedSlugs.push(slug);
-      const overlay = buildVerifiedOverlay(entry, result.verdict, result.url, result.host);
-      const built = gate.buildCommercialEntry(overlay, existing, { isClaimAutoApply: true, normalizeSources });
-      built.lastUpdated = new Date().toISOString();
-      built.firstAdded = existing?.firstAdded || new Date().toISOString();
-      if (!DRY_RUN) {
-        commercial.shows[slug] = built;
-        delete pending.shows[key];
+      if (verifyCallsUsed >= MAX_VERIFY_CALLS) {
+        log(`  ⏭️  verify-call budget (${MAX_VERIFY_CALLS}) exhausted this run — deferring to next run.`);
+        continue;
       }
-      if (built.recoupedDate && built.capitalization != null) {
-        calibrationAnchors.push({
-          slug,
-          recoupedDate: built.recoupedDate,
-          capitalization: built.capitalization,
-          source: 'reconciler-verified',
-        });
+      verifyCallsUsed++;
+
+      const existingUrls = new Set(
+        (Array.isArray(entry.sources) ? entry.sources.map(s => s.url) : []).filter(Boolean)
+      );
+      const openingYear = showsBySlug[slug]?.openingDate?.slice(0, 4);
+      const disambiguatedTitle = openingYear ? `${title} (${openingYear} Broadway production)` : title;
+      const result = await verifyClaim(title, disambiguatedTitle, existingUrls);
+
+      if (result) {
+        log(`  ✅ verified via ${result.host} — applying recouped:true.`);
+        verifiedApplied++;
+        verifiedSlugs.push(slug);
+        touchedSlugsThisRun.add(slug);
+        const overlay = buildVerifiedOverlay(entry, result.verdict, result.url, result.host);
+        const built = gate.buildCommercialEntry(overlay, existing, { isClaimAutoApply: true, normalizeSources });
+        built.lastUpdated = new Date().toISOString();
+        built.firstAdded = existing?.firstAdded || new Date().toISOString();
+        if (!DRY_RUN) {
+          commercial.shows[slug] = built;
+          delete pending.shows[key];
+        }
+        if (built.recoupedDate && built.capitalization != null) {
+          calibrationAnchors.push({
+            slug,
+            recoupedDate: built.recoupedDate,
+            capitalization: built.capitalization,
+            source: 'reconciler-verified',
+          });
+        }
+      } else {
+        const attempts = (entry.verifyAttempts || 0) + 1;
+        log(`  ❌ no trusted-host exact+high-confidence match found (attempt ${attempts}/${MAX_VERIFY_ATTEMPTS}).`);
+        stillUnverifiable++;
+        if (!DRY_RUN) {
+          pending.shows[key] = { ...entry, verifyAttempts: attempts, lastVerifyAttemptAt: new Date().toISOString() };
+        }
       }
-    } else {
-      const attempts = (entry.verifyAttempts || 0) + 1;
-      log(`  ❌ no trusted-host exact+high-confidence match found (attempt ${attempts}/${MAX_VERIFY_ATTEMPTS}).`);
-      stillUnverifiable++;
-      if (!DRY_RUN) {
-        pending.shows[key] = { ...entry, verifyAttempts: attempts, lastVerifyAttemptAt: new Date().toISOString() };
-      }
+    } catch (e) {
+      // Isolate per-entry failures: this workflow step is deliberately NOT
+      // continue-on-error (a silently-swallowed run would be worse), but one
+      // malformed LLM overlay or unexpected shape must not crash the whole
+      // pass and abort every other entry's progress. Leave this entry
+      // untouched — it retries next run.
+      log(`  ⚠️  entry errored, skipping: ${e.message}`);
+      skippedError++;
     }
   }
 
@@ -243,6 +301,7 @@ async function main() {
   log(`Closed as stale duplicates: ${closedStale}${staleDupSlugs.length ? ' (' + staleDupSlugs.join(', ') + ')' : ''}`);
   log(`Verified + applied:         ${verifiedApplied}${verifiedSlugs.length ? ' (' + verifiedSlugs.join(', ') + ')' : ''}`);
   log(`Still unverifiable:         ${stillUnverifiable}`);
+  log(`Skipped (error):            ${skippedError}`);
   log(`SERP verify calls used:     ${verifyCallsUsed}/${MAX_VERIFY_CALLS}`);
 
   if (DRY_RUN) {
@@ -250,36 +309,43 @@ async function main() {
     return;
   }
 
-  if (closedStale > 0 || verifiedApplied > 0) {
-    pending.lastUpdated = new Date().toISOString();
-    writeJSON(PENDING_PATH, pending);
-    if (verifiedApplied > 0) writeJSON(COMMERCIAL_PATH, commercial);
-  } else if (stillUnverifiable > 0) {
-    // verifyAttempts bump still needs to persist even with 0 applies/closes.
+  // Write commercial.json BEFORE pending — a kill/timeout between the two
+  // writes then leaves the pending entry present (worst case: closed as a
+  // stale duplicate on the next run, since commercial.json already reflects
+  // the applied claim) rather than the reverse order, where a kill drops the
+  // claim from the queue without ever having applied it (ship-check finding).
+  if (verifiedApplied > 0) writeJSON(COMMERCIAL_PATH, commercial);
+  if (closedStale > 0 || verifiedApplied > 0 || stillUnverifiable > 0) {
     pending.lastUpdated = new Date().toISOString();
     writeJSON(PENDING_PATH, pending);
   }
 
-  if (!DRY_RUN) {
-    // Seed from ALL existing verified recoupments in commercial.json first,
-    // then overlay this run's fresher reconciler-verified/stale-dup anchors —
-    // every (recoupedDate, capitalization) pair already sitting in
-    // commercial.json is the same free calibration anchor the card
-    // describes, and there's no reason to wait for each one to cycle through
-    // the pending queue to pick it up.
-    const bySlug = new Map();
-    for (const [slug, data] of Object.entries(commercial.shows)) {
-      if (data.recouped === true && data.recoupedDate && data.capitalization != null) {
-        bySlug.set(slug, { slug, recoupedDate: data.recoupedDate, capitalization: data.capitalization, source: 'commercial-json-backfill' });
-      }
+  // Seed from ALL existing verified recoupments in commercial.json first,
+  // then overlay this run's fresher reconciler-verified/stale-dup anchors —
+  // every (recoupedDate, capitalization) pair already sitting in
+  // commercial.json is the same free calibration anchor the card describes,
+  // and there's no reason to wait for each one to cycle through the pending
+  // queue to pick it up. Only write if the anchor set actually changed, so
+  // a no-op run doesn't churn a commit every Friday/Saturday.
+  const bySlug = new Map();
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    if (data.recouped === true && data.recoupedDate && data.capitalization != null) {
+      bySlug.set(slug, { slug, recoupedDate: data.recoupedDate, capitalization: data.capitalization, source: 'commercial-json-backfill' });
     }
-    for (const a of calibrationAnchors) bySlug.set(a.slug, a);
-    writeJSON(CALIBRATION_PATH, { updatedAt: new Date().toISOString(), anchors: [...bySlug.values()] });
-    log(`Wrote ${bySlug.size} calibration anchor(s) → ${path.relative(process.cwd(), CALIBRATION_PATH)}`);
+  }
+  for (const a of calibrationAnchors) bySlug.set(a.slug, a);
+  const newAnchors = [...bySlug.values()].sort((a, b) => a.slug.localeCompare(b.slug));
+  const existingCalibration = loadJSON(CALIBRATION_PATH, { anchors: [] });
+  const changed = JSON.stringify(existingCalibration.anchors || []) !== JSON.stringify(newAnchors);
+  if (changed) {
+    writeJSON(CALIBRATION_PATH, { updatedAt: new Date().toISOString(), anchors: newAnchors });
+    log(`Wrote ${newAnchors.length} calibration anchor(s) → ${path.relative(process.cwd(), CALIBRATION_PATH)}`);
+  } else {
+    log(`Calibration anchors unchanged (${newAnchors.length}) — skipping write.`);
   }
 }
 
-module.exports = { resolveSlug };
+module.exports = { resolveSlug, buildQueries };
 
 if (require.main === module) {
   main().catch(e => { console.error('FATAL', e); process.exit(1); });

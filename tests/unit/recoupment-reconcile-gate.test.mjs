@@ -9,14 +9,36 @@ const require = createRequire(import.meta.url);
 
 const {
   MAX_VERIFY_ATTEMPTS,
+  normalizeRecoupedDate,
   isStaleDuplicate,
   shouldAttemptVerification,
   isConfirmingVerdict,
   buildVerifiedOverlay,
 } = require('../../scripts/lib/recoupment-reconcile-gate');
 const { TRUSTED_RECOUPMENT_HOSTS } = require('../../scripts/lib/trusted-recoupment-domains');
+const { resolveSlug, buildQueries } = require('../../scripts/reconcile-recoupment-claims');
 
 describe('recoupment-reconcile-gate', () => {
+  describe('normalizeRecoupedDate', () => {
+    it('truncates a full YYYY-MM-DD date to YYYY-MM', () => {
+      // The real bug this guards: recoupment-classify.js's prompt asks for
+      // YYYY-MM-DD, but validate-data.js only accepts YYYY/YYYY-MM. A raw
+      // full date written to commercial.json fails validation.
+      assert.equal(normalizeRecoupedDate('2004-12-21'), '2004-12');
+    });
+    it('passes through a clean YYYY-MM or YYYY date', () => {
+      assert.equal(normalizeRecoupedDate('2026-05'), '2026-05');
+      assert.equal(normalizeRecoupedDate('2026'), '2026');
+    });
+    it('rejects garbage / unparseable dates', () => {
+      assert.equal(normalizeRecoupedDate('May 2026'), null);
+      assert.equal(normalizeRecoupedDate('null'), null);
+      assert.equal(normalizeRecoupedDate(''), null);
+      assert.equal(normalizeRecoupedDate(null), null);
+      assert.equal(normalizeRecoupedDate(undefined), null);
+    });
+  });
+
   describe('isStaleDuplicate', () => {
     it('true when commercial.json already has recouped:true + a sources[].url', () => {
       assert.equal(isStaleDuplicate({
@@ -48,6 +70,21 @@ describe('recoupment-reconcile-gate', () => {
       assert.equal(isStaleDuplicate({ recouped: true, sources: [] }), false);
       assert.equal(isStaleDuplicate({ recouped: true, sources: [{ type: 'trade' }] }), false);
     });
+
+    it('true when the pending entry has no recoupedDate to conflict with', () => {
+      const existing = { recouped: true, recoupedDate: '2026-05', sources: [{ url: 'https://variety.com/x' }] };
+      assert.equal(isStaleDuplicate(existing, { recouped: true }), true);
+    });
+
+    it('true when pending and existing recoupedDate agree on year', () => {
+      const existing = { recouped: true, recoupedDate: '2026-05', sources: [{ url: 'https://variety.com/x' }] };
+      assert.equal(isStaleDuplicate(existing, { recouped: true, recoupedDate: '2026' }), true);
+    });
+
+    it('false when pending recoupedDate names a DIFFERENT year — could be a correction, not a duplicate', () => {
+      const existing = { recouped: true, recoupedDate: '2016-03', sources: [{ url: 'https://nytimes.com/x' }] };
+      assert.equal(isStaleDuplicate(existing, { recouped: true, recoupedDate: '2024-11' }), false);
+    });
   });
 
   describe('shouldAttemptVerification', () => {
@@ -68,9 +105,9 @@ describe('recoupment-reconcile-gate', () => {
   });
 
   describe('isConfirmingVerdict', () => {
-    const goodVerdict = { recouped: true, productionMatch: 'exact', confidence: 'high' };
+    const goodVerdict = { recouped: true, productionMatch: 'exact', confidence: 'high', recoupedDate: '2026-05' };
 
-    it('true for exact + high-confidence + trusted host', () => {
+    it('true for exact + high-confidence + trusted host + clean date', () => {
       assert.equal(isConfirmingVerdict(goodVerdict, 'variety.com'), true);
     });
 
@@ -99,6 +136,16 @@ describe('recoupment-reconcile-gate', () => {
       assert.equal(isConfirmingVerdict(null, 'variety.com'), false);
     });
 
+    it('false when recoupedDate is missing or unparseable — mirrors isAutoApplyableClaim', () => {
+      assert.equal(isConfirmingVerdict({ ...goodVerdict, recoupedDate: null }, 'variety.com'), false);
+      assert.equal(isConfirmingVerdict({ ...goodVerdict, recoupedDate: 'null' }, 'variety.com'), false);
+      assert.equal(isConfirmingVerdict({ ...goodVerdict, recoupedDate: 'May 2026' }, 'variety.com'), false);
+    });
+
+    it('true even when recoupedDate needs truncation (full YYYY-MM-DD still confirms)', () => {
+      assert.equal(isConfirmingVerdict({ ...goodVerdict, recoupedDate: '2026-05-19' }, 'variety.com'), true);
+    });
+
     it('accepts every host in TRUSTED_RECOUPMENT_HOSTS', () => {
       for (const host of TRUSTED_RECOUPMENT_HOSTS) {
         assert.equal(isConfirmingVerdict(goodVerdict, host), true, `trusted host ${host} should pass`);
@@ -122,9 +169,35 @@ describe('recoupment-reconcile-gate', () => {
       assert.equal(overlay.sources[0].date, '2026-05-19');
     });
 
+    it('truncates a full YYYY-MM-DD verdict date to YYYY-MM (ship-check P0 fix)', () => {
+      const overlay = buildVerifiedOverlay({}, { recouped: true, recoupedDate: '2004-12-21', confidence: 'high' }, 'https://playbill.com/x', 'playbill.com');
+      assert.equal(overlay.recoupedDate, '2004-12');
+    });
+
     it('falls back to null recoupedDate when the verdict lacks one', () => {
       const overlay = buildVerifiedOverlay({}, { confidence: 'high' }, 'https://deadline.com/x', 'deadline.com');
       assert.equal(overlay.recoupedDate, null);
+    });
+  });
+});
+
+describe('reconcile-recoupment-claims helpers', () => {
+  describe('resolveSlug', () => {
+    it('prefers entry.slug over the pending key', () => {
+      assert.equal(resolveSlug('giant-2026', { slug: 'giant' }), 'giant');
+    });
+    it('falls back to the pending key when slug is absent', () => {
+      assert.equal(resolveSlug('some-key', {}), 'some-key');
+    });
+  });
+
+  describe('buildQueries', () => {
+    it('includes both generic and BWW/Playbill site-restricted queries', () => {
+      const queries = buildQueries('Wicked');
+      assert.ok(queries.some(q => q.includes('site:broadwayworld.com')));
+      assert.ok(queries.some(q => q.includes('site:playbill.com')));
+      assert.ok(queries.some(q => q === '"Wicked" Broadway recoups'));
+      assert.equal(queries.length, 5);
     });
   });
 });
