@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-07-14T14:31:59.712Z",
+  "timestamp": "2026-07-14T14:44:47.878Z",
   "stats": {
     "totalReviews": 40038,
-    "alreadyFlagged": 17553,
+    "alreadyFlagged": 17554,
     "dateGuardCatches": 49,
-    "directorMismatch": 911,
+    "directorMismatch": 910,
     "tvFilmSignals": 1099,
     "londonSignals": 744,
     "offBroadwaySignals": 469,
@@ -3895,20 +3895,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-2026",
-      "file": "nytimes--jesse-green.json",
-      "score": 92,
-      "publishDate": "2026-04-08",
-      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html?eafs_enabled=false",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
         }
       ]
     },
