@@ -147,44 +147,77 @@ export default function ImportShows({
     return 1;
   };
 
+  /** Normalize a title for comparison: fancy quotes/dashes → plain, & → and,
+   *  strip punctuation, collapse whitespace. Show Score renders titles with
+   *  curly quotes and ampersands ('CATS: \u201cThe Jellicle Ball\u201d',
+   *  'Guys & Dolls') that broke both the exact-match and containment checks
+   *  against our plain-ASCII catalog titles (owner import, 2026-07-14). */
+  const normTitle = (t: string) =>
+    t.toLowerCase()
+      .replace(/[\u2018\u2019\u201a\u2032']/g, '')
+      .replace(/[\u201c\u201d\u201e\u2033"]/g, '')
+      .replace(/&/g, ' and ')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+
   const matchShow = useCallback((name: string, venue?: string, dateSeen?: string | null): { match: SearchShow | null; score: number; dateSuspect: boolean } => {
     if (!fuseRef.current) return { match: null, score: 0, dateSuspect: false };
-    const nameLower = name.toLowerCase();
+    const nameNorm = normTitle(name);
     const withSanity = (match: SearchShow, raw: number) => {
       const sane = dateSanity(match, dateSeen);
       return { match, score: raw * sane, dateSuspect: sane < 1 && raw > 0.7 };
     };
+    // Same title, multiple productions (revivals/transfers): pick the run the
+    // user's date falls inside, else the one that opened closest to it. The
+    // old exactAll[0] grabbed whichever production happened to be first in
+    // the file — the root cause of the 2026-03-05 Mezzanine mismatches
+    // (History Boys 2006, Prince of Broadway 2017, ...).
+    const closestRun = (candidates: SearchShow[]): SearchShow => {
+      if (!dateSeen || candidates.length < 2) return candidates[0];
+      const seen = Date.parse(dateSeen);
+      const distance = (s: SearchShow) => {
+        if (!s.od) return 10 * 365 * 24 * 3600 * 1000; // undated: beats absurdly-far runs, loses to plausible ones
+        const od = Date.parse(s.od);
+        const cd = s.cd ? Date.parse(s.cd) : Number.POSITIVE_INFINITY;
+        if (seen >= od && seen <= cd) return 0; // inside the run
+        return Math.min(Math.abs(seen - od), Number.isFinite(cd) ? Math.abs(seen - cd) : Number.MAX_SAFE_INTEGER);
+      };
+      return [...candidates].sort((a, b) => distance(a) - distance(b))[0];
+    };
 
-    // Try exact title match — venue-aware when venue is provided
-    const exactAll = showsRef.current.filter(s => s.title.toLowerCase() === nameLower);
+    // Tier 1: exact normalized title. Tier 2: one title is a prefix of the
+    // other ('Sweeney Todd' vs 'Sweeney Todd: The Demon Barber of Fleet
+    // Street') — near-exact, still date/venue-disambiguated.
+    let exactAll = showsRef.current.filter(s => normTitle(s.title) === nameNorm);
+    let tierScore = 1;
+    if (exactAll.length === 0 && nameNorm.length >= 8) {
+      exactAll = showsRef.current.filter(s => {
+        const c = normTitle(s.title);
+        if (c.length < 8) return false;
+        return c.startsWith(nameNorm + ' ') || nameNorm.startsWith(c + ' ');
+      });
+      tierScore = 0.85;
+    }
     if (exactAll.length > 0) {
       if (venue) {
-        const venueNorm = venue.toLowerCase().replace(/theatre|theater/gi, '').trim();
-        const venueMatch = exactAll.find(s =>
-          s.venue && s.venue.toLowerCase().replace(/theatre|theater/gi, '').trim().includes(venueNorm)
-        );
-        if (venueMatch) return withSanity(venueMatch, 1);
-        // No venue match among exact titles — fall through to Fuse for better matching
-      } else {
-        // Same title, multiple productions (revivals/transfers): pick the run
-        // the user's date falls inside, else the one that opened closest to
-        // it. The old exactAll[0] grabbed whichever production happened to be
-        // first in the file — the root cause of the 2026-03-05 Mezzanine
-        // mismatches (History Boys 2006, Prince of Broadway 2017, ...).
-        let best = exactAll[0];
-        if (dateSeen && exactAll.length > 1) {
-          const seen = Date.parse(dateSeen);
-          const distance = (s: SearchShow) => {
-            if (!s.od) return 10 * 365 * 24 * 3600 * 1000; // undated: beats absurdly-far runs, loses to plausible ones
-            const od = Date.parse(s.od);
-            const cd = s.cd ? Date.parse(s.cd) : Number.POSITIVE_INFINITY;
-            if (seen >= od && seen <= cd) return 0; // inside the run
-            return Math.min(Math.abs(seen - od), Number.isFinite(cd) ? Math.abs(seen - cd) : Number.MAX_SAFE_INTEGER);
-          };
-          best = [...exactAll].sort((a, b) => distance(a) - distance(b))[0];
-        }
-        return withSanity(best, 1);
+        // Leading 'the' stripped on both sides: 'The Metropolitan Opera'
+        // must match venue 'Metropolitan Opera House'.
+        const vnorm = (v: string) => v.toLowerCase().replace(/theatre|theater/gi, '').replace(/^the\s+/, '').trim();
+        const venueNorm = vnorm(venue);
+        // Short normalized names must match exactly — substring matching let
+        // 'The Duke' (→'duke') claim "Duke of York's" (review finding).
+        const venueMatch = exactAll.find(s => {
+          if (!s.venue) return false;
+          const cand = vnorm(s.venue);
+          return venueNorm.length < 5 || cand.length < 5 ? cand === venueNorm : cand.includes(venueNorm);
+        });
+        if (venueMatch) return withSanity(venueMatch, tierScore);
+        // No venue agreement — the date is the next-best disambiguator among
+        // same-title productions (falling through to Fuse here re-picked
+        // whatever fuzzy ranked first, defeating the run selection).
+        return withSanity(closestRun(exactAll), tierScore * 0.95);
       }
+      return withSanity(closestRun(exactAll), tierScore);
     }
 
     // Fuzzy match
@@ -208,8 +241,8 @@ export default function ImportShows({
     const score = 1 - (best.score || 0);
     // Penalize matches where titles don't share a containment relationship
     // e.g. "High Spirits" ≠ "Blithe Spirit" even though both contain "Spirit"
-    const nameL = name.toLowerCase();
-    const matchL = best.item.title.toLowerCase();
+    const nameL = nameNorm;
+    const matchL = normTitle(best.item.title);
     const contained = nameL.includes(matchL) || matchL.includes(nameL);
     return withSanity(best.item, contained ? score : score * 0.6);
   }, []);
@@ -537,6 +570,8 @@ export default function ImportShows({
               <p className="text-xs text-gray-600 mb-4">
                 Imported ratings are private until you choose to share them.
                 {source === 'show-score' && ' Show Score scores convert to the nearest half-star.'}
+                {selectedDiary.filter(e => !e.sourceDate).length > 0 &&
+                  ` ${selectedDiary.filter(e => !e.sourceDate).length} of your reviews have no date — they'll land in a "No date" section where you can add one.`}
               </p>
 
               {/* Diary entries */}
