@@ -31,6 +31,21 @@
  *   "Auto-merge-base: <sha>" trailer stamped alongside it (a branch can carry
  *   more than one commit — reverting only the last one would silently leave
  *   earlier commits on main). Pushes, reopens the card.
+ *
+ * Tier-2 (Sprint 4, S4-T4): a data card's branch lives on a PRIVATE repo's
+ * origin (~broadway-scorecard-data or broadway-review-texts), never on this
+ * repo's — attemptDataCard() (scripts/autonomous-run.js) pushes there, not
+ * here. approve()/revert() detect this by fetching the branch's Notion
+ * evidence comment FIRST (before touching any git state) and checking for
+ * evidence.repoKey — set only by the Tier-2 executor
+ * (scripts/lib/autonomous-notion-evidence.js) — then delegate to
+ * approveDataCard()/revertDataCard() below, which clone the private repo
+ * fresh (REVIEW_TEXTS_TOKEN — the same PAT push-core-data/push-review-texts
+ * already use for both private repos) and run the identical
+ * rebase→gate→verify→ff-merge→push shape as the Tier-1 path, just scoped to
+ * that clone instead of this repo's checkout. review-texts merges dispatch
+ * "Rebuild Reviews (Fast)" afterward so the change actually reaches
+ * reviews.json/the live site.
  */
 
 'use strict';
@@ -42,10 +57,12 @@ const https = require('https');
 const { execFileSync, spawnSync } = require('child_process');
 
 const { transition } = require('./lib/autonomous-state.js');
-const { isDiffAllowed } = require('./lib/autonomous-eligibility.js');
+const { isDiffAllowed, isDataRepoDiffAllowed } = require('./lib/autonomous-eligibility.js');
 const { decideChecks, cardCheckArgv } = require('./lib/autonomous-run-core.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 const { latestEvidenceForBranch } = require('./lib/autonomous-notion-evidence.js');
+const { verifierArgvFor } = require('./lib/autonomous-data-verify.js');
+const { showIdsFromReviewTextsDiff } = require('./lib/autonomous-data-workdir.js');
 const {
   BASE_TRAILER_PREFIX, oscillationTrailerFor, stripTrailers, parseBaseTrailer, shouldEscalateOscillation,
   buildEscalationNote, buildMergeOutcomeNote, buildReverifyFailNote, buildRevertOutcomeNote,
@@ -68,8 +85,40 @@ function git(args, opts = {}) {
   return execFileSync('git', args, { cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts });
 }
 
-function gitOrNull(args) {
-  try { return git(args); } catch { return null; }
+function gitOrNull(args, opts = {}) {
+  try { return git(args, opts); } catch { return null; }
+}
+
+// Tier-2 (Sprint 4): a data card's branch lives on one of these private
+// repos' own origin, never this repo's. Same repoKey vocabulary as
+// scripts/lib/autonomous-eligibility.js DATA_CLASS_REPO.
+const DATA_REPO_URLS = {
+  'scorecard-data': 'https://github.com/thomaspryor/broadway-scorecard-data.git',
+  'review-texts': 'https://github.com/thomaspryor/broadway-review-texts.git',
+};
+
+// Fresh clone per merge attempt (no local-checkout reuse across CI runs) —
+// this is a one-shot workflow job, and a stale cached clone risks rebasing
+// against an out-of-date origin/main for a repo other workflows commit to
+// every ~30min. Mirrors the token-embed-in-remote-url pattern push-core-data
+// and mirror-data-to-gitlab.yml already use for these same two repos.
+function cloneDataRepo(repoKey, token) {
+  const url = DATA_REPO_URLS[repoKey];
+  if (!url) throw new Error(`cloneDataRepo: unknown repoKey "${repoKey}"`);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), `auto-merge-data-${repoKey}-`));
+  const authedUrl = url.replace('https://', `https://x-access-token:${token}@`);
+  execFileSync('git', ['clone', authedUrl, dir], { stdio: ['ignore', 'pipe', 'pipe'] });
+  git(['remote', 'set-url', 'origin', authedUrl], { cwd: dir });
+  return dir;
+}
+
+function dispatchRebuildFast(cardId) {
+  try {
+    execFileSync('gh', ['workflow', 'run', 'Rebuild Reviews (Fast)', '-f', `reason=autonomous data-card merge ${cardId}`], { stdio: ['ignore', 'pipe', 'pipe'] });
+    console.log('[merge] dispatched Rebuild Reviews (Fast)');
+  } catch (err) {
+    console.error(`[merge] WARN could not dispatch Rebuild Reviews (Fast): ${String(err.message).slice(0, 200)}`);
+  }
 }
 
 function notionBrain(args) {
@@ -183,10 +232,51 @@ function pushMain() {
   execFileSync('bash', [path.join(__dirname, 'lib', 'push-with-retry.sh'), '7', 'main'], { cwd: REPO, stdio: 'inherit' });
 }
 
-function countPriorMerges(cardId) {
+function countPriorMerges(cardId, cwd = REPO) {
   const trailer = oscillationTrailerFor(cardId);
-  return (gitOrNull(['log', '--fixed-strings', '--grep', trailer, '--format=%H', 'origin/main']) || '')
+  return (gitOrNull(['log', '--fixed-strings', '--grep', trailer, '--format=%H', 'origin/main'], { cwd }) || '')
     .trim().split('\n').filter(Boolean).length;
+}
+
+// Tier-2 mirror of verifyRebase(): rebases the ALREADY-CLONED private-repo
+// checkout onto its own origin/main, gates the rebased diff against
+// isDataRepoDiffAllowed, then runs the class's deterministic verifier(s)
+// (scripts/lib/autonomous-data-verify.js — NOT checkableDone; Tier-2 has no
+// LLM-authored check). Builds a scratch verification root shaped like this
+// repo's data/ layout (same contract attemptDataCard() already proved out —
+// see scripts/lib/autonomous-data-workdir.js), symlinked straight at `dir`
+// itself: no separate worktree layer needed since `dir` IS the candidate
+// tree post-rebase, unlike the executor's build-a-fresh-branch-off-main case.
+function verifyRebaseData(dir, repoKey, cls, evidence) {
+  try { git(['rebase', 'origin/main'], { cwd: dir }); }
+  catch (err) {
+    gitOrNull(['rebase', '--abort'], { cwd: dir });
+    return { ok: false, reason: `branch would not rebase cleanly onto ${repoKey}'s origin/main: ${String(err.message).slice(0, 300)}` };
+  }
+  const files = git(['diff', '--name-only', 'origin/main...HEAD'], { cwd: dir }).trim().split('\n').filter(Boolean);
+  if (!files.length) return { ok: false, reason: 'rebased diff is empty — nothing to merge' };
+  const gate = isDataRepoDiffAllowed(repoKey, files);
+  if (!gate.allowed) return { ok: false, reason: `rebased diff touches ineligible paths in ${repoKey}: ${gate.refused.join(', ')}` };
+
+  const scratchRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-merge-data-verify-'));
+  const dataDir = path.join(scratchRoot, 'data');
+  fs.mkdirSync(dataDir, { recursive: true });
+  if (repoKey === 'scorecard-data') fs.symlinkSync(path.join(dir, 'shows.json'), path.join(dataDir, 'shows.json'));
+  else fs.symlinkSync(dir, path.join(dataDir, 'review-texts'));
+
+  const showIds = repoKey === 'review-texts' ? showIdsFromReviewTextsDiff(files) : ((evidence && evidence.showIds) || []);
+  const verifiers = verifierArgvFor(cls, { dataDir, showIds });
+  if (!verifiers.length) return { ok: false, reason: `class "${cls}" has no verifier command for this diff (showIds: ${showIds.join(', ') || 'none'})` };
+
+  const env = checksEnv();
+  for (const v of verifiers) {
+    try {
+      execFileSync(v.argv[0], v.argv.slice(1), { cwd: scratchRoot, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8', env });
+    } catch (err) {
+      return { ok: false, reason: `${v.name}: ${String(err.stderr || err.stdout || err.message).slice(0, 400)}` };
+    }
+  }
+  return { ok: true, files, showIds };
 }
 
 // Rebase auto-merge-work onto the CURRENT origin/main, then re-run the full
@@ -216,6 +306,15 @@ async function approve(cardId, branch) {
     return;
   }
 
+  // Evidence is fetched FIRST, before any git state on THIS repo: a Tier-2
+  // (data card) branch was never pushed to Broadwayscore's origin, so
+  // `git fetch origin <branch>` below would fail for one. evidence.repoKey
+  // (stamped only by the Tier-2 executor) is the signal — a Tier-1 evidence
+  // comment or a missing one both leave repoKey null/absent.
+  const evidence = await fetchEvidenceForBranch(cardId, branch);
+  if (evidence && evidence.repoKey) return approveDataCard(cardId, branch, card, evidence);
+  if (!evidence) console.error('[merge] WARN no Notion evidence comment found for this branch — re-verifying with tsc + colocated tests only (no card-specific check)');
+
   // Oscillation breaker (S3-T2): git history on main, not the (Mac-local,
   // unreachable-from-CI) ledger — see scripts/lib/autonomous-merge-core.js.
   git(['fetch', 'origin', 'main']);
@@ -239,9 +338,6 @@ async function approve(cardId, branch) {
 
   git(['fetch', 'origin', branch]);
   git(['checkout', '-B', 'auto-merge-work', `origin/${branch}`]);
-
-  const evidence = await fetchEvidenceForBranch(cardId, branch);
-  if (!evidence) console.error('[merge] WARN no Notion evidence comment found for this branch — re-verifying with tsc + colocated tests only (no card-specific check)');
 
   for (let attempt = 1; attempt <= MAX_MERGE_ATTEMPTS; attempt++) {
     if (attempt > 1) {
@@ -292,6 +388,10 @@ async function revert(cardId, branch) {
     console.log(`[merge] card ${cardId} is Auto=${card.auto || 'none'}, not 'merged' — nothing to revert`);
     return;
   }
+
+  const evidence = await fetchEvidenceForBranch(cardId, branch);
+  if (evidence && evidence.repoKey) return revertDataCard(cardId, evidence);
+
   git(['fetch', 'origin', 'main']);
   const trailer = oscillationTrailerFor(cardId);
   const mergeSha = (gitOrNull(['log', '--fixed-strings', '--grep', trailer, '--format=%H', '-1', 'origin/main']) || '').trim();
@@ -330,6 +430,152 @@ async function revert(cardId, branch) {
   console.log(`[merge] REVERTED card ${cardId}: ${mergeSha} → ${revertSha}`);
 }
 
+// ── Tier-2 data-repo merge/revert (Sprint 4, S4-T4) ─────────────────────────
+//
+// Same rebase→gate→verify→ff-merge→push shape as approve()/revert() above,
+// scoped to a fresh clone of the private repo (`dir`) instead of this repo's
+// own checkout — see the module header comment for why a data card's branch
+// can't be fetched from THIS repo's origin.
+async function approveDataCard(cardId, branch, card, evidence) {
+  const repoKey = evidence.repoKey;
+  const cls = evidence.dataClass;
+  if (!repoKey || !DATA_REPO_URLS[repoKey]) {
+    transition('approved', 'merge.reverify-fail');
+    notionUpdate(cardId, ['--auto', 'needs-approval', '--outcome', buildReverifyFailNote(`evidence comment names an unrecognized data repoKey "${repoKey}"`)]);
+    console.error(`[merge] RE-VERIFY FAILED (data): unrecognized repoKey "${repoKey}"`);
+    process.exitCode = 1;
+    return;
+  }
+  const token = process.env.REVIEW_TEXTS_TOKEN;
+  if (!token) {
+    transition('approved', 'merge.reverify-fail');
+    notionUpdate(cardId, ['--auto', 'needs-approval', '--outcome', buildReverifyFailNote('REVIEW_TEXTS_TOKEN is not configured on this workflow — cannot reach the private data repo')]);
+    console.error('[merge] RE-VERIFY FAILED (data): REVIEW_TEXTS_TOKEN missing from env');
+    process.exitCode = 1;
+    return;
+  }
+
+  const dir = cloneDataRepo(repoKey, token);
+  git(['fetch', 'origin', 'main'], { cwd: dir });
+
+  // Oscillation breaker, scoped to the PRIVATE repo's own history — a
+  // data-card merge commit lands on scorecard-data/review-texts main, never
+  // on Broadwayscore's.
+  const trailer = oscillationTrailerFor(cardId);
+  const priorMerges = countPriorMerges(cardId, dir);
+  if (shouldEscalateOscillation(priorMerges)) {
+    transition('approved', 'merge.oscillation');
+    notionUpdate(cardId, ['--auto', 'failed', '--outcome', buildEscalationNote(cardId, priorMerges)]);
+    await sendEscalationEmail(`⚠️ Autonomous loop: "${card.name}" already merged ${priorMerges}x — refusing`, buildEscalationNote(cardId, priorMerges));
+    console.error(`[merge] OSCILLATION (data/${repoKey}): card ${cardId} already merged ${priorMerges} time(s) — refusing, escalated to owner`);
+    process.exitCode = 1;
+    return;
+  }
+
+  const reverifyFail = (reason) => {
+    transition('approved', 'merge.reverify-fail');
+    notionUpdate(cardId, ['--auto', 'needs-approval', '--outcome', buildReverifyFailNote(reason)]);
+    console.error(`[merge] RE-VERIFY FAILED (data/${repoKey}): ${reason}`);
+    process.exitCode = 1;
+  };
+
+  git(['fetch', 'origin', branch], { cwd: dir });
+  git(['checkout', '-B', 'auto-merge-work', `origin/${branch}`], { cwd: dir });
+
+  for (let attempt = 1; attempt <= MAX_MERGE_ATTEMPTS; attempt++) {
+    if (attempt > 1) {
+      git(['fetch', 'origin', 'main'], { cwd: dir });
+      git(['checkout', 'auto-merge-work'], { cwd: dir });
+    }
+    const verified = verifyRebaseData(dir, repoKey, cls, evidence);
+    if (!verified.ok) {
+      if (attempt === MAX_MERGE_ATTEMPTS) { reverifyFail(verified.reason); return; }
+      console.error(`[merge] attempt ${attempt} verify failed (data/${repoKey}, ${verified.reason.slice(0, 120)}) — retrying against fresh origin/main`);
+      continue;
+    }
+
+    const baseSha = git(['rev-parse', 'origin/main'], { cwd: dir }).trim();
+    const priorMsg = stripTrailers(git(['log', '-1', '--pretty=%B'], { cwd: dir }).trim(), trailer);
+    git(['commit', '--amend', '-m', `${priorMsg}\n\n${trailer}\n${BASE_TRAILER_PREFIX}${baseSha}`], { cwd: dir });
+    const sha = git(['rev-parse', 'HEAD'], { cwd: dir }).trim();
+
+    git(['checkout', 'main'], { cwd: dir });
+    git(['reset', '--hard', 'origin/main'], { cwd: dir });
+    try {
+      git(['merge', '--ff-only', 'auto-merge-work'], { cwd: dir });
+    } catch {
+      if (attempt === MAX_MERGE_ATTEMPTS) {
+        reverifyFail(`${repoKey}'s main advanced repeatedly during the merge window and a clean fast-forward was not possible after retrying`);
+        return;
+      }
+      console.error(`[merge] attempt ${attempt} fast-forward lost a race against ${repoKey}'s origin/main — retrying`);
+      git(['checkout', 'auto-merge-work'], { cwd: dir });
+      continue;
+    }
+
+    try {
+      git(['push', 'origin', 'main'], { cwd: dir });
+    } catch (err) {
+      if (attempt === MAX_MERGE_ATTEMPTS) { reverifyFail(`push to ${repoKey} failed after a clean fast-forward merge: ${String(err.message).slice(0, 300)}`); return; }
+      console.error(`[merge] attempt ${attempt} push race on ${repoKey} — retrying`);
+      git(['checkout', 'auto-merge-work'], { cwd: dir });
+      continue;
+    }
+
+    transition('approved', 'merge.success');
+    notionUpdate(cardId, ['--auto', 'merged', '--status', 'Done', '--outcome', buildMergeOutcomeNote({ sha, branch, files: verified.files })]);
+    console.log(`[merge] MERGED card ${cardId} (${sha}) from ${branch} → ${repoKey}`);
+    if (repoKey === 'review-texts') dispatchRebuildFast(cardId);
+    return;
+  }
+}
+
+async function revertDataCard(cardId, evidence) {
+  const repoKey = evidence.repoKey;
+  const token = process.env.REVIEW_TEXTS_TOKEN;
+  if (!repoKey || !DATA_REPO_URLS[repoKey] || !token) {
+    console.error(`[merge] REVERT FAILED (data): missing REVIEW_TEXTS_TOKEN or unrecognized repoKey "${repoKey}"`);
+    process.exitCode = 1;
+    return;
+  }
+
+  const dir = cloneDataRepo(repoKey, token);
+  git(['fetch', 'origin', 'main'], { cwd: dir });
+  const trailer = oscillationTrailerFor(cardId);
+  const mergeSha = (gitOrNull(['log', '--fixed-strings', '--grep', trailer, '--format=%H', '-1', 'origin/main'], { cwd: dir }) || '').trim();
+  if (!mergeSha) {
+    console.error(`[merge] REVERT FAILED (data/${repoKey}): no commit on origin/main carries "${trailer}" — cannot safely locate the merge to revert`);
+    process.exitCode = 1;
+    return;
+  }
+  const mergeMsg = git(['log', '-1', '--format=%B', mergeSha], { cwd: dir });
+  const baseSha = parseBaseTrailer(mergeMsg);
+
+  git(['checkout', 'main'], { cwd: dir });
+  git(['reset', '--hard', 'origin/main'], { cwd: dir });
+  let revertSha;
+  try {
+    if (baseSha && gitOrNull(['cat-file', '-e', baseSha], { cwd: dir })) {
+      git(['revert', '--no-commit', `${baseSha}..${mergeSha}`], { cwd: dir });
+      git(['commit', '-m', `Revert autonomous merge for card ${cardId} (${baseSha.slice(0, 7)}..${mergeSha.slice(0, 7)})`], { cwd: dir });
+    } else {
+      console.error(`[merge] WARN no valid Auto-merge-base trailer found on ${mergeSha} (data/${repoKey}) — falling back to single-commit revert`);
+      git(['revert', '--no-edit', mergeSha], { cwd: dir });
+    }
+    revertSha = git(['rev-parse', 'HEAD'], { cwd: dir }).trim();
+  } catch (err) {
+    gitOrNull(['revert', '--abort'], { cwd: dir });
+    console.error(`[merge] REVERT FAILED (data/${repoKey}): reverting ${mergeSha} conflicted: ${String(err.message).slice(0, 300)}`);
+    process.exitCode = 1;
+    return;
+  }
+  git(['push', 'origin', 'main'], { cwd: dir });
+  transition('merged', 'tap.revert');
+  notionUpdate(cardId, ['--auto', 'reverted', '--status', 'Not started', '--outcome', buildRevertOutcomeNote({ revertSha, mergeSha })]);
+  console.log(`[merge] REVERTED card ${cardId} (data/${repoKey}): ${mergeSha} → ${revertSha}`);
+  if (repoKey === 'review-texts') dispatchRebuildFast(cardId);
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const cardId = args.card;
@@ -347,4 +593,7 @@ if (require.main === module) {
   main().catch(err => { console.error(`[merge] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { approve, revert, verifyRebase, countPriorMerges, runChecks };
+module.exports = {
+  approve, revert, verifyRebase, countPriorMerges, runChecks,
+  approveDataCard, revertDataCard, verifyRebaseData, cloneDataRepo, dispatchRebuildFast, DATA_REPO_URLS,
+};
