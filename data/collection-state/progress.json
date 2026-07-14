@@ -1,18 +1,37 @@
 {
   "processed": [
-    "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
+    "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
+    "the-whoopi-monologues-off-broadway-2026/nytg--unknown.json",
+    "the-whoopi-monologues-off-broadway-2026/cititour--unknown.json",
+    "the-whoopi-monologues-off-broadway-2026/broadwayworld--unknown.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+    "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json",
+    "allegra-west-end-2026/whatsonstage--aliya-al.json"
   ],
-  "failed": [],
+  "failed": [
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "tender-off-west-end-2026/guardian--arifa-akbar.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-whoopi-monologues-off-broadway-2026/nytg--unknown.json",
+      "the-whoopi-monologues-off-broadway-2026/broadwayworld--unknown.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+      "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json",
+      "allegra-west-end-2026/whatsonstage--aliya-al.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-whoopi-monologues-off-broadway-2026/wsj--unknown.json",
       "the-whoopi-monologues-off-broadway-2026/wsj--unknown.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-whoopi-monologues-off-broadway-2026/cititour--unknown.json"
+    ],
     "brightdata": [
       "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
     ],
@@ -20,6 +39,6 @@
     "archive": []
   },
   "startTime": "2026-07-14T09:49:09.110Z",
-  "lastProcessed": "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
+  "lastProcessed": "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
   "log": []
 }
