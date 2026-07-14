@@ -109,6 +109,12 @@ function cloneDataRepo(repoKey, token) {
   const authedUrl = url.replace('https://', `https://x-access-token:${token}@`);
   execFileSync('git', ['clone', authedUrl, dir], { stdio: ['ignore', 'pipe', 'pipe'] });
   git(['remote', 'set-url', 'origin', authedUrl], { cwd: dir });
+  // A fresh clone has no committer identity — `git rebase` needs one even on
+  // a clean fast-forward replay (no conflicts), unlike a plain checkout.
+  // Caught live-fire (2026-07-14): the first real dispatch failed re-verify
+  // with "Committer identity unknown" before ever reaching the merge step.
+  git(['config', 'user.name', 'github-actions[bot]'], { cwd: dir });
+  git(['config', 'user.email', 'github-actions[bot]@users.noreply.github.com'], { cwd: dir });
   return dir;
 }
 
