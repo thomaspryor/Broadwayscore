@@ -13,7 +13,7 @@ interface StarRatingProps {
 }
 
 const SIZE_MAP = {
-  xs: { star: 14, gap: 1 },
+  xs: { star: 16, gap: 2 },
   sm: { star: 20, gap: 2 },
   md: { star: 28, gap: 3 },
   lg: { star: 40, gap: 4 },
@@ -143,7 +143,12 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
             key={starIndex}
             type="button"
             disabled={readOnly}
-            className={`relative rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 ${readOnly ? 'cursor-default' : 'cursor-pointer'}`}
+            className={`relative rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 ${readOnly ? 'cursor-default' : 'cursor-pointer'} ${
+              // Hover-rate stars (xs) render tiny on poster overlays — the visible glyph stays
+              // small on purpose, but the click/tap target expands via an invisible pseudo-element
+              // into the surrounding gap/padding, which has room to spare on the poster.
+              size === 'xs' ? "before:content-[''] before:absolute before:-inset-3" : ''
+            }`}
             style={{ width: starSize, height: starSize }}
             onMouseMove={readOnly ? undefined : e => handleMouseMove(e, starIndex)}
             onClick={readOnly ? undefined : e => handleClick(e, starIndex)}
