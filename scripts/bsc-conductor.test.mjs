@@ -64,6 +64,25 @@ test('runOrientationSweep: a failing sub-command degrades to a labeled message, 
   assert.equal(sweep.nextList, 'ok'); // unrelated fields unaffected
 });
 
+// ship-check P1: execFileSync's real Error.message shape is
+// "Command failed: <cmd>\n<actual stderr>" — the diagnostic text is on line 2+,
+// not line 1. A naive split('\n')[0] discarded exactly the useful part and left
+// the seed prompt unable to distinguish a real failure from "nothing to report".
+test('runOrientationSweep: execFileSync-shaped errors keep the real stderr, not the command echo', () => {
+  const runFn = () => {
+    throw new Error("Command failed: node scripts/bsc-next.js --list\n[bsc-next] shared task list 'x' is empty.\n");
+  };
+  const sweep = runOrientationSweep(runFn, { cmuxAvailableFn: () => false });
+  assert.doesNotMatch(sweep.nextList, /^\(bsc-next --list failed: Command failed/);
+  assert.match(sweep.nextList, /shared task list 'x' is empty/);
+});
+
+test('runOrientationSweep: a plain (non-execFileSync-shaped) error message passes through unchanged', () => {
+  const runFn = () => { throw new Error('ENOENT: no such file'); };
+  const sweep = runOrientationSweep(runFn, { cmuxAvailableFn: () => false });
+  assert.match(sweep.nextList, /bsc-next --list failed: ENOENT: no such file/);
+});
+
 const SAMPLE_SWEEP = {
   nextList: '1. #7 [pending] [sonnet] Fix thing',
   ledgerTail: '{"event":"run-end"}',

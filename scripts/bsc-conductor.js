@@ -63,8 +63,16 @@ function formatWorkspaces(list) {
 // runFn(cmd, args) -> stdout string | throws. Isolated so callers can stub it.
 function runOrientationSweep(runFn, opts = {}) {
   const repo = opts.repo || REPO;
+  // execFileSync's Error.message is "Command failed: <cmd>\n<real stderr>" — the
+  // diagnostic text that actually matters is on line 2+, not the command echo on
+  // line 1. Dropping only that leading line (instead of taking line 1) keeps the
+  // real failure reason in the seed prompt so the conductor session can tell a
+  // genuine problem apart from "nothing to report" (ship-check finding).
   const safe = (label, fn) => {
-    try { return fn(); } catch (e) { return `(${label} failed: ${e.message.split('\n')[0]})`; }
+    try { return fn(); } catch (e) {
+      const detail = e.message.replace(/^Command failed:[^\n]*\n?/, '').trim() || e.message;
+      return `(${label} failed: ${detail.slice(0, 500)})`;
+    }
   };
   const nextList = safe('bsc-next --list', () => runFn('node', ['scripts/bsc-next.js', '--list']));
   const ledgerTail = safe('ledger tail', () =>
@@ -113,8 +121,9 @@ function buildSeed(sweep, fetchedAt) {
     `bsc-conductor: fresh orchestrator session —`,
     ``,
     `You are the conductor. Your job is dispatch, forensics, and cross-session judgment — not implementation. ` +
-    `Everything below was fetched live at ${fetchedAt} by bsc-conductor.js itself (no tool calls spent gathering ` +
-    `it) so you can report an accurate state-of-the-world in your first message.`,
+    `Everything below was gathered by bsc-conductor.js itself just before this session opened (finished ${fetchedAt}, ` +
+    `no tool calls spent gathering it) — each section came from its own quick command a moment apart, not one atomic ` +
+    `snapshot, so treat anything time-sensitive (cmux workspace state, in-flight dispatches) as approximate.`,
     ``,
     `## Top actionable tasks (bsc-next --list)`,
     sweep.nextList,
