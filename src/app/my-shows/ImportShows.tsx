@@ -33,6 +33,9 @@ interface MatchedEntry {
   match: SearchShow | null;
   matchScore: number;
   selected: boolean;
+  /** Matched show already has a rating/watchlist row in this account —
+   *  deselected by default and labeled so the skip is self-explanatory. */
+  alreadyOwned: boolean;
   type: 'diary' | 'watchlist';
   listName?: string;
 }
@@ -186,6 +189,7 @@ export default function ImportShows({
         match,
         matchScore: score,
         selected: !!match && score > 0.7 && !alreadyReviewed,
+        alreadyOwned: alreadyReviewed,
         type: 'diary',
       });
       if (showId) diaryShowIds.add(showId);
@@ -212,6 +216,7 @@ export default function ImportShows({
         match,
         matchScore: score,
         selected: !!match && score > 0.7 && autoSelect,
+        alreadyOwned: alreadyWatchlisted || (raw.fromDiary ? alreadyReviewed : alreadyInDiary),
         type: 'watchlist',
         listName: raw.listName,
       });
@@ -256,6 +261,10 @@ export default function ImportShows({
   const unmatchedDiary = useMemo(() => diaryEntries.filter(e => !e.match || e.matchScore <= 0.7).length, [diaryEntries]);
   const unmatchedWatchlist = useMemo(() => watchlistEntries.filter(e => !e.match || e.matchScore <= 0.7).length, [watchlistEntries]);
   const unmatchedCount = unmatchedDiary + unmatchedWatchlist;
+  const alreadyOwnedCount = useMemo(
+    () => entries.filter(e => e.alreadyOwned && e.match && e.matchScore > 0.7).length,
+    [entries],
+  );
 
   const toggleEntry = (index: number) => {
     setEntries(prev => prev.map((e, i) => i === index ? { ...e, selected: !e.selected } : e));
@@ -445,11 +454,13 @@ export default function ImportShows({
           {/* Preview step */}
           {step === 'preview' && (
             <div>
-              {/* Summary */}
-              <div className="flex items-center gap-4 text-sm mb-2">
-                <span className="text-green-400">{selectedDiary.length} diary entries</span>
-                {watchlistEntries.length > 0 && <span className="text-blue-400">{selectedWatchlist.length} watchlist</span>}
-                {unmatchedCount > 0 && <span className="text-yellow-400">{unmatchedCount} unmatched</span>}
+              {/* Summary — spell out what will happen so the user never has to
+                  reconcile the counts themselves (owner confusion, 2026-07-13:
+                  "is it adding 37 shows, or 8?"). */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm mb-2">
+                <span className="text-green-400">{selectedDiary.length + selectedWatchlist.length} selected to import</span>
+                {alreadyOwnedCount > 0 && <span className="text-gray-400">{alreadyOwnedCount} skipped — already in your shows</span>}
+                {unmatchedCount > 0 && <span className="text-yellow-400">{unmatchedCount} not on Broadway Scorecard</span>}
               </div>
               {notices.map((n, i) => (
                 <p key={i} className="text-xs text-yellow-500 mb-1">{n}</p>
@@ -463,7 +474,7 @@ export default function ImportShows({
               {diaryEntries.length > 0 && (
                 <div className="mb-4">
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                    Diary ({selectedDiary.length}/{diaryEntries.length})
+                    Diary — {selectedDiary.length} of {diaryEntries.length} selected
                   </h4>
                   <div className="space-y-1 max-h-48 overflow-y-auto">
                     {diaryEntries.map((entry, i) => (
@@ -477,7 +488,7 @@ export default function ImportShows({
               {watchlistEntries.length > 0 && (
                 <div className="mb-4">
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                    Watchlist ({selectedWatchlist.length}/{watchlistEntries.length})
+                    Watchlist — {selectedWatchlist.length} of {watchlistEntries.length} selected
                   </h4>
                   <div className="space-y-1 max-h-32 overflow-y-auto">
                     {watchlistEntries.map((entry, i) => {
@@ -565,9 +576,14 @@ function ImportEntryRow({ entry, index, onToggle }: { entry: MatchedEntry; index
           ) : null}
         </div>
         {entry.match && !noMatch ? (
-          <div className="text-xs text-gray-500 truncate">→ {entry.match.title}</div>
+          <div className="text-xs text-gray-500 truncate">
+            → {entry.match.title}
+            {entry.alreadyOwned && (
+              <span className="text-gray-600"> · already in your shows{entry.selected ? ' — will add another viewing' : ''}</span>
+            )}
+          </div>
         ) : (
-          <div className="text-xs text-yellow-500">No match found</div>
+          <div className="text-xs text-yellow-500">Not on Broadway Scorecard</div>
         )}
       </div>
       {entry.listName && (
