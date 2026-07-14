@@ -32,6 +32,14 @@ on:
 permissions:
   contents: write
 
+# Serialize with update-show-status/enrich-off-broadway-dates on the shared
+# shows.json writer group — this workflow read-mutate-writes shows.json, and
+# widening scheduled runs to open,previews,upcoming,announced (2026-07-14)
+# increases overlap with the daily status writer.
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
 jobs:
   enrich-dates:
     runs-on: ubuntu-latest
@@ -79,10 +87,13 @@ jobs:
             FLAGS="$FLAGS --missing-only"
           fi
 
-          # Scheduled runs: only enrich open/previews shows (skip 700+ closed shows)
+          # Scheduled runs: enrich active + pipeline shows (skip 700+ closed shows).
+          # announced/upcoming/previews included 2026-07-14: announced Broadway
+          # shows (e.g. Dolly) never got date backfill, so update-show-status.js
+          # Check 2e could never promote them out of 'announced'.
           STATUS="${{ inputs.status || '' }}"
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            FLAGS="$FLAGS --status=open"
+            FLAGS="$FLAGS --status=open,previews,upcoming,announced"
           elif [ -n "$STATUS" ] && [ "$STATUS" != "all" ]; then
             FLAGS="$FLAGS --status=$STATUS"
           fi

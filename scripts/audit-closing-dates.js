@@ -475,7 +475,9 @@ async function main() {
     // the ±7d schedule check.
     const byUrgency = ambiguous
       .filter(a => a.action === 'NEEDS_HUMAN_REVIEW' || a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' || a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW')
-      .sort((a, b) => new Date(a.stored) - new Date(b.stored))
+      // stored=null (no-closingDate possibly-closed rows) sorts LAST, not as
+      // epoch-0 first — genuine stored-close retractions are the urgent ones.
+      .sort((a, b) => (a.stored ? new Date(a.stored).getTime() : Infinity) - (b.stored ? new Date(b.stored).getTime() : Infinity))
       .slice(0, MAX_TRIPLE_SIGNAL_ATTEMPTS);
     console.log(`\nTriple-signal auto-fix: attempting ${byUrgency.length} ambiguous show(s)`);
     for (const a of byUrgency) {
