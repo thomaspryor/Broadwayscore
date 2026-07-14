@@ -22,6 +22,7 @@ const { execSync } = require('child_process');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveOutletFromUrl } = require('./lib/review-normalization');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
+const { execErrorDetail } = require('./lib/exec-error-detail');
 
 // Parse CLI args
 const args = process.argv.slice(2);
@@ -242,14 +243,14 @@ async function main() {
         try {
           execSync(`git -C "${reviewTextsDir}" pull --rebase --autostash origin main`, { stdio: 'pipe' });
         } catch (rebaseErr) {
-          console.log(`  ⚠️  Pull-rebase failed: ${rebaseErr.message.split('\n')[0]}`);
+          console.log(`  ⚠️  Pull-rebase failed: ${execErrorDetail(rebaseErr)}`);
           console.log('  Attempting push anyway; if it fails resolve manually.');
         }
         execSync(`git -C "${reviewTextsDir}" push origin main`, { stdio: 'pipe' });
         console.log(`  ✓ Pushed ${newReviews} review-text file(s) to private repo`);
       }
     } catch (e) {
-      console.log(`  ⚠️  Push to review-texts failed: ${e.message.split('\n')[0]}`);
+      console.log(`  ⚠️  Push to review-texts failed: ${execErrorDetail(e)}`);
       console.log('  The CI workflows below will not see the new files.');
       console.log('  Fix: cd data/review-texts && git status, resolve, then push manually.');
     }
