@@ -593,21 +593,28 @@ jobs:
 
             # Stranded-scores gap (Notion 39d637c5-416f-81039, 2026-07-14, run
             # 29366309506): "skip if active" assumes the active run will pick up
-            # our scores. It won't if it was DISPATCHED before this job pushed
-            # them — workflow_dispatch/schedule checkout uses the ref at
-            # DISPATCH time, not at execution time, so an already-queued run
-            # can't contain a commit that didn't exist yet. Without this check
-            # the scores sat stranded until the 4-hourly rebuild-fast safety-net
-            # cron (up to 4h on opening night). Only matters if we actually
-            # scored something this run (has_scored_reviews) — otherwise there's
-            # nothing to strand. Compare the oldest active run's createdAt
-            # against the score-push-time step's timestamp (captured AFTER the
-            # push attempt, not the local commit time — push-review-texts can
-            # retry for tens of seconds before landing, so commit time would
-            # wrongly clear a run dispatched in that gap); if uncertain,
-            # dispatch anyway (fail safe). rebuild-fast.yml has PER-RUN
-            # concurrency so this can never collide with the in-flight
-            # rebuild-reviews run.
+            # our scores. It won't if that run's "Checkout review-texts" step
+            # already executed before this job's push landed — rebuild-reviews.yml
+            # uses `ref: main` (a live branch ref, re-resolved when the checkout
+            # STEP runs, not frozen at dispatch time), so a merely QUEUED/WAITING
+            # run will actually self-heal once it starts. Only a genuinely
+            # RUNNING run (checkout already behind it) can be stuck stale — which
+            # is exactly what the incident run was ("1 running"). We can't query
+            # "has checkout run yet" via `gh run list`, so createdAt is a safe
+            # proxy: an active run created before the push is treated as
+            # possibly-stale and gets the supplement — a false positive here
+            # (a QUEUED run that would've self-healed) just costs one harmless
+            # extra rebuild-fast.yml dispatch. Without this check the scores sat
+            # stranded until the 4-hourly rebuild-fast safety-net cron (up to 4h
+            # on opening night). Only matters if we actually scored something
+            # this run (has_scored_reviews) — otherwise there's nothing to
+            # strand. Compare the oldest active run's createdAt against the
+            # score-push-time step's timestamp (captured AFTER the push attempt,
+            # not the local commit time — push-review-texts can retry for tens
+            # of seconds before landing, so commit time would wrongly clear a
+            # run dispatched in that gap); if uncertain, dispatch anyway (fail
+            # safe). rebuild-fast.yml has PER-RUN concurrency so this can never
+            # collide with the in-flight rebuild-reviews run.
             if [ "${{ steps.check-changes.outputs.has_scored_reviews }}" = "true" ]; then
               SCORE_COMMIT_TIME="${{ steps.score-push-time.outputs.timestamp }}"
               OLDEST_RUNNING=$(gh run list --workflow="$REBUILD_WF" --status=in_progress --json createdAt --jq 'sort_by(.createdAt) | .[0].createdAt // empty' 2>/dev/null || echo "")
