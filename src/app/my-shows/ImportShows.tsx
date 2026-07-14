@@ -7,7 +7,9 @@ import { Modal, ModalCloseButton } from '@/components/show-cards';
 import {
   acquireFromMezzanine,
   acquireFromShowScore,
+  mergeDiaryShows,
   type ImportAcquireResult,
+  type RawImportEntry,
 } from '@/lib/show-import';
 
 // Our search-shows.json shape (also covers diary-search.json grouped entries)
@@ -24,6 +26,8 @@ interface SearchShow {
   /** Opening/closing dates (YYYY-MM-DD) for date-aware matching. */
   od?: string;
   cd?: string;
+  /** True for diary-only (unscored) catalog entries — see mergeDiaryShows. */
+  dy?: boolean;
 }
 
 interface MatchedEntry {
@@ -82,43 +86,13 @@ export default function ImportShows({
       fetch('/data/diary-search.json').catch(() => null),
       import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
     ]);
-    const data: SearchShow[] = await res.json();
+    let data: SearchShow[] = await res.json();
     // Merge diary shows — expand multi-prod groups into individual entries and add
     // diary entries with distinct venues for venue-aware import matching.
     if (diaryRes?.ok) {
       try {
         const diaryData: SearchShow[] = await diaryRes.json();
-        const existingVenues = new Map<string, Set<string>>();
-        for (const s of data) {
-          const key = s.title.toLowerCase();
-          if (!existingVenues.has(key)) existingVenues.set(key, new Set());
-          if (s.venue) existingVenues.get(key)!.add(s.venue.toLowerCase());
-        }
-        for (const s of diaryData) {
-          const titleLower = s.title.toLowerCase();
-          // Expand multi-prod groups into individual entries with venues
-          if (s.prods) {
-            for (const p of s.prods) {
-              const venue = p.v || '';
-              if (venue && !(existingVenues.get(titleLower)?.has(venue.toLowerCase()))) {
-                data.push({ id: p.id, title: s.title, slug: p.id, status: s.status || 'closed', venue, category: p.cat });
-                if (!existingVenues.has(titleLower)) existingVenues.set(titleLower, new Set());
-                existingVenues.get(titleLower)!.add(venue.toLowerCase());
-              }
-            }
-            continue;
-          }
-          const existingSet = existingVenues.get(titleLower);
-          // Skip if no venue to differentiate, and title already exists
-          if (!s.venue && existingSet) continue;
-          // Skip if same venue already in data
-          if (s.venue && existingSet?.has(s.venue.toLowerCase())) continue;
-          data.push(s);
-          if (s.venue) {
-            if (!existingVenues.has(titleLower)) existingVenues.set(titleLower, new Set());
-            existingVenues.get(titleLower)!.add(s.venue.toLowerCase());
-          }
-        }
+        data = mergeDiaryShows(data, diaryData);
       } catch { /* ignore parse errors */ }
     }
     showsRef.current = data;
@@ -249,10 +223,15 @@ export default function ImportShows({
 
   /** Match raw source entries against our catalog and apply selection
    *  defaults (auto-select confident matches not already in the account). */
-  const matchAndPreview = useCallback(async (acquired: ImportAcquireResult) => {
+  const matchAndPreview = useCallback(async (acquired: ImportAcquireResult, sourceId: ImportSourceId) => {
     await ensureSearchData();
     const matched: MatchedEntry[] = [];
     const diaryShowIds = new Set<string>();
+    // Self-heal loop (Notion 39d637c5): every row that doesn't confidently
+    // match gets logged so the nightly resolver can look it up on Mezzanine
+    // and grow diary-shows.json — the catalog fixes itself instead of
+    // staying frozen at its snapshot date. Best-effort: never blocks import.
+    const unmatchedRows: { raw: RawImportEntry; matchScore: number; dateSuspect: boolean }[] = [];
 
     for (const raw of acquired.entries.filter(e => e.kind === 'diary')) {
       const { match, score, dateSuspect } = matchShow(raw.title, raw.venue || undefined, raw.date);
@@ -272,6 +251,7 @@ export default function ImportShows({
         type: 'diary',
       });
       if (showId) diaryShowIds.add(showId);
+      if (!match || (score <= 0.7 && !dateSuspect)) unmatchedRows.push({ raw, matchScore: score, dateSuspect });
     }
 
     for (const raw of acquired.entries.filter(e => e.kind === 'watchlist')) {
@@ -300,12 +280,25 @@ export default function ImportShows({
         type: 'watchlist',
         listName: raw.listName,
       });
+      if (!match || (score <= 0.7 && !dateSuspect)) unmatchedRows.push({ raw, matchScore: score, dateSuspect });
     }
 
     setEntries(matched);
     setNotices(acquired.notices);
     setStep('preview');
-  }, [ensureSearchData, matchShow, existingReviewShowIds, existingWatchlistShowIds]);
+
+    // Fire-and-forget: don't await, don't block the preview step on this.
+    for (const { raw } of unmatchedRows) {
+      supabaseRestInsert('unmatched_imports', {
+        user_id: userId,
+        source: sourceId,
+        title: raw.title,
+        venue: raw.venue,
+        date_seen: raw.date,
+        mezz_show_id: raw.mezzShowId || null,
+      }).catch(() => {}); // best-effort logging — an insert failure must never surface to the user
+    }
+  }, [ensureSearchData, matchShow, existingReviewShowIds, existingWatchlistShowIds, userId]);
 
   const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -316,7 +309,7 @@ export default function ImportShows({
     setStep('matching');
     setError(null);
     try {
-      await matchAndPreview(await acquireFromMezzanine(file));
+      await matchAndPreview(await acquireFromMezzanine(file), 'mezzanine');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to parse file');
       setStep('source');
@@ -327,7 +320,7 @@ export default function ImportShows({
     setStep('matching');
     setError(null);
     try {
-      await matchAndPreview(await acquireFromShowScore(profileInput));
+      await matchAndPreview(await acquireFromShowScore(profileInput), 'show-score');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Import failed — try again.');
       setStep('source');

@@ -2,8 +2,13 @@ name: Update Mezzanine Data
 
 on:
   schedule:
-    # Weekly on Sundays at 1 PM UTC (8 AM EST), after Show Score at 12 PM
+    # Weekly on Sundays at 1 PM UTC (8 AM EST), after Show Score at 12 PM —
+    # audience score refresh for scored (shows.json) Broadway productions.
     - cron: '0 13 * * 0'
+    # Nightly at 8:30 AM UTC — self-heal loop (Notion 39d637c5): resolve
+    # unmatched_imports rows logged by the My Shows import modal against
+    # Mezzanine and grow diary-shows.json.
+    - cron: '30 8 * * *'
   workflow_dispatch:
     inputs:
       show:
@@ -24,6 +29,16 @@ on:
         required: false
         type: boolean
         default: false
+      run_resolver:
+        description: 'Run the unmatched-imports resolver instead of the audience scraper'
+        required: false
+        type: boolean
+        default: false
+      run_catalog_refresh:
+        description: 'Run the weekly diary-shows.json catalog delta refresh instead of the audience scraper'
+        required: false
+        type: boolean
+        default: false
   # Also trigger when new shows open
   repository_dispatch:
     types: [show-opened]
@@ -40,6 +55,13 @@ permissions:
 
 jobs:
   scrape-mezzanine:
+    # Only the weekly cron (audience refresh), manual dispatch (unless it's
+    # targeting one of the other two jobs), or a show-opened dispatch — never
+    # the nightly resolver cron.
+    if: |
+      (github.event_name == 'schedule' && github.event.schedule == '0 13 * * 0') ||
+      github.event_name == 'repository_dispatch' ||
+      (github.event_name == 'workflow_dispatch' && inputs.run_resolver != true && inputs.run_catalog_refresh != true)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -176,6 +198,243 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Update Mezzanine Data Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+  resolve-unmatched-imports:
+    # Nightly self-heal loop (Notion 39d637c5): grows diary-shows.json from
+    # rows the My Shows import modal couldn't confidently match.
+    if: |
+      (github.event_name == 'schedule' && github.event.schedule == '30 8 * * *') ||
+      (github.event_name == 'workflow_dispatch' && inputs.run_resolver == true)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Run unmatched-imports resolver
+        id: resolve
+        env:
+          MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
+          MEZZANINE_SESSION_TOKEN: ${{ secrets.MEZZANINE_SESSION_TOKEN }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set +e
+          node scripts/resolve-unmatched-imports.js --verbose
+          rc=$?
+          set -e
+          if [ "$rc" = "2" ]; then
+            echo "failure_mode=auth" >> "$GITHUB_OUTPUT"
+          elif [ "$rc" != "0" ]; then
+            echo "failure_mode=transient" >> "$GITHUB_OUTPUT"
+          fi
+          exit $rc
+
+      - name: Send alert on auth failure
+        if: failure() && steps.resolve.outputs.failure_mode == 'auth'
+        uses: actions/github-script@v7
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        with:
+          script: |
+            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await sendAlert({
+              title: 'Unmatched Imports Resolver Failed — Mezzanine Session Token Expired',
+              description: 'The nightly self-heal resolver failed with an authentication error (401/403). **The session token has expired.** Re-intercept the Mezzanine iOS app via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.',
+              severity: 'error',
+              email: true,
+              fields: [{ name: 'Run', value: `[View logs](${runUrl})` }],
+              url: runUrl,
+            }).catch((e) => console.error('Alert notification failed:', e.message));
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: resolve unmatched imports (nightly self-heal)'
+
+      - name: Regenerate diary search/lookup data
+        if: always()
+        run: node scripts/generate-diary-data.js
+
+      - name: Commit + push regenerated diary data
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/stage-data-changes.sh public/data/diary-search.json public/data/diary-lookup.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "data: regenerate diary search/lookup data"
+          if bash scripts/lib/push-with-retry.sh; then
+            exit 0
+          else
+            echo "Failed to push after 5 attempts"
+            exit 1
+          fi
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Unmatched Imports Resolver Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+  refresh-mezzanine-catalog:
+    # Weekly delta refresh (Notion 39d637c5 Part 2): catches shows that get
+    # their first Mezzanine rating without waiting for a user import to
+    # surface them via the resolver above.
+    #
+    # needs: scrape-mezzanine + if: always() serializes this AFTER that job
+    # instead of running in parallel — both jobs load/mutate/rewrite the full
+    # data/diary-shows.json array independently via checkout-core-data +
+    # push-core-data, and without serialization they'd race on the same
+    # Sunday run (ship-check finding, ranked alongside the pre-existing #52
+    # push-core-data reconciliation gap this doesn't fix but shouldn't add to).
+    needs: scrape-mezzanine
+    if: |
+      always() && (
+        (github.event_name == 'schedule' && github.event.schedule == '0 13 * * 0') ||
+        (github.event_name == 'workflow_dispatch' && inputs.run_catalog_refresh == true)
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Run weekly catalog refresh
+        id: refresh
+        env:
+          MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
+          MEZZANINE_SESSION_TOKEN: ${{ secrets.MEZZANINE_SESSION_TOKEN }}
+        run: |
+          set +e
+          node scripts/refresh-mezzanine-catalog.js --verbose
+          rc=$?
+          set -e
+          if [ "$rc" = "2" ]; then
+            echo "failure_mode=auth" >> "$GITHUB_OUTPUT"
+          fi
+          exit $rc
+
+      - name: Send alert on auth failure
+        if: failure() && steps.refresh.outputs.failure_mode == 'auth'
+        uses: actions/github-script@v7
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        with:
+          script: |
+            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await sendAlert({
+              title: 'Mezzanine Catalog Refresh Failed — Session Token Expired',
+              description: 'The weekly diary-shows.json delta refresh failed with an authentication error (401/403). **The session token has expired.** Re-intercept the Mezzanine iOS app via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.',
+              severity: 'error',
+              email: true,
+              fields: [{ name: 'Run', value: `[View logs](${runUrl})` }],
+              url: runUrl,
+            }).catch((e) => console.error('Alert notification failed:', e.message));
+
+      - name: Push core data to private repo
+        id: push_core_data
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: weekly Mezzanine catalog refresh'
+
+      - name: Commit and push watermark
+        # Gated on the PRIVATE diary-shows.json push actually succeeding, not
+        # always() -- the watermark is what tells next week's run "everything
+        # up to here is already in the catalog." Advancing it after a failed
+        # private push would silently skip those productions forever with no
+        # visible symptom (ship-check finding).
+        if: steps.push_core_data.outcome == 'success'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/stage-data-changes.sh data/audit/mezzanine-catalog-watermark.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "data: advance Mezzanine catalog refresh watermark"
+          if bash scripts/lib/push-with-retry.sh; then
+            exit 0
+          else
+            echo "Failed to push after 5 attempts"
+            exit 1
+          fi
+
+      - name: Regenerate diary search/lookup data
+        if: always()
+        run: node scripts/generate-diary-data.js
+
+      - name: Commit + push regenerated diary data
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/stage-data-changes.sh public/data/diary-search.json public/data/diary-lookup.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "data: regenerate diary search/lookup data"
+          if bash scripts/lib/push-with-retry.sh; then
+            exit 0
+          else
+            echo "Failed to push after 5 attempts"
+            exit 1
+          fi
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Mezzanine Catalog Refresh Failed'
+          severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
