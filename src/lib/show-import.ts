@@ -25,6 +25,10 @@ export interface RawImportEntry {
   /** True for diary entries rerouted to watchlist (unrated future viewings) —
    *  their auto-select rule differs from list-based watchlist entries. */
   fromDiary?: boolean;
+  /** Mezzanine Show class objectId (entry.show.id in the export) — lets the
+   *  unmatched-import self-heal loop look this show up directly on Mezzanine
+   *  instead of falling back to a fuzzy title search. */
+  mezzShowId?: string;
 }
 
 export interface ImportAcquireResult {
@@ -159,6 +163,7 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
       reviewText: entry.review || null,
       kind: !hasRating && isFuture ? 'watchlist' : 'diary',
       ...(!hasRating && isFuture ? { listName: 'Upcoming', fromDiary: true } : {}),
+      ...(entry.show.id ? { mezzShowId: entry.show.id } : {}),
     });
   }
 
