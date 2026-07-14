@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-14T19:47:46.647Z",
+  "generatedAt": "2026-07-14T20:40:24.427Z",
   "date": "2026-07-14",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 180180,
+  "entryCount": 180221,
   "shows": [
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -6412,6 +6412,21 @@
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
       "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "springwood-west-end-2026",
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
