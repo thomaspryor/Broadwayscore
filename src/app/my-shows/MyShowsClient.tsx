@@ -53,12 +53,13 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
   };
 }
 
-// Diary-only shows (regional/international/historical, Mezzanine-sourced) have
-// no /show/[slug] page — linking there 404s. Callers must render a non-link
-// card instead of a Link when this returns null.
-function getShowHref(slug: string, diaryOnly?: boolean): string | null {
-  if (diaryOnly) return null;
-  return `/show/${slug}`;
+// Diary-only shows (regional/international/historical, Mezzanine-sourced)
+// have no critic score and don't live in shows.json, so they get the
+// lightweight /diary-show/[id] page (id === slug for these) instead of the
+// full /show/[slug] page — owner directive 2026-07-14: cards must link
+// somewhere real, never render as dead links or de-linked divs.
+function getShowHref(slug: string, diaryOnly?: boolean): string {
+  return diaryOnly ? `/diary-show/${slug}` : `/show/${slug}`;
 }
 
 export default function MyShowsClient() {
@@ -1186,7 +1187,9 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
 
   return (
     <div className="group/diary relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
-      {/* Link overlay for the whole card — omitted for diary-only shows (no /show page) */}
+      {/* Link overlay for the whole card — getShowHref always returns a URL
+          (diary-only shows link to /diary-show/[id]); the `href &&` guard is
+          defensive only. */}
       {href && <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />}
 
       {/* Poster — square thumbnail to match homepage cards */}
@@ -1306,8 +1309,9 @@ function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string | 
 }
 
 
-/** Wraps card content in a Link when href is set, plain div otherwise —
- *  diary-only shows have no /show page to link to (getShowHref returns null). */
+/** Wraps card content in a Link when href is set, plain div otherwise. In
+ *  practice getShowHref() always returns a URL now (diary-only shows link to
+ *  /diary-show/[id]) — this is defensive for a future caller that passes null. */
 function CardLinkOrDiv({ href, className, children }: { href: string | null; className?: string; children: ReactNode }) {
   if (href) {
     return <Link href={href} className={className}>{children}</Link>;
@@ -1353,8 +1357,9 @@ function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview;
             </div>
           </div>
         )}
-        {/* Edit button — diary-only shows have no /show page, so grid view
-            (the default) needs its own edit affordance too, not just list view. */}
+        {/* Fallback edit affordance for the (now unreachable in practice)
+            case where getShowHref() can't resolve a diary-only show's page —
+            href is null, and this inline modal is the only way to edit. */}
         {!href && onRate && (
           <button
             type="button"
