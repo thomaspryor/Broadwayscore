@@ -825,6 +825,16 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'WhatsOnStage review round-up page' };
   }
 
+  // BroadwayWorld's /reviews/{show-slug} critics-aggregation page — a quote
+  // mosaic of OTHER outlets' reviews plus a critics-average score widget, not
+  // an individual review. Distinct from /article/... which is BWW's own
+  // reviews. Ingested as a 13th T1 review on the-whoopi-monologues-off-
+  // broadway-2026 (2026-07-14): took its score from the average widget and
+  // its criticName from a quoted outlet's JSON-LD Person markup.
+  if (/broadwayworld\.com\/reviews\/[^/?#]+\/?(?:[?#]|$)/i.test(url)) {
+    return { isRoundup: true, reason: 'BroadwayWorld /reviews/ critics-aggregation page' };
+  }
+
   // NOTE: Do NOT add generic roundup URL patterns (e.g. /review-roundup/ in BWW URLs).
   // Many legitimate individual critic reviews are SOURCED from roundup pages —
   // the URL points to the roundup where the review was discovered, but the review
@@ -1654,6 +1664,10 @@ const ROUNDUP_HOST_OUTLETS = {
   'thestage.co.uk': ['thestage', 'the-stage'],
   'londonboxoffice.co.uk': ['london-box-office', 'londonboxoffice'],
   'westendtheatre.com': ['westendtheatre', 'west-end-theatre', 'west-end-theatre-editorial'],
+  // BroadwayWorld's /reviews/{slug} page (see isRoundupUrl) — a critics-average
+  // widget quoting other outlets, not an individual BWW review. BWW's OWN
+  // reviews live at /article/BWW-Review-... and are unaffected.
+  'broadwayworld.com': ['broadwayworld', 'broadway-world', 'bww', 'broadwayworldcom'],
 };
 
 /**

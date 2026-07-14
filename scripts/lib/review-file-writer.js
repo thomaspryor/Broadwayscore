@@ -401,6 +401,17 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     fields.roundupArticleReason = 'auto: URL matches BWW Review-Roundup page pattern';
   }
 
+  // --- Guard E1: BWW /reviews/{slug} critics-aggregation page detection ---
+  // BWW's /reviews/{slug} page is a critics-average widget quoting OTHER
+  // outlets, not an individual BWW review (distinct from /article/... which
+  // IS a BWW-authored review). Ingested as a 13th T1 review on
+  // the-whoopi-monologues-off-broadway-2026 (2026-07-14): score came from the
+  // average widget, criticName from a quoted outlet's JSON-LD Person markup.
+  if (input.url && /broadwayworld\.com\/reviews\/[^/?#]+\/?(?:[?#]|$)/i.test(input.url)) {
+    fields.isRoundupArticle = true;
+    fields.roundupArticleReason = 'auto: URL matches BWW /reviews/ critics-aggregation page pattern';
+  }
+
   // --- Guard E2: LBO Review-Round-Up page detection ---
   // London Box Office publishes aggregator roundups at /news/post/Review-Round-Up%3A-...
   // (and `review-round-up-...`) URLs. The actual roundup pages alternate hyphenation;

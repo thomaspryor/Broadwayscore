@@ -664,6 +664,28 @@ describe('isRoundupUrl — WhatsOnStage review round-ups', () => {
   });
 });
 
+describe('isRoundupUrl — BWW /reviews/ critics-aggregation page (Whoopi Monologues 2026-07-14)', () => {
+  test('broadwayworld.com/reviews/{slug} → roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/reviews/the-whoopi-monologues');
+    assert.strictEqual(r.isRoundup, true);
+  });
+
+  test('bare-domain (no www) broadwayworld.com/reviews/{slug} → roundup', () => {
+    const r = isRoundupUrl('https://broadwayworld.com/reviews/Hell-s-Kitchen');
+    assert.strictEqual(r.isRoundup, true);
+  });
+
+  test('BWW individual review at /article/BWW-Review-... → NOT roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/article/BWW-Review-NETWORK-20181206');
+    assert.strictEqual(r.isRoundup, false);
+  });
+
+  test('BWW regional /{city}/article/... individual review → NOT roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/boston/article/BWW-Review-SOME-SHOW-20160101');
+    assert.strictEqual(r.isRoundup, false);
+  });
+});
+
 describe('isRoundupPageAsReview — page-as-review vs sourced-from-roundup', () => {
   const wosRoundup = 'https://www.whatsonstage.com/news/did-sam-ryder-reach-for-the-stars-jesus-christ-superstar-review-round-up_1726870/';
   const stageRoundup = 'https://www.thestage.co.uk/review-round-ups/hamilton-review-round-up';
@@ -705,6 +727,16 @@ describe('isRoundupPageAsReview — page-as-review vs sourced-from-roundup', () 
   test('missing url / null data → false', () => {
     assert.strictEqual(isRoundupPageAsReview({ outletId: 'whatsonstage' }), false);
     assert.strictEqual(isRoundupPageAsReview(null), false);
+  });
+
+  test('BWW /reviews/{slug} page + broadwayworld outletId → true (page IS the review, Whoopi Monologues 2026-07-14)', () => {
+    const bwwReviewsPage = 'https://www.broadwayworld.com/reviews/the-whoopi-monologues';
+    assert.strictEqual(isRoundupPageAsReview({ url: bwwReviewsPage, outletId: 'broadwayworld' }), true);
+  });
+
+  test('BWW individual /article/BWW-Review-... URL + broadwayworld outletId → NOT page-as-review', () => {
+    const bwwArticle = 'https://www.broadwayworld.com/article/BWW-Review-NETWORK-20181206';
+    assert.strictEqual(isRoundupPageAsReview({ url: bwwArticle, outletId: 'broadwayworld' }), false);
   });
 });
 
