@@ -70,6 +70,17 @@ function priorityRank(task) {
 // Excluded cards can still be selected explicitly via --id / --pick.
 const { EXCLUDED_CATEGORIES, categoryOf, isExcludedCategory } = require('./lib/autonomous-eligibility.js');
 
+// Model resolution (task #151): explicit --model > card hint > the loop's own
+// pickModel() by triage size > sonnet floor. See scripts/lib/bsc-next-model.js
+// for the full resolution order and why it reuses (not duplicates) the
+// nightly loop's model policy.
+const { resolveModel } = require('./lib/bsc-next-model.js');
+// The triage queue is a single canonical instance on the main checkout (like
+// notion-brain.js above) — anchor to REPO, not __dirname, so a dispatch
+// launched from inside a worktree still reads the real queue, not an empty
+// worktree-local copy (the file is gitignored, so worktrees never have it).
+const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
+
 // Actionable list, best-first: by Notion priority, then pending before
 // in_progress (fresh work first), then task id. Completed dropped;
 // Marketing/Partnerships dropped unless includeExcluded (used by --list to show
@@ -149,6 +160,11 @@ function buildSeed(task, card) {
     // after launch (e.g. "dispatch the next sprint yourself") are invisible
     // unless the session re-reads the card before wrapping up.
     `Before wrap-up, RE-READ this card via notion-brain get — directives may have been added since launch. If the card instructs chaining, dispatch the next workspace yourself; never end by telling the user to paste a prompt.`,
+    ``,
+    // Cheap human-in-loop escalation (task #151): sizing happens before any
+    // code is read, so a mis-sized card should say so rather than silently
+    // grinding on an under-powered model.
+    `If this task proves substantially harder than its size suggests (architecture, multi-file refactor, adversarial debugging), say so and recommend redispatch at --model opus.`,
     ``,
     `Start by confirming your understanding and a short plan, then proceed.`,
   ].filter(v => v !== null).join('\n');
@@ -253,6 +269,10 @@ function main() {
     process.exit(1);
   }
 
+  // Explicit --model flag always wins (layer 1 of resolveModel); everything
+  // else is resolved per-task once the task (and its Notion id) is known.
+  const explicitModel = typeof args.model === 'string' ? args.model : null;
+
   if (args.list) {
     const list = actionable(tasks);
     console.log(`Top workable tasks in '${LIST_ID}' (launch with --pick N):`);
@@ -260,8 +280,16 @@ function main() {
     // category left empty) — these pass the filter only because their subject
     // isn't a human-action verb (fail-closed check, no word bound).
     const unknownCat = t => { const c = categoryOf(t); return c === null || c === 'no-category'; };
-    list.slice(0, 10).forEach((t, i) => console.log(
-      `  ${i + 1}. #${t.id} [${t.status}]${unknownCat(t) ? ' [uncategorized]' : ''} ${t.subject}`));
+    // List mode resolves the model from the task-mirror description only (no
+    // per-task Notion fetch — that would be 10 API calls just to print a
+    // list). The mirror truncates notes to 400 chars (notion-tasks-sync.js),
+    // so a hint placed later in a long card can show sonnet here but resolve
+    // to its real hint at actual dispatch time (which DOES fetch the full
+    // card) — a display-only gap, since dispatch always uses the full card.
+    list.slice(0, 10).forEach((t, i) => {
+      const model = resolveModel({ explicitFlag: explicitModel, task: t, card: null, notionId: notionIdOf(t), queuePath: QUEUE_PATH });
+      console.log(`  ${i + 1}. #${t.id} [${t.status}] [${model}]${unknownCat(t) ? ' [uncategorized]' : ''} ${t.subject}`);
+    });
     const excluded = actionable(tasks, true).filter(isExcludedCategory);
     if (excluded.length) {
       console.log(`\nHuman-territory (${excluded.length} — never auto-picked; use --id N deliberately):`);
@@ -270,9 +298,6 @@ function main() {
     return;
   }
 
-  // Dispatched sessions default to Sonnet — never the user's interactive
-  // default. --model opus/haiku/fable overrides deliberately per dispatch.
-  const model = typeof args.model === 'string' ? args.model : 'sonnet';
   const task = pickTask(tasks, args);
   if (!task) { console.error('[bsc-next] no matching actionable task.'); process.exit(1); }
   const guardErr = completedLaunchGuard(task, args);
@@ -281,6 +306,12 @@ function main() {
   const pid = notionIdOf(task);
   const card = pid ? fetchCard(pid) : null;
   const seed = buildSeed(task, card);
+
+  // Dispatched sessions never inherit the user's interactive default (Fable —
+  // 9 Fable workspaces in one night, 2026-07-13): explicit --model wins,
+  // otherwise a card hint or the loop's own pickModel()-by-triage-size picks
+  // Opus for genuinely hard cards, floor is Sonnet. See resolveModel().
+  const model = resolveModel({ explicitFlag: explicitModel, task, card, notionId: pid, queuePath: QUEUE_PATH });
 
   if (args['dry-run'] || args['print-prompt']) {
     console.log(`# would launch on: #${task.id} [${task.status}] ${task.subject}\n`);

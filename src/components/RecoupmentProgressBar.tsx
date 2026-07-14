@@ -1,9 +1,8 @@
 'use client';
 
 interface RecoupmentProgressBarProps {
-  /** AI estimate [low, high] or model [pessimistic, central, optimistic] */
+  /** Model output [pessimistic, central, optimistic] (legacy [low, high] AI shape still supported) */
   estimatedPct: [number, number] | [number, number, number];
-  source?: string | null;
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
 }
 
@@ -29,11 +28,13 @@ function formatMultiple(pct: number): string {
   return `${(pct / 100).toFixed(1)}x`;
 }
 
-export default function RecoupmentProgressBar({ estimatedPct, source, modelMethod }: RecoupmentProgressBarProps) {
+export default function RecoupmentProgressBar({ estimatedPct, modelMethod }: RecoupmentProgressBarProps) {
   const isModel = estimatedPct.length === 3;
-  const low = Math.round(Math.min(...estimatedPct));
-  const high = Math.round(Math.max(...estimatedPct));
-  const central = isModel ? Math.round(estimatedPct[1]) : Math.round((low + high) / 2);
+  // Clamp at 0: the model can emit negative percentages for deep flops
+  // (e.g. cabaret-2024 [-168, -120, -74]); "-120% recouped" is nonsense copy.
+  const low = Math.max(0, Math.round(Math.min(...estimatedPct)));
+  const high = Math.max(0, Math.round(Math.max(...estimatedPct)));
+  const central = Math.max(0, isModel ? Math.round(estimatedPct[1]) : Math.round((low + high) / 2));
 
   // Recouped long-runners: swap "N% recouped" for "Nx returned to investors"
   // and hide the (meaningless past 100%) progress bar.
@@ -92,11 +93,9 @@ export default function RecoupmentProgressBar({ estimatedPct, source, modelMetho
         </div>
       )}
       <div className="flex items-center justify-between mt-1">
-        {(source || methodLabel) && (
+        {methodLabel && (
           <p className="text-[10px] text-gray-500">
-            {methodLabel && <span className="text-gray-400">{methodLabel}</span>}
-            {methodLabel && source && ' · '}
-            {source && `Source: ${source}`}
+            <span className="text-gray-400">{methodLabel}</span>
           </p>
         )}
       </div>

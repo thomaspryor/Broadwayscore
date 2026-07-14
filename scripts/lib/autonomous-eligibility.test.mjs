@@ -221,3 +221,10 @@ test('no deny-tag card is ever eligible (absolute exclusion sweep)', () => {
     }
   }
 });
+
+test('growth round 1: outlet-canonicalize + auto-triage-cross-production allowed; siblings still refused', () => {
+  assert.equal(isPathAllowed('scripts/lib/outlet-canonicalize.js'), true);
+  assert.equal(isPathAllowed('scripts/auto-triage-cross-production.js'), true);
+  assert.equal(isPathAllowed('scripts/lib/scraper.js'), false);        // still excluded
+  assert.equal(isPathAllowed('scripts/gather-reviews.js'), false);     // not granted by sibling growth
+});
