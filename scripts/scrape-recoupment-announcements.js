@@ -31,6 +31,7 @@ const path = require('path');
 const { serpQuery } = require('./lib/url-discovery');
 const { fetchPage } = require('./lib/scraper');
 const { classifyArticle } = require('./lib/recoupment-classify');
+const { isCommercialScope } = require('./lib/commercial-scope');
 
 // Worktrees don't ship the gitignored data files (shows.json, commercial.json
 // live in the private repo and are only symlinked in the main checkout). Fall
@@ -128,7 +129,7 @@ function pickCandidates(allShows, commercial) {
     if (age < 28) return false;       // too early
     if (age > 365) return false;      // beyond typical announcement window
     if (!['open', 'closed', 'closing'].includes(s.status)) return false;
-    if (s.market && s.market !== 'broadway') return false; // OB/WE recoupment scraping needs different outlets
+    if (!isCommercialScope(s)) return false; // Broadway-only — gate on category, never market (market='broadway' means NYC and includes OB)
     return true;
   });
 }
