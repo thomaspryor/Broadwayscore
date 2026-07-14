@@ -14,4 +14,5 @@ Fable-session fan-out is the #1 hidden cost: on 2026-07-12/13 a two-day Fable or
 **How to apply:**
 - When spawning subagents from an expensive-model session, pass `model: 'sonnet'` (mechanical/search/sweep) or `model: 'opus'` (adversarial verify, design review) explicitly — reserve parent-model inheritance for tasks that genuinely need it.
 - bsc-next now pins `--model sonnet` on all dispatches (override `--model opus` per card) — commit 95b5a5286a3; don't regress this.
+- In-session Agent/Task/Workflow fan-out is now enforced (not just advisory): `~/.claude/hooks/fanout-model-gate.sh` (PreToolUse) blocks a Fable-session subagent call with no explicit `model` param — pass `model:"sonnet"`/`"opus"` or add `FABLE-FANOUT-OK: <reason>` to inherit deliberately.
 - Related: [[autonomous-loop-schedule]] — the loop's ledger only meters its own calls; interactive/dispatch spend is invisible to the morning email's "loop" line (account-level visibility needs ANTHROPIC_ADMIN_KEY).
