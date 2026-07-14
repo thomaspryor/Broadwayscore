@@ -45,7 +45,7 @@
 - [Silent workflow failures](feedback_silent_workflow_failures.md) — never || true on git push; git add ||true may stage NOTHING ([[feedback_silent_git_add_failures.md]]); pipefail or pipe masks exit ([[feedback_pipe_masks_exit_code.md]])
 - [Test extraction pattern](feedback_test_extraction_pattern.md) — extract to scripts/lib/ + require(); .mjs node:test, register in test.yml ([[feedback_test_format_node_not_jest.md]])
 - [Branch protection: direct pushes not gated](feedback_branch_protection_direct_push.md) — required checks gate PR merges only; direct pushes land red
-- [Hook stdin format](feedback_hook_stdin_format.md) — PostToolUse stdin under tool_input; jq .tool_input.command
+- [Hook stdin format](feedback_hook_stdin_format.md) — PostToolUse stdin under tool_input; PreToolUse has no model field
 - [Compound shell/git traps](feedback_compound_shell_git_traps.md) — zsh vars don't word-split; never `stash pop` after conditional push (pops another session's stash); `git push` standalone ([[feedback_prepush_gate_stash_push_parser.md]])
 
 ## 🔌 External APIs & verification
