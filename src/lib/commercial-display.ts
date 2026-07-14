@@ -19,8 +19,20 @@ import type { ShowCommercial } from './data-types';
 
 export type RecoupmentDisplayMode = 'announced' | 'model' | 'none';
 
+/** Minimal shape the display-mode/quality-floor predicates actually read — lets
+ *  callers with a narrower row type (e.g. the /biz all-shows table) reuse the
+ *  same rules without reshaping into a full ShowCommercial. `modelMethod`
+ *  allows null in addition to ShowCommercial's optional-only typing since
+ *  several row shapes normalize "no method" to null rather than omitting it. */
+interface RecoupmentSignals {
+  modelDataQuality?: ShowCommercial['modelDataQuality'];
+  modelMethod?: ShowCommercial['modelMethod'] | null;
+  recouped: ShowCommercial['recouped'];
+  modelRecoupmentPct?: ShowCommercial['modelRecoupmentPct'];
+}
+
 /** True when the recoupment model's output is trustworthy enough to render. */
-export function meetsModelQualityFloor(commercial: ShowCommercial): boolean {
+export function meetsModelQualityFloor(commercial: Pick<RecoupmentSignals, 'modelDataQuality' | 'modelMethod'>): boolean {
   return (
     commercial.modelDataQuality !== 'low' &&
     commercial.modelMethod !== 'ai-estimated'
@@ -39,7 +51,7 @@ export function meetsModelQualityFloor(commercial: ShowCommercial): boolean {
  *    ai-estimated by construction, exactly what the floor excludes.
  */
 export function getRecoupmentDisplayMode(
-  commercial: ShowCommercial
+  commercial: RecoupmentSignals
 ): RecoupmentDisplayMode {
   if (commercial.recouped === true) return 'announced';
   if (commercial.modelRecoupmentPct && meetsModelQualityFloor(commercial)) {

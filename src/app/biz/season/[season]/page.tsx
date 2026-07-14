@@ -14,6 +14,7 @@ import {
 } from '@/lib/data-commercial';
 
 import AllShowsTable from '@/components/biz/AllShowsTable';
+import { formatEstimatedCurrency } from '@/lib/biz-format';
 
 // Dynamically generate params from actual data - auto-updates when shows are added
 export function generateStaticParams() {
@@ -38,19 +39,6 @@ export function generateMetadata({ params }: { params: { season: string } }): Me
       url: `${BASE_URL}/biz/season/${params.season}`,
     },
   };
-}
-
-function formatCurrency(amount: number): string {
-  if (amount >= 1_000_000_000) {
-    return `$${(amount / 1_000_000_000).toFixed(1)}B`;
-  }
-  if (amount >= 1_000_000) {
-    return `$${(amount / 1_000_000).toFixed(1)}M`;
-  }
-  if (amount >= 1_000) {
-    return `$${(amount / 1_000).toFixed(0)}K`;
-  }
-  return `$${amount}`;
 }
 
 export default function SeasonPage({ params }: { params: { season: string } }) {
@@ -131,13 +119,13 @@ export default function SeasonPage({ params }: { params: { season: string } }) {
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             <div className="text-2xl font-bold text-white">
-              ~{formatCurrency(totalCapitalization)}
+              {formatEstimatedCurrency(totalCapitalization)}
             </div>
             <div className="text-xs text-gray-500">Total Capital</div>
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             <div className="text-2xl font-bold text-amber-400">
-              ~{formatCurrency(stats.capitalAtRisk)}
+              {formatEstimatedCurrency(stats.capitalAtRisk)}
             </div>
             <div className="text-xs text-gray-500">Capital at Risk</div>
           </div>
