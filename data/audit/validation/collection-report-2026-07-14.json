@@ -14,10 +14,10 @@
     "processed": 0,
     "failed": 11,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -64,8 +64,11 @@
     "the-guilty-west-end-2026/thestage--unknown.json",
     "the-guilty-west-end-2026/times-uk--unknown.json"
   ],
+  "failed": [],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "allegra-west-end-2026/whatsonstage--aliya-al.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
