@@ -33,7 +33,10 @@ export default function HoverRateStars({ showId, showHref }: HoverRateStarsProps
 
   return (
     <div
-      className="absolute inset-x-0 bottom-0 z-[2] hidden sm:flex justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/85 to-transparent pt-4 pb-1"
+      // focus-within is load-bearing for a11y: the five star buttons are
+      // tabbable, so keyboard focus must reveal the strip — otherwise the
+      // focus ring lands on an invisible (opacity-0) control.
+      className="absolute inset-x-0 bottom-0 z-[2] hidden sm:flex justify-center opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity bg-gradient-to-t from-black/85 to-transparent pt-4 pb-1"
       // A star click must deep-link, not follow the wrapping card <Link>:
       // the child's router.push runs first, then this bubble-phase
       // preventDefault cancels the anchor's default navigation.
