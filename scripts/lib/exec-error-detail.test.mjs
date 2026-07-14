@@ -23,3 +23,11 @@ test('maxLen=0 disables truncation', () => {
   const long = 'Command failed: x\n' + 'y'.repeat(300);
   assert.equal(execErrorDetail(new Error(long), 0).length, 300);
 });
+
+// ship-check P2: empty stderr strips to '' (falsy) — must fall back to the
+// ORIGINAL message, not return an empty string that looks like "no error".
+test('empty stderr after the command echo falls back to the original message', () => {
+  const err = new Error('Command failed: git -C /x push origin main\n');
+  assert.equal(execErrorDetail(err), err.message);
+  assert.notEqual(execErrorDetail(err), '');
+});
