@@ -28,6 +28,7 @@ const { execFileSync, spawnSync } = require('child_process');
 
 const REPO = '/Users/tompryor/Broadwayscore';
 const cmuxws = require('./lib/cmux-workspaces.js');
+const { execErrorDetail } = require('./lib/exec-error-detail.js');
 
 function parseArgs(argv) {
   const a = { _: [] };
@@ -63,16 +64,11 @@ function formatWorkspaces(list) {
 // runFn(cmd, args) -> stdout string | throws. Isolated so callers can stub it.
 function runOrientationSweep(runFn, opts = {}) {
   const repo = opts.repo || REPO;
-  // execFileSync's Error.message is "Command failed: <cmd>\n<real stderr>" — the
-  // diagnostic text that actually matters is on line 2+, not the command echo on
-  // line 1. Dropping only that leading line (instead of taking line 1) keeps the
-  // real failure reason in the seed prompt so the conductor session can tell a
-  // genuine problem apart from "nothing to report" (ship-check finding).
+  // Keeps the real stderr, not the useless "Command failed: <cmd>" echo — see
+  // scripts/lib/exec-error-detail.js (ship-check finding, 2026-07-14). Without
+  // this a genuine sweep failure was indistinguishable from "nothing to report".
   const safe = (label, fn) => {
-    try { return fn(); } catch (e) {
-      const detail = e.message.replace(/^Command failed:[^\n]*\n?/, '').trim() || e.message;
-      return `(${label} failed: ${detail.slice(0, 500)})`;
-    }
+    try { return fn(); } catch (e) { return `(${label} failed: ${execErrorDetail(e, 500)})`; }
   };
   const nextList = safe('bsc-next --list', () => runFn('node', ['scripts/bsc-next.js', '--list']));
   const ledgerTail = safe('ledger tail', () =>
