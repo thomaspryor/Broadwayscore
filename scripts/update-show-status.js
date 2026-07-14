@@ -22,6 +22,7 @@ const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { countByShow, isStuckInPreviews, openSignalFromReviews, chooseOpeningDateBackfill } = require('./lib/opening-signal');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
+const { decideAnnouncedPromotion } = require('./lib/announced-promotion');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_FILE = path.join(__dirname, '..', 'data', 'reviews.json');
@@ -685,6 +686,26 @@ async function updateShowStatuses() {
       changes.status = { from: 'upcoming', to: 'previews' };
       if (!dryRun) {
         show.status = 'previews';
+      }
+    }
+
+    // Check 2e: Promote announced shows once real dates exist. Discovery
+    // creates date-less shows as 'announced', and enrichment scripts later
+    // write previewsStartDate/openingDate onto them — but no transition
+    // covered 'announced', so shows stayed invisible on upcoming pages
+    // forever (dolly-an-original-musical-2026, found 2026-07-14). Mirrors
+    // discovery's own initial-status logic (discover-new-shows.js).
+    //
+    // Decision logic (incl. zombie-entry recency guard) lives in
+    // scripts/lib/announced-promotion.js so tests exercise the real function.
+    const announcedDecision = decideAnnouncedPromotion(show);
+    if (announcedDecision.action === 'triage') {
+      console.log(`  ⚠️  ${show.title} (${show.id}): status=announced — ${announcedDecision.reason}`);
+    } else if (announcedDecision.action === 'promote') {
+      changes.status = { from: 'announced', to: announcedDecision.to };
+      changes.note = `announced show has dates (previews: ${show.previewsStartDate || 'null'}, opening: ${show.openingDate || 'null'})`;
+      if (!dryRun) {
+        show.status = announcedDecision.to;
       }
     }
 
