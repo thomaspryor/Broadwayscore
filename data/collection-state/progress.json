@@ -36,7 +36,8 @@
     "the-balusters-2026/playbill--unknown.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "the-whoopi-monologues-off-broadway-2026/wsj--unknown.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -340,7 +341,10 @@
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-whoopi-monologues-off-broadway-2026/wsj--unknown.json",
+      "the-whoopi-monologues-off-broadway-2026/wsj--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
@@ -363,6 +367,18 @@
     ]
   },
   "startTime": "2026-07-14T06:30:28.825Z",
-  "lastProcessed": "avenue-q-west-end-2026/theupcoming--sunny-morgan.json",
-  "log": []
+  "lastProcessed": "the-whoopi-monologues-off-broadway-2026/wsj--unknown.json",
+  "log": [
+    {
+      "t": "2026-07-14T09:48:02.031Z",
+      "event": "bb-session",
+      "session": "1fffa990",
+      "url": "https://www.wsj.com/articles/the-whoopi-monologues-review-goldberg-variations-of"
+    },
+    {
+      "t": "2026-07-14T09:48:02.770Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
