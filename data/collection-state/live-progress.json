@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-14T05:38:11.218Z",
-  "processed": 103,
-  "failed": 905,
-  "successRate": "10.2%",
+  "updatedAt": "2026-07-14T05:39:12.424Z",
+  "processed": 106,
+  "failed": 912,
+  "successRate": "10.4%",
   "tierBreakdown": {
-    "playwright": 66,
+    "playwright": 67,
     "amp": 0,
-    "browserbase": 14,
+    "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 10,
     "archiveToday": 31,
     "archive": 12
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-07-13T17:43:32.680Z",
-      "event": "bb-session",
-      "session": "78305f5e",
-      "url": "https://deadline.com/2025/04/andrew-scott-vanya-recoups-1236381055/"
-    },
-    {
-      "t": "2026-07-13T17:43:33.685Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-07-13T17:48:31.991Z",
       "event": "bb-session",
@@ -111,6 +100,28 @@
     },
     {
       "t": "2026-07-14T05:37:15.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-14T05:38:35.045Z",
+      "event": "bb-session",
+      "session": "51000b31",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-07-14T05:38:35.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-14T05:38:52.558Z",
+      "event": "bb-session",
+      "session": "63d9de6a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-07-14T05:38:52.990Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
