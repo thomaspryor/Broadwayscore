@@ -39,6 +39,7 @@ const { createNightBudget, checkSharedDailyCap, pickModel, ENVELOPES } = require
 const ledger = require('./lib/autonomous-ledger.js');
 const {
   buildImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks, cardCheckArgv, shouldThrottle, preflightVerdict,
+  resolveOwnerEmail,
 } = require('./lib/autonomous-run-core.js');
 
 const REPO = path.join(__dirname, '..');
@@ -147,7 +148,9 @@ function planCard(item, remainingUSD, opts) {
 function dryRun(args, cfg) {
   const nightUSD = num(args['night-budget'], cfg.nightUSD ?? 5);
   const maxItems = num(args['max-items'], cfg.maxItems ?? 3);
-  const queue = readQueue(args, { allowStale: true });
+  let queue;
+  try { queue = readQueue(args, { allowStale: true }); }
+  catch (err) { console.error(`[run] ${err.message}`); process.exit(1); }
 
   console.log(`# Autonomous night plan (DRY RUN — zero writes)`);
   console.log(`queue: generated ${queue.generatedAt} (${queue.mode}, model ${queue.model})`);
@@ -184,17 +187,20 @@ function dryRun(args, cfg) {
 
 // ── Live executor ───────────────────────────────────────────────────────────
 
+// Throws (never process.exit) so a caller inside live()'s try/finally still
+// reaches the finally — a missing/stale queue must still release the
+// singleton and send tonight's email, not go silent (ship-check P0: the old
+// process.exit(1) here bypassed both). dryRun() has no such invariant and
+// exits itself at its call site.
 function readQueue(args, { allowStale = false } = {}) {
   const queuePath = args.queue ? path.resolve(String(args.queue)) : QUEUE_PATH;
   if (!fs.existsSync(queuePath)) {
-    console.error(`[run] no queue at ${queuePath} — run: node scripts/autonomous-triage.js`);
-    process.exit(1);
+    throw new Error(`no queue at ${queuePath} — run: node scripts/autonomous-triage.js`);
   }
   const queue = JSON.parse(fs.readFileSync(queuePath, 'utf8'));
   const ageH = (Date.now() - new Date(queue.generatedAt).getTime()) / 3600e3;
   if (!allowStale && !(ageH < QUEUE_MAX_AGE_H)) {
-    console.error(`[run] queue is ${ageH.toFixed(1)}h old (max ${QUEUE_MAX_AGE_H}h) — re-run triage first`);
-    process.exit(1);
+    throw new Error(`queue is ${ageH.toFixed(1)}h old (max ${QUEUE_MAX_AGE_H}h) — re-run triage first`);
   }
   return queue;
 }
@@ -315,6 +321,30 @@ function preflightAuth() {
     console.error(`[run] preflight attempt ${attempt} failed (${verdict.kind}): ${verdict.detail}`);
   }
   return verdict;
+}
+
+// Morning email (night-2 fix): previously only autonomous-nightly.sh (the
+// launchd wrapper) invoked scripts/autonomous-email.js, so a manual/ad-hoc
+// `--live` run — including a 0-item night — finished silently with no
+// breakdown email. Sending it from inside live()'s `finally` means every
+// --live invocation gets it, scheduled or not, success or throttled/skipped,
+// matching autonomous-nightly.sh's old "every stage failure still advances
+// to the email" invariant without depending on the shell wrapper.
+// `mockEmailScript` (test-only, mirrors --mock-implementer) runs a local
+// script instead of hitting Resend.
+function sendMorningEmail(cfg, mockEmailScript) {
+  const ownerEmail = resolveOwnerEmail(cfg, process.env);
+  if (!ownerEmail) {
+    console.error('[run] WARN no ownerEmail (config) or OWNER_EMAIL (.env) — skipping morning email');
+    return;
+  }
+  const scriptPath = mockEmailScript ? path.resolve(String(mockEmailScript)) : path.join(__dirname, 'autonomous-email.js');
+  try {
+    execFileSync('node', [scriptPath, '--send-to', ownerEmail], { cwd: REPO, stdio: ['ignore', 'pipe', 'inherit'], env: process.env });
+    console.error(`[run] morning email step done (${ownerEmail})`);
+  } catch (err) {
+    console.error(`[run] WARN morning email step failed: ${String(err.message || err).slice(0, 200)}`);
+  }
 }
 
 function runChecks(workdir, changedFiles, checkableDone) {
@@ -487,21 +517,33 @@ function attemptCard(item, budget, cfg, runId, opts) {
 
 async function live(args, cfg) {
   const mockScript = args['mock-implementer'] || null;
+  const mockEmail = args['mock-email'] || null;
   const nightUSD = num(args['night-budget'], cfg.nightUSD ?? 5);
   const maxItems = num(args['max-items'], cfg.maxItems ?? 3);
   const sizes = args.sizes ? String(args.sizes).split(',').map(s => s.trim()) : (cfg.sizes || ['S']);
 
   const lock = ledger.acquireSingleton();
   if (!lock.acquired) {
+    // Another --live process holds the run — it (not this exit) is
+    // responsible for tonight's email, so send nothing here.
     console.log(`[run] already running (pid ${lock.holder?.pid}, started ${lock.holder?.startedAt}) — exiting`);
     process.exit(0);
   }
   try {
     const cap = checkSharedDailyCap(nightUSD);
-    if (!cap.ok) { console.error(`[run] ${cap.message}`); process.exit(1); }
+    // return (not process.exit): a hard exit here would skip the `finally`
+    // below and, with it, tonight's morning email — a capped night should
+    // still tell the owner nothing ran, not go silent.
+    if (!cap.ok) { console.error(`[run] ${cap.message}`); return; }
     if (cap.warning) console.error(`[run] WARN ${cap.warning}`);
 
-    const queue = readQueue(args);
+    // Missing/stale queue throws (readQueue never process.exit()s) — caught
+    // here so the finally below still runs: release the lock AND send
+    // tonight's email (ship-check P0 — a hard exit at this point used to
+    // skip both, with the wrapper's own email step now gone too).
+    let queue;
+    try { queue = readQueue(args); }
+    catch (err) { console.error(`[run] ${err.message}`); return; }
     // Adopt the runId triage stamped into the queue, so triage's own ledger
     // lines (its Sonnet spend) roll into this run's "Tonight" stats.
     const runId = typeof queue.runId === 'string' && /^run-/.test(queue.runId)
@@ -547,6 +589,10 @@ async function live(args, cfg) {
     console.log(`[run] night done: ${s.items} attempted · $${s.spent.toFixed(2)} spent · ledger ${ledger.LEDGER_PATH}`);
   } finally {
     ledger.releaseSingleton();
+    // Always fires — success, throttle, preflight-skip, or daily-cap return
+    // all reach this finally — so a manual/ad-hoc --live run gets the same
+    // "night's breakdown" email a scheduled run gets (night-2 fix).
+    sendMorningEmail(cfg, mockEmail);
   }
 }
 
@@ -570,4 +616,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { planCard, branchNameFor, attemptCard, runRecovery, readQueue, preflightAuth };
+module.exports = { planCard, branchNameFor, attemptCard, runRecovery, readQueue, preflightAuth, sendMorningEmail };
