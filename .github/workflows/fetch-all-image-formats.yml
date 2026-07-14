@@ -137,6 +137,11 @@ jobs:
           git config --local user.name "github-actions[bot]"
           bash scripts/lib/stage-data-changes.sh data/ public/images/shows/
 
+          # Drop aspect-ratio violators from the batch instead of letting the
+          # pre-commit gate abort the ENTIRE commit (2026-07-14: one landscape
+          # thumbnail discarded every fetched image, twice in one day).
+          node scripts/check-image-aspect.js --staged --quarantine
+
           git commit -m "chore: Auto-fetch and archive show images
 
           Fetched from TodayTix CDN and archived locally as WebP.
