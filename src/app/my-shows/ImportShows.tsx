@@ -36,6 +36,10 @@ interface MatchedEntry {
   match: SearchShow | null;
   matchScore: number;
   selected: boolean;
+  /** Real match demoted only by the date-sanity guard (the user's date falls
+   *  outside the production's run). Tickable with a caution label — a typo'd
+   *  diary date must not make a genuinely-seen show unimportable. */
+  dateSuspect: boolean;
   /** Matched show already has a rating/watchlist row in this account —
    *  deselected by default and labeled so the skip is self-explanatory. */
   alreadyOwned: boolean;
@@ -143,9 +147,13 @@ export default function ImportShows({
     return 1;
   };
 
-  const matchShow = useCallback((name: string, venue?: string, dateSeen?: string | null): { match: SearchShow | null; score: number } => {
-    if (!fuseRef.current) return { match: null, score: 0 };
+  const matchShow = useCallback((name: string, venue?: string, dateSeen?: string | null): { match: SearchShow | null; score: number; dateSuspect: boolean } => {
+    if (!fuseRef.current) return { match: null, score: 0, dateSuspect: false };
     const nameLower = name.toLowerCase();
+    const withSanity = (match: SearchShow, raw: number) => {
+      const sane = dateSanity(match, dateSeen);
+      return { match, score: raw * sane, dateSuspect: sane < 1 && raw > 0.7 };
+    };
 
     // Try exact title match — venue-aware when venue is provided
     const exactAll = showsRef.current.filter(s => s.title.toLowerCase() === nameLower);
@@ -155,7 +163,7 @@ export default function ImportShows({
         const venueMatch = exactAll.find(s =>
           s.venue && s.venue.toLowerCase().replace(/theatre|theater/gi, '').trim().includes(venueNorm)
         );
-        if (venueMatch) return { match: venueMatch, score: 1 * dateSanity(venueMatch, dateSeen) };
+        if (venueMatch) return withSanity(venueMatch, 1);
         // No venue match among exact titles — fall through to Fuse for better matching
       } else {
         // Same title, multiple productions (revivals/transfers): pick the run
@@ -167,7 +175,7 @@ export default function ImportShows({
         if (dateSeen && exactAll.length > 1) {
           const seen = Date.parse(dateSeen);
           const distance = (s: SearchShow) => {
-            if (!s.od) return Number.MAX_SAFE_INTEGER;
+            if (!s.od) return 10 * 365 * 24 * 3600 * 1000; // undated: beats absurdly-far runs, loses to plausible ones
             const od = Date.parse(s.od);
             const cd = s.cd ? Date.parse(s.cd) : Number.POSITIVE_INFINITY;
             if (seen >= od && seen <= cd) return 0; // inside the run
@@ -175,7 +183,7 @@ export default function ImportShows({
           };
           best = [...exactAll].sort((a, b) => distance(a) - distance(b))[0];
         }
-        return { match: best, score: 1 * dateSanity(best, dateSeen) };
+        return withSanity(best, 1);
       }
     }
 
@@ -183,8 +191,8 @@ export default function ImportShows({
     const results = fuseRef.current.search(name, { limit: 5 });
     if (results.length === 0) {
       // Fall back to first exact match if Fuse found nothing
-      if (exactAll.length > 0) return { match: exactAll[0], score: 1 * dateSanity(exactAll[0], dateSeen) };
-      return { match: null, score: 0 };
+      if (exactAll.length > 0) return withSanity(exactAll[0], 1);
+      return { match: null, score: 0, dateSuspect: false };
     }
 
     // If venue provided, prefer matches with same venue
@@ -193,7 +201,7 @@ export default function ImportShows({
       const venueMatch = results.find(r =>
         r.item.venue && r.item.venue.toLowerCase().replace(/theatre|theater/gi, '').trim().includes(venueNorm)
       );
-      if (venueMatch) return { match: venueMatch.item, score: (1 - (venueMatch.score || 0)) * dateSanity(venueMatch.item, dateSeen) };
+      if (venueMatch) return withSanity(venueMatch.item, 1 - (venueMatch.score || 0));
     }
 
     const best = results[0];
@@ -203,7 +211,7 @@ export default function ImportShows({
     const nameL = name.toLowerCase();
     const matchL = best.item.title.toLowerCase();
     const contained = nameL.includes(matchL) || matchL.includes(nameL);
-    return { match: best.item, score: (contained ? score : score * 0.6) * dateSanity(best.item, dateSeen) };
+    return withSanity(best.item, contained ? score : score * 0.6);
   }, []);
 
   /** Match raw source entries against our catalog and apply selection
@@ -214,7 +222,7 @@ export default function ImportShows({
     const diaryShowIds = new Set<string>();
 
     for (const raw of acquired.entries.filter(e => e.kind === 'diary')) {
-      const { match, score } = matchShow(raw.title, raw.venue || undefined, raw.date);
+      const { match, score, dateSuspect } = matchShow(raw.title, raw.venue || undefined, raw.date);
       const showId = match?.id || '';
       const alreadyReviewed = showId ? existingReviewShowIds.has(showId) : false;
       matched.push({
@@ -227,13 +235,14 @@ export default function ImportShows({
         matchScore: score,
         selected: !!match && score > 0.7 && !alreadyReviewed,
         alreadyOwned: alreadyReviewed,
+        dateSuspect,
         type: 'diary',
       });
       if (showId) diaryShowIds.add(showId);
     }
 
     for (const raw of acquired.entries.filter(e => e.kind === 'watchlist')) {
-      const { match, score } = matchShow(raw.title, raw.venue || undefined, raw.date);
+      const { match, score, dateSuspect } = matchShow(raw.title, raw.venue || undefined, raw.date);
       const showId = match?.id || '';
       const alreadyWatchlisted = showId ? existingWatchlistShowIds.has(showId) : false;
       const alreadyReviewed = showId ? existingReviewShowIds.has(showId) : false;
@@ -254,6 +263,7 @@ export default function ImportShows({
         matchScore: score,
         selected: !!match && score > 0.7 && autoSelect,
         alreadyOwned: alreadyWatchlisted || (raw.fromDiary ? alreadyReviewed : alreadyInDiary),
+        dateSuspect,
         type: 'watchlist',
         listName: raw.listName,
       });
@@ -296,7 +306,7 @@ export default function ImportShows({
   // "diaryEntries.length + i" offset math broke as soon as sections stopped
   // being a straight partition of `entries`).
   const indexedEntries = useMemo(() => entries.map((entry, idx) => ({ entry, idx })), [entries]);
-  const isUnmatched = (e: MatchedEntry) => !e.match || e.matchScore <= 0.7;
+  const isUnmatched = (e: MatchedEntry) => !e.match || (e.matchScore <= 0.7 && !e.dateSuspect);
   const diaryRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.type === 'diary' && !isUnmatched(entry)), [indexedEntries]);
   const watchlistRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.type === 'watchlist' && !isUnmatched(entry)), [indexedEntries]);
   // Grouped instead of scattered through the main list, and re-shown on the
@@ -307,8 +317,8 @@ export default function ImportShows({
   const watchlistEntries = useMemo(() => entries.filter(e => e.type === 'watchlist'), [entries]);
   const selectedDiary = useMemo(() => diaryEntries.filter(e => e.selected && e.match), [diaryEntries]);
   const selectedWatchlist = useMemo(() => watchlistEntries.filter(e => e.selected && e.match), [watchlistEntries]);
-  const unmatchedDiary = useMemo(() => diaryEntries.filter(e => !e.match || e.matchScore <= 0.7).length, [diaryEntries]);
-  const unmatchedWatchlist = useMemo(() => watchlistEntries.filter(e => !e.match || e.matchScore <= 0.7).length, [watchlistEntries]);
+  const unmatchedDiary = useMemo(() => diaryEntries.filter(e => !e.match || (e.matchScore <= 0.7 && !e.dateSuspect)).length, [diaryEntries]);
+  const unmatchedWatchlist = useMemo(() => watchlistEntries.filter(e => !e.match || (e.matchScore <= 0.7 && !e.dateSuspect)).length, [watchlistEntries]);
   const unmatchedCount = unmatchedDiary + unmatchedWatchlist;
   // The summary must PARTITION matched entries — selected + skipped-owned +
   // manually-unticked + unmatched = total — under every toggle state, or the
@@ -316,11 +326,11 @@ export default function ImportShows({
   // a re-ticked owned row must leave the skipped count, and a manually
   // unticked row must land in a visible bucket instead of vanishing.
   const skippedOwnedCount = useMemo(
-    () => entries.filter(e => e.alreadyOwned && !e.selected && e.match && e.matchScore > 0.7).length,
+    () => entries.filter(e => e.alreadyOwned && !e.selected && e.match && (e.matchScore > 0.7 || e.dateSuspect)).length,
     [entries],
   );
   const untickedCount = useMemo(
-    () => entries.filter(e => !e.alreadyOwned && !e.selected && e.match && e.matchScore > 0.7).length,
+    () => entries.filter(e => !e.alreadyOwned && !e.selected && e.match && (e.matchScore > 0.7 || e.dateSuspect)).length,
     [entries],
   );
 
@@ -648,7 +658,7 @@ export default function ImportShows({
 }
 
 function ImportEntryRow({ entry, index, onToggle }: { entry: MatchedEntry; index: number; onToggle: (i: number) => void }) {
-  const noMatch = !entry.match || entry.matchScore <= 0.7;
+  const noMatch = !entry.match || (entry.matchScore <= 0.7 && !entry.dateSuspect);
   return (
     <label className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-colors ${
       noMatch ? 'opacity-50' : entry.selected ? 'bg-white/5' : 'opacity-60'
@@ -678,6 +688,9 @@ function ImportEntryRow({ entry, index, onToggle }: { entry: MatchedEntry; index
             → {entry.match.title}
             {entry.alreadyOwned && (
               <span className="text-gray-600"> · already in your shows{entry.selected ? ' — will add another viewing' : ''}</span>
+            )}
+            {entry.dateSuspect && (
+              <span className="text-yellow-600"> · your date is outside this production&apos;s run — tick to import anyway</span>
             )}
           </div>
         ) : (
