@@ -51,7 +51,8 @@ import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useUserLists } from '@/hooks/useUserLists';
 import { useToastSafe } from '@/components/ui/Toast';
-import { savePendingAction, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
+import { savePendingAction } from '@/lib/deferred-auth';
+import { usePendingRatingDraft } from '@/hooks/usePendingRatingDraft';
 import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { featureFlags } from '@/config/feature-flags';
@@ -123,9 +124,6 @@ function Inner({
 
   const [ratePanelOpen, setRatePanelOpen] = useState(false);
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
-  // Draft carried across sign-in (rating + typed note + date + target review id).
-  const [pendingDraft, setPendingDraft] = useState<PendingAction | null>(null);
-  const hasExecutedPending = useRef(false);
   const rateBtnRef = useRef<HTMLButtonElement>(null);
   // Return focus to the rate button when the editor closes — the inline
   // (desktop) editor is not a Modal, so nothing else restores focus and it
@@ -183,26 +181,23 @@ function Inner({
     }
   }, [isAuthenticated, user, show.id, getReviewsForShow, getWatchlist, getLists]);
 
-  // Consume pending action after deferred auth
-  useEffect(() => {
-    if (!isAuthenticated || !user || hasExecutedPending.current) return;
-    const pending = getPendingAction();
-    if (!pending || pending.showId !== show.id) return;
-    hasExecutedPending.current = true;
-    clearPendingAction();
-
-    if (pending.type === 'rating') {
-      // Resume the draft the user was mid-editing before we gated on sign-in.
+  // Draft carried across sign-in (rating + typed note + date + target review id).
+  const { pendingDraft, setPendingDraft, hasExecutedPending, saveDraft } = usePendingRatingDraft(show.id, {
+    isAuthenticated,
+    user,
+    // Resume the draft the user was mid-editing before we gated on sign-in.
+    onResumeRatingDraft: () => {
       setEditingReview(null);
-      setPendingDraft(pending);
       setRatePanelOpen(true);
-    } else if (pending.type === 'watchlist') {
-      addToWatchlist(show.id)
-        .then(() => showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success'))
-        .catch(() => showToast?.('Failed to add to watchlist.', 'error'));
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, user, show.id]);
+    },
+    onOtherPendingAction: (pending) => {
+      if (pending.type === 'watchlist') {
+        addToWatchlist(show.id)
+          .then(() => showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success'))
+          .catch(() => showToast?.('Failed to add to watchlist.', 'error'));
+      }
+    },
+  });
 
   // ?rate=1 — auto-open rate panel (deferred-auth target for inline-stars CTAs)
   useEffect(() => {
@@ -213,13 +208,7 @@ function Inner({
     // the just-restored draft (typed note included) with a bare stars hint.
     if (hasExecutedPending.current) return;
     if (!isAuthenticated && !authLoading) {
-      savePendingAction({
-        type: 'rating',
-        showId: show.id,
-        ...(autoRateStars != null ? { rating: autoRateStars } : {}),
-        returnUrl: window.location.pathname,
-        timestamp: Date.now(),
-      });
+      saveDraft(autoRateStars != null ? { rating: autoRateStars } : {});
       showSignIn('rating');
     } else {
       // Always a FRESH panel (append), seeded with the ?stars= hint — consistent
@@ -279,7 +268,7 @@ function Inner({
     setEditingReview(null);
     setPendingDraft(null);
     setRatePanelOpen(true);
-  }, []);
+  }, [setPendingDraft]);
 
 
   // NOTE: RatingEditor owns the saving spinner and, critically, keeps the panel
@@ -296,16 +285,7 @@ function Inner({
       // Gate at Save — persist the full draft, then sign in. The editor stays
       // open behind the sign-in modal ('auth-gated'), so cancelling sign-in
       // loses nothing; completing it lets the pending-action effect resume.
-      savePendingAction({
-        type: 'rating',
-        showId: show.id,
-        rating: data.rating,
-        ...(data.reviewText ? { reviewText: data.reviewText } : {}),
-        ...(data.dateSeen ? { dateSeen: data.dateSeen } : {}),
-        ...(data.reviewId ? { reviewId: data.reviewId } : {}),
-        returnUrl: window.location.pathname,
-        timestamp: Date.now(),
-      });
+      saveDraft(data);
       showSignIn('rating');
       return 'auth-gated';
     }
@@ -345,21 +325,21 @@ function Inner({
     }
     await getReviewsForShow(show.id);
     invalidateRatingsCache();
-  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, isWatchlisted, removeFromWatchlist]);
+  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, isWatchlisted, removeFromWatchlist, saveDraft]);
 
   const handleRateSaved = useCallback(() => {
     setRatePanelOpen(false);
     setEditingReview(null);
     setPendingDraft(null);
     refocusRateBtn();
-  }, []);
+  }, [setPendingDraft]);
 
   const handleCancelRate = useCallback(() => {
     setRatePanelOpen(false);
     setEditingReview(null);
     setPendingDraft(null);
     refocusRateBtn();
-  }, []);
+  }, [setPendingDraft]);
 
   const handleDeleteRating = useCallback(async () => {
     if (!editingReview) return;
@@ -376,7 +356,7 @@ function Inner({
       setEditingReview(null);
       setPendingDraft(null);
     }
-  }, [editingReview, deleteReview, getReviewsForShow, show.id, showToast]);
+  }, [editingReview, deleteReview, getReviewsForShow, show.id, showToast, setPendingDraft]);
 
   // ─── Render ────────────────────────────────────────────────────────────
 
