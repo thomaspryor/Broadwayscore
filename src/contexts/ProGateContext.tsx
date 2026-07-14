@@ -101,10 +101,15 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   const [isClient, setIsClient] = useState(false);
   // Recapture: true when pre-fix modal user needs to be re-shown the modal to capture via Formspree
   const [needsRecapture, setNeedsRecapture] = useState(false);
+  // Time-on-page clock, shared by every dwell-gated passive trigger (exit intent,
+  // mobile scroll). Starts at mount, not at listener-arm time — otherwise flag
+  // latency (mobile A/B) would silently extend the min-time and bias comparisons.
+  const mountTimeRef = useRef<number>(0);
 
   // Load saved user data on mount
   useEffect(() => {
     setIsClient(true);
+    mountTimeRef.current = Date.now();
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       const formspreeSubscribed = isFormspreeSubscribed();
@@ -222,8 +227,15 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     if (!isClient || hasEmail || exitIntentFired || passiveModalFired) return;
 
     const handleMouseLeave = (e: MouseEvent) => {
-      // Only trigger when mouse leaves through the top of the viewport
-      if (e.clientY <= 0 && !modalOpen) {
+      // Only trigger when mouse leaves through the top of the viewport, and only
+      // after a minimum dwell time — without this a reflexive mouse move toward
+      // the tab/address bar milliseconds after load counted as "exit intent"
+      // (2026-07-14 audit: exit_intent was the single largest gate trigger by
+      // volume — 2,253 shown/30d — with zero dwell gate, unlike scroll_depth
+      // which already required minTimeOnPageSec). mountTimeRef is shared with
+      // the mobile-timing effect below; it is set as soon as isClient flips true.
+      const elapsedSec = (Date.now() - mountTimeRef.current) / 1000;
+      if (e.clientY <= 0 && !modalOpen && elapsedSec >= emailCaptureConfig.exitIntent.minTimeOnPageSec) {
         setExitIntentFired(true);
         setPassiveModalFired(true);
         triggerGate(isReturnVisitor ? 'return_visitor' : 'exit_intent', { trigger_source: 'mouseleave' });
@@ -243,12 +255,8 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   // fallback so analysis EXCLUDES those users rather than polluting control).
   // undefined = still resolving (listener stays unarmed); string|null = resolved.
   const [mobileGateFlag, setMobileGateFlag] = useState<string | null | undefined>(undefined);
-  // Time-on-page clock starts at mount, NOT at listener arming — otherwise flag
-  // latency would silently extend control's min-time and bias the comparison.
-  const mountTimeRef = useRef<number>(0);
   useEffect(() => {
     if (!isClient) return;
-    mountTimeRef.current = Date.now();
     if (!emailCaptureConfig.mobileScrollGate.enabled) return;
     // Only resolve on touch devices — the experiment exists only there, and
     // resolving on desktop would put desktop users in PostHog's exposure cohort.

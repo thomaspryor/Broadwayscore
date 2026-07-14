@@ -32,6 +32,16 @@ test('config: passiveGateCooldownDays present and sane in the active preset', ()
   assert.ok(emailCaptureConfig.passiveGateCooldownDays >= 7 && emailCaptureConfig.passiveGateCooldownDays <= 90);
 });
 
+test('config: exit-intent has a non-zero dwell gate in the active preset', () => {
+  // 2026-07-14 audit: exit_intent was the largest gate trigger by volume
+  // (2,253 shown/30d) with NO minimum dwell time — a mouse move toward the
+  // tab bar milliseconds after load counted as "exit intent." Guard against
+  // regressing back to an instant-fire listener.
+  assert.equal(typeof emailCaptureConfig.exitIntent.minTimeOnPageSec, 'number');
+  assert.ok(emailCaptureConfig.exitIntent.minTimeOnPageSec >= 3,
+    'exit intent must wait at least a few seconds before arming');
+});
+
 test('A/B params: end-of-content variant differs from control ONLY as configured, and keeps a scroll-restore guard', () => {
   const control = getMobileGateParams('control');
   const variant = getMobileGateParams('end-of-content');
