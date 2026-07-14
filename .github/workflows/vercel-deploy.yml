@@ -120,15 +120,15 @@ jobs:
     needs: should-deploy
     if: needs.should-deploy.outputs.proceed == 'true'
     runs-on: ubuntu-latest
-    # 25-minute job timeout (raised from 15 on 2026-05-20). The vercel build
-    # step alone takes ~10-12 min for 727+ static pages; the previous 15-min
-    # cap left only 3-5 min for post-deploy steps (smoke tests, Playwright,
-    # stage-latency push). push-with-retry.sh's 7-attempt retry loop (10-45s
-    # jitter each) consumed that window, making jobs show "cancelled" even
-    # after a successful Vercel deploy. The should-deploy SHA check ignores
-    # "cancelled" runs, so the cron kept re-deploying in a self-reinforcing
-    # loop — that's the "1hr+ to go live" pattern. 25 min is still tight
-    # enough to let a hung run be caught quickly.
+    # 25-minute job timeout (raised from 15 on 2026-05-20, when the build took
+    # ~10-12 min and the then-inline stage-latency push-retry loop consumed the
+    # rest, making jobs show "cancelled" even after a successful Vercel deploy.
+    # The should-deploy SHA check ignores "cancelled" runs, so the cron kept
+    # re-deploying in a self-reinforcing loop — the "1hr+ to go live" pattern.)
+    # Since then the build dropped to ~2-3 min (.next/cache persistence,
+    # 2026-05-23) and the stage-latency push moved to the async watermark
+    # workflow (2026-07-13), so 25 min is a generous ceiling that still
+    # catches a hung run quickly.
     timeout-minutes: 25
     concurrency:
       # Per-run group: GH concurrency queue depth is 1, so a shared
