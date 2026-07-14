@@ -83,8 +83,24 @@ export default function MyShowsClient() {
   };
   const [diarySort, setDiarySort] = useState<DiarySort>('date-desc');
   const [watchlistSort, setWatchlistSort] = useState<WatchlistSort>('added-desc');
+  // Grid is the default everywhere (owner, 2026-07-14 — diary was 'list').
+  // The choice persists in localStorage because this page fully remounts on
+  // every show-page round-trip; state-only prefs silently reset (owner report).
+  // Read lazily after mount to avoid an SSG hydration mismatch.
   const [watchlistView, setWatchlistView] = useState<ViewMode>('grid');
-  const [diaryView, setDiaryView] = useState<ViewMode>('list');
+  const [diaryView, setDiaryView] = useState<ViewMode>('grid');
+  useEffect(() => {
+    try {
+      const d = localStorage.getItem('bsc_diary_view');
+      const w = localStorage.getItem('bsc_watchlist_view');
+      if (d === 'list' || d === 'grid') setDiaryView(d);
+      if (w === 'list' || w === 'grid') setWatchlistView(w);
+    } catch { /* storage unavailable */ }
+  }, []);
+  const pickView = useCallback((tab: 'diary' | 'watchlist', mode: ViewMode) => {
+    if (tab === 'diary') setDiaryView(mode); else setWatchlistView(mode);
+    try { localStorage.setItem(tab === 'diary' ? 'bsc_diary_view' : 'bsc_watchlist_view', mode); } catch { /* ignore */ }
+  }, []);
   const [showMap, setShowMap] = useState<ShowMap>({});
   const [showMapLoaded, setShowMapLoaded] = useState(false);
 
@@ -110,6 +126,11 @@ export default function MyShowsClient() {
   const watchlist = isMockMode && mockData ? mockData.watchlist : realWatchlist;
   const listsCount = isMockMode ? 3 : realLists.length;
   const loading = isMockMode ? !mockData : (authLoading || reviewsLoading || watchlistLoading);
+  // Latches after the first successful load so refetches never blank the page.
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
+  useEffect(() => {
+    if (!loading) setHasLoadedOnce(true);
+  }, [loading]);
 
   // Mock-mode mutation handlers — update local state so tests can verify delete/remove/date flows
   const mockDeleteReview = useCallback(async (reviewId: string) => {
@@ -413,7 +434,12 @@ export default function MyShowsClient() {
     );
   }
 
-  if (loading) {
+  if (loading && !hasLoadedOnce) {
+    // Skeleton for the INITIAL load only. Refetches (e.g. onImportComplete →
+    // getAllReviews/getWatchlist) briefly set loading=true again; early-
+    // returning here unmounts the whole page tree — including the import
+    // modal, which lost its "Import Complete" state the moment the import
+    // finished (2026-07-14). Refreshes render the stale list until data lands.
     return (
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8">
         <div className="animate-pulse space-y-4">
@@ -582,7 +608,7 @@ export default function MyShowsClient() {
           <div className="inline-flex flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-8">
             <button
               type="button"
-              onClick={() => activeTab === 'diary' ? setDiaryView('grid') : setWatchlistView('grid')}
+              onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'grid')}
               className={`inline-flex items-center justify-center w-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="Grid view"
             >
@@ -592,7 +618,7 @@ export default function MyShowsClient() {
             </button>
             <button
               type="button"
-              onClick={() => activeTab === 'diary' ? setDiaryView('list') : setWatchlistView('list')}
+              onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'list')}
               className={`inline-flex items-center justify-center w-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
             >
@@ -636,7 +662,7 @@ export default function MyShowsClient() {
           <div className="inline-flex flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-9">
             <button
               type="button"
-              onClick={() => activeTab === 'diary' ? setDiaryView('grid') : setWatchlistView('grid')}
+              onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'grid')}
               className={`inline-flex items-center justify-center w-9 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="Grid view"
             >
@@ -646,7 +672,7 @@ export default function MyShowsClient() {
             </button>
             <button
               type="button"
-              onClick={() => activeTab === 'diary' ? setDiaryView('list') : setWatchlistView('list')}
+              onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'list')}
               className={`inline-flex items-center justify-center w-9 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
             >
@@ -717,11 +743,7 @@ export default function MyShowsClient() {
                           <div key={`wl-${entry.id}`} className="relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
                             <Link href={entryHref} className="absolute inset-0 z-0" aria-label={`View ${entryTitle}`} />
                             <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
-                              {entryShow?.posterUrl ? (
-                                <img src={entryShow.posterUrl} alt="" className="w-full h-full object-cover" />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
-                              )}
+                              <Poster url={entryShow?.posterUrl} iconClass="text-xl" />
                             </div>
                             <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
                               <h4 className="font-bold text-white text-base truncate">{entryTitle}</h4>
@@ -815,15 +837,19 @@ export default function MyShowsClient() {
                 // Group past reviews by year (from date_seen or created_at)
                 const reviewsByYear: Record<string, UserReview[]> = {};
                 for (const review of pastReviews) {
-                  const dateStr = review.date_seen || review.created_at;
-                  const year = dateStr ? new Date(dateStr.includes('T') ? dateStr : dateStr + 'T00:00:00').getFullYear().toString() : 'Unknown';
+                  // Group by date_seen ONLY. The old created_at fallback filed
+                  // undated imports under the year they were IMPORTED, silently
+                  // mixing them into real viewing history (owner report,
+                  // 2026-07-14: undated Show Score reviews showed as 2026).
+                  const dateStr = review.date_seen;
+                  const year = dateStr ? new Date(dateStr.includes('T') ? dateStr : dateStr + 'T00:00:00').getFullYear().toString() : 'No date';
                   if (!reviewsByYear[year]) reviewsByYear[year] = [];
                   reviewsByYear[year].push(review);
                 }
-                // Sort years descending (newest first), with 'Unknown' at end
+                // Sort years descending (newest first), with 'No date' at end
                 const sortedYears = Object.keys(reviewsByYear).sort((a, b) => {
-                  if (a === 'Unknown') return 1;
-                  if (b === 'Unknown') return -1;
+                  if (a === 'No date') return 1;
+                  if (b === 'No date') return -1;
                   return diarySort === 'date-asc' ? a.localeCompare(b) : b.localeCompare(a);
                 });
                 const hasOtherSections = upcomingReviews.length > 0 || upcomingWatchlistEntries.length > 0 || toBeRatedEntries.length > 0;
@@ -1085,11 +1111,7 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
 
       {/* Poster — square thumbnail to match homepage cards */}
       <div className="relative z-[1] pointer-events-none flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay">
-        {show?.posterUrl ? (
-          <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
-        )}
+        <Poster url={show?.posterUrl} iconClass="text-xl" />
       </div>
 
       {/* Info — date above review text, consistent font sizes */}
@@ -1167,11 +1189,7 @@ function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string; p
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
       <Link href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay">
-          {posterUrl ? (
-            <img src={posterUrl} alt="" className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl">🎭</div>
-          )}
+          <Poster url={posterUrl} iconClass="text-3xl" />
         </div>
         {/* Remove button — hidden on mobile, visible on hover on desktop */}
         <button
@@ -1194,6 +1212,19 @@ function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string; p
   );
 }
 
+
+/** Poster image that degrades to the 🎭 placeholder when the URL is missing
+ *  OR fails to load — a stored poster path that 404s otherwise renders as a
+ *  broken-image icon in the diary grid (owner report, 2026-07-14). */
+function Poster({ url, iconClass = 'text-3xl' }: { url: string | null | undefined; iconClass?: string }) {
+  const [broken, setBroken] = useState(false);
+  if (!url || broken) {
+    return <div className={`w-full h-full flex items-center justify-center text-gray-600 ${iconClass}`}>🎭</div>;
+  }
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={url} alt="" className="w-full h-full object-cover" onError={() => setBroken(true)} />;
+}
+
 function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: ShowLookup; onDelete?: () => void }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   useEffect(() => {
@@ -1210,11 +1241,7 @@ function DiaryGridCard({ review, show, onDelete }: { review: UserReview; show?: 
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
       <Link href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay">
-          {show?.posterUrl ? (
-            <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl">🎭</div>
-          )}
+          <Poster url={show?.posterUrl} iconClass="text-3xl" />
         </div>
         {/* Written-note preview on hover (desktop) — grid view otherwise hides
             the note entirely (owner request, 2026-07-13) */}
@@ -1287,11 +1314,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
     <div className="group/wl flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
       <Link href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay relative">
-          {show?.posterUrl ? (
-            <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl">🎭</div>
-          )}
+          <Poster url={show?.posterUrl} iconClass="text-3xl" />
           {isClosingSoon && (
             <span className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">
               Closing Soon
@@ -1451,11 +1474,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
       <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />
 
       <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay">
-        {show?.posterUrl ? (
-          <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
-        )}
+        <Poster url={show?.posterUrl} iconClass="text-xl" />
       </div>
 
       <div className="relative z-[1] flex-1 min-w-0">
@@ -1620,11 +1639,7 @@ function ToBeRatedCard({ entry, show, onRemove }: { entry: WatchlistEntry; show?
     <div className="relative flex items-center gap-3 px-3 sm:px-5 py-3 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/20 hover:bg-amber-500/[0.06] transition-colors">
       <Link href={href} className="absolute inset-0 z-0" aria-label={`Rate ${title}`} />
       <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
-        {show?.posterUrl ? (
-          <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
-        )}
+        <Poster url={show?.posterUrl} iconClass="text-xl" />
       </div>
       {/* Mobile: stars stack UNDER the title so it stays legible (a side-by-side
           row crushed titles to one character at 390px — 2026-07-12 design pass).
