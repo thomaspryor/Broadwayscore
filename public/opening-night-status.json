@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T02:53:50.791Z",
+  "generatedAt": "2026-07-14T06:59:19.169Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,28 +12,27 @@
       "status": "previews",
       "slug": "the-whoopi-monologues-off-broadway",
       "thumbnail": "/images/shows/the-whoopi-monologues-off-broadway-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "siteScore": 72.88,
+      "liveScore": 73,
+      "scoreDrift": 0.12000000000000455,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 0,
+      "total": 4,
       "t1": 0,
-      "t2": 0,
+      "t2": 4,
       "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "positive": 2,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "4/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -121,19 +120,11 @@
           "isDualMarket": false
         },
         {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
           "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
           "isDualMarket": false
         },
         {
@@ -146,10 +137,6 @@
         },
         {
           "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
           "isDualMarket": false
         },
         {
@@ -379,6 +366,20 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-07-14T06:37:20.822Z",
+          "rc": 4,
+          "s": 72.88,
+          "t1": 0,
+          "t2": 4,
+          "t3": 0,
+          "p": 2,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
