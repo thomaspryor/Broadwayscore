@@ -21,6 +21,9 @@ interface SearchShow {
   images?: { thumbnail?: string };
   prods?: { id: string; v?: string; ci?: string; co?: string; cat?: string }[];
   gid?: string;
+  /** Opening/closing dates (YYYY-MM-DD) for date-aware matching. */
+  od?: string;
+  cd?: string;
 }
 
 interface MatchedEntry {
@@ -123,7 +126,24 @@ export default function ImportShows({
     });
   }, []);
 
-  const matchShow = useCallback((name: string, venue?: string): { match: SearchShow | null; score: number } => {
+  /** Downgrade a match whose production can't have been running when the
+   *  user saw it. History Boys logged in 2025 must not attach to the 2006
+   *  Broadway run (Mezzanine import mismatches, 2026-07-14): a demoted match
+   *  falls below the 0.7 bar and surfaces as "Not on Broadway Scorecard"
+   *  instead of silently writing the wrong show. 90-day grace on both ends
+   *  covers previews and lingering post-closing dates; shows without a
+   *  closing date (open/unknown) are never demoted on the tail end. */
+  const dateSanity = (candidate: SearchShow, dateSeen?: string | null): number => {
+    if (!dateSeen) return 1;
+    const seen = Date.parse(dateSeen);
+    if (Number.isNaN(seen)) return 1;
+    const GRACE = 90 * 24 * 3600 * 1000;
+    if (candidate.od && seen < Date.parse(candidate.od) - GRACE) return 0.4;
+    if (candidate.cd && seen > Date.parse(candidate.cd) + GRACE) return 0.4;
+    return 1;
+  };
+
+  const matchShow = useCallback((name: string, venue?: string, dateSeen?: string | null): { match: SearchShow | null; score: number } => {
     if (!fuseRef.current) return { match: null, score: 0 };
     const nameLower = name.toLowerCase();
 
@@ -135,10 +155,27 @@ export default function ImportShows({
         const venueMatch = exactAll.find(s =>
           s.venue && s.venue.toLowerCase().replace(/theatre|theater/gi, '').trim().includes(venueNorm)
         );
-        if (venueMatch) return { match: venueMatch, score: 1 };
+        if (venueMatch) return { match: venueMatch, score: 1 * dateSanity(venueMatch, dateSeen) };
         // No venue match among exact titles — fall through to Fuse for better matching
       } else {
-        return { match: exactAll[0], score: 1 };
+        // Same title, multiple productions (revivals/transfers): pick the run
+        // the user's date falls inside, else the one that opened closest to
+        // it. The old exactAll[0] grabbed whichever production happened to be
+        // first in the file — the root cause of the 2026-03-05 Mezzanine
+        // mismatches (History Boys 2006, Prince of Broadway 2017, ...).
+        let best = exactAll[0];
+        if (dateSeen && exactAll.length > 1) {
+          const seen = Date.parse(dateSeen);
+          const distance = (s: SearchShow) => {
+            if (!s.od) return Number.MAX_SAFE_INTEGER;
+            const od = Date.parse(s.od);
+            const cd = s.cd ? Date.parse(s.cd) : Number.POSITIVE_INFINITY;
+            if (seen >= od && seen <= cd) return 0; // inside the run
+            return Math.min(Math.abs(seen - od), Number.isFinite(cd) ? Math.abs(seen - cd) : Number.MAX_SAFE_INTEGER);
+          };
+          best = [...exactAll].sort((a, b) => distance(a) - distance(b))[0];
+        }
+        return { match: best, score: 1 * dateSanity(best, dateSeen) };
       }
     }
 
@@ -146,7 +183,7 @@ export default function ImportShows({
     const results = fuseRef.current.search(name, { limit: 5 });
     if (results.length === 0) {
       // Fall back to first exact match if Fuse found nothing
-      if (exactAll.length > 0) return { match: exactAll[0], score: 1 };
+      if (exactAll.length > 0) return { match: exactAll[0], score: 1 * dateSanity(exactAll[0], dateSeen) };
       return { match: null, score: 0 };
     }
 
@@ -156,7 +193,7 @@ export default function ImportShows({
       const venueMatch = results.find(r =>
         r.item.venue && r.item.venue.toLowerCase().replace(/theatre|theater/gi, '').trim().includes(venueNorm)
       );
-      if (venueMatch) return { match: venueMatch.item, score: 1 - (venueMatch.score || 0) };
+      if (venueMatch) return { match: venueMatch.item, score: (1 - (venueMatch.score || 0)) * dateSanity(venueMatch.item, dateSeen) };
     }
 
     const best = results[0];
@@ -166,7 +203,7 @@ export default function ImportShows({
     const nameL = name.toLowerCase();
     const matchL = best.item.title.toLowerCase();
     const contained = nameL.includes(matchL) || matchL.includes(nameL);
-    return { match: best.item, score: contained ? score : score * 0.6 };
+    return { match: best.item, score: (contained ? score : score * 0.6) * dateSanity(best.item, dateSeen) };
   }, []);
 
   /** Match raw source entries against our catalog and apply selection
@@ -177,7 +214,7 @@ export default function ImportShows({
     const diaryShowIds = new Set<string>();
 
     for (const raw of acquired.entries.filter(e => e.kind === 'diary')) {
-      const { match, score } = matchShow(raw.title, raw.venue || undefined);
+      const { match, score } = matchShow(raw.title, raw.venue || undefined, raw.date);
       const showId = match?.id || '';
       const alreadyReviewed = showId ? existingReviewShowIds.has(showId) : false;
       matched.push({
@@ -196,7 +233,7 @@ export default function ImportShows({
     }
 
     for (const raw of acquired.entries.filter(e => e.kind === 'watchlist')) {
-      const { match, score } = matchShow(raw.title, raw.venue || undefined);
+      const { match, score } = matchShow(raw.title, raw.venue || undefined, raw.date);
       const showId = match?.id || '';
       const alreadyWatchlisted = showId ? existingWatchlistShowIds.has(showId) : false;
       const alreadyReviewed = showId ? existingReviewShowIds.has(showId) : false;
@@ -254,6 +291,18 @@ export default function ImportShows({
     }
   }, [matchAndPreview, profileInput]);
 
+  // Indexed views: rows carry their index into `entries` so toggleEntry works
+  // regardless of how the display lists are filtered/split (the old
+  // "diaryEntries.length + i" offset math broke as soon as sections stopped
+  // being a straight partition of `entries`).
+  const indexedEntries = useMemo(() => entries.map((entry, idx) => ({ entry, idx })), [entries]);
+  const isUnmatched = (e: MatchedEntry) => !e.match || e.matchScore <= 0.7;
+  const diaryRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.type === 'diary' && !isUnmatched(entry)), [indexedEntries]);
+  const watchlistRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.type === 'watchlist' && !isUnmatched(entry)), [indexedEntries]);
+  // Grouped instead of scattered through the main list, and re-shown on the
+  // done step: these are the user's to-do list for manual adds (owner
+  // request, 2026-07-14).
+  const unmatchedRows = useMemo(() => indexedEntries.filter(({ entry }) => isUnmatched(entry)), [indexedEntries]);
   const diaryEntries = useMemo(() => entries.filter(e => e.type === 'diary'), [entries]);
   const watchlistEntries = useMemo(() => entries.filter(e => e.type === 'watchlist'), [entries]);
   const selectedDiary = useMemo(() => diaryEntries.filter(e => e.selected && e.match), [diaryEntries]);
@@ -481,30 +530,43 @@ export default function ImportShows({
               </p>
 
               {/* Diary entries */}
-              {diaryEntries.length > 0 && (
+              {diaryRows.length > 0 && (
                 <div className="mb-4">
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                    Diary — {selectedDiary.length} of {diaryEntries.length} selected
+                    Diary — {selectedDiary.length} of {diaryRows.length} selected
                   </h4>
                   <div className="space-y-1 max-h-48 overflow-y-auto">
-                    {diaryEntries.map((entry, i) => (
-                      <ImportEntryRow key={`d-${i}`} entry={entry} index={i} onToggle={toggleEntry} />
+                    {diaryRows.map(({ entry, idx }) => (
+                      <ImportEntryRow key={`d-${idx}`} entry={entry} index={idx} onToggle={toggleEntry} />
                     ))}
                   </div>
                 </div>
               )}
 
               {/* Watchlist entries */}
-              {watchlistEntries.length > 0 && (
+              {watchlistRows.length > 0 && (
                 <div className="mb-4">
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                    Watchlist — {selectedWatchlist.length} of {watchlistEntries.length} selected
+                    Watchlist — {selectedWatchlist.length} of {watchlistRows.length} selected
                   </h4>
                   <div className="space-y-1 max-h-32 overflow-y-auto">
-                    {watchlistEntries.map((entry, i) => {
-                      const globalIndex = diaryEntries.length + i;
-                      return <ImportEntryRow key={`w-${i}`} entry={entry} index={globalIndex} onToggle={toggleEntry} />;
-                    })}
+                    {watchlistRows.map(({ entry, idx }) => (
+                      <ImportEntryRow key={`w-${idx}`} entry={entry} index={idx} onToggle={toggleEntry} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Unmatched — grouped so they're findable, not scattered */}
+              {unmatchedRows.length > 0 && (
+                <div className="mb-4">
+                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                    Not on Broadway Scorecard ({unmatchedRows.length})
+                  </h4>
+                  <div className="space-y-1 max-h-32 overflow-y-auto">
+                    {unmatchedRows.map(({ entry, idx }) => (
+                      <ImportEntryRow key={`u-${idx}`} entry={entry} index={idx} onToggle={toggleEntry} />
+                    ))}
                   </div>
                 </div>
               )}
@@ -521,11 +583,37 @@ export default function ImportShows({
 
           {/* Done step */}
           {step === 'done' && (
-            <div className="text-center py-6">
-              <div className="text-3xl mb-3">🎉</div>
-              <p className="text-lg font-bold text-white mb-2">{importStats.imported} shows imported</p>
-              {importStats.skipped > 0 && <p className="text-sm text-gray-400">{importStats.skipped} already existed (skipped)</p>}
-              {importStats.errors > 0 && <p className="text-sm text-red-400">{importStats.errors} failed</p>}
+            <div className="py-6">
+              <div className="text-center">
+                <div className="text-3xl mb-3">🎉</div>
+                <p className="text-lg font-bold text-white mb-2">{importStats.imported} shows imported</p>
+                {importStats.skipped > 0 && <p className="text-sm text-gray-400">{importStats.skipped} already existed (skipped)</p>}
+                {importStats.errors > 0 && <p className="text-sm text-red-400">{importStats.errors} failed</p>}
+              </div>
+              {/* The unmatched list is the user's takeaway: which of their
+                  shows couldn't come along, so they can search for them
+                  manually or tell us to add them. */}
+              {unmatchedRows.length > 0 && (
+                <div className="mt-5 text-left">
+                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                    Not imported — {unmatchedRows.length} show{unmatchedRows.length === 1 ? '' : 's'} we couldn&apos;t find on Broadway Scorecard
+                  </h4>
+                  <ul className="space-y-1 max-h-40 overflow-y-auto text-sm text-gray-300">
+                    {unmatchedRows.map(({ entry, idx }) => (
+                      <li key={`nu-${idx}`} className="px-2.5 py-1 rounded bg-white/5 flex items-baseline gap-2">
+                        <span className="truncate">{entry.sourceTitle}</span>
+                        {entry.sourceRating && (
+                          <span className="text-xs text-amber-400 flex-shrink-0">★ {entry.sourceRating}</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Try the <span className="text-gray-300">Add show</span> search (spellings sometimes differ), or{' '}
+                    <a href="/feedback" className="text-brand hover:underline">ask us to add them</a>.
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </div>
