@@ -55,6 +55,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { execErrorDetail } = require('./lib/exec-error-detail');
 const {
   FLAGGED_RECOVERY_CAP,
   isEmptyBodyFile,
@@ -941,7 +942,7 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     execFileSync('node', args, { stdio: 'pipe', timeout: 120000 });
     return { ok: true, reason: null, provisional };
   } catch (e) {
-    return { ok: false, reason: e.message.split('\n')[0].slice(0, 100), provisional };
+    return { ok: false, reason: execErrorDetail(e, 100), provisional };
   }
 }
 
@@ -1021,7 +1022,7 @@ function recoverEmptyBodyFlaggedMiss(showId, m) {
     execFileSync('node', iargs, { stdio: 'pipe', timeout: 120000 });
     ingestExit = true;
   } catch (e) {
-    reason = e.message.split('\n')[0].slice(0, 100);
+    reason = execErrorDetail(e, 100);
   }
   // "recovered" = the empty file is now ACTUALLY filled — NOT merely that the child
   // exited 0. ingest-review-from-url.js exits 0 on a no-op skip ("already exists",
