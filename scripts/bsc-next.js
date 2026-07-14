@@ -75,6 +75,11 @@ const { EXCLUDED_CATEGORIES, categoryOf, isExcludedCategory } = require('./lib/a
 // for the full resolution order and why it reuses (not duplicates) the
 // nightly loop's model policy.
 const { resolveModel } = require('./lib/bsc-next-model.js');
+
+// Cmux workspace naming (owner scope-add, card #168, 2026-07-14): auto-
+// dispatched workspaces get "🤖 <Project>·<subject>" so the sidebar is
+// scannable without opening every tab. See scripts/lib/workspace-naming.js.
+const { projectOf, buildAutoTitle, stripAutoPrefix } = require('./lib/workspace-naming.js');
 // The triage queue is a single canonical instance on the main checkout (like
 // notion-brain.js above) — anchor to REPO, not __dirname, so a dispatch
 // launched from inside a worktree still reads the real queue, not an empty
@@ -122,7 +127,11 @@ function findLiveWorkspaceForTask(task, workspaces, isDone) {
   const launchTitle = task.subject.slice(0, 50);
   return workspaces.find(w => {
     if (isDone(w.title)) return false;      // finished — sweep will close it
-    const t = String(w.title).replace(/^[^\p{L}\p{N}[]+/u, '');
+    // Strip cmux's own activity-glyph prefix (spinner/✳/etc — also eats the
+    // 🤖 auto-dispatch emoji, since it isn't a letter/digit), THEN strip the
+    // "<Project>·" naming prefix (scope add, card #168) so a live auto-
+    // dispatched workspace still matches its raw task subject.
+    const t = stripAutoPrefix(String(w.title).replace(/^[^\p{L}\p{N}[]+/u, ''));
     const n = Math.min(t.length, launchTitle.length);
     return n >= 20 && t.slice(0, n) === launchTitle.slice(0, n);
   }) || null;
@@ -133,7 +142,7 @@ function notionIdOf(task) {
   return m ? m[1] : null;
 }
 
-function buildSeed(task, card) {
+function buildSeed(task, card, project) {
   const url = (card && card.url) || ((task.description || '').match(/https?:\/\/\S+/) || [''])[0];
   const notes = (card && card.notes) || task.description || '(no description)';
   const meta = [
@@ -154,6 +163,21 @@ function buildSeed(task, card) {
     meta || null,
     ``,
     notes,
+    ``,
+    // Owner scope-add (card #168, 2026-07-14): "I can't see Sprint 3 anywhere"
+    // — a multi-phase card's workspace title should always show the CURRENT
+    // phase, not just its launch-time subject. --workspace defaults to the
+    // current pane, so no ref lookup is needed.
+    //
+    // IMPORTANT (ship-check P1 catch, 2026-07-14): the ✅ auto-mark hook and
+    // the duplicate-dispatch guard both key off this EXACT title as a
+    // prefix — a rename that drops the subject entirely (e.g. renaming to
+    // just "🤖 Infra·Sprint 3 wiring") makes both silently stop matching,
+    // so the workspace never gets ✅-marked/pruned and a second dispatch onto
+    // the same task goes undetected. The instruction below therefore tells
+    // the session to APPEND phase text after the unchanged launch title,
+    // never to replace it.
+    project ? `This workspace is named "${buildAutoTitle({ subject: task.subject, project })}" — the 🤖 marks it as auto-dispatched (safe to ignore; it reports via cards+email), "${project}" is its project bucket. If this card has multiple phases/sprints, you may APPEND the current phase after this exact title (never replace or shorten it — the ✅ auto-mark hook and duplicate-dispatch guard match on this title as a prefix): \`cmux workspace-action --action rename --title "${buildAutoTitle({ subject: task.subject, project })} — <current phase>"\`.` : null,
     ``,
     // Standing anti-stale-seed instruction (chain break #1, 2026-07-12): a
     // launched session's seed is a snapshot — directives added to the card
@@ -192,10 +216,22 @@ function pollUntil(fn, timeoutSec) {
   }
 }
 
-function launchCmux(task, seed, commandOverride, model = 'sonnet') {
+// Best-effort color-code (scope add, card #168): auto-dispatched workspaces
+// go Blue so the owner can distinguish "safe to ignore" tabs from ones they
+// opened themselves at a glance. Never blocks or fails the dispatch — a
+// verified-running claude session matters more than its tab color.
+function setAutoColor(ref) {
+  try { spawnSync(CMUX, ['workspace-action', '--action', 'set-color', '--color', 'Blue', '--workspace', ref], { encoding: 'utf8', timeout: 3000 }); } catch { /* cosmetic only */ }
+}
+
+function launchCmux(task, seed, commandOverride, model = 'sonnet', project = null) {
   const seedFile = path.join(os.tmpdir(), `bsc-seed-${task.id}.txt`);
   fs.writeFileSync(seedFile, seed);
-  const title = task.subject.slice(0, 50);
+  // Auto-dispatch naming (scope add, card #168): "🤖 <Project>·<subject>" so
+  // the cmux sidebar is scannable at a glance. project is only null in the
+  // --exec test seam / callers that bypass main()'s inference — falls back
+  // to the plain subject slice (pre-existing behavior) so nothing breaks.
+  const title = project ? buildAutoTitle({ subject: task.subject, project }) : task.subject.slice(0, 50);
   // The wrapper script expands $(cat …) so the multi-line prompt survives
   // without brittle inline quoting. `claude "<prompt>"` opens interactive on it.
   // --dangerously-skip-permissions: launched sessions must never permission-ping
@@ -238,6 +274,7 @@ function launchCmux(task, seed, commandOverride, model = 'sonnet') {
     // + claude cold start can exceed 15s post-reboot, and a false timeout
     // kills a healthy launch (ship-check reviewer finding, 2026-07-12).
     if (ws && pollUntil(() => cmuxws.claudeRunningIn(ws.ref), 30)) {
+      if (project) setAutoColor(ws.ref);
       return { ok: true, ref: ws.ref, seedFile, command };
     }
     if (attempt === 1) {
@@ -245,6 +282,7 @@ function launchCmux(task, seed, commandOverride, model = 'sonnet') {
       // registered at the buzzer isn't killed as a corpse.
       sleepSec(2);
       if (ws && cmuxws.claudeRunningIn(ws.ref)) {
+        if (project) setAutoColor(ws.ref);
         return { ok: true, ref: ws.ref, seedFile, command };
       }
       if (ws) { try { cmuxws.closeWorkspace(ws.ref); } catch { /* already gone */ } }
@@ -305,7 +343,15 @@ function main() {
 
   const pid = notionIdOf(task);
   const card = pid ? fetchCard(pid) : null;
-  const seed = buildSeed(task, card);
+  // Project bucket for auto-dispatch naming/coloring (scope add, card #168):
+  // prefer the full card's tags/category (richer than the task-mirror line),
+  // fall back to the mirror's categoryOf() for native/bridge-less tasks.
+  const project = projectOf({
+    tags: card && card.tags,
+    category: (card && card.category) || categoryOf(task),
+    subject: task.subject,
+  });
+  const seed = buildSeed(task, card, project);
 
   // Dispatched sessions never inherit the user's interactive default (Fable —
   // 9 Fable workspaces in one night, 2026-07-13): explicit --model wins,
@@ -354,7 +400,7 @@ function main() {
     }
   }
 
-  const res = launchCmux(task, seed, undefined, model);
+  const res = launchCmux(task, seed, undefined, model, project);
   if (res.ok) {
     console.log(`[bsc-next] opened Cmux workspace ${res.ref} on #${task.id}: ${task.subject} (claude verified running)`);
   } else {

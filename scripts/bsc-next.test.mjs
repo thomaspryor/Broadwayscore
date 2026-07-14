@@ -17,6 +17,15 @@ test('findLiveWorkspaceForTask: matches glyph-prefixed and truncated titles, ski
   assert.equal(findLiveWorkspaceForTask(task, [ws('✅ Triage 27 open needs-manual-review feedback issu')], isDoneTitle), null);
   // unrelated + too-short prefixes don't match
   assert.equal(findLiveWorkspaceForTask(task, [ws('Redesign show pages'), ws('Triage 27')], isDoneTitle), null);
+  // auto-dispatch naming (scope add, card #168): "🤖 <Project>·<subject>" —
+  // the duplicate-dispatch guard must still recognize its own launch title.
+  assert.equal(findLiveWorkspaceForTask(task, [ws('🤖 Infra·Triage 27 open needs-manual-review feedback issu')], isDoneTitle).ref, 'workspace:1');
+  // ship-check P1 catch: a compliant phase-rename APPENDS text after the
+  // launch title (never replaces it — see buildSeed's rename instruction) —
+  // the guard must still recognize the workspace as live on this task.
+  // (task.subject here is exactly 50 chars, so the launch title carries the
+  // FULL subject, unlike the truncation fixtures above.)
+  assert.equal(findLiveWorkspaceForTask(task, [ws('🤖 Infra·Triage 27 open needs-manual-review feedback issues — Sprint 2')], isDoneTitle).ref, 'workspace:1');
 });
 
 const TASKS = [
@@ -106,6 +115,23 @@ test('buildSeed always appends the re-read-before-wrap-up instruction', () => {
     assert.match(seed, /dispatch the next workspace yourself/);
     assert.match(seed, /never end by telling the user to paste a prompt/);
   }
+});
+
+test('buildSeed: with a project, instructs the session to APPEND (never replace) phase text on rename', () => {
+  const seed = buildSeed(TASKS[1], { url: 'https://n/x', notes: 'n', priority: 'P1' }, 'Infra');
+  assert.match(seed, /🤖 Infra·P1 pending/);
+  assert.match(seed, /APPEND the current phase after this exact title/);
+  assert.match(seed, /never replace or shorten it/);
+  // ship-check P1: the rename command must carry the FULL unchanged launch
+  // title, not a placeholder — otherwise the ✅ hook / dup-dispatch guard
+  // stop matching the moment a session follows this instruction.
+  assert.match(seed, /cmux workspace-action --action rename --title "🤖 Infra·P1 pending — <current phase>"/);
+});
+
+test('buildSeed: without a project (backward-compat callers), omits the rename instruction entirely', () => {
+  const seed = buildSeed(TASKS[1], { url: 'https://n/x', notes: 'n', priority: 'P1' });
+  assert.doesNotMatch(seed, /APPEND the current phase/);
+  assert.doesNotMatch(seed, /🤖/);
 });
 
 test('category filter: Marketing/Partnerships never default-picked, --id still works', () => {
