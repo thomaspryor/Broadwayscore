@@ -1,22 +1,40 @@
 {
   "processed": [],
   "failed": [
-    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
-    "dukes-off-broadway-2026/theatermania--unknown.json",
-    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    "tender-off-west-end-2026/guardian--arifa-akbar.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-14T06:31:27.878Z",
-  "lastProcessed": "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-  "log": []
+  "startTime": "2026-07-14T06:31:34.410Z",
+  "lastProcessed": "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+  "log": [
+    {
+      "t": "2026-07-14T06:33:01.869Z",
+      "event": "bb-session",
+      "session": "a8fccecd",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-14T06:33:02.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
