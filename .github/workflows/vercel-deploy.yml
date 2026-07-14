@@ -120,15 +120,15 @@ jobs:
     needs: should-deploy
     if: needs.should-deploy.outputs.proceed == 'true'
     runs-on: ubuntu-latest
-    # 25-minute job timeout (raised from 15 on 2026-05-20). The vercel build
-    # step alone takes ~10-12 min for 727+ static pages; the previous 15-min
-    # cap left only 3-5 min for post-deploy steps (smoke tests, Playwright,
-    # stage-latency push). push-with-retry.sh's 7-attempt retry loop (10-45s
-    # jitter each) consumed that window, making jobs show "cancelled" even
-    # after a successful Vercel deploy. The should-deploy SHA check ignores
-    # "cancelled" runs, so the cron kept re-deploying in a self-reinforcing
-    # loop — that's the "1hr+ to go live" pattern. 25 min is still tight
-    # enough to let a hung run be caught quickly.
+    # 25-minute job timeout (raised from 15 on 2026-05-20, when the build took
+    # ~10-12 min and the then-inline stage-latency push-retry loop consumed the
+    # rest, making jobs show "cancelled" even after a successful Vercel deploy.
+    # The should-deploy SHA check ignores "cancelled" runs, so the cron kept
+    # re-deploying in a self-reinforcing loop — the "1hr+ to go live" pattern.)
+    # Since then the build dropped to ~2-3 min (.next/cache persistence,
+    # 2026-05-23) and the stage-latency push moved to the async watermark
+    # workflow (2026-07-13), so 25 min is a generous ceiling that still
+    # catches a hung run quickly.
     timeout-minutes: 25
     concurrency:
       # Per-run group: GH concurrency queue depth is 1, so a shared
@@ -305,6 +305,7 @@ jobs:
           echo "Build completed in ${BUILD_SECS}s"
 
       - name: Deploy to Production
+        id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
@@ -316,6 +317,7 @@ jobs:
           # Source: https://vercel.com/changelog/cli-archive-deployments-are-now-up-to-30-faster-with-split-tgz-archive
           URL=$(npx vercel deploy --prebuilt --prod --archive=split-tgz --token=$VERCEL_TOKEN)
           echo "Deployed to production: $URL"
+          echo "deployed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
 
       - name: Check build duration
         if: always() && steps.build.outputs.build_seconds
@@ -395,31 +397,23 @@ jobs:
       - name: Content smoke test (Playwright)
         run: npx playwright test --project=chromium tests/e2e/smoke.spec.ts
 
-      - name: Emit deployed-live stage-latency event
-        if: success()
-        continue-on-error: true
-        timeout-minutes: 3
-        env:
-          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          node -e "
-            const { emitStage } = require('./scripts/lib/stage-latency');
-            emitStage({ stage: 'deployed-live', metadata: { runId: '${{ github.run_id }}', sha: '${{ github.sha }}' } });
-          "
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add data/audit/stage-latency.jsonl || true
-          git diff --cached --quiet || git commit -m "audit: stage-latency deployed-live [${{ github.run_id }}]"
-          bash scripts/lib/push-with-retry.sh || echo "::warning::stage-latency push failed (non-critical)"
-
-      - name: Dispatch async watermark update
+      - name: Dispatch async watermark + stage-latency update
         if: success()
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh workflow run update-deploy-watermark.yml || echo "::warning::Watermark dispatch failed (non-critical)"
+          # The deployed-live stage-latency emit rides along with the watermark
+          # workflow (2026-07-13). It used to be an inline commit+push step here,
+          # but push-with-retry lost the race against busy main and burned its
+          # full 3-min timeout on most deploys (~5 CI-hours/day) — often losing
+          # the event anyway. The watermark run appends the event with the
+          # deployed_at timestamp captured above and commits it in one push.
+          gh workflow run update-deploy-watermark.yml \
+            -f deployed_at='${{ steps.deploy.outputs.deployed_at }}' \
+            -f deploy_sha='${{ github.sha }}' \
+            -f deploy_run_id='${{ github.run_id }}' \
+            || echo "::warning::Watermark dispatch failed (non-critical)"
 
       - name: Notify search engines of updated sitemap
         if: success()
