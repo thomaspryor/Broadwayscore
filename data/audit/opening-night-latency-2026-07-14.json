@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-14T11:47:54.381Z",
+  "generatedAt": "2026-07-14T12:44:59.017Z",
   "date": "2026-07-14",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 166130,
+  "entryCount": 166176,
   "shows": [
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -6401,7 +6401,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1420330,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
