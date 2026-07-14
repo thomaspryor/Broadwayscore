@@ -97,7 +97,12 @@
     "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
     "the-potluck-off-broadway-2026/nyt-theater--jonathan-mandell.json",
     "music-city-off-broadway-2026/deadline--greg-evans.json",
-    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/nytimes--ben-brantley.json",
+    "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
@@ -955,7 +960,12 @@
     "music-city-off-broadway-2026/observer--unknown.json",
     "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
     "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
-    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json"
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json",
+    "gotta-dance-off-broadway-2026/timeout--unknown.json",
+    "gotta-dance-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "every-brilliant-thing-2026/latimes--unknown.json",
+    "every-brilliant-thing-2026/standard--nick-curtis.json"
   ],
   "failed": [],
   "skipped": [],
@@ -1023,7 +1033,10 @@
       "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
       "the-potluck-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1038,18 +1051,42 @@
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "vanya-off-broadway-2025/nytimes--jesse-green.json",
+      "vanya-off-broadway-2025/theatrely--unknown.json",
+      "between-two-knees-off-broadway-2024/nytimes--naveen-kumar.json",
+      "between-two-knees-off-broadway-2024/nytimes--unknown.json",
+      "primary-trust-off-broadway-2023/nytimes--naveen-kumar.json",
+      "a-midsummer-nights-dream-west-end-2026/telegraph--claire-allfree.json",
+      "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+      "cats-the-jellicle-ball-2026/nytimes--jesse-green.json",
+      "every-brilliant-thing-2026/nytimes--ben-brantley.json"
+    ],
+    "brightdata": [
+      "vanya-off-broadway-2025/thewrap--robert-hofler.json",
+      "vanya-off-broadway-2025/amny--unknown.json",
+      "vanya-off-broadway-2025/latimes--unknown.json",
+      "primary-trust-off-broadway-2023/thewrap--robert-hofler.json",
+      "primary-trust-off-broadway-2023/cititour--brian-scott-lipton.json",
+      "primary-trust-off-broadway-2023/dailybeast--unknown.json",
+      "king-hedley-ii-2001/talkinbroadway--unknown.json",
+      "the-balusters-2026/broadwayworld--unknown.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json"
+    ],
     "archiveToday": [
       "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-07-13T17:41:44.062Z",
-  "lastProcessed": "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+  "lastProcessed": "every-brilliant-thing-2026/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-07-13T17:43:32.680Z",
@@ -1138,6 +1175,17 @@
       "t": "2026-07-14T05:35:22.266Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-14T05:37:14.687Z",
+      "event": "bb-session",
+      "session": "c20550b5",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-07-14T05:37:15.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

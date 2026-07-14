@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-14T05:35:52.164Z",
-  "processed": 98,
-  "failed": 900,
-  "successRate": "9.8%",
+  "updatedAt": "2026-07-14T05:38:11.218Z",
+  "processed": 103,
+  "failed": 905,
+  "successRate": "10.2%",
   "tierBreakdown": {
-    "playwright": 63,
+    "playwright": 66,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 0
+    "scrapingbee": 10,
+    "brightdata": 10,
+    "archiveToday": 31,
+    "archive": 12
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-07-13T17:43:32.680Z",
@@ -102,6 +102,17 @@
       "t": "2026-07-14T05:35:22.266Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-14T05:37:14.687Z",
+      "event": "bb-session",
+      "session": "c20550b5",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-07-14T05:37:15.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
