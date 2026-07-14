@@ -249,7 +249,13 @@ async function main() {
   // Find target shows: closed Broadway, target seasons, missing from pending
   let targets;
   if (SHOW_LIST) {
-    targets = allShows.filter(s => SHOW_LIST.includes(s.id));
+    // Explicit lists are still scope-filtered (same contract as batch-
+    // commercial-research; deep-research --shows --force is the sole bypass).
+    targets = allShows.filter(s => SHOW_LIST.includes(s.id)).filter(s => {
+      if (isCommercialScope(s)) return true;
+      console.log(`  Skipping ${s.id} — out of commercial scope (${s.category})`);
+      return false;
+    });
   } else {
     // Scope via category predicate, NOT id-substring sniffing — an OB show
     // without "-off-broadway" in its id passed the old filter.

@@ -49,4 +49,25 @@ const DESIGNATION_CRITERIA = `Designation — pick EXACTLY one, using these crit
 - Nonprofit: produced by a nonprofit theater (Lincoln Center, Roundabout, MTC, Second Stage) — subscriber-funded, no traditional investor recoupment.
 - TBD: still running and too early to tell, or insufficient data to judge.`;
 
-module.exports = { isCommercialScope, DESIGNATION_CRITERIA };
+/**
+ * Resolve a pending/commercial entry to its shows.json record for scope
+ * checks. Pending keys can be year-suffixed show IDs (ragtime-2025) while
+ * shows.json may key the same production as a bare slug (ragtime), and
+ * entries usually — but not always — carry entry.slug. Returns null when
+ * nothing resolves (caller decides: apply paths let unresolved through, the
+ * add-ahead-of-shows.json flow is supported).
+ *
+ * @param {Record<string, object>} showsBySlug — map keyed by slug AND id
+ * @param {string} key — the pending/commercial key
+ * @param {object} [entry] — the entry (for entry.slug)
+ * @returns {object|null}
+ */
+function resolveScopeShow(showsBySlug, key, entry) {
+  if (entry && entry.slug && showsBySlug[entry.slug]) return showsBySlug[entry.slug];
+  if (showsBySlug[key]) return showsBySlug[key];
+  const stripped = key.replace(/-\d{4}$/, '');
+  if (stripped !== key && showsBySlug[stripped]) return showsBySlug[stripped];
+  return null;
+}
+
+module.exports = { isCommercialScope, DESIGNATION_CRITERIA, resolveScopeShow };

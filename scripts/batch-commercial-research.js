@@ -33,7 +33,7 @@ const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { normalizeSources } = require('./lib/commercial-sources');
 const { CLAUDE_SONNET } = require('./lib/models');
-const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-scope');
+const { isCommercialScope, DESIGNATION_CRITERIA, resolveScopeShow } = require('./lib/commercial-scope');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -481,7 +481,7 @@ function applyPending() {
       continue;
     }
 
-    const scopeShow = showsBySlug[entry.slug] || showsBySlug[showId];
+    const scopeShow = resolveScopeShow(showsBySlug, showId, entry);
     if (scopeShow && !isCommercialScope(scopeShow)) {
       console.log(`  ⛔ "${showId}" — out of commercial scope (${scopeShow.category}), skipping`);
       skipped++;

@@ -25,7 +25,7 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 const COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
 const PENDING_PATH = path.join(DATA_DIR, 'commercial-pending-review.json');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
-const { isCommercialScope } = require('./lib/commercial-scope');
+const { isCommercialScope, resolveScopeShow } = require('./lib/commercial-scope');
 
 // CLI args
 const args = process.argv.slice(2);
@@ -136,7 +136,7 @@ function main() {
     // Scope guard — Off-Broadway / West End entries must never land in
     // commercial.json (Broadway-only feature). Unresolved shows pass: adding
     // a commercial row ahead of the shows-list update is a supported flow.
-    const scopeShow = showsBySlug[entry.slug] || showsBySlug[showId];
+    const scopeShow = resolveScopeShow(showsBySlug, showId, entry);
     if (scopeShow && !isCommercialScope(scopeShow)) {
       console.log(`  ⛔ "${showId}" — out of commercial scope (${scopeShow.category}), skipping`);
       skipped++;
