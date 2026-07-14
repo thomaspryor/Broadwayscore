@@ -172,8 +172,23 @@ test('bridge tasks with a category keep the ≤5-word product-card carve-out (un
   assert.equal(isExcludedCategory(bridgeTech), false);
 });
 
-test('dispatch command pins --model sonnet by default (never inherits interactive default)', () => {
+test('dispatch command always passes a resolved --model (never bare, never inherits interactive default)', () => {
   const src = fs.readFileSync(new URL('./bsc-next.js', import.meta.url), 'utf8');
   assert.match(src, /claude --model \$\{model\} --dangerously-skip-permissions/);
-  assert.match(src, /args\.model === 'string' \? args\.model : 'sonnet'/);
+  // model is resolved via resolveModel() (task #151), not a blanket 'sonnet'
+  // literal — the sonnet floor now lives in scripts/lib/bsc-next-model.js.
+  assert.match(src, /require\('\.\/lib\/bsc-next-model\.js'\)/);
+  assert.match(src, /const model = resolveModel\(/);
+});
+
+// resolveModel()'s own resolution-order tests (fable-exclusion, size->model,
+// hint precedence) live in scripts/lib/bsc-next-model.test.mjs — this only
+// checks that bsc-next.js wires the explicit --model flag through untouched
+// (layer 1 must always win, verified end-to-end here since resolveModel's
+// own unit tests can't see bsc-next's arg-parsing).
+test('explicit --model flag is threaded through as opts.explicitFlag unchanged', () => {
+  const { resolveModel } = require('./lib/bsc-next-model.js');
+  const task = { id: '1', description: '[notion:x] P1 Next · Not started' };
+  assert.equal(resolveModel({ explicitFlag: 'fable', task, card: null, notionId: null, queuePath: '/nonexistent' }), 'fable');
+  assert.equal(resolveModel({ explicitFlag: 'opus', task, card: null, notionId: null, queuePath: '/nonexistent' }), 'opus');
 });

@@ -22,6 +22,7 @@
  */
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
@@ -71,6 +72,35 @@ function notionBrain(args) {
     cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: process.env,
   });
   return JSON.parse(out);
+}
+
+// Live read of the shared task list (~/.claude/tasks/<list>/ — same dir
+// notion-tasks-sync.js reads/writes) for the claim-visibility pre-filter.
+// Reuses notion-tasks-sync's OWN identity layer (.notion-map.json: pageId →
+// {taskId,...}) rather than scanning every task's description text — same
+// dir, same file, no parallel mechanism to drift out of sync. Called fresh
+// per card (not snapshotted once for the whole run): triage loops
+// sequentially through up to `limit` cards with a real Sonnet call each, so
+// a one-time snapshot would leave a claim made mid-run invisible to cards
+// triaged later in the same pass (ship-check finding). Cheap: small local
+// JSON reads, no network. Best-effort — a session that hasn't set up the
+// shared list, or a read hiccup, must never fail the whole triage run; it
+// just means the pre-filter can't see any claims this call and falls
+// through to the normal eligibility checks (fail-open on infra, not
+// fail-open on a real claim).
+function loadSharedTaskState() {
+  const dir = path.join(os.homedir(), '.claude', 'tasks', process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore');
+  let notionMap = {};
+  try { notionMap = JSON.parse(fs.readFileSync(path.join(dir, '.notion-map.json'), 'utf8')); } catch { /* no map yet */ }
+  let files;
+  try { files = fs.readdirSync(dir); } catch { return { notionMap: {}, tasksById: {} }; }
+  const tasksById = {};
+  for (const f of files) {
+    const m = /^(\d+)\.json$/.exec(f);
+    if (!m) continue;
+    try { tasksById[m[1]] = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { /* skip corrupt task file */ }
+  }
+  return { notionMap, tasksById };
 }
 
 // Running usage across every callSonnet() this process — ledgered once at
@@ -178,7 +208,12 @@ async function main() {
       console.error(`[triage] ${i + 1}/${ids.length} ${card.name} → skip (auto=${card.auto})`);
       continue;
     }
-    const result = await triageCard(card, callSonnet);
+    // Live re-read (night-2 fix, ship-check finding): a one-time snapshot
+    // before this loop would go stale across a multi-card, multi-Sonnet-call
+    // pass — a claim made mid-run would be invisible to cards triaged after
+    // it. This is a cheap local read, no network.
+    const taskState = loadSharedTaskState();
+    const result = await triageCard(card, callSonnet, { taskState });
     if (result.preFilter.eligible) candidates++; // reached the LLM → consumed a window slot
     const entry = { card: slim(card), ...result };
     entry.decision = decide(entry);

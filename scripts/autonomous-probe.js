@@ -32,6 +32,7 @@ function claudeP(prompt) {
     const out = execFileSync('claude', [
       '-p', prompt,
       '--settings', SETTINGS,
+      '--model', 'sonnet',
       '--dangerously-skip-permissions',
       '--max-turns', '4',
     ], { cwd: REPO, encoding: 'utf8', timeout: TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
