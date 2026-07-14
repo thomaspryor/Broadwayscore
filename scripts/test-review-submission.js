@@ -117,7 +117,7 @@ VALIDATION CRITERIA:
 RECOMMENDATION GUIDANCE:
 - "approve" when the URL is a valid professional review from a legitimate outlet, the production is in a covered market (NYC or London), AND the show is in our database.
 - "needs-manual-review" when it's a valid covered-market review from a legitimate outlet but the show is NOT yet in our database (we may need to add the show first).
-- "reject" when the URL is not a review, the outlet is illegitimate, the production is outside our covered markets, or the review already exists.
+- "reject" when the URL is not a review, the outlet is illegitimate, or the production is outside our covered markets.
 
 Respond in this JSON format:
 {
