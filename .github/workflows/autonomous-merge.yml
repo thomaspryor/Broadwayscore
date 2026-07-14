@@ -43,7 +43,11 @@ permissions:
 jobs:
   merge:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # fetch-depth: 0 is expensive on this repo's git history (comparable
+    # full-history workflows here take ~14min on the checkout step ALONE —
+    # audit-touring-contamination.yml run 29187952694). 15min was not enough
+    # headroom; a real dispatch got cancelled mid `npm ci` (2026-07-14).
+    timeout-minutes: 30
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
