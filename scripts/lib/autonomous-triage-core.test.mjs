@@ -2,6 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const {
@@ -13,6 +15,8 @@ const {
   triageCard,
   decide,
   orderQueue,
+  extractCheckPaths,
+  resolveCheckPaths,
 } = require('./autonomous-triage-core.js');
 
 const GOOD = {
@@ -84,6 +88,79 @@ test('checkableDone safe-command allowlist (prompt-injection gate)', () => {
   // Validator enforces it only for eligible cards.
   assert.equal(validateTriageResult({ ...GOOD, checkableDone: 'run the site and click around please' }).ok, false);
   assert.equal(validateTriageResult({ ...GOOD, eligible: false, checkableDone: 'run the site and click around please' }).ok, true);
+});
+
+// ── resolveCheckPaths (card #171: phantom checkableDone paths) ─────────────
+
+function mkFixtureRepo() {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'triage-checkpath-'));
+  fs.mkdirSync(path.join(root, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'tests', 'unit', 'foo.test.mjs'), '// fixture\n');
+  return root;
+}
+
+test('extractCheckPaths pulls file args out of each safe-check form', () => {
+  assert.deepEqual(extractCheckPaths('node --test tests/unit/a.test.mjs tests/unit/b.test.mjs'), ['tests/unit/a.test.mjs', 'tests/unit/b.test.mjs']);
+  assert.deepEqual(extractCheckPaths('test -f docs/x.md'), ['docs/x.md']);
+  assert.deepEqual(extractCheckPaths('npx tsc --noEmit'), []);
+  assert.deepEqual(extractCheckPaths('npx next lint'), []);
+});
+
+test('resolveCheckPaths: path exists as-given → unchanged, no correction flagged', () => {
+  const root = mkFixtureRepo();
+  const r = resolveCheckPaths('node --test tests/unit/foo.test.mjs', { repoRoot: root });
+  assert.equal(r.ok, true);
+  assert.equal(r.checkableDone, 'node --test tests/unit/foo.test.mjs');
+  assert.ok(!r.corrected);
+});
+
+test('resolveCheckPaths: phantom path auto-corrects to the tests/unit/<basename> near-match', () => {
+  const root = mkFixtureRepo();
+  const r = resolveCheckPaths('node --test tests/foo.test.mjs', { repoRoot: root });
+  assert.equal(r.ok, true);
+  assert.equal(r.checkableDone, 'node --test tests/unit/foo.test.mjs');
+  assert.equal(r.corrected, true);
+});
+
+test('resolveCheckPaths: no near-match on disk → ok:false, never a silent pass', () => {
+  const root = mkFixtureRepo();
+  const r = resolveCheckPaths('node --test tests/bar.test.mjs', { repoRoot: root });
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /does not exist on disk: tests\/bar\.test\.mjs/);
+  assert.match(r.reason, /tests\/unit\/bar\.test\.mjs/);
+});
+
+test('resolveCheckPaths: tsc/lint forms carry no path args → pass through', () => {
+  const root = mkFixtureRepo();
+  assert.deepEqual(resolveCheckPaths('npx tsc --noEmit', { repoRoot: root }), { ok: true, checkableDone: 'npx tsc --noEmit' });
+});
+
+test('resolveCheckPaths against the REAL repo tree: reproduces the exact card #171 incident', () => {
+  // tests/review-write-guard.test.mjs never existed; the real file is
+  // tests/unit/review-write-guard.test.mjs — this is the literal phantom
+  // path the lint-violator card's triage verdict produced.
+  const r = resolveCheckPaths('node --test tests/review-write-guard.test.mjs');
+  assert.equal(r.ok, true);
+  assert.equal(r.checkableDone, 'node --test tests/unit/review-write-guard.test.mjs');
+  assert.equal(r.corrected, true);
+});
+
+test('triageCard: LLM verdict with a phantom checkableDone path is auto-corrected, stays attempt-eligible', async () => {
+  const root = mkFixtureRepo();
+  const verdict = { ...GOOD, checkableDone: 'node --test tests/foo.test.mjs' };
+  const r = await triageCard(CARD, async () => JSON.stringify(verdict), { repoRoot: root });
+  assert.equal(r.triage.eligible, true);
+  assert.equal(r.triage.checkableDone, 'node --test tests/unit/foo.test.mjs');
+  assert.equal(decide(r), 'attempt');
+});
+
+test('triageCard: LLM verdict with an unresolvable phantom path is marked ineligible, never queued', async () => {
+  const root = mkFixtureRepo();
+  const verdict = { ...GOOD, checkableDone: 'node --test tests/nope.test.mjs' };
+  const r = await triageCard(CARD, async () => JSON.stringify(verdict), { repoRoot: root });
+  assert.equal(r.triage.eligible, false);
+  assert.match(r.triage.reason, /check-path-missing/);
+  assert.equal(decide(r), 'skip');
 });
 
 // ── findClaimedTask (claim visibility, night-2 fix) ─────────────────────────

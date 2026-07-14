@@ -51,6 +51,52 @@ function isSafeCheckCommand(cmd) {
 
 const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/ or scripts/>`, `npx tsc --noEmit`, `npx next lint`, or `test -f <docs|memory|tests path>`';
 
+// isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
+// checks the path is real, so an LLM that invents a plausible-but-wrong test
+// path (e.g. tests/review-write-guard.test.mjs instead of the real
+// tests/unit/review-write-guard.test.mjs) sails through validation, gets
+// queued, and burns a full executor run before failing at the check step
+// (card #171, 2026-07-14: $1.38 spent on a card that could never pass).
+// Extracts the same path tokens isSafeCheckCommand matches on, for a
+// downstream existence check.
+function extractCheckPaths(cmd) {
+  const s = String(cmd || '').trim();
+  for (const form of SAFE_CHECK_FORMS) {
+    const m = form.re.exec(s);
+    if (!m || !form.pathsGroup) continue;
+    return m[form.pathsGroup].trim().split(/\s+/);
+  }
+  return [];
+}
+
+const REPO_ROOT = path.join(__dirname, '..', '..');
+
+// Deterministic post-validation guard: runs once, no extra LLM call (a
+// missing path is a fact about the filesystem, not a model mistake worth a
+// retry). Only meaningful for eligible verdicts — an ineligible card's check
+// never executes. tests/unit/<basename> is the one "obvious near-match" this
+// repo's layout actually produces (every *.test.mjs lives there); anything
+// else fails closed to ineligible rather than guessing further.
+function resolveCheckPaths(checkableDone, opts = {}) {
+  const repoRoot = opts.repoRoot || REPO_ROOT;
+  const paths = extractCheckPaths(checkableDone);
+  if (paths.length === 0) return { ok: true, checkableDone }; // tsc/lint forms carry no file args
+  const exists = p => { try { return fs.existsSync(path.join(repoRoot, p)); } catch { return false; } };
+  let corrected = checkableDone;
+  let anyCorrection = false;
+  for (const p of paths) {
+    if (exists(p)) continue;
+    const nearMatch = `tests/unit/${path.basename(p)}`;
+    if (nearMatch !== p && exists(nearMatch)) {
+      corrected = corrected.replace(p, nearMatch);
+      anyCorrection = true;
+      continue;
+    }
+    return { ok: false, reason: `checkableDone references a path that does not exist on disk: ${p} (tried near-match ${nearMatch})` };
+  }
+  return { ok: true, checkableDone: corrected, corrected: anyCorrection };
+}
+
 const SCHEMA_PATH = path.join(__dirname, 'triage-schema.json');
 const schema = JSON.parse(fs.readFileSync(SCHEMA_PATH, 'utf8'));
 const SIZE_VALUES = schema.properties.size.enum;
@@ -234,7 +280,19 @@ async function triageCard(card, callLLM, opts = {}) {
       continue;
     }
     const { ok, errors } = validateTriageResult(parsed);
-    if (ok) return { preFilter, triage: parsed };
+    if (ok) {
+      if (parsed.eligible === true) {
+        const pathCheck = resolveCheckPaths(parsed.checkableDone, opts);
+        if (!pathCheck.ok) {
+          return {
+            preFilter,
+            triage: { ...parsed, eligible: false, reason: `${parsed.reason} [check-path-missing: ${pathCheck.reason}]` },
+          };
+        }
+        if (pathCheck.corrected) parsed = { ...parsed, checkableDone: pathCheck.checkableDone };
+      }
+      return { preFilter, triage: parsed };
+    }
     lastErrors = errors;
   }
   return { preFilter, failed: 'triage', error: lastErrors.join('; '), attempts: 2 };
@@ -270,6 +328,8 @@ module.exports = {
   SCHEMA_PATH,
   SAFE_CHECK_FORMS,
   isSafeCheckCommand,
+  extractCheckPaths,
+  resolveCheckPaths,
   buildTriagePrompt,
   parseTriageResponse,
   validateTriageResult,
