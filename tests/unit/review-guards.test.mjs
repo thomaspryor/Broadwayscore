@@ -738,6 +738,18 @@ describe('isRoundupPageAsReview — page-as-review vs sourced-from-roundup', () 
     const bwwArticle = 'https://www.broadwayworld.com/article/BWW-Review-NETWORK-20181206';
     assert.strictEqual(isRoundupPageAsReview({ url: bwwArticle, outletId: 'broadwayworld' }), false);
   });
+
+  test('BWW /reviews/{slug} page + non-BWW outletId → NOT page-as-review (review SOURCED from the roundup, not the page itself)', () => {
+    const bwwReviewsPage = 'https://www.broadwayworld.com/reviews/the-whoopi-monologues';
+    assert.strictEqual(isRoundupPageAsReview({ url: bwwReviewsPage, outletId: 'nytimes' }), false);
+  });
+
+  test('BWW alias outletIds (bww, broadway-world, broadwayworldcom) + /reviews/ page → true', () => {
+    const bwwReviewsPage = 'https://www.broadwayworld.com/reviews/the-whoopi-monologues';
+    assert.strictEqual(isRoundupPageAsReview({ url: bwwReviewsPage, outletId: 'bww' }), true);
+    assert.strictEqual(isRoundupPageAsReview({ url: bwwReviewsPage, outletId: 'broadway-world' }), true);
+    assert.strictEqual(isRoundupPageAsReview({ url: bwwReviewsPage, outletId: 'broadwayworldcom' }), true);
+  });
 });
 
 describe('cvBlocksUkWrongProductionAutoClear', () => {
