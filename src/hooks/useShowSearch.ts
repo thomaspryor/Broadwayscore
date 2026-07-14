@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useMemo, useDeferredValue } from 'react';
 import type Fuse from 'fuse.js';
-import { mergeDiaryShows, type DiarySearchEntry } from '@/lib/show-import';
+import { mergeDiaryShows, tierSearchResults, type DiarySearchEntry } from '@/lib/show-import';
 
 interface SearchShow {
   id: string;
@@ -80,14 +80,22 @@ export function useShowSearch<T extends SearchShow = SearchShow>(options: UseSho
 
   const results = useMemo(() => {
     if (deferredQuery.length < 2 || !fuseRef.current) return [];
-    const fuseResults = fuseRef.current.search(deferredQuery, { limit }).map(r => r.item);
+    // In diary-tiering mode, the diary catalog outnumbers scored shows ~20:1,
+    // so a Fuse window capped at `limit` could fill entirely with diary fuzzy
+    // matches and silently exclude a scored show that would otherwise win
+    // the tier sort. Search a wider window, then tier, then trim to `limit`.
+    const searchLimit = mergeDataUrl ? Math.max(limit * 5, 30) : limit;
+    const fuseResults = fuseRef.current.search(deferredQuery, { limit: searchLimit }).map(r => r.item);
     const q = deferredQuery.toLowerCase();
     const substring = shows.filter(s =>
       s.title.toLowerCase().includes(q) && !fuseResults.some(r => r.id === s.id)
     );
-    return [...fuseResults, ...substring].slice(0, limit);
+    const combined = [...fuseResults, ...substring];
+    // Only the diary-merged index (mergeDataUrl set) carries a `dy` field —
+    // header/site search never opts in, so this is a no-op there.
+    return mergeDataUrl ? tierSearchResults(combined, limit) : combined.slice(0, limit);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deferredQuery, dataReady, shows, limit]);
+  }, [deferredQuery, dataReady, shows, limit, mergeDataUrl]);
 
   return {
     query,
