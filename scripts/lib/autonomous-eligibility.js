@@ -214,6 +214,96 @@ function isDiffDeterministicGreen(files) {
   return list.every(isDeterministicGreenPath);
 }
 
+// ── Tier 2: data-pipeline card classes (Sprint 4) ───────────────────────────
+//
+// Tier 1's path gate (above) is scoped to THIS repo's worktree. Tier-2 cards
+// instead write to one of two private data repos (~/broadway-scorecard-data
+// and this repo's data/review-texts/ — its own nested git clone), which have
+// no Tier-1 path overlap at all: EXCLUDED_PREFIXES already blocks 'data/'
+// wholesale, and the private repos aren't reachable through this repo's
+// worktree mechanics in the first place. Classification and the diff gate
+// therefore need their own default-deny predicates, not a Tier-1 extension.
+//
+// classifyDataCard() is DETERMINISTIC — no LLM — mirroring the same idiom as
+// isHumanActionSubject() above: a small enumerated set of narrow title/tag
+// patterns, never free-text sentiment on the Problem/Evidence prose (a card's
+// notes are untrusted content, same as everywhere else in this file). Unknown
+// shape → null (default-deny) — the executor never guesses a class.
+const DATA_CARD_CLASSES = new Set(['missing-show', 're-gather', 'byline-recovery', 'cluster-cleanup']);
+
+// tag → class is the strongest signal because it's a controlled vocabulary
+// value, not prose: posthog-friction-analyzer.js already stamps 'missing-show'
+// on every card it files (verified against real cards: #28/#58/#59/#83/#84/#85).
+// Title-prefix patterns are the fallback for the other three classes, which
+// have no equivalent standardized tag today — same fallback idiom as
+// isHumanActionSubject's title-verb match.
+const DATA_CLASS_TAGS = { 'missing-show': 'missing-show' };
+const DATA_CLASS_TITLE_PATTERNS = [
+  // Order matters: more specific patterns first. "re-gather" cards are
+  // sometimes ALSO byline/cluster-shaped in free text, so the explicit verb
+  // wins over the noisier byline/cluster keyword matches below.
+  { cls: 'missing-show', re: /^Missing show:/i },
+  { cls: 're-gather', re: /\bre-?gather\b/i },
+  { cls: 'byline-recovery', re: /^Byline recovery:/i },
+  { cls: 'cluster-cleanup', re: /\b(byline-explosion|duplicate detector|dedup(?:e|lication)?)\b/i },
+];
+
+function classifyDataCard(card) {
+  const tag = (card.tags || []).map(t => String(t).trim().toLowerCase());
+  for (const [cls, wantTag] of Object.entries(DATA_CLASS_TAGS)) {
+    if (tag.includes(wantTag)) return cls;
+  }
+  const name = String(card.name || '').trim();
+  for (const { cls, re } of DATA_CLASS_TITLE_PATTERNS) {
+    if (re.test(name)) return cls;
+  }
+  return null;
+}
+
+// Which private repo(s) a class's implementation diff is expected to land in.
+// 'scorecard-data' = ~/broadway-scorecard-data (shows.json et al).
+// 'review-texts'   = this repo's data/review-texts/ nested clone.
+const DATA_CLASS_REPO = {
+  'missing-show': 'scorecard-data',
+  're-gather': 'review-texts',
+  'byline-recovery': 'review-texts',
+  'cluster-cleanup': 'review-texts',
+};
+
+// Path allow-list PER PRIVATE REPO — same default-deny shape as isPathAllowed,
+// scoped to what each class may legitimately touch. reviews.json is DERIVED
+// (rebuild-all-reviews.js) and explicitly excluded: an implementer must never
+// hand-edit or locally rebuild it (memory/feedback_local_rebuild_stale_clone_hazard.md)
+// — CI's rebuild-fast dispatch is the only path that regenerates it.
+function isScorecardDataPathAllowed(file) {
+  const f = normalizePath(file);
+  return f === 'shows.json';
+}
+
+// review-texts: only per-show JSON files (live or _pending), never the
+// top-level junk that lives in that repo's root (failed-fetches.json,
+// .playwright-mcp screenshots, etc. — verified against the real repo tree).
+function isReviewTextsPathAllowed(file) {
+  const f = normalizePath(file);
+  if (!f || f.split('/').includes('..') || f.includes('\\')) return false;
+  if (!f.endsWith('.json')) return false;
+  const parts = f.split('/');
+  if (parts.length === 2) return true; // <showId>/<outlet>--<critic>.json
+  if (parts.length === 3 && parts[0] === '_pending') return true; // _pending/<showId>/<file>.json
+  return false;
+}
+
+function isDataRepoPathAllowed(repoKey, file) {
+  if (repoKey === 'scorecard-data') return isScorecardDataPathAllowed(file);
+  if (repoKey === 'review-texts') return isReviewTextsPathAllowed(file);
+  return false;
+}
+
+function isDataRepoDiffAllowed(repoKey, files) {
+  const refused = (files || []).map(normalizePath).filter(f => !isDataRepoPathAllowed(repoKey, f));
+  return { allowed: refused.length === 0, refused };
+}
+
 module.exports = {
   EXCLUDED_CATEGORIES,
   HUMAN_ACTION_RE,
@@ -223,6 +313,8 @@ module.exports = {
   EXCLUDED_FILES,
   EXCLUDED_PREFIXES,
   DETERMINISTIC_GREEN_PREFIXES,
+  DATA_CARD_CLASSES,
+  DATA_CLASS_REPO,
   categoryOf,
   isHumanActionSubject,
   isExcludedCategory,
@@ -231,4 +323,9 @@ module.exports = {
   isDiffAllowed,
   isDeterministicGreenPath,
   isDiffDeterministicGreen,
+  classifyDataCard,
+  isScorecardDataPathAllowed,
+  isReviewTextsPathAllowed,
+  isDataRepoPathAllowed,
+  isDataRepoDiffAllowed,
 };
