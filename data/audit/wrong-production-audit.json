@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-14T00:23:34.735Z",
+  "timestamp": "2026-07-14T02:53:45.936Z",
   "stats": {
-    "totalReviews": 39978,
+    "totalReviews": 39979,
     "alreadyFlagged": 17542,
     "dateGuardCatches": 49,
     "directorMismatch": 911,
     "tvFilmSignals": 1098,
     "londonSignals": 742,
-    "offBroadwaySignals": 466,
+    "offBroadwaySignals": 467,
     "yearMismatch": 85,
-    "noPublishDate": 3792
+    "noPublishDate": 3793
   },
   "findings": [
     {
@@ -42413,6 +42413,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-potluck-off-broadway-2026",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 90,
+      "publishDate": "2026-07-14",
+      "url": "https://newyorktheater.me/2026/07/13/the-potluck-review/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
