@@ -636,7 +636,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Runs:** Dispatched by `vercel-deploy.yml` after each successful production deploy
 - **Does:** Commits updated `data/audit/deploy-watermark.json` (show/review counts) used by `pre-deploy-check.js` as a regression baseline. Since 2026-07-13 also appends the `deployed-live` stage-latency event (from `deployed_at`/`deploy_sha`/`deploy_run_id` dispatch inputs) to `data/audit/stage-latency.jsonl` in the same commit — the inline emit step in `vercel-deploy.yml` burned its full 3-min push-retry timeout on most deploys.
 - **Why async:** Push retries on concurrent branches took ~2 min inline. Moved to separate workflow to unblock deploy completion.
-- **Concurrency:** `deploy-watermark-update` group, `cancel-in-progress: true` (only latest watermark matters). Burst deploys can therefore drop an older deploy's stage-latency event; the newer deploy's event supersedes it (slight latency overstatement, acceptable).
+- **Concurrency:** `deploy-watermark-update` group, `cancel-in-progress: false` (a running run finishes its stage-latency append instead of dying mid-write; only the newest QUEUED run survives a burst). A burst can still drop an intermediate deploy's event; the newer deploy's event supersedes it (slight latency overstatement, acceptable).
 - **Requires:** REVIEW_TEXTS_TOKEN (for checkout-core-data — reads shows.json/reviews.json)
 - **If it fails:** Pre-deploy check uses a slightly stale baseline. Absolute floors (500 shows, 10K reviews) are the real safety net. A missed stage-latency event is superseded by the next deploy's event.
 

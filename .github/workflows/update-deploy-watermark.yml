@@ -29,7 +29,12 @@ jobs:
     timeout-minutes: 5
     concurrency:
       group: deploy-watermark-update
-      cancel-in-progress: true  # only latest watermark matters
+      # false (2026-07-13): a RUNNING run now finishes its stage-latency append
+      # + push instead of being killed mid-write by the next deploy's dispatch.
+      # Burst deploys still collapse in the pending queue (GH keeps only the
+      # newest queued run), which is fine — only the latest watermark matters
+      # and the newest deploy's stage-latency event supersedes the queued one.
+      cancel-in-progress: false
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -58,9 +63,12 @@ jobs:
           # older deploy. Committed below together with the watermark.
           node -e "
             const { emitStage } = require('./scripts/lib/stage-latency');
+            // Normalize to toISOString() so the log keeps one timestamp
+            // format (with milliseconds) regardless of the shell date -u
+            // format the deploy workflow captured.
             emitStage({
               stage: 'deployed-live',
-              at: process.env.DEPLOYED_AT,
+              at: new Date(process.env.DEPLOYED_AT).toISOString(),
               metadata: { runId: process.env.DEPLOY_RUN_ID, sha: process.env.DEPLOY_SHA },
             });
           "
