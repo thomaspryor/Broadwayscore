@@ -176,7 +176,7 @@ function pollUntil(fn, timeoutSec) {
   }
 }
 
-function launchCmux(task, seed, commandOverride) {
+function launchCmux(task, seed, commandOverride, model = 'sonnet') {
   const seedFile = path.join(os.tmpdir(), `bsc-seed-${task.id}.txt`);
   fs.writeFileSync(seedFile, seed);
   const title = task.subject.slice(0, 50);
@@ -185,7 +185,10 @@ function launchCmux(task, seed, commandOverride) {
   // --dangerously-skip-permissions: launched sessions must never permission-ping
   // (user rule 2026-07-12); explicit permissions.deny rules still outrank bypass.
   // commandOverride is a test seam (kill test, scope add 3) — never set in real use.
-  const command = commandOverride || `claude --dangerously-skip-permissions "$(cat ${seedFile})"`;
+  // --model sonnet: dispatched sessions default to Sonnet, not the user's
+  // interactive default (Fable) — 9 Fable workspaces in one night, 2026-07-13.
+  // Override per-dispatch with --model opus for genuinely hard cards.
+  const command = commandOverride || `claude --model ${model} --dangerously-skip-permissions "$(cat ${seedFile})"`;
   // Shell-init race (real failure 2026-07-12): new-workspace TYPES the command
   // into the pane while zsh/direnv may still be initializing, so leading
   // keystrokes get swallowed ('nclaude' → command not found) and the session
@@ -267,6 +270,9 @@ function main() {
     return;
   }
 
+  // Dispatched sessions default to Sonnet — never the user's interactive
+  // default. --model opus/haiku/fable overrides deliberately per dispatch.
+  const model = typeof args.model === 'string' ? args.model : 'sonnet';
   const task = pickTask(tasks, args);
   if (!task) { console.error('[bsc-next] no matching actionable task.'); process.exit(1); }
   const guardErr = completedLaunchGuard(task, args);
@@ -284,7 +290,7 @@ function main() {
 
   if (args.exec) {
     // Run an interactive claude on the seed in this terminal (no Cmux).
-    const r = spawnSync('claude', ['--dangerously-skip-permissions', seed], { stdio: 'inherit', cwd: REPO });
+    const r = spawnSync('claude', ['--model', model, '--dangerously-skip-permissions', seed], { stdio: 'inherit', cwd: REPO });
     if (r.error) { console.error(`[bsc-next] failed to launch claude: ${r.error.message}`); process.exit(1); }
     process.exit(r.status == null ? 1 : r.status); // null = killed by signal → non-zero
   }
@@ -317,7 +323,7 @@ function main() {
     }
   }
 
-  const res = launchCmux(task, seed);
+  const res = launchCmux(task, seed, undefined, model);
   if (res.ok) {
     console.log(`[bsc-next] opened Cmux workspace ${res.ref} on #${task.id}: ${task.subject} (claude verified running)`);
   } else {

@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
 const require = createRequire(import.meta.url);
 const { actionable, pickTask, completedLaunchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed } = require('./bsc-next.js');
 const { isDoneTitle } = require('./lib/cmux-workspaces.js');
@@ -169,4 +170,10 @@ test('bridge tasks with a category keep the ≤5-word product-card carve-out (un
   const bridgeTech = { subject: 'Fix rage clicks', description: '[notion:b] P1 Next · Not started · Product\n' };
   assert.equal(isExcludedCategory(bridgeGate), false);
   assert.equal(isExcludedCategory(bridgeTech), false);
+});
+
+test('dispatch command pins --model sonnet by default (never inherits interactive default)', () => {
+  const src = fs.readFileSync(new URL('./bsc-next.js', import.meta.url), 'utf8');
+  assert.match(src, /claude --model \$\{model\} --dangerously-skip-permissions/);
+  assert.match(src, /args\.model === 'string' \? args\.model : 'sonnet'/);
 });
