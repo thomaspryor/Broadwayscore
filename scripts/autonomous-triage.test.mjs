@@ -42,6 +42,22 @@ test('a transient fetch-failure entry (no real card) never enters the plan', () 
   assert.deepEqual(buildDataPlan([entry]), []);
 });
 
+test('a card claimed in-flight by an interactive session is NEVER requeued as Tier-2, even if classifiable (ship-check finding)', () => {
+  const card = { id: 'card-claimed', name: 'Byline recovery: outlet--unknown entries in reviews.json where a named sibling file exists', priority: 'P1 Next', tags: ['review-recovery', 'bylines'] };
+  const entry = {
+    decision: 'skip', card,
+    preFilter: { eligible: false, reason: 'claimed in-flight (shared task #151 is in_progress — already being worked interactively)' },
+    triage: null,
+  };
+  assert.deepEqual(buildDataPlan([entry]), []);
+});
+
+test('a policy-excluded skip (deny-tag) is NOT the same as claimed-in-flight — still enters the plan', () => {
+  const card = { id: 'card-x', name: 'Missing show: Some Regional Transfer', priority: 'P2 Later', tags: ['missing-show', 'commercial'] };
+  const entry = { decision: 'skip', card, preFilter: { eligible: false, reason: 'deny-tag "commercial"' }, triage: null };
+  assert.equal(buildDataPlan([entry]).length, 1);
+});
+
 test('ordering matches priority then size, same as the Tier-1 plan', () => {
   const p0m = skipped({ id: 'a', name: 'Missing show: A', priority: 'P0 Now', tags: ['missing-show'] }, 'M');
   const p1s = skipped({ id: 'b', name: 'Missing show: B', priority: 'P1 Next', tags: ['missing-show'] }, 'S');

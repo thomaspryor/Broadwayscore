@@ -325,10 +325,21 @@ async function main() {
 // A pre-filter skip (deny-tag/human-action) never reaches the LLM at all —
 // 'M' is a deliberately mid conservative default for that rarer case, not a
 // data class's true complexity estimate.
+// A skip's reason distinguishes a POLICY exclusion (deny-tag, human-action
+// title, marketing/partnerships category — none of these are Tier-2-specific,
+// so a data card is still a fair Tier-2 candidate) from a CLAIM exclusion
+// (findClaimedTask in autonomous-triage-core.js: an interactive session
+// already has this card in_progress right now). Requeuing a claimed card as
+// a Tier-2 candidate would undo that protection and race a live session
+// (ship-check finding) — the prefix is triageCard's own exact wording, not a
+// free-text guess.
+const CLAIMED_IN_FLIGHT_RE = /^claimed in-flight/;
+
 function buildDataPlan(entries) {
   const items = [];
   for (const e of entries) {
     if (e.decision !== 'skip' || !e.card || !e.card.id || e.transient) continue;
+    if (e.preFilter && CLAIMED_IN_FLIGHT_RE.test(e.preFilter.reason || '')) continue;
     const cls = classifyDataCard(e.card);
     if (!cls) continue;
     const size = e.triage && e.triage.size ? e.triage.size : 'M';

@@ -48,6 +48,7 @@ const {
 } = require('./lib/autonomous-checkpoint.js');
 const {
   buildDataWorkdir, removeDataWorkdir, pushDataBranch, showIdsFromReviewTextsDiff, primaryWorktree,
+  scorecardDataRoot, reviewTextsRoot,
 } = require('./lib/autonomous-data-workdir.js');
 const { verifierArgvFor } = require('./lib/autonomous-data-verify.js');
 
@@ -715,8 +716,27 @@ function attemptDataCard(item, budget, cfg, runId) {
     console.error(`[run] FAIL ${item.name} [${stage}] ${reason}`);
   };
 
+  // Collision guards (ship-check finding): Tier-1's attemptCard() refuses a
+  // pre-existing workdir or remote branch before ever creating a worktree
+  // (protects a live interactive session or a stranded prior attempt from
+  // being clobbered) — Tier-2 had neither check, and `git worktree add -B`
+  // would silently reset an existing branch to origin/main, discarding any
+  // unpushed work on it.
+  const privateRepoRoot = repoKey === 'scorecard-data' ? scorecardDataRoot() : reviewTextsRoot(REPO);
   let wd = null;
   try {
+    if (fs.existsSync(scratchRoot)) {
+      budget.settle(item.id, 0);
+      fail('branch-error', `scratch dir ${scratchRoot} already exists (another attempt in flight?) — refusing to remove it`);
+      return;
+    }
+    let remoteBranch = '';
+    try { remoteBranch = git(privateRepoRoot, ['ls-remote', '--heads', 'origin', branch]).trim(); } catch { /* treat as absent */ }
+    if (remoteBranch) {
+      budget.settle(item.id, 0);
+      fail('branch-error', `branch ${branch} already exists on ${repoKey}'s origin (pending previous attempt?) — refusing to overwrite`);
+      return;
+    }
     wd = buildDataWorkdir({ repoKey, branch, scratchRoot, repoRoot: REPO });
   } catch (err) {
     budget.settle(item.id, 0);
@@ -761,9 +781,17 @@ function attemptDataCard(item, budget, cfg, runId) {
             if (!verifiers.length) { stage = 'no-verifier'; detail = `class "${cls}" has no verifier command for this diff (showIds: ${showIds.join(', ') || 'none'})`; }
             else {
               const checkEnv = checksEnv();
+              // cwd MUST be the scratch root (data/'s parent), never REPO:
+              // verify-review-recovery.js resolves data/review-texts +
+              // data/reviews.json from process.cwd() by design (its own
+              // header comment) — cwd:REPO would silently re-verify the LIVE
+              // main checkout instead of this candidate branch (ship-check
+              // finding). validate-show-venue.js is unaffected (it takes an
+              // explicit --data-dir=wd.dataDir from verifierArgvFor and
+              // ignores cwd), but scratchRoot is correct for both.
               const results = verifiers.map(v => {
                 try {
-                  execFileSync(v.argv[0], v.argv.slice(1), { cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8', env: checkEnv });
+                  execFileSync(v.argv[0], v.argv.slice(1), { cwd: wd.scratchRoot, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8', env: checkEnv });
                   return { name: v.name, pass: true };
                 } catch (err) {
                   return { name: v.name, pass: false, detail: String(err.stderr || err.stdout || err.message).slice(0, 400) };
