@@ -26,6 +26,9 @@
  *   --fail-on-mismatch     exit 1 + emit ::error:: lines per mismatch
  *   --dry-run              do not write audit file
  *   --limit=N              cap shows processed (debug aid)
+ *   --data-dir=PATH        validate PATH/shows.json instead of the live
+ *                          checkout's data/shows.json (autonomous loop
+ *                          Tier-2 verification against a candidate branch)
  *
  * Usage:
  *   node scripts/validate-show-venue.js --show=sunset-baby-off-broadway-2026
@@ -43,11 +46,20 @@ const { serpQuery } = require('./lib/url-discovery');
 const { canonicalVenue, normalizeTitle } = require('./lib/title-match');
 
 const ROOT = path.join(__dirname, '..');
-const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
+const args = process.argv.slice(2);
+// --data-dir overrides ONLY the shows.json this run validates (Sprint 4,
+// autonomous nightly loop): SHOWS_PATH is __dirname-relative, so without this
+// flag a check invoked from ANY cwd — including a Tier-2 verification
+// scratch dir wired to a candidate branch's worktree — would silently
+// validate the live checkout's shows.json instead of the candidate diff.
+// playbill-urls.json (read cache) and the audit report (output) are NOT part
+// of what a card mutates, so they intentionally keep resolving to the real
+// repo regardless of this flag.
+const dataDirOverride = args.find(a => a.startsWith('--data-dir='))?.split('=').slice(1).join('=');
+const SHOWS_PATH = dataDirOverride ? path.join(path.resolve(dataDirOverride), 'shows.json') : path.join(ROOT, 'data', 'shows.json');
 const PLAYBILL_URLS_PATH = path.join(ROOT, 'data', 'playbill-urls.json');
 const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'venue-date-mismatches.json');
 
-const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const allProvisional = args.includes('--all-provisional');
 const candidatesFile = args.find(a => a.startsWith('--candidates-file='))?.split('=')[1];
