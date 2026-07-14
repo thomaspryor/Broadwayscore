@@ -302,7 +302,17 @@
     "avenue-q-west-end-2026/theatermania--andy-propst.json",
     "proof-2026/680newscom--gloria-martin.json",
     "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
-    "avenue-q-west-end-2026/backstage--david-sheward.json"
+    "avenue-q-west-end-2026/backstage--david-sheward.json",
+    "tender-off-west-end-2026/guardian--arifa-akbar.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+    "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
+    "jesus-christ-superstar-west-end-2026/newsday--linda-winer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -342,6 +352,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
     ],
     "directCookies": [],
@@ -371,6 +382,18 @@
     ]
   },
   "startTime": "2026-07-14T17:07:57.739Z",
-  "lastProcessed": "avenue-q-west-end-2026/backstage--david-sheward.json",
-  "log": []
+  "lastProcessed": "jesus-christ-superstar-west-end-2026/newsday--linda-winer.json",
+  "log": [
+    {
+      "t": "2026-07-14T21:02:55.319Z",
+      "event": "bb-session",
+      "session": "e7f3e27a",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-14T21:02:56.383Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
