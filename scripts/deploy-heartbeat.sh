@@ -42,8 +42,13 @@ if [[ -z "${VERCEL_TOKEN:-}" ]]; then
   exit 1
 fi
 
+# macOS has no `timeout(1)`; perl's alarm is the portable substitute (same
+# pattern as ~/.claude/hooks/gh-poll-block.sh and notion-card-required-commit.sh).
+# A hung network call must not wedge every future launchd tick.
+NET_TIMEOUT_SEC=30
+
 # 1. Is HEAD already live? Vercel API — free, doesn't touch the GitHub quota.
-CHECK_OUT=$(node scripts/check-prod-deploy.js HEAD 2>&1)
+CHECK_OUT=$(perl -e "alarm $NET_TIMEOUT_SEC; exec @ARGV" node scripts/check-prod-deploy.js HEAD 2>&1)
 CHECK_STATUS=$?
 if [[ "$CHECK_STATUS" -eq 0 ]]; then
   echo "$LOG_PREFIX HEAD already live — nothing to do"
@@ -52,29 +57,38 @@ fi
 echo "$LOG_PREFIX HEAD not confirmed live (exit $CHECK_STATUS): $(echo "$CHECK_OUT" | tail -1)"
 
 # 2. Single gh api call: recent vercel-deploy.yml runs (status + event + created_at).
-RUNS_JSON=$(gh api "repos/${REPO}/actions/workflows/vercel-deploy.yml/runs?per_page=10" 2>&1)
+RUNS_JSON=$(perl -e "alarm $NET_TIMEOUT_SEC; exec @ARGV" gh api "repos/${REPO}/actions/workflows/vercel-deploy.yml/runs?per_page=10" 2>&1)
 if [[ $? -ne 0 || -z "$RUNS_JSON" ]]; then
   echo "$LOG_PREFIX gh api call failed: $RUNS_JSON" >&2
   exit 1
 fi
 
-ACTIVE=$(echo "$RUNS_JSON" | node -e "
-  const d = JSON.parse(require('fs').readFileSync(0, 'utf8'));
-  const active = (d.workflow_runs || []).some(r => ['in_progress', 'queued', 'waiting'].includes(r.status));
-  console.log(active ? 'yes' : 'no');
+# Parse both values in one node call so a malformed/partial payload fails
+# closed (ERROR sentinel → abort below) instead of silently falling through
+# to a dispatch, which is the opposite of the fail-safe should-deploy uses
+# for the same "can't determine state" case (vercel-deploy.yml's schedule path).
+PARSED=$(echo "$RUNS_JSON" | node -e "
+  try {
+    const d = JSON.parse(require('fs').readFileSync(0, 'utf8'));
+    const runs = d.workflow_runs || [];
+    const active = runs.some(r => ['in_progress', 'queued', 'waiting'].includes(r.status));
+    const last = runs.find(r => r.event === 'schedule');
+    const ageMin = last ? Math.round((Date.now() - new Date(last.created_at).getTime()) / 60000) : 999;
+    console.log((active ? 'yes' : 'no') + ' ' + ageMin);
+  } catch (e) {
+    console.log('ERROR ' + e.message.replace(/\s+/g, ' '));
+  }
 ")
+read -r ACTIVE LAST_SCHEDULE_AGE_MIN <<< "$PARSED"
+
+if [[ "$ACTIVE" != "yes" && "$ACTIVE" != "no" ]]; then
+  echo "$LOG_PREFIX could not parse gh api response — aborting without dispatch: $PARSED" >&2
+  exit 1
+fi
 if [[ "$ACTIVE" == "yes" ]]; then
   echo "$LOG_PREFIX a deploy run is already in_progress/queued — waiting, not dispatching"
   exit 0
 fi
-
-LAST_SCHEDULE_AGE_MIN=$(echo "$RUNS_JSON" | node -e "
-  const d = JSON.parse(require('fs').readFileSync(0, 'utf8'));
-  const last = (d.workflow_runs || []).find(r => r.event === 'schedule');
-  if (!last) { console.log('999'); process.exit(0); }
-  const ageMs = Date.now() - new Date(last.created_at).getTime();
-  console.log(Math.round(ageMs / 60000));
-")
 
 if [[ "$LAST_SCHEDULE_AGE_MIN" -lt "$STALE_MIN" ]]; then
   echo "$LOG_PREFIX last scheduled fire ${LAST_SCHEDULE_AGE_MIN}m ago — within ${STALE_MIN}m window, not stalled"
