@@ -7,6 +7,7 @@ import { Modal, ModalCloseButton } from '@/components/show-cards';
 import {
   acquireFromMezzanine,
   acquireFromShowScore,
+  mergeDiaryShows,
   type ImportAcquireResult,
 } from '@/lib/show-import';
 
@@ -24,6 +25,8 @@ interface SearchShow {
   /** Opening/closing dates (YYYY-MM-DD) for date-aware matching. */
   od?: string;
   cd?: string;
+  /** True for diary-only (unscored) catalog entries — see mergeDiaryShows. */
+  dy?: boolean;
 }
 
 interface MatchedEntry {
@@ -82,43 +85,13 @@ export default function ImportShows({
       fetch('/data/diary-search.json').catch(() => null),
       import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
     ]);
-    const data: SearchShow[] = await res.json();
+    let data: SearchShow[] = await res.json();
     // Merge diary shows — expand multi-prod groups into individual entries and add
     // diary entries with distinct venues for venue-aware import matching.
     if (diaryRes?.ok) {
       try {
         const diaryData: SearchShow[] = await diaryRes.json();
-        const existingVenues = new Map<string, Set<string>>();
-        for (const s of data) {
-          const key = s.title.toLowerCase();
-          if (!existingVenues.has(key)) existingVenues.set(key, new Set());
-          if (s.venue) existingVenues.get(key)!.add(s.venue.toLowerCase());
-        }
-        for (const s of diaryData) {
-          const titleLower = s.title.toLowerCase();
-          // Expand multi-prod groups into individual entries with venues
-          if (s.prods) {
-            for (const p of s.prods) {
-              const venue = p.v || '';
-              if (venue && !(existingVenues.get(titleLower)?.has(venue.toLowerCase()))) {
-                data.push({ id: p.id, title: s.title, slug: p.id, status: s.status || 'closed', venue, category: p.cat });
-                if (!existingVenues.has(titleLower)) existingVenues.set(titleLower, new Set());
-                existingVenues.get(titleLower)!.add(venue.toLowerCase());
-              }
-            }
-            continue;
-          }
-          const existingSet = existingVenues.get(titleLower);
-          // Skip if no venue to differentiate, and title already exists
-          if (!s.venue && existingSet) continue;
-          // Skip if same venue already in data
-          if (s.venue && existingSet?.has(s.venue.toLowerCase())) continue;
-          data.push(s);
-          if (s.venue) {
-            if (!existingVenues.has(titleLower)) existingVenues.set(titleLower, new Set());
-            existingVenues.get(titleLower)!.add(s.venue.toLowerCase());
-          }
-        }
+        data = mergeDiaryShows(data, diaryData);
       } catch { /* ignore parse errors */ }
     }
     showsRef.current = data;
