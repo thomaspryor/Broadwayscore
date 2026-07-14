@@ -107,11 +107,14 @@ else
   fi
 fi
 
-# Files that should be symlinks (so local edits write through to private repo)
-SYMLINK_FILES=(shows.json reviews.json commercial.json)
+# Files that should be symlinks (so local edits write through to private repo).
+# diary-shows.json added 2026-07-14 (Notion 39d637c5, import self-heal loop) --
+# scripts/resolve-unmatched-imports.js and scripts/refresh-mezzanine-catalog.js
+# need to test against the real file locally, same as shows.json/reviews.json.
+SYMLINK_FILES=(shows.json reviews.json commercial.json diary-shows.json)
 
 # Files that should be regular copies (read-only for most purposes)
-COPY_FILES=(audience-buzz.json audience-reviews-lbo.json awards.json critic-consensus.json critic-registry.json diary-shows.json grosses.json grosses-history.json mezzanine-productions-raw.json opening-night-sent.json outlet-registry.json)
+COPY_FILES=(audience-buzz.json audience-reviews-lbo.json awards.json critic-consensus.json critic-registry.json grosses.json grosses-history.json mezzanine-productions-raw.json opening-night-sent.json outlet-registry.json)
 
 SYMLINK_COUNT=0
 for f in "${SYMLINK_FILES[@]}"; do
