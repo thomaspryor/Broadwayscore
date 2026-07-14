@@ -281,7 +281,11 @@ function main() {
     // isn't a human-action verb (fail-closed check, no word bound).
     const unknownCat = t => { const c = categoryOf(t); return c === null || c === 'no-category'; };
     // List mode resolves the model from the task-mirror description only (no
-    // per-task Notion fetch — that would be 10 API calls just to print a list).
+    // per-task Notion fetch — that would be 10 API calls just to print a
+    // list). The mirror truncates notes to 400 chars (notion-tasks-sync.js),
+    // so a hint placed later in a long card can show sonnet here but resolve
+    // to its real hint at actual dispatch time (which DOES fetch the full
+    // card) — a display-only gap, since dispatch always uses the full card.
     list.slice(0, 10).forEach((t, i) => {
       const model = resolveModel({ explicitFlag: explicitModel, task: t, card: null, notionId: notionIdOf(t), queuePath: QUEUE_PATH });
       console.log(`  ${i + 1}. #${t.id} [${t.status}] [${model}]${unknownCat(t) ? ' [uncategorized]' : ''} ${t.subject}`);

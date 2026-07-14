@@ -20,11 +20,23 @@ test('modelForSize: S -> sonnet (loop attempt 1), M/L -> opus (loop attempt-2-co
   assert.equal(modelForSize(null), 'sonnet'); // no triage data -> floor
 });
 
-test('explicitModelHint: reads "Model: X" from card notes or task description, fable never matches', () => {
+test('explicitModelHint: reads a line-start "Model: X" from card notes or task description, fable never matches', () => {
   assert.equal(explicitModelHint({ description: 'no hint here' }, null), null);
   assert.equal(explicitModelHint({ description: 'x' }, { notes: 'Model: Opus for this one' }), 'opus');
   assert.equal(explicitModelHint({ description: 'Model: sonnet is enough' }, null), 'sonnet');
   assert.equal(explicitModelHint({ description: 'Model: fable please' }, null), null); // fable never a valid hint
+  // multi-line notes: hint on its own line, anywhere in the text
+  assert.equal(explicitModelHint({ description: 'x' }, { notes: 'Architecture rewrite, multi-file.\nModel: Opus\nGood luck.' }), 'opus');
+});
+
+// Reviewer finding (ship-check, task #151): an unanchored \b regex would
+// false-positive on ordinary prose mentioning "model" mid-sentence —
+// including this feature's OWN card, whose notes describe the mechanism
+// using the literal phrase "Model: Opus" as an example, not a directive.
+test('explicitModelHint: does NOT match "model:" mid-sentence (only a dedicated line)', () => {
+  assert.equal(explicitModelHint({ description: 'x' }, { notes: 'Architecture rewrite. Model: Opus — this needs real judgment.' }), null);
+  assert.equal(explicitModelHint({ description: 'the data model: Opus schema tier needs a redesign' }, null), null);
+  assert.equal(explicitModelHint({ description: 'x' }, { notes: 'card hint... a model hint stored on the card, e.g. "Model: Opus"' }), null);
 });
 
 test('triageSizeFor: looks up the queue entry by Notion card id', () => {
@@ -43,6 +55,13 @@ test('triageSizeFor: looks up the queue entry by Notion card id', () => {
 
 test('triageSizeFor: missing queue file falls through to null, not a throw', () => {
   assert.equal(triageSizeFor('abc', '/nonexistent/path/queue.json'), null);
+});
+
+test('triageSizeFor: corrupt (unparseable) queue file also falls through to null, not a throw', () => {
+  const file = path.join(os.tmpdir(), `bsc-next-model-corrupt-${Date.now()}.json`);
+  fs.writeFileSync(file, '{not valid json');
+  assert.equal(triageSizeFor('abc', file), null);
+  fs.unlinkSync(file);
 });
 
 // ── resolveModel acceptance criteria (task #151) ────────────────────────────
@@ -64,7 +83,7 @@ test('resolveModel: card with triage size M/L -> opus', () => {
 test('resolveModel: explicit "Model: Opus" hint on the card -> opus, even with no/other triage', () => {
   const q = writeQueue([{ card: { id: 'card-hint' }, triage: { size: 'S' } }]);
   const task = { id: '3', description: '[notion:card-hint] P1 Next · Not started · Product' };
-  const card = { notes: 'Architecture rewrite. Model: Opus — this needs real judgment.' };
+  const card = { notes: 'Architecture rewrite, real judgment needed.\nModel: Opus' };
   assert.equal(resolveModel({ explicitFlag: null, task, card, notionId: 'card-hint', queuePath: q }), 'opus');
   fs.unlinkSync(q);
 });
