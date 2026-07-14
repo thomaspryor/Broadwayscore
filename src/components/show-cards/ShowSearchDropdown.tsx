@@ -102,7 +102,7 @@ export default function ShowSearchDropdown({
                       show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
                       'bg-gray-500/20 text-gray-400'
                     }`}>
-                      {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
+                      {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : show.status === 'upcoming' ? 'Upcoming' : show.status === 'announced' ? 'Announced' : 'Closed'}
                     </span>
                     <span className={`px-1 py-0.5 rounded font-medium ${
                       show.category === 'west-end' ? 'bg-purple-500/20 text-purple-400' :

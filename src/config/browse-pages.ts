@@ -73,6 +73,21 @@ function isClosingWithinDays(show: ComputedShow, days: number): boolean {
   return diffDays > 0 && diffDays <= days;
 }
 
+// Announced shows belong on "upcoming" pages (selling tickets before dates are
+// confirmed — Dolly/St. James class, 2026-07-14), but only while their announced
+// dates aren't already in the past. A past date on a still-'announced' entry
+// marks a zombie (announced then never maintained, e.g. wanted-2022) that
+// update-show-status.js flags for manual triage — don't list it as upcoming.
+// Date-only string comparison so "today" counts as current — matches the
+// pipeline's local-midnight semantics (scripts/lib/announced-promotion.js)
+// instead of dropping a show at UTC midnight on its own start date.
+export function isAnnouncedCurrent(show: ComputedShow): boolean {
+  if (show.status !== 'announced') return false;
+  const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD local
+  const past = (d: string | null | undefined) => !!d && d < today;
+  return !past(show.previewsStartDate) && !past(show.openingDate);
+}
+
 // Helper to check if show opened in year
 function openedInYear(show: ComputedShow, year: number): boolean {
   const openDate = new Date(show.openingDate);
@@ -589,10 +604,20 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaTitle: `Upcoming Broadway Shows (${CURRENT_YEAR})`,
     metaDescription: 'New Broadway shows coming soon. See what\'s opening next on the Great White Way, from world premieres to highly anticipated transfers.',
     intro: 'Get excited for Broadway\'s next wave of productions! These shows are currently in previews or have announced opening dates in the coming months. From world premieres to transfers from Off-Broadway and London, these productions represent the future of Broadway. Many are already selling tickets, so if you\'re planning ahead, here\'s your guide to what\'s coming to the Great White Way.',
-    filter: (show) => show.status === 'previews' || show.status === 'upcoming',
+    // 'announced' included 2026-07-14: shows selling tickets before dates are
+    // confirmed (e.g. Dolly at the St. James) were invisible here, which reads
+    // as a coverage gap. Date-less announced shows sort last (null openingDate)
+    // and group under their own section. isAnnouncedCurrent excludes zombie
+    // entries whose announced dates are already in the past (wanted-2022 class).
+    filter: (show) => show.status === 'previews' || show.status === 'upcoming' || isAnnouncedCurrent(show),
     sort: 'opening-date-asc',
     sectionGroup: (show) => {
       if (show.status === 'previews') return 'In Previews Now';
+      // Only date-less announced shows get their own section — announced shows
+      // WITH dates sort in among Coming Soon, and a separate label there would
+      // alternate headers mid-list (BrowseListClient renders a header on every
+      // label change).
+      if (show.status === 'announced' && !show.openingDate && !show.previewsStartDate) return 'Announced — Dates TBA';
       return 'Coming Soon';
     },
     relatedPages: ['new-broadway-shows-2025', 'broadway-shows-closing-soon', 'broadway-lottery-shows'],
@@ -884,7 +909,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaTitle: `Upcoming West End Shows (${CURRENT_YEAR})`,
     metaDescription: 'All upcoming West End shows opening in London. New musicals, plays, and transfers coming to the West End, sorted by opening date.',
     intro: 'Every West End show announced for London\'s theatre district, sorted by opening date. From highly anticipated transfers to world premieres, these are the productions headed to the West End. Bookmark this page to stay up to date on what\'s coming to London theatre — we update it as new shows are announced and opening dates are confirmed.',
-    filter: (show) => show.category === 'west-end' && (show.status === 'upcoming' || show.status === 'previews'),
+    filter: (show) => show.category === 'west-end' && (show.status === 'upcoming' || show.status === 'previews' || isAnnouncedCurrent(show)),
     sort: 'opening-date-asc',
     source: 'west-end',
     relatedPages: ['new-west-end-shows-2026', 'west-end-shows', 'best-west-end-musicals', 'upcoming-broadway-shows'],
@@ -1077,7 +1102,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     // Filtering to 'upcoming' only dropped every show already flipped to
     // previews (e.g. the entire July/August slate), leaving a misleading gap
     // that jumped from one July show straight to September (user, 2026-07-11).
-    filter: (show) => show.status === 'upcoming' || show.status === 'previews',
+    filter: (show) => show.status === 'upcoming' || show.status === 'previews' || isAnnouncedCurrent(show),
     sort: 'opening-date-asc',
     source: 'off-broadway',
     relatedPages: ['recently-opened-off-broadway', 'off-broadway-shows', 'best-off-broadway-shows', 'upcoming-broadway-shows'],

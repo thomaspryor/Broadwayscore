@@ -361,6 +361,15 @@ function validateStatus(shows) {
       // 'open' check errors, the bug is already live. Catch at discovery.
       error(`Active show "${show.title}" (${show.id}) missing category — discover-new-shows.js must set category+market on create. Fix the creator, not the data.`);
       invalid++;
+    } else if (show.status === 'announced' && !show.category) {
+      // Added 2026-07-14: 8 announced shows (incl. dolly-an-original-musical-2026)
+      // sat with null category for months — invisible on every category-scoped
+      // browse page (getBroadwayShows() filters on category), and when Check 2e
+      // in update-show-status.js promotes them to 'upcoming' they'd hit the
+      // error above anyway. Catch at the announced stage, same rationale as
+      // the previews/upcoming upgrade: fail at discovery, not at open.
+      error(`Announced show "${show.title}" (${show.id}) missing category — it is invisible on all browse pages and will fail validation on promotion. Set category+market at create.`);
+      invalid++;
     } else if (show.status === 'closed' && !show.category) {
       // Extended to closed shows 2026-05-16 (Notion 362637c5-416f-81ee follow-up):
       // historical bulk inserts ship as status='closed' and slipped past the open/
@@ -372,7 +381,7 @@ function validateStatus(shows) {
       error(`Closed show "${show.title}" (${show.id}) missing category — historical insert path regressed; check scripts/discover-historical-shows.js + lib/classify-show.js wiring.`);
       invalid++;
     }
-    if (['open', 'previews', 'upcoming', 'closed'].includes(show.status) && show.category && !show.market) {
+    if (['open', 'previews', 'upcoming', 'closed', 'announced'].includes(show.status) && show.category && !show.market) {
       error(`Show "${show.title}" (${show.id}, status=${show.status}) has category="${show.category}" but market=null — scripts/backfill-market.js can fill this from category, but also fix the creator that dropped it.`);
       invalid++;
     }
