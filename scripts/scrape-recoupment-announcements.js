@@ -133,11 +133,20 @@ function pickCandidates(allShows, commercial) {
   });
 }
 
+// Generic queries rank by whatever Google surfaces highest — usually NYT/
+// Deadline/Variety. BroadwayWorld and Playbill are both in TRUSTED_OUTLETS
+// but have no RSS feed (confirmed defunct/nonexistent — see rss-discovery.js
+// comments), so the hourly RSS poller can never catch their exclusives (e.g.
+// The Outsiders' Jan 27 2026 recoupment, which was BWW-only and missed
+// entirely). Site-restricted queries guarantee a BWW/Playbill article
+// surfaces here if Google has indexed it, independent of generic ranking.
 function buildQueries(showTitle) {
   return [
     `"${showTitle}" Broadway recouped`,
     `"${showTitle}" recoupment announcement`,
     `"${showTitle}" earned back investment`,
+    `"${showTitle}" recoups site:broadwayworld.com`,
+    `"${showTitle}" recoups site:playbill.com`,
   ];
 }
 
