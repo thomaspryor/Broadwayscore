@@ -6,27 +6,18 @@
 import Link from 'next/link';
 import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import type { RecoupmentTrend } from '@/lib/data-types';
+import { formatEstimatedCurrency } from '@/lib/biz-format';
 
 interface ApproachingRecoupmentCardProps {
   slug: string;
   title: string;
   season: string;
-  capitalization: number;
+  capitalization: number | null;
   estimatedRecoupmentPct: [number, number];
   modelRecoupmentPct?: [number, number, number] | null;
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
   trend: RecoupmentTrend;
   weeklyGross?: number | null;
-}
-
-function formatCurrency(amount: number): string {
-  if (amount >= 1_000_000) {
-    return `$${(amount / 1_000_000).toFixed(1)}M`;
-  }
-  if (amount >= 1_000) {
-    return `$${(amount / 1_000).toFixed(0)}K`;
-  }
-  return `$${amount}`;
 }
 
 const TREND_LABELS: Record<RecoupmentTrend, string> = {
@@ -61,7 +52,7 @@ export default function ApproachingRecoupmentCard({
       <div className="text-sm text-gray-400 mb-3">{season} Season</div>
       <div className="flex justify-between text-sm">
         <span className="text-gray-500">Investment</span>
-        <span className="text-white">~{formatCurrency(capitalization)}</span>
+        <span className="text-white">{formatEstimatedCurrency(capitalization)}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
         <span className="text-gray-500">Est. Recouped</span>

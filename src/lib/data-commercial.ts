@@ -267,9 +267,15 @@ export function getSeasonStats(season: string): SeasonStats {
 
 /**
  * Get recoupment trend for a show based on recent grosses history
- * Uses last 4 weeks of data, calculates average WoW change
+ * Uses last 4 weeks of data, calculates average WoW change.
+ *
+ * `threshold` controls how big an average WoW swing must be to call it a
+ * trend rather than 'steady' — default 2 (%) is tuned for the display badge.
+ * Callers that need to distinguish a genuine flop trajectory from ordinary
+ * seasonal softness (e.g. the approaching-recoupment gate) should pass a
+ * larger threshold instead of duplicating this calculation.
  */
-export function getRecoupmentTrend(slug: string): RecoupmentTrend {
+export function getRecoupmentTrend(slug: string, threshold: number = 2): RecoupmentTrend {
   const weekKeys = Object.keys(grossesHistory.weeks).sort().reverse();
 
   if (weekKeys.length < 3) return 'unknown';
@@ -298,8 +304,8 @@ export function getRecoupmentTrend(slug: string): RecoupmentTrend {
 
   const avgChange = wowChanges.reduce((a, b) => a + b, 0) / wowChanges.length;
 
-  if (avgChange > 2) return 'improving';
-  if (avgChange < -2) return 'declining';
+  if (avgChange > threshold) return 'improving';
+  if (avgChange < -threshold) return 'declining';
   return 'steady';
 }
 
@@ -423,8 +429,14 @@ export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
     const show = rawShows.find(s => s.slug === slug);
     if (!show || show.status !== 'open') continue;
 
+    // Use a coarser threshold here than the display badge (2%): a normal
+    // seasonal dip (summer, post-Tony) trips the default 'declining' label
+    // on almost every open show at once, which was silently zeroing out this
+    // entire section. Only exclude shows on a genuine downward trajectory.
+    const isSharpDecline = getRecoupmentTrend(slug, 8) === 'declining';
+    if (isSharpDecline) continue;
+
     const trend = getRecoupmentTrend(slug);
-    if (trend === 'declining') continue;
 
     const grossData = getShowGrosses(slug);
 
@@ -432,7 +444,7 @@ export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
       slug,
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
-      capitalization: data.capitalization || 0,
+      capitalization: data.capitalization ?? null,
       estimatedRecoupmentPct: data.estimatedRecoupmentPct || [0, 0],
       modelRecoupmentPct: data.modelRecoupmentPct || null,
       modelMethod: data.modelMethod || null,
@@ -479,7 +491,7 @@ export function getShowsAtRisk(): AtRiskShow[] {
       slug,
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
-      capitalization: data.capitalization || 0,
+      capitalization: data.capitalization ?? null,
       weeklyGross,
       weeklyRunningCost,
       trend,
@@ -518,7 +530,7 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
       weeksToRecoup,
-      capitalization: data.capitalization || 0,
+      capitalization: data.capitalization ?? null,
       recoupDate: data.recoupedDate,
     });
   }
@@ -609,6 +621,9 @@ export function getAllOpenShowsWithCommercial(): Array<{
   estimatedRecoupmentPct: [number, number] | null;
   modelRecoupmentPct?: [number, number, number] | null;
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
+  modelDataQuality?: 'high' | 'medium' | 'low';
+  investorMultiple?: number | null;
+  recoupedSource?: string | null;
   trend: RecoupmentTrend;
   recouped: boolean | null;
   recoupedWeeks: number | null;
@@ -623,6 +638,9 @@ export function getAllOpenShowsWithCommercial(): Array<{
     estimatedRecoupmentPct: [number, number] | null;
     modelRecoupmentPct?: [number, number, number] | null;
     modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
+    modelDataQuality?: 'high' | 'medium' | 'low';
+    investorMultiple?: number | null;
+    recoupedSource?: string | null;
     trend: RecoupmentTrend;
     recouped: boolean | null;
     recoupedWeeks: number | null;
@@ -644,6 +662,9 @@ export function getAllOpenShowsWithCommercial(): Array<{
       estimatedRecoupmentPct: data.estimatedRecoupmentPct || null,
       modelRecoupmentPct: data.modelRecoupmentPct || null,
       modelMethod: data.modelMethod || null,
+      modelDataQuality: data.modelDataQuality,
+      investorMultiple: data.investorMultiple,
+      recoupedSource: data.recoupedSource,
       trend: getRecoupmentTrend(slug),
       recouped: data.recouped,
       recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate),
