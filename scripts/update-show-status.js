@@ -834,11 +834,15 @@ async function updateShowStatuses() {
     fs.appendFileSync(outputFile, `updates_count=${updates.length}\n`);
     fs.appendFileSync(outputFile, `updated_shows=${updates.map(u => u.title).join(', ')}\n`);
 
-    // Separate output for shows transitioning previews→open (for downstream triggers).
-    // Exclude review-driven catch-up flips (Check 2d) — those shows opened days/weeks
-    // ago, so triggering the opening-night poller/broadcast for them would be wrong.
+    // Separate output for shows transitioning to open (for downstream triggers).
+    // Includes previews→open, upcoming→open, and announced→open (Check 2e —
+    // without 'announced' here a late-discovered show whose openingDate just
+    // arrived would open silently, skipping the opening-night poller/broadcast).
+    // Exclude review-driven catch-up flips (Check 2d) — those shows opened
+    // days/weeks ago, so triggering the opening-night pipeline would be wrong.
     const openedShows = updates.filter(u =>
-      u.changes.status?.from === 'previews' && u.changes.status?.to === 'open' && !u.changes.reviewDriven
+      ['previews', 'upcoming', 'announced'].includes(u.changes.status?.from) &&
+      u.changes.status?.to === 'open' && !u.changes.reviewDriven
     );
     fs.appendFileSync(outputFile, `opened_count=${openedShows.length}\n`);
     fs.appendFileSync(outputFile, `opened_slugs=${openedShows.map(u => u.id).join(',')}\n`);

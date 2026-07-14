@@ -32,6 +32,14 @@ on:
 permissions:
   contents: write
 
+# Serialize with update-show-status/enrich-off-broadway-dates on the shared
+# shows.json writer group — this workflow read-mutate-writes shows.json, and
+# widening scheduled runs to open,previews,upcoming,announced (2026-07-14)
+# increases overlap with the daily status writer.
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
 jobs:
   enrich-dates:
     runs-on: ubuntu-latest

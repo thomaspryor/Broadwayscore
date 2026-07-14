@@ -78,10 +78,13 @@ function isClosingWithinDays(show: ComputedShow, days: number): boolean {
 // dates aren't already in the past. A past date on a still-'announced' entry
 // marks a zombie (announced then never maintained, e.g. wanted-2022) that
 // update-show-status.js flags for manual triage — don't list it as upcoming.
-function isAnnouncedCurrent(show: ComputedShow): boolean {
+// Date-only string comparison so "today" counts as current — matches the
+// pipeline's local-midnight semantics (scripts/lib/announced-promotion.js)
+// instead of dropping a show at UTC midnight on its own start date.
+export function isAnnouncedCurrent(show: ComputedShow): boolean {
   if (show.status !== 'announced') return false;
-  const now = new Date();
-  const past = (d: string | null | undefined) => !!d && new Date(d).getTime() < now.getTime();
+  const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD local
+  const past = (d: string | null | undefined) => !!d && d < today;
   return !past(show.previewsStartDate) && !past(show.openingDate);
 }
 
@@ -610,7 +613,11 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     sort: 'opening-date-asc',
     sectionGroup: (show) => {
       if (show.status === 'previews') return 'In Previews Now';
-      if (show.status === 'announced') return 'Announced';
+      // Only date-less announced shows get their own section — announced shows
+      // WITH dates sort in among Coming Soon, and a separate label there would
+      // alternate headers mid-list (BrowseListClient renders a header on every
+      // label change).
+      if (show.status === 'announced' && !show.openingDate && !show.previewsStartDate) return 'Announced — Dates TBA';
       return 'Coming Soon';
     },
     relatedPages: ['new-broadway-shows-2025', 'broadway-shows-closing-soon', 'broadway-lottery-shows'],

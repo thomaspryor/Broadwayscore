@@ -6,7 +6,7 @@
  * status transition covered 'announced', so shows stayed invisible on
  * upcoming browse pages forever (dolly-an-original-musical-2026 incident).
  *
- * Pure function so scripts/test-announced-promotion.js exercises the real
+ * Pure function so tests/unit/announced-promotion.test.mjs exercises the real
  * decision (CLAUDE.md §15 — never copy logic into tests).
  */
 
@@ -29,17 +29,29 @@ function decideAnnouncedPromotion(show, now = new Date()) {
   const reached = (dateStr) => dateStr && (now.getTime() >= new Date(dateStr + 'T00:00:00').getTime());
   const staleBy = (dateStr) =>
     (now.getTime() - new Date(dateStr + 'T00:00:00').getTime()) / dayMs;
+  const isStale = (dateStr) => !!dateStr && staleBy(dateStr) > ANNOUNCED_PROMOTE_MAX_STALE_DAYS;
 
-  const refDate = show.openingDate || show.previewsStartDate;
-  if (reached(refDate) && staleBy(refDate) > ANNOUNCED_PROMOTE_MAX_STALE_DAYS) {
+  // Staleness is judged per-date: a stale placeholder openingDate must not
+  // block promotion when previewsStartDate is future/recent (and vice versa).
+  // Only triage when EVERY known date is stale — then the entry is a zombie.
+  const openStale = isStale(show.openingDate);
+  const prevStale = isStale(show.previewsStartDate);
+  const usableOpening = show.openingDate && !openStale ? show.openingDate : null;
+  const usablePreviews = show.previewsStartDate && !prevStale ? show.previewsStartDate : null;
+
+  if (!usableOpening && !usablePreviews) {
+    const staleDesc = [
+      openStale ? `openingDate ${show.openingDate}` : null,
+      prevStale ? `previewsStartDate ${show.previewsStartDate}` : null,
+    ].filter(Boolean).join(' and ');
     return {
       action: 'triage',
-      reason: `${show.openingDate ? 'openingDate' : 'previewsStartDate'} ${refDate} passed ${ANNOUNCED_PROMOTE_MAX_STALE_DAYS}+ days ago — zombie entry (cancelled? placeholder date? actually open/closed?)`,
+      reason: `${staleDesc} passed ${ANNOUNCED_PROMOTE_MAX_STALE_DAYS}+ days ago — zombie entry (cancelled? placeholder date? actually open/closed?)`,
     };
   }
 
-  const to = reached(show.openingDate) ? 'open'
-    : reached(show.previewsStartDate) ? 'previews'
+  const to = reached(usableOpening) ? 'open'
+    : reached(usablePreviews) ? 'previews'
     : 'upcoming';
   return { action: 'promote', to };
 }
