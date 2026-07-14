@@ -1,0 +1,51 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { buildDataPlan } = require('./autonomous-triage.js');
+
+// Fixture entries shaped like scripts/autonomous-triage.js's `entries` array:
+// a Tier-1 'skip' with a real triage.size (the common Tier-2 case — the card
+// reached the LLM, which correctly said eligible:false for touching data/,
+// but still estimated size independent of eligibility).
+function skipped(card, size) {
+  return { decision: 'skip', card, triage: size ? { eligible: false, size, reason: 'touches data/', checkableDone: 'n/a' } : null };
+}
+
+test('a real byline-recovery card (Tier-1 skip, LLM size M) becomes a Tier-2 dataPlan item', () => {
+  const card = { id: 'card-27', name: 'Byline recovery: outlet--unknown entries in reviews.json where a named sibling file exists', priority: 'P1 Next', tags: ['review-recovery', 'bylines'] };
+  const plan = buildDataPlan([skipped(card, 'M')]);
+  assert.deepEqual(plan, [{ id: 'card-27', name: card.name, priority: 'P1 Next', size: 'M', class: 'byline-recovery' }]);
+});
+
+test('pre-filter skip (no triage object at all) still classifies, defaults size to M', () => {
+  const card = { id: 'card-x', name: 'Missing show: Some Regional Transfer', priority: 'P2 Later', tags: ['missing-show', 'commercial'] }; // deny-tag → pre-filter skip, never reaches LLM
+  const plan = buildDataPlan([skipped(card, null)]);
+  assert.deepEqual(plan, [{ id: 'card-x', name: card.name, priority: 'P2 Later', size: 'M', class: 'missing-show' }]);
+});
+
+test('attempt/split/failed decisions never enter the data plan, even if classifiable', () => {
+  const card = { id: 'card-z', name: 'Missing show: Whatever', priority: 'P1 Next', tags: ['missing-show'] };
+  assert.deepEqual(buildDataPlan([{ decision: 'attempt', card, triage: { size: 'S' } }]), []);
+  assert.deepEqual(buildDataPlan([{ decision: 'split', card, triage: { size: 'L' } }]), []);
+  assert.deepEqual(buildDataPlan([{ decision: 'failed', card, triage: null }]), []);
+});
+
+test('unclassifiable skipped cards are excluded (default-deny holds)', () => {
+  const card = { id: 'card-q', name: 'Rage clicks on Hamilton show page', priority: 'P1 Next', tags: [] };
+  assert.deepEqual(buildDataPlan([skipped(card, 'S')]), []);
+});
+
+test('a transient fetch-failure entry (no real card) never enters the plan', () => {
+  const entry = { decision: 'skip', transient: true, card: { id: 'card-t' }, triage: null };
+  assert.deepEqual(buildDataPlan([entry]), []);
+});
+
+test('ordering matches priority then size, same as the Tier-1 plan', () => {
+  const p0m = skipped({ id: 'a', name: 'Missing show: A', priority: 'P0 Now', tags: ['missing-show'] }, 'M');
+  const p1s = skipped({ id: 'b', name: 'Missing show: B', priority: 'P1 Next', tags: ['missing-show'] }, 'S');
+  const p0s = skipped({ id: 'c', name: 'Missing show: C', priority: 'P0 Now', tags: ['missing-show'] }, 'S');
+  const plan = buildDataPlan([p1s, p0m, p0s]);
+  assert.deepEqual(plan.map(p => p.id), ['c', 'a', 'b']); // P0-S, P0-M, P1-S
+});

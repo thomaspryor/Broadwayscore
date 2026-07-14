@@ -34,18 +34,22 @@ const { execFileSync, spawnSync } = require('child_process');
 
 const https = require('https');
 const { transition } = require('./lib/autonomous-state.js');
-const { isDiffAllowed, isDiffDeterministicGreen } = require('./lib/autonomous-eligibility.js');
+const { isDiffAllowed, isDiffDeterministicGreen, classifyDataCard, DATA_CLASS_REPO, isDataRepoDiffAllowed } = require('./lib/autonomous-eligibility.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 const { createNightBudget, checkSharedDailyCap, pickModel, ENVELOPES } = require('./lib/autonomous-budget.js');
 const ledger = require('./lib/autonomous-ledger.js');
 const {
-  buildImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks, cardCheckArgv, shouldThrottle, preflightVerdict,
+  buildImplementerPrompt, buildDataImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks, cardCheckArgv, shouldThrottle, preflightVerdict,
   resolveOwnerEmail,
 } = require('./lib/autonomous-run-core.js');
 const { evidenceCommentText } = require('./lib/autonomous-notion-evidence.js');
 const {
   isIncrementalSize, classifyLCardOutcome, nightNumberFor, buildResumeNote, buildFirstNightNote, buildCheckpointNote,
 } = require('./lib/autonomous-checkpoint.js');
+const {
+  buildDataWorkdir, removeDataWorkdir, pushDataBranch, showIdsFromReviewTextsDiff, primaryWorktree,
+} = require('./lib/autonomous-data-workdir.js');
+const { verifierArgvFor } = require('./lib/autonomous-data-verify.js');
 
 const REPO = path.join(__dirname, '..');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
@@ -331,7 +335,7 @@ function checksEnv() {
   return env;
 }
 
-function runImplementer(item, card, workdir, model, maxWallMin, mockScript, promptPrefix) {
+function runImplementer(item, card, workdir, model, maxWallMin, mockScript, promptPrefix, fullPromptOverride) {
   const t0 = Date.now();
   if (mockScript) {
     const r = spawnSync('node', [path.resolve(String(mockScript))], {
@@ -344,7 +348,10 @@ function runImplementer(item, card, workdir, model, maxWallMin, mockScript, prom
 
   // promptPrefix (Sprint 3, L cards): resume/first-night checkpoint note,
   // prepended ahead of the normal card prompt — see scripts/lib/autonomous-checkpoint.js.
-  const prompt = (promptPrefix ? `${promptPrefix}\n\n---\n\n` : '') + buildImplementerPrompt(card, item);
+  // fullPromptOverride (Sprint 4, Tier-2 data cards): a complete, already-built
+  // prompt (buildDataImplementerPrompt) — Tier-1's buildImplementerPrompt call
+  // below is skipped entirely rather than layered under it.
+  const prompt = fullPromptOverride || ((promptPrefix ? `${promptPrefix}\n\n---\n\n` : '') + buildImplementerPrompt(card, item));
   const r = spawnSync('claude', [
     '--dangerously-skip-permissions',
     '--settings', SETTINGS_PATH,
@@ -649,6 +656,151 @@ function attemptCard(item, budget, cfg, runId, opts) {
   }
 }
 
+// ── Tier-2 data-card executor (Sprint 4) ────────────────────────────────────
+//
+// Mirrors attemptCard()'s claim → branch → implement → verify → push shape,
+// but branches in the PRIVATE data repo the card's class touches (never this
+// repo's worktree) and verifies with the deterministic commands from
+// scripts/lib/autonomous-data-verify.js instead of checkableDone (Tier-2 has
+// no LLM-authored check — the class is a controlled enum, we choose the
+// verifier). isDiffDeterministicGreen never matches a data-repo path, so
+// every Tier-2 pass lands on needs-approval — no auto-merge branch here.
+// Single attempt only (no Opus retry escalation yet — carry-forward).
+function attemptDataCard(item, budget, cfg, runId) {
+  let card;
+  try { card = notionBrain(['get', item.id]); }
+  catch (err) {
+    ledger.appendEntry({ event: 'card-skip', runId, cardId: item.id, name: item.name, note: `fetch failed: ${err.message.slice(0, 120)}` });
+    return;
+  }
+  if (card.status !== 'Not started' || card.auto) {
+    ledger.appendEntry({ event: 'card-skip', runId, cardId: item.id, name: item.name, note: `state moved underneath us (status=${card.status}, auto=${card.auto || 'none'})` });
+    console.error(`[run] skip ${item.name}: claimed elsewhere (status=${card.status}, auto=${card.auto || 'none'})`);
+    return;
+  }
+
+  // Re-derive from the FRESH card, not the stale triage-time snapshot in
+  // item — the card is untrusted and may have changed (retagged, retitled)
+  // between last night's triage and tonight's attempt.
+  const cls = classifyDataCard(card);
+  const repoKey = cls && DATA_CLASS_REPO[cls];
+  if (!cls || !repoKey) {
+    ledger.appendEntry({ event: 'card-skip', runId, cardId: item.id, name: item.name, note: `no longer classifiable as a Tier-2 data card (was "${item.class}")` });
+    return;
+  }
+
+  const adm = budget.admit(item.id, item.size);
+  if (!adm.admitted) {
+    console.error(`[run] skip ${item.name}: ${adm.reason}`);
+    ledger.appendEntry({ event: 'card-skip', runId, cardId: item.id, name: item.name, note: adm.reason });
+    return;
+  }
+
+  transition('queued', 'run.claim');
+  notionUpdate(item.id, ['--status', 'In progress', '--auto', 'attempted']);
+  ledger.appendEntry({ event: 'claim', runId, cardId: item.id, name: item.name });
+
+  const branch = branchNameFor(item);
+  const scratchRoot = path.join(WORKTREE_ROOT, `auto-data-${branch.split('/')[1]}`);
+  const env = ENVELOPES[item.size];
+  let totalUSD = 0;
+
+  const fail = (stage, reason) => {
+    transition('attempted', 'run.fail', { reason });
+    try {
+      notionUpdate(item.id, ['--auto', 'failed', '--status', 'Not started',
+        '--outcome', `## Autonomous attempt failed (${new Date().toISOString().slice(0, 10)})\n${stage}: ${String(reason).slice(0, 400)}\n\nBranch (private repo: ${repoKey}) was not merged; the loop will not retry this card (Auto=failed) — clear Auto to re-queue it.`]);
+    } catch (e) { console.error(`[run] WARN could not flip ${item.id} to failed: ${e.message.slice(0, 120)}`); }
+    ledger.appendEntry({ event: 'card-fail', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), note: `${stage}: ${String(reason).slice(0, 300)}` });
+    console.error(`[run] FAIL ${item.name} [${stage}] ${reason}`);
+  };
+
+  let wd = null;
+  try {
+    wd = buildDataWorkdir({ repoKey, branch, scratchRoot, repoRoot: REPO });
+  } catch (err) {
+    budget.settle(item.id, 0);
+    fail('branch-error', err.message.slice(0, 300));
+    return;
+  }
+
+  try {
+    const model = pickModel(1, null);
+    const prompt = buildDataImplementerPrompt(card, item, { repoKey, dataClass: cls });
+    console.error(`[run] ${item.name}: attempt 1 (${model}, data-class ${cls} → ${repoKey})`);
+    const imp = runImplementer(item, card, wd.dataDir, model, env.maxWallMin, null, null, prompt);
+    totalUSD = round2(totalUSD + imp.usd);
+    ledger.appendEntry({
+      event: 'implement', runId, cardId: item.id, name: item.name, attempt: 1, model,
+      usd: imp.usd, tokensIn: imp.tokensIn, tokensOut: imp.tokensOut,
+      note: imp.ok ? `ok in ${imp.wallMin.toFixed(1)}min` : `${imp.stage}: ${String(imp.error).slice(0, 200)}`,
+    });
+
+    let stage = null, detail = null, evidence = null;
+    if (!imp.ok) { stage = imp.stage; detail = imp.error; }
+    else {
+      const cut = budget.shouldAbort(item.size, { elapsedMin: imp.wallMin, attemptUSD: imp.usd });
+      if (cut.abort) { stage = 'budget'; detail = cut.reason; }
+    }
+
+    if (!stage) {
+      const wt = primaryWorktree(wd);
+      try {
+        if (git(wt.path, ['status', '--porcelain']).trim()) {
+          git(wt.path, ['add', '-A']);
+          git(wt.path, ['commit', '-q', '-m', `auto: ${item.name} (executor commit)`]);
+        }
+        const files = git(wt.path, ['diff', '--name-only', 'origin/main...HEAD']).trim().split('\n').filter(Boolean);
+        if (!files.length) { stage = 'empty-diff'; detail = 'implementer produced no changes'; }
+        else {
+          const gate = isDataRepoDiffAllowed(repoKey, files);
+          if (!gate.allowed) { stage = 'diff-refused'; detail = `ineligible paths in ${repoKey}: ${gate.refused.join(', ')}`; }
+          else {
+            const showIds = repoKey === 'review-texts' ? showIdsFromReviewTextsDiff(files) : [];
+            const verifiers = verifierArgvFor(cls, { dataDir: wd.dataDir, showIds });
+            if (!verifiers.length) { stage = 'no-verifier'; detail = `class "${cls}" has no verifier command for this diff (showIds: ${showIds.join(', ') || 'none'})`; }
+            else {
+              const checkEnv = checksEnv();
+              const results = verifiers.map(v => {
+                try {
+                  execFileSync(v.argv[0], v.argv.slice(1), { cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8', env: checkEnv });
+                  return { name: v.name, pass: true };
+                } catch (err) {
+                  return { name: v.name, pass: false, detail: String(err.stderr || err.stdout || err.message).slice(0, 400) };
+                }
+              });
+              const failed = results.filter(r => !r.pass);
+              if (failed.length) { stage = 'checks-failed'; detail = failed.map(r => `${r.name}: ${r.detail}`).join(' | ').slice(0, 500); }
+              else evidence = { branch, files, checks: results.map(r => `${r.name}: PASS`), summary: (imp.resultText || '').slice(0, 600), repoKey, dataClass: cls, showIds };
+            }
+          }
+        }
+      } catch (err) { stage = 'git-error'; detail = err.message.slice(0, 200); }
+
+      if (evidence) {
+        try { pushDataBranch(wt.path, branch); }
+        catch (err) { stage = 'push-error'; detail = err.message.slice(0, 200); evidence = null; }
+      }
+    }
+
+    if (evidence) {
+      postEvidenceComment(item.id, evidence);
+      // Tier-2 diffs never touch tests/**/docs/** in THIS repo, so they can
+      // never classify deterministic-green — every pass needs a human tap.
+      transition('attempted', 'run.pass');
+      notionUpdate(item.id, ['--auto', 'needs-approval']);
+      ledger.appendEntry({ event: 'card-pass', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), attempt: 1, evidence });
+      console.error(`[run] PASS ${item.name} → ${repoKey}:${branch} ($${totalUSD.toFixed(2)})`);
+      return;
+    }
+
+    fail(stage, detail);
+  } finally {
+    budget.settle(item.id, totalUSD);
+    if (wd) removeDataWorkdir(wd);
+  }
+}
+
 async function live(args, cfg) {
   const mockScript = args['mock-implementer'] || null;
   const mockEmail = args['mock-email'] || null;
@@ -684,11 +836,17 @@ async function live(args, cfg) {
       ? queue.runId
       : `run-${new Date().toISOString().replace(/[:.]/g, '-')}`;
     let plan = queue.plan;
-    if (args.card) plan = plan.filter(p => p.id === args.card || p.id.replace(/-/g, '') === String(args.card).replace(/-/g, ''));
+    // Tier-2 (Sprint 4): data-pipeline cards autonomous-triage.js classified
+    // but Tier-1 correctly skipped for touching data/ — see buildDataPlan().
+    let dataPlan = queue.dataPlan || [];
+    if (args.card) {
+      plan = plan.filter(p => p.id === args.card || p.id.replace(/-/g, '') === String(args.card).replace(/-/g, ''));
+      dataPlan = dataPlan.filter(p => p.id === args.card || p.id.replace(/-/g, '') === String(args.card).replace(/-/g, ''));
+    }
 
-    ledger.appendEntry({ event: 'run-start', runId, note: `budget $${nightUSD} · max ${maxItems} · sizes ${sizes.join(',')} · ${plan.length} plan item(s)${mockScript ? ' · MOCK implementer' : ''}` });
+    ledger.appendEntry({ event: 'run-start', runId, note: `budget $${nightUSD} · max ${maxItems} · sizes ${sizes.join(',')} · ${plan.length} plan item(s) + ${dataPlan.length} data-plan item(s)${mockScript ? ' · MOCK implementer' : ''}` });
 
-    runRecovery(new Set(plan.map(p => p.id)), runId);
+    runRecovery(new Set([...plan, ...dataPlan].map(p => p.id)), runId);
 
     // Approval-fatigue throttle: too many un-tapped items → no new attempts.
     const open = listCardsByAuto('needs-approval');
@@ -701,7 +859,7 @@ async function live(args, cfg) {
 
     // Auth pre-flight — only when there's real work and a real implementer
     // (the mock never touches claude CLI; an empty plan spends nothing).
-    if (plan.length && !mockScript) {
+    if ((plan.length || dataPlan.length) && !mockScript) {
       console.error('[run] preflight: pinging claude CLI (auth check)');
       const pf = preflightAuth();
       if (!pf.ok) {
@@ -717,6 +875,9 @@ async function live(args, cfg) {
 
     const budget = createNightBudget({ nightUSD, maxItems, sizes, weeklyUSD: cfg.weeklyUSD ?? null });
     for (const item of plan) attemptCard(item, budget, cfg, runId, { mockScript });
+    // Tier-2 items never use mockScript today (no fixture harness for the
+    // data-repo path yet — carry-forward); a mock run simply attempts none.
+    if (!mockScript) for (const item of dataPlan) attemptDataCard(item, budget, cfg, runId);
 
     const s = budget.state();
     ledger.appendEntry({ event: 'run-end', runId, note: `spent $${s.spent.toFixed(2)} of $${nightUSD} · ${s.items} attempted` });
@@ -750,4 +911,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { planCard, branchNameFor, attemptCard, runRecovery, readQueue, preflightAuth, sendMorningEmail };
+module.exports = { planCard, branchNameFor, attemptCard, attemptDataCard, runRecovery, readQueue, preflightAuth, sendMorningEmail };

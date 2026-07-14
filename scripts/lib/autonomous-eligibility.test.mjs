@@ -16,6 +16,11 @@ const {
   isDiffAllowed,
   isDeterministicGreenPath,
   isDiffDeterministicGreen,
+  classifyDataCard,
+  isScorecardDataPathAllowed,
+  isReviewTextsPathAllowed,
+  isDataRepoPathAllowed,
+  isDataRepoDiffAllowed,
 } = require('./autonomous-eligibility.js');
 
 // ── Card level ──────────────────────────────────────────────────────────────
@@ -267,4 +272,76 @@ test('isDeterministicGreenPath matches the same set isDiffDeterministicGreen req
   assert.equal(isDeterministicGreenPath('docs/runbook.md'), true);
   assert.equal(isDeterministicGreenPath('src/app/page.tsx'), false);
   assert.equal(isDeterministicGreenPath('data/shows.json'), false);
+});
+
+// ── Tier 2: data-pipeline card classification (Sprint 4) ────────────────────
+// Fixtures are REAL card shapes pulled from Notion 2026-07-14 (batch #109
+// missing-show cards + open backlog #27/#55/#56) — not invented examples.
+
+test('missing-show class: tag wins even if the title were generic', () => {
+  const card = { name: 'Missing show: King Hedley II', tags: ['friction', 'missing-show', 'fhash:53776abb', 'auto-fix-attempted', 'auto-fix-skipped'] };
+  assert.equal(classifyDataCard(card), 'missing-show');
+});
+
+test('missing-show class: title prefix alone (no tag) still classifies', () => {
+  assert.equal(classifyDataCard({ name: 'Missing show: Vanya (Andrew Scott solo, Lucille Lortel 2025)', tags: ['data-quality'] }), 'missing-show');
+});
+
+test('byline-recovery class: real open card #27', () => {
+  const card = { name: 'Byline recovery: outlet--unknown entries in reviews.json where a named sibling file exists', tags: ['review-recovery', 'bylines'] };
+  assert.equal(classifyDataCard(card), 'byline-recovery');
+});
+
+test('cluster-cleanup class: real open cards #55/#56', () => {
+  assert.equal(classifyDataCard({ name: "Clean up 10 byline-explosion review clusters (buried/unscored reviews)", tags: ['data-quality', 'reviews', 'dedup', 'west-end'] }), 'cluster-cleanup');
+  assert.equal(classifyDataCard({ name: 'Run title-fragment/empty-stub duplicate detector across Broadway + Off-Broadway', tags: [] }), 'cluster-cleanup');
+});
+
+test('re-gather class: real completed card wording', () => {
+  assert.equal(classifyDataCard({ name: "Delete and re-gather Teeth 'n' Smiles reviews from scratch", tags: [] }), 're-gather');
+});
+
+test('unknown card shape default-denies (null), never guesses', () => {
+  assert.equal(classifyDataCard({ name: 'Rage clicks on Hamilton show page', tags: [] }), null);
+  assert.equal(classifyDataCard({ name: 'CI red: NEWSLETTER_PATTERNS[4] content-quality regex FP rate over threshold', tags: [] }), null);
+  assert.equal(classifyDataCard({ name: '', tags: [] }), null);
+  assert.equal(classifyDataCard({}), null);
+});
+
+test('missing-show title pattern beats a coincidental re-gather-shaped card, order matters', () => {
+  // A missing-show card's tag is checked first regardless of title wording.
+  assert.equal(classifyDataCard({ name: 'Missing show: Some Re-gather Sounding Title', tags: ['missing-show'] }), 'missing-show');
+});
+
+// ── Tier 2: private-repo path allow-lists ────────────────────────────────────
+
+test('scorecard-data repo: only shows.json is writable', () => {
+  assert.equal(isScorecardDataPathAllowed('shows.json'), true);
+  assert.equal(isScorecardDataPathAllowed('reviews.json'), false); // derived, never hand-edited
+  assert.equal(isScorecardDataPathAllowed('commercial.json'), false);
+  assert.equal(isScorecardDataPathAllowed('outlet-registry.json'), false);
+});
+
+test('review-texts repo: per-show json files allowed, repo-root junk refused', () => {
+  assert.equal(isReviewTextsPathAllowed('hamilton-2015/nytg--austin-fimmano.json'), true);
+  assert.equal(isReviewTextsPathAllowed('_pending/some-show-2026/outlet--critic.json'), true);
+  assert.equal(isReviewTextsPathAllowed('failed-fetches.json'), false); // repo-root file, 1 path segment
+  assert.equal(isReviewTextsPathAllowed('tony-hub-desktop.png'), false); // not .json
+  assert.equal(isReviewTextsPathAllowed('some-show/nested/deep/file.json'), false); // too deep
+  assert.equal(isReviewTextsPathAllowed('../outside.json'), false);
+});
+
+test('isDataRepoPathAllowed dispatches to the right repo predicate', () => {
+  assert.equal(isDataRepoPathAllowed('scorecard-data', 'shows.json'), true);
+  assert.equal(isDataRepoPathAllowed('review-texts', 'hamilton-2015/x.json'), true);
+  assert.equal(isDataRepoPathAllowed('review-texts', 'shows.json'), false);
+});
+
+test('isDataRepoDiffAllowed refuses unknown repoKey and reports refused files', () => {
+  assert.equal(isDataRepoDiffAllowed('scorecard-data', ['shows.json']).allowed, true);
+  const bad = isDataRepoDiffAllowed('scorecard-data', ['shows.json', 'reviews.json']);
+  assert.equal(bad.allowed, false);
+  assert.deepEqual(bad.refused, ['reviews.json']);
+  assert.equal(isDataRepoDiffAllowed('review-texts', ['hamilton-2015/nytg--x.json']).allowed, true);
+  assert.equal(isDataRepoDiffAllowed('nonsense-repo', ['shows.json']).allowed, false);
 });

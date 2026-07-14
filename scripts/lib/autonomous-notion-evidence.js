@@ -23,7 +23,7 @@
 const MARKER = '[auto-evidence]';
 
 /**
- * @param {{branch:string, files:string[], checkableDone?:string|null, checks?:string[]}} evidence
+ * @param {{branch:string, files:string[], checkableDone?:string|null, checks?:string[], repoKey?:string|null, dataClass?:string|null, showIds?:string[]}} evidence
  * @returns {string} a Notion rich_text comment body
  */
 function evidenceCommentText(evidence) {
@@ -32,13 +32,21 @@ function evidenceCommentText(evidence) {
     files: evidence.files || [],
     checkableDone: evidence.checkableDone || null,
     checks: evidence.checks || [],
+    // Tier-2 only (Sprint 4): which private repo + card class this evidence
+    // belongs to, so autonomous-merge.yml's data path knows which repo to
+    // check out WITHOUT trusting the (untrusted) card text — repoKey/dataClass
+    // are stamped by the executor from its own classifyDataCard() call, never
+    // read back from the card's title/notes at merge time.
+    repoKey: evidence.repoKey || null,
+    dataClass: evidence.dataClass || null,
+    showIds: Array.isArray(evidence.showIds) ? evidence.showIds : [],
   };
   return `${MARKER} ${JSON.stringify(payload)}`;
 }
 
 /**
  * @param {string} text - a single comment's plain text
- * @returns {{branch:string, files:string[], checkableDone:string|null, checks:string[]}|null}
+ * @returns {{branch:string, files:string[], checkableDone:string|null, checks:string[], repoKey:string|null, dataClass:string|null, showIds:string[]}|null}
  */
 function parseEvidenceComment(text) {
   const t = String(text || '');
@@ -51,6 +59,9 @@ function parseEvidenceComment(text) {
       files: Array.isArray(payload.files) ? payload.files : [],
       checkableDone: typeof payload.checkableDone === 'string' ? payload.checkableDone : null,
       checks: Array.isArray(payload.checks) ? payload.checks : [],
+      repoKey: typeof payload.repoKey === 'string' ? payload.repoKey : null,
+      dataClass: typeof payload.dataClass === 'string' ? payload.dataClass : null,
+      showIds: Array.isArray(payload.showIds) ? payload.showIds : [],
     };
   } catch {
     return null;

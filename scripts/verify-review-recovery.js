@@ -15,6 +15,13 @@
  *   --show=SHOW_ID       Required. The show to check.
  *   --file=FILENAME      Optional. Check a specific review file only.
  *   --production         Also check the live production site (slower).
+ *   --pre-merge          Only run checks 1-4 (file-level integrity). Steps
+ *                        5/5.5/6 all depend on reviews.json/public per-show
+ *                        JSON having been rebuilt from THIS change — true for
+ *                        an already-merged/deployed show, never true for an
+ *                        unmerged candidate branch. Without this flag those
+ *                        checks would fail every correct pre-merge diff
+ *                        (autonomous nightly loop Tier-2 verification).
  *   --verbose            Show details for passing checks too.
  *
  * Checks (in pipeline order):
@@ -22,9 +29,9 @@
  *   2. Content quality  — fullText exists, contentTier != stub/invalid
  *   3. Exclusion flags  — wrongProduction, wrongShow, isRoundupArticle
  *   4. LLM scoring      — llmScore or assignedScore present
- *   5. Rebuild inclusion — review appears in reviews.json
- *   5.5 Local per-show JSON — public/data/shows/{showId}.json rv.length matches reviews.json
- *   6. Production (opt) — review count on live site matches local
+ *   5. Rebuild inclusion — review appears in reviews.json (skipped by --pre-merge)
+ *   5.5 Local per-show JSON — public/data/shows/{showId}.json rv.length matches reviews.json (skipped by --pre-merge)
+ *   6. Production (opt) — review count on live site matches local (skipped by --pre-merge)
  *
  * Exit codes:
  *   0 = all checks pass
@@ -48,7 +55,9 @@ args.forEach(a => {
 
 const showId = flags.show;
 const specificFile = flags.file;
-const checkProduction = !!flags.production;
+const preMerge = !!flags['pre-merge'];
+// A pre-merge candidate can't be live yet no matter what the caller passes.
+const checkProduction = !!flags.production && !preMerge;
 const verbose = !!flags.verbose;
 
 if (!showId) {
@@ -233,9 +242,13 @@ if (unscoredIncludable > 0) {
 
 // ── Check 5: Rebuild inclusion ──────────────────────────────────────────────
 
+let reviewsData = null;
+if (preMerge) {
+  console.log(`\n${BOLD}Step 5: Rebuild inclusion (reviews.json)${RESET}`);
+  skip('--pre-merge: reviews.json reflects main, not this unmerged branch — skipped');
+} else {
 console.log(`\n${BOLD}Step 5: Rebuild inclusion (reviews.json)${RESET}`);
 
-let reviewsData;
 try {
   reviewsData = JSON.parse(fs.readFileSync(REVIEWS_JSON, 'utf8'));
 } catch {
@@ -271,6 +284,7 @@ if (reviewsData) {
   if (missingFromReviews > 0) {
     console.log(`  ${FAIL} ${missingFromReviews} scored reviews missing — run: gh workflow run "Refresh Review Data"`);
   }
+}
 }
 
 // ── Check 5.5: Local per-show JSON (stage 2→3) ─────────────────────────────
