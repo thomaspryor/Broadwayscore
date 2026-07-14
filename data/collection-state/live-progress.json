@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-07-14T17:13:15.070Z",
-  "processed": 2,
-  "failed": 14,
-  "successRate": "12.5%",
+  "updatedAt": "2026-07-14T17:10:36.530Z",
+  "processed": 1,
+  "failed": 9,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 1
+    "archiveToday": 0,
+    "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-14T17:10:04.083Z",
+      "event": "bb-session",
+      "session": "4f854fa7",
+      "url": "https://deadline.com/2026/06/john-bolton-pleads-guilty-trump-classified-informat"
+    },
+    {
+      "t": "2026-07-14T17:10:04.759Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
