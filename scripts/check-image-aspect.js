@@ -36,7 +36,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 
 let sharp;
 try {
@@ -208,19 +208,22 @@ async function main() {
       const rel = path.relative(ROOT, v.absPath);
       console.log(`  QUARANTINED ${rel} — role=${v.role} ${v.reason}`);
       try {
-        execSync(`git restore --staged -- "${rel}"`, { cwd: ROOT });
+        execFileSync('git', ['restore', '--staged', '--', rel], { cwd: ROOT });
         // New file (not in HEAD) → delete it; modified file → restore committed version.
         const inHead = (() => {
-          try { execSync(`git cat-file -e HEAD:"${rel}"`, { cwd: ROOT, stdio: 'ignore' }); return true; } catch { return false; }
+          try { execFileSync('git', ['cat-file', '-e', `HEAD:${rel}`], { cwd: ROOT, stdio: 'ignore' }); return true; } catch { return false; }
         })();
         if (inHead) {
-          execSync(`git checkout -- "${rel}"`, { cwd: ROOT });
+          execFileSync('git', ['checkout', '--', rel], { cwd: ROOT });
         } else {
           fs.unlinkSync(v.absPath);
           removedNewFiles.push(rel);
         }
       } catch (err) {
-        console.error(`  quarantine failed for ${rel}: ${err.message}`);
+        // A failed quarantine leaves the violator staged → the pre-commit
+        // gate will abort the batch exactly like before. Make it loud.
+        console.error(`::error::quarantine failed for ${rel}: ${err.message}`);
+        process.exitCode = 1;
       }
     }
 
@@ -242,13 +245,18 @@ async function main() {
             show.images[role.toLowerCase()] = null;
             changed++;
             console.log(`  cleared shows.json images.${role.toLowerCase()} for ${showId}`);
+          } else if (show && show.images && show.images[role.toLowerCase()]) {
+            // Path drift between the deleted file and the recorded field means
+            // a dangling reference may ship — the exact bug this fix prevents.
+            console.error(`::warning::deleted ${rel} but ${showId} images.${role.toLowerCase()} is "${show.images[role.toLowerCase()]}" (no exact match) — check for a dangling path`);
           }
         }
         if (changed > 0) {
           fs.writeFileSync(showsFile, JSON.stringify(data, null, 2) + '\n');
         }
       } catch (err) {
-        console.error(`  shows.json cleanup failed: ${err.message}`);
+        console.error(`::error::shows.json cleanup failed after quarantine: ${err.message}`);
+        process.exitCode = 1;
       }
     }
     process.exit(0);
