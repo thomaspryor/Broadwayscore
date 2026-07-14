@@ -309,9 +309,19 @@ jobs:
     # Weekly delta refresh (Notion 39d637c5 Part 2): catches shows that get
     # their first Mezzanine rating without waiting for a user import to
     # surface them via the resolver above.
+    #
+    # needs: scrape-mezzanine + if: always() serializes this AFTER that job
+    # instead of running in parallel — both jobs load/mutate/rewrite the full
+    # data/diary-shows.json array independently via checkout-core-data +
+    # push-core-data, and without serialization they'd race on the same
+    # Sunday run (ship-check finding, ranked alongside the pre-existing #52
+    # push-core-data reconciliation gap this doesn't fix but shouldn't add to).
+    needs: scrape-mezzanine
     if: |
-      (github.event_name == 'schedule' && github.event.schedule == '0 13 * * 0') ||
-      (github.event_name == 'workflow_dispatch' && inputs.run_catalog_refresh == true)
+      always() && (
+        (github.event_name == 'schedule' && github.event.schedule == '0 13 * * 0') ||
+        (github.event_name == 'workflow_dispatch' && inputs.run_catalog_refresh == true)
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -362,8 +372,21 @@ jobs:
               url: runUrl,
             }).catch((e) => console.error('Alert notification failed:', e.message));
 
-      - name: Commit and push watermark
+      - name: Push core data to private repo
+        id: push_core_data
         if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: weekly Mezzanine catalog refresh'
+
+      - name: Commit and push watermark
+        # Gated on the PRIVATE diary-shows.json push actually succeeding, not
+        # always() -- the watermark is what tells next week's run "everything
+        # up to here is already in the catalog." Advancing it after a failed
+        # private push would silently skip those productions forever with no
+        # visible symptom (ship-check finding).
+        if: steps.push_core_data.outcome == 'success'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -379,13 +402,6 @@ jobs:
             echo "Failed to push after 5 attempts"
             exit 1
           fi
-
-      - name: Push core data to private repo
-        if: always()
-        uses: ./.github/actions/push-core-data
-        with:
-          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: 'data: weekly Mezzanine catalog refresh'
 
       - name: Regenerate diary search/lookup data
         if: always()
