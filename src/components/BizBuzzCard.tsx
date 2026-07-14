@@ -197,9 +197,9 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
         <div className="h-px bg-white/5" aria-hidden="true" />
 
         {/* Stats Row */}
-        <div className="flex gap-2 sm:gap-3">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
           {/* Capitalization */}
-          <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+          <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
             <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
               {formatWithEstimate(formatCurrency(commercial.capitalization), commercial.isEstimate?.capitalization ?? false)}
             </div>
@@ -210,7 +210,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
           {/* Weekly Running Cost (if available) */}
           {commercial.weeklyRunningCost && (
-            <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+            <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
                 {formatWithEstimate(formatCurrency(commercial.weeklyRunningCost), commercial.isEstimate?.weeklyRunningCost ?? false)}
               </div>
@@ -222,7 +222,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
           {/* Time to Recoup (if recouped) */}
           {commercial.recouped && commercial.recoupedWeeks && (
-            <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+            <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-emerald-400 tracking-tight">
                 {formatWeeksToRecoup(commercial.recoupedWeeks)}
               </div>
@@ -234,7 +234,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
           {/* Weekly Breakeven (from model — hidden below the quality floor) */}
           {commercial.modelBreakeven && !commercial.recouped && modelQualityOk && (
-            <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+            <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-gray-300 tracking-tight">
                 {formatCurrency(commercial.modelBreakeven)}
               </div>
@@ -246,7 +246,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
           {/* Total Box Office Gross (for closed shows without weeks-to-recoup) */}
           {showStatus === 'closed' && allTimeGross && !(commercial.recouped && commercial.recoupedWeeks) && (
-            <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+            <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
                 {formatCurrency(allTimeGross)}
               </div>
