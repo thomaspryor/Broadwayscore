@@ -101,6 +101,18 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   const [isClient, setIsClient] = useState(false);
   // Recapture: true when pre-fix modal user needs to be re-shown the modal to capture via Formspree
   const [needsRecapture, setNeedsRecapture] = useState(false);
+  // Per-PAGE dwell clock for the exit-intent gate — resets on every pathname
+  // change, unlike the mobile-timing effect's mountTimeRef below (that one is
+  // intentionally session-lifetime-scoped and belongs to the live
+  // mobile-gate-timing A/B test; left untouched here to avoid disturbing its
+  // exposure conditions). A provider-lifetime clock would let a visitor who's
+  // dwelled 5s+ anywhere in the session arm exit-intent instantly on every new
+  // page thereafter — same "reflexive fire" bug this gate exists to prevent,
+  // just deferred to the second page instead of the first (2026-07-14 review).
+  const exitIntentPageMountRef = useRef<number>(0);
+  useEffect(() => {
+    exitIntentPageMountRef.current = Date.now();
+  }, [pathname]);
 
   // Load saved user data on mount
   useEffect(() => {
@@ -222,8 +234,19 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     if (!isClient || hasEmail || exitIntentFired || passiveModalFired) return;
 
     const handleMouseLeave = (e: MouseEvent) => {
-      // Only trigger when mouse leaves through the top of the viewport
-      if (e.clientY <= 0 && !modalOpen) {
+      // Only trigger when mouse leaves through the top of the viewport, and only
+      // after a minimum dwell time ON THIS PAGE — without this a reflexive mouse
+      // move toward the tab/address bar milliseconds after a page loads counted
+      // as "exit intent" (2026-07-14 audit: exit_intent was the single largest
+      // gate trigger by volume — 2,253 shown/30d — with zero dwell gate, unlike
+      // scroll_depth which already required minTimeOnPageSec). Uses
+      // exitIntentPageMountRef (resets per pathname), NOT the mobile-timing
+      // effect's mountTimeRef below — that ref is session-lifetime-scoped
+      // (ProGateProvider mounts once in the root layout) and reusing it here
+      // let dwell time carry over between page navigations, arming exit-intent
+      // instantly on every page after the first few seconds of a session.
+      const elapsedSec = (Date.now() - exitIntentPageMountRef.current) / 1000;
+      if (e.clientY <= 0 && !modalOpen && elapsedSec >= emailCaptureConfig.exitIntent.minTimeOnPageSec) {
         setExitIntentFired(true);
         setPassiveModalFired(true);
         triggerGate(isReturnVisitor ? 'return_visitor' : 'exit_intent', { trigger_source: 'mouseleave' });
