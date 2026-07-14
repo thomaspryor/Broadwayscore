@@ -166,15 +166,49 @@ function validateTriageResult(obj) {
   return { ok: errors.length === 0, errors };
 }
 
+// Cross-session claim visibility (night-2 fix): notion-tasks-sync.js only
+// pushes task COMPLETIONS back to Notion (mergeStatus never downgrades a
+// live claim, but nothing uploads in_progress either — see its header
+// comment), so a card a human/interactive session has already claimed via
+// the shared task list can sit "Not started" in Notion for hours while its
+// mirrored task is in_progress. Without this check triage re-offers that
+// same card to the nightly loop as available work (2026-07-14 near-miss:
+// task-aware-model-selection card was mid-build under task #151 and still
+// triage-eligible).
+//
+// `taskState` is `{ notionMap, tasksById }` — notion-tasks-sync.js's OWN
+// identity layer (`.notion-map.json`: pageId → {taskId,...}, and the numeric
+// task files it writes), not a free-text scan of task descriptions. This
+// mirrors that script's own `taskBelongsTo()` guard: the numeric task id in
+// the map can be reused by a live session for unrelated work, so the mapped
+// task must still carry `[notion:<cardId>]` before it's trusted (ship-check
+// finding — a bare description-substring scan risked a false match on any
+// task whose notes happened to contain the same bracket text).
+function findClaimedTask(cardId, taskState) {
+  if (!cardId || !taskState) return null;
+  const entry = taskState.notionMap && taskState.notionMap[cardId];
+  if (!entry || !entry.taskId) return null;
+  const task = taskState.tasksById && taskState.tasksById[String(entry.taskId)];
+  if (!task || task.status !== 'in_progress') return null;
+  if (typeof task.description !== 'string' || !task.description.includes(`[notion:${cardId}]`)) return null;
+  return task;
+}
+
 /**
  * Triage one card. `callLLM(prompt) → Promise<string>` is injected (real
- * Sonnet in the CLI, a mock in tests). Never throws for model misbehavior —
- * returns one of:
+ * Sonnet in the CLI, a mock in tests). `opts.taskState` (optional, see
+ * findClaimedTask above) is the shared task list snapshot used for the
+ * claim-visibility pre-filter. Never throws for model misbehavior — returns
+ * one of:
  *   { preFilter: {eligible:false, reason} }                       (no LLM call)
  *   { preFilter: {eligible:true}, triage: {...validated result} }
  *   { preFilter: {eligible:true}, failed: 'triage', error, attempts }
  */
-async function triageCard(card, callLLM) {
+async function triageCard(card, callLLM, opts = {}) {
+  const claimedBy = findClaimedTask(card.id, opts.taskState);
+  if (claimedBy) {
+    return { preFilter: { eligible: false, reason: `claimed in-flight (shared task #${claimedBy.id} is in_progress — already being worked interactively)` } };
+  }
   const preFilter = isCardEligible(card);
   if (!preFilter.eligible) return { preFilter };
 
@@ -239,6 +273,7 @@ module.exports = {
   buildTriagePrompt,
   parseTriageResponse,
   validateTriageResult,
+  findClaimedTask,
   triageCard,
   decide,
   priorityRank,
