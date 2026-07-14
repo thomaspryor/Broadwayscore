@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-14T21:28:07.450Z",
+  "updatedAt": "2026-07-14T21:30:38.589Z",
   "processed": 48,
-  "failed": 523,
-  "successRate": "8.4%",
+  "failed": 533,
+  "successRate": "8.3%",
   "tierBreakdown": {
     "playwright": 36,
     "amp": 0,
@@ -13,6 +13,18 @@
     "archiveToday": 8,
     "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-14T21:29:41.736Z",
+      "event": "bb-session",
+      "session": "1b53db4f",
+      "url": "https://variety.com/2026/tv/columns/dance-moms-parody-musical-titanique-tye-blue"
+    },
+    {
+      "t": "2026-07-14T21:29:42.280Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
