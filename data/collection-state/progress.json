@@ -111,7 +111,9 @@
     "oh-mary-west-end-2025/nytimes--jesse-green.json",
     "oh-mary-west-end-2025/variety--brent-lang.json",
     "oh-mary-west-end-2025/deadline--greg-evans.json",
-    "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
+    "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+    "the-producers-west-end-2025/variety--ellise-shafer.json",
+    "the-producers-west-end-2025/west-end-best-friend--unknown.json"
   ],
   "failed": [
     "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
@@ -1015,7 +1017,15 @@
     "two-strangers-bway-2025/times-uk--clive-davis.json",
     "two-strangers-bway-2025/times-uk--dominic-cavendish.json",
     "two-strangers-bway-2025/whatsonstage--alex-wood.json",
-    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/cititour--unknown.json"
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/cititour--unknown.json",
+    "ragtime-2025/times-square-chronicles--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "ragtime-2025/whatsonstage--zachary-stewart.json",
+    "masquerade-off-broadway-2025/theater-life--unknown.json",
+    "the-producers-west-end-2025/deadline--unknown.json",
+    "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
+    "burlesque-west-end-2026/people--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json"
   ],
   "failed": [],
   "skipped": [],
@@ -1089,7 +1099,8 @@
       "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
       "pied-a-terre-off-broadway-2026/theater-scene--unknown.json",
       "oh-mary-west-end-2025/nytg--olivia-rook.json",
-      "oh-mary-west-end-2025/nytg--unknown.json"
+      "oh-mary-west-end-2025/nytg--unknown.json",
+      "the-producers-west-end-2025/west-end-best-friend--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1114,7 +1125,9 @@
       "data/review-texts/oh-mary-west-end-2025/variety--brent-lang.json",
       "oh-mary-west-end-2025/variety--brent-lang.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oh-mary-west-end-2025/deadline--greg-evans.json"
+      "oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/the-producers-west-end-2025/variety--ellise-shafer.json",
+      "the-producers-west-end-2025/variety--ellise-shafer.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1193,7 +1206,7 @@
     ]
   },
   "startTime": "2026-07-13T17:41:44.062Z",
-  "lastProcessed": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/cititour--unknown.json",
+  "lastProcessed": "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
   "log": [
     {
       "t": "2026-07-13T17:43:32.680Z",
@@ -1337,6 +1350,17 @@
       "t": "2026-07-14T05:40:20.272Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-14T05:47:00.116Z",
+      "event": "bb-session",
+      "session": "0fc1a9b2",
+      "url": "https://variety.com/2026/theater/global/richard-kind-returning-the-producers-lon"
+    },
+    {
+      "t": "2026-07-14T05:47:00.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
