@@ -126,17 +126,10 @@ function loadCheckpoint() {
 function saveCheckpoint(cp) {
   try { fs.writeFileSync(CHECKPOINT_PATH, JSON.stringify(cp, null, 2)); } catch { /* non-fatal */ }
 }
-// How long to skip a show after auditing it. Closed shows that came back clean
-// rarely change, so they get a long skip (don't re-burn credits); open shows and
-// shows with gaps are re-checked sooner so newly-published reviews are caught.
-function freshnessMsFor(show, lastEntry) {
-  const closed = show && show.status === 'closed';
-  // A closed show that audited clean won't get new reviews — re-check only yearly
-  // (effectively one-time) so the back-catalogue grind doesn't burn credits forever.
-  if (closed && lastEntry && lastEntry.gaps === 0) return 365 * 24 * 60 * 60 * 1000; // 365d
-  if (closed) return 14 * 24 * 60 * 60 * 1000; // 14d — retry closed shows that still had gaps
-  return FRESHNESS_HOURS * 60 * 60 * 1000; // open/previews — re-check often for new reviews
-}
+// Freshness + ordering policy (extracted 2026-07-14 — opening-week shows must
+// re-audit every hourly run and sort ahead of the back-catalogue grind; The
+// Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
+const { freshnessMsFor, compareAuditPriority } = require('./lib/gap-audit-freshness');
 
 // Non-review domains we ignore inside aggregator articles (platform widgets,
 // social, navigation, store links, internal Playbill/BWW article navigation).
@@ -1085,13 +1078,10 @@ if (require.main === module) (async () => {
         // existed recorded vacuous gaps:0 (59 shows) and closed-clean shows get a
         // 365d skip — force one re-audit under the new reference version.
         if (isWeShow(s) && e.refVersion !== WE_REF_VERSION) return true;
-        return (now - new Date(e.at).getTime()) >= freshnessMsFor(s, e);
+        return (now - new Date(e.at).getTime()) >= freshnessMsFor(s, e, { freshnessHours: FRESHNESS_HOURS, now });
       })
-      .sort((a, b) => {
-        const ta = checkpoint[a.id] ? new Date(checkpoint[a.id].at).getTime() : 0;
-        const tb = checkpoint[b.id] ? new Date(checkpoint[b.id].at).getTime() : 0;
-        return ta - tb; // oldest / never-audited first
-      });
+      // Opening-window shows first (reviews landing NOW), then oldest-audited.
+      .sort((a, b) => compareAuditPriority(a, b, checkpoint, now));
     console.log(`audit-show-review-gap: ${targets.length}/${before} due for audit (checkpoint, freshness skip applied)`);
   }
 
