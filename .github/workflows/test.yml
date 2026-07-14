@@ -263,6 +263,11 @@ on:
       # (workflow hygiene + lint + colocated batches), not ZERO coverage.
       - 'scripts/lib/run-budget.js'
       - 'scripts/lib/run-budget.test.mjs'
+      # Mezzanine production classifier (Notion 39d637c5, import self-heal loop) —
+      # colocated scripts/lib/*.test.mjs step covers it; path-listed so a solo
+      # edit to the classifier alone still triggers CI.
+      - 'scripts/lib/mezzanine-classify.js'
+      - 'scripts/lib/mezzanine-classify.test.mjs'
       # Gap-audit freshness/ordering policy (opening-week shows re-audit every
       # hourly run and sort ahead of the back-catalogue grind — Whoopi
       # Monologues NYT-review starvation, 2026-07-14). Colocated

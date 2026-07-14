@@ -8,6 +8,7 @@ import {
   acquireFromMezzanine,
   acquireFromShowScore,
   type ImportAcquireResult,
+  type RawImportEntry,
 } from '@/lib/show-import';
 
 // Our search-shows.json shape (also covers diary-search.json grouped entries)
@@ -249,10 +250,15 @@ export default function ImportShows({
 
   /** Match raw source entries against our catalog and apply selection
    *  defaults (auto-select confident matches not already in the account). */
-  const matchAndPreview = useCallback(async (acquired: ImportAcquireResult) => {
+  const matchAndPreview = useCallback(async (acquired: ImportAcquireResult, sourceId: ImportSourceId) => {
     await ensureSearchData();
     const matched: MatchedEntry[] = [];
     const diaryShowIds = new Set<string>();
+    // Self-heal loop (Notion 39d637c5): every row that doesn't confidently
+    // match gets logged so the nightly resolver can look it up on Mezzanine
+    // and grow diary-shows.json — the catalog fixes itself instead of
+    // staying frozen at its snapshot date. Best-effort: never blocks import.
+    const unmatchedRows: { raw: RawImportEntry; matchScore: number; dateSuspect: boolean }[] = [];
 
     for (const raw of acquired.entries.filter(e => e.kind === 'diary')) {
       const { match, score, dateSuspect } = matchShow(raw.title, raw.venue || undefined, raw.date);
@@ -272,6 +278,7 @@ export default function ImportShows({
         type: 'diary',
       });
       if (showId) diaryShowIds.add(showId);
+      if (!match || (score <= 0.7 && !dateSuspect)) unmatchedRows.push({ raw, matchScore: score, dateSuspect });
     }
 
     for (const raw of acquired.entries.filter(e => e.kind === 'watchlist')) {
@@ -300,12 +307,25 @@ export default function ImportShows({
         type: 'watchlist',
         listName: raw.listName,
       });
+      if (!match || (score <= 0.7 && !dateSuspect)) unmatchedRows.push({ raw, matchScore: score, dateSuspect });
     }
 
     setEntries(matched);
     setNotices(acquired.notices);
     setStep('preview');
-  }, [ensureSearchData, matchShow, existingReviewShowIds, existingWatchlistShowIds]);
+
+    // Fire-and-forget: don't await, don't block the preview step on this.
+    for (const { raw } of unmatchedRows) {
+      supabaseRestInsert('unmatched_imports', {
+        user_id: userId,
+        source: sourceId,
+        title: raw.title,
+        venue: raw.venue,
+        date_seen: raw.date,
+        mezz_show_id: raw.mezzShowId || null,
+      }).catch(() => {}); // best-effort logging — an insert failure must never surface to the user
+    }
+  }, [ensureSearchData, matchShow, existingReviewShowIds, existingWatchlistShowIds, userId]);
 
   const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -316,7 +336,7 @@ export default function ImportShows({
     setStep('matching');
     setError(null);
     try {
-      await matchAndPreview(await acquireFromMezzanine(file));
+      await matchAndPreview(await acquireFromMezzanine(file), 'mezzanine');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to parse file');
       setStep('source');
@@ -327,7 +347,7 @@ export default function ImportShows({
     setStep('matching');
     setError(null);
     try {
-      await matchAndPreview(await acquireFromShowScore(profileInput));
+      await matchAndPreview(await acquireFromShowScore(profileInput), 'show-score');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Import failed — try again.');
       setStep('source');
