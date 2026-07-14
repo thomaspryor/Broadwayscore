@@ -134,6 +134,20 @@ function preflightVerdict({ error, status, stdout, stderr } = {}) {
   return { ok: false, kind: 'infra', detail: detail || `claude CLI ping exited ${status}` };
 }
 
+// ── Morning email trigger (night-2 fix) ─────────────────────────────────────
+
+// The owner address: config override first, else OWNER_EMAIL from .env —
+// same precedence autonomous-nightly.sh used inline before this moved into
+// the executor so every --live invocation sends the email, not just the
+// launchd-scheduled one. Pure/testable; the caller (live()) injects cfg and
+// env so no real .env read is needed in tests.
+function resolveOwnerEmail(cfg, env) {
+  const fromConfig = (cfg && typeof cfg.ownerEmail === 'string') ? cfg.ownerEmail.trim() : '';
+  if (fromConfig) return fromConfig;
+  const fromEnv = (env && typeof env.OWNER_EMAIL === 'string') ? env.OWNER_EMAIL.trim() : '';
+  return fromEnv || null;
+}
+
 // ── Approval-fatigue throttle ───────────────────────────────────────────────
 
 // More than MAX_OPEN_APPROVALS un-tapped morning items → the night runs
@@ -158,4 +172,5 @@ module.exports = {
   AUTH_ERROR_RE,
   shouldThrottle,
   MAX_OPEN_APPROVALS,
+  resolveOwnerEmail,
 };
