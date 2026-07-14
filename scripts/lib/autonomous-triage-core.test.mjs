@@ -9,6 +9,7 @@ const {
   buildTriagePrompt,
   parseTriageResponse,
   validateTriageResult,
+  findClaimedTask,
   triageCard,
   decide,
   orderQueue,
@@ -83,6 +84,90 @@ test('checkableDone safe-command allowlist (prompt-injection gate)', () => {
   // Validator enforces it only for eligible cards.
   assert.equal(validateTriageResult({ ...GOOD, checkableDone: 'run the site and click around please' }).ok, false);
   assert.equal(validateTriageResult({ ...GOOD, eligible: false, checkableDone: 'run the site and click around please' }).ok, true);
+});
+
+// ── findClaimedTask (claim visibility, night-2 fix) ─────────────────────────
+
+// taskState shape: { notionMap: {[pageId]: {taskId}}, tasksById: {[taskId]: task} }
+function mkTaskState(notionMap, tasksById) { return { notionMap, tasksById }; }
+
+test('findClaimedTask: mapped taskId in_progress + marker present → claimed', () => {
+  const ts = mkTaskState(
+    { 'abc-123': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', description: '[notion:abc-123] P1 Next · Not started · Admin\nsome notes' } },
+  );
+  const hit = findClaimedTask('abc-123', ts);
+  assert.ok(hit);
+  assert.equal(hit.id, '151');
+});
+
+test('findClaimedTask: mapped taskId not in_progress → not claimed', () => {
+  const ts = mkTaskState(
+    { 'abc-123': { taskId: '151' } },
+    { 151: { id: '151', status: 'pending', description: '[notion:abc-123] P1' } },
+  );
+  assert.equal(findClaimedTask('abc-123', ts), null);
+});
+
+test('findClaimedTask: no map entry for this card → not claimed', () => {
+  const ts = mkTaskState({}, { 151: { id: '151', status: 'in_progress', description: '[notion:other]' } });
+  assert.equal(findClaimedTask('abc-123', ts), null);
+});
+
+test('findClaimedTask: id-reuse guard — mapped taskId in_progress but marker belongs to a DIFFERENT card (numeric id reused by a live session) → not trusted', () => {
+  const ts = mkTaskState(
+    { 'abc-123': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', description: '[notion:some-unrelated-card] fresh native task, id 151 reused' } },
+  );
+  assert.equal(findClaimedTask('abc-123', ts), null);
+});
+
+test('findClaimedTask: fails safe on missing id, missing/empty taskState, malformed entries', () => {
+  const ts = mkTaskState({ x: { taskId: '1' } }, { 1: { id: '1', status: 'in_progress', description: '[notion:x]' } });
+  assert.equal(findClaimedTask(null, ts), null);
+  assert.equal(findClaimedTask('x', null), null);
+  assert.equal(findClaimedTask('x', undefined), null);
+  assert.equal(findClaimedTask('x', mkTaskState({}, {})), null);
+  assert.equal(findClaimedTask('x', mkTaskState({ x: { taskId: '9' } }, {})), null); // taskId not in tasksById
+  assert.equal(findClaimedTask('x', mkTaskState({ x: { taskId: '1' } }, { 1: { id: '1', status: 'in_progress' } })), null); // no description field
+});
+
+// ── triageCard flow ─────────────────────────────────────────────────────────
+
+test('a card claimed in-flight (shared task in_progress) skips without an LLM call', async () => {
+  let calls = 0;
+  const taskState = mkTaskState(
+    { 'card-42': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', description: '[notion:card-42] P1 Next · Not started · Admin' } },
+  );
+  const r = await triageCard({ ...CARD, id: 'card-42' }, async () => { calls++; return JSON.stringify(GOOD); }, { taskState });
+  assert.equal(calls, 0);
+  assert.equal(r.preFilter.eligible, false);
+  assert.match(r.preFilter.reason, /claimed in-flight/);
+  assert.match(r.preFilter.reason, /#151/);
+  assert.equal(decide(r), 'skip');
+});
+
+test('a card with no matching claimed task proceeds to normal pre-filter/LLM flow', async () => {
+  const taskState = mkTaskState(
+    { 'some-other-card': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', description: '[notion:some-other-card] P1 Next · Not started · Admin' } },
+  );
+  let calls = 0;
+  const r = await triageCard({ ...CARD, id: 'card-42' }, async () => { calls++; return JSON.stringify(GOOD); }, { taskState });
+  assert.equal(calls, 1);
+  assert.equal(decide(r), 'attempt');
+});
+
+test('a claimed-but-completed task does not block re-triage', async () => {
+  const taskState = mkTaskState(
+    { 'card-42': { taskId: '151' } },
+    { 151: { id: '151', status: 'completed', description: '[notion:card-42] P1 Next · Done · Admin' } },
+  );
+  let calls = 0;
+  const r = await triageCard({ ...CARD, id: 'card-42' }, async () => { calls++; return JSON.stringify(GOOD); }, { taskState });
+  assert.equal(calls, 1);
+  assert.equal(decide(r), 'attempt');
 });
 
 // ── triageCard flow ─────────────────────────────────────────────────────────

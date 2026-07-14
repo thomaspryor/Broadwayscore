@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   buildImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks,
-  cardCheckArgv, shouldThrottle, preflightVerdict,
+  cardCheckArgv, shouldThrottle, preflightVerdict, resolveOwnerEmail,
 } = require('./autonomous-run-core.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 
@@ -143,6 +143,23 @@ test('preflight: nonzero exit with valid JSON still fails (never ok on bad exit)
   const v = preflightVerdict({ status: 1, stdout, stderr: 'network reset' });
   assert.equal(v.ok, false);
   assert.equal(v.kind, 'infra');
+});
+
+// ── resolveOwnerEmail (night-2 fix: always-fires morning email) ────────────
+
+test('resolveOwnerEmail: config takes precedence over env', () => {
+  assert.equal(resolveOwnerEmail({ ownerEmail: 'config@x.com' }, { OWNER_EMAIL: 'env@x.com' }), 'config@x.com');
+});
+
+test('resolveOwnerEmail: falls back to OWNER_EMAIL env when config is unset', () => {
+  assert.equal(resolveOwnerEmail({}, { OWNER_EMAIL: 'env@x.com' }), 'env@x.com');
+  assert.equal(resolveOwnerEmail(null, { OWNER_EMAIL: 'env@x.com' }), 'env@x.com');
+});
+
+test('resolveOwnerEmail: null when neither source has a usable address', () => {
+  assert.equal(resolveOwnerEmail({}, {}), null);
+  assert.equal(resolveOwnerEmail({ ownerEmail: '' }, { OWNER_EMAIL: '  ' }), null);
+  assert.equal(resolveOwnerEmail(undefined, undefined), null);
 });
 
 // ── shouldThrottle ──────────────────────────────────────────────────────────
