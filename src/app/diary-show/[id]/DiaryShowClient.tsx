@@ -7,12 +7,12 @@ import dynamic from 'next/dynamic';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
-import { savePendingAction, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
+import { usePendingRatingDraft } from '@/hooks/usePendingRatingDraft';
 import { useToastSafe } from '@/components/ui/Toast';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
 import StarRating from '@/components/user/StarRating';
 import ShowImage from '@/components/ShowImage';
-import type { UserReview, PendingAction } from '@/types/user';
+import type { UserReview } from '@/types/user';
 import { marketLabel, type DiaryShowDetail } from '@/lib/diary-show-types';
 
 const ShowPageWatchlistButton = dynamic(() => import('@/components/user/ShowPageWatchlistButton'), { ssr: false });
@@ -33,16 +33,11 @@ function Inner({ show }: { show: DiaryShowDetail }) {
   const searchParams = useSearchParams();
   const [ratePanelOpen, setRatePanelOpen] = useState(false);
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
-  // Draft carried across sign-in (rating + typed note + date + target review
-  // id) — without this, a signed-out user's typed rating/notes vanish the
-  // moment they complete sign-in (ship-check finding, 2026-07-14).
-  const [pendingDraft, setPendingDraft] = useState<PendingAction | null>(null);
   // Distinct from useUserReviews' `loading` (which only flips true once the
   // fetch has actually started) — this tracks "has the initial sync settled
   // at least once" so ?edit=1 doesn't race into "new rating" mode against an
   // empty `reviews` array on the very first render.
   const [reviewsSynced, setReviewsSynced] = useState(false);
-  const hasExecutedPending = useRef(false);
   const hasHandledQueryParam = useRef(false);
 
   useEffect(() => {
@@ -52,19 +47,17 @@ function Inner({ show }: { show: DiaryShowDetail }) {
 
   const latestReview = reviews[0] || null;
 
-  // Consume a rating pending from a deferred sign-in (mirrors ShowHeroRedesign).
-  useEffect(() => {
-    if (!isAuthenticated || !user || hasExecutedPending.current) return;
-    const pending = getPendingAction();
-    if (!pending || pending.showId !== show.id) return;
-    hasExecutedPending.current = true;
-    clearPendingAction();
-    if (pending.type === 'rating') {
+  // Draft carried across sign-in (rating + typed note + date + target review
+  // id) — without this, a signed-out user's typed rating/notes vanish the
+  // moment they complete sign-in (ship-check finding, 2026-07-14).
+  const { pendingDraft, setPendingDraft, hasExecutedPending, saveDraft } = usePendingRatingDraft(show.id, {
+    isAuthenticated,
+    user,
+    onResumeRatingDraft: () => {
       setEditingReview(null);
-      setPendingDraft(pending);
       setRatePanelOpen(true);
-    }
-  }, [isAuthenticated, user, show.id]);
+    },
+  });
 
   // ?rate=1 / ?edit=1 — deep-link targets from My Shows card CTAs. ?edit=1
   // waits for the user's reviews to finish loading so it doesn't race into
@@ -76,12 +69,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
     if (!wantsRate && !wantsEdit) return;
     if (!isAuthenticated) {
       hasHandledQueryParam.current = true;
-      savePendingAction({
-        type: 'rating',
-        showId: show.id,
-        returnUrl: window.location.pathname,
-        timestamp: Date.now(),
-      });
+      saveDraft({});
       showSignIn('rating');
       return;
     }
@@ -90,23 +78,14 @@ function Inner({ show }: { show: DiaryShowDetail }) {
     setEditingReview(wantsEdit ? latestReview : null);
     setPendingDraft(null);
     setRatePanelOpen(true);
-  }, [searchParams, authLoading, isAuthenticated, reviewsSynced, show.id, latestReview, showSignIn]);
+  }, [searchParams, authLoading, isAuthenticated, reviewsSynced, show.id, latestReview, showSignIn, saveDraft, hasExecutedPending, setPendingDraft]);
 
   const handleSaveReview = useCallback(async (data: RatingEditorSaveData) => {
     if (!user) {
       if (authLoading) {
         throw new Error('Still restoring your session — tap Retry in a moment.');
       }
-      savePendingAction({
-        type: 'rating',
-        showId: show.id,
-        rating: data.rating,
-        ...(data.reviewText ? { reviewText: data.reviewText } : {}),
-        ...(data.dateSeen ? { dateSeen: data.dateSeen } : {}),
-        ...(data.reviewId ? { reviewId: data.reviewId } : {}),
-        returnUrl: window.location.pathname,
-        timestamp: Date.now(),
-      });
+      saveDraft(data);
       showSignIn('rating');
       return 'auth-gated';
     }
@@ -133,7 +112,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
       showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     }
     await getReviewsForShow(show.id);
-  }, [user, authLoading, show.id, getReviewsForShow, showSignIn, showToast]);
+  }, [user, authLoading, show.id, getReviewsForShow, showSignIn, showToast, saveDraft]);
 
   const handleRateClick = () => {
     setEditingReview(null);
