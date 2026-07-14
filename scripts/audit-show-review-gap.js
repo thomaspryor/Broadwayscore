@@ -129,7 +129,7 @@ function saveCheckpoint(cp) {
 // Freshness + ordering policy (extracted 2026-07-14 — opening-week shows must
 // re-audit every hourly run and sort ahead of the back-catalogue grind; The
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
-const { freshnessMsFor, compareAuditPriority } = require('./lib/gap-audit-freshness');
+const { freshnessMsFor, compareAuditPriority, checkpointTs } = require('./lib/gap-audit-freshness');
 
 // Non-review domains we ignore inside aggregator articles (platform widgets,
 // social, navigation, store links, internal Playbill/BWW article navigation).
@@ -1078,7 +1078,9 @@ if (require.main === module) (async () => {
         // existed recorded vacuous gaps:0 (59 shows) and closed-clean shows get a
         // 365d skip — force one re-audit under the new reference version.
         if (isWeShow(s) && e.refVersion !== WE_REF_VERSION) return true;
-        return (now - new Date(e.at).getTime()) >= freshnessMsFor(s, e, { freshnessHours: FRESHNESS_HOURS, now });
+        // checkpointTs → 0 on malformed `at`, so a corrupt entry reads as
+        // never-audited (always due) instead of NaN-skipped forever.
+        return (now - checkpointTs(e)) >= freshnessMsFor(s, e, { freshnessHours: FRESHNESS_HOURS, now });
       })
       // Opening-window shows first (reviews landing NOW), then oldest-audited.
       .sort((a, b) => compareAuditPriority(a, b, checkpoint, now));

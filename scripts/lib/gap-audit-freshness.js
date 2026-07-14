@@ -15,10 +15,16 @@
 
 const { inOpeningWindow } = require('./gap-reference-sources');
 
-// Shows opened within the last 7 days re-audit every hourly cron run.
+// Shows opened within the last 7 days sort ahead of the back-catalogue grind.
 const OPENING_PRIORITY_WINDOW_DAYS = 7;
+// Tiered freshness bounds the hourly cost so a busy opening week can't invert
+// the starvation and eat the whole budget: only shows opened in the last 2
+// days (typically 0-4 shows, where reviews land hour-by-hour) re-audit every
+// run; days 3-7 re-check every 3h (late reviews, corrections).
+const OPENING_HOT_DAYS = 2;
 // Just under the hourly cron interval so consecutive runs never skip.
 const OPENING_WINDOW_FRESHNESS_MS = 55 * 60 * 1000;
+const OPENING_WARM_FRESHNESS_MS = 3 * 60 * 60 * 1000;
 
 function inOpeningPriorityWindow(show, now = Date.now()) {
   return (show?.status !== 'closed')
@@ -35,8 +41,21 @@ function freshnessMsFor(show, lastEntry, { freshnessHours = 12, now = Date.now()
   // (effectively one-time) so the back-catalogue grind doesn't burn credits forever.
   if (closed && lastEntry && lastEntry.gaps === 0) return 365 * 24 * 60 * 60 * 1000; // 365d
   if (closed) return 14 * 24 * 60 * 60 * 1000; // 14d — retry closed shows that still had gaps
-  if (inOpeningPriorityWindow(show, now)) return OPENING_WINDOW_FRESHNESS_MS;
+  if (inOpeningPriorityWindow(show, now)) {
+    return inOpeningWindow(show, now, OPENING_HOT_DAYS)
+      ? OPENING_WINDOW_FRESHNESS_MS
+      : OPENING_WARM_FRESHNESS_MS;
+  }
   return freshnessHours * 60 * 60 * 1000; // open/previews — re-check often for new reviews
+}
+
+// Checkpoint timestamp for sorting. Malformed/missing `at` → 0 (treated as
+// never-audited, i.e. maximum urgency) so a corrupt entry can't push a show
+// to the back of the queue via NaN comparisons.
+function checkpointTs(entry) {
+  if (!entry || !entry.at) return 0;
+  const t = new Date(entry.at).getTime();
+  return Number.isFinite(t) ? t : 0;
 }
 
 // Ordering for time-budgeted runs: opening-window shows first (reviews are
@@ -45,15 +64,16 @@ function compareAuditPriority(a, b, checkpoint, now = Date.now()) {
   const wa = inOpeningPriorityWindow(a, now) ? 0 : 1;
   const wb = inOpeningPriorityWindow(b, now) ? 0 : 1;
   if (wa !== wb) return wa - wb;
-  const ta = checkpoint[a.id] ? new Date(checkpoint[a.id].at).getTime() : 0;
-  const tb = checkpoint[b.id] ? new Date(checkpoint[b.id].at).getTime() : 0;
-  return ta - tb; // oldest / never-audited first
+  return checkpointTs(checkpoint[a.id]) - checkpointTs(checkpoint[b.id]); // oldest / never-audited first
 }
 
 module.exports = {
   freshnessMsFor,
   inOpeningPriorityWindow,
   compareAuditPriority,
+  checkpointTs,
   OPENING_PRIORITY_WINDOW_DAYS,
+  OPENING_HOT_DAYS,
   OPENING_WINDOW_FRESHNESS_MS,
+  OPENING_WARM_FRESHNESS_MS,
 };

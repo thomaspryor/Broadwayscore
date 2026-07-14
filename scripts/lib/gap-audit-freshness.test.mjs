@@ -7,7 +7,9 @@ const {
   freshnessMsFor,
   inOpeningPriorityWindow,
   compareAuditPriority,
+  checkpointTs,
   OPENING_WINDOW_FRESHNESS_MS,
+  OPENING_WARM_FRESHNESS_MS,
 } = require('./gap-audit-freshness.js');
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -54,6 +56,33 @@ test('opening-window show sorts ahead of a never-audited back-catalogue show', (
   const neverAudited = { id: 'never-audited', status: 'closed', openingDate: iso(400 * DAY) };
   const sorted = [neverAudited, openedToday].sort((a, b) => compareAuditPriority(a, b, checkpoint, NOW));
   assert.equal(sorted[0].id, 'opened-today');
+});
+
+test('day 3-7 shows get the warm 3h freshness, not the hot 55min one', () => {
+  const openedFourDaysAgo = { id: 'opened-4d', status: 'open', openingDate: iso(4 * DAY) };
+  assert.equal(inOpeningPriorityWindow(openedFourDaysAgo, NOW), true);
+  assert.equal(freshnessMsFor(openedFourDaysAgo, { gaps: 0 }, { now: NOW }), OPENING_WARM_FRESHNESS_MS);
+});
+
+test('malformed checkpoint timestamps read as never-audited, not NaN-skipped', () => {
+  assert.equal(checkpointTs({ at: 'not-a-date', gaps: 1 }), 0);
+  assert.equal(checkpointTs({ gaps: 1 }), 0);
+  assert.equal(checkpointTs(undefined), 0);
+  // and a corrupt entry must sort to the FRONT of the backlog, not the back
+  const checkpoint = {
+    'corrupt': { at: 'garbage', gaps: 1 },
+    'recent': { at: '2026-07-14T00:00:00.000Z', gaps: 1 },
+  };
+  const corrupt = { id: 'corrupt', status: 'open', openingDate: iso(100 * DAY) };
+  const recent = { id: 'recent', status: 'open', openingDate: iso(100 * DAY) };
+  const sorted = [recent, corrupt].sort((a, b) => compareAuditPriority(a, b, checkpoint, NOW));
+  assert.equal(sorted[0].id, 'corrupt');
+});
+
+test('invalid openingDate never enters the priority window', () => {
+  assert.equal(inOpeningPriorityWindow({ id: 'x', status: 'open', openingDate: 'TBD' }, NOW), false);
+  assert.equal(inOpeningPriorityWindow({ id: 'x', status: 'open', openingDate: null }, NOW), false);
+  assert.equal(inOpeningPriorityWindow(null, NOW), false);
 });
 
 test('outside the window, least-recently-audited order is preserved', () => {
