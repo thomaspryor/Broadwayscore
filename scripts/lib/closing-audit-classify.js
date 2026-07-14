@@ -36,6 +36,16 @@ function classifyMissingSchedule({ closingDate, todayStr, minDays, allowlisted, 
   if (closingDate && daysUntilStored >= minDays && !allowlisted) {
     return { action: 'POSSIBLY_CLOSED_NEEDS_REVIEW', daysUntilStored, reason: kind };
   }
+  // No stored closingDate at all + title-confirmed page with ZERO future
+  // performances (The Balusters class: limited run ended 2026-06-21, never
+  // had a closingDate, sat stale-open in silent errors). Open-run musicals
+  // never reach here — they're filtered by openRunSkip — so an empty
+  // calendar on a no-close show is a strong closed signal. Scoped to
+  // empty_schedule only: title_mismatch without a stored close is far more
+  // likely a slug collision on a newly-added show (SLUG_OVERRIDE hint path).
+  if (!closingDate && kind === 'empty_schedule' && !allowlisted) {
+    return { action: 'POSSIBLY_CLOSED_NEEDS_REVIEW', daysUntilStored: null, reason: kind };
+  }
   return {
     action: 'ERROR',
     daysUntilStored,
@@ -70,12 +80,19 @@ function classifyMissingSchedule({ closingDate, todayStr, minDays, allowlisted, 
  * @returns {boolean} true when it is safe to auto-apply pressDate
  */
 function possiblyClosedPressAgreement(stored, pressDate, opts = {}) {
-  if (!stored || !pressDate) return false;
-  const s = new Date(stored);
+  if (!pressDate) return false;
   const p = new Date(pressDate);
-  if (isNaN(s.getTime()) || isNaN(p.getTime())) return false;
-  if (!(p < s)) return false;
-  if (opts.kind === 'title_mismatch') {
+  if (isNaN(p.getTime())) return false;
+  if (stored) {
+    const s = new Date(stored);
+    if (isNaN(s.getTime())) return false;
+    if (!(p < s)) return false;
+  }
+  // Higher bar — press date must also already be in the PAST — whenever the
+  // page didn't confirm the show (title_mismatch: could be a slug collision
+  // on a running production) or there's no stored close to retract against
+  // (no-closingDate shows: the empty page is the only other signal).
+  if (opts.kind === 'title_mismatch' || !stored) {
     if (!opts.todayStr) return false;
     const t = new Date(opts.todayStr);
     if (isNaN(t.getTime())) return false;

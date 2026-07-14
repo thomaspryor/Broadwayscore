@@ -157,7 +157,10 @@ jobs:
         # opening-night readiness, push) by eating the whole job budget — that
         # cancellation is what made every run go stale and spammed cron-health.
         # Cap it and continue-on-error so the run still succeeds if it overruns.
-        timeout-minutes: 30
+        # 45 min: the 30-min cap was hit on 2026-07-14 (discovery killed mid-run,
+        # masked by continue-on-error) — new-show enrichment after a big skip
+        # list doesn't fit in 30.
+        timeout-minutes: 45
         continue-on-error: true
         run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end --consume-show-score-candidates
 

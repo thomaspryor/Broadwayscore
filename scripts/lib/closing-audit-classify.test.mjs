@@ -102,3 +102,20 @@ test('press agreement, title_mismatch without todayStr → no auto-apply (fail c
 test('press agreement, empty_schedule: future press date earlier than stored still auto-applies (title confirmed on page)', () => {
   assert.equal(possiblyClosedPressAgreement('2026-10-04', '2026-08-02', { kind: 'empty_schedule', todayStr: TODAY }), true);
 });
+
+test('empty_schedule with NO stored closingDate → POSSIBLY_CLOSED (The Balusters class: limited run, no close ever stored)', () => {
+  const v = classifyMissingSchedule({
+    closingDate: null, todayStr: TODAY, minDays: MIN_DAYS,
+    allowlisted: false, kind: 'empty_schedule',
+  });
+  assert.equal(v.action, 'POSSIBLY_CLOSED_NEEDS_REVIEW');
+  assert.equal(v.daysUntilStored, null);
+});
+
+test('press agreement, no stored close: past press date → auto-apply (Balusters: press 6/21, no stored close)', () => {
+  assert.equal(possiblyClosedPressAgreement(null, '2026-06-21', { kind: 'empty_schedule', todayStr: TODAY }), true);
+});
+
+test('press agreement, no stored close: FUTURE press date → no auto-apply (calendar gap on a running show)', () => {
+  assert.equal(possiblyClosedPressAgreement(null, '2026-08-02', { kind: 'empty_schedule', todayStr: TODAY }), false);
+});
