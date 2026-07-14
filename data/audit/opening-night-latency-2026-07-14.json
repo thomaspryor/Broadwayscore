@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-14T03:25:12.553Z",
+  "generatedAt": "2026-07-14T05:13:29.671Z",
   "date": "2026-07-14",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 301081,
+  "entryCount": 303409,
   "shows": [
     {
       "showId": "dukes-off-broadway-2026",
@@ -21,7 +21,7 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 22,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -606,7 +606,7 @@
     },
     {
       "showId": "showstopper-the-improvised-musical-west-end-2023",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -711,7 +711,7 @@
     },
     {
       "showId": "the-producers-west-end-2025",
-      "reviewCount": 18,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6427,6 +6427,21 @@
     {
       "showId": "waiting-for-godot-2025",
       "reviewCount": 29,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
