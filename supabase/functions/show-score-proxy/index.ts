@@ -25,7 +25,9 @@ import { parseProfileHtml, parsePageCount, venueHintIsMarket, cleanVenueHint } f
 
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,79}$/i;
 const MAX_PAGES = 20; // ~50 reviews/page → 1000 reviews before truncated:true
-const MAX_CALLS_PER_HOUR = 5;
+// Failed attempts (typo'd slug → not_found) consume a slot too since logging
+// is insert-first — 8 leaves headroom for a couple of typos plus real imports.
+const MAX_CALLS_PER_HOUR = 8;
 const UA =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36';
 
@@ -71,27 +73,31 @@ function userIdFromJwt(req: Request): string | null {
   }
 }
 
+/** Insert-first, count-after: the audit row is written (and verified) BEFORE
+ *  the limit check, so a failed insert fails CLOSED (throw → 500) instead of
+ *  silently disabling the limiter, and concurrent calls each see one another
+ *  in the count. Rejected calls consume a slot — fine, abusers burn their own. */
 async function checkAndLogRateLimit(userId: string, slug: string): Promise<boolean> {
   const base = Deno.env.get('SUPABASE_URL');
   const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
   if (!base || !key) throw new Error('missing service credentials');
   const auth = { apikey: key, Authorization: `Bearer ${key}` };
-  const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
 
+  const insertRes = await fetch(`${base}/rest/v1/import_fetch_log`, {
+    method: 'POST',
+    headers: { ...auth, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: userId, slug }),
+  });
+  if (!insertRes.ok) throw new Error(`rate-limit log insert failed: ${insertRes.status}`);
+
+  const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
   const countRes = await fetch(
     `${base}/rest/v1/import_fetch_log?user_id=eq.${userId}&created_at=gte.${since}&select=id`,
     { headers: { ...auth, Prefer: 'count=exact', Range: '0-0' } },
   );
   const range = countRes.headers.get('content-range') || '/0';
   const count = parseInt(range.split('/')[1], 10) || 0;
-  if (count >= MAX_CALLS_PER_HOUR) return false;
-
-  await fetch(`${base}/rest/v1/import_fetch_log`, {
-    method: 'POST',
-    headers: { ...auth, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ user_id: userId, slug }),
-  });
-  return true;
+  return count <= MAX_CALLS_PER_HOUR;
 }
 
 async function fetchProfilePage(slug: string, page: number): Promise<Response> {
@@ -111,9 +117,12 @@ Deno.serve(async (req) => {
     if (!SLUG_RE.test(slug)) return json(req, { ok: false, error: 'invalid_slug' });
 
     // The anon key passes platform verify_jwt but has no sub claim — a real
-    // signed-in user token is required.
+    // signed-in user token is required. HTTP 200 like every handled error:
+    // supabase-js invoke() throws on non-2xx, which would strand this code
+    // in the client's generic "something went wrong" path instead of its
+    // "sign in again" copy.
     const userId = userIdFromJwt(req);
-    if (!userId) return json(req, { ok: false, error: 'unauthorized' }, 401);
+    if (!userId) return json(req, { ok: false, error: 'unauthorized' });
     if (!(await checkAndLogRateLimit(userId, slug))) {
       return json(req, { ok: false, error: 'rate_limited' });
     }
@@ -139,12 +148,14 @@ Deno.serve(async (req) => {
     const pageCount = parsePageCount(firstHtml);
     const pagesToFetch = Math.min(pageCount, MAX_PAGES);
     const reviews = [...parsed.reviews];
+    let pagesFetched = 1;
     for (let page = 2; page <= pagesToFetch; page++) {
       const res = await fetchProfilePage(slug, page);
       if (!res.ok) break;
       const pageReviews = parseProfileHtml(await res.text()).reviews;
       if (pageReviews.length === 0) break;
       reviews.push(...pageReviews);
+      pagesFetched = page;
     }
 
     return json(req, {
@@ -161,6 +172,9 @@ Deno.serve(async (req) => {
       })),
       unparsed: reviews.filter((r) => r.rating === null).length,
       truncated: pageCount > MAX_PAGES,
+      // Mid-pagination upstream failure is NOT success-with-fewer-reviews —
+      // the client must tell the user the import is partial (ship-check P1).
+      incomplete: pagesFetched < pagesToFetch,
     });
   } catch (e) {
     console.error('show-score-proxy error:', e);

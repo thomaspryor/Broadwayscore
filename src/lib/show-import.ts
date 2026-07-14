@@ -22,6 +22,9 @@ export interface RawImportEntry {
   reviewText: string | null;
   kind: 'diary' | 'watchlist';
   listName?: string;
+  /** True for diary entries rerouted to watchlist (unrated future viewings) —
+   *  their auto-select rule differs from list-based watchlist entries. */
+  fromDiary?: boolean;
 }
 
 export interface ImportAcquireResult {
@@ -53,6 +56,7 @@ interface ShowScoreProxyResponse {
   }>;
   unparsed?: number;
   truncated?: boolean;
+  incomplete?: boolean;
 }
 
 export const SHOW_SCORE_ERROR_COPY: Record<string, string> = {
@@ -109,6 +113,7 @@ export async function acquireFromShowScore(profileInput: string): Promise<Import
   const notices: string[] = [];
   if (data.unparsed) notices.push(`${data.unparsed} review(s) had no readable rating and were skipped.`);
   if (data.truncated) notices.push('This profile has more than 1,000 reviews — only the most recent 1,000 were fetched.');
+  if (data.incomplete) notices.push(`Show Score stopped responding partway — only ${entries.length} review(s) were fetched. You can re-run the import later to pick up the rest.`);
   return { entries, notices };
 }
 
@@ -153,7 +158,7 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
       date,
       reviewText: entry.review || null,
       kind: !hasRating && isFuture ? 'watchlist' : 'diary',
-      ...(!hasRating && isFuture ? { listName: 'Upcoming' } : {}),
+      ...(!hasRating && isFuture ? { listName: 'Upcoming', fromDiary: true } : {}),
     });
   }
 

@@ -213,7 +213,11 @@ export default function MyShowsClient() {
           setShowMap(prev => ({ ...additions, ...prev }));
         }
       })
-      .catch(() => { /* raw-ID fallback rendering still works */ });
+      .catch(() => {
+        // Transient fetch failure: allow the next effect run to retry rather
+        // than stranding raw-ID rows until a full reload (ship-check P1).
+        diaryLookupTriedRef.current = false;
+      });
   }, [isMockMode, showMapLoaded, reviews, watchlist, showMap]);
 
   // Load user data when authenticated

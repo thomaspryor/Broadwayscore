@@ -197,6 +197,12 @@ export default function ImportShows({
       const alreadyWatchlisted = showId ? existingWatchlistShowIds.has(showId) : false;
       const alreadyReviewed = showId ? existingReviewShowIds.has(showId) : false;
       const alreadyInDiary = showId ? diaryShowIds.has(showId) : false;
+      // Parity with the original Mezzanine import: diary-derived entries
+      // (unrated future viewings) dedupe against reviews; list-based entries
+      // dedupe against this batch's diary picks.
+      const autoSelect = raw.fromDiary
+        ? !alreadyWatchlisted && !alreadyReviewed
+        : !alreadyWatchlisted && !alreadyInDiary;
       matched.push({
         sourceTitle: raw.title,
         sourceRating: null,
@@ -205,7 +211,7 @@ export default function ImportShows({
         sourceReview: null,
         match,
         matchScore: score,
-        selected: !!match && score > 0.7 && !alreadyWatchlisted && !alreadyReviewed && !alreadyInDiary,
+        selected: !!match && score > 0.7 && autoSelect,
         type: 'watchlist',
         listName: raw.listName,
       });
@@ -219,6 +225,9 @@ export default function ImportShows({
   const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    // Clear immediately so re-selecting the same filename after a parse error
+    // still fires a change event.
+    e.target.value = '';
     setStep('matching');
     setError(null);
     try {
@@ -370,6 +379,7 @@ export default function ImportShows({
                 </div>
                 <p className="text-xs text-gray-500 mb-2">
                   Paste your public profile link — your reviews and ratings import directly. No password needed.
+                  Find it on show-score.com: tap your profile picture, then copy the page address.
                 </p>
                 <div className="flex gap-2">
                   <input
@@ -544,11 +554,15 @@ function ImportEntryRow({ entry, index, onToggle }: { entry: MatchedEntry; index
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
           <span className="text-xs text-white truncate">{entry.sourceTitle}</span>
-          {entry.sourceRating && (
+          {entry.sourceRating ? (
             <span className="text-xs text-amber-400 flex-shrink-0">
               {entry.sourceScore !== null ? `${entry.sourceScore} → ` : ''}★ {entry.sourceRating}
             </span>
-          )}
+          ) : entry.type === 'diary' ? (
+            // Unrated diary entries import into the watchlist, not the diary —
+            // say so instead of letting the "diary" section header mislead.
+            <span className="text-xs text-gray-600 flex-shrink-0">no rating → watchlist</span>
+          ) : null}
         </div>
         {entry.match && !noMatch ? (
           <div className="text-xs text-gray-500 truncate">→ {entry.match.title}</div>

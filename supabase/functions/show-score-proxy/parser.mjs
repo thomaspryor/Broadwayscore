@@ -67,11 +67,25 @@ function splitShowTitle(raw) {
 }
 
 /**
+ * @typedef {Object} ProfileReview
+ * @property {string|null} reviewId
+ * @property {string} title
+ * @property {string|null} venueHint
+ * @property {number|null} rating
+ * @property {number|null} sourceScore
+ * @property {string|null} reviewText
+ * @property {string|null} dateSeen
+ */
+
+/**
  * Parse all <review-show-summary> tiles from a profile page.
  * Returns domain-ready entries; rows whose score can't be parsed carry
  * rating: null and are counted by the caller as unparsed.
+ * @param {string} html
+ * @returns {{displayName: string|null, totalOnProfile: number|null, reviews: ProfileReview[]}}
  */
 export function parseProfileHtml(html) {
+  /** @type {{displayName: string|null, totalOnProfile: number|null, reviews: ProfileReview[]}} */
   const out = { displayName: null, totalOnProfile: null, reviews: [] };
   if (!html || typeof html !== 'string') return out;
 
