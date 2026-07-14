@@ -107,6 +107,42 @@ export function mergeDiaryShows<T extends MergeableShow>(baseShows: T[], diarySh
   return merged;
 }
 
+// NYC (off-broadway) and London (west-end) diary shows surface before the
+// deep tail (us-regional/uk-regional/international/other) — owner direction
+// 2026-07-14: "typing 'Cats' should never bury the Broadway revival under 40
+// regional Cats productions."
+const NEAR_MARKET_CATEGORIES = new Set(['off-broadway', 'west-end']);
+
+interface RankableDiaryResult {
+  dy?: boolean;
+  category?: string;
+  rc?: number;
+  od?: string;
+}
+
+/**
+ * Re-order Fuse search results for the My Shows Add-show dropdown: scored
+ * (non-diary) matches always first, regardless of fuzzy-match score; diary-
+ * only matches follow, tie-broken by market (NYC/London first) → popularity
+ * (audienceRatingsCount desc) → recency (openingDate desc). Header/site
+ * search never calls this — only the diary-merged Add-show index does.
+ */
+export function tierSearchResults<T>(results: T[], limit: number): T[] {
+  const scored: T[] = [];
+  const diaryOnly: T[] = [];
+  for (const r of results) ((r as RankableDiaryResult).dy ? diaryOnly : scored).push(r);
+  diaryOnly.sort((a, b) => {
+    const ra = a as RankableDiaryResult;
+    const rb = b as RankableDiaryResult;
+    const marketDiff = Number(!NEAR_MARKET_CATEGORIES.has(ra.category || '')) - Number(!NEAR_MARKET_CATEGORIES.has(rb.category || ''));
+    if (marketDiff !== 0) return marketDiff;
+    const popDiff = (rb.rc || 0) - (ra.rc || 0);
+    if (popDiff !== 0) return popDiff;
+    return (rb.od || '').localeCompare(ra.od || '');
+  });
+  return [...scored, ...diaryOnly].slice(0, limit);
+}
+
 // ---------------------------------------------------------------------------
 // Show Score
 // ---------------------------------------------------------------------------
