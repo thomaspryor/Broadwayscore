@@ -88,8 +88,16 @@ function daysAgo(isoString) {
 // Shared with apply-commercial-pending.js — same `_recoupedClaim || recouped`
 // semantics. Don't redefine inline; reuse so the rules stay in lockstep.
 const { hasRecoupedClaim } = require('./lib/commercial-apply-gate');
+const { isCommercialScope } = require('./lib/commercial-scope');
 
 function classifyEntry(slug, entry, showsBySlug) {
+  // Out-of-scope (Off-Broadway / West End) entries must never re-enter the
+  // research queue — archive them so the leak drains instead of cycling.
+  const scopeShow = showsBySlug[entry.slug] || showsBySlug[slug];
+  if (scopeShow && !isCommercialScope(scopeShow)) {
+    return { action: 'archive', reason: `out of commercial scope (${scopeShow.category})` };
+  }
+
   if (hasRecoupedClaim(entry)) {
     return { action: 'report', reason: 'recouped-claim — needs human review' };
   }
@@ -185,11 +193,13 @@ function main() {
   const now = new Date().toISOString();
 
   // Archive
-  for (const { slug, entry } of archivedActions) {
+  for (const { slug, entry, reason } of archivedActions) {
     archive.shows[slug] = {
       ...entry,
       archivedAt: now,
-      archivedReason: 'low-confidence-aged-out',
+      archivedReason: reason.startsWith('out of commercial scope')
+        ? 'out-of-commercial-scope'
+        : 'low-confidence-aged-out',
     };
     delete pending.shows[slug];
   }

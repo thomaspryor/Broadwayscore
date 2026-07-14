@@ -84,6 +84,11 @@ on:
       - 'scripts/lib/audience-buzz-contamination-gate.test.mjs'
       - 'scripts/lib/critic-consensus-contamination-gate.js'
       - 'scripts/lib/critic-consensus-contamination-gate.test.mjs'
+      # Canonical Broadway-only scope + designation criteria for the commercial-
+      # research pipeline (2026-07-14 market-vs-category leak). Colocated test
+      # runs in the lib-test glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/commercial-scope.js'
+      - 'scripts/lib/commercial-scope.test.mjs'
       - 'scripts/audit-regex-patterns.js'
       - 'scripts/audit-duplicate-of-url-mismatch.js'
       - 'scripts/fix-circular-duplicate-pairs.js'

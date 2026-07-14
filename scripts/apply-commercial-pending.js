@@ -24,6 +24,8 @@ const { normalizeSources } = require('./lib/commercial-sources');
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
 const PENDING_PATH = path.join(DATA_DIR, 'commercial-pending-review.json');
+const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
+const { isCommercialScope } = require('./lib/commercial-scope');
 
 // CLI args
 const args = process.argv.slice(2);
@@ -114,9 +116,32 @@ function main() {
   // Sprint 2 2026-07-13).
   const appliedIds = new Set();
 
+  // Scope lookup — pending keys can be show IDs while entries carry slugs.
+  let showsBySlug = {};
+  try {
+    const allShows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows || [];
+    for (const s of allShows) {
+      if (s.slug) showsBySlug[s.slug] = s;
+      if (s.id) showsBySlug[s.id] = s;
+    }
+  } catch {
+    // shows.json unavailable — scope guard degrades to no-op rather than
+    // blocking the apply pipeline.
+  }
+
   for (const showId of showIds) {
     const entry = pending.shows[showId];
     if (!entry) continue;
+
+    // Scope guard — Off-Broadway / West End entries must never land in
+    // commercial.json (Broadway-only feature). Unresolved shows pass: adding
+    // a commercial row ahead of the shows-list update is a supported flow.
+    const scopeShow = showsBySlug[entry.slug] || showsBySlug[showId];
+    if (scopeShow && !isCommercialScope(scopeShow)) {
+      console.log(`  ⛔ "${showId}" — out of commercial scope (${scopeShow.category}), skipping`);
+      skipped++;
+      continue;
+    }
 
     // Review holds are never appliable — see gate.isReviewHold rationale.
     if (gate.isReviewHold(entry)) {

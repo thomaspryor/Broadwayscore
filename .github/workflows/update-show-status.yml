@@ -379,11 +379,12 @@ jobs:
           QUEUE_FILE="data/commercial-research-queue.json"
           node -e "
             const fs = require('fs');
+            const { isCommercialScope } = require('./scripts/lib/commercial-scope');
             const slugs = '$NEW_SLUGS'.split(',').filter(Boolean);
             const shows = require('./data/shows.json').shows || [];
             const bwaySlugs = slugs.filter(slug => {
               const show = shows.find(s => s.slug === slug || s.id === slug);
-              return show && (show.market || 'broadway') === 'broadway';
+              return isCommercialScope(show);
             });
             if (bwaySlugs.length === 0) { console.log('No Broadway shows to queue'); process.exit(0); }
             let queue = { shows: [], updatedAt: '' };
@@ -414,10 +415,11 @@ jobs:
             tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
             const tomorrowStr = tomorrow.toISOString().split('T')[0];
 
+            const { isCommercialScope } = require('./scripts/lib/commercial-scope');
             const preOpening = shows.filter(s => {
               if (!s || !s.openingDate) return false;
               if (s.openingDate !== tomorrowStr) return false;
-              if ((s.market || 'broadway') !== 'broadway') return false;
+              if (!isCommercialScope(s)) return false;
               // Skip if already has non-TBD commercial data
               const entry = commShows[s.slug || s.id];
               if (entry && entry.designation && entry.designation !== 'TBD') return false;
@@ -459,9 +461,10 @@ jobs:
             const weekAgoStr = weekAgo.toISOString().split('T')[0];
             const todayStr = new Date().toISOString().split('T')[0];
 
+            const { isCommercialScope } = require('./scripts/lib/commercial-scope');
             const closingTbd = shows.filter(s => {
               if (!s || s.status !== 'closed') return false;
-              if ((s.market || 'broadway') !== 'broadway') return false;
+              if (!isCommercialScope(s)) return false;
               if (!s.closingDate || s.closingDate < weekAgoStr || s.closingDate > todayStr) return false;
               // Only queue if TBD or uncovered
               const entry = commShows[s.slug || s.id];
