@@ -418,6 +418,11 @@ on:
       - 'scripts/lib/autonomous-ledger.test.mjs'
       - 'scripts/lib/autonomous-budget.js'
       - 'scripts/lib/autonomous-budget.test.mjs'
+      # bsc-next model resolution (task #151) reuses pickModel() above —
+      # colocated test runs in the lib-test glob; path-listed so a solo edit
+      # triggers CI.
+      - 'scripts/lib/bsc-next-model.js'
+      - 'scripts/lib/bsc-next-model.test.mjs'
       - 'scripts/lib/autonomous-run-core.js'
       - 'scripts/lib/autonomous-run-core.test.mjs'
       - 'scripts/lib/autonomous-email-render.js'
