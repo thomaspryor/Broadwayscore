@@ -868,7 +868,12 @@ export default function MyShowsClient() {
                       <div key={year}>
                         {showYearHeaders && (
                           <div className={`flex items-center justify-between mb-3${diaryView === 'list' && yearIdx > 0 ? ' pt-4 border-t border-white/[0.06]' : ''}`}>
-                            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">{year}</h3>
+                            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                              {year}
+                              {year === 'No date' && (
+                                <span className="normal-case font-normal tracking-normal text-gray-600"> — edit a show to add when you saw it</span>
+                              )}
+                            </h3>
                             <span className="text-xs text-gray-500">{reviewsByYear[year].length} {reviewsByYear[year].length === 1 ? 'entry' : 'entries'}</span>
                           </div>
                         )}
