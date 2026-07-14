@@ -8,7 +8,7 @@
 
 ### 1. Git Workflow
 Global rules apply (worktree-first, branch check, commit frequently). Project additions:
-- **Worktree scope (MANDATORY for ANY tracked code edit):** `src/`, `scripts/`, `.github/workflows/`, `next.config.js`, `tsconfig.json`, `package.json`, `CLAUDE.md` → **must be in a worktree before the first edit** (local hooks + parallel CI silently revert uncommitted edits; memory/data files can skip). See `memory/feedback_worktree_code_changes.md`.
+- **Worktree scope (MANDATORY for ANY tracked code edit):** `src/`, `scripts/`, `.github/workflows/`, `supabase/`, `next.config.js`, `tsconfig.json`, `package.json`, `CLAUDE.md` → **must be in a worktree before the first edit** (local hooks + parallel CI silently revert uncommitted edits; memory/data files can skip). See `memory/feedback_worktree_code_changes.md`.
 - **Push** every ~30 min or after milestones. **15+ min without committing** → stop and commit NOW.
 - **`git pull` before every shows.json edit.** CI commits to it every ~30 min; stale local copy + rebase silently re-introduces deleted entries. Pull immediately before edits and verify fixes survived after any rebase.
 

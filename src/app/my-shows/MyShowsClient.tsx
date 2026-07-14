@@ -15,7 +15,7 @@ import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
 import { ShowSearchDropdown } from '@/components/show-cards';
-const MezzanineImport = dynamic(() => import('./MezzanineImport'), { ssr: false });
+const ImportShows = dynamic(() => import('./ImportShows'), { ssr: false });
 
 const ListsTab = dynamic(() => import('./ListsTab').catch(() => {
   return { default: () => <div className="text-center py-12 text-red-400">Failed to load lists. Please refresh the page.</div> };
@@ -186,6 +186,35 @@ export default function MyShowsClient() {
       setShowMapLoaded(true);
     }
   }, [isMockMode, mockData]);
+
+  // Diary-only shows (off-Broadway/regional productions imported via
+  // Mezzanine/Show Score) live in diary-lookup.json, not show-lookup.json —
+  // without this merge their diary rows render raw show IDs. The file is
+  // ~5MB so it's fetched once, lazily, and only when a user's entry actually
+  // references a show the main lookup doesn't know; only referenced ids are
+  // merged into the map.
+  const diaryLookupTriedRef = useRef(false);
+  useEffect(() => {
+    if (isMockMode || !showMapLoaded || diaryLookupTriedRef.current) return;
+    const referenced = new Set([...reviews.map(r => r.show_id), ...watchlist.map(w => w.show_id)]);
+    const missing = Array.from(referenced).filter(id => !showMap[id]);
+    if (missing.length === 0) return;
+    diaryLookupTriedRef.current = true;
+    fetch('/data/diary-lookup.json')
+      .then(res => res.json())
+      .then((data: Record<string, unknown>[]) => {
+        const missingSet = new Set(missing);
+        const additions: ShowMap = {};
+        for (const raw of data) {
+          const show = decodeShow(raw);
+          if (missingSet.has(show.id)) additions[show.id] = show;
+        }
+        if (Object.keys(additions).length > 0) {
+          setShowMap(prev => ({ ...additions, ...prev }));
+        }
+      })
+      .catch(() => { /* raw-ID fallback rendering still works */ });
+  }, [isMockMode, showMapLoaded, reviews, watchlist, showMap]);
 
   // Load user data when authenticated
   useEffect(() => {
@@ -441,7 +470,7 @@ export default function MyShowsClient() {
       )}
       {!isMockMode && user && (
         <div className="mb-6">
-          <MezzanineImport
+          <ImportShows
             userId={user.id}
             existingReviewShowIds={new Set(reviews.map(r => r.show_id))}
             existingWatchlistShowIds={new Set(watchlist.map(w => w.show_id))}

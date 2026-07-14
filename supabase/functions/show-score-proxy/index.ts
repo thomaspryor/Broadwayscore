@@ -21,7 +21,7 @@
  * 'upstream_blocked'} for all handled failures; non-200 only for bugs.
  * Mirrored by ShowScoreProxyResponse in src/lib/show-import.ts.
  */
-import { parseProfileHtml, parsePageCount } from './parser.mjs';
+import { parseProfileHtml, parsePageCount, venueHintIsMarket, cleanVenueHint } from './parser.mjs';
 
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,79}$/i;
 const MAX_PAGES = 20; // ~50 reviews/page → 1000 reviews before truncated:true
@@ -32,14 +32,15 @@ const UA =
 const ALLOWED_ORIGINS = [
   'https://broadwayscorecard.com',
   'https://www.broadwayscorecard.com',
-  'http://localhost:3000',
+  'https://demo.broadwayscorecard.com',
 ];
 const VERCEL_PREVIEW_RE = /^https:\/\/[a-z0-9-]+\.vercel\.app$/;
+const LOCALHOST_RE = /^http:\/\/localhost:\d+$/; // dev servers use varying ports
 
 function corsHeaders(req: Request): Record<string, string> {
   const origin = req.headers.get('origin') || '';
   const allowed =
-    ALLOWED_ORIGINS.includes(origin) || VERCEL_PREVIEW_RE.test(origin)
+    ALLOWED_ORIGINS.includes(origin) || VERCEL_PREVIEW_RE.test(origin) || LOCALHOST_RE.test(origin)
       ? origin
       : ALLOWED_ORIGINS[0];
   return {
@@ -150,7 +151,14 @@ Deno.serve(async (req) => {
       ok: true,
       displayName: parsed.displayName,
       totalOnProfile: parsed.totalOnProfile,
-      reviews,
+      // Domain-ready entries: venue is null for market labels ("Broadway")
+      // and stripped of production-year decorations, so the client can hand
+      // it straight to venue-aware show matching without importing anything
+      // from this directory.
+      reviews: reviews.map((r) => ({
+        ...r,
+        venue: venueHintIsMarket(r.venueHint) ? null : cleanVenueHint(r.venueHint),
+      })),
       unparsed: reviews.filter((r) => r.rating === null).length,
       truncated: pageCount > MAX_PAGES,
     });

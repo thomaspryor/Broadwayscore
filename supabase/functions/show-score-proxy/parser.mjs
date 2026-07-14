@@ -60,15 +60,6 @@ export function cleanVenueHint(hint) {
   return cleaned || null;
 }
 
-/** Extract a member slug from a pasted profile URL or a bare slug. */
-export function extractMemberSlug(input) {
-  const s = String(input || '').trim();
-  const fromUrl = s.match(/show-score\.com\/member\/([a-z0-9][a-z0-9-]{0,79})/i);
-  if (fromUrl) return fromUrl[1].toLowerCase();
-  if (/^[a-z0-9][a-z0-9-]{0,79}$/i.test(s)) return s.toLowerCase();
-  return null;
-}
-
 /** Split 'Title (Venue-or-Market)' — the parenthetical suffix is optional. */
 function splitShowTitle(raw) {
   const m = String(raw).match(/^(.*?)(?:\s*\(([^)]+)\))?\s*$/);

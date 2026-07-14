@@ -1,34 +1,14 @@
 'use client';
 
-import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import type Fuse from 'fuse.js';
 import { supabaseRestInsert } from '@/lib/supabase-rest';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
-
-// Mezzanine JSON shape
-interface MezzEntry {
-  show: { name: string; id: string };
-  rating: number | null;
-  date: string | null;
-  review: string | null;
-  seat: string | null;
-  production?: {
-    theater?: { name: string; location?: string };
-  };
-}
-
-interface MezzList {
-  name: string;
-  shows: { name: string; id: string }[];
-}
-
-interface MezzExport {
-  appVersion?: string;
-  data: {
-    diaryEntries: MezzEntry[];
-    lists: MezzList[];
-  };
-}
+import {
+  acquireFromMezzanine,
+  acquireFromShowScore,
+  type ImportAcquireResult,
+} from '@/lib/show-import';
 
 // Our search-shows.json shape (also covers diary-search.json grouped entries)
 interface SearchShow {
@@ -44,10 +24,12 @@ interface SearchShow {
 }
 
 interface MatchedEntry {
-  mezzName: string;
-  mezzRating: number | null;
-  mezzDate: string | null;
-  mezzReview: string | null;
+  sourceTitle: string;
+  sourceRating: number | null;
+  /** Original source-scale score (Show Score 0–100) for preview display. */
+  sourceScore: number | null;
+  sourceDate: string | null;
+  sourceReview: string | null;
   match: SearchShow | null;
   matchScore: number;
   selected: boolean;
@@ -55,23 +37,27 @@ interface MatchedEntry {
   listName?: string;
 }
 
-type ImportStep = 'closed' | 'upload' | 'matching' | 'preview' | 'importing' | 'done';
+type ImportSourceId = 'mezzanine' | 'show-score';
+type ImportStep = 'closed' | 'source' | 'matching' | 'preview' | 'importing' | 'done';
 
-interface MezzanineImportProps {
+interface ImportShowsProps {
   userId: string;
   existingReviewShowIds: Set<string>;
   existingWatchlistShowIds: Set<string>;
   onImportComplete: () => void;
 }
 
-export default function MezzanineImport({
+export default function ImportShows({
   userId,
   existingReviewShowIds,
   existingWatchlistShowIds,
   onImportComplete,
-}: MezzanineImportProps) {
+}: ImportShowsProps) {
   const [step, setStep] = useState<ImportStep>('closed');
+  const [source, setSource] = useState<ImportSourceId>('show-score');
   const [entries, setEntries] = useState<MatchedEntry[]>([]);
+  const [notices, setNotices] = useState<string[]>([]);
+  const [profileInput, setProfileInput] = useState('');
   const [importStats, setImportStats] = useState({ imported: 0, skipped: 0, errors: 0 });
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -180,101 +166,79 @@ export default function MezzanineImport({
     return { match: best.item, score: contained ? score : score * 0.6 };
   }, []);
 
+  /** Match raw source entries against our catalog and apply selection
+   *  defaults (auto-select confident matches not already in the account). */
+  const matchAndPreview = useCallback(async (acquired: ImportAcquireResult) => {
+    await ensureSearchData();
+    const matched: MatchedEntry[] = [];
+    const diaryShowIds = new Set<string>();
+
+    for (const raw of acquired.entries.filter(e => e.kind === 'diary')) {
+      const { match, score } = matchShow(raw.title, raw.venue || undefined);
+      const showId = match?.id || '';
+      const alreadyReviewed = showId ? existingReviewShowIds.has(showId) : false;
+      matched.push({
+        sourceTitle: raw.title,
+        sourceRating: raw.rating,
+        sourceScore: raw.sourceScore,
+        sourceDate: raw.date,
+        sourceReview: raw.reviewText,
+        match,
+        matchScore: score,
+        selected: !!match && score > 0.7 && !alreadyReviewed,
+        type: 'diary',
+      });
+      if (showId) diaryShowIds.add(showId);
+    }
+
+    for (const raw of acquired.entries.filter(e => e.kind === 'watchlist')) {
+      const { match, score } = matchShow(raw.title, raw.venue || undefined);
+      const showId = match?.id || '';
+      const alreadyWatchlisted = showId ? existingWatchlistShowIds.has(showId) : false;
+      const alreadyReviewed = showId ? existingReviewShowIds.has(showId) : false;
+      const alreadyInDiary = showId ? diaryShowIds.has(showId) : false;
+      matched.push({
+        sourceTitle: raw.title,
+        sourceRating: null,
+        sourceScore: null,
+        sourceDate: raw.date,
+        sourceReview: null,
+        match,
+        matchScore: score,
+        selected: !!match && score > 0.7 && !alreadyWatchlisted && !alreadyReviewed && !alreadyInDiary,
+        type: 'watchlist',
+        listName: raw.listName,
+      });
+    }
+
+    setEntries(matched);
+    setNotices(acquired.notices);
+    setStep('preview');
+  }, [ensureSearchData, matchShow, existingReviewShowIds, existingWatchlistShowIds]);
+
   const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     setStep('matching');
     setError(null);
-
     try {
-      const text = await file.text();
-      const parsed: MezzExport = JSON.parse(text);
-
-      if (!parsed.data?.diaryEntries) {
-        throw new Error('Invalid Mezzanine export — missing data.diaryEntries');
-      }
-
-      await ensureSearchData();
-
-      // Match diary entries
-      // NOTE: We allow multiple diary entries for the same show (re-viewings).
-      // Only skip if user already has a review for this show in their account.
-      const matched: MatchedEntry[] = [];
-      const diaryShowIds = new Set<string>();
-
-      const today = new Date().toISOString().split('T')[0];
-
-      for (const entry of parsed.data.diaryEntries) {
-        const { match, score } = matchShow(
-          entry.show.name,
-          entry.production?.theater?.name
-        );
-        const showId = match?.id || '';
-        const alreadyReviewed = showId ? existingReviewShowIds.has(showId) : false;
-        const entryDate = entry.date ? entry.date.split('T')[0] : null;
-        const hasRating = !!(entry.rating && entry.rating > 0);
-        const isFuture = entryDate && entryDate > today;
-
-        // Unrated future entries → watchlist with planned_date (not diary)
-        if (!hasRating && isFuture) {
-          const alreadyWatchlisted = showId ? existingWatchlistShowIds.has(showId) : false;
-          matched.push({
-            mezzName: entry.show.name,
-            mezzRating: null,
-            mezzDate: entryDate,
-            mezzReview: null,
-            match,
-            matchScore: score,
-            selected: !!match && score > 0.7 && !alreadyWatchlisted && !alreadyReviewed,
-            type: 'watchlist',
-            listName: 'Upcoming',
-          });
-        } else {
-          matched.push({
-            mezzName: entry.show.name,
-            mezzRating: entry.rating || null,
-            mezzDate: entryDate,
-            mezzReview: entry.review || null,
-            match,
-            matchScore: score,
-            selected: !!match && score > 0.7 && !alreadyReviewed,
-            type: 'diary',
-          });
-        }
-
-        if (showId) diaryShowIds.add(showId);
-      }
-
-      // Match wishlist entries
-      for (const list of parsed.data.lists || []) {
-        for (const show of list.shows) {
-          const { match, score } = matchShow(show.name);
-          const showId = match?.id || '';
-          const alreadyWatchlisted = showId ? existingWatchlistShowIds.has(showId) : false;
-          const alreadyInDiary = showId ? diaryShowIds.has(showId) : false;
-
-          matched.push({
-            mezzName: show.name,
-            mezzRating: null,
-            mezzDate: null,
-            mezzReview: null,
-            match,
-            matchScore: score,
-            selected: !!match && score > 0.7 && !alreadyWatchlisted && !alreadyInDiary,
-            type: 'watchlist',
-            listName: list.name,
-          });
-        }
-      }
-
-      setEntries(matched);
-      setStep('preview');
+      await matchAndPreview(await acquireFromMezzanine(file));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to parse file');
-      setStep('upload');
+      setStep('source');
     }
-  }, [ensureSearchData, matchShow, existingReviewShowIds, existingWatchlistShowIds]);
+  }, [matchAndPreview]);
+
+  const handleShowScoreFetch = useCallback(async () => {
+    setStep('matching');
+    setError(null);
+    try {
+      await matchAndPreview(await acquireFromShowScore(profileInput));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Import failed — try again.');
+      setStep('source');
+    }
+  }, [matchAndPreview, profileInput]);
 
   const diaryEntries = useMemo(() => entries.filter(e => e.type === 'diary'), [entries]);
   const watchlistEntries = useMemo(() => entries.filter(e => e.type === 'watchlist'), [entries]);
@@ -299,19 +263,18 @@ export default function MezzanineImport({
     const unratedDiary: typeof selectedDiary = [];
     for (const entry of selectedDiary) {
       if (!entry.match) continue;
-      if (!entry.mezzRating || entry.mezzRating <= 0) {
+      if (!entry.sourceRating || entry.sourceRating <= 0) {
         // No rating — add to watchlist with planned_date instead
         unratedDiary.push(entry);
         continue;
       }
       try {
-        // Mezzanine ratings are 1-5 with 0.5 steps — same as ours
         const { error: insertErr } = await supabaseRestInsert('reviews', {
           user_id: userId,
           show_id: entry.match.id,
-          rating: entry.mezzRating,
-          review_text: entry.mezzReview || null,
-          date_seen: entry.mezzDate || null,
+          rating: entry.sourceRating,
+          review_text: entry.sourceReview || null,
+          date_seen: entry.sourceDate || null,
         });
         if (insertErr) {
           if (insertErr.code === '23505') { // unique constraint violation
@@ -335,7 +298,7 @@ export default function MezzanineImport({
         const { error: insertErr } = await supabaseRestInsert('watchlist', {
           user_id: userId,
           show_id: entry.match.id,
-          ...(entry.mezzDate && { planned_date: entry.mezzDate }),
+          ...(entry.sourceDate && { planned_date: entry.sourceDate }),
         });
         if (insertErr) {
           if (insertErr.code === '23505') skipped++;
@@ -357,6 +320,8 @@ export default function MezzanineImport({
   const handleClose = () => {
     setStep('closed');
     setEntries([]);
+    setNotices([]);
+    setProfileInput('');
     setError(null);
     setImportStats({ imported: 0, skipped: 0, errors: 0 });
     if (fileInputRef.current) fileInputRef.current.value = '';
@@ -366,25 +331,25 @@ export default function MezzanineImport({
     return (
       <button
         type="button"
-        onClick={() => setStep('upload')}
+        onClick={() => setStep('source')}
         className="text-xs text-gray-500 hover:text-white transition-colors flex items-center gap-1"
       >
         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
         </svg>
-        Import from Mezzanine
+        Import from Show Score or Mezzanine
       </button>
     );
   }
 
   return (
-    <Modal isOpen={true} onClose={handleClose} maxWidth="lg" bottomSheet ariaLabel="Import from Mezzanine">
+    <Modal isOpen={true} onClose={handleClose} maxWidth="lg" bottomSheet ariaLabel="Import shows">
       <div className="flex flex-col overflow-hidden max-h-[85vh]">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
           <h3 className="text-base font-bold text-white">
-            {step === 'upload' && 'Import from Mezzanine'}
-            {step === 'matching' && 'Matching shows...'}
+            {step === 'source' && 'Import your shows'}
+            {step === 'matching' && (source === 'show-score' ? 'Fetching your profile...' : 'Matching shows...')}
             {step === 'preview' && 'Review Import'}
             {step === 'importing' && 'Importing...'}
             {step === 'done' && 'Import Complete'}
@@ -394,26 +359,66 @@ export default function MezzanineImport({
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto px-5 py-4">
-          {/* Upload step */}
-          {step === 'upload' && (
-            <div className="text-center py-6">
-              <div className="text-3xl mb-3">📱</div>
-              <p className="text-sm text-gray-300 mb-1">Export your data from Mezzanine:</p>
-              <p className="text-xs text-gray-500 mb-6">Settings → Export Data → JSON</p>
-              <label className="btn-primary text-sm gap-2 cursor-pointer">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                </svg>
-                Choose JSON File
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".json"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                />
-              </label>
-              {error && <p className="text-sm text-red-400 mt-4">{error}</p>}
+          {/* Source-select step */}
+          {step === 'source' && (
+            <div className="space-y-6 py-2">
+              {/* Show Score */}
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-lg">🎭</span>
+                  <span className="text-sm font-bold text-white">Show Score</span>
+                </div>
+                <p className="text-xs text-gray-500 mb-2">
+                  Paste your public profile link — your reviews and ratings import directly. No password needed.
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={profileInput}
+                    onChange={(e) => setProfileInput(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter' && profileInput.trim()) { setSource('show-score'); handleShowScoreFetch(); } }}
+                    placeholder="show-score.com/member/your-name"
+                    className="flex-1 min-w-0 px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-brand/50"
+                  />
+                  <button
+                    onClick={() => { setSource('show-score'); handleShowScoreFetch(); }}
+                    disabled={!profileInput.trim()}
+                    className="btn-primary text-sm disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                  >
+                    Import
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="flex-1 h-px bg-white/10" />
+                <span className="text-xs text-gray-600">or</span>
+                <div className="flex-1 h-px bg-white/10" />
+              </div>
+
+              {/* Mezzanine */}
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-lg">📱</span>
+                  <span className="text-sm font-bold text-white">Mezzanine</span>
+                </div>
+                <p className="text-xs text-gray-500 mb-2">In the app: Settings → Export Data → JSON, then upload the file.</p>
+                <label className="btn-secondary text-sm gap-2 cursor-pointer inline-flex items-center">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+                  Choose JSON File
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".json"
+                    onChange={(e) => { setSource('mezzanine'); handleFileSelect(e); }}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+
+              {error && <p className="text-sm text-red-400">{error}</p>}
             </div>
           )}
 
@@ -421,7 +426,9 @@ export default function MezzanineImport({
           {step === 'matching' && (
             <div className="text-center py-12">
               <div className="animate-spin w-8 h-8 border-2 border-white/20 border-t-brand rounded-full mx-auto mb-4" />
-              <p className="text-sm text-gray-400">Matching your shows...</p>
+              <p className="text-sm text-gray-400">
+                {source === 'show-score' ? 'Fetching and matching your Show Score reviews...' : 'Matching your shows...'}
+              </p>
             </div>
           )}
 
@@ -429,11 +436,18 @@ export default function MezzanineImport({
           {step === 'preview' && (
             <div>
               {/* Summary */}
-              <div className="flex items-center gap-4 text-sm mb-4">
+              <div className="flex items-center gap-4 text-sm mb-2">
                 <span className="text-green-400">{selectedDiary.length} diary entries</span>
-                <span className="text-blue-400">{selectedWatchlist.length} watchlist</span>
+                {watchlistEntries.length > 0 && <span className="text-blue-400">{selectedWatchlist.length} watchlist</span>}
                 {unmatchedCount > 0 && <span className="text-yellow-400">{unmatchedCount} unmatched</span>}
               </div>
+              {notices.map((n, i) => (
+                <p key={i} className="text-xs text-yellow-500 mb-1">{n}</p>
+              ))}
+              <p className="text-xs text-gray-600 mb-4">
+                Imported ratings are private until you choose to share them.
+                {source === 'show-score' && ' Show Score scores convert to the nearest half-star.'}
+              </p>
 
               {/* Diary entries */}
               {diaryEntries.length > 0 && (
@@ -529,9 +543,11 @@ function ImportEntryRow({ entry, index, onToggle }: { entry: MatchedEntry; index
       />
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-xs text-white truncate">{entry.mezzName}</span>
-          {entry.mezzRating && (
-            <span className="text-xs text-amber-400 flex-shrink-0">★ {entry.mezzRating}</span>
+          <span className="text-xs text-white truncate">{entry.sourceTitle}</span>
+          {entry.sourceRating && (
+            <span className="text-xs text-amber-400 flex-shrink-0">
+              {entry.sourceScore !== null ? `${entry.sourceScore} → ` : ''}★ {entry.sourceRating}
+            </span>
           )}
         </div>
         {entry.match && !noMatch ? (

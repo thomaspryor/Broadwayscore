@@ -18,7 +18,6 @@ import {
   scoreToRating,
   venueHintIsMarket,
   cleanVenueHint,
-  extractMemberSlug,
   decodeEntities,
 } from '../../supabase/functions/show-score-proxy/parser.mjs';
 
@@ -125,17 +124,6 @@ describe('venue hints', () => {
     assert.strictEqual(cleanVenueHint('Public Theater 2023'), 'Public Theater');
     assert.strictEqual(cleanVenueHint('Westside Theatre'), 'Westside Theatre');
     assert.strictEqual(cleanVenueHint(''), null);
-  });
-});
-
-describe('extractMemberSlug', () => {
-  it('accepts full URLs, bare slugs, and rejects garbage', () => {
-    assert.strictEqual(extractMemberSlug('https://www.show-score.com/member/tom-300271'), 'tom-300271');
-    assert.strictEqual(extractMemberSlug('show-score.com/member/Bobby-Baby?page=2#reviews'), 'bobby-baby');
-    assert.strictEqual(extractMemberSlug('tom-300271'), 'tom-300271');
-    assert.strictEqual(extractMemberSlug('https://evil.com/member/x'), null);
-    assert.strictEqual(extractMemberSlug('not a slug!'), null);
-    assert.strictEqual(extractMemberSlug(''), null);
   });
 });
 
