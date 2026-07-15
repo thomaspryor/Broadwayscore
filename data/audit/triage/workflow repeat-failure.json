@@ -1,15 +1,15 @@
 {
   "system": "workflow repeat-failure",
-  "status": "error",
-  "lastChecked": "2026-07-14T07:34:44.664Z",
+  "status": "warn",
+  "lastChecked": "2026-07-15T07:37:17.759Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Test UGC Features",
-      "status": "error",
-      "message": "Test UGC Features failed 6 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Opening Night Poller — auto",
+      "status": "warn",
+      "message": "Opening Night Poller — auto failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }
