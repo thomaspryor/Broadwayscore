@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-07-15T21:11:53.772Z",
+  "timestamp": "2026-07-15T23:48:28.838Z",
   "stats": {
     "totalReviews": 40083,
     "alreadyFlagged": 17566,
     "dateGuardCatches": 50,
-    "directorMismatch": 911,
+    "directorMismatch": 912,
     "tvFilmSignals": 1099,
-    "londonSignals": 744,
+    "londonSignals": 745,
     "offBroadwaySignals": 469,
     "yearMismatch": 85,
     "noPublishDate": 3617
@@ -27768,6 +27768,20 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "newsday--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.newsday.com/news/new-york/theater-review-who-s-afraid-of-virginia-woolf-2-5-stars-m92773",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 85,
       "publishDate": "October 16, 2012",
@@ -42579,6 +42593,20 @@
       "score": 78,
       "publishDate": "2025-09-17",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-producers-garrick-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "the-sun--dominic-maxwell.json",
+      "score": 84,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/article/51bc03b7-bdf2-4856-97be-6fb7aa5a7e9b",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
