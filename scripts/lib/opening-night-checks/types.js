@@ -15,6 +15,7 @@
  * @property {Object} driftState          - Parsed data/audit/drift-state.json (or {})
  * @property {Object} criticConsensusDoc  - Parsed data/critic-consensus.json (or {})
  * @property {Date}   now                 - Current timestamp
+ * @property {Array}  [shows]             - Full shows.json shows array (for cross-show checks)
  *
  * @typedef {Object} CheckModule
  * @property {string} name
