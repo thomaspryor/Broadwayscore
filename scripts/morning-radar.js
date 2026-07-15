@@ -10,6 +10,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const {
+  hasEmptyCast,
+  isPlaceholderSynopsis,
+  hasStaleUpcomingTag,
+  hasSameMarketTitleMatch,
+} = require('./lib/opening-night-completeness.js');
 
 const dataDir = path.join(__dirname, '..', 'data');
 
@@ -55,6 +61,19 @@ const results = upcoming.map(s => {
     ? !!(sent[s.id]?.completed || sent[`${market}:${s.id}`]?.completed)
     : null; // null = not applicable
 
+  // Metadata completeness — surfaces the class of bug that shipped The Whoopi
+  // Monologues live with cast:[] and a placeholder synopsis (card #189). These
+  // are 'warning' severity in the hourly checklist (never emailed per
+  // feedback_actionable_only_email_alerts.md), so the morning radar is the
+  // pull-based surface where a human actually sees them before publicizing.
+  const completenessIssues = [];
+  if (s.status !== 'closed') {
+    if (hasEmptyCast(s)) completenessIssues.push('empty cast');
+    if (isPlaceholderSynopsis(s.synopsis)) completenessIssues.push('thin/placeholder synopsis');
+    if (hasStaleUpcomingTag(s)) completenessIssues.push("stale 'upcoming' tag");
+    if (s.isRevival !== true && hasSameMarketTitleMatch(s, shows.shows)) completenessIssues.push('unverified revival');
+  }
+
   return {
     id: s.id,
     title: s.title,
@@ -63,7 +82,8 @@ const results = upcoming.map(s => {
     hasDtli,
     hasBww,
     broadcastSent,
-    status: s.status
+    status: s.status,
+    completenessIssues
   };
 });
 
