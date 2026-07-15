@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useCallback, useState, useRef } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import Link from 'next/link';
 import WatchlistButton from './WatchlistButton';
+import DatePickerButton from './DatePickerButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useToastSafe } from '@/components/ui/Toast';
@@ -22,7 +23,6 @@ export default function ShowPageWatchlistButton({ showId }: ShowPageWatchlistBut
   const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, watchlist } = useWatchlist(user?.id || null);
   const { showToast } = useToastSafe();
   const [loading, setLoading] = useState(false);
-  const dateInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -66,37 +66,21 @@ export default function ShowPageWatchlistButton({ showId }: ShowPageWatchlistBut
   return (
     <div className="flex items-center gap-2 flex-shrink-0">
       {watched && (
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => {
-              dateInputRef.current?.showPicker?.();
-              dateInputRef.current?.focus();
-            }}
-            className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-300 transition-colors min-h-[36px] px-2 -mx-2"
-          >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span>
-              {watchlistDate
-                ? new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                : 'Add date'}
-            </span>
-          </button>
-          <input
-            ref={dateInputRef}
-            type="date"
-          autoComplete="off"
-          data-1p-ignore
-          data-lpignore="true"
-          data-bwignore="true"
-            value={watchlistDate || ''}
-            onChange={e => updatePlannedDate(showId, e.target.value || null).catch(() => showToast?.('Failed to save date.', 'error'))}
-            className="absolute top-0 left-0 w-0 h-0 opacity-0 pointer-events-none"
-            tabIndex={-1}
-          />
-        </div>
+        <DatePickerButton
+          value={watchlistDate || ''}
+          onChange={val => updatePlannedDate(showId, val || null).catch(() => showToast?.('Failed to save date.', 'error'))}
+          ariaLabel="Planned date"
+          className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-300 transition-colors min-h-[36px] px-2 -mx-2"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span>
+            {watchlistDate
+              ? new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+              : 'Add date'}
+          </span>
+        </DatePickerButton>
       )}
       <WatchlistButton
         isWatchlisted={watched}

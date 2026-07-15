@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Modal from '@/components/show-cards/Modal';
 import StarRating from './StarRating';
 import { sanitizeRating } from '@/lib/rating';
+import DatePickerButton from './DatePickerButton';
 
 export interface RatingEditorSaveData {
   rating: number;
@@ -95,20 +96,6 @@ export default function RatingEditor({
   // Live hover value from the stars — previewed in the big number so half-star
   // targeting is legible before the click (owner report, 2026-07-13).
   const [hoverValue, setHoverValue] = useState<number | null>(null);
-  const dateInputRef = useRef<HTMLInputElement>(null);
-
-  const openDatePicker = useCallback(() => {
-    const el = dateInputRef.current;
-    if (!el) return;
-    try {
-      el.showPicker();
-    } catch {
-      // Pre-showPicker browsers (old Safari): focusing the input opens the
-      // native wheel on iOS; desktop fallback is click.
-      el.focus();
-      el.click();
-    }
-  }, []);
 
   const [isDesktop, setIsDesktop] = useState<boolean>(
     () => typeof window !== 'undefined' && window.matchMedia('(min-width: 640px)').matches,
@@ -180,51 +167,25 @@ export default function RatingEditor({
         <label className="block text-xs font-medium text-gray-400 mb-1">
           Date Seen <span className="text-gray-600">(optional)</span>
         </label>
-        {/* Structural password-manager fix: the tabbable control is a BUTTON —
-            managers only attach to focusable text-entry fields, and the
-            data-1p-ignore attribute route proved advisory-only in the wild
-            (owner's manager ignored it, 2026-07-13). The real date input is
-            visually hidden underneath purely to anchor the native picker. */}
-        <div className="relative w-full sm:w-48">
-          <input
-            ref={dateInputRef}
-            type="date"
-            aria-hidden="true"
-            tabIndex={-1}
-            value={dateSeen}
-            onChange={e => setDateSeen(e.target.value)}
-            min="1950-01-01"
-            max={maxDate}
-            className="absolute inset-0 w-full h-full opacity-0 pointer-events-none [color-scheme:dark]"
-          />
-          <button
-            type="button"
-            onClick={openDatePicker}
-            aria-label="Date seen"
-            className={`w-full flex items-center gap-2 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 transition-colors ${dateSeen ? 'text-white' : 'text-gray-500'} ${dateSeen ? 'pr-9' : ''}`}
-          >
-            <svg className="w-4 h-4 shrink-0 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span data-testid="date-seen-display">
-              {dateSeen
-                ? new Date(dateSeen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                : 'Add a date'}
-            </span>
-          </button>
-          {dateSeen && (
-            <button
-              type="button"
-              onClick={() => setDateSeen('')}
-              aria-label="Clear date"
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1 rounded-full text-gray-500 hover:text-white transition-colors"
-            >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
-        </div>
+        <DatePickerButton
+          value={dateSeen}
+          onChange={setDateSeen}
+          min="1950-01-01"
+          max={maxDate}
+          ariaLabel="Date seen"
+          wrapClassName="relative w-full sm:w-48"
+          className={`w-full flex items-center gap-2 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 transition-colors ${dateSeen ? 'text-white pr-9' : 'text-gray-500'}`}
+          onClear={() => setDateSeen('')}
+        >
+          <svg className="w-4 h-4 shrink-0 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span data-testid="date-seen-display">
+            {dateSeen
+              ? new Date(dateSeen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+              : 'Add a date'}
+          </span>
+        </DatePickerButton>
       </div>
 
       {/* Private notes */}

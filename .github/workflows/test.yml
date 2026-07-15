@@ -250,6 +250,18 @@ on:
       - 'scripts/lib/wrong-production-corroboration.test.mjs'
       - 'scripts/flag-wrong-production-by-date.js'
       - 'scripts/rebuild-all-reviews.js'
+      # extractDateFromUrl (URL-date fallback for rebuild + backfill-review-dates.js)
+      # lives here; covered by tests/unit/rebuild-helpers.test.mjs (tests/** trigger)
+      # and the colocated scripts/lib/*.test.mjs glob — but rebuild-helpers.js itself
+      # wasn't path-listed, so a solo edit got ZERO CI (publishDate URL-date backfill,
+      # 2026-07-15).
+      - 'scripts/lib/rebuild-helpers.js'
+      - 'scripts/lib/rebuild-helpers.url-date.test.mjs'
+      - 'scripts/backfill-review-dates.js'
+      # collect-review-texts.js itself wasn't path-listed either (its extracted
+      # helpers are covered via tests/unit/collect-review-texts-rename-helper.test.mjs
+      # under the tests/** trigger, but a solo edit to the file got ZERO CI).
+      - 'scripts/collect-review-texts.js'
       - 'scripts/scoring-delta.js'
       - 'scripts/test-opening-night-fixes.js'
       - 'scripts/audit-slug-match-routing.js'
