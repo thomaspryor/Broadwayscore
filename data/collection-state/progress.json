@@ -452,7 +452,17 @@
     "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+    "the-oresteia-west-end-2026/whatsonstage--matt-trueman.json",
+    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
+    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
+    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
+    "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -491,6 +501,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
     ],
     "directCookies": [
@@ -516,7 +527,8 @@
       "data/review-texts/jesus-christ-superstar-west-end-2026/nottingham-confidential--unknown.json",
       "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
       "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
-      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
@@ -528,7 +540,7 @@
     ]
   },
   "startTime": "2026-07-14T22:55:59.639Z",
-  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+  "lastProcessed": "tender-off-west-end-2026/times-uk--sam-marlowe.json",
   "log": [
     {
       "t": "2026-07-15T04:20:37.829Z",
@@ -566,6 +578,17 @@
     },
     {
       "t": "2026-07-15T06:36:43.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-15T07:41:40.399Z",
+      "event": "bb-session",
+      "session": "96015deb",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-15T07:41:40.835Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
