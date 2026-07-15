@@ -267,6 +267,14 @@ function verifyInText(quote, fullText) {
   // Case-insensitive as last resort
   if (straightText.toLowerCase().includes(straightQuote.toLowerCase())) return true;
 
+  // LLMs close a mid-sentence clause with a terminal period ("...Hair
+  // Braiding." where the text continues "...Hair Braiding, which was...").
+  // Try again without the trailing punctuation — the words still must match
+  // verbatim, only the invented terminal mark is forgiven. (Jaja's/Cititour
+  // NOT-IN-TEXT rejections, 2026-07-14.)
+  const noTrail = straightQuote.replace(/[.!?…]+$/, '');
+  if (noTrail.length > 30 && straightText.toLowerCase().includes(noTrail.toLowerCase())) return true;
+
   return false;
 }
 
