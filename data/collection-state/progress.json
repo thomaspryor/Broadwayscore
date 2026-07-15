@@ -51,6 +51,7 @@
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
     "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
     "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
@@ -64,7 +65,9 @@
       "birthright-off-broadway-2026/the-recs--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/birthright-off-broadway-2026/pages-on-stages--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
@@ -90,6 +93,23 @@
     },
     {
       "t": "2026-07-15T04:20:38.701Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-15T05:18:14.977Z",
+      "event": "bb-session",
+      "session": "f61c9472",
+      "url": "https://pagesonstages.com/2026/06/29/birthright/"
+    },
+    {
+      "t": "2026-07-15T05:18:24.153Z",
+      "event": "bb-session",
+      "session": "cb44e013",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGA"
+    },
+    {
+      "t": "2026-07-15T05:18:25.046Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
