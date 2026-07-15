@@ -45,6 +45,7 @@ import StarRating from '@/components/user/StarRating';
 import RatingEditor from '@/components/user/RatingEditor';
 import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
+import HoverRateStars from '@/components/user/HoverRateStars';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
@@ -270,6 +271,16 @@ function Inner({
     setRatePanelOpen(true);
   }, [setPendingDraft]);
 
+  // Poster hover-stars pick — same fresh-panel semantics as handleRateIt, but
+  // seeded with the clicked star count (mirrors the ?rate=1&stars=N deep-link
+  // branch; a same-page deep-link wouldn't re-fire since params are read once).
+  const handlePosterStarsPick = useCallback((stars: number) => {
+    setEditingReview(null);
+    setPendingDraft({ type: 'rating', showId: show.id, rating: stars, returnUrl: '', timestamp: 0 });
+    setRatePanelOpen(true);
+    refocusRateBtn();
+  }, [setPendingDraft, show.id]);
+
 
   // NOTE: RatingEditor owns the saving spinner and, critically, keeps the panel
   // open with the typed note intact when this rejects. So on the authed path we
@@ -374,9 +385,12 @@ function Inner({
       {/* Header: poster left + title block right. Poster scales up at desktop. */}
       <div className="flex gap-4 lg:gap-6">
         <div className="flex-shrink-0 w-28 sm:w-36 lg:w-44">
-          <div className="relative aspect-[2/3] rounded-xl overflow-visible shadow-2xl border border-white/10 bg-surface-raised">
+          <div className="group relative aspect-[2/3] rounded-xl overflow-visible shadow-2xl border border-white/10 bg-surface-raised">
             {userFeaturesEnabled && <ShowPageBookmark showId={show.id} size="compact" />}
             <div className="absolute inset-0 rounded-xl overflow-hidden">
+              {userFeaturesEnabled && (
+                <HoverRateStars showId={show.id} showHref={`/show/${show.slug}`} starSize="sm" onPick={handlePosterStarsPick} />
+              )}
               <ShowImage
                 sources={[
                   show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
@@ -531,7 +545,7 @@ function Inner({
           <button
             type="button"
             onClick={handleWantToSee}
-            className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-card border transition-all ${
+            className={`flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 py-3 sm:py-2.5 px-2 rounded-card border transition-all ${
               onWatchlist
                 ? 'bg-brand/10 border-brand text-brand'
                 : 'bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25'
@@ -540,18 +554,18 @@ function Inner({
             <svg className="w-5 h-5" fill={onWatchlist ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
-            <span className="text-xs font-semibold">{onWatchlist ? 'On your list' : 'Want to See'}</span>
+            <span className="text-xs sm:text-sm font-semibold">{onWatchlist ? 'On your list' : 'Want to See'}</span>
           </button>
           <button
             type="button"
             ref={rateBtnRef}
             onClick={handleRateIt}
-            className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-card border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all"
+            className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 py-3 sm:py-2.5 px-2 rounded-card border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
             </svg>
-            <span className="text-xs font-semibold">
+            <span className="text-xs sm:text-sm font-semibold">
               {!hasRating ? 'Rate it' : 'Log another viewing'}
             </span>
           </button>

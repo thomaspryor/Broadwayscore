@@ -120,8 +120,10 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
       <svg className={`${s.icon} drop-shadow-lg`} viewBox="0 0 24 24">
         <path
           d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-          fill={watched ? '#f59e0b' : 'rgba(0,0,0,0.55)'}
-          stroke={watched ? '#fbbf24' : 'rgba(255,255,255,0.75)'}
+          // Brand gold (tailwind `brand` / `accent.gold`), not generic amber —
+          // owner flagged the off-palette #f59e0b as foreign (2026-07-14).
+          fill={watched ? '#d4a574' : 'rgba(0,0,0,0.55)'}
+          stroke={watched ? '#e4b584' : 'rgba(255,255,255,0.75)'}
           strokeWidth={1.8}
           strokeLinejoin="round"
         />

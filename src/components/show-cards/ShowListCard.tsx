@@ -339,21 +339,19 @@ const ShowListCard = memo(function ShowListCard({
   );
 
   // --- Thumbnail ---
-  // Upcoming/previews shows use poster aspect ratio on mobile (taller, more visual impact)
+  // One size for BOTH variants (owner, 2026-07-14): compact's smaller 80px thumb
+  // read as a different card next to the homepage AND was narrower than the
+  // hover-rate star strip. Upcoming shows keep poster-first source ordering only.
   const isUpcoming = show.status === 'previews' || show.status === 'upcoming';
-  const usePosterLayout = isCompact && isUpcoming;
-  const thumbnailSize = usePosterLayout
-    ? 'w-16 h-24 sm:w-20 sm:h-20'
-    : isCompact
-    ? 'w-16 h-16 sm:w-20 sm:h-20'
-    : 'w-24 h-24 sm:w-28 sm:h-28';
+  const preferPoster = isCompact && isUpcoming;
+  const thumbnailSize = 'w-24 h-24 sm:w-28 sm:h-28';
 
   const thumbnail = (
     <div className={`relative flex-shrink-0 ${thumbnailSize} rounded-lg overflow-hidden bg-surface-overlay`}>
       <ShowPageBookmark showId={show.id} size="sm" />
       <HoverRateStars showId={show.id} showHref={cardHref} />
       <ShowImage
-        sources={usePosterLayout ? [
+        sources={preferPoster ? [
           show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,
           show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
           show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'thumbnail') : null,
@@ -365,15 +363,15 @@ const ShowListCard = memo(function ShowListCard({
         alt={`${show.title} ${marketLabel} ${show.type}`}
         priority={index < 2}
         loading={index < 2 ? 'eager' : 'lazy'}
-        width={usePosterLayout ? 64 : isCompact ? 80 : 112}
-        height={usePosterLayout ? 96 : isCompact ? 80 : 112}
+        width={112}
+        height={112}
         decoding="async"
-        sizes={isCompact ? '(min-width: 640px) 80px, 64px' : '(min-width: 640px) 112px, 96px'}
+        sizes="(min-width: 640px) 112px, 96px"
         className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300${isCompact ? '' : ' will-change-transform'}`}
         fallback={
           <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
             <div className="text-2xl mb-0.5">🎭</div>
-            {!isCompact && (show.status === 'previews' || show.status === 'upcoming') && (
+            {(show.status === 'previews' || show.status === 'upcoming') && (
               <div className="text-[9px] text-gray-500 text-center font-medium leading-tight">Images<br/>soon</div>
             )}
           </div>

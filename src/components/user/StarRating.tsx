@@ -147,7 +147,7 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
               // Hover-rate stars (xs) render tiny on poster overlays — the visible glyph stays
               // small on purpose, but the click/tap target expands via an invisible pseudo-element
               // into the surrounding gap/padding, which has room to spare on the poster.
-              size === 'xs' ? "before:content-[''] before:absolute before:-inset-3" : ''
+              !readOnly && (size === 'xs' || size === 'sm') ? "before:content-[''] before:absolute before:-inset-3" : ''
             }`}
             style={{ width: starSize, height: starSize }}
             onMouseMove={readOnly ? undefined : e => handleMouseMove(e, starIndex)}
