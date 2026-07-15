@@ -35,6 +35,20 @@ list lives in `update-token.sh`'s PLISTS array (4 jobs as of 2026-07-14). Full
 setup + rollback + rotation runbook: `~/.config/claude/README.md`; rotate via
 `~/.config/claude/update-token.sh`.
 
+**2026-07-15 CORRECTION — the env-token architecture was built on a false premise.**
+Empirical tests (isolated CLAUDE_CONFIG_DIR, valid/invalid tokens, binaries
+2.1.209 + 2.1.210): macOS precedence is **keychain FIRST; CLAUDE_CODE_OAUTH_TOKEN
+is only a fallback when no keychain credential exists**. "Env token overrides
+/login" was inferred from a binary string, never tested — WRONG. Coverage work
+(zshenv, plists) therefore never stopped rotation. Real fix: DELETE the
+"Claude Code-credentials" keychain entry (`purge-keychain-login.sh`) so every
+caller falls back to the static token. /login recreates the entry and re-poisons
+ALL sessions — restart a prompting session instead; check-token.sh emails if the
+entry reappears. Test method that settled it: invalid env token + keychain
+present → works (keychain used); isolated config + valid token → works; isolated
+config + invalid token → 401. Lesson: auth-precedence claims need a
+disprove-test (deliberately invalid credential), not a binary-strings read.
+
 **Recurrence pattern (2026-07-14):** the race came back 2 weeks after the fix
 because NEW headless claude callers were installed tokenless (autonomous-nightly
 2026-07-13, weekly-retro) + the cmux `.zshrc` gap above. Any ONE tokenless
