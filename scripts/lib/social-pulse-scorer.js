@@ -35,15 +35,22 @@ const MIN_MENTIONS_FOR_CARD = 20;
  * Google Trends) is a one-line entry here.
  *
  * Rationale: X and Reddit are the strongest theater-chatter proxies;
- * Bluesky is real but its theater community is a fraction of X's;
- * Wikipedia views measure general-public interest (and carry adaptation
- * contamination for shows with films — Wicked — hence lowest weight).
+ * Bluesky is real but its theater community is a fraction of X's.
+ *
+ * Wikipedia pageviews are COLLECTED (counters.wikipedia, free) but carry
+ * NO weight — external review (GPT-4o + Gemini, 2026-07-15) converged on
+ * the contamination problem: article views for shows with film
+ * adaptations (Wicked) or articles shared across productions (Hadestown
+ * WE + Broadway) measure something other than THIS production's buzz,
+ * and any weight silently skews rank for exactly the biggest shows.
+ * Ranking on only the platforms the card displays also keeps the rank
+ * explainable from the card itself. Revisit only with adaptation-aware
+ * disambiguation.
  */
 const SIGNAL_WEIGHTS = Object.freeze({
-  x: 0.35,
-  reddit: 0.3,
+  x: 0.45,
+  reddit: 0.35,
   bluesky: 0.2,
-  wikipedia: 0.15,
 });
 
 /** Weeks of history required before self-baseline comparisons are meaningful. */

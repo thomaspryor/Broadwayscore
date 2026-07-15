@@ -360,6 +360,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
           {rank && rankColors ? (
             <Link
               href={trendingHref}
+              title="Rank blends mention volume across the platforms shown (relevance-weighted) with positive sentiment — not raw mention count alone."
               aria-label={`Ranked ${rank.position} of ${rank.total} in ${rank.market} social buzz — see all trending shows`}
               className="shrink-0 flex flex-col items-center justify-center rounded-lg px-3 py-2 min-w-[72px] shadow-sm no-underline transition-transform hover:-translate-y-0.5"
               style={{
@@ -478,7 +479,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
         </Link>
         <span
           className="text-[11px] text-gray-500 lowercase"
-          title={isV3 ? 'Mentions are real weekly counts across Reddit, Bluesky and X. Methodology updated July 2026.' : undefined}
+          title={isV3 ? 'Mentions are real weekly counts across Reddit, Bluesky and X. Rank and tier blend those counts (relevance-weighted) with sentiment. Methodology updated July 2026.' : undefined}
         >
           updated {formatUpdatedDate(sp.u)} · refreshed weekly
         </span>

@@ -17,7 +17,16 @@ The 6-reviewer plan-review (GPT-4o, Gemini, 4 Claude lenses) drove these changes
 7. **Names/shapes per design review:** no "Buzz Index" (collides with Audience Buzz) — it's effectiveVolume/Pulse everywhere; `apify-fetchers.js` → `social-pulse-sources.js`; shared `searchBlueskyPosts` primitive in `brand-mention-sources.js` (brand monitor contract untouched); counters in a separate `c:{}` schema key (the `xv` precedent); Wikipedia mapping in `data/wikipedia-title-map.json` (dtli-slug-map pattern), NOT shows.json; flat `scripts/lib/wikipedia-pageviews.js`.
 8. **Cadence tiering deleted** (biweekly tail would poison same-week peer percentiles; free sources make it pointless anyway). Weekly for all running shows; workflow timeout 300→90 min.
 9. **v2→v3 baseline reset is explicit:** prior files with `_v<3` are ignored for baseline/WoW; peer tiers work week 1; WoW returns week 2. `_budget.json` (Apify cap machinery) replaced by `_meta.json` run stamp (health-check freshness updated).
-10. **Known limitations (accepted):** Reddit's counter caps at 100/query (rarely binds); shared Wikipedia articles across productions (Hadestown WE + Broadway) and film adaptations (Wicked) contaminate the 0.15-weight wiki signal; X counter dies whenever X finishes its pay-per-use migration (weights renormalize, level shifts uniformly, peer tiers unaffected).
+10. **Known limitations (accepted):** Reddit's counter caps at 100/query (rarely binds; saturation now logged); X counter dies whenever X finishes its pay-per-use migration (weights renormalize, level shifts uniformly, peer tiers unaffected).
+
+## Post-ship external review (GPT-4o + Gemini 2.5 Pro, 2026-07-15)
+
+User-requested second-opinion pass on "does it do what users expect, and is the data legit." GPT-4o: SHIP WITH FIXES; Gemini: DO NOT SHIP with 2 P0s. Changes made in response:
+
+- **Wikipedia removed from ranking weights** (both models converged on contamination: film adaptations and shared articles across productions measure something other than THIS production's buzz, skewing exactly the biggest shows). The counter is still collected/stored (`c.wv`, free) but carries no weight; ranking now derives only from the platforms the card displays. Weights: x 0.45, reddit 0.35, bluesky 0.20.
+- **Rank-basis disclosure on the card** (Gemini P0: rank driven by an index while the card shows raw mentions): rank badge tooltip + footer tooltip now state that rank/tier blend relevance-weighted mention counts with sentiment.
+- **Reddit 100-cap saturation warning** (Gemini P1) logged per show so fleet saturation is visible in workflow logs.
+- Both models rated the sentiment min-sample gate and the `c` vs `pl` unit separation as correct/user-honest; Bluesky windowed hitsTotal judged a legitimate real measurement.
 
 **First-run checklist (after merge):** add BSKY secrets → `gh workflow run update-social-pulse.yml` (or wait for Monday 06:00 UTC) → review tier distribution + top-10 vs the last Apify ranking + recalibrate `MIN_TRENDING_VOLUME=50` if /trending thins out → after 2 sane weekly runs, cancel the Apify subscription.
 

@@ -632,12 +632,14 @@ describe('computeEffectiveVolume', () => {
     assert.ok(noisy < clean * 0.5, `noisy (${noisy}) should be well under clean (${clean})`);
   });
 
-  test('log scaling keeps wikipedia views from dominating', () => {
-    // A show with ONLY huge wikipedia views must not out-rank a show with
-    // solid mention counts across the social platforms.
+  test('wikipedia views carry NO ranking weight (external-review consensus: contamination)', () => {
+    // Collected in counters but excluded from SIGNAL_WEIGHTS — film
+    // adaptations and shared articles across productions contaminate it.
     const wikiOnly = computeEffectiveVolume({ wikipedia: 100000 }, allRelevant);
-    const social = computeEffectiveVolume({ reddit: 60, bluesky: 40, x: 300 }, allRelevant);
-    assert.ok(social > wikiOnly * 0.5, `social (${social}) vs wikiOnly (${wikiOnly})`);
+    assert.strictEqual(wikiOnly, null, 'wiki-only show has no rankable signal');
+    const withWiki = computeEffectiveVolume({ reddit: 60, bluesky: 40, x: 300, wikipedia: 100000 }, allRelevant);
+    const withoutWiki = computeEffectiveVolume({ reddit: 60, bluesky: 40, x: 300 }, allRelevant);
+    assert.strictEqual(withWiki, withoutWiki, 'wikipedia counter must not move the index');
   });
 
   test('no counters → null', () => {

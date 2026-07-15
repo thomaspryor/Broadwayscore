@@ -81,6 +81,12 @@ async function fetchRedditForShow({ showTitle, marketQualifier, maxItems = 100, 
       searchQualifier: marketQualifier || 'broadway',
     });
     const mentions = rawMentions.map(normalizeRedditPost).filter(Boolean);
+    if (rawMentions.length >= 100) {
+      // Reddit's API ceiling — the counter reads "100" but the real weekly
+      // volume is higher. Rare for theater content; surfaced so a run
+      // where hot shows saturate is visible in the workflow log.
+      logger.warn(`[${showTitle}] Reddit sample saturated at the 100/query API cap — true weekly count is >=100`);
+    }
     return { mentions, rawCount: rawMentions.length };
   } catch (err) {
     logger.warn(`[${showTitle}] Reddit fetch failed: ${err.message}`);
