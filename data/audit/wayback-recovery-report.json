@@ -1,22 +1,28 @@
 {
-  "totalCandidates": 4,
-  "cdxFound": 1,
-  "cdxNotFound": 1,
-  "recovered": 1,
+  "totalCandidates": 23,
+  "cdxFound": 9,
+  "cdxNotFound": 5,
+  "recovered": 8,
   "recoveredByTier": {
-    "1": 0,
-    "2": 0,
-    "3": 1
+    "1": 2,
+    "2": 4,
+    "3": 2
   },
   "recoveredByDomain": {
-    "culturesauce.com": 1
+    "timeout.com": 2,
+    "nydailynews.com": 1,
+    "newsday.com": 1,
+    "huffpost.com": 1,
+    "backstage.com": 1,
+    "thetimes.com": 1,
+    "musiccityreview.com": 1
   },
-  "tooShort": 0,
+  "tooShort": 1,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 2,
-  "notInArchive": 1,
+  "errors": 9,
+  "notInArchive": 5,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
