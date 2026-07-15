@@ -8,6 +8,10 @@ interface StarRatingProps {
   size?: 'xs' | 'sm' | 'md' | 'lg';
   readOnly?: boolean;
   hideLabel?: boolean;
+  /** Expand each star's hit target ~12px beyond the glyph (invisible pseudo-element).
+   *  ONLY for poster-overlay strips with empty space around the stars — in dense
+   *  rows (My Shows To-Be-Rated) the halo would swallow taps meant for neighbors. */
+  expandHitTarget?: boolean;
   /** Live hover preview (null on leave) — lets the parent echo the would-be value. */
   onHoverChange?: (value: number | null) => void;
 }
@@ -66,7 +70,7 @@ function fillFor(displayRating: number, starIndex: number): '0%' | '50%' | '100%
  * is the whole point — the previous isTouchDevice/synthetic-mousemove heuristic
  * broke half-stars on real phones.
  */
-export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false, onHoverChange }: StarRatingProps) {
+export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false, expandHitTarget = false, onHoverChange }: StarRatingProps) {
   const [hoverRating, setHoverRating] = useState<number | null>(null);
   const { star: starSize, gap } = SIZE_MAP[size];
   const uid = useId();
@@ -147,7 +151,7 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
               // Hover-rate stars (xs) render tiny on poster overlays — the visible glyph stays
               // small on purpose, but the click/tap target expands via an invisible pseudo-element
               // into the surrounding gap/padding, which has room to spare on the poster.
-              size === 'xs' ? "before:content-[''] before:absolute before:-inset-3" : ''
+              !readOnly && expandHitTarget ? "before:content-[''] before:absolute before:-inset-3" : ''
             }`}
             style={{ width: starSize, height: starSize }}
             onMouseMove={readOnly ? undefined : e => handleMouseMove(e, starIndex)}
