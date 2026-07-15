@@ -164,6 +164,24 @@ function createNightBudget(opts = {}) {
   };
 }
 
+// A size can be "enabled" in config yet mathematically inadmissible: its
+// worst-case reservation (both attempts) exceeds even a fresh night's
+// available budget (nightUSD - reserveUSD). On an M-only night that config
+// silently does zero work (2026-07-15: $5 night, M worst-case $7.50 —
+// 41 triage LLM calls, 0 attempts). Surface it so the run can warn loudly.
+function inadmissibleSizes({ nightUSD, sizes, reserveUSD = DEFAULTS.reserveUSD } = {}) {
+  const available = round2(nightUSD - reserveUSD);
+  return (sizes || []).filter(size => {
+    const env = ENVELOPES[size];
+    if (!env || env.incremental) return false; // L is worked incrementally, never admitted whole
+    return round2(env.estUSD + env.estAttempt2USD) > available;
+  }).map(size => ({
+    size,
+    worstCaseUSD: round2(ENVELOPES[size].estUSD + ENVELOPES[size].estAttempt2USD),
+    availableUSD: available,
+  }));
+}
+
 // The loop shares the Anthropic daily dollar pool with opening-night
 // automation — refuse a night config that could eat the whole shared cap.
 function checkSharedDailyCap(nightUSD, caps = DEFAULT_CAPS) {
@@ -185,4 +203,5 @@ module.exports = {
   pickModel,
   createNightBudget,
   checkSharedDailyCap,
+  inadmissibleSizes,
 };

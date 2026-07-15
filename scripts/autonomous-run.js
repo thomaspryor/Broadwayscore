@@ -37,7 +37,7 @@ const https = require('https');
 const { transition } = require('./lib/autonomous-state.js');
 const { isDiffAllowed, isDiffDeterministicGreen, classifyDataCard, DATA_CLASS_REPO, isDataRepoDiffAllowed } = require('./lib/autonomous-eligibility.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
-const { createNightBudget, checkSharedDailyCap, pickModel, ENVELOPES } = require('./lib/autonomous-budget.js');
+const { createNightBudget, checkSharedDailyCap, pickModel, ENVELOPES, inadmissibleSizes } = require('./lib/autonomous-budget.js');
 const ledger = require('./lib/autonomous-ledger.js');
 const {
   buildImplementerPrompt, buildDataImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks, cardCheckArgv, shouldThrottle, preflightVerdict,
@@ -920,6 +920,16 @@ async function live(args, cfg) {
     }
 
     ledger.appendEntry({ event: 'run-start', runId, note: `budget $${nightUSD} · max ${maxItems} · sizes ${sizes.join(',')} · ${plan.length} plan item(s) + ${dataPlan.length} data-plan item(s)${mockScript ? ' · MOCK implementer' : ''}` });
+
+    // Config-vs-envelope deadlock: an enabled size whose worst-case reservation
+    // exceeds even a fresh night's budget can NEVER be admitted — a night whose
+    // plan is all that size burns triage spend and attempts nothing.
+    const dead = inadmissibleSizes({ nightUSD, sizes });
+    for (const d of dead) {
+      const note = `config-warning: size ${d.size} is enabled but can never be admitted — worst-case $${d.worstCaseUSD.toFixed(2)} > $${d.availableUSD.toFixed(2)} available on a fresh night. Raise nightUSD or drop ${d.size} from sizes.`;
+      ledger.appendEntry({ event: 'config-warning', runId, note });
+      console.error(`[run] WARNING — ${note}`);
+    }
 
     runRecovery(new Set([...plan, ...dataPlan].map(p => p.id)), runId);
 
