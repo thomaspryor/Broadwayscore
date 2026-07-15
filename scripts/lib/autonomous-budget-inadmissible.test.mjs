@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { inadmissibleSizes, ENVELOPES, DEFAULTS } = require('./lib/autonomous-budget.js');
+const { inadmissibleSizes, ENVELOPES, DEFAULTS } = require('./autonomous-budget.js');
 
 // 2026-07-15 incident: nightUSD $5 with sizes S,M — M worst-case $7.50 can
 // never be admitted ($4.50 available after reserve), so an M-only night burns
