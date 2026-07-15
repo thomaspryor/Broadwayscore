@@ -53,6 +53,7 @@ export default function HoverRateStars({ showId, showHref, starSize = 'xs', clas
         rating={null}
         onRatingChange={(rating) => onPick ? onPick(rating) : router.push(`${showHref}?rate=1&stars=${rating}`)}
         size={starSize}
+        expandHitTarget
         hideLabel
       />
     </div>
