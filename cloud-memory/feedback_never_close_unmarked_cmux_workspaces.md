@@ -32,4 +32,14 @@ idle-unmarked ones as "review yourself" — meaning surface to the USER, not clo
    `cmux new-workspace --name <title> --cwd <original-cwd> --command "claude --resume <id> --dangerously-skip-permissions"`.
    Resume cwd must match the project dir the jsonl lives under.
 
+Guard-hook side effect: the PreToolUse guard (cmux-destructive-guard.sh) matches
+the destructive subcommands as bare tokens in ANY Bash command — so a grep/echo
+whose *pattern text* contains "close-workspace" is blocked too. For meta-commands
+about the guard itself, split the token in the pattern (e.g. `close.workspace`);
+CMUX_CLOSE_OK=1 remains reserved for user-approved real closes.
+
+2026-07-15 follow-up: wrap-up Phase 7's self-close killed a tab the owner was
+mid-typing in; self-close is now removed from wrap-up.md — sessions only ✅-mark,
+closing happens via bsc-prune/bsc-next sweeps.
+
 Related: [[feedback_absorb_gate_ceremony]]
