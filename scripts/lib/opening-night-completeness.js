@@ -49,8 +49,36 @@ function hasStaleUpcomingTag(show) {
 }
 
 /**
+ * Market-aware canonical-title match: true only if another show shares the
+ * same canonical title AND the same category. A same-title show in a DIFFERENT
+ * category (e.g. hamilton-2015 [broadway] vs hamilton-west-end-2021 [west-end],
+ * or oh-mary-2024 [broadway] vs oh-mary-off-broadway-2024 [off-broadway]) is a
+ * transfer of the same production, not a revival — isRevivalByCanonicalTitle
+ * (review-guards.js) doesn't distinguish these, so long-runners like Wicked/
+ * Hamilton/Hadestown/Oh Mary!/Lion King/Book of Mormon would false-positive if
+ * used directly. Uses `category` (broadway/off-broadway/west-end/off-west-end)
+ * rather than the coarser `market` (broadway/west-end only — off-Broadway
+ * shows carry market='broadway'), falling back to `market` if category absent.
+ * @param {Object} show
+ * @param {Array} shows
+ * @returns {boolean}
+ */
+function hasSameMarketTitleMatch(show, shows) {
+  if (!show || !Array.isArray(shows)) return false;
+  const targetTitle = (show.canonicalTitle || show.title || '').toLowerCase().trim();
+  if (!targetTitle) return false;
+  const targetMarket = show.category || show.market || null;
+  return shows.some(s => {
+    if (!s || s.id === show.id) return false;
+    const t = (s.canonicalTitle || s.title || '').toLowerCase().trim();
+    if (t !== targetTitle) return false;
+    return (s.category || s.market || null) === targetMarket;
+  });
+}
+
+/**
  * Count standalone occurrences of "revival" across a set of texts (e.g. review
- * fullText bodies). Used as a secondary signal alongside isRevivalByCanonicalTitle
+ * fullText bodies). Used as a secondary signal alongside hasSameMarketTitleMatch
  * for shows where a canonical-title match isn't available (retitled revivals).
  * @param {Array<string>} texts
  * @returns {number}
@@ -72,5 +100,6 @@ module.exports = {
   hasEmptyCast,
   isPlaceholderSynopsis,
   hasStaleUpcomingTag,
+  hasSameMarketTitleMatch,
   countRevivalMentions,
 };

@@ -7,6 +7,7 @@ const {
   hasEmptyCast,
   isPlaceholderSynopsis,
   hasStaleUpcomingTag,
+  hasSameMarketTitleMatch,
   countRevivalMentions,
   MIN_SYNOPSIS_LENGTH,
 } = require('../../scripts/lib/opening-night-completeness.js');
@@ -63,6 +64,33 @@ describe('hasStaleUpcomingTag', () => {
   });
   it('false when tags is missing', () => {
     assert.equal(hasStaleUpcomingTag({ status: 'open' }), false);
+  });
+});
+
+describe('hasSameMarketTitleMatch', () => {
+  it('true for same title, same market (real revival, e.g. Death of a Salesman)', () => {
+    const show = { id: 'death-of-a-salesman-2026', title: 'Death of a Salesman', market: 'broadway' };
+    const shows = [show, { id: 'death-of-a-salesman-2012', title: 'Death of a Salesman', market: 'broadway' }];
+    assert.equal(hasSameMarketTitleMatch(show, shows), true);
+  });
+  it('false for same title, different market (transfer, not revival — regression: Hamilton/Wicked/Hadestown/Oh Mary FP)', () => {
+    const show = { id: 'hamilton-2015', title: 'Hamilton', market: 'broadway' };
+    const shows = [show, { id: 'hamilton-west-end-2021', title: 'Hamilton', market: 'west-end' }];
+    assert.equal(hasSameMarketTitleMatch(show, shows), false);
+  });
+  it('false when no other show shares the title', () => {
+    const show = { id: 'something-new-2026', title: 'Something New', market: 'broadway' };
+    assert.equal(hasSameMarketTitleMatch(show, [show]), false);
+  });
+  it('falls back to market when category is absent', () => {
+    const show = { id: 'a-2026', title: 'A Play', market: 'broadway' };
+    const shows = [show, { id: 'a-2015', title: 'A Play', market: 'broadway' }];
+    assert.equal(hasSameMarketTitleMatch(show, shows), true);
+  });
+  it('false for same title, different category despite same coarse market (regression: Oh Mary! off-Broadway->Broadway transfer, both market=broadway)', () => {
+    const show = { id: 'oh-mary-2024', title: 'Oh, Mary!', market: 'broadway', category: 'broadway' };
+    const shows = [show, { id: 'oh-mary-off-broadway-2024', title: 'Oh, Mary!', market: 'broadway', category: 'off-broadway' }];
+    assert.equal(hasSameMarketTitleMatch(show, shows), false);
   });
 });
 
