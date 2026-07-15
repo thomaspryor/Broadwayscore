@@ -68,7 +68,10 @@
     "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
     "cats-the-jellicle-ball-2026/nysr--unknown.json",
     "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-    "the-oresteia-west-end-2026/telegraph--unknown.json"
+    "the-oresteia-west-end-2026/telegraph--unknown.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/nytimes--ben-brantley.json",
+    "every-brilliant-thing-2026/theatermania--hayley-levitt.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -359,7 +362,14 @@
     "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
     "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
     "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
-    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json"
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json",
+    "gotta-dance-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "every-brilliant-thing-2026/nytimes--addie-morfoot.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -411,13 +421,19 @@
       "tender-off-west-end-2026/stagedtheatre--unknown.json",
       "pride-west-end-2026/whatsonstage--daisy-bowie.json",
       "the-oresteia-west-end-2026/london-box-office--stuart-king.json",
-      "cats-the-jellicle-ball-2026/nysr--unknown.json"
+      "cats-the-jellicle-ball-2026/nysr--unknown.json",
+      "every-brilliant-thing-2026/theatermania--hayley-levitt.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
-      "data/review-texts/the-oresteia-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/every-brilliant-thing-2026/nytimes--addie-morfoot.json",
+      "data/review-texts/every-brilliant-thing-2026/nytimes--ben-brantley.json",
+      "every-brilliant-thing-2026/nytimes--ben-brantley.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
@@ -491,7 +507,7 @@
     ]
   },
   "startTime": "2026-07-14T22:55:59.639Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+  "lastProcessed": "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
   "log": [
     {
       "t": "2026-07-15T04:20:37.829Z",
@@ -586,6 +602,39 @@
       "t": "2026-07-15T20:17:31.563Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-15T21:00:54.535Z",
+      "event": "bb-session",
+      "session": "3f0a3494",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-07-15T21:00:55.459Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-15T21:01:42.653Z",
+      "event": "bb-session",
+      "session": "3487d461",
+      "url": "https://www.nytimes.com/2026/07/12/nyregion/tracee-ellis-ross-broadway-every-bri"
+    },
+    {
+      "t": "2026-07-15T21:01:43.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-15T21:02:31.358Z",
+      "event": "bb-session",
+      "session": "b8e0a129",
+      "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-r"
+    },
+    {
+      "t": "2026-07-15T21:02:32.490Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
