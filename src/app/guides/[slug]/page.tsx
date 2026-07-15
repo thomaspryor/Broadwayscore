@@ -351,12 +351,13 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                       </p>
                       {(show.status === 'previews' || show.status === 'upcoming') && show.openingDate && (
                         <p className="text-purple-400 text-xs mt-0.5">
-                          Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          {/* Year included to match browse cards — upcoming guides list shows opening next calendar year */}
+                          Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </p>
                       )}
                       {show.closingDate && show.status === 'open' && (
                         <p className="text-rose-400 text-xs mt-0.5">
-                          Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </p>
                       )}
                     </div>
