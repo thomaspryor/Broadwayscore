@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-15T15:24:07.846Z",
+    "generatedAt": "2026-07-15T15:50:06.818Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,7 +16,7 @@
   "flagged": [
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 159
+      "churn": 156
     },
     {
       "path": "data/audit/processed-feedback.json",
@@ -24,15 +24,15 @@
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 100
+      "churn": 94
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 99
+      "churn": 92
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 91
+      "churn": 84
     },
     {
       "path": ".github/workflows/test.yml",
@@ -50,15 +50,15 @@
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 125
+      "churn": 126
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 125
+      "churn": 126
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 125
+      "churn": 126
     },
     {
       "path": "data/llm-scoring-runs.json",
@@ -70,7 +70,7 @@
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 95
+      "churn": 96
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
@@ -90,7 +90,7 @@
     },
     {
       "path": "data/show-score-urls.json",
-      "churn": 44
+      "churn": 43
     },
     {
       "path": "public/data/shows/birthright-off-broadway-2026.json",
@@ -112,32 +112,32 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 959,
+      "churn": 952,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 941,
+      "churn": 934,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 630,
+      "churn": 631,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 548,
+      "churn": 551,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 256,
+      "churn": 257,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 256,
+      "churn": 257,
       "mergeAttr": "ours"
     },
     {
@@ -147,7 +147,7 @@
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 125,
+      "churn": 126,
       "mergeAttr": "ours"
     },
     {
@@ -162,17 +162,17 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 95,
+      "churn": 96,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 95,
+      "churn": 96,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 95,
+      "churn": 96,
       "mergeAttr": "ours"
     },
     {
