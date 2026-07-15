@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isPlausiblePersonName, pickRecoveredName, recoverBylineForEntry, recoverBylinesForShow } = require('./byline-recovery.js');
+const { isPlausiblePersonName, pickRecoveredName, recoverBylineForEntry, recoverBylinesForShow, nameCorroboratedBy } = require('./byline-recovery.js');
 
 test('isPlausiblePersonName accepts real two/three-token bylines', () => {
   for (const n of ['Charles Isherwood', 'Ben Brantley', 'Andrzej Lukowski', 'Alexis Soloski', 'J. Kelly Nestruck']) {
@@ -55,12 +55,36 @@ test('recoverBylineForEntry returns null when the entry has no URL', () => {
   assert.equal(recoverBylineForEntry({ criticName: 'Unknown', url: '' }, [{ criticName: 'X Y', url: '' }]), null);
 });
 
-test('recoverBylinesForShow recovers a clean same-URL pair', () => {
+test('recoverBylinesForShow recovers a clean same-URL pair (body-corroborated)', () => {
   const out = recoverBylinesForShow([
-    { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a?t=1', criticName: 'Unknown' },
+    { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a?t=1', criticName: 'Unknown', fullText: 'By Charles Isherwood. A fine show.' },
     { file: 'wsj--charles-isherwood.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Charles Isherwood' },
   ]);
   assert.deepEqual(out, [{ file: 'wsj--unknown.json', recoveredName: 'Charles Isherwood' }]);
+});
+
+test('recoverBylinesForShow corroborates from the SIBLING body when the Unknown has none', () => {
+  const out = recoverBylinesForShow([
+    { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Unknown', fullText: '' },
+    { file: 'wsj--charles-isherwood.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Charles Isherwood', fullText: 'Review by Charles Isherwood.' },
+  ]);
+  assert.deepEqual(out, [{ file: 'wsj--unknown.json', recoveredName: 'Charles Isherwood' }]);
+});
+
+test('recoverBylinesForShow REJECTS a single-outlet mis-extraction not in the body (Christopher vs Charles)', () => {
+  const out = recoverBylinesForShow([
+    { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Unknown', fullText: 'By Charles Isherwood. The play works.' },
+    { file: 'wsj--christopher-isherwood.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Christopher Isherwood', fullText: 'By Charles Isherwood. The play works.' },
+  ]);
+  assert.deepEqual(out, [], 'hallucinated first name is not in the body → rejected');
+});
+
+test('recoverBylinesForShow skips when no body corroborates', () => {
+  const out = recoverBylinesForShow([
+    { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Unknown' },
+    { file: 'wsj--jane-critic.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Jane Critic' },
+  ]);
+  assert.deepEqual(out, [], 'no fullText anywhere → cannot corroborate → skip');
 });
 
 test('recoverBylinesForShow blocks a name claimed by 2+ outlets (Glengarry Ben Brantley contamination)', () => {
@@ -77,4 +101,12 @@ test('recoverBylinesForShow does not touch a group with no named sibling', () =>
     { file: 'ap--unknown.json', outletId: 'ap', url: 'https://ap.com/a', criticName: 'Unknown' },
   ]);
   assert.deepEqual(out, []);
+});
+
+test('nameCorroboratedBy requires every substantive token to appear as a word', () => {
+  assert.equal(nameCorroboratedBy('Charles Isherwood', 'a review by charles isherwood today'), true);
+  assert.equal(nameCorroboratedBy('Christopher Isherwood', 'a review by charles isherwood today'), false);
+  assert.equal(nameCorroboratedBy('Charles Isherwood', 'isherwood is great'), false, 'first name missing');
+  assert.equal(nameCorroboratedBy('J. Kelly Nestruck', 'reviewed by j. kelly nestruck'), true, 'short "J." token is not required');
+  assert.equal(nameCorroboratedBy('Charles Isherwood', ''), false);
 });

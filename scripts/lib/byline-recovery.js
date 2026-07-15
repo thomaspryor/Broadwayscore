@@ -102,20 +102,48 @@ function recoverBylineForEntry(entry, siblings) {
 }
 
 /**
+ * True when every alphabetic token of `name` (each ≥3 letters, so short
+ * initials/particles don't gate) appears as a word in `text`. Case-insensitive.
+ * Used to corroborate a recovered byline against the article body — the byline
+ * of a review is almost always printed in its own text, so a name that does NOT
+ * appear is a mis-extraction (e.g. a "Christopher Isherwood" file sitting on a
+ * "Charles Isherwood" article) and must not be propagated.
+ *
+ * @param {string} name
+ * @param {string} text
+ * @returns {boolean}
+ */
+function nameCorroboratedBy(name, text) {
+  if (!name || !text || typeof text !== 'string') return false;
+  const hay = text.toLowerCase();
+  const tokens = name.split(/\s+/).map((t) => t.replace(/[^a-z]/gi, '')).filter((t) => t.length >= 3);
+  if (!tokens.length) return false; // nothing substantive to match on
+  return tokens.every((t) => new RegExp(`\\b${t.toLowerCase()}\\b`).test(hay));
+}
+
+/**
  * Show-level recovery. Takes EVERY review-file record in one show directory and
  * returns the Unknown files that can be safely re-bylined from a same-URL
  * sibling.
  *
- * Beyond the per-group same-URL rule, this applies a cross-outlet contamination
- * guard: a real critic reviews a given show for ONE outlet, so if a candidate
- * name is claimed as an extracted byline by 2+ distinct outlets in the same
- * show, it is stray contamination (e.g. "Ben Brantley" stamped onto amNY,
- * Chicago Tribune, Hollywood Reporter, WashPost and NYT for one Glengarry dir)
- * and is NOT propagated. Skipping such a name costs at most a legitimate
- * syndicated-wire recovery (AP → HuffPost) — a false accept would print a wrong
- * critic on a scored review, which is worse.
+ * Three independent safety gates, all of which must pass:
+ *   1. same-URL agreement — the named sibling(s) must share the Unknown file's
+ *      canonical URL and agree on a single plausible name (pickRecoveredName).
+ *   2. cross-outlet contamination guard — a real critic reviews a given show for
+ *      ONE outlet, so a name claimed as an extracted byline by 2+ distinct
+ *      outlets in the same show is stray contamination (e.g. "Ben Brantley"
+ *      stamped onto amNY, Chicago Tribune, Hollywood Reporter, WashPost and NYT
+ *      for one Glengarry dir) and is NOT propagated.
+ *   3. body corroboration — the recovered name must actually appear in the
+ *      article text (the Unknown file's OR the winning sibling's `fullText`).
+ *      This kills the single-outlet mis-extraction path a lone mangled file
+ *      would otherwise slip through gate 2 (a hallucinated "Christopher
+ *      Isherwood" byline is rejected because the WSJ body names Charles).
  *
- * @param {Array<{file:string, outletId:string, url?:string, criticName?:string}>} records
+ * Gates 2 and 3 err toward skipping: a missed recovery just leaves "Unknown",
+ * whereas a false accept prints a WRONG critic on a scored review.
+ *
+ * @param {Array<{file:string, outletId:string, url?:string, criticName?:string, fullText?:string}>} records
  * @returns {Array<{file:string, recoveredName:string}>}
  */
 function recoverBylinesForShow(records) {
@@ -148,14 +176,24 @@ function recoverBylinesForShow(records) {
       return !c || c === 'unknown';
     });
     if (!unknowns.length || unknowns.length === group.length) continue;
-    const name = pickRecoveredName(group.filter((r) => !unknowns.includes(r)).map((r) => r.criticName || ''));
+    const named = group.filter((r) => !unknowns.includes(r));
+    const name = pickRecoveredName(named.map((r) => r.criticName || ''));
     if (!name) continue;
-    // Cross-outlet contamination guard.
+    // Gate 2: cross-outlet contamination guard.
     const outlets = nameOutlets.get(name.toLowerCase());
     if (outlets && outlets.size > 1) continue;
+    // Gate 3: body corroboration in the Unknown's OR a sibling's fullText.
+    const corroborated = group.some((r) => nameCorroboratedBy(name, r.fullText));
+    if (!corroborated) continue;
     for (const u of unknowns) out.push({ file: u.file, recoveredName: name });
   }
   return out;
 }
 
-module.exports = { isPlausiblePersonName, pickRecoveredName, recoverBylineForEntry, recoverBylinesForShow };
+module.exports = {
+  isPlausiblePersonName,
+  pickRecoveredName,
+  recoverBylineForEntry,
+  recoverBylinesForShow,
+  nameCorroboratedBy,
+};

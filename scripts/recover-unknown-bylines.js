@@ -63,7 +63,7 @@ for (const showId of showDirs) {
     if (!m) continue;
     let j;
     try { j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
-    records.push({ file: f, outletId: m[1], url: j.url, criticName: j.criticName });
+    records.push({ file: f, outletId: m[1], url: j.url, criticName: j.criticName, fullText: j.fullText });
     jsonByFile.set(f, j);
   }
   scanned += records.length;
@@ -76,9 +76,14 @@ for (const showId of showDirs) {
     if (APPLY) {
       // Route through safeWriteReview (merge) so the temporal-byline guard can
       // veto/downgrade an attribution to a retired/deceased critic on an
-      // old-dated review, and PROTECTED_FIELDS stay intact.
+      // old-dated review, and PROTECTED_FIELDS stay intact. Pass the existing
+      // date alongside criticName — the guard only fires when newData carries a
+      // publishDate/parsedDate (review-write-guard.js:355), so omitting it left
+      // the guard inert.
       safeWriteReview(path.join(dir, file), {
         criticName: recoveredName,
+        publishDate: j.publishDate,
+        parsedDate: j.parsedDate,
         bylineRecoveredFrom: 'same-url-sibling', // provenance for audits
       }, { merge: true });
     }
