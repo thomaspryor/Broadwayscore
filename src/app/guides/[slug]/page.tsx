@@ -30,6 +30,7 @@ import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/l
 import ShowImage from '@/components/ShowImage';
 import TicketLink from '@/components/TicketLink';
 import { sortTicketLinks } from '@/lib/ticket-utils';
+import { stripInlineMarkdown } from '@/lib/formatting';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
@@ -235,7 +236,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
           {shows.length > 0 && (
             <div className="text-gray-300 leading-relaxed text-base sm:text-lg space-y-3">
               {intro.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i}>{para.replace(/\*\*(.*?)\*\*/g, '$1')}</p>
+                <p key={i}>{stripInlineMarkdown(para)}</p>
               ))}
             </div>
           )}
@@ -350,12 +351,13 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                       </p>
                       {(show.status === 'previews' || show.status === 'upcoming') && show.openingDate && (
                         <p className="text-purple-400 text-xs mt-0.5">
-                          Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          {/* Year included to match browse cards — upcoming guides list shows opening next calendar year */}
+                          Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </p>
                       )}
                       {show.closingDate && show.status === 'open' && (
                         <p className="text-rose-400 text-xs mt-0.5">
-                          Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </p>
                       )}
                     </div>
@@ -368,6 +370,9 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                         reviewCount={show.criticScore?.reviewCount}
                         status={show.status}
                         showCrown
+                        category={show.category}
+                        tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)}
+                        labelTbd
                       />
                       {audienceGrade && audienceGrade.grade !== '—' && (
                         <AudienceChip grade={audienceGrade} />
@@ -375,15 +380,17 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                     </div>
                   </div>
 
-                  {/* Critic Consensus or Synopsis fallback */}
+                  {/* Critic Consensus or Synopsis fallback — clamped so long
+                      press copy doesn't balloon one card vs its neighbors */}
                   {displayText && (
-                    <p className="text-gray-400 text-sm leading-relaxed mt-3">
+                    <p className="text-gray-400 text-sm leading-relaxed mt-3 line-clamp-3">
                       {displayText}
                     </p>
                   )}
 
-                  {/* Ticket links — single row at bottom. "Get Tickets" first, others visible on desktop only */}
-                  {show.status === 'open' && ticketLinks.length > 0 && (
+                  {/* Ticket links — single row at bottom. "Get Tickets" first, others visible on desktop only.
+                      Previews/upcoming shows sell tickets too — the upcoming guide's whole pitch is "book early". */}
+                  {(show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && ticketLinks.length > 0 && (
                     <div className="mt-3 flex flex-wrap gap-2">
                       {/* Primary CTA — always visible */}
                       <TicketLink
