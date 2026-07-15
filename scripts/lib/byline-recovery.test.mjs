@@ -79,6 +79,23 @@ test('recoverBylinesForShow REJECTS a single-outlet mis-extraction not in the bo
   assert.deepEqual(out, [], 'hallucinated first name is not in the body → rejected');
 });
 
+test('recoverBylinesForShow REFUSES to name from a flagged sibling (would merge-drop the scored review)', () => {
+  const out = recoverBylinesForShow([
+    { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Unknown', fullText: 'By Charles Isherwood.', flagged: false },
+    { file: 'wsj--charles-isherwood.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Charles Isherwood', fullText: 'By Charles Isherwood.', flagged: true },
+  ]);
+  assert.deepEqual(out, [], 'the only same-URL named sibling is flagged → skip, keep the scored review');
+});
+
+test('recoverBylinesForShow still recovers when a CLEAN sibling carries the name alongside a flagged one', () => {
+  const out = recoverBylinesForShow([
+    { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Unknown', fullText: 'By Charles Isherwood.', flagged: false },
+    { file: 'wsj--charles-isherwood.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Charles Isherwood', fullText: 'By Charles Isherwood.', flagged: true },
+    { file: 'wsj--charles-isherwood-2.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Charles Isherwood', fullText: 'By Charles Isherwood.', flagged: false },
+  ]);
+  assert.deepEqual(out, [{ file: 'wsj--unknown.json', recoveredName: 'Charles Isherwood' }]);
+});
+
 test('recoverBylinesForShow skips when no body corroborates', () => {
   const out = recoverBylinesForShow([
     { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Unknown' },
