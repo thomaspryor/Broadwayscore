@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-15T19:53:24.044Z",
+  "runDate": "2026-07-15T21:03:10.013Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -17,37 +17,37 @@
     "successRate": "19.6%"
   },
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 49,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 8,
     "directCookies": 5,
-    "scrapingbee": 4,
+    "scrapingbee": 5,
     "brightdata": 7,
     "archiveToday": 23,
     "archive": 15
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 5,
+    "tier1Attempts": 3,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier1_5Attempts": 5,
+    "tier1_5Success": 5,
+    "tier2Attempts": 5,
+    "tier2Success": 1,
+    "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
+    "tier4Attempts": 2,
     "tier4Success": 0,
     "totalFailed": 296,
-    "scrapingBeePageCredits": 10,
+    "scrapingBeePageCredits": 30,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 294,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 5,
+    "browserbaseMinutesUsed": 1.1,
+    "urlDiscoveryAttempts": 295,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -119,19 +119,17 @@
     "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
     "cats-the-jellicle-ball-2026/nysr--unknown.json",
     "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-    "the-oresteia-west-end-2026/timeout-london--unknown.json",
-    "the-oresteia-west-end-2026/london-theatre--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/london-box-office--eve-jawara.json",
-    "springwood-west-end-2026/london-box-office--stuart-king.json"
+    "the-oresteia-west-end-2026/telegraph--unknown.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/nytimes--ben-brantley.json",
+    "every-brilliant-thing-2026/theatermania--hayley-levitt.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
-    "the-oresteia-west-end-2026/standard--tim-bano.json",
-    "the-oresteia-west-end-2026/telegraph--unknown.json",
     "the-oresteia-west-end-2026/times-uk--ann-treneman.json",
-    "the-oresteia-west-end-2026/times-uk--unknown.json",
+    "the-oresteia-west-end-2026/times-uk--clive-davis.json",
     "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
     "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
     "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
@@ -420,7 +418,9 @@
     "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
     "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
     "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
-    "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json"
+    "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json",
+    "gotta-dance-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "every-brilliant-thing-2026/nytimes--addie-morfoot.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -472,36 +472,96 @@
       "pride-west-end-2026/whatsonstage--daisy-bowie.json",
       "the-oresteia-west-end-2026/london-box-office--stuart-king.json",
       "cats-the-jellicle-ball-2026/nysr--unknown.json",
-      "the-oresteia-west-end-2026/timeout-london--unknown.json",
-      "the-oresteia-west-end-2026/london-theatre--unknown.json",
-      "a-midsummer-nights-dream-west-end-2026/london-box-office--eve-jawara.json",
-      "springwood-west-end-2026/london-box-office--stuart-king.json"
+      "every-brilliant-thing-2026/theatermania--hayley-levitt.json"
     ],
     "amp": [],
-    "browserbase": [],
-    "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "browserbase": [
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/every-brilliant-thing-2026/nytimes--addie-morfoot.json",
+      "data/review-texts/every-brilliant-thing-2026/nytimes--ben-brantley.json",
+      "every-brilliant-thing-2026/nytimes--ben-brantley.json"
+    ],
+    "directCookies": [
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+      "beetlejuice-west-end-2026/times-uk--john-bleasdale.json",
+      "beetlejuice-west-end-2026/times-uk--susannah-butter.json",
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    ],
+    "scrapingbee": [
+      "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
+      "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--alan-light.json",
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+      "pride-west-end-2026/theatrely--unknown.json",
+      "the-oresteia-west-end-2026/telegraph--unknown.json"
+    ],
+    "brightdata": [
+      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
+      "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "tender-off-west-end-2026/guardian--arifa-akbar.json",
+      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
+      "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json"
+    ],
     "archiveToday": [
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json",
+      "data/review-texts/the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ],
-    "archive": []
+    "archive": [
+      "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
+      "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
+      "small-off-broadway-2026/culturesauce--thom-geier.json",
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
+      "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
+      "small-off-broadway-2026/culturesauce--thom-geier.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "proof-2026/playbill--unknown.json",
+      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+      "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
+      "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    ]
   },
-  "failuresByOutlet": {
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadway-debut-in-every-brilliant-thing-1236551549/",
+      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-every-brilliant-thing-1236598559/"
     },
-    "The Times (UK)": {
-      "count": 1,
-      "domain": "thetimes.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+    {
+      "reviewId": "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
+      "oldUrl": "http://www.theatermania.com/new-york-city-theater/reviews/every-brilliant-thing-barrow-street-review_70976.html",
+      "newUrl": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/"
     }
-  },
-  "urlDiscoveries": []
+  ]
 }
