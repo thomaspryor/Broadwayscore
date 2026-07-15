@@ -143,7 +143,7 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
           <p className="text-[12px] text-gray-500 mt-1.5 leading-snug">
             {isClosed
               ? `Among ${marketName} ${formatNoun} of its season and all-time`
-              : `Compared against all open ${marketName} ${formatNoun}`}
+              : `Compared against scored open ${marketName} ${formatNoun}`}
           </p>
         </div>
         {ownFormatAvailable && (
