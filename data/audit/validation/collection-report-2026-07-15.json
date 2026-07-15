@@ -1,69 +1,72 @@
 {
-  "runDate": "2026-07-15T16:40:58.285Z",
+  "runDate": "2026-07-15T16:42:35.841Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "allegra-west-end-2026",
+    "showFilter": "dukes-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 0,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
     "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "allegra-west-end-2026/whatsonstage--aliya-al.json"
+  "processed": [],
+  "failed": [
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
   ],
   "failed": [],
   "tierDetails": {
-    "playwright": [
-      "allegra-west-end-2026/whatsonstage--aliya-al.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
