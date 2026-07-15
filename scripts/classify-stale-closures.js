@@ -24,6 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 const { classifyStaleClosure } = require('./lib/classify-stale-closure');
+const { isCommercialScope } = require('./lib/commercial-scope');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -73,10 +74,15 @@ function main() {
 
   // Only Broadway closed shows — the carve-out for OB/WE production-types
   // already exists in the classifier, but filtering up-front saves cycles.
+  // Must gate on category via isCommercialScope(), not market: every
+  // Off-Broadway show has market:'broadway' (see scripts/lib/
+  // commercial-scope.js's SCOPE TRAP note) — a market-only check here let
+  // closed Off-Broadway shows silently re-enter commercial.json as Fizzle
+  // (2026-07-14 audit sweep).
   const targets = shows.filter(s => {
     if (TARGET) return s.slug === TARGET;
     if (s.status !== 'closed') return false;
-    if (s.market && s.market !== 'broadway') return false;
+    if (!isCommercialScope(s)) return false;
     return true;
   });
 
