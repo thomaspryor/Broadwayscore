@@ -35,6 +35,7 @@ const { isBroadwayCategory } = require('./lib/venue-classification');
 const { classifyReverseCrossMarket, classifyUsOnWeCrossMarket } = require('./lib/cross-market-guard');
 const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { detectRefusalPattern } = require('./lib/synopsis-validation');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { isNonTheatricalGenre } = require('./lib/genre-classification');
 const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
@@ -1001,6 +1002,17 @@ function validateSynopsisQuality(shows) {
     // Wikipedia disambiguation page content
     if (/may refer to:/i.test(show.synopsis.substring(0, 200))) {
       warn(`Show "${show.title}" (${show.id}) synopsis is a disambiguation page`);
+      issues++;
+    }
+
+    // LLM refusal text instead of a synopsis ("I'm afraid I don't have enough
+    // information about..."). 16 of these shipped to prod pages + JSON-LD
+    // before the 2026-07-14 sweep. Uses the canonical detector shared with
+    // auto-fix-show-data.js / pre-deploy-check.js — do NOT inline a second
+    // regex here (its FP history lives in scripts/lib/synopsis-validation.js).
+    // ERROR not warn: a refusal is never a valid synopsis.
+    if (detectRefusalPattern(show.synopsis)) {
+      error(`Show "${show.title}" (${show.id}) synopsis is an LLM refusal, not a synopsis — delete it or write a real one`);
       issues++;
     }
 

@@ -1,5 +1,20 @@
 export type SortDirection = 'asc' | 'desc';
 
+/**
+ * Strip inline markdown that leaks from LLM/press-copy sources (synopses,
+ * critic consensus) into plain-text UI, meta descriptions, and JSON-LD:
+ * **bold**, *italic*, [text](url), `code`. Not a markdown parser — these
+ * fields are single-paragraph prose that should render as plain text.
+ */
+export function stripInlineMarkdown<T extends string | null | undefined>(text: T): T {
+  if (!text) return text;
+  return text
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*\n]+)\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1') as T;
+}
+
 export function formatCurrency(amount: number | null | undefined): string {
   if (amount === null || amount === undefined) return '\u2014';
   if (amount >= 1_000_000_000) return `$${(amount / 1_000_000_000).toFixed(1)}B`;
