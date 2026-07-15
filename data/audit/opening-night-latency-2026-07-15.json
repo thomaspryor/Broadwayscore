@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-15T12:46:39.082Z",
+  "generatedAt": "2026-07-15T13:57:17.203Z",
   "date": "2026-07-15",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 219901,
+  "entryCount": 223402,
   "shows": [
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -576,12 +576,12 @@
     },
     {
       "showId": "tender-off-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1240034,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -6411,12 +6411,12 @@
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 865160,
+        "collected-to-scored": 1089811,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -6456,12 +6456,12 @@
     },
     {
       "showId": "the-oresteia-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1197438,
+        "collected-to-scored": 1331369,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
