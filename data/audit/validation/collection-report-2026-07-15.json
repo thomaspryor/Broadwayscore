@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-07-15T06:29:47.971Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 41,
+    "failed": 310,
+    "skipped": 0,
+    "successRate": "11.7%"
+  },
+  "tierBreakdown": {
+    "playwright": 30,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 1,
+    "scrapingbee": 1,
+    "brightdata": 3,
+    "archiveToday": 5,
+    "archive": 6
+  },
+  "statistics": {
+    "tier1Attempts": 30,
+    "tier1Success": 27,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 20,
+    "tier4Success": 3,
+    "totalFailed": 266,
+    "scrapingBeePageCredits": 21,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 265,
+    "urlDiscoverySuccess": 5,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "the-jonathan-larson-project-off-west-end-2026/london-box-office--stuart-king.json",
     "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
@@ -47,33 +98,6 @@
     "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
     "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
     "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
-    "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
-    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
-    "dukes-off-broadway-2026/theatermania--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
-    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
-    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
-    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
-    "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
-    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
-    "dukes-off-broadway-2026/theatermania--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
-    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
-    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
     "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
     "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
     "dukes-off-broadway-2026/theatermania--unknown.json",
@@ -381,8 +405,7 @@
     "death-of-a-salesman-2026/backstage--erik-haagensen.json",
     "death-of-a-salesman-2026/bloomberg--jeremy-gerard.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "the-jonathan-larson-project-off-west-end-2026/london-box-office--stuart-king.json",
       "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
@@ -444,36 +467,54 @@
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
     ]
   },
-  "startTime": "2026-07-14T22:55:59.639Z",
-  "lastProcessed": "death-of-a-salesman-2026/bloomberg--jeremy-gerard.json",
-  "log": [
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Times (UK)": {
+      "count": 1,
+      "domain": "thetimes.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
     {
-      "t": "2026-07-15T04:20:37.829Z",
-      "event": "bb-session",
-      "session": "80ea52e7",
-      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGA"
+      "reviewId": "tender-off-west-end-2026/guardian--arifa-akbar.json",
+      "oldUrl": "https://www.theguardian.com/stage/2025/jul/27/brixton-calling-review-tender-portrait-of-an-iconic-venue-and-the-unsung-hero-who-built-it",
+      "newUrl": "https://www.theguardian.com/stage/2026/jul/15/tender-review-bush-theatre-london"
     },
     {
-      "t": "2026-07-15T04:20:38.701Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "reviewId": "the-lost-boys-2026/playbill--unknown.json",
+      "oldUrl": "https://playbill.com/article/a-three-story-set-a-65-foot-fly-rig-the-lost-boys-promises-a-true-broadway-spectacle",
+      "newUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-lost-boys-on-broadway"
     },
     {
-      "t": "2026-07-15T05:18:14.977Z",
-      "event": "bb-session",
-      "session": "f61c9472",
-      "url": "https://pagesonstages.com/2026/06/29/birthright/"
+      "reviewId": "the-rocky-horror-show-2026/ew--dalton-ross.json",
+      "oldUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOopXcJBUL4sVlM7xVOyFXS5UGB_3iz7OqtgXb6yTmn6PB2nDrAvE",
+      "newUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOoqv8jToWGaGy8I7OphpAAIrlUGIfebqiCU70t-LQoKwiKbasf4u"
     },
     {
-      "t": "2026-07-15T05:18:24.153Z",
-      "event": "bb-session",
-      "session": "cb44e013",
-      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGA"
+      "reviewId": "the-rocky-horror-show-2026/playbill--unknown.json",
+      "oldUrl": "https://playbill.com/article/the-rocky-horror-show-extends-on-broadway",
+      "newUrl": "https://playbill.com/article/reviews-did-critics-find-the-rocky-horror-show-revival-worth-the-antici-pation"
     },
     {
-      "t": "2026-07-15T05:18:25.046Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "reviewId": "proof-2026/playbill--unknown.json",
+      "oldUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-proof-on-broadway",
+      "newUrl": "https://playbill.com/production/proof-broadway-booth-theatre-2026"
     }
   ]
 }
