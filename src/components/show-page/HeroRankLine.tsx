@@ -34,6 +34,10 @@ export default function HeroRankLine({ ranks, market, className = '', metric = '
   if (!c || (!c.openMarket && !c.season && !c.allTime)) return null;
 
   const shortLabel = getShortMarketLabel(market);
+  // OB/OWE have no reliable historical coverage, so an all-time rank there is
+  // misleading — drop the all-time fragment (matches WhereItRanks hiding the
+  // all-time column for these markets).
+  const hideAllTime = market === 'off-broadway' || market === 'off-west-end';
   const fragments: React.ReactNode[] = [];
   if (c.openMarket && c.openMarket.total > 0) {
     fragments.push(
@@ -51,7 +55,7 @@ export default function HeroRankLine({ ranks, market, className = '', metric = '
       </span>,
     );
   }
-  if (c.allTime && c.allTime.total > 0) {
+  if (!hideAllTime && c.allTime && c.allTime.total > 0) {
     fragments.push(
       <span key="at">
         <span className="font-bold text-brand">#{c.allTime.rank}/{c.allTime.total}</span>

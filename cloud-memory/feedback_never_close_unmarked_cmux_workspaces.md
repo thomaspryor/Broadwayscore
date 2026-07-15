@@ -38,8 +38,9 @@ whose *pattern text* contains "close-workspace" is blocked too. For meta-command
 about the guard itself, split the token in the pattern (e.g. `close.workspace`);
 CMUX_CLOSE_OK=1 remains reserved for user-approved real closes.
 
-2026-07-15 follow-up: wrap-up Phase 7's self-close killed a tab the owner was
-mid-typing in; self-close is now removed from wrap-up.md — sessions only ✅-mark,
-closing happens via bsc-prune/bsc-next sweeps.
+2026-07-15 follow-up (3 incidents that day): wrap-up Phase 7's self-close killed
+a tab mid-typing, and bsc-next's dispatch-time pruneDone() sweep closed another.
+BOTH are removed — sessions only ✅-mark; the ONLY closer is owner-run bsc-prune
+(bsc-conductor runs it --dry-run only). Never reintroduce automatic closing.
 
 Related: [[feedback_absorb_gate_ceremony]]
