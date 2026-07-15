@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-15T11:27:05.248Z",
+  "generatedAt": "2026-07-15T12:28:40.914Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,22 +12,23 @@
       "status": "open",
       "slug": "the-whoopi-monologues-off-broadway",
       "thumbnail": "/images/shows/the-whoopi-monologues-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 77.98,
+      "siteScore": 78.11,
       "liveScore": 78,
-      "scoreDrift": 0.01999999999999602,
+      "scoreDrift": -0.10999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 12,
+      "total": 11,
       "t1": 2,
       "t2": 8,
-      "t3": 2,
-      "positive": 9,
+      "t3": 1,
+      "positive": 8,
       "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
+          "11/12 total",
           "T1:2/3"
         ],
         "highConfidence": 9,
@@ -410,6 +411,18 @@
           "m": 3,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-07-15T12:28:40.914Z",
+          "rc": 11,
+          "s": 78.11,
+          "t1": 2,
+          "t2": 8,
+          "t3": 1,
+          "p": 8,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -424,24 +437,24 @@
       "slug": "the-oresteia-west-end",
       "thumbnail": "/images/shows/the-oresteia-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 80,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 4,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
-          "T2:0/2",
+          "T2:1/2",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -478,15 +491,7 @@
           "isDualMarket": true
         },
         {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -506,10 +511,20 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
+        }
+      ],
+      "timeline": [
         {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
+          "t": "2026-07-15T12:28:40.914Z",
+          "rc": 1,
+          "s": 80,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
