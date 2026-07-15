@@ -120,6 +120,21 @@ jobs:
             exit 1
           fi
 
+      - name: Commercial scope-contamination audit (informational)
+        if: inputs.dry_run != true
+        # OUT_OF_MARKET_SCOPE/SHOW_NOT_IN_DB are warn-only (not ship-blocking,
+        # see script header) but were previously NEVER run on a schedule —
+        # audit-commercial-contamination.js was only wired via `--gate` in
+        # test.yml, which checks a different, narrower signal set (impossible
+        # physics/contradictions only). A market-vs-category filter bug let
+        # 28 Off-Broadway/West-End shows sit undetected in commercial.json
+        # for a day (2026-07-14/15) with nothing surfacing it until a manual
+        # sweep. This step doesn't gate the push — it just guarantees the
+        # signal appears in this run's log every week instead of only when
+        # someone happens to run the script by hand.
+        run: node scripts/audit-commercial-contamination.js --strict
+        continue-on-error: true
+
       - name: Refresh recoupment model
         if: inputs.dry_run != true
         run: node scripts/merge-model-recoupment.js
