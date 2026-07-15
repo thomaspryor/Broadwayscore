@@ -29,6 +29,26 @@ const { recoverBylinesForShow } = require('./lib/byline-recovery');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
 const APPLY = process.argv.includes('--apply');
+
+// SAFETY BLOCK (2026-07-14 incident): applying this recovery is DISABLED.
+// Setting an outlet--unknown.json criticName to match a same-URL sibling turns
+// the pair into a same-name+same-URL duplicate; the rebuild's rename/dedup
+// helper then DELETES the scored --unknown twin, and when the surviving sibling
+// is flagged wrongProduction/invalid the review is dropped entirely (34 scored
+// reviews lost, reverted). The decision library (scripts/lib/byline-recovery.js)
+// is sound and unit-tested; the WRITE mechanism is not. A rename-safe redesign
+// is carded (Notion 39e637c5-416f-81bc) — clear the flag on the correctly-bylined
+// sibling, or fix the rebuild dedup precedence, instead of naming the twin.
+// Dry-run (report-only) stays available. Override only inside that redesign.
+if (APPLY && !process.argv.includes('--i-have-redesigned-the-rename-safe-write')) {
+  console.error([
+    'REFUSING --apply: this write mechanism drops scored reviews (2026-07-14 incident).',
+    'Naming outlet--unknown.json to match a same-URL sibling makes the rebuild',
+    'rename/dedup DELETE the scored twin. See the header + Notion 39e637c5-416f-81bc.',
+    'Dry-run (omit --apply) still reports candidates.',
+  ].join('\n'));
+  process.exit(2);
+}
 const dirArg = (process.argv.find((a) => a.startsWith('--dir=')) || '').split('=')[1];
 const REVIEW_TEXTS_DIR = dirArg
   ? path.resolve(dirArg)
