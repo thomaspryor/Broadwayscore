@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-15T14:33:13.684Z",
+    "generatedAt": "2026-07-15T14:39:49.623Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -20,15 +20,15 @@
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 111
+      "churn": 112
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 100
+      "churn": 101
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 99
+      "churn": 100
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -50,27 +50,27 @@
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 124
+      "churn": 125
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 124
+      "churn": 125
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 124
+      "churn": 125
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 113
+      "churn": 114
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 106
+      "churn": 107
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 93
+      "churn": 94
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
@@ -82,7 +82,7 @@
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 66
+      "churn": 67
     },
     {
       "path": "public/data/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
@@ -112,12 +112,12 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 959,
+      "churn": 960,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 940,
+      "churn": 941,
       "mergeAttr": "ours"
     },
     {
@@ -132,47 +132,47 @@
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 255,
+      "churn": 256,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 255,
+      "churn": 256,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 170,
+      "churn": 171,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 125,
+      "churn": 126,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 124,
+      "churn": 125,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 122,
+      "churn": 123,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 93,
+      "churn": 94,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 93,
+      "churn": 94,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 93,
+      "churn": 94,
       "mergeAttr": "ours"
     },
     {
