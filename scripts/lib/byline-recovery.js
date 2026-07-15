@@ -126,24 +126,34 @@ function nameCorroboratedBy(name, text) {
  * returns the Unknown files that can be safely re-bylined from a same-URL
  * sibling.
  *
- * Three independent safety gates, all of which must pass:
+ * Four independent safety gates, all of which must pass:
  *   1. same-URL agreement — the named sibling(s) must share the Unknown file's
  *      canonical URL and agree on a single plausible name (pickRecoveredName).
- *   2. cross-outlet contamination guard — a real critic reviews a given show for
+ *   2. clean-source — the sibling PROVIDING the name must not itself be flagged
+ *      (wrongProduction/wrongShow/isNonReview/contentTier==='invalid'). This is
+ *      the critical gate: the scored review is the Unknown file; naming it to
+ *      match a FLAGGED same-URL sibling turns the pair into a same-name/same-URL
+ *      duplicate, and the rebuild's dedup can then let the flagged sibling win
+ *      and DROP the scored review entirely (giant-2026/wsj lost its Charles
+ *      Isherwood review this way, 2026-07-14). Losing a scored review is worse
+ *      than an Unknown byline, so only propagate a name that a clean sibling
+ *      carries.
+ *   3. cross-outlet contamination guard — a real critic reviews a given show for
  *      ONE outlet, so a name claimed as an extracted byline by 2+ distinct
  *      outlets in the same show is stray contamination (e.g. "Ben Brantley"
  *      stamped onto amNY, Chicago Tribune, Hollywood Reporter, WashPost and NYT
  *      for one Glengarry dir) and is NOT propagated.
- *   3. body corroboration — the recovered name must actually appear in the
+ *   4. body corroboration — the recovered name must actually appear in the
  *      article text (the Unknown file's OR the winning sibling's `fullText`).
  *      This kills the single-outlet mis-extraction path a lone mangled file
- *      would otherwise slip through gate 2 (a hallucinated "Christopher
+ *      would otherwise slip through gate 3 (a hallucinated "Christopher
  *      Isherwood" byline is rejected because the WSJ body names Charles).
  *
- * Gates 2 and 3 err toward skipping: a missed recovery just leaves "Unknown",
- * whereas a false accept prints a WRONG critic on a scored review.
+ * Gates 2-4 err toward skipping: a missed recovery just leaves "Unknown"
+ * (the scored review is preserved), whereas a false accept either prints a
+ * WRONG critic or drops a scored review.
  *
- * @param {Array<{file:string, outletId:string, url?:string, criticName?:string, fullText?:string}>} records
+ * @param {Array<{file:string, outletId:string, url?:string, criticName?:string, fullText?:string, flagged?:boolean}>} records
  * @returns {Array<{file:string, recoveredName:string}>}
  */
 function recoverBylinesForShow(records) {
@@ -177,12 +187,15 @@ function recoverBylinesForShow(records) {
     });
     if (!unknowns.length || unknowns.length === group.length) continue;
     const named = group.filter((r) => !unknowns.includes(r));
-    const name = pickRecoveredName(named.map((r) => r.criticName || ''));
+    // Gate 2: only CLEAN (unflagged) siblings may supply a name — a flagged
+    // same-URL twin would merge-drop the scored review.
+    const cleanNamed = named.filter((r) => !r.flagged);
+    const name = pickRecoveredName(cleanNamed.map((r) => r.criticName || ''));
     if (!name) continue;
-    // Gate 2: cross-outlet contamination guard.
+    // Gate 3: cross-outlet contamination guard.
     const outlets = nameOutlets.get(name.toLowerCase());
     if (outlets && outlets.size > 1) continue;
-    // Gate 3: body corroboration in the Unknown's OR a sibling's fullText.
+    // Gate 4: body corroboration in the Unknown's OR a sibling's fullText.
     const corroborated = group.some((r) => nameCorroboratedBy(name, r.fullText));
     if (!corroborated) continue;
     for (const u of unknowns) out.push({ file: u.file, recoveredName: name });

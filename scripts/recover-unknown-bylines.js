@@ -46,8 +46,13 @@ if (!isDir(REVIEW_TEXTS_DIR)) {
 const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
   .filter((d) => !d.startsWith('_') && d !== 'aggregator-archive' && isDir(path.join(REVIEW_TEXTS_DIR, d)));
 
+const RECOVERED_MARK = 'same-url-sibling';
+const RESET_MARK = 'reset-unsafe-flagged-sibling';
+const isFlagged = (j) => !!(j.wrongProduction || j.wrongShow || j.isNonReview || j.contentTier === 'invalid');
+
 let scanned = 0;
 let recovered = 0;
+let reset = 0;
 const changes = [];
 
 for (const showId of showDirs) {
@@ -56,36 +61,58 @@ for (const showId of showDirs) {
   try { files = fs.readdirSync(dir).filter((f) => f.endsWith('.json')); } catch { continue; }
 
   // Load once; keep the parsed JSON around by filename for the write pass.
-  const records = [];
   const jsonByFile = new Map();
+  const records = [];
   for (const f of files) {
     const m = f.match(/^(.+?)--(.+)\.json$/);
     if (!m) continue;
     let j;
     try { j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
-    records.push({ file: f, outletId: m[1], url: j.url, criticName: j.criticName, fullText: j.fullText });
     jsonByFile.set(f, j);
+    // Normalize for the recompute: a previously-recovered file is treated as
+    // Unknown, so the corrected gates decide afresh whether it still qualifies.
+    const wasRecovered = j.bylineRecoveredFrom === RECOVERED_MARK;
+    records.push({
+      file: f,
+      outletId: m[1],
+      url: j.url,
+      criticName: wasRecovered ? 'Unknown' : j.criticName,
+      fullText: j.fullText,
+      flagged: isFlagged(j),
+      _wasRecovered: wasRecovered,
+    });
   }
   scanned += records.length;
 
-  for (const { file, recoveredName } of recoverBylinesForShow(records)) {
-    const j = jsonByFile.get(file);
-    if (!j) continue;
-    changes.push({ showId, file, from: j.criticName || '(empty)', to: recoveredName });
-    recovered++;
-    if (APPLY) {
-      // Route through safeWriteReview (merge) so the temporal-byline guard can
-      // veto/downgrade an attribution to a retired/deceased critic on an
-      // old-dated review, and PROTECTED_FIELDS stay intact. Pass the existing
-      // date alongside criticName — the guard only fires when newData carries a
-      // publishDate/parsedDate (review-write-guard.js:355), so omitting it left
-      // the guard inert.
-      safeWriteReview(path.join(dir, file), {
-        criticName: recoveredName,
-        publishDate: j.publishDate,
-        parsedDate: j.parsedDate,
-        bylineRecoveredFrom: 'same-url-sibling', // provenance for audits
-      }, { merge: true });
+  const toRecover = new Map(recoverBylinesForShow(records).map((x) => [x.file, x.recoveredName]));
+
+  for (const r of records) {
+    const j = jsonByFile.get(r.file);
+    if (toRecover.has(r.file)) {
+      const name = toRecover.get(r.file);
+      if (j.criticName === name && j.bylineRecoveredFrom === RECOVERED_MARK) continue; // already correct
+      changes.push({ showId, file: r.file, from: j.criticName || '(empty)', to: name });
+      recovered++;
+      if (APPLY) {
+        safeWriteReview(path.join(dir, r.file), {
+          criticName: name,
+          publishDate: j.publishDate,
+          parsedDate: j.parsedDate,
+          bylineRecoveredFrom: RECOVERED_MARK, // provenance for audits
+        }, { merge: true });
+      }
+    } else if (r._wasRecovered) {
+      // Unwind a prior recovery the corrected gates now reject (its same-URL
+      // sibling is flagged → naming it merge-drops the scored review). Restore
+      // 'Unknown' so the scored review survives the rebuild.
+      changes.push({ showId, file: r.file, from: j.criticName || '(empty)', to: 'Unknown (reset)' });
+      reset++;
+      if (APPLY) {
+        safeWriteReview(path.join(dir, r.file), {
+          criticName: 'Unknown',
+          bylineRecoveredFrom: RESET_MARK,
+        }, { merge: true });
+      }
     }
   }
 }
@@ -95,5 +122,5 @@ for (const c of changes) {
 }
 console.log(`\nDir: ${REVIEW_TEXTS_DIR}`);
 console.log(`Scanned ${scanned} files across ${showDirs.length} shows.`);
-console.log(`${APPLY ? 'Recovered' : 'Would recover'} ${recovered} Unknown byline(s).`);
+console.log(`${APPLY ? 'Recovered' : 'Would recover'} ${recovered} byline(s); ${APPLY ? 'reset' : 'would reset'} ${reset} unsafe prior recovery(ies).`);
 if (!APPLY) console.log('(dry run — pass --apply to write changes)');
