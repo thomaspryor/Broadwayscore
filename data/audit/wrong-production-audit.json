@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-15T14:13:54.045Z",
+  "timestamp": "2026-07-15T14:26:29.193Z",
   "stats": {
     "totalReviews": 40076,
-    "alreadyFlagged": 17551,
-    "dateGuardCatches": 49,
+    "alreadyFlagged": 17570,
+    "dateGuardCatches": 50,
     "directorMismatch": 911,
     "tvFilmSignals": 1099,
-    "londonSignals": 745,
+    "londonSignals": 744,
     "offBroadwaySignals": 469,
     "yearMismatch": 85,
-    "noPublishDate": 3821
+    "noPublishDate": 3613
   },
   "findings": [
     {
@@ -3523,7 +3523,7 @@
       "showId": "carousel-2018",
       "file": "chicagotribune--chris-jones.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2018-04-12",
       "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-carousel-broadway-review-0415-story.html",
       "findings": [
         {
@@ -4425,7 +4425,7 @@
       "showId": "children-of-a-lesser-god-1980",
       "file": "chicagotribune--chris-jones.json",
       "score": 63,
-      "publishDate": null,
+      "publishDate": "2018-04-11",
       "url": "http://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-lesser-god-broadway-review-0412-story.html",
       "findings": [
         {
@@ -5148,7 +5148,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "standard--unknown.json",
-      "publishDate": null,
+      "publishDate": "2026-06-26",
       "url": "https://www.standard.co.uk/culture/theatre/cyrano-de-bergerac-noel-coward-theatre-review-b1287720.html",
       "findings": [
         {
@@ -5475,7 +5475,7 @@
       "showId": "death-of-a-salesman-2012",
       "file": "philadelphia-inquirer--unknown.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2012-03-15",
       "url": "https://www.inquirer.com/philly/entertainment/20120315_Broadway_review_Death_of_a_Salesman.html",
       "findings": [
         {
@@ -6533,7 +6533,7 @@
       "showId": "elling-2010",
       "file": "reuters--david-rooney.json",
       "score": 38,
-      "publishDate": null,
+      "publishDate": "2010-11-22",
       "url": "https://www.reuters.com/article/idUSTRE6AL1WT20101122",
       "findings": [
         {
@@ -6984,7 +6984,7 @@
       "showId": "fiddler-on-the-roof-2015",
       "file": "ap--mark-kennedy.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2015-12-21",
       "url": "https://www.washingtontimes.com/news/2015/dec/21/review-fiddler-on-the-roof-revival-vibrant-and-hea/",
       "findings": [
         {
@@ -7138,7 +7138,7 @@
       "showId": "fiddler-on-the-roof-2015",
       "file": "guardian--alexis-soloski.json",
       "score": 76,
-      "publishDate": null,
+      "publishDate": "2015-12-21",
       "url": "http://www.theguardian.com/stage/2015/dec/21/fiddler-on-the-roof-review-revival-broadway-danny-burstein",
       "findings": [
         {
@@ -8112,7 +8112,7 @@
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "guardian--arifa-akbar.json",
       "score": 74,
-      "publishDate": null,
+      "publishDate": "2024-09-27",
       "url": "https://www.theguardian.com/stage/2024/sep/27/giant-review-royal-court-theatre-mark-rosenblatt-london",
       "findings": [
         {
@@ -10910,7 +10910,7 @@
       "showId": "hughie-2016",
       "file": "ap--mark-kennedy.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2016-02-25",
       "url": "https://www.washingtontimes.com/news/2016/feb/25/review-broadways-odd-hughie-glows-thanks-to-whitak/",
       "findings": [
         {
@@ -12578,7 +12578,7 @@
       "showId": "jesa-off-broadway-2026",
       "file": "broadwayworld--unknown.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2026-03-05",
       "url": "https://www.broadwayworld.com/off-broadway/article/Ma-Yi-Theater-and-The-Public-Theater-Extend-JESA-20260305",
       "findings": [
         {
@@ -13384,7 +13384,7 @@
       "showId": "kinky-boots-off-broadway-2026",
       "file": "queerty--matthew-wexler.json",
       "score": 69,
-      "publishDate": null,
+      "publishDate": "2022-08-25",
       "url": "https://www.queerty.com/retrofitted-kinky-boots-looks-fabulous-doesnt-quite-fit-20220825",
       "findings": [
         {
@@ -15985,6 +15985,19 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "broadwayworld--unknown.json",
+      "publishDate": "2022-10-19",
+      "url": "https://www.broadwayworld.com/westend/article/Review-MY-NEIGHBOUR-TOTORO-Barbican-Theatre-20221019",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "financialtimes--financial-times.json",
       "score": 87,
       "publishDate": "2022-10-19",
@@ -16137,7 +16150,7 @@
       "showId": "next-fall-2010",
       "file": "reuters--frank-scheck.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2010-03-12",
       "url": "https://www.reuters.com/article/idUSTRE62B06W20100312",
       "findings": [
         {
@@ -22040,7 +22053,7 @@
       "showId": "the-adding-machine-off-broadway-2026",
       "file": "talkinbroadway--howard-miller.json",
       "score": 89,
-      "publishDate": null,
+      "publishDate": "2026-04-14",
       "url": "https://www.talkinbroadway.com/page/ob/04_14_26.html",
       "findings": [
         {
@@ -23872,7 +23885,7 @@
       "showId": "the-lehman-trilogy-2021",
       "file": "chicagotribune--chris-jones.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2021-10-15",
       "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-lehman-brothers-broadway-review-20211015-4ybrapxkcrg4zjokf7bmake4zy-story.html",
       "findings": [
         {
@@ -24461,7 +24474,7 @@
       "showId": "the-parisian-woman-2017",
       "file": "guardian--jen-nevins.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2017-11-30",
       "url": "https://www.theguardian.com/stage/2017/nov/30/the-parisian-woman-uma-thurman-broadway-review",
       "findings": [
         {
@@ -25484,7 +25497,7 @@
       "showId": "the-thanksgiving-play-2023",
       "file": "queerty--christian-lewis.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "2023-04-20",
       "url": "https://www.queerty.com/the-thanksgiving-play-serves-a-satirical-feast-that-broadway-audiences-can-devour-20230420/",
       "findings": [
         {
@@ -27207,7 +27220,7 @@
       "showId": "west-side-story-2020",
       "file": "guardian--adrian-horton.json",
       "score": 77,
-      "publishDate": null,
+      "publishDate": "2020-02-20",
       "url": "https://www.theguardian.com/stage/2020/feb/20/west-side-story-review-broadway-revival",
       "findings": [
         {
@@ -29465,7 +29478,7 @@
       "showId": "archduke-west-end-2026",
       "file": "guardian--mark-lawson.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2026-06-28",
       "url": "https://www.theguardian.com/stage/2026/jun/28/archduke-review-royal-court-london-rajiv-joseph",
       "findings": [
         {
@@ -30814,20 +30827,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "caroline-off-broadway-2026",
-      "file": "thestage--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.thestage.co.uk/advice/caroline-lennon-my-first-job-taught-me-theres-no-such-thing-as-a-bad-audience",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -35683,7 +35682,7 @@
       "showId": "mass-west-end-2026",
       "file": "guardian--unknown.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [
         {
@@ -35753,7 +35752,7 @@
       "showId": "matilda-the-musical-2013",
       "file": "guardian--emma-brockes.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2013-04-12",
       "url": "https://www.guardian.co.uk/stage/2013/apr/12/matilda-broadway-dahl-rsc",
       "findings": [
         {
@@ -40094,7 +40093,7 @@
       "showId": "the-authenticator-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "2026-04-03",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-AUTHENTICATOR-at-National-Theatre-20260403",
       "findings": [
         {
@@ -41274,7 +41273,7 @@
       "showId": "the-guilty-west-end-2026",
       "file": "guardian--unknown.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2026-07-01",
       "url": "https://www.theguardian.com/stage/2026/jul/01/the-guilty-review-russell-tovey-donmar-warehouse-london",
       "findings": [
         {
@@ -43431,7 +43430,7 @@
       "showId": "trouble-in-mind-2021",
       "file": "guardian--arifa-akbar.json",
       "score": 73,
-      "publishDate": null,
+      "publishDate": "2021-12-10",
       "url": "https://www.theguardian.com/stage/2021/dec/10/trouble-in-mind-review-national-theatre",
       "findings": [
         {
