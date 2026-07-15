@@ -48,6 +48,13 @@ on:
       - 'scripts/validate-review-texts.js'
       - 'scripts/lib/review-texts-gate.js'
       - 'scripts/lib/review-texts-gate.test.mjs'
+      # Byline recovery: same-URL sibling name backfill for Unknown critics (#27).
+      # Pure decision fns in scripts/lib/byline-recovery.js (colocated *.test.mjs runs
+      # in the lib-test glob); path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/byline-recovery.js'
+      - 'scripts/lib/byline-recovery.test.mjs'
+      - 'scripts/recover-unknown-bylines.js'
       # Feedback pipeline pending-diagnoses persistence (2026-07-10, cancelled-run
       # recovery). Test lives in tests/unit/pending-diagnoses.test.mjs; path-listed
       # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
