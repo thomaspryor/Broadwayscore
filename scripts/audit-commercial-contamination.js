@@ -37,9 +37,8 @@
  *   - Floor/ceiling produce zero baseline hits with margin (live cap range
  *     $2.25M–$68M, weekly range $250k–$1.5M).
  *   - Designation/recoupment contradiction has zero live hits.
- *   - SHOW_NOT_IN_DB has one live hit (queen-of-versailles, forthcoming
- *     show not yet in shows.json) — warn-only so adding new commercial
- *     rows ahead of shows-list updates doesn't break CI.
+ *   - SHOW_NOT_IN_DB is warn-only so adding new commercial rows ahead of
+ *     shows-list updates doesn't break CI.
  */
 
 const fs = require('fs');
@@ -68,9 +67,13 @@ function loadShows() {
 
 // Commercial.json keys are often shorthand ("hamilton") vs shows.json's
 // canonical id ("hamilton-2015"). Resolve by exact id, then by
-// "key startsWith id-" pattern. Returns the matched show or null.
-function resolveShow(key, shows, idIndex) {
+// "key startsWith id-" pattern, then by shows.json's `slug` field (a
+// commercial key can match the public slug while the id carries a
+// different spelling, e.g. "queen-of-versailles" slug vs
+// "queen-versailles-2025" id). Returns the matched show or null.
+function resolveShow(key, shows, idIndex, slugIndex) {
   if (idIndex.has(key)) return idIndex.get(key);
+  if (slugIndex.has(key)) return slugIndex.get(key);
   const cands = shows.filter(s => s.id === key || s.id.startsWith(key + '-'));
   return cands[0] || null;
 }
@@ -78,6 +81,7 @@ function resolveShow(key, shows, idIndex) {
 function audit() {
   const shows = loadShows();
   const idIndex = shows ? new Map(shows.map(s => [s.id, s])) : new Map();
+  const slugIndex = shows ? new Map(shows.filter(s => s.slug).map(s => [s.slug, s])) : new Map();
   const raw = JSON.parse(fs.readFileSync(COMMERCIAL_FILE, 'utf-8'));
   const showsMap = raw.shows || {};
   const issues = [];
@@ -117,7 +121,7 @@ function audit() {
 
     let resolvedShow = null;
     if (shows) {
-      resolvedShow = resolveShow(key, shows, idIndex);
+      resolvedShow = resolveShow(key, shows, idIndex, slugIndex);
       if (!resolvedShow) flags.push('SHOW_NOT_IN_DB');
     }
 
