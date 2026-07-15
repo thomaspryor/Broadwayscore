@@ -372,21 +372,15 @@ function main() {
     process.exit(r.status == null ? 1 : r.status); // null = killed by signal → non-zero
   }
 
-  // Backstop auto-prune (scope add 2, task #48): sessions that die before
-  // self-closing leave ✅-marked workspaces behind — sweep them at every
-  // dispatch so the workspace list stays honest even without manual bsc-prune.
+  // NO auto-prune at dispatch (owner rule 2026-07-15, third closed-tab incident
+  // that day): ✅-marked workspaces stay open until the OWNER closes them —
+  // bsc-prune / the Cmux UI. The mark is mechanical (Stop hook flips it when
+  // the claimed task completes) and says nothing about whether the owner is
+  // still reading or typing in the tab, so dispatch-time sweeps closed tabs
+  // out from under the owner mid-keystroke. ✅ workspaces don't block
+  // re-dispatch either way — findLiveWorkspaceForTask() skips isDoneTitle().
   if (cmuxws.cmuxAvailable()) {
-    try {
-      const { closed, skipped } = cmuxws.pruneDone();
-      if (closed.length) {
-        console.log(`[bsc-next] pruned ${closed.length} finished ✅ workspace(s): ${closed.map(w => w.ref).join(', ')}`);
-      }
-      if (skipped.length) {
-        console.log(`[bsc-next] left ${skipped.length} ✅ workspace(s) with claude still running: ${skipped.map(w => w.ref).join(', ')}`);
-      }
-    } catch (e) { console.error(`[bsc-next] prune sweep failed (continuing): ${e.message}`); }
-
-    // Duplicate-dispatch guard (post-sweep so a just-pruned ✅ twin can't block).
+    // Duplicate-dispatch guard (✅-marked twins never count as live).
     if (!args.force) {
       try {
         const dup = findLiveWorkspaceForTask(task, cmuxws.listWorkspaces(), cmuxws.isDoneTitle);
