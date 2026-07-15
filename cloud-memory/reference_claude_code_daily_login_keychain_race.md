@@ -1,6 +1,6 @@
 ---
 name: reference-claude-code-daily-login-keychain-race
-description: "Recurring daily \"401 socket closed / run /login\" on macOS = launchd jobs bypass zshrc and rotate the keychain OAuth grant; fix is static token in every caller"
+description: "Recurring daily 401 / forced /login on macOS: keychain credential BEATS CLAUDE_CODE_OAUTH_TOKEN (env token is only a fallback) — fix is DELETE the keychain entry so everything uses the static token; never /login casually"
 metadata: 
   node_type: memory
   type: reference
