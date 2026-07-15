@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-15T06:03:04.378Z",
+  "generatedAt": "2026-07-15T07:02:17.683Z",
   "date": "2026-07-15",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 202355,
+  "entryCount": 203552,
   "shows": [
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -576,7 +576,7 @@
     },
     {
       "showId": "tender-off-west-end-2026",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6411,7 +6411,7 @@
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
-      "reviewCount": 14,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6427,6 +6427,21 @@
     {
       "showId": "springwood-west-end-2026",
       "reviewCount": 20,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "ride-the-cyclone-off-west-end-2026",
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
