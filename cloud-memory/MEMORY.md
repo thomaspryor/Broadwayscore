@@ -8,6 +8,7 @@
 - [Google Search Console API](feedback_gsc_api_auth.md) — gcloud ADC + webmasters scope; X-Goog-User-Project header required
 
 ## 👤 User profile & session discipline
+- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — ✅-only via bsc-prune; --help executes
 - [Terse output default](feedback_terse_output_default.md) — no recap, cut narration, keep proof; estimate in Claude-pace minutes ([[feedback_no_human_day_estimates.md]])
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff"; laptop+phone, infer from message style ([[feedback_user_device_context.md]])
 - [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/visual-qa/approvals myself, report outcomes not process; Stop hook blocks "done", bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
@@ -49,8 +50,7 @@
 - [Compound shell/git traps](feedback_compound_shell_git_traps.md) — zsh vars don't word-split; never `stash pop` after conditional push (pops another session's stash); `git push` standalone ([[feedback_prepush_gate_stash_push_parser.md]])
 
 ## 🔌 External APIs & verification
-- [404 is not always terminal](feedback_404_not_terminal.md) — check prior state before flipping success→failure
-- [Live-API contract test](feedback_live_api_contract_test.md) — call live API, unit tests miss empirical behavior; verify bug claim before fixing ([[feedback_verify_bug_claim_before_fixing.md]]); normalize JSON keys at load ([[feedback_api_key_whitespace.md]])
+- [Live-API contract test](feedback_live_api_contract_test.md) — call live API, unit tests miss empirical behavior; verify bug claim before fixing ([[feedback_verify_bug_claim_before_fixing.md]], [[feedback_404_not_terminal.md]]); normalize JSON keys at load ([[feedback_api_key_whitespace.md]])
 - [Resend preview ≠ delivered email](feedback_resend_preview_masks_delivered_rendering.md) — preview hides webp/dark-mode; verify in real client (owner Gmail iOS)
 - [Refactor parity test on real data](feedback_refactor_parity_test.md) — old vs new predicate; 0 diffs = safe
 - [Paywalled star outlets not gaps](feedback_paywalled_star_outlets_not_gaps.md) — Stage stubs scored via aggregatorStars-fallback; gap-scans exclude _pending/
@@ -135,4 +135,3 @@
 ## 📚 Reference & repo layout
 - [Repo layout](repo_layout.md) — three repos (web, iOS, data) w/ GitHub names + paths; ~/.claude is private repo via claude-sync ([[reference_claude_config_sync.md]])
 - [Theatre Record reference](reference_theatre_record.md) — paid UK review archive
-- [Competition rank for leaderboards](feedback_competition_rank_for_leaderboards.md) — competition rank (1,1,3) not dense
