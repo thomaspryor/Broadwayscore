@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-15T13:20:00.356Z",
+  "timestamp": "2026-07-15T14:13:54.045Z",
   "stats": {
-    "totalReviews": 40088,
-    "alreadyFlagged": 17550,
+    "totalReviews": 40076,
+    "alreadyFlagged": 17551,
     "dateGuardCatches": 49,
-    "directorMismatch": 912,
-    "tvFilmSignals": 1100,
+    "directorMismatch": 911,
+    "tvFilmSignals": 1099,
     "londonSignals": 745,
     "offBroadwaySignals": 469,
     "yearMismatch": 85,
-    "noPublishDate": 3830
+    "noPublishDate": 3821
   },
   "findings": [
     {
@@ -2005,25 +2005,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
-        }
-      ]
-    },
-    {
-      "showId": "beetlejuice-west-end-2026",
-      "file": "guardian-uk--unknown.json",
-      "score": 78,
-      "publishDate": "2026-05-28",
-      "url": "https://www.inkl.com/news/beetlejuice-review-tim-burtons-super-creep-reanimated-as-a-shock-jock-in-ghoulish-musical",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
