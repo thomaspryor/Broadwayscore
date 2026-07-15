@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-15T14:33:58.789Z",
+  "generatedAt": "2026-07-15T15:17:17.491Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,26 +12,25 @@
       "status": "open",
       "slug": "the-whoopi-monologues-off-broadway",
       "thumbnail": "/images/shows/the-whoopi-monologues-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 78.11,
+      "siteScore": 77.96,
       "liveScore": 78,
-      "scoreDrift": -0.10999999999999943,
+      "scoreDrift": 0.04000000000000625,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
+      "total": 12,
       "t1": 2,
       "t2": 8,
-      "t3": 1,
-      "positive": 8,
+      "t3": 2,
+      "positive": 9,
       "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "11/12 total",
           "T1:2/3"
         ],
-        "highConfidence": 9,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -420,6 +419,18 @@
           "t2": 8,
           "t3": 1,
           "p": 8,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-15T15:17:17.491Z",
+          "rc": 12,
+          "s": 77.96,
+          "t1": 2,
+          "t2": 8,
+          "t3": 2,
+          "p": 9,
           "m": 3,
           "n": 0,
           "bc": "waiting"
