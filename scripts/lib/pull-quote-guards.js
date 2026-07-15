@@ -113,10 +113,10 @@ function hasCopyrightChrome(excerpt) {
 // Parity-tested against all 18,763 live pull quotes: exactly the 6 known-bad
 // teasers match, zero false positives.
 const PROMO_TEASER_PATTERNS = [
-  /^[\s"'“‘«(\[]*read\s+(?:our|the|my)\s+(?:full\s+)?review\b/i,
-  /^[\s"'“‘«(\[]*(?:book|buy|get|find|grab)\s+(?:your\s+)?tickets?\b/i,
-  /^[\s"'“‘«(\[]*tickets?\s+(?:from|start|are\s+on\s+sale|on\s+sale)\b/i,
-  /^[\s"'“‘«(\[]*(?:follow\s+us|click\s+here|learn\s+more\s+about)\b/i,
+  /^[\s"'“”‘’«»`(\[]*read\s+(?:our|the|my)\s+(?:full\s+)?review\b/i,
+  /^[\s"'“”‘’«»`(\[]*(?:book|buy|get|find|grab)\s+(?:your\s+)?tickets?\b/i,
+  /^[\s"'“”‘’«»`(\[]*tickets?\s+(?:from|start|are\s+on\s+sale|on\s+sale)\b/i,
+  /^[\s"'“”‘’«»`(\[]*(?:follow\s+us|click\s+here|learn\s+more\s+about)\b/i,
 ];
 
 function isPromoTeaser(excerpt) {

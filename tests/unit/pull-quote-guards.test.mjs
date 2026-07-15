@@ -339,6 +339,8 @@ describe('isPromoTeaser', () => {
     assert.strictEqual(isPromoTeaser('Buy tickets to the best show of the season.'), true);
     assert.strictEqual(isPromoTeaser('Tickets from $122 for this limited run.'), true);
     assert.strictEqual(isPromoTeaser('"Read the full review at our site."'), true);
+    assert.strictEqual(isPromoTeaser('\u201dRead our review of the show.\u201d'), true, 'closing-quote wrap');
+    assert.strictEqual(isPromoTeaser('\u2019Buy tickets today.'), true, 'closing-apostrophe wrap');
     assert.strictEqual(isPromoTeaser('Book your tickets now before it closes.'), true);
   });
 

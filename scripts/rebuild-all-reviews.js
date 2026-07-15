@@ -487,7 +487,9 @@ function selectBestExcerpt(data, showTitle) {
   if (data.pullQuote && typeof data.pullQuote === 'string' && data.pullQuote.trim()) {
     const cleaned = cleanExcerpt(data.pullQuote);
     if (cleaned && cleaned.length > 20) {
-      if (!isInternalNote(cleaned) && !hasCopyrightChrome(cleaned)) {
+      // isPromoTeaser also guards this fast-path: a teaser here would come
+      // from a bulk import writing pullQuote, not a human editor's choice.
+      if (!isInternalNote(cleaned) && !hasCopyrightChrome(cleaned) && !isPromoTeaser(cleaned)) {
         return cleaned;
       }
     }
