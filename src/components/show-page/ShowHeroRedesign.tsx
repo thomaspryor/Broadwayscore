@@ -680,22 +680,25 @@ function Inner({
 // ─── Sub-components ──────────────────────────────────────────────────────
 
 function DateLine({ show }: { show: ComputedShow }) {
+  // One hierarchy step below the venue line (text-sm gray-300) so the two
+  // stacked rows read as place → metadata instead of two identical gray lines.
+  const dateClass = 'text-xs text-gray-500';
   if (show.status === 'closed' && show.openingDate && show.closingDate) {
     return (
-      <p>
+      <p className={dateClass}>
         {formatDate(show.openingDate)} → {formatDate(show.closingDate)}
       </p>
     );
   }
   if (show.status === 'previews' || show.status === 'upcoming') {
     if (show.openingDate) {
-      return <p>Opens {formatDate(show.openingDate)}</p>;
+      return <p className={dateClass}>Opens {formatDate(show.openingDate)}</p>;
     }
     return null;
   }
   // open
   return (
-    <p>
+    <p className={dateClass}>
       {show.openingDate && <>Opened {formatDate(show.openingDate)}</>}
       {show.closingDate && <> · Closes {formatDate(show.closingDate)}</>}
     </p>
