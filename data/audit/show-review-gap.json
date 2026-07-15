@@ -1,206 +1,131 @@
 {
-  "generatedAt": "2026-07-15T09:35:24.271Z",
+  "generatedAt": "2026-07-15T10:22:04.208Z",
   "windowDays": 1095,
-  "targets": 9,
+  "targets": 2,
   "counts": {
-    "withGap": 6,
-    "totalMissing": 24,
+    "withGap": 1,
+    "totalMissing": 8,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 4,
+    "totalFlaggedMisses": 0,
     "totalRecoverable": 0,
     "totalRecovered": 0
   },
   "results": [
     {
-      "showId": "sukkot-off-broadway-2026",
-      "title": "Sukkot",
-      "openingDate": "2026-07-11",
+      "showId": "the-whoopi-monologues-off-broadway-2026",
+      "title": "The Whoopi Monologues",
+      "openingDate": "2026-07-14",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://d4ov6iqsvotvt.cloudfront.net",
-        "https://fonts.gstatic.com",
-        "https://fonts.googleapis.com/css2",
-        "https://maps.google.com/",
-        "https://www.todaytixgroup.com/careers",
-        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-the-whoopi-monologues-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-WHOOPI-MONOLOGUES-Opens-Off-Broadway-20260714"
       ],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/the-whoopi-monologues-review-kerry-washington/",
+        "https://cititour.com/NYC_Broadway/The-Whoopi-Monologues/1386",
+        "https://culturesauce.com/whoopi-goldberg-monologues-off-broadway-review/",
+        "https://exeuntnyc.com/reviews/review-the-whoopi-monologues-at-the-mitzi-e-newhouse-theater/",
+        "https://nystagereview.com/2026/07/13/the-whoopi-monologues-goldbergs-characters-still-charm-and-disarm/",
+        "https://nystagereview.com/2026/07/13/the-whoopi-monologues-five-whoopis-are-less-than-one/",
+        "https://www.newyorktheatreguide.com/reviews/the-whoopi-monologues-off-broadway-review-kerry-washington-kara-young-whoopi-goldberg",
+        "https://www.wsj.com/articles/the-whoopi-monologues-review-goldberg-variations-off-broadway-0ee39174",
+        "https://www.thewrap.com/creative-content/theater/the-whoopi-monologues-off-broadway-review-kerry-washington/",
+        "https://www.nytimes.com/2026/07/14/theater/the-whoopi-monologues-review-kerry-washington-kara-young.html",
+        "https://www.theatermania.com/news/review-the-whoopi-monologues-shines-even-without-whoopi-goldberg_1845713/",
+        "https://www.talkinbroadway.com/page/ob/07_13_26.html"
+      ],
+      "dirFiles": 14,
+      "dirClean": 12,
+      "inReviewsJson": 12,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null
+    },
+    {
+      "showId": "the-oresteia-west-end-2026",
+      "title": "The Oresteia",
+      "openingDate": "2026-07-14",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-heres-what-critics-think-of-robert-ickes-oresteia-off-broadway"
+      ],
+      "aggregatorListedUrls": [
+        "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
+        "https://newyorktheater.me/2022/07/27/oresteia-review/",
+        "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
+        "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
+        "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
+        "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
+        "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
+        "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/"
+      ],
+      "dirFiles": 5,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "cloudfront.net",
-          "knownOutletId": null
+          "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "knownOutletId": null
+          "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "knownOutletId": null
+          "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "knownOutletId": null
+          "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "knownOutletId": null
+          "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "knownOutletId": null
+          "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "ingestResults": [
-        {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=d4ov6iqsvotvt.cloudfront.net): Scrapingdog HTTP 400: O"
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "outletId": "gstatic",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fonts.gstatic.com): Scrapingdog HTTP 404: {\"message\":\""
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "outletId": "googleapis",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fonts.googleapis.com): Scrapingdog HTTP 400: Oops! Som"
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "outletId": "google",
-          "provisional": true,
-          "ok": false,
-          "reason": "Fetch returned no usable HTML (got 442 chars)"
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "outletId": "todaytixgroup",
-          "provisional": true,
-          "ok": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "outletId": "google"
-        }
-      ]
-    },
-    {
-      "showId": "tender-off-west-end-2026",
-      "title": "Tender",
-      "openingDate": "2026-07-09",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.timeout.com/london/theatre/tender-1-review",
-        "https://www.thestage.co.uk/reviews/tender-review-soho-theatre-london-dave-harris-matthew-xia",
-        "https://theartsdesk.com/theatre/tender-soho-theatre-review-anarchic-takedown-cliched-masculinity",
-        "https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
-        "https://www.whatsonstage.com/news/tender-at-soho-theatre-review_1720027/"
-      ],
-      "dirFiles": 18,
-      "dirClean": 4,
-      "inReviewsJson": 4,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "thetimes.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/tender-review-soho-theatre-london-dave-harris-matthew-xia",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--dave-fargnoli.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/tender-review-soho-theatre-london-dave-harris-matthew-xia"
-            }
-          ]
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/tender-soho-theatre-review-anarchic-takedown-cliched-masculinity",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "artsdesk--aleks-sierz.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theartsdesk.com/theatre/tender-soho-theatre-review-anarchic-takedown-cliched-masculinity"
-            }
-          ]
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/tender-at-soho-theatre-review_1720027/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--oliver-ainley.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/tender-napalam-at-the-kings-head-theatre-review_55018/"
-            },
-            {
-              "file": "whatsonstage--rachel-agyekum.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/tender-at-soho-theatre-review_1720027/"
-            }
-          ]
-        }
-      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -238,503 +163,65 @@
         "currentRunRows": 0,
         "corroborated": 0,
         "perSource": {}
-      }
-    },
-    {
-      "showId": "allegra-west-end-2026",
-      "title": "Allegra",
-      "openingDate": "2026-07-09",
-      "status": "open",
-      "category": "west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.ft.com/content/d72d2b65-5a9a-4bf1-bce0-b6032f1fb132",
-        "https://www.whatsonstage.com/news/allegra-with-maureen-lipman-on-tour-review_1724142/",
-        "https://www.thetimes.com/culture/theatre-dance/article/allegra-review-maureen-lipman-80-deserves-a-hit-play-this-isnt-it-sqhvqv3cl",
-        "https://www.allegraplay.com/"
-      ],
-      "dirFiles": 15,
-      "dirClean": 7,
-      "inReviewsJson": 13,
-      "missing": [],
-      "dirOnly": [
+      },
+      "priorRunArticles": [
         {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "playsinternational.org.uk",
-          "count": 1
+          "url": "https://playbill.com/article/reviews-heres-what-critics-think-of-robert-ickes-oresteia-off-broadway",
+          "publishDate": "2022-07-29"
         }
       ],
-      "flaggedMisses": [
+      "weIngestBlocked": [
         {
-          "url": "https://www.allegraplay.com/",
-          "host": "allegraplay.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "wwwallegraplaycom--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.allegraplay.com/"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 5,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": true,
-            "rows": 5,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 5,
-        "corroborated": 4,
-        "perSource": {
-          "theatre-reviews": {
-            "cited": 5,
-            "corroborated": 4
-          }
-        }
-      }
-    },
-    {
-      "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
-      "title": "Giulia: The Poison Queen of Palermo",
-      "openingDate": "2026-07-10",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-GIULIA-THE-POISON-QUEEN-OF-PALERMO-Written-by-and-Starring-Jennifer-Nettles-20260710"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.nytimes.com/2026/07/10/theater/giulia-poison-queen-of-palermo-review-nettles.html",
-        "https://nystagereview.com/2026/07/10/giulia-the-poison-queen-of-palermo-pure-theatrical-alchemy/",
-        "https://nystagereview.com/2026/07/10/giulia-the-poison-queen-of-palermo-jennifer-nettles-brews-a-tasty-mass-murder-musical/https://nystagereview.com/2026/07/10/giulia-the-poison-queen-of-palermo-jennifer-nettles-brews-a-tasty-mass-murder-musical/",
-        "https://www.slantmagazine.com/theater/giulia-the-poison-queen-of-palermo-review-jennifer-nettles/",
-        "https://www.thewrap.com/creative-content/theater/giulia-the-poison-queen-of-palermo-off-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/giulia-the-poison-queen-of-palermo-off-broadway-review-jennifer-nettles",
-        "https://www.theatrely.com/post/jennifer-nettles-shines-but-giulia-the-poison-queen-of-palermo-muddles-its-mix-review",
-        "https://stageandcinema.com/2026/07/10/giulia-poison-queen-of-palermo-review-pac-nyc/",
-        "https://exeuntnyc.com/reviews/review-giulia-the-poison-queen-of-palermo-at-perelman-performing-arts-center/",
-        "https://www.theatermania.com/news/review-jennifer-nettless-giulia-is-a-female-empowerment-sweeney-todd_1845124/",
-        "https://culturesauce.com/giulia-jennifer-nettles-off-broadway-review/"
-      ],
-      "dirFiles": 21,
-      "dirClean": 15,
-      "inReviewsJson": 15,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "amny.com",
-          "count": 1
+          "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
-          "host": "offoffonline.com",
-          "count": 1
+          "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
-          "host": "theaterscene.org",
-          "count": 1
+          "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
+          "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
           "host": "vulture.com",
-          "count": 1
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run"
         }
       ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null
-    },
-    {
-      "showId": "hershey-felder-the-piano-and-me-off-broadway-2026",
-      "title": "Hershey Felder: The Piano and Me",
-      "openingDate": "2026-07-10",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://d4ov6iqsvotvt.cloudfront.net",
-        "https://fonts.gstatic.com",
-        "https://fonts.googleapis.com/css2",
-        "https://maps.google.com/",
-        "https://www.todaytixgroup.com/careers",
-        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "knownOutletId": null
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "ingestResults": [
-        {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=d4ov6iqsvotvt.cloudfront.net): Scrapingdog HTTP 400: O"
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "outletId": "gstatic",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fonts.gstatic.com): Scrapingdog HTTP 404: {\"message\":\""
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "outletId": "googleapis",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fonts.googleapis.com): Scrapingdog HTTP 400: Oops! Som"
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "outletId": "google",
-          "provisional": true,
-          "ok": false,
-          "reason": "Fetch returned no usable HTML (got 442 chars)"
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "outletId": "todaytixgroup",
-          "provisional": true,
-          "ok": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "outletId": "google"
-        }
-      ]
-    },
-    {
-      "showId": "the-smile-of-her-off-west-end-2026",
-      "title": "The Smile Of Her",
-      "openingDate": "2026-07-16",
-      "status": "previews",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null
-    },
-    {
-      "showId": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
-      "title": "Why I Stuck A Flare Up My Arse For England (Soho Playhouse)",
-      "openingDate": "2026-07-08",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://d4ov6iqsvotvt.cloudfront.net",
-        "https://fonts.gstatic.com",
-        "https://fonts.googleapis.com/css2",
-        "https://maps.google.com/",
-        "https://www.todaytixgroup.com/careers",
-        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
-      ],
-      "dirFiles": 5,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "knownOutletId": null
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "ingestResults": [
-        {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=d4ov6iqsvotvt.cloudfront.net): Scrapingdog HTTP 400: O"
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "outletId": "gstatic",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fonts.gstatic.com): Scrapingdog HTTP 404: {\"message\":\""
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "outletId": "googleapis",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fonts.googleapis.com): Scrapingdog HTTP 400: Oops! Som"
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "outletId": "google",
-          "provisional": true,
-          "ok": false,
-          "reason": "Fetch returned no usable HTML (got 442 chars)"
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "outletId": "todaytixgroup",
-          "provisional": true,
-          "ok": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "outletId": "google"
-        }
-      ]
-    },
-    {
-      "showId": "dukes-off-broadway-2026",
-      "title": "Dukes",
-      "openingDate": "2026-07-08",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://d4ov6iqsvotvt.cloudfront.net",
-        "https://fonts.gstatic.com",
-        "https://fonts.googleapis.com/css2",
-        "https://maps.google.com/",
-        "https://www.todaytixgroup.com/careers",
-        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
-      ],
-      "dirFiles": 3,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "knownOutletId": null
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "ingestResults": [
-        {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=d4ov6iqsvotvt.cloudfront.net): Scrapingdog HTTP 400: O"
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "outletId": "gstatic",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fonts.gstatic.com): Scrapingdog HTTP 404: {\"message\":\""
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "outletId": "googleapis",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fonts.googleapis.com): Scrapingdog HTTP 400: Oops! Som"
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "outletId": "google",
-          "provisional": true,
-          "ok": false,
-          "reason": "Fetch returned no usable HTML (got 442 chars)"
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "outletId": "todaytixgroup",
-          "provisional": true,
-          "ok": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "outletId": "google"
-        }
-      ]
-    },
-    {
-      "showId": "loves-labours-lost-globe-west-end-2026",
-      "title": "Love's Labour's Lost - Globe",
-      "openingDate": "2026-07-17",
-      "status": "upcoming",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null
+      "ingestResults": [],
+      "ingestSkippedByCap": []
     }
   ]
 }
