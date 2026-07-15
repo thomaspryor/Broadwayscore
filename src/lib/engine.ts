@@ -32,6 +32,7 @@ import {
 import { getRegistryTier } from './outlet-id-mapper';
 import { getMarketDate } from './date-utils';
 import { isOperaShow } from './show-market';
+import { stripInlineMarkdown } from './formatting';
 
 // ===========================================
 // TYPES
@@ -758,7 +759,7 @@ export function computeShowData(
     intermissions: show.intermissions,
     images: show.images,
     // Pass through new fields
-    synopsis: show.synopsis,
+    synopsis: stripInlineMarkdown(show.synopsis),
     ageRecommendation: show.ageRecommendation,
     limitedRun: show.limitedRun,
     previewsStartDate: show.previewsStartDate,

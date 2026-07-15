@@ -1004,6 +1004,16 @@ function validateSynopsisQuality(shows) {
       issues++;
     }
 
+    // LLM refusal text instead of a synopsis ("I'm afraid I don't have enough
+    // information about..."). 16 of these shipped to prod pages + JSON-LD
+    // before the 2026-07-14 sweep. Anchored to start-of-text so lyric/song
+    // titles like "I Cannot Hear the City" mid-synopsis don't false-positive.
+    // ERROR not warn: a refusal is never a valid synopsis.
+    if (/^(I'm afraid|I am afraid|I do not have|I don't have|I apologize|My apologies|As an AI|Unfortunately, I (do not|don't|cannot|can't))/i.test(show.synopsis.trim())) {
+      error(`Show "${show.title}" (${show.id}) synopsis is an LLM refusal, not a synopsis — delete it or write a real one`);
+      issues++;
+    }
+
     // Film description instead of stage show
     if (/^.{0,30}is a \d{4} American .* film/i.test(show.synopsis)) {
       warn(`Show "${show.title}" (${show.id}) synopsis describes a film, not a stage show`);

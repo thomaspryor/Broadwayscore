@@ -453,7 +453,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     },
     sort: 'opening-date',
     relatedGuides: ['best-new-broadway-shows', 'best-broadway-shows', 'broadway-shows-closing-soon', 'cheap-broadway-tickets'],
-    relatedBrowse: ['upcoming-broadway-shows', 'new-broadway-shows-2026'],
+    relatedBrowse: ['upcoming-broadway-shows', 'upcoming-off-broadway-shows', 'upcoming-west-end-shows', 'new-broadway-shows-2026'],
   },
 
   // === SHORT SHOWS ===

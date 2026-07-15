@@ -103,9 +103,29 @@ export interface ScoreBadgeProps {
   showCrown?: boolean;
   category?: string;
   tier1And2Count?: number;
+  /** Render a "Not Yet Rated" caption under TBD badges — for pages (guides)
+   *  that don't already label the badge the way ShowListCard does. */
+  labelTbd?: boolean;
 }
 
-export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown, category, tier1And2Count }: ScoreBadgeProps) {
+function TbdBadge({ sizeClass, labelTbd, caption }: { sizeClass: string; labelTbd?: boolean; caption: string }) {
+  const badge = (
+    <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`} title={caption}>
+      TBD
+    </div>
+  );
+  if (!labelTbd) return badge;
+  return (
+    <div className="flex flex-col items-center gap-1">
+      {badge}
+      <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
+        Not Yet Rated
+      </span>
+    </div>
+  );
+}
+
+export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown, category, tier1And2Count, labelTbd }: ScoreBadgeProps) {
   const sizeClass = {
     sm: 'w-11 h-11 text-lg lg:w-[68px] lg:h-[68px] lg:text-3xl rounded-lg',
     md: 'w-14 h-14 text-2xl lg:w-[68px] lg:h-[68px] lg:text-3xl rounded-xl',
@@ -114,22 +134,14 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
 
   // Show TBD for previews/upcoming shows
   if (status === 'previews' || status === 'upcoming') {
-    return (
-      <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>
-        TBD
-      </div>
-    );
+    return <TbdBadge sizeClass={sizeClass} labelTbd={labelTbd} caption="Score arrives once critics review this show after opening night" />;
   }
 
   // Show TBD if fewer than minimum reviews (5 for Broadway, 3 for off-Broadway/London; +2 if all T3)
   let minReviews = getMarketMinReviews(category);
   if (tier1And2Count !== undefined && tier1And2Count === 0) minReviews += 2;
   if (reviewCount !== undefined && reviewCount < minReviews) {
-    return (
-      <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>
-        TBD
-      </div>
-    );
+    return <TbdBadge sizeClass={sizeClass} labelTbd={labelTbd} caption="Not enough critic reviews yet to calculate a score" />;
   }
 
   if (score === undefined || score === null) {

@@ -620,7 +620,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       if (show.status === 'announced' && !show.openingDate && !show.previewsStartDate) return 'Announced — Dates TBA';
       return 'Coming Soon';
     },
-    relatedPages: ['new-broadway-shows-2025', 'broadway-shows-closing-soon', 'broadway-lottery-shows'],
+    relatedPages: ['upcoming-off-broadway-shows', 'upcoming-west-end-shows', 'new-broadway-shows-2025', 'broadway-shows-closing-soon', 'broadway-lottery-shows'],
   },
 
   'broadway-shows-for-teens': {
