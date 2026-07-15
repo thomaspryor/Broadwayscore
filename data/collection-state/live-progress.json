@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-15T06:35:31.927Z",
+  "updatedAt": "2026-07-15T06:37:00.296Z",
   "processed": 42,
-  "failed": 346,
-  "successRate": "10.8%",
+  "failed": 356,
+  "successRate": "10.6%",
   "tierBreakdown": {
     "playwright": 30,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 1,
     "scrapingbee": 1,
     "brightdata": 4,
-    "archiveToday": 5,
+    "archiveToday": 6,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-15T04:20:37.829Z",
@@ -42,6 +42,17 @@
       "t": "2026-07-15T05:18:25.046Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-15T06:36:42.929Z",
+      "event": "bb-session",
+      "session": "11aa24e8",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-15T06:36:43.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
