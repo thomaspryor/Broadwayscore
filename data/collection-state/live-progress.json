@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-15T05:15:30.569Z",
+  "updatedAt": "2026-07-15T05:18:32.883Z",
   "processed": 6,
-  "failed": 41,
-  "successRate": "12.8%",
+  "failed": 45,
+  "successRate": "11.8%",
   "tierBreakdown": {
     "playwright": 5,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
+    "brightdata": 1,
     "archiveToday": 4,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-07-15T04:20:37.829Z",
@@ -23,6 +23,23 @@
     },
     {
       "t": "2026-07-15T04:20:38.701Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-15T05:18:14.977Z",
+      "event": "bb-session",
+      "session": "f61c9472",
+      "url": "https://pagesonstages.com/2026/06/29/birthright/"
+    },
+    {
+      "t": "2026-07-15T05:18:24.153Z",
+      "event": "bb-session",
+      "session": "cb44e013",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGA"
+    },
+    {
+      "t": "2026-07-15T05:18:25.046Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
