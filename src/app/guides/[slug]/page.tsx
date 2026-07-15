@@ -370,6 +370,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                         status={show.status}
                         showCrown
                         category={show.category}
+                        tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)}
                         labelTbd
                       />
                       {audienceGrade && audienceGrade.grade !== '—' && (

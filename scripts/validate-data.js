@@ -35,6 +35,7 @@ const { isBroadwayCategory } = require('./lib/venue-classification');
 const { classifyReverseCrossMarket, classifyUsOnWeCrossMarket } = require('./lib/cross-market-guard');
 const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { detectRefusalPattern } = require('./lib/synopsis-validation');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { isNonTheatricalGenre } = require('./lib/genre-classification');
 const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
@@ -1006,10 +1007,11 @@ function validateSynopsisQuality(shows) {
 
     // LLM refusal text instead of a synopsis ("I'm afraid I don't have enough
     // information about..."). 16 of these shipped to prod pages + JSON-LD
-    // before the 2026-07-14 sweep. Anchored to start-of-text so lyric/song
-    // titles like "I Cannot Hear the City" mid-synopsis don't false-positive.
+    // before the 2026-07-14 sweep. Uses the canonical detector shared with
+    // auto-fix-show-data.js / pre-deploy-check.js — do NOT inline a second
+    // regex here (its FP history lives in scripts/lib/synopsis-validation.js).
     // ERROR not warn: a refusal is never a valid synopsis.
-    if (/^(I'm afraid|I am afraid|I do not have|I don't have|I apologize|My apologies|As an AI|Unfortunately, I (do not|don't|cannot|can't))/i.test(show.synopsis.trim())) {
+    if (detectRefusalPattern(show.synopsis)) {
       error(`Show "${show.title}" (${show.id}) synopsis is an LLM refusal, not a synopsis — delete it or write a real one`);
       issues++;
     }
