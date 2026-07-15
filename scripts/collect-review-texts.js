@@ -121,6 +121,7 @@ const { checkBrowserbaseCaps } = require('./lib/browserbase-caps');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
+const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 
 /**
  * Rename a review-text file to match its in-memory criticName when one of the
@@ -3999,41 +4000,11 @@ function extractPublishDateFromHtml(html) {
   return null;
 }
 
-// Extract publishDate from URL path patterns: /YYYY/MM/DD/ or YYYY-MM-DD
-// Fallback for when HTML has no date metadata. Conservative: validates calendar
-// correctness and rejects show-title years (e.g. "1776").
-function extractDateFromUrl(url) {
-  if (!url) return null;
-  const pathOnly = url.split('?')[0].split('#')[0];
-
-  // Pattern 1: /YYYY/MM/DD/ (WordPress-style, most reliable)
-  const slashMatch = pathOnly.match(/\/(\d{4})\/(\d{1,2})\/(\d{1,2})\//);
-  if (slashMatch) {
-    const result = validateUrlDate(slashMatch[1], slashMatch[2], slashMatch[3]);
-    if (result) return result;
-  }
-
-  // Pattern 2: YYYY-MM-DD in path (Bloomberg, LA Times, etc.)
-  const TITLE_YEARS = new Set(['1776', '1984', '1812', '1921', '1992', '1940', '2026']);
-  const dashMatch = pathOnly.match(/(\d{4})-(\d{2})-(\d{2})/);
-  if (dashMatch && !TITLE_YEARS.has(dashMatch[1])) {
-    const result = validateUrlDate(dashMatch[1], dashMatch[2], dashMatch[3]);
-    if (result) return result;
-  }
-
-  return null;
-}
-
-function validateUrlDate(yearStr, monthStr, dayStr) {
-  const year = parseInt(yearStr, 10);
-  const month = parseInt(monthStr, 10);
-  const day = parseInt(dayStr, 10);
-  if (year < 1970 || year > 2027 || month < 1 || month > 12 || day < 1 || day > 31) return null;
-  // Calendar validity — catches Feb 30, etc.
-  const d = new Date(year, month - 1, day);
-  if (d.getFullYear() !== year || d.getMonth() !== month - 1 || d.getDate() !== day) return null;
-  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-}
+// URL-path date fallback (for when HTML has no date metadata) now delegates
+// to the canonical scripts/lib/rebuild-helpers.js extractDateFromUrl — same
+// function rebuild-all-reviews.js and backfill-review-dates.js use, so this
+// collect path gains every pattern (Guardian, BWW-compact, blogspot, Talkin'
+// Broadway /ob/) instead of maintaining a second, narrower copy.
 
 // Extract publishDate from review text byline (first 500 chars).
 // Only fires when exactly ONE date is found. Rejects run/closing dates.
@@ -4201,13 +4172,14 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
 
-  // Fallback: extract publishDate from URL path (e.g. /2025/11/16/ or 2025-11-16)
+  // Fallback: extract publishDate from URL path (e.g. /2025/11/16/, Guardian
+  // /2025/jul/14/, or Talkin' Broadway /ob/07_13_26.html).
   if (!data.publishDate && data.url) {
-    const extractedDate = extractDateFromUrl(data.url);
-    if (extractedDate) {
-      data.publishDate = extractedDate;
-      data.dateSource = 'url';
-      console.log(`    → Extracted publishDate from URL: ${extractedDate}`);
+    const urlDateResult = extractDateFromUrlCanonical(data.url);
+    if (urlDateResult && urlDateResult.date && /^\d{4}-\d{2}-\d{2}$/.test(urlDateResult.date)) {
+      data.publishDate = urlDateResult.date;
+      data.dateSource = urlDateResult.source;
+      console.log(`    → Extracted publishDate from URL: ${urlDateResult.date} (${urlDateResult.source})`);
     }
   }
 

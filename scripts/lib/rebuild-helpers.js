@@ -864,7 +864,25 @@ function extractDateFromUrl(url) {
     }
   }
 
-  // Pattern 6: Year-only extraction (for wrong-production flagging, not display)
+  // Pattern 6: Talkin' Broadway off-broadway section — /ob/MM_DD_YY.html or
+  // /page/ob/MM_DD_YY.html, optional trailing letter for same-day multi-review
+  // disambiguation (02_08_24b.html). Scoped to the domain since the shape is
+  // generic. TB has been behind a Cloudflare managed challenge since ~2026-04
+  // (fetchPage can't reach it — see collect-review-texts.js), so this URL-only
+  // path is the only viable date source for TB off-broadway reviews.
+  if (/talkinbroadway\.com/i.test(url)) {
+    const tbMatch = pathOnly.match(/\/(?:page\/)?ob\/(\d{1,2})_(\d{1,2})_(\d{2})[a-z]?\.html/i);
+    if (tbMatch) {
+      const month = parseInt(tbMatch[1], 10);
+      const day = parseInt(tbMatch[2], 10);
+      const yy = parseInt(tbMatch[3], 10);
+      const year = yy <= 30 ? 2000 + yy : 1900 + yy;
+      const result = validateCalendarDate(year, month, day);
+      if (result) return { date: result, source: 'url-tb-ob' };
+    }
+  }
+
+  // Pattern 7: Year-only extraction (for wrong-production flagging, not display)
   // Look for /YYYY/ bounded by path separators
   const yearMatch = pathOnly.match(/\/(20\d\d)\//);
   if (yearMatch && !TITLE_YEARS.has(yearMatch[1])) {
