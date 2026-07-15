@@ -7,6 +7,12 @@
  * LLM-backfill in the enrollment hot path — enrollment just reserves the
  * slot; a human or a separate research pass fills in real numbers later.
  *
+ * SCOPE: this script trusts its caller's slug list completely — it never
+ * looks up shows.json, so it has no way to reject an Off-Broadway/West-End
+ * slug. Every caller MUST pre-filter with isCommercialScope()
+ * (scripts/lib/commercial-scope.js) before building --show= args, the way
+ * opening-night-orchestrator.yml's "Enroll commercial stubs" step does.
+ *
  * Usage:
  *   node scripts/initialize-commercial-stub.js --show=SLUG [--show=SLUG2 ...]
  *   node scripts/initialize-commercial-stub.js --show=SLUG --data-file=/path/to/commercial.json
