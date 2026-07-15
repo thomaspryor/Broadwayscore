@@ -63,7 +63,9 @@
     "tender-off-west-end-2026/stagedtheatre--unknown.json",
     "pride-west-end-2026/theatrely--unknown.json",
     "pride-west-end-2026/whatsonstage--daisy-bowie.json",
-    "the-oresteia-west-end-2026/london-box-office--stuart-king.json"
+    "the-oresteia-west-end-2026/london-box-office--stuart-king.json",
+    "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
+    "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json"
   ],
   "failed": [
     "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
@@ -808,7 +810,15 @@
     "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
     "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
     "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
-    "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json"
+    "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
+    "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
+    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json",
+    "pride-west-end-2026/standard--the-standard.json",
+    "relics-west-end-2026/nytimes--unknown.json",
+    "sinatra-the-musical-west-end-2026/variety--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "sinatra-the-musical-west-end-2026/express-uk--west-end-theatre.json",
+    "sinatra-the-musical-west-end-2026/front-row-center--unknown.json"
   ],
   "failed": [],
   "skipped": [],
@@ -866,14 +876,72 @@
     "browserbase": [
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
     ],
-    "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "directCookies": [
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+      "beetlejuice-west-end-2026/times-uk--john-bleasdale.json",
+      "beetlejuice-west-end-2026/times-uk--susannah-butter.json",
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    ],
+    "scrapingbee": [
+      "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
+      "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--alan-light.json",
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+      "pride-west-end-2026/theatrely--unknown.json"
+    ],
+    "brightdata": [
+      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
+      "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "tender-off-west-end-2026/guardian--arifa-akbar.json",
+      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
+      "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json",
+      "data/review-texts/the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    ],
+    "archive": [
+      "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
+      "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
+      "small-off-broadway-2026/culturesauce--thom-geier.json",
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
+      "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
+      "small-off-broadway-2026/culturesauce--thom-geier.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "proof-2026/playbill--unknown.json",
+      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+      "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
+      "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json"
+    ]
   },
   "startTime": "2026-07-14T22:55:59.639Z",
-  "lastProcessed": "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
+  "lastProcessed": "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
   "log": [
     {
       "t": "2026-07-15T04:20:37.829Z",
