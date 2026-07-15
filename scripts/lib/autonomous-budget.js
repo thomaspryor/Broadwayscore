@@ -114,7 +114,7 @@ function createNightBudget(opts = {}) {
     if (!env) return { admitted: false, reason: `size "${size}" has no budget envelope (L cards are worked incrementally, never admitted whole)` };
     if (!cfg.sizes.includes(size)) return { admitted: false, reason: `size ${size} not enabled tonight (config sizes: ${cfg.sizes.join(',')})` };
     if (items >= cfg.maxItems) return { admitted: false, reason: `night item cap (${cfg.maxItems}) reached` };
-    const worstCase = round2(env.estUSD + env.estAttempt2USD);
+    const worstCase = worstCaseUSD(env);
     if (worstCase > remaining()) {
       return { admitted: false, reason: `worst-case $${worstCase.toFixed(2)} (both attempts) exceeds remaining $${remaining().toFixed(2)}` };
     }
@@ -164,6 +164,28 @@ function createNightBudget(opts = {}) {
   };
 }
 
+// A size can be "enabled" in config yet mathematically inadmissible: its
+// worst-case reservation (both attempts) exceeds even a fresh night's
+// available budget (nightUSD - reserveUSD). On an M-only night that config
+// silently does zero work (2026-07-15: $5 night, M worst-case $7.50 —
+// 41 triage LLM calls, 0 attempts). Surface it so the run can warn loudly.
+function inadmissibleSizes({ nightUSD, sizes, reserveUSD = DEFAULTS.reserveUSD } = {}) {
+  const available = round2(nightUSD - reserveUSD);
+  return (sizes || []).filter(size => {
+    const env = ENVELOPES[size];
+    if (!env || env.incremental) return false; // L is worked incrementally, never admitted whole
+    return worstCaseUSD(env) > available;
+  }).map(size => ({
+    size,
+    worstCaseUSD: worstCaseUSD(ENVELOPES[size]),
+    availableUSD: available,
+  }));
+}
+
+// Single source of truth for the admission reservation — admit() and
+// inadmissibleSizes() must agree or the warning lies about admissibility.
+function worstCaseUSD(env) { return round2(env.estUSD + env.estAttempt2USD); }
+
 // The loop shares the Anthropic daily dollar pool with opening-night
 // automation — refuse a night config that could eat the whole shared cap.
 function checkSharedDailyCap(nightUSD, caps = DEFAULT_CAPS) {
@@ -185,4 +207,5 @@ module.exports = {
   pickModel,
   createNightBudget,
   checkSharedDailyCap,
+  inadmissibleSizes,
 };
