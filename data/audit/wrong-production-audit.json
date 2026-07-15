@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-15T07:06:57.110Z",
+  "timestamp": "2026-07-15T07:56:08.062Z",
   "stats": {
     "totalReviews": 40055,
-    "alreadyFlagged": 17545,
+    "alreadyFlagged": 17544,
     "dateGuardCatches": 49,
     "directorMismatch": 910,
-    "tvFilmSignals": 1101,
+    "tvFilmSignals": 1100,
     "londonSignals": 744,
     "offBroadwaySignals": 469,
     "yearMismatch": 85,
-    "noPublishDate": 3819
+    "noPublishDate": 3820
   },
   "findings": [
     {
@@ -1753,20 +1753,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
-      "file": "telegraph--marianka-swain.json",
-      "score": 82,
-      "publishDate": "2026-04-17",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
