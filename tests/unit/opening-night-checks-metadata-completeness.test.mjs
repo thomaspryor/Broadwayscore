@@ -129,6 +129,13 @@ describe('revival-unverified check', () => {
     assert.equal(result.ok, true);
   });
 
+  it('same title, different market (transfer, not revival) → ok (regression: Hamilton/Wicked/Hadestown/Oh Mary FP)', () => {
+    const show = { id: 'hamilton-west-end-2021', status: 'open', isRevival: false, title: 'Hamilton', market: 'west-end' };
+    const shows = [show, { id: 'hamilton-2015', title: 'Hamilton', market: 'broadway' }];
+    const result = revivalCheck.run(show, makeContext({ shows }));
+    assert.equal(result.ok, true);
+  });
+
   it('no title match, review text mentions "revival" 3+ times → warning', () => {
     const showId = 'retitled-revival-2026';
     const showDir = path.join(tmpRoot, showId);

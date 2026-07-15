@@ -2,8 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { isRevivalByCanonicalTitle } = require('../review-guards.js');
-const { countRevivalMentions } = require('../opening-night-completeness.js');
+const { hasSameMarketTitleMatch, countRevivalMentions } = require('../opening-night-completeness.js');
 
 const name = 'revival-unverified';
 const description = 'Show shares a canonical title with an earlier production (or review text repeatedly says "revival") but isRevival is not set';
@@ -26,7 +25,7 @@ function run(show, context) {
   }
 
   const shows = context.shows || [];
-  const titleMatch = isRevivalByCanonicalTitle(show.id, shows);
+  const titleMatch = hasSameMarketTitleMatch(show, shows);
 
   let mentionCount = 0;
   if (!titleMatch) {
@@ -55,7 +54,7 @@ function run(show, context) {
   }
 
   const signal = titleMatch
-    ? `shares canonical title with an earlier show in shows.json`
+    ? `shares canonical title with another show in the same market`
     : `review text mentions "revival" ${mentionCount}x`;
 
   return {
