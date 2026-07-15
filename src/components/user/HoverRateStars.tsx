@@ -46,8 +46,15 @@ export default function HoverRateStars({ showId, showHref, starSize = 'xs', clas
       className={`absolute inset-x-0 bottom-0 z-[2] hidden sm:flex justify-center opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity bg-gradient-to-t from-black/85 to-transparent pt-4 ${starSize === 'sm' ? 'pb-2' : 'pb-1'} ${className}`}
       // A star click must deep-link, not follow the wrapping card <Link>:
       // the child's router.push runs first, then this bubble-phase
-      // preventDefault cancels the anchor's default navigation.
-      onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+      // preventDefault cancels the anchor's default navigation. Scoped to
+      // clicks inside the star radiogroup — gradient-area clicks fall through
+      // to the card link (no dead zone at the poster bottom).
+      onClick={(e) => {
+        if ((e.target as HTMLElement).closest('[role="radiogroup"]')) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }}
     >
       <StarRating
         rating={null}
