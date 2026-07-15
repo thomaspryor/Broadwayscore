@@ -37,14 +37,13 @@
  *   - Floor/ceiling produce zero baseline hits with margin (live cap range
  *     $2.25M–$68M, weekly range $250k–$1.5M).
  *   - Designation/recoupment contradiction has zero live hits.
- *   - SHOW_NOT_IN_DB has one live hit (queen-of-versailles, forthcoming
- *     show not yet in shows.json) — warn-only so adding new commercial
- *     rows ahead of shows-list updates doesn't break CI.
+ *   - SHOW_NOT_IN_DB is warn-only so adding new commercial rows ahead of
+ *     shows-list updates doesn't break CI.
  */
 
 const fs = require('fs');
 const path = require('path');
-const { isCommercialScope } = require('./lib/commercial-scope');
+const { isCommercialScope, resolveScopeShow } = require('./lib/commercial-scope');
 
 const ROOT = path.join(__dirname, '..');
 const COMMERCIAL_FILE = path.join(ROOT, 'data', 'commercial.json');
@@ -67,17 +66,28 @@ function loadShows() {
 }
 
 // Commercial.json keys are often shorthand ("hamilton") vs shows.json's
-// canonical id ("hamilton-2015"). Resolve by exact id, then by
-// "key startsWith id-" pattern. Returns the matched show or null.
-function resolveShow(key, shows, idIndex) {
-  if (idIndex.has(key)) return idIndex.get(key);
-  const cands = shows.filter(s => s.id === key || s.id.startsWith(key + '-'));
+// canonical id ("hamilton-2015"). Delegate exact-id / exact-slug / stripped
+// -YYYY resolution to the shared resolveScopeShow() (scripts/lib/
+// commercial-scope.js — also used by the research pipeline, so the two
+// stay in sync) and only add the "key startsWith id-" shorthand fallback
+// that resolveScopeShow doesn't cover (e.g. "hamilton" -> "hamilton-2015",
+// which has no bare -YYYY suffix on the key to strip).
+function resolveShow(key, shows, showsBySlug) {
+  const viaShared = resolveScopeShow(showsBySlug, key);
+  if (viaShared) return viaShared;
+  const cands = shows.filter(s => s.id.startsWith(key + '-'));
   return cands[0] || null;
 }
 
 function audit() {
   const shows = loadShows();
-  const idIndex = shows ? new Map(shows.map(s => [s.id, s])) : new Map();
+  const showsBySlug = {};
+  if (shows) {
+    for (const s of shows) {
+      if (s.id) showsBySlug[s.id] = s;
+      if (s.slug) showsBySlug[s.slug] = s;
+    }
+  }
   const raw = JSON.parse(fs.readFileSync(COMMERCIAL_FILE, 'utf-8'));
   const showsMap = raw.shows || {};
   const issues = [];
@@ -117,7 +127,7 @@ function audit() {
 
     let resolvedShow = null;
     if (shows) {
-      resolvedShow = resolveShow(key, shows, idIndex);
+      resolvedShow = resolveShow(key, shows, showsBySlug);
       if (!resolvedShow) flags.push('SHOW_NOT_IN_DB');
     }
 
