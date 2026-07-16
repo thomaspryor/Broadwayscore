@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-07-15T08:25:32.745Z",
-    "showId": "a-midsummer-nights-dream-west-end-2026",
-    "newFile": "times-uk--unknown.json",
-    "ok": false,
-    "file": "times-uk--dominic-maxwell.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.thetimes.com/culture/theatre-dance/article/a-midsummer-nights-dream-review-a-hideous-set-ruins-the-fun-6z8l303sr",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2026-05-05",
-      "incomingUrl": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-a-midsummer-nights-dream-at-the-crucible-sheffield-2dtrdqbr9",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-07-15T08:25:32.792Z",
     "showId": "a-midsummer-nights-dream-west-end-2026",
     "newFile": "times-uk--unknown.json",
@@ -9414,6 +9395,21 @@
   },
   {
     "recordedAt": "2026-07-16T03:55:55.691Z",
+    "showId": "hadestown-2019",
+    "newFile": "nytimes--unknown.json",
+    "ok": false,
+    "file": "nytimes--ben-brantley.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2019-04-17T20:11:26-04:00",
+      "incomingPublishDate": "2026-07-15",
+      "diffDays": 2645,
+      "existingUrl": "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html?smtyp=cur&smid=tw-nytimesarts",
+      "incomingUrl": "https://www.nytimes.com/2026/07/15/theater/hadestown-theater-to-stream.html"
+    }
+  },
+  {
+    "recordedAt": "2026-07-16T04:38:22.504Z",
     "showId": "hadestown-2019",
     "newFile": "nytimes--unknown.json",
     "ok": false,
