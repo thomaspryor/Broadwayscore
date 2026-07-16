@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-16T07:33:39.924Z",
+  "updatedAt": "2026-07-16T08:59:16.594Z",
   "processed": 47,
-  "failed": 61,
-  "successRate": "43.5%",
+  "failed": 101,
+  "successRate": "31.8%",
   "tierBreakdown": {
     "playwright": 35,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 14,
     "directCookies": 1,
     "scrapingbee": 2,
     "brightdata": 2,
-    "archiveToday": 37,
+    "archiveToday": 44,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-07-16T06:30:52.366Z",
@@ -67,6 +67,39 @@
     },
     {
       "t": "2026-07-16T07:06:50.728Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-16T08:48:58.729Z",
+      "event": "bb-session",
+      "session": "4bbc91d6",
+      "url": "https://www.thetimes.com/uk/scotland/article/edinburgh-theatre-review-oresteia-t"
+    },
+    {
+      "t": "2026-07-16T08:48:59.558Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-16T08:50:04.978Z",
+      "event": "bb-session",
+      "session": "9907e006",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david"
+    },
+    {
+      "t": "2026-07-16T08:50:05.697Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-16T08:53:39.480Z",
+      "event": "bb-session",
+      "session": "c87dc39c",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-16T08:53:40.243Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
