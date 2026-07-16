@@ -53,7 +53,14 @@
     "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
     "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
     "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
-    "every-brilliant-thing-2026/whatsonstage--julia-rank.json"
+    "every-brilliant-thing-2026/whatsonstage--julia-rank.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+    "oh-mary-west-end-2025/nytg--olivia-rook.json",
+    "oh-mary-west-end-2025/nytg--unknown.json",
+    "oh-mary-west-end-2025/nytimes--jesse-green.json",
+    "oh-mary-west-end-2025/variety--brent-lang.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json"
   ],
   "failed": [
     "the-oresteia-west-end-2026/standard--tim-bano.json",
@@ -442,7 +449,10 @@
     "every-brilliant-thing-2026/thestage--dave-fargnoli.json",
     "every-brilliant-thing-2026/times-uk--alice-jones.json",
     "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
-    "im-sorry-prime-minister-west-end-2026/british-theatre--rachael-birtwistle.json"
+    "im-sorry-prime-minister-west-end-2026/british-theatre--rachael-birtwistle.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -485,7 +495,9 @@
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
       "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
       "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
-      "every-brilliant-thing-2026/whatsonstage--julia-rank.json"
+      "every-brilliant-thing-2026/whatsonstage--julia-rank.json",
+      "oh-mary-west-end-2025/nytg--olivia-rook.json",
+      "oh-mary-west-end-2025/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -502,7 +514,15 @@
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
       "data/review-texts/the-oresteia-west-end-2026/times-uk--clive-davis.json",
-      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+      "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--brent-lang.json",
+      "oh-mary-west-end-2025/variety--brent-lang.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -510,7 +530,8 @@
     "scrapingbee": [
       "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
       "the-potluck-off-broadway-2026/nytimes--helen-shaw.json",
-      "the-oresteia-west-end-2026/thereviewshub--the-reviews-hub-london.json"
+      "the-oresteia-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "oh-mary-west-end-2025/nytimes--jesse-green.json"
     ],
     "brightdata": [
       "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
@@ -572,7 +593,7 @@
     ]
   },
   "startTime": "2026-07-15T23:24:51.681Z",
-  "lastProcessed": "im-sorry-prime-minister-west-end-2026/british-theatre--rachael-birtwistle.json",
+  "lastProcessed": "oh-mary-west-end-2025/deadline--greg-evans.json",
   "log": [
     {
       "t": "2026-07-16T06:30:52.366Z",
@@ -661,6 +682,50 @@
       "t": "2026-07-16T08:53:40.243Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-16T11:28:29.101Z",
+      "event": "bb-session",
+      "session": "582e94ad",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
+    },
+    {
+      "t": "2026-07-16T11:28:29.971Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-16T11:28:46.572Z",
+      "event": "bb-session",
+      "session": "51f39f6d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
+    },
+    {
+      "t": "2026-07-16T11:28:47.307Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-16T11:29:49.760Z",
+      "event": "bb-session",
+      "session": "4fa0b6df",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-07-16T11:29:50.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-16T11:30:11.465Z",
+      "event": "bb-session",
+      "session": "7060162e",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
+    {
+      "t": "2026-07-16T11:30:12.186Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
