@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-16T21:39:54.176Z",
+  "generatedAt": "2026-07-16T23:37:16.229Z",
   "date": "2026-07-16",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 283022,
+  "entryCount": 285408,
   "shows": [
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -36,7 +36,7 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 24,
+      "reviewCount": 23,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6727,6 +6727,21 @@
     {
       "showId": "two-strangers-bway-2025",
       "reviewCount": 27,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
