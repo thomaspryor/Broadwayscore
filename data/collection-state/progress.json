@@ -78,7 +78,10 @@
     "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
     "the-great-gatsby-2024/stageandcinema--unknown.json",
     "hadestown-west-end-2024/columbus-dispatch--unknown.json",
-    "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json"
+    "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
+    "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+    "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+    "stranger-things-the-first-shadow-west-end-2023/timeout--andrzej-lukowski.json"
   ],
   "failed": [
     "the-oresteia-west-end-2026/standard--tim-bano.json",
@@ -632,7 +635,14 @@
     "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
     "stranger-things-the-first-shadow-west-end-2023/nytimes--elisabeth-vincentelli.json",
     "stranger-things-the-first-shadow-west-end-2023/variety--ellise-shafer.json",
-    "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json"
+    "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
+    "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
+    "stranger-things-the-first-shadow-west-end-2023/broadwaynews--brittani-samuel.json",
+    "stranger-things-the-first-shadow-west-end-2023/nydailynews--chris-jones.json",
+    "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
+    "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
+    "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
+    "stranger-things-the-first-shadow-west-end-2023/cititour--brian-scott-lipton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -684,7 +694,8 @@
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "oh-mary-2024/musical-theatre-review--angela-thomas.json",
       "the-great-gatsby-2024/stageandcinema--unknown.json",
-      "hadestown-west-end-2024/columbus-dispatch--unknown.json"
+      "hadestown-west-end-2024/columbus-dispatch--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/timeout--andrzej-lukowski.json"
     ],
     "amp": [],
     "browserbase": [
@@ -709,7 +720,11 @@
       "data/review-texts/oh-mary-west-end-2025/variety--brent-lang.json",
       "oh-mary-west-end-2025/variety--brent-lang.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oh-mary-west-end-2025/deadline--greg-evans.json"
+      "oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+      "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -791,7 +806,7 @@
     ]
   },
   "startTime": "2026-07-15T23:24:51.681Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/cititour--brian-scott-lipton.json",
   "log": [
     {
       "t": "2026-07-16T06:30:52.366Z",
@@ -922,6 +937,28 @@
     },
     {
       "t": "2026-07-16T11:30:12.186Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-16T12:12:43.768Z",
+      "event": "bb-session",
+      "session": "dfc0e5c6",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-16T12:12:44.654Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-16T12:13:00.495Z",
+      "event": "bb-session",
+      "session": "5beaff9a",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-16T12:13:01.269Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }

@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-07-16T12:12:19.555Z",
-  "processed": 79,
-  "failed": 552,
-  "successRate": "12.5%",
+  "updatedAt": "2026-07-16T12:13:46.802Z",
+  "processed": 82,
+  "failed": 559,
+  "successRate": "12.8%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 49,
     "amp": 0,
-    "browserbase": 22,
+    "browserbase": 26,
     "directCookies": 1,
     "scrapingbee": 10,
     "brightdata": 4,
     "archiveToday": 41,
     "archive": 11
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-07-16T07:01:51.164Z",
-      "event": "bb-session",
-      "session": "25d5b9e2",
-      "url": "https://www.thetimes.com/uk/scotland/article/edinburgh-theatre-review-oresteia-t"
-    },
-    {
-      "t": "2026-07-16T07:01:52.189Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-16T07:03:06.399Z",
-      "event": "bb-session",
-      "session": "79604f60",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david"
-    },
-    {
-      "t": "2026-07-16T07:03:07.326Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
     {
       "t": "2026-07-16T07:06:49.666Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-07-16T11:30:12.186Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-16T12:12:43.768Z",
+      "event": "bb-session",
+      "session": "dfc0e5c6",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-16T12:12:44.654Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-16T12:13:00.495Z",
+      "event": "bb-session",
+      "session": "5beaff9a",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-16T12:13:01.269Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
