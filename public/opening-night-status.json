@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-15T15:31:03.080Z",
+  "generatedAt": "2026-07-15T23:48:33.652Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -451,27 +451,27 @@
       "status": "open",
       "slug": "the-oresteia-west-end",
       "thumbnail": "/images/shows/the-oresteia-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 80,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 3,
+      "siteScore": 75.88,
+      "liveScore": 76,
+      "scoreDrift": 0.12000000000000455,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
-      "t1": 1,
-      "t2": 1,
+      "total": 7,
+      "t1": 4,
+      "t2": 3,
       "t3": 0,
-      "positive": 2,
-      "mixed": 0,
+      "positive": 5,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
-          "T1:0/3",
-          "hi-conf:0/6"
+          "7/8 total",
+          "T1:2/3",
+          "hi-conf:2/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -485,23 +485,11 @@
       },
       "missingT1": [
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
         {
           "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
@@ -549,6 +537,66 @@
           "t3": 0,
           "p": 2,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-15T16:31:46.590Z",
+          "rc": 3,
+          "s": 85,
+          "t1": 1,
+          "t2": 2,
+          "t3": 0,
+          "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-15T19:00:05.318Z",
+          "rc": 4,
+          "s": 78,
+          "t1": 2,
+          "t2": 2,
+          "t3": 0,
+          "p": 3,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-15T19:41:51.164Z",
+          "rc": 4,
+          "s": 77,
+          "t1": 2,
+          "t2": 2,
+          "t3": 0,
+          "p": 3,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-15T20:12:42.884Z",
+          "rc": 6,
+          "s": 79.1,
+          "t1": 3,
+          "t2": 3,
+          "t3": 0,
+          "p": 5,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-15T20:43:02.624Z",
+          "rc": 7,
+          "s": 75.88,
+          "t1": 4,
+          "t2": 3,
+          "t3": 0,
+          "p": 5,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }

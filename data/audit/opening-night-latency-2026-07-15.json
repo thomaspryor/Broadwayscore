@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-15T14:57:13.339Z",
+  "generatedAt": "2026-07-15T22:38:05.194Z",
   "date": "2026-07-15",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 226888,
+  "entryCount": 243199,
   "shows": [
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -66,12 +66,12 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 37326381,
+        "collected-to-scored": 199030096,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -6396,7 +6396,7 @@
     },
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6456,7 +6456,7 @@
     },
     {
       "showId": "the-oresteia-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
