@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-16T06:56:58.458Z",
+  "timestamp": "2026-07-16T07:51:22.312Z",
   "stats": {
-    "totalReviews": 40090,
-    "alreadyFlagged": 17567,
+    "totalReviews": 40097,
+    "alreadyFlagged": 17563,
     "dateGuardCatches": 50,
     "directorMismatch": 913,
     "tvFilmSignals": 1099,
     "londonSignals": 744,
-    "offBroadwaySignals": 470,
+    "offBroadwaySignals": 469,
     "yearMismatch": 85,
-    "noPublishDate": 3615
+    "noPublishDate": 3622
   },
   "findings": [
     {
@@ -42497,20 +42497,6 @@
       "score": 90,
       "publishDate": "2026-07-14",
       "url": "https://newyorktheater.me/2026/07/13/the-potluck-review/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "the-potluck-off-broadway-2026",
-      "file": "nytimes--helen-shaw.json",
-      "score": 62,
-      "publishDate": "2026-07-15",
-      "url": "https://www.nytimes.com/2026/07/15/theater/the-potluck-review-cesar-alvarez.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
