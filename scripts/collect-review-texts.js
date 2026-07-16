@@ -5879,11 +5879,14 @@ async function ensureBrowserHealthy() {
     }
 
     console.log(`  → Restarting browser (crash #${browserCrashCount})...`);
-    await closeBrowser();
+    // Bounded — same hang class as the REVIEW_TIMEOUT recovery path (see
+    // comment there); this is the higher-traffic sibling, hit by every
+    // Tier-1 Playwright call via fetchWithPlaywright().
+    try { await withTimeout(closeBrowser(), 30000, 'closeBrowser'); } catch (_) {}
     await sleep(2000); // Brief pause before restart
 
     try {
-      await setupBrowser();
+      await withTimeout(setupBrowser(), 60000, 'setupBrowser');
       console.log(`  ✓ Browser restarted successfully`);
       return true;
     } catch (restartError) {
@@ -6003,11 +6006,12 @@ async function processReview(review) {
       page = await context.newPage();
     }
   } catch (e) {
-    // Browser likely crashed — try full restart before giving up
+    // Browser likely crashed — try full restart before giving up.
+    // Bounded — same hang class as ensureBrowserHealthy()/REVIEW_TIMEOUT.
     console.log(`  ⚠ Could not create fresh page: ${e.message}`);
     try {
-      await closeBrowser();
-      await setupBrowser();
+      await withTimeout(closeBrowser(), 30000, 'closeBrowser');
+      await withTimeout(setupBrowser(), 60000, 'setupBrowser');
     } catch (restartErr) {
       console.log(`  ⚠ Browser restart failed: ${restartErr.message}`);
     }
@@ -6812,9 +6816,13 @@ async function main() {
       } catch (e) {
         if (e.message === 'REVIEW_TIMEOUT') {
           console.log(`  ✗ TIMEOUT: Review took >${CONFIG.reviewTimeout/1000}s - skipping (${review.outlet} - ${review.critic})`);
-          // Kill and restart browser to clear hung state
-          try { await closeBrowser(); } catch(_) {}
-          try { await setupBrowser(); } catch(_) {}
+          // Kill and restart browser to clear hung state. Bounded — a hung
+          // browser.close()/launch() (zombie process, exhausted resources after
+          // many restarts) otherwise stalls the whole run indefinitely with 0%
+          // CPU (observed 2026-07-15: TB recovery run stuck 7+ hours on this
+          // exact path after a REVIEW_TIMEOUT with no further progress).
+          try { await withTimeout(closeBrowser(), 30000, 'closeBrowser'); } catch(_) {}
+          try { await withTimeout(setupBrowser(), 60000, 'setupBrowser'); } catch(_) {}
         }
         result = { success: false, error: e.message };
       }
