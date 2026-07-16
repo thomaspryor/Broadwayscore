@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-16T06:57:18.312Z",
+    "generatedAt": "2026-07-16T07:16:58.674Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,22 +9,22 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 6,
-    "exemptCount": 13,
+    "exemptCount": 14,
     "coveredCount": 37,
-    "highChurnTracked": 56
+    "highChurnTracked": 57
   },
   "flagged": [
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 108
+      "churn": 109
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 89
+      "churn": 88
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 89
+      "churn": 88
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -41,24 +41,24 @@
   ],
   "exempt": [
     {
-      "path": "data/llm-scoring-runs.json",
+      "path": "public/data/admin/critic-coverage.json",
       "churn": 112
     },
     {
-      "path": "public/data/admin/critic-coverage.json",
-      "churn": 111
-    },
-    {
       "path": "public/data/admin/locks.json",
-      "churn": 111
+      "churn": 112
     },
     {
       "path": "public/data/mobile-shows.json",
+      "churn": 112
+    },
+    {
+      "path": "data/llm-scoring-runs.json",
       "churn": 111
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 105
+      "churn": 104
     },
     {
       "path": "public/opening-night-status.json",
@@ -66,7 +66,7 @@
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 83
+      "churn": 84
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -74,14 +74,14 @@
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
-      "churn": 65
-    },
-    {
-      "path": "public/data/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 45
+      "churn": 64
     },
     {
       "path": "data/show-score-urls.json",
+      "churn": 44
+    },
+    {
+      "path": "public/data/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
       "churn": 44
     },
     {
@@ -91,22 +91,26 @@
     {
       "path": "public/data/shows/birthright-off-broadway-2026.json",
       "churn": 34
+    },
+    {
+      "path": "public/data/shows/the-oresteia-west-end-2026.json",
+      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 984,
+      "churn": 980,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 965,
+      "churn": 961,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 668,
+      "churn": 667,
       "mergeAttr": "ours"
     },
     {
@@ -126,12 +130,7 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 163,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 119,
+      "churn": 164,
       "mergeAttr": "ours"
     },
     {
@@ -140,8 +139,13 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/collection-state/scoring-progress.json",
+      "churn": 118,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 111,
+      "churn": 112,
       "mergeAttr": "ours"
     },
     {
@@ -240,18 +244,18 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/relics-west-end-2026.json",
-      "churn": 40,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/poller-backoff/the-potluck-off-broadway-2026.json",
       "churn": 40,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/relics-west-end-2026.json",
+      "churn": 39,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/poller-backoff/the-truth-a-comedy-by-florian-zeller-west-end-2026.json",
-      "churn": 40,
+      "churn": 39,
       "mergeAttr": "ours"
     },
     {
