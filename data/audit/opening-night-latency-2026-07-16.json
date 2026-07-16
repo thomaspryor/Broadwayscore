@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-16T13:58:00.657Z",
+  "generatedAt": "2026-07-16T15:48:53.826Z",
   "date": "2026-07-16",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 267823,
+  "entryCount": 269007,
   "shows": [
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -36,7 +36,7 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 23,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -171,12 +171,12 @@
     },
     {
       "showId": "sinatra-the-musical-west-end-2026",
-      "reviewCount": 32,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 32161481,
+        "collected-to-scored": 16616222,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -221,7 +221,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 413932225,
+        "collected-to-scored": 413897380,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -396,12 +396,12 @@
     },
     {
       "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1399614,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -561,7 +561,7 @@
     },
     {
       "showId": "cats-the-jellicle-ball-2026",
-      "reviewCount": 30,
+      "reviewCount": 29,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6416,7 +6416,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1089811,
+        "collected-to-scored": 1208903,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
