@@ -42,7 +42,10 @@
     "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
     "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
     "cats-the-jellicle-ball-2026/nysr--unknown.json",
-    "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json"
+    "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "tender-off-west-end-2026/afridiziak-theatre-news--unknown.json",
@@ -558,7 +561,14 @@
     "cats-the-jellicle-ball-2026/newsday--linda-winer.json",
     "cats-the-jellicle-ball-2026/huffpost--david-finkle.json",
     "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
-    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json"
+    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
+    "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json"
   ],
   "failed": [],
   "skipped": [],
@@ -596,11 +606,20 @@
       "proof-2026/playbill--unknown.json",
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
       "cats-the-jellicle-ball-2026/nysr--unknown.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -654,7 +673,7 @@
     ]
   },
   "startTime": "2026-07-15T23:24:51.681Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+  "lastProcessed": "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
   "log": [
     {
       "t": "2026-07-16T06:30:52.366Z",
@@ -666,6 +685,17 @@
       "t": "2026-07-16T06:30:52.949Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-16T06:40:56.267Z",
+      "event": "bb-session",
+      "session": "bc216237",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-07-16T06:40:57.056Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
