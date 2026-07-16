@@ -1,7 +1,107 @@
 {
-  "generatedAt": "2026-07-15T23:48:33.652Z",
+  "generatedAt": "2026-07-16T05:06:15.510Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "the-smile-of-her-off-west-end-2026",
+      "title": "The Smile Of Her",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-07-16",
+      "status": "previews",
+      "slug": "the-smile-of-her-off-west-end",
+      "thumbnail": "/images/shows/the-smile-of-her-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    },
     {
       "id": "the-whoopi-monologues-off-broadway-2026",
       "title": "The Whoopi Monologues",
@@ -489,10 +589,6 @@
           "isDualMarket": true
         },
         {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
           "name": "Daily Mail",
           "isDualMarket": true
         }
@@ -804,31 +900,6 @@
   ],
   "upcoming": [
     {
-      "id": "the-smile-of-her-off-west-end-2026",
-      "title": "The Smile Of Her",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-07-16",
-      "status": "previews",
-      "slug": "the-smile-of-her-off-west-end",
-      "thumbnail": "/images/shows/the-smile-of-her-off-west-end-2026/thumbnail.jpg",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
-    {
       "id": "loves-labours-lost-globe-west-end-2026",
       "title": "Love's Labour's Lost - Globe",
       "market": "west-end",
@@ -838,7 +909,7 @@
       "status": "upcoming",
       "slug": "loves-labours-lost-globe-west-end",
       "thumbnail": "/images/shows/loves-labours-lost-globe-west-end-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -863,7 +934,7 @@
       "status": "previews",
       "slug": "trainspotting-the-musical-west-end",
       "thumbnail": "/images/shows/trainspotting-the-musical-west-end-2026/thumbnail.jpg",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -875,6 +946,45 @@
         "warnings": 0,
         "unknowns": 2,
         "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "hugo-marchand-artists-at-the-center-off-broadway-2026",
+      "title": "Hugo Marchand | Artists at the Center",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "special",
+      "openingDate": "2026-07-23",
+      "status": "upcoming",
+      "slug": "hugo-marchand-artists-at-the-center-off-broadway",
+      "thumbnail": "/images/shows/hugo-marchand-artists-at-the-center-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
       },
       "preflight": false
     }

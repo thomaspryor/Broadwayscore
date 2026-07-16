@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-15T23:48:28.838Z",
+  "timestamp": "2026-07-16T05:06:08.526Z",
   "stats": {
-    "totalReviews": 40083,
-    "alreadyFlagged": 17566,
+    "totalReviews": 40088,
+    "alreadyFlagged": 17572,
     "dateGuardCatches": 50,
-    "directorMismatch": 912,
+    "directorMismatch": 913,
     "tvFilmSignals": 1099,
     "londonSignals": 745,
     "offBroadwaySignals": 469,
     "yearMismatch": 85,
-    "noPublishDate": 3617
+    "noPublishDate": 3614
   },
   "findings": [
     {
@@ -14605,6 +14605,20 @@
       ]
     },
     {
+      "showId": "long-days-journey-into-night-2016",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": 80,
+      "publishDate": "May 2, 2016",
+      "url": "https://www.talkinbroadway.com/world/LongDays.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert falls\" from long-days-journey-into-night-2003"
+        }
+      ]
+    },
+    {
       "showId": "lucky-guy-2013",
       "file": "variety--marilyn-stasio.json",
       "score": 78,
@@ -27769,7 +27783,7 @@
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "newsday--unknown.json",
-      "score": null,
+      "score": 55,
       "publishDate": null,
       "url": "https://www.newsday.com/news/new-york/theater-review-who-s-afraid-of-virginia-woolf-2-5-stars-m92773",
       "findings": [
