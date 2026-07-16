@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-16T08:02:21.691Z",
+  "timestamp": "2026-07-16T09:04:39.463Z",
   "stats": {
-    "totalReviews": 40097,
-    "alreadyFlagged": 17563,
+    "totalReviews": 40098,
+    "alreadyFlagged": 17564,
     "dateGuardCatches": 50,
     "directorMismatch": 913,
     "tvFilmSignals": 1099,
-    "londonSignals": 744,
+    "londonSignals": 746,
     "offBroadwaySignals": 469,
     "yearMismatch": 85,
-    "noPublishDate": 3623
+    "noPublishDate": 3617
   },
   "findings": [
     {
@@ -42208,6 +42208,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-oresteia-west-end-2026",
+      "file": "london-unattached--madeleine-morrow.json",
+      "score": 96,
+      "publishDate": "2026-07-15",
+      "url": "https://www.london-unattached.com/the-oresteia-the-bridge-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-oresteia-west-end-2026",
+      "file": "theatre-vibe--lizzie-loveridge.json",
+      "score": 48,
+      "publishDate": null,
+      "url": "https://theatrevibe.co.uk/2026/07/15/review-the-oresteia-bridge-theatre-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
