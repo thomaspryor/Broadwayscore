@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-16T05:06:08.526Z",
+  "timestamp": "2026-07-16T06:56:58.458Z",
   "stats": {
-    "totalReviews": 40088,
-    "alreadyFlagged": 17572,
+    "totalReviews": 40090,
+    "alreadyFlagged": 17567,
     "dateGuardCatches": 50,
     "directorMismatch": 913,
     "tvFilmSignals": 1099,
-    "londonSignals": 745,
-    "offBroadwaySignals": 469,
+    "londonSignals": 744,
+    "offBroadwaySignals": 470,
     "yearMismatch": 85,
-    "noPublishDate": 3614
+    "noPublishDate": 3615
   },
   "findings": [
     {
@@ -8111,7 +8111,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 74,
+      "score": 79,
       "publishDate": "2024-09-27",
       "url": "https://www.theguardian.com/stage/2024/sep/27/giant-review-royal-court-theatre-mark-rosenblatt-london",
       "findings": [
@@ -8182,7 +8182,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "standard--tim-bano.json",
-      "score": 94,
+      "score": 95,
       "publishDate": "2024-09-27",
       "url": "https://www.standard.co.uk/culture/theatre/giant-royal-court-review-john-lithgow-romola-garai-b1184513.html",
       "findings": [
@@ -26062,7 +26062,7 @@
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 88,
+      "score": 97,
       "publishDate": "2022-03-31",
       "url": null,
       "findings": [
@@ -42507,6 +42507,20 @@
     },
     {
       "showId": "the-potluck-off-broadway-2026",
+      "file": "nytimes--helen-shaw.json",
+      "score": 62,
+      "publishDate": "2026-07-15",
+      "url": "https://www.nytimes.com/2026/07/15/theater/the-potluck-review-cesar-alvarez.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-potluck-off-broadway-2026",
       "file": "thewrap--robert-hofler.json",
       "score": 77,
       "publishDate": "2026-07-14",
@@ -43899,19 +43913,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "white-rabbit-red-rabbit-west-end-2026",
-      "file": "broadwayworld--mica-blackwell.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
