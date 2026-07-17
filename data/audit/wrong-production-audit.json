@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-17T07:11:59.266Z",
+  "timestamp": "2026-07-17T08:28:38.737Z",
   "stats": {
-    "totalReviews": 40141,
-    "alreadyFlagged": 17568,
+    "totalReviews": 40143,
+    "alreadyFlagged": 17569,
     "dateGuardCatches": 50,
     "directorMismatch": 913,
     "tvFilmSignals": 1099,
-    "londonSignals": 747,
+    "londonSignals": 748,
     "offBroadwaySignals": 473,
     "yearMismatch": 85,
-    "noPublishDate": 3631
+    "noPublishDate": 3632
   },
   "findings": [
     {
@@ -34516,6 +34516,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "file": "observer--kate-kellaway.json",
+      "publishDate": "2026-07-17",
+      "url": "https://observer.co.uk/culture/theatre/article/jesus-christ-superstar-sam-ryders-voice-is-his-salvation",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
