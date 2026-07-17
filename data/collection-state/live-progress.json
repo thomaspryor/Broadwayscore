@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-17T06:27:12.526Z",
-  "processed": 82,
-  "failed": 960,
+  "updatedAt": "2026-07-17T06:29:22.992Z",
+  "processed": 83,
+  "failed": 969,
   "successRate": "7.9%",
   "tierBreakdown": {
     "playwright": 50,
     "amp": 0,
-    "browserbase": 13,
+    "browserbase": 15,
     "directCookies": 1,
     "scrapingbee": 9,
     "brightdata": 7,
     "archiveToday": 23,
     "archive": 10
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-07-17T00:43:13.296Z",
@@ -100,6 +100,17 @@
     },
     {
       "t": "2026-07-17T05:48:32.146Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-17T06:29:07.614Z",
+      "event": "bb-session",
+      "session": "debd4f3f",
+      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
+    },
+    {
+      "t": "2026-07-17T06:29:08.672Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
