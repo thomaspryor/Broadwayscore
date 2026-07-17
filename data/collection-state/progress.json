@@ -18,7 +18,8 @@
     "the-oresteia-west-end-2026/artsdesk--unknown.json",
     "the-jonathan-larson-project-off-west-end-2026/british-theatre--unknown.json",
     "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
-    "allegra-west-end-2026/whatsonstage--aliya-al.json"
+    "allegra-west-end-2026/whatsonstage--aliya-al.json",
+    "jesus-christ-superstar-west-end-2026/observer--kate-kellaway.json"
   ],
   "failed": [
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
@@ -48,7 +49,16 @@
     "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
     "tender-off-west-end-2026/thestage--dave-fargnoli.json",
     "tender-off-west-end-2026/theupcoming--unknown.json",
-    "tender-off-west-end-2026/times-uk--richard-morrison.json"
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+    "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
+    "jesus-christ-superstar-west-end-2026/newsday--linda-winer.json",
+    "jesus-christ-superstar-west-end-2026/newsday--unknown.json",
+    "jesus-christ-superstar-west-end-2026/oxfordshire-guardian--samuel-macgregor.json",
+    "jesus-christ-superstar-west-end-2026/theatre-reviews-limited--unknown.json",
+    "jesus-christ-superstar-west-end-2026/about-entertainment--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -67,14 +77,16 @@
       "the-oresteia-west-end-2026/all-that-dazzles-uk--unknown.json",
       "the-oresteia-west-end-2026/artsdesk--unknown.json",
       "the-jonathan-larson-project-off-west-end-2026/british-theatre--unknown.json",
-      "allegra-west-end-2026/whatsonstage--aliya-al.json"
+      "allegra-west-end-2026/whatsonstage--aliya-al.json",
+      "jesus-christ-superstar-west-end-2026/observer--kate-kellaway.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
       "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
       "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
-      "data/review-texts/the-oresteia-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -93,7 +105,7 @@
     "archive": []
   },
   "startTime": "2026-07-17T10:55:37.854Z",
-  "lastProcessed": "tender-off-west-end-2026/times-uk--richard-morrison.json",
+  "lastProcessed": "jesus-christ-superstar-west-end-2026/about-entertainment--charles-isherwood.json",
   "log": [
     {
       "t": "2026-07-17T11:47:35.104Z",
@@ -125,6 +137,17 @@
     },
     {
       "t": "2026-07-17T11:57:59.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-17T12:03:22.820Z",
+      "event": "bb-session",
+      "session": "f89f5c0a",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-17T12:03:23.301Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
