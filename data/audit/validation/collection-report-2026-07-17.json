@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-07-17T06:43:42.772Z",
+  "runDate": "2026-07-17T06:47:42.707Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "allegra-west-end-2026",
+    "showFilter": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 0,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -35,13 +35,13 @@
     "tier1_5Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 0,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -50,14 +50,13 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "allegra-west-end-2026/whatsonstage--aliya-al.json"
+  "processed": [],
+  "failed": [
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json"
   ],
-  "failed": [],
   "tierDetails": {
-    "playwright": [
-      "allegra-west-end-2026/whatsonstage--aliya-al.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
