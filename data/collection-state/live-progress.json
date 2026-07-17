@@ -1,18 +1,63 @@
 {
-  "updatedAt": "2026-07-17T10:58:01.685Z",
-  "processed": 0,
-  "failed": 7,
-  "successRate": "0%",
+  "updatedAt": "2026-07-17T12:04:08.422Z",
+  "processed": 20,
+  "failed": 37,
+  "successRate": "35.1%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 16,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
+    "browserbase": 5,
+    "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 0,
+    "brightdata": 2,
+    "archiveToday": 4,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-07-17T11:47:35.104Z",
+      "event": "bb-session",
+      "session": "c86b1f38",
+      "url": "https://www.hollywoodreporter.com/lifestyle/style/loves-labours-lost-theater-rev"
+    },
+    {
+      "t": "2026-07-17T11:47:35.516Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-17T11:56:22.908Z",
+      "event": "bb-session",
+      "session": "8a503fe5",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-oresteia-review-dav"
+    },
+    {
+      "t": "2026-07-17T11:56:23.377Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-07-17T11:57:58.638Z",
+      "event": "bb-session",
+      "session": "9b719e07",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david"
+    },
+    {
+      "t": "2026-07-17T11:57:59.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-17T12:03:22.820Z",
+      "event": "bb-session",
+      "session": "f89f5c0a",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-17T12:03:23.301Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
