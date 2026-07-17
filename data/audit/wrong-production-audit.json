@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-17T11:39:46.783Z",
+  "timestamp": "2026-07-17T11:52:23.884Z",
   "stats": {
-    "totalReviews": 40165,
-    "alreadyFlagged": 17574,
+    "totalReviews": 40169,
+    "alreadyFlagged": 17572,
     "dateGuardCatches": 50,
     "directorMismatch": 913,
     "tvFilmSignals": 1100,
     "londonSignals": 748,
-    "offBroadwaySignals": 472,
+    "offBroadwaySignals": 473,
     "yearMismatch": 85,
-    "noPublishDate": 3635
+    "noPublishDate": 3642
   },
   "findings": [
     {
@@ -42582,6 +42582,19 @@
       "score": 63,
       "publishDate": "2026-07-15",
       "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-potluck-review-cesar-alvarez",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-potluck-off-broadway-2026",
+      "file": "one-minute-critic--unknown.json",
+      "publishDate": "2026-07-15",
+      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
