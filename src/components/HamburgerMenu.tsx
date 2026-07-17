@@ -41,15 +41,31 @@ export default function HamburgerMenu({
 
   return (
     <>
-      {/* Hamburger trigger button */}
+      {/* Hamburger trigger button. On phones a signed-in user sees their
+          avatar here instead of the lines — the standalone header avatar is
+          desktop-only (three 44px targets don't fit a phone header; owner
+          report, 2026-07-17). The menu carries My Shows / Sign in either way. */}
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="p-2 text-gray-400 hover:text-white transition-colors"
+        className="p-1.5 sm:p-2 shrink-0 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
         aria-label="Open menu"
         aria-expanded={isOpen}
       >
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        {isAuthenticated && (
+          profile?.avatar_url ? (
+            <img
+              src={profile.avatar_url}
+              alt=""
+              className="sm:hidden w-7 h-7 rounded-full border border-white/20"
+            />
+          ) : (
+            <span className="sm:hidden w-7 h-7 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-xs">
+              {(profile?.display_name || email || '?').charAt(0).toUpperCase()}
+            </span>
+          )
+        )}
+        <svg className={`w-5 h-5 ${isAuthenticated ? 'hidden sm:block' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
