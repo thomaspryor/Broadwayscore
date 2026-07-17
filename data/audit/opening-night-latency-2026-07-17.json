@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-17T16:41:47.910Z",
+  "generatedAt": "2026-07-17T17:41:10.642Z",
   "date": "2026-07-17",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 168553,
+  "entryCount": 170899,
   "shows": [
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
@@ -71,7 +71,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1213225,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -126,7 +126,7 @@
     },
     {
       "showId": "sinatra-the-musical-west-end-2026",
-      "reviewCount": 34,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -591,12 +591,12 @@
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1261683,
+        "collected-to-scored": 1208903,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
