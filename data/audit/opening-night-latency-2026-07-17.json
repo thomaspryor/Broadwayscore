@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-17T11:46:14.225Z",
+  "generatedAt": "2026-07-17T12:43:16.333Z",
   "date": "2026-07-17",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 157986,
+  "entryCount": 162698,
   "shows": [
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
@@ -36,7 +36,7 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 25,
+      "reviewCount": 23,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -131,7 +131,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1070963,
+        "collected-to-scored": 1132968,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -591,7 +591,7 @@
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -711,7 +711,7 @@
     },
     {
       "showId": "the-oresteia-west-end-2026",
-      "reviewCount": 14,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -771,7 +771,7 @@
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1371,7 +1371,7 @@
     },
     {
       "showId": "heathers-the-musical-off-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1386,7 +1386,7 @@
     },
     {
       "showId": "the-smile-of-her-off-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1402,6 +1402,21 @@
     {
       "showId": "shifters-off-broadway-2026",
       "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026",
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
