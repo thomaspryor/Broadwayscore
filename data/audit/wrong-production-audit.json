@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-17T18:05:57.814Z",
+  "timestamp": "2026-07-17T18:22:46.814Z",
   "stats": {
     "totalReviews": 40185,
-    "alreadyFlagged": 17580,
+    "alreadyFlagged": 17581,
     "dateGuardCatches": 50,
     "directorMismatch": 913,
-    "tvFilmSignals": 1100,
-    "londonSignals": 750,
+    "tvFilmSignals": 1101,
+    "londonSignals": 751,
     "offBroadwaySignals": 474,
     "yearMismatch": 85,
-    "noPublishDate": 3644
+    "noPublishDate": 3640
   },
   "findings": [
     {
@@ -24336,6 +24336,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-oresteia-west-end-2026",
+      "file": "broadwayworld--alexander-cohen.json",
+      "score": null,
+      "publishDate": "2026-07-15",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
