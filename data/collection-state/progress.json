@@ -1,42 +1,28 @@
 {
-  "processed": [],
+  "processed": [
+    "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
+  ],
   "failed": [
-    "tender-off-west-end-2026/afridiziak-theatre-news--unknown.json",
-    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
-    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
-    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
-    "tender-off-west-end-2026/theupcoming--unknown.json",
-    "tender-off-west-end-2026/times-uk--richard-morrison.json",
-    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
-    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
+    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
+    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
+    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
+    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "amp": [],
-    "browserbase": [
-      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+    "playwright": [
+      "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
     ],
+    "amp": [],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-17T16:53:58.639Z",
-  "lastProcessed": "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
-  "log": [
-    {
-      "t": "2026-07-17T16:55:41.969Z",
-      "event": "bb-session",
-      "session": "6a646df5",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
-    },
-    {
-      "t": "2026-07-17T16:55:42.483Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    }
-  ]
+  "startTime": "2026-07-17T16:55:17.377Z",
+  "lastProcessed": "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+  "log": []
 }
