@@ -1,48 +1,48 @@
 {
-  "runDate": "2026-07-17T06:49:46.211Z",
+  "runDate": "2026-07-17T06:52:08.473Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "dukes-off-broadway-2026",
+    "showFilter": "the-jonathan-larson-project-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 3,
+    "processed": 1,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
     "tier3Attempts": 1,
-    "tier3Success": 0,
+    "tier3Success": 1,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 0,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -50,21 +50,26 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+  ],
   "failed": [
-    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
-    "dukes-off-broadway-2026/theatermania--unknown.json",
-    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
+    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
+    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
+    "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "data/review-texts/the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
