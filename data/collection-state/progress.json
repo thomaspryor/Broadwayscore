@@ -82,7 +82,8 @@
     "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
     "hadestown-west-end-2024/columbus-dispatch--unknown.json",
     "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
-    "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json"
+    "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+    "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json"
   ],
   "failed": [
     "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
@@ -1053,7 +1054,16 @@
     "stranger-things-the-first-shadow-west-end-2023/variety--ellise-shafer.json",
     "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
     "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
-    "stranger-things-the-first-shadow-west-end-2023/broadwaynews--brittani-samuel.json"
+    "stranger-things-the-first-shadow-west-end-2023/broadwaynews--brittani-samuel.json",
+    "stranger-things-the-first-shadow-west-end-2023/nydailynews--chris-jones.json",
+    "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
+    "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
+    "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
+    "stranger-things-the-first-shadow-west-end-2023/cititour--brian-scott-lipton.json",
+    "stranger-things-the-first-shadow-west-end-2023/amny--matt-windman.json",
+    "stranger-things-the-first-shadow-west-end-2023/chicagotribune--chris-jones.json",
+    "stranger-things-the-first-shadow-west-end-2023/dailybeast--tim-teeman.json",
+    "stranger-things-the-first-shadow-west-end-2023/latimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1125,7 +1135,9 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
-      "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json"
+      "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -1198,7 +1210,7 @@
     ]
   },
   "startTime": "2026-07-16T18:02:53.885Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/latimes--unknown.json",
   "log": [
     {
       "t": "2026-07-17T00:43:13.296Z",
@@ -1296,6 +1308,17 @@
     },
     {
       "t": "2026-07-17T06:29:08.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-17T06:29:28.553Z",
+      "event": "bb-session",
+      "session": "8d11a22c",
+      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
+    },
+    {
+      "t": "2026-07-17T06:29:29.409Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
