@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-07-17T09:59:34.552Z",
+  "runDate": "2026-07-17T10:58:08.073Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "loves-labours-lost-globe-west-end-2026",
+    "showFilter": "los-soles-truncos-off-broadway-2025,la-llamada-off-broadway-2024,drunk-romeo-and-juliet-off-broadway-2025,la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024,drunk-shakespeare-off-broadway-2022,age-is-a-feeling-off-broadway-2024,austentatious-an-improvised-jane-austen-novel-west-end-2025,chamber-magic-off-broadway-2022,milk-and-honey-amt-theater-off-broadway-2026,why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 1,
+    "failed": 7,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -41,18 +41,24 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 1,
+    "totalFailed": 7,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 7,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [],
   "failed": [
-    "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json"
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--brent-lang.json"
   ],
   "tierDetails": {
     "playwright": [],
