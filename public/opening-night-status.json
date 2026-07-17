@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T11:52:28.857Z",
+  "generatedAt": "2026-07-17T12:17:05.547Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,98 +12,6 @@
       "status": "open",
       "slug": "loves-labours-lost-globe-west-end",
       "thumbnail": "/images/shows/loves-labours-lost-globe-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
-      "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
-        ],
-        "highConfidence": 0,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ]
-    },
-    {
-      "id": "the-smile-of-her-off-west-end-2026",
-      "title": "The Smile Of Her",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-07-16",
-      "status": "open",
-      "slug": "the-smile-of-her-off-west-end",
-      "thumbnail": "/images/shows/the-smile-of-her-off-west-end-2026/thumbnail.jpg",
       "siteScore": null,
       "liveScore": null,
       "scoreDrift": null,
@@ -187,6 +95,120 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    },
+    {
+      "id": "the-smile-of-her-off-west-end-2026",
+      "title": "The Smile Of Her",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-07-16",
+      "status": "open",
+      "slug": "the-smile-of-her-off-west-end",
+      "thumbnail": "/images/shows/the-smile-of-her-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 60,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 2,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 1,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 1,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:1/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-07-17T12:17:05.547Z",
+          "rc": 1,
+          "s": 60,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -647,23 +669,23 @@
       "status": "open",
       "slug": "the-oresteia-west-end",
       "thumbnail": "/images/shows/the-oresteia-west-end-2026/thumbnail.jpg",
-      "siteScore": 80.62,
-      "liveScore": 81,
-      "scoreDrift": 0.37999999999999545,
+      "siteScore": 78.6,
+      "liveScore": 79,
+      "scoreDrift": 0.4000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 17,
       "t1": 6,
-      "t2": 5,
-      "t3": 3,
-      "positive": 11,
+      "t2": 6,
+      "t3": 5,
+      "positive": 13,
       "mixed": 2,
-      "negative": 1,
+      "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 7,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -831,6 +853,18 @@
           "m": 2,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-07-17T12:17:05.547Z",
+          "rc": 17,
+          "s": 78.6,
+          "t1": 6,
+          "t2": 6,
+          "t3": 5,
+          "p": 13,
+          "m": 2,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -844,28 +878,28 @@
       "status": "open",
       "slug": "heathers-the-musical-off-west-end",
       "thumbnail": "/images/shows/heathers-the-musical-off-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 68,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 73.39,
+      "liveScore": 73,
+      "scoreDrift": -0.39000000000000057,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
+      "total": 5,
       "t1": 0,
-      "t2": 2,
-      "t3": 0,
-      "positive": 1,
-      "mixed": 1,
+      "t2": 3,
+      "t3": 2,
+      "positive": 3,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
+          "5/8 total",
           "T1:0/3",
           "T2:1/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -878,6 +912,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -951,6 +989,18 @@
           "t3": 0,
           "p": 1,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-17T12:17:05.547Z",
+          "rc": 5,
+          "s": 73.39,
+          "t1": 0,
+          "t2": 3,
+          "t3": 2,
+          "p": 3,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
