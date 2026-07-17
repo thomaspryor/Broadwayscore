@@ -1,76 +1,125 @@
 {
-  "runDate": "2026-07-17T16:57:53.526Z",
+  "runDate": "2026-07-17T18:14:31.380Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-jonathan-larson-project-off-west-end-2026",
+    "showFilter": "the-whoopi-monologues-off-broadway-2026,the-oresteia-west-end-2026,heathers-the-musical-off-west-end-2026,the-smile-of-her-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 8,
+    "failed": 13,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "38.1%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 0,
+    "brightdata": 1,
+    "archiveToday": 2,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 15,
+    "tier1Success": 8,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 2,
+    "tier2Attempts": 7,
+    "tier2Success": 3,
+    "tier3Attempts": 6,
+    "tier3Success": 4,
+    "tier3_6Attempts": 5,
+    "tier3_6Success": 2,
+    "tier4Attempts": 7,
     "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 13,
+    "scrapingBeePageCredits": 52,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.4,
+    "urlDiscoveryAttempts": 7,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
+    "the-smile-of-her-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "the-smile-of-her-off-west-end-2026/broadwayworld--stephi-wild.json",
+    "the-oresteia-west-end-2026/timeout-london--unknown.json",
+    "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
+    "heathers-the-musical-off-west-end-2026/london-theatre--olivia-rook.json",
+    "heathers-the-musical-off-west-end-2026/whatsonstage--unknown.json",
+    "the-oresteia-west-end-2026/broadwayworld--unknown.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
-    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
-    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
-    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
-    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    "the-smile-of-her-off-west-end-2026/thestage--unknown.json",
+    "heathers-the-musical-off-west-end-2026/guardian--giselle-au-nhien-nguyen.json",
+    "the-oresteia-west-end-2026/oxfordshire-guardian--unknown.json",
+    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
+    "heathers-the-musical-off-west-end-2026/thestage--unknown.json",
+    "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-oresteia-west-end-2026/british-theatre--unknown.json",
+    "the-oresteia-west-end-2026/the-recs--unknown.json",
+    "the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
+    "the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+    "the-oresteia-west-end-2026/times-uk--clive-davis.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
+      "the-smile-of-her-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+      "the-smile-of-her-off-west-end-2026/broadwayworld--stephi-wild.json",
+      "the-oresteia-west-end-2026/timeout-london--unknown.json",
+      "heathers-the-musical-off-west-end-2026/london-theatre--olivia-rook.json",
+      "heathers-the-musical-off-west-end-2026/whatsonstage--unknown.json",
+      "the-oresteia-west-end-2026/broadwayworld--unknown.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--clive-davis.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [],
+    "brightdata": [
+      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/heathers-the-musical-off-west-end-2026/thestage--unknown.json",
+      "data/review-texts/the-oresteia-west-end-2026/the-recs--unknown.json"
+    ],
     "archive": []
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "Oxfordshire Guardian": {
+      "count": 1,
+      "domain": "facebook.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-smile-of-her-off-west-end-2026/broadwayworld--stephi-wild.json",
+      "oldUrl": "https://www.broadwayworld.com/translate/de/Photos-Christine-Lahti-inTHE-SMILE-OF-HER-at-the-Marylebone-Theatre-20260716",
+      "newUrl": "https://www.broadwayworld.com/translate/pl/Photos-Christine-Lahti-inTHE-SMILE-OF-HER-at-the-Marylebone-Theatre-20260716"
+    },
+    {
+      "reviewId": "heathers-the-musical-off-west-end-2026/london-theatre--olivia-rook.json",
+      "oldUrl": "https://www.londontheatre.co.uk/reviews/heathers-review-the-cult-classic-triumphantly-returns-to-the-west-end",
+      "newUrl": "https://www.londontheatre.co.uk/reviews/heathers-the-musical-review-the-arts-at-marble-arch"
+    }
+  ]
 }

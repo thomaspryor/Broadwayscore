@@ -1,28 +1,80 @@
 {
   "processed": [
-    "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
+    "the-smile-of-her-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "the-smile-of-her-off-west-end-2026/broadwayworld--stephi-wild.json",
+    "the-oresteia-west-end-2026/timeout-london--unknown.json",
+    "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
+    "heathers-the-musical-off-west-end-2026/london-theatre--olivia-rook.json",
+    "heathers-the-musical-off-west-end-2026/whatsonstage--unknown.json",
+    "the-oresteia-west-end-2026/broadwayworld--unknown.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
-    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
-    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
-    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
-    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    "the-smile-of-her-off-west-end-2026/thestage--unknown.json",
+    "heathers-the-musical-off-west-end-2026/guardian--giselle-au-nhien-nguyen.json",
+    "the-oresteia-west-end-2026/oxfordshire-guardian--unknown.json",
+    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
+    "heathers-the-musical-off-west-end-2026/thestage--unknown.json",
+    "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-oresteia-west-end-2026/british-theatre--unknown.json",
+    "the-oresteia-west-end-2026/the-recs--unknown.json",
+    "the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
+    "the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+    "the-oresteia-west-end-2026/times-uk--clive-davis.json"
   ],
-  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
+      "the-smile-of-her-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+      "the-smile-of-her-off-west-end-2026/broadwayworld--stephi-wild.json",
+      "the-oresteia-west-end-2026/timeout-london--unknown.json",
+      "heathers-the-musical-off-west-end-2026/london-theatre--olivia-rook.json",
+      "heathers-the-musical-off-west-end-2026/whatsonstage--unknown.json",
+      "the-oresteia-west-end-2026/broadwayworld--unknown.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--clive-davis.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [],
+    "brightdata": [
+      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/heathers-the-musical-off-west-end-2026/thestage--unknown.json",
+      "data/review-texts/the-oresteia-west-end-2026/the-recs--unknown.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-07-17T16:55:17.377Z",
-  "lastProcessed": "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
-  "log": []
+  "startTime": "2026-07-17T18:00:53.399Z",
+  "lastProcessed": "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+  "log": [
+    {
+      "t": "2026-07-17T18:12:30.995Z",
+      "event": "bb-session",
+      "session": "20bfa629",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-oresteia-review-dav"
+    },
+    {
+      "t": "2026-07-17T18:12:31.410Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-07-17T18:14:01.835Z",
+      "event": "bb-session",
+      "session": "06e20147",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david"
+    },
+    {
+      "t": "2026-07-17T18:14:02.402Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
