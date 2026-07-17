@@ -14,11 +14,15 @@ export default function HeaderUserIcon() {
 
   if (!featureFlags.userAccounts) return null;
 
+  // Mobile hides this standalone control entirely: three 44px tap targets +
+  // logo + market pill can't fit a phone header, and the clipped avatar looked
+  // broken (owner report, 2026-07-17). On phones the hamburger trigger itself
+  // renders the avatar and the menu carries My Shows / Sign in.
   if (isAuthenticated) {
     return (
       <Link
         href="/my-shows"
-        className="flex items-center gap-1.5 px-2 py-1.5 text-sm text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/[0.05]"
+        className="hidden sm:flex items-center shrink-0 gap-1.5 px-2 py-1.5 text-sm text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/[0.05]"
         aria-label="My Shows"
       >
         {profile?.avatar_url ? (
@@ -43,7 +47,7 @@ export default function HeaderUserIcon() {
     <button
       type="button"
       onClick={() => { saveReturnUrl('/my-shows'); showSignIn('generic'); }}
-      className="flex items-center gap-1.5 p-2 sm:px-3.5 sm:py-1.5 rounded-lg text-gray-300 hover:text-white sm:bg-white/10 sm:border sm:border-white/15 sm:hover:bg-white/15 sm:hover:border-white/25 transition-colors text-sm font-semibold"
+      className="hidden sm:flex items-center shrink-0 gap-1.5 px-3.5 py-1.5 rounded-lg text-gray-300 hover:text-white bg-white/10 border border-white/15 hover:bg-white/15 hover:border-white/25 transition-colors text-sm font-semibold"
       aria-label="Sign in"
     >
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
