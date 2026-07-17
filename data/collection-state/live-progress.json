@@ -1,18 +1,52 @@
 {
-  "updatedAt": "2026-07-17T00:37:39.692Z",
-  "processed": 57,
-  "failed": 569,
-  "successRate": "9.1%",
+  "updatedAt": "2026-07-17T00:53:08.118Z",
+  "processed": 58,
+  "failed": 608,
+  "successRate": "8.7%",
   "tierBreakdown": {
-    "playwright": 41,
+    "playwright": 42,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 3,
     "directCookies": 1,
     "scrapingbee": 2,
     "brightdata": 5,
-    "archiveToday": 2,
+    "archiveToday": 8,
     "archive": 8
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-07-17T00:43:13.296Z",
+      "event": "bb-session",
+      "session": "32ee2cb3",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-oresteia-review-dav"
+    },
+    {
+      "t": "2026-07-17T00:43:14.322Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-07-17T00:44:50.842Z",
+      "event": "bb-session",
+      "session": "ad1b56c9",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david"
+    },
+    {
+      "t": "2026-07-17T00:44:51.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-17T00:48:03.402Z",
+      "event": "bb-session",
+      "session": "6f67ae8c",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-17T00:48:04.506Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
