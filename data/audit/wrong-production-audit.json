@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-07-17T19:26:24.264Z",
+  "timestamp": "2026-07-17T20:27:20.769Z",
   "stats": {
-    "totalReviews": 40185,
-    "alreadyFlagged": 17581,
+    "totalReviews": 40184,
+    "alreadyFlagged": 17580,
     "dateGuardCatches": 50,
     "directorMismatch": 913,
     "tvFilmSignals": 1101,
-    "londonSignals": 751,
+    "londonSignals": 750,
     "offBroadwaySignals": 474,
     "yearMismatch": 85,
     "noPublishDate": 3641
@@ -42627,7 +42627,7 @@
       "file": "one-minute-critic--steven-vargas.json",
       "score": 63,
       "publishDate": "2026-07-15",
-      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-potluck-review-cesar-alvarez",
+      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&#038;utm_medium=rss&",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -44070,19 +44070,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "white-rabbit-red-rabbit-west-end-2026",
-      "file": "broadwayworld--mica-blackwell.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
