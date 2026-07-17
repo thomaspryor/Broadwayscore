@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-17T05:47:02.654Z",
-  "processed": 61,
-  "failed": 801,
-  "successRate": "7.1%",
+  "updatedAt": "2026-07-17T05:48:51.616Z",
+  "processed": 67,
+  "failed": 805,
+  "successRate": "7.7%",
   "tierBreakdown": {
-    "playwright": 43,
+    "playwright": 45,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 13,
     "directCookies": 1,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 5,
     "archiveToday": 32,
     "archive": 8
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-07-17T00:43:13.296Z",
@@ -69,6 +69,39 @@
       "t": "2026-07-17T05:46:44.508Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-17T05:47:39.284Z",
+      "event": "bb-session",
+      "session": "ba10c991",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-17T05:47:40.286Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-17T05:48:01.543Z",
+      "event": "bb-session",
+      "session": "a0624ff0",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-17T05:48:02.431Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-17T05:48:31.299Z",
+      "event": "bb-session",
+      "session": "44451a99",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+    },
+    {
+      "t": "2026-07-17T05:48:32.146Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
