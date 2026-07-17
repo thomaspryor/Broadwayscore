@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-07-17T18:06:02.244Z",
-  "processed": 5,
-  "failed": 5,
-  "successRate": "50.0%",
+  "updatedAt": "2026-07-17T18:14:11.646Z",
+  "processed": 7,
+  "failed": 13,
+  "successRate": "35.0%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 6,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 0,
+    "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-07-17T18:12:30.995Z",
+      "event": "bb-session",
+      "session": "20bfa629",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-oresteia-review-dav"
+    },
+    {
+      "t": "2026-07-17T18:12:31.410Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-07-17T18:14:01.835Z",
+      "event": "bb-session",
+      "session": "06e20147",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david"
+    },
+    {
+      "t": "2026-07-17T18:14:02.402Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
