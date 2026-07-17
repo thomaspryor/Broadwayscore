@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T09:42:35.620Z",
+  "generatedAt": "2026-07-17T09:49:42.361Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-07-17",
-      "status": "upcoming",
+      "status": "open",
       "slug": "loves-labours-lost-globe-west-end",
       "thumbnail": "/images/shows/loves-labours-lost-globe-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -842,6 +842,116 @@
           "p": 11,
           "m": 2,
           "n": 1,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "heathers-the-musical-off-west-end-2026",
+      "title": "Heathers the Musical",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "musical",
+      "openingDate": "2026-07-14",
+      "status": "open",
+      "slug": "heathers-the-musical-off-west-end",
+      "thumbnail": "/images/shows/heathers-the-musical-off-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": 58,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 2,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 1,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 1,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-07-17T09:49:42.361Z",
+          "rc": 1,
+          "s": 58,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 0,
           "bc": "waiting"
         }
       ]
