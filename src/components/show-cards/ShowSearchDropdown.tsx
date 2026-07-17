@@ -99,7 +99,10 @@ export default function ShowSearchDropdown({
   return (
     <div className="relative">
       <div className="flex items-center gap-1.5">
-        <div className="relative">
+        {/* Mobile: full-width input at 16px — anything smaller makes iOS Safari
+            zoom the page on focus and stay zoomed after closing (owner report,
+            2026-07-17). sm+ keeps the compact 208px/13px inline style. */}
+        <div className="relative flex-1 sm:flex-none">
           <input
             ref={inputRef}
             type="text"
@@ -110,7 +113,7 @@ export default function ShowSearchDropdown({
               if (e.key === 'Enter' && results.length > 0) onSelect(results[0]);
             }}
             placeholder={placeholder}
-            className="w-40 sm:w-52 px-3 py-1.5 pl-8 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50"
+            className="w-full sm:w-52 px-3 py-2 sm:py-1.5 pl-8 text-base sm:text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50"
           />
           <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -129,7 +132,7 @@ export default function ShowSearchDropdown({
       </div>
 
       {query.length >= 2 && (
-        <div className={`absolute top-full ${align === 'right' ? 'right-0' : 'left-0'} mt-1.5 w-[calc(100vw-2rem)] sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-72 overflow-y-auto`}>
+        <div className={`absolute top-full ${align === 'right' ? 'right-0' : 'left-0'} mt-1.5 w-full min-w-[calc(100vw-2rem)] sm:min-w-0 sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-[min(18rem,60vh)] overflow-y-auto`}>
           {results.length > 0 ? results.map(show => {
             const disabled = isDisabled?.(show) ?? false;
             return (

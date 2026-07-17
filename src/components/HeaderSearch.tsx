@@ -308,7 +308,7 @@ export default function HeaderSearch() {
       {/* Mobile search button */}
       <button
         onClick={() => { ensureData(); setIsMobileOpen(true); }}
-        className="sm:hidden p-2 text-gray-400 hover:text-white transition-colors"
+        className="sm:hidden p-1.5 text-gray-400 hover:text-white transition-colors"
         aria-label="Search shows"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
