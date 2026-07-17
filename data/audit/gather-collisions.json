@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-07-15T23:18:04.411Z",
-    "showId": "jesus-christ-superstar-west-end-2026",
-    "newFile": "deadline--unknown.json",
-    "ok": false,
-    "file": "deadline--dino-ray-ramos.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2018-04-02",
-      "incomingUrl": "https://deadline.com/2021/11/james-beeks-jesus-christ-superstar-capitol-siege-pretrial-hearing-1234881575/",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-07-15T23:19:05.518Z",
     "showId": "the-guilty-west-end-2026",
     "newFile": "hollywood-reporter--unknown.json",
@@ -9370,6 +9351,21 @@
   },
   {
     "recordedAt": "2026-07-17T03:47:31.209Z",
+    "showId": "hadestown-2019",
+    "newFile": "nytimes--unknown.json",
+    "ok": false,
+    "file": "nytimes--ben-brantley.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2019-04-17T20:11:26-04:00",
+      "incomingPublishDate": "2026-07-15",
+      "diffDays": 2645,
+      "existingUrl": "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html?smtyp=cur&smid=tw-nytimesarts",
+      "incomingUrl": "https://www.nytimes.com/2026/07/15/theater/hadestown-theater-to-stream.html"
+    }
+  },
+  {
+    "recordedAt": "2026-07-17T04:36:27.208Z",
     "showId": "hadestown-2019",
     "newFile": "nytimes--unknown.json",
     "ok": false,
