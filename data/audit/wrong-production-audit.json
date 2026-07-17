@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-17T16:27:41.463Z",
+  "timestamp": "2026-07-17T16:56:24.176Z",
   "stats": {
-    "totalReviews": 40181,
-    "alreadyFlagged": 17579,
+    "totalReviews": 40184,
+    "alreadyFlagged": 17580,
     "dateGuardCatches": 50,
     "directorMismatch": 913,
     "tvFilmSignals": 1100,
-    "londonSignals": 749,
+    "londonSignals": 750,
     "offBroadwaySignals": 474,
     "yearMismatch": 85,
-    "noPublishDate": 3642
+    "noPublishDate": 3643
   },
   "findings": [
     {
@@ -31327,6 +31327,20 @@
       "score": 100,
       "publishDate": "2026-06-25",
       "url": "https://www.allthatdazzles.co.uk/post/review-cyrano-de-bergerac-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "score": 61,
+      "publishDate": "2026-07-17",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-cyrano-de-bergerac-noel-coward-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
