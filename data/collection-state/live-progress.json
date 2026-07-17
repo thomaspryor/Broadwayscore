@@ -1,20 +1,42 @@
 {
-  "updatedAt": "2026-07-17T07:23:25.279Z",
-  "processed": 90,
-  "failed": 1092,
+  "updatedAt": "2026-07-17T07:25:08.328Z",
+  "processed": 91,
+  "failed": 1101,
   "successRate": "7.6%",
   "tierBreakdown": {
     "playwright": 54,
     "amp": 0,
-    "browserbase": 20,
+    "browserbase": 19,
     "directCookies": 1,
     "scrapingbee": 10,
     "brightdata": 7,
     "archiveToday": 32,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
+    {
+      "t": "2026-07-17T00:44:50.842Z",
+      "event": "bb-session",
+      "session": "ad1b56c9",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david"
+    },
+    {
+      "t": "2026-07-17T00:44:51.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-17T00:48:03.402Z",
+      "event": "bb-session",
+      "session": "6f67ae8c",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-17T00:48:04.506Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
     {
       "t": "2026-07-17T05:46:24.202Z",
       "event": "bb-session",
@@ -93,37 +115,15 @@
       "domain": "deadline.com"
     },
     {
-      "t": "2026-07-17T07:35:21.264Z",
+      "t": "2026-07-17T07:24:50.379Z",
       "event": "bb-session",
-      "session": "2edea3f8",
-      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-oresteia-review-dav"
+      "session": "d93faa1a",
+      "url": "https://www.wsj.com/opinion/a-potluck-not-a-melting-pot-11ae25ac"
     },
     {
-      "t": "2026-07-17T07:35:21.670Z",
+      "t": "2026-07-17T07:24:51.405Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.co.uk"
-    },
-    {
-      "t": "2026-07-17T07:36:58.311Z",
-      "event": "bb-session",
-      "session": "14726fdd",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david"
-    },
-    {
-      "t": "2026-07-17T07:36:58.709Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-17T07:40:21.592Z",
-      "event": "bb-session",
-      "session": "245cf603",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
-    },
-    {
-      "t": "2026-07-17T07:40:22.012Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "wsj.com"
     }
   ]
 }
