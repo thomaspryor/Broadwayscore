@@ -655,13 +655,23 @@ function safeWriteReview(filePath, newData, options = {}) {
   // corpus file missing showId, and writers that build payloads from scratch
   // (show-not-mentioned-recovery URL updates shipped allegra-west-end-2026/
   // whatsonstage--aliya-al.json without one) can turn the whole Test Suite red
-  // with a single file. The corpus layout guarantees the parent directory name
-  // IS the show id, so derive it at the write choke point. Underscore/dot dirs
-  // (_pending etc.) are validator-excluded and keep their layout untouched.
-  if (!newData.showId) {
+  // with a single file. The corpus layout guarantees the immediate parent
+  // directory name IS the show id — including under _pending/, whose layout
+  // nests show-id dirs (_pending/{show-id}/file.json) — so derive it at the
+  // write choke point. The underscore/dot skip exists for dirs whose own name
+  // can never be a show id: test-guard dirs, tmp dirs, hidden dirs.
+  {
     const dirName = path.basename(path.dirname(filePath));
     if (dirName && !dirName.startsWith('_') && !dirName.startsWith('.')) {
-      newData.showId = dirName;
+      if (!newData.showId) {
+        newData.showId = dirName;
+      } else if (newData.showId !== dirName) {
+        // Don't auto-correct: a mismatch means the file is misfiled or carries
+        // a stale id after a move — both need eyes, not silent rewriting.
+        // rebuild groups by data.showId, so this file is being counted under a
+        // show it doesn't live in.
+        console.warn(`[review-write-guard] showId mismatch in ${path.basename(filePath)}: field says "${newData.showId}" but file lives in "${dirName}"`);
+      }
     }
   }
 
@@ -1086,6 +1096,22 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
       delete contentToWrite[field];
       if (field === 'duplicateOf') delete contentToWrite.duplicateReason;
       console.log(`[review-write-guard] stripped self-referential ${field} on rename → ${dstBasename}`);
+    }
+  }
+  // Re-stamp showId to the destination show dir. rebuild-all-reviews groups by
+  // data.showId (not by directory), so a cross-show move that keeps the source
+  // id verbatim files the review under the WRONG show — and validate-review-
+  // texts won't catch it (it derives its key from the directory). The dir name
+  // is the show id by corpus layout (same rule as safeWriteReview's backstop);
+  // skip dirs whose own name can't be a show id (test/tmp/hidden).
+  {
+    const dstDirName = path.basename(path.dirname(dstPath));
+    if (dstDirName && !dstDirName.startsWith('_') && !dstDirName.startsWith('.')
+        && contentToWrite.showId !== dstDirName) {
+      if (contentToWrite.showId) {
+        console.log(`[review-write-guard] re-stamped showId on rename: "${contentToWrite.showId}" → "${dstDirName}" (${dstBasename})`);
+      }
+      contentToWrite.showId = dstDirName;
     }
   }
   fs.writeFileSync(dstPath, JSON.stringify(contentToWrite, null, 2) + '\n');
