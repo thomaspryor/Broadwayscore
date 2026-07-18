@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-18T05:09:44.042Z",
+    "generatedAt": "2026-07-18T06:53:41.753Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -20,15 +20,15 @@
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 80
+      "churn": 90
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 80
+      "churn": 90
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 71
+      "churn": 81
     },
     {
       "path": "data/audit/we-gate-proving.json",
@@ -36,37 +36,37 @@
     },
     {
       "path": "data/audit/indexing-api-usage.json",
-      "churn": 36
+      "churn": 34
     }
   ],
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 111
+      "churn": 109
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 106
+      "churn": 104
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 100
+      "churn": 102
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 100
+      "churn": 102
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 100
+      "churn": 102
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 82
+      "churn": 83
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 81
+      "churn": 83
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -74,15 +74,15 @@
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
-      "churn": 49
-    },
-    {
-      "path": "public/data/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 47
+      "churn": 50
     },
     {
       "path": "public/data/shows/the-oresteia-west-end-2026.json",
-      "churn": 47
+      "churn": 50
+    },
+    {
+      "path": "public/data/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
+      "churn": 46
     },
     {
       "path": "data/show-score-urls.json",
@@ -90,53 +90,58 @@
     },
     {
       "path": "public/data/shows/the-potluck-off-broadway-2026.json",
-      "churn": 33
+      "churn": 34
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1044,
+      "churn": 1047,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1023,
+      "churn": 1026,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 721,
+      "churn": 724,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 668,
+      "churn": 674,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 256,
+      "churn": 259,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 256,
+      "churn": 259,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 161,
+      "churn": 163,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 113,
+      "churn": 110,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 108,
+      "churn": 109,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/verify-all-scored-state.json",
+      "churn": 102,
       "mergeAttr": "ours"
     },
     {
@@ -155,28 +160,23 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/verify-all-scored-state.json",
-      "churn": 100,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 81,
+      "churn": 83,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 81,
+      "churn": 83,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 81,
+      "churn": 83,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 74,
+      "churn": 77,
       "mergeAttr": "ours"
     },
     {
@@ -240,6 +240,11 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 35,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/poller-backoff/dukes-off-broadway-2026.json",
       "churn": 30,
       "mergeAttr": "ours"
@@ -251,11 +256,6 @@
     },
     {
       "path": "data/audit/poller-backoff/why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/browserbase-usage.json",
       "churn": 30,
       "mergeAttr": "ours"
     }
