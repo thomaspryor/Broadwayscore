@@ -691,7 +691,17 @@
     "the-oresteia-west-end-2026/the-recs--unknown.json",
     "the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
     "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
-    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json"
+    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
+    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
+    "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json",
+    "tender-off-west-end-2026/afridiziak-theatre-news--unknown.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/theupcoming--unknown.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -739,6 +749,7 @@
     "browserbase": [
       "data/review-texts/pride-west-end-2026/wsj--brian-p-kelly.json",
       "pride-west-end-2026/wsj--brian-p-kelly.json",
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
     ],
     "directCookies": [
@@ -770,7 +781,7 @@
     ]
   },
   "startTime": "2026-07-18T17:09:59.494Z",
-  "lastProcessed": "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
+  "lastProcessed": "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
   "log": [
     {
       "t": "2026-07-18T19:23:12.888Z",
@@ -821,6 +832,17 @@
       "t": "2026-07-18T23:18:10.169Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-07-18T23:23:17.643Z",
+      "event": "bb-session",
+      "session": "7f24ef58",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-18T23:23:18.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
