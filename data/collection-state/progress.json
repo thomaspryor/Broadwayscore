@@ -1,34 +1,58 @@
 {
   "processed": [
-    "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
-    "heathers-the-musical-off-west-end-2026/whatsonstage--unknown.json"
+    "the-oresteia-west-end-2026/timeout-london--unknown.json",
+    "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
   ],
   "failed": [
-    "heathers-the-musical-off-west-end-2026/guardian--giselle-au-nhien-nguyen.json",
-    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
-    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "heathers-the-musical-off-west-end-2026/thestage--unknown.json",
-    "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json",
-    "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
-    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json"
+    "the-oresteia-west-end-2026/oxfordshire-guardian--unknown.json",
+    "the-oresteia-west-end-2026/british-theatre--unknown.json",
+    "the-oresteia-west-end-2026/the-recs--unknown.json",
+    "the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
+    "the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+    "the-oresteia-west-end-2026/times-uk--clive-davis.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "heathers-the-musical-off-west-end-2026/whatsonstage--unknown.json"
+      "the-oresteia-west-end-2026/timeout-london--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json"
+      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
     ]
   },
-  "startTime": "2026-07-18T06:14:58.518Z",
-  "lastProcessed": "heathers-the-musical-off-west-end-2026/whatsonstage--unknown.json",
-  "log": []
+  "startTime": "2026-07-18T06:15:39.659Z",
+  "lastProcessed": "the-oresteia-west-end-2026/times-uk--clive-davis.json",
+  "log": [
+    {
+      "t": "2026-07-18T06:21:16.445Z",
+      "event": "bb-session",
+      "session": "8a04b1a7",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-oresteia-review-dav"
+    },
+    {
+      "t": "2026-07-18T06:21:17.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-07-18T06:22:54.791Z",
+      "event": "bb-session",
+      "session": "bd16c1e6",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david"
+    },
+    {
+      "t": "2026-07-18T06:22:55.639Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
