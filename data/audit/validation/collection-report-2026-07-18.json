@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-07-18T06:16:12.877Z",
+  "runDate": "2026-07-18T06:16:20.553Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hershey-felder-the-piano-and-me-off-broadway-2026",
+    "showFilter": "allegra-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -41,7 +41,7 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 1,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -50,12 +50,14 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
-  "failed": [
-    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
+  "processed": [
+    "allegra-west-end-2026/whatsonstage--aliya-al.json"
   ],
+  "failed": [],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "allegra-west-end-2026/whatsonstage--aliya-al.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
