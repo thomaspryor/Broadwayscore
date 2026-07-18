@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-07-18T06:16:52.043Z",
+  "runDate": "2026-07-18T06:16:35.158Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
+    "showFilter": "heathers-the-musical-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 5,
+    "processed": 2,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "22.2%"
   },
   "tierBreakdown": {
     "playwright": 1,
@@ -24,7 +24,7 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -39,29 +39,34 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 5,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 7,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 5,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 8,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
+    "heathers-the-musical-off-west-end-2026/whatsonstage--unknown.json"
+  ],
   "failed": [
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json"
+    "heathers-the-musical-off-west-end-2026/guardian--giselle-au-nhien-nguyen.json",
+    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "heathers-the-musical-off-west-end-2026/thestage--unknown.json",
+    "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json",
+    "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "failed": [],
   "tierDetails": {
     "playwright": [
-      "allegra-west-end-2026/whatsonstage--aliya-al.json"
+      "heathers-the-musical-off-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -69,8 +74,16 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json"
+    ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
+      "oldUrl": "https://www.broadwayworld.com/westend/article/Review-HEATHERS-THE-MUSICAL-sohoplace-20240529",
+      "newUrl": "https://www.broadwayworld.com/jacksonville/regional/Heathers-the-Musical-4384561"
+    }
+  ]
 }
