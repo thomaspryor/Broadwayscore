@@ -763,3 +763,35 @@ describe('safeWriteReview google-redirect URL unwrap (JCS artsdesk 2026-07-09)',
     assert.equal(written.url, weird);
   });
 });
+
+describe('showId backstop', () => {
+  // validate-review-texts --gate hard-fails on a missing showId; one such file
+  // (allegra-west-end-2026/whatsonstage--aliya-al.json, 2026-07-18) turned the
+  // Test Suite red. safeWriteReview derives showId from the show directory.
+  test('derives showId from parent directory when missing', () => {
+    const showDir = path.join(tmpDir, 'allegra-west-end-2026');
+    fs.mkdirSync(showDir);
+    const filePath = path.join(showDir, 'whatsonstage--aliya-al.json');
+    safeWriteReview(filePath, { outlet: 'WhatsOnStage', criticName: 'Aliya Al' });
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.showId, 'allegra-west-end-2026');
+  });
+
+  test('does not override an existing showId', () => {
+    const showDir = path.join(tmpDir, 'some-dir-name');
+    fs.mkdirSync(showDir);
+    const filePath = path.join(showDir, 'nyt--critic.json');
+    safeWriteReview(filePath, { showId: 'real-show-2026', outlet: 'NYT' });
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.showId, 'real-show-2026');
+  });
+
+  test('skips underscore dirs like _pending', () => {
+    const pendingDir = path.join(tmpDir, '_pending');
+    fs.mkdirSync(pendingDir);
+    const filePath = path.join(pendingDir, 'thestage--unknown.json');
+    safeWriteReview(filePath, { outlet: 'The Stage' });
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.showId, undefined);
+  });
+});

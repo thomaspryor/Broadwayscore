@@ -651,6 +651,20 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // showId backstop (2026-07-18): validate-review-texts --gate hard-fails any
+  // corpus file missing showId, and writers that build payloads from scratch
+  // (show-not-mentioned-recovery URL updates shipped allegra-west-end-2026/
+  // whatsonstage--aliya-al.json without one) can turn the whole Test Suite red
+  // with a single file. The corpus layout guarantees the parent directory name
+  // IS the show id, so derive it at the write choke point. Underscore/dot dirs
+  // (_pending etc.) are validator-excluded and keep their layout untouched.
+  if (!newData.showId) {
+    const dirName = path.basename(path.dirname(filePath));
+    if (dirName && !dirName.startsWith('_') && !dirName.startsWith('.')) {
+      newData.showId = dirName;
+    }
+  }
+
   fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
   return { wrote: true, preserved, lockedSkipped };
 }
