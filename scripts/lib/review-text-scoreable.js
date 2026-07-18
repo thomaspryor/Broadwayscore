@@ -38,6 +38,7 @@
  * stopped falsely flagging 39 duplicateOf files as silent gaps).
  */
 const { isLikelyStaleRoundupFlag, isRoundupPageAsReview, isLikelyStaleWrongShow, wrongShowCleared, isLikelyStaleSuspectedMisattribution, getCriticRegistry } = require('./review-guards');
+const { parseOriginalScore } = require('./score-parsers');
 
 function passesFlagFilters(data, show) {
   if (!data) return false;
@@ -70,7 +71,14 @@ function passesFlagFilters(data, show) {
   if (data.duplicateTextOf) return false;
   if (data.duplicateOf) return false;
   if (data.humanReviewedWrongProduction) return false;
-  if (data.contentTier === 'invalid' || data.contentTier === 'stub') return false;
+  if (data.contentTier === 'invalid') return false;
+  // Stub: the real rebuild (review-guards.js isIncludableForRebuild "Must
+  // have either review text or an aggregator signal") INCLUDES textless
+  // stubs that carry a score signal — e.g. The Stage paywall stubs scored
+  // from first-party page stars (originalScore, stage-star-svg). Blanket
+  // stub-rejection here made star-scored live entries (360-allstars,
+  // heathers/smile thestage) read as "won't reach reviews.json" (2026-07-18).
+  if (data.contentTier === 'stub' && !hasValidScore(data)) return false;
   if (data.scoreStatus === 'TO_BE_CALCULATED') return false;
 
   // Additional rebuild-exclusion flags that the pre-2026-04-22 inline logic
@@ -131,7 +139,15 @@ function hasValidScore(data) {
   if (!data) return false;
   const hasHuman = data.humanReviewScore >= 1 && data.humanReviewScore <= 100;
   const hasAdj = data.adjudicatedScore >= 1 && data.adjudicatedScore <= 100;
-  const hasOrig = data.originalScore && !data.originalScoreCleared;
+  // originalScore must be a rating rebuild can actually use: either a stored
+  // normalized value, or a raw string the rebuild parser accepts (numeric,
+  // star form, letter grade). A truthy-but-unparseable string ("N/A",
+  // "see review") is NOT a score — counting it made junk-scored stubs
+  // invisible to the silent-gap audit (ship-check 2026-07-18).
+  const normOk = typeof data.originalScoreNormalized === 'number'
+    && data.originalScoreNormalized >= 1 && data.originalScoreNormalized <= 100;
+  const hasOrig = !data.originalScoreCleared && !!data.originalScore
+    && (normOk || parseOriginalScore(String(data.originalScore)) != null);
   const hasLlm = data.llmScore && data.llmScore.score >= 1 && data.llmScore.score <= 100;
   const hasAssigned = data.assignedScore >= 1 && data.assignedScore <= 100;
   const hasAggStars = !!data.aggregatorStars;
