@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-18T18:17:56.457Z",
+  "generatedAt": "2026-07-18T19:16:32.951Z",
   "windowDays": 45,
   "showsScanned": 56,
   "gaps": [
@@ -54,6 +54,23 @@
       "recovery": null,
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=heathers-the-musical-off-west-end-2026 --url=null --outlet=observer   # run LOCALLY (cookie jar lives on the Mac)"
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "title": "Heathers the Musical",
+      "openingDate": "2026-07-14",
+      "file": "theatre-weekly--unknown.json",
+      "outletId": "theatre-weekly",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://theatreweekly.com/review-heathers-the-musical-at-the-arts-at-marble-arch/",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=heathers-the-musical-off-west-end-2026 --url=https://theatreweekly.com/review-heathers-the-musical-at-the-arts-at-marble-arch/ --outlet=theatre-weekly   # run LOCALLY (cookie jar lives on the Mac)"
     }
   ]
 }
