@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-18T06:54:00.366Z",
+    "generatedAt": "2026-07-18T07:09:08.247Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 6 flagged, 13 exempt, 33 covered\n  ⚠️   115  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    90  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️    90  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️    81  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    60  data/audit/we-gate-proving.json  — no merge driver; needs a decision\n  ⚠️    34  data/audit/indexing-api-usage.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 6 flagged, 13 exempt, 33 covered\n  ⚠️   115  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    90  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️    90  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️    81  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    59  data/audit/we-gate-proving.json  — no merge driver; needs a decision\n  ⚠️    34  data/audit/indexing-api-usage.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
