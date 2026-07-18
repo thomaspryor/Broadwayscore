@@ -95,7 +95,8 @@
     "and-juliet-2022/newyorker--conde-nast.json",
     "moulin-rouge-the-musical-west-end-2021/chicagotribune--reviews-chris-jones.json",
     "the-smile-of-her-off-west-end-2026/broadwayworld--stephi-wild.json",
-    "music-city-off-broadway-2026/deadline--greg-evans.json"
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -421,7 +422,16 @@
     "every-brilliant-thing-2026/latimes--unknown.json",
     "every-brilliant-thing-2026/standard--nick-curtis.json",
     "every-brilliant-thing-2026/telegraph--marianka-swain.json",
-    "every-brilliant-thing-2026/thestage--dave-fargnoli.json"
+    "every-brilliant-thing-2026/thestage--dave-fargnoli.json",
+    "every-brilliant-thing-2026/times-uk--alice-jones.json",
+    "every-brilliant-thing-2026/whatsonstage--julia-rank.json",
+    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -505,7 +515,9 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
-      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json"
+      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -526,7 +538,7 @@
     ]
   },
   "startTime": "2026-07-17T18:00:53.399Z",
-  "lastProcessed": "every-brilliant-thing-2026/thestage--dave-fargnoli.json",
+  "lastProcessed": "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
   "log": [
     {
       "t": "2026-07-18T06:21:16.445Z",
@@ -673,6 +685,17 @@
       "event": "bb-session",
       "session": "a9497518",
       "url": "https://www.broadwayworld.com/reviews/dukes"
+    },
+    {
+      "t": "2026-07-18T11:58:53.125Z",
+      "event": "bb-session",
+      "session": "b7a3c67e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-07-18T11:58:53.955Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
