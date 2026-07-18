@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-07-18T09:52:40.584Z",
+  "timestamp": "2026-07-18T10:27:17.958Z",
   "stats": {
-    "totalReviews": 40195,
-    "alreadyFlagged": 17587,
+    "totalReviews": 40208,
+    "alreadyFlagged": 17596,
     "dateGuardCatches": 50,
     "directorMismatch": 913,
     "tvFilmSignals": 1102,
-    "londonSignals": 750,
+    "londonSignals": 751,
     "offBroadwaySignals": 473,
     "yearMismatch": 85,
     "noPublishDate": 3642
@@ -34599,6 +34599,20 @@
       "score": 62,
       "publishDate": "2026-07-17",
       "url": "https://observer.co.uk/culture/theatre/article/jesus-christ-superstar-sam-ryders-voice-is-his-salvation",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "file": "observer--katherine-cowles.json",
+      "score": 63,
+      "publishDate": "2026-07-17",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
