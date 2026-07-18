@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-18T18:22:37.235Z",
+  "timestamp": "2026-07-18T19:34:18.973Z",
   "stats": {
-    "totalReviews": 40217,
-    "alreadyFlagged": 17598,
+    "totalReviews": 40216,
+    "alreadyFlagged": 17602,
     "dateGuardCatches": 49,
     "directorMismatch": 912,
     "tvFilmSignals": 1102,
     "londonSignals": 753,
-    "offBroadwaySignals": 473,
+    "offBroadwaySignals": 474,
     "yearMismatch": 85,
-    "noPublishDate": 3650
+    "noPublishDate": 3642
   },
   "findings": [
     {
@@ -37565,13 +37565,14 @@
     {
       "showId": "pride-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "publishDate": "2026-06-11",
+      "score": 97,
+      "publishDate": "2026-06-25",
       "url": "https://www.theguardian.com/stage/2026/jun/26/pride-review-dorfman-theatre-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -42655,7 +42656,20 @@
       "file": "one-minute-critic--steven-vargas.json",
       "score": 63,
       "publishDate": "2026-07-15",
-      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-potluck-review-cesar-alvarez",
+      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&#038;utm_medium=rss&",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-potluck-off-broadway-2026",
+      "file": "one-minute-critic--unknown.json",
+      "publishDate": "2026-07-15",
+      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
