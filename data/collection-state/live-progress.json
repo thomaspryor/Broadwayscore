@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-18T13:01:39.578Z",
+  "updatedAt": "2026-07-18T12:31:01.055Z",
   "processed": 97,
-  "failed": 406,
-  "successRate": "19.3%",
+  "failed": 403,
+  "successRate": "19.4%",
   "tierBreakdown": {
     "playwright": 62,
     "amp": 0,
@@ -15,6 +15,17 @@
   },
   "browserbaseSessions": 1,
   "recentActivity": [
+    {
+      "t": "2026-07-17T23:59:51.870Z",
+      "event": "bb-session",
+      "session": "7248c61c",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-17T23:59:52.718Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
     {
       "t": "2026-07-18T01:10:19.835Z",
       "event": "bb-session",
@@ -116,18 +127,6 @@
       "t": "2026-07-18T11:58:53.955Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-07-18T12:11:31.553Z",
-      "event": "bb-session",
-      "session": "11b14b01",
-      "url": "https://www.broadwayworld.com/reviews/dukes"
-    },
-    {
-      "t": "2026-07-18T13:01:30.753Z",
-      "event": "bb-session",
-      "session": "470a26e4",
-      "url": "https://www.broadwayworld.com/reviews/dukes"
     }
   ]
 }
