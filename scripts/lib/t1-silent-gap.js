@@ -133,13 +133,16 @@ function classifySilentGap({ file, show, tier, outletScored, now }) {
   // auto-recovery can't run (retry cap exhausted, paywall) — a cap-exhausted
   // T1 stub is exactly the "human must run the local cookie ingest" case, and
   // returning null here made both thestage stubs vanish from the audit while
-  // still unresolved (2026-07-18). Editorial/human-protected exclusions never
-  // reach this branch (filtered above / includable). A textless stub that
-  // already carries a valid score path (e.g. originalScore from first-party
-  // page stars — the stage-star-svg pattern) scores at rebuild time and is
-  // NOT a gap; isEmptyBodyFile only checks fullText/aggregatorStars/
-  // assignedScore, so guard with the canonical score predicate.
-  if (isEmptyBodyFile(file) && !hasValidScore(file)) {
+  // still unresolved (2026-07-18). Guards on this branch:
+  //  - contentTier 'invalid' is content-garbage, not a paywall stub — a
+  //    cookie re-ingest of its own URL can only re-fetch garbage, so it is
+  //    not an actionable gap (ship-check finding: 'invalid' is NOT covered
+  //    by hasEditorialExclusion above and would otherwise alert here).
+  //  - a textless stub that already carries a valid score path (e.g.
+  //    originalScore from first-party page stars — stage-star-svg) scores at
+  //    rebuild time and is NOT a gap; isEmptyBodyFile only checks fullText/
+  //    aggregatorStars/assignedScore, so use the canonical score predicate.
+  if (file.contentTier !== 'invalid' && isEmptyBodyFile(file) && !hasValidScore(file)) {
     return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) };
   }
 
