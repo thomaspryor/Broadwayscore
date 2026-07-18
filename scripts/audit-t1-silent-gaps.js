@@ -148,6 +148,13 @@ function fixCommand(showId, fileName, d, type) {
   }
   const outletId = fileName.split('--')[0];
   const critic = d.criticName && d.criticName !== 'Unknown' ? ` --critic="${d.criticName}"` : '';
+  if (!d.url) {
+    // No URL on file — an ingest command would be unrunnable (--url=null).
+    // The operator must locate the review first (or flag the file if it's a
+    // cross-production/aggregator artifact).
+    return `# no URL on file — find the ${outletId} review for ${showId} first, then: ` +
+      `node scripts/ingest-review-from-url.js --show=${showId} --url=<URL> --outlet=${outletId}${critic}`;
+  }
   return `node scripts/ingest-review-from-url.js --show=${showId} --url=${d.url}` +
     ` --outlet=${outletId}${critic}   # run LOCALLY (cookie jar lives on the Mac)`;
 }
@@ -259,7 +266,14 @@ async function main() {
         fields,
       });
       if (delivered) {
-        for (const g of due) state[`${g.showId}/${g.file}`] = now.toISOString();
+        // Only mark gaps whose show+outlet actually made it into the emailed
+        // fields (the slice(0,15) cap). Marking ALL due gaps suppressed the
+        // 16th+ outlet for REALERT_DAYS without it ever being emailed
+        // (ship-check finding 2026-07-18).
+        const emailedKeys = new Set(dueDeduped.slice(0, 15).map((g) => `${g.showId}/${g.outletId}`));
+        for (const g of due) {
+          if (emailedKeys.has(`${g.showId}/${g.outletId}`)) state[`${g.showId}/${g.file}`] = now.toISOString();
+        }
         fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
       }
     } else {
