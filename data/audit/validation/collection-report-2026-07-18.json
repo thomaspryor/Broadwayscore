@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-07-18T16:00:08.833Z",
+  "runDate": "2026-07-18T17:14:56.420Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "heathers-the-musical-off-west-end-2026",
+    "showFilter": "loves-labours-lost-globe-west-end-2026,the-smile-of-her-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 13,
+    "processed": 0,
+    "failed": 10,
     "skipped": 0,
-    "successRate": "7.1%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,52 +27,44 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 3,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier2Attempts": 3,
+    "tier2Success": 0,
+    "tier3Attempts": 2,
     "tier3Success": 1,
     "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 3,
     "tier4Success": 1,
-    "totalFailed": 13,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 9,
+    "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 13,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 7,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json"
-  ],
+  "processed": [],
   "failed": [
-    "heathers-the-musical-off-west-end-2026/hollywood-reporter--david-rooney.json",
-    "heathers-the-musical-off-west-end-2026/nytimes--ben-brantley.json",
-    "heathers-the-musical-off-west-end-2026/vulture--jesse-green.json",
-    "heathers-the-musical-off-west-end-2026/abc-news--peter-santilli.json",
-    "heathers-the-musical-off-west-end-2026/guardian--giselle-au-nhien-nguyen.json",
-    "heathers-the-musical-off-west-end-2026/nypost--elisabeth-vincentelli.json",
-    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
-    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
-    "heathers-the-musical-off-west-end-2026/nbcny--robert-kahn.json",
-    "heathers-the-musical-off-west-end-2026/thestage--unknown.json",
-    "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
-    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json"
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
+    "loves-labours-lost-globe-west-end-2026/guardian--mark-fisher.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--holly-williams.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--matt-trueman.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
+    "the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
+    "the-smile-of-her-off-west-end-2026/thestage--unknown.json"
   ],
-  "failed": [],
   "tierDetails": {
-    "playwright": [
-      "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -81,12 +73,14 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json",
-      "oldUrl": "https://www.westendbestfriend.co.uk/news/review-heathers-the-musical-soho-place",
-      "newUrl": "https://www.westendbestfriend.co.uk/news/review-heathers-the-musical-the-arts-at-marble-arch"
+  "failuresByOutlet": {
+    "Chichester Observer": {
+      "count": 1,
+      "domain": "facebook.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
-  ]
+  },
+  "urlDiscoveries": []
 }
