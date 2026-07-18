@@ -159,8 +159,10 @@ jobs:
       # checkpoint rotation. Recovers empty bodies from each file's own URL
       # (shared aggUrlRecoveryCount cap) and emails a deduped ACTION alert for
       # whatever remains.
+      # Kill switch: set repo variable T1_SILENT_GAP_DISABLED=true to stop the
+      # sweep (spam / credit burn / bad writes) without shipping a commit.
       - name: T1/T2 silent-gap sweep
-        if: always()
+        if: ${{ always() && vars.T1_SILENT_GAP_DISABLED != 'true' }}
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}

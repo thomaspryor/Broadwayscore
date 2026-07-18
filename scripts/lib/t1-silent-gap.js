@@ -8,11 +8,13 @@
  * aggregator-gap audit only sees files whose URL an aggregator article
  * lists, and no alert ever fires for a discovered-but-unscoreable file).
  *
- * A silent gap is a review-texts dir file for a tier-1/2 outlet on a
- * recently-opened show that will NOT contribute to the composite score and
- * is not legitimately excluded. The classifier is dir-driven: it needs only
- * the file's own JSON (which always carries the discovered URL), not an
- * aggregator citation.
+ * Inclusion semantics are DELEGATED to the canonical predicate
+ * (scripts/lib/review-text-scoreable.js — the same single-source-of-truth
+ * validate-data.js and check-review-count-drift.js use), per
+ * memory/feedback_includability_predicates_must_be_canonical.md. This module
+ * only decides, for a file the canonical predicate says will NOT reach
+ * reviews.json, whether that absence is a legitimate editorial exclusion or
+ * a silent gap worth recovering/escalating.
  *
  * Kept pure (no fs / no fetch) per the test-extraction rule — the sweep
  * runner (scripts/audit-t1-silent-gaps.js) and the unit test share it.
@@ -20,6 +22,7 @@
 
 'use strict';
 
+const { wouldBeIncludedInRebuild, passesFlagFilters } = require('./review-text-scoreable');
 const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
 
 // Tiers considered "cannot silently miss". 1 = NYT/Times/Guardian class,
@@ -29,6 +32,43 @@ const MAJOR_TIER_MAX = 2;
 // Re-alert the same file at most once per this many days.
 const REALERT_DAYS = 7;
 
+// 'unscored' means "scoreable content, scoring just hasn't run" — give the
+// scoring cron this long after the text landed before treating it as a gap
+// (the scoring→rebuild chain can lag ~4h; task #178).
+const UNSCORED_GRACE_HOURS = 12;
+
+// Ensemble rejection reasons that are editorial verdicts (the review SHOULD
+// be excluded) rather than fetch-quality failures (bot stub / garbage text —
+// a better fetch could still recover the review).
+const EDITORIAL_REJECTIONS = new Set(['not_a_review', 'wrong_production', 'wrong_show']);
+
+// Editorial verdicts: the review is correctly absent from the score. Mirrors
+// the exclusion families in review-text-scoreable.js passesFlagFilters —
+// everything here is "right review judgment", never "bad fetch".
+function hasEditorialExclusion(f) {
+  return f.wrongProduction === true || f.wrongShow === true
+    || f.isNonReview === true || f.isNotReview === true
+    || f.nonReviewFlag === true || f.nonReviewContent === true
+    || f.isRoundupArticle === true || f.fabricatedEntry === true
+    || f.isSyndicatedDuplicate === true || f.crossOutletDuplicate === true
+    || f.wrongAttribution === true || f.suspectedMisattribution === true
+    || !!f.duplicateOf || !!f.duplicateTextOf
+    || f.humanReviewedWrongProduction === true
+    || !!(f.contentVerification && f.contentVerification.wrongArticle === true)
+    || EDITORIAL_REJECTIONS.has(f.rejectionReason);
+}
+
+// The file's URL points at the WRONG article (discovery mis-attribution) or a
+// known-blocked URL — re-fetching the file's own URL can only re-ingest the
+// wrong content, and "review missing" is not true (the real review may not
+// exist). These are task-#6 Bug-A phantoms, not silent gaps.
+const WRONG_URL_INCOMPLETE = new Set(['url_content_mismatch', 'wrong_content', 'scraper_garbage']);
+function hasWrongUrlSignal(f) {
+  return WRONG_URL_INCOMPLETE.has(f.incompleteReason)
+    || f.isBlockedReviewUrl === true
+    || f.bwwAggregatorAmbiguous === true;
+}
+
 /**
  * Classify one dir file. Returns null when there is nothing to escalate,
  * else { type, recoverable }.
@@ -37,59 +77,64 @@ const REALERT_DAYS = 7;
  *   'empty-body'           — no usable text/stars/score; re-ingest from the
  *                            file's own URL may heal it (recoverable=true
  *                            while merge-safe and under the shared retry cap)
- *   'rejected-unscoreable' — has text but the scoring ensemble rejected it
- *                            (bot-stub / truncation class); needs a better
- *                            fetch, so report + alert only
+ *   'rejected-unscoreable' — scoreability/garbage rejection (bot-stub or
+ *                            truncation class); needs a better fetch, so
+ *                            report + alert only
  *   'unscored'             — scoreable content but the scoring pipeline never
  *                            produced a score; fix = dispatch scoring
  *
- * "Scored but not yet in reviews.json" is deliberately NOT a gap type —
- * the rebuild cron closes that within hours (task #178 fixed the strand).
- *
  * @param {object} args
  * @param {object} args.file            parsed review-text JSON
+ * @param {object} [args.show]          shows.json entry (stale-flag heuristics
+ *                                      in the canonical predicate use it)
  * @param {number} args.tier            outlet tier (getTier(outletId, {showCategory}))
- * @param {boolean} args.outletScored   this outlet already has a scored entry
- *                                      for the show (reviews.json or a scored
- *                                      sibling file) — gap only when false
+ * @param {boolean} args.outletScored   this outlet already has an entry that
+ *                                      will reach reviews.json for the show
+ * @param {Date} [args.now]             clock for the unscored grace window
  * @returns {null | {type: string, recoverable: boolean}}
  */
-function classifySilentGap({ file, tier, outletScored }) {
+function classifySilentGap({ file, show, tier, outletScored, now }) {
   if (!file || typeof file !== 'object') return null;
   if (tier == null || tier > MAJOR_TIER_MAX) return null;
   if (outletScored) return null;
 
-  // Legitimate exclusions — the review SHOULD be absent from the score.
-  if (file.wrongProduction === true || file.wrongShow === true) return null;
-  if (file.isNonReview === true || file.isRoundupArticle === true) return null;
-  if (file.duplicateOf || file.duplicateTextOf) return null;
-  if (file.rejectionReason === 'not_a_review') return null;
-  // Collector LLM classed it as a feature/preview — same not-a-review family.
-  if (typeof file.rejectionReasoning === 'string' && /not a review/i.test(file.rejectionReasoning)
-      && !file.rejectedBy) return null;
-  if (file.humanReviewScore != null) return null; // human-set — already handled
-  // Adjudicated star-stubs (paywalled outlets scored via aggregator stars,
-  // e.g. The Stage) are live scores even with an empty body.
-  if (file.adjudicatedScore != null) return null;
+  // Canonical: this file will contribute a reviews.json entry — rebuild or
+  // deploy lag at worst, never a gap.
+  if (wouldBeIncludedInRebuild(file, show)) return null;
 
-  if (isEmptyBodyFile(file)) {
-    return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) };
+  // Editorial verdicts and wrong-URL phantoms are correct absences regardless
+  // of which branch below they'd land in.
+  if (hasEditorialExclusion(file) || hasWrongUrlSignal(file)) return null;
+
+  if (passesFlagFilters(file, show)) {
+    // Includable content, but no valid score yet.
+    if (isEmptyBodyFile(file)) {
+      return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) };
+    }
+    const fetchedAt = Date.parse(file.textFetchedAt || '');
+    if (!Number.isNaN(fetchedAt) && now instanceof Date
+        && now.getTime() - fetchedAt < UNSCORED_GRACE_HOURS * 3600000) {
+      return null; // fresh text — scoring cron hasn't had its window yet
+    }
+    return { type: 'unscored', recoverable: false };
   }
 
-  const scored = file.llmScore != null || file.assignedScore != null
-    || file.aggregatorStars != null || file.originalScore != null;
-
-  // Scoreability rejection with no surviving score (NYT bot-stub class).
-  // A file can carry an assignedScore AND a rejection stamp (the ensemble
-  // rejected the text after a provisional score) — the rejection wins at
-  // rebuild, so it is still a gap.
-  if (file.rejectedBy || file.rejectionReason) {
+  // Flag-excluded by the canonical predicate; only fetch-quality states
+  // escalate (editorial/wrong-URL exclusions already returned null above).
+  if (file.rejectedAt) {
+    // Scoreability/garbage rejection (e.g. rejectedBy: ensemble-scoreability-
+    // check on an NYT bot stub). rejectionReason for editorial verdicts is
+    // filtered above; absent/garbage_text means the TEXT was bad, not the review.
     return { type: 'rejected-unscoreable', recoverable: false };
   }
 
-  if (!scored) return { type: 'unscored', recoverable: false };
+  // Empty stubs excluded only by content tier (contentTier 'stub'/'invalid'
+  // with no editorial flag) are the paywall-stub class — recoverable.
+  if (isEmptyBodyFile(file) && isRecoverableFlaggedFile(file)) {
+    return { type: 'empty-body', recoverable: true };
+  }
 
-  return null; // scored and unrejected — rebuild/deploy lag at worst
+  return null;
 }
 
 /**
@@ -105,4 +150,4 @@ function shouldAlertGap(lastAlertedAt, now) {
   return now.getTime() - last >= REALERT_DAYS * 24 * 60 * 60 * 1000;
 }
 
-module.exports = { classifySilentGap, shouldAlertGap, MAJOR_TIER_MAX, REALERT_DAYS };
+module.exports = { classifySilentGap, shouldAlertGap, MAJOR_TIER_MAX, REALERT_DAYS, UNSCORED_GRACE_HOURS };

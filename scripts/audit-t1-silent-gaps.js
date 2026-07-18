@@ -39,6 +39,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const { classifySilentGap, shouldAlertGap } = require('./lib/t1-silent-gap');
+const { wouldBeIncludedInRebuild } = require('./lib/review-text-scoreable');
 const { getTier } = require('./lib/outlet-tiers');
 const { AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
 const { decideEmptyBodyRecovery, nextRecoveryCount } = require('./lib/flagged-recovery');
@@ -100,14 +101,10 @@ function scoredOutletsByShow() {
   return map;
 }
 
-// A sibling file for the same outlet that carries a live score and no
-// exclusion — covers the scoring→rebuild window where reviews.json is stale.
-function fileCountsAsScored(d) {
-  if (!d || d.wrongProduction === true || d.wrongShow === true) return false;
-  if (d.duplicateOf || d.duplicateTextOf) return false;
-  if (d.rejectedBy || d.rejectionReason) return false;
-  return d.llmScore != null || d.assignedScore != null
-    || d.humanReviewScore != null || d.adjudicatedScore != null;
+// A sibling file for the same outlet that WILL reach reviews.json (canonical
+// predicate) — covers the scoring→rebuild window where reviews.json is stale.
+function fileCountsAsScored(d, show) {
+  return wouldBeIncludedInRebuild(d, show);
 }
 
 function recoverFromOwnUrl(showId, fileName, d) {
@@ -136,7 +133,7 @@ function recoverFromOwnUrl(showId, fileName, d) {
   try {
     const fp = path.join(REVIEW_TEXTS_DIR, showId, fileName);
     const fresh = JSON.parse(fs.readFileSync(fp, 'utf8'));
-    if (!fileCountsAsScored(fresh) && !(fresh.fullText && fresh.fullText.length >= 400)) {
+    if (!(fresh.fullText && fresh.fullText.length >= 400) && !fileCountsAsScored(fresh)) {
       fresh.aggUrlRecoveryCount = nextRecoveryCount(fresh);
       fresh.aggUrlRecoveryAt = new Date().toISOString();
       safeWriteReview(fp, fresh);
@@ -160,6 +157,10 @@ async function main() {
   const scoredMap = scoredOutletsByShow();
   const gaps = [];
   let fetches = 0;
+  // Byline-explosion clusters share one URL across many files — never spend
+  // more than one fetch slot per URL per run (QA finding: 6 identical
+  // whatsonstage stubs would starve the cap).
+  const attemptedUrls = new Set();
 
   for (const show of shows) {
     const dir = path.join(REVIEW_TEXTS_DIR, show.id);
@@ -171,7 +172,7 @@ async function main() {
 
     const scoredOutlets = new Set(scoredMap.get(show.id) || []);
     for (const [f, d] of parsed) {
-      if (fileCountsAsScored(d)) scoredOutlets.add(f.split('--')[0]);
+      if (fileCountsAsScored(d, show)) scoredOutlets.add(f.split('--')[0]);
     }
 
     for (const [f, d] of parsed) {
@@ -179,17 +180,28 @@ async function main() {
       const outletId = f.split('--')[0];
       if (AGGREGATOR_OUTLET_IDS.has(outletId)) continue;
       const tier = getTier(outletId, { showCategory: show.category });
-      let gap = classifySilentGap({ file: d, tier, outletScored: scoredOutlets.has(outletId) });
+      let gap = classifySilentGap({ file: d, show, tier, outletScored: scoredOutlets.has(outletId), now: new Date() });
       if (!gap) continue;
 
       let recovery = null;
-      if (gap.type === 'empty-body' && gap.recoverable && DO_RECOVER && !DRY_RUN && fetches < FETCH_CAP) {
+      if (gap.type === 'empty-body' && gap.recoverable && DO_RECOVER && !DRY_RUN
+          && fetches < FETCH_CAP && d.url && !attemptedUrls.has(d.url)) {
+        attemptedUrls.add(d.url);
         recovery = recoverFromOwnUrl(show.id, f, d);
         if (recovery.attempted) fetches++;
+        // Healed only if a re-classification agrees — a re-ingest that lands
+        // another bot stub must NOT suppress the gap (Codex review finding).
         const fresh = loadJson(path.join(dir, f), null);
-        if (fresh && (fileCountsAsScored(fresh) || (fresh.fullText && fresh.fullText.length >= 400))) {
+        // (A just-refilled file classifies null via the unscored grace window —
+        // the scoring cron gets UNSCORED_GRACE_HOURS before later runs flag it.)
+        const freshGap = fresh && classifySilentGap({
+          file: fresh, show, tier,
+          outletScored: scoredOutlets.has(outletId),
+          now: new Date(),
+        });
+        if (fresh && freshGap == null) {
           console.log(`  ♻️  recovered ${show.id}/${f} from its own URL`);
-          continue; // healed — scoring picks it up next pass
+          continue;
         }
       }
 
@@ -240,7 +252,7 @@ async function main() {
         value: `${g.url || 'no url'}\nFix: ${g.fix}`,
       }));
       const delivered = await sendAlert({
-        title: `T1/T2 review silent gap: ${due.length} major-outlet review(s) missing from scores`,
+        title: `T1/T2 review silent gap: ${dueDeduped.length} major-outlet review(s) missing from scores`,
         description: 'Discovered review files that will not reach the composite score and are not legitimately excluded. Each needs the listed fix command.',
         severity: 'error',
         email: true,
