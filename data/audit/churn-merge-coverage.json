@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-18T06:53:41.753Z",
+    "generatedAt": "2026-07-18T07:08:49.930Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -32,7 +32,7 @@
     },
     {
       "path": "data/audit/we-gate-proving.json",
-      "churn": 60
+      "churn": 59
     },
     {
       "path": "data/audit/indexing-api-usage.json",
@@ -50,23 +50,23 @@
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 102
+      "churn": 100
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 102
+      "churn": 100
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 102
-    },
-    {
-      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 83
+      "churn": 100
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 83
+      "churn": 81
+    },
+    {
+      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
+      "churn": 80
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -74,11 +74,11 @@
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
-      "churn": 50
+      "churn": 49
     },
     {
       "path": "public/data/shows/the-oresteia-west-end-2026.json",
-      "churn": 50
+      "churn": 49
     },
     {
       "path": "public/data/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
@@ -116,17 +116,17 @@
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 259,
+      "churn": 257,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 259,
+      "churn": 257,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 163,
+      "churn": 161,
       "mergeAttr": "ours"
     },
     {
@@ -136,12 +136,7 @@
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 109,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/verify-all-scored-state.json",
-      "churn": 102,
+      "churn": 107,
       "mergeAttr": "ours"
     },
     {
@@ -160,18 +155,23 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/verify-all-scored-state.json",
+      "churn": 100,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 83,
+      "churn": 81,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 83,
+      "churn": 81,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 83,
+      "churn": 81,
       "mergeAttr": "ours"
     },
     {
