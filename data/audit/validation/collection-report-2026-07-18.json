@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-07-18T15:58:48.156Z",
+  "runDate": "2026-07-18T16:00:08.833Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-jonathan-larson-project-off-west-end-2026",
+    "showFilter": "heathers-the-musical-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,66 +12,81 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 4,
+    "failed": 13,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "7.1%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 1,
+    "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 2,
     "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 1,
     "tier2Success": 1,
     "tier3Attempts": 1,
     "tier3Success": 1,
     "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 4,
-    "scrapingBeePageCredits": 20,
+    "tier4Success": 1,
+    "totalFailed": 13,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 13,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json"
   ],
   "failed": [
-    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
-    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
-    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
-    "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
+    "heathers-the-musical-off-west-end-2026/hollywood-reporter--david-rooney.json",
+    "heathers-the-musical-off-west-end-2026/nytimes--ben-brantley.json",
+    "heathers-the-musical-off-west-end-2026/vulture--jesse-green.json",
+    "heathers-the-musical-off-west-end-2026/abc-news--peter-santilli.json",
+    "heathers-the-musical-off-west-end-2026/guardian--giselle-au-nhien-nguyen.json",
+    "heathers-the-musical-off-west-end-2026/nypost--elisabeth-vincentelli.json",
+    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
+    "heathers-the-musical-off-west-end-2026/nbcny--robert-kahn.json",
+    "heathers-the-musical-off-west-end-2026/thestage--unknown.json",
+    "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "failed": [],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json"
+    ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [
-      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
-    ],
+    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json",
+      "oldUrl": "https://www.westendbestfriend.co.uk/news/review-heathers-the-musical-soho-place",
+      "newUrl": "https://www.westendbestfriend.co.uk/news/review-heathers-the-musical-the-arts-at-marble-arch"
+    }
+  ]
 }
