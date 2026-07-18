@@ -17,7 +17,9 @@
     "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json",
     "the-potluck-off-broadway-2026/one-minute-critic--unknown.json",
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json"
+    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
+    "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
   ],
   "failed": [
     "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
@@ -101,7 +103,15 @@
     "a-midsummer-nights-dream-west-end-2026/standard--dominic-cavendish.json",
     "a-midsummer-nights-dream-west-end-2026/standard--nick-curtis.json",
     "a-midsummer-nights-dream-west-end-2026/standard--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json"
+    "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json",
+    "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+    "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
+    "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
+    "archduke-west-end-2026/culturesauce--thom-geier.json",
+    "archduke-west-end-2026/dc-theater-arts--deb-miller.json",
+    "archduke-west-end-2026/nysr--michael-sommers.json",
+    "archduke-west-end-2026/nytg--amelia-merrill.json",
+    "archduke-west-end-2026/one-minute-critic--matthew-wexler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -116,7 +126,9 @@
       "jesus-christ-superstar-west-end-2026/observer--kate-kellaway.json",
       "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json",
       "the-potluck-off-broadway-2026/one-minute-critic--unknown.json",
-      "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
+      "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
+      "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
+      "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -138,6 +150,18 @@
     ]
   },
   "startTime": "2026-07-18T17:09:59.494Z",
-  "lastProcessed": "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json",
-  "log": []
+  "lastProcessed": "archduke-west-end-2026/one-minute-critic--matthew-wexler.json",
+  "log": [
+    {
+      "t": "2026-07-18T19:23:12.888Z",
+      "event": "bb-session",
+      "session": "ed37197c",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=P9RfwACvik9Zf"
+    },
+    {
+      "t": "2026-07-18T19:23:13.832Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }

@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-07-18T19:21:32.782Z",
-  "processed": 18,
-  "failed": 82,
-  "successRate": "18.0%",
+  "updatedAt": "2026-07-18T19:26:12.984Z",
+  "processed": 20,
+  "failed": 90,
+  "successRate": "18.2%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 13,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 1,
@@ -13,6 +13,18 @@
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-18T19:23:12.888Z",
+      "event": "bb-session",
+      "session": "ed37197c",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=P9RfwACvik9Zf"
+    },
+    {
+      "t": "2026-07-18T19:23:13.832Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
