@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-17T06:44:17.961Z",
+  "generatedAt": "2026-07-18T06:36:48.575Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-07-17T05:59:40.108Z",
-    "reviewsJsonAgeHours": 0.7,
+    "reviewsJsonLastUpdated": "2026-07-18T06:11:55.436Z",
+    "reviewsJsonAgeHours": 0.4,
     "freshnessBreach": false,
-    "showsScanned": 5,
-    "filesScanned": 73,
+    "showsScanned": 7,
+    "filesScanned": 119,
     "showsOverThreshold": 0,
     "orphanReviews": 1
   },
@@ -23,25 +23,49 @@
   ],
   "perShow": [
     {
+      "showDir": "heathers-the-musical-off-west-end-2026",
+      "actual": 5,
+      "scanned": 21,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
       "showDir": "the-jonathan-larson-project-off-west-end-2026",
-      "actual": 15,
-      "scanned": 25,
+      "actual": 17,
+      "scanned": 26,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-oresteia-west-end-2026",
-      "actual": 13,
-      "scanned": 25,
+      "actual": 19,
+      "scanned": 32,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
+      "showDir": "the-smile-of-her-off-west-end-2026",
+      "actual": 3,
+      "scanned": 8,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "everything-theatre--paul-hegarty.json",
+          "outletId": "everything-theatre",
+          "criticName": "Paul Hegarty",
+          "publishDate": "2026-07-17",
+          "url": "https://everything-theatre.co.uk/2026/07/review-the-smile-of-her-marylebone-theatre/"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
       "showDir": "the-whoopi-monologues-off-broadway-2026",
-      "actual": 13,
-      "scanned": 16,
+      "actual": 15,
+      "scanned": 18,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
