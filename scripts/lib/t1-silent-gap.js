@@ -22,7 +22,7 @@
 
 'use strict';
 
-const { wouldBeIncludedInRebuild, passesFlagFilters } = require('./review-text-scoreable');
+const { wouldBeIncludedInRebuild, passesFlagFilters, hasValidScore } = require('./review-text-scoreable');
 const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
 
 // Tiers considered "cannot silently miss". 1 = NYT/Times/Guardian class,
@@ -129,9 +129,18 @@ function classifySilentGap({ file, show, tier, outletScored, now }) {
   }
 
   // Empty stubs excluded only by content tier (contentTier 'stub'/'invalid'
-  // with no editorial flag) are the paywall-stub class — recoverable.
-  if (isEmptyBodyFile(file) && isRecoverableFlaggedFile(file)) {
-    return { type: 'empty-body', recoverable: true };
+  // with no editorial flag) are the paywall-stub class. Report them even when
+  // auto-recovery can't run (retry cap exhausted, paywall) — a cap-exhausted
+  // T1 stub is exactly the "human must run the local cookie ingest" case, and
+  // returning null here made both thestage stubs vanish from the audit while
+  // still unresolved (2026-07-18). Editorial/human-protected exclusions never
+  // reach this branch (filtered above / includable). A textless stub that
+  // already carries a valid score path (e.g. originalScore from first-party
+  // page stars — the stage-star-svg pattern) scores at rebuild time and is
+  // NOT a gap; isEmptyBodyFile only checks fullText/aggregatorStars/
+  // assignedScore, so guard with the canonical score predicate.
+  if (isEmptyBodyFile(file) && !hasValidScore(file)) {
+    return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) };
   }
 
   return null;

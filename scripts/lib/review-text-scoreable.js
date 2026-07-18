@@ -70,7 +70,14 @@ function passesFlagFilters(data, show) {
   if (data.duplicateTextOf) return false;
   if (data.duplicateOf) return false;
   if (data.humanReviewedWrongProduction) return false;
-  if (data.contentTier === 'invalid' || data.contentTier === 'stub') return false;
+  if (data.contentTier === 'invalid') return false;
+  // Stub: the real rebuild (review-guards.js isIncludableForRebuild "Must
+  // have either review text or an aggregator signal") INCLUDES textless
+  // stubs that carry a score signal — e.g. The Stage paywall stubs scored
+  // from first-party page stars (originalScore, stage-star-svg). Blanket
+  // stub-rejection here made star-scored live entries (360-allstars,
+  // heathers/smile thestage) read as "won't reach reviews.json" (2026-07-18).
+  if (data.contentTier === 'stub' && !hasValidScore(data)) return false;
   if (data.scoreStatus === 'TO_BE_CALCULATED') return false;
 
   // Additional rebuild-exclusion flags that the pre-2026-04-22 inline logic
