@@ -1,28 +1,22 @@
 {
-  "updatedAt": "2026-07-18T05:37:40.433Z",
-  "processed": 73,
-  "failed": 1087,
-  "successRate": "6.3%",
+  "updatedAt": "2026-07-18T05:39:49.227Z",
+  "processed": 76,
+  "failed": 1094,
+  "successRate": "6.5%",
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 56,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 11,
     "directCookies": 2,
     "scrapingbee": 6,
     "brightdata": 5,
     "archiveToday": 11,
     "archive": 5
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-07-18T06:21:16.445Z",
-      "event": "bb-session",
-      "session": "8a04b1a7",
-      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-oresteia-review-dav"
-    },
-    {
-      "t": "2026-07-18T06:21:17.264Z",
+      "t": "2026-07-17T18:12:31.410Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
     },
@@ -110,6 +104,28 @@
       "t": "2026-07-18T05:36:09.490Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-18T05:37:42.425Z",
+      "event": "bb-session",
+      "session": "96509f0c",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-07-18T05:37:42.866Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-18T05:38:05.176Z",
+      "event": "bb-session",
+      "session": "3654da08",
+      "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
+    },
+    {
+      "t": "2026-07-18T05:38:05.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
