@@ -8,7 +8,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { safeWriteReview, checkForDataLoss, checkUrlCollision, coerceAssignedScore } = require('../../scripts/lib/review-write-guard');
+const { safeWriteReview, safeRenameReview, checkForDataLoss, checkUrlCollision, coerceAssignedScore } = require('../../scripts/lib/review-write-guard');
 
 let tmpDir;
 beforeEach(() => {
@@ -786,12 +786,44 @@ describe('showId backstop', () => {
     assert.equal(written.showId, 'real-show-2026');
   });
 
-  test('skips underscore dirs like _pending', () => {
-    const pendingDir = path.join(tmpDir, '_pending');
-    fs.mkdirSync(pendingDir);
-    const filePath = path.join(pendingDir, 'thestage--unknown.json');
+  test('skips dirs whose name cannot be a show id (underscore/dot/tmp-guard)', () => {
+    const guardDir = path.join(tmpDir, '__zzz-guard');
+    fs.mkdirSync(guardDir);
+    const filePath = path.join(guardDir, 'thestage--unknown.json');
     safeWriteReview(filePath, { outlet: 'The Stage' });
     const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     assert.equal(written.showId, undefined);
+  });
+
+  test('_pending nested layout still derives the show id (parent dir is the show dir)', () => {
+    const showDir = path.join(tmpDir, '_pending', 'tender-off-west-end-2026');
+    fs.mkdirSync(showDir, { recursive: true });
+    const filePath = path.join(showDir, 'thestage--unknown.json');
+    safeWriteReview(filePath, { outlet: 'The Stage' });
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.showId, 'tender-off-west-end-2026');
+  });
+
+  test('warns but does not rewrite a mismatched showId', () => {
+    const showDir = path.join(tmpDir, 'show-a-2026');
+    fs.mkdirSync(showDir);
+    const filePath = path.join(showDir, 'nyt--critic.json');
+    safeWriteReview(filePath, { showId: 'show-b-2026', outlet: 'NYT' });
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.showId, 'show-b-2026');
+  });
+
+  test('safeRenameReview re-stamps showId on a cross-show-dir move', () => {
+    const srcDir = path.join(tmpDir, 'wrong-show-2018');
+    const dstDir = path.join(tmpDir, 'right-show-2026');
+    fs.mkdirSync(srcDir);
+    fs.mkdirSync(dstDir);
+    const srcPath = path.join(srcDir, 'nyt--critic.json');
+    fs.writeFileSync(srcPath, JSON.stringify({ showId: 'wrong-show-2018', outlet: 'NYT', url: 'https://example.com/r' }, null, 2));
+    const result = safeRenameReview(srcPath, path.join(dstDir, 'nyt--critic.json'));
+    assert.equal(result.wrote, true);
+    const written = JSON.parse(fs.readFileSync(path.join(dstDir, 'nyt--critic.json'), 'utf8'));
+    assert.equal(written.showId, 'right-show-2026');
+    assert.equal(fs.existsSync(srcPath), false);
   });
 });
