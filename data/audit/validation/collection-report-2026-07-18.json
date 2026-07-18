@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-18T09:04:10.374Z",
+  "runDate": "2026-07-18T12:00:32.950Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,15 +11,15 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 96,
-    "failed": 298,
+    "processed": 97,
+    "failed": 343,
     "skipped": 0,
-    "successRate": "24.4%"
+    "successRate": "22.0%"
   },
   "tierBreakdown": {
     "playwright": 62,
     "amp": 0,
-    "browserbase": 15,
+    "browserbase": 17,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
@@ -27,27 +27,27 @@
     "archive": 9
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier3_6Attempts": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 298,
+    "totalFailed": 299,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 300,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -146,7 +146,8 @@
     "and-juliet-2022/newyorker--conde-nast.json",
     "moulin-rouge-the-musical-west-end-2021/chicagotribune--reviews-chris-jones.json",
     "the-smile-of-her-off-west-end-2026/broadwayworld--stephi-wild.json",
-    "music-city-off-broadway-2026/deadline--greg-evans.json"
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -177,6 +178,28 @@
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
+    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "dukes-off-broadway-2026/broadwayworld--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "heathers-the-musical-off-west-end-2026/hollywood-reporter--david-rooney.json",
+    "heathers-the-musical-off-west-end-2026/nytimes--ben-brantley.json",
+    "heathers-the-musical-off-west-end-2026/vulture--jesse-green.json",
+    "heathers-the-musical-off-west-end-2026/abc-news--peter-santilli.json",
+    "heathers-the-musical-off-west-end-2026/nypost--elisabeth-vincentelli.json",
+    "heathers-the-musical-off-west-end-2026/nbcny--robert-kahn.json",
     "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
     "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
     "jesus-christ-superstar-west-end-2026/newsday--linda-winer.json",
@@ -390,7 +413,6 @@
     "joe-turners-come-and-gone-2026/broadwaynews--jonah-de-forest-for-broadwaycom.json",
     "joe-turners-come-and-gone-2026/broadwaynews--jonah-de-forest.json",
     "joe-turners-come-and-gone-2026/broadwaynews--unknown.json",
-    "joe-turners-come-and-gone-2026/talkinbroadway--unknown.json",
     "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
     "the-rocky-horror-show-2026/thereviewshub--unknown.json",
     "the-rocky-horror-show-2026/british-theatre--unknown.json",
@@ -446,7 +468,31 @@
     "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
     "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
     "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
-    "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json"
+    "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json",
+    "gotta-dance-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "every-brilliant-thing-2026/latimes--unknown.json",
+    "every-brilliant-thing-2026/standard--nick-curtis.json",
+    "every-brilliant-thing-2026/telegraph--marianka-swain.json",
+    "every-brilliant-thing-2026/thestage--dave-fargnoli.json",
+    "every-brilliant-thing-2026/times-uk--alice-jones.json",
+    "every-brilliant-thing-2026/whatsonstage--julia-rank.json",
+    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
+    "oh-mary-west-end-2025/nypost--johnny-oleksinski.json",
+    "oh-mary-west-end-2025/thewrap--robert-hofler.json",
+    "oh-mary-west-end-2025/wsj--charles-isherwood.json",
+    "oh-mary-west-end-2025/chicagotribune--chris-jones.json",
+    "oh-mary-west-end-2025/daily-mail--unknown.json",
+    "oh-mary-west-end-2025/dailybeast--tim-teeman.json",
+    "oh-mary-west-end-2025/financialtimes--unknown.json",
+    "oh-mary-west-end-2025/njcom--christopher-kelly.json",
+    "oh-mary-west-end-2025/nysr--bob-verini.json",
+    "oh-mary-west-end-2025/nysr--michael-sommers.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -529,7 +575,9 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
-      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json"
+      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -549,25 +597,12 @@
       "operation-mincemeat-west-end-2024/west-end-best-friend--nick-wayne.json"
     ]
   },
-  "failuresByOutlet": {
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": [
     {
-      "reviewId": "the-smile-of-her-off-west-end-2026/broadwayworld--stephi-wild.json",
-      "oldUrl": "https://www.broadwayworld.com/translate/pl/Photos-Christine-Lahti-inTHE-SMILE-OF-HER-at-the-Marylebone-Theatre-20260716",
-      "newUrl": "https://www.broadwayworld.com/translate/fr/Photos-Christine-Lahti-inTHE-SMILE-OF-HER-at-the-Marylebone-Theatre-20260716"
-    },
-    {
-      "reviewId": "music-city-off-broadway-2026/deadline--greg-evans.json",
-      "oldUrl": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680/",
-      "newUrl": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-1236861882/"
+      "reviewId": "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
+      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary-1236451899/"
     }
   ]
 }
