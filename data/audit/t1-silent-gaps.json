@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-18T17:08:09.253Z",
+  "generatedAt": "2026-07-18T18:17:56.457Z",
   "windowDays": 45,
   "showsScanned": 56,
   "gaps": [
@@ -54,40 +54,6 @@
       "recovery": null,
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=heathers-the-musical-off-west-end-2026 --url=null --outlet=observer   # run LOCALLY (cookie jar lives on the Mac)"
-    },
-    {
-      "showId": "heathers-the-musical-off-west-end-2026",
-      "title": "Heathers the Musical",
-      "openingDate": "2026-07-14",
-      "file": "thestage--unknown.json",
-      "outletId": "thestage",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thestage.co.uk/reviews/heathers-the-musical-review-the-arts-at-marble-arch",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-      },
-      "recoveryCount": 1,
-      "fix": "node scripts/ingest-review-from-url.js --show=heathers-the-musical-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/heathers-the-musical-review-the-arts-at-marble-arch --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)"
-    },
-    {
-      "showId": "the-smile-of-her-off-west-end-2026",
-      "title": "The Smile Of Her",
-      "openingDate": "2026-07-16",
-      "file": "thestage--unknown.json",
-      "outletId": "thestage",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thestage.co.uk/reviews/the-smile-of-her-review-marylebone-theatre-london",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-      },
-      "recoveryCount": 1,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-smile-of-her-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/the-smile-of-her-review-marylebone-theatre-london --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)"
     }
   ]
 }
