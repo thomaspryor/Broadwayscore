@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-18T12:19:44.768Z",
+  "timestamp": "2026-07-18T14:28:00.166Z",
   "stats": {
-    "totalReviews": 40209,
+    "totalReviews": 40207,
     "alreadyFlagged": 17594,
-    "dateGuardCatches": 50,
-    "directorMismatch": 913,
+    "dateGuardCatches": 49,
+    "directorMismatch": 912,
     "tvFilmSignals": 1102,
-    "londonSignals": 752,
+    "londonSignals": 753,
     "offBroadwaySignals": 473,
     "yearMismatch": 85,
-    "noPublishDate": 3644
+    "noPublishDate": 3641
   },
   "findings": [
     {
@@ -4418,20 +4418,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "children-of-a-lesser-god-1980",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 63,
-      "publishDate": "2018-04-11",
-      "url": "http://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-lesser-god-broadway-review-0412-story.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"kenny leon\" from children-of-a-lesser-god-2018"
         }
       ]
     },
@@ -29023,20 +29009,6 @@
       ]
     },
     {
-      "showId": "allegra-west-end-2026",
-      "file": "whatsonstage--aliya-al.json",
-      "score": 75,
-      "publishDate": "2026-05-21",
-      "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/allegra_1722344/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 48d before show (2026-05-21 vs 2026-07-08)"
-        }
-      ]
-    },
-    {
       "showId": "amaze-off-broadway-2026",
       "file": "timeout--adam-feldman.json",
       "score": 78,
@@ -42367,6 +42339,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-oresteia-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2026-07-15",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david-morrissey-bg8qzzhhn",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
