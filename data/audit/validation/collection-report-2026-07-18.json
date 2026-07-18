@@ -1,30 +1,30 @@
 {
-  "runDate": "2026-07-18T15:54:59.274Z",
+  "runDate": "2026-07-18T15:56:20.725Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-whoopi-monologues-off-broadway-2026",
+    "showFilter": "hershey-felder-the-piano-and-me-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 0,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 2,
@@ -39,9 +39,9 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -50,26 +50,20 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "the-whoopi-monologues-off-broadway-2026/new-york-city-theatre--unknown.json",
-    "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
-    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+  "processed": [],
+  "failed": [
+    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "failed": [],
   "tierDetails": {
-    "playwright": [
-      "the-whoopi-monologues-off-broadway-2026/new-york-city-theatre--unknown.json",
-      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
