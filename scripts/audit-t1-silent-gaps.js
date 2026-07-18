@@ -107,7 +107,7 @@ function fileCountsAsScored(d, show) {
   return wouldBeIncludedInRebuild(d, show);
 }
 
-function recoverFromOwnUrl(showId, fileName, d) {
+function recoverFromOwnUrl(showId, fileName, d, show) {
   const outletId = fileName.split('--')[0];
   const decision = decideEmptyBodyRecovery({
     file: d,
@@ -133,7 +133,7 @@ function recoverFromOwnUrl(showId, fileName, d) {
   try {
     const fp = path.join(REVIEW_TEXTS_DIR, showId, fileName);
     const fresh = JSON.parse(fs.readFileSync(fp, 'utf8'));
-    if (!(fresh.fullText && fresh.fullText.length >= 400) && !fileCountsAsScored(fresh)) {
+    if (!(fresh.fullText && fresh.fullText.length >= 400) && !fileCountsAsScored(fresh, show)) {
       fresh.aggUrlRecoveryCount = nextRecoveryCount(fresh);
       fresh.aggUrlRecoveryAt = new Date().toISOString();
       safeWriteReview(fp, fresh);
@@ -187,7 +187,7 @@ async function main() {
       if (gap.type === 'empty-body' && gap.recoverable && DO_RECOVER && !DRY_RUN
           && fetches < FETCH_CAP && d.url && !attemptedUrls.has(d.url)) {
         attemptedUrls.add(d.url);
-        recovery = recoverFromOwnUrl(show.id, f, d);
+        recovery = recoverFromOwnUrl(show.id, f, d, show);
         if (recovery.attempted) fetches++;
         // Healed only if a re-classification agrees — a re-ingest that lands
         // another bot stub must NOT suppress the gap (Codex review finding).
