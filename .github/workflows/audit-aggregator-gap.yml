@@ -150,6 +150,25 @@ jobs:
           fi
           node scripts/audit-show-review-gap.js $ARGS
 
+      # Dir-driven sweep for tier-1/2 reviews that were discovered but sit in a
+      # terminal unscoreable state (empty paywall stub / bot-stub rejection /
+      # never-scored). Complements the aggregator-driven audit above: it needs
+      # no aggregator citation (the 2026-07-18 Times/Oresteia + NYT/Potluck
+      # incident class was invisible to the citation-based recovery) and always
+      # covers the full recent window regardless of the back-catalogue
+      # checkpoint rotation. Recovers empty bodies from each file's own URL
+      # (shared aggUrlRecoveryCount cap) and emails a deduped ACTION alert for
+      # whatever remains.
+      - name: T1/T2 silent-gap sweep
+        if: always()
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-t1-silent-gaps.js --recover --alert
+
       - name: Commit audit JSON (public repo)
         if: always()
         env:
@@ -160,7 +179,7 @@ jobs:
           # Audit JSON lives in the public repo. Commit the checkpoint too — it's
           # what lets consecutive runs resume instead of re-auditing the same
           # first shows (the 25-min-timeout fix).
-          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json || true
+          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json || true
           if git diff --cached --quiet; then
             echo "No audit changes to commit"
           else

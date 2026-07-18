@@ -531,6 +531,12 @@ on:
       - 'scripts/autonomous-run-release-claim.test.mjs'
       # validate-show-venue.js already path-listed above (line ~180).
       - 'scripts/verify-review-recovery.js'
+      # T1/T2 silent-gap sweep (2026-07-18 Times/Oresteia + NYT/Potluck class):
+      # classifier is colocated-tested via the lib-test glob; path-listed so a
+      # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/t1-silent-gap.js'
+      - 'scripts/lib/t1-silent-gap.test.mjs'
+      - 'scripts/audit-t1-silent-gaps.js'
       # Sprint 4, S4-T4: autonomous-merge.yml/.js 'data' action (Tier-2 CI
       # merge/revert against the private repos). scripts/autonomous-merge.js
       # is already path-listed above (and .github/workflows/** is globbed at
