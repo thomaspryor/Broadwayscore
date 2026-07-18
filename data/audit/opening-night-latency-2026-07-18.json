@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-18T19:42:46.976Z",
+  "generatedAt": "2026-07-18T20:32:55.281Z",
   "date": "2026-07-18",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 211969,
+  "entryCount": 215520,
   "shows": [
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
@@ -36,7 +36,7 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -456,7 +456,7 @@
     },
     {
       "showId": "pride-west-end-2026",
-      "reviewCount": 23,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1116,12 +1116,12 @@
     },
     {
       "showId": "the-potluck-off-broadway-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 219820671,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1371,12 +1371,12 @@
     },
     {
       "showId": "heathers-the-musical-off-west-end-2026",
-      "reviewCount": 6,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 2737354,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1386,7 +1386,7 @@
     },
     {
       "showId": "the-smile-of-her-off-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
