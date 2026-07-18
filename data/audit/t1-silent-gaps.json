@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-18T15:17:35.571Z",
+  "generatedAt": "2026-07-18T16:03:53.162Z",
   "windowDays": 45,
-  "showsScanned": 55,
+  "showsScanned": 56,
   "gaps": [
     {
       "showId": "pride-west-end-2026",
@@ -30,6 +30,49 @@
       "fix": "node scripts/ingest-review-from-url.js --show=the-potluck-off-broadway-2026 --url=https://www.nytimes.com/2026/07/15/theater/the-potluck-review-cesar-alvarez.html --outlet=nytimes --critic=\"Helen Shaw\"   # run LOCALLY (cookie jar lives on the Mac)"
     },
     {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "title": "Heathers the Musical",
+      "openingDate": "2026-07-14",
+      "file": "nytg--unknown.json",
+      "outletId": "nytg",
+      "tier": 2,
+      "type": "empty-body",
+      "url": null,
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=heathers-the-musical-off-west-end-2026 --url=null --outlet=nytg   # run LOCALLY (cookie jar lives on the Mac)"
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "title": "Heathers the Musical",
+      "openingDate": "2026-07-14",
+      "file": "observer--unknown.json",
+      "outletId": "observer",
+      "tier": 1,
+      "type": "empty-body",
+      "url": null,
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=heathers-the-musical-off-west-end-2026 --url=null --outlet=observer   # run LOCALLY (cookie jar lives on the Mac)"
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "title": "Heathers the Musical",
+      "openingDate": "2026-07-14",
+      "file": "thestage--unknown.json",
+      "outletId": "thestage",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thestage.co.uk/reviews/heathers-the-musical-review-the-arts-at-marble-arch",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=heathers-the-musical-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/heathers-the-musical-review-the-arts-at-marble-arch --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)"
+    },
+    {
       "showId": "the-smile-of-her-off-west-end-2026",
       "title": "The Smile Of Her",
       "openingDate": "2026-07-16",
@@ -43,7 +86,7 @@
         "ok": false,
         "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=the-smile-of-her-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/the-smile-of-her-review-marylebone-theatre-london --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)"
     }
   ]
