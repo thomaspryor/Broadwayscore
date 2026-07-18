@@ -19,7 +19,9 @@
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
     "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
-    "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
+    "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
+    "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
+    "pride-west-end-2026/wsj--brian-p-kelly.json"
   ],
   "failed": [
     "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
@@ -111,7 +113,15 @@
     "archduke-west-end-2026/dc-theater-arts--deb-miller.json",
     "archduke-west-end-2026/nysr--michael-sommers.json",
     "archduke-west-end-2026/nytg--amelia-merrill.json",
-    "archduke-west-end-2026/one-minute-critic--matthew-wexler.json"
+    "archduke-west-end-2026/one-minute-critic--matthew-wexler.json",
+    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--unknown.json",
+    "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "pride-west-end-2026/nyt-theater--unknown.json",
+    "pride-west-end-2026/nytimes--ben-brantley.json",
+    "pride-west-end-2026/nytimes--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/newsday--unknown.json",
+    "pride-west-end-2026/wsj--unknown.json",
+    "pride-west-end-2026/theatrely--kobi-kassal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -131,13 +141,17 @@
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/pride-west-end-2026/wsj--brian-p-kelly.json",
+      "pride-west-end-2026/wsj--brian-p-kelly.json"
+    ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
     ],
     "scrapingbee": [
       "heathers-the-musical-off-west-end-2026/westendtheatre--unknown.json",
-      "the-potluck-off-broadway-2026/nytimes--helen-shaw.json"
+      "the-potluck-off-broadway-2026/nytimes--helen-shaw.json",
+      "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json"
     ],
     "brightdata": [
       "heathers-the-musical-off-west-end-2026/voice-magazine--unknown.json"
@@ -150,7 +164,7 @@
     ]
   },
   "startTime": "2026-07-18T17:09:59.494Z",
-  "lastProcessed": "archduke-west-end-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "pride-west-end-2026/theatrely--kobi-kassal.json",
   "log": [
     {
       "t": "2026-07-18T19:23:12.888Z",
@@ -162,6 +176,17 @@
       "t": "2026-07-18T19:23:13.832Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-18T19:28:14.341Z",
+      "event": "bb-session",
+      "session": "fc16908c",
+      "url": "https://www.wsj.com/arts-culture/fine-art/folk-nation-crafting-patriotism-in-the"
+    },
+    {
+      "t": "2026-07-18T19:28:15.385Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
