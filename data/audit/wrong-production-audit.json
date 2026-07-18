@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-18T10:27:17.958Z",
+  "timestamp": "2026-07-18T12:07:47.148Z",
   "stats": {
-    "totalReviews": 40208,
-    "alreadyFlagged": 17596,
+    "totalReviews": 40209,
+    "alreadyFlagged": 17593,
     "dateGuardCatches": 50,
     "directorMismatch": 913,
     "tvFilmSignals": 1102,
-    "londonSignals": 751,
+    "londonSignals": 752,
     "offBroadwaySignals": 473,
     "yearMismatch": 85,
-    "noPublishDate": 3642
+    "noPublishDate": 3644
   },
   "findings": [
     {
@@ -42344,6 +42344,20 @@
     },
     {
       "showId": "the-oresteia-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "score": 61,
+      "publishDate": "2026-07-17",
+      "url": "https://playsinternational.org.uk/the-oresteia-bridge-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-oresteia-west-end-2026",
       "file": "theatre-vibe--lizzie-loveridge.json",
       "score": 48,
       "publishDate": null,
@@ -42655,7 +42669,7 @@
       "file": "one-minute-critic--steven-vargas.json",
       "score": 63,
       "publishDate": "2026-07-15",
-      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&",
+      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-potluck-review-cesar-alvarez",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
