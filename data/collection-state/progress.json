@@ -161,7 +161,17 @@
     "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
     "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--unknown.json",
     "heathers-the-musical-off-west-end-2026/nbcny--robert-kahn.json",
-    "heathers-the-musical-off-west-end-2026/thestage--unknown.json"
+    "heathers-the-musical-off-west-end-2026/thestage--unknown.json",
+    "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-oresteia-west-end-2026/british-theatre--unknown.json",
+    "the-oresteia-west-end-2026/the-recs--unknown.json",
+    "the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
+    "the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+    "the-oresteia-west-end-2026/times-uk--clive-davis.json",
+    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
+    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
+    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -245,7 +255,9 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
-      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json"
+      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -267,7 +279,7 @@
     ]
   },
   "startTime": "2026-07-17T18:00:53.399Z",
-  "lastProcessed": "heathers-the-musical-off-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
   "log": [
     {
       "t": "2026-07-18T06:21:16.445Z",
@@ -420,6 +432,28 @@
       "event": "bb-session",
       "session": "7b2de750",
       "url": "https://www.facebook.com/bridgetheatrelondon/posts/simon-stones-the-oresteia-aft"
+    },
+    {
+      "t": "2026-07-18T11:02:23.284Z",
+      "event": "bb-session",
+      "session": "f012befc",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-oresteia-review-dav"
+    },
+    {
+      "t": "2026-07-18T11:02:24.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-07-18T11:03:47.084Z",
+      "event": "bb-session",
+      "session": "7d264544",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david"
+    },
+    {
+      "t": "2026-07-18T11:03:48.132Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
