@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-07-18T17:14:50.397Z",
-  "processed": 0,
-  "failed": 10,
-  "successRate": "0%",
+  "updatedAt": "2026-07-18T20:02:59.083Z",
+  "processed": 50,
+  "failed": 260,
+  "successRate": "16.1%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 35,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "browserbase": 2,
+    "directCookies": 1,
+    "scrapingbee": 3,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 8
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-07-18T19:23:12.888Z",
+      "event": "bb-session",
+      "session": "ed37197c",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=P9RfwACvik9Zf"
+    },
+    {
+      "t": "2026-07-18T19:23:13.832Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-18T19:28:14.341Z",
+      "event": "bb-session",
+      "session": "fc16908c",
+      "url": "https://www.wsj.com/arts-culture/fine-art/folk-nation-crafting-patriotism-in-the"
+    },
+    {
+      "t": "2026-07-18T19:28:15.385Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
