@@ -1,41 +1,22 @@
 {
-  "processed": [],
-  "failed": [
-    "tender-off-west-end-2026/afridiziak-theatre-news--unknown.json",
-    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
-    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
-    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
-    "tender-off-west-end-2026/theupcoming--unknown.json",
-    "tender-off-west-end-2026/times-uk--richard-morrison.json",
-    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
-    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
+  "processed": [
+    "allegra-west-end-2026/whatsonstage--aliya-al.json"
   ],
+  "failed": [],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "amp": [],
-    "browserbase": [
-      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+    "playwright": [
+      "allegra-west-end-2026/whatsonstage--aliya-al.json"
     ],
+    "amp": [],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-18T06:15:31.637Z",
-  "lastProcessed": "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
-  "log": [
-    {
-      "t": "2026-07-18T06:17:30.566Z",
-      "event": "bb-session",
-      "session": "d89f0a73",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
-    },
-    {
-      "t": "2026-07-18T06:17:31.853Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    }
-  ]
+  "startTime": "2026-07-18T06:16:03.748Z",
+  "lastProcessed": "allegra-west-end-2026/whatsonstage--aliya-al.json",
+  "log": []
 }
