@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-07-16T23:47:34.258Z",
-    "showId": "a-midsummer-nights-dream-west-end-2026",
-    "newFile": "whatsonstage--unknown.json",
-    "ok": false,
-    "file": "whatsonstage--alun-hood.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/",
-      "existingFlags": {
-        "wrongProduction": false,
-        "wrongShow": true,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2026-06-30",
-      "incomingUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-shakespeares-globe-review_1720033/",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-07-16T23:47:34.307Z",
     "showId": "a-midsummer-nights-dream-west-end-2026",
     "newFile": "whatsonstage--unknown.json",
@@ -9421,6 +9402,21 @@
       "existingPublishDate": "2018-09-13",
       "incomingUrl": "https://www.whatsonstage.com/news/heathers-the-musical-at-theatre-royal-haymarket-review_54381/",
       "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-07-18T00:25:44.953Z",
+    "showId": "hadestown-2019",
+    "newFile": "nytimes--unknown.json",
+    "ok": false,
+    "file": "nytimes--ben-brantley.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2019-04-17T20:11:26-04:00",
+      "incomingPublishDate": "2026-07-15",
+      "diffDays": 2645,
+      "existingUrl": "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html?smtyp=cur&smid=tw-nytimesarts",
+      "incomingUrl": "https://www.nytimes.com/2026/07/15/theater/hadestown-theater-to-stream.html"
     }
   }
 ]
