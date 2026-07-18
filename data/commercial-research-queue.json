@@ -1,11 +1,15 @@
 {
   "shows": [
     "the-fear-of-13",
-    "dog-day-afternoon"
+    "dog-day-afternoon",
+    "the-lost-boys-2026",
+    "the-balusters-2026"
   ],
-  "updatedAt": "2026-07-17T09:39:33.908Z",
+  "updatedAt": "2026-07-18T19:00:36.710Z",
   "triggers": {
     "the-fear-of-13": "closing",
-    "dog-day-afternoon": "closing"
+    "dog-day-afternoon": "closing",
+    "the-lost-boys-2026": "sweep-requeue-low-conf",
+    "the-balusters-2026": "sweep-requeue-low-conf"
   }
 }
