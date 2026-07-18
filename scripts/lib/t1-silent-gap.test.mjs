@@ -130,6 +130,28 @@ test('flag-excluded empty stub over the retry cap is still REPORTED (2026-07-18:
   }), { type: 'empty-body', recoverable: false });
 });
 
+test('contentTier=invalid garbage is NOT an empty-body gap (re-ingest can only re-fetch garbage)', () => {
+  assert.equal(classify({
+    ...TIMES_EMPTY_STUB, contentTier: 'invalid', aggUrlRecoveryCount: 3,
+  }), null);
+});
+
+test('star-scored textless stub is not a gap; junk originalScore stub still is', () => {
+  // First-party page stars (stage-star-svg pattern) — rebuild will score it.
+  assert.equal(classify({
+    ...TIMES_EMPTY_STUB, contentTier: 'stub',
+    originalScore: '3/5 stars', originalScoreNormalized: 60, aggUrlRecoveryCount: 3,
+  }), null);
+  // Letter grade parses via isUnambiguousRatingString — also a valid score.
+  assert.equal(classify({
+    ...TIMES_EMPTY_STUB, contentTier: 'stub', originalScore: 'B+', aggUrlRecoveryCount: 3,
+  }), null);
+  // Unparseable originalScore is NOT a score — must stay visible as a gap.
+  assert.deepEqual(classify({
+    ...TIMES_EMPTY_STUB, contentTier: 'stub', originalScore: 'N/A', aggUrlRecoveryCount: 3,
+  }), { type: 'empty-body', recoverable: false });
+});
+
 test('alert dedupe: never-alerted fires, recent alert suppresses, 8-day-old re-fires', () => {
   assert.equal(shouldAlertGap(null, NOW), true);
   assert.equal(shouldAlertGap('2026-07-17T12:00:00Z', NOW), false);
