@@ -1,16 +1,883 @@
 {
-  "generatedAt": "2026-07-18T16:03:30.856Z",
+  "generatedAt": "2026-07-18T17:07:57.718Z",
   "windowDays": 1095,
-  "targets": 2,
+  "targets": 4,
   "counts": {
-    "withGap": 2,
-    "totalMissing": 10,
+    "withGap": 3,
+    "totalMissing": 35,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 15,
-    "totalRecoverable": 0,
+    "totalFlaggedMisses": 10,
+    "totalRecoverable": 1,
     "totalRecovered": 0
   },
   "results": [
+    {
+      "showId": "the-oresteia-west-end-2026",
+      "title": "The Oresteia",
+      "openingDate": "2026-07-14",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-heres-what-critics-think-of-robert-ickes-oresteia-off-broadway"
+      ],
+      "aggregatorListedUrls": [
+        "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
+        "https://newyorktheater.me/2022/07/27/oresteia-review/",
+        "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
+        "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
+        "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
+        "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
+        "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
+        "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
+        "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-oresteia-review-david-morrissey-the-bridge-b3015202.html",
+        "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-oresteia-bridge-theatre-review/",
+        "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
+        "https://www.theguardian.com/stage/2026/jul/15/the-oresteia-review-bridge-theatre-london-david-morrissey-mary-louise-parker"
+      ],
+      "dirFiles": 34,
+      "dirClean": 20,
+      "inReviewsJson": 23,
+      "missing": [
+        {
+          "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 2
+        },
+        {
+          "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatrereviews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "london-unattached.com",
+          "count": 1
+        },
+        {
+          "host": "playsinternational.org.uk",
+          "count": 1
+        },
+        {
+          "host": "theatrevibe.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": true,
+          "recoverableFile": "thestage--dave-fargnoli.json",
+          "recoverableOutletId": "thestage",
+          "recoverableCritic": "Dave Fargnoli",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--dave-fargnoli.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 6,
+        "sources": {
+          "westendtheatre": {
+            "found": true,
+            "rows": 6,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 6,
+        "corroborated": 5,
+        "perSource": {
+          "westendtheatre": {
+            "cited": 6,
+            "corroborated": 5
+          }
+        }
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-heres-what-critics-think-of-robert-ickes-oresteia-off-broadway",
+          "publishDate": "2022-07-29"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "the-whoopi-monologues-off-broadway-2026",
+      "title": "The Whoopi Monologues",
+      "openingDate": "2026-07-14",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-the-whoopi-monologues-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-WHOOPI-MONOLOGUES-Opens-Off-Broadway-20260714"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/the-whoopi-monologues-review-kerry-washington/",
+        "https://cititour.com/NYC_Broadway/The-Whoopi-Monologues/1386",
+        "https://culturesauce.com/whoopi-goldberg-monologues-off-broadway-review/",
+        "https://exeuntnyc.com/reviews/review-the-whoopi-monologues-at-the-mitzi-e-newhouse-theater/",
+        "https://nystagereview.com/2026/07/13/the-whoopi-monologues-goldbergs-characters-still-charm-and-disarm/",
+        "https://nystagereview.com/2026/07/13/the-whoopi-monologues-five-whoopis-are-less-than-one/",
+        "https://www.newyorktheatreguide.com/reviews/the-whoopi-monologues-off-broadway-review-kerry-washington-kara-young-whoopi-goldberg",
+        "https://www.wsj.com/articles/the-whoopi-monologues-review-goldberg-variations-off-broadway-0ee39174",
+        "https://www.thewrap.com/creative-content/theater/the-whoopi-monologues-off-broadway-review-kerry-washington/",
+        "https://www.nytimes.com/2026/07/14/theater/the-whoopi-monologues-review-kerry-washington-kara-young.html",
+        "https://www.theatermania.com/news/review-the-whoopi-monologues-shines-even-without-whoopi-goldberg_1845713/",
+        "https://www.talkinbroadway.com/page/ob/07_13_26.html",
+        "https://www.interestedbystander.com/2026/07/theater-reviews-two-buzzy-women-driven.html"
+      ],
+      "dirFiles": 19,
+      "dirClean": 15,
+      "inReviewsJson": 15,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.org",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "title": "Heathers the Musical",
+      "openingDate": "2026-07-14",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-are-out-for-the-heathers-off-broadway-revival",
+        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
+        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Returns-Off-Broadway-at-New-World-Stages-20250710"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/Heathers/1313",
+        "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
+        "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
+        "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
+        "https://exeuntnyc.com/reviews/review-heathers-the-musical-at-new-world-stages/",
+        "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
+        "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
+        "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
+        "https://www.newyorktheatreguide.com/reviews/heathers-off-broadway-review",
+        "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
+        "https://1minutecritic.com/heathers-off-broadway-review/",
+        "https://recliningstandards.com/2025/07/10/ck-df-review-heathers-at-new-world-stages/",
+        "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
+        "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
+        "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
+        "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html",
+        "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186",
+        "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398",
+        "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
+        "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html",
+        "http://www.timeout.com/newyork/theater/heathers-the-musical",
+        "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
+        "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
+        "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/",
+        "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html",
+        "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
+        "https://pagesonstages.com/2025/07/10/heathers/",
+        "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
+        "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
+        "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/"
+      ],
+      "dirFiles": 27,
+      "dirClean": 5,
+      "inReviewsJson": 6,
+      "missing": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Heathers/1313",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
+          "host": "digitaljournal.com",
+          "knownOutletId": "digital-journal",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-heathers-the-musical-at-new-world-stages/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/heathers-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://1minutecritic.com/heathers-off-broadway-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://recliningstandards.com/2025/07/10/ck-df-review-heathers-at-new-world-stages/",
+          "host": "recliningstandards.com",
+          "knownOutletId": "reclining-standards",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/heathers-the-musical",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://pagesonstages.com/2025/07/10/heathers/",
+          "host": "pagesonstages.com",
+          "knownOutletId": "pages-on-stages",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
+          "host": "stageandcinema.com",
+          "knownOutletId": "stageandcinema",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "musicaltheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "westendwilma.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--ben-brantley.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186",
+          "host": "go.com",
+          "knownOutletId": "abc-news",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "abc-news--peter-santilli.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nbcny--robert-kahn.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nypost--elisabeth-vincentelli.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": true,
+            "rows": 0,
+            "emptyParse": true,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-are-out-for-the-heathers-off-broadway-revival",
+          "publishDate": "2025-07-10"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
+          "publishDate": "2014-03-31"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Returns-Off-Broadway-at-New-World-Stages-20250710",
+          "publishDate": "2025-07-10"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Heathers/1313",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
+          "host": "digitaljournal.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-heathers-the-musical-at-new-world-stages/",
+          "host": "exeuntnyc.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
+          "host": "thefrontrowcenter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/heathers-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://1minutecritic.com/heathers-off-broadway-review/",
+          "host": "1minutecritic.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://recliningstandards.com/2025/07/10/ck-df-review-heathers-at-new-world-stages/",
+          "host": "recliningstandards.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/heathers-the-musical",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
+          "host": "frontmezzjunkies.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://pagesonstages.com/2025/07/10/heathers/",
+          "host": "pagesonstages.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
+          "host": "theaterpizzazz.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
+          "host": "stageandcinema.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": []
+    },
     {
       "showId": "loves-labours-lost-globe-west-end-2026",
       "title": "Love's Labour's Lost - Globe",
@@ -172,428 +1039,6 @@
         {
           "url": "https://www.thestage.co.uk/reviews/loves-labours-lost-review-royal-shakespeare-theatre-stratford-upon-avon-william-shakespeare-emily-burns-luke-thompson",
           "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "hercules-west-end-2025",
-      "title": "Hercules",
-      "openingDate": "2025-07-10",
-      "status": "open",
-      "category": "west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-do-the-reviews-say-about-disneys-hercules-in-londons-west-end-watch-luke-bradys-go-the-distance",
-        "https://playbill.com/article/reviews-what-did-critics-think-of-hercules-at-paper-mill-playhouse",
-        "https://playbill.com/article/what-do-critics-think-of-hercules-in-central-park",
-        "https://www.broadwayworld.com/article/Review-Roundup-HERCULES-Opens-at-Theatre-Royal-Drury-Lane-20250624",
-        "https://www.broadwayworld.com/article/Review-Roundup-Disneys-HERCULES-Musical-Opens-at-Paper-Mill-Playhouse-20230302",
-        "https://www.broadwayworld.com/article/Review-Roundup-Public-Works-HERCULES-in-Central-Park-20190902"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.afridiziak.com/reviews/disneys-hercules-theatre-royal-drury-lane/",
-        "https://www.dailymail.co.uk/tvshowbiz/article-14844061/Hercules-theatre-review-Musical-lacks-punch-new-Disney-classic-writes-PATRICK-MARMION.html",
-        "https://www.digitalspy.com/movies/a65152308/hercules-review-buy-tickets/",
-        "https://www.express.co.uk/entertainment/theatre/2073053/disney-hercules-musical-london-review",
-        "https://www.theguardian.com/stage/2025/jun/24/hercules-review-disney-musical-theatre-royal-drury-lane",
-        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/hercules-musical-review-disney-west-end-b2776526.html",
-        "https://www.londontheatre.co.uk/reviews/hercules-review-disney-theatre-royal-drury-lane-alan-menken",
-        "https://www.londontheatredirect.com/news/hercules-review-2025",
-        "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-lane.html",
-        "https://www.thestage.co.uk/reviews/hercules-review-theatre-royal-drury-lane-london-disney-casey-nicholaw",
-        "https://www.standard.co.uk/culture/theatre/hercules-at-theatre-royal-drury-lane-b1234755.html",
-        "https://www.telegraph.co.uk/art/reviews/hercules-disney-review-theatre-royal-drury-lane/",
-        "https://theatreweekly.com/review-disneys-hercules-at-theatre-royal-drury-lane-london/",
-        "https://www.timeout.com/london/news/review-disneys-hercules-at-theatre-royal-drury-lane-062425",
-        "https://www.thetimes.com/culture/theatre-dance/article/hercules-review-mighty-muses-save-disneys-musclebound-musical-wp3rcgnz6",
-        "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-1236439211/",
-        "https://www.whatsonstage.com/news/disneys-hercules-in-the-west-end-review-bursting-with-energy-but-lacking-in-heart_1684149/",
-        "https://www.nj.com/entertainment/2023/03/hercules-nj-play-review-even-muscles-cant-lift-paper-mills-new-musical.html",
-        "https://nystagereview.com/2023/03/02/disneys-hercules-olympian-musical-takes-the-stage-at-paper-mill/",
-        "https://www.nytimes.com/2023/03/03/theater/hercules-review-paper-mill-playhouse.html",
-        "https://www.theatrely.com/post/hercules-has-just-enough-strength-to-match-its-heart-review",
-        "https://www.theaterpizzazz.com/hercules-paper-mill-playhouse/",
-        "https://www.amny.com/entertainment/hercules-public-theater-review-1.35791376",
-        "https://deadline.com/2019/09/hercules-off-broadway-review-disney-public-works-central-park-1202709466/",
-        "https://ew.com/theater-reviews/2019/09/02/hercules-musical-review/",
-        "https://www.hollywoodreporter.com/review/hercules-1236066",
-        "https://www.vulture.com/2019/09/theater-review-the-strengths-of-a-free-public-hercules.html",
-        "http://nystagereview.com/2019/09/02/hercules-the-strong-man-and-huge-cast-sing-lustily-on-stage/",
-        "https://www.nytimes.com/2019/09/02/theater/hercules-review-public-works-delacorte.html",
-        "https://www.thewrap.com/hercules-theater-review-can-disneys-animated-hero-go-the-distance-to-broadway/",
-        "https://inews.co.uk/culture/hercules-musical-awful-review-3767364",
-        "https://www.slashfilm.com/1209464/disneys-hercules-musical-review-i-wont-say-im-in-love-but-theres-potential/",
-        "http://nystagereview.com/2019/09/03/hercules-a-heroic-new-musical-and-thats-the-gospel-truth/",
-        "https://variety.com/2019/legit/reviews/hercules-review-musical-public-works-central-park-1203321731/",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hercules-musical-review-disney-west-end-b2776526.html",
-        "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
-      ],
-      "dirFiles": 38,
-      "dirClean": 21,
-      "inReviewsJson": 22,
-      "missing": [
-        {
-          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/hercules-musical-review-disney-west-end-b2776526.html",
-          "host": "the-independent.com",
-          "knownOutletId": "independent"
-        },
-        {
-          "url": "https://www.theaterpizzazz.com/hercules-paper-mill-playhouse/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.amny.com/entertainment/hercules-public-theater-review-1.35791376",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://deadline.com/2019/09/hercules-off-broadway-review-disney-public-works-central-park-1202709466/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/hercules-1236066",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/hercules-theater-review-can-disneys-animated-hero-go-the-distance-to-broadway/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.slashfilm.com/1209464/disneys-hercules-musical-review-i-wont-say-im-in-love-but-theres-potential/",
-          "host": "slashfilm.com",
-          "knownOutletId": "slash-film",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "theartsdesk.com",
-          "count": 1
-        },
-        {
-          "host": "britishtheatre.com",
-          "count": 1
-        },
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "everything-theatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "ft.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14844061/Hercules-theatre-review-Musical-lacks-punch-new-Disney-classic-writes-PATRICK-MARMION.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "daily-mail--patrick-marmion.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.dailymail.co.uk/tvshowbiz/article-14844061/Hercules-theatre-review-Musical-lacks-punch-new-Disney-classic-writes-PATRICK-MARMION.html"
-            },
-            {
-              "file": "daily-mail--robert-gore-langton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.dailymail.co.uk/tvshowbiz/article-14844061/Hercules-theatre-review-Musical-lacks-punch-new-Disney-classic-writes-PATRICK-MARMION.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-lane.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--matt-wolf.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-lane.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/hercules-review-theatre-royal-drury-lane-london-disney-casey-nicholaw",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--sam-marlowe.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.thestage.co.uk/reviews/hercules-review-theatre-royal-drury-lane-london-disney-casey-nicholaw"
-            }
-          ]
-        },
-        {
-          "url": "https://www.nj.com/entertainment/2023/03/hercules-nj-play-review-even-muscles-cant-lift-paper-mills-new-musical.html",
-          "host": "nj.com",
-          "knownOutletId": "njcom",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "njcom--jacqueline-cutler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nj.com/entertainment/2023/03/hercules-nj-play-review-even-muscles-cant-lift-paper-mills-new-musical.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2023/03/02/disneys-hercules-olympian-musical-takes-the-stage-at-paper-mill/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--roma-torre.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2023/03/02/disneys-hercules-olympian-musical-takes-the-stage-at-paper-mill/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2023/03/03/theater/hercules-review-paper-mill-playhouse.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--matt-wolf.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-lane.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/hercules-has-just-enough-strength-to-match-its-heart-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatrely--kobi-kassal.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatrely.com/post/hercules-has-just-enough-strength-to-match-its-heart-review"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://ew.com/theater-reviews/2019/09/02/hercules-musical-review/",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "ew--httpswwwfacebookcomentertainmentweekly.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://ew.com/theater-reviews/2019/09/02/hercules-musical-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2019/09/theater-review-the-strengths-of-a-free-public-hercules.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--sara-holdren.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.vulture.com/2019/09/theater-review-the-strengths-of-a-free-public-hercules.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2019/09/02/hercules-the-strong-man-and-huge-cast-sing-lustily-on-stage/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--roma-torre.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2023/03/02/disneys-hercules-olympian-musical-takes-the-stage-at-paper-mill/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2019/09/02/theater/hercules-review-public-works-delacorte.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--matt-wolf.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-lane.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2019/09/03/hercules-a-heroic-new-musical-and-thats-the-gospel-truth/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--roma-torre.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2023/03/02/disneys-hercules-olympian-musical-takes-the-stage-at-paper-mill/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-what-did-critics-think-of-hercules-at-paper-mill-playhouse",
-          "publishDate": "2023-03-03"
-        },
-        {
-          "url": "https://playbill.com/article/what-do-critics-think-of-hercules-in-central-park",
-          "publishDate": "2019-09-02"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Disneys-HERCULES-Musical-Opens-at-Paper-Mill-Playhouse-20230302",
-          "publishDate": "2023-03-02"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Public-Works-HERCULES-in-Central-Park-20190902",
-          "publishDate": "2019-09-02"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/hercules-musical-review-disney-west-end-b2776526.html",
-          "host": "the-independent.com",
-          "priorRun": false,
-          "reason": "we-gate-off"
-        },
-        {
-          "url": "https://www.theaterpizzazz.com/hercules-paper-mill-playhouse/",
-          "host": "theaterpizzazz.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.amny.com/entertainment/hercules-public-theater-review-1.35791376",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://deadline.com/2019/09/hercules-off-broadway-review-disney-public-works-central-park-1202709466/",
-          "host": "deadline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/hercules-1236066",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thewrap.com/hercules-theater-review-can-disneys-animated-hero-go-the-distance-to-broadway/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.slashfilm.com/1209464/disneys-hercules-musical-review-i-wont-say-im-in-love-but-theres-potential/",
-          "host": "slashfilm.com",
           "priorRun": true,
           "reason": "prior-run"
         }
