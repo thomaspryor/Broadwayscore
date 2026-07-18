@@ -124,6 +124,12 @@ test('empty-body over the retry cap stays a gap but is no longer recoverable', (
     { type: 'empty-body', recoverable: false });
 });
 
+test('flag-excluded empty stub over the retry cap is still REPORTED (2026-07-18: thestage paywall stubs vanished from the audit unresolved)', () => {
+  assert.deepEqual(classify({
+    ...TIMES_EMPTY_STUB, contentTier: 'stub', incompleteReason: 'paywall', aggUrlRecoveryCount: 3,
+  }), { type: 'empty-body', recoverable: false });
+});
+
 test('alert dedupe: never-alerted fires, recent alert suppresses, 8-day-old re-fires', () => {
   assert.equal(shouldAlertGap(null, NOW), true);
   assert.equal(shouldAlertGap('2026-07-17T12:00:00Z', NOW), false);
