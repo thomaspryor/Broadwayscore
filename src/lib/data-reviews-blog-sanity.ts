@@ -61,7 +61,9 @@ function toBlogReviewListItem(item: ReviewListItem): Omit<BlogReview, 'contentHt
     publishDate: item.publishDate,
     heroImage: item.heroImage?.url,
     slug: item.slug,
-    readingTime: 0, // not used on list view
+    // ReviewCard renders "N min read" on the list view, so this must be real —
+    // a hardcoded 0 shipped as "0 min read" on every card (2026-07-19 audit).
+    readingTime: item.bodyWords ? Math.max(1, Math.ceil(item.bodyWords / 238)) : 0,
     contentHtml: '', // not used on list view
     stressTestHtml: null,
     excerpt: item.excerpt || '',
