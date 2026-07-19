@@ -88,7 +88,13 @@ function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, d
   if (gateDisabled) return { proceed: true, reason: 'kill-switch' };
 
   if (eventName !== 'schedule') {
-    // Explicit ship intent — dedup only when this exact SHA is already live.
+    // Explicit ship intent — dedup only when this exact SHA is verifiably live
+    // (strictly less skip-prone than the old gh-run-list dedup, which skipped
+    // against SHAs of runs that never deployed). Known residual: a rebuild that
+    // changed ONLY private core-data without moving public HEAD would dedup
+    // here even though a redeploy would ship fresher data — in practice
+    // rebuild-all-reviews commits public/data/shows/*.json in lockstep with
+    // reviews.json (HEAD moves), and the 6h backstop bounds the edge case.
     if (baselineSha && baselineSha === headSha) return { proceed: false, reason: 'already-live' };
     return { proceed: true, reason: 'explicit-ship' };
   }

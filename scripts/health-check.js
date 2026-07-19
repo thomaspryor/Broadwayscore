@@ -1056,9 +1056,17 @@ function checkDeployFreshness() {
     return [{ name: 'Deploy: production freshness', status: 'warn', message: 'Skipped — no VERCEL_TOKEN available' }];
   }
   return [runCheck('Deploy: production freshness', () => {
-    const out = execSync('node scripts/check-prod-deploy.js --json', {
-      encoding: 'utf8', timeout: 30000, stdio: ['pipe', 'pipe', 'pipe'],
-    });
+    let out;
+    try {
+      out = execSync('node scripts/check-prod-deploy.js --json', {
+        encoding: 'utf8', timeout: 30000, stdio: ['pipe', 'pipe', 'pipe'],
+      });
+    } catch (err) {
+      // check-prod-deploy exits 2 on API/network failure — a transient Vercel
+      // blip is not "prod is stale"; warn (visible in digest) instead of error
+      // (subject-line escalation). A real freshness breach still errors below.
+      return { name: 'Deploy: production freshness', status: 'warn', message: `Vercel API unreachable (${err.message.split('\n')[0].slice(0, 120)}) — freshness unknown this run` };
+    }
     const dep = JSON.parse(out);
     const ageH = dep.ageSec / 3600;
     const msg = `Latest READY production deploy: ${dep.deployedSha ? dep.deployedSha.slice(0, 10) : 'unknown-sha'}, age ${ageH.toFixed(1)}h`;
