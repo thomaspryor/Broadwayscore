@@ -1,41 +1,20 @@
 {
-  "generatedAt": "2026-07-19T00:14:07.715Z",
+  "generatedAt": "2026-07-19T01:29:35.937Z",
   "windowDays": 45,
   "showsScanned": 54,
   "gaps": [
     {
-      "showId": "loves-labours-lost-globe-west-end-2026",
-      "title": "Love's Labour's Lost - Globe",
-      "openingDate": "2026-07-17",
-      "file": "times-uk--david-jays-and-maxie-szalwinska.json",
-      "outletId": "times-uk",
-      "tier": 1,
+      "showId": "a-walk-on-the-moon-off-broadway-2026",
+      "title": "A Walk on the Moon",
+      "openingDate": "2026-06-29",
+      "file": "talkinbroadway--marc-miller.json",
+      "outletId": "talkinbroadway",
+      "tier": 2,
       "type": "empty-body",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-reviews-dance-nation-six-loves-labours-lost-vzp5qcwqv",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 132 chars — pattern may be missing for this outlet. Add an entry to scri"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=loves-labours-lost-globe-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/theatre-reviews-dance-nation-six-loves-labours-lost-vzp5qcwqv --outlet=times-uk --critic=\"David Jays and Maxie Szalwinska\"   # run LOCALLY (cookie jar lives on the Mac)"
-    },
-    {
-      "showId": "loves-labours-lost-globe-west-end-2026",
-      "title": "Love's Labour's Lost - Globe",
-      "openingDate": "2026-07-17",
-      "file": "times-uk--dominic-maxwell.json",
-      "outletId": "times-uk",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-loves-labours-lost-at-the-sam-wanamaker-playhouse-se1-76j52g6ws",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": null
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=loves-labours-lost-globe-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/theatre-review-loves-labours-lost-at-the-sam-wanamaker-playhouse-se1-76j52g6ws --outlet=times-uk --critic=\"Dominic Maxwell\"   # run LOCALLY (cookie jar lives on the Mac)"
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGAeQJnhH5ozCC.Rav71xHV9tvxB9h0oo-1782899801-1.0.1.1-_Mvq1E.E_0FWweMKJDcl8.iYGoS61tlUQWAbHIjhVXA",
+      "recovery": null,
+      "recoveryCount": 3,
+      "fix": "node scripts/ingest-review-from-url.js --show=a-walk-on-the-moon-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGAeQJnhH5ozCC.Rav71xHV9tvxB9h0oo-1782899801-1.0.1.1-_Mvq1E.E_0FWweMKJDcl8.iYGoS61tlUQWAbHIjhVXA --outlet=talkinbroadway --critic=\"Marc Miller\"   # run LOCALLY (cookie jar lives on the Mac)"
     }
   ]
 }
