@@ -1,1307 +1,20 @@
 {
-  "generatedAt": "2026-07-19T17:19:21.473Z",
+  "generatedAt": "2026-07-19T18:18:41.290Z",
   "windowDays": 1095,
-  "targets": 65,
+  "targets": 64,
   "counts": {
-    "withGap": 9,
-    "totalMissing": 74,
+    "withGap": 8,
+    "totalMissing": 21,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 30,
-    "totalRecoverable": 2,
+    "totalFlaggedMisses": 37,
+    "totalRecoverable": 1,
     "totalRecovered": 1
   },
   "results": [
     {
-      "showId": "shifters-off-broadway-2026",
-      "title": "Shifters",
-      "openingDate": "2026-07-16",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-shifters-off-broadway"
-      ],
-      "aggregatorListedUrls": [
-        "https://culturesauce.com/shifters-off-broadway-review/",
-        "https://exeuntnyc.com/reviews/review-shifters-at-the-cherry-lane-theatre/",
-        "https://newyorktheater.me/2026/07/15/shifters-review/",
-        "https://www.newyorktheatreguide.com/reviews/shifters-off-broadway-review",
-        "https://www.nytimes.com/2026/07/17/theater/shifters-review.html",
-        "https://nystagereview.com/2026/07/15/shifters-love-and-romance-profoundly-revisited/",
-        "https://www.theatermania.com/news/review-in-shifters-piecing-together-a-first-great-love_1845923/"
-      ],
-      "dirFiles": 24,
-      "dirClean": 8,
-      "inReviewsJson": 9,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "wsj.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://culturesauce.com/shifters-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "culturesauce--thom-geier.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://culturesauce.com/shifters-off-broadway-review/"
-            },
-            {
-              "file": "culturesauce--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://culturesauce.com/shifters-off-broadway-review/"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null
-    },
-    {
-      "showId": "the-oresteia-west-end-2026",
-      "title": "The Oresteia",
-      "openingDate": "2026-07-14",
-      "status": "open",
-      "category": "west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-heres-what-critics-think-of-robert-ickes-oresteia-off-broadway"
-      ],
-      "aggregatorListedUrls": [
-        "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-        "https://newyorktheater.me/2022/07/27/oresteia-review/",
-        "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-        "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-        "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-        "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-        "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-        "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/"
-      ],
-      "dirFiles": 35,
-      "dirClean": 20,
-      "inReviewsJson": 23,
-      "missing": [
-        {
-          "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theartsdesk.com",
-          "count": 1
-        },
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "ft.com",
-          "count": 1
-        },
-        {
-          "host": "theguardian.com",
-          "count": 1
-        },
-        {
-          "host": "independent.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "london-unattached.com",
-          "count": 1
-        },
-        {
-          "host": "playsinternational.org.uk",
-          "count": 1
-        },
-        {
-          "host": "standard.co.uk",
-          "count": 1
-        },
-        {
-          "host": "telegraph.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatrevibe.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "timeout.com",
-          "count": 1
-        },
-        {
-          "host": "thetimes.com",
-          "count": 2
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        },
-        {
-          "host": "whatsonstage.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 1
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-heres-what-critics-think-of-robert-ickes-oresteia-off-broadway",
-          "publishDate": "2022-07-29"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
-          "host": "newyorktheater.me",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-          "host": "wsj.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-whoopi-monologues-off-broadway-2026",
-      "title": "The Whoopi Monologues",
-      "openingDate": "2026-07-14",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-the-whoopi-monologues-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-WHOOPI-MONOLOGUES-Opens-Off-Broadway-20260714"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/the-whoopi-monologues-review-kerry-washington/",
-        "https://cititour.com/NYC_Broadway/The-Whoopi-Monologues/1386",
-        "https://culturesauce.com/whoopi-goldberg-monologues-off-broadway-review/",
-        "https://exeuntnyc.com/reviews/review-the-whoopi-monologues-at-the-mitzi-e-newhouse-theater/",
-        "https://nystagereview.com/2026/07/13/the-whoopi-monologues-goldbergs-characters-still-charm-and-disarm/",
-        "https://nystagereview.com/2026/07/13/the-whoopi-monologues-five-whoopis-are-less-than-one/",
-        "https://www.newyorktheatreguide.com/reviews/the-whoopi-monologues-off-broadway-review-kerry-washington-kara-young-whoopi-goldberg",
-        "https://www.wsj.com/articles/the-whoopi-monologues-review-goldberg-variations-off-broadway-0ee39174",
-        "https://www.thewrap.com/creative-content/theater/the-whoopi-monologues-off-broadway-review-kerry-washington/",
-        "https://www.nytimes.com/2026/07/14/theater/the-whoopi-monologues-review-kerry-washington-kara-young.html",
-        "https://www.theatermania.com/news/review-the-whoopi-monologues-shines-even-without-whoopi-goldberg_1845713/",
-        "https://www.talkinbroadway.com/page/ob/07_13_26.html",
-        "https://www.interestedbystander.com/2026/07/theater-reviews-two-buzzy-women-driven.html"
-      ],
-      "dirFiles": 19,
-      "dirClean": 15,
-      "inReviewsJson": 15,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.org",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null
-    },
-    {
-      "showId": "heathers-the-musical-off-west-end-2026",
-      "title": "Heathers the Musical",
-      "openingDate": "2026-07-14",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-are-out-for-the-heathers-off-broadway-revival",
-        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
-        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Returns-Off-Broadway-at-New-World-Stages-20250710"
-      ],
-      "aggregatorListedUrls": [
-        "https://cititour.com/NYC_Broadway/Heathers/1313",
-        "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
-        "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
-        "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
-        "https://exeuntnyc.com/reviews/review-heathers-the-musical-at-new-world-stages/",
-        "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
-        "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
-        "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
-        "https://www.newyorktheatreguide.com/reviews/heathers-off-broadway-review",
-        "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
-        "https://1minutecritic.com/heathers-off-broadway-review/",
-        "https://recliningstandards.com/2025/07/10/ck-df-review-heathers-at-new-world-stages/",
-        "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
-        "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
-        "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
-        "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html",
-        "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186",
-        "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398",
-        "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
-        "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html",
-        "http://www.timeout.com/newyork/theater/heathers-the-musical",
-        "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
-        "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
-        "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/",
-        "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html",
-        "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
-        "https://pagesonstages.com/2025/07/10/heathers/",
-        "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
-        "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
-        "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/"
-      ],
-      "dirFiles": 35,
-      "dirClean": 11,
-      "inReviewsJson": 12,
-      "missing": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Heathers/1313",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
-          "host": "digitaljournal.com",
-          "knownOutletId": "digital-journal",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-heathers-the-musical-at-new-world-stages/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/heathers-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://1minutecritic.com/heathers-off-broadway-review/",
-          "host": "1minutecritic.com",
-          "knownOutletId": "one-minute-critic",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://recliningstandards.com/2025/07/10/ck-df-review-heathers-at-new-world-stages/",
-          "host": "recliningstandards.com",
-          "knownOutletId": "reclining-standards",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
-          "host": "usatoday.com",
-          "knownOutletId": "usatoday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/heathers-the-musical",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
-          "host": "frontmezzjunkies.com",
-          "knownOutletId": "frontmezzjunkies",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://pagesonstages.com/2025/07/10/heathers/",
-          "host": "pagesonstages.com",
-          "knownOutletId": "pages-on-stages",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
-          "host": "stageandcinema.com",
-          "knownOutletId": "stageandcinema",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "londontheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "musicaltheatrereview.com",
-          "count": 1
-        },
-        {
-          "host": "theatresoutheast.com",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "theatreandtonic.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        },
-        {
-          "host": "voicemag.uk",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        },
-        {
-          "host": "westendwilma.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--ben-brantley.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186",
-          "host": "go.com",
-          "knownOutletId": "abc-news",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "abc-news--peter-santilli.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--david-rooney.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html",
-          "host": "nbcnewyork.com",
-          "knownOutletId": "nbcny",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nbcny--robert-kahn.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nypost--elisabeth-vincentelli.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 1
-          },
-          "theatre-reviews": {
-            "found": true,
-            "rows": 0,
-            "emptyParse": true,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-are-out-for-the-heathers-off-broadway-revival",
-          "publishDate": "2025-07-10"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
-          "publishDate": "2014-03-31"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Returns-Off-Broadway-at-New-World-Stages-20250710",
-          "publishDate": "2025-07-10"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Heathers/1313",
-          "host": "cititour.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
-          "host": "culturesauce.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
-          "host": "digitaljournal.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-heathers-the-musical-at-new-world-stages/",
-          "host": "exeuntnyc.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
-          "host": "thefrontrowcenter.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
-          "host": "newyorktheater.me",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/heathers-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://1minutecritic.com/heathers-off-broadway-review/",
-          "host": "1minutecritic.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://recliningstandards.com/2025/07/10/ck-df-review-heathers-at-new-world-stages/",
-          "host": "recliningstandards.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
-          "host": "theatermania.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
-          "host": "theatrely.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
-          "host": "usatoday.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/heathers-the-musical",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
-          "host": "nydailynews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
-          "host": "frontmezzjunkies.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://pagesonstages.com/2025/07/10/heathers/",
-          "host": "pagesonstages.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
-          "host": "theaterpizzazz.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
-          "host": "stageandcinema.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-jonathan-larson-project-off-west-end-2026",
-      "title": "The Jonathan Larson Project",
-      "openingDate": "2026-07-13",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-do-the-critics-think-of-the-jonathan-larson-project-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-JONATHAN-LARSON-PROJECT-Opens-Off-Broadway-20250310"
-      ],
-      "aggregatorListedUrls": [
-        "https://cititour.com/NYC_Broadway/The-Jonathan-Larson-Project/1282",
-        "https://culturesauce.com/2025/03/10/jonathan-larson-project-off-broadway-review/",
-        "https://www.thedailybeast.com/the-new-jonathan-larson-musical-is-an-affront-to-the-rent-genius/",
-        "https://exeuntnyc.com/reviews/review-the-jonathan-larson-project-at-the-orpheum-theatre/",
-        "https://themusicaltheatrereport.com/2025/03/11/the-jonathan-larson-project-at-the-orpheum-theatre/",
-        "https://www.nydailynews.com/2025/03/10/theater-review-jonathan-larson-project-rent-composer-unheard-songs/",
-        "https://nystagereview.com/2025/03/11/the-jonathan-larson-project-seasoned-with-love/",
-        "https://newyorktheater.me/2025/03/10/the-jonathan-larson-project-review/",
-        "https://www.newyorktheatreguide.com/reviews/the-jonathan-larson-project-off-broadway-review",
-        "https://www.theatermania.com/news/review-the-jonathan-larson-project-a-taste-of-the-rent-composers-left-behinds_1766868/",
-        "https://www.theatrely.com/post/the-jonathan-larson-project-soars-off-broadway-review",
-        "https://t2conline.com/the-jonathan-larson-project-a-powerful-tribute-to-a-visionary-voice/"
-      ],
-      "dirFiles": 30,
-      "dirClean": 18,
-      "inReviewsJson": 18,
-      "missing": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/The-Jonathan-Larson-Project/1282",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://culturesauce.com/2025/03/10/jonathan-larson-project-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nydailynews.com/2025/03/10/theater-review-jonathan-larson-project-rent-composer-unheard-songs/",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/the-jonathan-larson-project-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/the-jonathan-larson-project-soars-off-broadway-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://t2conline.com/the-jonathan-larson-project-a-powerful-tribute-to-a-visionary-voice/",
-          "host": "t2conline.com",
-          "knownOutletId": "times-square-chronicles",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "britishtheatreguide.info",
-          "count": 1
-        },
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "everything-theatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theguardian.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "loureviews.blog",
-          "count": 1
-        },
-        {
-          "host": "musicaltheatrereview.com",
-          "count": 1
-        },
-        {
-          "host": "stagedtheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreandtonic.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thetimes.com",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        },
-        {
-          "host": "whatsonstage.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.thedailybeast.com/the-new-jonathan-larson-musical-is-an-affront-to-the-rent-genius/",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dailybeast--tim-teeman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thedailybeast.com/the-new-jonathan-larson-musical-is-an-affront-to-the-rent-genius/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-the-jonathan-larson-project-at-the-orpheum-theatre/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "exeunt-magazine--lane-williamson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://exeuntnyc.com/reviews/review-the-jonathan-larson-project-at-the-orpheum-theatre/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://themusicaltheatrereport.com/2025/03/11/the-jonathan-larson-project-at-the-orpheum-theatre/",
-          "host": "themusicaltheatrereport.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "themusicaltheatrereport--ben-west.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://themusicaltheatrereport.com/2025/03/11/the-jonathan-larson-project-at-the-orpheum-theatre/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2025/03/11/the-jonathan-larson-project-seasoned-with-love/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--michael-sommers.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/03/11/the-jonathan-larson-project-seasoned-with-love/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2025/03/10/the-jonathan-larson-project-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://newyorktheater.me/2025/03/10/the-jonathan-larson-project-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-the-jonathan-larson-project-a-taste-of-the-rent-composers-left-behinds_1766868/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/review-the-jonathan-larson-project-a-taste-of-the-rent-composers-left-behinds_1766868/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 1
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/what-do-the-critics-think-of-the-jonathan-larson-project-off-broadway",
-          "publishDate": "2025-03-11"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-JONATHAN-LARSON-PROJECT-Opens-Off-Broadway-20250310",
-          "publishDate": "2025-03-10"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/The-Jonathan-Larson-Project/1282",
-          "host": "cititour.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://culturesauce.com/2025/03/10/jonathan-larson-project-off-broadway-review/",
-          "host": "culturesauce.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nydailynews.com/2025/03/10/theater-review-jonathan-larson-project-rent-composer-unheard-songs/",
-          "host": "nydailynews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/the-jonathan-larson-project-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theatrely.com/post/the-jonathan-larson-project-soars-off-broadway-review",
-          "host": "theatrely.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://t2conline.com/the-jonathan-larson-project-a-powerful-tribute-to-a-visionary-voice/",
-          "host": "t2conline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-smile-of-her-off-west-end-2026",
-      "title": "The Smile Of Her",
-      "openingDate": "2026-07-16",
+      "showId": "loves-labours-lost-globe-west-end-2026",
+      "title": "Love's Labour's Lost - Globe",
+      "openingDate": "2026-07-17",
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
@@ -1349,1074 +62,39 @@
       }
     },
     {
-      "showId": "an-enemy-of-the-people-2024",
-      "title": "An Enemy of the People",
-      "openingDate": "2024-03-18",
+      "showId": "how-to-dance-in-ohio-2023",
+      "title": "How to Dance in Ohio",
+      "openingDate": "2023-12-10",
       "status": "closed",
       "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-are-critics-saying-about-an-enemy-of-the-people-on-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-Starring-Jeremy-Strong-Opens-On-Broadway-20240318",
-        "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928"
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-how-to-dance-in-ohio-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-Live-20231210"
       ],
       "aggregatorListedUrls": [
-        "https://www.timeout.com/newyork/theater/an-enemy-of-the-people-broadway-review-jeremy-strong-michael-imperioli",
-        "https://nystagereview.com/2024/03/18/an-enemy-of-the-people-ibsens-cautionary-tale-as-timely-as-ever-142-years-on/",
-        "https://www.thedailybeast.com/in-enemy-of-the-people-jeremy-strong-finds-his-way-from-succession-to-broadway",
-        "https://deadline.com/2024/03/enemy-of-the-people-broadway-review-1235860766/",
-        "https://ew.com/an-enemy-of-the-people-review-jeremy-strong-michael-imperioli-8610065",
-        "https://www.hollywoodreporter.com/lifestyle/arts/an-enemy-of-the-people-theater-review-jeremy-strong-michael-imperioli-broadway-ibsen-revival-1235854269/",
-        "https://www.theguardian.com/stage/2024/mar/18/an-enemy-of-the-people-review-jeremy-strong-henrik-ibsen-drama",
-        "https://www.nydailynews.com/2024/03/18/broadway-review-enemy-of-the-people-is-lively-showcase-for-jeremy-strong-michael-imperioli/",
-        "https://nypost.com/2024/03/18/entertainment/an-enemy-of-the-people-review-jeremy-strong-and-michael-imperioli-duke-it-out-on-broadway/",
-        "https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html",
-        "https://www.newyorktheatreguide.com/reviews/an-enemy-of-the-people-broadway-review-jeremy-strong-michael-imperioli-victoria-pedretti",
-        "https://newyorktheater.me/2024/03/18/enemy-of-the-people-broadway-review/",
-        "https://nystagereview.com/2024/03/18/an-enemy-of-the-people-ibsens-classic-trivialized-with-gimmickry-and-ice-cubes/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/an-enemy-of-the-people-new-york-succession-jeremy-strong/",
-        "https://www.theatermania.com/news/review-a-battle-of-the-hbo-stars-in-rousing-enemy-of-the-people-on-broadway_1734531/",
-        "https://www.theatrely.com/post/an-enemy-of-the-people-watered-down-liquored-up-review",
-        "https://variety.com/2024/legit/news/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/",
-        "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadway-michael-imperioli-sam-gold-ibsen-amy-herzog-6b1bb53e",
-        "https://www.washingtonpost.com/entertainment/theater/2024/03/18/jeremy-strong-enemy-of-the-people-broadway-review-climate-activists/",
-        "https://www.thewrap.com/an-enemy-of-the-people-broadway-review-jeremy-strong/",
-        "https://www.amny.com/entertainment/broadway/review-enemy-of-the-people-broadway/",
-        "https://www.usatoday.com/story/entertainment/music/2024/03/18/enemy-people-broadway-review-jeremy-strong-michael-imperioli/72946126007/",
-        "https://www.slantmagazine.com/theater/an-enemy-of-the-people-review-jeremy-strong/",
-        "http://theater.nytimes.com/2012/09/28/theater/reviews/an-enemy-of-the-people-at-samuel-j-friedman-theater.html",
-        "http://www.nydailynews.com/entertainment/music-arts/theater-review-enemy-people-article-1.1169554",
-        "http://ph.news.yahoo.com/review-great-cast-saves-enemy-people-010145601.html",
-        "http://www.newsday.com/entertainment/theater/enemy-of-the-people-review-fine-ibsen-1.4043118",
-        "http://www.usatoday.com/life/people/story/2012/09/27/ibsens-an-enemy-of-the-people-gets-timely-revival/57849738/1",
-        "http://www.timeout.com/newyork/theater/an-enemy-of-the-people-1",
-        "http://www.backstage.com/review/ny-theater/broadway/enemy-people-broadway-boyd-gaines-richard-thomas-manhattan-theatre-club/",
-        "http://www.hollywoodreporter.com/review/an-enemy-of-the-people-theater-review-374734",
-        "http://www.amny.com/urbanite-1.812039/theater-review-an-enemy-of-the-people-3-stars-1.4048475",
-        "http://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review___An_Enemy_of_the_People__can_t_resolve_conflicts.html",
-        "https://variety.com/2024/legit/reviews/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/"
-      ],
-      "dirFiles": 68,
-      "dirClean": 39,
-      "inReviewsJson": 42,
-      "missing": [
-        {
-          "url": "http://ph.news.yahoo.com/review-great-cast-saves-enemy-people-010145601.html",
-          "host": "yahoo.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "culturesauce.com",
-          "count": 1
-        },
-        {
-          "host": "dailymail.co.uk",
-          "count": 1
-        },
-        {
-          "host": "ft.com",
-          "count": 1
-        },
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "independent.co.uk",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "twi-ny.com",
-          "count": 1
-        },
-        {
-          "host": "thetimes.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thetimes.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": true,
-          "recoverableFile": "nytimes--jesse-green.json",
-          "recoverableOutletId": "nytimes",
-          "recoverableCritic": "Jesse Green",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html"
-            }
-          ]
-        },
-        {
-          "url": "http://theater.nytimes.com/2012/09/28/theater/reviews/an-enemy-of-the-people-at-samuel-j-friedman-theater.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": true,
-          "recoverableFile": "nytimes--jesse-green.json",
-          "recoverableOutletId": "nytimes",
-          "recoverableCritic": "Jesse Green",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/enemy-of-the-people-review-fine-ibsen-1.4043118",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "newsday--linda-winer.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.newsday.com/entertainment/theater/enemy-of-the-people-review-fine-ibsen-1.4043118"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.backstage.com/review/ny-theater/broadway/enemy-people-broadway-boyd-gaines-richard-thomas-manhattan-theatre-club/",
-          "host": "backstage.com",
-          "knownOutletId": "backstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "backstage--suzt-evans.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.backstage.com/review/ny-theater/broadway/enemy-people-broadway-boyd-gaines-richard-thomas-manhattan-theatre-club/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review___An_Enemy_of_the_People__can_t_resolve_conflicts.html",
-          "host": "northjersey.com",
-          "knownOutletId": "northjerseycom",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "northjerseycom--robert-feldberg.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review___An_Enemy_of_the_People__can_t_resolve_conflicts.html?page=all"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928",
-          "publishDate": "2012-09-28"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "http://ph.news.yahoo.com/review-great-cast-saves-enemy-people-010145601.html",
-          "host": "yahoo.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html",
-          "host": "nytimes.com",
-          "file": "nytimes--jesse-green.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "reason": null,
-          "recoveryCount": 0
-        }
-      ]
-    },
-    {
-      "showId": "the-notebook-2024",
-      "title": "The Notebook",
-      "openingDate": "2024-03-14",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-are-critics-saying-about-the-notebook-on-broadway",
-        "https://playbill.com/article/reviews-heres-what-critics-think-of-the-world-premiere-of-the-notebook-musical",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-National-Tour-is-Now-Underway-20250917",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-World-Premiere-Musical-at-Chicago-Shakespeare-Theater-20221007"
-      ],
-      "aggregatorListedUrls": [
-        "https://abcnews.go.com/Entertainment/wireStory/theater-review-gosling-geese-broadways-notebook-guts-guile-108136912",
-        "https://cititour.com/NYC_Broadway/The-Notebook/1215",
-        "https://deadline.com/2024/03/the-notebook-broadway-review-1235857614/",
-        "https://www.digitaljournal.com/entertainment/review-the-notebook-is-a-new-musical-on-broadway-based-on-the-nicholas-sparks-novel/article",
-        "https://www.thederrick.com/ap/entertainment/theater-review-without-gosling-or-geese-broadways-the-notebook-goes-for-the-guts-without-guile/article_5d910506-34e4-5fc1-b9b9-3f58c4c3f06f.html",
-        "https://ew.com/the-notebook-musical-review-nicholas-sparks-broadway-8609026",
-        "https://www.theguardian.com/stage/2024/mar/14/the-notebook-review-broadway",
-        "https://www.indiewire.com/criticism/culture/the-notebook-broadway-musical-review-1234964639/",
-        "https://www.nydailynews.com/2024/03/14/broadway-review-the-notebook-is-an-unexpectedly-sophisticated-tearjerker/",
-        "https://nypost.com/2024/03/14/entertainment/the-notebook-review-broadway-musical-doesnt-match-films-sweep/",
-        "https://nystagereview.com/2024/03/14/the-notebook-just-another-love-story-with-kleenex/",
-        "https://nystagereview.com/2024/03/14/the-notebook-a-musical-romance-made-for-fans-to-love/",
-        "https://newyorktheater.me/2024/03/14/the-notebook-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/the-notebook-broadway-review-ingrid-michaelson",
-        "https://www.nytimes.com/2024/03/14/theater/the-notebook-review-broadway-musical.html",
-        "https://www.theatermania.com/news/review-the-notebook-is-broadways-guaranteed-tearjerker_1733888/",
-        "https://www.slantmagazine.com/theater/the-notebook-review-broadway/",
-        "https://www.theatrely.com/post/the-notebook-brings-heartfelt-passion-to-broadway-review",
-        "https://www.timeout.com/newyork/theater/the-notebook-broadway-musical-review",
-        "https://variety.com/2024/legit/reviews/the-notebook-review-broadway-musical-1235939025/",
-        "https://www.wsj.com/articles/the-notebook-review-broadway-musical-nicholas-sparks-ingrid-michaelson-46fd2416",
-        "https://www.washingtonpost.com/entertainment/theater/2024/03/14/the-notebook-review-broadway-musical/",
-        "https://www.thewrap.com/the-notebook-broadway-review-ingrid-michaelson/",
-        "https://chicago.suntimes.com/2022/10/7/23392910/the-notebook-review-chicago-shakespeare-theater-superb-romance",
-        "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-notebook-musical-chicago-shakespeare-review-20221007-srquwezkwndife2b2j6fvjnjfi-story.html",
-        "https://www.dailyherald.com/entlife/20221009/lovely-score-impressive-performances-power-chicago-shakespeares-superb-notebook",
-        "https://www.theepochtimes.com/theater-review-the-notebook-love-over-a-lifetime_4786838.html",
-        "https://www.shawlocal.com/northwest-herald/arts-and-entertainment/2022/10/11/review-the-notebook-musical-sings-to-the-heart/",
-        "https://thirdcoastreview.com/2022/10/07/review-the-notebook-chicago-shakespeare/",
-        "https://www.news-herald.com/2025/09/15/the-notebook-at-playhouse-square-review-sweeping-us-off-our-feet/",
-        "https://www.cleveland.com/entertainment/2025/09/the-notebook-review-tony-nominated-musical-launches-national-tour-at-playhouse-square.html",
-        "https://berkshireonstage.blog/2025/10/02/review-the-notebook-the-musical-at-the-bushnell/",
-        "https://patch.com/connecticut/hartford/theater-review-notebook-musical-tour-bushnell",
-        "https://buffalotheatreguide.com/2025/10/08/theatre-review-the-notebook-at-sheas-buffalo-theatre/",
-        "https://www.buffalorising.com/2025/10/a-love-that-endures-the-notebook-opens-at-sheas/",
-        "https://outinstl.com/the-notebook-at-the-fabulous-fox-theatre-a-love-that-outlasts-time/",
-        "https://www.minnesotamonthly.com/arts-entertainment/arts-entertainment-arts-entertainment/the-notebook-at-the-ordway-proves-love-is-worth-the-fight/",
-        "https://socalthrills.com/theatre-review-the-notebook-the-musical/",
-        "https://wehotimes.com/the-notebook-a-tale-of-memory-and-love-at-the-hollywood-pantages/",
-        "https://www.latimes.com/entertainment-arts/story/2026-01-09/notebook-musical-theater-review-hollywood-pantages",
-        "https://weliveentertainment.com/we-live-entertainment/notebook-use-edit-fans-wont-mind/",
-        "https://www.ocregister.com/2026/01/29/theater-review-the-notebook-avoids-cloying-sentimentality-in-costa-mesa/",
-        "https://www.sfchronicle.com/entertainment/theater/article/notebook-review-sf-21336695.php",
-        "https://www.seattletimes.com/entertainment/theater/does-the-notebook-musical-deliver-anything-new/",
-        "https://www.spokesman.com/stories/2026/mar/22/review-spokane-production-of-the-notebook-enchants/",
-        "https://vegastheatrescene.com/notebook-review.html",
-        "https://www.sdjewishworld.com/2026/04/17/the-notebook-prompts-tears-and-laughter-in-equal-measure/",
-        "https://www.sandiegouniontribune.com/2026/04/16/review-updates-to-notebook-musical-touring-version-have-pros-cons/",
-        "https://timesofsandiego.com/arts/2026/04/16/tender-the-notebook-musical-adapts-iconic-love-story-to-stage/",
-        "https://outsfl.com/a-e/the-notebook-brings-romance-and-emotion-to-miami",
-        "https://attractionsmagazine.com/review-the-notebook-musical-orlando/",
-        "https://www.orlandosentinel.com/2026/05/13/the-notebook-review-orlando-broadway/",
-        "https://www.thecharlotteledger.com/p/sparks-fly-in-the-notebook",
-        "https://www.tulsapeople.com/about-town/a-review-of-the-notebook-the-musical/article_761967e6-fcb9-4068-b7e8-e35b8f924686.html",
-        "https://fortworthbusiness.com/culture/the-notebook-reminds-us-alzheimers-cant-take-away-love/",
-        "https://www.newcitystage.com/2022/10/07/music-is-the-food-of-love-a-review-of-the-notebook-at-chicago-shakespeare-theater/",
-        "https://www.aroundthetownchicago.com/theatre-reviews/the-notebook/"
-      ],
-      "dirFiles": 40,
-      "dirClean": 31,
-      "inReviewsJson": 31,
-      "missing": [
-        {
-          "url": "https://abcnews.go.com/Entertainment/wireStory/theater-review-gosling-geese-broadways-notebook-guts-guile-108136912",
-          "host": "go.com",
-          "knownOutletId": "abc-news"
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/The-Notebook/1215",
-          "host": "cititour.com",
-          "knownOutletId": "cititour"
-        },
-        {
-          "url": "https://www.digitaljournal.com/entertainment/review-the-notebook-is-a-new-musical-on-broadway-based-on-the-nicholas-sparks-novel/article",
-          "host": "digitaljournal.com",
-          "knownOutletId": "digital-journal"
-        },
-        {
-          "url": "https://www.thederrick.com/ap/entertainment/theater-review-without-gosling-or-geese-broadways-the-notebook-goes-for-the-guts-without-guile/article_5d910506-34e4-5fc1-b9b9-3f58c4c3f06f.html",
-          "host": "thederrick.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.theepochtimes.com/theater-review-the-notebook-love-over-a-lifetime_4786838.html",
-          "host": "theepochtimes.com",
-          "knownOutletId": "epoch-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.shawlocal.com/northwest-herald/arts-and-entertainment/2022/10/11/review-the-notebook-musical-sings-to-the-heart/",
-          "host": "shawlocal.com",
-          "knownOutletId": "shaw-local",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.news-herald.com/2025/09/15/the-notebook-at-playhouse-square-review-sweeping-us-off-our-feet/",
-          "host": "news-herald.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.cleveland.com/entertainment/2025/09/the-notebook-review-tony-nominated-musical-launches-national-tour-at-playhouse-square.html",
-          "host": "cleveland.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://berkshireonstage.blog/2025/10/02/review-the-notebook-the-musical-at-the-bushnell/",
-          "host": "berkshireonstage.blog",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://patch.com/connecticut/hartford/theater-review-notebook-musical-tour-bushnell",
-          "host": "patch.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://buffalotheatreguide.com/2025/10/08/theatre-review-the-notebook-at-sheas-buffalo-theatre/",
-          "host": "buffalotheatreguide.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.buffalorising.com/2025/10/a-love-that-endures-the-notebook-opens-at-sheas/",
-          "host": "buffalorising.com",
-          "knownOutletId": "buffalorising",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://outinstl.com/the-notebook-at-the-fabulous-fox-theatre-a-love-that-outlasts-time/",
-          "host": "outinstl.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.minnesotamonthly.com/arts-entertainment/arts-entertainment-arts-entertainment/the-notebook-at-the-ordway-proves-love-is-worth-the-fight/",
-          "host": "minnesotamonthly.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://socalthrills.com/theatre-review-the-notebook-the-musical/",
-          "host": "socalthrills.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://wehotimes.com/the-notebook-a-tale-of-memory-and-love-at-the-hollywood-pantages/",
-          "host": "wehotimes.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.latimes.com/entertainment-arts/story/2026-01-09/notebook-musical-theater-review-hollywood-pantages",
-          "host": "latimes.com",
-          "knownOutletId": "latimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://weliveentertainment.com/we-live-entertainment/notebook-use-edit-fans-wont-mind/",
-          "host": "weliveentertainment.com",
-          "knownOutletId": "weliveentertainment",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.ocregister.com/2026/01/29/theater-review-the-notebook-avoids-cloying-sentimentality-in-costa-mesa/",
-          "host": "ocregister.com",
-          "knownOutletId": "oc-register",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.sfchronicle.com/entertainment/theater/article/notebook-review-sf-21336695.php",
-          "host": "sfchronicle.com",
-          "knownOutletId": "san-francisco-chronicle",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.seattletimes.com/entertainment/theater/does-the-notebook-musical-deliver-anything-new/",
-          "host": "seattletimes.com",
-          "knownOutletId": "seattle-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.spokesman.com/stories/2026/mar/22/review-spokane-production-of-the-notebook-enchants/",
-          "host": "spokesman.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://vegastheatrescene.com/notebook-review.html",
-          "host": "vegastheatrescene.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.sdjewishworld.com/2026/04/17/the-notebook-prompts-tears-and-laughter-in-equal-measure/",
-          "host": "sdjewishworld.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.sandiegouniontribune.com/2026/04/16/review-updates-to-notebook-musical-touring-version-have-pros-cons/",
-          "host": "sandiegouniontribune.com",
-          "knownOutletId": "san-diego-union-tribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://timesofsandiego.com/arts/2026/04/16/tender-the-notebook-musical-adapts-iconic-love-story-to-stage/",
-          "host": "timesofsandiego.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://outsfl.com/a-e/the-notebook-brings-romance-and-emotion-to-miami",
-          "host": "outsfl.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://attractionsmagazine.com/review-the-notebook-musical-orlando/",
-          "host": "attractionsmagazine.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.orlandosentinel.com/2026/05/13/the-notebook-review-orlando-broadway/",
-          "host": "orlandosentinel.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thecharlotteledger.com/p/sparks-fly-in-the-notebook",
-          "host": "thecharlotteledger.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.tulsapeople.com/about-town/a-review-of-the-notebook-the-musical/article_761967e6-fcb9-4068-b7e8-e35b8f924686.html",
-          "host": "tulsapeople.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://fortworthbusiness.com/culture/the-notebook-reminds-us-alzheimers-cant-take-away-love/",
-          "host": "fortworthbusiness.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newcitystage.com/2022/10/07/music-is-the-food-of-love-a-review-of-the-notebook-at-chicago-shakespeare-theater/",
-          "host": "newcitystage.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.aroundthetownchicago.com/theatre-reviews/the-notebook/",
-          "host": "aroundthetownchicago.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "apnews.com",
-          "count": 1
-        },
-        {
-          "host": "broadwayandme.blogspot.com",
-          "count": 1
-        },
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 2
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "theatrereviews.com",
-          "count": 1
-        },
-        {
-          "host": "twi-ny.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.indiewire.com/criticism/culture/the-notebook-broadway-musical-review-1234964639/",
-          "host": "indiewire.com",
-          "knownOutletId": "indiewire",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "indiewire--erin-strecker.json",
-              "flag": "clean",
-              "urlInDir": "https://www.indiewire.com/criticism/culture/the-notebook-broadway-musical-review-1234964639/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-notebook-musical-chicago-shakespeare-review-20221007-srquwezkwndife2b2j6fvjnjfi-story.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "chicagotribune--chris-jones.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-notebook-musical-chicago-shakespeare-review-20221007-srquwezkwndife2b2j6fvjnjfi-story.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.dailyherald.com/entlife/20221009/lovely-score-impressive-performances-power-chicago-shakespeares-superb-notebook",
-          "host": "dailyherald.com",
-          "knownOutletId": "daily-herald",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "daily-herald--barbara-vitello.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.dailyherald.com/entlife/20221009/lovely-score-impressive-performances-power-chicago-shakespeares-superb-notebook/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://thirdcoastreview.com/2022/10/07/review-the-notebook-chicago-shakespeare/",
-          "host": "thirdcoastreview.com",
-          "knownOutletId": "third-coast-review",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "third-coast-review--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://thirdcoastreview.com/2022/10/07/review-the-notebook-chicago-shakespeare/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-heres-what-critics-think-of-the-world-premiere-of-the-notebook-musical",
-          "publishDate": "2022-10-18"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-National-Tour-is-Now-Underway-20250917",
-          "publishDate": "2025-09-17"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-World-Premiere-Musical-at-Chicago-Shakespeare-Theater-20221007",
-          "publishDate": "2022-10-07"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.theepochtimes.com/theater-review-the-notebook-love-over-a-lifetime_4786838.html",
-          "host": "theepochtimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.shawlocal.com/northwest-herald/arts-and-entertainment/2022/10/11/review-the-notebook-musical-sings-to-the-heart/",
-          "host": "shawlocal.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.news-herald.com/2025/09/15/the-notebook-at-playhouse-square-review-sweeping-us-off-our-feet/",
-          "host": "news-herald.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.cleveland.com/entertainment/2025/09/the-notebook-review-tony-nominated-musical-launches-national-tour-at-playhouse-square.html",
-          "host": "cleveland.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://berkshireonstage.blog/2025/10/02/review-the-notebook-the-musical-at-the-bushnell/",
-          "host": "berkshireonstage.blog",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://patch.com/connecticut/hartford/theater-review-notebook-musical-tour-bushnell",
-          "host": "patch.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://buffalotheatreguide.com/2025/10/08/theatre-review-the-notebook-at-sheas-buffalo-theatre/",
-          "host": "buffalotheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.buffalorising.com/2025/10/a-love-that-endures-the-notebook-opens-at-sheas/",
-          "host": "buffalorising.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://outinstl.com/the-notebook-at-the-fabulous-fox-theatre-a-love-that-outlasts-time/",
-          "host": "outinstl.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.minnesotamonthly.com/arts-entertainment/arts-entertainment-arts-entertainment/the-notebook-at-the-ordway-proves-love-is-worth-the-fight/",
-          "host": "minnesotamonthly.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://socalthrills.com/theatre-review-the-notebook-the-musical/",
-          "host": "socalthrills.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://wehotimes.com/the-notebook-a-tale-of-memory-and-love-at-the-hollywood-pantages/",
-          "host": "wehotimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.latimes.com/entertainment-arts/story/2026-01-09/notebook-musical-theater-review-hollywood-pantages",
-          "host": "latimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://weliveentertainment.com/we-live-entertainment/notebook-use-edit-fans-wont-mind/",
-          "host": "weliveentertainment.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.ocregister.com/2026/01/29/theater-review-the-notebook-avoids-cloying-sentimentality-in-costa-mesa/",
-          "host": "ocregister.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.sfchronicle.com/entertainment/theater/article/notebook-review-sf-21336695.php",
-          "host": "sfchronicle.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.seattletimes.com/entertainment/theater/does-the-notebook-musical-deliver-anything-new/",
-          "host": "seattletimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.spokesman.com/stories/2026/mar/22/review-spokane-production-of-the-notebook-enchants/",
-          "host": "spokesman.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://vegastheatrescene.com/notebook-review.html",
-          "host": "vegastheatrescene.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.sdjewishworld.com/2026/04/17/the-notebook-prompts-tears-and-laughter-in-equal-measure/",
-          "host": "sdjewishworld.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.sandiegouniontribune.com/2026/04/16/review-updates-to-notebook-musical-touring-version-have-pros-cons/",
-          "host": "sandiegouniontribune.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://timesofsandiego.com/arts/2026/04/16/tender-the-notebook-musical-adapts-iconic-love-story-to-stage/",
-          "host": "timesofsandiego.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://outsfl.com/a-e/the-notebook-brings-romance-and-emotion-to-miami",
-          "host": "outsfl.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://attractionsmagazine.com/review-the-notebook-musical-orlando/",
-          "host": "attractionsmagazine.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.orlandosentinel.com/2026/05/13/the-notebook-review-orlando-broadway/",
-          "host": "orlandosentinel.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thecharlotteledger.com/p/sparks-fly-in-the-notebook",
-          "host": "thecharlotteledger.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.tulsapeople.com/about-town/a-review-of-the-notebook-the-musical/article_761967e6-fcb9-4068-b7e8-e35b8f924686.html",
-          "host": "tulsapeople.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://fortworthbusiness.com/culture/the-notebook-reminds-us-alzheimers-cant-take-away-love/",
-          "host": "fortworthbusiness.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newcitystage.com/2022/10/07/music-is-the-food-of-love-a-review-of-the-notebook-at-chicago-shakespeare-theater/",
-          "host": "newcitystage.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.aroundthetownchicago.com/theatre-reviews/the-notebook/",
-          "host": "aroundthetownchicago.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://abcnews.go.com/Entertainment/wireStory/theater-review-gosling-geese-broadways-notebook-guts-guile-108136912",
-          "host": "go.com",
-          "outletId": "abc-news",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=abcnews.go.com): Scrapingdog HTTP 404: {\"message\":\"Thi"
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/The-Notebook/1215",
-          "host": "cititour.com",
-          "outletId": "cititour",
-          "provisional": false,
-          "ok": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://www.digitaljournal.com/entertainment/review-the-notebook-is-a-new-musical-on-broadway-based-on-the-nicholas-sparks-novel/article",
-          "host": "digitaljournal.com",
-          "outletId": "digital-journal",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  ScrapingBee failed (render_js=false, domain=digitaljournal.com): ScrapingBee HTTP 401: {\"message"
-        },
-        {
-          "url": "https://www.thederrick.com/ap/entertainment/theater-review-without-gosling-or-geese-broadways-the-notebook-goes-for-the-guts-without-guile/article_5d910506-34e4-5fc1-b9b9-3f58c4c3f06f.html",
-          "host": "thederrick.com",
-          "outletId": "thederrick",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thederrick.com): Scrapingdog HTTP 404: {\"message\":\"Thi"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "days-of-wine-and-roses-2024",
-      "title": "Days of Wine and Roses",
-      "openingDate": "2024-01-28",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-days-of-wine-and-roses-on-broadway",
-        "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-adam-guettels-days-of-wine-and-roses",
-        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Visit-DAYS-OF-WINE-AND-ROSES-Starring-Kelli-OHara-Brian-dArcy-James-20230605",
-        "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-Live-20240128"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.broadwaynews.com/the-broadway-review-in-days-of-wine-and-roses-bottomless-booze-and-underbaked-romance/",
-        "https://www.amny.com/entertainment/theater/review-days-of-wine-and-roses/",
-        "https://cititour.com/NYC_Broadway/Days-of-Wine-and-Roses/1198",
-        "https://deadline.com/2024/01/days-of-wine-and-roses-broadway-review-once-upon-a-matress-1235806789/",
-        "https://www.hollywoodsoapbox.com/review-days-of-wine-and-roses-is-a-heartbreaking-mesmerizing-musical/",
-        "https://www.nydailynews.com/2024/01/28/broadway-review-cheers-to-days-of-wine-and-roses-a-beautifully-executed-musical/",
-        "https://www.vulture.com/2024/01/theater-review-days-wine-roses-on-broadway.html",
-        "https://nystagereview.com/2024/01/28/days-of-wine-and-roses-demon-rum-is-a-suave-seducer/",
-        "https://nystagereview.com/2024/01/28/days-of-wine-and-roses-musical-on-alcoholic-sorrows-shakes-and-stirs/",
-        "https://newyorktheater.me/2024/01/28/days-of-wine-and-roses-broadway-review-kelli-ohara-and-brian-darcy-james-together-again/",
-        "https://www.newyorktheatreguide.com/reviews/days-of-wine-and-roses-broadway-review-kelli-ohara-brian-darcy-james",
-        "https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html",
-        "https://www.theatermania.com/news/review-kelli-ohara-and-brian-darcy-james-tear-our-hearts-out-in-days-of-wine-and-roses_1727508/",
-        "https://www.theaterpizzazz.com/days-of-wine-and-roses-love-danger-abandon/",
-        "https://www.theatrely.com/post/days-of-wine-and-roses-two-people-sumptuously-stranded-at-sea----review",
-        "https://www.timeout.com/newyork/theater/days-of-wine-and-roses-broadway-review-musical-kelli-ohara-brian-darcy-james",
-        "https://www.washingtonpost.com/entertainment/theater/2024/01/28/days-of-wine-and-roses-review-broadway/",
-        "https://www.thewrap.com/days-of-wine-and-roses-broadway-review-kelli-ohara-brian-darcy-james/",
-        "https://www.nytimes.com/2023/06/05/theater/days-of-wine-and-roses-review.html",
-        "https://www.thedailybeast.com/review-days-of-wine-and-roses-is-a-feelbad-musical-pickled-in-alcoholism",
-        "https://cititour.com/NYC_Broadway/Days-of-Wine-and-Roses/1151",
-        "https://www.nydailynews.com/entertainment/broadway/ny-broadway-days-of-wine-and-roses-review-20230606-y3ccfhoh55ci5nyfbf7zuvssfq-story.html",
-        "https://www.newyorktheatreguide.com/reviews/days-of-wine-and-roses-off-broadway-review-brian-darcy-james-kelli-ohara",
-        "https://observer.com/2023/06/the-days-of-wine-and-roses-review-love-on-the-rocks-with-an-iffy-musical-twist/",
-        "https://www.washingtonpost.com/theater-dance/2023/06/05/wine-roses-ohara-james-guettel/",
-        "https://www.thewrap.com/days-of-wine-and-roses-theater-review-kelli-ohara-brian-darcy-james/",
-        "https://www.wsj.com/articles/days-of-wine-and-roses-review-the-intoxicating-decline-of-a-marriage-811e0230",
-        "https://www.theguardian.com/stage/2024/jan/29/days-of-wine-and-roses-review-broadway-musical"
-      ],
-      "dirFiles": 36,
-      "dirClean": 33,
-      "inReviewsJson": 30,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "culturesauce.com",
-          "count": 1
-        },
-        {
-          "host": "ew.com",
-          "count": 1
-        },
-        {
-          "host": "exeuntnyc.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "nypost.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
-          "host": "thekomisarscoop.com",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "theatrereviews.com",
-          "count": 1
-        },
-        {
-          "host": "variety.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.thedailybeast.com/review-days-of-wine-and-roses-is-a-feelbad-musical-pickled-in-alcoholism",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dailybeast--tim-teeman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thedailybeast.com/review-days-of-wine-and-roses-is-a-feelbad-musical-pickled-in-alcoholism/"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-adam-guettels-days-of-wine-and-roses",
-          "publishDate": "2023-06-06"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Visit-DAYS-OF-WINE-AND-ROSES-Starring-Kelli-OHara-Brian-dArcy-James-20230605",
-          "publishDate": "2023-06-05"
-        }
-      ]
-    },
-    {
-      "showId": "prayer-for-the-french-republic-2024",
-      "title": "Prayer for the French Republic",
-      "openingDate": "2024-01-09",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-prayer-for-the-french-republic-on-broadway",
-        "https://playbill.com/article/read-the-reviews-for-prayer-for-the-french-republic-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-On-Broadway-20240109"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/theater/review-prayer-for-the-french-republic/",
-        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-prayer-french-republic-broadway-review-20240110-bun346fnxjhj5jn3rnvqstmxzu-story.html",
-        "https://cititour.com/NYC_Broadway/Prayer-for-the-French-Republic/1194",
-        "https://deadline.com/2024/01/prayer-for-the-french-republic-broadway-review-1235696968/",
-        "https://www.vulture.com/2024/01/theater-review-prayer-for-the-french-republic.html",
-        "https://nystagereview.com/2024/01/09/prayer-for-the-french-republic-give-thanks-for-this-powerful-drama/",
-        "https://nystagereview.com/2024/01/09/prayer-for-the-french-republic-judaism-takes-centerstage-in-joshua-harmons-engrossing-drama/",
-        "https://newyorktheater.me/2024/01/11/prayer-for-the-french-republic-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/prayer-for-the-french-republic-broadway-review",
-        "https://www.nytimes.com/2024/01/09/theater/prayer-for-the-french-republic-review.html",
-        "https://observer.com/2024/01/review-prayer-for-the-french-republic-is-one-of-broadways-best-new-plays/",
-        "https://www.theatermania.com/news/review-prayer-for-the-french-republic-and-a-one-way-ticket-to-israel_1725360/",
-        "https://www.theaterpizzazz.com/prayer-for-the-french-republic-2/",
-        "https://www.theatrely.com/post/prayer-for-the-french-republic-journeys-to-broadway-review",
-        "https://www.timeout.com/newyork/theater/prayer-for-the-french-republic-broadway-review",
-        "https://variety.com/2024/legit/reviews/prayer-for-the-french-republic-review-broadway-1235865240/",
-        "http://nystagereview.com/2022/02/01/prayer-for-the-french-republic-old-hatred-and-enduring-hope/",
-        "http://nystagereview.com/2022/02/01/prayer-for-the-french-republic-will-jews-always-have-paris-and-the-rest-of-france/",
-        "https://newyorktheater.me/2022/02/01/antisemitism-on-stage-prayer-for-the-french-republic-and-the-garden-of-the-finzi-continis-reviews/",
-        "https://www.newyorktheatreguide.com/reviews/prayer-for-the-french-republic-review-manhattan-theatre-club",
-        "https://www.nytimes.com/2022/02/01/theater/prayer-for-the-french-republic-review.html",
-        "https://www.theatrely.com/post/prayer-for-the-french-republic-ask-what-jewish-safe-havens-remain-review",
-        "https://www.theaterpizzazz.com/prayer-for-the-french-republic/",
-        "https://www.thewrap.com/prayer-for-the-french-republic-off-broadway-review/",
-        "https://www.nydailynews.com/2024/01/09/broadway-review-prayer-for-the-french-republic-is-gripping-timely-tale-of-jewish-identity/",
-        "https://www.newyorker.com/magazine/2024/01/22/prayer-for-the-french-republic-theatre-review",
-        "https://www.wsj.com/articles/prayer-for-the-french-republic-review-antisemitism-joshua-harmon-david-cromer-anthony-edwards-broadway-0732206e"
+        "https://www.theatrely.com/post/how-to-dance-in-ohio-boogies-onto-broadway-review",
+        "https://cititour.com/NYC_Broadway/How-to-Dance-in-Ohio/1189",
+        "https://www.thedailybeast.com/review-how-to-dance-in-ohio-is-broadways-most-original-new-musical",
+        "https://deadline.com/2023/12/how-to-dance-in-ohio-review-broadway-1235658895/",
+        "https://ew.com/how-to-dance-in-ohio-review-broadway-musical-hbo-documentary-8413917",
+        "https://nypost.com/2023/12/10/entertainment/how-to-dance-in-ohio-review-musical-is-a-better-idea-than-show/",
+        "https://nystagereview.com/2023/12/10/how-to-dance-in-ohio-exuberance-triumphs-over-social-unease/",
+        "https://nystagereview.com/2023/12/10/how-to-dance-in-ohio-talented-cast-overcomes-earnest-but-ordinary-material/",
+        "https://www.newyorktheatreguide.com/reviews/how-to-dance-in-ohio-broadway-review",
+        "https://newyorktheater.me/2023/12/10/how-to-dance-in-ohio-broadway-review/",
+        "https://www.nytimes.com/2023/12/10/theater/how-to-dance-in-ohio-review.html",
+        "https://observer.com/2023/12/review-how-to-dance-in-ohio-welcomes-autistic-youth-under-the-disco-ball/",
+        "https://www.queerty.com/how-to-dance-in-ohio-brings-a-fresh-perspective-on-queer-visibility-to-broadway-20231211",
+        "https://www.theatermania.com/news/review-how-to-dance-in-ohio-is-a-game-changer-for-accessibility-on-broadway_1723629/",
+        "https://www.timeout.com/newyork/theater/how-to-dance-in-ohio-broadway-review-musical-autism",
+        "https://www.thewrap.com/how-to-dance-in-ohio-broadway-review/",
+        "https://www.vulture.com/2023/12/theater-review-how-to-dance-in-ohio.html",
+        "https://www.wsj.com/articles/how-to-dance-in-ohio-review-a-compassionate-coming-of-age-musical-4a42287f",
+        "https://variety.com/2023/legit/reviews/how-to-dance-in-ohio-review-broadway-musical-1235832602/"
       ],
       "dirFiles": 34,
       "dirClean": 25,
-      "inReviewsJson": 25,
+      "inReviewsJson": 26,
       "missing": [],
       "dirOnly": [
         {
@@ -2424,15 +102,15 @@
           "count": 1
         },
         {
-          "host": "culturesauce.com",
+          "host": "nydailynews.com",
           "count": 1
         },
         {
-          "host": "thefrontrowcenter.com",
+          "host": "pagesonstages.wordpress.com",
           "count": 1
         },
         {
-          "host": "pagesonstages.com",
+          "host": "stagebuddy.com",
           "count": 1
         },
         {
@@ -2440,12 +118,8 @@
           "count": 1
         },
         {
-          "host": "thekomisarscoop.com",
-          "count": 1
-        },
-        {
           "host": "theaterlife.com",
-          "count": 1
+          "count": 2
         },
         {
           "host": "theaterscene.net",
@@ -2454,9 +128,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.vulture.com/2024/01/theater-review-prayer-for-the-french-republic.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
+          "url": "https://www.theatrely.com/post/how-to-dance-in-ohio-boogies-onto-broadway-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2464,19 +138,14 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "vulture--helen-shaw.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.vulture.com/2024/01/theater-review-prayer-for-the-french-republic.html"
-            },
-            {
-              "file": "vulture--sara-holdren.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.vulture.com/2024/01/theater-review-prayer-for-the-french-republic.html"
+              "file": "theatrely--kobi-kassal.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatrely.com/post/how-to-dance-in-ohio-makes-me-believe-in-broadway-once-again"
             }
           ]
         },
         {
-          "url": "https://observer.com/2024/01/review-prayer-for-the-french-republic-is-one-of-broadways-best-new-plays/",
+          "url": "https://observer.com/2023/12/review-how-to-dance-in-ohio-welcomes-autistic-youth-under-the-disco-ball/",
           "host": "observer.com",
           "knownOutletId": "observer",
           "recoverable": false,
@@ -2488,12 +157,151 @@
             {
               "file": "observer--david-cote.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/01/review-prayer-for-the-french-republic-is-one-of-broadways-best-new-plays/"
+              "urlInDir": "https://observer.com/2023/12/review-how-to-dance-in-ohio-welcomes-autistic-youth-under-the-disco-ball/"
+            },
+            {
+              "file": "observer--jesse-green.json",
+              "flag": "duplicate",
+              "urlInDir": "https://observer.com/2023/12/review-how-to-dance-in-ohio-welcomes-autistic-youth-under-the-disco-ball/"
             }
           ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null
+    },
+    {
+      "showId": "spamalot-2023",
+      "title": "Spamalot",
+      "openingDate": "2023-11-16",
+      "status": "closed",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-broadways-spamalot-revival",
+        "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-On-Broadway-20231116",
+        "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Embarks-on-North-American-Tour-20251217"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-spamalot-broadway-review-20231117-mtibfgo5drdx5exlwp4jisfel4-story.html",
+        "https://cititour.com/NYC_Broadway/Spamalot/1181",
+        "https://www.thedailybeast.com/broadway-review-monty-pythons-spamalot-is-backdeliciously-silly-slightly-dated",
+        "https://deadline.com/2023/11/spamalot-broadway-review-1235612888/",
+        "https://nystagereview.com/2023/11/16/spamalot-lightheaded-lighthearted-fun/",
+        "https://nystagereview.com/2023/11/16/spamalot-spamalot-trumpeting-the-return-of-a-raunchy-musical-comedy-for-the-ages/",
+        "https://www.newyorktheatreguide.com/reviews/spamalot-broadway-review",
+        "https://nypost.com/2023/11/16/entertainment/monty-pythons-spamalot-broadway-review-an-ok-copy-of-the-original/",
+        "https://www.nytimes.com/2023/11/16/theater/spamalot-review-broadway.html",
+        "https://www.nydailynews.com/2023/11/16/broadway-review-spamalot-revival-still-hits-the-high-notes-even-as-it-ages/",
+        "https://www.slantmagazine.com/theater/spamalot-review/",
+        "https://www.theatermania.com/news/review-monty-pythons-spamalot-returns-to-broadway-in-a-test-of-expiration-dates_1721545/",
+        "https://www.theatrely.com/post/the-spamalot-you-know-and-love-is-back-on-broadway-review",
+        "https://www.timeout.com/newyork/theater/spamalot-review-broadway-musical-revival-monty-python",
+        "https://www.thewrap.com/spamalot-broadway-review-monty-python-revival/",
+        "https://www.wsj.com/articles/spamalot-review-king-arthur-monty-python-broadway-eric-idle-james-monroe-iglehart-ethan-slater-musical-comedy-42160743",
+        "https://www.vulture.com/2023/11/theater-review-spamalot-broadway-revival.html",
+        "https://www.queerty.com/michael-urie-and-a-gay-cavalcade-gallop-onto-broadway-in-spamalot-20231117",
+        "https://trinitytripod.com/arts/theatre-review-the-national-tour-of-spamalot-brings-nostalgia-and-whimsy-aplenty-to-the-bushnell/",
+        "https://www.courant.com/2025/12/11/theater-review-overstuffed-spamalot-at-the-bushnell-tries-anything-to-make-you-laugh/",
+        "https://www.dailygazette.com/thespot518/arts/theater/spamalot-at-proctors-a-fun-filled-foray-into-new-year-bill-kellerts-review/article_5a7d3157-b633-4019-9d2e-91faef13c430.html",
+        "https://www.timesunion.com/theater/article/spamalot-review-proctors-21268648.php",
+        "https://www.roccitymag.com/arts-entertainment/theater/review-monty-pythons-spamalot-is-not-dead-yet/",
+        "https://themoderatevoice.com/review-of-the-touring-production-of-spamalot-at-the-5th-avenue-theatre/",
+        "https://www.ocregister.com/2026/02/18/review-monty-pythons-spamalot-is-clearly-not-dead-yet-in-costa-mesa/",
+        "https://www.mercurynews.com/2026/03/06/review-new-spamalot-broadway-tour-proves-to-be-a-huge-winner/",
+        "https://splashmags.com/2026/03/spamalot-brings-the-house-down-on-opening-night-at-the-pantages/",
+        "https://socalthrills.com/theatre-review-monty-pythons-spamalot/",
+        "https://fortworthbusiness.com/entertainment/spamalot-offers-major-absurdity-with-fort-worth-star/",
+        "https://www.laduenews.com/arts-and-culture/spamalot-fox-theatre-film-monty-python-and-the-holy-grail-stl-st-louis-performance-play/article_eb5232ee-3ed4-48f2-b56e-554bec8b0a1b.html",
+        "https://chicago.suntimes.com/theater/2026/05/26/review-spamalot-north-american-tour-production-cibc-theatre-chicago",
+        "https://www.chicagotribune.com/2026/05/21/review-spamalot-chicago/",
+        "https://variety.com/2023/legit/reviews/spamalot-review-broadway-2023-1235792687/",
+        "https://www.washingtonpost.com/entertainment/theater/2023/11/16/monty-python-spamalot-broadway-idle/"
+      ],
+      "dirFiles": 46,
+      "dirClean": 35,
+      "inReviewsJson": 29,
+      "missing": [
+        {
+          "url": "https://www.dailygazette.com/thespot518/arts/theater/spamalot-at-proctors-a-fun-filled-foray-into-new-year-bill-kellerts-review/article_5a7d3157-b633-4019-9d2e-91faef13c430.html",
+          "host": "dailygazette.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.nydailynews.com/2024/01/09/broadway-review-prayer-for-the-french-republic-is-gripping-timely-tale-of-jewish-identity/",
+          "url": "https://socalthrills.com/theatre-review-monty-pythons-spamalot/",
+          "host": "socalthrills.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://fortworthbusiness.com/entertainment/spamalot-offers-major-absurdity-with-fort-worth-star/",
+          "host": "fortworthbusiness.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.laduenews.com/arts-and-culture/spamalot-fox-theatre-film-monty-python-and-the-holy-grail-stl-st-louis-performance-play/article_eb5232ee-3ed4-48f2-b56e-554bec8b0a1b.html",
+          "host": "laduenews.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chicago.suntimes.com/theater/2026/05/26/review-spamalot-north-american-tour-production-cibc-theatre-chicago",
+          "host": "suntimes.com",
+          "knownOutletId": "suntimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
+          "host": "ew.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheater.me",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "slashfilm.com",
+          "count": 1
+        },
+        {
+          "host": "stagebuddy.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 2
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nydailynews.com/2023/11/16/broadway-review-spamalot-revival-still-hits-the-high-notes-even-as-it-ages/",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
           "recoverable": false,
@@ -2505,64 +313,221 @@
             {
               "file": "nydailynews--chris-jones.json",
               "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2024/01/09/broadway-review-prayer-for-the-french-republic-is-gripping-timely-tale-of-jewish-identity/"
+              "urlInDir": "https://www.nydailynews.com/2023/11/16/broadway-review-spamalot-revival-still-hits-the-high-notes-even-as-it-ages/"
             }
           ]
+        },
+        {
+          "url": "https://trinitytripod.com/arts/theatre-review-the-national-tour-of-spamalot-brings-nostalgia-and-whimsy-aplenty-to-the-bushnell/",
+          "host": "trinitytripod.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "trinitytripod--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://trinitytripod.com/arts/theatre-review-the-national-tour-of-spamalot-brings-nostalgia-and-whimsy-aplenty-to-the-bushnell/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timesunion.com/theater/article/spamalot-review-proctors-21268648.php",
+          "host": "timesunion.com",
+          "knownOutletId": "albany-times-union",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "albany-times-union--katherine-kiessling.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timesunion.com/theater/article/spamalot-review-proctors-21268648.php"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://themoderatevoice.com/review-of-the-touring-production-of-spamalot-at-the-5th-avenue-theatre/",
+          "host": "themoderatevoice.com",
+          "knownOutletId": "the-moderate-voice",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-moderate-voice--doug-bursch.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://themoderatevoice.com/review-of-the-touring-production-of-spamalot-at-the-5th-avenue-theatre/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://splashmags.com/2026/03/spamalot-brings-the-house-down-on-opening-night-at-the-pantages/",
+          "host": "splashmags.com",
+          "knownOutletId": "splash-magazines",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "splash-magazines--beverly-cohn.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://splashmags.com/2026/03/spamalot-brings-the-house-down-on-opening-night-at-the-pantages/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/read-the-reviews-for-prayer-for-the-french-republic-off-broadway",
-          "publishDate": "2022-02-02"
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Embarks-on-North-American-Tour-20251217",
+          "publishDate": "2025-12-17"
         }
-      ]
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.dailygazette.com/thespot518/arts/theater/spamalot-at-proctors-a-fun-filled-foray-into-new-year-bill-kellerts-review/article_5a7d3157-b633-4019-9d2e-91faef13c430.html",
+          "host": "dailygazette.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://socalthrills.com/theatre-review-monty-pythons-spamalot/",
+          "host": "socalthrills.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://fortworthbusiness.com/entertainment/spamalot-offers-major-absurdity-with-fort-worth-star/",
+          "host": "fortworthbusiness.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.laduenews.com/arts-and-culture/spamalot-fox-theatre-film-monty-python-and-the-holy-grail-stl-st-louis-performance-play/article_eb5232ee-3ed4-48f2-b56e-554bec8b0a1b.html",
+          "host": "laduenews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://chicago.suntimes.com/theater/2026/05/26/review-spamalot-north-american-tour-production-cibc-theatre-chicago",
+          "host": "suntimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": []
     },
     {
-      "showId": "appropriate-2023",
-      "title": "Appropriate",
-      "openingDate": "2023-12-18",
+      "showId": "harmony-2023",
+      "title": "Harmony",
+      "openingDate": "2023-11-13",
       "status": "closed",
       "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-are-the-critics-saying-about-broadways-appropriate",
-        "https://playbill.com/article/read-reviews-for-branden-jacobs-jenkins-appropriate-in-london",
-        "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-On-Broadway-Starring-Elle-Fanning-Sarah-Paulson-Corey-Stoll-More-20231218"
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-harmony-on-broadway",
+        "https://playbill.com/article/reviews-see-what-critics-had-to-say-about-barry-manilow-and-bruce-sussmans-harmony-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20231113",
+        "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-at-National-Yiddish-Theatre-Folksbiene-20220413",
+        "https://www.broadwayworld.com/article/Review-Roundup-Alliance-Theatres-HARMONY-20130918"
       ],
       "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/theater/chaos-erupts-in-dark-family-comedy-appropriate/",
-        "https://cititour.com/NYC_Theater/Appropriate/1193",
-        "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-appropriate-broadway-review-20231219-ccqq4wgb4vg35ovtaalmimvfuy-story.html",
-        "https://www.thedailybeast.com/broadway-review-sarah-paulson-takes-her-appropriate-family-to-the-edge",
-        "https://deadline.com/2023/12/appropriate-broadway-review-1235671187/",
-        "https://www.theguardian.com/stage/2023/dec/18/appropriate-broadway-review-sarah-paulson-branden-jacobs-jenkins",
-        "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/",
-        "https://www.vulture.com/2023/12/theater-review-branden-jacobs-jenkinss-appropriate.html",
-        "https://nystagereview.com/2023/12/18/appropriate-check-your-expectations-at-the-door-for-this-brilliantly-subversive-family-drama/",
-        "https://nystagereview.com/2023/12/18/appropriate-southern-discomfort-and-sibling-rivalry-at-its-juiciest/",
-        "https://www.nytimes.com/2023/12/18/theater/appropriate-broadway-review.html",
-        "https://newyorktheater.me/2023/12/18/appropriate-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/appropriate-broadway-review-sarah-paulson",
-        "https://observer.com/2023/12/review-appropriate-is-a-family-album-of-white-supremacy/",
-        "https://www.theaterpizzazz.com/appropriate/",
-        "https://www.theatrely.com/post/appropriate-review",
-        "https://www.thewrap.com/appropriate-broadway-review-sarah-paulson-elle-fanning/",
-        "https://variety.com/2023/legit/reviews/appropriate-review-broadway-sarah-paulson-corey-stoll-1235841181/",
-        "https://www.standard.co.uk/go/london/theatre/appropriate-pictures-donmar-warehouse-branden-jacobs-jenkins-a4218331.html",
-        "https://www.theguardian.com/stage/2019/aug/23/appropriate-review-donmar-warehouse-london-branden-jacobs-jenkins",
-        "http://www.whatsonstage.com/london-theatre/reviews/appropriate-donmar-warehouse-jacobs-jenkins_49741.html",
-        "https://cititour.com/NYC_Broadway/Appropriate/1193",
-        "https://www.wsj.com/articles/appropriate-review-drama-coded-into-its-dna-42f5e6db"
+        "https://www.timeout.com/newyork/theater/harmony-review-broadway-musical-barry-manilow",
+        "https://observer.com/2023/11/review-barry-manilow-writes-the-songs-that-make-harmony-sing/",
+        "https://www.amny.com/entertainment/review-manilow-harmony/",
+        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-harmony-barry-manilow-broadway-review-20231114-5k25cntac5at3aks4dvxarcfhm-story.html",
+        "https://cititour.com/NYC_Broadway/Harmony/1179",
+        "https://www.thedailybeast.com/review-barry-manilows-harmony-strikes-a-bum-note-on-broadway",
+        "https://deadline.com/2023/11/harmony-danny-and-the-deep-blue-sea-reviews-1235600743/",
+        "https://ew.com/theater/theater-reviews/harmony-review-broadway-barry-manilow-musical/",
+        "https://www.theguardian.com/stage/2023/nov/13/harmony-broadway-musical-barry-manilow",
+        "https://www.vulture.com/2023/11/theater-review-harmony-broadway-barry-manilow.html",
+        "https://nypost.com/2023/11/13/entertainment/harmony-review-barry-manilows-musical-is-moving-but-isnt-in-sync/",
+        "https://nystagereview.com/2023/11/13/harmony-superb-singing-marks-barry-manilows-long-delayed-broadway-debut-as-composer/",
+        "https://nystagereview.com/2023/11/13/harmony-a-harmonious-new-musical-about-discordant-1930s-germany/",
+        "https://newyorktheater.me/2023/11/13/harmony-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/harmony-broadway-review-barry-manilow",
+        "https://www.nytimes.com/2023/11/13/theater/harmony-review-barry-manilow.html",
+        "https://www.nydailynews.com/2023/11/11/barry-manilows-harmony-on-broadway-is-no-jukebox-musical/",
+        "https://www.thestage.co.uk/reviews/harmony-by-barry-manilow-review-at-the-ethel-barrymore-theatre-new-york",
+        "https://www.theatermania.com/news/review-music-and-passion-and-bourgeoning-fascism-in-barry-manilows-harmony_1720947/",
+        "https://www.theaterpizzazz.com/harmony-on-broadway/",
+        "https://www.theatrely.com/post/harmony-finally-on-broadway-review",
+        "https://www.washingtonpost.com/entertainment/theater/2023/11/13/barry-manilow-comedian-harmonists-harmony/",
+        "https://www.wsj.com/articles/harmony-review-barry-manilow-broadway-bruce-sussman-comedian-harmonists-germany-world-war-ii-musical-72163639",
+        "https://variety.com/2023/legit/reviews/harmony-review-barry-manilow-broadway-1235790164/",
+        "https://t2conline.com/barry-manilows-harmony-satisfies-as-it-remembers-the-past/",
+        "https://www.thewrap.com/harmony-broadway-review-barry-manilow-delivers-his-cabaret/",
+        "https://www.nydailynews.com/entertainment/broadway/ny-broadway-barry-manilow-harmony-20220414-fth64bmxwreqxfgs5pco5zfj6a-story.html",
+        "https://nypost.com/2022/04/13/harmony-review-barry-manilows-musical-has-flaws-but-stellar-singing/",
+        "https://nystagereview.com/2022/04/13/harmony-harmonious-tale-of-berlin-singing-group-in-1930s/",
+        "https://newyorktheater.me/2022/04/13/harmony-review-barry-manilows-musical-in-nyc-at-last/",
+        "https://www.nytimes.com/2022/04/13/theater/harmony-review.html",
+        "https://www.queerty.com/barry-manilow-strikes-chord-harmony-premieres-off-broadway-20220413",
+        "https://www.timeout.com/newyork/theater/harmony-musical-barry-manilow-review",
+        "https://www.theatrely.com/post/historic-harmony-in-turbulent-times-review",
+        "https://variety.com/2022/legit/reviews/harmony-review-barry-manilow-musical-new-york-1235232141/",
+        "http://www.atlantaintownpaper.com/2013/09/theatre-review-harmony-alliance-theatre/",
+        "http://www.artsatl.com/2013/09/review-manilows-harmony-hits-strong-rough-edged-chord-alliance-staging/",
+        "http://www.myajc.com/news/entertainment/arts-theater/theater-review-manilows-harmony-is-a-glorious-work/nZy8s/",
+        "http://neighbornewspapers.com/view/full_story/23617161/article-Column--Alliance-Theatre-s--Harmony--dazzles",
+        "http://www.fenuxe.com/2013/09/18/harmony-brings-broadway-to-peachtree/"
       ],
-      "dirFiles": 42,
-      "dirClean": 32,
+      "dirFiles": 46,
+      "dirClean": 35,
       "inReviewsJson": 33,
       "missing": [
         {
-          "url": "https://www.standard.co.uk/go/london/theatre/appropriate-pictures-donmar-warehouse-branden-jacobs-jenkins-a4218331.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
+          "url": "http://www.atlantaintownpaper.com/2013/09/theatre-review-harmony-alliance-theatre/",
+          "host": "atlantaintownpaper.com",
+          "knownOutletId": "atlanta-intown",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.artsatl.com/2013/09/review-manilows-harmony-hits-strong-rough-edged-chord-alliance-staging/",
+          "host": "artsatl.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.myajc.com/news/entertainment/arts-theater/theater-review-manilows-harmony-is-a-glorious-work/nZy8s/",
+          "host": "myajc.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://neighbornewspapers.com/view/full_story/23617161/article-Column--Alliance-Theatre-s--Harmony--dazzles",
+          "host": "neighbornewspapers.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.fenuxe.com/2013/09/18/harmony-brings-broadway-to-peachtree/",
+          "host": "fenuxe.com",
+          "knownOutletId": null,
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -2573,19 +538,148 @@
           "count": 1
         },
         {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "temptalkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 2
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://observer.com/2023/11/review-barry-manilow-writes-the-songs-that-make-harmony-sing/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "observer--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://observer.com/2023/11/review-barry-manilow-writes-the-songs-that-make-harmony-sing/"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-see-what-critics-had-to-say-about-barry-manilow-and-bruce-sussmans-harmony-off-broadway",
+          "publishDate": "2022-04-13"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-at-National-Yiddish-Theatre-Folksbiene-20220413",
+          "publishDate": "2022-04-13"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Alliance-Theatres-HARMONY-20130918",
+          "publishDate": "2013-09-18"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.atlantaintownpaper.com/2013/09/theatre-review-harmony-alliance-theatre/",
+          "host": "atlantaintownpaper.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.artsatl.com/2013/09/review-manilows-harmony-hits-strong-rough-edged-chord-alliance-staging/",
+          "host": "artsatl.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.myajc.com/news/entertainment/arts-theater/theater-review-manilows-harmony-is-a-glorious-work/nZy8s/",
+          "host": "myajc.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://neighbornewspapers.com/view/full_story/23617161/article-Column--Alliance-Theatre-s--Harmony--dazzles",
+          "host": "neighbornewspapers.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.fenuxe.com/2013/09/18/harmony-brings-broadway-to-peachtree/",
+          "host": "fenuxe.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "i-need-that-2023",
+      "title": "I Need That",
+      "openingDate": "2023-11-02",
+      "status": "closed",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-i-need-that-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-Starring-Danny-DeVito-Opens-On-Broadway-20231102"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-danny-devito-broadway-need-that-review-20231103-oyeb6akghnhxpi47yvhzy5jnxe-story.html",
+        "https://cititour.com/NYC_Broadway/I-Need-That/1178",
+        "https://www.thedailybeast.com/broadway-review-danny-devito-gets-lost-in-the-clutter-of-i-need-that",
+        "https://deadline.com/2023/11/danny-devito-i-need-that-broadway-review-1235589573/",
+        "https://www.theguardian.com/stage/2023/nov/02/i-need-that-play-review-danny-devito-broadway",
+        "https://nypost.com/2023/11/02/entertainment/i-need-that-review-devito-is-a-hoarder-in-messy-broadway-play/",
+        "https://nystagereview.com/2023/11/02/i-need-that-danny-devitos-got-the-goods/",
+        "https://nystagereview.com/2023/11/02/i-need-that-a-play-about-hoarding-not-cluttered-by-nuance/",
+        "https://newyorktheater.me/2023/11/02/i-need-that-broadway-review-danny-devito-as-a-slob/",
+        "https://www.newyorktheatreguide.com/reviews/i-need-that-broadway-review-danny-devito",
+        "https://www.nytimes.com/2023/11/02/theater/i-need-that-review-danny-devito.html",
+        "https://observer.com/2023/11/review-danny-devito-hoards-laughter-and-tears-in-i-need-that/",
+        "https://www.slantmagazine.com/theater/i-need-that-review-danny-devito-theresa-rebeck/",
+        "https://www.theatermania.com/news/review-danny-devito-plays-a-foul-mouthed-hoarder-in-new-broadway-comedy-i-need-that_1719735/",
+        "https://www.theatrely.com/post/i-need-that-hoards-up-drama-review",
+        "https://www.theaterpizzazz.com/i-need-that-its-father-daughter-time/",
+        "https://www.timeout.com/newyork/theater/i-need-that-broadway-review-danny-devito",
+        "https://variety.com/2023/legit/reviews/i-need-that-review-danny-devito-broadway-1235778734/",
+        "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy-devito-broadway-roundabout-a6902a53",
+        "https://www.thewrap.com/i-need-that-danny-devito-broadway-review/",
+        "https://www.vulture.com/2023/11/theater-review-i-need-that-danny-lucy-devito.html"
+      ],
+      "dirFiles": 35,
+      "dirClean": 29,
+      "inReviewsJson": 31,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "amny.com",
+          "count": 1
+        },
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
           "host": "culturesauce.com",
           "count": 1
         },
         {
-          "host": "ew.com",
-          "count": 1
-        },
-        {
-          "host": "exeuntnyc.com",
-          "count": 1
-        },
-        {
-          "host": "newyorker.com",
+          "host": "thefrontrowcenter.com",
           "count": 1
         },
         {
@@ -2609,64 +703,13 @@
           "count": 1
         },
         {
-          "host": "theatermania.com",
-          "count": 1
-        },
-        {
-          "host": "theatrereviews.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        },
-        {
           "host": "washingtonpost.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://deadline.com/2023/12/appropriate-broadway-review-1235671187/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "deadline--greg-evans.json",
-              "flag": "clean",
-              "urlInDir": "https://deadline.com/2023/12/appropriate-broadway-review-1235671187/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--angie-han.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/"
-            },
-            {
-              "file": "hollywood-reporter--lovia-gyarkye.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/"
-            }
-          ]
-        },
-        {
-          "url": "https://observer.com/2023/12/review-appropriate-is-a-family-album-of-white-supremacy/",
+          "url": "https://observer.com/2023/11/review-danny-devito-hoards-laughter-and-tears-in-i-need-that/",
           "host": "observer.com",
           "knownOutletId": "observer",
           "recoverable": false,
@@ -2678,17 +721,678 @@
             {
               "file": "observer--david-cote.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2023/12/review-appropriate-is-a-family-album-of-white-supremacy/"
-            },
-            {
-              "file": "observer--rex-reed.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://observer.com/2023/12/review-appropriate-is-a-family-album-of-white-supremacy/"
+              "urlInDir": "https://observer.com/2023/11/review-danny-devito-hoards-laughter-and-tears-in-i-need-that/"
             }
           ]
         },
         {
-          "url": "http://www.whatsonstage.com/london-theatre/reviews/appropriate-donmar-warehouse-jacobs-jenkins_49741.html",
+          "url": "https://www.theaterpizzazz.com/i-need-that-its-father-daughter-time/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-pizzazz--carole-di-tosti.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theaterpizzazz.com/i-need-that-its-father-daughter-time/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy-devito-broadway-roundabout-a6902a53",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "recoverable": true,
+          "recoverableFile": "wsj--charles-isherwood.json",
+          "recoverableOutletId": "wsj",
+          "recoverableCritic": "Charles Isherwood",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wsj--charles-isherwood.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy-devito-broadway-roundabout-a6902a53"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "recoveryResults": [
+        {
+          "url": "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy-devito-broadway-roundabout-a6902a53",
+          "host": "wsj.com",
+          "file": "wsj--charles-isherwood.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ]
+    },
+    {
+      "showId": "gutenberg-2023",
+      "title": "Gutenberg! The Musical!",
+      "openingDate": "2023-10-12",
+      "status": "closed",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-gutenberg-the-musical-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-On-Broadway-Starring-Josh-Gad-and-Andrew-Rannells-20231012"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.amny.com/entertainment/gutenberg-review-andrew-rannells-josh-gad-musical/",
+        "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-gutenberg-musical-broadway-review-20231013-zuik74fcf5hxvnjlqdrmfffb3u-story.html",
+        "https://cititour.com/NYC_Broadway/Gutenberg-The-Musical/1173",
+        "https://www.thedailybeast.com/review-gutenberg-the-musical-on-broadway-is-extremely-deliciously-silly",
+        "https://deadline.com/2023/10/gutenberg-musical-broadway-review-1235570178/",
+        "https://nypost.com/2023/10/13/gutenberg-the-musical-review-gad-and-rannells-have-almost-too-much-fun/",
+        "https://nystagereview.com/2023/10/12/gutenberg-the-musical-revisionist-history-of-the-hysterical-kind/",
+        "https://nystagereview.com/2023/10/12/gutenberg-the-musical-a-meta-musical-satire-that-doesnt-deserve-exclamation-points/",
+        "https://newyorktheater.me/2023/10/12/gutenberg-the-musical-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/gutenberg-the-musical-broadway-review-andrew-rannells-josh-gad",
+        "https://www.nytimes.com/2023/10/12/theater/gutenberg-musical-review-josh-gad-andrew-rannells.html",
+        "https://www.timeout.com/newyork/theater/gutenberg-the-musical-broadway-review-josh-gad-andrew-rannells",
+        "https://www.theatermania.com/news/review-gutenberg-the-musical-fails-to-impress-on-broadway_1717497/",
+        "https://www.theatrely.com/post/gutenberg-the-musical-reunites-rannells-and-gad-review",
+        "https://observer.com/2023/10/review-of-gutenberg-the-musical-print-is-hilariously-not-dead/",
+        "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c",
+        "https://www.thewrap.com/gutenberg-the-musical-broadway-review-josh-gad-andrew-rannells/",
+        "https://www.washingtonpost.com/entertainment/theater/2023/10/12/gutenberg-broadway-gad-rannells-timbers/",
+        "https://variety.com/2023/legit/reviews/gutenberg-the-musical-review-broadway-josh-gad-andrew-rannells-1235754185/",
+        "https://deadline.com/2023/10/amplify-pictures-gutenberg-broadway-folk-productions-1235561678/"
+      ],
+      "dirFiles": 38,
+      "dirClean": 24,
+      "inReviewsJson": 23,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "stagebuddy.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-gutenberg-musical-broadway-review-20231013-zuik74fcf5hxvnjlqdrmfffb3u-story.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "chicagotribune--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-gutenberg-musical-broadway-review-20231013-zuik74fcf5hxvnjlqdrmfffb3u-story.html"
+            }
+          ]
+        },
+        {
+          "url": "https://deadline.com/2023/10/gutenberg-musical-broadway-review-1235570178/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "deadline--greg-evans.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://deadline.com/2023/10/amplify-pictures-gutenberg-broadway-folk-productions-1235561678/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-gutenberg-the-musical-fails-to-impress-on-broadway_1717497/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--jesse-green.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.theatermania.com/broadway/reviews/gutenberg-the-musical_96847.html"
+            },
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatermania.com/news/review-gutenberg-the-musical-fails-to-impress-on-broadway_1717497/"
+            }
+          ]
+        },
+        {
+          "url": "https://observer.com/2023/10/review-of-gutenberg-the-musical-print-is-hilariously-not-dead/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "observer--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://observer.com/2023/10/review-of-gutenberg-the-musical-print-is-hilariously-not-dead/"
+            }
+          ]
+        },
+        {
+          "url": "https://deadline.com/2023/10/amplify-pictures-gutenberg-broadway-folk-productions-1235561678/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "deadline--greg-evans.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://deadline.com/2023/10/amplify-pictures-gutenberg-broadway-folk-productions-1235561678/"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "title": "Merrily We Roll Along",
+      "openingDate": "2023-10-10",
+      "status": "closed",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-broadways-merrily-we-roll-along",
+        "https://playbill.com/article/reviews-are-out-for-merrily-we-roll-along-on-screen",
+        "https://playbill.com/article/what-did-critics-think-of-fiascos-merrily-we-roll-along-off-broadway",
+        "https://playbill.com/article/reviews-critics-weigh-in-on-off-broadway-merrily-we-roll-along-led-by-jonathan-groff-lindsay-mendez-and-daniel-radcliffe",
+        "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231010",
+        "https://www.broadwayworld.com/article/Review-Roundup-Broadways-MERRILY-WE-ROLL-ALONG-Debuts-in-Theaters-20251205",
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-About-Roundabout-and-Fiascos-MERRILY-WE-ROLL-ALONG-20190220"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-merrily-we-roll-along-broadway-review-radcliffe-20231010-plf5izps4zc25gpzvf6mcsuqoa-story.html",
+        "https://cititour.com/NYC_Broadway/Merrily-We-Roll-Along/1172",
+        "https://www.thedailybeast.com/review-merrily-we-roll-along-on-broadway-is-almost-perfect-sondheim",
+        "https://deadline.com/2023/10/merrily-we-roll-along-broadway-review-1235567197/",
+        "https://www.forbes.com/sites/darrynking/2023/10/10/merrily-we-roll-along-breaks-the-heart-and-fills-it-up-on-broadway/",
+        "https://www.vulture.com/2023/10/theater-review-merrily-we-roll-along-sondheim-radcliffe-groff-mendez.html",
+        "https://nypost.com/2023/10/10/merrily-we-roll-along-review-radcliffe-groff-and-mendez-soar-on-broadway/",
+        "https://nystagereview.com/2023/10/10/merrily-we-roll-along-feel-the-flow-hear-whats-happening/",
+        "https://nystagereview.com/2023/10/10/now-you-know-or-how-to-make-merrily-roll-along/",
+        "https://newyorktheater.me/2023/10/11/merrily-we-roll-along-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/merrily-we-roll-along-broadway-review-jonathan-groff-daniel-radcliffe-lindsay-mendez",
+        "https://www.nytimes.com/2023/10/10/theater/merrily-we-roll-along-review.html",
+        "https://www.theatermania.com/news/review-its-a-hit-daniel-radcliffe-jonathan-groff-and-lindsay-mendez-bring-heavenly-merrily-we-roll-along-to-broadway_1717001/",
+        "https://www.theaterpizzazz.com/time-to-merrily-roll-along-on-broadway/",
+        "https://www.theatrely.com/post/merrily-we-roll-along-a-spectacular-broadway-feast-review",
+        "https://www.timeout.com/newyork/theater/merrily-we-roll-along-broadway-review-revival-sondheim-groff-radcliffe-mendez",
+        "https://www.usatoday.com/story/entertainment/music/2023/10/10/merrily-we-roll-along-broadway-review/71115620007/",
+        "https://variety.com/2023/legit/reviews/merrily-we-roll-along-review-broadway-daniel-radcliffe-jonathan-groff-lindsay-mendez-1235750477/",
+        "https://www.thewrap.com/merrily-we-roll-along-broadway-review-daniel-radcliffe-jonathan-groff-lindsay-mendez/",
+        "https://www.fathomentertainment.com/releases/merrily-we-roll-along/",
+        "https://www.cbc.ca/news/entertainment/merrily-we-roll-along-review-9.7003925",
+        "https://crookedmarquee.com/merrily-we-roll-along-and-the-kinda-sorta-movie-musical/",
+        "https://deadline.com/2025/12/merrily-we-roll-along-review-film-version-broadway-musical-1236636276/",
+        "https://fromthefourthrow.com/2025/12/04/merrily-we-roll-along-review-a-broadway-musical-proshot-sure-to-delight-theatre-kids/",
+        "https://www.kget.com/community/ricks-reviews/merrily-rolls-along-from-stage-to-movie-theater/amp/",
+        "https://moviecricket.net/blog/2025/12/4/review-merrily-we-roll-along-captures-the-joys-of-the-broadway-revival-including-jonathan-groffs-impossibly-good-looks-and-daniel-radcliffes-neuroses",
+        "https://movieweb.com/merrily-we-roll-along-movie-2025-review/",
+        "https://www.nytimes.com/2025/12/04/movies/merrily-we-roll-along-review.html",
+        "https://www.rogerebert.com/reviews/merrily-we-roll-along-daniel-radcliffe-musical-film-review-2025",
+        "https://screenzealots.com/2025/12/04/merrily-we-roll-along/",
+        "https://www.seattletimes.com/entertainment/movies/merrily-we-roll-along-review-capturing-a-bittersweet-broadway-musical-on-film/",
+        "https://www.goaheadsumi.com/review-merrily-we-roll-along-takes-a-good-thing-and-ruins-it/",
+        "https://www.thestar.com/entertainment/movies/merrily-we-roll-along-film-review/article_0843c4d9-d721-4507-9bd5-97d5c9e3837c.html",
+        "https://www.ukfilmreview.co.uk/reviews/merrily-we-roll-along",
+        "https://www.wearemoviegeeks.com/2025/12/merrily-we-roll-along-2025-review/",
+        "https://www.thewrap.com/merrily-we-roll-along-2025-movie-review-jonathan-groff-daniel-radcliffe-lindsay-mendez/",
+        "https://www.amny.com/entertainment/merrily-we-roll-along-review-1.27510110",
+        "https://www.hollywoodreporter.com/review/merrily-we-roll-along-theater-1187518",
+        "http://nystagereview.com/2019/02/19/merrily-we-roll-along-opening-doors-again/",
+        "http://nystagereview.com/2019/02/19/merrily-we-roll-along-a-glittering-jewel-revealed/",
+        "https://www.nytimes.com/2019/02/19/theater/review-merrily-we-roll-along-stephen-sondheim.html",
+        "https://www.newsday.com/entertainment/theater/merrily-we-roll-along-1.27482965",
+        "https://variety.com/2019/legit/reviews/merrily-we-roll-along-review-stephen-sondheim-1203143247/",
+        "https://www.vulture.com/2019/02/theater-fiascos-lo-fi-reworking-of-merrily-we-roll-along.html",
+        "https://www.thewrap.com/merrily-we-roll-along-theater-review-stephen-sondheim-steps-backward/",
+        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-merrily-we-roll-along-daniel-radcliffe-stephen-sondheim-20221213-gme3d2stofghhgpsed6rcsuili-story.html",
+        "https://cititour.com/NYC_Broadway/Merrily-We-Roll-Along/1118",
+        "https://www.thedailybeast.com/merrily-we-roll-along-a-slice-of-stunning-sondheim-starring-daniel-radcliffe",
+        "https://www.theguardian.com/stage/2022/dec/12/merrily-we-roll-along-review-daniel-radcliffe-jonathan-groff",
+        "https://www.hollywoodreporter.com/lifestyle/arts/merrily-we-roll-along-theater-review-daniel-radcliffe-jonathan-groff-stephen-sondheim-1235280713/",
+        "https://www.vulture.com/2022/12/theater-review-merrily-we-roll-along-at-nytw.html",
+        "https://nypost.com/2022/12/12/merrily-we-roll-along-review-a-lovable-and-intimate-revival/",
+        "https://nystagereview.com/2022/12/12/merrily-we-roll-along-how-we-learned-to-stop-worrying-and-love-the-sondheim-show/",
+        "https://nystagereview.com/2022/12/12/merrily-we-roll-along-opening-doors-and-how/",
+        "https://www.newyorktheatreguide.com/reviews/merrily-we-roll-along-off-broadway-review-jonathan-groff-daniel-radcliffe-lindsay-mendez",
+        "https://www.nytimes.com/2022/12/12/theater/merrily-we-roll-along-review.html",
+        "https://observer.com/2022/12/review-sondheims-brilliant-flop-merrily-we-roll-along-is-smartly-revived/",
+        "https://www.queerty.com/jonathan-groff-daniel-radcliffe-bring-new-life-sondheims-merrily-roll-along-20221213",
+        "https://www.telegraph.co.uk/theatre/what-to-see/merrily-roll-along-new-york-theatre-workshop-review-daniel-radcliffe/",
+        "https://www.theaterpizzazz.com/merrily-we-roll-along-rolls-into-success/",
+        "https://www.theatermania.com/off-broadway/reviews/review-merrily-we-roll-along-groff-mendez-radcliffe_94671.html",
+        "https://www.theatrely.com/post/merrily-we-roll-along-sondheims-sisyphus-review",
+        "https://www.timeout.com/newyork/theater/merrily-we-roll-along-revival-review-jonathan-groff-daniel-radcliffe",
+        "https://www.thewrap.com/merrily-we-roll-along-off-broadway-review-daniel-radcliffe-jonathan-groff/",
+        "https://www.villagevoice.com/review-merrily-we-roll-along-finally-has-its-moment-in-time/",
+        "https://www.whatsonstage.com/news/merrily-we-roll-along-with-daniel-radcliffe-jonathan-groff-and-lindsay-mendez-review_1535303/",
+        "https://www.slashfilm.com/1416649/merrily-we-roll-along-review/",
+        "https://collider.com/merrily-we-roll-along-movie-review-daniel-radcliffe-jonathan-groff-sondheim/",
+        "https://www.nj.com/entertainment/2019/02/merrily-we-roll-along-is-an-early-contender-for-best-show-of-the-year-review.html",
+        "https://www.wsj.com/articles/merrily-we-roll-along-review-old-friends-back-on-broadway-sondheim-daniel-radcliffe-jonathan-groff-17728a41",
+        "https://www.washingtonpost.com/entertainment/theater/2023/10/10/merrily-sondheim-radcliffe-groff-broadway/"
+      ],
+      "dirFiles": 57,
+      "dirClean": 35,
+      "inReviewsJson": 31,
+      "missing": [
+        {
+          "url": "https://www.theaterpizzazz.com/time-to-merrily-roll-along-on-broadway/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz"
+        },
+        {
+          "url": "https://www.kget.com/community/ricks-reviews/merrily-rolls-along-from-stage-to-movie-theater/amp/",
+          "host": "kget.com",
+          "knownOutletId": "kget",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/merrily-we-roll-along-1.27482965",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2022/dec/12/merrily-we-roll-along-review-daniel-radcliffe-jonathan-groff",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2022/12/review-sondheims-brilliant-flop-merrily-we-roll-along-is-smartly-revived/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.queerty.com/jonathan-groff-daniel-radcliffe-bring-new-life-sondheims-merrily-roll-along-20221213",
+          "host": "queerty.com",
+          "knownOutletId": "queerty",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/merrily-roll-along-new-york-theatre-workshop-review-daniel-radcliffe/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/merrily-we-roll-along-rolls-into-success/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2019/02/merrily-we-roll-along-is-an-early-contender-for-best-show-of-the-year-review.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
+          "host": "ew.com",
+          "count": 1
+        },
+        {
+          "host": "latimes.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "thekomisarscoop.com",
+          "count": 1
+        },
+        {
+          "host": "thetimes.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.fathomentertainment.com/releases/merrily-we-roll-along/",
+          "host": "fathomentertainment.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "fathomentertainmentcom--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.fathomentertainment.com/releases/merrily-we-roll-along/?utm_campaign=14979909-MerrilyWeRollAlong&utm_source=Fathom&utm_medium=PressRelease&utm_content=2025_MerrilyWeRollAlong_Fathom_PR_Press%20Release"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.cbc.ca/news/entertainment/merrily-we-roll-along-review-9.7003925",
+          "host": "cbc.ca",
+          "knownOutletId": "cbc",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "cbc--jackson-weaver.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.cbc.ca/news/entertainment/merrily-we-roll-along-review-9.7003925"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://crookedmarquee.com/merrily-we-roll-along-and-the-kinda-sorta-movie-musical/",
+          "host": "crookedmarquee.com",
+          "knownOutletId": "crooked-marquee",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "crooked-marquee--jason-bailey.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://crookedmarquee.com/merrily-we-roll-along-and-the-kinda-sorta-movie-musical/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://fromthefourthrow.com/2025/12/04/merrily-we-roll-along-review-a-broadway-musical-proshot-sure-to-delight-theatre-kids/",
+          "host": "fromthefourthrow.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "from-the-fourth-row--nick-nitkowski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://fromthefourthrow.com/2025/12/04/merrily-we-roll-along-review-a-broadway-musical-proshot-sure-to-delight-theatre-kids/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://movieweb.com/merrily-we-roll-along-movie-2025-review/",
+          "host": "movieweb.com",
+          "knownOutletId": "movieweb",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "movieweb--mark-keizer.json",
+              "flag": "clean",
+              "urlInDir": "https://movieweb.com/merrily-we-roll-along-movie-2025-review/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://screenzealots.com/2025/12/04/merrily-we-roll-along/",
+          "host": "screenzealots.com",
+          "knownOutletId": "screen-zealots",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "screen-zealots--screen-zealots.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://screenzealots.com/2025/12/04/merrily-we-roll-along/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.seattletimes.com/entertainment/movies/merrily-we-roll-along-review-capturing-a-bittersweet-broadway-musical-on-film/",
+          "host": "seattletimes.com",
+          "knownOutletId": "seattle-times",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "seattle-times--gemma-wilson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.seattletimes.com/entertainment/movies/merrily-we-roll-along-review-capturing-a-bittersweet-broadway-musical-on-film/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.goaheadsumi.com/review-merrily-we-roll-along-takes-a-good-thing-and-ruins-it/",
+          "host": "goaheadsumi.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "goaheadsumi--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.goaheadsumi.com/review-merrily-we-roll-along-takes-a-good-thing-and-ruins-it/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestar.com/entertainment/movies/merrily-we-roll-along-film-review/article_0843c4d9-d721-4507-9bd5-97d5c9e3837c.html",
+          "host": "thestar.com",
+          "knownOutletId": "toronto-star",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "toronto-star--joshua-chong.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestar.com/entertainment/movies/merrily-we-roll-along-film-review/article_0843c4d9-d721-4507-9bd5-97d5c9e3837c.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.ukfilmreview.co.uk/reviews/merrily-we-roll-along",
+          "host": "ukfilmreview.co.uk",
+          "knownOutletId": "uk-film-review",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "uk-film-review--george-wolf.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.ukfilmreview.co.uk/reviews/merrily-we-roll-along"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wearemoviegeeks.com/2025/12/merrily-we-roll-along-2025-review/",
+          "host": "wearemoviegeeks.com",
+          "knownOutletId": "we-are-movie-geeks",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "we-are-movie-geeks--jim-batts.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.wearemoviegeeks.com/2025/12/merrily-we-roll-along-2025-review/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/merrily-we-roll-along-review-1.27510110",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "amny--matt-windman.json",
+              "flag": "clean",
+              "urlInDir": "https://www.amny.com/entertainment/broadway/merrily-broadway-revival-is-a-triumph/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/merrily-we-roll-along-theater-1187518",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--angie-han.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.hollywoodreporter.com/lifestyle/arts/merrily-we-roll-along-theater-review-daniel-radcliffe-jonathan-groff-stephen-sondheim-1235280713/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/merrily-we-roll-along-theater-review-daniel-radcliffe-jonathan-groff-stephen-sondheim-1235280713/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--angie-han.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.hollywoodreporter.com/lifestyle/arts/merrily-we-roll-along-theater-review-daniel-radcliffe-jonathan-groff-stephen-sondheim-1235280713/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/merrily-we-roll-along-with-daniel-radcliffe-jonathan-groff-and-lindsay-mendez-review_1535303/",
           "host": "whatsonstage.com",
           "knownOutletId": "whatsonstage",
           "recoverable": false,
@@ -2698,9 +1402,395 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "whatsonstage--zachary-stewart.json",
+              "file": "whatsonstage--david-gordon.json",
+              "flag": "clean",
+              "urlInDir": "https://www.whatsonstage.com/news/merrily-we-roll-along-with-daniel-radcliffe-jonathan-groff-and-lindsay-mendez-review_1535303/"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-are-out-for-merrily-we-roll-along-on-screen",
+          "publishDate": "2025-12-05"
+        },
+        {
+          "url": "https://playbill.com/article/what-did-critics-think-of-fiascos-merrily-we-roll-along-off-broadway",
+          "publishDate": "2019-02-19"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-critics-weigh-in-on-off-broadway-merrily-we-roll-along-led-by-jonathan-groff-lindsay-mendez-and-daniel-radcliffe",
+          "publishDate": "2022-12-12"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Broadways-MERRILY-WE-ROLL-ALONG-Debuts-in-Theaters-20251205",
+          "publishDate": "2025-12-05"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-About-Roundabout-and-Fiascos-MERRILY-WE-ROLL-ALONG-20190220",
+          "publishDate": "2019-02-20"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.kget.com/community/ricks-reviews/merrily-rolls-along-from-stage-to-movie-theater/amp/",
+          "host": "kget.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/merrily-we-roll-along-1.27482965",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2022/dec/12/merrily-we-roll-along-review-daniel-radcliffe-jonathan-groff",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://observer.com/2022/12/review-sondheims-brilliant-flop-merrily-we-roll-along-is-smartly-revived/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.queerty.com/jonathan-groff-daniel-radcliffe-bring-new-life-sondheims-merrily-roll-along-20221213",
+          "host": "queerty.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/merrily-roll-along-new-york-theatre-workshop-review-daniel-radcliffe/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/merrily-we-roll-along-rolls-into-success/",
+          "host": "theaterpizzazz.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2019/02/merrily-we-roll-along-is-an-early-contender-for-best-show-of-the-year-review.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.theaterpizzazz.com/time-to-merrily-roll-along-on-broadway/",
+          "host": "theaterpizzazz.com",
+          "outletId": "theater-pizzazz",
+          "provisional": false,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theaterpizzazz.com): Scrapingdog HTTP 404: {\"message\":"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "jajas-african-hair-braiding-2023",
+      "title": "Jaja's African Hair Braiding",
+      "openingDate": "2023-10-03",
+      "status": "closed",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-jajas-african-hair-braiding-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-On-Broadway-20231003"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/JaJas-African-Hair-Braiding/1171",
+        "https://www.thedailybeast.com/broadway-review-jajas-african-hair-braiding-has-both-style-and-substance",
+        "https://ew.com/theater/theater-reviews/jajas-african-hair-braiding-review-broadway/",
+        "https://www.theguardian.com/stage/2023/oct/03/jajas-african-hair-braiding-harlem-broadway-play-review",
+        "https://www.nydailynews.com/2023/10/03/broadway-review-harlem-set-jajas-african-hair-braiding-is-a-fun-and-bubbly-slice-of-life/",
+        "https://www.vulture.com/2023/10/theater-review-jajas-african-hair-braiding.html",
+        "https://nystagereview.com/2023/10/03/jajas-african-hair-braiding-harlem-braids-maybe-not-tight-enough/",
+        "https://nystagereview.com/2023/10/03/jajas-african-hair-braiding-tressed-to-impress/https://nystagereview.com/2023/10/03/jajas-african-hair-braiding-tressed-to-impress/",
+        "https://www.newyorktheatreguide.com/reviews/jajas-african-hair-braiding-broadway-review",
+        "https://www.nytimes.com/2023/10/03/theater/jajas-african-hair-braiding-review.html",
+        "https://www.theatrely.com/post/jajas-african-hair-braiding-an-unbridled-joy-review",
+        "https://www.theatermania.com/news/review-steel-magnolias-in-harlem-jajas-african-hair-braiding-comes-to-broadway_1716476/",
+        "https://variety.com/2023/legit/reviews/jajas-african-hair-braiding-review-broadway-1235740710/",
+        "https://www.thewrap.com/jajas-african-hair-braiding-broadway-review-jocelyn-bioh/",
+        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-jajas-african-hair-braiding-broadway-review-20231004-cnqbpkgoyjgc7pa24koxyjwuia-story.html",
+        "https://www.washingtonpost.com/entertainment/theater/2023/10/03/jaja-braiding-jocelyn-bioh-broadway/"
+      ],
+      "dirFiles": 31,
+      "dirClean": 25,
+      "inReviewsJson": 26,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheater.me",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "stagebuddy.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nydailynews.com/2023/10/03/broadway-review-harlem-set-jajas-african-hair-braiding-is-a-fun-and-bubbly-slice-of-life/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2023/10/03/broadway-review-harlem-set-jajas-african-hair-braiding-is-a-fun-and-bubbly-slice-of-life/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrely.com/post/jajas-african-hair-braiding-an-unbridled-joy-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--juan-a-ramirez.json",
               "flag": "wrongShow",
-              "urlInDir": "https://www.whatsonstage.com/news/appropriate-on-broadway-review-sarah-paulson-and-elle-fanning-star-in-branden-jacobs-jenkins-jaw-dropping-drama_1559990/"
+              "urlInDir": "https://www.theatrely.com/post/jajas-african-hair-braiding-an-unbridled-joy-review"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null
+    },
+    {
+      "showId": "the-shark-is-broken-2023",
+      "title": "The Shark Is Broken",
+      "openingDate": "2023-08-10",
+      "status": "closed",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-broadways-the-shark-is-broken",
+        "https://playbill.com/article/read-the-reviews-for-jaws-inspired-the-shark-is-broken-in-londons-west-end",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20230810",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-on-the-West-End-What-Did-the-Critics-Think-20211022"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/The-Shark-is-Broken/1165",
+        "https://deadline.com/2023/08/the-shark-is-broken-broadway-review-jaws-comedy-1235458548/",
+        "https://ew.com/theater/theater-reviews/shark-is-broken-review-jaws-broadway/",
+        "https://nystagereview.com/2023/08/10/the-shark-is-broken-jaws-stars-square-off-for-fun-and-fishticuffs/",
+        "https://nystagereview.com/2023/08/10/the-shark-is-broken-the-greatest-fish-story-never-told/",
+        "https://newyorktheater.me/2023/08/10/the-shark-is-broken-broadway-review-waiting-for-jaws/",
+        "https://www.newyorktheatreguide.com/reviews/the-shark-is-broken-broadway-review",
+        "https://www.nytimes.com/2023/08/10/theater/the-shark-is-broken-review.html",
+        "https://observer.com/2023/08/review-does-the-shark-is-broken-have-much-bite-on-broadway/",
+        "https://www.queerty.com/broadways-the-shark-is-broken-nips-but-fails-to-bite-20230810",
+        "https://www.timeout.com/newyork/theater/the-shark-is-broken-broadway-review-jaws-play",
+        "https://variety.com/2023/legit/reviews/the-shark-is-broken-review-broadway-play-jaws-1235693491/",
+        "https://www.vulture.com/2023/08/theater-review-the-shark-is-broken-jaws-shaw.html",
+        "https://www.wsj.com/articles/the-shark-is-broken-review-in-the-jaws-of-a-blockbuster-8fb22c26",
+        "https://www.thewrap.com/the-shark-is-broken-jaws-broadway-golden-theatre-bruce-shaw/",
+        "https://theartsdesk.com/theatre/shark-broken-new-ambassadors-theatre-review-how-spielbergs-first-blockbuster-almost-didnt",
+        "https://www.theguardian.com/stage/2021/oct/21/the-shark-is-broken-review-making-of-jaws",
+        "https://www.independent.co.uk/independentpremium/culture/shark-is-broken-review-ambassador-theatre-b1942569.html",
+        "https://inews.co.uk/culture/the-shark-is-broken-ambassadors-theatre-london-review-jaws-robert-ian-shaw-1263368",
+        "https://www.londontheatre.co.uk/reviews/the-shark-is-broken-review-ambassadors-theatre",
+        "https://www.londontheatredirect.com/news/review-the-shark-is-broken-ambassadors-theatre",
+        "https://www.telegraph.co.uk/theatre/what-to-see/shark-broken-review-just-thought-safe-go-back-theatre/",
+        "https://www.theupcoming.co.uk/2021/10/21/the-shark-is-broken-at-ambassadors-theatre-theatre-review/",
+        "https://nypost.com/2023/08/10/the-shark-is-broken-review-jaws-play-swallowed-by-broadway/",
+        "https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-shark-is-broken-chris-jones-20230811-kv4cwl4kqnd65ll7eqlysa4jle-story.html",
+        "https://www.thedailybeast.com/review-the-shark-is-broken-on-broadway-takes-a-very-funny-bite-out-of-jaws",
+        "https://www.theatrely.com/post/the-shark-is-broken-bites-mechanically-review"
+      ],
+      "dirFiles": 49,
+      "dirClean": 36,
+      "inReviewsJson": 33,
+      "missing": [
+        {
+          "url": "https://theartsdesk.com/theatre/shark-broken-new-ambassadors-theatre-review-how-spielbergs-first-blockbuster-almost-didnt",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/review-the-shark-is-broken-ambassadors-theatre",
+          "host": "londontheatredirect.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "amny.com",
+          "count": 1
+        },
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        },
+        {
+          "host": "mashable.com",
+          "count": 1
+        },
+        {
+          "host": "newyorker.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "slashfilm.com",
+          "count": 1
+        },
+        {
+          "host": "stagebuddy.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 2
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 2
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nytimes.com/2023/08/10/theater/the-shark-is-broken-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--jesse-green.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.nytimes.com/2023/08/10/theater/the-shark-is-broken-review.html"
+            },
+            {
+              "file": "nytimes--jesse-scheib.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nytimes.com/2023/08/10/theater/the-shark-is-broken-review.html"
+            }
+          ]
+        },
+        {
+          "url": "https://observer.com/2023/08/review-does-the-shark-is-broken-have-much-bite-on-broadway/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "observer--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://observer.com/2023/08/review-does-the-shark-is-broken-have-much-bite-on-broadway/?utm_medium=social&utm_source=t.co"
+            }
+          ]
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/shark-broken-review-just-thought-safe-go-back-theatre/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--dominic-cavendish.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/shark-broken-review-just-thought-safe-go-back-theatre/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2021/10/21/the-shark-is-broken-at-ambassadors-theatre-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "knownOutletId": "theupcoming",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theupcoming--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theupcoming.co.uk/2021/10/21/the-shark-is-broken-at-ambassadors-theatre-theatre-review/"
             }
           ],
           "priorRun": true,
@@ -2711,14 +1801,24 @@
       "weReference": null,
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/read-reviews-for-branden-jacobs-jenkins-appropriate-in-london",
-          "publishDate": "2019-08-23"
+          "url": "https://playbill.com/article/read-the-reviews-for-jaws-inspired-the-shark-is-broken-in-londons-west-end",
+          "publishDate": "2021-10-22"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-on-the-West-End-What-Did-the-Critics-Think-20211022",
+          "publishDate": "2021-10-22"
         }
       ],
       "weIngestBlocked": [
         {
-          "url": "https://www.standard.co.uk/go/london/theatre/appropriate-pictures-donmar-warehouse-branden-jacobs-jenkins-a4218331.html",
-          "host": "standard.co.uk",
+          "url": "https://theartsdesk.com/theatre/shark-broken-new-ambassadors-theatre-review-how-spielbergs-first-blockbuster-almost-didnt",
+          "host": "theartsdesk.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/review-the-shark-is-broken-ambassadors-theatre",
+          "host": "londontheatredirect.com",
           "priorRun": true,
           "reason": "prior-run"
         }
