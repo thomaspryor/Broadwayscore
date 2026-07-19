@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-19T11:45:29.555Z",
+  "timestamp": "2026-07-19T12:17:16.409Z",
   "stats": {
     "totalReviews": 40251,
-    "alreadyFlagged": 17631,
+    "alreadyFlagged": 17632,
     "dateGuardCatches": 49,
     "directorMismatch": 914,
     "tvFilmSignals": 1103,
-    "londonSignals": 754,
+    "londonSignals": 755,
     "offBroadwaySignals": 475,
     "yearMismatch": 85,
-    "noPublishDate": 3634
+    "noPublishDate": 3631
   },
   "findings": [
     {
@@ -38462,6 +38462,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 313d before show (May 8, 2025 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "shifters-off-broadway-2026",
+      "file": "culturesauce--unknown.json",
+      "publishDate": "2026-07-16",
+      "url": "https://culturesauce.com/shifters-off-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
