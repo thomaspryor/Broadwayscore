@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-19T18:36:57.453Z",
+  "generatedAt": "2026-07-19T19:42:21.170Z",
   "date": "2026-07-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 274663,
+  "entryCount": 275893,
   "shows": [
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
@@ -36,7 +36,7 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -791,7 +791,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 471464,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1777,6 +1777,51 @@
     {
       "showId": "an-enemy-of-the-people-2024",
       "reviewCount": 42,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "titanique-2026",
+      "reviewCount": 26,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "burlesque-west-end-2026",
+      "reviewCount": 17,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "i-need-that-2023",
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
