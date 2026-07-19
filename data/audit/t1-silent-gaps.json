@@ -1,6 +1,41 @@
 {
-  "generatedAt": "2026-07-18T23:01:49.526Z",
+  "generatedAt": "2026-07-19T00:14:07.715Z",
   "windowDays": 45,
-  "showsScanned": 56,
-  "gaps": []
+  "showsScanned": 54,
+  "gaps": [
+    {
+      "showId": "loves-labours-lost-globe-west-end-2026",
+      "title": "Love's Labour's Lost - Globe",
+      "openingDate": "2026-07-17",
+      "file": "times-uk--david-jays-and-maxie-szalwinska.json",
+      "outletId": "times-uk",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-reviews-dance-nation-six-loves-labours-lost-vzp5qcwqv",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 132 chars — pattern may be missing for this outlet. Add an entry to scri"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=loves-labours-lost-globe-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/theatre-reviews-dance-nation-six-loves-labours-lost-vzp5qcwqv --outlet=times-uk --critic=\"David Jays and Maxie Szalwinska\"   # run LOCALLY (cookie jar lives on the Mac)"
+    },
+    {
+      "showId": "loves-labours-lost-globe-west-end-2026",
+      "title": "Love's Labour's Lost - Globe",
+      "openingDate": "2026-07-17",
+      "file": "times-uk--dominic-maxwell.json",
+      "outletId": "times-uk",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-loves-labours-lost-at-the-sam-wanamaker-playhouse-se1-76j52g6ws",
+      "recovery": {
+        "attempted": true,
+        "ok": true,
+        "reason": null
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=loves-labours-lost-globe-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/theatre-review-loves-labours-lost-at-the-sam-wanamaker-playhouse-se1-76j52g6ws --outlet=times-uk --critic=\"Dominic Maxwell\"   # run LOCALLY (cookie jar lives on the Mac)"
+    }
+  ]
 }
