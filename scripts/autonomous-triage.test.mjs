@@ -73,3 +73,28 @@ test('auto-stamped cards never occupy a plan slot (2026-07-17..19 wedge: attempt
   const plan = buildDataPlan([skipped(failed, 'M'), skipped(attempted, 'S'), skipped(clean, 'M')]);
   assert.deepEqual(plan.map(p => p.id), ['card-c']);
 });
+
+test('empirical size floor: a card whose past attempt exceeded its per-card cap is bumped one size (S→M), others untouched', () => {
+  const burned = { id: 'card-burned', name: 'Byline recovery: cap-exceeded card', priority: 'P1 Next', tags: ['review-recovery'], auto: null };
+  const fresh = { id: 'card-fresh', name: 'Missing show: never attempted', priority: 'P1 Next', tags: ['missing-show'], auto: null };
+  const capExceeded = new Set(['card-burned']);
+  const plan = buildDataPlan([skipped(burned, 'S'), skipped(fresh, 'S')], capExceeded);
+  // S-first sort: the bumped M card correctly falls BEHIND the fresh S card.
+  assert.deepEqual(plan.map(p => [p.id, p.size]), [['card-fresh', 'S'], ['card-burned', 'M']]);
+});
+
+test('empirical size floor: M cap-fail parks to L (owner territory), never re-attempts at proven-too-small M', () => {
+  const burned = { id: 'card-m', name: 'Byline recovery: blew the M cap', priority: 'P1 Next', tags: ['review-recovery'], auto: null };
+  const plan = buildDataPlan([skipped(burned, 'M')], new Set(['card-m']));
+  assert.deepEqual(plan.map(p => [p.id, p.size]), [['card-m', 'L']]);
+});
+
+test('capExceededCardIds parses the producer-verbatim card-fail note (regex/field-name drift guard)', () => {
+  const { capExceededCardIds } = require('./autonomous-triage.js');
+  const rows = [
+    { event: 'card-fail', cardId: 'card-burned', note: 'budget: attempt spend $2.22 exceeded per-card cap $1.50' },
+    { event: 'card-fail', cardId: 'card-other', note: 'empty-diff: implementer produced no changes' },
+    { event: 'card-skip', cardId: 'card-skip', note: 'exceeded per-card cap' },
+  ];
+  assert.deepEqual([...capExceededCardIds(rows)], ['card-burned']);
+});

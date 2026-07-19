@@ -69,3 +69,20 @@ test('normalizeQuery strips curly quotes/ampersand like ImportShows.tsx normTitl
   // 2026-07-14 ('cocktailmagique' → 0 results, 'cocktail magique' → 10).
   assert.equal(normalizeQuery('Cocktail Magique'), 'cocktail magique');
 });
+
+test('rankCandidates collapses Mezzanine duplicate records (same title+venue+year, casing/leading-the variants)', () => {
+  // Owner repro 2026-07-19: 14 copies of "The Trouble With Dead Boyfriends" and
+  // 3 of "I Mostly Blame Myself", all at the Players Theatre with venue-string
+  // variants only — the Find-it picker showed them all as identical rows.
+  const dupes = [
+    { title: 'I Mostly Blame Myself', venue: 'The players theatre', category: 'off-broadway', openingDate: null, ratingsCount: 0, id: 'a' },
+    { title: 'I Mostly Blame Myself', venue: 'The Players Theatre', category: 'off-broadway', openingDate: null, ratingsCount: 2, id: 'c' },
+    { title: 'I Mostly Blame Myself', venue: 'The Players Theatre', category: 'off-broadway', openingDate: null, ratingsCount: 0, id: 'b' },
+    { title: 'The Trouble With Dead Boyfriends', venue: 'Players Theatre', category: 'off-broadway', openingDate: '2007-07-13', ratingsCount: 0, id: 'd' },
+    { title: 'The Trouble With Dead Boyfriends', venue: 'The Players Theatre', category: 'off-broadway', openingDate: '2007-07-13', ratingsCount: 0, id: 'e' },
+    { title: 'The Trouble With Dead Boyfriends', venue: 'Players Theatre', category: 'off-broadway', openingDate: '2024-06-01', ratingsCount: 0, id: 'f' },
+  ];
+  const out = rankCandidates(dupes, 10);
+  // One Blame copy (the highest-rated), and BOTH Boyfriends years (real revivals survive)
+  assert.deepStrictEqual(out.map(c => c.id), ['c', 'f', 'd']);
+});

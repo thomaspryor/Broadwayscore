@@ -134,6 +134,42 @@ function renderQueueSummary(qs) {
   </div>`;
 }
 
+// ── Needs-your-attention block (2026-07-19 wedge postmortem) ────────────────
+// The loop wedged for 3 nights (auto=failed cards holding every plan slot)
+// and the email showed only "0 items" — the owner had no way to see WHY or
+// what to do. This block surfaces every state that silently stalls work,
+// each with the concrete owner action.
+function renderAttentionBlock(attention) {
+  const { configWarnings = [], failedCards = [], parkedItems = [] } = attention || {};
+  const lines = [];
+  for (const w of configWarnings) {
+    lines.push({ label: 'config', text: w, action: 'fix .claude/autonomous-config.json' });
+  }
+  for (const c of failedCards) {
+    lines.push({
+      label: 'failed', text: c.name,
+      action: 'clear the Auto tag on the card to retry, or close the card if it no longer matters',
+    });
+  }
+  for (const p of parkedItems) {
+    lines.push({
+      label: 'parked', text: `${p.name} (sized ${p.size})`,
+      action: 'too big for the loop — needs an interactive session, or split the card',
+    });
+  }
+  if (!lines.length) return '';
+  const rows = lines.map(l =>
+    `<div style="margin:0 0 8px;">
+      <span style="display:inline-block;background:#b45309;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;vertical-align:middle;text-transform:uppercase;">${esc(l.label)}</span>
+      <span style="font-size:13px;color:#333;margin-left:6px;">${esc(l.text)}</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">→ ${esc(l.action)}</div>
+    </div>`).join('');
+  return `<div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:#b45309;">Needs your attention — ${lines.length} item${lines.length > 1 ? 's' : ''} stalling the loop</div>
+    ${rows}
+  </div>`;
+}
+
 function renderItem(item) {
   const badge = `<span style="display:inline-block;background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;vertical-align:middle;">PASS</span>`;
   const cost = `<span style="color:#999;font-size:12px;margin-left:6px;">~${money(item.usd)}</span>`;
@@ -204,7 +240,7 @@ function renderUsageBlock(stats, admin, config = {}) {
  *   config: { weeklyUSD } · lastRunNote: string|null · awaitingTotal: number
  */
 function renderEmail(data) {
-  const { items = [], moreAwaiting = 0, failedCount = 0, throttled = null, runSkipped = null, queueSummary = null, stats, admin = null, config = {}, lastRunNote = null, awaitingTotal = 0 } = data;
+  const { items = [], moreAwaiting = 0, failedCount = 0, throttled = null, runSkipped = null, queueSummary = null, attention = null, stats, admin = null, config = {}, lastRunNote = null, awaitingTotal = 0 } = data;
 
   const parts = [];
   parts.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
@@ -221,6 +257,10 @@ function renderEmail(data) {
     // self-describing, so use a neutral marker not a hardcoded "Throttled:".
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(throttled)}</p>`);
   }
+  // Attention block sits ABOVE approvals: a stalled loop outranks routine
+  // taps — three silent-zero nights (07-17..19) is the incident this fixes.
+  const attentionHtml = renderAttentionBlock(attention);
+  if (attentionHtml) parts.push(attentionHtml);
   for (const item of items) parts.push(renderItem(item));
   // 0-planned night: say WHY (night-1 fix — the bare "nothing to approve"
   // read as a malfunction and the owner immediately distrusted it).
@@ -243,6 +283,6 @@ function renderEmail(data) {
 }
 
 module.exports = {
-  renderEmail, renderItem, renderUsageBlock, renderQueueSummary, summarizeQueue, skipBucket, extractWhy, esc,
+  renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, summarizeQueue, skipBucket, extractWhy, esc,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
 };

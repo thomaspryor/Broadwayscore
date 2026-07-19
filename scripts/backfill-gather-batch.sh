@@ -43,7 +43,8 @@ echo "$(date): Starting batch $BATCH_IDX of $TOTAL_BATCHES ($SHOW_COUNT shows)"
 perl -e 'alarm 30; exec @ARGV' gh workflow run "Gather Review Data" -R "$REPO" \
   -f shows="$SHOWS" \
   -f parallel_jobs=3 \
-  -f max_tier=2
+  -f max_tier=2 \
+  -f no_sb_serp=true
 
 echo "$(date): Batch $BATCH_IDX dispatched"
 
