@@ -1,76 +1,85 @@
 {
-  "runDate": "2026-07-19T06:28:06.372Z",
+  "runDate": "2026-07-19T06:31:02.627Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "tender-off-west-end-2026",
+    "showFilter": "heathers-the-musical-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 8,
+    "processed": 2,
+    "failed": 14,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "12.5%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 0,
+    "browserbase": 0,
+    "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
     "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
     "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 8,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 14,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 5,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 14,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "heathers-the-musical-off-west-end-2026/british-theatre--unknown.json",
+    "heathers-the-musical-off-west-end-2026/times-uk--dominic-maxwell.json"
+  ],
   "failed": [
-    "tender-off-west-end-2026/afridiziak-theatre-news--unknown.json",
-    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
-    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
-    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
-    "tender-off-west-end-2026/theupcoming--unknown.json",
-    "tender-off-west-end-2026/times-uk--richard-morrison.json",
-    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
-    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
+    "heathers-the-musical-off-west-end-2026/hollywood-reporter--david-rooney.json",
+    "heathers-the-musical-off-west-end-2026/nytimes--ben-brantley.json",
+    "heathers-the-musical-off-west-end-2026/vulture--jesse-green.json",
+    "heathers-the-musical-off-west-end-2026/abc-news--peter-santilli.json",
+    "heathers-the-musical-off-west-end-2026/guardian--giselle-au-nhien-nguyen.json",
+    "heathers-the-musical-off-west-end-2026/nypost--elisabeth-vincentelli.json",
+    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
+    "heathers-the-musical-off-west-end-2026/nbcny--robert-kahn.json",
+    "heathers-the-musical-off-west-end-2026/thestage--holly-omahony.json",
+    "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json",
+    "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "failed": [],
   "tierDetails": {
     "playwright": [
-      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "heathers-the-musical-off-west-end-2026/british-theatre--unknown.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+    "browserbase": [],
+    "directCookies": [
+      "heathers-the-musical-off-west-end-2026/times-uk--dominic-maxwell.json"
     ],
-    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
