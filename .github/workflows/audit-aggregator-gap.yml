@@ -148,6 +148,14 @@ jobs:
           if [ "$FAIL" = "true" ]; then
             ARGS="$ARGS --fail-on-gap"
           fi
+          # Fast-forward the review-texts checkout at the last possible moment.
+          # The job checkout can be many minutes old by the time the audit's
+          # recovery ingests run; a file filled by a parallel push in that window
+          # otherwise reads as still-empty here and the stale husk gets
+          # re-ingested + pushed over the real review (2026-07-18: heathers
+          # theatre-weekly lost a scored 3367-char review this way).
+          git -C data/review-texts pull --ff-only origin main \
+            || echo "::warning::review-texts ff-pull failed — recovery may run against a stale checkout"
           node scripts/audit-show-review-gap.js $ARGS
 
       # Dir-driven sweep for tier-1/2 reviews that were discovered but sit in a
