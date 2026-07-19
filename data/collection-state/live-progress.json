@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-19T11:04:17.184Z",
-  "processed": 80,
-  "failed": 259,
-  "successRate": "23.6%",
+  "updatedAt": "2026-07-19T11:06:17.223Z",
+  "processed": 81,
+  "failed": 268,
+  "successRate": "23.2%",
   "tierBreakdown": {
     "playwright": 49,
     "amp": 0,
@@ -11,16 +11,10 @@
     "scrapingbee": 0,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-07-19T00:19:30.970Z",
-      "event": "bb-session",
-      "session": "6c18a8ec",
-      "url": "https://therecs.co.uk/the-oresteia-bridge-theatre/"
-    },
     {
       "t": "2026-07-19T00:22:18.441Z",
       "event": "bb-session",
@@ -128,6 +122,12 @@
       "t": "2026-07-19T10:12:43.013Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-19T11:06:07.865Z",
+      "event": "bb-session",
+      "session": "8565a70f",
+      "url": "https://www.broadwayworld.com/reviews/dukes"
     }
   ]
 }

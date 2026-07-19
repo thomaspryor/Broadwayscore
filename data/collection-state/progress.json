@@ -79,7 +79,8 @@
     "long-days-journey-into-night-2003/talkinbroadway--matthew-murray.json",
     "long-days-journey-into-night-2003/theater-scene--darryl-reilly.json",
     "long-days-journey-into-night-2003/towleroad--naveen-kumar.json",
-    "shifters-off-broadway-2026/nytg--gillian-russo.json"
+    "shifters-off-broadway-2026/nytg--gillian-russo.json",
+    "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
   ],
   "failed": [
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
@@ -340,7 +341,16 @@
     "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
     "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
     "shifters-off-broadway-2026/thestage--tom-wicker.json",
-    "shifters-off-broadway-2026/times-uk--donald-hutera.json"
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
+    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -413,10 +423,12 @@
       "long-days-journey-into-night-2003/talkinbroadway--matthew-murray.json"
     ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
+    ]
   },
   "startTime": "2026-07-18T17:09:59.494Z",
-  "lastProcessed": "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+  "lastProcessed": "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
   "log": [
     {
       "t": "2026-07-18T19:23:12.888Z",
@@ -604,6 +616,12 @@
       "t": "2026-07-19T10:12:43.013Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-19T11:06:07.865Z",
+      "event": "bb-session",
+      "session": "8565a70f",
+      "url": "https://www.broadwayworld.com/reviews/dukes"
     }
   ]
 }
