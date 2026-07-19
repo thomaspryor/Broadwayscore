@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-19T11:17:08.464Z",
+  "runDate": "2026-07-19T12:10:23.432Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,36 +11,36 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 79,
-    "failed": 312,
+    "processed": 82,
+    "failed": 374,
     "skipped": 0,
-    "successRate": "20.2%"
+    "successRate": "18.0%"
   },
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 49,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 4,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
     "totalFailed": 62,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
@@ -129,7 +129,10 @@
     "long-days-journey-into-night-2003/timeout--adam-feldman.json",
     "long-days-journey-into-night-2003/talkinbroadway--matthew-murray.json",
     "long-days-journey-into-night-2003/theater-scene--darryl-reilly.json",
-    "long-days-journey-into-night-2003/towleroad--naveen-kumar.json"
+    "long-days-journey-into-night-2003/towleroad--naveen-kumar.json",
+    "the-smile-of-her-off-west-end-2026/stagedtheatre--unknown.json",
+    "heathers-the-musical-off-west-end-2026/times-uk--ann-treneman.json",
+    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/the-recs--unknown.json"
   ],
   "failed": [
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
@@ -443,6 +446,68 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
+    "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
+    "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "the-hills-of-california-2024/times-uk--ann-treneman.json",
+    "mary-jane-2024/ew--joey-nolfi.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/usatoday--melissa-ruggieri.json",
+    "the-wiz-2024/indiewire--sarah-shachat.json",
+    "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
+    "appropriate-2023/timeout--adam-feldman.json",
+    "harmony-2023/usatoday--david-rooney.json",
+    "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
+    "grey-house-2023/stageandcinema--simi-horwitz.json",
+    "the-collaboration-2022/hollywood-reporter--anita-gates.json",
+    "the-collaboration-2022/times-uk--jesse-green.json",
+    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json",
+    "topdog-underdog-2022/rollingstone--david-fear.json",
+    "the-piano-lesson-2022/timeout--adam-feldman.json",
+    "waitress-2021/vulture--helen-shaw.json",
+    "the-inheritance-2019/usatoday--charles-isherwood.json",
+    "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
+    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
+    "kiss-me-kate-2019/usatoday--david-rooney.json",
+    "kiss-me-kate-2019/usatoday--elysa-gardner.json",
+    "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
+    "the-nap-2018/nypost--johnny-oleksinski.json",
+    "escape-to-margaritaville-2018/vulture--jesse-green.json",
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+    "farinelli-and-the-king-2017/observer--rex-reed.json",
+    "indecent-2017/usatoday--elysa-gardner.json",
+    "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
+    "tuck-everlasting-2016/usatoday--elysa-gardner.json",
+    "eclipsed-2016/observer--rex-reed.json",
+    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
+    "hedwig-and-the-angry-inch-2014/rollingstone--rob-sheffield.json",
+    "motown-the-musical-2013/observer--rex-reed.json",
+    "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
+    "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json",
+    "picnic-2013/observer--rex-reed.json",
+    "ghost-the-musical-2012/timeout--david-cote.json",
+    "clybourne-park-2012/usatoday--elysa-gardner.json",
+    "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
+    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "red-2010/chicagotribune--chris-jones.json",
+    "ragtime-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/usatoday--elysa-gardner.json",
+    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
+    "shrek-the-musical-2008/usatoday--elysa-gardner.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
   ],
   "tierDetails": {
@@ -494,7 +559,8 @@
       "long-days-journey-into-night-2003/theatre-reviews-limited--michele-willens.json",
       "long-days-journey-into-night-2003/timeout--adam-feldman.json",
       "long-days-journey-into-night-2003/theater-scene--darryl-reilly.json",
-      "long-days-journey-into-night-2003/towleroad--naveen-kumar.json"
+      "long-days-journey-into-night-2003/towleroad--naveen-kumar.json",
+      "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/the-recs--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -511,10 +577,13 @@
     ],
     "scrapingbee": [],
     "brightdata": [
-      "long-days-journey-into-night-2003/talkinbroadway--matthew-murray.json"
+      "long-days-journey-into-night-2003/talkinbroadway--matthew-murray.json",
+      "the-smile-of-her-off-west-end-2026/stagedtheatre--unknown.json"
     ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "heathers-the-musical-off-west-end-2026/times-uk--ann-treneman.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
