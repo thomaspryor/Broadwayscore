@@ -65,6 +65,7 @@ export const reviewsListQuery = groq`
     dateAttended,
     publishDate,
     excerpt,
+    "bodyWords": length(string::split(pt::text(body), " ")),
     heroImage {
       "url": asset->url,
       alt
@@ -108,6 +109,7 @@ export interface ReviewListItem {
   dateAttended: string;
   publishDate: string;
   excerpt?: string;
+  bodyWords?: number;
   heroImage?: { url: string; alt?: string };
 }
 
