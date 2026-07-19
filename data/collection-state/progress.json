@@ -9,7 +9,8 @@
     "dolly-a-true-original-musical-regional-2025/knox-news--melonee-hurt.json",
     "the-smile-of-her-off-west-end-2026/guardian-uk--arifa-akbar.json",
     "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
-    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+    "jesus-christ-superstar-west-end-2026/observer--kate-kellaway.json"
   ],
   "failed": [
     "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
@@ -298,7 +299,16 @@
     "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json",
     "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
     "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
-    "tender-off-west-end-2026/thestage--dave-fargnoli.json"
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/theupcoming--unknown.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+    "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
+    "jesus-christ-superstar-west-end-2026/newsday--linda-winer.json",
+    "jesus-christ-superstar-west-end-2026/newsday--unknown.json",
+    "jesus-christ-superstar-west-end-2026/oxfordshire-guardian--samuel-macgregor.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -314,7 +324,8 @@
     "browserbase": [
       "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
-      "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json"
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -333,11 +344,12 @@
     ],
     "archive": [
       "shifters-off-broadway-2026/broadwayworld--unknown.json",
-      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
+      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+      "jesus-christ-superstar-west-end-2026/observer--kate-kellaway.json"
     ]
   },
   "startTime": "2026-07-19T17:20:49.888Z",
-  "lastProcessed": "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+  "lastProcessed": "jesus-christ-superstar-west-end-2026/oxfordshire-guardian--samuel-macgregor.json",
   "log": [
     {
       "t": "2026-07-19T17:23:15.324Z",
@@ -393,6 +405,17 @@
     },
     {
       "t": "2026-07-19T20:58:15.724Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-19T21:01:32.843Z",
+      "event": "bb-session",
+      "session": "40eacba3",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-19T21:01:33.255Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
