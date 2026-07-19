@@ -1,33 +1,44 @@
 {
-  "processed": [],
+  "processed": [
+    "tender-off-west-end-2026/afridiziak-theatre-news--unknown.json"
+  ],
   "failed": [
-    "heathers-the-musical-off-west-end-2026/hollywood-reporter--david-rooney.json",
-    "heathers-the-musical-off-west-end-2026/nytimes--ben-brantley.json",
-    "heathers-the-musical-off-west-end-2026/vulture--jesse-green.json",
-    "heathers-the-musical-off-west-end-2026/abc-news--peter-santilli.json",
-    "heathers-the-musical-off-west-end-2026/guardian--giselle-au-nhien-nguyen.json",
-    "heathers-the-musical-off-west-end-2026/nypost--elisabeth-vincentelli.json",
-    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
-    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
-    "heathers-the-musical-off-west-end-2026/nbcny--robert-kahn.json",
-    "heathers-the-musical-off-west-end-2026/thestage--holly-omahony.json",
-    "heathers-the-musical-off-west-end-2026/times-uk--dominic-maxwell.json",
-    "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
-    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json"
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/theupcoming--unknown.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "tender-off-west-end-2026/afridiziak-theatre-news--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-19T16:03:01.867Z",
-  "lastProcessed": "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
-  "log": []
+  "startTime": "2026-07-19T16:03:17.697Z",
+  "lastProcessed": "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+  "log": [
+    {
+      "t": "2026-07-19T16:04:55.538Z",
+      "event": "bb-session",
+      "session": "d21ecba2",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-19T16:04:56.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
