@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-19T05:19:08.436Z",
+    "generatedAt": "2026-07-19T06:38:20.602Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -20,15 +20,15 @@
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 94
+      "churn": 97
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 90
+      "churn": 93
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 90
+      "churn": 93
     },
     {
       "path": "data/audit/we-gate-proving.json",
@@ -38,31 +38,31 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 116
+      "churn": 117
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 112
+      "churn": 113
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 98
+      "churn": 99
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 98
+      "churn": 99
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 98
+      "churn": 99
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 88
+      "churn": 87
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 83
+      "churn": 84
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -78,11 +78,7 @@
     },
     {
       "path": "data/show-score-urls.json",
-      "churn": 38
-    },
-    {
-      "path": "public/data/shows/the-potluck-off-broadway-2026.json",
-      "churn": 36
+      "churn": 37
     },
     {
       "path": "public/data/shows/the-oresteia-west-end-2026.json",
@@ -90,88 +86,92 @@
     },
     {
       "path": "public/data/shows/heathers-the-musical-off-west-end-2026.json",
-      "churn": 32
+      "churn": 33
+    },
+    {
+      "path": "public/data/shows/the-potluck-off-broadway-2026.json",
+      "churn": 33
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1052,
+      "churn": 1068,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1031,
+      "churn": 1045,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 704,
+      "churn": 700,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 662,
+      "churn": 663,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 253,
+      "churn": 252,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 253,
+      "churn": 252,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 160,
+      "churn": 161,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 116,
+      "churn": 117,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 110,
+      "churn": 113,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 101,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
-      "churn": 101,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/a-walk-on-the-moon-off-broadway-2026.json",
       "churn": 100,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
+      "churn": 100,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/a-walk-on-the-moon-off-broadway-2026.json",
+      "churn": 99,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 98,
+      "churn": 99,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 83,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 83,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 83,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
@@ -191,7 +191,7 @@
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 62,
+      "churn": 58,
       "mergeAttr": "ours"
     },
     {
@@ -206,37 +206,37 @@
     },
     {
       "path": "data/audit/poller-backoff/a-midsummer-nights-dream-west-end-2026.json",
-      "churn": 41,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/allegra-west-end-2026.json",
-      "churn": 41,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/jesus-christ-superstar-west-end-2026.json",
-      "churn": 41,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/tender-off-west-end-2026.json",
-      "churn": 41,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-guilty-west-end-2026.json",
-      "churn": 41,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-oresteia-west-end-2026.json",
-      "churn": 41,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/to-kill-a-mockingbird-west-end-2026.json",
-      "churn": 41,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
