@@ -235,6 +235,10 @@ on:
       # scripts/test-opening-night-fixes.js (run in the opening-night step). Without these,
       # changes to core discovery/scoring-guard logic push with ZERO CI coverage.
       - 'scripts/lib/url-discovery.js'
+      # SERP provider-chain ordering + SB-SERP skip (invisible-burn fix 2026-07).
+      # Colocated test runs in the lib-test glob; path-listed so a solo edit
+      # triggers CI (allow-list gate).
+      - 'scripts/lib/serp-chain-order.test.mjs'
       - 'scripts/lib/review-guards.js'
       # Pre-window inclusion predicate + priorRuns window logic (card 386637c5).
       # These decide review inclusion exactly like review-guards.js — without
