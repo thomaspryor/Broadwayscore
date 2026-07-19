@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-19T08:20:41.101Z",
+  "timestamp": "2026-07-19T08:53:59.947Z",
   "stats": {
-    "totalReviews": 40223,
+    "totalReviews": 40224,
     "alreadyFlagged": 17615,
     "dateGuardCatches": 49,
     "directorMismatch": 914,
-    "tvFilmSignals": 1102,
+    "tvFilmSignals": 1103,
     "londonSignals": 754,
     "offBroadwaySignals": 475,
     "yearMismatch": 85,
@@ -12871,6 +12871,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-2025",
+      "file": "teenvogue--p-claire-dodsonbeth-garrabrant.json",
+      "publishDate": "2025-04-03",
+      "url": "https://www.teenvogue.com/story/sadie-sink-cover-march-april-2025-interview",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
