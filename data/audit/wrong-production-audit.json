@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-19T09:43:14.250Z",
+  "timestamp": "2026-07-19T09:49:14.621Z",
   "stats": {
-    "totalReviews": 40233,
+    "totalReviews": 40234,
     "alreadyFlagged": 17618,
     "dateGuardCatches": 49,
     "directorMismatch": 916,
     "tvFilmSignals": 1103,
-    "londonSignals": 754,
+    "londonSignals": 755,
     "offBroadwaySignals": 475,
     "yearMismatch": 85,
-    "noPublishDate": 3635
+    "noPublishDate": 3636
   },
   "findings": [
     {
@@ -38490,6 +38490,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 313d before show (May 8, 2025 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "shifters-off-broadway-2026",
+      "file": "nytg--unknown.json",
+      "publishDate": "2026-07-15",
+      "url": "https://www.newyorktheatreguide.com/reviews/shifters-off-broadway-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
