@@ -945,10 +945,16 @@ async function main() {
   const recoveredReviewIds = []; // Track for batch cleanup of failed-fetches.json
   const exhaustedUrls = {}; // Track per-URL failure reasons for wayback-exhausted.json
 
-  // Domain circuit breaker — skip domains with too many consecutive failures
+  // Domain circuit breaker — skip domains with too many consecutive failures.
+  // Disabled when the candidate set is a single domain (e.g. DOMAIN_FILTER=wsj.com):
+  // there's nowhere else for the run to redirect effort, so tripping it just
+  // kills the rest of an intentionally-scoped run after 5 unlucky misses
+  // (180-candidate wsj.com run stopped at candidate 11, 2026-07-19).
   const domainFailures = {};  // { 'cititour.com': 5, ... }
   const skippedDomains = new Set();
   let domainSkipCount = 0;
+  const distinctDomains = new Set(candidates.map(c => c.domain));
+  const circuitBreakerEnabled = distinctDomains.size > 1;
 
   console.log(`\n${'='.repeat(60)}`);
   console.log('Phase 1: CDX Discovery + Fetch\n');
@@ -1024,7 +1030,7 @@ async function main() {
 
       // Domain failure tracking
       domainFailures[c.domain] = (domainFailures[c.domain] || 0) + 1;
-      if (domainFailures[c.domain] >= 5) {
+      if (circuitBreakerEnabled && domainFailures[c.domain] >= 5) {
         skippedDomains.add(c.domain);
         console.log(`  ⚠ Domain ${c.domain} circuit-broken after ${domainFailures[c.domain]} consecutive failures`);
       }
@@ -1119,7 +1125,7 @@ async function main() {
         } else {
           exhaustedUrls[c.url] = { reason: 'content_quality_failed', lastAttempt: new Date().toISOString(), retryable: false };
           domainFailures[c.domain] = (domainFailures[c.domain] || 0) + 1;
-          if (domainFailures[c.domain] >= 5 && !skippedDomains.has(c.domain)) {
+          if (circuitBreakerEnabled && domainFailures[c.domain] >= 5 && !skippedDomains.has(c.domain)) {
             skippedDomains.add(c.domain);
             console.log(`  ⚠ Domain ${c.domain} circuit-broken after ${domainFailures[c.domain]} consecutive failures`);
           }
@@ -1127,7 +1133,7 @@ async function main() {
       } else {
         exhaustedUrls[c.url] = { reason: 'snapshots_paywalled', lastAttempt: new Date().toISOString(), retryable: false };
         domainFailures[c.domain] = (domainFailures[c.domain] || 0) + 1;
-        if (domainFailures[c.domain] >= 5 && !skippedDomains.has(c.domain)) {
+        if (circuitBreakerEnabled && domainFailures[c.domain] >= 5 && !skippedDomains.has(c.domain)) {
           skippedDomains.add(c.domain);
           console.log(`  ⚠ Domain ${c.domain} circuit-broken after ${domainFailures[c.domain]} consecutive failures`);
         }
