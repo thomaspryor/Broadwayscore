@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-19T00:05:46.777Z",
-  "processed": 57,
-  "failed": 666,
-  "successRate": "7.9%",
+  "updatedAt": "2026-07-19T00:23:35.098Z",
+  "processed": 58,
+  "failed": 715,
+  "successRate": "7.5%",
   "tierBreakdown": {
     "playwright": 38,
     "amp": 0,
-    "browserbase": 4,
-    "directCookies": 1,
+    "browserbase": 5,
+    "directCookies": 2,
     "scrapingbee": 3,
     "brightdata": 3,
     "archiveToday": 0,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-07-18T19:23:12.888Z",
@@ -73,6 +73,46 @@
     },
     {
       "t": "2026-07-18T23:23:18.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-19T00:15:27.102Z",
+      "event": "bb-session",
+      "session": "b4ed89f1",
+      "url": "https://www.facebook.com/thestage/posts/-review-the-smile-of-her-american-actor-"
+    },
+    {
+      "t": "2026-07-19T00:17:27.130Z",
+      "event": "bb-session",
+      "session": "05231486",
+      "url": "https://www.facebook.com/bridgetheatrelondon/posts/simon-stones-the-oresteia-aft"
+    },
+    {
+      "t": "2026-07-19T00:19:30.970Z",
+      "event": "bb-session",
+      "session": "6c18a8ec",
+      "url": "https://therecs.co.uk/the-oresteia-bridge-theatre/"
+    },
+    {
+      "t": "2026-07-19T00:22:18.441Z",
+      "event": "bb-session",
+      "session": "1ab4299d",
+      "url": "https://www.thestage.co.uk/reviews/the-jonathan-larson-project-review-southwark-"
+    },
+    {
+      "t": "2026-07-19T00:22:19.414Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-07-19T00:23:18.738Z",
+      "event": "bb-session",
+      "session": "5adbed39",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-19T00:23:19.700Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
