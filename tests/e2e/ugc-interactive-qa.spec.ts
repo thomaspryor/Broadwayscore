@@ -1,4 +1,5 @@
 import { test, expect, type Page, type Locator } from '@playwright/test';
+import { switchToListView } from './helpers/mock-helpers';
 
 /**
  * Interactive QA walkthrough for UGC pages.
@@ -161,6 +162,7 @@ test.describe('Click behaviors — mobile (390px)', () => {
 
   test('delete confirmation appears and auto-dismisses', async ({ page }) => {
     await goToMock(page, 'diary');
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
 
     // Find a delete button on a list card
     const deleteBtn = page.locator('button[aria-label="Delete rating"]').first();
@@ -361,9 +363,13 @@ test.describe('Desktop layout (1440px)', () => {
 
   test('edit/delete icons are hidden until card hover', async ({ page }) => {
     await goToMock(page, 'diary');
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
 
-    // Before hovering, edit icons should be invisible (opacity-0)
-    const firstEditLink = page.locator('a[aria-label="Edit rating"]').first();
+    // Before hovering, edit icons should be invisible (opacity-0).
+    // :visible — DiaryCard renders the icons twice (mobile in-flow copy is
+    // display:none at 1440 but still computes opacity 1); only the desktop
+    // hover-corner instance is display-visible here.
+    const firstEditLink = page.locator('a[aria-label="Edit rating"]:visible').first();
     const opacity = await firstEditLink.evaluate(el => {
       const parent = el.parentElement;
       return parent ? getComputedStyle(parent).opacity : '1';

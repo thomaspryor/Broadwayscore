@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { switchToListView } from './helpers/mock-helpers';
 
 
 /**
@@ -138,6 +139,7 @@ test.describe('My Shows — Diary Sections', () => {
 
   test('Upcoming section shows future watchlist items', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     await expect(page.getByRole('heading', { name: 'Upcoming' })).toBeVisible();
     // Gypsy (Sep 15) and Smash (Oct 10)
     await expect(page.getByRole('heading', { name: 'Gypsy', level: 4 })).toBeVisible();
@@ -146,6 +148,7 @@ test.describe('My Shows — Diary Sections', () => {
 
   test('Past Shows section shows all rated shows', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     await expect(page.getByRole('heading', { name: 'Past Shows' })).toBeVisible();
     // All 7 reviewed shows
     await expect(page.getByRole('heading', { name: 'Wicked', level: 4 })).toBeVisible();
@@ -180,12 +183,14 @@ test.describe('My Shows — Diary Sections', () => {
 
   test('review text is displayed for shows with notes', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     await expect(page.getByText('Incredible production, Elphaba was phenomenal.')).toBeVisible();
     await expect(page.getByText('Good but not great revival.')).toBeVisible();
   });
 
   test('edit links point to correct show pages', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     const editLinks = page.getByRole('link', { name: 'Edit rating' });
     const count = await editLinks.count();
     expect(count).toBe(9); // 9 rated shows in mock data
@@ -336,6 +341,7 @@ test.describe('My Shows — View Toggle', () => {
 test.describe('My Shows — Delete Flow', () => {
   test('delete shows 2-step confirmation', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     // Find first delete button
     const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
     await deleteBtn.click();
@@ -346,6 +352,7 @@ test.describe('My Shows — Delete Flow', () => {
 
   test('clicking "No" dismisses confirmation', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
     await deleteBtn.click();
     await expect(page.getByRole('button', { name: /Delete\?/ })).toBeVisible();
@@ -358,6 +365,7 @@ test.describe('My Shows — Delete Flow', () => {
 
   test('delete confirmation auto-dismisses after timeout', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
     await deleteBtn.click();
     await expect(page.getByRole('button', { name: /Delete\?/ })).toBeVisible();
@@ -381,11 +389,13 @@ test.describe('My Shows — Watchlist', () => {
     expect(await titles.count()).toBeGreaterThanOrEqual(6);
   });
 
-  test('watchlist cards have "Rate" action', async ({ page }) => {
+  test('watchlist cards have a rate-strip of five stars', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Grid cards should have Rate overlay
-    const rateElements = page.locator('text=Rate');
-    expect(await rateElements.count()).toBeGreaterThan(0);
+    // Grid cards carry a 5-star rate strip at the poster bottom (replaced the
+    // text "Rate" pill + centered hover stars, 2026-07-19).
+    const strips = page.locator('[class*="group/wl"] [role="radiogroup"]');
+    expect(await strips.count()).toBeGreaterThan(0);
+    await expect(strips.first().getByRole('button', { name: '5 stars' })).toBeAttached();
   });
 
   test('watchlist cards have date picker', async ({ page }) => {
@@ -475,6 +485,7 @@ test.describe('My Shows — Desktop Layout (1440px)', () => {
 
   test('diary list shows full star ratings on desktop', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     // Desktop shows full 5-star display (hidden md:inline-flex)
     const starRatings = page.locator('.hidden.md\\:inline-flex');
     expect(await starRatings.count()).toBeGreaterThan(0);
