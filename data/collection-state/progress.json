@@ -1,7 +1,14 @@
 {
-  "processed": [
-    "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
-    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+  "processed": [],
+  "failed": [
+    "tender-off-west-end-2026/afridiziak-theatre-news--unknown.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/theupcoming--unknown.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
   ],
   "failed": [],
   "skipped": [],
@@ -10,7 +17,9 @@
       "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
@@ -21,7 +30,19 @@
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-19T06:24:19.944Z",
-  "lastProcessed": "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-  "log": []
+  "startTime": "2026-07-19T06:25:26.041Z",
+  "lastProcessed": "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+  "log": [
+    {
+      "t": "2026-07-19T06:27:46.306Z",
+      "event": "bb-session",
+      "session": "e5ce968b",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-19T06:27:46.696Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
