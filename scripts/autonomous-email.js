@@ -237,11 +237,37 @@ async function main() {
   // 0-planned skip breakdown (night-1 fix #2) — fail-soft: a missing or
   // stale queue just omits the section, never blocks the morning email.
   let queueSummary = null;
+  let freshQueue = null;
   try {
     const queue = JSON.parse(fs.readFileSync(QUEUE_PATH, 'utf8'));
     const ageH = (Date.now() - new Date(queue.generatedAt).getTime()) / 3600e3;
-    if (ageH < QUEUE_SUMMARY_MAX_AGE_H) queueSummary = summarizeQueue(queue);
+    if (ageH < QUEUE_SUMMARY_MAX_AGE_H) { queueSummary = summarizeQueue(queue); freshQueue = queue; }
   } catch { /* no queue on this machine — skip the section */ }
+
+  // Needs-your-attention (2026-07-19 wedge postmortem): every state that
+  // silently stalls the loop, with the owner action. Fail-soft per source —
+  // a Notion hiccup must never block the email.
+  //   config-warnings: tonight's run segment (inadmissibleSizes etc.)
+  //   failed cards:    auto=failed — parked until the OWNER clears Auto
+  //   parked items:    planned at a size the config doesn't enable (L, or a
+  //                    size-floor bump past the enabled set) — skipped nightly
+  const attention = { configWarnings: [], failedCards: [], parkedItems: [] };
+  for (const e of runEntries) {
+    if (e.event === 'config-warning' && e.note) attention.configWarnings.push(e.note);
+  }
+  try {
+    attention.failedCards = (notionBrain(['list', '--auto', 'failed', '--limit', '10']) || [])
+      .map(c => ({ name: c.name }));
+  } catch (err) {
+    console.error(`[email] WARN could not list auto=failed cards: ${err.message.slice(0, 120)}`);
+  }
+  if (freshQueue) {
+    const enabled = new Set(Array.isArray(cfg.sizes) ? cfg.sizes : ['S']);
+    for (const p of [...(freshQueue.plan || []), ...(freshQueue.dataPlan || [])]) {
+      if (p && p.size && !enabled.has(p.size)) attention.parkedItems.push({ name: p.name, size: p.size });
+    }
+  }
+  const attentionCount = attention.configWarnings.length + attention.failedCards.length + attention.parkedItems.length;
 
   const admin = await fetchAdminUsage();
   const html = renderEmail({
@@ -250,6 +276,7 @@ async function main() {
     failedCount,
     runSkipped,
     queueSummary,
+    attention,
     throttled: listingFailed
       ? 'could not read the approval queue from Notion — items below may be incomplete; check the cards directly'
       : missingEvidence
@@ -271,9 +298,11 @@ async function main() {
       ? `Overnight: ⚠️ could not read the approval queue`
       : items.length
         ? `Overnight: ${items.length} item${items.length > 1 ? 's' : ''} awaiting your tap — ${items.map(i => i.name).join(' · ').slice(0, 80)}`
-        : queueSummary
-          ? `Overnight: no items to approve (${queueSummary.total} triaged, 0 workable)`
-          : `Overnight: no items to approve (${failedCount} failed)`;
+        : attentionCount
+          ? `Overnight: ⚠️ ${attentionCount} item${attentionCount > 1 ? 's' : ''} stalling the loop — needs your triage`
+          : queueSummary
+            ? `Overnight: no items to approve (${queueSummary.total} triaged, 0 workable)`
+            : `Overnight: no items to approve (${failedCount} failed)`;
 
   if (dryRun) {
     const out = path.join(REPO, 'data', 'audit', 'autonomous-email-preview.html');
