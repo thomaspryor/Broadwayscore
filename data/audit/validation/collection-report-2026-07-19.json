@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-19T19:47:28.362Z",
+  "runDate": "2026-07-19T20:17:17.091Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,20 +11,20 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 150,
+    "processed": 10,
+    "failed": 197,
     "skipped": 0,
-    "successRate": "4.5%"
+    "successRate": "4.8%"
   },
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 6,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
+    "browserbase": 2,
+    "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -57,7 +57,10 @@
     "titanique-2026/nytg--gillian-russo.json",
     "burlesque-west-end-2026/theatreandtonic--unknown.json",
     "heathers-the-musical-off-broadway-2025/theatrely--unknown.json",
-    "dolly-a-true-original-musical-regional-2025/knox-news--melonee-hurt.json"
+    "dolly-a-true-original-musical-regional-2025/knox-news--melonee-hurt.json",
+    "the-smile-of-her-off-west-end-2026/guardian-uk--arifa-akbar.json",
+    "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
   ],
   "failed": [
     "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
@@ -148,6 +151,53 @@
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
+    "loves-labours-lost-globe-west-end-2026/guardian--mark-fisher.json",
+    "loves-labours-lost-globe-west-end-2026/london-theatre--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--holly-williams.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--matt-trueman.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
+    "the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
+    "the-smile-of-her-off-west-end-2026/nottingham-confidential--unknown.json",
+    "the-smile-of-her-off-west-end-2026/thestage--dave-fargnoli.json",
+    "heathers-the-musical-off-west-end-2026/hollywood-reporter--david-rooney.json",
+    "heathers-the-musical-off-west-end-2026/nytimes--ben-brantley.json",
+    "heathers-the-musical-off-west-end-2026/vulture--jesse-green.json",
+    "heathers-the-musical-off-west-end-2026/abc-news--peter-santilli.json",
+    "heathers-the-musical-off-west-end-2026/guardian--giselle-au-nhien-nguyen.json",
+    "heathers-the-musical-off-west-end-2026/nypost--elisabeth-vincentelli.json",
+    "the-oresteia-west-end-2026/oxfordshire-guardian--unknown.json",
+    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
+    "heathers-the-musical-off-west-end-2026/nbcny--robert-kahn.json",
+    "heathers-the-musical-off-west-end-2026/thestage--holly-omahony.json",
+    "heathers-the-musical-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-oresteia-west-end-2026/british-theatre--unknown.json",
+    "the-oresteia-west-end-2026/the-recs--unknown.json",
+    "the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
+    "the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
+    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
+    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
+    "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/theupcoming--unknown.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+    "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
+    "jesus-christ-superstar-west-end-2026/newsday--linda-winer.json",
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
@@ -217,18 +267,25 @@
       "the-smile-of-her-off-west-end-2026/guardian-uk--unknown.json",
       "titanique-2026/nytg--gillian-russo.json",
       "burlesque-west-end-2026/theatreandtonic--unknown.json",
-      "heathers-the-musical-off-broadway-2025/theatrely--unknown.json"
+      "heathers-the-musical-off-broadway-2025/theatrely--unknown.json",
+      "the-smile-of-her-off-west-end-2026/guardian-uk--arifa-akbar.json"
     ],
     "amp": [],
-    "browserbase": [],
-    "directCookies": [],
+    "browserbase": [
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+    ],
+    "directCookies": [
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
       "dolly-a-true-original-musical-regional-2025/knox-news--melonee-hurt.json"
     ],
     "archiveToday": [],
     "archive": [
-      "shifters-off-broadway-2026/broadwayworld--unknown.json"
+      "shifters-off-broadway-2026/broadwayworld--unknown.json",
+      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
     ]
   },
   "failuresByOutlet": {},
