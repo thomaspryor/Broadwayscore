@@ -410,7 +410,11 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // Gated on outletId (via isRoundupPageAsReview), not URL alone, so a review
   // legitimately SOURCED from this page under a different outlet still writes —
   // same policy the rebuild-time gate already applies to WOS/Stage/LBO/WET.
-  if (isRoundupPageAsReview({ url: input.url, outletId })) {
+  // Skip when Guard E already flagged — since isRoundupUrl gained the
+  // /article/Review-Roundup- pattern (df046f73aaa), isRoundupPageAsReview
+  // also matches those URLs and was overwriting E's more specific reason
+  // (broke the Guard E unit test on main, 2026-07-19).
+  if (!fields.isRoundupArticle && isRoundupPageAsReview({ url: input.url, outletId })) {
     fields.isRoundupArticle = true;
     fields.roundupArticleReason = 'auto: URL matches BWW /reviews/ critics-aggregation page pattern';
   }
