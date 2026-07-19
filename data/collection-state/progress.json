@@ -1,22 +1,39 @@
 {
-  "processed": [],
+  "processed": [
+    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+  ],
   "failed": [
-    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
-    "dukes-off-broadway-2026/theatermania--unknown.json",
-    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
+    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
+    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
+    "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-19T06:23:31.050Z",
-  "lastProcessed": "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-  "log": []
+  "startTime": "2026-07-19T06:21:20.197Z",
+  "lastProcessed": "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+  "log": [
+    {
+      "t": "2026-07-19T06:23:30.444Z",
+      "event": "bb-session",
+      "session": "abbff6be",
+      "url": "https://www.thestage.co.uk/reviews/the-jonathan-larson-project-review-southwark-"
+    },
+    {
+      "t": "2026-07-19T06:23:31.205Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
