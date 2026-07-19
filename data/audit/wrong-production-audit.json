@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-07-18T22:35:08.113Z",
+  "timestamp": "2026-07-18T23:43:14.517Z",
   "stats": {
-    "totalReviews": 40217,
+    "totalReviews": 40219,
     "alreadyFlagged": 17603,
     "dateGuardCatches": 49,
-    "directorMismatch": 912,
+    "directorMismatch": 913,
     "tvFilmSignals": 1102,
     "londonSignals": 753,
     "offBroadwaySignals": 474,
@@ -11641,6 +11641,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-1997",
+      "file": "theater-pizzazz--samuel-l-leiter.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theaterpizzazz.com/into-the-woods-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
         }
       ]
     },
