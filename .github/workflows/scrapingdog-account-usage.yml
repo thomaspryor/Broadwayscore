@@ -4,6 +4,7 @@ name: Scrapingdog Account Usage
 # renewal). The key only exists as a repo secret, so local sessions dispatch
 # this to see live SD usage. Calls the account endpoint only — no scraping,
 # so the fetchPage() rule doesn't apply.
+# hygiene-notify-ok: on-demand diagnostic; the dispatching session reads the run output directly
 
 on:
   workflow_dispatch:
