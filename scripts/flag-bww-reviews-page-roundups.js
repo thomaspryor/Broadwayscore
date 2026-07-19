@@ -67,7 +67,7 @@ for (const d of showDirs) {
 }
 
 console.log(`Scanned ${scanned} review files across ${showDirs.length} show dirs.`);
-console.log(`Found ${toFlag.length} unflagged BWW /reviews/ aggregation page(s):\n`);
+console.log(`Found ${toFlag.length} unflagged BWW aggregation page(s) (/reviews/ or /article/Review-Roundup-):\n`);
 
 for (const item of toFlag) {
   console.log(`  ${item.showId}/${item.file}`);
@@ -84,9 +84,12 @@ let written = 0;
 for (const item of toFlag) {
   // safeWriteReview re-reads the file fresh at write time and merges — protects
   // against a concurrent CI commit touching this file between scan and apply.
+  const isRoundupArticleUrl = /article\/review-roundup-/i.test(item.url);
   safeWriteReview(item.filePath, {
     isRoundupArticle: true,
-    roundupArticleReason: 'auto: sweep — URL matches BWW /reviews/ critics-aggregation page pattern (Notion 39d637c5-416f-81eb)',
+    roundupArticleReason: isRoundupArticleUrl
+      ? 'auto: sweep — URL is a BWW /article/Review-Roundup- staff compilation of other outlets’ reviews (2026-07-19 Oresteia leak)'
+      : 'auto: sweep — URL matches BWW /reviews/ critics-aggregation page pattern (Notion 39d637c5-416f-81eb)',
   });
   written++;
 }
