@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-19T02:08:14.026Z",
+  "timestamp": "2026-07-19T04:07:40.175Z",
   "stats": {
-    "totalReviews": 40219,
-    "alreadyFlagged": 17609,
+    "totalReviews": 40218,
+    "alreadyFlagged": 17610,
     "dateGuardCatches": 49,
     "directorMismatch": 914,
     "tvFilmSignals": 1102,
-    "londonSignals": 753,
+    "londonSignals": 754,
     "offBroadwaySignals": 474,
     "yearMismatch": 85,
-    "noPublishDate": 3631
+    "noPublishDate": 3629
   },
   "findings": [
     {
@@ -31066,6 +31066,19 @@
       "score": 18,
       "publishDate": "2017-04-23T18:50:01-04:00",
       "url": "https://www.vulture.com/2017/04/theater-review-a-wonka-thats-anything-but-sweet.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "chat-noir-off-west-end-2026",
+      "file": "telegraph--unknown.json",
+      "publishDate": "2026-06-05",
+      "url": "https://www.telegraph.co.uk/theatre/tickets/london/chat-noir/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
