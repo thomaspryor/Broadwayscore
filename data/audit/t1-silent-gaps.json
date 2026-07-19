@@ -1,20 +1,6 @@
 {
-  "generatedAt": "2026-07-19T08:49:28.452Z",
+  "generatedAt": "2026-07-19T09:40:32.523Z",
   "windowDays": 45,
-  "showsScanned": 54,
-  "gaps": [
-    {
-      "showId": "a-walk-on-the-moon-off-broadway-2026",
-      "title": "A Walk on the Moon",
-      "openingDate": "2026-06-29",
-      "file": "talkinbroadway--marc-miller.json",
-      "outletId": "talkinbroadway",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=P9RfwACvik9Zfqw.O7DDE9j3rRZk9ncltc9G7MhciYw-1782825677-1.0.1.1-MD7q1kApy1e__Spp3obZOq6UrtjHCsxK0tIeHAyRhY4",
-      "recovery": null,
-      "recoveryCount": 3,
-      "fix": "node scripts/ingest-review-from-url.js --show=a-walk-on-the-moon-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=P9RfwACvik9Zfqw.O7DDE9j3rRZk9ncltc9G7MhciYw-1782825677-1.0.1.1-MD7q1kApy1e__Spp3obZOq6UrtjHCsxK0tIeHAyRhY4 --outlet=talkinbroadway --critic=\"Marc Miller\"   # run LOCALLY (cookie jar lives on the Mac)"
-    }
-  ]
+  "showsScanned": 55,
+  "gaps": []
 }
