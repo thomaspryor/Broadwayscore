@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-07-18T07:32:51.964Z",
+  "lastChecked": "2026-07-19T07:43:39.577Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.2% scored (18929/19269)"
+      "message": "98.3% scored (18949/19273)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "warn",
-      "message": "6 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+      "message": "5 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
     }
   ]
 }
