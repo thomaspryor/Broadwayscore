@@ -7,6 +7,7 @@ import { useClickOutside } from '@/hooks/useClickOutside';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { useIsOperaDomain } from '@/hooks/useIsOperaDomain';
 import { isOperaShowPath } from '@/lib/opera-show-ids';
+import { featureFlags } from '@/config/feature-flags';
 
 interface MarketStats {
   nyc: { openShows: number; theaters: number };
@@ -34,7 +35,8 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // Treat opera show pages as NOT off-broadway for the pill label, even though
   // the URL-derived marketId is 'off-broadway' (shared routing convention).
   const isOffBroadway = marketId === 'off-broadway' && !isOperaShowPage;
-  // Regional (non-NYC US) shows: distinct pill label, no dropdown entry yet (hub deferred).
+  // Regional (non-NYC US) shows: distinct pill label; dropdown links to the
+  // pre-Broadway browse page (no dedicated hub yet).
   const isRegional = marketId === 'regional';
   // Don't apply opera domain branding when user has explicitly navigated to
   // another market (off-broadway, west-end, off-west-end, regional). The opera
@@ -164,6 +166,28 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
               </svg>
             )}
           </Link>
+          {featureFlags.regional && (
+            <Link
+              href="/browse/pre-broadway-out-of-town-shows"
+              className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
+                isRegional ? 'bg-emerald-500/[0.10]' : 'hover:bg-white/[0.04]'
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              <div className="flex items-center gap-2">
+                <span className={`w-1.5 h-1.5 rounded-full ${isRegional ? 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.5)]' : 'bg-emerald-500/60'}`} />
+                <div>
+                  <div className={`text-sm font-semibold ${isRegional ? 'text-emerald-200' : 'text-white'}`}>Pre-Broadway</div>
+                  <div className="text-[11px] text-gray-500">Out-of-town tryouts · US regional</div>
+                </div>
+              </div>
+              {isRegional && (
+                <svg className="w-4 h-4 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </Link>
+          )}
           <div className="h-px bg-white/[0.06] mx-2 my-1" />
           <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-500">London</div>
           <Link
