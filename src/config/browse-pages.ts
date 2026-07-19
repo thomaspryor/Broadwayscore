@@ -41,7 +41,9 @@ export interface BrowsePageConfig {
   /** Optional function to group shows into sections with H2 headings.
    *  Returns a label for each show — shows with the same label are grouped together.
    *  Only applies when using the default/custom sort (client re-sorts lose groupings). */
-  sectionGroup?: (show: ComputedShow) => string;
+  // getById lets a section label depend on a linked show (e.g. a tryout's
+  // Broadway transfer status) without importing data modules into this config.
+  sectionGroup?: (show: ComputedShow, getById?: (id: string) => ComputedShow | undefined) => string;
 }
 
 // Helper to parse runtime string to minutes
@@ -272,9 +274,15 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     }),
     source: 'regional',
     hideRanks: true, // catalog of tryouts, not a ranking — no left-hand numbers
-    sectionGroup: (show) => {
+    sectionGroup: (show, getById) => {
       if (show.status === 'open' || show.status === 'previews') return 'On Stage Now';
-      if (show.transferredTo) return 'Transferred to Broadway';
+      if (show.transferredTo) {
+        // Tense depends on the Broadway production: announced/upcoming = the
+        // transfer hasn't happened yet (e.g. Dolly, Broadway previews Dec 2026).
+        const bway = getById?.(show.transferredTo);
+        const onBroadwayYet = bway && (bway.status === 'previews' || bway.status === 'open' || bway.status === 'closed');
+        return onBroadwayYet ? 'Transferred to Broadway' : 'Transferring to Broadway';
+      }
       return 'Recent Tryouts';
     },
     relatedPages: ['upcoming-broadway-shows', 'new-broadway-shows-2025', 'best-broadway-show-right-now'],
