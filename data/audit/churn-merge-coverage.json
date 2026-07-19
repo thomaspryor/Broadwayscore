@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-19T06:38:20.602Z",
+    "generatedAt": "2026-07-19T07:20:20.782Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,8 +10,8 @@
     "minChurn": 30,
     "flaggedCount": 5,
     "exemptCount": 14,
-    "coveredCount": 34,
-    "highChurnTracked": 53
+    "coveredCount": 33,
+    "highChurnTracked": 52
   },
   "flagged": [
     {
@@ -20,15 +20,15 @@
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 97
+      "churn": 99
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 93
+      "churn": 95
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 93
+      "churn": 95
     },
     {
       "path": "data/audit/we-gate-proving.json",
@@ -46,19 +46,19 @@
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 99
+      "churn": 98
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 99
+      "churn": 98
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 99
+      "churn": 98
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 87
+      "churn": 86
     },
     {
       "path": "public/opening-night-status.json",
@@ -78,35 +78,35 @@
     },
     {
       "path": "data/show-score-urls.json",
-      "churn": 37
-    },
-    {
-      "path": "public/data/shows/the-oresteia-west-end-2026.json",
-      "churn": 35
+      "churn": 38
     },
     {
       "path": "public/data/shows/heathers-the-musical-off-west-end-2026.json",
-      "churn": 33
+      "churn": 34
+    },
+    {
+      "path": "public/data/shows/the-oresteia-west-end-2026.json",
+      "churn": 34
     },
     {
       "path": "public/data/shows/the-potluck-off-broadway-2026.json",
-      "churn": 33
+      "churn": 34
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1068,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/progress.json",
       "churn": 1045,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/collection-state/progress.json",
+      "churn": 1023,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 700,
+      "churn": 701,
       "mergeAttr": "ours"
     },
     {
@@ -126,7 +126,7 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 161,
+      "churn": 160,
       "mergeAttr": "ours"
     },
     {
@@ -136,7 +136,7 @@
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 113,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
@@ -156,7 +156,7 @@
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 99,
+      "churn": 98,
       "mergeAttr": "ours"
     },
     {
@@ -176,22 +176,22 @@
     },
     {
       "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 68,
+      "churn": 67,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/show-review-gap.json",
-      "churn": 65,
+      "churn": 64,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 65,
+      "churn": 64,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 58,
+      "churn": 59,
       "mergeAttr": "ours"
     },
     {
@@ -241,26 +241,21 @@
     },
     {
       "path": "data/audit/poller-backoff/hershey-felder-the-piano-and-me-off-broadway-2026.json",
-      "churn": 36,
+      "churn": 35,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/dukes-off-broadway-2026.json",
-      "churn": 31,
+      "churn": 30,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/sukkot-off-broadway-2026.json",
-      "churn": 31,
+      "churn": 30,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026.json",
-      "churn": 31,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-potluck-off-broadway-2026.json",
       "churn": 30,
       "mergeAttr": "ours"
     }
