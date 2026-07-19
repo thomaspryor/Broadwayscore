@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-19T20:47:32.065Z",
+  "updatedAt": "2026-07-19T21:00:14.267Z",
   "processed": 10,
-  "failed": 259,
-  "successRate": "3.7%",
+  "failed": 287,
+  "successRate": "3.4%",
   "tierBreakdown": {
     "playwright": 6,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 0,
+    "archiveToday": 6,
     "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-07-19T17:23:15.324Z",
@@ -46,6 +46,29 @@
     },
     {
       "t": "2026-07-19T19:47:42.838Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-19T20:53:29.466Z",
+      "event": "bb-session",
+      "session": "54c864fd",
+      "url": "https://www.facebook.com/bridgetheatrelondon/posts/simon-stones-the-oresteia-aft"
+    },
+    {
+      "t": "2026-07-19T20:55:23.313Z",
+      "event": "bb-session",
+      "session": "1bebb764",
+      "url": "https://therecs.co.uk/the-oresteia-bridge-theatre/"
+    },
+    {
+      "t": "2026-07-19T20:58:15.270Z",
+      "event": "bb-session",
+      "session": "d941b989",
+      "url": "https://www.thetimes.com/uk/scotland/article/edinburgh-theatre-review-oresteia-t"
+    },
+    {
+      "t": "2026-07-19T20:58:15.724Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
