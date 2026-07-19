@@ -16,9 +16,14 @@
  *
  * Usage:
  *   node scripts/recover-serp-text.js --domain=newyorker.com [options]
+ *   node scripts/recover-serp-text.js --outlet=ap [options]
  *
  * Options:
- *   --domain=X       Required. Outlet domain to target (newyorker.com, apnews.com)
+ *   --domain=X       Outlet domain to target (newyorker.com). Matches data.url's hostname.
+ *   --outlet=X       Outlet ID to target (ap). Matches data.outletId directly — use for wire
+ *                    services syndicated across many domains, where no single --domain covers
+ *                    them (AP reviews live on apnews.com, hosted.ap.org, huffpost.com, local
+ *                    papers, etc). One of --domain/--outlet is required.
  *   --limit=N        Max candidates to process (default: 20)
  *   --dry-run        Discovery + fetch only, no file writes
  *   --show=SLUG      Only process one show
@@ -44,6 +49,11 @@ const getArg = (name) => {
 
 const CONFIG = {
   domain: getArg('domain'),
+  // --outlet matches data.outletId directly instead of the URL's hostname.
+  // Needed for wire-service outlets like AP, whose reviews live on dozens of
+  // syndication domains (apnews.com, hosted.ap.org, huffpost.com,
+  // washingtonpost.com, local papers, ...) — no single --domain covers them.
+  outlet: getArg('outlet'),
   limit: parseInt(getArg('limit') || '20', 10),
   dryRun: args.includes('--dry-run'),
   showFilter: getArg('show') || null,
@@ -56,8 +66,8 @@ const CONFIG = {
   brightDataKey: process.env.BRIGHTDATA_TOKEN || '',
 };
 
-if (!CONFIG.domain) {
-  console.error('Usage: node scripts/recover-serp-text.js --domain=newyorker.com [--limit=N] [--dry-run] [--show=SLUG]');
+if (!CONFIG.domain && !CONFIG.outlet) {
+  console.error('Usage: node scripts/recover-serp-text.js (--domain=newyorker.com | --outlet=ap) [--limit=N] [--dry-run] [--show=SLUG]');
   process.exit(1);
 }
 
@@ -106,9 +116,13 @@ function loadCandidates() {
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
 
       if (!data.url) { skippedNoUrl++; continue; }
-      let domain;
-      try { domain = new URL(data.url).hostname.replace(/^www\./, ''); } catch { continue; }
-      if (domain !== CONFIG.domain) { skippedWrongDomain++; continue; }
+      if (CONFIG.outlet) {
+        if ((data.outletId || '') !== CONFIG.outlet) { skippedWrongDomain++; continue; }
+      } else {
+        let domain;
+        try { domain = new URL(data.url).hostname.replace(/^www\./, ''); } catch { continue; }
+        if (domain !== CONFIG.domain) { skippedWrongDomain++; continue; }
+      }
 
       if (data.contentTier === 'complete') { skippedComplete++; continue; }
       if (!thinTiers.has(data.contentTier)) continue;
@@ -134,7 +148,7 @@ function loadCandidates() {
 
   console.log(`Scanned: ${scanned}`);
   console.log(`Skipped (complete): ${skippedComplete}, (flagged): ${skippedFlagged}, (no url): ${skippedNoUrl}, (wrong domain): ${skippedWrongDomain}, (exhausted): ${skippedExhausted}`);
-  console.log(`Candidates for ${CONFIG.domain}: ${candidates.length}`);
+  console.log(`Candidates for ${CONFIG.outlet ? `outlet=${CONFIG.outlet}` : CONFIG.domain}: ${candidates.length}`);
 
   return candidates.slice(0, CONFIG.limit);
 }
@@ -258,7 +272,7 @@ async function processRecovered(candidate, text, html, newUrl, method) {
 async function main() {
   console.log('SERP Text Recovery');
   console.log('===================');
-  console.log(`  Domain: ${CONFIG.domain}`);
+  console.log(`  ${CONFIG.outlet ? `Outlet: ${CONFIG.outlet}` : `Domain: ${CONFIG.domain}`}`);
   console.log(`  Limit: ${CONFIG.limit}`);
   console.log(`  Dry run: ${CONFIG.dryRun}\n`);
 

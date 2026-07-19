@@ -14,7 +14,7 @@ Global rules apply (worktree-first, branch check, commit frequently). Project ad
 
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
-- **Cron deploys main HEAD every 5 min.** After a normal push the deploy lands in ~5-10 min — do NOT `gh workflow run "Deploy to Vercel"` (races the cron, re-triggers the cancel-cascade). Manual dispatch is "ship NOW" only (opening night, broken page).
+- **5-min cron + content-aware gate.** Each tick deploys only when site-relevant paths changed vs the live Vercel deploy, or the live deploy is >6h old (`scripts/lib/should-deploy-gate.js`; kill switch: repo var `DEPLOY_GATE_DISABLED=true`). A site-relevant push lands in ~5-10 min — do NOT `gh workflow run "Deploy to Vercel"` (races the cron, re-triggers the cancel-cascade). Manual dispatch is "ship NOW" only (opening night, broken page). Private core-data-only changes ride the next rebuild or the 6h backstop.
 - **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when that commit is live on prod (`--wait` to poll; deploys lag 20-30 min in bursts, last one wins). A cancel-cascade run reports `success` while its Vercel deploy is CANCELED — the READY prod deployment is the only proof (2026-06-26 incident).
 - **CI monitoring:** never `gh run watch` (polls every 3s, zeroed the quota twice). Use `scripts/lib/wait-for-run.sh <run-id> [min]`; prefer outcome checks (prod URL, check-prod-deploy.js, raw.githubusercontent.com, data-repo `git log`) — all rate-limit-immune. On 403: `gh api rate_limit` for the reset, don't loop gh. Detail: `memory/feedback_github_polling_rate_limit.md`.
 

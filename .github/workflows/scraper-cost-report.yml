@@ -33,7 +33,7 @@ jobs:
           WORKFLOW_ROWS=""
           TOTAL_RUNS=0
           TOTAL_FAILED=0
-          for wf in "Collect Review Texts" "Gather Review Data" "Opening Night Poller" "Opening Night Reviews" "Enrich IBDB Dates" "Bulk Show Score" "Auto-Maintain Show Data" "Scrape BWW Reviews" "Update Commercial" "Fix Platform Ticket Links"; do
+          for wf in "Collect Review Texts" "Gather Review Data" "Opening Night Poller" "Opening Night Reviews" "Enrich IBDB Dates" "Bulk Show Score" "Auto-Maintain Show Data" "Scrape BWW Reviews" "Update Commercial Data" "Fix Platform Ticket Links"; do
             RUNS=$(gh run list --workflow="$wf" --created=">$SINCE" --json conclusion -q 'length' 2>/dev/null || echo "0")
             SUCCESS=$(gh run list --workflow="$wf" --created=">$SINCE" --status=completed --json conclusion -q '[.[] | select(.conclusion=="success")] | length' 2>/dev/null || echo "0")
             FAILED=$((RUNS - SUCCESS))
