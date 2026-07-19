@@ -821,6 +821,8 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
                 className="block w-full text-left text-xs text-gray-300 hover:text-white hover:bg-white/5 rounded px-1.5 py-1"
               >
                 {candidate.title}{candidate.venue ? ` — ${candidate.venue}` : ''}{candidate.openingDate ? ` (${candidate.openingDate.slice(0, 4)})` : ''}
+                {(candidate.ratingsCount ?? 0) > 0 && <span className="text-gray-500"> · {candidate.ratingsCount} ratings</span>}
+                {candidate.city && <span className="text-gray-500"> · {candidate.city}</span>}
               </button>
             ))}
           </div>

@@ -262,6 +262,13 @@ function main() {
       delete pending.shows[showId];
     }
     if (Object.keys(pending.shows).length > 0) {
+      // Stamp the deletion (/what-else follow-up, 2026-07-19): mergePendingReview
+      // in push-with-retry.sh's conflict path uses this field as a logical
+      // clock to decide whether a slug missing from "remote" was deleted
+      // (respect it) or never seen yet (keep a concurrent producer's copy).
+      // Without this stamp, an applied show could be silently resurrected by
+      // a stale concurrent write on the next push conflict.
+      pending.lastUpdated = new Date().toISOString();
       fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
       console.log(`📋 ${Object.keys(pending.shows).length} shows remaining in pending file`);
     } else {
