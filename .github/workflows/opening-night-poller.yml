@@ -488,14 +488,10 @@ jobs:
           fi
         timeout-minutes: 5
 
-      - name: Snapshot core data for private repo push (fast_path)
-        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
-        run: |
-          for f in reviews.json shows.json critic-consensus.json critic-registry.json outlet-registry.json; do
-            if [ -f "data/$f" ]; then
-              cp -f "data/$f" /tmp/core-data-snapshot/
-            fi
-          done
+      # NOTE: snapshot-overwrite step removed 2026-07-19. /tmp/core-data-snapshot/ is
+      # the checkout-time baseline push-core-data diffs against (2beb6617c58);
+      # overwriting it with rebuilt files made them read as "untouched" and
+      # silently skipped from the private-repo push.
 
       - name: Update critic registry (fast_path)
         if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'

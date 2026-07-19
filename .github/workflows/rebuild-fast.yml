@@ -129,15 +129,10 @@ jobs:
 
           node scripts/rebuild-all-reviews.js $FORCE_FLAG
 
-      - name: Snapshot rebuilt core data for private repo push
-        if: always()
-        run: |
-          for f in reviews.json shows.json critic-consensus.json critic-registry.json outlet-registry.json; do
-            if [ -f "data/$f" ]; then
-              cp -f "data/$f" /tmp/core-data-snapshot/
-            fi
-          done
-          echo "Updated core-data snapshot with rebuilt files"
+      # NOTE: snapshot-overwrite step removed 2026-07-19. /tmp/core-data-snapshot/ is
+      # the checkout-time baseline push-core-data diffs against (2beb6617c58);
+      # overwriting it with rebuilt files made them read as "untouched" and
+      # silently skipped from the private-repo push.
 
       - name: Update critic registry
         run: node scripts/audit-critic-outlets.js
