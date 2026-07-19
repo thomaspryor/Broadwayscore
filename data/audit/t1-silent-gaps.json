@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-19T16:19:07.666Z",
+  "generatedAt": "2026-07-19T17:19:25.875Z",
   "windowDays": 45,
   "showsScanned": 55,
   "gaps": [
@@ -30,7 +30,7 @@
         "ok": false,
         "reason": "Article extraction returned 129 chars — pattern may be missing for this outlet. Add an entry to scri"
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=shifters-off-broadway-2026 --url=https://playbill.com/article/what-are-the-reviews-for-shifters-off-broadway --outlet=playbill   # run LOCALLY (cookie jar lives on the Mac)"
     }
   ]
