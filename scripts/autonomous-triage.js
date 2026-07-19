@@ -29,6 +29,7 @@ const { execFileSync } = require('child_process');
 const { triageCard, decide, orderQueue, isSafeCheckCommand, priorityRank } = require('./lib/autonomous-triage-core.js');
 const { classifyDataCard } = require('./lib/autonomous-eligibility.js');
 const { estimateUSD } = require('./lib/autonomous-budget.js');
+const ledgerLib = require('./lib/autonomous-ledger.js');
 const ledger = require('./lib/autonomous-ledger.js');
 
 const REPO = path.join(__dirname, '..');
@@ -335,14 +336,41 @@ async function main() {
 // free-text guess.
 const CLAIMED_IN_FLIGHT_RE = /^claimed in-flight/;
 
-function buildDataPlan(entries) {
+// Empirical size floor: if a card's own PAST attempt died on "exceeded
+// per-card cap", the LLM's size estimate is proven too small — measured spend
+// beats a re-derived guess (2026-07-16: review-write-guard implemented fine in
+// 5.4min but was discarded at $2.22 > $1.50 S cap; the next triage re-estimated
+// S again, queuing the identical failure). Bump one step per observed cap-fail:
+// S→M; M→L parks it for the owner (L is incremental/disabled) rather than
+// burning a third attempt that the $3.00 cap already proved too small.
+const CAP_EXCEEDED_RE = /exceeded per-card cap/;
+const SIZE_BUMP = { S: 'M', M: 'L' };
+function capExceededCardIds(entries = null) {
+  // readEntries returns { entries, corrupt }, not a bare array.
+  const rows = entries || (() => { try { return ledgerLib.readEntries().entries; } catch { return []; } })();
+  const ids = new Set();
+  for (const r of rows) {
+    if (r.event === 'card-fail' && r.cardId && CAP_EXCEEDED_RE.test(String(r.note || ''))) ids.add(r.cardId);
+  }
+  return ids;
+}
+
+function buildDataPlan(entries, capExceeded = capExceededCardIds()) {
   const items = [];
   for (const e of entries) {
     if (e.decision !== 'skip' || !e.card || !e.card.id || e.transient) continue;
     if (e.preFilter && CLAIMED_IN_FLIGHT_RE.test(e.preFilter.reason || '')) continue;
+    // Auto-stamped cards (failed/attempted/needs-approval) are unattemptable:
+    // attemptDataCard refuses any card with `auto` set, so planning one wedges
+    // a slot into a nightly "state moved underneath us" skip. 2026-07-17..19:
+    // two auto=failed cards + an L held all 3 slots — three nights, zero
+    // attempts. failed stays failed until the OWNER clears it (morning-email
+    // triage); it just must not occupy a plan slot meanwhile.
+    if (e.card.auto) continue;
     const cls = classifyDataCard(e.card);
     if (!cls) continue;
-    const size = e.triage && e.triage.size ? e.triage.size : 'M';
+    let size = e.triage && e.triage.size ? e.triage.size : 'M';
+    if (capExceeded.has(e.card.id) && SIZE_BUMP[size]) size = SIZE_BUMP[size];
     items.push({ id: e.card.id, name: e.card.name, priority: e.card.priority, size, class: cls });
   }
   return items.sort((a, b) =>
