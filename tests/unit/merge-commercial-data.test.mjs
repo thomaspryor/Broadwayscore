@@ -127,6 +127,14 @@ describe('mergePendingReview', () => {
     const { merged } = mergePendingReview(ours, remote);
     assert.equal(merged.shows.giant.confidence, 'high');
   });
+
+  it('keeps ours on an exact timestamp tie (equality does not prove remote saw it)', () => {
+    const ours = { shows: { 'giant': { confidence: 'high', researchedAt: '2026-07-19T09:00:00.000Z' } } };
+    const remote = { shows: {}, lastUpdated: '2026-07-19T09:00:00.000Z' };
+    const { merged, stats } = mergePendingReview(ours, remote);
+    assert.equal(merged.shows.giant.confidence, 'high', 'a tie must not be treated as proof of deletion');
+    assert.equal(stats.resolvedAsDeletion, 0);
+  });
 });
 
 describe('mergeResearchQueue', () => {

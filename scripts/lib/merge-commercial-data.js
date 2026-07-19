@@ -143,9 +143,13 @@ function mergePendingReview(ours, remote) {
       // file-level lastUpdated as a logical clock: if remote's last write
       // happened AFTER this entry existed, remote has definitely seen (and
       // removed) it.
+      // Strict '<', not '<=' (ship-check finding, 2026-07-19): equal
+      // timestamps don't prove remote saw this entry — could be an
+      // unrelated write stamped in the same millisecond. On a tie, default
+      // to keeping ours; only delete when remote is UNAMBIGUOUSLY newer.
       const entryTime = entryDate(o, PENDING_ENTRY_DATE_FIELDS);
       const remoteFileTime = entryDate(remote, ['lastUpdated']);
-      if (remote.lastUpdated && entryTime > 0 && entryTime <= remoteFileTime) {
+      if (remote.lastUpdated && entryTime > 0 && entryTime < remoteFileTime) {
         delete merged.shows[slug];
         resolvedAsDeletion++;
       }
