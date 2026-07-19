@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-19T17:07:27.729Z",
+  "timestamp": "2026-07-19T17:56:05.510Z",
   "stats": {
-    "totalReviews": 40343,
-    "alreadyFlagged": 17645,
+    "totalReviews": 40342,
+    "alreadyFlagged": 17642,
     "dateGuardCatches": 49,
     "directorMismatch": 915,
-    "tvFilmSignals": 1103,
+    "tvFilmSignals": 1104,
     "londonSignals": 755,
     "offBroadwaySignals": 475,
     "yearMismatch": 85,
@@ -19563,6 +19563,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "shifters-off-broadway-2026",
+      "file": "broadwayworld--aa-cristi.json",
+      "publishDate": "2026-07-15",
+      "url": "https://www.broadwayworld.com/off-broadway/article/Review-Roundup-SHIFTERSMakes-North-American-Premiere-at-Cherry-Lane-Theatre-20260715",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
