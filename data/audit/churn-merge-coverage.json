@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-19T17:16:51.580Z",
+    "generatedAt": "2026-07-19T17:59:55.433Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,19 +16,19 @@
   "flagged": [
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 124
+      "churn": 125
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 109
+      "churn": 110
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 107
+      "churn": 108
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 106
+      "churn": 107
     },
     {
       "path": "data/audit/we-gate-proving.json",
@@ -36,13 +36,13 @@
     },
     {
       "path": "data/audit/validation/collection-report-2026-07-19.json",
-      "churn": 41
+      "churn": 42
     }
   ],
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 123
+      "churn": 124
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
@@ -62,7 +62,7 @@
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 96
+      "churn": 95
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
@@ -90,28 +90,28 @@
     },
     {
       "path": "public/data/shows/the-oresteia-west-end-2026.json",
-      "churn": 38
+      "churn": 39
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 991,
+      "churn": 994,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 973,
+      "churn": 976,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 707,
+      "churn": 706,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 671,
+      "churn": 672,
       "mergeAttr": "union"
     },
     {
@@ -126,7 +126,7 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 170,
+      "churn": 168,
       "mergeAttr": "ours"
     },
     {
@@ -136,7 +136,7 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 123,
+      "churn": 124,
       "mergeAttr": "ours"
     },
     {
@@ -161,17 +161,17 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 96,
+      "churn": 95,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 96,
+      "churn": 95,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 96,
+      "churn": 95,
       "mergeAttr": "ours"
     },
     {
@@ -191,7 +191,7 @@
     },
     {
       "path": "data/audit/drift-state.json",
-      "churn": 56,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
@@ -201,7 +201,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 46,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
