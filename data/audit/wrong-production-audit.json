@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-18T23:43:14.517Z",
+  "timestamp": "2026-07-19T01:19:17.071Z",
   "stats": {
     "totalReviews": 40219,
-    "alreadyFlagged": 17603,
+    "alreadyFlagged": 17609,
     "dateGuardCatches": 49,
-    "directorMismatch": 913,
+    "directorMismatch": 914,
     "tvFilmSignals": 1102,
     "londonSignals": 753,
     "offBroadwaySignals": 474,
     "yearMismatch": 85,
-    "noPublishDate": 3640
+    "noPublishDate": 3633
   },
   "findings": [
     {
@@ -11647,7 +11647,7 @@
     {
       "showId": "into-the-woods-1997",
       "file": "theater-pizzazz--samuel-l-leiter.json",
-      "score": null,
+      "score": 85,
       "publishDate": null,
       "url": "https://www.theaterpizzazz.com/into-the-woods-2/",
       "findings": [
@@ -27969,6 +27969,20 @@
       "score": 80,
       "publishDate": null,
       "url": "https://variety.com/2012/legit/reviews/who-s-afraid-of-virginia-woolf-2-1117948558/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "village-voice--michael-musto.json",
+      "score": null,
+      "publishDate": "2012-10-19",
+      "url": "https://www.villagevoice.com/whos-afraid-of-virginia-woolf-is-back-my-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
