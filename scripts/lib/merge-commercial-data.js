@@ -29,6 +29,20 @@
 //     fallback) is newer. Manual-protection fields are not applicable here —
 //     pending entries are throwaway claims awaiting apply.
 //   * Union of slugs is kept.
+//
+// Merge rules — commercial-research-queue.json:
+//   * shape: { shows: [slug, ...], triggers: { [slug]: reason }, updatedAt }
+//   * Written by 5 different cron workflows (commercial-weekly, commercial-
+//     friday, update-commercial, scrape-waltz-costs, update-show-status) —
+//     previously NOT in this file's exemption list, so it fell to the
+//     generic "accept remote" case in push-with-retry.sh and silently
+//     dropped local queue additions on conflict.
+//   * `shows` is a deduped union of both sides' arrays (order: ours first,
+//     then remote-only additions appended).
+//   * `triggers` is a shallow merge; on key collision, keep whichever side's
+//     entry belongs to the union decision for that slug (both sides usually
+//     agree on the reason for the same slug — this is a rare edge case).
+//   * `updatedAt` becomes the newer of the two timestamps.
 
 const HUMAN_REVIEWED_COMMERCIAL_FIELDS = [
   'humanReviewedDesignation',
@@ -125,8 +139,36 @@ function mergePendingReview(ours, remote) {
   return { merged, stats: { added, totalSlugs: allSlugs.size } };
 }
 
+function mergeResearchQueue(ours, remote) {
+  ours = ours || { shows: [], triggers: {} };
+  remote = remote || { shows: [], triggers: {} };
+  const oursShows = Array.isArray(ours.shows) ? ours.shows : [];
+  const remoteShows = Array.isArray(remote.shows) ? remote.shows : [];
+
+  const seen = new Set(oursShows);
+  const mergedShows = [...oursShows];
+  let added = 0;
+  for (const slug of remoteShows) {
+    if (!seen.has(slug)) {
+      mergedShows.push(slug);
+      seen.add(slug);
+      added++;
+    }
+  }
+
+  const merged = { ...ours };
+  merged.shows = mergedShows;
+  merged.triggers = { ...(remote.triggers || {}), ...(ours.triggers || {}) };
+
+  const newer = pickNewer(remote, ours, ['updatedAt']);
+  if (newer?.updatedAt) merged.updatedAt = newer.updatedAt;
+
+  return { merged, stats: { added, totalShows: mergedShows.length } };
+}
+
 module.exports = {
   HUMAN_REVIEWED_COMMERCIAL_FIELDS,
   mergeCommercialJson,
   mergePendingReview,
+  mergeResearchQueue,
 };

@@ -9,6 +9,7 @@ const require = createRequire(import.meta.url);
 const {
   mergeCommercialJson,
   mergePendingReview,
+  mergeResearchQueue,
 } = require('../../scripts/lib/merge-commercial-data');
 
 describe('mergeCommercialJson', () => {
@@ -97,5 +98,44 @@ describe('mergePendingReview', () => {
     const remote = { shows: { 'giant': { confidence: 'high', detectedAt: '2026-05-24T00:00:00.000Z' } } };
     const { merged } = mergePendingReview(ours, remote);
     assert.equal(merged.shows.giant.confidence, 'high');
+  });
+});
+
+describe('mergeResearchQueue', () => {
+  it('unions slugs from both sides with no duplicates', () => {
+    const ours = { shows: ['giant', 'ragtime'], triggers: { giant: 'closing' } };
+    const remote = { shows: ['ragtime', 'hairspray'], triggers: { hairspray: 'pre-opening' } };
+    const { merged, stats } = mergeResearchQueue(ours, remote);
+    assert.deepEqual(merged.shows, ['giant', 'ragtime', 'hairspray']);
+    assert.equal(stats.added, 1, 'only hairspray is a genuinely new slug');
+  });
+
+  it('does not silently drop local-only slugs (the bug this fixes)', () => {
+    // Simulates the exact regression: local run added a slug that the remote
+    // side never saw. The old "accept remote" behavior would have dropped it.
+    const ours = { shows: ['locally-added-slug'], triggers: {} };
+    const remote = { shows: [], triggers: {} };
+    const { merged } = mergeResearchQueue(ours, remote);
+    assert.ok(merged.shows.includes('locally-added-slug'));
+  });
+
+  it('merges triggers from both sides', () => {
+    const ours = { shows: ['a'], triggers: { a: 'closing' } };
+    const remote = { shows: ['b'], triggers: { b: 'pre-opening' } };
+    const { merged } = mergeResearchQueue(ours, remote);
+    assert.equal(merged.triggers.a, 'closing');
+    assert.equal(merged.triggers.b, 'pre-opening');
+  });
+
+  it('picks the newer updatedAt', () => {
+    const ours = { shows: [], triggers: {}, updatedAt: '2026-07-14T09:00:00.000Z' };
+    const remote = { shows: [], triggers: {}, updatedAt: '2026-07-15T09:36:30.155Z' };
+    const { merged } = mergeResearchQueue(ours, remote);
+    assert.equal(merged.updatedAt, '2026-07-15T09:36:30.155Z');
+  });
+
+  it('handles null/empty inputs gracefully', () => {
+    assert.deepEqual(mergeResearchQueue(null, null).merged.shows, []);
+    assert.deepEqual(mergeResearchQueue({}, {}).merged.shows, []);
   });
 });
