@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-19T21:47:30.728Z",
+  "timestamp": "2026-07-19T21:55:55.981Z",
   "stats": {
-    "totalReviews": 40343,
-    "alreadyFlagged": 17645,
+    "totalReviews": 40341,
+    "alreadyFlagged": 17648,
     "dateGuardCatches": 49,
-    "directorMismatch": 915,
+    "directorMismatch": 914,
     "tvFilmSignals": 1104,
     "londonSignals": 754,
     "offBroadwaySignals": 475,
     "yearMismatch": 85,
-    "noPublishDate": 3629
+    "noPublishDate": 3624
   },
   "findings": [
     {
@@ -13143,20 +13143,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 90,
-      "publishDate": "2026-03-27",
-      "url": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
         }
       ]
     },
