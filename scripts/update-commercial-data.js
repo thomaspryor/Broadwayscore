@@ -2226,7 +2226,7 @@ function buildValidationSources(gathered) {
  * @param {Object[]} allSources - Sources for validation
  * @returns {Object[]} Validated changes with validatedConfidence
  */
-function validateProposedChanges(proposedChanges, allSources) {
+function validateProposedChanges(proposedChanges, allSources, opts = {}) {
   if (!sourceValidator || SKIP_VALIDATION) {
     console.log('  Skipping validation (module not available or --skip-validation flag)');
     return proposedChanges.map(c => ({ ...c, validatedConfidence: c.confidence }));
@@ -2248,18 +2248,37 @@ function validateProposedChanges(proposedChanges, allSources) {
     };
 
     const result = sourceValidator.validateChange(changeForValidator, allSources);
+    let validatedConfidence = result.validatedConfidence;
+    let validationNotes = result.validationNotes;
+    const supportingCount = result.supportingSources?.length || 0;
+
+    // S1-T7 fix (2026-07-19, ship-check finding): calculateConfidence's
+    // "no corroboration" rule PRESERVES the original confidence — it never
+    // downgrades. buildValidationSources() only omits the tier-3 fallback
+    // post as a corroborating source; it never touches validatedConfidence.
+    // Without this, Claude can self-assign 'high'/'medium' to a change
+    // sourced solely from an unverified-fallback Reddit post and it sails
+    // straight through filterByConfidence unchanged. Force 'low' whenever
+    // the fallback was active AND no independent source corroborated it —
+    // legitimate multi-source corroboration (SEC filing, trade press) still
+    // overrides this, since that raises supportingCount above 0.
+    if (opts.unverifiedFallbackActive && supportingCount === 0 &&
+        (change.source || '').toLowerCase().includes('reddit')) {
+      validatedConfidence = 'low';
+      validationNotes = `${validationNotes || 'No corroborating sources found'}; forced low — unverified-fallback Reddit source with no independent corroboration`;
+    }
 
     validated.push({
       ...change,
-      validatedConfidence: result.validatedConfidence,
-      supportingSourcesCount: result.supportingSources?.length || 0,
+      validatedConfidence,
+      supportingSourcesCount: supportingCount,
       contradictingSourcesCount: result.contradictingSources?.length || 0,
-      validationNotes: result.validationNotes
+      validationNotes
     });
 
     // Log if confidence was adjusted
-    if (result.validatedConfidence !== change.confidence) {
-      console.log(`    ${change.slug}.${change.field}: ${change.confidence} -> ${result.validatedConfidence}`);
+    if (validatedConfidence !== change.confidence) {
+      console.log(`    ${change.slug}.${change.field}: ${change.confidence} -> ${validatedConfidence}`);
     }
   }
 
@@ -2499,7 +2518,8 @@ async function main() {
 
   const validatedChanges = validateProposedChanges(
     analysisResult.proposedChanges || [],
-    validationSources
+    validationSources,
+    { unverifiedFallbackActive: gathered.grossesPost?.sourceConfidence === 'unverified-fallback' }
   );
 
   // Replace proposed changes with validated versions
@@ -2627,7 +2647,7 @@ async function main() {
 }
 
 // Exports for unit testing
-module.exports = { filterByConfidence, shadowClassifier, buildValidationSources };
+module.exports = { filterByConfidence, shadowClassifier, buildValidationSources, validateProposedChanges };
 
 // Run only when executed directly (not when require()'d for testing)
 if (require.main === module) {

@@ -138,4 +138,33 @@ describe('mergeResearchQueue', () => {
     assert.deepEqual(mergeResearchQueue(null, null).merged.shows, []);
     assert.deepEqual(mergeResearchQueue({}, {}).merged.shows, []);
   });
+
+  it('does NOT resurrect slugs a newer consumption clear already processed (ship-check finding)', () => {
+    // ours is a stale pre-consumption snapshot still carrying 'giant';
+    // remote is deep-research-commercial.js's clear, written after
+    // processing it. A plain union would re-add 'giant' forever.
+    const ours = { shows: ['giant', 'ragtime'], triggers: { giant: 'closing', ragtime: 'pre-opening' }, updatedAt: '2026-07-19T09:00:00.000Z' };
+    const remote = { shows: [], updatedAt: '2026-07-19T10:00:00.000Z' };
+    const { merged, stats } = mergeResearchQueue(ours, remote);
+    assert.deepEqual(merged.shows, [], 'consumed slugs must not be resurrected');
+    assert.equal(stats.resolvedAsConsumption, 'remote');
+  });
+
+  it('does NOT resurrect when local side is the newer consumption clear', () => {
+    const ours = { shows: [], updatedAt: '2026-07-19T10:00:00.000Z' };
+    const remote = { shows: ['giant'], triggers: { giant: 'closing' }, updatedAt: '2026-07-19T09:00:00.000Z' };
+    const { merged, stats } = mergeResearchQueue(ours, remote);
+    assert.deepEqual(merged.shows, []);
+    assert.equal(stats.resolvedAsConsumption, 'ours');
+  });
+
+  it('still unions a producer add that lands AFTER an older consumption clear', () => {
+    // remote's clear is OLDER than ours' add — this is the normal case
+    // (queue producer runs after the researcher already cleared it), not a
+    // race, so the new slug must still be picked up.
+    const ours = { shows: ['newly-queued'], triggers: { 'newly-queued': 'closing' }, updatedAt: '2026-07-19T11:00:00.000Z' };
+    const remote = { shows: [], updatedAt: '2026-07-19T09:00:00.000Z' };
+    const { merged } = mergeResearchQueue(ours, remote);
+    assert.deepEqual(merged.shows, ['newly-queued']);
+  });
 });

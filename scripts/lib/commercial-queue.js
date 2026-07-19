@@ -38,13 +38,19 @@ const { isCommercialScope } = require('./commercial-scope');
  * @returns {string[]}
  */
 function filterNewBroadwayShows(slugs, shows) {
-  const bySlugOrId = new Map();
+  // Two separate maps, checked slug-first (ship-check finding, 2026-07-19):
+  // a single map keyed by both slug AND id lets one show's id silently
+  // overwrite another show's slug entry if the two strings ever collide —
+  // whichever show iterates last would win. Deterministic slug-priority
+  // matches resolveScopeShow()'s convention (commercial-scope.js).
+  const bySlug = new Map();
+  const byId = new Map();
   for (const s of shows) {
-    if (s.slug) bySlugOrId.set(s.slug, s);
-    if (s.id) bySlugOrId.set(s.id, s);
+    if (s.slug) bySlug.set(s.slug, s);
+    if (s.id) byId.set(s.id, s);
   }
   return slugs.filter((slug) => {
-    const show = bySlugOrId.get(slug);
+    const show = bySlug.get(slug) || byId.get(slug);
     return !!show && show.category === 'broadway';
   });
 }
@@ -64,7 +70,11 @@ function filterPreOpeningShows(shows, commercial, tomorrowStr) {
       if (!s || !s.openingDate) return false;
       if (s.openingDate !== tomorrowStr) return false;
       if (!isCommercialScope(s)) return false;
-      const entry = commShows[s.slug || s.id];
+      // Check both keys (ship-check finding, 2026-07-19): commercial.json
+      // entries aren't guaranteed to be keyed the same way s.slug || s.id
+      // resolves — a show covered under the OTHER key form was silently
+      // treated as uncovered and requeued.
+      const entry = commShows[s.slug] || commShows[s.id];
       if (entry && entry.designation && entry.designation !== 'TBD') return false;
       return true;
     })
@@ -87,7 +97,7 @@ function filterClosingTbdShows(shows, commercial, weekAgoStr, todayStr) {
       if (!s || s.status !== 'closed') return false;
       if (!isCommercialScope(s)) return false;
       if (!s.closingDate || s.closingDate < weekAgoStr || s.closingDate > todayStr) return false;
-      const entry = commShows[s.slug || s.id];
+      const entry = commShows[s.slug] || commShows[s.id];
       if (!entry) return true;
       if (entry.designation === 'TBD') return true;
       return false;

@@ -145,6 +145,20 @@ function mergeResearchQueue(ours, remote) {
   const oursShows = Array.isArray(ours.shows) ? ours.shows : [];
   const remoteShows = Array.isArray(remote.shows) ? remote.shows : [];
 
+  // deep-research-commercial.js consumes the queue by writing {shows: [],
+  // updatedAt} after processing. A plain array-union would resurrect those
+  // already-researched slugs if a concurrent producer's stale add lands in
+  // the same conflict (ship-check finding, 2026-07-19) — reprocessing them
+  // forever on every future conflict. Whichever side is BOTH empty and
+  // strictly newer is a consumption event and wins outright; only fall
+  // through to the additive union when neither side looks like a clear.
+  if (oursShows.length === 0 && pickNewer(remote, ours, ['updatedAt']) === ours) {
+    return { merged: { ...ours, shows: [], triggers: ours.triggers || {} }, stats: { added: 0, totalShows: 0, resolvedAsConsumption: 'ours' } };
+  }
+  if (remoteShows.length === 0 && pickNewer(ours, remote, ['updatedAt']) === remote) {
+    return { merged: { ...remote, shows: [], triggers: remote.triggers || {} }, stats: { added: 0, totalShows: 0, resolvedAsConsumption: 'remote' } };
+  }
+
   const seen = new Set(oursShows);
   const mergedShows = [...oursShows];
   let added = 0;

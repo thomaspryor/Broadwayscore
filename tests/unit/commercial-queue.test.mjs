@@ -44,6 +44,19 @@ describe('filterNewBroadwayShows (category-race fix)', () => {
     const result = filterNewBroadwayShows(['by-id-show'], shows);
     assert.deepEqual(result, ['by-id-show']);
   });
+
+  it('resolves to the slug-owning show when another show\'s id collides with that slug (ship-check finding)', () => {
+    // Show A's slug and Show B's id are the same string. A single map keyed
+    // by both slug and id would let whichever show inserts last silently
+    // overwrite the other's entry. Slug lookup must take deterministic
+    // priority regardless of shows[] iteration order.
+    const shows = [
+      { slug: 'collision', id: 'collision-2026', category: 'off-broadway' },
+      { slug: 'other-show', id: 'collision', category: 'broadway' },
+    ];
+    const result = filterNewBroadwayShows(['collision'], shows);
+    assert.deepEqual(result, [], 'must resolve to the off-broadway show that owns the slug, not the show whose id happens to match');
+  });
 });
 
 describe('filterPreOpeningShows (unchanged isCommercialScope behavior)', () => {
@@ -75,6 +88,13 @@ describe('filterPreOpeningShows (unchanged isCommercialScope behavior)', () => {
     const result = filterPreOpeningShows(shows, { shows: {} }, '2026-08-01');
     assert.deepEqual(result, []);
   });
+
+  it('finds commercial coverage keyed by id even though the show has a different slug (ship-check finding)', () => {
+    const shows = [{ slug: 'the-lost-boys', id: 'the-lost-boys-2026', openingDate: '2026-08-01', category: 'broadway' }];
+    const commercial = { shows: { 'the-lost-boys-2026': { designation: 'Flop' } } };
+    const result = filterPreOpeningShows(shows, commercial, '2026-08-01');
+    assert.deepEqual(result, [], 'commercial.json keyed by id must still be recognized as coverage');
+  });
 });
 
 describe('filterClosingTbdShows (unchanged isCommercialScope behavior)', () => {
@@ -102,6 +122,13 @@ describe('filterClosingTbdShows (unchanged isCommercialScope behavior)', () => {
     const commercial = { shows: { 'still-tbd': { designation: 'TBD' } } };
     const result = filterClosingTbdShows(shows, commercial, '2026-07-10', '2026-07-19');
     assert.deepEqual(result, ['still-tbd']);
+  });
+
+  it('finds commercial coverage keyed by id even though the show has a different slug (ship-check finding)', () => {
+    const shows = [{ slug: 'joe-turners-come-and-gone', id: 'joe-turners-come-and-gone-2026', status: 'closed', closingDate: '2026-07-15', category: 'broadway' }];
+    const commercial = { shows: { 'joe-turners-come-and-gone-2026': { designation: 'Windfall' } } };
+    const result = filterClosingTbdShows(shows, commercial, '2026-07-10', '2026-07-19');
+    assert.deepEqual(result, [], 'commercial.json keyed by id must still be recognized as coverage');
   });
 });
 

@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
 const { buildGrossesPostResult } = require('../../scripts/lib/grosses-post-resolver');
-const { buildValidationSources } = require('../../scripts/update-commercial-data');
+const { buildValidationSources, validateProposedChanges } = require('../../scripts/update-commercial-data');
 
 describe('buildGrossesPostResult', () => {
   it('tags a tier-1 (author-scoped) match with no sourceConfidence', () => {
@@ -68,5 +68,49 @@ describe('buildValidationSources (unverified-fallback gating)', () => {
     assert.equal(unstructured.length, 1);
     assert.equal(unstructured[0].showSlug, null);
     assert.equal(unstructured[0].field, null);
+  });
+});
+
+describe('validateProposedChanges (unverified-fallback confidence downgrade)', () => {
+  // Ship-check finding (2026-07-19): omitting corroboration is not enough —
+  // calculateConfidence()'s "no corroboration" rule PRESERVES whatever
+  // confidence Claude self-assigned. Without an explicit forced downgrade, a
+  // change sourced solely from an unverified tier-3 post could self-report
+  // 'high'/'medium' and sail through filterByConfidence unchanged.
+  it('forces low confidence for a Reddit-sourced change with zero corroboration when fallback is active', () => {
+    const changes = [
+      { slug: 'giant', field: 'estimatedRecoupmentPct', oldValue: 20, newValue: 45, confidence: 'high', source: 'Reddit Grosses Analysis' },
+    ];
+    const validated = validateProposedChanges(changes, [], { unverifiedFallbackActive: true });
+    assert.equal(validated[0].validatedConfidence, 'low');
+    assert.match(validated[0].validationNotes, /forced low/);
+  });
+
+  it('does NOT downgrade a Reddit-sourced change that has independent corroboration', () => {
+    const changes = [
+      { slug: 'giant', field: 'estimatedRecoupmentPct', oldValue: 20, newValue: 45, confidence: 'high', source: 'Reddit Grosses Analysis' },
+    ];
+    const sources = [
+      { showSlug: 'giant', field: 'estimatedRecoupmentPct', value: 45, sourceType: 'SEC Form D', url: 'https://sec.gov/x' },
+      { showSlug: 'giant', field: 'estimatedRecoupmentPct', value: 45, sourceType: 'Deadline', url: 'https://deadline.com/x' },
+    ];
+    const validated = validateProposedChanges(changes, sources, { unverifiedFallbackActive: true });
+    assert.equal(validated[0].validatedConfidence, 'high', 'two corroborating sources should still win');
+  });
+
+  it('leaves non-Reddit changes untouched even when fallback is active', () => {
+    const changes = [
+      { slug: 'giant', field: 'capitalization', oldValue: null, newValue: 25000000, confidence: 'medium', source: 'SEC Form D filing' },
+    ];
+    const validated = validateProposedChanges(changes, [], { unverifiedFallbackActive: true });
+    assert.equal(validated[0].validatedConfidence, 'medium');
+  });
+
+  it('does not downgrade when fallback is inactive (normal tier-1/2 runs unaffected)', () => {
+    const changes = [
+      { slug: 'giant', field: 'estimatedRecoupmentPct', oldValue: 20, newValue: 45, confidence: 'high', source: 'Reddit Grosses Analysis' },
+    ];
+    const validated = validateProposedChanges(changes, [], { unverifiedFallbackActive: false });
+    assert.equal(validated[0].validatedConfidence, 'high');
   });
 });
