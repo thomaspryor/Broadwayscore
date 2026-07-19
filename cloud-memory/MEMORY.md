@@ -3,8 +3,7 @@
 > Caps: 180 lines/20KB (hook-enforced; harness truncates ~200). Always-on index only — 450+ files on disk are recalled on demand. **At cap: add ⇒ remove/merge one.** Last compacted 2026-07-05.
 
 ## 🌐 External APIs & services
-- [Vercel billing API + cost drivers](reference_vercel_billing_api.md) — /v1/invoices + /v1/invoices/upcoming; deploy frequency = the cost lever
-- [Vercel API access](feedback_vercel_api_access.md) — VERCEL_TOKEN in .env; prj_wmBnDUrCQCwabIAYPbnMiIP3wg15
+- [Vercel API + billing](reference_vercel_billing_api.md) — VERCEL_TOKEN in .env; /v1/invoices[/upcoming]; deploy freq = cost lever ([[feedback_vercel_api_access.md]])
 - [Analytics Real Users lens](feedback_analytics_real_users_lens.md) — GA4 bot-inflated; PostHog (proj 332742) is_owner + SG/CN/VN excluded; newsletter email has no UTM ([[feedback_newsletter_no_utm.md]])
 - [Google Search Console API](feedback_gsc_api_auth.md) — gcloud ADC + webmasters scope; X-Goog-User-Project header required
 
