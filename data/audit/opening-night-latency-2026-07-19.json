@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-19T03:27:22.728Z",
+  "generatedAt": "2026-07-19T05:27:33.405Z",
   "date": "2026-07-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 227255,
+  "entryCount": 229604,
   "shows": [
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
@@ -531,12 +531,12 @@
     },
     {
       "showId": "cats-the-jellicle-ball-2026",
-      "reviewCount": 30,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 815274,
+        "collected-to-scored": 1271490,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -641,7 +641,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 365268262,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1611,7 +1611,7 @@
     },
     {
       "showId": "book-of-mormon-2011",
-      "reviewCount": 34,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1671,7 +1671,37 @@
     },
     {
       "showId": "and-then-the-rodeo-burned-down-off-broadway-2026",
-      "reviewCount": 9,
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "hershey-felder-the-piano-and-me-off-broadway-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "angels-in-america-2018",
+      "reviewCount": 53,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
