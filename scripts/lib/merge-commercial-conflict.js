@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * Helper invoked by push-with-retry.sh during conflict resolution on
- * data/commercial.json or data/commercial-pending-review.json.
+ * data/commercial.json, data/commercial-pending-review.json, or
+ * data/commercial-research-queue.json.
  *
  * Usage:
  *   node scripts/lib/merge-commercial-conflict.js <file> <keep_local_flag> <keep_remote_flag>
@@ -28,7 +29,7 @@ if (!file || !keepLocal || !keepRemote) {
   process.exit(1);
 }
 
-const { mergeCommercialJson, mergePendingReview } = require('./merge-commercial-data');
+const { mergeCommercialJson, mergePendingReview, mergeResearchQueue } = require('./merge-commercial-data');
 
 function readSide(flag) {
   execSync(`git checkout ${flag} -- ${JSON.stringify(file)}`, { stdio: 'pipe' });
@@ -43,6 +44,8 @@ try {
   let mergedResult;
   if (file.endsWith('commercial-pending-review.json')) {
     mergedResult = mergePendingReview(localData, remoteData);
+  } else if (file.endsWith('commercial-research-queue.json')) {
+    mergedResult = mergeResearchQueue(localData, remoteData);
   } else {
     mergedResult = mergeCommercialJson(localData, remoteData);
   }
