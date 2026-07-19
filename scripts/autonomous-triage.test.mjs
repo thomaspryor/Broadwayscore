@@ -65,3 +65,11 @@ test('ordering matches priority then size, same as the Tier-1 plan', () => {
   const plan = buildDataPlan([p1s, p0m, p0s]);
   assert.deepEqual(plan.map(p => p.id), ['c', 'a', 'b']); // P0-S, P0-M, P1-S
 });
+
+test('auto-stamped cards never occupy a plan slot (2026-07-17..19 wedge: attemptDataCard refuses auto!=null, so planning one = 3 nights of state-moved skips)', () => {
+  const failed = { id: 'card-f', name: 'Byline recovery: wedged failed card', priority: 'P1 Next', tags: ['review-recovery'], auto: 'failed' };
+  const attempted = { id: 'card-a', name: 'Missing show: stranded attempted card', priority: 'P1 Next', tags: ['missing-show'], auto: 'attempted' };
+  const clean = { id: 'card-c', name: 'Missing show: fresh card', priority: 'P2 Later', tags: ['missing-show'], auto: null };
+  const plan = buildDataPlan([skipped(failed, 'M'), skipped(attempted, 'S'), skipped(clean, 'M')]);
+  assert.deepEqual(plan.map(p => p.id), ['card-c']);
+});
