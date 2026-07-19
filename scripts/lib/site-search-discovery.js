@@ -880,6 +880,7 @@ const SITE_SEARCH_ENDPOINTS = {
 };
 
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+const { recordSbCall } = require('./bd-telemetry');
 
 /**
  * Resolve {MARKET_KEYWORD} placeholder based on market.
@@ -1028,8 +1029,13 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
-        if (res.statusCode === 200) resolve(data);
-        else reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
+        if (res.statusCode === 200) {
+          recordSbCall({ url, fn: 'render', success: true, status: 200, credits: 5 });
+          resolve(data);
+        } else {
+          recordSbCall({ url, fn: 'render', success: false, status: res.statusCode, credits: 0 });
+          reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
+        }
       });
       res.on('error', reject);
     });

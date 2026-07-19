@@ -431,7 +431,7 @@ const UNCOLLECTABLE_OUTLETS = (() => {
 })();
 
 // Domain alias matching — imported from shared lib (scraper.js)
-const { domainMatchesExpected, checkScrapingBeeCredits } = require('./lib/scraper');
+const { domainMatchesExpected, checkScrapingBeeCredits, fetchWithScrapingdog } = require('./lib/scraper');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
@@ -537,6 +537,8 @@ const stats = {
   tier1Success: 0,
   tier1_5Attempts: 0,  // Browserbase
   tier1_5Success: 0,
+  tier1_9Attempts: 0,  // Scrapingdog
+  tier1_9Success: 0,
   tier2Attempts: 0,
   tier2Success: 0,
   tier3Attempts: 0,
@@ -577,6 +579,7 @@ let state = {
     amp: [],
     browserbase: [],
     directCookies: [],
+    scrapingdog: [],
     scrapingbee: [],
     brightdata: [],
     archiveToday: [],
@@ -2220,6 +2223,37 @@ async function fetchWithBrowserbase(url, review) {
 // TIER 2: ScrapingBee API
 // ============================================================================
 
+/**
+ * TIER 1.9: Scrapingdog page fetch — 1 cr plain / 5 cr JS-rendered, vs
+ * ScrapingBee's 1/10/75 on the same page. Delegates to the shared
+ * fetchWithScrapingdog in lib/scraper, which forwards subscriber cookies,
+ * auto-detects JS-required domains, respects the per-run SD budget, and emits
+ * [SD Call] telemetry. Same acceptance bar as the SB tier: unblocked HTML with
+ * >500 chars of extracted text; anything less throws so the chain continues.
+ */
+async function fetchWithScrapingdogText(url) {
+  if (!process.env.SCRAPINGDOG_API_KEY) {
+    throw new Error('Scrapingdog not configured');
+  }
+  stats.tier1_9Attempts++;
+  console.log('    Scrapingdog...');
+  const result = await fetchWithScrapingdog(url);
+  if (!result || !result.content) {
+    // fetchWithScrapingdog logs the underlying error and returns null
+    throw new Error('Scrapingdog returned no content');
+  }
+  const html = result.content;
+  if (isBlocked(html)) {
+    throw new Error('CAPTCHA detected (scrapingdog)');
+  }
+  const text = extractTextFromHtml(html, url);
+  if (text && text.length > 500) {
+    stats.tier1_9Success++;
+    return { html, text };
+  }
+  throw new Error(`Insufficient text: ${text?.length || 0} chars`);
+}
+
 async function fetchWithScrapingBee(url, useStealth = false) {
   if (!CONFIG.scrapingBeeKey || !axios) {
     throw new Error('ScrapingBee not configured');
@@ -3191,6 +3225,22 @@ function buildTierChain(ctx, review) {
           console.warn(`  ⚠ COOKIE EXPIRED: ${ctx.url} — falling back to lower tiers`);
         }
       },
+    },
+
+    // TIER 1.9: Scrapingdog (cheapest API tier — 1 cr plain / 5 cr JS, vs SB's
+    // 1/10/75). Sits just ahead of ScrapingBee so any page SD can fetch never
+    // reaches SB; SD failures fall straight through to the SB/BD safety net.
+    {
+      id: 'scrapingdog',
+      tierNumber: 1.9,
+      method: 'scrapingdog',
+      label: 'Scrapingdog API',
+      shouldRun: () => {
+        if (ctx.skipDirectScrapers) return false;
+        return !!process.env.SCRAPINGDOG_API_KEY;
+      },
+      execute: (url) => fetchWithScrapingdogText(url),
+      onFailure: (error) => { ctx.anyTierFailed = true; },
     },
 
     // TIER 2: ScrapingBee API (now with cookie forwarding for paywalled sites)
@@ -5118,9 +5168,9 @@ function loadState() {
         state = saved;
         // Ensure tierBreakdown and all sub-arrays exist (older state files may be missing keys)
         if (!state.tierBreakdown) {
-          state.tierBreakdown = { playwright: [], amp: [], browserbase: [], directCookies: [], scrapingbee: [], brightdata: [], archiveToday: [], archive: [] };
+          state.tierBreakdown = { playwright: [], amp: [], browserbase: [], directCookies: [], scrapingdog: [], scrapingbee: [], brightdata: [], archiveToday: [], archive: [] };
         } else {
-          for (const key of ['playwright', 'amp', 'browserbase', 'scrapingbee', 'brightdata', 'archiveToday', 'archive']) {
+          for (const key of ['playwright', 'amp', 'browserbase', 'scrapingdog', 'scrapingbee', 'brightdata', 'archiveToday', 'archive']) {
             if (!state.tierBreakdown[key]) state.tierBreakdown[key] = [];
           }
         }
@@ -6545,6 +6595,7 @@ async function testUrl(url) {
   // Test each tier
   const tiers = [
     { name: 'Playwright', fn: () => fetchWithPlaywright(url, fakeReview) },
+    { name: 'Scrapingdog', fn: () => fetchWithScrapingdogText(url), requires: process.env.SCRAPINGDOG_API_KEY },
     { name: 'ScrapingBee', fn: () => fetchWithScrapingBee(url), requires: CONFIG.scrapingBeeKey },
     { name: 'Bright Data', fn: () => fetchWithBrightData(url), requires: CONFIG.brightDataKey },
     { name: 'Archive.org', fn: () => fetchFromArchive(url) },
@@ -6618,6 +6669,7 @@ function generateReport() {
       amp: state.tierBreakdown.amp?.length || 0,
       browserbase: state.tierBreakdown.browserbase?.length || 0,
       directCookies: state.tierBreakdown.directCookies?.length || 0,
+      scrapingdog: state.tierBreakdown.scrapingdog?.length || 0,
       scrapingbee: state.tierBreakdown.scrapingbee?.length || 0,
       brightdata: state.tierBreakdown.brightdata?.length || 0,
       archiveToday: state.tierBreakdown.archiveToday?.length || 0,
@@ -6630,6 +6682,8 @@ function generateReport() {
       ampSuccess: stats.ampSuccess,
       tier1_5Attempts: stats.tier1_5Attempts,
       tier1_5Success: stats.tier1_5Success,
+      tier1_9Attempts: stats.tier1_9Attempts,
+      tier1_9Success: stats.tier1_9Success,
       tier2Attempts: stats.tier2Attempts,
       tier2Success: stats.tier2Success,
       tier3Attempts: stats.tier3Attempts,
@@ -6671,6 +6725,7 @@ function generateReport() {
   console.log(`║ ├─ Tier 1.1 (AMP):       ${String(report.tierBreakdown.amp).padStart(31)} ║`);
   console.log(`║ ├─ Tier 1.5 (Browserbase):${String(report.tierBreakdown.browserbase).padStart(30)} ║`);
   console.log(`║ ├─ Tier 1.8 (Direct+Cook):${String(report.tierBreakdown.directCookies).padStart(30)} ║`);
+  console.log(`║ ├─ Tier 1.9 (Scrapingdog):${String(report.tierBreakdown.scrapingdog).padStart(30)} ║`);
   console.log(`║ ├─ Tier 2 (ScrapingBee): ${String(report.tierBreakdown.scrapingbee).padStart(31)} ║`);
   console.log(`║ ├─ Tier 3 (Bright Data): ${String(report.tierBreakdown.brightdata).padStart(31)} ║`);
   console.log(`║ ├─ Tier 3.6 (archive.ph):${String(report.tierBreakdown.archiveToday).padStart(31)} ║`);

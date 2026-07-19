@@ -3,9 +3,11 @@
  * Scrape Show Score audience data and update audience-buzz.json
  *
  * Uses a fallback chain to fetch Show Score pages and extract audience scores:
- * 1. ScrapingBee (primary — render_js + premium_proxy for SPA content)
- * 2. Playwright (fallback — native JS rendering, no API credits needed)
- * 3. Bright Data Web Unlocker (last resort — may not render JS fully)
+ * 1. Scrapingdog (primary for score fetches — 5 cr JS render, result must pass
+ *    render validation or the chain falls through)
+ * 2. ScrapingBee (render_js + premium_proxy for SPA content, 25 cr)
+ * 3. Playwright (fallback — native JS rendering, no API credits needed)
+ * 4. Bright Data Web Unlocker (last resort — may not render JS fully)
  *
  * Designed to run in GitHub Actions.
  *
@@ -13,7 +15,8 @@
  *   node scripts/scrape-show-score-audience.js [--show=hamilton-2015] [--limit=10] [--dry-run]
  *
  * Environment variables:
- *   SCRAPINGBEE_API_KEY - ScrapingBee API key (primary, optional)
+ *   SCRAPINGDOG_API_KEY - Scrapingdog API key (primary, optional)
+ *   SCRAPINGBEE_API_KEY - ScrapingBee API key (fallback, optional)
  *   BRIGHTDATA_TOKEN    - Bright Data API token (fallback, optional)
  *   At least one scraping method must be available (or Playwright installed).
  */
@@ -25,6 +28,8 @@ const { JSDOM } = require('jsdom');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { fetchWithScrapingdog } = require('./lib/scraper');
+const { recordSbCall } = require('./lib/bd-telemetry');
 
 // Lazy-load Playwright — only imported if needed as fallback
 let playwrightBrowser = null;
@@ -152,14 +157,30 @@ function fetchViaScrapingBeeSingle(url) {
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
         if (res.statusCode === 200) {
+          recordSbCall({ url, fn: 'premium-render', success: true, status: 200, credits: 25 });
           resolve(data);
         } else {
+          recordSbCall({ url, fn: 'premium-render', success: false, status: res.statusCode, credits: 0 });
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
     }).on('error', reject)
       .on('timeout', () => reject(new Error('ScrapingBee request timeout')));
   });
+}
+
+/**
+ * Fetch URL through Scrapingdog with JS rendering (5 credits vs ScrapingBee's
+ * render_js+premium_proxy 25). Returns HTML string or null on failure.
+ */
+async function fetchViaScrapingdog(url) {
+  try {
+    const result = await fetchWithScrapingdog(url, { renderJs: true });
+    return result && result.content ? result.content : null;
+  } catch (error) {
+    console.error(`  Scrapingdog failed: ${error.message}`);
+    return null;
+  }
 }
 
 /**
@@ -236,11 +257,22 @@ function fetchViaBrightData(url) {
 
 /**
  * Fetch URL with fallback chain and retry logic.
- * Chain: ScrapingBee (premium) → Playwright → Bright Data
+ * Chain: Scrapingdog (validated render) → ScrapingBee (premium) → Playwright → Bright Data
  * Returns HTML string or throws if all methods fail.
  */
-async function fetchWithFallback(url, retries = 2) {
-  // Try ScrapingBee first (with retries) — best for Show Score (render_js + premium_proxy)
+async function fetchWithFallback(url, retries = 2, opts = {}) {
+  // Scrapingdog first when the caller can validate the render (5 cr vs SB's 25).
+  // Show Score is an SPA and SD's dynamic renderer can return the unhydrated
+  // shell; an unvalidated shell would read as "no audience score" downstream.
+  // So the SD result is only trusted when opts.validate confirms rendered
+  // content — otherwise we fall through to the proven SB premium path.
+  if (opts.validate && process.env.SCRAPINGDOG_API_KEY) {
+    const sdHtml = await fetchViaScrapingdog(url);
+    if (sdHtml && opts.validate(sdHtml)) return sdHtml;
+    if (sdHtml && verbose) console.log('  Scrapingdog HTML failed render validation — falling back to ScrapingBee');
+  }
+
+  // Try ScrapingBee next (with retries) — best for Show Score (render_js + premium_proxy)
   if (SCRAPINGBEE_KEY) {
     for (let attempt = 1; attempt <= retries + 1; attempt++) {
       try {
@@ -585,6 +617,18 @@ function extractAudienceData(html, showId) {
 }
 
 /**
+ * Render validation for the Scrapingdog tier: an unhydrated SPA shell contains
+ * no aggregateRating/score markup, which extractAudienceData would misread as
+ * "show has no audience score". Only accept SD HTML that provably rendered the
+ * score; score-less pages fall through to ScrapingBee, whose render is trusted.
+ */
+function hasRenderedAudienceContent(html) {
+  if (!html) return false;
+  const { score } = extractAudienceData(html, null);
+  return score !== null && score !== undefined;
+}
+
+/**
  * Extract metadata (runtime, synopsis) from Show Score HTML via JSDOM.
  * Returns { runtime: string|null, synopsis: string|null }.
  */
@@ -762,7 +806,7 @@ async function processShow(show) {
   console.log(`  URL: ${url}`);
 
   try {
-    const html = await fetchWithFallback(url);
+    const html = await fetchWithFallback(url, 2, { validate: hasRenderedAudienceContent });
 
     // Validate page
     if (!html || html.includes('Page not found') || html.includes('404 -')) {

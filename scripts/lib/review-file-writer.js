@@ -589,6 +589,15 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   const { showId, input, fields, dryRun, onMerge } = ctx;
   let changed = false;
 
+  // Self-heal: legacy/nonstandard writers occasionally leave files without a
+  // showId, which validate-data hard-errors on (allegra-west-end-2026
+  // whatsonstage file, 2026-07-14). The containing directory IS the show, so
+  // stamp it on the next merge instead of failing validation forever.
+  if (!existing.showId) {
+    existing.showId = showId;
+    changed = true;
+  }
+
   // Clear a stored JSON-LD pullQuote/excerpt BEFORE the field merge. The merge
   // below only copies an incoming field when `!existing[key]`; a JSON-LD blob is
   // truthy, so it would block a clean incoming quote from landing — and then
