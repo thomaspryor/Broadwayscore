@@ -99,6 +99,34 @@ describe('mergePendingReview', () => {
     const { merged } = mergePendingReview(ours, remote);
     assert.equal(merged.shows.giant.confidence, 'high');
   });
+
+  it('does NOT resurrect a slug remote already applied and deleted (what-else follow-up)', () => {
+    // ours is a stale pre-application snapshot still carrying 'giant';
+    // remote is apply-commercial-pending.js's write after removing it —
+    // its file-level lastUpdated is stamped AFTER giant's own entry
+    // timestamp, proving remote has seen (and intentionally removed) it.
+    const ours = { shows: { 'giant': { confidence: 'high', researchedAt: '2026-07-19T09:00:00.000Z' } } };
+    const remote = { shows: {}, lastUpdated: '2026-07-19T10:00:00.000Z' };
+    const { merged, stats } = mergePendingReview(ours, remote);
+    assert.equal(merged.shows.giant, undefined, 'applied/removed entry must not be resurrected');
+    assert.equal(stats.resolvedAsDeletion, 1);
+  });
+
+  it('still keeps a slug remote has not seen yet (remote predates the local addition)', () => {
+    // remote's last write happened BEFORE ours added 'giant' — remote simply
+    // hasn't seen it, this is NOT a deletion signal.
+    const ours = { shows: { 'giant': { confidence: 'high', researchedAt: '2026-07-19T11:00:00.000Z' } } };
+    const remote = { shows: {}, lastUpdated: '2026-07-19T09:00:00.000Z' };
+    const { merged } = mergePendingReview(ours, remote);
+    assert.equal(merged.shows.giant.confidence, 'high', 'a genuinely new local entry must survive');
+  });
+
+  it('keeps ours when remote has no lastUpdated at all (no evidence of deletion)', () => {
+    const ours = { shows: { 'giant': { confidence: 'high', researchedAt: '2026-07-19T09:00:00.000Z' } } };
+    const remote = { shows: {} };
+    const { merged } = mergePendingReview(ours, remote);
+    assert.equal(merged.shows.giant.confidence, 'high');
+  });
 });
 
 describe('mergeResearchQueue', () => {

@@ -73,6 +73,11 @@ on:
       # corruption that broke validate-review-texts). Pure detector + colocated test.
       - 'scripts/lib/conflict-markers.js'
       - 'scripts/lib/conflict-markers.test.mjs'
+      # Content-aware should-deploy gate (vercel-deploy.yml preflight). Pure
+      # decide() + colocated test run by the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI (allow-list gate).
+      - 'scripts/lib/should-deploy-gate.js'
+      - 'scripts/lib/should-deploy-gate.test.mjs'
       - 'scripts/lib/push-with-retry.sh'
       - 'scripts/lib/push-with-retry.conflict-marker.test.sh'
       # Shared sync-only-changed-files helper for push-aggregator-archive
