@@ -702,6 +702,16 @@ describe('isRoundupUrl — BWW /article/Review-Roundup- compilation (Oresteia 20
     assert.strictEqual(r.isRoundup, false);
   });
 
+  test('BWW own review at /article/BWW-Review-... → NOT roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/article/BWW-Review-CHESS-Sizzles-at-the-Kennedy-Center-20180216');
+    assert.strictEqual(r.isRoundup, false);
+  });
+
+  test('review-roundup only in query string → NOT roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/article/Some-Feature-20260101?from=review-roundup-widget');
+    assert.strictEqual(r.isRoundup, false);
+  });
+
   test('other-domain review-roundup path stays unflagged (sourced-from-roundup carve-out)', () => {
     const r = isRoundupUrl('https://example.com/article/review-roundup-some-show');
     assert.strictEqual(r.isRoundup, false);
