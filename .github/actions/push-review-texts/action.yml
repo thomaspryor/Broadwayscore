@@ -30,7 +30,35 @@ runs:
 
         # SAFETY: Pull remote changes FIRST so we don't overwrite data (e.g., fullText)
         # that was fetched/committed by other processes while local changes were pending.
-        git pull --rebase origin main -q 2>/dev/null || true
+        # MUST use --autostash: the tree is always dirty here (the workflow's changes
+        # aren't committed yet) and a plain `git pull --rebase` REFUSES to run on a
+        # dirty tree — the old `|| true` swallowed that refusal, so this pull
+        # silently no-oped on EVERY run and the protected-field restore below
+        # compared against a stale HEAD (three whole-file review clobbers,
+        # 2026-07-18/19: theatre-weekly, talkinbroadway x2). If the autostash pop
+        # conflicts, prefer the stash (this workflow's fresh writes) and let the
+        # protected-field restore re-add anything the stale base was missing.
+        # Failure shapes (adversarial review 2026-07-20):
+        #  - Mid-rebase conflict (exit != 0): ABORT back to the pre-pull state.
+        #    Stale baseline for this run, but no corruption — the push-retry
+        #    loop below resolves the same conflict content-aware (fullText
+        #    length) with the corrected HEAD/REBASE_HEAD logic.
+        #  - Autostash-POP conflict: `git pull --rebase --autostash` exits 0
+        #    (!) and leaves conflict markers + unmerged paths, which the old
+        #    exit-code gate missed — `git add -A` below would have COMMITTED
+        #    the markers. Detect via unmerged paths and resolve toward the
+        #    stash side (this workflow's writes; stage 3 = stash in a pop
+        #    conflict). The protected-field restore below then re-adds any
+        #    richer content the fresh HEAD has.
+        if ! git pull --rebase --autostash origin main -q 2>/dev/null; then
+          echo "::warning::push-review-texts: pre-stage pull hit a rebase conflict — aborted; baseline stale, push-loop resolves content-aware"
+          git rebase --abort 2>/dev/null || true
+        fi
+        if [ -n "$(git ls-files -u)" ]; then
+          echo "::warning::push-review-texts: autostash pop conflicted — keeping this workflow's writes; protected fields restored below"
+          git checkout --theirs -- . 2>/dev/null || true
+          git add -A
+        fi
 
         # Stage all changes
         # ROOT-CAUSE GUARD (2026-05-27): the review-texts data repo contains
@@ -198,10 +226,11 @@ runs:
             # move landed after this run checked out, a re-created sibling duplicate
             # passes those guards (stale-checkout race — the tender poller incident,
             # creation commit 65159277b5b, 6 min after the disambiguation push).
-            # This is the only point where the tree reflects current remote
-            # ownership (the pre-stage pull above is `|| true` and no-ops on a
-            # dirty tree), so validate files our commits ADDED and git-rm +
-            # commit any whose URL is live under another show, before pushing.
+            # The pre-stage pull now lands remote commits (--autostash,
+            # 2026-07-20), but it can fall back to a stale baseline on a
+            # mid-rebase conflict — this post-rebase point is still the last
+            # guaranteed-fresh view, so validate files our commits ADDED and
+            # git-rm + commit any whose URL is live under another show here.
             # Fail-open: a validator crash must never block a data push.
             node ../../scripts/validate-added-review-ownership.js --base=origin/main \
               || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
@@ -248,10 +277,24 @@ runs:
                   KEPT_OURS=$((KEPT_OURS + 1))
                   echo "  $f: kept ours (${OUR_LEN} chars > ${THEIR_LEN} chars)"
                 else
-                  git checkout --theirs "$f" 2>/dev/null || true
+                  # Use explicit `git show HEAD:` — NOT `git checkout --theirs`.
+                  # During a REBASE git inverts ours/theirs: --theirs means the
+                  # commit being replayed (REBASE_HEAD, this workflow's version),
+                  # so the old line wrote the SHORTER side while logging that it
+                  # kept the richer one. That inversion destroyed restored
+                  # reviews three times on 2026-07-18/19 (a 5,435-char
+                  # talkinbroadway review lost to a 0-char husk twice).
+                  # Write via temp: `git show X > f` truncates f BEFORE git show
+                  # runs, so a failed show must not leave a 0-byte file.
+                  if git show HEAD:"$f" > "$f.mergetmp" 2>/dev/null; then
+                    mv "$f.mergetmp" "$f"
+                  else
+                    rm -f "$f.mergetmp"
+                    git show REBASE_HEAD:"$f" > "$f" 2>/dev/null || true
+                  fi
                   git add "$f"
                   KEPT_THEIRS=$((KEPT_THEIRS + 1))
-                  echo "  $f: kept theirs (${THEIR_LEN} chars >= ${OUR_LEN} chars)"
+                  echo "  $f: kept remote (${THEIR_LEN} chars >= ${OUR_LEN} chars)"
                 fi
               elif [[ "$f" == "failed-fetches.json" ]]; then
                 # Merge failed-fetches arrays: union by reviewId, keep newer (ours) entries
@@ -271,8 +314,18 @@ runs:
                 rm -f /tmp/ff_ours.json /tmp/ff_theirs.json /tmp/ff_merged.json
                 git add "$f"
               else
-                # Other non-review files: keep ours
-                git checkout --ours "$f" 2>/dev/null || git add "$f"
+                # Other non-review files: keep ours (this workflow's version).
+                # Rebase inverts --ours/--theirs, so "ours" = REBASE_HEAD, not
+                # `git checkout --ours` (which would take the remote base). If
+                # REBASE_HEAD lacks the file our commit deleted it — honor the
+                # delete rather than resurrecting the remote copy.
+                if git show REBASE_HEAD:"$f" > "$f.mergetmp" 2>/dev/null; then
+                  mv "$f.mergetmp" "$f"
+                  git add "$f"
+                else
+                  rm -f "$f.mergetmp"
+                  git rm -q "$f" 2>/dev/null || true
+                fi
               fi
             done <<< "$UNMERGED"
 
