@@ -253,7 +253,9 @@ async function main() {
   //                    size-floor bump past the enabled set) — skipped nightly
   const attention = { configWarnings: [], failedCards: [], parkedItems: [] };
   for (const e of runEntries) {
-    if (e.event === 'config-warning' && e.note) attention.configWarnings.push(e.note);
+    // Strip the note's own "config-warning: " prefix — the block's label
+    // already says "config" (review tidy).
+    if (e.event === 'config-warning' && e.note) attention.configWarnings.push(String(e.note).replace(/^config-warning:\s*/, ''));
   }
   try {
     attention.failedCards = (notionBrain(['list', '--auto', 'failed', '--limit', '10']) || [])
