@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-19T09:22:03.276Z",
+  "updatedAt": "2026-07-19T09:25:04.903Z",
   "processed": 74,
-  "failed": 144,
-  "successRate": "33.9%",
+  "failed": 154,
+  "successRate": "32.5%",
   "tierBreakdown": {
     "playwright": 44,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 4,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-07-18T19:28:15.385Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-07-18T22:22:41.161Z",
-      "event": "bb-session",
-      "session": "8f841340",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
-    },
     {
       "t": "2026-07-18T22:22:42.182Z",
       "event": "bb-cookie-inject",
@@ -128,6 +117,17 @@
       "event": "bb-session",
       "session": "58a2995f",
       "url": "https://www.broadwayworld.com/reviews/dukes"
+    },
+    {
+      "t": "2026-07-19T09:24:52.771Z",
+      "event": "bb-session",
+      "session": "3c589ea7",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-this-"
+    },
+    {
+      "t": "2026-07-19T09:24:53.732Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
