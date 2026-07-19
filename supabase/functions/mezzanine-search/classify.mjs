@@ -106,7 +106,26 @@ export function rankCandidates(candidates, limit = 10) {
     if (popDiff !== 0) return popDiff;
     return (b.openingDate || '').localeCompare(a.openingDate || '');
   });
-  return ranked.slice(0, limit);
+  // Mezzanine's user-generated catalog holds many literal duplicate records of
+  // the same production (14 copies of one Players Theatre show, differing only
+  // in venue casing — owner repro 2026-07-19). Collapse to one candidate per
+  // normalized title+venue+year, keeping the best-ranked copy; distinct years
+  // survive as separate candidates (real revivals).
+  const seen = new Set();
+  const deduped = [];
+  for (const c of ranked) {
+    // Leading "the" stripped from venue like ImportShows' vnorm — "Players
+    // Theatre" and "The Players Theatre" are the same building. A candidate
+    // without a title (shouldn't happen post-productionToCandidate) keys on
+    // its own id so it can never collapse into another.
+    const key = c.title
+      ? `${normalizeQuery(c.title)}|${normalizeQuery(c.venue || '').replace(/^the /, '')}|${(c.openingDate || '').slice(0, 4)}`
+      : `id:${c.id}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    deduped.push(c);
+  }
+  return deduped.slice(0, limit);
 }
 
 /** Normalize a search query the same way ImportShows.tsx's normTitle does

@@ -16,9 +16,14 @@
  *
  * Usage:
  *   node scripts/recover-serp-text.js --domain=newyorker.com [options]
+ *   node scripts/recover-serp-text.js --outlet=ap [options]
  *
  * Options:
- *   --domain=X       Required. Outlet domain to target (newyorker.com, apnews.com)
+ *   --domain=X       Outlet domain to target (newyorker.com). Matches data.url's hostname.
+ *   --outlet=X       Outlet ID to target (ap). Matches data.outletId directly — use for wire
+ *                    services syndicated across many domains, where no single --domain covers
+ *                    them (AP reviews live on apnews.com, hosted.ap.org, huffpost.com, local
+ *                    papers, etc). One of --domain/--outlet is required.
  *   --limit=N        Max candidates to process (default: 20)
  *   --dry-run        Discovery + fetch only, no file writes
  *   --show=SLUG      Only process one show
@@ -34,7 +39,7 @@ const { setExtractedScore } = require('./lib/score-routing');
 const { extractArticleText } = require('./lib/article-extractor');
 const { discoverCorrectUrl } = require('./lib/url-discovery');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, unwrapRedirectUrl } = require('./lib/scraper');
 
 const args = process.argv.slice(2);
 const getArg = (name) => {
@@ -44,6 +49,11 @@ const getArg = (name) => {
 
 const CONFIG = {
   domain: getArg('domain'),
+  // --outlet matches data.outletId directly instead of the URL's hostname.
+  // Needed for wire-service outlets like AP, whose reviews live on dozens of
+  // syndication domains (apnews.com, hosted.ap.org, huffpost.com,
+  // washingtonpost.com, local papers, ...) — no single --domain covers them.
+  outlet: getArg('outlet'),
   limit: parseInt(getArg('limit') || '20', 10),
   dryRun: args.includes('--dry-run'),
   showFilter: getArg('show') || null,
@@ -56,8 +66,8 @@ const CONFIG = {
   brightDataKey: process.env.BRIGHTDATA_TOKEN || '',
 };
 
-if (!CONFIG.domain) {
-  console.error('Usage: node scripts/recover-serp-text.js --domain=newyorker.com [--limit=N] [--dry-run] [--show=SLUG]');
+if (!CONFIG.domain && !CONFIG.outlet) {
+  console.error('Usage: node scripts/recover-serp-text.js (--domain=newyorker.com | --outlet=ap) [--limit=N] [--dry-run] [--show=SLUG]');
   process.exit(1);
 }
 
@@ -68,10 +78,15 @@ function loadExhausted() {
   catch { return {}; }
 }
 
-function saveExhausted(map) {
+// Merges with whatever is currently on disk (not just what this process started
+// from) so a concurrent recovery run's exhausted entries survive — a flat
+// overwrite from an in-memory snapshot would silently erase them.
+function saveExhausted(newEntries) {
   const dir = path.dirname(CONFIG.exhaustedPath);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(CONFIG.exhaustedPath, JSON.stringify({ urls: map, lastUpdated: new Date().toISOString(), totalCount: Object.keys(map).length }, null, 2) + '\n');
+  const onDisk = loadExhausted();
+  const merged = { ...onDisk, ...newEntries };
+  fs.writeFileSync(CONFIG.exhaustedPath, JSON.stringify({ urls: merged, lastUpdated: new Date().toISOString(), totalCount: Object.keys(merged).length }, null, 2) + '\n');
 }
 
 function loadCandidates() {
@@ -101,9 +116,13 @@ function loadCandidates() {
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
 
       if (!data.url) { skippedNoUrl++; continue; }
-      let domain;
-      try { domain = new URL(data.url).hostname.replace(/^www\./, ''); } catch { continue; }
-      if (domain !== CONFIG.domain) { skippedWrongDomain++; continue; }
+      if (CONFIG.outlet) {
+        if ((data.outletId || '') !== CONFIG.outlet) { skippedWrongDomain++; continue; }
+      } else {
+        let domain;
+        try { domain = new URL(data.url).hostname.replace(/^www\./, ''); } catch { continue; }
+        if (domain !== CONFIG.domain) { skippedWrongDomain++; continue; }
+      }
 
       if (data.contentTier === 'complete') { skippedComplete++; continue; }
       if (!thinTiers.has(data.contentTier)) continue;
@@ -129,7 +148,7 @@ function loadCandidates() {
 
   console.log(`Scanned: ${scanned}`);
   console.log(`Skipped (complete): ${skippedComplete}, (flagged): ${skippedFlagged}, (no url): ${skippedNoUrl}, (wrong domain): ${skippedWrongDomain}, (exhausted): ${skippedExhausted}`);
-  console.log(`Candidates for ${CONFIG.domain}: ${candidates.length}`);
+  console.log(`Candidates for ${CONFIG.outlet ? `outlet=${CONFIG.outlet}` : CONFIG.domain}: ${candidates.length}`);
 
   return candidates.slice(0, CONFIG.limit);
 }
@@ -197,11 +216,16 @@ async function processRecovered(candidate, text, html, newUrl, method) {
 
   let data;
   if (newUrl !== candidate.url) {
+    // stampOnNoop: a canonical-equivalent rewrite (protocol/tracking-param-only
+    // diff) makes updateFileUrlWithInvariant return null even though it's not a
+    // refusal — without stampOnNoop that silently drops the recovery and
+    // blacklists a perfectly good URL (mirrors rediscover-review-urls.js's
+    // fallback branch, which hits the same ambiguity).
     const updated = updateFileUrlWithInvariant(candidate.filePath, newUrl, {
       ...metadata,
       urlDiscoveredAt: metadata.textFetchedAt,
       urlDiscoveryMethod: 'google-serp',
-    });
+    }, { stampOnNoop: true });
     if (!updated) {
       console.log(`    URL-invariant write refused (cross-outlet or unreadable)`);
       return { ok: false, reason: 'invariant_refused' };
@@ -248,7 +272,7 @@ async function processRecovered(candidate, text, html, newUrl, method) {
 async function main() {
   console.log('SERP Text Recovery');
   console.log('===================');
-  console.log(`  Domain: ${CONFIG.domain}`);
+  console.log(`  ${CONFIG.outlet ? `Outlet: ${CONFIG.outlet}` : `Domain: ${CONFIG.domain}`}`);
   console.log(`  Limit: ${CONFIG.limit}`);
   console.log(`  Dry run: ${CONFIG.dryRun}\n`);
 
@@ -301,10 +325,15 @@ async function main() {
         console.log(`  → No SERP match found`);
         stats.notFound++;
       } else {
-        console.log(`  → SERP found: ${newUrl}`);
-        const rediscoveredFetch = await fetchAndExtract(newUrl);
+        // Defensive unwrap: a BD Web Unlocker HTML-regex result is normally
+        // already unwrapped at discovery time, but this is the same guard
+        // review-write-guard.js applies at its write chokepoint — cheap
+        // insurance against ever persisting a google.com/url?q=... wrapper.
+        const cleanUrl = unwrapRedirectUrl(newUrl);
+        console.log(`  → SERP found: ${cleanUrl}`);
+        const rediscoveredFetch = await fetchAndExtract(cleanUrl);
         if (rediscoveredFetch) {
-          const result = await processRecovered(c, rediscoveredFetch.text, rediscoveredFetch.html, newUrl, 'serp-rediscovery');
+          const result = await processRecovered(c, rediscoveredFetch.text, rediscoveredFetch.html, cleanUrl, 'serp-rediscovery');
           if (result.ok) {
             console.log(`  ✓ RECOVERED via SERP rediscovery`);
             stats.recovered++;

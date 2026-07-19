@@ -212,3 +212,37 @@ test('run-skipped note renders as the top red banner', () => {
   const clean = renderEmail({ items: [], stats: STATS, awaitingTotal: 0 });
   assert.doesNotMatch(clean, /⛔/);
 });
+
+test('renderAttentionBlock: empty input renders nothing', () => {
+  const { renderAttentionBlock } = require('./autonomous-email-render.js');
+  assert.equal(renderAttentionBlock(null), '');
+  assert.equal(renderAttentionBlock({ configWarnings: [], failedCards: [], parkedItems: [] }), '');
+});
+
+test('renderAttentionBlock: each category renders with its owner action, escaped', () => {
+  const { renderAttentionBlock } = require('./autonomous-email-render.js');
+  const html = renderAttentionBlock({
+    configWarnings: ['size M is enabled but can never be admitted <script>'],
+    failedCards: [{ name: 'Byline recovery & cleanup' }],
+    parkedItems: [{ name: 'Clean up 10 clusters', size: 'L' }],
+  });
+  assert.match(html, /3 items stalling the loop/);
+  assert.match(html, /&lt;script&gt;/);              // escaped
+  assert.match(html, /Byline recovery &amp; cleanup/);
+  assert.match(html, /clear the Auto tag/);
+  assert.match(html, /sized L/);
+  assert.match(html, /interactive session/);
+  assert.doesNotMatch(html, /<script>/);
+});
+
+test('renderEmail: attention block appears above approval items', () => {
+  const { renderEmail } = require('./autonomous-email-render.js');
+  const html = renderEmail({
+    items: [{ name: 'Some pass card', branch: 'b', usd: 1, checks: [], approveUrl: 'https://x/a', rejectUrl: 'https://x/r' }],
+    attention: { failedCards: [{ name: 'Wedged card' }], configWarnings: [], parkedItems: [] },
+    stats: { runId: null, tonight: { usd: 0, byModel: {} }, week: { usd: 0 }, paceMonthlyUSD: null },
+  });
+  const attnIdx = html.indexOf('stalling the loop');
+  const itemIdx = html.indexOf('Some pass card');
+  assert.ok(attnIdx > -1 && itemIdx > -1 && attnIdx < itemIdx, `attention(${attnIdx}) must precede items(${itemIdx})`);
+});
