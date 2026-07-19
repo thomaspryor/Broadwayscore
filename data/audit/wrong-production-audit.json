@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-19T09:58:41.073Z",
+  "timestamp": "2026-07-19T10:24:25.367Z",
   "stats": {
-    "totalReviews": 40234,
-    "alreadyFlagged": 17618,
+    "totalReviews": 40246,
+    "alreadyFlagged": 17632,
     "dateGuardCatches": 49,
-    "directorMismatch": 916,
+    "directorMismatch": 914,
     "tvFilmSignals": 1103,
     "londonSignals": 755,
     "offBroadwaySignals": 475,
     "yearMismatch": 85,
-    "noPublishDate": 3636
+    "noPublishDate": 3632
   },
   "findings": [
     {
@@ -14628,34 +14628,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "long-days-journey-into-night-2003",
-      "file": "theater-scene--darryl-reilly.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.theaterscene.net/plays/long-days-journey-night/darryl-reilly/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jonathan kent\" from long-days-journey-into-night-2016"
-        }
-      ]
-    },
-    {
-      "showId": "long-days-journey-into-night-2003",
-      "file": "towleroad--naveen-kumar.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.towleroad.com/2016/04/jessica-lange-is-astonishing-in-long-days-journey-into-night-on-broadway-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jonathan kent\" from long-days-journey-into-night-2016"
         }
       ]
     },
@@ -38496,6 +38468,7 @@
     {
       "showId": "shifters-off-broadway-2026",
       "file": "nytg--unknown.json",
+      "score": 73,
       "publishDate": "2026-07-15",
       "url": "https://www.newyorktheatreguide.com/reviews/shifters-off-broadway-review",
       "findings": [
