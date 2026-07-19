@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-19T05:27:33.405Z",
+  "generatedAt": "2026-07-19T07:09:51.488Z",
   "date": "2026-07-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 229604,
+  "entryCount": 233127,
   "shows": [
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
@@ -36,7 +36,7 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1376,7 +1376,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 2737354,
+        "collected-to-scored": 2747515,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1386,12 +1386,12 @@
     },
     {
       "showId": "the-smile-of-her-off-west-end-2026",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1337334,
+        "collected-to-scored": 977788,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1521,7 +1521,7 @@
     },
     {
       "showId": "loves-labours-lost-globe-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1702,6 +1702,36 @@
     {
       "showId": "angels-in-america-2018",
       "reviewCount": 53,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "giant-west-end-2025",
+      "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "giant-royal-court-off-west-end-2024",
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
