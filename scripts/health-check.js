@@ -1101,6 +1101,102 @@ function checkAPICredits() {
     }
   }));
 
+  // Scrapingdog — same burn-projection shape as SB. Added 2026-07-19 after the
+  // SB-exhaustion incident revealed SD had ZERO balance monitoring: if SD runs
+  // dry, every fetch silently falls back to BD/SB (the exact failure that
+  // exhausted SB's plan). 'error' (not 'warn') on projected exhaustion so the
+  // actionable-only email policy actually delivers it.
+  const sdKey = process.env.SCRAPINGDOG_API_KEY;
+  if (sdKey) {
+    results.push(runCheck('Credits: ScrapingDog', () => {
+      const result = execSync(
+        `curl -s --max-time 10 "https://api.scrapingdog.com/account?api_key=${sdKey}"`,
+        { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+      ).trim();
+      const acct = JSON.parse(result);
+      if (!acct.requestLimit) {
+        return { name: 'Credits: ScrapingDog', status: 'warn', message: `Unexpected account response: ${result.slice(0, 80)}` };
+      }
+      const remaining = acct.requestLimit - acct.requestUsed;
+      const pctRemaining = Math.round((remaining / acct.requestLimit) * 100);
+      const daysToRenewal = typeof acct.validity === 'number' ? acct.validity : null;
+      let msg = `${Math.round(remaining / 1000)}k credits left (${pctRemaining}%)`;
+      let status = 'pass';
+      if (daysToRenewal !== null) {
+        const daysIntoCycle = Math.max(1, 30 - daysToRenewal);
+        const dailyBurn = acct.requestUsed / daysIntoCycle;
+        const daysUntilExhaustion = dailyBurn > 0 ? remaining / dailyBurn : Infinity;
+        msg += ` · ${Math.round(dailyBurn / 1000)}k/day burn · renews in ${daysToRenewal}d`;
+        if (remaining <= 0) { status = 'error'; msg += ' · EXHAUSTED'; }
+        else if (daysUntilExhaustion < daysToRenewal) { status = 'error'; msg += ` · exhausts in ~${Math.round(daysUntilExhaustion)}d (BEFORE renewal)`; }
+        else if (pctRemaining <= 15) { status = 'warn'; }
+      } else if (pctRemaining <= 5) { status = 'error'; }
+      else if (pctRemaining <= 15) { status = 'warn'; }
+      return { name: 'Credits: ScrapingDog', status, message: msg, hint: status !== 'pass' ? 'If SD runs dry, all traffic silently falls back to BD/SB. Upgrade plan or reduce scraping.' : undefined };
+    }));
+  } else {
+    results.push({ name: 'Credits: ScrapingDog', status: 'warn', message: 'Skipped — no SCRAPINGDOG_API_KEY available' });
+  }
+
+  // Bright Data — balance + month-to-date spend (serp + unlocker zones). BD is
+  // pay-per-request with a prepaid balance; 2026-07-19 audit found $16 balance
+  // vs $148 pending. 'error' on low balance so it emails.
+  const bdToken = process.env.BRIGHTDATA_TOKEN;
+  if (bdToken) {
+    results.push(runCheck('Credits: Bright Data', () => {
+      const balRaw = execSync(
+        `curl -s --max-time 10 -H "Authorization: Bearer ${bdToken}" "https://api.brightdata.com/customer/balance"`,
+        { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+      ).trim();
+      const bal = JSON.parse(balRaw);
+      const monthStart = new Date();
+      monthStart.setDate(1);
+      const from = monthStart.toISOString().split('T')[0];
+      const to = new Date().toISOString().split('T')[0];
+      const zones = ['serp_api1', process.env.BRIGHTDATA_ZONE || 'web_unlocker2'];
+      let monthCost = 0;
+      for (const zone of [...new Set(zones)]) {
+        try {
+          const costRaw = execSync(
+            `curl -s --max-time 10 -H "Authorization: Bearer ${bdToken}" "https://api.brightdata.com/zone/cost?zone=${zone}&from=${from}&to=${to}"`,
+            { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+          ).trim();
+          const cost = JSON.parse(costRaw);
+          for (const cust of Object.values(cost)) {
+            if (cust && cust.custom && typeof cust.custom.cost === 'number') monthCost += cust.custom.cost;
+          }
+        } catch { /* per-zone cost is best-effort; balance is the hard signal */ }
+      }
+      const balance = typeof bal.balance === 'number' ? bal.balance : null;
+      const pending = typeof bal.pending_costs === 'number' ? bal.pending_costs : 0;
+      let msg = `balance $${balance !== null ? balance.toFixed(2) : '?'} · pending $${pending.toFixed(2)} · month-to-date $${monthCost.toFixed(2)} (serp+unlocker)`;
+      if (balance !== null && balance < 20) {
+        return { name: 'Credits: Bright Data', status: 'error', message: msg, hint: 'Low BD balance — top up or confirm auto-recharge, or BD tier goes dark.' };
+      }
+      if (monthCost > 250) {
+        return { name: 'Credits: Bright Data', status: 'warn', message: msg, hint: 'BD spend above $250/mo pace — check SERP demand.' };
+      }
+      return { name: 'Credits: Bright Data', status: 'pass', message: msg };
+    }));
+  }
+
+  // Browserbase — usage trend only (minutes are lifetime-cumulative; small volume).
+  const bbKey = process.env.BROWSERBASE_API_KEY;
+  const bbProject = process.env.BROWSERBASE_PROJECT_ID;
+  if (bbKey && bbProject) {
+    results.push(runCheck('Credits: Browserbase', () => {
+      const raw = execSync(
+        `curl -s --max-time 10 -H "X-BB-API-Key: ${bbKey}" "https://api.browserbase.com/v1/projects/${bbProject}/usage"`,
+        { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+      ).trim();
+      const usage = JSON.parse(raw);
+      if (typeof usage.browserMinutes !== 'number') {
+        return { name: 'Credits: Browserbase', status: 'warn', message: `Unexpected usage response: ${raw.slice(0, 80)}` };
+      }
+      return { name: 'Credits: Browserbase', status: 'pass', message: `${usage.browserMinutes} browser minutes used (cumulative)` };
+    }));
+  }
+
   return results;
 }
 
