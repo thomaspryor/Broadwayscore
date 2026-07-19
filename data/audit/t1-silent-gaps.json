@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-19T12:21:58.747Z",
+  "generatedAt": "2026-07-19T13:21:38.526Z",
   "windowDays": 45,
   "showsScanned": 55,
   "gaps": [
@@ -11,27 +11,10 @@
       "outletId": "talkinbroadway",
       "tier": 2,
       "type": "empty-body",
-      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=P9RfwACvik9Zfqw.O7DDE9j3rRZk9ncltc9G7MhciYw-1782825677-1.0.1.1-MD7q1kApy1e__Spp3obZOq6UrtjHCsxK0tIeHAyRhY4",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGAeQJnhH5ozCC.Rav71xHV9tvxB9h0oo-1782899801-1.0.1.1-_Mvq1E.E_0FWweMKJDcl8.iYGoS61tlUQWAbHIjhVXA",
       "recovery": null,
       "recoveryCount": 3,
-      "fix": "node scripts/ingest-review-from-url.js --show=a-walk-on-the-moon-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=P9RfwACvik9Zfqw.O7DDE9j3rRZk9ncltc9G7MhciYw-1782825677-1.0.1.1-MD7q1kApy1e__Spp3obZOq6UrtjHCsxK0tIeHAyRhY4 --outlet=talkinbroadway --critic=\"Marc Miller\"   # run LOCALLY (cookie jar lives on the Mac)"
-    },
-    {
-      "showId": "heathers-the-musical-off-west-end-2026",
-      "title": "Heathers the Musical",
-      "openingDate": "2026-07-14",
-      "file": "times-uk--ann-treneman.json",
-      "outletId": "times-uk",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-heathers-the-musical-theatre-royal-haymarket-sw1-x5qbxcgjb",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": null
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=heathers-the-musical-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/theatre-review-heathers-the-musical-theatre-royal-haymarket-sw1-x5qbxcgjb --outlet=times-uk --critic=\"Ann Treneman\"   # run LOCALLY (cookie jar lives on the Mac)"
+      "fix": "node scripts/ingest-review-from-url.js --show=a-walk-on-the-moon-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGAeQJnhH5ozCC.Rav71xHV9tvxB9h0oo-1782899801-1.0.1.1-_Mvq1E.E_0FWweMKJDcl8.iYGoS61tlUQWAbHIjhVXA --outlet=talkinbroadway --critic=\"Marc Miller\"   # run LOCALLY (cookie jar lives on the Mac)"
     }
   ]
 }
