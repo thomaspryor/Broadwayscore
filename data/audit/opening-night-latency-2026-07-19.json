@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-19T19:42:21.170Z",
+  "generatedAt": "2026-07-19T20:33:01.550Z",
   "date": "2026-07-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 275893,
+  "entryCount": 275899,
   "shows": [
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
@@ -1822,6 +1822,21 @@
     {
       "showId": "i-need-that-2023",
       "reviewCount": 31,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
