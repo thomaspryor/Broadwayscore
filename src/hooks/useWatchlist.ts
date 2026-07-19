@@ -166,12 +166,16 @@ export function useWatchlist(userId: string | null) {
 
     setError(null);
     try {
-      const { error: err } = await supabaseRestUpdate(
+      const { data, error: err } = await supabaseRestUpdate(
         'watchlist',
         `user_id=eq.${userId}&show_id=eq.${showId}`,
         { planned_date: plannedDate },
       );
       if (err) throw new Error(err.message);
+      // PostgREST returns 200 + [] when the filter matched nothing (e.g. the
+      // entry was removed in another tab) — that's a failed save, not success.
+      // Same guard as the review-edit path in ShowHeroRedesign.handleSaveReview.
+      if (!data) throw new Error('This show is no longer on your watchlist.');
 
       // Later fresh mounts must refetch, not read a cache with the stale date.
       invalidateWatchlistCache();
