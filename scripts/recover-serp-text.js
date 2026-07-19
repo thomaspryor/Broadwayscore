@@ -34,7 +34,7 @@ const { setExtractedScore } = require('./lib/score-routing');
 const { extractArticleText } = require('./lib/article-extractor');
 const { discoverCorrectUrl } = require('./lib/url-discovery');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, unwrapRedirectUrl } = require('./lib/scraper');
 
 const args = process.argv.slice(2);
 const getArg = (name) => {
@@ -68,10 +68,15 @@ function loadExhausted() {
   catch { return {}; }
 }
 
-function saveExhausted(map) {
+// Merges with whatever is currently on disk (not just what this process started
+// from) so a concurrent recovery run's exhausted entries survive — a flat
+// overwrite from an in-memory snapshot would silently erase them.
+function saveExhausted(newEntries) {
   const dir = path.dirname(CONFIG.exhaustedPath);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(CONFIG.exhaustedPath, JSON.stringify({ urls: map, lastUpdated: new Date().toISOString(), totalCount: Object.keys(map).length }, null, 2) + '\n');
+  const onDisk = loadExhausted();
+  const merged = { ...onDisk, ...newEntries };
+  fs.writeFileSync(CONFIG.exhaustedPath, JSON.stringify({ urls: merged, lastUpdated: new Date().toISOString(), totalCount: Object.keys(merged).length }, null, 2) + '\n');
 }
 
 function loadCandidates() {
@@ -197,11 +202,16 @@ async function processRecovered(candidate, text, html, newUrl, method) {
 
   let data;
   if (newUrl !== candidate.url) {
+    // stampOnNoop: a canonical-equivalent rewrite (protocol/tracking-param-only
+    // diff) makes updateFileUrlWithInvariant return null even though it's not a
+    // refusal — without stampOnNoop that silently drops the recovery and
+    // blacklists a perfectly good URL (mirrors rediscover-review-urls.js's
+    // fallback branch, which hits the same ambiguity).
     const updated = updateFileUrlWithInvariant(candidate.filePath, newUrl, {
       ...metadata,
       urlDiscoveredAt: metadata.textFetchedAt,
       urlDiscoveryMethod: 'google-serp',
-    });
+    }, { stampOnNoop: true });
     if (!updated) {
       console.log(`    URL-invariant write refused (cross-outlet or unreadable)`);
       return { ok: false, reason: 'invariant_refused' };
@@ -301,10 +311,15 @@ async function main() {
         console.log(`  → No SERP match found`);
         stats.notFound++;
       } else {
-        console.log(`  → SERP found: ${newUrl}`);
-        const rediscoveredFetch = await fetchAndExtract(newUrl);
+        // Defensive unwrap: a BD Web Unlocker HTML-regex result is normally
+        // already unwrapped at discovery time, but this is the same guard
+        // review-write-guard.js applies at its write chokepoint — cheap
+        // insurance against ever persisting a google.com/url?q=... wrapper.
+        const cleanUrl = unwrapRedirectUrl(newUrl);
+        console.log(`  → SERP found: ${cleanUrl}`);
+        const rediscoveredFetch = await fetchAndExtract(cleanUrl);
         if (rediscoveredFetch) {
-          const result = await processRecovered(c, rediscoveredFetch.text, rediscoveredFetch.html, newUrl, 'serp-rediscovery');
+          const result = await processRecovered(c, rediscoveredFetch.text, rediscoveredFetch.html, cleanUrl, 'serp-rediscovery');
           if (result.ok) {
             console.log(`  ✓ RECOVERED via SERP rediscovery`);
             stats.recovered++;
