@@ -1,73 +1,124 @@
 {
-  "runDate": "2026-07-19T16:06:46.692Z",
+  "runDate": "2026-07-19T17:28:02.253Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
+    "showFilter": "loves-labours-lost-globe-west-end-2026,shifters-off-broadway-2026,the-smile-of-her-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 5,
+    "processed": 3,
+    "failed": 25,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "10.7%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 6,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 5,
+    "tier4Attempts": 4,
+    "tier4Success": 1,
+    "totalFailed": 25,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 5,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.6,
+    "urlDiscoveryAttempts": 20,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "shifters-off-broadway-2026/nytg--gillian-russo.json",
+    "the-smile-of-her-off-west-end-2026/guardian-uk--unknown.json",
+    "shifters-off-broadway-2026/broadwayworld--unknown.json"
+  ],
   "failed": [
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json"
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
+    "loves-labours-lost-globe-west-end-2026/guardian--mark-fisher.json",
+    "loves-labours-lost-globe-west-end-2026/london-theatre--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--holly-williams.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--matt-trueman.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+    "shifters-off-broadway-2026/independent--alice-saville.json",
+    "shifters-off-broadway-2026/playbill--unknown.json",
+    "shifters-off-broadway-2026/standard--nick-curtis.json",
+    "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+    "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "the-smile-of-her-off-west-end-2026/nottingham-confidential--unknown.json",
+    "the-smile-of-her-off-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "shifters-off-broadway-2026/nytg--gillian-russo.json",
+      "the-smile-of-her-off-west-end-2026/guardian-uk--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "shifters-off-broadway-2026/broadwayworld--unknown.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Chichester Observer": {
+      "count": 1,
+      "domain": "facebook.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Nottingham Confidential": {
+      "count": 1,
+      "domain": "facebook.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
