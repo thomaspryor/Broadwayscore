@@ -340,6 +340,13 @@ function buildDataPlan(entries) {
   for (const e of entries) {
     if (e.decision !== 'skip' || !e.card || !e.card.id || e.transient) continue;
     if (e.preFilter && CLAIMED_IN_FLIGHT_RE.test(e.preFilter.reason || '')) continue;
+    // Auto-stamped cards (failed/attempted/needs-approval) are unattemptable:
+    // attemptDataCard refuses any card with `auto` set, so planning one wedges
+    // a slot into a nightly "state moved underneath us" skip. 2026-07-17..19:
+    // two auto=failed cards + an L held all 3 slots — three nights, zero
+    // attempts. failed stays failed until the OWNER clears it (morning-email
+    // triage); it just must not occupy a plan slot meanwhile.
+    if (e.card.auto) continue;
     const cls = classifyDataCard(e.card);
     if (!cls) continue;
     const size = e.triage && e.triage.size ? e.triage.size : 'M';
