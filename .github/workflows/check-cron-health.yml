@@ -113,6 +113,11 @@ jobs:
             # recency band tolerates GitHub's heavy throttling of */10 schedules; the real
             # alert is the workflow no longer being 'active'.
             "process-feedback.yml|12|Process Feedback Submissions"
+            # Weekly Monday 14:00 UTC. Keys off last SUCCESSFUL run, so
+            # timeout-CANCELLED runs (invisible to the failure digest — cancelled
+            # != failure) trip this after ~8.5 days. It went 8 straight Mondays
+            # cancelled (May 25 - Jul 13 2026) with zero alerts.
+            "scraper-cost-report.yml|205|Weekly Scraper Cost Report"
           )
 
           FAILURES=""
