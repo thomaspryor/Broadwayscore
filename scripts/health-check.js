@@ -1039,6 +1039,36 @@ function checkSecretsHealth() {
   ];
 }
 
+// --- Category I2: Deploy freshness (content-aware gate watchdog) ---
+//
+// The should-deploy gate (scripts/lib/should-deploy-gate.js) skips scheduled
+// deploys when nothing site-relevant changed, with a 6h staleness backstop.
+// All existing alerting keys off run FAILURES — a gate stuck wrongly-closed
+// produces green skip runs and zero deploys with no signal (plan-review
+// pre-mortem, 2026-07-19). This check is the stuck-closed detector: the
+// backstop guarantees a READY production deployment at least every ~6h
+// (plus cron delay), so age >8h means the gate, the cron, or Vercel is broken.
+// Uses check-prod-deploy.js (canonical READY-deployment query) — do not
+// hand-roll another copy of the Vercel API call.
+
+function checkDeployFreshness() {
+  if (!process.env.VERCEL_TOKEN) {
+    return [{ name: 'Deploy: production freshness', status: 'warn', message: 'Skipped — no VERCEL_TOKEN available' }];
+  }
+  return [runCheck('Deploy: production freshness', () => {
+    const out = execSync('node scripts/check-prod-deploy.js --json', {
+      encoding: 'utf8', timeout: 30000, stdio: ['pipe', 'pipe', 'pipe'],
+    });
+    const dep = JSON.parse(out);
+    const ageH = dep.ageSec / 3600;
+    const msg = `Latest READY production deploy: ${dep.deployedSha ? dep.deployedSha.slice(0, 10) : 'unknown-sha'}, age ${ageH.toFixed(1)}h`;
+    const hint = 'Gate stuck or cron dead? Check should-deploy runs (gh run list --workflow=vercel-deploy.yml), dispatch "Rebuild Reviews (Fast)", or set repo var DEPLOY_GATE_DISABLED=true';
+    if (ageH > 12) return { name: 'Deploy: production freshness', status: 'error', message: msg + ' (>12h — 6h backstop is not firing)', hint };
+    if (ageH > 8) return { name: 'Deploy: production freshness', status: 'warn', message: msg + ' (>8h — backstop late; GH cron delays can explain up to ~2h)', hint };
+    return { name: 'Deploy: production freshness', status: 'pass', message: msg };
+  })];
+}
+
 // --- Category J: API Credits ---
 
 function checkAPICredits() {
@@ -1984,6 +2014,7 @@ async function main() {
     ...checkCronHealth(),
     ...checkSecretsHealth(),
     ...checkAPICredits(),
+    ...checkDeployFreshness(),
   ];
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
