@@ -88,3 +88,13 @@ test('empirical size floor: M cap-fail parks to L (owner territory), never re-at
   const plan = buildDataPlan([skipped(burned, 'M')], new Set(['card-m']));
   assert.deepEqual(plan.map(p => [p.id, p.size]), [['card-m', 'L']]);
 });
+
+test('capExceededCardIds parses the producer-verbatim card-fail note (regex/field-name drift guard)', () => {
+  const { capExceededCardIds } = require('./autonomous-triage.js');
+  const rows = [
+    { event: 'card-fail', cardId: 'card-burned', note: 'budget: attempt spend $2.22 exceeded per-card cap $1.50' },
+    { event: 'card-fail', cardId: 'card-other', note: 'empty-diff: implementer produced no changes' },
+    { event: 'card-skip', cardId: 'card-skip', note: 'exceeded per-card cap' },
+  ];
+  assert.deepEqual([...capExceededCardIds(rows)], ['card-burned']);
+});

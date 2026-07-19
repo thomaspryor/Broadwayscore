@@ -18,7 +18,7 @@ const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filter
 const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
-const { recordBdCall, recordSdCall } = require('./bd-telemetry');
+const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
 
 // Scrapingdog SERP — flag-gated cheap primary ahead of BD/SB SERP. Google Light
 // Search = 5 credits (~$0.45/1k) vs BD SERP (~$1.50/1k). Default OFF.
@@ -232,6 +232,20 @@ let _brightDataConsecutiveFailures = 0;
 let _scrapingdogSerpFailures = 0;
 const MAX_CONSECUTIVE_FAILURES = 5;
 
+// ScrapingBee SERP (store/google) costs ~25 credits/call and is SEPARATE from
+// scraper.js's SB_CREDIT_BUDGET (page fetches) — sharing one flag would let a
+// SERP burst black out the paywalled-outlet page-fetch fallback mid-run. The
+// cap is PER PROCESS: matrix-sharded workflows (parallel_jobs=N) get N× this.
+// SERP_NO_SB=1 skips SB SERP entirely (bulk/backfill runs — an empty SD+BD
+// result there is almost always the true answer, not worth 25cr to re-ask).
+const SB_SERP_CREDITS_PER_CALL = 25;
+const _sbSerpCapRaw = parseInt(process.env.SERP_SB_MAX_CALLS_PER_RUN || '40', 10);
+// NaN guard: a malformed env value would make `count >= NaN` never trip,
+// silently disabling the cap — default to 40 instead.
+const SERP_SB_MAX_CALLS_PER_RUN = Number.isFinite(_sbSerpCapRaw) ? _sbSerpCapRaw : 40;
+let _sbSerpCallCount = 0;
+let _sbSerpCapLogged = false;
+
 // Rolling window health tracking for ScrapingBee SERP
 const _scrapingBeeSerpResults = []; // true=success, false=failure
 const ROLLING_WINDOW_SIZE = 20;
@@ -304,6 +318,14 @@ async function _serpViaScrapingdog(query, log, dateRange, geo) {
 
 async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
   if (_scrapingBeeSerpExhausted || !apiKey || scraper.sbCreditsLow) return null;
+  if (_sbSerpCallCount >= SERP_SB_MAX_CALLS_PER_RUN) {
+    if (!_sbSerpCapLogged) {
+      _sbSerpCapLogged = true;
+      log(`    ⚠ ScrapingBee SERP per-run cap hit (${SERP_SB_MAX_CALLS_PER_RUN} calls ≈ ${SERP_SB_MAX_CALLS_PER_RUN * SB_SERP_CREDITS_PER_CALL} credits) — skipping SB SERP for the rest of this run`);
+      recordSbCall({ host: 'serp.scrapingbee', fn: 'serp-cap-hit', success: false, status: 'cap', credits: 0 });
+    }
+    return null;
+  }
 
   const axios = require('axios');
   const RETRYABLE_STATUSES = new Set([500, 502, 503]);
@@ -318,12 +340,14 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
         const fmtD = d => d.toISOString().split('T')[0];
         params.search += ` after:${fmtD(dateRange.dateMin)} before:${fmtD(dateRange.dateMax)}`;
       }
+      _sbSerpCallCount++;
       const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
         params,
         timeout: 30000,
       });
       const data = response.data;
       _recordSerpResult(true);
+      recordSbCall({ host: 'serp.scrapingbee', fn: 'serp', success: true, status: 200, credits: SB_SERP_CREDITS_PER_CALL });
       return (data.organic_results || data.results || []).map(r => ({
         url: r.url || r.link,
         title: r.title || '',
@@ -331,6 +355,9 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
       }));
     } catch (error) {
       const status = error.response?.status;
+      // credits: 0 — ScrapingBee does not bill failed (4xx/5xx/timeout) requests;
+      // recording 25 here would inflate the cost report's attribution.
+      recordSbCall({ host: 'serp.scrapingbee', fn: 'serp', success: false, status: status || (error.message || 'error').slice(0, 80), credits: 0 });
       if (status === 401 || status === 403 || status === 429) {
         _scrapingBeeSerpExhausted = true;
         log(`    ⚠ ScrapingBee SERP exhausted (${status}) — falling back to Bright Data`);
@@ -546,7 +573,27 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride) {
  */
 const _serpCache = require('./serp-cache');
 
-async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride) {
+/**
+ * Pure decision function: ordered BD/SB provider names for the SERP chain.
+ * Extracted for testability (CLAUDE.md rule 15). Scrapingdog runs before this
+ * chain and is gated separately. skips entries: 'scrapingbee' | 'brightdata'
+ * | 'scrapingdog'. SERP_NO_SB=1 (env) adds 'scrapingbee' — used by bulk
+ * backfill runs where an empty SD+BD result should be accepted, not re-asked
+ * on SB at ~25 credits/query.
+ */
+function serpChainOrder(preferSpeed, skips = new Set()) {
+  const order = preferSpeed ? ['scrapingbee', 'brightdata'] : ['brightdata', 'scrapingbee'];
+  return order.filter(p => !skips.has(p));
+}
+
+function _effectiveSerpSkips(skipProviders) {
+  const skips = new Set(skipProviders || []);
+  if (process.env.SERP_NO_SB === '1') skips.add('scrapingbee');
+  return skips;
+}
+
+async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride, skipProviders) {
+  const _skips = _effectiveSerpSkips(skipProviders);
   // 24h disk cache — same query within TTL returns cached results, no API call.
   // Cuts duplicate SERP spend across orchestrator iterations, poller dispatches,
   // gather-reviews runs targeting the same shows. See scripts/lib/serp-cache.js.
@@ -576,7 +623,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
 
   // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). On null/empty it
   // falls through to the existing BD/SB chain, which stays as the safety net.
-  if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY) {
+  if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_skips.has('scrapingdog')) {
     const sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo);
     if (sdResults && sdResults.length > 0) {
       if (!(preferSpeed && sdResults.length === 0)) {
@@ -586,12 +633,17 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     }
   }
 
-  const primary = preferSpeed
-    ? { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' }
-    : { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' };
-  const fallback = preferSpeed
-    ? { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' }
-    : { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' };
+  const _entries = {
+    scrapingbee: { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' },
+    brightdata: { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' },
+  };
+  const _chain = serpChainOrder(preferSpeed, _skips).map(name => _entries[name]);
+  if (_chain.length === 0) {
+    log('    ⚠ All SERP providers skipped (skipProviders/SERP_NO_SB) — no results');
+    return { results: null, provider: 'none' };
+  }
+  const primary = _chain[0];
+  const fallback = _chain[1] || null;
 
   // Geo override only flows to BD providers — ScrapingBee's SERP endpoint does
   // not accept a country param (its /store/google endpoint geo-localizes by SB's
@@ -604,7 +656,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
 
   let results = await _withGeo(primary.fn)(query, primary.key, log, dateRange);
   let provider = primary.name;
-  if (!results || results.length === 0) {
+  if (fallback && (!results || results.length === 0)) {
     const fbResults = await _withGeo(fallback.fn)(query, fallback.key, log, dateRange);
     if (fbResults && fbResults.length > 0) {
       results = fbResults;
@@ -620,7 +672,13 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // dropped yet" — caching it would hide a freshly-published review for up to
   // 24h. So we skip caching empty results on the opening-night path; routine
   // gather-reviews scans still benefit from negative caching.
-  const shouldCache = results !== null && !(preferSpeed && results.length === 0);
+  // Never cache empty results from a skip-truncated chain: a backfill run with
+  // SERP_NO_SB would otherwise cache "no results" and suppress a later normal
+  // run's SB fallback for the cache TTL (cache poisoning across modes).
+  const _chainTruncated = _skips.size > 0;
+  const shouldCache = results !== null
+    && !(preferSpeed && results.length === 0)
+    && !(_chainTruncated && results.length === 0);
   if (shouldCache) {
     _serpCache.set(query, cacheOpts, { results, provider });
   }
@@ -1031,13 +1089,16 @@ async function serpQuery(query, options = {}) {
   // Explicit geo override for callers whose queries don't contain "West End"
   // but target UK-only sites (e.g. slug discovery for SeatPlan/LBO/LTD).
   const geo = options.geo;
+  // Per-caller provider skips (e.g. ['scrapingbee'] on bulk backfills);
+  // SERP_NO_SB=1 env adds 'scrapingbee' globally inside the chain.
+  const skipProviders = options.skipProviders;
 
   if (!sbKey && !bdKey) {
     log('    ⚠ No SERP API keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN)');
     return null;
   }
 
-  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed, geo);
+  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed, geo, skipProviders);
   if (!results) return null;
 
   return results.slice(0, nbResults);
@@ -1053,6 +1114,7 @@ module.exports = {
   canDisambiguateGenericTitle,
   discoverCorrectUrl,
   serpQuery,
+  serpChainOrder,
   getShowInfo,
   calculateDateWindow,
   buildDateTbs,
