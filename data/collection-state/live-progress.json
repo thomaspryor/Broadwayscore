@@ -1,20 +1,26 @@
 {
-  "updatedAt": "2026-07-19T14:06:50.099Z",
+  "updatedAt": "2026-07-19T14:10:08.041Z",
   "processed": 82,
-  "failed": 610,
-  "successRate": "11.8%",
+  "failed": 622,
+  "successRate": "11.6%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 49,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 4,
     "scrapingbee": 0,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-07-19T00:22:18.441Z",
+      "event": "bb-session",
+      "session": "1ab4299d",
+      "url": "https://www.thestage.co.uk/reviews/the-jonathan-larson-project-review-southwark-"
+    },
     {
       "t": "2026-07-19T00:22:19.414Z",
       "event": "bb-cookie-inject",
@@ -121,12 +127,6 @@
       "t": "2026-07-19T11:50:46.855Z",
       "event": "bb-session",
       "session": "fd76622c",
-      "url": "https://www.broadwayworld.com/reviews/dukes"
-    },
-    {
-      "t": "2026-07-19T13:55:20.614Z",
-      "event": "bb-session",
-      "session": "d0c4dbb8",
       "url": "https://www.broadwayworld.com/reviews/dukes"
     }
   ]
