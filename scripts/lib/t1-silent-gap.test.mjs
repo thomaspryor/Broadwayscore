@@ -130,6 +130,15 @@ test('flag-excluded empty stub over the retry cap is still REPORTED (2026-07-18:
   }), { type: 'empty-body', recoverable: false });
 });
 
+test('roundup page-as-review husk is NOT a gap (2026-07-19: shifters playbill what-are-the-reviews page)', () => {
+  assert.equal(classify({
+    ...TIMES_EMPTY_STUB,
+    outletId: 'playbill',
+    url: 'https://playbill.com/article/what-are-the-reviews-for-shifters-off-broadway',
+    contentTier: 'stub',
+  }), null);
+});
+
 test('contentTier=invalid garbage is NOT an empty-body gap (re-ingest can only re-fetch garbage)', () => {
   assert.equal(classify({
     ...TIMES_EMPTY_STUB, contentTier: 'invalid', aggUrlRecoveryCount: 3,

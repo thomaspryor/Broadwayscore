@@ -818,6 +818,14 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'Playbill critics-think-of roundup' };
   }
 
+  // Playbill "what are the reviews for ..." articles — the newer slug shape
+  // for the same multi-outlet roundup format. A shifters-off-broadway-2026
+  // playbill--unknown husk at this URL shape emailed a CRITICAL silent-gap
+  // alert as a missing first-party review (2026-07-19).
+  if (/playbill\.com\/article\/what-are-the-reviews-for-/i.test(url)) {
+    return { isRoundup: true, reason: 'Playbill what-are-the-reviews roundup' };
+  }
+
   // WhatsOnStage review round-ups — /news/{slug}-review-round-up_{id}/. One
   // 902-word roundup quoting 7 critics exploded into 7 per-critic files scored
   // 100 via unicode-stars on jesus-christ-superstar-west-end-2026 (2026-07-08).

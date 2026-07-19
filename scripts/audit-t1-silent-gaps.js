@@ -254,25 +254,48 @@ async function main() {
       return true;
     });
     if (due.length > 0) {
-      const fields = dueDeduped.slice(0, 15).map((g) => ({
+      // Email routing (2026-07-19, after 6 CRITICAL emails in 36h): only gaps
+      // on shows NEAR OPENING (score actively forming, user can still act
+      // before the broadcast) page in real time. Back-catalogue strandings go
+      // to the daily digest via health-check.js silentGapBacklogResults —
+      // they are still recorded in the report + alert-state below, so they
+      // surface once a day instead of one CRITICAL email per discovery.
+      const URGENT_OPENING_DAYS = 10;
+      const now2 = Date.now();
+      const isUrgent = (g) => {
+        const t = Date.parse(g.openingDate || '');
+        return !Number.isNaN(t) && Math.abs(now2 - t) <= URGENT_OPENING_DAYS * 24 * 60 * 60 * 1000;
+      };
+      const urgent = dueDeduped.filter(isUrgent);
+      const emailBatch = urgent.slice(0, 15);
+      const fields = emailBatch.map((g) => ({
         name: `${g.title} — ${g.outletId} (T${g.tier}, ${g.type})`,
         value: `${g.url || 'no url'}\nFix: ${g.fix}`,
       }));
-      const delivered = await sendAlert({
-        title: `T1/T2 review silent gap: ${dueDeduped.length} major-outlet review(s) missing from scores`,
-        description: 'Discovered review files that will not reach the composite score and are not legitimately excluded. Each needs the listed fix command.',
-        severity: 'error',
-        email: true,
-        fields,
-      });
+      const delivered = urgent.length > 0
+        ? await sendAlert({
+          title: `T1/T2 review silent gap: ${urgent.length} review(s) missing on near-opening show(s)`,
+          description: `Discovered review files that will not reach the composite score and are not legitimately excluded. Each needs the listed fix command. (${dueDeduped.length - urgent.length} additional back-catalogue gap(s) routed to the daily digest.)`,
+          severity: 'error',
+          email: true,
+          fields,
+        })
+        // No urgent gaps: nothing pages. Backlog gaps are marked below so
+        // they stop re-evaluating as due, and the daily digest carries them.
+        : true;
       if (delivered) {
-        // Only mark gaps whose show+outlet actually made it into the emailed
-        // fields (the slice(0,15) cap). Marking ALL due gaps suppressed the
-        // 16th+ outlet for REALERT_DAYS without it ever being emailed
-        // (ship-check finding 2026-07-18).
-        const emailedKeys = new Set(dueDeduped.slice(0, 15).map((g) => `${g.showId}/${g.outletId}`));
+        // Mark: (a) urgent gaps that actually made the emailed fields — an
+        // urgent gap past the 15-cap stays unmarked so it emails next run
+        // (ship-check finding 2026-07-18); (b) ALL non-urgent backlog gaps —
+        // they route to the daily digest (health-check silentGapBacklogResults
+        // reads the report file), so marking stops the hourly re-evaluation
+        // without losing visibility.
+        const handledKeys = new Set([
+          ...emailBatch.map((g) => `${g.showId}/${g.outletId}`),
+          ...dueDeduped.filter((g) => !isUrgent(g)).map((g) => `${g.showId}/${g.outletId}`),
+        ]);
         for (const g of due) {
-          if (emailedKeys.has(`${g.showId}/${g.outletId}`)) state[`${g.showId}/${g.file}`] = now.toISOString();
+          if (handledKeys.has(`${g.showId}/${g.outletId}`)) state[`${g.showId}/${g.file}`] = now.toISOString();
         }
         fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
       }

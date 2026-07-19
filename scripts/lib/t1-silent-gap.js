@@ -24,6 +24,7 @@
 
 const { wouldBeIncludedInRebuild, passesFlagFilters, hasValidScore } = require('./review-text-scoreable');
 const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
+const { isRoundupPageAsReview } = require('./review-guards');
 
 // Tiers considered "cannot silently miss". 1 = NYT/Times/Guardian class,
 // 2 = TheaterMania/Standard/Telegraph class.
@@ -105,6 +106,13 @@ function classifySilentGap({ file, show, tier, outletScored, now }) {
   // Editorial verdicts and wrong-URL phantoms are correct absences regardless
   // of which branch below they'd land in.
   if (hasEditorialExclusion(file) || hasWrongUrlSignal(file)) return null;
+
+  // Page-as-review artifacts: a roundup/aggregate page (playbill
+  // what-are-the-reviews, WOS/BWW/Stage roundups) ingested under the host's
+  // own outletId is never a first-party review — "review missing" is not
+  // true, and re-ingesting its URL can only re-fetch the roundup page
+  // (2026-07-19: shifters playbill--unknown husk emailed a CRITICAL alert).
+  if (isRoundupPageAsReview(file)) return null;
 
   if (passesFlagFilters(file, show)) {
     // Includable content, but no valid score yet.
