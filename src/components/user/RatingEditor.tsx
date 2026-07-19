@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import Modal from '@/components/show-cards/Modal';
 import StarRating from './StarRating';
 import { sanitizeRating } from '@/lib/rating';
@@ -93,6 +93,19 @@ export default function RatingEditor({
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // True once the user has interacted with the date field — a late-arriving
+  // suggestion must never clobber a date they picked themselves.
+  const dateTouched = useRef(false);
+
+  // suggestedDateSeen often arrives AFTER mount: the ?rate=1 deep-link opens
+  // this editor as soon as auth resolves, while the watchlist (source of the
+  // "Saw Jun 24" planned date) is still being fetched. The useState initializer
+  // above has already run by then, so without this effect the field stayed on
+  // today's date (owner report, 2026-07-17).
+  useEffect(() => {
+    if (reviewId || initialDateSeen || dateTouched.current || !suggestedDateSeen) return;
+    setDateSeen(suggestedDateSeen > maxDate ? maxDate : suggestedDateSeen);
+  }, [suggestedDateSeen, reviewId, initialDateSeen, maxDate]);
   // Live hover value from the stars — previewed in the big number so half-star
   // targeting is legible before the click (owner report, 2026-07-13).
   const [hoverValue, setHoverValue] = useState<number | null>(null);
@@ -169,13 +182,13 @@ export default function RatingEditor({
         </label>
         <DatePickerButton
           value={dateSeen}
-          onChange={setDateSeen}
+          onChange={(v) => { dateTouched.current = true; setDateSeen(v); }}
           min="1950-01-01"
           max={maxDate}
           ariaLabel="Date seen"
           wrapClassName="relative w-full sm:w-48"
           className={`w-full flex items-center gap-2 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 transition-colors ${dateSeen ? 'text-white pr-9' : 'text-gray-500'}`}
-          onClear={() => setDateSeen('')}
+          onClear={() => { dateTouched.current = true; setDateSeen(''); }}
         >
           <svg className="w-4 h-4 shrink-0 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -199,7 +212,10 @@ export default function RatingEditor({
           placeholder="What did you think?"
           rows={3}
           maxLength={MAX_CHARS + 100}
-          className="w-full px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 resize-none"
+          // text-base on mobile is load-bearing: a sub-16px font makes iOS
+          // Safari zoom the whole page on focus and stay zoomed after save
+          // (owner report, 2026-07-17). Never drop below 16px here.
+          className="w-full px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 resize-none"
         />
         <div className="flex items-center justify-between mt-0.5">
           <div className="flex items-center gap-1.5 text-xs text-gray-500">

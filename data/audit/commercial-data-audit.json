@@ -1,82 +1,80 @@
 {
   "_meta": {
     "description": "Commercial data audit report",
-    "generatedAt": "2026-07-13T15:47:30.946Z",
+    "generatedAt": "2026-07-18T20:56:25.465Z",
     "scriptVersion": "1.0.0"
   },
   "summary": {
-    "totalEntries": 270,
-    "totalShowsInShowsJson": 2750,
+    "totalEntries": 242,
+    "totalShowsInShowsJson": 2776,
     "matchStats": {
-      "matchedBySlug": 255,
-      "matchedById": 15,
+      "matchedBySlug": 229,
+      "matchedById": 13,
       "orphaned": 0
     },
     "designationDistribution": {
       "Miracle": 9,
-      "Windfall": 19,
+      "Windfall": 18,
       "Trickle": 3,
       "Fizzle": 24,
       "Flop": 65,
       "Easy Winner": 18,
-      "TBD": 33,
-      "Nonprofit": 97,
+      "TBD": 31,
+      "Nonprofit": 72,
       "Tour Stop": 2
     },
     "recoupmentStats": {
-      "recouped": 49,
-      "notRecouped": 124,
-      "nullOrMissing": 97
+      "recouped": 48,
+      "notRecouped": 122,
+      "nullOrMissing": 72
     },
     "modelFalseNegatives": {
-      "count": 2,
+      "count": 6,
       "baseline": 2,
       "shows": [
         "our-town",
-        "leopoldstadt-2022"
+        "hairspray-2002",
+        "come-from-away-2017",
+        "just-for-us",
+        "giant",
+        "what-the-constitution-means-to-me-2019"
       ]
     },
     "dataCompleteness": {
       "hasCapitalization": 129,
       "hasWeeklyRunningCost": 83,
       "hasCostMethodology": 136,
-      "hasSources": 175,
-      "hasDeepResearch": 186
+      "hasSources": 170,
+      "hasDeepResearch": 165
     },
     "openShowCoverage": {
-      "totalOpenPreviewsShows": 171,
-      "withCommercialData": 39,
-      "withoutCommercialData": 132,
-      "coveragePct": 23
+      "totalOpenPreviewsShows": 180,
+      "withCommercialData": 31,
+      "withoutCommercialData": 149,
+      "coveragePct": 17
     },
     "issuesSummary": {
-      "total": 334,
+      "total": 327,
       "bySeverity": {
-        "high": 0,
-        "medium": 26,
-        "low": 308
+        "high": 6,
+        "medium": 25,
+        "low": 296
       },
       "byType": {
-        "id-mismatch": 15,
-        "source-quality": 118,
+        "id-mismatch": 13,
+        "source-quality": 116,
         "financial-sanity": 1,
         "methodology": 8,
         "stale-data": 6,
-        "closed-show-tbd": 11,
-        "nonprofit-classification": 40,
+        "closed-show-tbd": 12,
+        "nonprofit-classification": 15,
         "recoupment-pct": 1,
-        "coverage-gap": 132,
-        "model-false-negative": 2
+        "coverage-gap": 149,
+        "model-false-negative": 6
       }
     }
   },
   "issues": [
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "milo-rau-and-edouard-louis-the-interrogation-off-broadway-2026",
-      "detail": "Commercial key \"milo-rau-and-edouard-louis-the-interrogation-off-broadway-2026\" matches show ID but not slug. Show slug is \"milo-rau-and-edouard-louis-the-interrogation-off-broadway\". Consider renaming the key to match the slug."
-    },
     {
       "type": "id-mismatch",
       "severity": "medium",
@@ -148,12 +146,6 @@
       "severity": "medium",
       "showId": "harry-potter-2021",
       "detail": "Commercial key \"harry-potter-2021\" matches show ID but not slug. Show slug is \"harry-potter\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "care-west-end-2026",
-      "detail": "Commercial key \"care-west-end-2026\" matches show ID but not slug. Show slug is \"care-west-end\". Consider renaming the key to match the slug."
     },
     {
       "type": "id-mismatch",
@@ -542,18 +534,6 @@
     {
       "type": "source-quality",
       "severity": "low",
-      "showId": "milo-rau-and-edouard-louis-the-interrogation-off-broadway-2026",
-      "detail": "sources[0] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "milo-rau-and-edouard-louis-the-interrogation-off-broadway-2026",
-      "detail": "sources[1] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
       "showId": "boop-2025",
       "detail": "sources[1] missing date."
     },
@@ -927,103 +907,109 @@
       "type": "stale-data",
       "severity": "low",
       "showId": "the-great-gatsby",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (166 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (171 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "stranger-things",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (160 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (165 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "buena-vista-social-club",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (145 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (150 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "operation-mincemeat",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (166 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (171 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "two-strangers",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-11\" (152 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-11\" (157 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "maybe-happy-ending",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-03-04\" (131 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-03-04\" (136 days ago)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "death-becomes-her",
-      "detail": "Show is closed (closed 15 days ago on 2026-06-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 20 days ago on 2026-06-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "chess",
-      "detail": "Show is closed (closed 22 days ago on 2026-06-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 27 days ago on 2026-06-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "leopoldstadt-2022",
+      "detail": "Show is closed (closed 1112 days ago on 2023-07-02) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "dog-day-afternoon",
-      "detail": "Show is closed (closed 1 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
-    },
-    {
-      "type": "closed-show-tbd",
-      "severity": "medium",
-      "showId": "milo-rau-and-edouard-louis-the-interrogation-off-broadway-2026",
-      "detail": "Show is closed (closed 107 days ago on 2026-03-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 6 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "death-becomes-her-2024",
-      "detail": "Show is closed (closed 15 days ago on 2026-06-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 20 days ago on 2026-06-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "a-christmas-carol-2019",
-      "detail": "Show is closed (closed 2381 days ago on 2020-01-05) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 2386 days ago on 2020-01-05) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-lyons-2012",
-      "detail": "Show is closed (closed 5125 days ago on 2012-07-01) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 5130 days ago on 2012-07-01) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "jerusalem-2011",
-      "detail": "Show is closed (closed 5440 days ago on 2011-08-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 5445 days ago on 2011-08-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "job-2024",
-      "detail": "Show is closed (closed 624 days ago on 2024-10-27) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 629 days ago on 2024-10-27) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "torch-song-2018",
-      "detail": "Show is closed (closed 2745 days ago on 2019-01-06) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 2750 days ago on 2019-01-06) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-fear-of-13",
-      "detail": "Show is closed (closed 1 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 6 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "celebrity-autobiography",
+      "detail": "Show is closed (closed 27 days ago on 2026-06-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "nonprofit-classification",
@@ -1116,156 +1102,6 @@
       "detail": "Show is at \"Studio 54\" (Roundabout Theatre venue) but designation is \"TBD\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
     },
     {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"Repertorio Español / Spanish Theatre Repertory\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "fish-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"WP Theater\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "care-west-end-2026",
-      "detail": "Designated \"Nonprofit\" but venue \"Young Vic Theatre\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "public-charge-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "antigone-this-play-i-read-in-high-school-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "no-singing-in-the-navy-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"Playwrights Horizons\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "jesa-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "girl-interrupted-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "the-dinosaurs-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"Playwrights Horizons\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "rheology-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"Playwrights Horizons\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "jerome-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"Playwrights Horizons\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "my-joy-is-heavy-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"New York Theatre Workshop\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "age-is-a-feeling-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"Vineyard Theatre\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "girls-chance-music-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"Vineyard Theatre\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "bughouse-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"Vineyard Theatre\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "this-is-my-favorite-song-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"Playwrights Horizons\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "stereophonic-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"Playwrights Horizons\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "buena-vista-social-club-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"Atlantic Theater Company\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "good-time-charlie-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "how-shakespeare-saved-my-life-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "well-see-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "the-curious-case-of-benjamin-button-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "the-verge-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "the-winters-tale-off-broadway",
-      "detail": "Designated \"Nonprofit\" but venue \"Delacorte Theater\" is not a recognized nonprofit venue. Verify this is correct."
-    },
-    {
       "type": "recoupment-pct",
       "severity": "low",
       "showId": "suffs",
@@ -1346,6 +1182,12 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway",
+      "detail": "Open/previews show \"La Breve y Maravillosa Vida de Oscar Wao\" at Repertorio Español / Spanish Theatre Repertory has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "drunk-shakespeare-off-broadway",
       "detail": "Open/previews show \"Drunk Shakespeare\" at The Ruby Theatre has no commercial data entry."
     },
@@ -1364,6 +1206,18 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "my-joy-is-heavy-off-broadway",
+      "detail": "Open/previews show \"My Joy Is Heavy\" at New York Theatre Workshop has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "age-is-a-feeling-off-broadway",
+      "detail": "Open/previews show \"Age Is a Feeling\" at Vineyard Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "the-whoopi-monologues-off-broadway",
       "detail": "Open/previews show \"The Whoopi Monologues\" at Lincoln Center Theater - Mitzi E. Newhouse Theater has no commercial data entry."
     },
@@ -1372,6 +1226,18 @@
       "severity": "low",
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway",
       "detail": "Open/previews show \"Giulia: The Poison Queen of Palermo\" at Perelman Performing Arts Center (PAC NYC) has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "hadestown-west-end",
+      "detail": "Open/previews show \"Hadestown\" at Lyric Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "oh-mary-west-end",
+      "detail": "Open/previews show \"Oh, Mary!\" at Trafalgar Theatre has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1444,12 +1310,6 @@
       "severity": "low",
       "showId": "oliver-west-end",
       "detail": "Open/previews show \"Oliver!\" at Gielgud Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "im-sorry-prime-minister-west-end",
-      "detail": "Open/previews show \"I’m Sorry, Prime Minister\" at Apollo Theatre has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1586,14 +1446,14 @@
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "deep-azure-globe-west-end",
-      "detail": "Open/previews show \"Deep Azure - Globe\" at Sam Wanamaker Playhouse has no commercial data entry."
+      "showId": "a-midsummer-nights-dream-globe-west-end",
+      "detail": "Open/previews show \"A Midsummer Night's Dream - Globe\" at Shakespeare's Globe has no commercial data entry."
     },
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "a-midsummer-nights-dream-globe-west-end",
-      "detail": "Open/previews show \"A Midsummer Night's Dream - Globe\" at Shakespeare's Globe has no commercial data entry."
+      "showId": "loves-labours-lost-globe-west-end",
+      "detail": "Open/previews show \"Love's Labour's Lost - Globe\" at Shakespeare's Globe has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1676,6 +1536,12 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "the-gruffalo-west-end-2026",
+      "detail": "Open/previews show \"The Gruffalo\" at TBA has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "dark-of-the-moon-west-end",
       "detail": "Open/previews show \"Dark of the Moon\" at Charing Cross Theatre has no commercial data entry."
     },
@@ -1702,6 +1568,12 @@
       "severity": "low",
       "showId": "war-horse-west-end",
       "detail": "Open/previews show \"War Horse\" at National Theatre (Olivier) has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway",
+      "detail": "Open/previews show \"Henry VI: A Trilogy in Two Parts\" at The Public Theater has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1766,6 +1638,12 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "trainspotting-the-musical-west-end",
+      "detail": "Open/previews show \"Trainspotting the musical\" at TBA has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway",
       "detail": "Open/previews show \"Heated Rivalry: The Unauthorized Musical Parody\" at 6th Floor Theater (formerly The McKittrick Hotel) has no commercial data entry."
     },
@@ -1774,6 +1652,12 @@
       "severity": "low",
       "showId": "milk-and-honey-amt-theater-off-broadway",
       "detail": "Open/previews show \"Milk and Honey (AMT Theater)\" at Midtown W has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-oresteia-west-end",
+      "detail": "Open/previews show \"The Oresteia\" at TBA has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1934,6 +1818,30 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "the-smile-of-her-off-west-end",
+      "detail": "Open/previews show \"The Smile Of Her\" at Marylebone Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "liberace-and-liza-a-tribute-west-end",
+      "detail": "Open/previews show \"Liberace & Liza: A Tribute\" at TBA has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "ride-the-cyclone-off-west-end",
+      "detail": "Open/previews show \"Ride The Cyclone\" at Southwark Playhouse has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-jonathan-larson-project-off-west-end",
+      "detail": "Open/previews show \"The Jonathan Larson Project\" at Southwark Playhouse has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "poet-on-a-string-off-broadway",
       "detail": "Open/previews show \"Poet On A String\" at Midtown W has no commercial data entry."
     },
@@ -1960,12 +1868,6 @@
       "severity": "low",
       "showId": "the-black-mirror-experience-off-broadway",
       "detail": "Open/previews show \"The Black Mirror Experience\" at The Shed has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "race-the-movie-the-play-off-broadway",
-      "detail": "Open/previews show \"Race: The Movie: The Play\" at Asylum NYC has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -2024,6 +1926,12 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "grayson-the-musical-a-first-look-off-west-end",
+      "detail": "Open/previews show \"Grayson the Musical: A First Look\" at Soho Theatre Walthamstow has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "hamlet-by-william-shakespeare-off-broadway",
       "detail": "Open/previews show \"Hamlet by William Shakespeare\" at Gene Frankel Theatre has no commercial data entry."
     },
@@ -2054,6 +1962,12 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "yes-to-the-unknown-a-night-with-gloria-steinem-off-broadway",
+      "detail": "Open/previews show \"YES TO THE UNKNOWN: A Night with Gloria Steinem\" at Audible’s Minetta Lane Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway",
       "detail": "Open/previews show \"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" at Midtown E has no commercial data entry."
     },
@@ -2064,16 +1978,64 @@
       "detail": "Open/previews show \"We've Been Here Before: A One Woman Musical\" at Soho/Tribeca has no commercial data entry."
     },
     {
-      "type": "model-false-negative",
+      "type": "coverage-gap",
       "severity": "low",
-      "showId": "our-town",
-      "detail": "Announced recouped (2025-01) but modelRecouped=false (range 55.6–83.6–109.6%). Count 2 vs baseline 2 — diagnose model inputs if this grows."
+      "showId": "the-traitors-live-experience-off-west-end",
+      "detail": "Open/previews show \"The Traitors: Live Experience\" at The Traitors: Live Experience has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "shreks-adventure-london-standard-entry-off-west-end",
+      "detail": "Open/previews show \"Shrek's Adventure! London Standard Entry\" at County Hall has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "swan-lake-off-broadway",
+      "detail": "Open/previews show \"Swan Lake\" at Metropolitan Opera House has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "jest-to-impress-off-broadway",
+      "detail": "Open/previews show \"Jest to Impress\" at Soho/Tribeca has no commercial data entry."
     },
     {
       "type": "model-false-negative",
-      "severity": "low",
-      "showId": "leopoldstadt-2022",
-      "detail": "Announced recouped (2023-07) but modelRecouped=false (range -19.5–31.3–78.8%). Count 2 vs baseline 2 — diagnose model inputs if this grows."
+      "severity": "high",
+      "showId": "our-town",
+      "detail": "Announced recouped (2025-01) but modelRecouped=false (range 27–51.9–75%). Count 6 vs baseline 2 — diagnose model inputs if this grows."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "hairspray-2002",
+      "detail": "Announced recouped (2003-05) but modelRecouped=false (range -277.4–-37.4–172.7%). Count 6 vs baseline 2 — diagnose model inputs if this grows."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "come-from-away-2017",
+      "detail": "Announced recouped (2017-10) but modelRecouped=false (range -450.9–33.9–360.4%). Count 6 vs baseline 2 — diagnose model inputs if this grows."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "just-for-us",
+      "detail": "Announced recouped (2023-10) but modelRecouped=false (range 54.8–69.3–82.6%). Count 6 vs baseline 2 — diagnose model inputs if this grows."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "giant",
+      "detail": "Announced recouped (2026-05) but modelRecouped=false (range 54.7–82.4–108%). Count 6 vs baseline 2 — diagnose model inputs if this grows."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "what-the-constitution-means-to-me-2019",
+      "detail": "Announced recouped (2019-07) but modelRecouped=false (range -243.9–-188.7–-136%). Count 6 vs baseline 2 — diagnose model inputs if this grows."
     }
   ]
 }

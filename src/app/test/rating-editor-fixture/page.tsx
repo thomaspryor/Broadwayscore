@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, Suspense } from 'react';
+import { useState, useCallback, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
 import StarRating from '@/components/user/StarRating';
@@ -15,6 +15,9 @@ import Modal from '@/components/show-cards/Modal';
  *   ?state=edit  — editing review r1 (rating 4.5, note + date pre-filled)
  *   ?fail=1      — onSave rejects, exercising the failed-save-keeps-text path
  *   ?stars=N     — initial rating for the new state
+ *   ?suggestDelayed=YYYY-MM-DD — suggestedDateSeen arrives 800ms AFTER mount,
+ *     mirroring the production race where ?rate=1 opens the editor before the
+ *     watchlist fetch (source of the planned date) resolves (owner bug, 2026-07-17)
  *
  * Rendered inline (presentation="inline") so tests are deterministic across widths.
  */
@@ -41,6 +44,16 @@ function RatingEditorFixtureInner() {
   const [stackOpen, setStackOpen] = useState(stack);
   const [saved, setSaved] = useState<RatingEditorSaveData | null>(null);
 
+  // ?suggestDelayed — the suggestion starts null and lands after the editor
+  // has already mounted, like the real watchlist fetch does.
+  const suggestDelayed = sp.get('suggestDelayed');
+  const [suggestedDateSeen, setSuggestedDateSeen] = useState<string | null>(null);
+  useEffect(() => {
+    if (!suggestDelayed) return;
+    const t = setTimeout(() => setSuggestedDateSeen(suggestDelayed), 800);
+    return () => clearTimeout(t);
+  }, [suggestDelayed]);
+
   const handleSave = useCallback(async (data: RatingEditorSaveData): Promise<void | 'auth-gated'> => {
     if (fail) throw new Error('Simulated network failure.');
     if (authGate) {
@@ -65,6 +78,7 @@ function RatingEditorFixtureInner() {
               initialRating={isEdit ? 4.5 : starsParam ? parseFloat(starsParam) : 0}
               initialReviewText={isEdit ? 'Incredible show!' : null}
               initialDateSeen={isEdit ? '2024-11-15' : null}
+              suggestedDateSeen={suggestedDateSeen}
               mode={isEdit ? 'edit' : 'new'}
               onSave={handleSave}
               onSaved={() => setOpen(false)}

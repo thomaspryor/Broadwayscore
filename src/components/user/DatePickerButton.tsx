@@ -62,9 +62,16 @@ export default function DatePickerButton({
         data-bwignore="true"
         value={value}
         onChange={e => { e.stopPropagation(); onChange(e.target.value); }}
+        onClick={e => e.stopPropagation()}
         min={min}
         max={max}
-        className="absolute inset-0 w-full h-full opacity-0 pointer-events-none [color-scheme:dark]"
+        // On touch devices the invisible input takes the tap DIRECTLY —
+        // showPicker() from the button's click handler silently no-ops on iOS
+        // Safari, which read as "the date picker just doesn't open" (owner
+        // report, 2026-07-17). Tapping a native date input always opens the
+        // iOS wheel. Fine-pointer (desktop) keeps the button + showPicker path,
+        // which password managers can't bind to.
+        className="absolute inset-0 w-full h-full opacity-0 pointer-events-none [@media(pointer:coarse)]:pointer-events-auto [@media(pointer:coarse)]:z-[1] [@media(pointer:coarse)]:cursor-pointer [color-scheme:dark]"
       />
       <button
         type="button"
@@ -90,7 +97,7 @@ export default function DatePickerButton({
           type="button"
           onClick={e => { e.preventDefault(); e.stopPropagation(); onClear(); }}
           aria-label="Clear date"
-          className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1 rounded-full text-gray-500 hover:text-white transition-colors"
+          className="absolute right-1.5 top-1/2 -translate-y-1/2 z-[2] p-1 rounded-full text-gray-500 hover:text-white transition-colors"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

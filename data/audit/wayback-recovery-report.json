@@ -1,22 +1,23 @@
 {
-  "totalCandidates": 4,
-  "cdxFound": 1,
-  "cdxNotFound": 1,
-  "recovered": 1,
+  "totalCandidates": 6,
+  "cdxFound": 2,
+  "cdxNotFound": 2,
+  "recovered": 2,
   "recoveredByTier": {
-    "1": 0,
+    "1": 1,
     "2": 0,
     "3": 1
   },
   "recoveredByDomain": {
-    "culturesauce.com": 1
+    "timeout.com": 1,
+    "theaterpizzazz.com": 1
   },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
   "errors": 2,
-  "notInArchive": 1,
+  "notInArchive": 2,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }

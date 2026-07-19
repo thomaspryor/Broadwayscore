@@ -1,37 +1,148 @@
 {
-  "generatedAt": "2026-07-15T14:33:58.789Z",
+  "generatedAt": "2026-07-19T21:56:02.809Z",
   "lookbackDays": 3,
   "shows": [
     {
-      "id": "the-whoopi-monologues-off-broadway-2026",
-      "title": "The Whoopi Monologues",
-      "market": "broadway",
-      "category": "off-broadway",
+      "id": "loves-labours-lost-globe-west-end-2026",
+      "title": "Love's Labour's Lost - Globe",
+      "market": "west-end",
+      "category": "off-west-end",
       "type": "play",
-      "openingDate": "2026-07-14",
+      "openingDate": "2026-07-17",
       "status": "open",
-      "slug": "the-whoopi-monologues-off-broadway",
-      "thumbnail": "/images/shows/the-whoopi-monologues-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 78.11,
-      "liveScore": 78,
-      "scoreDrift": -0.10999999999999943,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
+      "slug": "loves-labours-lost-globe-west-end",
+      "thumbnail": "/images/shows/loves-labours-lost-globe-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": 60,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 11,
-      "t1": 2,
-      "t2": 8,
-      "t3": 1,
-      "positive": 8,
-      "mixed": 3,
+      "total": 1,
+      "t1": 1,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "11/12 total",
-          "T1:2/3"
+          "1/8 total",
+          "T1:1/3",
+          "T2:0/2",
+          "hi-conf:0/6"
         ],
-        "highConfidence": 9,
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-07-19T21:47:34.473Z",
+          "rc": 1,
+          "s": 60,
+          "t1": 1,
+          "t2": 0,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "shifters-off-broadway-2026",
+      "title": "Shifters",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-07-16",
+      "status": "open",
+      "slug": "shifters-off-broadway",
+      "thumbnail": "/images/shows/shifters-off-broadway-2026/thumbnail.jpg",
+      "siteScore": 71.98,
+      "liveScore": 72,
+      "scoreDrift": 0.01999999999999602,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 9,
+      "t1": 2,
+      "t2": 6,
+      "t3": 1,
+      "positive": 4,
+      "mixed": 5,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "9/12 total",
+          "T1:2/3",
+          "hi-conf:3/8"
+        ],
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -127,23 +238,27 @@
           "isDualMarket": false
         },
         {
-          "name": "Observer",
-          "isDualMarket": true
+          "name": "TheWrap",
+          "isDualMarket": false
         },
         {
-          "name": "Playbill",
-          "isDualMarket": false
+          "name": "Observer",
+          "isDualMarket": true
         },
         {
           "name": "The Daily Beast",
           "isDualMarket": false
         },
         {
-          "name": "New York Theater",
+          "name": "Theatrely",
           "isDualMarket": false
         },
         {
-          "name": "Theatrely",
+          "name": "Talkin' Broadway",
+          "isDualMarket": false
+        },
+        {
+          "name": "Cititour",
           "isDualMarket": false
         },
         {
@@ -152,10 +267,6 @@
         },
         {
           "name": "Lighting & Sound America",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
@@ -337,126 +448,94 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        },
+        {
+          "name": "The Tennessean",
+          "isDualMarket": false
         }
       ],
       "timeline": [
         {
-          "t": "2026-07-14T06:37:20.822Z",
-          "rc": 4,
-          "s": 72.88,
-          "t1": 0,
-          "t2": 4,
+          "t": "2026-07-19T09:43:19.234Z",
+          "rc": 7,
+          "s": 72.82,
+          "t1": 2,
+          "t2": 5,
           "t3": 0,
-          "p": 2,
-          "m": 2,
+          "p": 4,
+          "m": 3,
           "n": 0,
           "bc": "waiting"
         },
         {
-          "t": "2026-07-14T09:57:34.446Z",
-          "rc": 5,
-          "s": 74.19,
-          "t1": 1,
-          "t2": 4,
+          "t": "2026-07-19T10:24:30.693Z",
+          "rc": 8,
+          "s": 72.84,
+          "t1": 2,
+          "t2": 6,
           "t3": 0,
-          "p": 3,
-          "m": 2,
+          "p": 4,
+          "m": 4,
           "n": 0,
           "bc": "waiting"
         },
         {
-          "t": "2026-07-14T14:32:04.863Z",
+          "t": "2026-07-19T10:32:08.178Z",
+          "rc": 8,
+          "s": 72.73,
+          "t1": 2,
+          "t2": 6,
+          "t3": 0,
+          "p": 4,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-19T12:17:19.453Z",
           "rc": 9,
-          "s": 78.35,
-          "t1": 1,
-          "t2": 7,
+          "s": 71.98,
+          "t1": 2,
+          "t2": 6,
           "t3": 1,
-          "p": 7,
-          "m": 2,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-07-14T17:32:00.639Z",
-          "rc": 11,
-          "s": 76.67,
-          "t1": 1,
-          "t2": 8,
-          "t3": 2,
-          "p": 8,
-          "m": 3,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-07-14T21:39:44.079Z",
-          "rc": 12,
-          "s": 77.6,
-          "t1": 2,
-          "t2": 8,
-          "t3": 2,
-          "p": 9,
-          "m": 3,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-07-15T05:56:17.011Z",
-          "rc": 12,
-          "s": 77.98,
-          "t1": 2,
-          "t2": 8,
-          "t3": 2,
-          "p": 9,
-          "m": 3,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-07-15T12:28:40.914Z",
-          "rc": 11,
-          "s": 78.11,
-          "t1": 2,
-          "t2": 8,
-          "t3": 1,
-          "p": 8,
-          "m": 3,
+          "p": 4,
+          "m": 5,
           "n": 0,
           "bc": "waiting"
         }
       ]
     },
     {
-      "id": "the-oresteia-west-end-2026",
-      "title": "The Oresteia",
+      "id": "the-smile-of-her-off-west-end-2026",
+      "title": "The Smile Of Her",
       "market": "west-end",
-      "category": "west-end",
+      "category": "off-west-end",
       "type": "play",
-      "openingDate": "2026-07-14",
+      "openingDate": "2026-07-16",
       "status": "open",
-      "slug": "the-oresteia-west-end",
-      "thumbnail": "/images/shows/the-oresteia-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 80,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 3,
+      "slug": "the-smile-of-her-off-west-end",
+      "thumbnail": "/images/shows/the-smile-of-her-off-west-end-2026/thumbnail.jpg",
+      "siteScore": 69.85,
+      "liveScore": 70,
+      "scoreDrift": 0.15000000000000568,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
-      "t1": 1,
-      "t2": 1,
-      "t3": 0,
-      "positive": 2,
-      "mixed": 0,
-      "negative": 0,
+      "total": 7,
+      "t1": 2,
+      "t2": 2,
+      "t3": 3,
+      "positive": 5,
+      "mixed": 1,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
-          "T1:0/3",
-          "hi-conf:0/6"
+          "7/8 total",
+          "T1:1/3",
+          "hi-conf:4/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -469,10 +548,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -487,6 +562,10 @@
         },
         {
           "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
           "isDualMarket": true
         },
         {
@@ -514,225 +593,86 @@
       ],
       "timeline": [
         {
-          "t": "2026-07-15T12:28:40.914Z",
+          "t": "2026-07-17T12:17:05.547Z",
           "rc": 1,
-          "s": 80,
+          "s": 60,
           "t1": 0,
           "t2": 1,
           "t3": 0,
-          "p": 1,
-          "m": 0,
+          "p": 0,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         },
         {
-          "t": "2026-07-15T13:20:05.159Z",
+          "t": "2026-07-17T18:22:51.812Z",
           "rc": 2,
-          "s": 80,
-          "t1": 1,
-          "t2": 1,
-          "t3": 0,
-          "p": 2,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        }
-      ]
-    },
-    {
-      "id": "the-jonathan-larson-project-off-west-end-2026",
-      "title": "The Jonathan Larson Project",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-07-13",
-      "status": "open",
-      "slug": "the-jonathan-larson-project-off-west-end",
-      "thumbnail": "/images/shows/the-jonathan-larson-project-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 73.48,
-      "liveScore": 73,
-      "scoreDrift": -0.480000000000004,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 13,
-      "t1": 2,
-      "t2": 6,
-      "t3": 5,
-      "positive": 9,
-      "mixed": 3,
-      "negative": 1,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3"
-        ],
-        "highConfidence": 7,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-07-14T08:51:29.877Z",
-          "rc": 1,
-          "s": 77,
-          "t1": 0,
-          "t2": 0,
-          "t3": 1,
-          "p": 1,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-07-14T16:13:52.005Z",
-          "rc": 2,
-          "s": 78,
+          "s": 67,
           "t1": 0,
           "t2": 1,
           "t3": 1,
+          "p": 1,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-18T00:17:14.109Z",
+          "rc": 3,
+          "s": 56.09,
+          "t1": 1,
+          "t2": 1,
+          "t3": 1,
+          "p": 1,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-18T06:44:14.444Z",
+          "rc": 4,
+          "s": 66.41,
+          "t1": 1,
+          "t2": 2,
+          "t3": 1,
           "p": 2,
-          "m": 0,
-          "n": 0,
+          "m": 1,
+          "n": 1,
           "bc": "waiting"
         },
         {
-          "t": "2026-07-14T22:39:18.037Z",
-          "rc": 3,
-          "s": 84,
-          "t1": 1,
-          "t2": 1,
-          "t3": 1,
-          "p": 3,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-07-14T23:00:31.817Z",
-          "rc": 3,
-          "s": 83.83,
-          "t1": 1,
-          "t2": 1,
-          "t3": 1,
-          "p": 3,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-07-14T23:40:35.084Z",
+          "t": "2026-07-18T19:34:23.907Z",
           "rc": 5,
-          "s": 80.42,
-          "t1": 1,
-          "t2": 3,
-          "t3": 1,
-          "p": 5,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-07-15T00:02:59.444Z",
-          "rc": 3,
-          "s": 82.12,
-          "t1": 1,
-          "t2": 1,
+          "s": 68.41,
+          "t1": 2,
+          "t2": 2,
           "t3": 1,
           "p": 3,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-07-15T01:30:29.216Z",
-          "rc": 14,
-          "s": 71.93,
-          "t1": 2,
-          "t2": 7,
-          "t3": 5,
-          "p": 9,
-          "m": 4,
+          "m": 1,
           "n": 1,
           "bc": "waiting"
         },
         {
-          "t": "2026-07-15T06:53:44.506Z",
-          "rc": 13,
-          "s": 73.32,
+          "t": "2026-07-19T06:36:31.454Z",
+          "rc": 6,
+          "s": 69.42,
           "t1": 2,
-          "t2": 6,
-          "t3": 5,
-          "p": 9,
-          "m": 3,
+          "t2": 2,
+          "t3": 2,
+          "p": 4,
+          "m": 1,
           "n": 1,
           "bc": "waiting"
         },
         {
-          "t": "2026-07-15T13:20:05.159Z",
-          "rc": 14,
-          "s": 73.54,
+          "t": "2026-07-19T12:39:23.198Z",
+          "rc": 7,
+          "s": 69.85,
           "t1": 2,
-          "t2": 6,
-          "t3": 6,
-          "p": 10,
-          "m": 3,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-07-15T14:33:58.789Z",
-          "rc": 13,
-          "s": 73.48,
-          "t1": 2,
-          "t2": 6,
-          "t3": 5,
-          "p": 9,
-          "m": 3,
+          "t2": 2,
+          "t3": 3,
+          "p": 5,
+          "m": 1,
           "n": 1,
           "bc": "waiting"
         }
@@ -740,56 +680,6 @@
     }
   ],
   "upcoming": [
-    {
-      "id": "the-smile-of-her-off-west-end-2026",
-      "title": "The Smile Of Her",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-07-16",
-      "status": "previews",
-      "slug": "the-smile-of-her-off-west-end",
-      "thumbnail": "/images/shows/the-smile-of-her-off-west-end-2026/thumbnail.jpg",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
-    {
-      "id": "loves-labours-lost-globe-west-end-2026",
-      "title": "Love's Labour's Lost - Globe",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-07-17",
-      "status": "upcoming",
-      "slug": "loves-labours-lost-globe-west-end",
-      "thumbnail": "/images/shows/loves-labours-lost-globe-west-end-2026/thumbnail.webp",
-      "daysUntil": 2,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
     {
       "id": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -800,7 +690,7 @@
       "status": "previews",
       "slug": "trainspotting-the-musical-west-end",
       "thumbnail": "/images/shows/trainspotting-the-musical-west-end-2026/thumbnail.jpg",
-      "daysUntil": 7,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -812,6 +702,45 @@
         "warnings": 0,
         "unknowns": 2,
         "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "hugo-marchand-artists-at-the-center-off-broadway-2026",
+      "title": "Hugo Marchand | Artists at the Center",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "special",
+      "openingDate": "2026-07-23",
+      "status": "upcoming",
+      "slug": "hugo-marchand-artists-at-the-center-off-broadway",
+      "thumbnail": "/images/shows/hugo-marchand-artists-at-the-center-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 4,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
       },
       "preflight": false
     }

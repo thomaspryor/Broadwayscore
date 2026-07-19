@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-15T14:33:53.843Z",
+  "timestamp": "2026-07-19T21:55:55.981Z",
   "stats": {
-    "totalReviews": 40076,
-    "alreadyFlagged": 17570,
-    "dateGuardCatches": 50,
-    "directorMismatch": 911,
-    "tvFilmSignals": 1099,
-    "londonSignals": 744,
-    "offBroadwaySignals": 469,
+    "totalReviews": 40341,
+    "alreadyFlagged": 17648,
+    "dateGuardCatches": 49,
+    "directorMismatch": 914,
+    "tvFilmSignals": 1104,
+    "londonSignals": 754,
+    "offBroadwaySignals": 475,
     "yearMismatch": 85,
-    "noPublishDate": 3613
+    "noPublishDate": 3624
   },
   "findings": [
     {
@@ -4422,20 +4422,6 @@
       ]
     },
     {
-      "showId": "children-of-a-lesser-god-1980",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 63,
-      "publishDate": "2018-04-11",
-      "url": "http://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-lesser-god-broadway-review-0412-story.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"kenny leon\" from children-of-a-lesser-god-2018"
-        }
-      ]
-    },
-    {
       "showId": "children-of-a-lesser-god-2018",
       "file": "gq--mark-burka.json",
       "score": 82,
@@ -6030,6 +6016,20 @@
       "score": 42,
       "publishDate": "November 17, 2021",
       "url": "https://newyorktheater.me/2021/11/17/diana-the-musical-review-3-ways-its-better-on-broadway-3-ways-its-not/#more-80621",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "diana-the-musical-2021",
+      "file": "playbill--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playbill.com/article/read-the-reviews-for-diana-the-musical-on-broadway",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -8111,7 +8111,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 74,
+      "score": 79,
       "publishDate": "2024-09-27",
       "url": "https://www.theguardian.com/stage/2024/sep/27/giant-review-royal-court-theatre-mark-rosenblatt-london",
       "findings": [
@@ -8182,7 +8182,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "standard--tim-bano.json",
-      "score": 94,
+      "score": 97,
       "publishDate": "2024-09-27",
       "url": "https://www.standard.co.uk/culture/theatre/giant-royal-court-review-john-lithgow-romola-garai-b1184513.html",
       "findings": [
@@ -8290,7 +8290,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "timeout-london--tim-bano.json",
-      "score": 93,
+      "score": 96,
       "publishDate": "2025-05-02",
       "url": "https://www.timeout.com/london/theatre/giant-review-3",
       "findings": [
@@ -11645,6 +11645,20 @@
       ]
     },
     {
+      "showId": "into-the-woods-1997",
+      "file": "theater-pizzazz--samuel-l-leiter.json",
+      "score": 85,
+      "publishDate": null,
+      "url": "https://www.theaterpizzazz.com/into-the-woods-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
+        }
+      ]
+    },
+    {
       "showId": "into-the-woods-2022",
       "file": "amny--matt-windman.json",
       "score": 78,
@@ -12862,6 +12876,19 @@
     },
     {
       "showId": "john-proctor-is-the-villain-2025",
+      "file": "teenvogue--p-claire-dodsonbeth-garrabrant.json",
+      "publishDate": "2025-04-03",
+      "url": "https://www.teenvogue.com/story/sadie-sink-cover-march-april-2025-interview",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-2025",
       "file": "theater-scene--victor-gluck.json",
       "score": 25,
       "publishDate": "2025-04-19",
@@ -13116,20 +13143,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 90,
-      "publishDate": "2026-03-27",
-      "url": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
         }
       ]
     },
@@ -14605,6 +14618,20 @@
       ]
     },
     {
+      "showId": "long-days-journey-into-night-2016",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": 92,
+      "publishDate": "May 2, 2016",
+      "url": "https://www.talkinbroadway.com/world/LongDays.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert falls\" from long-days-journey-into-night-2003"
+        }
+      ]
+    },
+    {
       "showId": "lucky-guy-2013",
       "file": "variety--marilyn-stasio.json",
       "score": 78,
@@ -14966,6 +14993,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "master-haroldand-the-boys-2003",
+      "file": "about-entertainment--ben-brantley.json",
+      "score": null,
+      "publishDate": "June 2, 2003",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from master-haroldand-the-boys-1982"
         }
       ]
     },
@@ -19508,6 +19549,33 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "shifters-off-broadway-2026",
+      "file": "broadwayworld--aa-cristi.json",
+      "publishDate": "2026-07-15",
+      "url": "https://www.broadwayworld.com/off-broadway/article/Review-Roundup-SHIFTERSMakes-North-American-Premiere-at-Cherry-Lane-Theatre-20260715",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "shifters-off-broadway-2026",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 74,
+      "publishDate": "2026-07-15",
+      "url": "https://newyorktheater.me/2026/07/15/shifters-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -24312,6 +24380,25 @@
       ]
     },
     {
+      "showId": "the-oresteia-west-end-2026",
+      "file": "broadwayworld--alexander-cohen.json",
+      "score": 57,
+      "publishDate": "2026-07-15",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-other-place-2013",
       "file": "newsday--linda-winer.json",
       "score": 88,
@@ -26048,7 +26135,7 @@
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 88,
+      "score": 97,
       "publishDate": "2022-03-31",
       "url": null,
       "findings": [
@@ -27768,6 +27855,20 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "newsday--unknown.json",
+      "score": 55,
+      "publishDate": null,
+      "url": "https://www.newsday.com/news/new-york/theater-review-who-s-afraid-of-virginia-woolf-2-5-stars-m92773",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 85,
       "publishDate": "October 16, 2012",
@@ -27894,6 +27995,20 @@
       "score": 80,
       "publishDate": null,
       "url": "https://variety.com/2012/legit/reviews/who-s-afraid-of-virginia-woolf-2-1117948558/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "village-voice--michael-musto.json",
+      "score": 87,
+      "publishDate": "2012-10-19",
+      "url": "https://www.villagevoice.com/whos-afraid-of-virginia-woolf-is-back-my-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28944,19 +29059,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "allegra-west-end-2026",
-      "file": "whatsonstage--aliya-al.json",
-      "publishDate": "2026-05-21",
-      "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/allegra_1722344/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 48d before show (2026-05-21 vs 2026-07-08)"
         }
       ]
     },
@@ -30999,6 +31101,19 @@
       ]
     },
     {
+      "showId": "chat-noir-off-west-end-2026",
+      "file": "telegraph--unknown.json",
+      "publishDate": "2026-06-05",
+      "url": "https://www.telegraph.co.uk/theatre/tickets/london/chat-noir/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "chess-2025",
       "file": "timeout--adam-feldman.json",
       "score": 43,
@@ -31284,6 +31399,20 @@
       "score": 100,
       "publishDate": "2026-06-25",
       "url": "https://www.allthatdazzles.co.uk/post/review-cyrano-de-bergerac-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "score": 61,
+      "publishDate": "2026-07-17",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-cyrano-de-bergerac-noel-coward-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -33445,6 +33574,19 @@
       ]
     },
     {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "file": "new-york-city-theatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.newyorkcitytheatre.com/shows/newworldstages1/heathers-the-musical",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
       "showId": "heisenberg-2016",
       "file": "nytg--kathleen-campion.json",
       "score": 88,
@@ -34487,6 +34629,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "file": "observer--kate-kellaway.json",
+      "score": 62,
+      "publishDate": "2026-07-17",
+      "url": "https://observer.co.uk/culture/theatre/article/jesus-christ-superstar-sam-ryders-voice-is-his-salvation",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "file": "observer--katherine-cowles.json",
+      "score": 63,
+      "publishDate": "2026-07-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -37462,13 +37632,14 @@
     {
       "showId": "pride-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "publishDate": "2026-06-11",
+      "score": 97,
+      "publishDate": "2026-06-25",
       "url": "https://www.theguardian.com/stage/2026/jun/26/pride-review-dorfman-theatre-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -38304,6 +38475,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 313d before show (May 8, 2025 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "shifters-off-broadway-2026",
+      "file": "culturesauce--unknown.json",
+      "publishDate": "2026-07-16",
+      "url": "https://culturesauce.com/shifters-off-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -41089,19 +41273,6 @@
       ]
     },
     {
-      "showId": "the-fear-of-13-2026",
-      "file": "washpost--thomas-floyd.json",
-      "publishDate": "2026-04-24",
-      "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/24/fear-of-13-proof-rocky-horror-broadway-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "the-ferryman-2018",
       "file": "america-magazine--rob-weinert-kendt.json",
       "score": 77,
@@ -41611,6 +41782,20 @@
       "score": 85,
       "publishDate": "November 17, 2019",
       "url": "https://variety.com/2019/legit/reviews/the-inheritance-review-broadway-1203406810/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-west-end-2026",
+      "file": "musical-theatre-review--unknown.json",
+      "score": 77,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/the-jonathan-larson-project-southwark-playhouse-borough/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -42184,6 +42369,62 @@
       ]
     },
     {
+      "showId": "the-oresteia-west-end-2026",
+      "file": "london-unattached--madeleine-morrow.json",
+      "score": 96,
+      "publishDate": "2026-07-15",
+      "url": "https://www.london-unattached.com/the-oresteia-the-bridge-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-oresteia-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "score": 61,
+      "publishDate": "2026-07-17",
+      "url": "https://playsinternational.org.uk/the-oresteia-bridge-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-oresteia-west-end-2026",
+      "file": "theatre-vibe--lizzie-loveridge.json",
+      "score": 48,
+      "publishDate": null,
+      "url": "https://theatrevibe.co.uk/2026/07/15/review-the-oresteia-bridge-theatre-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-oresteia-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 39,
+      "publishDate": "2026-07-15",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david-morrissey-bg8qzzhhn",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-other-place-off-broadway-2026",
       "file": "thewrap--robert-hofler.json",
       "score": 72,
@@ -42479,6 +42720,74 @@
     },
     {
       "showId": "the-potluck-off-broadway-2026",
+      "file": "nytimes--helen-shaw.json",
+      "score": 62,
+      "publishDate": "2026-07-15",
+      "url": "https://www.nytimes.com/2026/07/15/theater/the-potluck-review-cesar-alvarez.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-potluck-off-broadway-2026",
+      "file": "one-minute-critic--steven-vargas.json",
+      "score": 63,
+      "publishDate": "2026-07-15",
+      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-potluck-review-cesar-alvarez",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-potluck-off-broadway-2026",
+      "file": "one-minute-critic--unknown.json",
+      "publishDate": "2026-07-15",
+      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-potluck-off-broadway-2026",
+      "file": "theater-scene--tony-marinelli.json",
+      "score": 95,
+      "publishDate": "2026-07-15",
+      "url": "https://www.theaterscene.net/musicals/offbway/the-potluck/tony-marinelli/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-potluck-off-broadway-2026",
+      "file": "theater-scene--unknown.json",
+      "publishDate": "2026-07-15",
+      "url": "https://www.theaterscene.net/musicals/offbway/the-potluck/tony-marinelli/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-potluck-off-broadway-2026",
       "file": "thewrap--robert-hofler.json",
       "score": 77,
       "publishDate": "2026-07-14",
@@ -42579,6 +42888,20 @@
       "score": 78,
       "publishDate": "2025-09-17",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-producers-garrick-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "the-sun--dominic-maxwell.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/article/51bc03b7-bdf2-4856-97be-6fb7aa5a7e9b",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -43857,19 +44180,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "white-rabbit-red-rabbit-west-end-2026",
-      "file": "broadwayworld--mica-blackwell.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

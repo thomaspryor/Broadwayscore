@@ -166,11 +166,6 @@ function Inner({
   const isClosed = show.status === 'closed';
   const isPreviews = show.status === 'previews' || show.status === 'upcoming';
 
-  // Average rating across user's viewings (multi-viewing card foot)
-  const userAvg = ratingCount > 0
-    ? showReviews.reduce((sum, r) => sum + r.rating, 0) / ratingCount
-    : 0;
-
   // ─── Effects ───────────────────────────────────────────────────────────
 
   // Load on auth
@@ -539,19 +534,25 @@ function Inner({
         </div>
       )}
 
-      {/* Action buttons row — Want to See / Rate it (icon stacked vertical) */}
+      {/* Action cluster — user buttons + tickets share ONE space-y-2 group so
+          every gap in the button stack is identical (the old split put 16px
+          above Get Tickets but 8px below it — owner report, 2026-07-17). */}
+      <div className="space-y-2">
+      {/* Action buttons row — same geometry as the ticket buttons below
+          (h-10 / rounded-lg / horizontal icon+label); a taller rounder shape
+          here read as mismatched (owner report, 2026-07-17). */}
       {userFeaturesEnabled && (
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
             onClick={handleWantToSee}
-            className={`flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 py-3 sm:py-2.5 px-2 rounded-card border transition-all ${
+            className={`flex items-center justify-center gap-1.5 h-10 px-2 rounded-lg border transition-all whitespace-nowrap ${
               onWatchlist
                 ? 'bg-brand/10 border-brand text-brand'
                 : 'bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25'
             }`}
           >
-            <svg className="w-5 h-5" fill={onWatchlist ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4 shrink-0" fill={onWatchlist ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
             <span className="text-xs sm:text-sm font-semibold">{onWatchlist ? 'On your list' : 'Want to See'}</span>
@@ -560,9 +561,9 @@ function Inner({
             type="button"
             ref={rateBtnRef}
             onClick={handleRateIt}
-            className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 py-3 sm:py-2.5 px-2 rounded-card border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all"
+            className="flex items-center justify-center gap-1.5 h-10 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
             </svg>
             <span className="text-xs sm:text-sm font-semibold">
@@ -574,7 +575,7 @@ function Inner({
 
       {/* On-list caption — minor indicator (decision: show page stays simple, list mgmt in /my-shows) */}
       {userFeaturesEnabled && firstListContainingShow && (
-        <p className="text-xs text-gray-500 flex items-center gap-1.5 -mt-2">
+        <p className="text-xs text-gray-500 flex items-center gap-1.5">
           <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h10" />
           </svg>
@@ -605,7 +606,6 @@ function Inner({
       {userFeaturesEnabled && hasRating && latestReview && !ratePanelOpen && (
         <YourRatingInline
           reviews={sortedReviews}
-          userAvg={userAvg}
           onEditReview={(r) => { setEditingReview(r); setRatePanelOpen(true); }}
         />
       )}
@@ -673,6 +673,7 @@ function Inner({
           }
         />
       )}
+      </div>{/* /action cluster */}
     </div>
   );
 }
@@ -719,28 +720,29 @@ function AwaitingCard({ show, reviewCount }: { show: ComputedShow; reviewCount: 
 
 function YourRatingInline({
   reviews,
-  userAvg,
   onEditReview,
 }: {
   reviews: UserReview[];
-  userAvg: number;
   onEditReview: (review: UserReview) => void;
 }) {
   const isMulti = reviews.length > 1;
   return (
-    <div className="card p-4 space-y-2.5">
+    <div className="card p-4 space-y-2.5 overflow-hidden">
       {reviews.map((review, i) => (
         <div key={review.id} className={i > 0 ? 'pt-2.5 border-t border-white/5 space-y-1' : 'space-y-1'}>
-          <div className="flex items-center gap-3 min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <div className="flex-shrink-0">
               <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
             </div>
-            <div className="flex items-baseline gap-1.5 min-w-0 flex-1 text-xs">
-              <span className="font-bold text-gray-200 whitespace-nowrap">
+            {/* min-w-0 + truncate: the label+date must SHRINK on narrow
+                viewports — nowrap without an overflow guard ran under the edit
+                pencil and off the card (owner report, 2026-07-17). */}
+            <div className="min-w-0 flex-1 text-xs truncate">
+              <span className="font-bold text-gray-200">
                 {!isMulti ? 'Your rating' : i === 0 ? 'Latest viewing' : 'Earlier viewing'}
               </span>
               {review.date_seen && (
-                <span className="text-gray-500 whitespace-nowrap">· {formatDate(review.date_seen)}</span>
+                <span className="text-gray-500"> · {formatDate(review.date_seen)}</span>
               )}
             </div>
             <button
@@ -761,11 +763,7 @@ function YourRatingInline({
           )}
         </div>
       ))}
-      {isMulti && (
-        <div className="pt-2 border-t border-white/5 text-xs text-gray-500 text-right">
-          avg {formatStars(userAvg)}
-        </div>
-      )}
+      {/* avg-stars footer removed (owner, 2026-07-17: "not needed") */}
     </div>
   );
 }
@@ -780,9 +778,3 @@ function formatDate(iso: string | null | undefined): string {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-/** Render avg rating as Unicode stars, e.g. 4.5 → "★★★★½". */
-function formatStars(avg: number): string {
-  const full = Math.floor(avg);
-  const half = avg - full >= 0.5;
-  return '★'.repeat(full) + (half ? '½' : '');
-}

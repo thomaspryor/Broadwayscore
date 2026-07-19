@@ -47,11 +47,12 @@ test.describe('My Shows — Page Structure', () => {
 
   test('stats bar shows correct counts', async ({ page }) => {
     await goToMock(page);
-    // Counts live in the tab badges (summary bar deduped 2026-07-12);
-    // the amber "to rate" hook is the one non-badge stat.
+    // Counts live in the tab badges only — the "N to rate" stats line was
+    // removed entirely (owner, 2026-07-17: pushed content down, redundant
+    // with the To Be Rated section header).
     await expect(page.locator('#tab-diary span').first()).toHaveText('9');
     await expect(page.locator('#tab-watchlist span').first()).toHaveText('6');
-    await expect(page.getByText('to rate')).toBeVisible();
+    await expect(page.getByText(/^\d+ to rate$/)).toHaveCount(0);
   });
 
   test('no console errors on page load', async ({ page }) => {

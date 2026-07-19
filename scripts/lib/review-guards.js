@@ -818,6 +818,14 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'Playbill critics-think-of roundup' };
   }
 
+  // Playbill "what are the reviews for ..." articles — the newer slug shape
+  // for the same multi-outlet roundup format. A shifters-off-broadway-2026
+  // playbill--unknown husk at this URL shape emailed a CRITICAL silent-gap
+  // alert as a missing first-party review (2026-07-19).
+  if (/playbill\.com\/article\/what-are-the-reviews-for-/i.test(url)) {
+    return { isRoundup: true, reason: 'Playbill what-are-the-reviews roundup' };
+  }
+
   // WhatsOnStage review round-ups — /news/{slug}-review-round-up_{id}/. One
   // 902-word roundup quoting 7 critics exploded into 7 per-critic files scored
   // 100 via unicode-stars on jesus-christ-superstar-west-end-2026 (2026-07-08).
@@ -835,10 +843,23 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'BroadwayWorld /reviews/ critics-aggregation page' };
   }
 
-  // NOTE: Do NOT add generic roundup URL patterns (e.g. /review-roundup/ in BWW URLs).
-  // Many legitimate individual critic reviews are SOURCED from roundup pages —
-  // the URL points to the roundup where the review was discovered, but the review
-  // itself has specific critic/outlet attribution and should count as an original review.
+  // BroadwayWorld "Review Roundup: ..." articles — /article/Review-Roundup-{slug}
+  // (optionally under a regional prefix like /westend/). These are BWW-staff-
+  // bylined quote compilations of OTHER outlets' reviews, not BWW's own review
+  // (those are /article/Review-{SHOW}- or /article/BWW-Review-, which this
+  // pattern must NOT match). One was scored 75 and shipped as a second
+  // first-party BWW review on the-oresteia-west-end-2026 (2026-07-19); a
+  // corpus scan found 71 files with this primary-URL shape, every one already
+  // flagged excluded — zero legitimate reviews live at these URLs.
+  if (/broadwayworld\.com\/(?:[a-z0-9-]+\/)?article\/review-roundup-/i.test(url)) {
+    return { isRoundup: true, reason: 'BroadwayWorld Review-Roundup article (multi-outlet quote compilation)' };
+  }
+
+  // NOTE: Do NOT add generic cross-domain roundup URL patterns (e.g. bare
+  // /review-roundup/ on any host). Many legitimate individual critic reviews
+  // are SOURCED from roundup pages — the URL points to the roundup where the
+  // review was discovered, but the review itself has specific critic/outlet
+  // attribution and should count as an original review.
   // Only flag site-specific patterns where the roundup PAGE is being treated as a review.
 
   return { isRoundup: false };

@@ -74,13 +74,24 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
     : 'shows';
   const isClosed = show.status === 'closed';
 
-  // Per-row visibility: hide any row where the show has no rank in any pool.
-  // Covers: previews shows that aren't yet scored, OB/OWE shows (no Awards
-  // pool), historic shows missing all-time data. Don't show "—" cells for
-  // metrics the show legitimately has no data on.
+  // Off-Broadway / off-West-End have no reliable pre-2005 historical coverage
+  // (only ~34 OB musicals scored ever, heavily recent-weighted), so an
+  // "all-time" rank there is misleading — "#30/34" reads as a big pool when
+  // it's really just "all we happen to have scored." Drop the all-time column
+  // entirely for these markets; they show Open + This-season only.
+  const hideAllTime = market === 'off-broadway' || market === 'off-west-end';
+
+  // Per-row visibility: hide any row where the show has no rank in a VISIBLE
+  // pool. Covers: previews shows that aren't yet scored, OB/OWE shows (no
+  // Awards pool), historic shows missing all-time data. Don't show "—" cells
+  // for metrics the show legitimately has no data on, and don't count the
+  // all-time pool toward visibility when its column is hidden.
   const visibleRows = ROWS.filter(row => {
     const rs = activeRanks[row.metric];
-    return Boolean(rs.openMarket || rs.season || rs.allTime);
+    const hasOpen = !isClosed && Boolean(rs.openMarket);
+    const hasSeason = Boolean(rs.season);
+    const hasAllTime = !hideAllTime && Boolean(rs.allTime);
+    return hasOpen || hasSeason || hasAllTime;
   });
 
   // Pre-2005 closed shows have no all-time rank (footnote: "shows scored
@@ -142,7 +153,7 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
           </h2>
           <p className="text-[12px] text-gray-500 mt-1.5 leading-snug">
             {isClosed
-              ? `Among ${marketName} ${formatNoun} of its season and all-time`
+              ? `Among ${marketName} ${formatNoun} of its season${hideAllTime ? '' : ' and all-time'}`
               : `Compared against scored open ${marketName} ${formatNoun}`}
           </p>
         </div>
@@ -195,9 +206,11 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
               <span className="sm:hidden">Season</span>
               <span className="hidden sm:inline">This season</span>
             </th>
-            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
-              All-time<span className="text-gray-600 font-normal">*</span>
-            </th>
+            {!hideAllTime && (
+              <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
+                All-time<span className="text-gray-600 font-normal">*</span>
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -228,10 +241,13 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
                 </td>
 
                 {/* All-time column: ALWAYS show "of N" so per-metric pool
-                    differences are explicit. */}
-                <td className={`py-2 pl-1 sm:pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
-                  <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} showDenominator />
-                </td>
+                    differences are explicit. Hidden entirely for OB/OWE (no
+                    reliable historical coverage). */}
+                {!hideAllTime && (
+                  <td className={`py-2 pl-1 sm:pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
+                    <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} showDenominator />
+                  </td>
+                )}
               </tr>
             );
           })}
@@ -239,9 +255,11 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
       </table>
       </div>
 
-      <p className="text-[10px] text-gray-500">
-        <span className="text-gray-600">*</span> All-time pool: shows scored 2005–present. Ranks update daily.
-      </p>
+      {!hideAllTime && (
+        <p className="text-[10px] text-gray-500">
+          <span className="text-gray-600">*</span> All-time pool: shows scored 2005–present. Ranks update daily.
+        </p>
+      )}
     </section>
   );
 }

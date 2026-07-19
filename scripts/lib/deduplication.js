@@ -380,6 +380,15 @@ function isMultiProduction(newShow, existing) {
     if (isDefinitelyClosed(newShow) || isDefinitelyClosed(existing)) {
       return true;
     }
+    // One active, one merely announced/upcoming, at CONFIRMED different venues:
+    // separate productions. Mirrors the `venuesKnownDifferent` rule in the
+    // existing-active branch below, which only fires when `existing` is the
+    // active one — without this the check was direction-asymmetric
+    // (2026-07-18: Kew "Jack and the Beanstalk" in previews flagged as a
+    // duplicate of Hackney Empire's announced Christmas panto).
+    if (isNotYetOpen(newShow) || isNotYetOpen(existing)) {
+      return true;
+    }
   }
 
   const newYear = getYear(newShow);

@@ -173,9 +173,10 @@ export default function MyShowsClient() {
     initialRating?: number;
     initialReviewText?: string | null;
     initialDateSeen?: string | null;
+    suggestedDateSeen?: string | null;
   } | null>(null);
   const openRatingEditor = useCallback((show: { id: string; title: string }, opts?: {
-    reviewId?: string; initialRating?: number; initialReviewText?: string | null; initialDateSeen?: string | null;
+    reviewId?: string; initialRating?: number; initialReviewText?: string | null; initialDateSeen?: string | null; suggestedDateSeen?: string | null;
   }) => {
     setRatingTarget({ id: show.id, title: show.title, ...opts });
   }, []);
@@ -372,10 +373,6 @@ export default function MyShowsClient() {
 
   // Stats
   const showsSeen = new Set(reviews.map(r => r.show_id)).size;
-  const upcomingCount = reviews.filter(r => {
-    if (!r.date_seen) return false;
-    return new Date(r.date_seen) > new Date();
-  }).length;
 
   // Sorted diary entries
   const sortedReviews = useMemo(() => {
@@ -575,9 +572,10 @@ export default function MyShowsClient() {
   }
 
   return (
-    <div data-testid="my-shows-content" className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-12">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-2">
+    <div data-testid="my-shows-content" className="max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-12">
+      {/* Header — flex-wrap lets the opened Add-show search take a full row on
+          mobile (basis-full) instead of squeezing beside the title. */}
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white">My Shows</h1>
         {activeTab === 'lists' ? (
           <button
@@ -614,6 +612,7 @@ export default function MyShowsClient() {
           initialRating={ratingTarget.initialRating ?? 0}
           initialReviewText={ratingTarget.initialReviewText}
           initialDateSeen={ratingTarget.initialDateSeen}
+          suggestedDateSeen={ratingTarget.suggestedDateSeen}
           presentation="modal"
           onSave={handleInlineRatingSave}
           onSaved={() => setRatingTarget(null)}
@@ -621,21 +620,10 @@ export default function MyShowsClient() {
         />
       )}
 
-      {/* Stats bar — tab badges carry the seen/watchlist/lists counts now, so
-          only the two signals WITHOUT a badge live here (owner: the duplicate
-          counts were redundant, 2026-07-12). */}
-      {(toBeRatedEntries.length > 0 || upcomingCount > 0) && (
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-400 mb-2">
-          {toBeRatedEntries.length > 0 && (
-            <span><strong className="text-amber-400">{toBeRatedEntries.length}</strong> to rate</span>
-          )}
-          {upcomingCount > 0 && (
-            <span><strong className="text-white">{upcomingCount}</strong> upcoming</span>
-          )}
-        </div>
-      )}
+      {/* Stats bar removed — the To Be Rated / Upcoming sections carry their
+          own headers, so the counts only pushed content down (owner, 2026-07-17). */}
       {!isMockMode && user && (
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <ImportShows
             userId={user.id}
             existingReviewShowIds={new Set(reviews.map(r => r.show_id))}
@@ -741,24 +729,24 @@ export default function MyShowsClient() {
             </select>
           )}
           {/* Grid / List toggle */}
-          <div className="inline-flex flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-8">
+          <div className="inline-flex items-stretch flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-8">
             <button
               type="button"
               onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'grid')}
-              className={`inline-flex items-center justify-center w-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`inline-flex items-center justify-center w-8 h-full outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="Grid view"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4 block shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
             </button>
             <button
               type="button"
               onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'list')}
-              className={`inline-flex items-center justify-center w-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`inline-flex items-center justify-center w-8 h-full outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4 block shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
@@ -767,15 +755,17 @@ export default function MyShowsClient() {
         )}
       </div>
 
-      {/* Mobile controls row — only visible on mobile, hidden on sm+ */}
+      {/* Mobile controls row — only visible on mobile, hidden on sm+.
+          Selects are 16px on mobile: anything smaller makes iOS Safari zoom
+          the whole page on focus and stay zoomed (owner report, 2026-07-17). */}
       {activeTab !== 'lists' && (
-        <div className="flex sm:hidden items-center justify-end gap-1.5 py-2 mb-4">
+        <div className="flex sm:hidden items-center justify-end gap-1.5 py-1.5 mb-2">
           {activeTab === 'diary' && (
             <select
               value={diarySort}
               onChange={e => setDiarySort(e.target.value as DiarySort)}
               aria-label="Sort diary"
-              className="text-xs bg-white/5 border border-white/10 rounded px-1.5 py-1 h-9 text-gray-300 max-w-[90px]"
+              className="text-base bg-white/5 border border-white/10 rounded px-1.5 py-1 h-11 text-gray-300 max-w-[110px]"
             >
               <option value="date-desc">Newest</option>
               <option value="date-asc">Oldest</option>
@@ -787,32 +777,34 @@ export default function MyShowsClient() {
               value={watchlistSort}
               onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
               aria-label="Sort watchlist"
-              className="text-xs bg-white/5 border border-white/10 rounded px-1.5 py-1 h-9 text-gray-300 max-w-[90px]"
+              className="text-base bg-white/5 border border-white/10 rounded px-1.5 py-1 h-11 text-gray-300 max-w-[110px]"
             >
               <option value="added-desc">Recent</option>
               <option value="alphabetical">A-Z</option>
               <option value="closing-soon">Closing</option>
             </select>
           )}
-          {/* Grid / List toggle */}
-          <div className="inline-flex flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-9">
+          {/* Grid / List toggle — h-11 (44px): the global mobile tap-target rule
+              inflates the buttons to 44px anyway, and a shorter container left
+              the icons visually low (owner report, 2026-07-17). */}
+          <div className="inline-flex items-stretch flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-11">
             <button
               type="button"
               onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'grid')}
-              className={`inline-flex items-center justify-center w-9 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`inline-flex items-center justify-center w-11 h-full outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="Grid view"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4 block shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
             </button>
             <button
               type="button"
               onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'list')}
-              className={`inline-flex items-center justify-center w-9 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`inline-flex items-center justify-center w-11 h-full outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4 block shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
@@ -1228,7 +1220,7 @@ function RowRemoveButton({ onRemove, label }: { onRemove: () => void; label: str
       type="button"
       onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirm(true); }}
       aria-label={label}
-      className="relative z-[2] flex-shrink-0 p-1.5 rounded-full text-gray-600 hover:text-red-400 transition-colors pointer-events-auto"
+      className="relative z-[2] inline-flex items-center justify-center flex-shrink-0 p-1.5 rounded-full text-gray-600 hover:text-red-400 transition-colors pointer-events-auto"
     >
       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -1256,7 +1248,10 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
       {href ? (
         <Link
           href={`${href}?edit=1`}
-          className="p-1 rounded-full text-gray-600 hover:text-white transition-colors"
+          // inline-flex centering is load-bearing: the mobile 44px tap-target
+          // rule inflates this inline <a>, and without it the pencil glyph
+          // pinned to the box's top — the "floating pencil" (owner, 2026-07-17).
+          className="inline-flex items-center justify-center p-1 rounded-full text-gray-600 hover:text-white transition-colors"
           aria-label="Edit rating"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1267,7 +1262,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
         <button
           type="button"
           onClick={() => onRate({ id: review.show_id, title }, { reviewId: review.id, initialRating: review.rating, initialReviewText: review.review_text, initialDateSeen: review.date_seen })}
-          className="p-1 rounded-full text-gray-600 hover:text-white transition-colors"
+          className="inline-flex items-center justify-center p-1 rounded-full text-gray-600 hover:text-white transition-colors"
           aria-label="Edit rating"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1279,7 +1274,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmDelete(true); }}
-          className="relative z-[1] p-1 rounded-full text-gray-600 hover:text-red-400 transition-colors"
+          className="relative z-[1] inline-flex items-center justify-center p-1 rounded-full text-gray-600 hover:text-red-400 transition-colors"
           aria-label="Delete rating"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1581,7 +1576,10 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
 /** Render mini star icons for grid cards (filled, half, empty — or filled-only) */
 function MiniStars({ rating, size = 'sm', filledOnly = false }: { rating: number; size?: 'sm' | 'md' | 'lg'; filledOnly?: boolean }) {
   const uid = useId();
-  const starClass = size === 'lg' ? 'w-5 h-5 sm:w-6 sm:h-6' : size === 'md' ? 'w-4.5 h-4.5 sm:w-5 sm:h-5' : 'w-3.5 h-3.5';
+  // NOTE: w-4.5/h-4.5 are NOT in the Tailwind spacing scale — they compile to
+  // nothing, the SVGs fall back to width:100% and flex-share the row, so star
+  // size varied with star count (mobile diary grid bug, 2026-07-17).
+  const starClass = size === 'lg' ? 'w-5 h-5 sm:w-6 sm:h-6' : size === 'md' ? 'w-[18px] h-[18px] sm:w-5 sm:h-5' : 'w-3.5 h-3.5';
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     if (i <= Math.floor(rating)) {
@@ -1714,7 +1712,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
             <button
               type="button"
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(true); }}
-              className="relative z-[1] p-1 text-gray-600 hover:text-red-400 transition-colors"
+              className="relative z-[1] inline-flex items-center justify-center p-1 text-gray-600 hover:text-red-400 transition-colors"
               aria-label="Remove from watchlist"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1846,7 +1844,10 @@ function AddShowSearch({
   }
 
   return (
-    <div ref={containerRef} className="relative">
+    // basis-full: on mobile the open search takes a FULL row of its own instead
+    // of a tiny 160px input squeezed beside the page title (owner report,
+    // 2026-07-17); sm+ keeps the compact inline width.
+    <div ref={containerRef} className="relative basis-full sm:basis-auto min-w-0">
       <ShowSearchDropdown
         placeholder={context === 'diary' ? 'Search to rate...' : 'Search to add...'}
         onSelect={handleSelect}
@@ -1872,14 +1873,16 @@ function AddShowSearch({
 }
 
 /** "To Be Rated" card with inline interactive stars */
-function ToBeRatedCard({ entry, show, onRemove, onRate }: { entry: WatchlistEntry; show?: ShowLookup; onRemove: () => void; onRate: (show: { id: string; title: string }, opts: { initialRating: number }) => void }) {
+function ToBeRatedCard({ entry, show, onRemove, onRate }: { entry: WatchlistEntry; show?: ShowLookup; onRemove: () => void; onRate: (show: { id: string; title: string }, opts: { initialRating: number; suggestedDateSeen?: string | null }) => void }) {
   const router = useRouter();
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const href = getShowHref(slug, show?.diaryOnly);
   const handleStarRate = (rating: number) => {
+    // The "Saw Jun 24" date the user already logged must follow them into the
+    // editor — defaulting to today lost it (owner report, 2026-07-17).
     if (href) router.push(`${href}?rate=1&stars=${rating}`);
-    else onRate({ id: entry.show_id, title }, { initialRating: rating });
+    else onRate({ id: entry.show_id, title }, { initialRating: rating, suggestedDateSeen: entry.planned_date });
   };
 
   return (

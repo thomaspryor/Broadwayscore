@@ -57,7 +57,9 @@ for (const d of showDirs) {
     if (!data.url) continue;
     const roundup = isRoundupUrl(data.url);
     if (!roundup.isRoundup) continue;
-    if (!/broadwayworld\.com\/reviews\//i.test(data.url)) continue; // scope to this card's pattern
+    // Scope to BWW aggregation pages: /reviews/{slug} quote-mosaic pages plus
+    // /article/Review-Roundup- staff compilations (2026-07-19 Oresteia leak).
+    if (!/broadwayworld\.com\/(reviews\/|(?:[a-z0-9-]+\/)?article\/review-roundup-)/i.test(data.url)) continue;
     if (data.isRoundupArticle === true) continue; // already flagged
     if (shouldSkipRoundupAudit(data)) continue; // manually cleared — respect it
     toFlag.push({ showId: d.name, file: f, filePath, url: data.url, criticName: data.criticName, data });
@@ -65,7 +67,7 @@ for (const d of showDirs) {
 }
 
 console.log(`Scanned ${scanned} review files across ${showDirs.length} show dirs.`);
-console.log(`Found ${toFlag.length} unflagged BWW /reviews/ aggregation page(s):\n`);
+console.log(`Found ${toFlag.length} unflagged BWW aggregation page(s) (/reviews/ or /article/Review-Roundup-):\n`);
 
 for (const item of toFlag) {
   console.log(`  ${item.showId}/${item.file}`);
@@ -82,9 +84,12 @@ let written = 0;
 for (const item of toFlag) {
   // safeWriteReview re-reads the file fresh at write time and merges — protects
   // against a concurrent CI commit touching this file between scan and apply.
+  const isRoundupArticleUrl = /article\/review-roundup-/i.test(item.url);
   safeWriteReview(item.filePath, {
     isRoundupArticle: true,
-    roundupArticleReason: 'auto: sweep — URL matches BWW /reviews/ critics-aggregation page pattern (Notion 39d637c5-416f-81eb)',
+    roundupArticleReason: isRoundupArticleUrl
+      ? 'auto: sweep — URL is a BWW /article/Review-Roundup- staff compilation of other outlets’ reviews (2026-07-19 Oresteia leak)'
+      : 'auto: sweep — URL matches BWW /reviews/ critics-aggregation page pattern (Notion 39d637c5-416f-81eb)',
   });
   written++;
 }

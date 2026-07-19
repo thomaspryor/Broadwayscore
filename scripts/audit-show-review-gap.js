@@ -985,14 +985,24 @@ function bumpRecoveryCount(showId, file, value) {
 // outcome (see bumpRecoveryCount) so the cap actually halts retries. Returns the
 // per-flaggedMiss outcome for logging + the audit JSON.
 function recoverEmptyBodyFlaggedMiss(showId, m) {
-  // Re-run the cap/url decision from the carried flaggedMiss metadata. The full
-  // merge-safety check (human-protected / wrongProduction / empty-body) was already
-  // applied in auditShow via isRecoverableFlaggedFile — only recoverable misses
-  // reach here. This second pass re-checks the retry cap (the audit JSON could be a
-  // few minutes stale) and that an aggregator URL is present. fullText is absent on
-  // this reconstructed view, which reads as empty-body — correct, since recovery
-  // only ever targets empty-body files.
-  const file = { aggUrlRecoveryCount: m.recoverableCount || 0 };
+  // Re-run the cap/url decision against the CURRENT on-disk file, not the
+  // reconstructed flaggedMiss view. The audit JSON can be minutes stale, and a
+  // parallel session/workflow may have FILLED the file since detection —
+  // 2026-07-18 incident: heathers theatre-weekly was manually filled (3367
+  // chars, scored 74) between audit detection and this recovery pass; the old
+  // reconstructed view ({aggUrlRecoveryCount} with fullText absent) read as
+  // empty-body, the recovery re-ingested an empty aggregator fetch, and the
+  // workflow's stale checkout then pushed the husk over the real review.
+  // decideEmptyBodyRecovery's isEmptyBodyFile check on the fresh read makes
+  // this pass a no-op when the file is no longer empty. Fall back to the
+  // reconstructed view only when the file is unreadable (deleted/renamed —
+  // recovery would then recreate it, which is the intended fill behavior).
+  let file;
+  try {
+    file = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, showId, m.recoverableFile), 'utf8'));
+  } catch {
+    file = { aggUrlRecoveryCount: m.recoverableCount || 0 };
+  }
   const decision = decideEmptyBodyRecovery({
     file,
     outletId: m.recoverableOutletId || m.knownOutletId || null,

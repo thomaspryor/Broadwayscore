@@ -130,10 +130,13 @@ export default function RootLayout({
         </a>
         <UserProviders>
           <header className="fixed top-0 left-0 right-0 z-[60] bg-surface-raised border-b border-white/10">
-            <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between h-16 relative">
                 <MarketNav stats={marketStats} />
-                <div className="flex items-center gap-3">
+                {/* gap-1 on mobile: with userAccounts on, this row holds search +
+                    avatar + hamburger and overflowed the viewport at gap-3,
+                    clipping the avatar (owner report, 2026-07-17). */}
+                <div className="flex items-center shrink-0 gap-1 sm:gap-3">
                   <HeaderSecondaryMarketLink />
                   <div className="hidden sm:block">
                     <HeaderSubscribeButton />

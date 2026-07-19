@@ -615,6 +615,17 @@ const loggedInDomains = new Set();
 let browserCrashCount = 0;
 const MAX_BROWSER_CRASHES = 5;
 
+// Bumped by closeBrowser()/setupBrowser() on every restart attempt. Three
+// call sites (ensureBrowserHealthy, the REVIEW_TIMEOUT handler, processReview's
+// fresh-page fallback) can each independently trigger a restart with no mutex
+// between them; withTimeout() bounds the WAIT but never cancels the underlying
+// browser.close()/chromium.launch(), so a "timed out" restart can still finish
+// in the background later. Without this guard it would silently overwrite
+// browser/context/page with a stale instance after a newer restart already
+// succeeded. setupBrowser() checks its captured generation before committing
+// to the module globals; a stale one tears itself down instead.
+let browserGeneration = 0;
+
 // ============================================================================
 // PAGE HELPERS (scroll, paywall dismissal)
 // ============================================================================
@@ -5742,8 +5753,9 @@ function findReviewsToProcess() {
 
 async function setupBrowser() {
   console.log('\nLaunching browser with stealth...');
+  const myGeneration = ++browserGeneration;
 
-  browser = await chromium.launch({
+  const newBrowser = await chromium.launch({
     headless: true,
     args: [
       '--no-sandbox',
@@ -5755,7 +5767,7 @@ async function setupBrowser() {
     ],
   });
 
-  context = await browser.newContext({
+  const newContext = await newBrowser.newContext({
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
     viewport: { width: 1920, height: 1080 },
     locale: 'en-US',
@@ -5776,7 +5788,7 @@ async function setupBrowser() {
   });
 
   // Enhanced stealth scripts (even with playwright-extra)
-  await context.addInitScript(() => {
+  await newContext.addInitScript(() => {
     // Override webdriver
     Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
 
@@ -5831,27 +5843,42 @@ async function setupBrowser() {
 
   // Inject cookies for paywalled domains (bypasses login entirely)
   for (const domain of Object.keys(COOKIE_DOMAIN_MAP)) {
-    const injected = await injectCookies(context, domain);
+    const injected = await injectCookies(newContext, domain);
     if (injected) {
       cookieInjectedDomains.add(domain);
       loggedInDomains.add(domain); // Mark as "logged in" so loginToSite() is skipped
     }
   }
 
-  page = await context.newPage();
+  const newPage = await newContext.newPage();
+
+  if (myGeneration !== browserGeneration) {
+    // A newer restart (closeBrowser()/another setupBrowser()) superseded this
+    // one while we were launching — this instance is stale. Tear it down
+    // instead of clobbering the globals a later restart already set.
+    console.log('  ⚠ Stale browser launch superseded by a newer restart — discarding');
+    try { await newBrowser.close(); } catch (_) {}
+    return;
+  }
+
+  browser = newBrowser;
+  context = newContext;
+  page = newPage;
   console.log('✓ Browser ready');
 }
 
 async function closeBrowser() {
-  if (browser) {
+  browserGeneration++; // Invalidate any setupBrowser() still launching in the background.
+  const toClose = browser;
+  browser = null;
+  context = null;
+  page = null;
+  if (toClose) {
     try {
-      await browser.close();
+      await toClose.close();
     } catch (e) {
       // Browser may already be closed
     }
-    browser = null;
-    context = null;
-    page = null;
   }
 }
 
@@ -5879,11 +5906,14 @@ async function ensureBrowserHealthy() {
     }
 
     console.log(`  → Restarting browser (crash #${browserCrashCount})...`);
-    await closeBrowser();
+    // Bounded — same hang class as the REVIEW_TIMEOUT recovery path (see
+    // comment there); this is the higher-traffic sibling, hit by every
+    // Tier-1 Playwright call via fetchWithPlaywright().
+    try { await withTimeout(closeBrowser(), 30000, 'closeBrowser'); } catch (_) {}
     await sleep(2000); // Brief pause before restart
 
     try {
-      await setupBrowser();
+      await withTimeout(setupBrowser(), 60000, 'setupBrowser');
       console.log(`  ✓ Browser restarted successfully`);
       return true;
     } catch (restartError) {
@@ -6003,11 +6033,12 @@ async function processReview(review) {
       page = await context.newPage();
     }
   } catch (e) {
-    // Browser likely crashed — try full restart before giving up
+    // Browser likely crashed — try full restart before giving up.
+    // Bounded — same hang class as ensureBrowserHealthy()/REVIEW_TIMEOUT.
     console.log(`  ⚠ Could not create fresh page: ${e.message}`);
     try {
-      await closeBrowser();
-      await setupBrowser();
+      await withTimeout(closeBrowser(), 30000, 'closeBrowser');
+      await withTimeout(setupBrowser(), 60000, 'setupBrowser');
     } catch (restartErr) {
       console.log(`  ⚠ Browser restart failed: ${restartErr.message}`);
     }
@@ -6812,9 +6843,13 @@ async function main() {
       } catch (e) {
         if (e.message === 'REVIEW_TIMEOUT') {
           console.log(`  ✗ TIMEOUT: Review took >${CONFIG.reviewTimeout/1000}s - skipping (${review.outlet} - ${review.critic})`);
-          // Kill and restart browser to clear hung state
-          try { await closeBrowser(); } catch(_) {}
-          try { await setupBrowser(); } catch(_) {}
+          // Kill and restart browser to clear hung state. Bounded — a hung
+          // browser.close()/launch() (zombie process, exhausted resources after
+          // many restarts) otherwise stalls the whole run indefinitely with 0%
+          // CPU (observed 2026-07-15: TB recovery run stuck 7+ hours on this
+          // exact path after a REVIEW_TIMEOUT with no further progress).
+          try { await withTimeout(closeBrowser(), 30000, 'closeBrowser'); } catch(_) {}
+          try { await withTimeout(setupBrowser(), 60000, 'setupBrowser'); } catch(_) {}
         }
         result = { success: false, error: e.message };
       }
