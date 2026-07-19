@@ -57,7 +57,9 @@ for (const d of showDirs) {
     if (!data.url) continue;
     const roundup = isRoundupUrl(data.url);
     if (!roundup.isRoundup) continue;
-    if (!/broadwayworld\.com\/reviews\//i.test(data.url)) continue; // scope to this card's pattern
+    // Scope to BWW aggregation pages: /reviews/{slug} quote-mosaic pages plus
+    // /article/Review-Roundup- staff compilations (2026-07-19 Oresteia leak).
+    if (!/broadwayworld\.com\/(reviews\/|(?:[a-z0-9-]+\/)?article\/review-roundup-)/i.test(data.url)) continue;
     if (data.isRoundupArticle === true) continue; // already flagged
     if (shouldSkipRoundupAudit(data)) continue; // manually cleared — respect it
     toFlag.push({ showId: d.name, file: f, filePath, url: data.url, criticName: data.criticName, data });
