@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isRelevantPost } = require('./lib/reddit-grosses');
 
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { KNOWN_ALIASES: SHARED_ALIASES } = require('./lib/show-matching');
@@ -134,10 +135,8 @@ async function fetchAllPosts() {
 // Filter Relevant Posts
 // ---------------------------------------------------------------------------
 
-function isRelevantPost(post) {
-  const title = (post.title || '').toLowerCase();
-  return title.includes('grosses') || title.includes('post-mortem') || title.includes('postmortem');
-}
+// isRelevantPost moved to scripts/lib/reddit-grosses.js (shared with
+// update-commercial-data.js) — imported above.
 
 // ---------------------------------------------------------------------------
 // Extract Show Names + Costs from Post Selftext

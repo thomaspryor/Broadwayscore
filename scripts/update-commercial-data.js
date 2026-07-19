@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { isRelevantPost } = require('./lib/reddit-grosses');
 
 const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
 const { CLAUDE_SONNET } = require('./lib/models');
