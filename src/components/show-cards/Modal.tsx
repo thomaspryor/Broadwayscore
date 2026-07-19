@@ -74,8 +74,12 @@ export default function Modal({
         ),
       ).filter(el => el.offsetParent !== null);
     };
-    // Defer initial focus one frame so the panel is painted.
-    const raf = requestAnimationFrame(() => (focusables()[0] || panelRef.current)?.focus?.());
+    // Defer initial focus one frame so the panel is painted. Focus the PANEL
+    // (tabIndex=-1), never the first control: Safari/Chrome treat programmatic
+    // focus as :focus-visible, which painted an amber focus ring on the first
+    // star the moment the rating sheet opened (owner report, 2026-07-19).
+    // Tab from the panel still lands on the first control, so the trap holds.
+    const raf = requestAnimationFrame(() => panelRef.current?.focus?.());
     const onTab = (e: KeyboardEvent) => {
       if (e.key !== 'Tab' || !isTopmost()) return;
       const f = focusables();
@@ -160,8 +164,10 @@ export default function Modal({
     ? 'flex items-end sm:items-center justify-center'
     : 'flex items-center justify-center p-4';
 
+  // Bottom sheets sit flush against the screen edge — pad for the iOS home
+  // indicator so the last action row isn't visually cut off (owner, 2026-07-19).
   const panelRounding = bottomSheet
-    ? 'rounded-t-2xl sm:rounded-2xl'
+    ? 'rounded-t-2xl sm:rounded-2xl pb-[env(safe-area-inset-bottom)] sm:pb-0'
     : 'rounded-2xl';
 
   // Portal to <body>: position:fixed resolves against the nearest containing

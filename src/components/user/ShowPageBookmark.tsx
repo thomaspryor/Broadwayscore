@@ -14,10 +14,14 @@ interface ShowPageBookmarkProps {
   size?: 'sm' | 'md' | 'compact';
 }
 
+// Negative offsets compensate for the ~20% whitespace the 24-unit viewBox
+// keeps around the bookmark glyph — with positive offsets the icon floated
+// ~8px off the corner (owner report, 2026-07-19). The svg box overflows the
+// rounded corner; the thumbnail's overflow-hidden clips only empty space.
 const SIZES = {
-  sm: { button: 'top-0.5 right-0.5 p-0', icon: 'w-7 h-8' },
-  md: { button: 'top-1 right-1 p-0', icon: 'w-8 h-9' },
-  compact: { button: 'top-0.5 right-0.5 p-0', icon: 'w-7 h-8' },
+  sm: { button: '-top-0.5 -right-1 p-0', icon: 'w-7 h-8' },
+  md: { button: '-top-0.5 -right-1 p-0', icon: 'w-8 h-9' },
+  compact: { button: '-top-0.5 -right-1 p-0', icon: 'w-7 h-8' },
 };
 
 /**

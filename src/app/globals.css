@@ -574,6 +574,17 @@ img {
     min-height: auto;
     min-width: auto;
   }
+
+  /* Exception for compact star rows — five adjacent star buttons must fit a
+     ~112px-wide grid card (44px minimums forced 220px, clipping both ends),
+     and readOnly display stars ballooned to 44px giants in diary rows
+     (owner reports, 2026-07-19). Applied by: WatchlistCard rate strip,
+     StarRating when readOnly. Adjacent interactive stars remain an easy
+     compound target even below 44px each. */
+  .star-compact button {
+    min-height: auto;
+    min-width: auto;
+  }
 }
 
 /* Beat the Critics — standalone mode hides site chrome */

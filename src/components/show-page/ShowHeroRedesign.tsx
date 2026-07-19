@@ -727,22 +727,33 @@ function YourRatingInline({
 }) {
   const isMulti = reviews.length > 1;
   return (
-    <div className="card p-4 space-y-2.5 overflow-hidden">
+    <div className="card p-4 overflow-hidden">
+      {/* Eyebrow header — same treatment as CRITICS' TAKE above, so the hero
+          reads as a set of sections. Replaces the mid-card "Your rating" label
+          that trailed the stars; the date demotes to a 12px caption
+          (owner design pick "Option A", 2026-07-19). */}
+      <p className="text-xs font-bold uppercase tracking-[0.12em] text-gray-500 mb-2">
+        Your Rating
+      </p>
+      <div className="space-y-2.5">
       {reviews.map((review, i) => (
         <div key={review.id} className={i > 0 ? 'pt-2.5 border-t border-white/5 space-y-1' : 'space-y-1'}>
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="flex items-center gap-2.5 min-w-0">
             <div className="flex-shrink-0">
               <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
             </div>
-            {/* min-w-0 + truncate: the label+date must SHRINK on narrow
+            <span className="flex-shrink-0 text-sm font-bold text-amber-400 tabular-nums">
+              {review.rating.toFixed(1)}
+            </span>
+            {/* min-w-0 + truncate: the caption must SHRINK on narrow
                 viewports — nowrap without an overflow guard ran under the edit
                 pencil and off the card (owner report, 2026-07-17). */}
-            <div className="min-w-0 flex-1 text-xs truncate">
-              <span className="font-bold text-gray-200">
-                {!isMulti ? 'Your rating' : i === 0 ? 'Latest viewing' : 'Earlier viewing'}
-              </span>
+            <div className="min-w-0 flex-1 text-xs text-gray-500 truncate">
+              {isMulti && (
+                <span className="text-gray-400">{i === 0 ? 'Latest' : 'Earlier'}</span>
+              )}
               {review.date_seen && (
-                <span className="text-gray-500"> · {formatDate(review.date_seen)}</span>
+                <span>{isMulti ? ' · ' : ''}Seen {formatDate(review.date_seen)}</span>
               )}
             </div>
             <button
@@ -763,6 +774,7 @@ function YourRatingInline({
           )}
         </div>
       ))}
+      </div>
       {/* avg-stars footer removed (owner, 2026-07-17: "not needed") */}
     </div>
   );

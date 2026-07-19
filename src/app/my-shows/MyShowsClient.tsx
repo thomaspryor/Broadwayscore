@@ -433,10 +433,17 @@ export default function MyShowsClient() {
     switch (watchlistSort) {
       case 'added-desc':
         return sorted.sort((a, b) => {
-          // Within each section (booked vs unbooked), sort by planned_date or created_at
+          // Within each section (booked vs unbooked), sort by planned_date or
+          // created_at. The date/no-date boundary MUST have its own consistent
+          // rule: mixing comparators across it made the order non-transitive,
+          // so a freshly-added show landed mid-list under "Recent"
+          // (owner report, 2026-07-19). Sections are split after this sort,
+          // so the boundary's direction is invisible — only its consistency
+          // matters.
           const aHasDate = !!a.planned_date;
           const bHasDate = !!b.planned_date;
-          if (aHasDate && bHasDate) return (a.planned_date || '').localeCompare(b.planned_date || '');
+          if (aHasDate !== bHasDate) return aHasDate ? 1 : -1;
+          if (aHasDate) return (a.planned_date || '').localeCompare(b.planned_date || '');
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         });
       case 'alphabetical':
@@ -594,8 +601,12 @@ export default function MyShowsClient() {
             userId={isMockMode ? null : (user?.id ?? null)}
             onAddToWatchlist={async (showId: string) => {
               await effectiveAddToWatchlist(showId);
-              if (!isMockMode) await getWatchlist(true);
+              // Toast BEFORE the refresh: a rejected refetch used to throw past
+              // the toast line, so the add silently succeeded with no feedback
+              // (owner report, 2026-07-19). The refresh is best-effort — the
+              // optimistic local entry is already visible.
               showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
+              if (!isMockMode) await getWatchlist(true).catch(() => {});
             }}
             onRateDiaryOnly={(show) => openRatingEditor(show)}
             existingWatchlistIds={new Set(watchlist.map(w => w.show_id))}
@@ -1316,6 +1327,11 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
             })}
           </p>
         )}
+        {/* Mobile: real five stars STACKED under the date, same pattern as the
+            To-Be-Rated rows — right-aligned stars + icons crushed titles to
+            ~8 chars at 390px. The lone-star+number compact form before that
+            read as "numbers without the actual stars" (owner, 2026-07-19). */}
+        <div className="md:hidden mt-1"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></div>
         {review.review_text && (
           <p className="text-xs text-gray-500 mt-0.5 line-clamp-1 italic">{review.review_text}</p>
         )}
@@ -1324,14 +1340,9 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
       {/* Rating — same md stars as the To Be Rated rows above (a smaller size
           here read as "worse" stars; desktop edit/delete moved to the
           top-right corner so the stars don't have to shrink — owner,
-          2026-07-13). Mobile keeps icons IN-FLOW next to the compact rating:
-          the absolute corner collided with the star+number at 390px. */}
+          2026-07-13). Mobile keeps icons IN-FLOW on the right:
+          the absolute corner collided with row content at 390px. */}
       <div className="relative z-[1] pointer-events-none flex-shrink-0 flex items-center gap-1.5">
-        {/* Single star + number on mobile, full stars on desktop */}
-        <span className="md:hidden flex items-center gap-1">
-          <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-          <span className="text-base font-bold text-amber-400">{review.rating % 1 === 0 ? review.rating.toFixed(0) : review.rating.toFixed(1)}</span>
-        </span>
         <span className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="md" readOnly hideLabel /></span>
         <div className="flex md:hidden items-center gap-0.5 pointer-events-auto">{actionIcons}</div>
       </div>
@@ -1489,8 +1500,8 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
   const slug = show?.slug || entry.show_id;
   const href = getShowHref(slug, show?.diaryOnly);
   const rateHref = href ? `${href}?rate=1` : null;
-  const handleRateClick = () => {
-    if (rateHref) window.location.href = rateHref;
+  const handleRateStars = (stars: number) => {
+    if (rateHref) window.location.href = `${rateHref}&stars=${stars}`;
     else onRate({ id: entry.show_id, title });
   };
 
@@ -1516,37 +1527,33 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
             </span>
           )}
         </div>
-        {/* Rate overlay — navigates to show page with ?rate=1 (or opens the
-            inline rating modal for diary-only shows with no /show page) */}
-        {/* On mobile: "Rate" button at bottom; on desktop: 5 empty stars on hover */}
+        {/* Rate strip — five tappable empty stars anchored to the poster
+            BOTTOM with the same gradient as every other rate affordance
+            (browse hover-to-rate, To-Be-Rated rows). Always visible on mobile
+            (no hover); hover/focus-revealed on sm+. Tapping star N deep-links
+            ?rate=1&stars=N; diary-only shows open the inline editor. The old
+            centered-on-hover stars + mobile lone-star "Rate" pill read as
+            inconsistent/confusing (owner, 2026-07-19). */}
         <div
-          role="button"
-          tabIndex={0}
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRateClick(); }}
-          onKeyDown={(e) => { if (e.key === 'Enter') handleRateClick(); }}
-          className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 sm:group-hover/wl:opacity-100 transition-opacity z-[1] cursor-pointer"
+          className="absolute inset-x-0 bottom-0 z-[1] flex justify-center bg-gradient-to-t from-black/85 to-transparent pt-4 pb-1.5 opacity-100 sm:opacity-0 sm:group-hover/wl:opacity-100 focus-within:opacity-100 transition-opacity"
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
         >
-          <span className="hidden sm:flex items-center gap-0.5">
-            {[1,2,3,4,5].map(i => (
-              <svg key={i} className="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="#FFD700" strokeWidth="1.5" strokeLinejoin="round" />
-              </svg>
+          <span className="star-compact flex items-center" role="radiogroup" aria-label={`Rate ${title}`}>
+            {[1, 2, 3, 4, 5].map(i => (
+              <button
+                key={i}
+                type="button"
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRateStars(i); }}
+                aria-label={`${i} star${i !== 1 ? 's' : ''}`}
+                className="p-0.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80"
+              >
+                {/* w-3.5 on mobile: five w-5 stars overflow the ~115px
+                    3-column cards at 390px (clipped edges, caught in visual QA) */}
+                <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="#FFD700" strokeWidth="1.5" strokeLinejoin="round" />
+                </svg>
+              </button>
             ))}
-          </span>
-        </div>
-        {/* Mobile-only: small Rate button at bottom */}
-        <div className="sm:hidden absolute inset-x-0 bottom-0 flex items-end justify-center pb-2 bg-gradient-to-t from-black/60 via-transparent to-transparent z-[1]">
-          <span
-            role="button"
-            tabIndex={0}
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRateClick(); }}
-            onKeyDown={(e) => { if (e.key === 'Enter') handleRateClick(); }}
-            className="text-xs font-semibold text-white/90 flex items-center gap-1 cursor-pointer"
-          >
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-            </svg>
-            Rate
           </span>
         </div>
         {/* Trash button to remove — hidden on mobile, visible on hover on desktop */}
