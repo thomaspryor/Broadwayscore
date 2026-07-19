@@ -56,7 +56,7 @@ jobs:
           # provider-reported numbers below are the billing ground truth.
           PW_TOTAL=0; BD_TOTAL=0; SB_TOTAL=0; SB_CREDITS_TOTAL=0
           SB_BY_WF_FILE=$(mktemp)
-          for wf in "Collect Review Texts" "Gather Review Data" "Opening Night Poller" "Opening Night Reviews" "Enrich IBDB Dates" "Bulk Show Score" "Auto-Maintain Show Data" "Scrape BWW Reviews" "Update Commercial" "Fix Platform Ticket Links" "Audit Aggregator Review Gap" "Scrape New Aggregators"; do
+          for wf in "Collect Review Texts" "Gather Review Data" "Opening Night Poller" "Opening Night Reviews" "Enrich IBDB Dates" "Bulk Show Score" "Auto-Maintain Show Data" "Scrape BWW Reviews" "Update Commercial Data" "Fix Platform Ticket Links" "Audit Aggregator Review Gap" "Scrape New Aggregators"; do
             wf_name=$(echo "$wf" | tr ' ' '_')
             for run_id in $(gh run list --workflow="$wf" --created=">$SINCE" --status=completed --limit=5 --json databaseId -q '.[].databaseId' 2>/dev/null); do
               # Sum ALL summary lines per log (multi-call scripts emit multiple)

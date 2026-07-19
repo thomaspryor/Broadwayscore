@@ -239,7 +239,10 @@ const MAX_CONSECUTIVE_FAILURES = 5;
 // SERP_NO_SB=1 skips SB SERP entirely (bulk/backfill runs — an empty SD+BD
 // result there is almost always the true answer, not worth 25cr to re-ask).
 const SB_SERP_CREDITS_PER_CALL = 25;
-const SERP_SB_MAX_CALLS_PER_RUN = parseInt(process.env.SERP_SB_MAX_CALLS_PER_RUN || '40', 10);
+const _sbSerpCapRaw = parseInt(process.env.SERP_SB_MAX_CALLS_PER_RUN || '40', 10);
+// NaN guard: a malformed env value would make `count >= NaN` never trip,
+// silently disabling the cap — default to 40 instead.
+const SERP_SB_MAX_CALLS_PER_RUN = Number.isFinite(_sbSerpCapRaw) ? _sbSerpCapRaw : 40;
 let _sbSerpCallCount = 0;
 let _sbSerpCapLogged = false;
 
@@ -352,7 +355,9 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
       }));
     } catch (error) {
       const status = error.response?.status;
-      recordSbCall({ host: 'serp.scrapingbee', fn: 'serp', success: false, status: status || (error.message || 'error').slice(0, 80), credits: SB_SERP_CREDITS_PER_CALL });
+      // credits: 0 — ScrapingBee does not bill failed (4xx/5xx/timeout) requests;
+      // recording 25 here would inflate the cost report's attribution.
+      recordSbCall({ host: 'serp.scrapingbee', fn: 'serp', success: false, status: status || (error.message || 'error').slice(0, 80), credits: 0 });
       if (status === 401 || status === 403 || status === 429) {
         _scrapingBeeSerpExhausted = true;
         log(`    ⚠ ScrapingBee SERP exhausted (${status}) — falling back to Bright Data`);
@@ -667,7 +672,13 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // dropped yet" — caching it would hide a freshly-published review for up to
   // 24h. So we skip caching empty results on the opening-night path; routine
   // gather-reviews scans still benefit from negative caching.
-  const shouldCache = results !== null && !(preferSpeed && results.length === 0);
+  // Never cache empty results from a skip-truncated chain: a backfill run with
+  // SERP_NO_SB would otherwise cache "no results" and suppress a later normal
+  // run's SB fallback for the cache TTL (cache poisoning across modes).
+  const _chainTruncated = _skips.size > 0;
+  const shouldCache = results !== null
+    && !(preferSpeed && results.length === 0)
+    && !(_chainTruncated && results.length === 0);
   if (shouldCache) {
     _serpCache.set(query, cacheOpts, { results, provider });
   }

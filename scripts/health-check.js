@@ -1043,13 +1043,13 @@ function checkSecretsHealth() {
 
 function checkAPICredits() {
   const apiKey = process.env.SCRAPINGBEE_API_KEY;
-  if (!apiKey) {
-    return [{ name: 'Credits: ScrapingBee', status: 'warn', message: 'Skipped — no SCRAPINGBEE_API_KEY available' }];
-  }
-
   const results = [];
 
-  results.push(runCheck('Credits: ScrapingBee', () => {
+  // No early return on a missing SB key — the SD/BD/BB checks below must
+  // still run (each provider is monitored independently).
+  if (!apiKey) {
+    results.push({ name: 'Credits: ScrapingBee', status: 'warn', message: 'Skipped — no SCRAPINGBEE_API_KEY available' });
+  } else results.push(runCheck('Credits: ScrapingBee', () => {
     try {
       const result = execSync(
         `curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=${apiKey}"`,
@@ -1109,13 +1109,22 @@ function checkAPICredits() {
   const sdKey = process.env.SCRAPINGDOG_API_KEY;
   if (sdKey) {
     results.push(runCheck('Credits: ScrapingDog', () => {
-      const result = execSync(
-        `curl -s --max-time 10 "https://api.scrapingdog.com/account?api_key=${sdKey}"`,
-        { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
-      ).trim();
-      const acct = JSON.parse(result);
+      // Internal try/catch: a transient curl timeout / non-JSON response must
+      // report 'warn', not 'error' — runCheck's catch would emit an emailing
+      // 'error' for pure infra noise. 'error' is reserved for a successfully
+      // parsed low/exhausted balance (same pattern as the SB check above).
+      let acct;
+      try {
+        const result = execSync(
+          `curl -s --max-time 10 "https://api.scrapingdog.com/account?api_key=${sdKey}"`,
+          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+        ).trim();
+        acct = JSON.parse(result);
+      } catch (err) {
+        return { name: 'Credits: ScrapingDog', status: 'warn', message: `API check failed: ${err.message.substring(0, 80)}` };
+      }
       if (!acct.requestLimit) {
-        return { name: 'Credits: ScrapingDog', status: 'warn', message: `Unexpected account response: ${result.slice(0, 80)}` };
+        return { name: 'Credits: ScrapingDog', status: 'warn', message: `Unexpected account response: ${JSON.stringify(acct).slice(0, 80)}` };
       }
       const remaining = acct.requestLimit - acct.requestUsed;
       const pctRemaining = Math.round((remaining / acct.requestLimit) * 100);
@@ -1144,11 +1153,17 @@ function checkAPICredits() {
   const bdToken = process.env.BRIGHTDATA_TOKEN;
   if (bdToken) {
     results.push(runCheck('Credits: Bright Data', () => {
-      const balRaw = execSync(
-        `curl -s --max-time 10 -H "Authorization: Bearer ${bdToken}" "https://api.brightdata.com/customer/balance"`,
-        { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
-      ).trim();
-      const bal = JSON.parse(balRaw);
+      // Internal try/catch: infra failure → 'warn' (see ScrapingDog note above).
+      let bal;
+      try {
+        const balRaw = execSync(
+          `curl -s --max-time 10 -H "Authorization: Bearer ${bdToken}" "https://api.brightdata.com/customer/balance"`,
+          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+        ).trim();
+        bal = JSON.parse(balRaw);
+      } catch (err) {
+        return { name: 'Credits: Bright Data', status: 'warn', message: `API check failed: ${err.message.substring(0, 80)}` };
+      }
       const monthStart = new Date();
       monthStart.setDate(1);
       const from = monthStart.toISOString().split('T')[0];
@@ -1185,13 +1200,18 @@ function checkAPICredits() {
   const bbProject = process.env.BROWSERBASE_PROJECT_ID;
   if (bbKey && bbProject) {
     results.push(runCheck('Credits: Browserbase', () => {
-      const raw = execSync(
-        `curl -s --max-time 10 -H "X-BB-API-Key: ${bbKey}" "https://api.browserbase.com/v1/projects/${bbProject}/usage"`,
-        { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
-      ).trim();
-      const usage = JSON.parse(raw);
+      let usage;
+      try {
+        const raw = execSync(
+          `curl -s --max-time 10 -H "X-BB-API-Key: ${bbKey}" "https://api.browserbase.com/v1/projects/${bbProject}/usage"`,
+          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+        ).trim();
+        usage = JSON.parse(raw);
+      } catch (err) {
+        return { name: 'Credits: Browserbase', status: 'warn', message: `API check failed: ${err.message.substring(0, 80)}` };
+      }
       if (typeof usage.browserMinutes !== 'number') {
-        return { name: 'Credits: Browserbase', status: 'warn', message: `Unexpected usage response: ${raw.slice(0, 80)}` };
+        return { name: 'Credits: Browserbase', status: 'warn', message: `Unexpected usage response: ${JSON.stringify(usage).slice(0, 80)}` };
       }
       return { name: 'Credits: Browserbase', status: 'pass', message: `${usage.browserMinutes} browser minutes used (cumulative)` };
     }));
