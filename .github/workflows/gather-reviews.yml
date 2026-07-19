@@ -32,6 +32,11 @@ on:
         required: false
         type: boolean
         default: false
+      no_sb_serp:
+        description: 'Skip ScrapingBee SERP fallback (~25cr/query). Use for bulk/historical backfills where an empty SD+BD SERP result should be accepted, not re-asked on SB.'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -149,6 +154,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          SERP_NO_SB: ${{ inputs.no_sb_serp == true && '1' || '' }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
@@ -232,6 +238,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          SERP_NO_SB: ${{ inputs.no_sb_serp == true && '1' || '' }}
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
