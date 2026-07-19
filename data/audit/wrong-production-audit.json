@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-19T20:55:38.386Z",
+  "timestamp": "2026-07-19T21:47:30.728Z",
   "stats": {
     "totalReviews": 40343,
-    "alreadyFlagged": 17646,
+    "alreadyFlagged": 17645,
     "dateGuardCatches": 49,
     "directorMismatch": 915,
     "tvFilmSignals": 1104,
-    "londonSignals": 755,
+    "londonSignals": 754,
     "offBroadwaySignals": 475,
     "yearMismatch": 85,
-    "noPublishDate": 3631
+    "noPublishDate": 3629
   },
   "findings": [
     {
@@ -41278,19 +41278,6 @@
       "score": 64,
       "publishDate": "2026-04-15",
       "url": "https://www.vulture.com/article/theater-review-adrien-brody-on-broadway-in-the-fear-of-13.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-fear-of-13-2026",
-      "file": "washpost--thomas-floyd.json",
-      "publishDate": "2026-04-24",
-      "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/24/fear-of-13-proof-rocky-horror-broadway-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
