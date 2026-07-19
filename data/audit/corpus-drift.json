@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-19T18:00:14.133Z",
+    "generatedAt": "2026-07-19T19:40:55.053Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -18,7 +18,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40987\nHas fullText: 32411\n\n--- Quality Breakdown ---\n  full: 22238 (68.6%)\n  truncated: 9472 (29.2%)\n  partial: 325 (1.0%)\n  excerpt: 318 (1.0%)\n  stub: 40 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6722\n  has_footer_junk: 1513\n  ends_with_ellipsis: 133\n  has_footer_text: 109\n  paywall_or_login_prompt: 75\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.6% (min: 25%)\n  ✅ Truncated: 29.2% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40987\nHas fullText: 32414\n\n--- Quality Breakdown ---\n  full: 22240 (68.6%)\n  truncated: 9474 (29.2%)\n  partial: 325 (1.0%)\n  excerpt: 317 (1.0%)\n  stub: 40 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6722\n  has_footer_junk: 1513\n  ends_with_ellipsis: 133\n  has_footer_text: 109\n  paywall_or_login_prompt: 75\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.6% (min: 25%)\n  ✅ Truncated: 29.2% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 6 flagged, 13 exempt, 33 covered\n  ⚠️   125  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️   110  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️   108  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️   107  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️    59  data/audit/we-gate-proving.json  — no merge driver; needs a decision\n  ⚠️    42  data/audit/validation/collection-report-2026-07-19.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 6 flagged, 13 exempt, 34 covered\n  ⚠️   124  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️   110  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️   108  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️   107  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️    59  data/audit/we-gate-proving.json  — no merge driver; needs a decision\n  ⚠️    43  data/audit/validation/collection-report-2026-07-19.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
