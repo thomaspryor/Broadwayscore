@@ -195,20 +195,14 @@ jobs:
           # Retry rebuild
           node scripts/rebuild-all-reviews.js $FORCE_FLAG
 
-      - name: Snapshot rebuilt core data for private repo push
-        if: always()
-        run: |
-          # push-core-data compares data/ against /tmp/core-data-snapshot/ to detect changes.
-          # The snapshot was taken at checkout time (stale). Update it with the freshly rebuilt
-          # files so push-core-data will push the new reviews.json to the private repo.
-          # Without this, git checkout -- data/reviews.json (line 220) reverts reviews.json
-          # and push-core-data sees "no changes" since snapshot == reverted file.
-          for f in reviews.json shows.json critic-consensus.json critic-registry.json outlet-registry.json; do
-            if [ -f "data/$f" ]; then
-              cp -f "data/$f" /tmp/core-data-snapshot/
-            fi
-          done
-          echo "Updated core-data snapshot with rebuilt files"
+      # NOTE: do NOT overwrite /tmp/core-data-snapshot/ with rebuilt files. Since the
+      # 2026-07-12 push-core-data fix (2beb6617c58), the snapshot is the CHECKOUT-TIME
+      # baseline: push-core-data pushes exactly the data/ files that differ from it.
+      # Copying rebuilt files into the snapshot made them read as "untouched", so
+      # rebuilds silently stopped pushing reviews.json to the private repo unless a
+      # later enrichment step happened to re-modify it (2026-07-19 incident). The
+      # git-checkout-revert this step defended against is a no-op: reviews.json and
+      # audience-buzz.json are gitignored in this repo.
 
       - name: Extract pull quotes for new reviews
         # Moved AFTER Rebuild reviews.json + snapshot (Notion 351637c5-416f-8177).
