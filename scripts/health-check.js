@@ -1039,17 +1039,55 @@ function checkSecretsHealth() {
   ];
 }
 
+// --- Category I2: Deploy freshness (content-aware gate watchdog) ---
+//
+// The should-deploy gate (scripts/lib/should-deploy-gate.js) skips scheduled
+// deploys when nothing site-relevant changed, with a 6h staleness backstop.
+// All existing alerting keys off run FAILURES — a gate stuck wrongly-closed
+// produces green skip runs and zero deploys with no signal (plan-review
+// pre-mortem, 2026-07-19). This check is the stuck-closed detector: the
+// backstop guarantees a READY production deployment at least every ~6h
+// (plus cron delay), so age >8h means the gate, the cron, or Vercel is broken.
+// Uses check-prod-deploy.js (canonical READY-deployment query) — do not
+// hand-roll another copy of the Vercel API call.
+
+function checkDeployFreshness() {
+  if (!process.env.VERCEL_TOKEN) {
+    return [{ name: 'Deploy: production freshness', status: 'warn', message: 'Skipped — no VERCEL_TOKEN available' }];
+  }
+  return [runCheck('Deploy: production freshness', () => {
+    let out;
+    try {
+      out = execSync('node scripts/check-prod-deploy.js --json', {
+        encoding: 'utf8', timeout: 30000, stdio: ['pipe', 'pipe', 'pipe'],
+      });
+    } catch (err) {
+      // check-prod-deploy exits 2 on API/network failure — a transient Vercel
+      // blip is not "prod is stale"; warn (visible in digest) instead of error
+      // (subject-line escalation). A real freshness breach still errors below.
+      return { name: 'Deploy: production freshness', status: 'warn', message: `Vercel API unreachable (${err.message.split('\n')[0].slice(0, 120)}) — freshness unknown this run` };
+    }
+    const dep = JSON.parse(out);
+    const ageH = dep.ageSec / 3600;
+    const msg = `Latest READY production deploy: ${dep.deployedSha ? dep.deployedSha.slice(0, 10) : 'unknown-sha'}, age ${ageH.toFixed(1)}h`;
+    const hint = 'Gate stuck or cron dead? Check should-deploy runs (gh run list --workflow=vercel-deploy.yml), dispatch "Rebuild Reviews (Fast)", or set repo var DEPLOY_GATE_DISABLED=true';
+    if (ageH > 12) return { name: 'Deploy: production freshness', status: 'error', message: msg + ' (>12h — 6h backstop is not firing)', hint };
+    if (ageH > 8) return { name: 'Deploy: production freshness', status: 'warn', message: msg + ' (>8h — backstop late; GH cron delays can explain up to ~2h)', hint };
+    return { name: 'Deploy: production freshness', status: 'pass', message: msg };
+  })];
+}
+
 // --- Category J: API Credits ---
 
 function checkAPICredits() {
   const apiKey = process.env.SCRAPINGBEE_API_KEY;
-  if (!apiKey) {
-    return [{ name: 'Credits: ScrapingBee', status: 'warn', message: 'Skipped — no SCRAPINGBEE_API_KEY available' }];
-  }
-
   const results = [];
 
-  results.push(runCheck('Credits: ScrapingBee', () => {
+  // No early return on a missing SB key — the SD/BD/BB checks below must
+  // still run (each provider is monitored independently).
+  if (!apiKey) {
+    results.push({ name: 'Credits: ScrapingBee', status: 'warn', message: 'Skipped — no SCRAPINGBEE_API_KEY available' });
+  } else results.push(runCheck('Credits: ScrapingBee', () => {
     try {
       const result = execSync(
         `curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=${apiKey}"`,
@@ -1100,6 +1138,122 @@ function checkAPICredits() {
       return { name: 'Credits: ScrapingBee', status: 'warn', message: `API check failed: ${err.message.substring(0, 80)}` };
     }
   }));
+
+  // Scrapingdog — same burn-projection shape as SB. Added 2026-07-19 after the
+  // SB-exhaustion incident revealed SD had ZERO balance monitoring: if SD runs
+  // dry, every fetch silently falls back to BD/SB (the exact failure that
+  // exhausted SB's plan). 'error' (not 'warn') on projected exhaustion so the
+  // actionable-only email policy actually delivers it.
+  const sdKey = process.env.SCRAPINGDOG_API_KEY;
+  if (sdKey) {
+    results.push(runCheck('Credits: ScrapingDog', () => {
+      // Internal try/catch: a transient curl timeout / non-JSON response must
+      // report 'warn', not 'error' — runCheck's catch would emit an emailing
+      // 'error' for pure infra noise. 'error' is reserved for a successfully
+      // parsed low/exhausted balance (same pattern as the SB check above).
+      let acct;
+      try {
+        const result = execSync(
+          `curl -s --max-time 10 "https://api.scrapingdog.com/account?api_key=${sdKey}"`,
+          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+        ).trim();
+        acct = JSON.parse(result);
+      } catch (err) {
+        return { name: 'Credits: ScrapingDog', status: 'warn', message: `API check failed: ${err.message.substring(0, 80)}` };
+      }
+      if (!acct.requestLimit) {
+        return { name: 'Credits: ScrapingDog', status: 'warn', message: `Unexpected account response: ${JSON.stringify(acct).slice(0, 80)}` };
+      }
+      const remaining = acct.requestLimit - acct.requestUsed;
+      const pctRemaining = Math.round((remaining / acct.requestLimit) * 100);
+      const daysToRenewal = typeof acct.validity === 'number' ? acct.validity : null;
+      let msg = `${Math.round(remaining / 1000)}k credits left (${pctRemaining}%)`;
+      let status = 'pass';
+      if (daysToRenewal !== null) {
+        const daysIntoCycle = Math.max(1, 30 - daysToRenewal);
+        const dailyBurn = acct.requestUsed / daysIntoCycle;
+        const daysUntilExhaustion = dailyBurn > 0 ? remaining / dailyBurn : Infinity;
+        msg += ` · ${Math.round(dailyBurn / 1000)}k/day burn · renews in ${daysToRenewal}d`;
+        if (remaining <= 0) { status = 'error'; msg += ' · EXHAUSTED'; }
+        else if (daysUntilExhaustion < daysToRenewal) { status = 'error'; msg += ` · exhausts in ~${Math.round(daysUntilExhaustion)}d (BEFORE renewal)`; }
+        else if (pctRemaining <= 15) { status = 'warn'; }
+      } else if (pctRemaining <= 5) { status = 'error'; }
+      else if (pctRemaining <= 15) { status = 'warn'; }
+      return { name: 'Credits: ScrapingDog', status, message: msg, hint: status !== 'pass' ? 'If SD runs dry, all traffic silently falls back to BD/SB. Upgrade plan or reduce scraping.' : undefined };
+    }));
+  } else {
+    results.push({ name: 'Credits: ScrapingDog', status: 'warn', message: 'Skipped — no SCRAPINGDOG_API_KEY available' });
+  }
+
+  // Bright Data — balance + month-to-date spend (serp + unlocker zones). BD is
+  // pay-per-request with a prepaid balance; 2026-07-19 audit found $16 balance
+  // vs $148 pending. 'error' on low balance so it emails.
+  const bdToken = process.env.BRIGHTDATA_TOKEN;
+  if (bdToken) {
+    results.push(runCheck('Credits: Bright Data', () => {
+      // Internal try/catch: infra failure → 'warn' (see ScrapingDog note above).
+      let bal;
+      try {
+        const balRaw = execSync(
+          `curl -s --max-time 10 -H "Authorization: Bearer ${bdToken}" "https://api.brightdata.com/customer/balance"`,
+          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+        ).trim();
+        bal = JSON.parse(balRaw);
+      } catch (err) {
+        return { name: 'Credits: Bright Data', status: 'warn', message: `API check failed: ${err.message.substring(0, 80)}` };
+      }
+      const monthStart = new Date();
+      monthStart.setDate(1);
+      const from = monthStart.toISOString().split('T')[0];
+      const to = new Date().toISOString().split('T')[0];
+      const zones = ['serp_api1', process.env.BRIGHTDATA_ZONE || 'web_unlocker2'];
+      let monthCost = 0;
+      for (const zone of [...new Set(zones)]) {
+        try {
+          const costRaw = execSync(
+            `curl -s --max-time 10 -H "Authorization: Bearer ${bdToken}" "https://api.brightdata.com/zone/cost?zone=${zone}&from=${from}&to=${to}"`,
+            { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+          ).trim();
+          const cost = JSON.parse(costRaw);
+          for (const cust of Object.values(cost)) {
+            if (cust && cust.custom && typeof cust.custom.cost === 'number') monthCost += cust.custom.cost;
+          }
+        } catch { /* per-zone cost is best-effort; balance is the hard signal */ }
+      }
+      const balance = typeof bal.balance === 'number' ? bal.balance : null;
+      const pending = typeof bal.pending_costs === 'number' ? bal.pending_costs : 0;
+      let msg = `balance $${balance !== null ? balance.toFixed(2) : '?'} · pending $${pending.toFixed(2)} · month-to-date $${monthCost.toFixed(2)} (serp+unlocker)`;
+      if (balance !== null && balance < 20) {
+        return { name: 'Credits: Bright Data', status: 'error', message: msg, hint: 'Low BD balance — top up or confirm auto-recharge, or BD tier goes dark.' };
+      }
+      if (monthCost > 250) {
+        return { name: 'Credits: Bright Data', status: 'warn', message: msg, hint: 'BD spend above $250/mo pace — check SERP demand.' };
+      }
+      return { name: 'Credits: Bright Data', status: 'pass', message: msg };
+    }));
+  }
+
+  // Browserbase — usage trend only (minutes are lifetime-cumulative; small volume).
+  const bbKey = process.env.BROWSERBASE_API_KEY;
+  const bbProject = process.env.BROWSERBASE_PROJECT_ID;
+  if (bbKey && bbProject) {
+    results.push(runCheck('Credits: Browserbase', () => {
+      let usage;
+      try {
+        const raw = execSync(
+          `curl -s --max-time 10 -H "X-BB-API-Key: ${bbKey}" "https://api.browserbase.com/v1/projects/${bbProject}/usage"`,
+          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+        ).trim();
+        usage = JSON.parse(raw);
+      } catch (err) {
+        return { name: 'Credits: Browserbase', status: 'warn', message: `API check failed: ${err.message.substring(0, 80)}` };
+      }
+      if (typeof usage.browserMinutes !== 'number') {
+        return { name: 'Credits: Browserbase', status: 'warn', message: `Unexpected usage response: ${JSON.stringify(usage).slice(0, 80)}` };
+      }
+      return { name: 'Credits: Browserbase', status: 'pass', message: `${usage.browserMinutes} browser minutes used (cumulative)` };
+    }));
+  }
 
   return results;
 }
@@ -1984,6 +2138,7 @@ async function main() {
     ...checkCronHealth(),
     ...checkSecretsHealth(),
     ...checkAPICredits(),
+    ...checkDeployFreshness(),
   ];
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
