@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-19T01:39:10.101Z",
+  "runDate": "2026-07-19T02:20:28.856Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,38 +11,38 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 67,
-    "failed": 797,
+    "processed": 72,
+    "failed": 826,
     "skipped": 0,
-    "successRate": "7.8%"
+    "successRate": "8.0%"
   },
   "tierBreakdown": {
     "playwright": 42,
     "amp": 0,
     "browserbase": 5,
     "directCookies": 2,
-    "scrapingbee": 7,
-    "brightdata": 3,
+    "scrapingbee": 9,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 12
+    "archive": 14
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier2Attempts": 4,
+    "tier2Success": 3,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 63,
-    "scrapingBeePageCredits": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 2,
+    "totalFailed": 66,
+    "scrapingBeePageCredits": 22,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -117,7 +117,12 @@
     "born-yesterday-2011/theatermania--unknown.json",
     "jerusalem-2011/nytimes--unknown.json",
     "million-dollar-quartet-2010/cbsnews--shania-russell.json",
-    "festen-2006/nytimes--unknown.json"
+    "festen-2006/nytimes--unknown.json",
+    "book-of-mormon-2011/boston-com--mark-kennedy.json",
+    "bandstand-2017/vulture--jesse-green.json",
+    "long-days-journey-into-night-2016/usatoday--elysa-gardner.json",
+    "something-rotten-2015/nytimes--ben-brantley.json",
+    "kinky-boots-2013/washpost--peter-marks.json"
   ],
   "failed": [
     "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
@@ -854,7 +859,35 @@
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "kings-2-off-west-end-2026/london-box-office--eve-jawara.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
+    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
+    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "hadestown-2019/newnownextcom--michael-musto.json",
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
+    "driftwood-west-end-2026/standard--nick-curtis.json",
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
     "yellow-face-2024/nypost--johnny-oleksinski.json",
@@ -916,7 +949,8 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "king-hedley-ii-2001/nytimes--ben-brantley.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -982,12 +1016,15 @@
       "shifters-off-broadway-2026/nytimes--unknown.json",
       "jerusalem-2011/nytimes--unknown.json",
       "million-dollar-quartet-2010/cbsnews--shania-russell.json",
-      "festen-2006/nytimes--unknown.json"
+      "festen-2006/nytimes--unknown.json",
+      "something-rotten-2015/nytimes--ben-brantley.json",
+      "kinky-boots-2013/washpost--peter-marks.json"
     ],
     "brightdata": [
       "heathers-the-musical-off-west-end-2026/voice-magazine--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json"
+      "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+      "long-days-journey-into-night-2016/usatoday--elysa-gardner.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1002,7 +1039,9 @@
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
       "proof-2026/playbill--unknown.json",
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
-      "and-juliet-2022/theater-pizzazz--carole-di-tosti.json"
+      "and-juliet-2022/theater-pizzazz--carole-di-tosti.json",
+      "book-of-mormon-2011/boston-com--mark-kennedy.json",
+      "bandstand-2017/vulture--jesse-green.json"
     ]
   },
   "failuresByOutlet": {},
