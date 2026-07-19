@@ -1,5 +1,9 @@
 {
-  "processed": [],
+  "processed": [
+    "shifters-off-broadway-2026/nytg--gillian-russo.json",
+    "the-smile-of-her-off-west-end-2026/guardian-uk--unknown.json",
+    "shifters-off-broadway-2026/broadwayworld--unknown.json"
+  ],
   "failed": [
     "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
     "loves-labours-lost-globe-west-end-2026/guardian--mark-fisher.json",
@@ -10,20 +14,39 @@
     "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
     "loves-labours-lost-globe-west-end-2026/whatsonstage--matt-trueman.json",
     "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json",
-    "loves-labours-lost-globe-west-end-2026/whatsonstage--sarah-crompton.json"
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+    "shifters-off-broadway-2026/independent--alice-saville.json",
+    "shifters-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "shifters-off-broadway-2026/nytg--gillian-russo.json",
+      "the-smile-of-her-off-west-end-2026/guardian-uk--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "shifters-off-broadway-2026/broadwayworld--unknown.json"
+    ]
   },
   "startTime": "2026-07-19T17:20:49.888Z",
-  "lastProcessed": "loves-labours-lost-globe-west-end-2026/whatsonstage--sarah-crompton.json",
-  "log": []
+  "lastProcessed": "shifters-off-broadway-2026/playbill--unknown.json",
+  "log": [
+    {
+      "t": "2026-07-19T17:23:15.324Z",
+      "event": "bb-session",
+      "session": "248642a3",
+      "url": "https://www.facebook.com/thestage/posts/-review-the-smile-of-her-american-actor-"
+    }
+  ]
 }
