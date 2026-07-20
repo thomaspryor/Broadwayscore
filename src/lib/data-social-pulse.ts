@@ -35,11 +35,18 @@ export interface RawSocialPulse {
   market: 'Broadway' | 'West End' | 'Off-Broadway' | 'Off-West End';
   fetchedAt: string;
   tier: 'Buzzing' | 'Rising' | 'Steady' | 'Troubled' | 'BuildingBaseline' | 'Hidden';
+  /** v3: true weekly mention total (uncapped counters). v2: capped-sample count. */
   volume: number;
+  /** Pulse Index ranking strength — relevance-adjusted counter blend (schema v3). */
+  effectiveVolume?: number;
   positivePct: number;
+  /** Opinion-bearing posts behind positivePct (schema v3). */
+  opinionSample?: number;
   weekOverWeekPct: number | null;
-  baselineMultiple: number | null;
-  platformBreakdown: { x: number; tiktok: number; instagram: number; reddit?: number };
+  baselineMultiple?: number | null;
+  platformBreakdown: { x: number; tiktok: number; instagram: number; reddit?: number; bluesky?: number };
+  /** Weekly counters per signal; null = signal absent that week (schema v3). */
+  counters?: { reddit: number | null; bluesky: number | null; x: number | null; wikipedia: number | null };
   topQuotes: Array<{ text: string; platform: string; author: string | null; url: string | null }>;
   rank?: { position: number; total: number; text: string } | null;
   compositeScore?: number;
@@ -157,7 +164,7 @@ function isValidRawPulse(raw: unknown): raw is RawSocialPulse {
 
 /**
  * Read every RAW social-pulse file in data/social-pulse/ and return the
- * parsed payloads. Files beginning with `_` (like `_budget.json`) are
+ * parsed payloads. Files beginning with `_` (like `_meta.json`) are
  * treated as internal bookkeeping and skipped. Malformed files are
  * warned-and-skipped rather than crashing the build.
  *
@@ -174,7 +181,7 @@ function readAllRawSocialPulses(): RawSocialPulse[] {
   const out: RawSocialPulse[] = [];
   for (const name of files) {
     if (!name.endsWith('.json')) continue;
-    if (name.startsWith('_')) continue; // _budget.json and similar
+    if (name.startsWith('_')) continue; // _meta.json and similar
     try {
       const raw = fs.readFileSync(path.join(SOCIAL_PULSE_DIR, name), 'utf-8');
       const parsed = JSON.parse(raw);
@@ -234,10 +241,13 @@ export function getTopTrendingShows(
     )
     .map<TrendingPick>((p) => ({
       ...p,
+      // Fallback mirrors compute-social-pulse-ranks.js: ranking strength is
+      // the v3 effectiveVolume (Pulse Index) when present, legacy volume
+      // otherwise.
       compositeScore:
         typeof p.compositeScore === 'number'
           ? p.compositeScore
-          : (p.volume * p.positivePct) / 100,
+          : ((p.effectiveVolume ?? p.volume) * p.positivePct) / 100,
     }))
     .sort((a, b) => {
       if (b.compositeScore !== a.compositeScore) return b.compositeScore - a.compositeScore;
