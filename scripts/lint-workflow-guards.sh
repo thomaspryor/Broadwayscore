@@ -259,6 +259,32 @@ check_demo_flags() {
   fi
 }
 
+check_snapshot_overwrite() {
+  # /tmp/core-data-snapshot is the CHECKOUT-TIME baseline push-core-data diffs
+  # data/ against (a file identical to its snapshot is treated as untouched
+  # and skipped). ONLY checkout-core-data may write it. Workflows that copied
+  # their own freshly-written files into the snapshot silently disabled their
+  # core-data pushes for a week (2026-07-12..19: rebuild-reviews stopped
+  # pushing reviews.json; caught via a newsletter with stale scores). Six
+  # workflows had this pattern removed on 2026-07-19 — this lint keeps it out.
+  # Only writes INTO the snapshot are violations — the snapshot as cp/rsync
+  # DESTINATION (final argument). Reading FROM it (e.g. commercial-weekly.yml
+  # restoring the pristine baseline on failure) is legitimate.
+  local VIOLATIONS="" f
+  for f in .github/workflows/*.yml; do
+    if grep -E '(cp|rsync)[^#]*[[:space:]]"?/tmp/core-data-snapshot/?"?[[:space:]]*$' "$f" >/dev/null 2>&1; then
+      VIOLATIONS="$VIOLATIONS $(basename "$f")"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Workflows write into /tmp/core-data-snapshot (breaks push-core-data change detection — files matching the snapshot are treated as untouched and never pushed):$VIOLATIONS"
+    echo "Fix: delete the snapshot-copy step. The snapshot is the checkout-time baseline; overwriting it makes your workflow's own output read as 'unchanged'. See push-core-data/action.yml + 2026-07-19 incident."
+    FAILED=1
+  else
+    echo "No workflow writes into /tmp/core-data-snapshot"
+  fi
+}
+
 run_check() {
   case "$1" in
     prebuild)          check_prebuild ;;
@@ -268,14 +294,16 @@ run_check() {
     scraping-fallback) check_scraping_fallback ;;
     theatr-token)      check_theatr_token ;;
     demo-flags)        check_demo_flags ;;
+    snapshot-overwrite) check_snapshot_overwrite ;;
     workflows)
       check_prebuild; check_core_data_pairing; check_private_git_add
-      check_merge_drivers; check_scraping_fallback; check_theatr_token ;;
+      check_merge_drivers; check_scraping_fallback; check_theatr_token
+      check_snapshot_overwrite ;;
     all)
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_theatr_token
-      check_demo_flags ;;
-    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|theatr-token|demo-flags|workflows|all>[,...]" >&2; exit 2 ;;
+      check_demo_flags; check_snapshot_overwrite ;;
+    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|theatr-token|demo-flags|snapshot-overwrite|workflows|all>[,...]" >&2; exit 2 ;;
   esac
 }
 
