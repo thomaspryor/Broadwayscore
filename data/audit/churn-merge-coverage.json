@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-20T07:34:13.039Z",
+    "generatedAt": "2026-07-20T08:21:48.364Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -32,11 +32,11 @@
     },
     {
       "path": "data/audit/we-gate-proving.json",
-      "churn": 59
+      "churn": 58
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 52
+      "churn": 53
     },
     {
       "path": "data/audit/validation/collection-report-2026-07-19.json",
@@ -74,7 +74,7 @@
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 85
+      "churn": 83
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -93,58 +93,58 @@
       "churn": 40
     },
     {
-      "path": "public/data/shows/the-oresteia-west-end-2026.json",
-      "churn": 40
+      "path": "public/data/shows/heathers-the-musical-off-west-end-2026.json",
+      "churn": 38
     },
     {
-      "path": "public/data/shows/heathers-the-musical-off-west-end-2026.json",
+      "path": "public/data/shows/the-oresteia-west-end-2026.json",
       "churn": 38
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 967,
+      "churn": 966,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 952,
+      "churn": 951,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 683,
+      "churn": 678,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 668,
+      "churn": 664,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 256,
+      "churn": 254,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 256,
+      "churn": 254,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 170,
+      "churn": 169,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 132,
+      "churn": 133,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 131,
+      "churn": 132,
       "mergeAttr": "ours"
     },
     {
@@ -184,22 +184,22 @@
     },
     {
       "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 67,
+      "churn": 66,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/show-review-gap.json",
-      "churn": 65,
+      "churn": 64,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 65,
+      "churn": 64,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/drift-state.json",
-      "churn": 51,
+      "churn": 52,
       "mergeAttr": "ours"
     },
     {
@@ -209,7 +209,7 @@
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 47,
+      "churn": 46,
       "mergeAttr": "ours"
     },
     {
@@ -239,12 +239,12 @@
     },
     {
       "path": "data/audit/poller-backoff/heathers-the-musical-off-west-end-2026.json",
-      "churn": 40,
+      "churn": 41,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/to-kill-a-mockingbird-west-end-2026.json",
-      "churn": 39,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
