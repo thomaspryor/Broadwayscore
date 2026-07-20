@@ -1,15 +1,15 @@
 {
   "system": "seo",
-  "status": "warn",
-  "lastChecked": "2026-07-19T07:43:39.578Z",
+  "status": "error",
+  "lastChecked": "2026-07-20T12:44:04.111Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "SEO: health",
-      "status": "warn",
-      "message": "2 SEO warning(s): LCP regressed on /: 1409ms (was 664ms); Lighthouse score dropped on /browse/best-broadway-musicals: 71 (was 93)"
+      "status": "error",
+      "message": "1 critical SEO anomalies: Lighthouse score below 70 on /west-end: 69/100 + field LCP 2512ms over 2500ms"
     }
   ]
 }

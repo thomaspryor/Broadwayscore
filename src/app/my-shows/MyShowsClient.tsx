@@ -46,12 +46,13 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
     type: raw.m ? 'musical' : 'play',
     status: (raw.st as string) || 'closed',
     category: (raw.c as string) || 'broadway',
-    previewDate: null,
+    previewDate: (raw.pd as string) || null,
     openingDate: (raw.od as string) || null,
     closingDate: (raw.cd as string) || null,
     compositeScore: null,
     posterUrl: (raw.p as string) || null,
     diaryOnly: !!raw.dy,
+    ticketsOnSale: !!raw.tx,
   };
 }
 
@@ -469,9 +470,29 @@ export default function MyShowsClient() {
     }
   }, [watchlist, watchlistSort, showMap]);
 
-  // Split watchlist into "not yet booked" vs "booked" (has planned_date)
+  // Split watchlist into UPCOMING (future planned_date — shown at the TOP so
+  // adding a date doesn't read as the show "disappearing" into a below-the-fold
+  // Booked section; owner, 2026-07-20), "not yet booked" (no date), and
+  // past-dated entries (seen — surfaced as To Be Rated, mirroring the Diary).
+  // Local timezone, NOT UTC: with UTC, from ~8pm ET a show planned for
+  // TONIGHT flipped from Upcoming to To Be Rated before curtain
+  // (code-review catch, 2026-07-20). Mirrors RatingEditor.localToday().
+  const wlNow = new Date();
+  const wlToday = new Date(wlNow.getTime() - wlNow.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  const upcomingBookedWatchlist = useMemo(
+    () => sortedWatchlist.filter(e => !!e.planned_date && e.planned_date >= wlToday),
+    [sortedWatchlist, wlToday],
+  );
   const unbookedWatchlist = useMemo(() => sortedWatchlist.filter(e => !e.planned_date), [sortedWatchlist]);
-  const bookedWatchlist = useMemo(() => sortedWatchlist.filter(e => !!e.planned_date), [sortedWatchlist]);
+  const seenToRateWatchlist = useMemo(
+    () => sortedWatchlist.filter(e => !!e.planned_date && e.planned_date < wlToday && !reviews.some(r => r.show_id === e.show_id)),
+    [sortedWatchlist, wlToday, reviews],
+  );
+  // Rendered watchlist size — excludes stale rows (past-dated + already
+  // rated: the show lives in the Diary; the leftover entry is a remnant of
+  // an edit-path save that skips watchlist removal). Badge must match what
+  // the tab renders (review finding, 2026-07-20).
+  const visibleWatchlistCount = upcomingBookedWatchlist.length + unbookedWatchlist.length + seenToRateWatchlist.length;
 
   // While mock mode is initializing (useEffect hasn't fired yet), show loading
   const hasMockParam = searchParams.get('mock') === '1';
@@ -725,7 +746,7 @@ export default function MyShowsClient() {
           aria-selected={activeTab === 'watchlist'}
           aria-controls="panel-watchlist"
           onClick={() => setActiveTab('watchlist')}
-          aria-label={watchlist.length > 0 ? `Watchlist, ${watchlist.length} shows` : 'Watchlist'}
+          aria-label={visibleWatchlistCount > 0 ? `Watchlist, ${visibleWatchlistCount} shows` : 'Watchlist'}
           className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
             activeTab === 'watchlist'
               ? 'text-white border-brand'
@@ -733,9 +754,9 @@ export default function MyShowsClient() {
           }`}
         >
           Watchlist
-          {watchlist.length > 0 && (
+          {visibleWatchlistCount > 0 && (
             <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full" aria-hidden="true">
-              {watchlist.length}
+              {visibleWatchlistCount}
             </span>
           )}
         </button>
@@ -1150,10 +1171,57 @@ export default function MyShowsClient() {
             )
           ) : (
             <div className="space-y-6">
+              {/* Upcoming — future planned dates at the TOP so a newly dated
+                  show visibly moves up, not below the fold (owner, 2026-07-20) */}
+              {upcomingBookedWatchlist.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Upcoming</h3>
+                  {watchlistView === 'grid' ? (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                      {upcomingBookedWatchlist.map(entry => (
+                        <WatchlistCard
+                          key={entry.id}
+                          entry={entry}
+                          show={showMap[entry.show_id]}
+                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
+                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRate={openRatingEditor}
+                        />
+                      ))}
+                      {unbookedWatchlist.length === 0 && (
+                        <AddShowCard context="watchlist" onOpen={() => {
+                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                          btn?.click();
+                        }} />
+                      )}
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {upcomingBookedWatchlist.map(entry => (
+                        <WatchlistListItem
+                          key={entry.id}
+                          entry={entry}
+                          show={showMap[entry.show_id]}
+                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
+                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRate={openRatingEditor}
+                        />
+                      ))}
+                      {unbookedWatchlist.length === 0 && (
+                        <AddShowCard context="watchlist" variant="list" onOpen={() => {
+                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                          btn?.click();
+                        }} />
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Not yet booked section */}
               {unbookedWatchlist.length > 0 && (
                 <div>
-                  {bookedWatchlist.length > 0 && (
+                  {(upcomingBookedWatchlist.length > 0 || seenToRateWatchlist.length > 0) && (
                     <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Not yet booked</h3>
                   )}
                   {watchlistView === 'grid' ? (
@@ -1194,49 +1262,31 @@ export default function MyShowsClient() {
                 </div>
               )}
 
-              {/* Booked section */}
-              {bookedWatchlist.length > 0 && (
+              {/* Seen (past planned date, unrated) — mirror the Diary's To Be
+                  Rated treatment instead of hiding them in a dated 'Booked'
+                  pile (owner, 2026-07-20) */}
+              {seenToRateWatchlist.length > 0 && (
                 <div>
-                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Booked</h3>
-                  {watchlistView === 'grid' ? (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                      {bookedWatchlist.map(entry => (
-                        <WatchlistCard
-                          key={entry.id}
-                          entry={entry}
-                          show={showMap[entry.show_id]}
-                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
-                          onRate={openRatingEditor}
-                        />
-                      ))}
-                      {unbookedWatchlist.length === 0 && (
-                        <AddShowCard context="watchlist" onOpen={() => {
-                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
-                          btn?.click();
-                        }} />
-                      )}
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      {bookedWatchlist.map(entry => (
-                        <WatchlistListItem
-                          key={entry.id}
-                          entry={entry}
-                          show={showMap[entry.show_id]}
-                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
-                          onRate={openRatingEditor}
-                        />
-                      ))}
-                      {unbookedWatchlist.length === 0 && (
-                        <AddShowCard context="watchlist" variant="list" onOpen={() => {
-                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
-                          btn?.click();
-                        }} />
-                      )}
+                  {upcomingBookedWatchlist.length === 0 && unbookedWatchlist.length === 0 && (
+                    <div className="mb-4">
+                      <AddShowCard context="watchlist" variant="list" onOpen={() => {
+                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                        btn?.click();
+                      }} />
                     </div>
                   )}
+                  <h3 className="text-xs font-bold text-amber-400/80 uppercase tracking-wider mb-3">To Be Rated</h3>
+                  <div className="space-y-2">
+                    {seenToRateWatchlist.map(entry => (
+                      <ToBeRatedCard
+                        key={`wl-rate-${entry.id}`}
+                        entry={entry}
+                        show={showMap[entry.show_id]}
+                        onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed — no rating needed.', 'info'); }}
+                        onRate={openRatingEditor}
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -1283,7 +1333,7 @@ function RowRemoveButton({ onRemove, label }: { onRemove: () => void; label: str
       className="relative z-[2] inline-flex items-center justify-center flex-shrink-0 p-1.5 rounded-full text-gray-600 hover:text-red-400 transition-colors pointer-events-auto"
     >
       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
       </svg>
     </button>
   );
@@ -1590,6 +1640,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
     const fourWeeks = 28 * 24 * 60 * 60 * 1000;
     return closing.getTime() - now.getTime() < fourWeeks && closing > now;
   })();
+  const bookability = bookabilityLabel(show);
 
   const formattedDate = entry.planned_date
     ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
@@ -1600,9 +1651,16 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
       <CardLinkOrDiv href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay relative">
           <Poster url={show?.posterUrl} iconClass="text-3xl" />
+          {/* Poster badges live TOP-LEFT: the rate strip owns the bottom and
+              the trash owns the top-right (owner, 2026-07-20) */}
           {isClosingSoon && (
-            <span className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">
+            <span className="absolute top-1.5 left-1.5 z-[2] px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">
               Closing Soon
+            </span>
+          )}
+          {!isClosingSoon && bookability && (
+            <span className={`absolute top-1.5 left-1.5 z-[2] px-1.5 py-0.5 text-[9px] font-bold uppercase rounded ${bookability.cls}`}>
+              {bookability.text}
             </span>
           )}
         </div>
@@ -1669,6 +1727,30 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
 }
 
 /** Render mini star icons for grid cards (filled, half, empty — or filled-only) */
+/**
+ * Bookability label for watchlist entries — without it a watchlist full of
+ * announced/closed shows "looks like a lot I could book, but can't actually
+ * yet" (owner, 2026-07-20). Returns null for open/previews shows (bookable —
+ * no label needed; Closing Soon is handled separately).
+ */
+function bookabilityLabel(show?: ShowLookup): { text: string; cls: string } | null {
+  if (!show) return null;
+  if (show.status === 'closed') {
+    return { text: 'Closed', cls: 'bg-gray-600/90 text-white' };
+  }
+  if (show.status === 'upcoming' || show.status === 'announced') {
+    if (show.ticketsOnSale) {
+      return { text: 'Tix on sale', cls: 'bg-status-open/90 text-black' };
+    }
+    const start = show.previewDate || show.openingDate;
+    const text = start
+      ? `Opens ${new Date(start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+      : 'Not yet open';
+    return { text, cls: 'bg-blue-500/80 text-white' };
+  }
+  return null;
+}
+
 function MiniStars({ rating, size = 'sm', filledOnly = false }: { rating: number; size?: 'sm' | 'md' | 'lg'; filledOnly?: boolean }) {
   const uid = useId();
   // NOTE: w-4.5/h-4.5 are NOT in the Tailwind spacing scale — they compile to
@@ -1725,6 +1807,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
   onRemove: () => void;
   onRate: (show: { id: string; title: string }) => void;
 }) {
+  const router = useRouter();
   const [confirmRemove, setConfirmRemove] = useState(false);
   useEffect(() => {
     if (!confirmRemove) return;
@@ -1741,6 +1824,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
     const fourWeeks = 28 * 24 * 60 * 60 * 1000;
     return closing.getTime() - now.getTime() < fourWeeks && closing > now;
   })();
+  const bookability = bookabilityLabel(show);
 
   const formattedDate = entry.planned_date
     ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
@@ -1760,6 +1844,9 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
         {isClosingSoon && (
           <span className="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">Closing Soon</span>
         )}
+        {!isClosingSoon && bookability && (
+          <span className={`inline-block mt-1 px-1.5 py-0.5 text-[9px] font-bold uppercase rounded ${bookability.cls}`}>{bookability.text}</span>
+        )}
         {show?.closingDate && (
           <p className="text-xs text-gray-500 mt-1">
             Closes {new Date(show.closingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -1774,30 +1861,25 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
           hasDate={!!formattedDate}
           onChange={(val) => onDateChange(val || null)}
         />
-        {/* Rate + Remove row */}
+        {/* Rate + Remove row — same tappable 5-star affordance as the grid
+            strip and To-Be-Rated rows; the old '☆ Rate' text link was a
+            second visual treatment for the identical action (flagged by the
+            UX walkthrough panel, 2026-07-20) */}
         <div className="flex items-center gap-2">
-          {href ? (
-            <Link
-              href={`${href}?rate=1`}
-              className="relative z-[1] text-xs sm:text-xs text-gray-500 hover:text-amber-400 transition-colors flex items-center gap-1"
-            >
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-              Rate
-            </Link>
-          ) : (
-            <button
-              type="button"
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRate({ id: entry.show_id, title }); }}
-              className="relative z-[1] text-xs sm:text-xs text-gray-500 hover:text-amber-400 transition-colors flex items-center gap-1"
-            >
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-              Rate
-            </button>
-          )}
+          {/* star-compact: without it the 44px mobile tap minimums inflate
+              these five buttons to 220px and crush the title column to zero
+              width at 390px (same failure class as the diary rows, 2026-07-19) */}
+          <span className="relative z-[1] star-compact">
+            <StarRating
+              rating={null}
+              onRatingChange={(stars) => {
+                if (href) router.push(`${href}?rate=1&stars=${stars}`);
+                else onRate({ id: entry.show_id, title });
+              }}
+              size="sm"
+              hideLabel
+            />
+          </span>
           {confirmRemove ? (
             <span className="relative z-[1] flex items-center gap-1 text-xs">
               <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }} className="text-red-400 hover:text-red-300 font-medium">Remove?</button>

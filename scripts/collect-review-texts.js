@@ -2008,7 +2008,32 @@ function canUseBrowserbase(urlDomain) {
  * Fetch with Browserbase - managed browser cloud with CAPTCHA solving
  * Uses their API to create a browser session and control it
  */
+/**
+ * fetchWithBrowserbase: retries once (fresh session) on "Insufficient text"
+ * before giving up. #221/#224 diagnostic (2026-07-20) found WSJ's real-world
+ * Browserbase hit rate is ~50% per attempt even with valid injected cookies —
+ * NOT a hard block (isBlocked/isPaywalled both pass, the page loads and has a
+ * real <article> with real cookies present) but some sessions render an empty
+ * paragraph tree while an identical retry moments later succeeds. Sampled
+ * data/review-texts wsj--*.json fetchMethod:'browserbase' entries from
+ * 2026-07-10 to 07-19 show real successes (5000+ chars) interleaved with
+ * 0-char failures throughout, not a step-function regression — a single
+ * session-level retry (independent fingerprint/proxy) converts that ~50%
+ * single-shot rate into a ~75% effective rate. Does NOT retry hard failures
+ * (cap reached, missing config, session-creation errors) — those won't
+ * resolve on retry and retrying them just burns a second session for nothing.
+ */
 async function fetchWithBrowserbase(url, review) {
+  try {
+    return await _fetchWithBrowserbaseAttempt(url, review);
+  } catch (error) {
+    if (!/Insufficient text/.test(error.message)) throw error;
+    console.log(`    ⚠ Browserbase returned insufficient text — retrying once with a fresh session...`);
+    return await _fetchWithBrowserbaseAttempt(url, review);
+  }
+}
+
+async function _fetchWithBrowserbaseAttempt(url, review) {
   // Extract domain ONCE — used by both the cap gate and the per-domain counter.
   // canUseBrowserbase needs it to enforce the per-domain cap (otherwise
   // anything that bypasses the shouldRun gate would silently skip the
@@ -2220,9 +2245,21 @@ async function fetchWithBrowserbase(url, review) {
 // TIER 2: ScrapingBee API
 // ============================================================================
 
+// This script has its own standalone ScrapingBee client (does not go through
+// scripts/lib/scraper.js), so scraper.js's _scrapingBeePageExhausted breaker
+// doesn't cover it — a second-opinion review of that fix (2026-07-20) found
+// this exact function still had zero circuit breaker, meaning the incident
+// it was meant to close (every SB call doing a full round-trip before dying
+// on a monthly-cap 401) was still live in the flagship review-collection
+// script. Same one-failure-and-stop pattern as scraper.js's breaker.
+let _sbPageExhausted = false;
+
 async function fetchWithScrapingBee(url, useStealth = false) {
   if (!CONFIG.scrapingBeeKey || !axios) {
     throw new Error('ScrapingBee not configured');
+  }
+  if (_sbPageExhausted) {
+    throw new Error('ScrapingBee disabled for the rest of this process (prior auth/limit failure)');
   }
 
   // Determine cost tier based on domain
@@ -2330,6 +2367,15 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     if (error.response) {
       const status = error.response.status;
       const message = error.response.data?.message || error.message;
+
+      // Same trigger set as scraper.js's _scrapingBeePageExhausted and
+      // url-discovery.js's _scrapingBeeSerpExhausted: auth/plan/rate-limit
+      // failures don't resolve mid-run, so stop asking for the rest of this
+      // process instead of eating a full round-trip on every candidate.
+      if ([401, 403, 429].includes(status)) {
+        _sbPageExhausted = true;
+        console.warn(`  ⚠️  ScrapingBee disabled for the rest of this process (HTTP ${status})`);
+      }
 
       if (status === 401) {
         throw new Error(`ScrapingBee auth failed: ${message}`);

@@ -1,15 +1,26 @@
 #!/usr/bin/env node
 /**
- * fetch-social-pulse.js — fetches social mentions for a single show (or all
- * running shows), classifies them with GPT-4o-mini, scores them with the
- * social-pulse-scorer library, and writes two output files per show:
+ * fetch-social-pulse.js — fetches social mentions + weekly buzz counters
+ * for a single show (or all running shows), classifies the text sample
+ * with GPT-4o-mini, scores it with the social-pulse-scorer library, and
+ * writes two output files per show:
  *
  *   1. data/social-pulse/{show-id}.json       — canonical source
  *   2. public/data/shows/{show-id}.social.json — compact client-ready
  *
  * Writing to a SIBLING public file (not merging into the main show JSON)
- * eliminates the race with nightly generate-mobile-show-details.js rebuilds
- * (see plan-review pre-mortem scenario for why this matters).
+ * eliminates the race with nightly generate-mobile-show-details.js rebuilds.
+ *
+ * SCHEMA v3 (2026-07, PR #431): the Apify actor stack is gone. Sources are
+ * all free — Reddit + Bluesky text samples (sentiment/quotes) and uncapped
+ * weekly COUNTERS (Reddit count, Bluesky hitsTotal, X tweet count while
+ * the grandfathered token lives, Wikipedia article pageviews). `volume` is
+ * now the TRUE weekly mention total, not a scrape-cap artifact; ranking
+ * strength uses the relevance-adjusted effectiveVolume blend (see
+ * SIGNAL_WEIGHTS in social-pulse-scorer.js).
+ *
+ * v2→v3 baseline reset: counters change the meaning of `volume`, so prior
+ * v2 baselines/volumes are ignored (WoW% returns after the second v3 run).
  *
  * Usage:
  *   node scripts/fetch-social-pulse.js --show-id=maybe-happy-ending-2024
@@ -17,21 +28,30 @@
  *   node scripts/fetch-social-pulse.js --show-id=X --dry-run  (no writes)
  *
  * Required env:
- *   APIFY_TOKEN
- *   OPENAI_API_KEY
+ *   OPENAI_API_KEY                      (LLM relevance/sentiment classifier)
+ * Strongly recommended in CI:
+ *   BSKY_HANDLE + BSKY_APP_PASSWORD     (Bluesky auth — the public endpoint
+ *                                        403s from datacenter IPs; without
+ *                                        these the run aborts via the
+ *                                        coverage guard, by design)
+ *   SCRAPINGBEE_API_KEY                 (Reddit 403 fallback proxy)
+ * Optional:
+ *   X_BEARER_TOKEN                      (weekly tweet counts, at-risk)
  *
- * Budget safety:
- *   - Reads data/social-pulse/_budget.json before EACH show to check
- *     cumulative monthly spend against a $4.50 soft cap (leaves $0.50
- *     headroom under Apify's free-tier $5 hard cap).
- *   - Aborts if over the cap.
- *   - Writes updated cumulative spend after each show.
+ * Fleet health guards (exit codes for the workflow):
+ *   4 — >30% of shows have zero relevant sample mentions (classifier/sample
+ *       pipeline broken)
+ *   6 — counter coverage collapsed: >50% of shows missing the Bluesky
+ *       counter, or >90% of shows with Reddit=0 (a platform is broken or
+ *       secrets are missing — do NOT ship an index computed from the
+ *       surviving signals; it would silently reweight every show)
  */
 
 const fs = require('fs');
 const path = require('path');
 
-const { fetchAllSocialMentions, fetchXTweetCount } = require('./lib/apify-fetchers');
+const { fetchAllPulseSources } = require('./lib/social-pulse-sources');
+const { fetchWeeklyPageviews } = require('./lib/wikipedia-pageviews');
 const { classifyMentions } = require('./lib/social-pulse-llm');
 const { computeSocialPulse } = require('./lib/social-pulse-scorer');
 const { listRunningShows } = require('./lib/list-running-shows');
@@ -39,26 +59,13 @@ const { listRunningShows } = require('./lib/list-running-shows');
 const REPO_ROOT = path.join(__dirname, '..');
 const SOCIAL_PULSE_DIR = path.join(REPO_ROOT, 'data', 'social-pulse');
 const PUBLIC_SHOWS_DIR = path.join(REPO_ROOT, 'public', 'data', 'shows');
-const BUDGET_FILE = path.join(SOCIAL_PULSE_DIR, '_budget.json');
+const META_FILE = path.join(SOCIAL_PULSE_DIR, '_meta.json');
+const WIKI_MAP_FILE = path.join(REPO_ROOT, 'data', 'wikipedia-title-map.json');
 
-// Volume limits. Bumped 2026-04-11 after the user noted "only 10 TikToks for
-// Cats feels off" — the old caps were saturating on hot shows. New caps:
-//   X:         100 → 150  (+$9.10/mo, cheap at $0.00025/tweet)
-//   TikTok:    10 → 20    (+$10.92/mo, the expensive platform)
-//   Instagram: 15 (unchanged — already plenty for the platform's signal)
-// Total est ~$33/mo, comfortably under $39 Creator plan credits.
-const TWITTER_MAX = 150;
-const TIKTOK_MAX = 20;
-const INSTAGRAM_MAX = 15;
-// Reddit via brand-mention-sources.js fetchRedditMentions. 100 is Reddit's
-// own API ceiling per query (not ours). Effectively uncapped for theater
-// volumes — hot shows typically return 20-80 posts.
+// Text-sample sizes (Job B). These bound the LLM classification batch, NOT
+// the volume metric — volume comes from the uncapped counters.
 const REDDIT_MAX = 100;
-
-// Soft cap for cumulative monthly Apify spend. Apify ceiling raised to $75
-// (2026-04-12). Weekly runs cost ~$10 each, 4 runs/mo = ~$40. $65 cap
-// leaves $10 headroom for retries and ad-hoc single-show runs.
-const BUDGET_SOFT_CAP_USD = 65.0;
+const BLUESKY_MAX = 100;
 
 // ---------- CLI argument parsing ----------
 
@@ -80,39 +87,36 @@ function parseArgs(argv) {
   return args;
 }
 
-// ---------- Budget tracking ----------
+// ---------- Filesystem helpers ----------
 
 function ensureDir(dir) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 }
 
-function readBudget() {
-  if (!fs.existsSync(BUDGET_FILE)) {
-    return { month: currentMonthKey(), cumulativeUsd: 0, runs: 0 };
+/**
+ * Run stamp. Replaces the Apify-era _budget.json — health-check.js reads
+ * lastUpdated to catch a silently-dead Monday workflow (powers /trending).
+ */
+function writeRunMeta(stats) {
+  ensureDir(SOCIAL_PULSE_DIR);
+  const meta = {
+    lastUpdated: new Date().toISOString(),
+    schema: 3,
+    ...stats,
+  };
+  fs.writeFileSync(META_FILE, JSON.stringify(meta, null, 2));
+}
+
+function loadWikiTitleMap() {
+  if (!fs.existsSync(WIKI_MAP_FILE)) {
+    console.warn('No data/wikipedia-title-map.json — Wikipedia counter disabled (run scripts/map-show-wikipedia-articles.js)');
+    return {};
   }
   try {
-    const raw = JSON.parse(fs.readFileSync(BUDGET_FILE, 'utf-8'));
-    // Reset cumulative spend on month rollover
-    if (raw.month !== currentMonthKey()) {
-      return { month: currentMonthKey(), cumulativeUsd: 0, runs: 0 };
-    }
-    return raw;
+    return JSON.parse(fs.readFileSync(WIKI_MAP_FILE, 'utf-8')).titles || {};
   } catch {
-    return { month: currentMonthKey(), cumulativeUsd: 0, runs: 0 };
+    return {};
   }
-}
-
-function writeBudget(budget) {
-  ensureDir(SOCIAL_PULSE_DIR);
-  // lastUpdated drives the daily-digest freshness check for /trending data.
-  // Without it the directory rots silently if the Monday workflow breaks.
-  budget.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(BUDGET_FILE, JSON.stringify(budget, null, 2));
-}
-
-function currentMonthKey() {
-  const d = new Date();
-  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
 }
 
 // ---------- Show lookup ----------
@@ -143,11 +147,19 @@ function getMarketLabel(show) {
 
 // ---------- Prior data ----------
 
+/**
+ * Loads the prior canonical file for baseline/WoW continuity — but ONLY
+ * from schema v3 onward. v2 volumes were capped-sample artifacts; carrying
+ * their baselines across the semantics change would make every first-week
+ * WoW/baseline comparison span the discontinuity.
+ */
 function loadPriorSocialPulse(showId) {
   const file = path.join(SOCIAL_PULSE_DIR, `${showId}.json`);
   if (!fs.existsSync(file)) return null;
   try {
-    return JSON.parse(fs.readFileSync(file, 'utf-8'));
+    const prior = JSON.parse(fs.readFileSync(file, 'utf-8'));
+    if ((prior._v || 1) < 3) return null; // v2→v3 baseline reset
+    return prior;
   } catch {
     return null;
   }
@@ -162,35 +174,43 @@ function writeCanonicalFile(showId, data) {
 }
 
 /**
- * Writes the compact client-ready sibling public file. Separate from the
- * main public show JSON (intentionally — see header comment on race
- * conditions with generate-mobile-show-details.js).
+ * Writes the compact client-ready sibling public file.
  *
- * Schema uses short keys to keep the payload tiny:
- *   { _v: 2, t: tier, v: volume, p: positive%, wow: WoW%, bm: baselineMultiple,
- *     pl: {x, tt, ig, r}, q: [{t, p, a, u}], u: updated_date, r: rank }
+ * Schema v3 keys:
+ *   { _v: 3, t: tier, v: weekly mention total, ev: effectiveVolume,
+ *     p: positive%, wow: WoW%,
+ *     pl: {x, tt, ig, r, bs},   // classified SAMPLE breakdown (counts of posts we read)
+ *     c:  {r, bs, x, wv},       // weekly COUNTERS (true uncapped volume; null = absent)
+ *     q: [{t, p, a, u}], u: updated_date, r: rank }
  *
- * Schema v2 (2026-04-11): added pl.r (reddit count). Legacy v1 files
- * still parse — the card defaults missing pl.r to 0.
+ * Counters live in `c`, NOT `pl` — sample counts and true counters are
+ * different units (the v2 `xv` top-level precedent, generalized).
+ * Legacy v2 files still parse client-side; the card treats missing keys
+ * as absent.
  */
-function writePublicFile(showId, scored, xTrueVolume) {
+function writePublicFile(showId, scored, counters) {
   ensureDir(PUBLIC_SHOWS_DIR);
   const compact = {
-    _v: 2,
+    _v: 3,
     t: scored.tier,
     v: scored.volume,
+    ev: scored.effectiveVolume,
     p: scored.positivePct,
+    os: scored.opinionSample,
     wow: scored.weekOverWeekPct,
-    bm: scored.baselineMultiple,
     pl: {
       x: scored.platformBreakdown.x,
       tt: scored.platformBreakdown.tiktok,
       ig: scored.platformBreakdown.instagram,
       r: scored.platformBreakdown.reddit,
+      bs: scored.platformBreakdown.bluesky,
     },
-    // True X volume from free X API (uncapped). The card uses this instead
-    // of pl.x (which is capped at 150 by Apify) for meaningful volume display.
-    xv: xTrueVolume ?? undefined,
+    c: {
+      r: counters.reddit,
+      bs: counters.bluesky,
+      x: counters.x,
+      wv: counters.wikipedia,
+    },
     q: scored.topQuotes.map((q) => ({
       t: q.text,
       p: q.platform,
@@ -205,40 +225,37 @@ function writePublicFile(showId, scored, xTrueVolume) {
 
 // ---------- Per-show processing ----------
 
-async function processShow({ show, apifyToken, openaiApiKey, dryRun, logger = console }) {
+async function processShow({ show, wikiTitles, openaiApiKey, dryRun, logger = console }) {
   const showId = show.id;
   const showTitle = show.title;
   const marketQualifier = getMarketQualifier(show);
   const marketLabel = getMarketLabel(show);
 
-  logger.log(`[${showId}] Fetching mentions for "${showTitle}" (${marketLabel})...`);
+  logger.log(`[${showId}] Fetching pulse for "${showTitle}" (${marketLabel})...`);
 
-  // Step 1a: Fetch mentions from all four platforms (Reddit + 3 Apify)
-  // Step 1b: Fetch true X tweet count via free X API (runs in parallel)
-  const [fetchResult, xTrueVolume] = await Promise.all([
-    fetchAllSocialMentions({
+  // Fetch social sources + Wikipedia counter in parallel
+  const wikiTitle = wikiTitles[showId] || null;
+  const [fetchResult, wikiViews] = await Promise.all([
+    fetchAllPulseSources({
       showTitle,
       marketQualifier,
-      twitterMax: TWITTER_MAX,
-      tiktokMax: TIKTOK_MAX,
-      instagramMax: INSTAGRAM_MAX,
       redditMax: REDDIT_MAX,
-      token: apifyToken,
+      blueskyMax: BLUESKY_MAX,
       logger,
     }),
-    fetchXTweetCount({ showTitle, marketQualifier, logger }),
+    wikiTitle ? fetchWeeklyPageviews(wikiTitle, { logger }) : Promise.resolve(null),
   ]);
 
-  const xVolLabel = xTrueVolume !== null ? `X.vol=${xTrueVolume}` : 'X.vol=n/a';
-  logger.log(
-    `[${showId}]   Reddit=${fetchResult.rawCounts.reddit || 0} X=${fetchResult.rawCounts.twitter} ${xVolLabel} TikTok=${fetchResult.rawCounts.tiktok} IG=${fetchResult.rawCounts.instagram} total=${fetchResult.mentions.length} cost=$${fetchResult.costUsd.toFixed(4)}`,
-  );
+  const counters = { ...fetchResult.counters, wikipedia: wikiViews };
 
+  logger.log(
+    `[${showId}]   counters: reddit=${counters.reddit ?? 'n/a'} bluesky=${counters.bluesky ?? 'n/a'} x=${counters.x ?? 'n/a'} wiki=${counters.wikipedia ?? 'n/a'} | sample=${fetchResult.mentions.length}`,
+  );
   if (fetchResult.errors.length > 0) {
     logger.warn(`[${showId}]   platform errors: ${fetchResult.errors.map((e) => e.platform).join(', ')}`);
   }
 
-  // Step 2: Classify relevance + sentiment
+  // Classify relevance + sentiment on the text sample
   const classified = await classifyMentions({
     mentions: fetchResult.mentions,
     showTitle,
@@ -246,173 +263,163 @@ async function processShow({ show, apifyToken, openaiApiKey, dryRun, logger = co
     openaiApiKey,
     logger,
   });
-
   const relevantCount = classified.filter((m) => m.relevant).length;
   logger.log(`[${showId}]   relevant=${relevantCount}/${classified.length}`);
 
-  // Step 3: Load prior baseline + prior volume
+  // Prior v3 data for baseline/WoW (v2 ignored — semantics reset)
   const prior = loadPriorSocialPulse(showId);
   const baseline = prior?.baseline || null;
-  const priorVolume = prior?.volume || null;
+  const priorVolume = prior?.volume ?? null;
 
-  // Step 4: Score
   const scored = computeSocialPulse({
     mentions: classified,
+    counters,
     baseline,
     priorVolume,
   });
 
   logger.log(
-    `[${showId}]   tier=${scored.tier} vol=${scored.volume} pos=${scored.positivePct}% baseMult=${scored.baselineMultiple ?? 'n/a'} wow=${scored.weekOverWeekPct ?? 'n/a'}%`,
+    `[${showId}]   tier=${scored.tier} vol=${scored.volume} effVol=${scored.effectiveVolume} pos=${scored.positivePct}% wow=${scored.weekOverWeekPct ?? 'n/a'}%`,
   );
 
-  // Step 5: Persist
   const canonical = {
-    _v: 2,
+    _v: 3,
     showId,
     showTitle,
     market: marketLabel,
     fetchedAt: new Date().toISOString(),
     ...scored,
-    // True X volume from the free X API (uncapped, unlike Apify's capped sample)
-    xTrueVolume: xTrueVolume ?? null,
+    counters,
+    wikipediaTitle: wikiTitle,
     baseline: scored.nextBaseline, // persist the UPDATED baseline for next run
-    costUsd: fetchResult.costUsd,
     rawCounts: fetchResult.rawCounts,
     errors: fetchResult.errors,
   };
-  // Don't carry nextBaseline twice
   delete canonical.nextBaseline;
 
   if (!dryRun) {
     writeCanonicalFile(showId, canonical);
-    writePublicFile(showId, scored, xTrueVolume);
+    writePublicFile(showId, scored, counters);
   } else {
     logger.log(`[${showId}]   (dry run — not writing files)`);
   }
 
-  return { showId, tier: scored.tier, volume: scored.volume, costUsd: fetchResult.costUsd, errors: fetchResult.errors };
+  return {
+    showId,
+    tier: scored.tier,
+    volume: scored.volume,
+    counters,
+    sampleSize: classified.length,
+    relevantCount,
+    errors: fetchResult.errors,
+  };
 }
 
 // ---------- Main ----------
 
 async function main() {
   const args = parseArgs(process.argv);
-  const apifyToken = process.env.APIFY_TOKEN;
   const openaiApiKey = process.env.OPENAI_API_KEY;
 
-  if (!apifyToken) {
-    console.error('Missing APIFY_TOKEN env var');
-    process.exit(1);
-  }
   if (!openaiApiKey) {
     console.error('Missing OPENAI_API_KEY env var');
     process.exit(1);
   }
 
-  // Determine show list
   let shows;
   if (args.allRunning) {
     shows = listRunningShows();
     console.log(`Processing ${shows.length} running shows`);
   } else {
-    const show = loadShow(args.showId);
-    shows = [show];
+    shows = [loadShow(args.showId)];
   }
 
-  // Budget check — refuses to start if already over cap
-  const budget = readBudget();
-  console.log(`Budget: $${budget.cumulativeUsd.toFixed(4)} / $${BUDGET_SOFT_CAP_USD} for ${budget.month}`);
-  if (budget.cumulativeUsd >= BUDGET_SOFT_CAP_USD) {
-    console.error(`BUDGET EXCEEDED — cumulative spend $${budget.cumulativeUsd.toFixed(4)} ≥ cap $${BUDGET_SOFT_CAP_USD}. Aborting.`);
-    process.exit(3);
-  }
-
+  const wikiTitles = loadWikiTitleMap();
   const results = [];
-  for (const show of shows) {
-    // Re-check budget before each show (parallel loops could push it over)
-    const currentBudget = readBudget();
-    if (currentBudget.cumulativeUsd >= BUDGET_SOFT_CAP_USD) {
-      console.error(
-        `BUDGET reached mid-loop at $${currentBudget.cumulativeUsd.toFixed(4)}. Stopping after ${results.length}/${shows.length} shows.`,
-      );
-      break;
-    }
 
+  for (const show of shows) {
     try {
       const result = await processShow({
         show,
-        apifyToken,
+        wikiTitles,
         openaiApiKey,
         dryRun: args.dryRun,
         logger: console,
       });
       results.push(result);
-
-      if (!args.dryRun) {
-        currentBudget.cumulativeUsd += result.costUsd;
-        currentBudget.runs++;
-        writeBudget(currentBudget);
-      }
     } catch (err) {
       console.error(`[${show.id}] FAILED: ${err.message}`);
       results.push({ showId: show.id, error: err.message });
     }
 
-    // Small spacing between shows — Apify actors are rate-limited at the
-    // platform level (Twitter, TikTok) but we're polite anyway.
+    // Politeness spacing between shows — Bluesky's public AppView has an
+    // IP-level limit and Reddit's proxy fallback appreciates the breather.
     if (shows.length > 1) {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
     }
   }
 
-  // Summary
+  // ---------- Summary ----------
   console.log('\n=== Summary ===');
+  const ok = results.filter((r) => !r.error);
+  const failed = results.length - ok.length;
   const byTier = {};
-  let totalCost = 0;
-  let failed = 0;
-  for (const r of results) {
-    if (r.error) {
-      failed++;
-      continue;
-    }
-    byTier[r.tier] = (byTier[r.tier] || 0) + 1;
-    totalCost += r.costUsd || 0;
-  }
-  console.log(`Processed ${results.length - failed}/${results.length}, failures: ${failed}`);
-  console.log(`Total Apify cost this run: $${totalCost.toFixed(4)}`);
+  for (const r of ok) byTier[r.tier] = (byTier[r.tier] || 0) + 1;
+  console.log(`Processed ${ok.length}/${results.length}, failures: ${failed}`);
   console.log('Tier breakdown:', byTier);
 
-  // Detect Apify account-level budget exhaustion. When the monthly hard
-  // limit is hit, every Apify actor returns 403 with this message — the
-  // health check below would otherwise call it "an actor is broken,"
-  // which sends you chasing a code bug instead of the real fix
-  // (raise the cap at https://console.apify.com/billing).
-  const APIFY_BUDGET_RE = /Monthly usage hard limit exceeded/i;
-  const APIFY_PLATFORMS = new Set(['x', 'tiktok', 'instagram']);
-  const showsWithApifyBudgetError = results.filter((r) =>
-    (r.errors || []).some(
-      (e) => APIFY_PLATFORMS.has(e.platform) && APIFY_BUDGET_RE.test(e.error || ''),
-    ),
-  ).length;
-  const apifyBudgetExhausted =
-    results.length > 0 && showsWithApifyBudgetError / results.length > 0.5;
-
-  // Health check: if >30% of shows hit zero relevant mentions, surface as
-  // exit code 4 for the workflow to catch.
-  const zeroShows = results.filter((r) => !r.error && r.volume === 0).length;
-  const zeroPct = results.length > 0 ? zeroShows / results.length : 0;
-  if (zeroPct > 0.3) {
-    if (apifyBudgetExhausted) {
+  // ---------- Fleet health guards ----------
+  // Only meaningful for multi-show runs; a single-show run can't establish
+  // fleet-level coverage. NOTE: the _meta.json freshness stamp is written
+  // AFTER the guards — a guard-failed run must look stale to
+  // health-check.js, not freshly updated.
+  if (ok.length >= 10) {
+    // Guard 6a: Bluesky counter coverage. Bluesky returns hitsTotal >= 0 on
+    // success; null means the fetch failed (403 from datacenter IP without
+    // BSKY secrets is the expected failure mode).
+    const blueskyMissing = ok.filter((r) => r.counters.bluesky === null).length;
+    if (blueskyMissing / ok.length > 0.5) {
       console.error(
-        `APIFY BUDGET EXHAUSTED: ${showsWithApifyBudgetError}/${results.length} shows hit "Monthly usage hard limit exceeded" on Apify (X/TikTok/Instagram). Reddit + X-volume still ran. ACTION: raise the monthly hard limit or upgrade plan at https://console.apify.com/billing.`,
+        `COUNTER COVERAGE FAILED: ${blueskyMissing}/${ok.length} shows have no Bluesky counter. ` +
+          'Likely 403 from datacenter IP — set BSKY_HANDLE + BSKY_APP_PASSWORD secrets. ' +
+          'Refusing to publish an index computed from the surviving signals.',
       );
-      process.exit(5);
+      process.exit(6);
     }
-    console.error(
-      `HEALTH CHECK FAILED: ${zeroShows}/${results.length} shows returned 0 relevant mentions (${Math.round(zeroPct * 100)}%). This likely means an actor is broken.`,
-    );
-    process.exit(4);
+
+    // Guard 6b: Reddit fleet-wide zero. The Reddit fetcher swallows proxy
+    // failures into empty results, so per-show zero is legal but fleet-wide
+    // zero means the pipeline (or SCRAPINGBEE_API_KEY) is broken.
+    const redditZero = ok.filter((r) => !r.counters.reddit).length;
+    if (redditZero / ok.length > 0.9) {
+      console.error(
+        `COUNTER COVERAGE FAILED: ${redditZero}/${ok.length} shows have Reddit=0. ` +
+          'Reddit search or its ScrapingBee fallback is broken fleet-wide.',
+      );
+      process.exit(6);
+    }
+
+    // Guard 4: sample pipeline health (classifier / text fetch). Kept from
+    // the Apify era but on the SAMPLE, not volume: >30% of shows with zero
+    // relevant classified mentions means the classifier or both text
+    // sources broke.
+    const zeroSample = ok.filter((r) => r.relevantCount === 0).length;
+    if (zeroSample / ok.length > 0.3) {
+      console.error(
+        `HEALTH CHECK FAILED: ${zeroSample}/${ok.length} shows returned 0 relevant sample mentions (${Math.round((zeroSample / ok.length) * 100)}%).`,
+      );
+      process.exit(4);
+    }
+  }
+
+  // Freshness stamp — only reached on a healthy run (guards above exit
+  // before this on fleet-level failure).
+  if (!args.dryRun) {
+    writeRunMeta({
+      shows: results.length,
+      failures: failed,
+      tierBreakdown: byTier,
+    });
   }
 
   process.exit(0);

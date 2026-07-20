@@ -1,7 +1,7 @@
 {
   "system": "credits",
   "status": "error",
-  "lastChecked": "2026-07-19T07:43:39.578Z",
+  "lastChecked": "2026-07-20T12:44:04.111Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,22 @@
     {
       "name": "Credits: ScrapingBee",
       "status": "error",
-      "message": "7k credits left (1%) · 79k/day burn · exhausts in ~0d (renews Aug 5)"
+      "message": "0k credits left (0%) · EXHAUSTED · renews Aug 5"
+    },
+    {
+      "name": "Credits: ScrapingDog",
+      "status": "warn",
+      "message": "107k credits left (10%) · 33k/day burn · renews in 2d"
+    },
+    {
+      "name": "Credits: Bright Data",
+      "status": "pass",
+      "message": "balance $58.19 · pending invoice $156.42 · month-to-date $150.13 (serp+unlocker)"
+    },
+    {
+      "name": "Credits: Browserbase",
+      "status": "pass",
+      "message": "4373 browser minutes used (cumulative)"
     }
   ]
 }

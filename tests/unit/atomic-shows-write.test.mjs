@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, readFileSync, rmSync, symlinkSync, lstatSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createRequire } from 'node:module';
@@ -80,4 +80,26 @@ test('atomicWriteShowsJson custom shrinkThresholdPct', () => {
     const r = atomicWriteShowsJson(p, { shows: shows.slice(0, 94) }, { shrinkThresholdPct: 10 });
     assert.equal(r.wrote, true);
   });
+});
+
+test('atomicWriteShowsJson writes THROUGH a symlink, preserving it', () => {
+  // rename() onto a symlink replaces the symlink with a regular file,
+  // orphaning the real target — 2026-07-20: a runtime sweep's 84 fixes
+  // landed in a stray local file this way while the private data repo
+  // kept (and shipped) stale values. The write must resolve symlinks.
+  const dir = mkdtempSync(join(tmpdir(), 'atomic-shows-link-'));
+  try {
+    const real = join(dir, 'real-shows.json');
+    const link = join(dir, 'shows.json');
+    writeFileSync(real, JSON.stringify({ shows: [{ id: 'a' }] }, null, 2));
+    symlinkSync(real, link);
+
+    atomicWriteShowsJson(link, { shows: [{ id: 'a' }, { id: 'b' }] });
+
+    assert.equal(lstatSync(link).isSymbolicLink(), true, 'symlink must survive the write');
+    const parsed = JSON.parse(readFileSync(real, 'utf8'));
+    assert.equal(parsed.shows.length, 2, 'content must land in the real target');
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });

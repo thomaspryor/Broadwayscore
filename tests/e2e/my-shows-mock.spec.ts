@@ -159,9 +159,11 @@ test.describe('My Shows — Diary Sections', () => {
 
   test('To Be Rated stars are interactive', async ({ page }) => {
     await goToMock(page);
-    // Click 4-star on Ragtime
-    const ragtime = page.locator('text=Ragtime').first().locator('..').locator('..');
-    const fourStar = page.getByRole('button', { name: '4 stars' }).first();
+    // Click 4-star ON THE RAGTIME CARD — an unscoped .first() resolved to a
+    // different card's star row under parallel-run load order (flake fix,
+    // 2026-07-20).
+    const ragtimeCard = page.locator('div').filter({ has: page.getByRole('heading', { name: 'Ragtime', level: 4 }) }).filter({ has: page.getByRole('button', { name: '4 stars' }) }).last();
+    const fourStar = ragtimeCard.getByRole('button', { name: '4 stars' });
     await expect(fourStar).toBeVisible();
     // Click should navigate to show page with rate param
     const [newPage] = await Promise.all([
@@ -256,9 +258,10 @@ test.describe('My Shows — Tabs', () => {
     await page.getByRole('tab', { name: /Watchlist/ }).click();
     // URL should update
     await expect(page).toHaveURL(/tab=watchlist/);
-    // Watchlist defaults to grid — check poster images exist (no h4 in grid)
+    // Watchlist defaults to grid — poster cards for upcoming/undated entries;
+    // past-dated ones render as To Be Rated rows since 2026-07-20.
     const posters = page.locator('.aspect-\\[2\\/3\\]');
-    expect(await posters.count()).toBeGreaterThanOrEqual(6);
+    expect(await posters.count()).toBeGreaterThanOrEqual(4);
     // Switch to list view and verify titles
     await page.getByRole('button', { name: 'List view' }).click();
     await expect(page.getByRole('heading', { name: 'Gypsy', level: 4 })).toBeVisible();
@@ -380,10 +383,13 @@ test.describe('My Shows — Delete Flow', () => {
 test.describe('My Shows — Watchlist', () => {
   test('shows all 6 watchlist items', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Grid view: count poster cards (aspect-[2/3] areas, excluding AddShowCard)
+    // Since the 2026-07-20 restructure, past-dated entries render as To Be
+    // Rated ROWS (no poster card): mock has 6 entries, 2 past-dated → 4
+    // poster cards + 2 rows, all 6 titles visible in list view.
     const posters = page.locator('[role="tabpanel"] .aspect-\\[2\\/3\\]');
-    expect(await posters.count()).toBeGreaterThanOrEqual(6);
-    // Switch to list view to verify titles are present
+    expect(await posters.count()).toBeGreaterThanOrEqual(4);
+    await expect(page.getByRole('heading', { name: 'To Be Rated' })).toBeVisible();
+    // Switch to list view to verify all titles are present
     await page.getByRole('button', { name: 'List view' }).click();
     const titles = page.locator('[role="tabpanel"] h4');
     expect(await titles.count()).toBeGreaterThanOrEqual(6);

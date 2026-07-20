@@ -86,6 +86,7 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
   'stagebuddy.com',     // WordPress blog — free Playwright works reliably
   'londontheatre.co.uk', // React SPA (Material-UI) — BD returns empty, Playwright renders JS
   'bachtrack.com',      // review body (.pcm-walled-full) renders only in a real browser; BD/SB (even render_js) get a shell with meta description only. Verified Playwright renders full body 2026-07-13 (Met opera backfill)
+  'todaytix.com',       // Public server-rendered show pages (run time, metadata) — no anti-bot; keeps bulk runtime audits off BD/SB credits
 ]);
 
 // --- Domains where ScrapingBee MUST use render_js=true (JS-rendered content) ---
@@ -160,6 +161,18 @@ const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG === '1';
 // --- SB credit pre-check ---
 let _sbCreditCheckDone = false;
 let _sbCreditsLow = false;
+
+// --- SB page-fetch reactive circuit breaker ---
+// checkScrapingBeeCredits() (below) is a proactive precheck, but nothing calls
+// it automatically — it must be invoked explicitly by a script's setup code,
+// and most callers don't. fetchWithScrapingBee() had no fallback for that: with
+// the account genuinely over its monthly cap (2026-07-20 incident, #224), every
+// single call did a full HTTP round-trip before dying on a 401, for the entire
+// duration of every run, across every script, all day. url-discovery.js's SERP
+// path already self-heals this way (_scrapingBeeSerpExhausted, set on first
+// 401/403/429) — this mirrors that same pattern for the page-fetch path so ONE
+// failed call disables SB for the rest of the process instead of all of them.
+let _scrapingBeePageExhausted = false;
 
 /**
  * Check ScrapingBee remaining credits. Call once per process.
@@ -461,7 +474,7 @@ async function fetchWithScrapingdog(url, options = {}) {
  * Fetch page using ScrapingBee API (HTML output)
  */
 async function fetchWithScrapingBee(url, options = {}) {
-  if (!SCRAPINGBEE_KEY) {
+  if (!SCRAPINGBEE_KEY || _scrapingBeePageExhausted) {
     return null;
   }
 
@@ -503,7 +516,9 @@ async function fetchWithScrapingBee(url, options = {}) {
           if (res.statusCode === 200) {
             resolve(data);
           } else {
-            reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+            const err = new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`);
+            err.statusCode = res.statusCode;
+            reject(err);
           }
         });
       }).on('error', reject);
@@ -519,6 +534,14 @@ async function fetchWithScrapingBee(url, options = {}) {
     const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
     recordSbCall({ host: hostname, fn: renderJs ? 'render' : 'page', success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost });
     console.error(`⚠️  ScrapingBee failed (render_js=${renderJs}, domain=${hostname}): ${error.message}`);
+    // Same trigger set as url-discovery.js's _serpViaScrapingBee circuit breaker:
+    // 401 (auth/limit), 403 (forbidden/plan), 429 (rate limit) all mean "stop
+    // asking SB for the rest of this process" — a monthly-cap 401 doesn't
+    // resolve itself mid-run, so retrying it per-call just burns time.
+    if ([401, 403, 429].includes(error.statusCode)) {
+      _scrapingBeePageExhausted = true;
+      console.warn(`  ⚠️  ScrapingBee page-fetch disabled for the rest of this process (HTTP ${error.statusCode})`);
+    }
     return null;
   }
 }
@@ -784,8 +807,8 @@ async function fetchPage(url, options = {}) {
     }
   }
 
-  // Fall back to ScrapingBee (skip if credits exhausted, budget exceeded, or domain-skipped)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !skips.has('scrapingbee')) {
+  // Fall back to ScrapingBee (skip if credits exhausted, budget exceeded, page-exhausted, or domain-skipped)
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted && !skips.has('scrapingbee')) {
     console.log('  → Trying ScrapingBee...');
     const raw = await fetchWithScrapingBee(url, options);
     if (raw) {
@@ -846,7 +869,7 @@ async function fetchJSON(url, options = {}) {
   const headers = { Accept: 'application/json', ...options.headers };
 
   // Try ScrapingBee first (cheapest: 1 credit with render_js=false)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded) {
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted) {
     try {
       const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
       const response = await new Promise((resolve, reject) => {
@@ -855,7 +878,11 @@ async function fetchJSON(url, options = {}) {
           res.on('data', chunk => data += chunk);
           res.on('end', () => {
             if (res.statusCode === 200) resolve(data);
-            else reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
+            else {
+              const err = new Error(`ScrapingBee HTTP ${res.statusCode}`);
+              err.statusCode = res.statusCode;
+              reject(err);
+            }
           });
         }).on('error', reject);
       });
@@ -866,6 +893,10 @@ async function fetchJSON(url, options = {}) {
     } catch (err) {
       recordSbCall({ url, fn: 'json', success: false, status: (err.message || 'error').slice(0, 80), credits: 1 });
       console.log(`  fetchJSON ScrapingBee failed: ${err.message}`);
+      if ([401, 403, 429].includes(err.statusCode)) {
+        _scrapingBeePageExhausted = true;
+        console.warn(`  ⚠️  ScrapingBee disabled for the rest of this process (HTTP ${err.statusCode})`);
+      }
     }
   }
 
@@ -1044,4 +1075,5 @@ module.exports = {
   unwrapRedirectUrl,
   get sbCreditsLow() { return _sbCreditsLow; },
   get sdQuotaExceeded() { return _sdQuotaExceeded; },
+  get scrapingBeePageExhausted() { return _scrapingBeePageExhausted; },
 };

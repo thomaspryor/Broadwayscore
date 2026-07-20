@@ -44,6 +44,8 @@ export interface ShowLookup {
   compositeScore: number | null;
   posterUrl: string | null;
   diaryOnly?: boolean;
+  /** Tickets on sale for a not-yet-open show (watchlist bookability label). */
+  ticketsOnSale?: boolean;
 }
 
 export interface UserList {
