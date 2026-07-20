@@ -91,6 +91,7 @@ const SAMPLE_SWEEP = {
   radar: '[]',
   needsApproval: '[]',
   urgent: '[]',
+  staleCards: '[{"name":"Ancient card"}]',
 };
 
 test('buildSeed embeds every sweep section under its own heading', () => {
@@ -131,4 +132,11 @@ test('main() defaults to --model opus --effort high, never a bare/inherited mode
   // no --dangerously-skip-permissions: this is the owner's own interactive
   // session, unlike bsc-next's unattended dispatch targets.
   assert.doesNotMatch(src, /--dangerously-skip-permissions/);
+});
+
+test('seed embeds the stale-card kill/keep section (review gap fix)', () => {
+  const seed = buildSeed(SAMPLE_SWEEP, 'now');
+  assert.match(seed, /## Notion: stale cards \(Not started, untouched 90\+ days\)/);
+  assert.match(seed, /Ancient card/);
+  assert.match(seed, /owner-action/);
 });

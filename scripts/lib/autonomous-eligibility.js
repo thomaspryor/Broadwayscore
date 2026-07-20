@@ -41,7 +41,11 @@ const HUMAN_ACTION_RE = /^(send|reply|follow up|email|recruit|post|repost|meet|r
 
 // Domains where an unattended mistake is expensive or externally visible.
 // Tag names are compared lowercased.
-const DENY_TAGS = new Set(['email', 'commercial', 'scoring', 'ios-app']);
+// owner-action (2026-07-19): cards that need the OWNER personally (outreach,
+// credentials, posting, meetings) — deterministic replacement for the
+// human-action title heuristic on tagged cards; the loop must never spend
+// triage LLM calls on them.
+const DENY_TAGS = new Set(['email', 'commercial', 'scoring', 'ios-app', 'owner-action']);
 
 // Category is the trailing meta segment of the mirrored task description's
 // first line ("[notion:<id>] P0 Now · In progress · Marketing") written by

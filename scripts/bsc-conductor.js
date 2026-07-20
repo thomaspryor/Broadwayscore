@@ -151,8 +151,10 @@ function buildSeed(sweep, fetchedAt) {
     sweep.urgent,
     ``,
     `## Notion: stale cards (Not started, untouched 90+ days) — propose kill/keep`,
-    `For each card below, tell the owner in ONE line whether it still looks relevant (check if its feature/window ` +
-    `still exists) and recommend kill or keep. Close only the ones the owner confirms.`,
+    `Split the cards below into two lists. Cards tagged \`owner-action\` are the owner's personal queue — render ` +
+    `them as a compact "Waiting on you" list (no kill/keep editorializing unless one's feature clearly no longer ` +
+    `exists). For the rest, say in ONE line whether each still looks relevant (check if its feature/window still ` +
+    `exists) and recommend kill or keep. Close only the ones the owner confirms.`,
     sweep.staleCards,
     ``,
     `---`,

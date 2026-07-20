@@ -345,3 +345,9 @@ test('isDataRepoDiffAllowed refuses unknown repoKey and reports refused files', 
   assert.equal(isDataRepoDiffAllowed('review-texts', ['hamilton-2015/nytg--x.json']).allowed, true);
   assert.equal(isDataRepoDiffAllowed('nonsense-repo', ['shows.json']).allowed, false);
 });
+
+test('owner-action deny-tag: personal-queue cards never reach the loop (2026-07-19)', () => {
+  const r = isCardEligible({ id: 'x', name: 'Follow up with TodayTix on affiliate approval', status: 'Not started', category: 'Product', tags: ['owner-action'] });
+  assert.equal(r.eligible, false);
+  assert.match(r.reason, /deny-tag "owner-action"/);
+});
