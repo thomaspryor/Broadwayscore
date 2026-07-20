@@ -8,20 +8,20 @@ name: Nightly UX Walkthrough
 # this catches flow/consistency/affordance/hierarchy issues that narrow e2e
 # assertions miss (they only check that a POST succeeded, not how it looks).
 #
-# Runs after the daily UGC round-trip (same throwaway-user infra, so a dead
-# Supabase project fails there first with its own self-heal). No separate
-# schedule trigger — that would fire on the SAME success path as workflow_run
-# every day (ship-check finding, 2026-07-20: schedule at 13:35 + workflow_run
-# off UGC's 13:17 both pass the `if:` gate below on a normal day), doubling
-# synthetic-user churn and 3-model LLM cost for no benefit. If UGC Auth
-# Round-trip itself ever stops firing, that's caught by its own cron-health
-# entry, not by duplicating this workflow's trigger.
+# A plain daily schedule, NOT chained off UGC Auth Round-trip's completion.
+# It looks like a clean "runs after the daily round-trip" hook, but UGC Auth
+# Round-trip ALSO fires on every 'Deploy Demo Site' success (vercel-demo.yml
+# redeploys the demo site every 8h) — so a workflow_run trigger off it fires
+# ~4x/day, not nightly, quadrupling synthetic-user churn and 3-model LLM cost
+# (caught live during this session's own wrap-up, 2026-07-20: a second run
+# queued 8 minutes after the first from an unrelated demo redeploy). A plain
+# schedule is the only trigger here that's actually once-daily regardless of
+# how often its upstream workflows fire.
 
 on:
+  schedule:
+    - cron: '35 13 * * *'  # daily 13:35 UTC — 18 min after UGC Auth Round-trip's OWN daily cron (13:17)
   workflow_dispatch:
-  workflow_run:
-    workflows: ['UGC Auth Round-trip']
-    types: [completed]
 
 concurrency:
   group: ux-walkthrough
@@ -31,7 +31,6 @@ jobs:
   walkthrough:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
