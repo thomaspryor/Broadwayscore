@@ -2245,9 +2245,21 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
 // TIER 2: ScrapingBee API
 // ============================================================================
 
+// This script has its own standalone ScrapingBee client (does not go through
+// scripts/lib/scraper.js), so scraper.js's _scrapingBeePageExhausted breaker
+// doesn't cover it — a second-opinion review of that fix (2026-07-20) found
+// this exact function still had zero circuit breaker, meaning the incident
+// it was meant to close (every SB call doing a full round-trip before dying
+// on a monthly-cap 401) was still live in the flagship review-collection
+// script. Same one-failure-and-stop pattern as scraper.js's breaker.
+let _sbPageExhausted = false;
+
 async function fetchWithScrapingBee(url, useStealth = false) {
   if (!CONFIG.scrapingBeeKey || !axios) {
     throw new Error('ScrapingBee not configured');
+  }
+  if (_sbPageExhausted) {
+    throw new Error('ScrapingBee disabled for the rest of this process (prior auth/limit failure)');
   }
 
   // Determine cost tier based on domain
@@ -2355,6 +2367,15 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     if (error.response) {
       const status = error.response.status;
       const message = error.response.data?.message || error.message;
+
+      // Same trigger set as scraper.js's _scrapingBeePageExhausted and
+      // url-discovery.js's _scrapingBeeSerpExhausted: auth/plan/rate-limit
+      // failures don't resolve mid-run, so stop asking for the rest of this
+      // process instead of eating a full round-trip on every candidate.
+      if ([401, 403, 429].includes(status)) {
+        _sbPageExhausted = true;
+        console.warn(`  ⚠️  ScrapingBee disabled for the rest of this process (HTTP ${status})`);
+      }
 
       if (status === 401) {
         throw new Error(`ScrapingBee auth failed: ${message}`);
