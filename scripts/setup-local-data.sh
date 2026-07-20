@@ -145,6 +145,22 @@ for f in "${COPY_FILES[@]}"; do
 done
 echo "Core data: $SYMLINK_COUNT symlinked, $COPY_COUNT copied to data/"
 
+# Generated files that live only in the main checkout's data/ (cast pipeline
+# output, not in the core-data repo). tsc fails in a fresh worktree without
+# them (data-actors.ts, data-tony-nominees.ts import them directly).
+GENERATED_FILES=(cast-manifest.json actor-slugs.json)
+MAIN_REPO="$(git worktree list --porcelain 2>/dev/null | head -1 | sed 's/^worktree //')"
+GEN_COUNT=0
+for f in "${GENERATED_FILES[@]}"; do
+  src="$MAIN_REPO/data/$f"
+  dst="$DATA_DIR/$f"
+  if [ ! -f "$dst" ] && [ -f "$src" ] && [ "$src" != "$dst" ]; then
+    cp "$src" "$dst"
+    GEN_COUNT=$((GEN_COUNT + 1))
+  fi
+done
+[ "$GEN_COUNT" -gt 0 ] && echo "Generated files: $GEN_COUNT copied from main checkout"
+
 # Verify key files
 if [ ! -f "$DATA_DIR/shows.json" ] || [ ! -f "$DATA_DIR/reviews.json" ]; then
   echo "WARNING: shows.json or reviews.json missing after copy!"
