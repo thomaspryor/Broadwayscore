@@ -1260,6 +1260,11 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
         {
           brightDataKey: bdAllowedForShow ? (process.env.BRIGHTDATA_TOKEN || '') : '',
           preferSpeed: false, // BD-first: SERP only runs after 3h gate so latency no longer critical
+          // A Scrapingdog SERP success with 0 results here often means "review
+          // hasn't published yet," not a genuine zero — must keep falling
+          // through to BD/SB rather than caching/accepting it as final
+          // (task #213; see shouldAcceptEmptyScrapingdogSerp).
+          emptyAuthoritative: false,
           dateRange: openingNightDateRange,
         }
       );

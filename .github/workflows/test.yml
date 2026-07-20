@@ -251,6 +251,14 @@ on:
       - 'scripts/lib/ibdb-dates.js'
       - 'scripts/lib/ibdb-cast.js'
       - 'scripts/probe-scrapingdog-billing.js'
+      # Task #213 A2/A3: SD structural-failure skip list + live confirmation
+      # probe for the empty-authoritative SERP fix. opening-night-poller.js
+      # opts out of empty-authoritative mode (emptyAuthoritative:false) — the
+      # one flow where "0 results" can mean "not published yet" rather than a
+      # genuine zero; path-listed so this and future edits get CI coverage.
+      - 'scripts/config/domain-tier-skip.json'
+      - 'scripts/confirm-sd-empty-authoritative.js'
+      - 'scripts/opening-night-poller.js'
       # SERP provider-chain ordering + SB-SERP skip (invisible-burn fix 2026-07).
       # Colocated test runs in the lib-test glob; path-listed so a solo edit
       # triggers CI (allow-list gate).
