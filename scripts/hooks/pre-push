@@ -56,6 +56,39 @@ for spec in ${PUSH_SPECS[@]+"${PUSH_SPECS[@]}"}; do
   [ "$local_oid" = "0000000000000000000000000000000000000000" ] && continue
   HAVE_NON_DELETE_SPEC=1
 
+  # Non-fast-forward guard on protected branches: a push that isn't a
+  # fast-forward of the remote's current tip only succeeds as a FORCE push.
+  # 2026-07-19 incident: a worktree-merge session with a stale local main
+  # force-pushed over a concurrently-landed merge commit 17s after it landed,
+  # silently destroying it (origin allow_force_pushes=false but
+  # enforce_admins=false lets any admin-credentialed local session bypass
+  # that server-side rule). This client-side check makes that class of push
+  # impossible from any session that has this hook installed, regardless of
+  # what server-side branch protection allows. See card #208.
+  case "$remote_ref" in
+  refs/heads/main | refs/heads/master)
+    if [ "$remote_oid" != "0000000000000000000000000000000000000000" ] && \
+       ! git merge-base --is-ancestor "$remote_oid" "$local_oid" 2>/dev/null; then
+      branch_name="${remote_ref#refs/heads/}"
+      echo ""
+      echo "=== PRE-PUSH BLOCKED: non-fast-forward push to $branch_name ==="
+      echo ""
+      echo "  Local $local_oid does not build on remote's current tip $remote_oid."
+      echo "  This would only succeed as a FORCE push, which can silently destroy"
+      echo "  commits someone else just landed on $branch_name (2026-07-19 incident)."
+      echo ""
+      echo "  Fix: git fetch origin && git merge origin/$branch_name (never rebase a"
+      echo "  shared branch), then retry — or use scripts/merge-worktree-to-main.sh,"
+      echo "  which does exactly this with safe retry-via-merge."
+      echo ""
+      echo "  Bypass ONLY for a deliberate, approved history rewrite:"
+      echo "    git push --no-verify"
+      echo ""
+      exit 1
+    fi
+    ;;
+  esac
+
   if [ "$remote_oid" = "0000000000000000000000000000000000000000" ]; then
     # New branch — diff against the merge-base with origin/main if possible.
     base=$(git merge-base "$local_oid" origin/main 2>/dev/null || true)
