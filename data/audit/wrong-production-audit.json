@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-20T19:40:14.752Z",
+  "timestamp": "2026-07-20T19:59:53.020Z",
   "stats": {
     "totalReviews": 40289,
-    "alreadyFlagged": 17642,
+    "alreadyFlagged": 17644,
     "dateGuardCatches": 49,
     "directorMismatch": 915,
-    "tvFilmSignals": 1108,
-    "londonSignals": 758,
+    "tvFilmSignals": 1107,
+    "londonSignals": 757,
     "offBroadwaySignals": 478,
     "yearMismatch": 86,
-    "noPublishDate": 3638
+    "noPublishDate": 3636
   },
   "findings": [
     {
@@ -3932,11 +3932,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -44338,19 +44333,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "white-rabbit-red-rabbit-west-end-2026",
-      "file": "broadwayworld--mica-blackwell.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
