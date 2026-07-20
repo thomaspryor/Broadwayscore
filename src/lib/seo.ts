@@ -139,6 +139,12 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
       name: show.venue,
       address: toPostalAddress(show.theaterAddress || show.venue, country),
     },
+    // GSC flags Events missing "organizer". We don't track producers, so the
+    // presenting theater is the closest honest entity we always have.
+    organizer: {
+      '@type': 'Organization',
+      name: show.venue,
+    },
     ...(startDate && { startDate }),
     ...(show.closingDate && { endDate: show.closingDate }),
     ...(show.images?.hero && { image: toAbsoluteUrl(show.images.hero) }),
@@ -171,12 +177,25 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
   // Add ticket offers (excluding hidden platforms — stale/non-converting affiliates)
   if (show.ticketLinks && show.ticketLinks.length > 0) {
     const visibleLinks = show.ticketLinks.filter(l => !isPlatformHidden(l.platform));
+    // We don't track on-sale dates; by previews start tickets are certainly on
+    // sale, so previewsStartDate is the latest-safe validFrom (GSC warns
+    // per-offer without it). Only claim it once the date has PASSED at build
+    // time — a future validFrom contradicts availability:InStock for upcoming
+    // shows (tickets are usually on sale long before previews). Pages rebuild
+    // on every deploy, so the build-date comparison self-heals. Price stays
+    // conditional — most platforms lack priceFrom and inventing one would be
+    // fabricated data.
+    const onSaleCandidate = show.previewsStartDate || show.openingDate;
+    const onSaleBy = onSaleCandidate && onSaleCandidate <= new Date().toISOString().slice(0, 10)
+      ? onSaleCandidate
+      : undefined;
     if (visibleLinks.length > 0) {
       schema.offers = visibleLinks.map(link => ({
         '@type': 'Offer',
         url: link.url,
         priceCurrency: currency,
         ...(link.priceFrom && { price: link.priceFrom }),
+        ...(onSaleBy && { validFrom: onSaleBy }),
         availability: 'https://schema.org/InStock',
         seller: {
           '@type': 'Organization',

@@ -7,7 +7,8 @@ on:
   # mid-prerender before any could complete, and even the "latest" deploy
   # could be cancelled mid-build by the next push. The cron batches pushes:
   # at most one deploy per 5-min window, and the should-deploy preflight job
-  # below skips ticks where main HEAD hasn't moved. See
+  # below skips ticks with no site-relevant change vs the live deploy
+  # (scripts/lib/should-deploy-gate.js). See
   # memory/feedback_workflow_cascade_prevention.md. The demo workflow solved
   # the same cascade with the same fix in 2026-04 (see vercel-demo.yml L17-19).
   schedule:
@@ -30,91 +31,50 @@ permissions:
 
 jobs:
   # Preflight: decide whether to actually deploy. Runs on every trigger
-  # (~10s). Skips scheduled ticks where main HEAD hasn't moved since the last
-  # successful deploy. Manual dispatch and workflow_run (post-rebuild) always
-  # proceed — they're explicit "I need this NOW" signals. Carries the
-  # Beaches #9 race guard (workflow_run conclusion check) that previously
-  # sat on the deploy job.
+  # (~15s). All skip/proceed logic lives in scripts/lib/should-deploy-gate.js
+  # (pure decide() + colocated test — see its header for the full rules):
+  #   - Baseline = latest READY Vercel production deployment (via
+  #     check-prod-deploy.js --json), NOT GitHub run conclusions — a run can
+  #     report success while its Vercel deploy was CANCELED (2026-06-26), and
+  #     skipped preflights also conclude "success" (stale-baseline bug in the
+  #     old gh-run-list lookup).
+  #   - Scheduled ticks skip only on positive proof: HEAD already live, or no
+  #     site-path diff vs the live SHA while the live deploy is <6h old
+  #     (content-aware gate, 2026-07-19 cost fix: ~93% of main commits are
+  #     bookkeeping that rebuilt an identical site ~139x/day).
+  #   - The 6h staleness backstop bounds staleness for private core-data
+  #     changes (shows.json etc.) that never touch this repo's tree.
+  #   - workflow_dispatch / workflow_run stay "ship NOW" lanes, deduped only
+  #     when HEAD is already live. Any gate-input failure fails OPEN (deploy).
+  # Kill switch: set repo variable DEPLOY_GATE_DISABLED=true to force every
+  # trigger through (phone-operable; no code change).
+  # Carries the Beaches #9 race guard (workflow_run conclusion check).
   should-deploy:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
-    timeout-minutes: 2
+    timeout-minutes: 3
     outputs:
       proceed: ${{ steps.check.outputs.proceed }}
     steps:
-      - name: Checkout (shallow, for git rev-parse origin/main)
+      - name: Checkout (shallow — the gate fetches the live baseline commit itself)
         uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 1
-      - name: Decide whether to deploy
+      - name: Content-aware deploy gate
         id: check
         env:
-          GH_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GATE_EVENT_NAME: ${{ github.event_name }}
+          GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
         run: |
-          # All paths: fetch HEAD and last-successful-deploy SHA first.
-          MAIN_HEAD=$(git rev-parse origin/main)
-          # Use the workflow file path, not the display name — the
-          # Workflows API returns this workflow twice (across pages) and
-          # `--workflow="Deploy to Vercel"` then errors with
-          # `could not resolve to a unique workflow; found: vercel-deploy.yml
-          # vercel-deploy.yml`, which broke every deploy on 2026-05-27.
-          # Fail-safe the gh lookup: under `bash -eo pipefail`, a transient
-          # GitHub API hiccup here used to crash the whole preflight step and
-          # redden the deploy. Capture failure instead of aborting.
-          GH_FAILED=0
-          LAST_DEPLOYED=$(gh run list \
-            --workflow=vercel-deploy.yml \
-            --limit=30 \
-            --json headSha,conclusion \
-            --jq '[.[] | select(.conclusion == "success")][0].headSha // ""') || GH_FAILED=1
-          if [ "$GH_FAILED" = "1" ]; then
-            if [ "${{ github.event_name }}" = "schedule" ]; then
-              # Can't determine last-deployed SHA → can't safely dedup. On a
-              # cron tick the safe choice is SKIP (next 5-min tick retries),
-              # NOT proceed — defaulting to proceed would force a deploy on
-              # every API blip and, with dedup blind, risk the parallel-build
-              # cascade we work hard to prevent.
-              echo "::warning::gh run list failed (transient GitHub API?) — skipping this scheduled tick; next cron retries"
-              echo "proceed=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-            # workflow_dispatch / workflow_run: explicit ship intent. Proceed
-            # without SHA dedup; the vercel-production-deploy concurrency group
-            # collapses any parallel builds.
-            echo "::warning::gh run list failed — proceeding for ${{ github.event_name }} without SHA dedup"
-            LAST_DEPLOYED=""
-          fi
-          echo "Main HEAD:     $MAIN_HEAD"
-          echo "Last deployed: $LAST_DEPLOYED"
-
-          if [ "${{ github.event_name }}" != "schedule" ]; then
-            # workflow_dispatch / workflow_run: explicit "ship it" signals.
-            # Still skip if this exact SHA is already live — prevents the
-            # 5+ parallel builds that fire when gather-reviews, rebuild-fast,
-            # rebuild-reviews, update-show-status, etc. all dispatch within
-            # seconds of each other after completing. Previously each got a
-            # full 15-min build even when the first one already deployed.
-            if [ -n "$LAST_DEPLOYED" ] && [ "$LAST_DEPLOYED" = "$MAIN_HEAD" ]; then
-              echo "::notice::SHA $MAIN_HEAD already live — skipping duplicate ${{ github.event_name }} dispatch"
-              echo "proceed=false" >> "$GITHUB_OUTPUT"
-            else
-              echo "::notice::Event ${{ github.event_name }} — proceeding (new SHA)"
-              echo "proceed=true" >> "$GITHUB_OUTPUT"
-            fi
-            exit 0
-          fi
-
-          # Cron path: skip if main HEAD hasn't moved since the most recent
-          # successful deploy. Looks back 30 runs to find the last success;
-          # ignores cancelled / failed runs (they didn't actually ship).
-          if [ -n "$LAST_DEPLOYED" ] && [ "$LAST_DEPLOYED" = "$MAIN_HEAD" ]; then
-            echo "::notice::No new commits since last deploy ($MAIN_HEAD) — skipping scheduled deploy"
-            echo "proceed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "::notice::New commits since last deploy — proceeding"
-            echo "proceed=true" >> "$GITHUB_OUTPUT"
-          fi
+          # The gate script fails OPEN internally (API/fetch/diff errors →
+          # proceed=true). If the script itself crashes, fail this step LOUDLY
+          # rather than leaving `proceed` unset — an empty output makes the
+          # deploy job's `if:` silently false on every trigger (green runs,
+          # zero deploys, no alerts — the worst failure mode).
+          node scripts/lib/should-deploy-gate.js
+          grep -q '^proceed=' "$GITHUB_OUTPUT" || { echo "::error::[content-gate] gate exited without setting proceed"; exit 1; }
 
   deploy:
     needs: should-deploy
@@ -268,6 +228,10 @@ jobs:
       - name: Check if data changed
         id: check-data
         run: |
+          # NOTE: this path regex answers "fast vs FULL prebuild" (HOW to build),
+          # not "deploy or not" — that's the should-deploy gate's SITE_PATHS in
+          # scripts/lib/should-deploy-gate.js. The two lists differ on purpose:
+          # this one is data-only; the gate's covers every build-shaping path.
           # For manual triggers or missing before-sha, assume data changed (full build)
           BEFORE="${{ github.event.before }}"
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
