@@ -118,15 +118,10 @@ const commercialKeys = new Set(Object.keys(commercial.shows));
 
 const BANNED_URL_SUBSTRINGS = ['chatgpt.com', 'openai.com', 'bard.google.com', 'claude.ai'];
 
-// True when an entry claims recouped=true but has no citation: no
-// recoupedSource, and no sources[] entry with a non-empty url.
-function isUnsourcedRecouped(data) {
-  if (data.recouped !== true) return false;
-  if (data.recoupedSource) return false;
-  const hasUrlSource = Array.isArray(data.sources) &&
-    data.sources.some(s => s && typeof s.url === 'string' && s.url.trim().length > 0);
-  return !hasUrlSource;
-}
+// True when an entry claims recouped=true but has no independently
+// checkable citation (recoupedSource must be a real URL, not just non-empty
+// text — see scripts/lib/commercial-citation-guards.js for why).
+const { isUnsourcedRecouped } = require('./lib/commercial-citation-guards');
 
 // Returns the list of sources[] entries whose url points at a banned
 // LLM-tool domain (ChatGPT/OpenAI/Bard/Claude), for a given entry.
@@ -163,7 +158,7 @@ const cliArgs = process.argv.slice(2);
 if (cliArgs.includes('--list-unsourced-recouped')) {
   let count = 0;
   for (const [key, data] of commercialEntries) {
-    if (!isUnsourcedRecouped(data)) continue;
+    if (!isUnsourcedRecouped(data, key)) continue;
     console.log(key);
     count++;
   }
@@ -213,7 +208,7 @@ if (cliArgs.includes('--strict')) {
   let violationCount = 0;
 
   for (const [key, data] of commercialEntries) {
-    if (isUnsourcedRecouped(data)) {
+    if (isUnsourcedRecouped(data, key)) {
       console.error(`${key}: recouped=true with no recoupedSource and no sourced sources[].url`);
       violationCount++;
     }

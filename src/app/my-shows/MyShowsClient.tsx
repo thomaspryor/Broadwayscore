@@ -368,15 +368,20 @@ export default function MyShowsClient() {
     })();
   }, [isMockMode, showMapLoaded, reviews, watchlist, showMap]);
 
-  // Load user data when authenticated
+  // Load user data when authenticated. getLists swallows failures internally
+  // (returns []) and nothing retried — one transient error on first load left
+  // the Lists tab count blank until a manual refresh (owner, 2026-07-20).
+  // One delayed retry covers the session-restore race window.
   useEffect(() => {
     if (isMockMode) return;
     if (isAuthenticated && user) {
       getAllReviews();
       getWatchlist();
-      getLists();
+      getLists().then(r => {
+        if (r.length === 0) setTimeout(() => { getLists(); }, 1500);
+      });
     }
-  }, [isMockMode, isAuthenticated, user, getAllReviews, getWatchlist]);
+  }, [isMockMode, isAuthenticated, user, getAllReviews, getWatchlist, getLists]);
 
   // Stats
   const showsSeen = new Set(reviews.map(r => r.show_id)).size;
@@ -1628,6 +1633,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const href = getShowHref(slug, show?.diaryOnly);
+  const isFutureDated = !!entry.planned_date && entry.planned_date >= new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0];
   const rateHref = href ? `${href}?rate=1` : null;
   const handleRateStars = (stars: number) => {
     if (rateHref) window.location.href = `${rateHref}&stars=${stars}`;
@@ -1671,6 +1677,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
             ?rate=1&stars=N; diary-only shows open the inline editor. The old
             centered-on-hover stars + mobile lone-star "Rate" pill read as
             inconsistent/confusing (owner, 2026-07-19). */}
+        {!isFutureDated && (
         <div
           className="absolute inset-x-0 bottom-0 z-[1] flex justify-center bg-gradient-to-t from-black/85 to-transparent pt-4 pb-1.5 opacity-100 sm:opacity-0 sm:group-hover/wl:opacity-100 focus-within:opacity-100 transition-opacity"
           // Scoped to star clicks — an unconditional preventDefault made the
@@ -1700,6 +1707,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
             ))}
           </span>
         </div>
+        )}
         {/* Trash button to remove — hidden on mobile, visible on hover on desktop */}
         <button
           type="button"
@@ -1737,6 +1745,9 @@ function bookabilityLabel(show?: ShowLookup): { text: string; cls: string } | nu
   if (!show) return null;
   if (show.status === 'closed') {
     return { text: 'Closed', cls: 'bg-gray-600/90 text-white' };
+  }
+  if (show.status === 'open' || show.status === 'previews') {
+    return { text: show.status === 'previews' ? 'In Previews' : 'Open', cls: 'bg-status-open/90 text-black' };
   }
   if (show.status === 'upcoming' || show.status === 'announced') {
     if (show.ticketsOnSale) {
@@ -1817,6 +1828,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const href = getShowHref(slug, show?.diaryOnly);
+  const isFutureDated = !!entry.planned_date && entry.planned_date >= new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0];
 
   const isClosingSoon = show?.closingDate && (() => {
     const closing = new Date(show.closingDate!);
@@ -1864,11 +1876,11 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
         {/* Rate + Remove row — same tappable 5-star affordance as the grid
             strip and To-Be-Rated rows; the old '☆ Rate' text link was a
             second visual treatment for the identical action (flagged by the
-            UX walkthrough panel, 2026-07-20) */}
+            UX walkthrough panel, 2026-07-20). HIDDEN for future-dated
+            (Upcoming) entries — rate stars on a show the user hasn't seen
+            yet made no sense (owner, 2026-07-20). */}
         <div className="flex items-center gap-2">
-          {/* star-compact: without it the 44px mobile tap minimums inflate
-              these five buttons to 220px and crush the title column to zero
-              width at 390px (same failure class as the diary rows, 2026-07-19) */}
+          {!isFutureDated && (
           <span className="relative z-[1] star-compact">
             <StarRating
               rating={null}
@@ -1880,6 +1892,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
               hideLabel
             />
           </span>
+          )}
           {confirmRemove ? (
             <span className="relative z-[1] flex items-center gap-1 text-xs">
               <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }} className="text-red-400 hover:text-red-300 font-medium">Remove?</button>
@@ -2107,11 +2120,22 @@ function ToBeRatedCard({ entry, show, onRemove, onRate }: { entry: WatchlistEntr
 
 /** (+) card to add shows — placed at end of grid views */
 function AddShowCard({ context, variant = 'grid', onOpen }: { context: 'diary' | 'watchlist'; variant?: 'grid' | 'list'; onOpen: () => void }) {
+  const openAndReveal = () => {
+    onOpen();
+    // The search input mounts in the page HEADER — from the bottom of a long
+    // list the open is off-screen and reads as a dead button on mobile
+    // (owner, 2026-07-20). Scroll it into view and focus it.
+    requestAnimationFrame(() => {
+      const input = document.querySelector<HTMLInputElement>('input[placeholder^="Search to"]');
+      input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      input?.focus({ preventScroll: true });
+    });
+  };
   if (variant === 'list') {
     return (
       <button
         type="button"
-        onClick={onOpen}
+        onClick={openAndReveal}
         className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/[0.03] transition-colors text-gray-500 hover:text-gray-300"
         aria-label={context === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist'}
       >
@@ -2125,7 +2149,7 @@ function AddShowCard({ context, variant = 'grid', onOpen }: { context: 'diary' |
   return (
     <button
       type="button"
-      onClick={onOpen}
+      onClick={openAndReveal}
       className="flex flex-col rounded-xl border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/[0.03] transition-colors text-gray-500 hover:text-gray-300 overflow-hidden"
       aria-label={context === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist'}
     >
