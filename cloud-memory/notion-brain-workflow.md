@@ -1,7 +1,11 @@
 ---
-name: Notion Brain Workflow
+name: notion-brain-workflow
 description: "Every CC session creates/updates a card. IDs, schema, lifecycle, fallbacks."
-type: feedback
+metadata: 
+  node_type: memory
+  type: feedback
+  originSessionId: b722e13b-a35b-4ed7-8e29-eb895974cc61
+  modified: 2026-07-20T03:35:45.779Z
 ---
 
 ## Notion as Project Brain
@@ -37,6 +41,8 @@ node scripts/notion-brain.js get <page-id>
 **Env:** Reads `NOTION_API_KEY` from `.env` automatically. Uses `@notionhq/client` v5 SDK with `dataSources.query()`.
 
 **Fallback:** If the CLI fails (network, auth), fall back to Notion MCP tools. If MCP also fails, buffer updates as text in the Final Report.
+
+**`search --text` only matches Name/Notes, never Tags.** If a script dedupes against existing cards by tag string (e.g. searching `--text "ux-audit"` to find cards tagged `ux-audit`), it silently returns zero results forever — the tag never appears in the title/notes text. Search the literal title text/prefix instead (2026-07-20, ux-walkthrough.mjs dedup was a no-op until fixed).
 
 ## Session Lifecycle
 
