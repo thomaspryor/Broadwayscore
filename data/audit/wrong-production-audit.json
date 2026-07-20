@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-19T23:30:55.026Z",
+  "timestamp": "2026-07-20T03:24:57.835Z",
   "stats": {
-    "totalReviews": 40341,
-    "alreadyFlagged": 17649,
+    "totalReviews": 40344,
+    "alreadyFlagged": 17648,
     "dateGuardCatches": 49,
-    "directorMismatch": 914,
-    "tvFilmSignals": 1104,
+    "directorMismatch": 915,
+    "tvFilmSignals": 1106,
     "londonSignals": 754,
-    "offBroadwaySignals": 475,
+    "offBroadwaySignals": 476,
     "yearMismatch": 85,
-    "noPublishDate": 3623
+    "noPublishDate": 3626
   },
   "findings": [
     {
@@ -12023,6 +12023,19 @@
       ]
     },
     {
+      "showId": "into-the-woods-2022",
+      "file": "wsj--charles-isherwood.json",
+      "publishDate": "July 15th, 2022",
+      "url": "https://www.wsj.com/articles/into-the-woods-broadway-steven-sondheim-review-james-lapine-rob-berman-lear-debessonet-brian-darcy-james-sara-bareilles-gavin-creel-phillipa-soo-patina-miller-alysia-velez-joshua-henry-annie-golden-david-patrick-kelly-julia-lester-cole-thompson-11657835121",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
       "showId": "into-the-woods-west-end-2025",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 58,
@@ -23370,6 +23383,19 @@
       ]
     },
     {
+      "showId": "the-ferryman-2018",
+      "file": "wsj--terry-teachout.json",
+      "publishDate": "October 25th, 2018",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "the-front-page-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 75,
@@ -25661,6 +25687,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-whoopi-monologues-off-broadway-2026",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 75,
+      "publishDate": "2026-07-19",
+      "url": "https://newyorktheater.me/2026/07/19/the-whoopi-monologues-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbomax\""
         }
       ]
     },
@@ -39010,6 +39050,20 @@
       ]
     },
     {
+      "showId": "spring-awakening-2015",
+      "file": "wsj--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.wsj.com/articles/spring-awakening-reimagined-and-a-new-season-of-dance-1442792731?gaa_at=eafs&gaa_n=AWEtsqeK8uHd9joBgQoDVW2XX143b9cl55hWRbOcV3wn8m6eZqq_5LpxRJSn&gaa_ts=69d03acf&gaa_sig=CU6qIfelQsTTaERymS7kvGdCkTZgpbVilVdmHlqG6w_nWvC-DSUsccuQTNDS5O2QubYaAZ8U6xLmAdj5jTX7Pw%3D%3D",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
       "showId": "stephen-sondheims-old-friends-2025",
       "file": "frontmezzjunkies--unknown.json",
       "score": 86,
@@ -42737,7 +42791,7 @@
       "file": "one-minute-critic--steven-vargas.json",
       "score": 63,
       "publishDate": "2026-07-15",
-      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-potluck-review-cesar-alvarez",
+      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&#038;utm_medium=rss&",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
