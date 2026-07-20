@@ -475,8 +475,17 @@ function applyPending() {
   let skipped = 0;
 
   for (const [showId, entry] of Object.entries(pending.shows || {})) {
-    if (commercial.shows[showId]) {
-      console.log(`  ⏭️  "${showId}" already in commercial.json — skipping`);
+    // commercial.json is keyed by SLUG (memory: feedback_commercial_slug_keys).
+    // Writing (and existence-checking) by showId created ID-keyed duplicates
+    // next to the slug-keyed entries — this script's new Date() firstAdded
+    // stamps match the 13 hand-merged duplicates of 2026-07-19.
+    const resolvedShow = showsBySlug[showId];
+    const commercialKey = entry.slug || (resolvedShow && resolvedShow.slug) || showId;
+    if (commercialKey === showId && !(resolvedShow && resolvedShow.slug === showId)) {
+      console.warn(`  ⚠️ "${showId}" — no slug resolvable from shows.json; keying by show ID (validate-data will flag)`);
+    }
+    if (commercial.shows[commercialKey]) {
+      console.log(`  ⏭️  "${showId}" already in commercial.json as "${commercialKey}" — skipping`);
       skipped++;
       continue;
     }
@@ -504,8 +513,8 @@ function applyPending() {
       firstAdded: new Date().toISOString(),
     };
 
-    commercial.shows[showId] = commercialEntry;
-    console.log(`  ✅ Applied "${showId}" → ${commercialEntry.designation}`);
+    commercial.shows[commercialKey] = commercialEntry;
+    console.log(`  ✅ Applied "${showId}" → commercial.shows["${commercialKey}"] (${commercialEntry.designation})`);
     applied++;
   }
 
