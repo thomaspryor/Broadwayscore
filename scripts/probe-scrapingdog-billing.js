@@ -32,7 +32,10 @@ async function readUsed() {
   const { data } = await axios.get('https://api.scrapingdog.com/account', {
     params: { api_key: API_KEY }, timeout: 15000,
   });
-  if (typeof data.requestUsed !== 'number') throw new Error(`unexpected account response: ${JSON.stringify(data).slice(0, 120)}`);
+  if (typeof data.requestUsed !== 'number') {
+    const safe = { ...data }; delete safe.api_key; delete safe.apiKey; delete safe.key;
+    throw new Error(`unexpected account response: ${JSON.stringify(safe).slice(0, 120)}`);
+  }
   return data.requestUsed;
 }
 
@@ -63,8 +66,18 @@ async function pageCall(url) {
 }
 
 (async () => {
+  // Ambient-drift baseline: other workflows (hourly poller etc.) consume SD
+  // credits concurrently; requestUsed is monotonic, so their traffic inflates
+  // our deltas. Measure the idle drift over 20s and subtract it (scaled) from
+  // each phase; refuse to conclude when ambient traffic is heavy.
+  const pre = await readUsed();
+  await sleep(20000);
   const used0 = await readUsed();
-  console.log(`baseline requestUsed: ${used0}`);
+  const ambientPer20s = used0 - pre;
+  console.log(`ambient drift: ${ambientPer20s} credits/20s · baseline requestUsed: ${used0}`);
+  if (ambientPer20s > 5) {
+    console.log('WARNING: heavy ambient SD traffic — verdict below is unreliable; re-run in a quiet window (e.g. not at the top of the hour when the poller fires).');
+  }
 
   // --- Phase 1: intended-failure calls (3 operator SERP + 2 DTLI pages) ---
   const failures = [];
@@ -90,16 +103,28 @@ async function pageCall(url) {
   const used2 = await readUsed();
   console.log(`after control phase: ${used2} (delta ${used2 - used1})`);
 
-  const controlMoved = used2 - used1 > 0;
-  const verdict = !controlMoved
-    ? 'INCONCLUSIVE — control successes did not move requestUsed (counter may lag >20s); re-run with longer waits'
-    : (used1 - used0 > 0
-      ? `FAILURES ARE BILLED (~${used1 - used0} credits for ${actuallyFailed} failures) — A1/A2 fixes reclaim existing spend`
-      : 'FAILURES ARE FREE — A1/A2 fixes will ADD net-new billable SD volume; size the cap-blowout guard accordingly');
+  // Each phase spans ~40s (calls + 20s settle) ≈ 2 ambient windows.
+  const ambientPerPhase = ambientPer20s * 2;
+  const failureDeltaAdj = (used1 - used0) - ambientPerPhase;
+  const controlDeltaAdj = (used2 - used1) - ambientPerPhase;
+
+  let verdict;
+  if (controlDeltaAdj <= 0) {
+    verdict = 'INCONCLUSIVE — control successes did not clearly move requestUsed above ambient drift (counter lag or heavy concurrent traffic); re-run in a quiet window';
+  } else if (actuallyFailed === 0) {
+    verdict = 'INCONCLUSIVE — none of the intended-failure calls actually failed (SD may now return 200/empty for operator queries); A1 may already be partially moot, re-check with fresh failing shapes';
+  } else if (failureDeltaAdj >= 3) {
+    verdict = `FAILURES ARE BILLED (~${failureDeltaAdj} credits above ambient for ${actuallyFailed} failures) — A1/A2 fixes reclaim existing spend`;
+  } else if (failureDeltaAdj <= 1) {
+    verdict = 'FAILURES ARE FREE — A1/A2 fixes will ADD net-new billable SD volume; size the cap-blowout guard accordingly';
+  } else {
+    verdict = 'INCONCLUSIVE — failure delta within ambient noise band; re-run in a quiet window';
+  }
 
   console.log(JSON.stringify({
     baseline: used0, afterFailures: used1, afterControls: used2,
-    failureDelta: used1 - used0, controlDelta: used2 - used1,
+    ambientPer20s, failureDeltaRaw: used1 - used0, failureDeltaAdj,
+    controlDeltaRaw: used2 - used1, controlDeltaAdj,
     failedCalls: actuallyFailed, verdict,
   }, null, 2));
 })().catch(err => { console.error('probe crashed:', err.message); process.exit(1); });
