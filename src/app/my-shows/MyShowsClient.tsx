@@ -1413,6 +1413,7 @@ function Poster({ url, iconClass = 'text-3xl' }: { url: string | null | undefine
 }
 
 function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview; show?: ShowLookup; onDelete?: () => void; onRate?: (show: { id: string; title: string }, opts: { reviewId: string; initialRating: number; initialReviewText: string | null; initialDateSeen: string | null }) => void }) {
+  const router = useRouter();
   const [confirmDelete, setConfirmDelete] = useState(false);
   useEffect(() => {
     if (!confirmDelete) return;
@@ -1456,30 +1457,25 @@ function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview;
         {/* Edit + delete — hidden on mobile (tap opens the show page, which
             has the pencil), hover-revealed on desktop. Edit added for parity
             with list view (owner, 2026-07-19). */}
+        {/* Button (not Link): a Link here would NEST anchors inside
+            CardLinkOrDiv — invalid HTML that the parser splits on any
+            server-rendered path (code-review finding, 2026-07-19). */}
         {(href || onRate) && (
-          href ? (
-            <Link
-              href={`${href}?edit=1`}
-              onClick={(e) => e.stopPropagation()}
-              className="absolute top-2 right-10 z-[2] w-7 h-7 hidden sm:flex items-center justify-center rounded-full bg-black/70 text-gray-400 hover:text-white opacity-0 group-hover/grid:opacity-100 focus-visible:opacity-100 transition-opacity"
-              aria-label="Edit rating"
-            >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-              </svg>
-            </Link>
-          ) : (
-            <button
-              type="button"
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRate?.({ id: review.show_id, title }, { reviewId: review.id, initialRating: review.rating, initialReviewText: review.review_text, initialDateSeen: review.date_seen }); }}
-              className="absolute top-2 right-10 z-[2] w-7 h-7 hidden sm:flex items-center justify-center rounded-full bg-black/70 text-gray-400 hover:text-white opacity-0 group-hover/grid:opacity-100 focus-visible:opacity-100 transition-opacity"
-              aria-label="Edit rating"
-            >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-              </svg>
-            </button>
-          )
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (href) router.push(`${href}?edit=1`);
+              else onRate?.({ id: review.show_id, title }, { reviewId: review.id, initialRating: review.rating, initialReviewText: review.review_text, initialDateSeen: review.date_seen });
+            }}
+            className="absolute top-2 right-10 z-[2] w-7 h-7 hidden sm:flex items-center justify-center rounded-full bg-black/70 text-gray-400 hover:text-white opacity-0 group-hover/grid:opacity-100 focus-visible:opacity-100 transition-opacity"
+            aria-label="Edit rating"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          </button>
         )}
         {/* Delete button — hidden on mobile, visible on hover on desktop */}
         {onDelete && (
