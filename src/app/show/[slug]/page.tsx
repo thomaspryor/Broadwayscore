@@ -525,7 +525,9 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                     <span className="font-semibold">Regional production</span>
                     {transfer ? (
                       <span className="text-gray-400">
-                        {' '}— this tryout transferred to Broadway.{' '}
+                        {transfer.status === 'previews' || transfer.status === 'open' || transfer.status === 'closed'
+                          ? ' — this tryout transferred to Broadway. '
+                          : ' — this tryout is transferring to Broadway. '}
                         <Link href={`/show/${transfer.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
                           See the Broadway production →
                         </Link>

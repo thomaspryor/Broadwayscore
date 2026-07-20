@@ -22,6 +22,9 @@ export function getMarketFromPath(pathname: string): MarketId {
   // WE-specific pages outside the /west-end/ prefix
   if (pathname.startsWith('/olivier-awards')) return 'west-end';
 
+  // Pre-Broadway browse hub — the market dropdown's regional destination
+  if (pathname.startsWith('/browse/pre-broadway-out-of-town-shows')) return 'regional';
+
   // Show detail pages: /show/{slug} where slug contains market suffix
   // Slugs may end with market (hamilton-west-end) or have year (hamilton-west-end-2021)
   if (pathname.startsWith('/show/')) {

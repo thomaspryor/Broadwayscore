@@ -6,6 +6,8 @@
  * Markets: 'all' = appears everywhere, 'broadway' = BW only, 'west-end' = WE only.
  */
 
+export type AudienceMarket = 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end' | 'regional';
+
 export interface AudienceSourceConfig {
   key: string;
   name: string;
@@ -13,23 +15,23 @@ export interface AudienceSourceConfig {
   shortName?: string;
   volumeLabel: string;
   iconColor: string;
-  markets: ('broadway' | 'west-end' | 'off-broadway' | 'off-west-end')[];
+  markets: AudienceMarket[];
   /** Whether this source shows starRating (X/5) instead of percentage */
   showStarRating?: boolean;
 }
 
 export const AUDIENCE_SOURCES: AudienceSourceConfig[] = [
   { key: 'showScore', name: 'Show Score', volumeLabel: 'reviews', iconColor: 'text-yellow-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end'] },
-  { key: 'mezzanine', name: 'Mezzanine', volumeLabel: 'reviews', iconColor: 'text-purple-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end'], showStarRating: true },
+  { key: 'mezzanine', name: 'Mezzanine', volumeLabel: 'reviews', iconColor: 'text-purple-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end', 'regional'], showStarRating: true },
   { key: 'seatplan', name: 'SeatPlan', volumeLabel: 'reviews', iconColor: 'text-cyan-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
   { key: 'lbo', name: 'London Box Office', shortName: 'London BO', volumeLabel: 'reviews', iconColor: 'text-emerald-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
   { key: 'ltd', name: 'London Theatre Direct', shortName: 'London TD', volumeLabel: 'reviews', iconColor: 'text-rose-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
   { key: 'theatr', name: 'Theatr', volumeLabel: 'votes', iconColor: 'text-teal-400', markets: ['broadway', 'off-broadway'] },
   { key: 'broadwayCom', name: 'Broadway.com', shortName: 'Bway.com', volumeLabel: 'reviews', iconColor: 'text-blue-400', markets: ['broadway', 'off-broadway'], showStarRating: true },
-  { key: 'reddit', name: 'Reddit', volumeLabel: 'mentions', iconColor: 'text-orange-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end'] },
+  { key: 'reddit', name: 'Reddit', volumeLabel: 'mentions', iconColor: 'text-orange-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end', 'regional'] },
 ];
 
-export function getSourcesForMarket(market: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end'): AudienceSourceConfig[] {
+export function getSourcesForMarket(market: AudienceMarket): AudienceSourceConfig[] {
   return AUDIENCE_SOURCES.filter(s => s.markets.includes(market));
 }
 
@@ -48,6 +50,6 @@ export const SOURCE_DESCRIPTIONS: Record<string, string> = {
   ltd: 'Verified purchase reviews from London Theatre Direct, a major UK ticket reseller with 1K-14K reviews per show.',
 };
 
-export function getSourceNames(market: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end'): string {
+export function getSourceNames(market: AudienceMarket): string {
   return getSourcesForMarket(market).map(s => s.name).join(', ');
 }

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getBrowseList, getAllBrowseSlugs } from '@/lib/data-core';
+import { getBrowseList, getAllBrowseSlugs, getShowById } from '@/lib/data-core';
 import { getShowGrosses } from '@/lib/data-grosses';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
@@ -180,7 +180,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
   // Compute section group labels (server-side, since sectionGroup uses ComputedShow)
   const sectionLabels = config.sectionGroup
-    ? shows.map(show => config.sectionGroup!(show))
+    ? shows.map(show => config.sectionGroup!(show, getShowById))
     : undefined;
 
   // Determine available sorts and filters for this page
