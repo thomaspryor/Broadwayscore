@@ -608,7 +608,17 @@
     "heathers-the-musical-off-west-end-2026/times-uk--dominic-maxwell.json",
     "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
     "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
-    "the-oresteia-west-end-2026/british-theatre--unknown.json"
+    "the-oresteia-west-end-2026/british-theatre--unknown.json",
+    "the-oresteia-west-end-2026/the-recs--unknown.json",
+    "the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
+    "the-oresteia-west-end-2026/times-uk--ann-treneman.json",
+    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
+    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
+    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
+    "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -627,7 +637,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json",
-      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
+      "data/review-texts/the-oresteia-west-end-2026/times-uk--ann-treneman.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -646,7 +657,10 @@
       "data/review-texts/the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
       "data/review-texts/the-smile-of-her-off-west-end-2026/nottingham-confidential--unknown.json",
       "data/review-texts/the-smile-of-her-off-west-end-2026/thestage--dave-fargnoli.json",
-      "data/review-texts/the-oresteia-west-end-2026/oxfordshire-guardian--unknown.json"
+      "data/review-texts/the-oresteia-west-end-2026/oxfordshire-guardian--unknown.json",
+      "data/review-texts/heathers-the-musical-off-west-end-2026/thestage--holly-omahony.json",
+      "data/review-texts/the-oresteia-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/the-oresteia-west-end-2026/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "shifters-off-broadway-2026/broadwayworld--unknown.json",
@@ -655,7 +669,7 @@
     ]
   },
   "startTime": "2026-07-19T17:20:49.888Z",
-  "lastProcessed": "the-oresteia-west-end-2026/british-theatre--unknown.json",
+  "lastProcessed": "tender-off-west-end-2026/thestage--dave-fargnoli.json",
   "log": [
     {
       "t": "2026-07-19T17:23:15.324Z",
@@ -696,6 +710,17 @@
       "event": "bb-session",
       "session": "a8164580",
       "url": "https://www.broadwayworld.com/reviews/dukes"
+    },
+    {
+      "t": "2026-07-20T00:47:41.070Z",
+      "event": "bb-session",
+      "session": "70edfa9b",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-this-"
+    },
+    {
+      "t": "2026-07-20T00:47:41.957Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

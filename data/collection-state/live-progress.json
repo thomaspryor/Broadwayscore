@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-20T00:44:20.538Z",
+  "updatedAt": "2026-07-20T00:49:42.691Z",
   "processed": 16,
-  "failed": 591,
+  "failed": 601,
   "successRate": "2.6%",
   "tierBreakdown": {
     "playwright": 10,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archiveToday": 9,
+    "archiveToday": 12,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-19T17:23:15.324Z",
@@ -54,6 +54,17 @@
       "event": "bb-session",
       "session": "a8164580",
       "url": "https://www.broadwayworld.com/reviews/dukes"
+    },
+    {
+      "t": "2026-07-20T00:47:41.070Z",
+      "event": "bb-session",
+      "session": "70edfa9b",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-this-"
+    },
+    {
+      "t": "2026-07-20T00:47:41.957Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
