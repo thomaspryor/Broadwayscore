@@ -48,6 +48,16 @@ export default function DatePickerButton({
   onClear,
 }: DatePickerButtonProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  // Touch devices: iOS fires `change` with TODAY the moment the wheel opens
+  // (before the user picks anything). Committing on every change saved
+  // today's date instantly; the card re-sorted under the open wheel, which
+  // dismissed it — "picker flashed, card jumped, today applied" (owner,
+  // 2026-07-20). On coarse pointers we stage changes in local state and
+  // commit ONCE when the interaction ends (blur = wheel Done/dismiss).
+  // Desktop pickers commit per-change as before (Chrome's calendar emits
+  // change only on an actual pick).
+  const isCoarse = () => typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
+  const staged = useRef<string | null>(null);
 
   return (
     <div className={wrapClassName}>
@@ -60,8 +70,18 @@ export default function DatePickerButton({
         data-1p-ignore
         data-lpignore="true"
         data-bwignore="true"
-        value={value}
-        onChange={e => { e.stopPropagation(); onChange(e.target.value); }}
+        value={staged.current ?? value}
+        onChange={e => {
+          e.stopPropagation();
+          if (isCoarse()) { staged.current = e.target.value; return; }
+          onChange(e.target.value);
+        }}
+        onBlur={() => {
+          if (staged.current === null) return;
+          const v = staged.current;
+          staged.current = null;
+          if (v !== value) onChange(v);
+        }}
         onClick={e => e.stopPropagation()}
         min={min}
         max={max}
