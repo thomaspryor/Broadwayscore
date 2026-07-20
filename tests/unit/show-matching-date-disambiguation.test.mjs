@@ -4,6 +4,11 @@
 // 2,351 show/week entries in a historical grosses backfill (250 shows affected).
 // options.date (run-window containment, 14-day slack) is the fix; options.year
 // (closest-opening-year) is the fallback when no window contains the date.
+//
+// TESTS-VS-DERIVED-DATA-EXEMPT: fixtures below are hand-written synthetic show
+// objects (not read from data/shows.json) modeled on real Gypsy/Chicago dates
+// purely to make the algorithm test realistic — this tests pickBestProduction's
+// logic, not any current fact about the live catalog.
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
