@@ -179,9 +179,16 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
     const visibleLinks = show.ticketLinks.filter(l => !isPlatformHidden(l.platform));
     // We don't track on-sale dates; by previews start tickets are certainly on
     // sale, so previewsStartDate is the latest-safe validFrom (GSC warns
-    // per-offer without it). Price stays conditional — most platforms lack
-    // priceFrom and inventing one would be fabricated data.
-    const onSaleBy = show.previewsStartDate || show.openingDate;
+    // per-offer without it). Only claim it once the date has PASSED at build
+    // time — a future validFrom contradicts availability:InStock for upcoming
+    // shows (tickets are usually on sale long before previews). Pages rebuild
+    // on every deploy, so the build-date comparison self-heals. Price stays
+    // conditional — most platforms lack priceFrom and inventing one would be
+    // fabricated data.
+    const onSaleCandidate = show.previewsStartDate || show.openingDate;
+    const onSaleBy = onSaleCandidate && onSaleCandidate <= new Date().toISOString().slice(0, 10)
+      ? onSaleCandidate
+      : undefined;
     if (visibleLinks.length > 0) {
       schema.offers = visibleLinks.map(link => ({
         '@type': 'Offer',

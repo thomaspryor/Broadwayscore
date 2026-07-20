@@ -114,6 +114,8 @@ function mergeCommercialJson(ours, remote) {
   return { merged, stats: { added, kept, overlaid, totalSlugs: allSlugs.size } };
 }
 
+const PENDING_ENTRY_DATE_FIELDS = ['researchedAt', 'detectedAt', 'lastUpdated'];
+
 function mergePendingReview(ours, remote) {
   ours = ours || { shows: {} };
   remote = remote || { shows: {} };
@@ -123,20 +125,40 @@ function mergePendingReview(ours, remote) {
   merged.shows = { ...oursShows };
 
   let added = 0;
+  let resolvedAsDeletion = 0;
   const allSlugs = new Set([...Object.keys(oursShows), ...Object.keys(remoteShows)]);
   for (const slug of allSlugs) {
     const o = oursShows[slug];
     const r = remoteShows[slug];
     if (!o && r) { merged.shows[slug] = r; added++; continue; }
-    if (o && !r) continue;
-    merged.shows[slug] = pickNewer(o, r, ['researchedAt', 'detectedAt', 'lastUpdated']);
+    if (o && !r) {
+      // 10 scripts write/delete individual keys in this file (apply-
+      // commercial-pending.js removes applied shows, sweep-pending-
+      // commercial.js removes expired ones) on independent cron schedules —
+      // "remote lacks a slug ours still has" is ambiguous between "remote's
+      // base predates ours' addition" (keep ours, current behavior) and
+      // "remote already applied/swept it" (must NOT resurrect — same class
+      // of bug as mergeResearchQueue, ship-check finding 2026-07-19,
+      // /what-else follow-up). Use ours' entry timestamp vs remote's
+      // file-level lastUpdated as a logical clock: if remote's last write
+      // happened AFTER this entry existed, remote has definitely seen (and
+      // removed) it.
+      const entryTime = entryDate(o, PENDING_ENTRY_DATE_FIELDS);
+      const remoteFileTime = entryDate(remote, ['lastUpdated']);
+      if (remote.lastUpdated && entryTime > 0 && entryTime <= remoteFileTime) {
+        delete merged.shows[slug];
+        resolvedAsDeletion++;
+      }
+      continue;
+    }
+    merged.shows[slug] = pickNewer(o, r, PENDING_ENTRY_DATE_FIELDS);
   }
 
   // Refresh top-level lastUpdated to whichever side is newer
   const newer = pickNewer(remote, ours, ['lastUpdated']);
   if (newer?.lastUpdated) merged.lastUpdated = newer.lastUpdated;
 
-  return { merged, stats: { added, totalSlugs: allSlugs.size } };
+  return { merged, stats: { added, resolvedAsDeletion, totalSlugs: allSlugs.size } };
 }
 
 function mergeResearchQueue(ours, remote) {

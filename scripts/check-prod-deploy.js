@@ -29,6 +29,13 @@
  *                     elapses (default 900s). Requires a <commit-ish> arg.
  *
  * Requires: VERCEL_TOKEN in the environment (already used by check-secrets-health).
+ *
+ * MACHINE CONTRACT (2026-07-19): `--json` output is parsed by
+ * scripts/lib/should-deploy-gate.js (deploy-gate baseline: deployedSha, ageSec)
+ * and scripts/health-check.js checkDeployFreshness(). Do NOT print anything
+ * else to stdout in --json mode and do NOT rename those two fields — a silent
+ * parse failure makes the deploy gate fail open (deploys every cron tick,
+ * Vercel bill climbs with no red run anywhere).
  */
 
 const { execSync } = require('child_process');
