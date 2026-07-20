@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-07-19T23:28:16.083Z",
+  "generatedAt": "2026-07-20T03:22:15.918Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 75,
+    "avgScoreDiff": 1
   },
   "syndicationPairs": [
     {
@@ -96,8 +96,28 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Kevin Filipski",
+      "showId": "sylvia-2015",
+      "primaryOutlet": "film-festival-traveler",
+      "secondaryOutlet": "flipsidereviews",
+      "primaryFile": "film-festival-traveler--kevin-filipski.json",
+      "secondaryFile": "flipsidereviews--kevin-filipski.json",
+      "similarity": 75,
+      "primaryScore": 78,
+      "secondaryScore": 77,
+      "scoreDiff": 1
+    }
+  ],
   "authorMismatches": [
+    {
+      "showId": "birthday-candles-2022",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
+      "pattern": "tail"
+    },
     {
       "showId": "dog-day-afternoon-2026",
       "file": "nytimes--michael-paulson.json",
@@ -111,6 +131,13 @@
       "fileCritic": "cristina-sanza",
       "detectedAuthor": "Theater Cristina",
       "pattern": "tail"
+    },
+    {
+      "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
+      "file": "hollywood-reporter--david-rooney.json",
+      "fileCritic": "david-rooney",
+      "detectedAuthor": "Frank Scheck",
+      "pattern": "head"
     },
     {
       "showId": "how-i-learned-to-drive-2022",
@@ -134,10 +161,24 @@
       "pattern": "head"
     },
     {
+      "showId": "the-piano-lesson-2022",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
+      "pattern": "tail"
+    },
+    {
       "showId": "this-is-not-about-me-off-west-end-2026",
       "file": "thestage--lyn-gardner.json",
       "fileCritic": "lyn-gardner",
       "detectedAuthor": "proves that she",
+      "pattern": "tail"
+    },
+    {
+      "showId": "thoughts-of-a-colored-man-2021",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
       "pattern": "tail"
     }
   ]
