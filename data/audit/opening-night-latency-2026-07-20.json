@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-20T19:54:29.344Z",
+  "generatedAt": "2026-07-20T20:46:12.365Z",
   "date": "2026-07-20",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 165391,
+  "entryCount": 166651,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -2632,6 +2632,21 @@
     {
       "showId": "shit-meet-fan-off-broadway-2024",
       "reviewCount": 14,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "dukes-off-broadway-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
