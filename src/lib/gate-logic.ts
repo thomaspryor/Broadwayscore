@@ -4,7 +4,7 @@
  * Extracted per CLAUDE.md §15 so the cooldown and A/B-variant selection are
  * unit-testable without React (tests/unit/gate-logic.test.mjs, tsx batch).
  *
- * Two concerns live here:
+ * Three concerns live here:
  *  1. Passive-gate dismissal cooldown — a visitor who dismissed the popup is
  *     not re-asked for `cooldownDays` (2026-07 audit: dismissal state was
  *     React-state only, so the same person was re-gated EVERY visit — 2,992
@@ -14,6 +14,11 @@
  *     TicketButtonsAB conventions: explicit `fallback` label when flags never
  *     load (those users get control BEHAVIOR but are EXCLUDED from analysis —
  *     never silently merged into the control arm), sticky bucketing on.
+ *  3. Cold-start page-view gate — no passive trigger fires until the visitor
+ *     has viewed a few pages THIS SESSION (2026-07-20 audit: two prior fixes
+ *     to #1 above left conversion/dismissal unchanged 6 days later, because
+ *     neither touched the real gap — a brand-new visitor's first page load
+ *     was eligible for the gate the instant the dwell timer elapsed).
  */
 
 import { emailCaptureConfig } from '@/config/email-capture';
@@ -76,4 +81,16 @@ export function getMobileGateParams(flagValue: string | null): MobileGateParams 
  */
 export function buildGateAbVariant(timing: MobileGateTiming): string {
   return `flag:${MOBILE_GATE_FLAG},timing:${timing}`;
+}
+
+/**
+ * True once the visitor has viewed enough pages THIS SESSION for a passive
+ * gate to be worth showing. A visitor on their first page load has built zero
+ * trust — asking cold there converts near zero and drives the dismiss rate.
+ *
+ * @param pageViewCount   pages viewed this session (sessionStorage counter)
+ * @param minPageViews    emailCaptureConfig.minPageViewsForPassiveGate
+ */
+export function hasSeenEnoughPages(pageViewCount: number, minPageViews: number): boolean {
+  return pageViewCount >= minPageViews;
 }
