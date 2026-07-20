@@ -211,9 +211,13 @@ test.describe('Show Page Rating Section', () => {
 });
 
 test.describe('Diary Search & Production Picker', () => {
+  // Fetched via page.request (raw HTTP, not page.goto) — these files are large
+  // (10MB+) and page.goto + res.json() reads the body through Chrome's CDP
+  // inspector cache, which evicts large responses ("Request content was
+  // evicted from inspector cache"). page.request.get() bypasses that cache.
   test('diary-search.json is fetchable and valid', async ({ page }) => {
-    const res = await page.goto('/data/diary-search.json');
-    if (!res || res.status() === 404) {
+    const res = await page.request.get('/data/diary-search.json');
+    if (res.status() === 404) {
       test.skip(true, 'diary-search.json not deployed yet');
       return;
     }
@@ -222,8 +226,8 @@ test.describe('Diary Search & Production Picker', () => {
   });
 
   test('diary-lookup.json is fetchable and valid', async ({ page }) => {
-    const res = await page.goto('/data/diary-lookup.json');
-    if (!res || res.status() === 404) {
+    const res = await page.request.get('/data/diary-lookup.json');
+    if (res.status() === 404) {
       test.skip(true, 'diary-lookup.json not deployed yet');
       return;
     }
@@ -232,8 +236,8 @@ test.describe('Diary Search & Production Picker', () => {
   });
 
   test('multi-production search entries have prods array', async ({ page }) => {
-    const res = await page.goto('/data/diary-search.json');
-    if (!res || res.status() === 404) {
+    const res = await page.request.get('/data/diary-search.json');
+    if (res.status() === 404) {
       test.skip(true, 'diary-search.json not deployed yet');
       return;
     }
