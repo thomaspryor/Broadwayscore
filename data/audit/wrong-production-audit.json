@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-20T12:04:30.053Z",
+  "timestamp": "2026-07-20T12:50:15.042Z",
   "stats": {
-    "totalReviews": 40288,
-    "alreadyFlagged": 17647,
+    "totalReviews": 40284,
+    "alreadyFlagged": 17644,
     "dateGuardCatches": 49,
     "directorMismatch": 915,
     "tvFilmSignals": 1108,
-    "londonSignals": 756,
+    "londonSignals": 758,
     "offBroadwaySignals": 478,
     "yearMismatch": 86,
-    "noPublishDate": 3637
+    "noPublishDate": 3635
   },
   "findings": [
     {
@@ -33004,6 +33004,19 @@
     },
     {
       "showId": "hadestown-2019",
+      "file": "musical-theatre-review--ron-cohen.json",
+      "publishDate": "April 26th, 2019",
+      "url": "http://musicaltheatrereview.com/hadestown-walter-kerr-theatre-new-york/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-2019",
       "file": "nysr--elysa-gardner.json",
       "score": 78,
       "publishDate": "2019-04-17T20:51:45",
@@ -41212,6 +41225,20 @@
       "score": 25,
       "publishDate": "2024-12-06",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-devil-wears-prada-review-more-john-lewis-than-valentino-8jn7bgc76",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 65,
+      "publishDate": "2024-12-08",
+      "url": "https://www.thetimes.com/article/e28fca36-bbfd-44b0-862d-865f15a5a53c",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
