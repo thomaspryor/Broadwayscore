@@ -106,6 +106,20 @@ jobs:
           done
           git checkout main
 
+      - name: Capture original branch SHAs (for post-rewrite force-with-lease)
+        if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
+        run: |
+          # Recorded BEFORE filter-repo rewrites history, so the force-push step
+          # can lease against "what origin actually had when we started" instead
+          # of blindly forcing. Tab-separated (not per-file) so branch names with
+          # slashes don't need directory creation.
+          : > /tmp/orig-branch-shas.txt
+          for branch in $(git branch --format='%(refname:short)'); do
+            sha=$(git rev-parse "$branch" 2>/dev/null) || continue
+            printf '%s\t%s\n' "$branch" "$sha" >> /tmp/orig-branch-shas.txt
+          done
+          echo "Captured $(wc -l < /tmp/orig-branch-shas.txt) branch SHA(s) before filter-repo rewrite"
+
       - name: Install git-filter-repo
         if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
         run: pip3 install git-filter-repo
@@ -151,22 +165,51 @@ jobs:
           CURRENT_RUN_ID=${{ github.run_id }}
           RUNNING=$(gh run list --status=in_progress --json databaseId --jq "[.[] | select(.databaseId != $CURRENT_RUN_ID)] | length")
           if [ "$RUNNING" -gt 0 ]; then
-            echo "WARNING: $RUNNING workflows started during filter-repo. Proceeding with force push anyway."
-            echo "Those workflows will fail on their next push (expected — they'll be retried by schedule)."
+            echo "WARNING: $RUNNING workflows started during filter-repo. Proceeding with per-branch"
+            echo "force-with-lease anyway — any branch that moved on origin is rejected below"
+            echo "instead of clobbered (see comment above the push loop)."
           fi
 
-          for attempt in $(seq 1 5); do
-            echo "=== Force push attempt $attempt ==="
-            if git push --force --all origin 2>&1 && git push --force --tags origin 2>&1; then
-              echo "SUCCESS on attempt $attempt!"
-              exit 0
-            fi
-            echo "Failed, retrying in 10s..."
-            sleep 10
-          done
+          # Push each branch individually with --force-with-lease against the SHA
+          # captured BEFORE filter-repo ran (previous step). If a branch moved on
+          # origin during the (up to ~60min) rewrite window — a legit commit
+          # landed there — the lease check rejects THAT branch's push instead of
+          # silently overwriting it. This is the same failure class as the
+          # 2026-07-19 incident (card #208: a stale-base force-push destroyed a
+          # concurrently-landed merge commit), just closing this workflow's own
+          # window for it rather than a racing local session's. Tags don't carry
+          # main's continuous-churn risk, so they keep a plain --force.
+          FAILED_BRANCHES=""
+          while IFS=$'\t' read -r branch orig_sha; do
+            [ -z "$branch" ] && continue
+            git rev-parse --verify "$branch" >/dev/null 2>&1 || continue
+            echo "=== Pushing $branch (lease: $orig_sha) ==="
+            pushed=0
+            for attempt in 1 2 3 4 5; do
+              OUT=$(git push --force-with-lease="refs/heads/$branch:$orig_sha" origin "refs/heads/$branch" 2>&1)
+              RC=$?
+              echo "$OUT"
+              if [ "$RC" -eq 0 ]; then
+                pushed=1
+                break
+              fi
+              if echo "$OUT" | grep -qiE "stale info|rejected"; then
+                echo "  ABORT: $branch moved on origin during the rewrite (lease rejected) — leaving it untouched, not retrying with a stale lease"
+                break
+              fi
+              echo "  transient failure (attempt $attempt) — retrying in 10s"
+              sleep 10
+            done
+            [ "$pushed" = "1" ] || FAILED_BRANCHES="$FAILED_BRANCHES $branch"
+          done < /tmp/orig-branch-shas.txt
 
-          echo "ERROR: Force push failed after 5 attempts"
-          exit 1
+          git push --force --tags origin 2>&1 || echo "WARNING: tag push failed (non-fatal — tags aren't required for the purge's safety goal)"
+
+          if [ -n "$FAILED_BRANCHES" ]; then
+            echo "::error::Force-with-lease failed or was aborted for:$FAILED_BRANCHES — these branches were NOT rewritten on origin this run. If aborted (moved-branch), a legit commit landed mid-rewrite; re-run the purge next Saturday. If transient (network), investigate before next run."
+            exit 1
+          fi
+          echo "SUCCESS — all branches pushed with lease verification"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}

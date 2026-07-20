@@ -5,6 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 7bb9fe54-d348-4630-8cb8-968f5460b90d
+  modified: 2026-07-19T23:55:39.680Z
 ---
 
 The 2026-07-05 ScrapingBee cost incident: the account burned its full 2M monthly credits while every log-based audit said "CI barely uses SB."
@@ -17,6 +18,7 @@ The 2026-07-05 ScrapingBee cost incident: the account burned its full 2M monthly
 - `gh run list` silently caps at 20 rows — use `gh api --paginate .../actions/runs?created=...` for real run counts (Collect Review Texts ran 59×/day when `gh run list` showed 20/21 days).
 - Failed SB calls (401/500) cost 0 credits — 401 noise in logs says nothing about spend.
 - `scripts/audit-sb-spend.js` attributes SB credits per workflow from run logs (self-reported "(N credits" + [SB Call] telemetry + grosses-css signals) — but it CANNOT see unlogged paths; compare its total vs dashboard and treat the residual as unattributed.
-- Fix stack for the burn (if not yet applied): fix SD SERP 404 encoding, treat SD empty-success as authoritative (don't cascade), swap preferSpeed fallback to BD, add recordSbCall to _serpViaScrapingBee, short-TTL negative cache.
+- **Applied 2026-07-19** (main@76beaf43323 + e80a79aff42): `_serpViaScrapingBee` now emits `recordSbCall` on every attempt (25cr success / 0cr failure), has a per-process `SERP_SB_MAX_CALLS_PER_RUN` cap (default 40; per matrix SHARD, so parallel_jobs=3 → 120), `SERP_NO_SB=1` env + `serpQuery({skipProviders})` skip (backfill dispatches pass `no_sb_serp=true`), and skip-truncated empty results are never cached. `scraper-cost-report.yml` revived (was timeout-cancelled 8 straight Mondays) with a provider-reported ground-truth section; SD/BD/Browserbase balances now in `health-check.js checkAPICredits` daily digest.
+- STILL OPEN: SD SERP 404 encoding fix + treat SD empty-success as authoritative (don't cascade), preferSpeed fallback swap, direct-SB caller migration (tasks #66/#5), fetchJSON reorder (task #203).
 
 Related: [[feedback_scraper_architecture]], [[feedback_sb_credit_budget]], [[feedback_investigate_premise_before_scaling]]
