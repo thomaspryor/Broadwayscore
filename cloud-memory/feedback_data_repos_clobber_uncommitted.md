@@ -24,6 +24,8 @@ to a sibling session that runs `git pull --rebase`. Rebase autostashes, applies 
 to pop — if pop conflicts or the script aborts, the stash is preserved BUT later sessions see no
 local-only commits and may safely "reset --hard" or pull again.
 
+**Pushing when the shared checkout is dirty/behind (another session's WIP):** never pull/rebase it. `git fetch && git worktree add <scratch> --detach origin/main`, apply your file-scoped edits there, commit, `git push origin HEAD:main`, `git worktree remove` — used 5x cleanly on 2026-07-19 while byline-recovery owned the main review-texts checkout. Do NOT `git worktree remove` in a `&&` chain after a push that can fail non-fast-forward — a failed push leaves the commit only in that worktree (rebase+push from inside it first).
+
 **How to apply:** For data repos with active CI traffic (`data/review-texts`,
 `broadway-scorecard-data`):
 
