@@ -553,6 +553,17 @@ on:
       # reason as autonomous-triage.test.mjs above) so it's explicitly listed
       # here AND in the tests/unit node --test invocation.
       - 'scripts/autonomous-merge.test.mjs'
+      # S2-T1/S2-T3: commercial-model drift-detection gets a colocated
+      # scripts/lib/*.test.mjs (auto-run by the lib-test glob step, no
+      # explicit registration needed there); path-listed here so a solo edit
+      # to either file still triggers CI (feedback_test_yml_push_path_allowlist).
+      # scripts/audit-commercial-data.js and scripts/health-check.js are the
+      # callers/consumers (--write-history flag, "Commercial model drift"
+      # check) — both previously unlisted, so path-listed too.
+      - 'scripts/lib/commercial-model-drift.js'
+      - 'scripts/lib/commercial-model-drift.test.mjs'
+      - 'scripts/audit-commercial-data.js'
+      - 'scripts/health-check.js'
   pull_request:
     branches: [main]
   schedule:

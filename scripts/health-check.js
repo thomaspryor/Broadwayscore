@@ -31,6 +31,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { execSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
+const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 // Discord daily reports removed — email digest is the single notification channel.
 
 // Generate a signed one-tap approve URL for a fix workflow.
@@ -770,6 +771,39 @@ function checkQuality() {
         return { name: 'Quality: corpus drift', status: 'warn', message: `${drifted.length} audit(s) drifting: ${drifted.map(a => a.label || a.name).join(', ')}`, hint: 'Non-blocking corpus drift — review data/audit/corpus-drift.json' };
       }
       return { name: 'Quality: corpus drift', status: 'pass', message: `${audits.length} audits within thresholds (${formatAge(age)} ago)` };
+    }),
+  ];
+}
+
+// --- Commercial model drift (S2-T3) ---
+// Surfaces the rolling history written by audit-commercial-data.js
+// --write-history (S2-T1, called weekly from commercial-weekly.yml — S2-T2):
+// modelDesignationFlag contradiction count and ai-estimated-tier count,
+// week over week. Same posture as "Quality: corpus drift" above — drift
+// itself is a `this-week` warn (visible in the digest, not paging); a
+// missing/unreadable history file is also a warn (informational monitor,
+// not a ship-blocker) since a first-ever week or a not-yet-run cron
+// legitimately has no file yet.
+function checkCommercialModelDrift() {
+  return [
+    runCheck('Commercial model drift', () => {
+      const historyFile = path.join(AUDIT_DIR, 'commercial-data-history.json');
+      if (!fs.existsSync(historyFile)) {
+        return {
+          name: 'Commercial model drift',
+          status: 'warn',
+          message: 'No commercial-data-history.json (commercial-weekly.yml may not have run --write-history yet)',
+          hint: 'Trigger commercial-weekly.yml or check S2-T1/S2-T2 wiring',
+        };
+      }
+      let history;
+      try {
+        history = readJSON(historyFile);
+      } catch (err) {
+        return { name: 'Commercial model drift', status: 'error', message: `Failed to parse commercial-data-history.json: ${err.message}` };
+      }
+      const result = computeCommercialModelDriftStatus(history);
+      return { name: 'Commercial model drift', status: result.status, message: result.message, hint: result.hint };
     }),
   ];
 }
@@ -2138,6 +2172,7 @@ async function main() {
     ...checkSync(),
     ...checkPipelines(),
     ...checkQuality(),
+    ...checkCommercialModelDrift(),
     ...checkCookieExpiration(),
     ...checkCWV(),
     ...checkSEO(),
