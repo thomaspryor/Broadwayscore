@@ -42,6 +42,7 @@ import {
   getScoreTier,
 } from '@/components/show-cards';
 import StarRating from '@/components/user/StarRating';
+import DatePickerButton from '@/components/user/DatePickerButton';
 import RatingEditor from '@/components/user/RatingEditor';
 import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -118,7 +119,7 @@ function Inner({
 }: ShowHeroRedesignProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
-  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, watchlist } = useWatchlist(user?.id || null);
+  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, watchlist } = useWatchlist(user?.id || null);
   const { lists, getLists } = useUserLists(user?.id || null);
   const { showToast } = useToastSafe();
   const searchParams = useSearchParams();
@@ -591,6 +592,25 @@ function Inner({
                 >
                   Watchlist
                 </Link>
+                {/* Planned date, visible AND editable in place — it was set
+                    on My Shows but invisible here (owner, 2026-07-20) */}
+                {' '}
+                <DatePickerButton
+                  value={watchlistDate || ''}
+                  onChange={(val) => updatePlannedDate(show.id, val || null).catch(() => showToast?.('Failed to save date.', 'error'))}
+                  ariaLabel="Planned date"
+                  wrapClassName="relative inline-block align-middle"
+                  className="inline-flex items-center gap-1 text-xs text-amber-400/90 hover:text-amber-300 transition-colors"
+                >
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>
+                    {watchlistDate
+                      ? `Seeing it ${new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+                      : 'Add date'}
+                  </span>
+                </DatePickerButton>
               </>
             )}
             {onWatchlist && firstListContainingShow && ' · '}
