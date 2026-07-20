@@ -585,6 +585,22 @@ img {
     min-height: auto;
     min-width: auto;
   }
+
+  /* Exception for switch toggles — a 44x24 pill inflated to 44x44 renders as
+     a CIRCLE with a stranded knob (Ranked-list toggle, owner 2026-07-20).
+     44px width is already met; the 24px height matches platform switches. */
+  button[role="switch"] {
+    min-height: auto;
+    min-width: auto;
+  }
+
+  /* iOS zooms the page when focusing any text control under 16px — on the
+     Create List sheet this zoomed past the right edge and, combined with the
+     modal scroll lock, read as a frozen page (owner, 2026-07-20). A 16px
+     floor on text-entry controls kills the zoom trigger site-wide. */
+  input[type="text"], input[type="search"], input[type="email"], input[type="date"], textarea, select {
+    font-size: 16px;
+  }
 }
 
 /* Beat the Critics — standalone mode hides site chrome */
