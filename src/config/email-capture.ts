@@ -58,6 +58,19 @@ interface EmailCaptureConfig {
    */
   passiveGateCooldownDays: number;
   /**
+   * Minimum pages viewed THIS SESSION before any passive gate (exit_intent,
+   * scroll_depth, return_visitor) is allowed to fire. Without this, a
+   * brand-new visitor's very first page load — seconds after landing, zero
+   * trust built — was eligible the instant the dwell timer elapsed. Two prior
+   * fixes (dismissal cooldown 2026-07-12, exit-intent dwell gate 2026-07-14)
+   * left this untouched; conversion/dismissal were unchanged 6 days later
+   * (2026-07-20 audit, card fhash:4fa87279). Blocking triggers (csv/json/
+   * page_view_limit) and recapture are exempt — same list as
+   * passiveGateCooldownDays; page_view_limit already has its own explicit
+   * view-count threshold via BizPageTracker.
+   */
+  minPageViewsForPassiveGate: number;
+  /**
    * Mobile scroll-gate timing A/B ('mobile-gate-timing' PostHog flag).
    * control = current mobileScrollGate behavior; end-of-content fires when the
    * reader reaches the bottom of the page. The variant keeps a small min-time
@@ -92,6 +105,7 @@ const presets: Record<string, EmailCaptureConfig> = {
       minTimeOnPageSec: 15,
     },
     passiveGateCooldownDays: 14,
+    minPageViewsForPassiveGate: 2,
     mobileScrollGateVariants: {
       control: { scrollThreshold: 0.65, minTimeOnPageSec: 15 },
       'end-of-content': { scrollThreshold: 0.95, minTimeOnPageSec: 3 },
@@ -116,6 +130,7 @@ const presets: Record<string, EmailCaptureConfig> = {
       minTimeOnPageSec: 10,
     },
     passiveGateCooldownDays: 14,
+    minPageViewsForPassiveGate: 2,
     mobileScrollGateVariants: {
       control: { scrollThreshold: 0.65, minTimeOnPageSec: 10 },
       'end-of-content': { scrollThreshold: 0.95, minTimeOnPageSec: 3 },
