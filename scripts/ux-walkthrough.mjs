@@ -45,12 +45,13 @@ function loadDotenv(path = '.env') {
 loadDotenv();
 
 function parseArgs(argv) {
-  const args = { baseUrl: 'https://demo.broadwayscorecard.com', skipReview: false, keep: false, out: null };
+  const args = { baseUrl: 'https://demo.broadwayscorecard.com', skipReview: false, keep: false, out: null, noFile: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--base-url') args.baseUrl = argv[++i];
     else if (a === '--skip-review') args.skipReview = true;
     else if (a === '--keep') args.keep = true;
+    else if (a === '--no-file') args.noFile = true; // compute findings, skip Notion writes (calibration runs)
     else if (a === '--out') args.out = argv[++i];
   }
   return args;
@@ -288,7 +289,22 @@ async function withPage(browser, session, viewport, fn) {
 
 async function shoot(page, outDir, name) {
   const file = join(outDir, `${name}.png`);
+  // Cap capture height: Anthropic's vision API rejects images with any
+  // dimension > 8000px — oversized fullPage shots 400'd the Claude reviewer
+  // out of every run, silently degrading the panel to 2 models (verification,
+  // 2026-07-20). Capture full page first, then check the REAL rendered height
+  // from the PNG header and re-capture clipped if oversized — scrollHeight
+  // can't be trusted (the bottom-sheet scroll lock made it report 844 while
+  // fullPage rendered 10935). 4000px keeps everything reviewers need and is
+  // consistent input for all three models.
+  const MAX_CAPTURE_HEIGHT = 4000;
   await page.screenshot({ path: file, fullPage: true });
+  const header = readFileSync(file).subarray(16, 24);
+  const pngHeight = header.readUInt32BE(4);
+  if (pngHeight > MAX_CAPTURE_HEIGHT) {
+    const vp = page.viewportSize();
+    await page.screenshot({ path: file, clip: { x: 0, y: 0, width: vp.width, height: MAX_CAPTURE_HEIGHT } });
+  }
   return file;
 }
 
@@ -389,14 +405,14 @@ Screenshots are labeled <viewport>__<surface>, e.g. "mobile__diary_grid" or "des
 
 Review across these dimensions:
 1. HIERARCHY — is the most important info (show title, rating, action) the most visually prominent? Is anything buried that shouldn't be, or loud that shouldn't be (e.g. a date more prominent than the show title)?
-2. CONSISTENCY ACROSS VIEWS/BREAKPOINTS — do star sizes, icons, spacing match between grid and list views, and between mobile and desktop? Cross-surface parity issues (e.g. an icon present in grid but missing in list) belong here.
+2. CONSISTENCY ACROSS VIEWS/BREAKPOINTS — FIRST inventory the recurring components (star rows, badges, buttons, dates, posters) and explicitly compare each one's SIZE, color, and style across every screenshot at the SAME viewport: e.g. are the stars in desktop__diary_list the same size as the stars in desktop__to_be_rated and desktop__diary_grid? A component rendered noticeably larger/smaller in one sibling view than everywhere else is ALWAYS a finding. Cross-surface parity issues (e.g. an icon present in grid but missing in list) belong here too. NOTE: desktop row/card action icons are hover-revealed by design — do not flag them as "missing" from static desktop screenshots.
 3. AFFORDANCE CLARITY — do interactive elements look tappable/clickable? Is a destructive action (delete) clearly different from a safe one, and does its confirm step read as an obvious "are you sure," not just a color change?
 4. FEEDBACK AFTER ACTION — after adding/rating/removing a show, is there visible confirmation, and does the item land somewhere sensible (not buried mid-list with no signal it moved)?
 5. DEAD ENDS — any screen where a signed-in user has no obvious next action?
 6. 12PX FLOOR — any text that looks smaller than ~12px, especially on mobile.
 7. DESIGN TOKENS — hardcoded-looking colors that don't match the app's dark score-card aesthetic (unexpected zinc/slate grays, off-brand reds/greens).
 
-Return ONLY a JSON object: {"findings": [{"summary": "...", "screenshot": "<label of the most relevant screenshot>", "severity": "high"|"medium"|"low"}]}. Max 5 findings. Be specific — quote what you see, don't speculate. If you see nothing worth flagging in a dimension, skip it. No markdown fencing, no commentary.`;
+Return ONLY a JSON object: {"findings": [{"summary": "...", "screenshot": "<label of the most relevant screenshot>", "severity": "high"|"medium"|"low"}]}. Max 8 findings. Be specific — quote what you see, don't speculate. If you see nothing worth flagging in a dimension, skip it. No markdown fencing, no commentary.`;
 
 function imageToBase64(path) {
   return readFileSync(path).toString('base64');
@@ -481,8 +497,12 @@ async function reviewWithClaude(shots, apiKey) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model: 'claude-sonnet-5', max_tokens: 1500, messages: [{ role: 'user', content }] }),
-    signal: AbortSignal.timeout(90000),
+    // max_tokens 6000: sonnet-5 auto-engages extended thinking on the 19-image
+    // review and 1500 tokens were consumed ENTIRELY by the thinking block —
+    // the response had no text and the reviewer errored 'no content' every
+    // run (verification, 2026-07-20). Budget must cover thinking + answer.
+    body: JSON.stringify({ model: 'claude-sonnet-5', max_tokens: 6000, messages: [{ role: 'user', content }] }),
+    signal: AbortSignal.timeout(180000),
   });
   if (!res.ok) throw new Error(`Anthropic HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const body = await res.json();
@@ -576,17 +596,17 @@ function titleFor(finding) {
   return `UX audit: ${finding.summary}`.slice(0, 120);
 }
 
-async function fileNotionCards(deduped, existingTitles) {
+async function fileNotionCards(deduped, existingTitles, respondingCount) {
   const filed = [];
   for (const f of deduped) {
-    if (f.agreementCount < 2) continue; // only 2-of-3+ agreement gets filed
+    if (f.agreementCount < 2) continue; // only 2+-model agreement gets filed
     const title = titleFor(f);
     const dupe = existingTitles.some(t => similarity(t, title) >= 0.6);
     if (dupe) {
       console.error(`[ux-walkthrough] skip (existing card match): ${title}`);
       continue;
     }
-    const notes = `## Problem\n${f.summary}\n\n## Evidence\nFlagged by ${f.agreementCount} of 3 review models (${f.models.join(', ')}) in the nightly signed-in UX walkthrough. Reference screenshot: ${f.screenshot}.\n\n## Suggested approach\nReproduce on demo.broadwayscorecard.com signed in, compare grid/list + mobile/desktop, fix per design-system tokens (memory/design-system.md).\n\n## Acceptance criteria\nFix verified in the next nightly walkthrough run (no repeat finding) + /visual-qa pass.`;
+    const notes = `## Problem\n${f.summary}\n\n## Evidence\nFlagged by ${f.agreementCount} of ${respondingCount} responding review models (${f.models.join(', ')}) in the nightly signed-in UX walkthrough. Reference screenshot: ${f.screenshot}.\n\n## Suggested approach\nReproduce on demo.broadwayscorecard.com signed in, compare grid/list + mobile/desktop, fix per design-system tokens (memory/design-system.md).\n\n## Acceptance criteria\nFix verified in the next nightly walkthrough run (no repeat finding) + /visual-qa pass.`;
     try {
       execFileSync('node', [
         'scripts/notion-brain.js', 'create', title,
@@ -663,7 +683,8 @@ async function main() {
 
       const deduped = dedupeFindings(panel);
       const existingTitles = await existingCardTitles();
-      const filed = await fileNotionCards(deduped, existingTitles);
+      const respondingCount = panel.filter(p => !p.error).length;
+      const filed = args.noFile ? [] : await fileNotionCards(deduped, existingTitles, respondingCount);
 
       writeFileSync(join(outDir, 'review.json'), JSON.stringify({ panel, deduped, filed }, null, 2));
       console.error(`[ux-walkthrough] ${deduped.length} deduped finding(s), ${filed.length} filed to Notion`);

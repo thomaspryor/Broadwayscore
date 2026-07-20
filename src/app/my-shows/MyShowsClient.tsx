@@ -1725,6 +1725,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
   onRemove: () => void;
   onRate: (show: { id: string; title: string }) => void;
 }) {
+  const router = useRouter();
   const [confirmRemove, setConfirmRemove] = useState(false);
   useEffect(() => {
     if (!confirmRemove) return;
@@ -1774,30 +1775,25 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
           hasDate={!!formattedDate}
           onChange={(val) => onDateChange(val || null)}
         />
-        {/* Rate + Remove row */}
+        {/* Rate + Remove row — same tappable 5-star affordance as the grid
+            strip and To-Be-Rated rows; the old '☆ Rate' text link was a
+            second visual treatment for the identical action (flagged by the
+            UX walkthrough panel, 2026-07-20) */}
         <div className="flex items-center gap-2">
-          {href ? (
-            <Link
-              href={`${href}?rate=1`}
-              className="relative z-[1] text-xs sm:text-xs text-gray-500 hover:text-amber-400 transition-colors flex items-center gap-1"
-            >
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-              Rate
-            </Link>
-          ) : (
-            <button
-              type="button"
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRate({ id: entry.show_id, title }); }}
-              className="relative z-[1] text-xs sm:text-xs text-gray-500 hover:text-amber-400 transition-colors flex items-center gap-1"
-            >
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-              Rate
-            </button>
-          )}
+          {/* star-compact: without it the 44px mobile tap minimums inflate
+              these five buttons to 220px and crush the title column to zero
+              width at 390px (same failure class as the diary rows, 2026-07-19) */}
+          <span className="relative z-[1] star-compact">
+            <StarRating
+              rating={null}
+              onRatingChange={(stars) => {
+                if (href) router.push(`${href}?rate=1&stars=${stars}`);
+                else onRate({ id: entry.show_id, title });
+              }}
+              size="sm"
+              hideLabel
+            />
+          </span>
           {confirmRemove ? (
             <span className="relative z-[1] flex items-center gap-1 text-xs">
               <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }} className="text-red-400 hover:text-red-300 font-medium">Remove?</button>
