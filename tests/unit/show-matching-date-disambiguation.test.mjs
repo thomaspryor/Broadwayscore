@@ -73,4 +73,28 @@ describe('matchTitleToShow date-containment disambiguation', () => {
     const result = matchTitleToShow('Gypsy', GYPSY_PRODUCTIONS, { market: 'broadway', prefer: 'open', date: '1980-01-01', year: 1980 });
     assert.equal(result?.show?.id, 'gypsy-1974');
   });
+
+  it('regression: accented input matches a same-title production whose title lacks the accent, not just the accented sibling', () => {
+    // Real bug (2026-07-20): shows.json is inconsistent about diacritics across
+    // productions of the same title (les-miserables-1987's title is "Les Miserables",
+    // no accent, while the 2006/2014 productions are "Les Misérables"). The exact-title
+    // match compared the diacritic-stripped input against a NON-stripped show.title,
+    // so only the non-accented production ever exact-matched — short-circuiting to a
+    // single candidate before date/year disambiguation could run. Caused 195
+    // chronologically-impossible les-miserables-1987 entries in a historical backfill.
+    const LES_MIZ = [
+      { id: 'les-miserables-2014', slug: 'les-miserables-2014', title: 'Les Misérables', category: 'broadway', openingDate: '2014-03-23', closingDate: '2016-09-04', status: 'closed' },
+      { id: 'les-miserables-2006', slug: 'les-miserables-2006', title: 'Les Misérables', category: 'broadway', openingDate: '2006-11-09', closingDate: '2008-01-06', status: 'closed' },
+      { id: 'les-miserables-1987', slug: 'les-miserables-1987', title: 'Les Miserables', category: 'broadway', openingDate: '1987-03-12', closingDate: '2003-05-18', status: 'closed' },
+    ];
+    const cases = [
+      ['2016-08-28', 'les-miserables-2014'],
+      ['2007-01-15', 'les-miserables-2006'],
+      ['2001-06-01', 'les-miserables-1987'],
+    ];
+    for (const [date, expectedId] of cases) {
+      const result = matchTitleToShow('Les Misérables', LES_MIZ, { market: 'broadway', prefer: 'open', year: new Date(date).getFullYear(), date });
+      assert.equal(result?.show?.id, expectedId, `date=${date}`);
+    }
+  });
 });
