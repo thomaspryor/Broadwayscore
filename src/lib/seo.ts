@@ -632,7 +632,8 @@ export function generateBrowseFAQSchema(
 ) {
   const isLondon = shows.length > 0 && isLondonMarket(shows[0].category);
   const isOffBroadway = shows.length > 0 && shows[0].category === 'off-broadway';
-  const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+  const isRegional = shows.length > 0 && shows[0].category === 'regional';
+  const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in a regional production' : 'on Broadway';
   const outletNames = isLondon
     ? 'The Guardian, Telegraph, Time Out, and WhatsOnStage'
     : 'The New York Times, Vulture, and Variety';

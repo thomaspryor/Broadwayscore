@@ -976,6 +976,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           isOffBroadway={isOffBroadway}
           isOffWestEnd={isOffWestEnd}
           isOpera={isOpera}
+          isRegional={isRegional}
           isCuratedHistoricalShow={isCuratedHistoricalShow}
           lastUpdated={lastUpdated}
           score={score}

@@ -76,6 +76,7 @@ export interface ShowPageBelowFoldProps {
   isOffBroadway: boolean;
   isOffWestEnd: boolean;
   isOpera: boolean;
+  isRegional: boolean;
   isCuratedHistoricalShow: boolean;
   lastUpdated: string | null;
   score: number | undefined;
@@ -138,6 +139,7 @@ export default function ShowPageBelowFold({
   isOffBroadway,
   isOffWestEnd,
   isOpera,
+  isRegional,
   isCuratedHistoricalShow,
   lastUpdated,
   score,
@@ -382,7 +384,7 @@ export default function ShowPageBelowFold({
             ) : null;
           })()}
           {show.status === 'open' && (() => {
-            const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+            const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in its regional run' : 'on Broadway';
             const dur = getBroadwayDuration(show.openingDate, durationSuffix);
             return dur ? (
               <div>
