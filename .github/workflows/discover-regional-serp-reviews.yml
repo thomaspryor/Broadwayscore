@@ -51,9 +51,15 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-          # Pool is ~7 shows, 1 SERP query each — this cap is a hard backstop,
-          # not the expected usage (Bright Data is the default primary provider).
-          SB_CREDIT_BUDGET: '150'
+          # Real batch-wide SERP cost cap: 1 query/show, pool is ~7 shows, so 7
+          # calls x 25cr/call = 175cr worst case if every query fell through to
+          # SB (Bright Data is the default primary provider, so real usage
+          # should be near 0). SB_CREDIT_BUDGET below only bounds the page-fetch
+          # step inside each spawned ingest-review-from-url.js subprocess (reset
+          # per-process, so it does NOT accumulate across shows/candidates) —
+          # SERP_SB_MAX_CALLS_PER_RUN is what actually caps the batch-wide SERP cost.
+          SERP_SB_MAX_CALLS_PER_RUN: '7'
+          SB_CREDIT_BUDGET: '50'
         run: |
           ARGS=""
           if [ -n "${{ github.event.inputs.show }}" ]; then

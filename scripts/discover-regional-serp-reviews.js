@@ -28,7 +28,10 @@
  *
  * Cost: one SERP query per show (~7 shows in the pool = 7 queries). Bright
  * Data is the default primary provider (see url-discovery.js), so ScrapingBee
- * usage should stay near zero; SB_CREDIT_BUDGET still caps worst case.
+ * usage should stay near zero. The workflow sets SERP_SB_MAX_CALLS_PER_RUN to
+ * bound worst-case batch-wide SERP cost — SB_CREDIT_BUDGET only bounds the
+ * page-fetch inside each spawned ingest-review-from-url.js subprocess (resets
+ * per-process, does not accumulate across shows/candidates).
  */
 
 'use strict';
@@ -39,6 +42,12 @@ const { execFileSync } = require('child_process');
 const { serpQuery, calculateDateWindow } = require('./lib/url-discovery');
 const { urlLooksLikeReview } = require('./lib/review-guards');
 const { _parseDomain, _buildDomainMap } = require('./lib/outlet-canonicalize');
+const { validateSerpCandidate } = require('./lib/serp-candidate-validator');
+
+// Hard cap on ingest subprocess wall time. A slow/paywalled fetch (WSJ took
+// ~2min in testing) must not be allowed to eat the workflow's 20-min budget
+// across every show in the pool — one bad URL fails, the rest still run.
+const INGEST_TIMEOUT_MS = 3 * 60 * 1000;
 
 const ROOT = path.join(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
@@ -135,14 +144,15 @@ function ingestUrl(showId, url, outletId) {
     const out = execFileSync(
       process.execPath,
       [path.join(__dirname, 'ingest-review-from-url.js'), `--show=${showId}`, `--url=${url}`, `--outlet=${outletId}`],
-      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }
+      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: INGEST_TIMEOUT_MS }
     );
     if (/✅ Created/.test(out)) return { action: 'new', log: out };
     if (/✅ Updated/.test(out)) return { action: 'updated', log: out };
     return { action: 'skipped', log: out };
   } catch (e) {
     const output = (e.stdout || '') + (e.stderr || '');
-    console.log(`  ✗ ingest failed for ${url}: ${(e.stderr || e.message).split('\n')[0]}`);
+    const reason = e.signal === 'SIGTERM' ? `timed out after ${INGEST_TIMEOUT_MS / 1000}s` : (e.stderr || e.message).split('\n')[0];
+    console.log(`  ✗ ingest failed for ${url}: ${reason}`);
     return { action: 'error', log: output };
   }
 }
@@ -181,6 +191,14 @@ async function processShow(show) {
       continue;
     }
     if (!urlLooksLikeReview(url, show.title) || looksLikeAggregationOrReaction(url, r.title)) {
+      skippedNotReview++;
+      continue;
+    }
+    // Cross-market / wrong-production hard-marker check (same guard collect-outlet-reviews.js
+    // and gather-reviews.js's SERP path rely on) — cheap, synchronous, no network cost.
+    const validation = validateSerpCandidate({ show, candidate: { url, title: r.title } });
+    if (!validation.ok) {
+      console.log(`  · rejected by validateSerpCandidate (${validation.reason}): ${url}`);
       skippedNotReview++;
       continue;
     }
@@ -230,9 +248,17 @@ async function main() {
     return;
   }
 
+  // One show's failure (SERP provider exception, etc.) must not abort the
+  // whole run — the audit log and rebuild trigger for every other show's
+  // real ingests would be lost with it.
   const perShow = [];
   for (const show of shows) {
-    perShow.push(await processShow(show));
+    try {
+      perShow.push(await processShow(show));
+    } catch (e) {
+      console.error(`✗ ${show.id} failed: ${e.message}`);
+      perShow.push({ showId: show.id, error: e.message });
+    }
   }
 
   const totalIngested = perShow.reduce((n, s) => n + (s.ingested ? s.ingested.length : 0), 0);
