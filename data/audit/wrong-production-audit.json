@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-20T06:36:17.661Z",
+  "timestamp": "2026-07-20T07:04:06.402Z",
   "stats": {
-    "totalReviews": 40345,
-    "alreadyFlagged": 17652,
+    "totalReviews": 40346,
+    "alreadyFlagged": 17651,
     "dateGuardCatches": 49,
-    "directorMismatch": 915,
+    "directorMismatch": 916,
     "tvFilmSignals": 1107,
     "londonSignals": 756,
     "offBroadwaySignals": 478,
     "yearMismatch": 86,
-    "noPublishDate": 3624
+    "noPublishDate": 3625
   },
   "findings": [
     {
@@ -3893,6 +3893,25 @@
       "file": "nytimes--helen-shaw.json",
       "score": 90,
       "publishDate": "April 7, 2026",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "nytimes--jesse-green.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
       "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html",
       "findings": [
         {
@@ -19589,19 +19608,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "shifters-off-broadway-2026",
-      "file": "playbill--unknown.json",
-      "publishDate": "2026-07-16",
-      "url": "https://playbill.com/article/what-are-the-reviews-for-shifters-off-broadway",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
