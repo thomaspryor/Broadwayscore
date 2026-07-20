@@ -159,9 +159,11 @@ test.describe('My Shows — Diary Sections', () => {
 
   test('To Be Rated stars are interactive', async ({ page }) => {
     await goToMock(page);
-    // Click 4-star on Ragtime
-    const ragtime = page.locator('text=Ragtime').first().locator('..').locator('..');
-    const fourStar = page.getByRole('button', { name: '4 stars' }).first();
+    // Click 4-star ON THE RAGTIME CARD — an unscoped .first() resolved to a
+    // different card's star row under parallel-run load order (flake fix,
+    // 2026-07-20).
+    const ragtimeCard = page.locator('div').filter({ has: page.getByRole('heading', { name: 'Ragtime', level: 4 }) }).filter({ has: page.getByRole('button', { name: '4 stars' }) }).last();
+    const fourStar = ragtimeCard.getByRole('button', { name: '4 stars' });
     await expect(fourStar).toBeVisible();
     // Click should navigate to show page with rate param
     const [newPage] = await Promise.all([
