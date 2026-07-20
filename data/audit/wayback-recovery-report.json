@@ -1,22 +1,24 @@
 {
   "totalCandidates": 11,
-  "cdxFound": 3,
-  "cdxNotFound": 3,
+  "cdxFound": 4,
+  "cdxNotFound": 5,
   "recovered": 3,
   "recoveredByTier": {
-    "1": 3,
+    "1": 0,
     "2": 0,
-    "3": 0
+    "3": 3
   },
   "recoveredByDomain": {
-    "wsj.com": 3
+    "newyorktheatreguide.com": 1,
+    "cityam.com": 1,
+    "standard.co.uk": 1
   },
-  "tooShort": 0,
+  "tooShort": 2,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 5,
-  "notInArchive": 3,
+  "errors": 2,
+  "notInArchive": 5,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
