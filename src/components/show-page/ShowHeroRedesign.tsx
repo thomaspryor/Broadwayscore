@@ -573,28 +573,46 @@ function Inner({
         </div>
       )}
 
-      {/* On-list caption — minor indicator (decision: show page stays simple, list mgmt in /my-shows) */}
-      {userFeaturesEnabled && firstListContainingShow && (
+      {/* Membership caption — one line gathering ALL list membership: the
+          Watchlist link first (the "On your list" button is a TOGGLE and must
+          not navigate), then custom lists. Owner design pick, 2026-07-19. */}
+      {userFeaturesEnabled && (onWatchlist || firstListContainingShow) && (
         <p className="text-xs text-gray-500 flex items-center gap-1.5">
           <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h10" />
           </svg>
           <span className="truncate">
-            Also on{' '}
-            {listsWithShow.length === 1 ? (
-              <Link
-                href={`/my-shows?tab=lists&list=${firstListContainingShow.id}`}
-                className="text-gray-400 hover:text-brand transition-colors border-b border-dotted border-white/10"
-              >
-                {firstListContainingShow.name}
-              </Link>
-            ) : (
-              <Link
-                href="/my-shows?tab=lists"
-                className="text-gray-400 hover:text-brand transition-colors border-b border-dotted border-white/10"
-              >
-                {listsWithShow.length} of your lists
-              </Link>
+            {onWatchlist && (
+              <>
+                On your{' '}
+                <Link
+                  href="/my-shows?tab=watchlist"
+                  className="text-brand/90 hover:text-brand transition-colors border-b border-dotted border-brand/30"
+                >
+                  Watchlist
+                </Link>
+              </>
+            )}
+            {onWatchlist && firstListContainingShow && ' · '}
+            {firstListContainingShow && (
+              <>
+                Also on{' '}
+                {listsWithShow.length === 1 ? (
+                  <Link
+                    href={`/my-shows?tab=lists&list=${firstListContainingShow.id}`}
+                    className="text-gray-400 hover:text-brand transition-colors border-b border-dotted border-white/10"
+                  >
+                    {firstListContainingShow.name}
+                  </Link>
+                ) : (
+                  <Link
+                    href="/my-shows?tab=lists"
+                    className="text-gray-400 hover:text-brand transition-colors border-b border-dotted border-white/10"
+                  >
+                    {listsWithShow.length} of your lists
+                  </Link>
+                )}
+              </>
             )}
           </span>
         </p>
