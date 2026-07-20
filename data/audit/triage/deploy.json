@@ -1,5 +1,5 @@
 {
-  "system": "cwv",
+  "system": "deploy",
   "status": "pass",
   "lastChecked": "2026-07-20T12:44:04.111Z",
   "lastAlertTimestamp": null,
@@ -7,9 +7,9 @@
   "escalationState": "resolved",
   "details": [
     {
-      "name": "CWV: performance",
+      "name": "Deploy: production freshness",
       "status": "pass",
-      "message": "All metrics within thresholds (1d ago)"
+      "message": "Latest READY production deploy: 4c8dce09b5, age 0.1h"
     }
   ]
 }
