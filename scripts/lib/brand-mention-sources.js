@@ -285,52 +285,97 @@ async function fetchHackerNewsMentions(keywords = DEFAULT_KEYWORDS, { sinceTs = 
 // ──────────────────────────────────────────────────────────────────────────
 
 /**
- * Bluesky search. The `public.api.bsky.app/xrpc/app.bsky.feed.searchPosts`
- * endpoint is now auth-gated (returns 403 without a session token) — Bluesky
- * tightened WAF rules in 2025. To enable this source, set BSKY_HANDLE and
- * BSKY_APP_PASSWORD in GH secrets; the adapter will use them to create an
- * AT Protocol session via `com.atproto.server.createSession` and search as
- * that user.
+ * Cached AT Protocol session token for authenticated Bluesky calls. One
+ * session per process is plenty — access JWTs live ~2h and our batch runs
+ * finish well inside that.
+ */
+let _bskySessionJwt = null;
+
+async function getBlueskySessionJwt() {
+  if (_bskySessionJwt) return _bskySessionJwt;
+  const handle = process.env.BSKY_HANDLE;
+  const appPassword = process.env.BSKY_APP_PASSWORD;
+  if (!handle || !appPassword) return null;
+  const session = await postJson(
+    'https://bsky.social/xrpc/com.atproto.server.createSession',
+    { identifier: handle, password: appPassword }
+  );
+  if (!session.accessJwt) throw new Error('no accessJwt in session response');
+  _bskySessionJwt = session.accessJwt;
+  return _bskySessionJwt;
+}
+
+/**
+ * Low-level Bluesky post search. Returns { posts, hitsTotal } where
+ * hitsTotal is Bluesky's own total match count for the query — a TRUE
+ * uncapped volume number (0 when the field is absent, which Bluesky does
+ * for zero-hit queries).
  *
- * If creds are not set, this adapter logs a one-time warning and returns [].
- * It is NEVER a fatal error — the monitor keeps running on Reddit + HN.
+ * IMPORTANT: hitsTotal without a time window is an ALL-TIME count and
+ * measures catalog age, not current buzz. Callers wanting weekly volume
+ * MUST pass since/until (verified 2026-07-14: "maybe happy ending" broadway
+ * all-time=1015 vs 7-day window=2).
+ *
+ * Endpoint strategy: try the public unauthenticated AppView first
+ * (api.bsky.app — works from residential/proxy IPs), fall back to an
+ * authenticated bsky.social session when BSKY_HANDLE/BSKY_APP_PASSWORD are
+ * set. Datacenter IPs (GitHub Actions runners) have been observed to get
+ * 403 from the public endpoint since Bluesky's 2025 WAF tightening, so CI
+ * callers should treat the auth secrets as REQUIRED, not optional.
+ */
+async function searchBlueskyPosts({ query, limit = 100, since = null, until = null, sort = 'latest' }) {
+  const params = new URLSearchParams({ q: query, limit: String(limit), sort });
+  if (since) params.set('since', since);
+  if (until) params.set('until', until);
+
+  // Bluesky omits hitsTotal on zero-hit responses (0 is correct there),
+  // but if it were ever omitted alongside a non-empty posts array, 0 would
+  // silently undercount — fall back to the sample size instead.
+  const shape = (data) => ({
+    posts: data.posts || [],
+    hitsTotal: data.hitsTotal ?? (data.posts && data.posts.length ? data.posts.length : 0),
+  });
+
+  // 1) Public AppView, no auth
+  try {
+    const data = await fetchJson(`https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?${params}`);
+    return shape(data);
+  } catch (publicErr) {
+    // 2) Authenticated fallback (required path on datacenter IPs)
+    const jwt = await getBlueskySessionJwt().catch((e) => {
+      throw new Error(`public endpoint failed (${publicErr.message}) and session creation failed (${e.message})`);
+    });
+    if (!jwt) {
+      throw new Error(`public endpoint failed (${publicErr.message}) and BSKY_HANDLE/BSKY_APP_PASSWORD not set for auth fallback`);
+    }
+    const data = await fetchJson(`https://bsky.social/xrpc/app.bsky.feed.searchPosts?${params}`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
+    return shape(data);
+  }
+}
+
+/**
+ * Bluesky brand-mention adapter. Thin wrapper over searchBlueskyPosts that
+ * preserves the historical contract: keyword array in, flat normalized
+ * mention array out, containsKeyword post-filter, never throws.
+ *
+ * Unlike the pre-2026-07 version this no longer hard-requires BSKY_HANDLE/
+ * BSKY_APP_PASSWORD — the unauthenticated public AppView is tried first and
+ * creds are only needed where that 403s (datacenter IPs).
  */
 async function fetchBlueskyMentions(keywords = DEFAULT_KEYWORDS, { limit = 25 } = {}) {
   const mentions = [];
   const detected = nowIso();
 
-  const handle = process.env.BSKY_HANDLE;
-  const appPassword = process.env.BSKY_APP_PASSWORD;
-  if (!handle || !appPassword) {
-    console.warn('[bluesky] BSKY_HANDLE + BSKY_APP_PASSWORD not set — skipping Bluesky (endpoint is auth-gated as of 2025)');
-    return [];
-  }
-
-  // Create session (short-lived access token)
-  let accessJwt;
-  try {
-    const session = await postJson(
-      'https://bsky.social/xrpc/com.atproto.server.createSession',
-      { identifier: handle, password: appPassword }
-    );
-    accessJwt = session.accessJwt;
-    if (!accessJwt) throw new Error('no accessJwt in session response');
-  } catch (e) {
-    console.warn(`[bluesky] session creation failed: ${e.message}`);
-    return [];
-  }
-
   for (const keyword of keywords) {
-    const url = `https://bsky.social/xrpc/app.bsky.feed.searchPosts?q=${encodeURIComponent(keyword)}&limit=${limit}&sort=latest`;
-    let data;
+    let posts;
     try {
-      data = await fetchJson(url, { headers: { Authorization: `Bearer ${accessJwt}` } });
+      ({ posts } = await searchBlueskyPosts({ query: keyword, limit }));
     } catch (e) {
       console.warn(`[bluesky] search failed for "${keyword}": ${e.message}`);
       continue;
     }
-
-    const posts = (data && data.posts) || [];
     for (const post of posts) {
       // Filter blocked / deleted posts
       if (post.viewer && (post.viewer.blocked || post.viewer.blockedBy)) continue;
@@ -413,6 +458,7 @@ module.exports = {
   fetchRedditMentions,
   fetchHackerNewsMentions,
   fetchBlueskyMentions,
+  searchBlueskyPosts,
   fetchFreeSources,
   // exported for unit tests
   _internal: { containsKeyword, fetchJson },

@@ -19,17 +19,31 @@ import Link from 'next/link';
 export interface SocialPulsePayload {
   _v: number;
   t: 'Buzzing' | 'Rising' | 'Steady' | 'Troubled' | 'BuildingBaseline' | 'Hidden';
-  v: number;              // volume (relevant mention count)
+  v: number;              // v3: TRUE weekly mention total (uncapped counters); v2: capped-sample count
+  ev?: number;            // effective volume — Pulse Index ranking strength (schema v3, 2026-07)
   p: number;              // positive %, 0-100
+  os?: number;            // opinion-bearing sample size behind `p` (schema v3)
   wow: number | null;     // week-over-week %
-  bm: number | null;      // baseline multiple (legacy, may be null)
+  bm?: number | null;     // baseline multiple (legacy, may be null)
   pl: {
-    x: number;            // X/Twitter count (capped Apify sample)
-    tt: number;           // TikTok count
-    ig: number;           // Instagram count
-    r?: number;           // Reddit count (schema v2, 2026-04-11 — optional for back-compat with v1 files)
+    x: number;            // classified-sample counts per platform (posts we read),
+    tt: number;           //   NOT true volume — see `c` for counters
+    ig: number;
+    r?: number;           // Reddit sample count (schema v2+)
+    bs?: number;          // Bluesky sample count (schema v3)
   };
-  xv?: number;            // True X volume from X API (uncapped — schema v2, 2026-04-13)
+  /**
+   * Weekly COUNTERS — true uncapped volume per signal (schema v3).
+   * null/missing = signal absent that week. Different units from `pl`
+   * (which counts sampled posts) — the v2 `xv` precedent, generalized.
+   */
+  c?: {
+    r: number | null;     // Reddit posts this week
+    bs: number | null;    // Bluesky mentions this week (hitsTotal, 7-day window)
+    x: number | null;     // X tweets this week (free counts API, at-risk)
+    wv: number | null;    // Wikipedia article views this week (index input, not displayed)
+  };
+  xv?: number;            // legacy v2: true X volume (superseded by c.x)
   q: Array<{ t: string; p: string; a: string | null; u: string | null }>;
   u: string;              // updated ISO date
   r?: string;             // rank string like "3/42 Broadway" (top-level, NOT to be confused with pl.r)
@@ -194,13 +208,33 @@ function RedditIcon() {
   );
 }
 
+/**
+ * Bluesky — the butterfly on brand blue (#0085ff). Reads distinctly at
+ * 18px alongside the other platform icons.
+ */
+function BlueskyIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-label="Bluesky">
+      <rect width="24" height="24" rx="4" fill="#0085ff" />
+      <path
+        fill="#ffffff"
+        d="M7.2 5.9c1.7 1.3 3.6 3.9 4.8 5.6 1.2-1.7 3.1-4.3 4.8-5.6 1.2-.9 3.2-1.6 3.2.7 0 .4-.3 3.7-.4 4.2-.5 1.8-2.3 2.3-3.9 2 2.8.5 3.5 2.1 2 3.7-2.9 3-4.2-.8-5.6-3.2-.1-.2-.1-.2-.2 0-1.4 2.4-2.7 6.2-5.6 3.2-1.5-1.6-.8-3.2 2-3.7-1.6.3-3.4-.2-3.9-2-.1-.5-.4-3.8-.4-4.2 0-2.3 2-1.6 3.2-.7z"
+      />
+    </svg>
+  );
+}
+
 const PLATFORM_META: Record<string, { Icon: () => JSX.Element; label: string }> = {
   x: { Icon: XIcon, label: 'X' },
   twitter: { Icon: XIcon, label: 'X' },
   tiktok: { Icon: TikTokIcon, label: 'TikTok' },
   instagram: { Icon: InstagramIcon, label: 'Instagram' },
   reddit: { Icon: RedditIcon, label: 'Reddit' },
+  bluesky: { Icon: BlueskyIcon, label: 'Bluesky' },
 };
+
+/** Min opinion-bearing posts behind the % for the sentiment bar to render. */
+const MIN_OPINION_SAMPLE = 10;
 
 // ---------- Helpers ----------
 
@@ -275,17 +309,31 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
     backgroundSize: `${(100 / Math.max(posBarWidth, 1)) * 100}% 100%`,
   };
 
-  // Platform breakdown row. Use true X volume (sp.xv) when available —
-  // the Apify-capped count (sp.pl.x) maxes out at ~150 for every show,
-  // making it useless for differentiation. True volume from the free X API
-  // gives real numbers (Hamilton=163, Becky Shaw=263).
-  const xCount = sp.xv || sp.pl.x || 0;
-  const platformEntries: Array<{ key: string; count: number }> = [
-    { key: 'reddit', count: sp.pl.r || 0 },
-    { key: 'x', count: xCount },
-    { key: 'tiktok', count: sp.pl.tt || 0 },
-    { key: 'instagram', count: sp.pl.ig || 0 },
-  ].filter((p) => p.count > 0);
+  // Platform breakdown row.
+  // Schema v3: `c` holds TRUE weekly counters per platform — show those.
+  // (Wikipedia views feed the ranking index but aren't mentions, so they
+  // don't get a row.) Legacy v2 files fall back to the old sample-count
+  // behavior until the first v3 run overwrites them.
+  const isV3 = !!sp.c;
+  const platformEntries: Array<{ key: string; count: number }> = (
+    isV3
+      ? [
+          { key: 'reddit', count: sp.c?.r || 0 },
+          { key: 'bluesky', count: sp.c?.bs || 0 },
+          { key: 'x', count: sp.c?.x || 0 },
+        ]
+      : [
+          { key: 'reddit', count: sp.pl.r || 0 },
+          { key: 'x', count: sp.xv || sp.pl.x || 0 },
+          { key: 'tiktok', count: sp.pl.tt || 0 },
+          { key: 'instagram', count: sp.pl.ig || 0 },
+        ]
+  ).filter((p) => p.count > 0);
+
+  // Sentiment bar renders only with a meaningful opinion sample behind the
+  // percentage (v3 samples are smaller than the old capped X sample; a
+  // 3-post "67% positive" must not ship). v2 files lack `os` — keep showing.
+  const showSentiment = sp.os === undefined || sp.os >= MIN_OPINION_SAMPLE;
 
   return (
     <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="socials-scorecard-heading">
@@ -312,6 +360,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
           {rank && rankColors ? (
             <Link
               href={trendingHref}
+              title="Rank blends mention volume across the platforms shown (relevance-weighted) with positive sentiment — not raw mention count alone."
               aria-label={`Ranked ${rank.position} of ${rank.total} in ${rank.market} social buzz — see all trending shows`}
               className="shrink-0 flex flex-col items-center justify-center rounded-lg px-3 py-2 min-w-[72px] shadow-sm no-underline transition-transform hover:-translate-y-0.5"
               style={{
@@ -356,16 +405,23 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
           </div>
         </div>
 
-        {/* Sentiment bar — full-width, colorful, prominent */}
-        <div className="mt-4">
-          <div className="flex items-baseline justify-between mb-1.5">
-            <span className="text-sm font-semibold text-gray-200" title="Percentage of opinion-bearing posts that are positive. Neutral/informational posts are excluded.">{sp.p}% positive</span>
-            <span className="text-xs text-gray-500">{formatVolume(sp.v)} mentions</span>
+        {/* Sentiment bar — full-width, colorful, prominent. Hidden when the
+            opinion sample behind the % is too thin to be meaningful. */}
+        {showSentiment ? (
+          <div className="mt-4">
+            <div className="flex items-baseline justify-between mb-1.5">
+              <span className="text-sm font-semibold text-gray-200" title="Percentage of opinion-bearing posts that are positive. Neutral/informational posts are excluded.">{sp.p}% positive</span>
+              <span className="text-xs text-gray-500">{formatVolume(sp.v)} mentions this week</span>
+            </div>
+            <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+              <div className="h-full rounded-full transition-all" style={sentimentBarStyle} />
+            </div>
           </div>
-          <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
-            <div className="h-full rounded-full transition-all" style={sentimentBarStyle} />
+        ) : (
+          <div className="mt-4 flex items-baseline justify-end">
+            <span className="text-xs text-gray-500">{formatVolume(sp.v)} mentions this week</span>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Platform breakdown with brand-colored logos */}
@@ -421,7 +477,10 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
           <span>See all trending shows</span>
           <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
         </Link>
-        <span className="text-[11px] text-gray-500 lowercase">
+        <span
+          className="text-[11px] text-gray-500 lowercase"
+          title={isV3 ? 'Mentions are real weekly counts across Reddit, Bluesky and X. Rank and tier blend those counts (relevance-weighted) with sentiment. Methodology updated July 2026.' : undefined}
+        >
           updated {formatUpdatedDate(sp.u)} · refreshed weekly
         </span>
       </div>
