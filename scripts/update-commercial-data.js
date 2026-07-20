@@ -1174,7 +1174,11 @@ async function gatherSECFilings(shows, commercial) {
 
       for (const term of searchTerms.slice(0, 3)) { // Limit to 3 patterns per show
         try {
-          const filings = await secScraper.searchFormDFilings({ companyName: term });
+          // S3-T3 fix (2026-07-19): searchFormDFilings destructures
+          // `showName`, not `companyName` — this call has passed the wrong
+          // key since this code was written, so `filings` was always []
+          // regardless of what searchFormDFilings' internals could do.
+          const filings = await secScraper.searchFormDFilings({ showName: term });
 
           if (filings && filings.length > 0) {
             // Parse the most recent filing
