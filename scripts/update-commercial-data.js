@@ -1167,45 +1167,39 @@ async function gatherSECFilings(shows, commercial) {
     const title = show.title;
 
     try {
-      // Use BROADWAY_LLC_PATTERNS to generate search terms
-      const searchTerms = secScraper.BROADWAY_LLC_PATTERNS?.map(pattern =>
-        pattern.replace('{show}', title)
-      ) || [`${title} LLC`, `${title} Broadway LLC`];
+      // S3-T3 fix (2026-07-19, ship-check finding — Codex + independent QA
+      // subagent both caught this): this loop used to pre-expand `title`
+      // through BROADWAY_LLC_PATTERNS itself (e.g. "KPOP Broadway LLC"),
+      // THEN pass that already-expanded term as showName to
+      // searchFormDFilings(), which internally calls
+      // searchCompanyByShowName() and re-applies the FULL pattern list
+      // again — producing double-expanded garbage queries like "KPOP
+      // Broadway LLC Broadway LLC". searchCompanyByShowName() already
+      // tries all patterns against the bare title; call it once with the
+      // bare title instead of pre-expanding.
+      const filings = await secScraper.searchFormDFilings({ showName: title });
 
-      for (const term of searchTerms.slice(0, 3)) { // Limit to 3 patterns per show
-        try {
-          // S3-T3 fix (2026-07-19): searchFormDFilings destructures
-          // `showName`, not `companyName` — this call has passed the wrong
-          // key since this code was written, so `filings` was always []
-          // regardless of what searchFormDFilings' internals could do.
-          const filings = await secScraper.searchFormDFilings({ showName: term });
+      if (filings && filings.length > 0) {
+        // Most recent filing
+        const latestFiling = filings[0];
+        const parsed = await secScraper.parseFormDFiling(latestFiling.url || latestFiling.filingUrl);
 
-          if (filings && filings.length > 0) {
-            // Parse the most recent filing
-            const latestFiling = filings[0];
-            const parsed = await secScraper.parseFormDFiling(latestFiling.url || latestFiling.filingUrl);
+        if (parsed?.totalOfferingAmount) {
+          results.push({
+            showSlug: slug,
+            capitalization: parsed.totalOfferingAmount,
+            source: `SEC Form D: ${parsed.companyName || title}`,
+            filingUrl: latestFiling.url || latestFiling.filingUrl,
+            filingDate: parsed.filingDate,
+            confidence: 'high' // SEC data is always high confidence
+          });
 
-            if (parsed?.totalOfferingAmount) {
-              results.push({
-                showSlug: slug,
-                capitalization: parsed.totalOfferingAmount,
-                source: `SEC Form D: ${parsed.companyName || term}`,
-                filingUrl: latestFiling.url || latestFiling.filingUrl,
-                filingDate: parsed.filingDate,
-                confidence: 'high' // SEC data is always high confidence
-              });
-
-              console.log(`    Found: ${title} - $${(parsed.totalOfferingAmount / 1e6).toFixed(1)}M`);
-              break; // Found a match, move to next show
-            }
-          }
-        } catch (searchError) {
-          // Non-fatal, continue to next search term
+          console.log(`    Found: ${title} - $${(parsed.totalOfferingAmount / 1e6).toFixed(1)}M`);
         }
-
-        // Rate limiting
-        await sleep(1000);
       }
+
+      // Rate limiting
+      await sleep(1000);
     } catch (e) {
       console.error(`    Error searching for ${title}: ${e.message}`);
     }
