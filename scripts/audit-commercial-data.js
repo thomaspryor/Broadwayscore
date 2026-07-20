@@ -128,6 +128,21 @@ function getBannedSources(data) {
   );
 }
 
+// True when an entry has no capitalization figure, no automatable source
+// for one (S3-T3 shipped the SEC EDGAR name-search fix; this predicate
+// doesn't care WHY it's missing, only whether it still is), and the owner
+// hasn't already done a manual Deep Research pass that covered
+// capitalization specifically (S5-T1). Stateless recompute from
+// commercial.json every run -- no persisted "researched" list to drift
+// out of sync with reality.
+function needsManualResearch(data) {
+  if (data.capitalization) return false;
+  if (data.capitalizationSource) return false;
+  const verifiedFields = data.deepResearch?.verifiedFields;
+  if (Array.isArray(verifiedFields) && verifiedFields.includes('capitalization')) return false;
+  return true;
+}
+
 // ============================================
 // CLI reporting flags (exit before the full audit runs)
 // ============================================
@@ -154,6 +169,32 @@ if (cliArgs.includes('--list-chatgpt-sources')) {
     }
   }
   console.error(`${count} chatgpt-source entries`);
+  process.exit(0);
+}
+
+if (cliArgs.includes('--list-unresearched')) {
+  // Sorted by relevance: currently-open shows first (most reader-visible,
+  // most actionable for the owner's next Deep Research pass), then shows
+  // with an active weeklyRunningCost read (we're already tracking them
+  // financially, a capitalization gap is more actionable than for a show
+  // with no data at all), then alphabetically as a stable tiebreak.
+  const rows = [];
+  for (const [key, data] of commercialEntries) {
+    if (!needsManualResearch(data)) continue;
+    const show = showBySlug[key] || showById[key];
+    rows.push({
+      key,
+      isOpen: show?.status === 'open',
+      hasWeeklyCost: !!data.weeklyRunningCost,
+    });
+  }
+  rows.sort((a, b) => {
+    if (a.isOpen !== b.isOpen) return a.isOpen ? -1 : 1;
+    if (a.hasWeeklyCost !== b.hasWeeklyCost) return a.hasWeeklyCost ? -1 : 1;
+    return a.key.localeCompare(b.key);
+  });
+  for (const row of rows) console.log(row.key);
+  console.error(`${rows.length} shows need manual research`);
   process.exit(0);
 }
 
