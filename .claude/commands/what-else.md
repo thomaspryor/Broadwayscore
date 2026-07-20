@@ -18,7 +18,28 @@ Identify the key changes: what was built, fixed, or discovered.
 
 ### Phase 2: Five lenses
 
-Apply each lens to the session's work. Skip any that don't produce insights — quality over quantity.
+Apply each lens to the session's work — ALL FIVE, every run, no exceptions.
+
+**Output contract (MANDATORY):** your reply must contain a `LENSES:` block with
+one line per lens, each citing the concrete check you ran (a grep/read/command
+or the specific session artifact examined), ending in either a spark or an
+explicit empty verdict:
+
+```
+LENSES:
+1. Pattern recognition — grepped commercial.json writers for market/category scoping → 2 cousins found (fixed) / clean
+2. Edges — [check] → [spark or "empty"]
+3. User impact — [check] → [spark or "empty"]
+4. Data/infra — [check] → [spark or "empty"]
+5. Compounding — [check] → [spark or "empty"]
+```
+
+"Empty" is a legitimate verdict per lens; a **blanket "no new sparks" without
+the five evidence lines is a violation** — it means the analysis didn't happen
+(2026-07-15: a session invoked /what-else, asserted no-sparks from vibes, and
+the user caught it; when re-run properly the lenses found real cousins to check).
+"Skip lenses that don't produce insights" applies to what you REPORT as sparks,
+never to whether a lens is run.
 
 **1. Pattern recognition**
 - Did we create something that solves a problem elsewhere too? (A component, script, helper, approach)
@@ -47,7 +68,9 @@ Apply each lens to the session's work. Skip any that don't produce insights — 
 
 ### Phase 3: Filter and prioritize
 
-**Read the current roadmap** to avoid duplicating existing items:
+**Read the current roadmap** to avoid duplicating existing items (mandatory —
+run the command; the LENSES block plus this read are the two things that make
+a /what-else pass real rather than performative):
 ```bash
 gh issue view 1 --repo thomaspryor/broadway-scorecard-data --json body -q '.body' 2>/dev/null || cat memory/roadmap.md
 ```
