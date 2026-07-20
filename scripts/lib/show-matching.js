@@ -636,9 +636,15 @@ function matchTitleToShow(externalTitle, shows, options) {
   // Try each title variant (full title, then stripped subtitle)
   for (const variant of titleVariants) {
     // 1. Exact title match against shows.json titles (collect all for multi-production)
+    // Strip diacritics from showTitle too — `variant` is already diacritic-stripped
+    // (line ~616), but shows.json is inconsistent about accents across productions
+    // of the same title (e.g. "Les Miserables" 1987 vs "Les Misérables" 2006/2014).
+    // Without this, only the non-accented production exact-matches and short-circuits
+    // before multi-production disambiguation ever runs. Found 2026-07-20: this caused
+    // 195 chronologically-impossible les-miserables-1987 entries in a historical backfill.
     const exactMatches = [];
     for (const show of shows) {
-      const showTitle = (show.title || '').toLowerCase().trim();
+      const showTitle = (show.title || '').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       if (showTitle === variant) {
         exactMatches.push(show);
       }
