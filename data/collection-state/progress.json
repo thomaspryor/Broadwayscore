@@ -1,40 +1,26 @@
 {
   "processed": [],
   "failed": [
-    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
-    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
-    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
-    "tender-off-west-end-2026/theupcoming--unknown.json",
-    "tender-off-west-end-2026/times-uk--richard-morrison.json",
-    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
-    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
+    "the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
+    "the-smile-of-her-off-west-end-2026/guardian-uk--arifa-akbar.json",
+    "the-smile-of-her-off-west-end-2026/nottingham-confidential--unknown.json",
+    "the-smile-of-her-off-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
+      "data/review-texts/the-smile-of-her-off-west-end-2026/nottingham-confidential--unknown.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-07-20T06:34:24.433Z",
-  "lastProcessed": "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
-  "log": [
-    {
-      "t": "2026-07-20T06:35:47.815Z",
-      "event": "bb-session",
-      "session": "dbb97fd7",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
-    },
-    {
-      "t": "2026-07-20T06:35:49.011Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    }
-  ]
+  "startTime": "2026-07-20T06:31:47.485Z",
+  "lastProcessed": "the-smile-of-her-off-west-end-2026/thestage--dave-fargnoli.json",
+  "log": []
 }
