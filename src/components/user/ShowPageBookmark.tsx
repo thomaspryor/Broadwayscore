@@ -14,13 +14,16 @@ interface ShowPageBookmarkProps {
   size?: 'sm' | 'md' | 'compact';
 }
 
-// Negative offsets compensate for the ~20% whitespace the 24-unit viewBox
-// keeps around the bookmark glyph — with positive offsets the icon floated
-// ~8px off the corner (owner report, 2026-07-19). The svg box overflows the
-// rounded corner; the thumbnail's overflow-hidden clips only empty space.
+// sm/compact: negative offsets compensate for the ~20% whitespace the 24-unit
+// viewBox keeps around the bookmark glyph — with positive offsets the icon
+// floated ~8px off the thumbnail corner (owner report, 2026-07-19). The svg
+// box overflows the rounded corner; those thumbnails are overflow-hidden so
+// only empty space is clipped. md (show-page hero) keeps positive offsets:
+// its poster container is overflow-VISIBLE, so a negative offset would hang
+// the svg box outside the poster (review, 2026-07-19).
 const SIZES = {
   sm: { button: '-top-0.5 -right-1 p-0', icon: 'w-7 h-8' },
-  md: { button: '-top-0.5 -right-1 p-0', icon: 'w-8 h-9' },
+  md: { button: 'top-1 right-1 p-0', icon: 'w-8 h-9' },
   compact: { button: '-top-0.5 -right-1 p-0', icon: 'w-7 h-8' },
 };
 

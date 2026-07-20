@@ -1536,7 +1536,14 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
             inconsistent/confusing (owner, 2026-07-19). */}
         <div
           className="absolute inset-x-0 bottom-0 z-[1] flex justify-center bg-gradient-to-t from-black/85 to-transparent pt-4 pb-1.5 opacity-100 sm:opacity-0 sm:group-hover/wl:opacity-100 focus-within:opacity-100 transition-opacity"
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+          // Scoped to star clicks — an unconditional preventDefault made the
+          // gradient band a navigation dead-zone (same guard as HoverRateStars).
+          onClick={(e) => {
+            if ((e.target as HTMLElement).closest('[role="radiogroup"]')) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
         >
           <span className="star-compact flex items-center" role="radiogroup" aria-label={`Rate ${title}`}>
             {[1, 2, 3, 4, 5].map(i => (
