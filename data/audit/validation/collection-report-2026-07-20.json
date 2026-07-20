@@ -1,30 +1,30 @@
 {
-  "runDate": "2026-07-20T16:13:50.832Z",
+  "runDate": "2026-07-20T16:28:56.614Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-smile-of-her-off-west-end-2026",
+    "showFilter": "the-whoopi-monologues-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 4,
+    "processed": 2,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 0
+    "archiveToday": 0,
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 4,
@@ -33,15 +33,15 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 1,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 13,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -50,26 +50,24 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
-  "failed": [
-    "the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
-    "the-smile-of-her-off-west-end-2026/guardian-uk--arifa-akbar.json",
-    "the-smile-of-her-off-west-end-2026/nottingham-confidential--unknown.json",
-    "the-smile-of-her-off-west-end-2026/thestage--dave-fargnoli.json"
+  "processed": [
+    "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
+  "failed": [],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
-      "data/review-texts/the-smile-of-her-off-west-end-2026/nottingham-confidential--unknown.json",
-      "data/review-texts/the-smile-of-her-off-west-end-2026/thestage--dave-fargnoli.json"
-    ],
-    "archive": []
+    "archiveToday": [],
+    "archive": [
+      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
