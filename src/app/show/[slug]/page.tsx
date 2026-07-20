@@ -20,7 +20,7 @@ import { getShowCastTonyMap } from '@/lib/data-tony-noms';
 import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
 import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { featureFlags } from '@/config/feature-flags';
-import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, generateCriticReviewsSchema, BASE_URL } from '@/lib/seo';
+import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, generateCriticReviewsSchema, getShowFAQs, BASE_URL } from '@/lib/seo';
 import { isLondonMarket } from '@/lib/venue-classification';
 import { getCurrencySymbol } from '@/lib/market-utils';
 import { isOperaShow } from '@/lib/show-market';
@@ -32,7 +32,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoader';
 import { getVideoReviews } from '@/lib/data-video-reviews';
-import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
+import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar, getBreakdownTier } from '@/components/show-cards';
 import { hasEnoughReviews, reviewsRemainingForScore } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
@@ -235,6 +235,31 @@ function getSentimentLabel(score: number, category?: string): { label: string; c
     label: tier?.label ?? 'Critical Miss',
     colorClass: getScoreTextColorClass(score, category),
   };
+}
+
+// Explicit, crawlable verdict sentence — Show-Score and Playbill both lead with a
+// textual verdict sentence rather than a bare score widget, which is what search
+// snippets and AI Overviews extract from. The score box below conveys the same
+// info visually, but a UI widget's numbers aren't reliably parsed as page text.
+function buildVerdictSentence(
+  showTitle: string,
+  roundedScore: number,
+  reviewCount: number,
+  reviews: { reviewScore: number | null | undefined }[],
+  category?: string
+): string {
+  const counts: Record<'rave' | 'positive' | 'mixed' | 'negative', number> = {
+    rave: 0, positive: 0, mixed: 0, negative: 0,
+  };
+  for (const r of reviews) {
+    const tier = getBreakdownTier(r.reviewScore, category);
+    if (tier) counts[tier]++;
+  }
+  const breakdownParts = (['rave', 'positive', 'mixed', 'negative'] as const)
+    .filter(t => counts[t] > 0)
+    .map(t => `${counts[t]} ${t}`);
+  const breakdown = breakdownParts.length > 0 ? ` (${breakdownParts.join(', ')})` : '';
+  return `Critics rated ${showTitle} ${roundedScore}/100 across ${reviewCount} review${reviewCount === 1 ? '' : 's'}${breakdown}.`;
 }
 
 export default async function ShowPage({ params }: { params: { slug: string } }) {
@@ -474,93 +499,22 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 <StatusBadge status={show.status} />
               </div>
 
-              {/* Title */}
+              {/* Title — "Reviews" suffix matches the exact-match query users type
+                  ("[show] reviews") and the <title> tag pattern above. */}
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
-                {show.title}
+                {show.title} Reviews
               </h1>
 
-              {/* Meta line — inline text so it wraps naturally on mobile */}
-              <p className="text-gray-400 text-xs sm:text-sm mb-4 leading-relaxed" data-testid="show-meta-line">
-                {isWestEnd ? (
-                  <Link href={`/west-end/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
-                ) : isOffBroadway || isRegional ? (
-                  <span className="text-gray-300">{show.venue}</span>
-                ) : (
-                  <Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
-                )}
-                {show.runtime && (
-                  <span className="whitespace-nowrap"> <span className="text-gray-500">·</span> {show.runtime}</span>
-                )}
-                {show.status === 'previews' || show.status === 'upcoming' ? (
-                  formatDate(show.openingDate) ? <span> <span className="text-gray-500">·</span> Opens {formatDate(show.openingDate)}</span> : null
-                ) : show.closingDate ? (
-                  <>
-                    {formatDate(show.openingDate) && <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>}
-                    <span> <span className="text-gray-500">·</span> <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatDate(show.closingDate)}</span></span>
-                    {show.status === 'closed' && (() => {
-                      const runLen = getRunLength(show.openingDate, show.closingDate, 'precise');
-                      return runLen ? <span> <span className="text-gray-500">·</span> Ran for {runLen}</span> : null;
-                    })()}
-                  </>
-                ) : formatDate(show.openingDate) ? (
-                  <>
-                    <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
-                    {(() => {
-                      const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? null : 'on Broadway';
-                      const dur = durationSuffix ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
-                      return dur ? <span> <span className="text-gray-500">·</span> {dur}</span> : null;
-                    })()}
-                  </>
-                ) : null}
-              </p>
-
-              {/* Regional trust line — keyed on category (renders even if the market flag is off,
-                  since the detail page is reachable directly). Explains why a non-Broadway show
-                  lives on Broadway Scorecard so first-time search arrivals don't bounce.
-                  When the tryout has a linked Broadway transfer (transferredTo), say so. */}
-              {isRegional && (() => {
-                const transfer = (featureFlags.regional && show.transferredTo) ? getShowById(show.transferredTo) : null;
-                return (
-                  <p className="text-xs sm:text-sm mb-4 -mt-1 leading-relaxed text-emerald-300/90" data-testid="regional-trust-line">
-                    <span className="font-semibold">Regional production</span>
-                    {transfer ? (
-                      <span className="text-gray-400">
-                        {' '}— this tryout transferred to Broadway.{' '}
-                        <Link href={`/show/${transfer.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
-                          See the Broadway production →
-                        </Link>
-                      </span>
-                    ) : (
-                      <span className="text-gray-400"> — tracked as a buzzy, well-reviewed show that could transfer to Broadway.</span>
-                    )}
-                  </p>
-                );
-              })()}
-
-              {/* Broadway side of a regional→Broadway transfer pair: surface the
-                  tryout's critic score (often the only pre-Broadway signal). */}
-              {!isRegional && featureFlags.regional && show.transferOf && (() => {
-                const tryout = getShowById(show.transferOf);
-                if (!tryout) return null;
-                const tryoutVenue = (tryout.venue || '').split(',')[0];
-                // Same TBD gate as everywhere else — never broadcast a score the
-                // tryout's own page would show as TBD. (ship-check P2)
-                const tCount = tryout.criticScore?.reviewCount || 0;
-                const tT12 = (tryout.criticScore?.tier1Count || 0) + (tryout.criticScore?.tier2Count || 0);
-                const tryoutScore = (tryout.criticScore?.score && hasEnoughReviews(tCount, tryout.category, tT12, false))
-                  ? Math.round(tryout.criticScore.score) : null;
-                return (
-                  <p className="text-xs sm:text-sm mb-4 -mt-1 leading-relaxed text-emerald-300/90" data-testid="tryout-link-line">
-                    <span className="font-semibold">Pre-Broadway tryout</span>
-                    <span className="text-gray-400">
-                      {' '}— critics first reviewed this show at {tryoutVenue}{tryoutScore ? <> (scored <span className="text-emerald-300 font-semibold">{tryoutScore}/100</span>)</> : null}.{' '}
-                      <Link href={`/show/${tryout.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
-                        See the tryout reviews →
-                      </Link>
-                    </span>
-                  </p>
-                );
-              })()}
+              {/* Verdict-first lead sentence — SXO fix 2026-07-19: this page previously
+                  led with production metadata (venue/runtime/dates) before any
+                  reviews-intent content, while Show-Score and Playbill lead with the
+                  verdict. Renders as plain crawlable text right under the H1, ahead
+                  of the score box and the metadata line. */}
+              {!showTBD && roundedScore !== null && show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
+                <p className="text-sm sm:text-base text-gray-200 mb-3 leading-relaxed" data-testid="verdict-lead-sentence">
+                  {buildVerdictSentence(show.title, roundedScore, reviewCount, show.criticScore.reviews, show.category)}
+                </p>
+              )}
 
               {/* Score Box + Sentiment + Review Count - Metacritic style */}
               {(() => {
@@ -664,6 +618,91 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                       </a>
                     )}
                   </div>
+                );
+              })()}
+
+              {/* Meta line — inline text so it wraps naturally on mobile. Moved below
+                  the verdict/score block 2026-07-19 (SXO fix) — production metadata
+                  used to lead the page ahead of any reviews-intent content. */}
+              <p className="text-gray-400 text-xs sm:text-sm mt-3 mb-1 leading-relaxed" data-testid="show-meta-line">
+                {isWestEnd ? (
+                  <Link href={`/west-end/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
+                ) : isOffBroadway || isRegional ? (
+                  <span className="text-gray-300">{show.venue}</span>
+                ) : (
+                  <Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
+                )}
+                {show.runtime && (
+                  <span className="whitespace-nowrap"> <span className="text-gray-500">·</span> {show.runtime}</span>
+                )}
+                {show.status === 'previews' || show.status === 'upcoming' ? (
+                  formatDate(show.openingDate) ? <span> <span className="text-gray-500">·</span> Opens {formatDate(show.openingDate)}</span> : null
+                ) : show.closingDate ? (
+                  <>
+                    {formatDate(show.openingDate) && <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>}
+                    <span> <span className="text-gray-500">·</span> <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatDate(show.closingDate)}</span></span>
+                    {show.status === 'closed' && (() => {
+                      const runLen = getRunLength(show.openingDate, show.closingDate, 'precise');
+                      return runLen ? <span> <span className="text-gray-500">·</span> Ran for {runLen}</span> : null;
+                    })()}
+                  </>
+                ) : formatDate(show.openingDate) ? (
+                  <>
+                    <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
+                    {(() => {
+                      const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? null : 'on Broadway';
+                      const dur = durationSuffix ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
+                      return dur ? <span> <span className="text-gray-500">·</span> {dur}</span> : null;
+                    })()}
+                  </>
+                ) : null}
+              </p>
+
+              {/* Regional trust line — keyed on category (renders even if the market flag is off,
+                  since the detail page is reachable directly). Explains why a non-Broadway show
+                  lives on Broadway Scorecard so first-time search arrivals don't bounce.
+                  When the tryout has a linked Broadway transfer (transferredTo), say so. */}
+              {isRegional && (() => {
+                const transfer = (featureFlags.regional && show.transferredTo) ? getShowById(show.transferredTo) : null;
+                return (
+                  <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="regional-trust-line">
+                    <span className="font-semibold">Regional production</span>
+                    {transfer ? (
+                      <span className="text-gray-400">
+                        {' '}— this tryout transferred to Broadway.{' '}
+                        <Link href={`/show/${transfer.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
+                          See the Broadway production →
+                        </Link>
+                      </span>
+                    ) : (
+                      <span className="text-gray-400"> — tracked as a buzzy, well-reviewed show that could transfer to Broadway.</span>
+                    )}
+                  </p>
+                );
+              })()}
+
+              {/* Broadway side of a regional→Broadway transfer pair: surface the
+                  tryout's critic score (often the only pre-Broadway signal). */}
+              {!isRegional && featureFlags.regional && show.transferOf && (() => {
+                const tryout = getShowById(show.transferOf);
+                if (!tryout) return null;
+                const tryoutVenue = (tryout.venue || '').split(',')[0];
+                // Same TBD gate as everywhere else — never broadcast a score the
+                // tryout's own page would show as TBD. (ship-check P2)
+                const tCount = tryout.criticScore?.reviewCount || 0;
+                const tT12 = (tryout.criticScore?.tier1Count || 0) + (tryout.criticScore?.tier2Count || 0);
+                const tryoutScore = (tryout.criticScore?.score && hasEnoughReviews(tCount, tryout.category, tT12, false))
+                  ? Math.round(tryout.criticScore.score) : null;
+                return (
+                  <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="tryout-link-line">
+                    <span className="font-semibold">Pre-Broadway tryout</span>
+                    <span className="text-gray-400">
+                      {' '}— critics first reviewed this show at {tryoutVenue}{tryoutScore ? <> (scored <span className="text-emerald-300 font-semibold">{tryoutScore}/100</span>)</> : null}.{' '}
+                      <Link href={`/show/${tryout.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
+                        See the tryout reviews →
+                      </Link>
+                    </span>
+                  </p>
                 );
               })()}
             </div>
@@ -852,9 +891,39 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           </section>
         )}
 
+        {/* PAA-style Q&A block — visible counterpart to faqSchema above (Google
+            discounts FAQPage schema with no matching on-page content). Native
+            <details>/<summary> so it works without JS and stays crawlable.
+            Renders every FAQ getShowFAQs() returns (max 7, native accordion
+            collapses them) — must match faqSchema above 1:1, not a subset,
+            or the schema advertises Q&As Google can't find on the page. */}
+        {(() => {
+          const showFAQs = getShowFAQs(show, consensus?.text ?? null);
+          if (showFAQs.length === 0) return null;
+          return (
+            <section className="card p-5 sm:p-6 mb-5 sm:mb-8" aria-labelledby="show-faq-heading">
+              <h2 id="show-faq-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none mb-4">
+                Frequently Asked Questions
+              </h2>
+              <div className="space-y-3" data-testid="show-faq-block">
+                {showFAQs.map((faq, i) => (
+                  <details key={i} className="group border-b border-white/5 pb-3 last:border-0 last:pb-0">
+                    <summary className="text-sm font-medium text-gray-200 cursor-pointer list-none flex items-start justify-between gap-3 marker:content-none [&::-webkit-details-marker]:hidden">
+                      <span>{faq.question}</span>
+                      <span aria-hidden="true" className="text-gray-500 group-open:rotate-45 transition-transform shrink-0 leading-none">+</span>
+                    </summary>
+                    <p className="text-sm text-gray-400 leading-relaxed mt-2">{faq.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
+
         {/* === SECTION ORDERING ===
             ABOVE FOLD (server component):
               1. Critic Reviews
+              1.5. FAQ / PAA block
             BELOW FOLD (ShowPageBelowFold lazy chunk):
               2. Video Reviews
               3. Audience Scorecard
