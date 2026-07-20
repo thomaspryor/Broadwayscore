@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-20T18:57:26.072Z",
+  "generatedAt": "2026-07-20T19:54:29.344Z",
   "date": "2026-07-20",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 164218,
+  "entryCount": 165391,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -2617,6 +2617,21 @@
     {
       "showId": "millions-world-premiere-musical-regional-2025",
       "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "shit-meet-fan-off-broadway-2024",
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
