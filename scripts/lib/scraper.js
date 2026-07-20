@@ -162,6 +162,18 @@ const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG === '1';
 let _sbCreditCheckDone = false;
 let _sbCreditsLow = false;
 
+// --- SB page-fetch reactive circuit breaker ---
+// checkScrapingBeeCredits() (below) is a proactive precheck, but nothing calls
+// it automatically — it must be invoked explicitly by a script's setup code,
+// and most callers don't. fetchWithScrapingBee() had no fallback for that: with
+// the account genuinely over its monthly cap (2026-07-20 incident, #224), every
+// single call did a full HTTP round-trip before dying on a 401, for the entire
+// duration of every run, across every script, all day. url-discovery.js's SERP
+// path already self-heals this way (_scrapingBeeSerpExhausted, set on first
+// 401/403/429) — this mirrors that same pattern for the page-fetch path so ONE
+// failed call disables SB for the rest of the process instead of all of them.
+let _scrapingBeePageExhausted = false;
+
 /**
  * Check ScrapingBee remaining credits. Call once per process.
  * Returns true if credits are available, false if low/exhausted/missing key.
@@ -462,7 +474,7 @@ async function fetchWithScrapingdog(url, options = {}) {
  * Fetch page using ScrapingBee API (HTML output)
  */
 async function fetchWithScrapingBee(url, options = {}) {
-  if (!SCRAPINGBEE_KEY) {
+  if (!SCRAPINGBEE_KEY || _scrapingBeePageExhausted) {
     return null;
   }
 
@@ -504,7 +516,9 @@ async function fetchWithScrapingBee(url, options = {}) {
           if (res.statusCode === 200) {
             resolve(data);
           } else {
-            reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+            const err = new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`);
+            err.statusCode = res.statusCode;
+            reject(err);
           }
         });
       }).on('error', reject);
@@ -520,6 +534,14 @@ async function fetchWithScrapingBee(url, options = {}) {
     const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
     recordSbCall({ host: hostname, fn: renderJs ? 'render' : 'page', success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost });
     console.error(`⚠️  ScrapingBee failed (render_js=${renderJs}, domain=${hostname}): ${error.message}`);
+    // Same trigger set as url-discovery.js's _serpViaScrapingBee circuit breaker:
+    // 401 (auth/limit), 403 (forbidden/plan), 429 (rate limit) all mean "stop
+    // asking SB for the rest of this process" — a monthly-cap 401 doesn't
+    // resolve itself mid-run, so retrying it per-call just burns time.
+    if ([401, 403, 429].includes(error.statusCode)) {
+      _scrapingBeePageExhausted = true;
+      console.warn(`  ⚠️  ScrapingBee page-fetch disabled for the rest of this process (HTTP ${error.statusCode})`);
+    }
     return null;
   }
 }
@@ -1045,4 +1067,5 @@ module.exports = {
   unwrapRedirectUrl,
   get sbCreditsLow() { return _sbCreditsLow; },
   get sdQuotaExceeded() { return _sdQuotaExceeded; },
+  get scrapingBeePageExhausted() { return _scrapingBeePageExhausted; },
 };

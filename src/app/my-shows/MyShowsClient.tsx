@@ -488,6 +488,11 @@ export default function MyShowsClient() {
     () => sortedWatchlist.filter(e => !!e.planned_date && e.planned_date < wlToday && !reviews.some(r => r.show_id === e.show_id)),
     [sortedWatchlist, wlToday, reviews],
   );
+  // Rendered watchlist size — excludes stale rows (past-dated + already
+  // rated: the show lives in the Diary; the leftover entry is a remnant of
+  // an edit-path save that skips watchlist removal). Badge must match what
+  // the tab renders (review finding, 2026-07-20).
+  const visibleWatchlistCount = upcomingBookedWatchlist.length + unbookedWatchlist.length + seenToRateWatchlist.length;
 
   // While mock mode is initializing (useEffect hasn't fired yet), show loading
   const hasMockParam = searchParams.get('mock') === '1';
@@ -741,7 +746,7 @@ export default function MyShowsClient() {
           aria-selected={activeTab === 'watchlist'}
           aria-controls="panel-watchlist"
           onClick={() => setActiveTab('watchlist')}
-          aria-label={watchlist.length > 0 ? `Watchlist, ${watchlist.length} shows` : 'Watchlist'}
+          aria-label={visibleWatchlistCount > 0 ? `Watchlist, ${visibleWatchlistCount} shows` : 'Watchlist'}
           className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
             activeTab === 'watchlist'
               ? 'text-white border-brand'
@@ -749,9 +754,9 @@ export default function MyShowsClient() {
           }`}
         >
           Watchlist
-          {watchlist.length > 0 && (
+          {visibleWatchlistCount > 0 && (
             <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full" aria-hidden="true">
-              {watchlist.length}
+              {visibleWatchlistCount}
             </span>
           )}
         </button>
@@ -1262,6 +1267,14 @@ export default function MyShowsClient() {
                   pile (owner, 2026-07-20) */}
               {seenToRateWatchlist.length > 0 && (
                 <div>
+                  {upcomingBookedWatchlist.length === 0 && unbookedWatchlist.length === 0 && (
+                    <div className="mb-4">
+                      <AddShowCard context="watchlist" variant="list" onOpen={() => {
+                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                        btn?.click();
+                      }} />
+                    </div>
+                  )}
                   <h3 className="text-xs font-bold text-amber-400/80 uppercase tracking-wider mb-3">To Be Rated</h3>
                   <div className="space-y-2">
                     {seenToRateWatchlist.map(entry => (
@@ -1727,7 +1740,7 @@ function bookabilityLabel(show?: ShowLookup): { text: string; cls: string } | nu
   }
   if (show.status === 'upcoming' || show.status === 'announced') {
     if (show.ticketsOnSale) {
-      return { text: 'Tix on sale', cls: 'bg-emerald-400/90 text-emerald-950' };
+      return { text: 'Tix on sale', cls: 'bg-status-open/90 text-black' };
     }
     const start = show.previewDate || show.openingDate;
     const text = start
