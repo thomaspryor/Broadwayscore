@@ -138,19 +138,20 @@ function getBannedSources(data) {
   );
 }
 
-// True when an entry has no capitalization figure, no automatable source
-// for one (S3-T3 shipped the SEC EDGAR name-search fix; this predicate
-// doesn't care WHY it's missing, only whether it still is), and the owner
-// hasn't already done a manual Deep Research pass that covered
-// capitalization specifically (S5-T1). Stateless recompute from
-// commercial.json every run -- no persisted "researched" list to drift
-// out of sync with reality.
+// True when an entry has no capitalization figure. Checks ONLY
+// data.capitalization itself (ship-check finding, 2026-07-19): an earlier
+// version also suppressed on capitalizationSource being set, or on
+// deepResearch.verifiedFields including 'capitalization' -- but neither
+// guarantees a NUMBER was actually found (a source note or a "verified as
+// not found" research pass could set either without capitalization ever
+// being written), which would silently hide a show that still has a real
+// gap. Currently 0 commercial.json entries hit that ambiguity, but the
+// schema doesn't distinguish "confirmed absent" from "attempted," so
+// checking capitalization directly is the only signal that can't lie.
+// Stateless recompute from commercial.json every run -- no persisted
+// "researched" list to drift out of sync with reality.
 function needsManualResearch(data) {
-  if (data.capitalization) return false;
-  if (data.capitalizationSource) return false;
-  const verifiedFields = data.deepResearch?.verifiedFields;
-  if (Array.isArray(verifiedFields) && verifiedFields.includes('capitalization')) return false;
-  return true;
+  return !data.capitalization;
 }
 
 // ============================================
