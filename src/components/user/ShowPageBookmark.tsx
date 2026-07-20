@@ -21,10 +21,16 @@ interface ShowPageBookmarkProps {
 // only empty space is clipped. md (show-page hero) keeps positive offsets:
 // its poster container is overflow-VISIBLE, so a negative offset would hang
 // the svg box outside the poster (review, 2026-07-19).
+// Offsets are calibrated against the glyph's whitespace inside the 24-unit
+// viewBox (path spans x 5-19, y 3-21 → ~21% right / ~12.5% top padding at
+// w-7 ≈ 5.8px / 3.5px). Target ≈ 3.5-4px VISUAL gap on both axes:
+// top-0 keeps the top's natural 3.5px; -right-0.5 (-2px) trims the right to
+// ~3.8px. The first attempt (-right-1) left <2px — read as touching the edge
+// (owner, 2026-07-20); the original (+right-0.5) left ~8px — too far.
 const SIZES = {
-  sm: { button: '-top-0.5 -right-1 p-0', icon: 'w-7 h-8' },
+  sm: { button: 'top-0 -right-0.5 p-0', icon: 'w-7 h-8' },
   md: { button: 'top-1 right-1 p-0', icon: 'w-8 h-9' },
-  compact: { button: '-top-0.5 -right-1 p-0', icon: 'w-7 h-8' },
+  compact: { button: 'top-0 -right-0.5 p-0', icon: 'w-7 h-8' },
 };
 
 /**
