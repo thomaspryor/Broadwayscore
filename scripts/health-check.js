@@ -1185,9 +1185,8 @@ function checkAPICredits() {
     results.push({ name: 'Credits: ScrapingDog', status: 'warn', message: 'Skipped — no SCRAPINGDOG_API_KEY available' });
   }
 
-  // Bright Data — balance + month-to-date spend (serp + unlocker zones). BD is
-  // pay-per-request with a prepaid balance; 2026-07-19 audit found $16 balance
-  // vs $148 pending. 'error' on low balance so it emails.
+  // Bright Data — month-to-date spend (serp + unlocker zones), balance shown
+  // for context only. Alerting rationale in the comment inside the check.
   const bdToken = process.env.BRIGHTDATA_TOKEN;
   if (bdToken) {
     results.push(runCheck('Credits: Bright Data', () => {
