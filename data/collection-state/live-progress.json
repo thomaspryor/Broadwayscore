@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-20T12:32:20.722Z",
-  "processed": 76,
-  "failed": 1105,
-  "successRate": "6.4%",
+  "updatedAt": "2026-07-20T12:33:02.973Z",
+  "processed": 78,
+  "failed": 1113,
+  "successRate": "6.5%",
   "tierBreakdown": {
     "playwright": 50,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 12,
     "directCookies": 3,
     "scrapingbee": 0,
     "brightdata": 10,
     "archiveToday": 22,
     "archive": 16
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-07-19T17:23:15.324Z",
@@ -110,6 +110,18 @@
       "t": "2026-07-20T06:36:26.071Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-20T12:32:26.261Z",
+      "event": "bb-session",
+      "session": "cc49611c",
+      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
+    },
+    {
+      "t": "2026-07-20T12:32:40.590Z",
+      "event": "bb-session",
+      "session": "a53b0cdf",
+      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
     }
   ]
 }
