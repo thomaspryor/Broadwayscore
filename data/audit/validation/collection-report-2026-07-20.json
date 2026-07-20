@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-20T11:21:20.609Z",
+  "runDate": "2026-07-20T11:56:51.160Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 68,
-    "failed": 1220,
+    "processed": 66,
+    "failed": 1245,
     "skipped": 0,
-    "successRate": "5.3%"
+    "successRate": "5.0%"
   },
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 44,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 8,
     "directCookies": 2,
     "scrapingbee": 0,
-    "brightdata": 9,
-    "archiveToday": 22,
+    "brightdata": 10,
+    "archiveToday": 23,
     "archive": 13
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 4,
+    "tier1Attempts": 4,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
+    "tier3Attempts": 3,
+    "tier3Success": 2,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
     "tier4Attempts": 4,
-    "tier4Success": 1,
-    "totalFailed": 291,
+    "tier4Success": 0,
+    "totalFailed": 293,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 293,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -114,10 +114,8 @@
     "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
     "birthright-off-broadway-2026/the-recs--unknown.json",
     "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
-    "the-lost-boys-2026/musical-theatre-review--unknown.json",
-    "the-lost-boys-2026/boston-herald--marilyn-stasio.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
-    "oh-mary-west-end-2025/variety--unknown.json",
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
     "oh-mary-west-end-2025/deadline--greg-evans.json"
   ],
   "failed": [
@@ -1050,6 +1048,29 @@
     "oh-mary-west-end-2025/nysr--michael-sommers.json",
     "oh-mary-west-end-2025/nysr--unknown.json",
     "oh-mary-west-end-2025/usatoday--patrick-ryan.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+    "shifters-off-broadway-2026/independent--alice-saville.json",
+    "shifters-off-broadway-2026/standard--nick-curtis.json",
+    "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+    "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
+    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
@@ -1277,7 +1298,6 @@
     "avenue-q-west-end-2026/backstage--david-sheward.json",
     "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
     "avenue-q-west-end-2026/talkinbroadway--unknown.json",
-    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
     "avenue-q-west-end-2026/theupcoming--sunny-morgan.json",
     "avenue-q-west-end-2026/valentine-dsides--unknown.json",
     "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json",
@@ -1328,6 +1348,7 @@
     "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
     "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
     "oh-mary-west-end-2025/variety--brent-lang.json",
+    "oh-mary-west-end-2025/variety--unknown.json",
     "oh-mary-west-end-2025/vulture--sara-holdren.json",
     "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
     "oh-mary-west-end-2025/ew--christian-holub.json",
@@ -1340,7 +1361,9 @@
     "oh-mary-west-end-2025/dailybeast--tim-teeman.json",
     "oh-mary-west-end-2025/financialtimes--unknown.json",
     "oh-mary-west-end-2025/njcom--christopher-kelly.json",
-    "oh-mary-west-end-2025/nysr--bob-verini.json"
+    "oh-mary-west-end-2025/nysr--bob-verini.json",
+    "oh-mary-west-end-2025/nysr--michael-sommers.json",
+    "oh-mary-west-end-2025/nysr--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1387,9 +1410,7 @@
       "oh-mary-west-end-2025/nytg--unknown.json",
       "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
       "birthright-off-broadway-2026/the-recs--unknown.json",
-      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
-      "the-lost-boys-2026/musical-theatre-review--unknown.json",
-      "the-lost-boys-2026/boston-herald--marilyn-stasio.json"
+      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1400,9 +1421,7 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oh-mary-west-end-2025/deadline--greg-evans.json"
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
@@ -1418,7 +1437,8 @@
       "cats-the-jellicle-ball-2026/newyorker--helen-shaw.json",
       "cats-the-jellicle-ball-2026/nytimes--jesse-green.json",
       "oh-mary-west-end-2025/nytimes--jesse-green.json",
-      "oh-mary-west-end-2025/variety--unknown.json"
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+      "oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "archiveToday": [
       "data/review-texts/the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
@@ -1442,6 +1462,7 @@
       "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "data/review-texts/birthright-off-broadway-2026/the-recs--unknown.json",
       "data/review-texts/the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "data/review-texts/beetlejuice-west-end-2026/timeout--adam-feldman.json"
     ],
     "archive": [
@@ -1460,25 +1481,12 @@
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": [
     {
-      "reviewId": "oh-mary-west-end-2025/variety--unknown.json",
-      "oldUrl": "https://variety.com/2026/legit/global/oh-mary-giles-terera-michael-urie-reprising-roles-west-end-1236811548/",
-      "newUrl": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-1236609831/"
-    },
-    {
       "reviewId": "oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oldUrl": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/",
-      "newUrl": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+      "oldUrl": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/",
+      "newUrl": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
     }
   ]
 }
