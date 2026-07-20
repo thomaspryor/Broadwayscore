@@ -605,14 +605,17 @@ export default function MyShowsClient() {
           <AddShowSearch
             context={activeTab}
             userId={isMockMode ? null : (user?.id ?? null)}
-            onAddToWatchlist={async (showId: string) => {
+            onAddToWatchlist={async (showId: string, title?: string) => {
               await effectiveAddToWatchlist(showId);
               // The just-added prompt (rendered below) confirms the add AND
               // offers the date in place — quick-add used to require finding
               // the entry on the watchlist to date it (owner, 2026-07-19).
               // Set BEFORE the refresh: a rejected refetch used to throw past
               // the feedback line, so the add silently succeeded with none.
-              setJustAdded({ showId, title: showMap[showId]?.title || showId });
+              // Title comes from the tapped search row — for live-lookup adds
+              // showMap's setState hasn't committed yet, so reading it here
+              // showed the raw show ID (code-review finding, 2026-07-19).
+              setJustAdded({ showId, title: title || showMap[showId]?.title || showId });
               if (!isMockMode) await getWatchlist(true).catch(() => {});
             }}
             onRateDiaryOnly={(show) => openRatingEditor(show)}
@@ -1845,7 +1848,7 @@ function AddShowSearch({
   /** Gates the live Mezzanine catalog search — signed out / mock mode never
    *  offers it (the edge function is JWT-gated anyway). */
   userId: string | null;
-  onAddToWatchlist: (showId: string) => Promise<void>;
+  onAddToWatchlist: (showId: string, title?: string) => Promise<void>;
   /** Diary-only shows have no /show page to deep-link ?rate=1 into — open the
    *  inline rating modal instead. */
   onRateDiaryOnly: (show: { id: string; title: string }) => void;
@@ -1878,7 +1881,7 @@ function AddShowSearch({
       if (!existingWatchlistIds.has(show.id)) {
         setAddingId(show.id);
         try {
-          await onAddToWatchlist(show.id);
+          await onAddToWatchlist(show.id, show.title);
         } finally {
           setAddingId(null);
         }
