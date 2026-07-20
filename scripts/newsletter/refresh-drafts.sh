@@ -47,7 +47,9 @@ echo "== Pulling data repos"
 # realpath handles both the symlinked layout (data/reviews.json -> core-data
 # clone) and a pre-setup regular file, unlike bare readlink.
 DATA_REPO=$(node -e "console.log(require('path').dirname(require('fs').realpathSync('data/reviews.json')))")
-git -C "$DATA_REPO" pull --rebase --quiet
+# --autostash: local sessions and background jobs leave churn in the data
+# clone; without it this pull hard-fails on any unstaged change.
+git -C "$DATA_REPO" pull --rebase --autostash --quiet
 git -C data/review-texts pull --rebase --quiet 2>/dev/null || true
 # The per-show cs/rc JSONs (public/data/shows/) that generate.mjs reads live in
 # THIS repo and are committed by CI rebuilds — a fresh reviews.json alone is not
