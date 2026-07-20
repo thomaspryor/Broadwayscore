@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-20T08:29:29.066Z",
+  "timestamp": "2026-07-20T10:51:55.025Z",
   "stats": {
-    "totalReviews": 40356,
-    "alreadyFlagged": 17652,
+    "totalReviews": 40281,
+    "alreadyFlagged": 17647,
     "dateGuardCatches": 49,
-    "directorMismatch": 916,
+    "directorMismatch": 915,
     "tvFilmSignals": 1107,
     "londonSignals": 756,
     "offBroadwaySignals": 478,
     "yearMismatch": 86,
-    "noPublishDate": 3633
+    "noPublishDate": 3632
   },
   "findings": [
     {
@@ -15025,20 +15025,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "master-haroldand-the-boys-2003",
-      "file": "about-entertainment--ben-brantley.json",
-      "score": null,
-      "publishDate": "June 2, 2003",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"athol fugard\" from master-haroldand-the-boys-1982"
         }
       ]
     },
@@ -42867,7 +42853,7 @@
       "file": "one-minute-critic--steven-vargas.json",
       "score": 63,
       "publishDate": "2026-07-15",
-      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&#038;utm_medium=rss&",
+      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
