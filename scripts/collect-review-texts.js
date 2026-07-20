@@ -2008,7 +2008,32 @@ function canUseBrowserbase(urlDomain) {
  * Fetch with Browserbase - managed browser cloud with CAPTCHA solving
  * Uses their API to create a browser session and control it
  */
+/**
+ * fetchWithBrowserbase: retries once (fresh session) on "Insufficient text"
+ * before giving up. #221/#224 diagnostic (2026-07-20) found WSJ's real-world
+ * Browserbase hit rate is ~50% per attempt even with valid injected cookies —
+ * NOT a hard block (isBlocked/isPaywalled both pass, the page loads and has a
+ * real <article> with real cookies present) but some sessions render an empty
+ * paragraph tree while an identical retry moments later succeeds. Sampled
+ * data/review-texts wsj--*.json fetchMethod:'browserbase' entries from
+ * 2026-07-10 to 07-19 show real successes (5000+ chars) interleaved with
+ * 0-char failures throughout, not a step-function regression — a single
+ * session-level retry (independent fingerprint/proxy) converts that ~50%
+ * single-shot rate into a ~75% effective rate. Does NOT retry hard failures
+ * (cap reached, missing config, session-creation errors) — those won't
+ * resolve on retry and retrying them just burns a second session for nothing.
+ */
 async function fetchWithBrowserbase(url, review) {
+  try {
+    return await _fetchWithBrowserbaseAttempt(url, review);
+  } catch (error) {
+    if (!/Insufficient text/.test(error.message)) throw error;
+    console.log(`    ⚠ Browserbase returned insufficient text — retrying once with a fresh session...`);
+    return await _fetchWithBrowserbaseAttempt(url, review);
+  }
+}
+
+async function _fetchWithBrowserbaseAttempt(url, review) {
   // Extract domain ONCE — used by both the cap gate and the per-domain counter.
   // canUseBrowserbase needs it to enforce the per-domain cap (otherwise
   // anything that bypasses the shouldRun gate would silently skip the
