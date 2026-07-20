@@ -32,7 +32,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoader';
 import { getVideoReviews } from '@/lib/data-video-reviews';
-import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar, getBreakdownTier } from '@/components/show-cards';
+import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import { hasEnoughReviews, reviewsRemainingForScore } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
@@ -235,31 +235,6 @@ function getSentimentLabel(score: number, category?: string): { label: string; c
     label: tier?.label ?? 'Critical Miss',
     colorClass: getScoreTextColorClass(score, category),
   };
-}
-
-// Explicit, crawlable verdict sentence — Show-Score and Playbill both lead with a
-// textual verdict sentence rather than a bare score widget, which is what search
-// snippets and AI Overviews extract from. The score box below conveys the same
-// info visually, but a UI widget's numbers aren't reliably parsed as page text.
-function buildVerdictSentence(
-  showTitle: string,
-  roundedScore: number,
-  reviewCount: number,
-  reviews: { reviewScore: number | null | undefined }[],
-  category?: string
-): string {
-  const counts: Record<'rave' | 'positive' | 'mixed' | 'negative', number> = {
-    rave: 0, positive: 0, mixed: 0, negative: 0,
-  };
-  for (const r of reviews) {
-    const tier = getBreakdownTier(r.reviewScore, category);
-    if (tier) counts[tier]++;
-  }
-  const breakdownParts = (['rave', 'positive', 'mixed', 'negative'] as const)
-    .filter(t => counts[t] > 0)
-    .map(t => `${counts[t]} ${t}`);
-  const breakdown = breakdownParts.length > 0 ? ` (${breakdownParts.join(', ')})` : '';
-  return `Critics rated ${showTitle} ${roundedScore}/100 across ${reviewCount} review${reviewCount === 1 ? '' : 's'}${breakdown}.`;
 }
 
 export default async function ShowPage({ params }: { params: { slug: string } }) {
@@ -499,24 +474,20 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 <StatusBadge status={show.status} />
               </div>
 
-              {/* Title — "Reviews" suffix matches the exact-match query users type
-                  ("[show] reviews") and the <title> tag pattern above. */}
+              {/* Title — matches Metacritic/Rotten Tomatoes convention: just the show
+                  name, not "[Show] Reviews". The "Reviews" keyword lives in the <title>
+                  tag above (what Google/browser tabs show), not the on-page H1. */}
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
-                {show.title} Reviews
+                {show.title}
               </h1>
 
-              {/* Verdict-first lead sentence — SXO fix 2026-07-19: this page previously
-                  led with production metadata (venue/runtime/dates) before any
-                  reviews-intent content, while Show-Score and Playbill lead with the
-                  verdict. Renders as plain crawlable text right under the H1, ahead
-                  of the score box and the metadata line. The meta line, regional
-                  trust line, and tryout link line moved below the score box — see
-                  further down this file. */}
-              {!showTBD && roundedScore !== null && show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
-                <p className="text-sm sm:text-base text-gray-200 mb-3 leading-relaxed" data-testid="verdict-lead-sentence">
-                  {buildVerdictSentence(show.title, roundedScore, reviewCount, show.criticScore.reviews, show.category)}
-                </p>
-              )}
+              {/* No separate verdict sentence here — SXO fix 2026-07-19 tried one and it
+                  duplicated the score box below (same 91/100, same review count, same
+                  rave/positive/mixed breakdown as the color bar) while also being prone
+                  to wrapping/truncating in this narrow poster-adjacent column. Matches
+                  Metacritic/Rotten Tomatoes: the score badge below IS the verdict, no
+                  redundant prose restating it. It already renders directly under the H1,
+                  above the venue/runtime/date metadata line — that's the actual fix. */}
 
               {/* Score Box + Sentiment + Review Count - Metacritic style */}
               {(() => {
