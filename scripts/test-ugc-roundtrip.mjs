@@ -87,27 +87,40 @@ async function deleteUser(id) {
 
 // Best-effort startup sweep for synthetic users a PRIOR run failed to clean
 // up (workflow timeout, runner OOM, cancellation — none of which reach the
-// `finally` block in main()). Only touches @broadwayscorecard-test.invalid
-// accounts older than 1h (safely past any run's duration), so it can't
-// collide with a genuinely concurrent run. Never throws. Same gap + fix as
-// scripts/ux-walkthrough.mjs's sweepOrphanedTestUsers (2026-07-20).
+// `finally` block in main()). Only touches accounts matching BOTH the email
+// suffix AND this script's own roundtripTest tag (codex adversarial review,
+// 2026-07-20: email suffix alone isn't proof this script created the row),
+// older than 1h (safely past any run's duration — collision risk is a
+// developer manually pausing a local run past 1h, an accepted edge case for
+// test tooling). Enumerates ALL pages first, then deletes — deleting mid-
+// pagination would shift a page-based offset and skip later-page survivors
+// (same codex finding). Never throws.
 async function sweepOrphanedTestUsers() {
   try {
     const cutoff = Date.now() - 60 * 60 * 1000;
+    const toDelete = [];
     let page = 1;
-    let swept = 0;
     for (;;) {
       const r = await adminFetch('GET', `admin/users?page=${page}&per_page=200`);
       const users = r.json?.users;
-      if (!r.ok || !Array.isArray(users) || users.length === 0) break;
+      if (!r.ok) { console.warn(`orphan sweep: admin/users page ${page} HTTP ${r.status} — stopping early`); break; }
+      if (!Array.isArray(users) || users.length === 0) break;
       for (const u of users) {
         if (!u.email?.endsWith('@broadwayscorecard-test.invalid')) continue;
+        if (!u.user_metadata?.roundtripTest) continue;
         if (new Date(u.created_at).getTime() >= cutoff) continue;
-        await deleteUser(u.id).catch(() => {});
-        swept++;
+        toDelete.push(u.id);
       }
       if (users.length < 200) break;
       page++;
+    }
+    let swept = 0;
+    for (const id of toDelete) {
+      // deleteUser() discards adminFetch's result, so an HTTP-level failure
+      // (e.g. 404 if already gone) wouldn't surface here — check r.ok directly
+      // so `swept` can't over-report (codex finding, 2026-07-20).
+      const r = await adminFetch('DELETE', `admin/users/${id}`).catch(() => ({ ok: false }));
+      if (r.ok) swept++;
     }
     if (swept > 0) console.log(`swept ${swept} orphaned @broadwayscorecard-test.invalid user(s) from prior run(s)`);
   } catch (err) {
