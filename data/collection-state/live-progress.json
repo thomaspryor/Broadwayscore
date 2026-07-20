@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-19T22:58:02.794Z",
-  "processed": 10,
-  "failed": 537,
-  "successRate": "1.8%",
+  "updatedAt": "2026-07-20T00:07:57.905Z",
+  "processed": 16,
+  "failed": 561,
+  "successRate": "2.8%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 10,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 4,
-    "archive": 2
+    "brightdata": 2,
+    "archiveToday": 5,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-19T17:23:15.324Z",
@@ -48,6 +48,12 @@
       "t": "2026-07-19T19:47:42.838Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-20T00:05:43.940Z",
+      "event": "bb-session",
+      "session": "a8164580",
+      "url": "https://www.broadwayworld.com/reviews/dukes"
     }
   ]
 }
