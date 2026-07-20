@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-20T21:08:38.628Z",
+  "timestamp": "2026-07-20T23:51:07.411Z",
   "stats": {
-    "totalReviews": 40289,
-    "alreadyFlagged": 17645,
+    "totalReviews": 40290,
+    "alreadyFlagged": 17646,
     "dateGuardCatches": 49,
     "directorMismatch": 915,
-    "tvFilmSignals": 1107,
+    "tvFilmSignals": 1108,
     "londonSignals": 757,
     "offBroadwaySignals": 478,
     "yearMismatch": 86,
@@ -19790,6 +19790,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "singfeld-a-musical-about-nothing-off-broadway-2023",
+      "file": "nytg--unknown.json",
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/show/28808-singfeld-a-musical-about-nothing",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
