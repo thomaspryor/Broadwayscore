@@ -853,7 +853,7 @@ export function getBrowseList(slug: string): BrowseList | undefined {
     : getBroadwayShows();
 
   // Context for data-dependent filters and custom sorts
-  const ctx: BrowseFilterContext = { getAudienceBuzz, getShowCommercial, getShowAwards, getShowGrosses };
+  const ctx: BrowseFilterContext = { getAudienceBuzz, getShowCommercial, getShowAwards, getShowGrosses, getShowById };
 
   let filteredShows = config.dataFilter
     ? allShows.filter(show => config.dataFilter!(show, ctx))

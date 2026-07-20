@@ -8,6 +8,13 @@ name: Scrapingdog Account Usage
 
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "usage = read-only account readout; billing-probe = A0 gate (fires ~7 SD calls incl. deliberate failures, ≤25 credits) — see scripts/probe-scrapingdog-billing.js; confirm-empty-authoritative = task #213 live check of the empty-authoritative SERP fix (~4 SD SERP calls, ≤20 credits) — see scripts/confirm-sd-empty-authoritative.js"
+        required: false
+        type: choice
+        default: usage
+        options: [usage, billing-probe, confirm-empty-authoritative]
 
 permissions:
   contents: read
@@ -15,9 +22,32 @@ permissions:
 jobs:
   usage:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
+      - uses: actions/checkout@v5
+        if: ${{ inputs.mode == 'billing-probe' || inputs.mode == 'confirm-empty-authoritative' }}
+      - uses: actions/setup-node@v5
+        if: ${{ inputs.mode == 'billing-probe' || inputs.mode == 'confirm-empty-authoritative' }}
+        with:
+          node-version: 20
+      - name: Install dependencies
+        if: ${{ inputs.mode == 'billing-probe' || inputs.mode == 'confirm-empty-authoritative' }}
+        run: npm ci --ignore-scripts
+      - name: Billing probe (A0)
+        if: ${{ inputs.mode == 'billing-probe' }}
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: node scripts/probe-scrapingdog-billing.js
+      - name: Confirm empty-authoritative SERP fix (task #213)
+        if: ${{ inputs.mode == 'confirm-empty-authoritative' }}
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/confirm-sd-empty-authoritative.js
       - name: Fetch account usage
+        if: ${{ inputs.mode != 'billing-probe' && inputs.mode != 'confirm-empty-authoritative' }}
         env:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
         run: |

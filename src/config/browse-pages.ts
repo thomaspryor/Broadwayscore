@@ -9,7 +9,7 @@ import type { AudienceBuzzData, ShowCommercial, ShowAwards, ShowGrosses } from '
 // with no score (TBD) in a score-ranked list. getMarketMinReviews() returns the
 // canonical per-market threshold (West End / Broadway = 5, Off-West End /
 // Off-Broadway / Regional = 3) from score-buckets.ts.
-import { getMarketMinReviews } from '@/lib/market-utils';
+import { getMarketMinReviews, hasReachedStage } from '@/lib/market-utils';
 import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
 
 // Context object passed to dataFilter/customSort — avoids importing heavy data modules here
@@ -20,6 +20,7 @@ export interface BrowseFilterContext {
   getShowCommercial: (slug: string) => ShowCommercial | undefined;
   getShowAwards: (showId: string) => ShowAwards | undefined;
   getShowGrosses: (slug: string) => ShowGrosses | undefined;
+  getShowById: (id: string) => ComputedShow | undefined;
 }
 
 export interface BrowsePageConfig {
@@ -266,9 +267,18 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     // BrowseListClient only shows sections for custom/score sorts. Order:
     // running tryouts first, then transferred-to-Broadway, then the rest,
     // newest first within each group (matches the sectionGroup below).
-    customSort: (shows) => [...shows].sort((a, b) => {
-      const rank = (s: ComputedShow) =>
-        s.status === 'open' || s.status === 'previews' ? 0 : s.transferredTo ? 1 : 2;
+    customSort: (shows, ctx) => [...shows].sort((a, b) => {
+      // Ranks must keep each sectionGroup label contiguous — BrowseListClient
+      // renders a heading whenever the label differs from the previous row, so
+      // interleaved labels would duplicate headings. Transferring (Broadway run
+      // not yet started) sorts before Transferred (run reached the stage).
+      const rank = (s: ComputedShow) => {
+        if (s.status === 'open' || s.status === 'previews') return 0;
+        if (s.transferredTo) {
+          return hasReachedStage(ctx.getShowById(s.transferredTo)?.status) ? 2 : 1;
+        }
+        return 3;
+      };
       if (rank(a) !== rank(b)) return rank(a) - rank(b);
       return (b.openingDate || '').localeCompare(a.openingDate || '');
     }),
@@ -279,9 +289,10 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       if (show.transferredTo) {
         // Tense depends on the Broadway production: announced/upcoming = the
         // transfer hasn't happened yet (e.g. Dolly, Broadway previews Dec 2026).
-        const bway = getById?.(show.transferredTo);
-        const onBroadwayYet = bway && (bway.status === 'previews' || bway.status === 'open' || bway.status === 'closed');
-        return onBroadwayYet ? 'Transferred to Broadway' : 'Transferring to Broadway';
+        // Must stay in lockstep with the customSort rank above.
+        return hasReachedStage(getById?.(show.transferredTo)?.status)
+          ? 'Transferred to Broadway'
+          : 'Transferring to Broadway';
       }
       return 'Recent Tryouts';
     },

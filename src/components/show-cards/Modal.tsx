@@ -80,13 +80,21 @@ export default function Modal({
     // star the moment the rating sheet opened (owner report, 2026-07-19).
     // Tab from the panel still lands on the first control, so the trap holds.
     const raf = requestAnimationFrame(() => panelRef.current?.focus?.());
+    // Manual traversal for EVERY Tab, not just first/last wrap: WebKit/Safari's
+    // native Tab only visits text fields — it skips buttons entirely and then
+    // walks out of the dialog into the page behind (caught by the webkit e2e
+    // project, 2026-07-19). Stepping through the focusables list ourselves
+    // gives every browser the same order and guarantees containment.
     const onTab = (e: KeyboardEvent) => {
       if (e.key !== 'Tab' || !isTopmost()) return;
+      e.preventDefault();
       const f = focusables();
-      if (!f.length) { e.preventDefault(); panelRef.current?.focus(); return; }
-      const first = f[0], last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      if (!f.length) { panelRef.current?.focus(); return; }
+      const idx = f.indexOf(document.activeElement as HTMLElement);
+      const next = e.shiftKey
+        ? (idx <= 0 ? f[f.length - 1] : f[idx - 1])
+        : (idx === -1 || idx === f.length - 1 ? f[0] : f[idx + 1]);
+      next.focus();
     };
     document.addEventListener('keydown', onTab);
     return () => {

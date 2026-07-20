@@ -8,6 +8,12 @@ const publicDataDir = path.join(__dirname, '../../public/data');
 const scriptPath = path.join(__dirname, '../../scripts/generate-diary-data.js');
 
 test.describe('Generate Diary Data Script', () => {
+  // These tests share mutable filesystem state (data/diary-shows.json input,
+  // public/data/diary-*.json outputs) — under fullyParallel + multiple workers
+  // they race: one test's execSync write can truncate a file mid-read by
+  // another, producing "Unexpected end of JSON input". Must run serially.
+  test.describe.configure({ mode: 'serial' });
+
   test('script runs without errors', () => {
     if (!fs.existsSync(path.join(dataDir, 'diary-shows.json'))) {
       test.skip(true, 'diary-shows.json not available');

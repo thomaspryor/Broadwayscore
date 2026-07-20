@@ -182,7 +182,15 @@ function main() {
     // ID-keyed pending entry (e.g. appropriate-2023) updates the existing
     // slug-keyed commercial entry (appropriate) instead of creating an
     // unsourced duplicate that the strict gate would then fail on.
-    const commercialKey = entry.slug || showId;
+    // entry.slug is often absent — resolve the canonical slug from shows.json
+    // before falling back to showId. The bare `entry.slug || showId` fallback
+    // created 13 ID-keyed duplicate entries (doubt-2024 next to doubt, ...)
+    // that were invisible on /biz and had to be hand-merged (2026-07-19).
+    const resolvedShow = showsBySlug[showId];
+    const commercialKey = entry.slug || (resolvedShow && resolvedShow.slug) || showId;
+    if (commercialKey === showId && !(resolvedShow && resolvedShow.slug === showId)) {
+      console.warn(`  ⚠️ "${showId}" — no slug resolvable from shows.json; keying by show ID (validate-data will flag)`);
+    }
     const existing = commercial.shows[commercialKey];
     if (existing && existing.humanReviewedDesignation === true && !SINGLE_SHOW) {
       console.log(`  🔒 "${showId}" — humanReviewedDesignation:true, skipping auto-apply`);

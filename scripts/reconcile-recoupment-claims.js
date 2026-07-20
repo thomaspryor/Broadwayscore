@@ -107,9 +107,29 @@ function hostnameOf(url) {
 // Resolve the commercial.json key for a pending entry. commercial.json is
 // keyed by slug (memory: feedback_commercial_slug_keys); pending entries are
 // keyed by year-suffixed show ID (e.g. giant-2026) but usually carry
-// entry.slug. Fall back to the pending key itself if slug is absent.
+// entry.slug. When slug is absent, resolve it from shows.json — the bare
+// `entry.slug || key` fallback created ID-keyed duplicate entries next to
+// the slug-keyed ones (13 hand-merged 2026-07-19).
+let _showsByIdOrSlug = null;
+function _lookupShow(key) {
+  if (_showsByIdOrSlug === null) {
+    _showsByIdOrSlug = {};
+    try {
+      const allShows = (loadJSON(path.join(__dirname, '..', 'data', 'shows.json'), {}).shows) || [];
+      for (const s of allShows) {
+        if (s.slug) _showsByIdOrSlug[s.slug] = s;
+        if (s.id) _showsByIdOrSlug[s.id] = s;
+      }
+    } catch { /* shows.json unavailable — degrade to bare fallback */ }
+  }
+  return _showsByIdOrSlug[key];
+}
 function resolveSlug(key, entry) {
-  return entry.slug || key;
+  if (entry.slug) return entry.slug;
+  const show = _lookupShow(key);
+  if (show && show.slug) return show.slug;
+  console.warn(`  ⚠️ "${key}" — no slug resolvable from shows.json; keying by pending key (validate-data will flag if it's an ID)`);
+  return key;
 }
 
 // Mirrors scrape-recoupment-announcements.js's buildQueries: generic queries

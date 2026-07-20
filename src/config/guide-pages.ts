@@ -4,6 +4,7 @@
 
 import { ComputedShow } from '@/lib/engine';
 import { isAnnouncedCurrent } from '@/config/browse-pages';
+import { isPlatformHidden } from '@/lib/ticket-utils';
 
 export interface GuidePageConfig {
   slug: string;
@@ -315,7 +316,8 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     introFallback: "Great Broadway doesn't have to mean expensive tickets. These {count} shows offer tickets under $100, proving you can experience world-class theater on a budget.",
     filter: (show) => {
       if (show.status !== 'open') return false;
-      const minPrice = Math.min(...(show.ticketLinks?.filter(l => l.priceFrom).map(l => l.priceFrom!) || [Infinity]));
+      // Only price from platforms the user can actually see a button for
+      const minPrice = Math.min(...(show.ticketLinks?.filter(l => l.priceFrom && !isPlatformHidden(l.platform)).map(l => l.priceFrom!) || [Infinity]));
       return minPrice < 100;
     },
     sort: 'score',

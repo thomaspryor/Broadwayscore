@@ -236,6 +236,12 @@ export default function MyShowsClient() {
   const effectiveRemoveFromWatchlist = isMockMode ? mockRemoveFromWatchlist : removeFromWatchlist;
   const effectiveUpdatePlannedDate = isMockMode ? mockUpdatePlannedDate : updatePlannedDate;
 
+  // Just-added-from-search prompt: confirms the add and offers the planned
+  // date IN PLACE — quick-add previously required finding the new entry on
+  // the watchlist to date it (owner, 2026-07-19). Cleared on date/skip or
+  // replaced by the next add.
+  const [justAdded, setJustAdded] = useState<{ showId: string; title: string } | null>(null);
+
   // updatePlannedDate rethrows on failure (Phase 2) — surface it instead of
   // letting the onChange promise reject unhandled with zero feedback.
   const handlePlannedDateChange = useCallback(async (showId: string, date: string | null) => {
@@ -599,13 +605,17 @@ export default function MyShowsClient() {
           <AddShowSearch
             context={activeTab}
             userId={isMockMode ? null : (user?.id ?? null)}
-            onAddToWatchlist={async (showId: string) => {
+            onAddToWatchlist={async (showId: string, title?: string) => {
               await effectiveAddToWatchlist(showId);
-              // Toast BEFORE the refresh: a rejected refetch used to throw past
-              // the toast line, so the add silently succeeded with no feedback
-              // (owner report, 2026-07-19). The refresh is best-effort — the
-              // optimistic local entry is already visible.
-              showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
+              // The just-added prompt (rendered below) confirms the add AND
+              // offers the date in place — quick-add used to require finding
+              // the entry on the watchlist to date it (owner, 2026-07-19).
+              // Set BEFORE the refresh: a rejected refetch used to throw past
+              // the feedback line, so the add silently succeeded with none.
+              // Title comes from the tapped search row — for live-lookup adds
+              // showMap's setState hasn't committed yet, so reading it here
+              // showed the raw show ID (code-review finding, 2026-07-19).
+              setJustAdded({ showId, title: title || showMap[showId]?.title || showId });
               if (!isMockMode) await getWatchlist(true).catch(() => {});
             }}
             onRateDiaryOnly={(show) => openRatingEditor(show)}
@@ -615,6 +625,45 @@ export default function MyShowsClient() {
           />
         )}
       </div>
+
+      {/* Just-added prompt — in-place date capture for search quick-adds */}
+      {justAdded && (
+        <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2 px-3 py-2.5 rounded-xl bg-brand/[0.06] border border-brand/20" data-testid="just-added-prompt">
+          <svg className="w-4 h-4 flex-shrink-0 text-brand" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+          </svg>
+          <span className="text-sm text-white min-w-0 truncate">
+            <span className="font-semibold">{justAdded.title}</span>
+            <span className="text-gray-400"> added to your Watchlist</span>
+          </span>
+          <span className="flex items-center gap-2 ml-auto">
+            <span className="text-xs text-gray-500 hidden sm:inline">Seeing it when?</span>
+            <SharedDatePicker
+              value=""
+              onChange={(date) => {
+                if (!date) return;
+                const target = justAdded;
+                setJustAdded(null);
+                handlePlannedDateChange(target.showId, date);
+              }}
+              ariaLabel="Planned date"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg text-gray-300 bg-white/[0.05] border border-white/10 hover:border-white/20 transition-colors"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Add date</span>
+            </SharedDatePicker>
+            <button
+              type="button"
+              onClick={() => setJustAdded(null)}
+              className="text-xs text-gray-500 hover:text-white transition-colors px-1.5 py-1.5"
+            >
+              Skip
+            </button>
+          </span>
+        </div>
+      )}
 
       {ratingTarget && (
         <RatingEditor
@@ -1372,12 +1421,14 @@ function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string | 
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
-          className={`absolute top-2 right-2 z-[2] w-7 h-7 hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
+          className={`absolute top-2 right-2 z-[2] hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
           aria-label="Remove from upcoming"
         >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-          </svg>
+          {confirmRemove ? 'Remove?' : (
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          )}
         </button>
       </CardLinkOrDiv>
       {date && (
@@ -1477,17 +1528,21 @@ function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview;
             </svg>
           </button>
         )}
-        {/* Delete button — hidden on mobile, visible on hover on desktop */}
+        {/* Delete button — hidden on mobile, visible on hover on desktop.
+            The confirm state SAYS "Delete?" — a trash that merely turned red
+            didn't read as tap-again-to-confirm (owner, 2026-07-19). */}
         {onDelete && (
           <button
             type="button"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmDelete ? onDelete() : setConfirmDelete(true); }}
-            className={`absolute top-2 right-2 z-[2] w-7 h-7 hidden sm:flex items-center justify-center rounded-full ${confirmDelete ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
+            className={`absolute top-2 right-2 z-[2] hidden sm:flex items-center justify-center rounded-full ${confirmDelete ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
             aria-label="Delete rating"
           >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
+            {confirmDelete ? 'Delete?' : (
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            )}
           </button>
         )}
       </CardLinkOrDiv>
@@ -1591,12 +1646,14 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
-          className={`absolute top-2 right-2 z-[2] w-7 h-7 hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'bg-red-500/80 text-white opacity-100' : 'bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/wl:opacity-100'} transition-opacity`}
+          className={`absolute top-2 right-2 z-[2] hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/wl:opacity-100'} transition-opacity`}
           aria-label="Remove from watchlist"
         >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-          </svg>
+          {confirmRemove ? 'Remove?' : (
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          )}
         </button>
       </CardLinkOrDiv>
       <div className="px-2 py-1.5">
@@ -1791,7 +1848,7 @@ function AddShowSearch({
   /** Gates the live Mezzanine catalog search — signed out / mock mode never
    *  offers it (the edge function is JWT-gated anyway). */
   userId: string | null;
-  onAddToWatchlist: (showId: string) => Promise<void>;
+  onAddToWatchlist: (showId: string, title?: string) => Promise<void>;
   /** Diary-only shows have no /show page to deep-link ?rate=1 into — open the
    *  inline rating modal instead. */
   onRateDiaryOnly: (show: { id: string; title: string }) => void;
@@ -1824,7 +1881,7 @@ function AddShowSearch({
       if (!existingWatchlistIds.has(show.id)) {
         setAddingId(show.id);
         try {
-          await onAddToWatchlist(show.id);
+          await onAddToWatchlist(show.id, show.title);
         } finally {
           setAddingId(null);
         }

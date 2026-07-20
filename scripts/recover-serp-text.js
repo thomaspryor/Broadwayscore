@@ -31,6 +31,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
@@ -72,6 +73,59 @@ if (!CONFIG.domain && !CONFIG.outlet) {
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// Commit + push data/review-texts periodically DURING the run, not just at the
+// end. A long local run (30-60 min for 100+ candidates) leaves every recovered
+// file sitting uncommitted the whole time — this machine also runs scheduled
+// local automation (launchd: autonomous-nightly, backfill-gather) against the
+// SAME checkout, and a concurrent write to the same file is a filesystem race
+// git can't protect against (no conflict is ever raised — whoever's write
+// lands last on disk wins, and `git add` only ever sees the current state).
+// 2026-07-19: a ~40min New Yorker run recovered 22 files; only 6 survived to
+// the final commit because most were silently overwritten mid-run before this
+// script ever got to `git add`. Committing every few recoveries shrinks that
+// exposure window from ~40 min to a couple of minutes.
+function checkpointReviewTexts(label) {
+  try {
+    execSync('git add -A', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
+    try {
+      execSync('git diff --staged --quiet', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
+      return; // nothing to commit
+    } catch { /* has staged changes */ }
+    execSync(`git commit -m "data: ${label} checkpoint"`, { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        execSync('git pull --rebase -X theirs origin main', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
+        // -X theirs favors the LOCAL (this script's) commits on conflicting hunks
+        // per rebase semantics, but this codebase has documented, incident-backed
+        // evidence that concurrent writes to the same JSON file's fields still get
+        // dropped in practice — restore-protected-fields.js is the established
+        // safety net (same pattern as rediscover-review-urls.js's
+        // pushReviewTextsCheckpoint). Re-applies fullText and other protected
+        // fields from pre-rebase HEAD if the rebase silently lost them.
+        try {
+          const restoreScriptPath = path.resolve(__dirname, 'lib', 'restore-protected-fields.js');
+          const restored = execSync(`node "${restoreScriptPath}" origin/main`, { cwd: CONFIG.reviewTextsDir, encoding: 'utf8', stdio: 'pipe' }).trim();
+          if (parseInt(restored, 10) > 0) {
+            console.log(`  [checkpoint] restored protected fields in ${restored} file(s) after rebase`);
+            execSync('git add -A', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
+            execSync('git commit --amend --no-edit', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
+          }
+        } catch (restoreErr) {
+          console.log(`  [checkpoint] restore-protected-fields failed: ${restoreErr.message.slice(0, 200)}`);
+        }
+        execSync('git push origin main', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
+        console.log(`  [checkpoint] pushed review-texts (attempt ${attempt})`);
+        return;
+      } catch (e) {
+        try { execSync('git rebase --abort', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' }); } catch {}
+        if (attempt === 3) console.log(`  [checkpoint] WARNING: failed to push after 3 attempts: ${e.message.slice(0, 200)}`);
+      }
+    }
+  } catch (e) {
+    console.log(`  [checkpoint] error: ${e.message.slice(0, 200)}`);
+  }
+}
 
 function loadExhausted() {
   try { return JSON.parse(fs.readFileSync(CONFIG.exhaustedPath, 'utf8')).urls || {}; }
@@ -353,15 +407,19 @@ async function main() {
       exhausted[c.url] = { reason: 'recovery_exhausted', lastAttempt: new Date().toISOString() };
     }
 
-    if (!CONFIG.dryRun && (i + 1) % 10 === 0) {
+    if (!CONFIG.dryRun && (i + 1) % 5 === 0) {
       saveExhausted(exhausted);
+      checkpointReviewTexts(`SERP text recovery (${CONFIG.outlet || CONFIG.domain}, ${i + 1}/${candidates.length})`);
       console.log(`\n  [checkpoint] ${stats.recovered}/${i + 1} recovered so far`);
     }
 
     await sleep(CONFIG.itemDelayMs);
   }
 
-  if (!CONFIG.dryRun) saveExhausted(exhausted);
+  if (!CONFIG.dryRun) {
+    saveExhausted(exhausted);
+    checkpointReviewTexts(`SERP text recovery (${CONFIG.outlet || CONFIG.domain}, final)`);
+  }
 
   console.log('\n' + '='.repeat(60));
   console.log('SUMMARY');
