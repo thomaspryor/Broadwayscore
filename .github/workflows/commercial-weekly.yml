@@ -312,6 +312,20 @@ jobs:
         run: node scripts/audit-commercial-data.js
         continue-on-error: true
 
+      - name: Update commercial model drift history
+        # S2-T1/S2-T2: appends one entry/week to
+        # data/audit/commercial-data-history.json (modelDesignationFlag
+        # contradiction count, modelMethod tier breakdown, ai-estimated tier
+        # entry/exit vs last week) so health-check.js's "Commercial model
+        # drift" check has something to compare against. --write-history is
+        # only passed here (this job is the sole weekly-cadence caller) —
+        # the flagless "Run commercial audit" step above and
+        # update-commercial.yml's manual-dispatch fallback intentionally do
+        # NOT advance history. continue-on-error: true — same reasoning as
+        # "Run commercial audit" above; informational, not ship-blocking.
+        run: node scripts/audit-commercial-data.js --write-history
+        continue-on-error: true
+
       - name: Commercial scope-contamination audit (informational)
         # OUT_OF_MARKET_SCOPE/SHOW_NOT_IN_DB are warn-only (not ship-blocking,
         # see script header) but were previously NEVER run on a schedule —
@@ -353,7 +367,7 @@ jobs:
       - name: Commit applied data + audit
         if: always()
         run: |
-          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/audit/commercial-data-audit.json data/recoupment-calibration-anchors.json
+          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/audit/commercial-data-audit.json data/audit/commercial-data-history.json data/recoupment-calibration-anchors.json
           bash scripts/lib/stage-data-changes.sh
           if git diff --staged --quiet; then
             echo "No changes to commit"
