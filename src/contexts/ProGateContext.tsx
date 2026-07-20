@@ -102,6 +102,10 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   const [exitIntentFired, setExitIntentFired] = useState(false);
   // Track whether ANY passive modal (exit intent, scroll depth, page view limit) has fired this session
   const [passiveModalFired, setPassiveModalFired] = useState(false);
+  // Guards against scheduling more than one delayed page_view_limit attempt —
+  // separate from passiveModalFired so a suppressed attempt (see recordPageView)
+  // doesn't falsely latch the shared "a passive modal fired" flag.
+  const pageViewLimitScheduledRef = useRef<boolean>(false);
   const [isReturnVisitor, setIsReturnVisitor] = useState(false);
   const [isClient, setIsClient] = useState(false);
   // Recapture: true when pre-fix modal user needs to be re-shown the modal to capture via Formspree
@@ -188,12 +192,19 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   // return_visitor trigger name (which both the scroll and mouseleave paths reuse).
   const [gateFireMeta, setGateFireMeta] = useState<GateFireMeta>({});
 
-  const triggerGate = useCallback((trigger: GateTrigger, meta: GateFireMeta = {}) => {
-    if (isAuthenticated) return; // Signed-in users are auto-subscribed — never nag
-    if (hasEmail) return; // Don't show if already have email
-    if (modalOpen) return; // Don't stack modals
+  // Returns whether the modal actually opened. Callers MUST gate their own
+  // "already fired this session" latches (exitIntentFired, scrollFired,
+  // passiveModalFired) on this return value — setting them unconditionally
+  // before calling triggerGate would permanently disarm the trigger for the
+  // rest of the tab session on every early return below (cooldown, cold-start
+  // page-count gate, excluded path, etc.), even though no modal was ever
+  // shown (2026-07-20 review: caught before ship — see call sites).
+  const triggerGate = useCallback((trigger: GateTrigger, meta: GateFireMeta = {}): boolean => {
+    if (isAuthenticated) return false; // Signed-in users are auto-subscribed — never nag
+    if (hasEmail) return false; // Don't show if already have email
+    if (modalOpen) return false; // Don't stack modals
     // Don't trigger on excluded pages (feedback, submit-review, etc.)
-    if (emailCaptureConfig.excludedPaths.some(p => window.location.pathname.startsWith(p))) return;
+    if (emailCaptureConfig.excludedPaths.some(p => window.location.pathname.startsWith(p))) return false;
     const blocking = BLOCKING_TRIGGERS.includes(trigger);
     // Dismissal cooldown: every non-blocking ask (exit_intent, scroll_depth,
     // return_visitor, page_view_limit) stays quiet for passiveGateCooldownDays
@@ -203,20 +214,21 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       // Cold-start guard: don't ask before the visitor has shown real
       // engagement this session (2026-07-20 audit — see gate-logic.ts).
       if (!hasSeenEnoughPages(sessionPageViewsRef.current, emailCaptureConfig.minPageViewsForPassiveGate)) {
-        return;
+        return false;
       }
       try {
         if (shouldSuppressPassiveGate(
           localStorage.getItem(GATE_DISMISSED_KEY),
           Date.now(),
           emailCaptureConfig.passiveGateCooldownDays,
-        )) return;
+        )) return false;
       } catch { /* localStorage unavailable — fail open, show the modal */ }
     }
     setGateFireMeta(meta);
     setModalTrigger(trigger);
     setModalBlocking(blocking);
     setModalOpen(true);
+    return true;
   }, [isAuthenticated, hasEmail, modalOpen]);
 
   const handleModalClose = useCallback(() => {
@@ -274,9 +286,13 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       // instantly on every page after the first few seconds of a session.
       const elapsedSec = (Date.now() - exitIntentPageMountRef.current) / 1000;
       if (e.clientY <= 0 && !modalOpen && elapsedSec >= emailCaptureConfig.exitIntent.minTimeOnPageSec) {
-        setExitIntentFired(true);
-        setPassiveModalFired(true);
-        triggerGate(isReturnVisitor ? 'return_visitor' : 'exit_intent', { trigger_source: 'mouseleave' });
+        // Only latch "fired" on an actual open — a suppressed attempt (still
+        // cold, in cooldown) must leave the listener armed to retry later.
+        const opened = triggerGate(isReturnVisitor ? 'return_visitor' : 'exit_intent', { trigger_source: 'mouseleave' });
+        if (opened) {
+          setExitIntentFired(true);
+          setPassiveModalFired(true);
+        }
       }
     };
 
@@ -351,13 +367,17 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       const scrollPct = scrollTop / docHeight;
 
       if (scrollPct >= params.scrollThreshold) {
-        fired = true;
-        setScrollFired(true);
-        setPassiveModalFired(true);
-        triggerGate(isReturnVisitor ? 'return_visitor' : 'scroll_depth', {
+        // Only latch "fired" on an actual open — a suppressed attempt (still
+        // cold, in cooldown) must leave the listener armed to retry later.
+        const opened = triggerGate(isReturnVisitor ? 'return_visitor' : 'scroll_depth', {
           trigger_source: 'scroll',
           ab_variant: abVariant,
         });
+        if (opened) {
+          fired = true;
+          setScrollFired(true);
+          setPassiveModalFired(true);
+        }
       }
     };
 
@@ -405,12 +425,19 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       // Track in analytics
       track('biz_page_view', { page });
 
-      // Check if should show gate (skip if already shown a passive modal this session)
+      // Check if should show gate (skip if already shown a passive modal this
+      // session, or already scheduled a page_view_limit attempt — a ref, not
+      // passiveModalFired, so a suppressed attempt doesn't wrongly disarm the
+      // OTHER passive triggers' shared "already fired" latch).
       const totalViews = Object.values(views).reduce((sum: number, v) => sum + (v as number), 0);
-      if (totalViews >= pageViewThreshold && !hasEmail && !passiveModalFired) {
+      if (totalViews >= pageViewThreshold && !hasEmail && !passiveModalFired && !pageViewLimitScheduledRef.current) {
+        pageViewLimitScheduledRef.current = true;
         // Show gate after short delay to let page render
-        setPassiveModalFired(true);
-        setTimeout(() => triggerGate('page_view_limit', { trigger_source: 'page_views' }), 2000);
+        setTimeout(() => {
+          if (triggerGate('page_view_limit', { trigger_source: 'page_views' })) {
+            setPassiveModalFired(true);
+          }
+        }, 2000);
       }
     } catch {
       // localStorage not available
