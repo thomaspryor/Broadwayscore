@@ -39,10 +39,14 @@ function parseArgs(argv) {
 }
 
 /**
- * Reads all data/social-pulse/*.json files (skipping _budget.json and any
+ * Reads all data/social-pulse/*.json files (skipping _meta.json and any
  * other leading-underscore metadata files). Returns parsed objects with
  * the showId attached.
  */
+/** Max age for a pulse file to participate in ranks/tiers. Mirrors
+ *  MAX_SOCIAL_PULSE_AGE_DAYS in src/lib/data-social-pulse.ts. */
+const MAX_RANKABLE_AGE_DAYS = 14;
+
 function loadAllPulseFiles() {
   if (!fs.existsSync(SOCIAL_PULSE_DIR)) {
     console.error(`No ${SOCIAL_PULSE_DIR} directory — run fetch-social-pulse.js first`);
@@ -60,7 +64,31 @@ function loadAllPulseFiles() {
       console.warn(`Skipping ${filename}: ${err.message}`);
     }
   }
-  return pulseData;
+
+  // Freshness filter: the fetcher only rewrites RUNNING shows, so files
+  // for closed/upcoming shows freeze at their last fetch forever (the
+  // School Girls precedent). Pooling frozen files with fresh ones skews
+  // peer percentiles and inflates "#N/M" rank denominators with dead
+  // shows. /trending already excludes them via isFreshPulse — this makes
+  // the ranks/tiers written back into per-show files consistent with it.
+  const cutoff = Date.now() - MAX_RANKABLE_AGE_DAYS * 24 * 60 * 60 * 1000;
+  const fresh = pulseData.filter((e) => {
+    const t = Date.parse(e.data.fetchedAt || '');
+    return !Number.isNaN(t) && t >= cutoff;
+  });
+
+  // Schema-mix guard: v2 volumes are capped-sample counts, v3 volumes are
+  // true counters — different units. Once ANY v3 file exists, v2 files
+  // must not share the peer pool (they'd deflate percentiles and over-tier
+  // v3 shows). Before the first v3 run, all-v2 pools rank as before.
+  const hasV3 = fresh.some((e) => (e.data._v || 1) >= 3);
+  const pool = hasV3 ? fresh.filter((e) => (e.data._v || 1) >= 3) : fresh;
+
+  const dropped = pulseData.length - pool.length;
+  if (dropped > 0) {
+    console.log(`Excluding ${dropped} stale${hasV3 ? '/legacy-schema' : ''} pulse file(s) from ranking (kept ${pool.length}).`);
+  }
+  return pool;
 }
 
 /**
@@ -105,11 +133,17 @@ const MIN_SHOWS_FOR_RANK_DISPLAY = 10;
  * hides the "#N/M" line. Tier still gets recomputed regardless.
  */
 function assignRanksAndTiers(groups) {
+  // Ranking strength: effectiveVolume (schema v3 Pulse Index — the
+  // relevance-adjusted uncapped-counter blend) when the file has it,
+  // legacy capped-sample volume otherwise. Mixed v2/v3 markets only occur
+  // mid-migration; after the first v3 run every file has effectiveVolume.
+  const strength = (d) => (Number.isFinite(d.effectiveVolume) ? d.effectiveVolume : (d.volume || 0));
+
   for (const [, entries] of groups) {
     // Sort by composite (blended) score, not raw volume
     entries.sort((a, b) => {
-      const aScore = computeCompositeScore(a.data.volume || 0, a.data.positivePct || 0);
-      const bScore = computeCompositeScore(b.data.volume || 0, b.data.positivePct || 0);
+      const aScore = computeCompositeScore(strength(a.data), a.data.positivePct || 0);
+      const bScore = computeCompositeScore(strength(b.data), b.data.positivePct || 0);
       return bScore - aScore;
     });
 
@@ -117,6 +151,7 @@ function assignRanksAndTiers(groups) {
     const peerStats = computePeerStats(
       entries.map((e) => ({
         volume: e.data.volume || 0,
+        effectiveVolume: strength(e.data),
         positivePct: e.data.positivePct || 0,
       })),
     );
@@ -141,13 +176,14 @@ function assignRanksAndTiers(groups) {
       // Re-tier using peer-relative rules
       entry.newTier = derivePeerTier({
         volume: entry.data.volume || 0,
+        effectiveVolume: strength(entry.data),
         positivePct: entry.data.positivePct || 0,
         peerStats,
       });
 
       // Composite score is useful as a debug field too
       entry.newCompositeScore = computeCompositeScore(
-        entry.data.volume || 0,
+        strength(entry.data),
         entry.data.positivePct || 0,
       );
     });
