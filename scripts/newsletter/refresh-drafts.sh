@@ -31,6 +31,10 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
+if [ ! -f .env ]; then
+  echo "ERROR: no .env here ($(pwd)) — run from the main configured checkout (needs RESEND_API_KEY), not a worktree/fresh clone." >&2
+  exit 1
+fi
 set -a; source .env; set +a
 
 WEEK="${1:-$(TZ=America/New_York date -v-mon +%Y-%m-%d 2>/dev/null || TZ=America/New_York date -d 'last monday' +%Y-%m-%d)}"
@@ -40,13 +44,22 @@ mkdir -p "$OUT"
 echo "== Refreshing drafts for week $WEEK (out: $OUT)"
 
 echo "== Pulling data repos"
-git -C "$(readlink data/reviews.json | xargs dirname)" pull --rebase --quiet
+# realpath handles both the symlinked layout (data/reviews.json -> core-data
+# clone) and a pre-setup regular file, unlike bare readlink.
+DATA_REPO=$(node -e "console.log(require('path').dirname(require('fs').realpathSync('data/reviews.json')))")
+git -C "$DATA_REPO" pull --rebase --quiet
 git -C data/review-texts pull --rebase --quiet 2>/dev/null || true
 # The per-show cs/rc JSONs (public/data/shows/) that generate.mjs reads live in
 # THIS repo and are committed by CI rebuilds — a fresh reviews.json alone is not
-# enough. Skipping this pull shipped a stale review count (24 vs 23, 2026-07-19).
+# enough. Skipping this pull shipped a stale review count (24 vs 23, 2026-07-19),
+# and create-broadcast-draft's staleness guard only covers the core-data repo —
+# nothing downstream catches stale per-show files. So a failed pull is a hard
+# abort, not a warning.
 echo "== Pulling main repo (per-show score JSONs)"
-git pull --rebase --autostash --quiet || echo "WARNING: main repo pull failed — public/data/shows may be stale; verify scores against prod before sending"
+if ! git pull --rebase --autostash --quiet; then
+  echo "ERROR: main repo pull failed — public/data/shows would be stale (24-vs-23 incident class). Resolve and re-run." >&2
+  exit 1
+fi
 
 for EDITION in broadway west-end; do
   AUDIENCE=general
@@ -60,6 +73,14 @@ for EDITION in broadway west-end; do
   NEWSLETTER_EDITION=$EDITION NEWSLETTER_OUT_DIR="$OUT" node scripts/newsletter/overflow-check.mjs "$WEEK"
   echo "== [$EDITION] PATCH Resend draft (never sends)"
   NEWSLETTER_EDITION=$EDITION node scripts/newsletter/create-broadcast-draft.mjs "$WEEK" --create --audience=$AUDIENCE --out-dir="$OUT"
+  # generate.mjs appends to the tracked data/newsletter-state.json on every run.
+  # CI commits that (dedup state); this local wrapper must not leave it dirty —
+  # a dirty copy autostash-conflicts with CI's upstream version on the next
+  # pull above, and conflict markers then break generate's state read.
+  # NOTE: unlike CI, this wrapper also skips regression-test.mjs (non-blocking
+  # in CI) and the [DRAFT] owner-preview email — the owner is already reviewing
+  # the draft in the Resend UI in this flow.
+  git checkout -- data/newsletter-state.json 2>/dev/null || true
 done
 
 echo ""
