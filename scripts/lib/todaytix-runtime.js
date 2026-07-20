@@ -17,8 +17,13 @@
 
 /**
  * Pull the displayed run-time string out of a TodayTix show-page HTML document.
- * Tries the visible "Run time" section first, then the JSON-LD FAQ answer,
- * then the raw embedded CMS field.
+ * Tries the visible "Run time" section first, then the JSON-LD FAQ answer.
+ *
+ * Both strategies are scoped to the page's primary show. Deliberately NO raw
+ * `"runTimeAndIntermission":"..."` fallback: pages embed that field for
+ * carousel/related shows too, and an unscoped first-match can return a
+ * DIFFERENT show's runtime. Failing closed (null → caller skips) is safer
+ * than failing open with plausible wrong data.
  *
  * @param {string} html
  * @returns {string|null} e.g. "3hr 30min. Incl. 2 Intermissions."
@@ -30,9 +35,6 @@ function extractRunTimeDisplay(html) {
   if (m) return m[1].trim();
 
   m = html.match(/"What is the running time of [^"]+","acceptedAnswer":\{"@type":"Answer","text":"[^"]*? runs for ([^"]+?)"/);
-  if (m) return m[1].trim();
-
-  m = html.match(/"runTimeAndIntermission":"([^"]+)"/);
   if (m) return m[1].trim();
 
   return null;
@@ -47,7 +49,12 @@ function extractRunTimeDisplay(html) {
  *   "3hr 30min. Incl. 2 Intermissions."
  *   "1hr 50min. Incl. 15min intermission."   (the 15min is the interval length, not count)
  *   "2hr 50min. (Approx.) to 3hr 10min. Incl. 1 intermission."  (range — take lower bound)
+ *   "2h 05min. Incl. 1 Interval"             (bare "h", London pages)
+ *   "2 Hours and 20 Minutes, including 20 minute interval."
  *   "90min."
+ *
+ * Multi-part listings ("Part One: 2hr 45min. & Part Two: 2hr 35min.") return
+ * null — no single number honestly describes them; leave existing data alone.
  *
  * @param {string} display
  * @returns {{minutes: number, runtime: string, intermissions: number|null}|null}
@@ -56,10 +63,12 @@ function parseRunTimeDisplay(display) {
   if (!display) return null;
   const t = display.toLowerCase().trim();
 
+  if (/part\s+(?:one|two|1|2)/.test(t)) return null;
+
   // Runtime lives in the first sentence; later sentences describe intermissions
   // (which can contain their own minute counts, e.g. "Incl. 15min intermission").
   const firstSegment = t.split(/\.\s|\.$/)[0];
-  const hr = firstSegment.match(/(\d+)\s*(?:hr|hour)/);
+  const hr = firstSegment.match(/(\d+)\s*h(?:ours?|rs?)?\b/);
   const min = firstSegment.match(/(\d+)\s*min/);
   if (!hr && !min) return null;
 
@@ -70,9 +79,13 @@ function parseRunTimeDisplay(display) {
   if (/no\s+(?:intermission|interval)/.test(t)) {
     intermissions = 0;
   } else {
-    const count = t.match(/(\d+)\s+intermissions?/);
-    if (count) intermissions = parseInt(count[1], 10);
-    else if (/intermission|interval/.test(t)) intermissions = 1;
+    const count = t.match(/(\d+|one|two|three)\s+(?:intermissions?|intervals?)/);
+    if (count) {
+      const words = { one: 1, two: 2, three: 3 };
+      intermissions = words[count[1]] ?? parseInt(count[1], 10);
+    } else if (/intermission|interval/.test(t)) {
+      intermissions = 1;
+    }
   }
 
   return { minutes, runtime: formatCompactRuntime(minutes), intermissions };

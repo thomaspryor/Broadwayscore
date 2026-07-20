@@ -35,6 +35,11 @@ test('parseRunTimeDisplay: interval-length minutes must not pollute runtime or c
   });
 });
 
+test('parseRunTimeDisplay: spelled-out interval counts (UK pages)', () => {
+  assert.strictEqual(parseRunTimeDisplay('2hr 30min. Incl. Two intervals.').intermissions, 2);
+  assert.strictEqual(parseRunTimeDisplay('3hr. Incl. two intermissions.').intermissions, 2);
+});
+
 test('parseRunTimeDisplay: bare "Incl. intermission" means one', () => {
   assert.deepStrictEqual(parseRunTimeDisplay('2hr 15min. Incl. intermission.'), {
     minutes: 135, runtime: '2h 15m', intermissions: 1,
@@ -50,6 +55,22 @@ test('parseRunTimeDisplay: range takes the lower bound', () => {
 test('parseRunTimeDisplay: minutes-only and hour-only forms', () => {
   assert.strictEqual(parseRunTimeDisplay('90min.').minutes, 90);
   assert.strictEqual(parseRunTimeDisplay('2hr. Incl. 15min intermission.').minutes, 120);
+});
+
+test('parseRunTimeDisplay: bare "h" and prose-hours forms (caught live 2026-07-20)', () => {
+  // "2h 05min" parsed as 5 minutes before the h(?:ours?|rs?)? fix
+  assert.deepStrictEqual(parseRunTimeDisplay('2h 05min. Incl. 1 Interval'), {
+    minutes: 125, runtime: '2h 5m', intermissions: 1,
+  });
+  assert.deepStrictEqual(parseRunTimeDisplay('2 Hours and 20 Minutes, including 20 minute interval.'), {
+    minutes: 140, runtime: '2h 20m', intermissions: 1,
+  });
+  assert.strictEqual(parseRunTimeDisplay('2hr 40 min. Including a 20 minutes interval.').minutes, 160);
+});
+
+test('parseRunTimeDisplay: multi-part listings return null (no single honest number)', () => {
+  // Cursed Child — first-segment parse would stamp Part One's time as the whole runtime
+  assert.strictEqual(parseRunTimeDisplay('Part One: 2hr 45min. &amp; Part Two: 2hr 35min.'), null);
 });
 
 test('parseRunTimeDisplay: garbage and out-of-range rejected', () => {
@@ -69,9 +90,11 @@ test('extractRunTimeDisplay: JSON-LD FAQ fallback scoped to the show question', 
   assert.strictEqual(extractRunTimeDisplay(html), '3hr 30min. Incl. 2 Intermissions.');
 });
 
-test('extractRunTimeDisplay: raw CMS field last resort', () => {
+test('extractRunTimeDisplay: raw CMS field alone is NOT trusted (carousel contamination)', () => {
+  // Pages embed runTimeAndIntermission for related/carousel shows too — an
+  // unscoped first-match can return a different show's runtime. Fail closed.
   const html = '{"runTimeAndIntermission":"1hr 30min. No intermission."}';
-  assert.strictEqual(extractRunTimeDisplay(html), '1hr 30min. No intermission.');
+  assert.strictEqual(extractRunTimeDisplay(html), null);
 });
 
 test('extractRunTimeDisplay: missing → null', () => {
