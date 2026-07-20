@@ -1,0 +1,100 @@
+name: Autonomous Merge
+
+# Sprint 3 (Notion 39b637c5-416f-81c4-9258-f8821c066e24): the ONLY place a
+# branch the autonomous nightly loop produced reaches main. Dispatched either
+# by the signed-endpoint tap (src/app/api/autonomous-action/route.ts, approve
+# or revert) or directly by the Mac Studio executor for a deterministic-green
+# diff (scripts/autonomous-run.js — test/docs/fixture-only changes merge
+# without a human tap, see scripts/lib/autonomous-eligibility.js
+# isDiffDeterministicGreen). All actual git/Notion logic lives in
+# scripts/autonomous-merge.js so it's testable via its colocated
+# scripts/lib/autonomous-merge-core.js unit tests — this workflow is a thin
+# wrapper.
+#
+# Sprint 4 (S4-T4): a Tier-2 data card's branch lives on a PRIVATE repo's own
+# origin (broadway-scorecard-data or broadway-review-texts), not this repo's —
+# scripts/autonomous-merge.js detects this from the branch's Notion evidence
+# comment (repoKey) and clones/merges that repo directly using
+# REVIEW_TEXTS_TOKEN (the same PAT push-core-data/push-review-texts already
+# use). No new workflow_dispatch input needed — approve/revert stay the same
+# two actions either way.
+
+on:
+  workflow_dispatch:
+    inputs:
+      card_id:
+        description: 'Notion card id'
+        required: true
+        type: string
+      branch:
+        description: 'auto/* branch to merge or revert'
+        required: true
+        type: string
+      action:
+        description: 'approve (rebase+reverify+merge) or revert (undo a prior merge)'
+        required: true
+        type: choice
+        options: [approve, revert]
+
+# GLOBAL concurrency group (not per-card): two cards merging at once could
+# race on main in ways push-with-retry.sh's data-file conflict auto-resolution
+# doesn't safely cover for code changes (ship-check finding, 2026-07-14).
+# Serializing means the second dispatch just queues briefly — the loop caps
+# at 3 items/night, so throughput is a non-issue.
+concurrency:
+  group: autonomous-merge
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    # fetch-depth: 0 is expensive on this repo's git history (comparable
+    # full-history workflows here take ~14min on the checkout step ALONE —
+    # audit-touring-contamination.yml run 29187952694). 15min was not enough
+    # headroom; a real dispatch got cancelled mid `npm ci` (2026-07-14).
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run merge/revert
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GH_TOKEN: ${{ github.token }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          node scripts/autonomous-merge.js \
+            --card "${{ github.event.inputs.card_id }}" \
+            --branch "${{ github.event.inputs.branch }}" \
+            --action "${{ github.event.inputs.action }}"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Autonomous Merge failed'
+          description: 'card ${{ github.event.inputs.card_id }} · branch ${{ github.event.inputs.branch }} · action ${{ github.event.inputs.action }} — check the card, the loop leaves it in a safe non-merged state on any failure'
+          severity: 'warning'

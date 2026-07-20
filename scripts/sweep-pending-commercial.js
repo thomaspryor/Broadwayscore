@@ -88,8 +88,18 @@ function daysAgo(isoString) {
 // Shared with apply-commercial-pending.js — same `_recoupedClaim || recouped`
 // semantics. Don't redefine inline; reuse so the rules stay in lockstep.
 const { hasRecoupedClaim } = require('./lib/commercial-apply-gate');
+const { isCommercialScope, resolveScopeShow } = require('./lib/commercial-scope');
 
 function classifyEntry(slug, entry, showsBySlug) {
+  // Out-of-scope (Off-Broadway / West End) entries must never re-enter the
+  // research queue — archive them so the leak drains instead of cycling.
+  // Deliberately checked BEFORE hasRecoupedClaim: an out-of-scope recouped
+  // claim is archived, not surfaced to Notion for human review.
+  const scopeShow = resolveScopeShow(showsBySlug, slug, entry);
+  if (scopeShow && !isCommercialScope(scopeShow)) {
+    return { action: 'archive', reason: `out of commercial scope (${scopeShow.category})` };
+  }
+
   if (hasRecoupedClaim(entry)) {
     return { action: 'report', reason: 'recouped-claim — needs human review' };
   }
@@ -140,7 +150,10 @@ function main() {
   const allShows = loadJSON(SHOWS_PATH, { shows: [] });
   const showsArray = allShows.shows || allShows;
   const showsBySlug = {};
-  for (const s of showsArray) showsBySlug[s.slug] = s;
+  for (const s of showsArray) {
+    if (s.slug) showsBySlug[s.slug] = s;
+    if (s.id) showsBySlug[s.id] = s;
+  }
 
   const pending = loadJSON(PENDING_PATH, { shows: {} });
   const archive = loadJSON(ARCHIVE_PATH, { shows: {} });
@@ -185,11 +198,13 @@ function main() {
   const now = new Date().toISOString();
 
   // Archive
-  for (const { slug, entry } of archivedActions) {
+  for (const { slug, entry, reason } of archivedActions) {
     archive.shows[slug] = {
       ...entry,
       archivedAt: now,
-      archivedReason: 'low-confidence-aged-out',
+      archivedReason: reason.startsWith('out of commercial scope')
+        ? 'out-of-commercial-scope'
+        : 'low-confidence-aged-out',
     };
     delete pending.shows[slug];
   }

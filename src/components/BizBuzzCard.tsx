@@ -4,6 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import type { ShowCommercial, RecoupmentTrend } from '@/lib/data-types';
 import { getDesignationBadgeStyle, getTrendColor, getTrendIcon } from '@/config/commercial';
+import {
+  getRecoupmentDisplayMode,
+  meetsModelQualityFloor,
+  isEditorialRecoupment,
+  formatRecoupedDate,
+} from '@/lib/commercial-display';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 
 interface BizBuzzCardProps {
@@ -150,6 +156,14 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   // Show trend for TBD shows that aren't recouped
   const showTrend = trend && trend !== 'unknown' && commercial.designation === 'TBD' && !commercial.recouped;
 
+  // Q1 conflict rule + quality floor (see src/lib/commercial-display.ts):
+  // announced/curated recoupment suppresses ALL model output; model numbers
+  // below the quality floor stay off the card.
+  const displayMode = getRecoupmentDisplayMode(commercial);
+  const modelQualityOk = meetsModelQualityFloor(commercial);
+  const recoupedDateLabel = formatRecoupedDate(commercial.recoupedDate);
+  const editorialRecoupment = isEditorialRecoupment(commercial);
+
   return (
     <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="commercial-scorecard-heading">
       {/* Unified scorecard chrome — eyebrow on left, recoup status on right */}
@@ -183,9 +197,9 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
         <div className="h-px bg-white/5" aria-hidden="true" />
 
         {/* Stats Row */}
-        <div className="flex gap-2 sm:gap-3">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
           {/* Capitalization */}
-          <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+          <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
             <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
               {formatWithEstimate(formatCurrency(commercial.capitalization), commercial.isEstimate?.capitalization ?? false)}
             </div>
@@ -196,7 +210,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
           {/* Weekly Running Cost (if available) */}
           {commercial.weeklyRunningCost && (
-            <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+            <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
                 {formatWithEstimate(formatCurrency(commercial.weeklyRunningCost), commercial.isEstimate?.weeklyRunningCost ?? false)}
               </div>
@@ -208,7 +222,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
           {/* Time to Recoup (if recouped) */}
           {commercial.recouped && commercial.recoupedWeeks && (
-            <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+            <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-emerald-400 tracking-tight">
                 {formatWeeksToRecoup(commercial.recoupedWeeks)}
               </div>
@@ -218,9 +232,9 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             </div>
           )}
 
-          {/* Weekly Breakeven (from model) */}
-          {commercial.modelBreakeven && !commercial.recouped && (
-            <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+          {/* Weekly Breakeven (from model — hidden below the quality floor) */}
+          {commercial.modelBreakeven && !commercial.recouped && modelQualityOk && (
+            <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-gray-300 tracking-tight">
                 {formatCurrency(commercial.modelBreakeven)}
               </div>
@@ -232,7 +246,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
           {/* Total Box Office Gross (for closed shows without weeks-to-recoup) */}
           {showStatus === 'closed' && allTimeGross && !(commercial.recouped && commercial.recoupedWeeks) && (
-            <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+            <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
                 {formatCurrency(allTimeGross)}
               </div>
@@ -243,11 +257,37 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           )}
         </div>
 
-        {/* Recoupment Progress — prefer model-calculated over AI-estimated */}
-        {(commercial.modelRecoupmentPct || commercial.estimatedRecoupmentPct) && (
+        {/* Announced/curated recoupment — the announcement IS the display;
+            the model is never quoted on these shows (Q1 sign-off) */}
+        {displayMode === 'announced' && (
+          <div
+            className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20"
+            data-testid="recoupment-announcement"
+          >
+            <div className="flex items-center gap-2">
+              <svg className="w-4 h-4 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              <span className="text-sm text-emerald-400 font-medium">
+                {editorialRecoupment
+                  ? `Recouped${recoupedDateLabel ? ` · ${recoupedDateLabel}` : ''} · Scorecard editorial assessment`
+                  : `Producers announced recoupment${recoupedDateLabel ? ` in ${recoupedDateLabel}` : ''}`}
+              </span>
+            </div>
+            {commercial.recoupedSource && (
+              <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+                Source: {commercial.recoupedSource}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Recoupment Progress — model output only, and only above the
+            quality floor. Renders solely when no announced/curated
+            recoupment state exists (Q1). */}
+        {displayMode === 'model' && commercial.modelRecoupmentPct && (
           <RecoupmentProgressBar
-            estimatedPct={commercial.modelRecoupmentPct || commercial.estimatedRecoupmentPct!}
-            source={commercial.modelMethod ? undefined : commercial.estimatedRecoupmentSource}
+            estimatedPct={commercial.modelRecoupmentPct}
             modelMethod={commercial.modelMethod}
           />
         )}
@@ -300,14 +340,14 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
                     Recouped: {commercial.recoupedDate}
                   </p>
                 )}
+                {commercial.recouped === true && commercial.recoupedSource && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    Recoupment source: {commercial.recoupedSource}
+                  </p>
+                )}
                 {commercial.weeklyRunningCostSource && (
                   <p className="text-xs text-gray-500 mt-1">
                     Weekly cost source: {commercial.weeklyRunningCostSource}
-                  </p>
-                )}
-                {commercial.estimatedRecoupmentSource && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    Recoupment estimate source: {commercial.estimatedRecoupmentSource}
                   </p>
                 )}
               </div>

@@ -264,6 +264,25 @@ jobs:
             echo "No pending file — nothing to apply"
           fi
 
+      - name: Reconcile recoupment claim queue
+        # Closes stale duplicates (pending claims already resolved+cited in
+        # commercial.json by a prior pipeline run) and attempts SERP+LLM
+        # verification of the rest against TRUSTED_RECOUPMENT_HOSTS. NOT
+        # continue-on-error, same reasoning as auto-apply above — writes only
+        # happen after the full pass succeeds, so a mid-run failure leaves no
+        # partial state for the strict gate below to catch.
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          if [ -f data/commercial-pending-review.json ]; then
+            node scripts/reconcile-recoupment-claims.js
+          fi
+
       - name: Commercial data strict gate (required)
         # S1-T5: hard gate — recouped:true entries with no citation, or
         # sources[].url pointing at an LLM tool (chatgpt.com etc.), must never
@@ -275,14 +294,15 @@ jobs:
           if ! node scripts/audit-commercial-data.js --strict; then
             echo "commercial strict audit failed (unsourced recouped or LLM-tool source URL) — blocking core-data push" \
               > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
-            # Make the failure atomic: the auto-apply above already mutated
-            # commercial.json AND deleted the applied entries from
+            # Make the failure atomic: the auto-apply + reconciler steps above
+            # already mutated commercial.json AND deleted/updated entries in
             # pending-review. The always()-gated public commit below would
             # otherwise record those entries as consumed while the sentinel
             # blocks the commercial.json push — losing the pending data.
             # Restore both so the next Saturday run retries the same pending.
             cp /tmp/core-data-snapshot/commercial.json data/commercial.json 2>/dev/null || true
             git checkout -- data/commercial-pending-review.json 2>/dev/null || true
+            git checkout -- data/recoupment-calibration-anchors.json 2>/dev/null || true
             exit 1
           fi
 
@@ -290,6 +310,34 @@ jobs:
         # continue-on-error: true — audit is read-only/informational; a failure
         # shouldn't block the deploy. Audit findings surface in the daily digest.
         run: node scripts/audit-commercial-data.js
+        continue-on-error: true
+
+      - name: Update commercial model drift history
+        # S2-T1/S2-T2: appends one entry/week to
+        # data/audit/commercial-data-history.json (modelDesignationFlag
+        # contradiction count, modelMethod tier breakdown, ai-estimated tier
+        # entry/exit vs last week) so health-check.js's "Commercial model
+        # drift" check has something to compare against. --write-history is
+        # only passed here (this job is the sole weekly-cadence caller) —
+        # the flagless "Run commercial audit" step above and
+        # update-commercial.yml's manual-dispatch fallback intentionally do
+        # NOT advance history. continue-on-error: true — same reasoning as
+        # "Run commercial audit" above; informational, not ship-blocking.
+        run: node scripts/audit-commercial-data.js --write-history
+        continue-on-error: true
+
+      - name: Commercial scope-contamination audit (informational)
+        # OUT_OF_MARKET_SCOPE/SHOW_NOT_IN_DB are warn-only (not ship-blocking,
+        # see script header) but were previously NEVER run on a schedule —
+        # audit-commercial-contamination.js was only wired via `--gate` in
+        # test.yml, which checks a different, narrower signal set (impossible
+        # physics/contradictions only). A market-vs-category filter bug let
+        # 28 Off-Broadway/West-End shows sit undetected in commercial.json
+        # for a day (2026-07-14/15) with nothing surfacing it until a manual
+        # sweep. This step doesn't gate the push — it just guarantees the
+        # signal appears in this run's log every week instead of only when
+        # someone happens to run the script by hand.
+        run: node scripts/audit-commercial-contamination.js --strict
         continue-on-error: true
 
       - name: Refresh recoupment model
@@ -319,7 +367,7 @@ jobs:
       - name: Commit applied data + audit
         if: always()
         run: |
-          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/audit/commercial-data-audit.json
+          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/audit/commercial-data-audit.json data/audit/commercial-data-history.json data/recoupment-calibration-anchors.json
           bash scripts/lib/stage-data-changes.sh
           if git diff --staged --quiet; then
             echo "No changes to commit"

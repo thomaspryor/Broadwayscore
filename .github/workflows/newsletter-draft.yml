@@ -91,7 +91,12 @@ concurrency:
 jobs:
   draft:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 25 (was 15): on 2026-07-19 both regen runs finished every substantive
+    # step (generate → gates → preview → Resend draft PATCH) but hit the
+    # 15-min ceiling inside the final "Commit newsletter de-dup state" push
+    # retry under commit churn, marking green runs 'cancelled' and dropping
+    # the dedup-state commit.
+    timeout-minutes: 25
 
     steps:
       - name: Checkout repository

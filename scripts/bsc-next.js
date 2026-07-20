@@ -70,6 +70,22 @@ function priorityRank(task) {
 // Excluded cards can still be selected explicitly via --id / --pick.
 const { EXCLUDED_CATEGORIES, categoryOf, isExcludedCategory } = require('./lib/autonomous-eligibility.js');
 
+// Model resolution (task #151): explicit --model > card hint > the loop's own
+// pickModel() by triage size > sonnet floor. See scripts/lib/bsc-next-model.js
+// for the full resolution order and why it reuses (not duplicates) the
+// nightly loop's model policy.
+const { resolveModel } = require('./lib/bsc-next-model.js');
+
+// Cmux workspace naming (owner scope-add, card #168, 2026-07-14): auto-
+// dispatched workspaces get "🤖 <Project>·<subject>" so the sidebar is
+// scannable without opening every tab. See scripts/lib/workspace-naming.js.
+const { projectOf, buildAutoTitle, stripAutoPrefix } = require('./lib/workspace-naming.js');
+// The triage queue is a single canonical instance on the main checkout (like
+// notion-brain.js above) — anchor to REPO, not __dirname, so a dispatch
+// launched from inside a worktree still reads the real queue, not an empty
+// worktree-local copy (the file is gitignored, so worktrees never have it).
+const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
+
 // Actionable list, best-first: by Notion priority, then pending before
 // in_progress (fresh work first), then task id. Completed dropped;
 // Marketing/Partnerships dropped unless includeExcluded (used by --list to show
@@ -111,7 +127,11 @@ function findLiveWorkspaceForTask(task, workspaces, isDone) {
   const launchTitle = task.subject.slice(0, 50);
   return workspaces.find(w => {
     if (isDone(w.title)) return false;      // finished — sweep will close it
-    const t = String(w.title).replace(/^[^\p{L}\p{N}[]+/u, '');
+    // Strip cmux's own activity-glyph prefix (spinner/✳/etc — also eats the
+    // 🤖 auto-dispatch emoji, since it isn't a letter/digit), THEN strip the
+    // "<Project>·" naming prefix (scope add, card #168) so a live auto-
+    // dispatched workspace still matches its raw task subject.
+    const t = stripAutoPrefix(String(w.title).replace(/^[^\p{L}\p{N}[]+/u, ''));
     const n = Math.min(t.length, launchTitle.length);
     return n >= 20 && t.slice(0, n) === launchTitle.slice(0, n);
   }) || null;
@@ -122,7 +142,7 @@ function notionIdOf(task) {
   return m ? m[1] : null;
 }
 
-function buildSeed(task, card) {
+function buildSeed(task, card, project) {
   const url = (card && card.url) || ((task.description || '').match(/https?:\/\/\S+/) || [''])[0];
   const notes = (card && card.notes) || task.description || '(no description)';
   const meta = [
@@ -144,11 +164,31 @@ function buildSeed(task, card) {
     ``,
     notes,
     ``,
+    // Owner scope-add (card #168, 2026-07-14): "I can't see Sprint 3 anywhere"
+    // — a multi-phase card's workspace title should always show the CURRENT
+    // phase, not just its launch-time subject. --workspace defaults to the
+    // current pane, so no ref lookup is needed.
+    //
+    // IMPORTANT (ship-check P1 catch, 2026-07-14): the ✅ auto-mark hook and
+    // the duplicate-dispatch guard both key off this EXACT title as a
+    // prefix — a rename that drops the subject entirely (e.g. renaming to
+    // just "🤖 Infra·Sprint 3 wiring") makes both silently stop matching,
+    // so the workspace never gets ✅-marked/pruned and a second dispatch onto
+    // the same task goes undetected. The instruction below therefore tells
+    // the session to APPEND phase text after the unchanged launch title,
+    // never to replace it.
+    project ? `This workspace is named "${buildAutoTitle({ subject: task.subject, project })}" — the 🤖 marks it as auto-dispatched (safe to ignore; it reports via cards+email), "${project}" is its project bucket. If this card has multiple phases/sprints, you may APPEND the current phase after this exact title (never replace or shorten it — the ✅ auto-mark hook and duplicate-dispatch guard match on this title as a prefix): \`cmux workspace-action --action rename --title "${buildAutoTitle({ subject: task.subject, project })} — <current phase>"\`.` : null,
+    ``,
     // Standing anti-stale-seed instruction (chain break #1, 2026-07-12): a
     // launched session's seed is a snapshot — directives added to the card
     // after launch (e.g. "dispatch the next sprint yourself") are invisible
     // unless the session re-reads the card before wrapping up.
     `Before wrap-up, RE-READ this card via notion-brain get — directives may have been added since launch. If the card instructs chaining, dispatch the next workspace yourself; never end by telling the user to paste a prompt.`,
+    ``,
+    // Cheap human-in-loop escalation (task #151): sizing happens before any
+    // code is read, so a mis-sized card should say so rather than silently
+    // grinding on an under-powered model.
+    `If this task proves substantially harder than its size suggests (architecture, multi-file refactor, adversarial debugging), say so and recommend redispatch at --model opus.`,
     ``,
     `Start by confirming your understanding and a short plan, then proceed.`,
   ].filter(v => v !== null).join('\n');
@@ -176,16 +216,31 @@ function pollUntil(fn, timeoutSec) {
   }
 }
 
-function launchCmux(task, seed, commandOverride) {
+// Best-effort color-code (scope add, card #168): auto-dispatched workspaces
+// go Blue so the owner can distinguish "safe to ignore" tabs from ones they
+// opened themselves at a glance. Never blocks or fails the dispatch — a
+// verified-running claude session matters more than its tab color.
+function setAutoColor(ref) {
+  try { spawnSync(CMUX, ['workspace-action', '--action', 'set-color', '--color', 'Blue', '--workspace', ref], { encoding: 'utf8', timeout: 3000 }); } catch { /* cosmetic only */ }
+}
+
+function launchCmux(task, seed, commandOverride, model = 'sonnet', project = null) {
   const seedFile = path.join(os.tmpdir(), `bsc-seed-${task.id}.txt`);
   fs.writeFileSync(seedFile, seed);
-  const title = task.subject.slice(0, 50);
+  // Auto-dispatch naming (scope add, card #168): "🤖 <Project>·<subject>" so
+  // the cmux sidebar is scannable at a glance. project is only null in the
+  // --exec test seam / callers that bypass main()'s inference — falls back
+  // to the plain subject slice (pre-existing behavior) so nothing breaks.
+  const title = project ? buildAutoTitle({ subject: task.subject, project }) : task.subject.slice(0, 50);
   // The wrapper script expands $(cat …) so the multi-line prompt survives
   // without brittle inline quoting. `claude "<prompt>"` opens interactive on it.
   // --dangerously-skip-permissions: launched sessions must never permission-ping
   // (user rule 2026-07-12); explicit permissions.deny rules still outrank bypass.
   // commandOverride is a test seam (kill test, scope add 3) — never set in real use.
-  const command = commandOverride || `claude --dangerously-skip-permissions "$(cat ${seedFile})"`;
+  // --model sonnet: dispatched sessions default to Sonnet, not the user's
+  // interactive default (Fable) — 9 Fable workspaces in one night, 2026-07-13.
+  // Override per-dispatch with --model opus for genuinely hard cards.
+  const command = commandOverride || `claude --model ${model} --dangerously-skip-permissions "$(cat ${seedFile})"`;
   // Shell-init race (real failure 2026-07-12): new-workspace TYPES the command
   // into the pane while zsh/direnv may still be initializing, so leading
   // keystrokes get swallowed ('nclaude' → command not found) and the session
@@ -219,6 +274,7 @@ function launchCmux(task, seed, commandOverride) {
     // + claude cold start can exceed 15s post-reboot, and a false timeout
     // kills a healthy launch (ship-check reviewer finding, 2026-07-12).
     if (ws && pollUntil(() => cmuxws.claudeRunningIn(ws.ref), 30)) {
+      if (project) setAutoColor(ws.ref);
       return { ok: true, ref: ws.ref, seedFile, command };
     }
     if (attempt === 1) {
@@ -226,6 +282,7 @@ function launchCmux(task, seed, commandOverride) {
       // registered at the buzzer isn't killed as a corpse.
       sleepSec(2);
       if (ws && cmuxws.claudeRunningIn(ws.ref)) {
+        if (project) setAutoColor(ws.ref);
         return { ok: true, ref: ws.ref, seedFile, command };
       }
       if (ws) { try { cmuxws.closeWorkspace(ws.ref); } catch { /* already gone */ } }
@@ -250,6 +307,10 @@ function main() {
     process.exit(1);
   }
 
+  // Explicit --model flag always wins (layer 1 of resolveModel); everything
+  // else is resolved per-task once the task (and its Notion id) is known.
+  const explicitModel = typeof args.model === 'string' ? args.model : null;
+
   if (args.list) {
     const list = actionable(tasks);
     console.log(`Top workable tasks in '${LIST_ID}' (launch with --pick N):`);
@@ -257,8 +318,16 @@ function main() {
     // category left empty) — these pass the filter only because their subject
     // isn't a human-action verb (fail-closed check, no word bound).
     const unknownCat = t => { const c = categoryOf(t); return c === null || c === 'no-category'; };
-    list.slice(0, 10).forEach((t, i) => console.log(
-      `  ${i + 1}. #${t.id} [${t.status}]${unknownCat(t) ? ' [uncategorized]' : ''} ${t.subject}`));
+    // List mode resolves the model from the task-mirror description only (no
+    // per-task Notion fetch — that would be 10 API calls just to print a
+    // list). The mirror truncates notes to 400 chars (notion-tasks-sync.js),
+    // so a hint placed later in a long card can show sonnet here but resolve
+    // to its real hint at actual dispatch time (which DOES fetch the full
+    // card) — a display-only gap, since dispatch always uses the full card.
+    list.slice(0, 10).forEach((t, i) => {
+      const model = resolveModel({ explicitFlag: explicitModel, task: t, card: null, notionId: notionIdOf(t), queuePath: QUEUE_PATH });
+      console.log(`  ${i + 1}. #${t.id} [${t.status}] [${model}]${unknownCat(t) ? ' [uncategorized]' : ''} ${t.subject}`);
+    });
     const excluded = actionable(tasks, true).filter(isExcludedCategory);
     if (excluded.length) {
       console.log(`\nHuman-territory (${excluded.length} — never auto-picked; use --id N deliberately):`);
@@ -274,7 +343,21 @@ function main() {
 
   const pid = notionIdOf(task);
   const card = pid ? fetchCard(pid) : null;
-  const seed = buildSeed(task, card);
+  // Project bucket for auto-dispatch naming/coloring (scope add, card #168):
+  // prefer the full card's tags/category (richer than the task-mirror line),
+  // fall back to the mirror's categoryOf() for native/bridge-less tasks.
+  const project = projectOf({
+    tags: card && card.tags,
+    category: (card && card.category) || categoryOf(task),
+    subject: task.subject,
+  });
+  const seed = buildSeed(task, card, project);
+
+  // Dispatched sessions never inherit the user's interactive default (Fable —
+  // 9 Fable workspaces in one night, 2026-07-13): explicit --model wins,
+  // otherwise a card hint or the loop's own pickModel()-by-triage-size picks
+  // Opus for genuinely hard cards, floor is Sonnet. See resolveModel().
+  const model = resolveModel({ explicitFlag: explicitModel, task, card, notionId: pid, queuePath: QUEUE_PATH });
 
   if (args['dry-run'] || args['print-prompt']) {
     console.log(`# would launch on: #${task.id} [${task.status}] ${task.subject}\n`);
@@ -284,26 +367,20 @@ function main() {
 
   if (args.exec) {
     // Run an interactive claude on the seed in this terminal (no Cmux).
-    const r = spawnSync('claude', ['--dangerously-skip-permissions', seed], { stdio: 'inherit', cwd: REPO });
+    const r = spawnSync('claude', ['--model', model, '--dangerously-skip-permissions', seed], { stdio: 'inherit', cwd: REPO });
     if (r.error) { console.error(`[bsc-next] failed to launch claude: ${r.error.message}`); process.exit(1); }
     process.exit(r.status == null ? 1 : r.status); // null = killed by signal → non-zero
   }
 
-  // Backstop auto-prune (scope add 2, task #48): sessions that die before
-  // self-closing leave ✅-marked workspaces behind — sweep them at every
-  // dispatch so the workspace list stays honest even without manual bsc-prune.
+  // NO auto-prune at dispatch (owner rule 2026-07-15, third closed-tab incident
+  // that day): ✅-marked workspaces stay open until the OWNER closes them —
+  // bsc-prune / the Cmux UI. The mark is mechanical (Stop hook flips it when
+  // the claimed task completes) and says nothing about whether the owner is
+  // still reading or typing in the tab, so dispatch-time sweeps closed tabs
+  // out from under the owner mid-keystroke. ✅ workspaces don't block
+  // re-dispatch either way — findLiveWorkspaceForTask() skips isDoneTitle().
   if (cmuxws.cmuxAvailable()) {
-    try {
-      const { closed, skipped } = cmuxws.pruneDone();
-      if (closed.length) {
-        console.log(`[bsc-next] pruned ${closed.length} finished ✅ workspace(s): ${closed.map(w => w.ref).join(', ')}`);
-      }
-      if (skipped.length) {
-        console.log(`[bsc-next] left ${skipped.length} ✅ workspace(s) with claude still running: ${skipped.map(w => w.ref).join(', ')}`);
-      }
-    } catch (e) { console.error(`[bsc-next] prune sweep failed (continuing): ${e.message}`); }
-
-    // Duplicate-dispatch guard (post-sweep so a just-pruned ✅ twin can't block).
+    // Duplicate-dispatch guard (✅-marked twins never count as live).
     if (!args.force) {
       try {
         const dup = findLiveWorkspaceForTask(task, cmuxws.listWorkspaces(), cmuxws.isDoneTitle);
@@ -317,7 +394,7 @@ function main() {
     }
   }
 
-  const res = launchCmux(task, seed);
+  const res = launchCmux(task, seed, undefined, model, project);
   if (res.ok) {
     console.log(`[bsc-next] opened Cmux workspace ${res.ref} on #${task.id}: ${task.subject} (claude verified running)`);
   } else {

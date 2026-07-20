@@ -163,3 +163,35 @@ test('past closingDate counts as closed even without closed status', () => {
   const result = checkForDuplicate(announced, [pastClose]);
   assert.equal(result.isDuplicate, false, `past-closingDate show should be treated as closed: ${result.reason}`);
 });
+
+// Regression (2026-07-18): jack-and-the-beanstalk-theatre-on-kew (previews, Theatre
+// on Kew, summer run) was flagged as duplicate of Hackney Empire's announced
+// Christmas panto — same title, same category, same year, CONFIRMED different
+// venues. The existing-active branch already treated venue-diff as separate when
+// the EXISTING show was the active one; the check was direction-asymmetric.
+test('active + announced same-title same-category at confirmed different venues = not duplicate (either direction)', () => {
+  const kew = {
+    id: 'jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026',
+    title: 'Jack and the Beanstalk - Theatre on Kew',
+    status: 'previews',
+    category: 'off-west-end',
+    venue: 'Theatre on Kew',
+    openingDate: null,
+    previewsStartDate: '2026-07-18',
+    closingDate: '2026-08-23',
+  };
+  const hackney = {
+    id: 'jack-and-the-beanstalk-off-west-end-2026',
+    title: 'Jack and The Beanstalk',
+    status: 'announced',
+    category: 'off-west-end',
+    venue: 'Hackney Empire',
+    openingDate: null,
+    previewsStartDate: '2026-11-21',
+    closingDate: '2026-12-31',
+  };
+  const a = checkForDuplicate(kew, [hackney]);
+  assert.equal(a.isDuplicate, false, `kew-vs-hackney should not be duplicate: ${a.reason}`);
+  const b = checkForDuplicate(hackney, [kew]);
+  assert.equal(b.isDuplicate, false, `hackney-vs-kew should not be duplicate: ${b.reason}`);
+});

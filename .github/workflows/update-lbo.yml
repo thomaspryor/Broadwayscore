@@ -76,15 +76,10 @@ jobs:
           # shellcheck disable=SC2086
           node scripts/scrape-lbo-audience.js $ARGS
 
-      - name: Save core data snapshot
-        if: always() && inputs.dry_run != true
-        run: |
-          mkdir -p /tmp/core-data-snapshot
-          for f in audience-buzz.json audience-reviews-lbo.json; do
-            if [ -f "data/$f" ]; then
-              cp -f "data/$f" /tmp/core-data-snapshot/
-            fi
-          done
+      # NOTE: snapshot-overwrite step removed 2026-07-19. /tmp/core-data-snapshot/ is
+      # the checkout-time baseline push-core-data diffs against (2beb6617c58);
+      # overwriting it with the scraper's output made audience files read as
+      # "untouched" and silently skipped from the private-repo push.
 
       - name: Push core data to private repo
         if: always() && inputs.dry_run != true

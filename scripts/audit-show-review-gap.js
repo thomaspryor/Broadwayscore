@@ -55,6 +55,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { execErrorDetail } = require('./lib/exec-error-detail');
 const {
   FLAGGED_RECOVERY_CAP,
   isEmptyBodyFile,
@@ -126,17 +127,10 @@ function loadCheckpoint() {
 function saveCheckpoint(cp) {
   try { fs.writeFileSync(CHECKPOINT_PATH, JSON.stringify(cp, null, 2)); } catch { /* non-fatal */ }
 }
-// How long to skip a show after auditing it. Closed shows that came back clean
-// rarely change, so they get a long skip (don't re-burn credits); open shows and
-// shows with gaps are re-checked sooner so newly-published reviews are caught.
-function freshnessMsFor(show, lastEntry) {
-  const closed = show && show.status === 'closed';
-  // A closed show that audited clean won't get new reviews — re-check only yearly
-  // (effectively one-time) so the back-catalogue grind doesn't burn credits forever.
-  if (closed && lastEntry && lastEntry.gaps === 0) return 365 * 24 * 60 * 60 * 1000; // 365d
-  if (closed) return 14 * 24 * 60 * 60 * 1000; // 14d — retry closed shows that still had gaps
-  return FRESHNESS_HOURS * 60 * 60 * 1000; // open/previews — re-check often for new reviews
-}
+// Freshness + ordering policy (extracted 2026-07-14 — opening-week shows must
+// re-audit every hourly run and sort ahead of the back-catalogue grind; The
+// Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
+const { freshnessMsFor, compareAuditPriority, checkpointTs } = require('./lib/gap-audit-freshness');
 
 // Non-review domains we ignore inside aggregator articles (platform widgets,
 // social, navigation, store links, internal Playbill/BWW article navigation).
@@ -948,7 +942,7 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     execFileSync('node', args, { stdio: 'pipe', timeout: 120000 });
     return { ok: true, reason: null, provisional };
   } catch (e) {
-    return { ok: false, reason: e.message.split('\n')[0].slice(0, 100), provisional };
+    return { ok: false, reason: execErrorDetail(e, 100), provisional };
   }
 }
 
@@ -991,14 +985,24 @@ function bumpRecoveryCount(showId, file, value) {
 // outcome (see bumpRecoveryCount) so the cap actually halts retries. Returns the
 // per-flaggedMiss outcome for logging + the audit JSON.
 function recoverEmptyBodyFlaggedMiss(showId, m) {
-  // Re-run the cap/url decision from the carried flaggedMiss metadata. The full
-  // merge-safety check (human-protected / wrongProduction / empty-body) was already
-  // applied in auditShow via isRecoverableFlaggedFile — only recoverable misses
-  // reach here. This second pass re-checks the retry cap (the audit JSON could be a
-  // few minutes stale) and that an aggregator URL is present. fullText is absent on
-  // this reconstructed view, which reads as empty-body — correct, since recovery
-  // only ever targets empty-body files.
-  const file = { aggUrlRecoveryCount: m.recoverableCount || 0 };
+  // Re-run the cap/url decision against the CURRENT on-disk file, not the
+  // reconstructed flaggedMiss view. The audit JSON can be minutes stale, and a
+  // parallel session/workflow may have FILLED the file since detection —
+  // 2026-07-18 incident: heathers theatre-weekly was manually filled (3367
+  // chars, scored 74) between audit detection and this recovery pass; the old
+  // reconstructed view ({aggUrlRecoveryCount} with fullText absent) read as
+  // empty-body, the recovery re-ingested an empty aggregator fetch, and the
+  // workflow's stale checkout then pushed the husk over the real review.
+  // decideEmptyBodyRecovery's isEmptyBodyFile check on the fresh read makes
+  // this pass a no-op when the file is no longer empty. Fall back to the
+  // reconstructed view only when the file is unreadable (deleted/renamed —
+  // recovery would then recreate it, which is the intended fill behavior).
+  let file;
+  try {
+    file = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, showId, m.recoverableFile), 'utf8'));
+  } catch {
+    file = { aggUrlRecoveryCount: m.recoverableCount || 0 };
+  }
   const decision = decideEmptyBodyRecovery({
     file,
     outletId: m.recoverableOutletId || m.knownOutletId || null,
@@ -1028,7 +1032,7 @@ function recoverEmptyBodyFlaggedMiss(showId, m) {
     execFileSync('node', iargs, { stdio: 'pipe', timeout: 120000 });
     ingestExit = true;
   } catch (e) {
-    reason = e.message.split('\n')[0].slice(0, 100);
+    reason = execErrorDetail(e, 100);
   }
   // "recovered" = the empty file is now ACTUALLY filled — NOT merely that the child
   // exited 0. ingest-review-from-url.js exits 0 on a no-op skip ("already exists",
@@ -1085,13 +1089,12 @@ if (require.main === module) (async () => {
         // existed recorded vacuous gaps:0 (59 shows) and closed-clean shows get a
         // 365d skip — force one re-audit under the new reference version.
         if (isWeShow(s) && e.refVersion !== WE_REF_VERSION) return true;
-        return (now - new Date(e.at).getTime()) >= freshnessMsFor(s, e);
+        // checkpointTs → 0 on malformed `at`, so a corrupt entry reads as
+        // never-audited (always due) instead of NaN-skipped forever.
+        return (now - checkpointTs(e)) >= freshnessMsFor(s, e, { freshnessHours: FRESHNESS_HOURS, now });
       })
-      .sort((a, b) => {
-        const ta = checkpoint[a.id] ? new Date(checkpoint[a.id].at).getTime() : 0;
-        const tb = checkpoint[b.id] ? new Date(checkpoint[b.id].at).getTime() : 0;
-        return ta - tb; // oldest / never-audited first
-      });
+      // Opening-window shows first (reviews landing NOW), then oldest-audited.
+      .sort((a, b) => compareAuditPriority(a, b, checkpoint, now));
     console.log(`audit-show-review-gap: ${targets.length}/${before} due for audit (checkpoint, freshness skip applied)`);
   }
 

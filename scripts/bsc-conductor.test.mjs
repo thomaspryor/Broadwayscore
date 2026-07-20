@@ -1,0 +1,142 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import fs from 'node:fs';
+const require = createRequire(import.meta.url);
+const { parseArgs, tailLines, formatWorkspaces, runOrientationSweep, buildSeed, STANDING_RULES } =
+  require('./bsc-conductor.js');
+
+test('parseArgs: flags with values vs bare boolean flags', () => {
+  assert.deepEqual(parseArgs(['--model', 'sonnet', '--dry-run']), { _: [], model: 'sonnet', 'dry-run': true });
+  assert.deepEqual(parseArgs([]), { _: [] });
+});
+
+test('tailLines: returns last N lines, oldest dropped', () => {
+  const readFn = () => 'a\nb\nc\nd\n';
+  assert.equal(tailLines('/x', 2, readFn), 'c\nd');
+  assert.equal(tailLines('/x', 10, readFn), 'a\nb\nc\nd');
+});
+
+test('tailLines: empty file vs missing file get distinct messages', () => {
+  assert.match(tailLines('/x', 5, () => ''), /empty/);
+  assert.match(tailLines('/x', 5, () => { throw new Error('ENOENT'); }), /no ledger file yet/);
+});
+
+test('formatWorkspaces: empty list, selected marker, ref+title rendered', () => {
+  assert.match(formatWorkspaces([]), /none open/);
+  const out = formatWorkspaces([
+    { ref: 'workspace:1', title: 'Fix scraper', selected: false },
+    { ref: 'workspace:2', title: 'Build thing', selected: true },
+  ]);
+  assert.match(out, /workspace:1 {2}Fix scraper/);
+  assert.match(out, /workspace:2 \[selected\] {2}Build thing/);
+});
+
+test('runOrientationSweep: happy path threads runFn calls through to named fields', () => {
+  const calls = [];
+  const runFn = (cmd, args) => { calls.push(args.join(' ')); return `stub:${args.join(' ')}`; };
+  const sweep = runOrientationSweep(runFn, {
+    readFn: () => 'line1\nline2\n',
+    cmuxAvailableFn: () => true,
+    listWorkspacesFn: () => [{ ref: 'workspace:1', title: 'T', selected: false }],
+  });
+  assert.match(sweep.nextList, /^stub:scripts\/bsc-next\.js --list$/);
+  assert.match(sweep.pruneDry, /^stub:scripts\/bsc-prune\.js --dry-run$/);
+  assert.match(sweep.radar, /^stub:scripts\/morning-radar\.js$/);
+  assert.match(sweep.needsApproval, /notion-brain\.js list --auto needs-approval,queued/);
+  assert.match(sweep.urgent, /notion-brain\.js list --priority P0 Now/);
+  assert.equal(sweep.ledgerTail, 'line1\nline2');
+  assert.match(sweep.workspaces, /workspace:1 {2}T/);
+});
+
+test('runOrientationSweep: cmux unavailable is reported, not thrown', () => {
+  const sweep = runOrientationSweep(() => 'x', { cmuxAvailableFn: () => false });
+  assert.match(sweep.workspaces, /cmux CLI not found/);
+});
+
+test('runOrientationSweep: a failing sub-command degrades to a labeled message, not a crash', () => {
+  const runFn = (cmd, args) => {
+    if (args.includes('scripts/morning-radar.js')) throw new Error('boom\nstack trace');
+    return 'ok';
+  };
+  const sweep = runOrientationSweep(runFn, { cmuxAvailableFn: () => false });
+  assert.match(sweep.radar, /morning-radar failed: boom/);
+  assert.equal(sweep.nextList, 'ok'); // unrelated fields unaffected
+});
+
+// ship-check P1: execFileSync's real Error.message shape is
+// "Command failed: <cmd>\n<actual stderr>" — the diagnostic text is on line 2+,
+// not line 1. A naive split('\n')[0] discarded exactly the useful part and left
+// the seed prompt unable to distinguish a real failure from "nothing to report".
+test('runOrientationSweep: execFileSync-shaped errors keep the real stderr, not the command echo', () => {
+  const runFn = () => {
+    throw new Error("Command failed: node scripts/bsc-next.js --list\n[bsc-next] shared task list 'x' is empty.\n");
+  };
+  const sweep = runOrientationSweep(runFn, { cmuxAvailableFn: () => false });
+  assert.doesNotMatch(sweep.nextList, /^\(bsc-next --list failed: Command failed/);
+  assert.match(sweep.nextList, /shared task list 'x' is empty/);
+});
+
+test('runOrientationSweep: a plain (non-execFileSync-shaped) error message passes through unchanged', () => {
+  const runFn = () => { throw new Error('ENOENT: no such file'); };
+  const sweep = runOrientationSweep(runFn, { cmuxAvailableFn: () => false });
+  assert.match(sweep.nextList, /bsc-next --list failed: ENOENT: no such file/);
+});
+
+const SAMPLE_SWEEP = {
+  nextList: '1. #7 [pending] [sonnet] Fix thing',
+  ledgerTail: '{"event":"run-end"}',
+  pruneDry: 'nothing to prune',
+  workspaces: '  (none open)',
+  radar: '[]',
+  needsApproval: '[]',
+  urgent: '[]',
+  staleCards: '[{"name":"Ancient card"}]',
+};
+
+test('buildSeed embeds every sweep section under its own heading', () => {
+  const seed = buildSeed(SAMPLE_SWEEP, '2026-07-14T21:30:00.000Z');
+  assert.match(seed, /## Top actionable tasks \(bsc-next --list\)\n1\. #7 \[pending\] \[sonnet\] Fix thing/);
+  assert.match(seed, /## Last 20 autonomous-ledger\.jsonl entries\n\{"event":"run-end"\}/);
+  assert.match(seed, /## Cmux workspace prune check/);
+  assert.match(seed, /## Open cmux workspaces\n {2}\(none open\)/);
+  assert.match(seed, /## Morning radar/);
+  assert.match(seed, /## Notion: needs-approval \/ queued cards/);
+  assert.match(seed, /## Notion: P0 Now \/ Not started cards/);
+  assert.match(seed, /2026-07-14T21:30:00\.000Z/);
+});
+
+test('buildSeed asks for a 5-line report first and defers re-running the sweep', () => {
+  const seed = buildSeed(SAMPLE_SWEEP, 'now');
+  assert.match(seed, /5-line state-of-the-world/);
+  assert.match(seed, /Do not re-run the sweep commands yourself unless something above looks stale/);
+});
+
+test('buildSeed carries all 7 standing rules by number', () => {
+  const seed = buildSeed(SAMPLE_SWEEP, 'now');
+  for (let i = 1; i <= 7; i++) assert.match(seed, new RegExp(`${i}\\. [A-Z]`));
+  assert.match(STANDING_RULES, /DISPATCH, DON'T IMPLEMENT/);
+  assert.match(STANDING_RULES, /PIN MODELS ON EVERY FAN-OUT/);
+  assert.match(STANDING_RULES, /CARD EVERY DISCOVERY/);
+  assert.match(STANDING_RULES, /CONVERSE WITH THE OWNER/);
+  assert.match(STANDING_RULES, /NO PASTE-PROMPTS/);
+  assert.match(STANDING_RULES, /NO HUMAN-TERRITORY PICKS/);
+  assert.match(STANDING_RULES, /STAY DISPOSABLE/);
+});
+
+test('main() defaults to --model opus --effort high, never a bare/inherited model', () => {
+  const src = fs.readFileSync(new URL('./bsc-conductor.js', import.meta.url), 'utf8');
+  assert.match(src, /model = typeof args\.model === 'string' \? args\.model : 'opus'/);
+  assert.match(src, /effort = typeof args\.effort === 'string' \? args\.effort : 'high'/);
+  assert.match(src, /spawnSync\('claude', \['--model', model, '--effort', effort,/);
+  // no --dangerously-skip-permissions: this is the owner's own interactive
+  // session, unlike bsc-next's unattended dispatch targets.
+  assert.doesNotMatch(src, /--dangerously-skip-permissions/);
+});
+
+test('seed embeds the stale-card kill/keep section (review gap fix)', () => {
+  const seed = buildSeed(SAMPLE_SWEEP, 'now');
+  assert.match(seed, /## Notion: stale cards \(Not started, untouched 90\+ days\)/);
+  assert.match(seed, /Ancient card/);
+  assert.match(seed, /owner-action/);
+});

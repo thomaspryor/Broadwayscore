@@ -48,9 +48,18 @@ function loadShows(): void {
 }
 
 // Match a Playbill title to a show slug using the shared library
-// Playbill only covers Broadway → market: 'broadway', prefer most recent open production
-function findMatchingSlug(title: string): string | null {
-  const result = matchTitleToShow(title, allShows, { market: 'broadway', prefer: 'open' });
+// Playbill only covers Broadway → market: 'broadway'. This is a HISTORICAL
+// backfill, not a live-week scrape: pass the exact week date so the shared
+// matcher disambiguates same-title productions (e.g. Cabaret 1998/2014, Gypsy
+// 1989/2003/2024) by which one's run window actually contains that week
+// (falls back to closest-opening-year if no window matches), instead of
+// always picking whichever revival is open TODAY — otherwise every historical
+// week for a recurring title gets attributed to whatever's running right now.
+// Found 2026-07-20: year-only disambiguation caused 2,351 chronologically-
+// impossible show/week entries across 250 shows in the 2001-2018 backfill.
+function findMatchingSlug(title: string, weekDateStr: string): string | null {
+  const weekYear = new Date(weekDateStr + 'T00:00:00Z').getFullYear();
+  const result = matchTitleToShow(title, allShows, { market: 'broadway', prefer: 'open', year: weekYear, date: weekDateStr });
   if (!result?.show) return null;
   // Require high confidence — medium (word-based fuzzy) causes wrong-show contamination
   if (result.confidence !== 'high') return null;
@@ -222,7 +231,7 @@ async function backfillHistory(): Promise<void> {
           for (const row of rowData) {
             if (!row || !row.showName) continue;
 
-            const slug = findMatchingSlug(row.showName);
+            const slug = findMatchingSlug(row.showName, weekDate);
             if (slug) {
               weekSnapshot[slug] = {
                 gross: parseCurrency(row.gross),

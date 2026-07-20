@@ -35,7 +35,7 @@ const {
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
-const { pickRerouteTarget, shouldSkipRoundupAudit } = require('./review-guards');
+const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview } = require('./review-guards');
 const { detectRoundupDigest } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
@@ -399,6 +399,24 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     // Allow through but mark as roundup so rebuild excludes from scoring
     fields.isRoundupArticle = true;
     fields.roundupArticleReason = 'auto: URL matches BWW Review-Roundup page pattern';
+  }
+
+  // --- Guard E1: BWW /reviews/{slug} critics-aggregation page detection ---
+  // BWW's /reviews/{slug} page is a critics-average widget quoting OTHER
+  // outlets, not an individual BWW review (distinct from /article/... which
+  // IS a BWW-authored review). Ingested as a 13th T1 review on
+  // the-whoopi-monologues-off-broadway-2026 (2026-07-14): score came from the
+  // average widget, criticName from a quoted outlet's JSON-LD Person markup.
+  // Gated on outletId (via isRoundupPageAsReview), not URL alone, so a review
+  // legitimately SOURCED from this page under a different outlet still writes —
+  // same policy the rebuild-time gate already applies to WOS/Stage/LBO/WET.
+  // Skip when Guard E already flagged — since isRoundupUrl gained the
+  // /article/Review-Roundup- pattern (df046f73aaa), isRoundupPageAsReview
+  // also matches those URLs and was overwriting E's more specific reason
+  // (broke the Guard E unit test on main, 2026-07-19).
+  if (!fields.isRoundupArticle && isRoundupPageAsReview({ url: input.url, outletId })) {
+    fields.isRoundupArticle = true;
+    fields.roundupArticleReason = 'auto: URL matches BWW /reviews/ critics-aggregation page pattern';
   }
 
   // --- Guard E2: LBO Review-Round-Up page detection ---

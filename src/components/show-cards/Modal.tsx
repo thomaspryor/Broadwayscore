@@ -74,15 +74,27 @@ export default function Modal({
         ),
       ).filter(el => el.offsetParent !== null);
     };
-    // Defer initial focus one frame so the panel is painted.
-    const raf = requestAnimationFrame(() => (focusables()[0] || panelRef.current)?.focus?.());
+    // Defer initial focus one frame so the panel is painted. Focus the PANEL
+    // (tabIndex=-1), never the first control: Safari/Chrome treat programmatic
+    // focus as :focus-visible, which painted an amber focus ring on the first
+    // star the moment the rating sheet opened (owner report, 2026-07-19).
+    // Tab from the panel still lands on the first control, so the trap holds.
+    const raf = requestAnimationFrame(() => panelRef.current?.focus?.());
+    // Manual traversal for EVERY Tab, not just first/last wrap: WebKit/Safari's
+    // native Tab only visits text fields — it skips buttons entirely and then
+    // walks out of the dialog into the page behind (caught by the webkit e2e
+    // project, 2026-07-19). Stepping through the focusables list ourselves
+    // gives every browser the same order and guarantees containment.
     const onTab = (e: KeyboardEvent) => {
       if (e.key !== 'Tab' || !isTopmost()) return;
+      e.preventDefault();
       const f = focusables();
-      if (!f.length) { e.preventDefault(); panelRef.current?.focus(); return; }
-      const first = f[0], last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      if (!f.length) { panelRef.current?.focus(); return; }
+      const idx = f.indexOf(document.activeElement as HTMLElement);
+      const next = e.shiftKey
+        ? (idx <= 0 ? f[f.length - 1] : f[idx - 1])
+        : (idx === -1 || idx === f.length - 1 ? f[0] : f[idx + 1]);
+      next.focus();
     };
     document.addEventListener('keydown', onTab);
     return () => {
@@ -160,8 +172,10 @@ export default function Modal({
     ? 'flex items-end sm:items-center justify-center'
     : 'flex items-center justify-center p-4';
 
+  // Bottom sheets sit flush against the screen edge — pad for the iOS home
+  // indicator so the last action row isn't visually cut off (owner, 2026-07-19).
   const panelRounding = bottomSheet
-    ? 'rounded-t-2xl sm:rounded-2xl'
+    ? 'rounded-t-2xl sm:rounded-2xl pb-[env(safe-area-inset-bottom)] sm:pb-0'
     : 'rounded-2xl';
 
   // Portal to <body>: position:fixed resolves against the nearest containing

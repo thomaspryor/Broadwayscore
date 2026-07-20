@@ -8,7 +8,10 @@ on:
 jobs:
   report:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # 30 min: the 10-min limit timeout-cancelled EVERY weekly run May 25 - Jul 13
+    # 2026 (log-scanning outgrew it), and cancelled runs are invisible to the
+    # failure digest. Also registered in check-cron-health.yml CRITICAL_CRONS.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
 
@@ -16,6 +19,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
         run: |
@@ -27,7 +33,7 @@ jobs:
           WORKFLOW_ROWS=""
           TOTAL_RUNS=0
           TOTAL_FAILED=0
-          for wf in "Collect Review Texts" "Gather Review Data" "Opening Night Poller" "Opening Night Reviews" "Enrich IBDB Dates" "Bulk Show Score" "Auto-Maintain Show Data" "Scrape BWW Reviews" "Update Commercial" "Fix Platform Ticket Links"; do
+          for wf in "Collect Review Texts" "Gather Review Data" "Opening Night Poller" "Opening Night Reviews" "Enrich IBDB Dates" "Bulk Show Score" "Auto-Maintain Show Data" "Scrape BWW Reviews" "Update Commercial Data" "Fix Platform Ticket Links"; do
             RUNS=$(gh run list --workflow="$wf" --created=">$SINCE" --json conclusion -q 'length' 2>/dev/null || echo "0")
             SUCCESS=$(gh run list --workflow="$wf" --created=">$SINCE" --status=completed --json conclusion -q '[.[] | select(.conclusion=="success")] | length' 2>/dev/null || echo "0")
             FAILED=$((RUNS - SUCCESS))
@@ -42,18 +48,17 @@ jobs:
             fi
           done
 
-          # --- Collect [Scraper Summary] data ---
-          # Iterates ALL workflows (no head cap — repo has 100+) and scans up
-          # to 100 recent runs per workflow, summing EVERY [Scraper Summary]
-          # line in each log (not just the first — some long-running scripts
-          # emit the summary multiple times per run).
-          # Also tracks SB credits per workflow so the report can attribute spikes.
+          # --- Collect [Scraper Summary] data (SAMPLED) ---
+          # Bounded to the known scraping workflows × last 5 completed runs each
+          # (~50 log downloads). The previous version walked ALL 100+ workflows ×
+          # up to 100 runs each and timeout-cancelled every weekly run May 25 -
+          # Jul 13 2026. Telemetry here is sampled ATTRIBUTION; the
+          # provider-reported numbers below are the billing ground truth.
           PW_TOTAL=0; BD_TOTAL=0; SB_TOTAL=0; SB_CREDITS_TOTAL=0
           SB_BY_WF_FILE=$(mktemp)
-          for wf_entry in $(gh api --paginate repos/$GITHUB_REPOSITORY/actions/workflows --jq '.workflows[] | "\(.id)|\(.name | gsub(" "; "_"))"' 2>/dev/null); do
-            wf_id="${wf_entry%%|*}"
-            wf_name="${wf_entry#*|}"
-            for run_id in $(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$wf_id/runs?created=>$SINCE&per_page=100&status=completed" --jq '.workflow_runs[].id' 2>/dev/null); do
+          for wf in "Collect Review Texts" "Gather Review Data" "Opening Night Poller" "Opening Night Reviews" "Enrich IBDB Dates" "Bulk Show Score" "Auto-Maintain Show Data" "Scrape BWW Reviews" "Update Commercial Data" "Fix Platform Ticket Links" "Audit Aggregator Review Gap" "Scrape New Aggregators"; do
+            wf_name=$(echo "$wf" | tr ' ' '_')
+            for run_id in $(gh run list --workflow="$wf" --created=">$SINCE" --status=completed --limit=5 --json databaseId -q '.[].databaseId' 2>/dev/null); do
               # Sum ALL summary lines per log (multi-call scripts emit multiple)
               while IFS= read -r SUMMARY; do
                 [ -z "$SUMMARY" ] && continue
@@ -134,6 +139,31 @@ jobs:
             SB_USED_NUM=$(echo "$SB_PARSED" | cut -d'|' -f3)
             SB_CAP_NUM=$(echo "$SB_PARSED" | cut -d'|' -f4)
             SB_PROJECTED_ABS=$(echo "$SB_PARSED" | cut -d'|' -f5)
+          fi
+
+          # --- Provider-reported ground truth (billing APIs, not log-sampled) ---
+          # These are exact numbers straight from each provider — the telemetry
+          # tables above are sampled attribution only. When these disagree with
+          # the sampled sums, the burn is coming from an untelemetried path
+          # (the 2026-07 SB SERP invisible-burn failure mode).
+          SD_LINE="—"
+          if [ -n "$SCRAPINGDOG_API_KEY" ]; then
+            SD_RAW=$(curl -s --max-time 15 "https://api.scrapingdog.com/account?api_key=$SCRAPINGDOG_API_KEY" 2>/dev/null || echo "{}")
+            SD_LINE=$(echo "$SD_RAW" | python3 -c "import sys,json; d=json.load(sys.stdin); u=d.get('requestUsed',0); l=d.get('requestLimit',0) or 1; v=d.get('validity','?'); print(f'{u:,} / {l:,} credits used ({u/l*100:.0f}%) · renews in {v}d · pack {d.get(\"pack\",\"?\")}')" 2>/dev/null || echo "API error")
+          fi
+          BD_LINE="—"
+          if [ -n "$BRIGHTDATA_TOKEN" ]; then
+            BD_BAL=$(curl -s --max-time 15 -H "Authorization: Bearer $BRIGHTDATA_TOKEN" "https://api.brightdata.com/customer/balance" 2>/dev/null || echo "{}")
+            MONTH_FROM=$(date '+%Y-%m-01')
+            TODAY=$(date '+%Y-%m-%d')
+            BD_MONTH_COST=0
+            for zone in serp_api1 "${BRIGHTDATA_ZONE:-web_unlocker2}"; do
+              ZC=$(curl -s --max-time 15 -H "Authorization: Bearer $BRIGHTDATA_TOKEN" "https://api.brightdata.com/zone/cost?zone=$zone&from=$MONTH_FROM&to=$TODAY" 2>/dev/null || echo "{}")
+              Z=$(echo "$ZC" | python3 -c "import sys,json; d=json.load(sys.stdin); print(sum((c.get('custom') or {}).get('cost',0) for c in d.values() if isinstance(c,dict)))" 2>/dev/null || echo "0")
+              BD_MONTH_COST=$(echo "$BD_MONTH_COST + $Z" | bc 2>/dev/null || echo "$BD_MONTH_COST")
+            done
+            BD_LINE=$(echo "$BD_BAL" | python3 -c "import sys,json; d=json.load(sys.stdin); print(f'balance \${d.get(\"balance\",0):.2f} · pending \${d.get(\"pending_costs\",0):.2f}')" 2>/dev/null || echo "API error")
+            BD_LINE="$BD_LINE · month-to-date \$$BD_MONTH_COST (serp+unlocker)"
           fi
 
           # --- SB credit status ---
@@ -227,6 +257,13 @@ jobs:
 
             <p style="font-size:12px;color:#9ca3af;margin:4px 0 0 0">SB breakdown (last collect run): page=$SB_PAGE, SERP=$SB_SERP</p>
 
+            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Provider-Reported (billing ground truth)</h3>
+            <table style="font-size:13px;border-collapse:collapse;width:100%">
+              <tr><td style="padding:4px 0;color:#6b7280">ScrapingDog</td><td style="padding:4px 0 4px 8px">$SD_LINE</td></tr>
+              <tr><td style="padding:4px 0;color:#6b7280">Bright Data</td><td style="padding:4px 0 4px 8px">$BD_LINE</td></tr>
+            </table>
+            <p style="font-size:11px;color:#9ca3af;margin:4px 0 0 0">Telemetry tables above are sampled attribution; when they disagree with these numbers, an untelemetried path is burning.</p>
+
             <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">ScrapingBee Cycle Usage</h3>
             <p style="font-size:14px;margin:0 0 4px 0"><strong>${SB_PCT}% used</strong> ($SB_USED_NUM / $SB_CAP_NUM credits). Projected end-of-cycle: <strong>${SB_PROJECTED}%</strong> of current cap.</p>
             <p style="font-size:13px;color:#6b7280;margin:0 0 8px 0">Post-downgrade cap (Startup plan): <strong>$SB_TARGET_CAP credits.</strong> Current trajectory will land at ~${SB_PROJECTED}% of <em>current</em> 3M cap = projected use vs new cap is what matters.</p>
@@ -258,6 +295,12 @@ jobs:
           | Browserbase | $BB_SESSIONS sessions | \$$BB_COST |
 
           SB breakdown (last collect run): page=$SB_PAGE, SERP=$SB_SERP
+
+          ## Provider-Reported (billing ground truth)
+          - ScrapingDog: $SD_LINE
+          - Bright Data: $BD_LINE
+
+          Telemetry above is sampled attribution; disagreement with these numbers means an untelemetried path is burning.
 
           ## ScrapingBee Cycle Usage
           - Used this cycle: $SB_USED_NUM / $SB_CAP_NUM (${SB_PCT}%)

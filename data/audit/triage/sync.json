@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-07-13T08:05:15.138Z",
+  "lastChecked": "2026-07-20T12:44:04.111Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,12 +14,12 @@
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "33 open shows all have reviews and grosses"
+      "message": "30 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: social-pulse per-show freshness",
       "status": "pass",
-      "message": "79 running BW/WE shows — no stale social-pulse files"
+      "message": "76 running BW/WE shows — no stale social-pulse files"
     },
     {
       "name": "Sync: phantom show detection",
@@ -29,17 +29,17 @@
     {
       "name": "Sync: cast coverage",
       "status": "pass",
-      "message": "33 active Broadway shows all have cast data"
+      "message": "30 active Broadway shows all have cast data"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 18764 vs baseline 18775"
+      "message": "Reviews dropped: 19109 vs baseline 19121"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 7/6/2026 (7d ago)"
+      "message": "weekEnding 7/12/2026 (8d ago)"
     }
   ]
 }

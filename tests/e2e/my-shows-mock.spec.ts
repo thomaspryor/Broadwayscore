@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { switchToListView } from './helpers/mock-helpers';
 
 
 /**
@@ -47,11 +48,12 @@ test.describe('My Shows — Page Structure', () => {
 
   test('stats bar shows correct counts', async ({ page }) => {
     await goToMock(page);
-    // Counts live in the tab badges (summary bar deduped 2026-07-12);
-    // the amber "to rate" hook is the one non-badge stat.
+    // Counts live in the tab badges only — the "N to rate" stats line was
+    // removed entirely (owner, 2026-07-17: pushed content down, redundant
+    // with the To Be Rated section header).
     await expect(page.locator('#tab-diary span').first()).toHaveText('9');
     await expect(page.locator('#tab-watchlist span').first()).toHaveText('6');
-    await expect(page.getByText('to rate')).toBeVisible();
+    await expect(page.getByText(/^\d+ to rate$/)).toHaveCount(0);
   });
 
   test('no console errors on page load', async ({ page }) => {
@@ -137,6 +139,7 @@ test.describe('My Shows — Diary Sections', () => {
 
   test('Upcoming section shows future watchlist items', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     await expect(page.getByRole('heading', { name: 'Upcoming' })).toBeVisible();
     // Gypsy (Sep 15) and Smash (Oct 10)
     await expect(page.getByRole('heading', { name: 'Gypsy', level: 4 })).toBeVisible();
@@ -145,6 +148,7 @@ test.describe('My Shows — Diary Sections', () => {
 
   test('Past Shows section shows all rated shows', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     await expect(page.getByRole('heading', { name: 'Past Shows' })).toBeVisible();
     // All 7 reviewed shows
     await expect(page.getByRole('heading', { name: 'Wicked', level: 4 })).toBeVisible();
@@ -155,9 +159,11 @@ test.describe('My Shows — Diary Sections', () => {
 
   test('To Be Rated stars are interactive', async ({ page }) => {
     await goToMock(page);
-    // Click 4-star on Ragtime
-    const ragtime = page.locator('text=Ragtime').first().locator('..').locator('..');
-    const fourStar = page.getByRole('button', { name: '4 stars' }).first();
+    // Click 4-star ON THE RAGTIME CARD — an unscoped .first() resolved to a
+    // different card's star row under parallel-run load order (flake fix,
+    // 2026-07-20).
+    const ragtimeCard = page.locator('div').filter({ has: page.getByRole('heading', { name: 'Ragtime', level: 4 }) }).filter({ has: page.getByRole('button', { name: '4 stars' }) }).last();
+    const fourStar = ragtimeCard.getByRole('button', { name: '4 stars' });
     await expect(fourStar).toBeVisible();
     // Click should navigate to show page with rate param
     const [newPage] = await Promise.all([
@@ -179,12 +185,14 @@ test.describe('My Shows — Diary Sections', () => {
 
   test('review text is displayed for shows with notes', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     await expect(page.getByText('Incredible production, Elphaba was phenomenal.')).toBeVisible();
     await expect(page.getByText('Good but not great revival.')).toBeVisible();
   });
 
   test('edit links point to correct show pages', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     const editLinks = page.getByRole('link', { name: 'Edit rating' });
     const count = await editLinks.count();
     expect(count).toBe(9); // 9 rated shows in mock data
@@ -250,9 +258,10 @@ test.describe('My Shows — Tabs', () => {
     await page.getByRole('tab', { name: /Watchlist/ }).click();
     // URL should update
     await expect(page).toHaveURL(/tab=watchlist/);
-    // Watchlist defaults to grid — check poster images exist (no h4 in grid)
+    // Watchlist defaults to grid — poster cards for upcoming/undated entries;
+    // past-dated ones render as To Be Rated rows since 2026-07-20.
     const posters = page.locator('.aspect-\\[2\\/3\\]');
-    expect(await posters.count()).toBeGreaterThanOrEqual(6);
+    expect(await posters.count()).toBeGreaterThanOrEqual(4);
     // Switch to list view and verify titles
     await page.getByRole('button', { name: 'List view' }).click();
     await expect(page.getByRole('heading', { name: 'Gypsy', level: 4 })).toBeVisible();
@@ -335,6 +344,7 @@ test.describe('My Shows — View Toggle', () => {
 test.describe('My Shows — Delete Flow', () => {
   test('delete shows 2-step confirmation', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     // Find first delete button
     const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
     await deleteBtn.click();
@@ -345,6 +355,7 @@ test.describe('My Shows — Delete Flow', () => {
 
   test('clicking "No" dismisses confirmation', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
     await deleteBtn.click();
     await expect(page.getByRole('button', { name: /Delete\?/ })).toBeVisible();
@@ -357,6 +368,7 @@ test.describe('My Shows — Delete Flow', () => {
 
   test('delete confirmation auto-dismisses after timeout', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
     await deleteBtn.click();
     await expect(page.getByRole('button', { name: /Delete\?/ })).toBeVisible();
@@ -371,20 +383,25 @@ test.describe('My Shows — Delete Flow', () => {
 test.describe('My Shows — Watchlist', () => {
   test('shows all 6 watchlist items', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Grid view: count poster cards (aspect-[2/3] areas, excluding AddShowCard)
+    // Since the 2026-07-20 restructure, past-dated entries render as To Be
+    // Rated ROWS (no poster card): mock has 6 entries, 2 past-dated → 4
+    // poster cards + 2 rows, all 6 titles visible in list view.
     const posters = page.locator('[role="tabpanel"] .aspect-\\[2\\/3\\]');
-    expect(await posters.count()).toBeGreaterThanOrEqual(6);
-    // Switch to list view to verify titles are present
+    expect(await posters.count()).toBeGreaterThanOrEqual(4);
+    await expect(page.getByRole('heading', { name: 'To Be Rated' })).toBeVisible();
+    // Switch to list view to verify all titles are present
     await page.getByRole('button', { name: 'List view' }).click();
     const titles = page.locator('[role="tabpanel"] h4');
     expect(await titles.count()).toBeGreaterThanOrEqual(6);
   });
 
-  test('watchlist cards have "Rate" action', async ({ page }) => {
+  test('watchlist cards have a rate-strip of five stars', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Grid cards should have Rate overlay
-    const rateElements = page.locator('text=Rate');
-    expect(await rateElements.count()).toBeGreaterThan(0);
+    // Grid cards carry a 5-star rate strip at the poster bottom (replaced the
+    // text "Rate" pill + centered hover stars, 2026-07-19).
+    const strips = page.locator('[class*="group/wl"] [role="radiogroup"]');
+    expect(await strips.count()).toBeGreaterThan(0);
+    await expect(strips.first().getByRole('button', { name: '5 stars' })).toBeAttached();
   });
 
   test('watchlist cards have date picker', async ({ page }) => {
@@ -474,6 +491,7 @@ test.describe('My Shows — Desktop Layout (1440px)', () => {
 
   test('diary list shows full star ratings on desktop', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
     // Desktop shows full 5-star display (hidden md:inline-flex)
     const starRatings = page.locator('.hidden.md\\:inline-flex');
     expect(await starRatings.count()).toBeGreaterThan(0);

@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-07T06:30:33.119Z",
+    "generatedAt": "2026-07-14T05:55:12.245Z",
     "threshold": 40,
-    "showsScanned": 1780,
-    "reviewsScanned": 34030,
-    "duplicatesFound": 79,
+    "showsScanned": 1797,
+    "reviewsScanned": 34047,
+    "duplicatesFound": 74,
     "byMethod": {
       "similarity": [
         {
@@ -68,6 +68,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "archduke-west-end-2026",
+          "method": "similarity",
+          "similarity": 81,
+          "primaryFile": "artsdesk--aleks-sierz.json",
+          "primaryOutlet": "The Arts Desk",
+          "primaryCritic": "Aleks Sierz",
+          "secondaryFile": "sierz-co-uk--unknown.json",
+          "secondaryOutlet": "Aleks Sierz",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 80,
+          "secondaryScore": 79,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
           "showId": "beautiful-the-carole-king-musical-2014",
           "method": "similarity",
           "similarity": 92,
@@ -125,21 +140,6 @@
           "primaryScore": 76,
           "secondaryScore": 88,
           "scoreDiff": 12,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "cult-of-love-2024",
-          "method": "similarity",
-          "similarity": 98,
-          "primaryFile": "variety--aramide-tinubu.json",
-          "primaryOutlet": "Variety",
-          "primaryCritic": "Aramide Tinubu",
-          "secondaryFile": "hollywood-reporter--david-rooney.json",
-          "secondaryOutlet": "The Hollywood Reporter",
-          "secondaryCritic": "David Rooney",
-          "primaryScore": 70,
-          "secondaryScore": 67,
-          "scoreDiff": 3,
           "textSource": "fullText"
         },
         {
@@ -308,21 +308,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "hadestown-2019",
-          "method": "similarity",
-          "similarity": 96,
-          "primaryFile": "variety--marilyn-stasio.json",
-          "primaryOutlet": "Variety",
-          "primaryCritic": "Marilyn Stasio",
-          "secondaryFile": "vulture--sara-holdren.json",
-          "secondaryOutlet": "Vulture",
-          "secondaryCritic": "Sara Holdren",
-          "primaryScore": 85,
-          "secondaryScore": 85,
-          "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
           "showId": "hadestown-west-end-2024",
           "method": "similarity",
           "similarity": 86,
@@ -353,18 +338,18 @@
           "textSource": "fullText"
         },
         {
-          "showId": "hedwig-and-the-angry-inch-2014",
+          "showId": "hells-kitchen-2024",
           "method": "similarity",
-          "similarity": 87,
-          "primaryFile": "variety--marilyn-stasio.json",
-          "primaryOutlet": "Variety",
-          "primaryCritic": "Marilyn Stasio",
-          "secondaryFile": "chicagotribune--chris-jones.json",
-          "secondaryOutlet": "Chicago Tribune",
-          "secondaryCritic": "Chris Jones",
-          "primaryScore": 90,
-          "secondaryScore": 83,
-          "scoreDiff": 7,
+          "similarity": 83,
+          "primaryFile": "ap--mark-kennedy.json",
+          "primaryOutlet": "Associated Press",
+          "primaryCritic": "Mark Kennedy",
+          "secondaryFile": "showbiz411--roger-friedman.json",
+          "secondaryOutlet": "Showbiz411",
+          "secondaryCritic": "Roger Friedman",
+          "primaryScore": 37,
+          "secondaryScore": 74,
+          "scoreDiff": 37,
           "textSource": "fullText"
         },
         {
@@ -380,21 +365,6 @@
           "primaryScore": 65,
           "secondaryScore": 42,
           "scoreDiff": 23,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "how-to-dance-in-ohio-2023",
-          "method": "similarity",
-          "similarity": 91,
-          "primaryFile": "theater-life--barry-gordin.json",
-          "primaryOutlet": "Theater Life",
-          "primaryCritic": "Barry Gordin",
-          "secondaryFile": "this-week-in-new-york--mark-rifkin.json",
-          "secondaryOutlet": "This Week in New York",
-          "secondaryCritic": "Mark Rifkin",
-          "primaryScore": 77,
-          "secondaryScore": 76,
-          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -437,9 +407,9 @@
           "secondaryFile": "boston-herald--marilyn-stasio.json",
           "secondaryOutlet": "Boston Herald",
           "secondaryCritic": "Marilyn Stasio",
-          "primaryScore": 61,
+          "primaryScore": 91,
           "secondaryScore": 86,
-          "scoreDiff": 25,
+          "scoreDiff": 5,
           "textSource": "fullText"
         },
         {
@@ -593,6 +563,51 @@
           "textSource": "fullText"
         },
         {
+          "showId": "oh-mary-west-end-2025",
+          "method": "similarity",
+          "similarity": 97,
+          "primaryFile": "daily-mail--patrick-marmion.json",
+          "primaryOutlet": "Daily Mail",
+          "primaryCritic": "Patrick Marmion",
+          "secondaryFile": "digital-journal--markos-papadatos.json",
+          "secondaryOutlet": "Digital Journal",
+          "secondaryCritic": "Markos Papadatos",
+          "primaryScore": 14,
+          "secondaryScore": 15,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "on-the-twentieth-century-2015",
+          "method": "similarity",
+          "similarity": 58,
+          "primaryFile": "front-row-center--tulis-mccall.json",
+          "primaryOutlet": "The Front Row Center",
+          "primaryCritic": "Tulis McCall",
+          "secondaryFile": "nytg--brian-scott-lipton.json",
+          "secondaryOutlet": "New York Theatre Guide",
+          "secondaryCritic": "Brian Scott Lipton",
+          "primaryScore": 93,
+          "secondaryScore": 91,
+          "scoreDiff": 2,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "on-your-feet-2015",
+          "method": "similarity",
+          "similarity": 79,
+          "primaryFile": "huffpost--fern-siegel.json",
+          "primaryOutlet": "HuffPost",
+          "primaryCritic": "Fern Siegel",
+          "secondaryFile": "nbcny--robert-kahn.json",
+          "secondaryOutlet": "NBC New York",
+          "secondaryCritic": "Robert Kahn",
+          "primaryScore": 77,
+          "secondaryScore": 81,
+          "scoreDiff": 4,
+          "textSource": "fullText"
+        },
+        {
           "showId": "once-upon-a-one-more-time-2023",
           "method": "similarity",
           "similarity": 76,
@@ -635,21 +650,6 @@
           "primaryScore": 61,
           "secondaryScore": 61,
           "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "prima-facie-2023",
-          "method": "similarity",
-          "similarity": 94,
-          "primaryFile": "theater-life--barry-gordin.json",
-          "primaryOutlet": "Theater Life",
-          "primaryCritic": "Barry Gordin",
-          "secondaryFile": "theater-pizzazz--samuel-l-leiter.json",
-          "secondaryOutlet": "Theater Pizzazz",
-          "secondaryCritic": "Samuel L. Leiter",
-          "primaryScore": 92,
-          "secondaryScore": 88,
-          "scoreDiff": 4,
           "textSource": "fullText"
         },
         {
@@ -758,21 +758,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "spring-awakening-2015",
-          "method": "similarity",
-          "similarity": 84,
-          "primaryFile": "dctheatrescene--var-block.json",
-          "primaryOutlet": "DC Metro Theater Arts",
-          "primaryCritic": "Var Block",
-          "secondaryFile": "dc-metro-theater-arts--richard-seff.json",
-          "secondaryOutlet": "DC Metro Theater Arts",
-          "secondaryCritic": "Richard Seff",
-          "primaryScore": 81,
-          "secondaryScore": 81,
-          "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
           "showId": "stick-fly-2011",
           "method": "similarity",
           "similarity": 71,
@@ -818,21 +803,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "the-bands-visit-2017",
-          "method": "similarity",
-          "similarity": 99,
-          "primaryFile": "theater-life--barry-gordin.json",
-          "primaryOutlet": "Theater Life",
-          "primaryCritic": "Barry Gordin",
-          "secondaryFile": "off-script-with-dan-dwyer--dan-dwyer.json",
-          "secondaryOutlet": "Off Script with Dan Dwyer",
-          "secondaryCritic": "Dan Dwyer",
-          "primaryScore": 92,
-          "secondaryScore": 84,
-          "scoreDiff": 8,
-          "textSource": "fullText"
-        },
-        {
           "showId": "the-bridges-of-madison-county-2014",
           "method": "similarity",
           "similarity": 92,
@@ -842,9 +812,9 @@
           "secondaryFile": "huffpost--huff-wires.json",
           "secondaryOutlet": "The Huffington Post",
           "secondaryCritic": "Huff Wires",
-          "primaryScore": 84,
+          "primaryScore": 82,
           "secondaryScore": 81,
-          "scoreDiff": 3,
+          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -902,24 +872,9 @@
           "secondaryFile": "ap--mark-kennedy.json",
           "secondaryOutlet": "Associated Press",
           "secondaryCritic": "Mark Kennedy",
-          "primaryScore": 76,
+          "primaryScore": 93,
           "secondaryScore": 88,
-          "scoreDiff": 12,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "the-misanthrope-west-end-2026",
-          "method": "similarity",
-          "similarity": 96,
-          "primaryFile": "times-uk--clive-davis.json",
-          "primaryOutlet": "The Times (UK)",
-          "primaryCritic": "Clive Davis",
-          "secondaryFile": "thestage--dave-fargnoli.json",
-          "secondaryOutlet": "The Stage",
-          "secondaryCritic": "Dave Fargnoli",
-          "primaryScore": 38,
-          "secondaryScore": 38,
-          "scoreDiff": 0,
+          "scoreDiff": 5,
           "textSource": "fullText"
         },
         {
@@ -1009,9 +964,9 @@
           "secondaryFile": "reuters--david-rooney.json",
           "secondaryOutlet": "Reuters/Hollywood Reporter",
           "secondaryCritic": "David Rooney",
-          "primaryScore": 42,
+          "primaryScore": 44,
           "secondaryScore": 44,
-          "scoreDiff": 2,
+          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -1024,9 +979,9 @@
           "secondaryFile": "nytimes--ben-brantley.json",
           "secondaryOutlet": "The New York Times",
           "secondaryCritic": "Ben Brantley",
-          "primaryScore": 43,
+          "primaryScore": 19,
           "secondaryScore": 29,
-          "scoreDiff": 14,
+          "scoreDiff": 10,
           "textSource": "fullText"
         },
         {
@@ -1122,21 +1077,6 @@
       ],
       "fingerprint": [
         {
-          "showId": "girl-from-the-north-country-2022",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "chicagotribune--chris-jones.json",
-          "primaryOutlet": "Chicago Tribune",
-          "primaryCritic": "Chris Jones",
-          "secondaryFile": "nydailynews--chris-jones.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "Chris Jones",
-          "primaryScore": 86,
-          "secondaryScore": 87,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
           "showId": "glengarry-glen-ross-west-end-2026",
           "method": "fingerprint",
           "similarity": 100,
@@ -1150,21 +1090,6 @@
           "secondaryScore": null,
           "scoreDiff": 0,
           "textSource": "excerpts"
-        },
-        {
-          "showId": "hello-dolly-2017",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "hollywood-reporter--frank-scheck.json",
-          "primaryOutlet": "The Hollywood Reporter",
-          "primaryCritic": "Frank Scheck",
-          "secondaryFile": "act-three-the-reviews--doug-marino.json",
-          "secondaryOutlet": "Act Three - The Reviews",
-          "secondaryCritic": "Doug Marino",
-          "primaryScore": 91,
-          "secondaryScore": 92,
-          "scoreDiff": 1,
-          "textSource": "fullText"
         },
         {
           "showId": "next-fall-2010",
@@ -1291,6 +1216,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "archduke-west-end-2026",
+      "method": "similarity",
+      "similarity": 81,
+      "primaryFile": "artsdesk--aleks-sierz.json",
+      "primaryOutlet": "The Arts Desk",
+      "primaryCritic": "Aleks Sierz",
+      "secondaryFile": "sierz-co-uk--unknown.json",
+      "secondaryOutlet": "Aleks Sierz",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 80,
+      "secondaryScore": 79,
+      "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
       "showId": "beautiful-the-carole-king-musical-2014",
       "method": "similarity",
       "similarity": 92,
@@ -1366,21 +1306,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "cult-of-love-2024",
-      "method": "similarity",
-      "similarity": 98,
-      "primaryFile": "variety--aramide-tinubu.json",
-      "primaryOutlet": "Variety",
-      "primaryCritic": "Aramide Tinubu",
-      "secondaryFile": "hollywood-reporter--david-rooney.json",
-      "secondaryOutlet": "The Hollywood Reporter",
-      "secondaryCritic": "David Rooney",
-      "primaryScore": 70,
-      "secondaryScore": 67,
-      "scoreDiff": 3,
-      "textSource": "fullText"
-    },
-    {
       "showId": "david-copperfield-59e59-theaters-off-broadway-2026",
       "method": "similarity",
       "similarity": 85,
@@ -1420,9 +1345,9 @@
       "secondaryFile": "reuters--david-rooney.json",
       "secondaryOutlet": "Reuters/Hollywood Reporter",
       "secondaryCritic": "David Rooney",
-      "primaryScore": 42,
+      "primaryScore": 44,
       "secondaryScore": 44,
-      "scoreDiff": 2,
+      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -1480,9 +1405,9 @@
       "secondaryFile": "nytimes--ben-brantley.json",
       "secondaryOutlet": "The New York Times",
       "secondaryCritic": "Ben Brantley",
-      "primaryScore": 43,
+      "primaryScore": 19,
       "secondaryScore": 29,
-      "scoreDiff": 14,
+      "scoreDiff": 10,
       "textSource": "fullText"
     },
     {
@@ -1546,21 +1471,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "girl-from-the-north-country-2022",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "primaryOutlet": "Chicago Tribune",
-      "primaryCritic": "Chris Jones",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "Chris Jones",
-      "primaryScore": 86,
-      "secondaryScore": 87,
-      "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
       "showId": "glengarry-glen-ross-2025",
       "method": "similarity",
       "similarity": 73,
@@ -1621,21 +1531,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "hadestown-2019",
-      "method": "similarity",
-      "similarity": 96,
-      "primaryFile": "variety--marilyn-stasio.json",
-      "primaryOutlet": "Variety",
-      "primaryCritic": "Marilyn Stasio",
-      "secondaryFile": "vulture--sara-holdren.json",
-      "secondaryOutlet": "Vulture",
-      "secondaryCritic": "Sara Holdren",
-      "primaryScore": 85,
-      "secondaryScore": 85,
-      "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
       "showId": "hadestown-west-end-2024",
       "method": "similarity",
       "similarity": 86,
@@ -1666,33 +1561,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "hedwig-and-the-angry-inch-2014",
+      "showId": "hells-kitchen-2024",
       "method": "similarity",
-      "similarity": 87,
-      "primaryFile": "variety--marilyn-stasio.json",
-      "primaryOutlet": "Variety",
-      "primaryCritic": "Marilyn Stasio",
-      "secondaryFile": "chicagotribune--chris-jones.json",
-      "secondaryOutlet": "Chicago Tribune",
-      "secondaryCritic": "Chris Jones",
-      "primaryScore": 90,
-      "secondaryScore": 83,
-      "scoreDiff": 7,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "hello-dolly-2017",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "hollywood-reporter--frank-scheck.json",
-      "primaryOutlet": "The Hollywood Reporter",
-      "primaryCritic": "Frank Scheck",
-      "secondaryFile": "act-three-the-reviews--doug-marino.json",
-      "secondaryOutlet": "Act Three - The Reviews",
-      "secondaryCritic": "Doug Marino",
-      "primaryScore": 91,
-      "secondaryScore": 92,
-      "scoreDiff": 1,
+      "similarity": 83,
+      "primaryFile": "ap--mark-kennedy.json",
+      "primaryOutlet": "Associated Press",
+      "primaryCritic": "Mark Kennedy",
+      "secondaryFile": "showbiz411--roger-friedman.json",
+      "secondaryOutlet": "Showbiz411",
+      "secondaryCritic": "Roger Friedman",
+      "primaryScore": 37,
+      "secondaryScore": 74,
+      "scoreDiff": 37,
       "textSource": "fullText"
     },
     {
@@ -1708,21 +1588,6 @@
       "primaryScore": 65,
       "secondaryScore": 42,
       "scoreDiff": 23,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "how-to-dance-in-ohio-2023",
-      "method": "similarity",
-      "similarity": 91,
-      "primaryFile": "theater-life--barry-gordin.json",
-      "primaryOutlet": "Theater Life",
-      "primaryCritic": "Barry Gordin",
-      "secondaryFile": "this-week-in-new-york--mark-rifkin.json",
-      "secondaryOutlet": "This Week in New York",
-      "secondaryCritic": "Mark Rifkin",
-      "primaryScore": 77,
-      "secondaryScore": 76,
-      "scoreDiff": 1,
       "textSource": "fullText"
     },
     {
@@ -1765,9 +1630,9 @@
       "secondaryFile": "boston-herald--marilyn-stasio.json",
       "secondaryOutlet": "Boston Herald",
       "secondaryCritic": "Marilyn Stasio",
-      "primaryScore": 61,
+      "primaryScore": 91,
       "secondaryScore": 86,
-      "scoreDiff": 25,
+      "scoreDiff": 5,
       "textSource": "fullText"
     },
     {
@@ -1966,6 +1831,51 @@
       "textSource": "excerpts"
     },
     {
+      "showId": "oh-mary-west-end-2025",
+      "method": "similarity",
+      "similarity": 97,
+      "primaryFile": "daily-mail--patrick-marmion.json",
+      "primaryOutlet": "Daily Mail",
+      "primaryCritic": "Patrick Marmion",
+      "secondaryFile": "digital-journal--markos-papadatos.json",
+      "secondaryOutlet": "Digital Journal",
+      "secondaryCritic": "Markos Papadatos",
+      "primaryScore": 14,
+      "secondaryScore": 15,
+      "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "on-the-twentieth-century-2015",
+      "method": "similarity",
+      "similarity": 58,
+      "primaryFile": "front-row-center--tulis-mccall.json",
+      "primaryOutlet": "The Front Row Center",
+      "primaryCritic": "Tulis McCall",
+      "secondaryFile": "nytg--brian-scott-lipton.json",
+      "secondaryOutlet": "New York Theatre Guide",
+      "secondaryCritic": "Brian Scott Lipton",
+      "primaryScore": 93,
+      "secondaryScore": 91,
+      "scoreDiff": 2,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "on-your-feet-2015",
+      "method": "similarity",
+      "similarity": 79,
+      "primaryFile": "huffpost--fern-siegel.json",
+      "primaryOutlet": "HuffPost",
+      "primaryCritic": "Fern Siegel",
+      "secondaryFile": "nbcny--robert-kahn.json",
+      "secondaryOutlet": "NBC New York",
+      "secondaryCritic": "Robert Kahn",
+      "primaryScore": 77,
+      "secondaryScore": 81,
+      "scoreDiff": 4,
+      "textSource": "fullText"
+    },
+    {
       "showId": "once-upon-a-one-more-time-2023",
       "method": "similarity",
       "similarity": 76,
@@ -2023,21 +1933,6 @@
       "primaryScore": 61,
       "secondaryScore": 61,
       "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "prima-facie-2023",
-      "method": "similarity",
-      "similarity": 94,
-      "primaryFile": "theater-life--barry-gordin.json",
-      "primaryOutlet": "Theater Life",
-      "primaryCritic": "Barry Gordin",
-      "secondaryFile": "theater-pizzazz--samuel-l-leiter.json",
-      "secondaryOutlet": "Theater Pizzazz",
-      "secondaryCritic": "Samuel L. Leiter",
-      "primaryScore": 92,
-      "secondaryScore": 88,
-      "scoreDiff": 4,
       "textSource": "fullText"
     },
     {
@@ -2146,21 +2041,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "spring-awakening-2015",
-      "method": "similarity",
-      "similarity": 84,
-      "primaryFile": "dctheatrescene--var-block.json",
-      "primaryOutlet": "DC Metro Theater Arts",
-      "primaryCritic": "Var Block",
-      "secondaryFile": "dc-metro-theater-arts--richard-seff.json",
-      "secondaryOutlet": "DC Metro Theater Arts",
-      "secondaryCritic": "Richard Seff",
-      "primaryScore": 81,
-      "secondaryScore": 81,
-      "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
       "showId": "stick-fly-2011",
       "method": "similarity",
       "similarity": 71,
@@ -2206,21 +2086,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "the-bands-visit-2017",
-      "method": "similarity",
-      "similarity": 99,
-      "primaryFile": "theater-life--barry-gordin.json",
-      "primaryOutlet": "Theater Life",
-      "primaryCritic": "Barry Gordin",
-      "secondaryFile": "off-script-with-dan-dwyer--dan-dwyer.json",
-      "secondaryOutlet": "Off Script with Dan Dwyer",
-      "secondaryCritic": "Dan Dwyer",
-      "primaryScore": 92,
-      "secondaryScore": 84,
-      "scoreDiff": 8,
-      "textSource": "fullText"
-    },
-    {
       "showId": "the-bridges-of-madison-county-2014",
       "method": "similarity",
       "similarity": 92,
@@ -2230,9 +2095,9 @@
       "secondaryFile": "huffpost--huff-wires.json",
       "secondaryOutlet": "The Huffington Post",
       "secondaryCritic": "Huff Wires",
-      "primaryScore": 84,
+      "primaryScore": 82,
       "secondaryScore": 81,
-      "scoreDiff": 3,
+      "scoreDiff": 1,
       "textSource": "fullText"
     },
     {
@@ -2290,24 +2155,9 @@
       "secondaryFile": "ap--mark-kennedy.json",
       "secondaryOutlet": "Associated Press",
       "secondaryCritic": "Mark Kennedy",
-      "primaryScore": 76,
+      "primaryScore": 93,
       "secondaryScore": 88,
-      "scoreDiff": 12,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-misanthrope-west-end-2026",
-      "method": "similarity",
-      "similarity": 96,
-      "primaryFile": "times-uk--clive-davis.json",
-      "primaryOutlet": "The Times (UK)",
-      "primaryCritic": "Clive Davis",
-      "secondaryFile": "thestage--dave-fargnoli.json",
-      "secondaryOutlet": "The Stage",
-      "secondaryCritic": "Dave Fargnoli",
-      "primaryScore": 38,
-      "secondaryScore": 38,
-      "scoreDiff": 0,
+      "scoreDiff": 5,
       "textSource": "fullText"
     },
     {

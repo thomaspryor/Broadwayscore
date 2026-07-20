@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { classifyProduction, slugify, parseDate } = require('./lib/mezzanine-classify.js');
 
 // Parse CLI args
 const args = process.argv.slice(2);
@@ -176,71 +177,6 @@ async function fetchAllProductions() {
   if (fs.existsSync(checkpointPath)) fs.unlinkSync(checkpointPath);
 
   return all;
-}
-
-/**
- * Classify a production by location/market
- */
-function classifyProduction(p) {
-  const theater = p.theater || {};
-
-  // Skip Broadway — already in shows.json
-  if (theater.isBroadway === true) return 'broadway';
-
-  const loc = (theater.location || '').toLowerCase();
-  const city = (theater.geocodedCity || '').toLowerCase();
-  const country = (theater.geocodedCountryCode || '').toUpperCase();
-
-  // NYC Off-Broadway
-  if (loc === 'newyork' || loc === 'nyc' ||
-      loc.includes('new york') || loc.includes('brooklyn') || loc.includes('manhattan') ||
-      city === 'new york' || city === 'brooklyn' || city === 'manhattan') {
-    return 'off-broadway';
-  }
-
-  // London / West End
-  if (loc === 'london' || city === 'london') {
-    return 'west-end';
-  }
-
-  // UK regional
-  if (country === 'GB') return 'uk-regional';
-
-  // US regional
-  if (country === 'US') return 'us-regional';
-
-  // International
-  if (country) return 'international';
-
-  // Unknown location — classify as 'other'
-  return 'other';
-}
-
-/**
- * Generate a URL-safe slug from a title
- */
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // strip diacritics
-    .replace(/['']/g, '')
-    .replace(/[&]/g, 'and')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-    .substring(0, 80); // cap length
-}
-
-/**
- * Parse a date from Mezzanine's format
- */
-function parseDate(val) {
-  if (!val) return null;
-  if (typeof val === 'string') return val.substring(0, 10);
-  if (val.iso) return val.iso.substring(0, 10);
-  return null;
 }
 
 /**

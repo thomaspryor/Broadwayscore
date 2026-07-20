@@ -23,10 +23,20 @@ export default function robots(): MetadataRoute.Robots {
       // AI search bots (ALLOWED — shows us in AI search results with citations)
       { userAgent: 'OAI-SearchBot', allow: '/', disallow: '/admin/' },
       { userAgent: 'PerplexityBot', allow: '/', disallow: '/admin/' },
-      // AI training crawlers (BLOCKED — prevent content from training AI models)
+      // Anthropic splits retrieval from training (support.claude.com article
+      // 8896518): Claude-SearchBot (search indexing) + Claude-User (fetches for
+      // a user's question) power citations; ClaudeBot is the TRAINING crawler.
+      // Owner decision 2026-07-19: be citable in Claude answers, keep training
+      // blocked — so allow the two retrieval agents, keep ClaudeBot below.
+      { userAgent: 'Claude-SearchBot', allow: '/', disallow: '/admin/' },
+      { userAgent: 'Claude-User', allow: '/', disallow: '/admin/' },
+      // CCBot: allowed 2026-07-19 (owner decision, eyes open) — Common Crawl is
+      // a public archive that trainers also ingest, but it's how the domain
+      // enters the CC authority graph and smaller AI search tools' indexes.
+      { userAgent: 'CCBot', allow: '/', disallow: '/admin/' },
+      // AI training crawlers (BLOCKED — prevent direct training scrapes)
       { userAgent: 'GPTBot', disallow: '/' },
       { userAgent: 'Google-Extended', disallow: '/' },
-      { userAgent: 'CCBot', disallow: '/' },
       { userAgent: 'anthropic-ai', disallow: '/' },
       { userAgent: 'ClaudeBot', disallow: '/' },
       { userAgent: 'Bytespider', disallow: '/' },

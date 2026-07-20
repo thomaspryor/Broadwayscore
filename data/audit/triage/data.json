@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-07-13T08:05:15.139Z",
+  "lastChecked": "2026-07-20T12:44:04.111Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,7 +9,12 @@
     {
       "name": "Data: OB closing candidates awaiting review",
       "status": "warn",
-      "message": "1 open Off-Broadway show(s) look closed per the weekly detector. First: clara-sex-love-and-classical-off-broadway-2026 → 2026-05-10 [medium]"
+      "message": "5 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
+    },
+    {
+      "name": "Data: T1/T2 silent review gaps",
+      "status": "warn",
+      "message": "1 discovered review(s) not reaching the composite score (0 T1). First: a-walk-on-the-moon-off-broadway-2026 — talkinbroadway (empty-body)"
     }
   ]
 }

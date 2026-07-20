@@ -129,12 +129,18 @@ jobs:
           fi
 
       - name: Commit and push if changed
+        id: webpush
         if: always() && steps.changes.outputs.changed == 'true'
         run: |
           BRANCH="${GITHUB_REF#refs/heads/}"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           bash scripts/lib/stage-data-changes.sh data/ public/images/shows/
+
+          # Drop aspect-ratio violators from the batch instead of letting the
+          # pre-commit gate abort the ENTIRE commit (2026-07-14: one landscape
+          # thumbnail discarded every fetched image, twice in one day).
+          node scripts/check-image-aspect.js --staged --quarantine
 
           git commit -m "chore: Auto-fetch and archive show images
 
@@ -145,8 +151,12 @@ jobs:
 
           bash scripts/lib/push-with-retry.sh 5 HEAD:$BRANCH
 
+      # Gated on the web-repo push: shows.json here carries /images/shows/...
+      # paths whose files land in THAT commit. Pushing core data anyway when
+      # the web push failed publishes dangling paths (steve-burns-alive /
+      # the-pass / father-time incident, 2026-07-14 run).
       - name: Push core data to private repo
-        if: always()
+        if: always() && steps.webpush.outcome != 'failure'
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}

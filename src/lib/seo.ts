@@ -139,6 +139,12 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
       name: show.venue,
       address: toPostalAddress(show.theaterAddress || show.venue, country),
     },
+    // GSC flags Events missing "organizer". We don't track producers, so the
+    // presenting theater is the closest honest entity we always have.
+    organizer: {
+      '@type': 'Organization',
+      name: show.venue,
+    },
     ...(startDate && { startDate }),
     ...(show.closingDate && { endDate: show.closingDate }),
     ...(show.images?.hero && { image: toAbsoluteUrl(show.images.hero) }),
@@ -171,12 +177,25 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
   // Add ticket offers (excluding hidden platforms — stale/non-converting affiliates)
   if (show.ticketLinks && show.ticketLinks.length > 0) {
     const visibleLinks = show.ticketLinks.filter(l => !isPlatformHidden(l.platform));
+    // We don't track on-sale dates; by previews start tickets are certainly on
+    // sale, so previewsStartDate is the latest-safe validFrom (GSC warns
+    // per-offer without it). Only claim it once the date has PASSED at build
+    // time — a future validFrom contradicts availability:InStock for upcoming
+    // shows (tickets are usually on sale long before previews). Pages rebuild
+    // on every deploy, so the build-date comparison self-heals. Price stays
+    // conditional — most platforms lack priceFrom and inventing one would be
+    // fabricated data.
+    const onSaleCandidate = show.previewsStartDate || show.openingDate;
+    const onSaleBy = onSaleCandidate && onSaleCandidate <= new Date().toISOString().slice(0, 10)
+      ? onSaleCandidate
+      : undefined;
     if (visibleLinks.length > 0) {
       schema.offers = visibleLinks.map(link => ({
         '@type': 'Offer',
         url: link.url,
         priceCurrency: currency,
         ...(link.priceFrom && { price: link.priceFrom }),
+        ...(onSaleBy && { validFrom: onSaleBy }),
         availability: 'https://schema.org/InStock',
         seller: {
           '@type': 'Organization',
@@ -447,13 +466,29 @@ export function generateItemListSchema(items: {
 
 // FAQPage Schema - For show pages and other FAQ content
 // FAQ schema increases AI citations by 28% and makes pages 3.2x more likely to appear in AI Overviews
-export function generateShowFAQSchema(show: ComputedShow, consensusText?: string | null) {
+//
+// getShowFAQs() builds the raw question/answer list — shared by generateShowFAQSchema()
+// (JSON-LD) and the visible PAA-style Q&A block on the show page. Keeping one source of
+// truth means the schema always matches what's rendered on-page (Google penalizes FAQ
+// schema that doesn't correspond to visible content).
+// new Date(null | undefined | '') resolves to the 1970 epoch instead of throwing —
+// guards FAQ answer copy from printing "opens on December 31, 1969" for shows
+// with an unconfirmed date.
+function formatFAQDate(dateStr?: string | null): string | null {
+  if (!dateStr) return null;
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime()) || date.getFullYear() < 1950) return null;
+  return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+export function getShowFAQs(show: ComputedShow, consensusText?: string | null): { question: string; answer: string }[] {
   const score = show.criticScore?.score ? Math.round(show.criticScore.score) : null;
   const reviewCount = show.criticScore?.reviewCount || 0;
   const isLondon = isLondonMarket(show.category);
   const isOffBroadway = show.category === 'off-broadway';
+  const isRegional = show.category === 'regional';
   const isOpera = isOperaShow(show);
-  const marketLabel = isOpera ? 'at the Met' : isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+  const marketLabel = isOpera ? 'at the Met' : isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in a regional production' : 'on Broadway';
 
   const faqs: { question: string; answer: string }[] = [];
 
@@ -508,15 +543,22 @@ export function generateShowFAQSchema(show: ComputedShow, consensusText?: string
   }
 
   // Q: Is it still running?
+  // formatFAQDate guards against null/invalid dates (e.g. upcoming shows with no
+  // confirmed openingDate yet) — new Date(null) silently resolves to the 1970
+  // epoch, which previously rendered as "opens on December 31, 1969" once this
+  // copy became visible on-page instead of buried in JSON-LD only.
+  const openingDateStr = formatFAQDate(show.openingDate);
+  const closingDateStr = formatFAQDate(show.closingDate);
+  const previewsStartStr = formatFAQDate(show.previewsStartDate);
   faqs.push({
     question: `Is ${show.title} still running ${marketLabel}?`,
     answer: show.status === 'open'
-      ? `Yes, ${show.title} is currently playing at ${show.venue} ${marketLabel}.${show.closingDate ? ` It is scheduled to close on ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.` : ''}`
+      ? `Yes, ${show.title} is currently playing at ${show.venue} ${marketLabel}.${closingDateStr ? ` It is scheduled to close on ${closingDateStr}.` : ''}`
       : show.status === 'previews'
-      ? `${show.title} is currently in previews at ${show.venue}. It officially opens on ${new Date(show.openingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.`
+      ? `${show.title} is currently in previews at ${show.venue}.${openingDateStr ? ` It officially opens on ${openingDateStr}.` : ''}`
       : show.status === 'upcoming'
-      ? `${show.title} is upcoming at ${show.venue}. Previews begin ${show.previewsStartDate ? new Date(show.previewsStartDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'soon'} and it officially opens on ${new Date(show.openingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.`
-      : `No, ${show.title} has closed. It played at ${show.venue}${show.closingDate ? ` and closed on ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` : ''}.`,
+      ? `${show.title} is upcoming at ${show.venue}. Previews begin ${previewsStartStr || 'soon'}${openingDateStr ? ` and it officially opens on ${openingDateStr}.` : '.'}`
+      : `No, ${show.title} has closed. It played at ${show.venue}${closingDateStr ? ` and closed on ${closingDateStr}` : ''}.`,
   });
 
   // Q: Where is it playing?
@@ -562,6 +604,11 @@ export function generateShowFAQSchema(show: ComputedShow, consensusText?: string
     });
   }
 
+  return faqs;
+}
+
+export function generateShowFAQSchema(show: ComputedShow, consensusText?: string | null) {
+  const faqs = getShowFAQs(show, consensusText);
   if (faqs.length === 0) return null;
 
   return {
@@ -585,7 +632,8 @@ export function generateBrowseFAQSchema(
 ) {
   const isLondon = shows.length > 0 && isLondonMarket(shows[0].category);
   const isOffBroadway = shows.length > 0 && shows[0].category === 'off-broadway';
-  const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+  const isRegional = shows.length > 0 && shows[0].category === 'regional';
+  const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in a regional production' : 'on Broadway';
   const outletNames = isLondon
     ? 'The Guardian, Telegraph, Time Out, and WhatsOnStage'
     : 'The New York Times, Vulture, and Variety';

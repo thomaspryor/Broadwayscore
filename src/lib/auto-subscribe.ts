@@ -28,7 +28,9 @@ export async function autoSubscribeOnSignIn(email: string): Promise<void> {
   // admin, injected into bsc_auth) must never reach the real subscriber
   // pipeline — every test run would add a junk email to the list.
   if (email.endsWith('@bsc-test.dev')) return;
-  if (isFormspreeSubscribed()) return; // already on a list — nothing to do
+  // Check the broadway (main) list SPECIFICALLY — a WE-only subscriber who
+  // signs in still belongs on the main list (owner rule: sign-in = main list).
+  if (isFormspreeSubscribed('broadway')) return;
   attemptedThisSession = true;
 
   try {

@@ -12,6 +12,7 @@ import { MustSeeCrown, getScoreColorClass } from '@/components/show-cards/ScoreB
 import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
+import HoverRateStars from '@/components/user/HoverRateStars';
 import type { HomepageShow } from '@/components/HomePageClient';
 
 function ServerMiniShowCard({ show, priority }: { show: HomepageShow; priority: boolean }) {
@@ -39,6 +40,7 @@ function ServerMiniShowCard({ show, priority }: { show: HomepageShow; priority: 
       <div className="relative mb-1.5">
         <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3]">
           <ShowPageBookmark showId={show.id} size="sm" />
+          <HoverRateStars showId={show.id} showHref={`/show/${show.slug}`} />
           {imgSrc ? (
             <img
               src={imgSrc}

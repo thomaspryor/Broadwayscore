@@ -434,6 +434,8 @@ export interface ShowCommercial {
   recoupedDate: string | null;
   recoupedWeeks: number | null;
   recoupedSource?: string | null;
+  /** Owner-reviewed editorial keep (Q3 policy) — survives CI merges. */
+  humanReviewedDesignation?: boolean;
   nonprofitOrg?: string;
   notes?: string;
   estimatedRecoupmentPct?: [number, number] | null;
@@ -483,7 +485,7 @@ export interface ApproachingRecoupmentShow {
   slug: string;
   title: string;
   season: string;
-  capitalization: number;
+  capitalization: number | null;
   estimatedRecoupmentPct: [number, number];
   modelRecoupmentPct?: [number, number, number] | null;
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
@@ -495,7 +497,7 @@ export interface AtRiskShow {
   slug: string;
   title: string;
   season: string;
-  capitalization: number;
+  capitalization: number | null;
   weeklyGross: number;
   weeklyRunningCost: number;
   trend: import('@/config/commercial').RecoupmentTrend;
@@ -506,7 +508,7 @@ export interface RecentRecoupmentShow {
   title: string;
   season: string;
   weeksToRecoup: number;
-  capitalization: number;
+  capitalization: number | null;
   recoupDate: string;
 }
 

@@ -29,6 +29,20 @@
 //     fallback) is newer. Manual-protection fields are not applicable here —
 //     pending entries are throwaway claims awaiting apply.
 //   * Union of slugs is kept.
+//
+// Merge rules — commercial-research-queue.json:
+//   * shape: { shows: [slug, ...], triggers: { [slug]: reason }, updatedAt }
+//   * Written by 5 different cron workflows (commercial-weekly, commercial-
+//     friday, update-commercial, scrape-waltz-costs, update-show-status) —
+//     previously NOT in this file's exemption list, so it fell to the
+//     generic "accept remote" case in push-with-retry.sh and silently
+//     dropped local queue additions on conflict.
+//   * `shows` is a deduped union of both sides' arrays (order: ours first,
+//     then remote-only additions appended).
+//   * `triggers` is a shallow merge; on key collision, keep whichever side's
+//     entry belongs to the union decision for that slug (both sides usually
+//     agree on the reason for the same slug — this is a rare edge case).
+//   * `updatedAt` becomes the newer of the two timestamps.
 
 const HUMAN_REVIEWED_COMMERCIAL_FIELDS = [
   'humanReviewedDesignation',
@@ -100,6 +114,8 @@ function mergeCommercialJson(ours, remote) {
   return { merged, stats: { added, kept, overlaid, totalSlugs: allSlugs.size } };
 }
 
+const PENDING_ENTRY_DATE_FIELDS = ['researchedAt', 'detectedAt', 'lastUpdated'];
+
 function mergePendingReview(ours, remote) {
   ours = ours || { shows: {} };
   remote = remote || { shows: {} };
@@ -109,24 +125,90 @@ function mergePendingReview(ours, remote) {
   merged.shows = { ...oursShows };
 
   let added = 0;
+  let resolvedAsDeletion = 0;
   const allSlugs = new Set([...Object.keys(oursShows), ...Object.keys(remoteShows)]);
   for (const slug of allSlugs) {
     const o = oursShows[slug];
     const r = remoteShows[slug];
     if (!o && r) { merged.shows[slug] = r; added++; continue; }
-    if (o && !r) continue;
-    merged.shows[slug] = pickNewer(o, r, ['researchedAt', 'detectedAt', 'lastUpdated']);
+    if (o && !r) {
+      // 10 scripts write/delete individual keys in this file (apply-
+      // commercial-pending.js removes applied shows, sweep-pending-
+      // commercial.js removes expired ones) on independent cron schedules —
+      // "remote lacks a slug ours still has" is ambiguous between "remote's
+      // base predates ours' addition" (keep ours, current behavior) and
+      // "remote already applied/swept it" (must NOT resurrect — same class
+      // of bug as mergeResearchQueue, ship-check finding 2026-07-19,
+      // /what-else follow-up). Use ours' entry timestamp vs remote's
+      // file-level lastUpdated as a logical clock: if remote's last write
+      // happened AFTER this entry existed, remote has definitely seen (and
+      // removed) it.
+      // Strict '<', not '<=' (ship-check finding, 2026-07-19): equal
+      // timestamps don't prove remote saw this entry — could be an
+      // unrelated write stamped in the same millisecond. On a tie, default
+      // to keeping ours; only delete when remote is UNAMBIGUOUSLY newer.
+      const entryTime = entryDate(o, PENDING_ENTRY_DATE_FIELDS);
+      const remoteFileTime = entryDate(remote, ['lastUpdated']);
+      if (remote.lastUpdated && entryTime > 0 && entryTime < remoteFileTime) {
+        delete merged.shows[slug];
+        resolvedAsDeletion++;
+      }
+      continue;
+    }
+    merged.shows[slug] = pickNewer(o, r, PENDING_ENTRY_DATE_FIELDS);
   }
 
   // Refresh top-level lastUpdated to whichever side is newer
   const newer = pickNewer(remote, ours, ['lastUpdated']);
   if (newer?.lastUpdated) merged.lastUpdated = newer.lastUpdated;
 
-  return { merged, stats: { added, totalSlugs: allSlugs.size } };
+  return { merged, stats: { added, resolvedAsDeletion, totalSlugs: allSlugs.size } };
+}
+
+function mergeResearchQueue(ours, remote) {
+  ours = ours || { shows: [], triggers: {} };
+  remote = remote || { shows: [], triggers: {} };
+  const oursShows = Array.isArray(ours.shows) ? ours.shows : [];
+  const remoteShows = Array.isArray(remote.shows) ? remote.shows : [];
+
+  // deep-research-commercial.js consumes the queue by writing {shows: [],
+  // updatedAt} after processing. A plain array-union would resurrect those
+  // already-researched slugs if a concurrent producer's stale add lands in
+  // the same conflict (ship-check finding, 2026-07-19) — reprocessing them
+  // forever on every future conflict. Whichever side is BOTH empty and
+  // strictly newer is a consumption event and wins outright; only fall
+  // through to the additive union when neither side looks like a clear.
+  if (oursShows.length === 0 && pickNewer(remote, ours, ['updatedAt']) === ours) {
+    return { merged: { ...ours, shows: [], triggers: ours.triggers || {} }, stats: { added: 0, totalShows: 0, resolvedAsConsumption: 'ours' } };
+  }
+  if (remoteShows.length === 0 && pickNewer(ours, remote, ['updatedAt']) === remote) {
+    return { merged: { ...remote, shows: [], triggers: remote.triggers || {} }, stats: { added: 0, totalShows: 0, resolvedAsConsumption: 'remote' } };
+  }
+
+  const seen = new Set(oursShows);
+  const mergedShows = [...oursShows];
+  let added = 0;
+  for (const slug of remoteShows) {
+    if (!seen.has(slug)) {
+      mergedShows.push(slug);
+      seen.add(slug);
+      added++;
+    }
+  }
+
+  const merged = { ...ours };
+  merged.shows = mergedShows;
+  merged.triggers = { ...(remote.triggers || {}), ...(ours.triggers || {}) };
+
+  const newer = pickNewer(remote, ours, ['updatedAt']);
+  if (newer?.updatedAt) merged.updatedAt = newer.updatedAt;
+
+  return { merged, stats: { added, totalShows: mergedShows.length } };
 }
 
 module.exports = {
   HUMAN_REVIEWED_COMMERCIAL_FIELDS,
   mergeCommercialJson,
   mergePendingReview,
+  mergeResearchQueue,
 };

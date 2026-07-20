@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-07-13T12:50:49.591Z",
+  "generatedAt": "2026-07-20T12:44:09.913Z",
   "mode": "dry-run",
   "reviewTextSweep": {
-    "scanned": 34,
-    "showsWithNoTexts": 9,
+    "scanned": 36,
+    "showsWithNoTexts": 7,
     "candidates": [
       {
         "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -27,6 +27,90 @@
             "quote": "through April 5"
           }
         ]
+      },
+      {
+        "showId": "the-whoopi-monologues-off-broadway-2026",
+        "proposedClosingDate": "2026-08-30",
+        "confidence": "high",
+        "reason": "6 reviews agree",
+        "evidence": [
+          {
+            "reviewId": "the-whoopi-monologues-off-broadway-2026/culturesauce--thom-geier.json",
+            "isoDate": "2026-08-30",
+            "quote": "through August 30"
+          },
+          {
+            "reviewId": "the-whoopi-monologues-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+            "isoDate": "2026-08-30",
+            "quote": "through August 30"
+          },
+          {
+            "reviewId": "the-whoopi-monologues-off-broadway-2026/nytg--joe-dziemianowicz.json",
+            "isoDate": "2026-08-30",
+            "quote": "through August 30"
+          },
+          {
+            "reviewId": "the-whoopi-monologues-off-broadway-2026/nytimes--brittani-samuel.json",
+            "isoDate": "2026-08-30",
+            "quote": "Through Aug. 30"
+          },
+          {
+            "reviewId": "the-whoopi-monologues-off-broadway-2026/theater-scene--darryl-reilly.json",
+            "isoDate": "2026-08-30",
+            "quote": "through August 30, 2026"
+          },
+          {
+            "reviewId": "the-whoopi-monologues-off-broadway-2026/wsj--charles-isherwood.json",
+            "isoDate": "2026-08-30",
+            "quote": "closes Aug. 30"
+          }
+        ]
+      },
+      {
+        "showId": "the-potluck-off-broadway-2026",
+        "proposedClosingDate": "2026-08-02",
+        "confidence": "high",
+        "reason": "4 reviews agree",
+        "evidence": [
+          {
+            "reviewId": "the-potluck-off-broadway-2026/culturesauce--unknown.json",
+            "isoDate": "2026-08-02",
+            "quote": "through August 2"
+          },
+          {
+            "reviewId": "the-potluck-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+            "isoDate": "2026-08-02",
+            "quote": "through August 2"
+          },
+          {
+            "reviewId": "the-potluck-off-broadway-2026/theater-scene--tony-marinelli.json",
+            "isoDate": "2026-08-02",
+            "quote": "through August 2, 2026"
+          },
+          {
+            "reviewId": "the-potluck-off-broadway-2026/theater-scene--unknown.json",
+            "isoDate": "2026-08-02",
+            "quote": "through August 2, 2026"
+          }
+        ]
+      },
+      {
+        "showId": "dukes-off-broadway-2026",
+        "proposedClosingDate": "2026-08-02",
+        "confidence": "medium",
+        "reason": "single review, 3.6wk implied run length",
+        "evidence": [
+          {
+            "reviewId": "dukes-off-broadway-2026/broadwayworld--unknown.json",
+            "isoDate": "2026-08-02",
+            "quote": "run through Sunday August 2, 2026"
+          },
+          {
+            "reviewId": "dukes-off-broadway-2026/broadwayworld--unknown.json",
+            "isoDate": "2026-08-02",
+            "quote": "run through Sunday August 2, 2026"
+          }
+        ]
       }
     ],
     "unconfirmed": [
@@ -37,6 +121,16 @@
             "reviewId": "singfeld-a-musical-about-nothing-off-broadway-2023/theater-scene--joseph-pisano.json",
             "isoDate": "2026-03-30",
             "quote": "through March 30, 2026"
+          }
+        ]
+      },
+      {
+        "showId": "pied-a-terre-off-broadway-2026",
+        "mentions": [
+          {
+            "reviewId": "pied-a-terre-off-broadway-2026/theater-scene--victor-gluck.json",
+            "isoDate": "2026-07-26",
+            "quote": "through July 26, 2026"
           }
         ]
       },
@@ -213,11 +307,6 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
-        "proposedClosingDate": "2026-07-19",
-        "reason": "already-has-closing-date"
-      },
-      {
         "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
         "proposedClosingDate": "2026-09-07",
         "reason": "already-has-closing-date"
@@ -238,6 +327,11 @@
         "reason": "already-has-closing-date"
       },
       {
+        "showId": "shifters-off-broadway-2026",
+        "proposedClosingDate": "2026-08-30",
+        "reason": "already-has-closing-date"
+      },
+      {
         "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
         "proposedClosingDate": "2026-09-11",
         "reason": "already-has-closing-date"
@@ -245,11 +339,6 @@
       {
         "showId": "the-black-mirror-experience-off-broadway-2026",
         "proposedClosingDate": "2026-09-06",
-        "reason": "already-has-closing-date"
-      },
-      {
-        "showId": "dad-dont-read-this-off-broadway-2026",
-        "proposedClosingDate": "2026-07-11",
         "reason": "already-has-closing-date"
       }
     ]
@@ -260,22 +349,27 @@
     "candidates": [
       {
         "showId": "drunk-shakespeare-off-broadway-2022",
-        "consecutiveMissingChecks": 2,
+        "consecutiveMissingChecks": 3,
         "firstMissingDate": "2026-07-12"
       },
       {
-        "showId": "age-is-a-feeling-off-broadway-2024",
+        "showId": "my-joy-is-heavy-off-broadway-2025",
         "consecutiveMissingChecks": 2,
+        "firstMissingDate": "2026-07-13"
+      },
+      {
+        "showId": "age-is-a-feeling-off-broadway-2024",
+        "consecutiveMissingChecks": 3,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "gotta-dance-off-broadway-2026",
-        "consecutiveMissingChecks": 2,
+        "consecutiveMissingChecks": 3,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "the-black-mirror-experience-off-broadway-2026",
-        "consecutiveMissingChecks": 2,
+        "consecutiveMissingChecks": 3,
         "firstMissingDate": "2026-07-12"
       }
     ]

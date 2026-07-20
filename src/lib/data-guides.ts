@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import { ComputedShow } from './engine';
 import { getBroadwayShows } from './data-core';
+import { stripInlineMarkdown } from './formatting';
 import { getShowGrosses } from './data-grosses';
 import {
   GuidePageConfig,
@@ -35,7 +36,7 @@ function loadConsensus(): ConsensusData {
 
 export function getCriticConsensus(showId: string): string | null {
   const data = loadConsensus();
-  return data.shows[showId]?.text || null;
+  return stripInlineMarkdown(data.shows[showId]?.text) || null;
 }
 
 // --- Guide Editorials ---

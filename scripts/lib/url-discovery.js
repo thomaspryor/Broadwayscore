@@ -7,7 +7,10 @@
  * Used by:
  * - collect-review-texts.js (full text collection — has its own inline copy)
  * - rediscover-review-urls.js (URL rediscovery pre-processing)
- * - opening-night-poller.js (time-sensitive — uses preferSpeed=true)
+ * - opening-night-poller.js (passes emptyAuthoritative:false — an empty SERP
+ *   result there may mean "not published yet," not a genuine zero. Runs
+ *   preferSpeed:false since its SERP only fires after a 3h gate, latency
+ *   no longer being the binding constraint by then.)
  */
 
 const fs = require('fs');
@@ -18,7 +21,7 @@ const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filter
 const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
-const { recordBdCall, recordSdCall } = require('./bd-telemetry');
+const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
 
 // Scrapingdog SERP — flag-gated cheap primary ahead of BD/SB SERP. Google Light
 // Search = 5 credits (~$0.45/1k) vs BD SERP (~$1.50/1k). Default OFF.
@@ -232,6 +235,20 @@ let _brightDataConsecutiveFailures = 0;
 let _scrapingdogSerpFailures = 0;
 const MAX_CONSECUTIVE_FAILURES = 5;
 
+// ScrapingBee SERP (store/google) costs ~25 credits/call and is SEPARATE from
+// scraper.js's SB_CREDIT_BUDGET (page fetches) — sharing one flag would let a
+// SERP burst black out the paywalled-outlet page-fetch fallback mid-run. The
+// cap is PER PROCESS: matrix-sharded workflows (parallel_jobs=N) get N× this.
+// SERP_NO_SB=1 skips SB SERP entirely (bulk/backfill runs — an empty SD+BD
+// result there is almost always the true answer, not worth 25cr to re-ask).
+const SB_SERP_CREDITS_PER_CALL = 25;
+const _sbSerpCapRaw = parseInt(process.env.SERP_SB_MAX_CALLS_PER_RUN || '40', 10);
+// NaN guard: a malformed env value would make `count >= NaN` never trip,
+// silently disabling the cap — default to 40 instead.
+const SERP_SB_MAX_CALLS_PER_RUN = Number.isFinite(_sbSerpCapRaw) ? _sbSerpCapRaw : 40;
+let _sbSerpCallCount = 0;
+let _sbSerpCapLogged = false;
+
 // Rolling window health tracking for ScrapingBee SERP
 const _scrapingBeeSerpResults = []; // true=success, false=failure
 const ROLLING_WINDOW_SIZE = 20;
@@ -268,42 +285,77 @@ function _resolveGeo(query, override) {
  * Returns [{url, title, snippet}] or null if unavailable/failed (so the chain
  * falls through to BD/SB). Bake-off 2026-06-21 confirmed clean organic results.
  */
-async function _serpViaScrapingdog(query, log, dateRange, geo) {
+async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed) {
   // Circuit breaker (mirrors BD/SB SERP): once Scrapingdog SERP has failed
   // MAX_CONSECUTIVE_FAILURES times in a row this run, stop trying it first so a
   // degraded provider doesn't burn a credit + latency on every query before the
   // BD/SB fallback runs. Resets to 0 on any success.
   if (!USE_SCRAPINGDOG || !SCRAPINGDOG_API_KEY || _scrapingdogSerpFailures >= MAX_CONSECUTIVE_FAILURES) return null;
+  // Daily-pace circuit breaker (task #213 A3) — same quota check scraper.js's
+  // fetchWithScrapingdog uses, shared/memoized across both call sites per
+  // process. Fire-and-forget: a live /account round-trip must never add
+  // latency to SERP discovery (see scraper.js's fetchWithScrapingdog).
+  scraper.checkScrapingdogQuotaOnce();
+  if (scraper.sdQuotaExceeded) return null;
+
   const axios = require('axios');
   let q = query;
   if (dateRange) {
     const fmtD = d => d.toISOString().split('T')[0];
     q += ` after:${fmtD(dateRange.dateMin)} before:${fmtD(dateRange.dateMax)}`;
   }
-  try {
-    const response = await axios.get('https://api.scrapingdog.com/google/', {
-      params: { api_key: SCRAPINGDOG_API_KEY, query: q, results: 10, country: geo || 'us' },
-      timeout: 30000,
-    });
-    const data = response.data || {};
-    const organic = data.organic_results || data.organic_data || [];
-    _scrapingdogSerpFailures = 0;
-    recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: true, status: 200, credits: 5 });
-    return organic.slice(0, 10).map(r => ({
-      url: r.link || r.url || '',
-      title: r.title || '',
-      snippet: r.description || r.snippet || '',
-    })).filter(r => r.url);
-  } catch (error) {
-    _scrapingdogSerpFailures++;
-    recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: error.response?.status || (error.message || 'error').slice(0, 80), credits: 5 });
-    log(`    ✗ Scrapingdog SERP error (${_scrapingdogSerpFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message} — falling back to BD/SB`);
-    return null;
+
+  // Retry once on transient errors (timeouts, network resets, 5xx) before
+  // falling back to BD/SB — these are free per the A0 billing probe and often
+  // clear on a second attempt. Non-transient (4xx) failures are not retried.
+  // Skipped entirely under preferSpeed (opening-night polling): a 30s SD
+  // timeout followed by a 30s retry would blow well past the freshness window
+  // that flow exists to protect — fail fast to BD/SB there instead.
+  const MAX_ATTEMPTS = preferSpeed ? 1 : 2;
+  let lastError = null;
+  let attemptsMade = 0;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    attemptsMade++;
+    try {
+      const response = await axios.get('https://api.scrapingdog.com/google/', {
+        params: { api_key: SCRAPINGDOG_API_KEY, query: q, results: 10, country: geo || 'us' },
+        timeout: 30000,
+      });
+      const data = response.data || {};
+      const organic = data.organic_results || data.organic_data || [];
+      _scrapingdogSerpFailures = 0;
+      // credits reflects actual attempts made — a retried call bills twice.
+      recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: true, status: 200, credits: 5 * attemptsMade });
+      return organic.slice(0, 10).map(r => ({
+        url: r.link || r.url || '',
+        title: r.title || '',
+        snippet: r.description || r.snippet || '',
+      })).filter(r => r.url);
+    } catch (error) {
+      lastError = error;
+      const status = error.response?.status;
+      const isTransient = !status || status >= 500;
+      if (isTransient && attempt < MAX_ATTEMPTS) continue;
+      break;
+    }
   }
+
+  _scrapingdogSerpFailures++;
+  recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: lastError.response?.status || (lastError.message || 'error').slice(0, 80), credits: 5 * attemptsMade });
+  log(`    ✗ Scrapingdog SERP error (${_scrapingdogSerpFailures}/${MAX_CONSECUTIVE_FAILURES}): ${lastError.message} — falling back to BD/SB`);
+  return null;
 }
 
 async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
   if (_scrapingBeeSerpExhausted || !apiKey || scraper.sbCreditsLow) return null;
+  if (_sbSerpCallCount >= SERP_SB_MAX_CALLS_PER_RUN) {
+    if (!_sbSerpCapLogged) {
+      _sbSerpCapLogged = true;
+      log(`    ⚠ ScrapingBee SERP per-run cap hit (${SERP_SB_MAX_CALLS_PER_RUN} calls ≈ ${SERP_SB_MAX_CALLS_PER_RUN * SB_SERP_CREDITS_PER_CALL} credits) — skipping SB SERP for the rest of this run`);
+      recordSbCall({ host: 'serp.scrapingbee', fn: 'serp-cap-hit', success: false, status: 'cap', credits: 0 });
+    }
+    return null;
+  }
 
   const axios = require('axios');
   const RETRYABLE_STATUSES = new Set([500, 502, 503]);
@@ -318,12 +370,14 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
         const fmtD = d => d.toISOString().split('T')[0];
         params.search += ` after:${fmtD(dateRange.dateMin)} before:${fmtD(dateRange.dateMax)}`;
       }
+      _sbSerpCallCount++;
       const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
         params,
         timeout: 30000,
       });
       const data = response.data;
       _recordSerpResult(true);
+      recordSbCall({ host: 'serp.scrapingbee', fn: 'serp', success: true, status: 200, credits: SB_SERP_CREDITS_PER_CALL });
       return (data.organic_results || data.results || []).map(r => ({
         url: r.url || r.link,
         title: r.title || '',
@@ -331,6 +385,9 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
       }));
     } catch (error) {
       const status = error.response?.status;
+      // credits: 0 — ScrapingBee does not bill failed (4xx/5xx/timeout) requests;
+      // recording 25 here would inflate the cost report's attribution.
+      recordSbCall({ host: 'serp.scrapingbee', fn: 'serp', success: false, status: status || (error.message || 'error').slice(0, 80), credits: 0 });
       if (status === 401 || status === 403 || status === 429) {
         _scrapingBeeSerpExhausted = true;
         log(`    ⚠ ScrapingBee SERP exhausted (${status}) — falling back to Bright Data`);
@@ -546,7 +603,50 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride) {
  */
 const _serpCache = require('./serp-cache');
 
-async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride) {
+/**
+ * Pure decision function: ordered BD/SB provider names for the SERP chain.
+ * Extracted for testability (CLAUDE.md rule 15). Scrapingdog runs before this
+ * chain and is gated separately. skips entries: 'scrapingbee' | 'brightdata'
+ * | 'scrapingdog'. SERP_NO_SB=1 (env) adds 'scrapingbee' — used by bulk
+ * backfill runs where an empty SD+BD result should be accepted, not re-asked
+ * on SB at ~25 credits/query.
+ */
+function serpChainOrder(preferSpeed, skips = new Set()) {
+  const order = preferSpeed ? ['scrapingbee', 'brightdata'] : ['brightdata', 'scrapingbee'];
+  return order.filter(p => !skips.has(p));
+}
+
+/**
+ * Pure decision function (task #213): should a Scrapingdog SERP result of 0
+ * organic hits be accepted as the final answer instead of falling through to
+ * BD/SB? sdResults is the raw return of _serpViaScrapingdog: null means SD
+ * didn't run or its own request failed (must fall through); [] means SD's
+ * request SUCCEEDED and found nothing (empty-authoritative candidate).
+ *
+ * emptyAuthoritative (default true) is an explicit per-call option, NOT
+ * preferSpeed — a codebase-review pass caught that preferSpeed doesn't
+ * correlate with "this query might resolve later": opening-night-poller.js
+ * (the one flow where empty genuinely can mean "not published yet") calls
+ * with preferSpeed:false ("BD-first: SERP only runs after 3h gate so latency
+ * no longer critical"), while OTHER callers (reconcile-recoupment-claims.js,
+ * scrape-off-broadway-alliance.js) pass preferSpeed:true purely for speed on
+ * queries where a stale empty answer is harmless. Gating on preferSpeed would
+ * have let the poller's fresh discovery get permanently cached as "no
+ * results" by SD's very first empty answer, silently hiding reviews published
+ * within the 24h SERP cache TTL. Extracted for testability per CLAUDE.md rule 15.
+ */
+function shouldAcceptEmptyScrapingdogSerp(sdResults, emptyAuthoritative) {
+  return sdResults !== null && sdResults.length === 0 && emptyAuthoritative !== false;
+}
+
+function _effectiveSerpSkips(skipProviders) {
+  const skips = new Set(skipProviders || []);
+  if (process.env.SERP_NO_SB === '1') skips.add('scrapingbee');
+  return skips;
+}
+
+async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride, skipProviders, emptyAuthoritative = true) {
+  const _skips = _effectiveSerpSkips(skipProviders);
   // 24h disk cache — same query within TTL returns cached results, no API call.
   // Cuts duplicate SERP spend across orchestrator iterations, poller dispatches,
   // gather-reviews runs targeting the same shows. See scripts/lib/serp-cache.js.
@@ -574,24 +674,42 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     return { results: cached.results, provider: `${cached.provider}-cached` };
   }
 
-  // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). On null/empty it
-  // falls through to the existing BD/SB chain, which stays as the safety net.
-  if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY) {
-    const sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo);
+  // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). On a real fetch
+  // failure (null) it falls through to the existing BD/SB chain, which stays
+  // as the safety net.
+  if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_skips.has('scrapingdog')) {
+    const sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo, preferSpeed);
     if (sdResults && sdResults.length > 0) {
-      if (!(preferSpeed && sdResults.length === 0)) {
-        _serpCache.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
-      }
+      _serpCache.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
       return { results: sdResults, provider: 'scrapingdog' };
+    }
+    // Empty-authoritative mode (task #213): sdResults !== null means SD's own
+    // request SUCCEEDED and found 0 organic results — that's an answer, not a
+    // gap. Log analysis of 10 recent CI runs showed 88% of BD SERP calls were
+    // immediately preceded by exactly this case (an SD success with 0 results),
+    // not an SD failure — BD was re-asking a question SD had already answered.
+    // emptyAuthoritative:false (opening-night-poller.js) is EXEMPT: there,
+    // empty commonly means "review hasn't published yet," so it must still
+    // fall through to BD/SB rather than being cached/accepted as a final
+    // answer. NOT gated on preferSpeed — see shouldAcceptEmptyScrapingdogSerp.
+    if (shouldAcceptEmptyScrapingdogSerp(sdResults, emptyAuthoritative)) {
+      log('    ✓ Scrapingdog SERP: 0 organic results — accepting as authoritative, skipping BD/SB');
+      _serpCache.set(query, cacheOpts, { results: [], provider: 'scrapingdog-empty' });
+      return { results: [], provider: 'scrapingdog-empty' };
     }
   }
 
-  const primary = preferSpeed
-    ? { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' }
-    : { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' };
-  const fallback = preferSpeed
-    ? { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' }
-    : { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' };
+  const _entries = {
+    scrapingbee: { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' },
+    brightdata: { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' },
+  };
+  const _chain = serpChainOrder(preferSpeed, _skips).map(name => _entries[name]);
+  if (_chain.length === 0) {
+    log('    ⚠ All SERP providers skipped (skipProviders/SERP_NO_SB) — no results');
+    return { results: null, provider: 'none' };
+  }
+  const primary = _chain[0];
+  const fallback = _chain[1] || null;
 
   // Geo override only flows to BD providers — ScrapingBee's SERP endpoint does
   // not accept a country param (its /store/google endpoint geo-localizes by SB's
@@ -604,7 +722,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
 
   let results = await _withGeo(primary.fn)(query, primary.key, log, dateRange);
   let provider = primary.name;
-  if (!results || results.length === 0) {
+  if (fallback && (!results || results.length === 0)) {
     const fbResults = await _withGeo(fallback.fn)(query, fallback.key, log, dateRange);
     if (fbResults && fbResults.length > 0) {
       results = fbResults;
@@ -615,12 +733,21 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   }
 
   // Cache successful results. Empty arrays ARE cached for routine flows because
-  // "no organic results" is a stable answer. EXCEPTION: during opening-night
-  // polling (preferSpeed=true), an empty array often means "review hasn't
-  // dropped yet" — caching it would hide a freshly-published review for up to
-  // 24h. So we skip caching empty results on the opening-night path; routine
-  // gather-reviews scans still benefit from negative caching.
-  const shouldCache = results !== null && !(preferSpeed && results.length === 0);
+  // "no organic results" is a stable answer. EXCEPTION: emptyAuthoritative:false
+  // (opening-night-poller.js) — there, an empty array often means "review
+  // hasn't dropped yet" — caching it would hide a freshly-published review for
+  // up to 24h. So we skip caching empty results on that path; routine
+  // gather-reviews scans still benefit from negative caching. Keyed on
+  // emptyAuthoritative, not preferSpeed — see shouldAcceptEmptyScrapingdogSerp
+  // for why preferSpeed doesn't correlate with "might resolve later" (a
+  // codebase-review pass found opening-night-poller.js passes preferSpeed:false).
+  // Never cache empty results from a skip-truncated chain: a backfill run with
+  // SERP_NO_SB would otherwise cache "no results" and suppress a later normal
+  // run's SB fallback for the cache TTL (cache poisoning across modes).
+  const _chainTruncated = _skips.size > 0;
+  const shouldCache = results !== null
+    && !(emptyAuthoritative === false && results.length === 0)
+    && !(_chainTruncated && results.length === 0);
   if (shouldCache) {
     _serpCache.set(query, cacheOpts, { results, provider });
   }
@@ -645,6 +772,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
  * @param {boolean} [options.returnMetadata] - If true, return { url, serpTitle } instead of just url
  * @param {boolean} [options.preferSpeed] - If true, use ScrapingBee first (sync, ~1-3s) instead of BrightData (async, ~4-20s). Use for time-sensitive flows like opening night polling.
  * @param {boolean} [options.forceHistorical] - If true, skip date filter entirely from the first query (best for pre-2005 shows where Google date metadata is unreliable).
+ * @param {boolean} [options.emptyAuthoritative] - Default true. If false, a Scrapingdog SERP success with 0 results does NOT short-circuit the BD/SB fallback and is never cached — use for flows where "no results yet" may mean "not published yet" (e.g. opening-night-poller.js).
  * @returns {string|null|'__SERP_UNAVAILABLE__'|{url: string, serpTitle: string}} - Discovered URL (or object if returnMetadata)
  */
 async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
@@ -654,6 +782,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const returnMetadata = options.returnMetadata || false;
   const preferSpeed = options.preferSpeed || false;
   const forceHistorical = options.forceHistorical || false;
+  const emptyAuthoritative = options.emptyAuthoritative !== false;
 
   if (!scrapingBeeKey && !brightDataKey) return '__SERP_UNAVAILABLE__';
 
@@ -710,7 +839,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   log(`  [URL Discovery] Searching: ${query}`);
 
   // Provider chain: BD first (cheap) unless preferSpeed (opening night → SB first)
-  let { results, provider } = await _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed);
+  let { results, provider } = await _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative);
 
   // Both providers down
   if (results === null) {
@@ -735,7 +864,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
         strippedQuery = `"${primaryTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
       }
       log(`    Retry with stripped title: ${strippedQuery}`);
-      ({ results, provider } = await _serpWithChain(strippedQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed));
+      ({ results, provider } = await _serpWithChain(strippedQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative));
       provider = provider ? provider + '-stripped' : null;
       if (results === null) {
         log('    ✗ All SERP providers unavailable');
@@ -750,7 +879,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     if (criticName && (domain || oldDomain)) {
       const fallbackQuery = `"${serpTitle}" "${outletName}" "${criticName}" ${marketTerm}${yearClause}`;
       log(`    Fallback search (no site:): ${fallbackQuery}`);
-      ({ results, provider } = await _serpWithChain(fallbackQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed));
+      ({ results, provider } = await _serpWithChain(fallbackQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative));
       provider = provider ? provider + '-fallback' : null;
       if (results === null) {
         log('    ✗ All SERP providers unavailable');
@@ -770,7 +899,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
           ? `${buildSiteClause(domain)} "${serpTitle}" ${marketTerm}${yearClause}${criticClause}`
           : `"${serpTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
         log(`    Fallback 3 (no date filter, historical show): ${noDateQuery}`);
-        ({ results, provider } = await _serpWithChain(noDateQuery, scrapingBeeKey, brightDataKey, log, null, preferSpeed));
+        ({ results, provider } = await _serpWithChain(noDateQuery, scrapingBeeKey, brightDataKey, log, null, preferSpeed, undefined, undefined, emptyAuthoritative));
         provider = provider ? provider + '-historical' : null;
         if (results === null) {
           log('    ✗ All SERP providers unavailable');
@@ -1019,6 +1148,7 @@ function validateUrlDomain(url, outletId) {
  * @param {number} [options.nbResults] - Max results to return (default: 10)
  * @param {{ dateMin: Date, dateMax: Date }} [options.dateRange] - Optional date range filter
  * @param {boolean} [options.preferSpeed] - If true, ScrapingBee first (for time-sensitive flows)
+ * @param {boolean} [options.emptyAuthoritative] - Default true. Set false when "no results yet" may mean "not published yet" (see shouldAcceptEmptyScrapingdogSerp).
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if all providers unavailable
  */
 async function serpQuery(query, options = {}) {
@@ -1031,13 +1161,19 @@ async function serpQuery(query, options = {}) {
   // Explicit geo override for callers whose queries don't contain "West End"
   // but target UK-only sites (e.g. slug discovery for SeatPlan/LBO/LTD).
   const geo = options.geo;
+  // Per-caller provider skips (e.g. ['scrapingbee'] on bulk backfills);
+  // SERP_NO_SB=1 env adds 'scrapingbee' globally inside the chain.
+  const skipProviders = options.skipProviders;
+  // Default true. Set false for flows where "no results yet" may mean "not
+  // published yet" rather than a genuine zero (see shouldAcceptEmptyScrapingdogSerp).
+  const emptyAuthoritative = options.emptyAuthoritative !== false;
 
   if (!sbKey && !bdKey) {
     log('    ⚠ No SERP API keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN)');
     return null;
   }
 
-  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed, geo);
+  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed, geo, skipProviders, emptyAuthoritative);
   if (!results) return null;
 
   return results.slice(0, nbResults);
@@ -1053,6 +1189,8 @@ module.exports = {
   canDisambiguateGenericTitle,
   discoverCorrectUrl,
   serpQuery,
+  serpChainOrder,
+  shouldAcceptEmptyScrapingdogSerp,
   getShowInfo,
   calculateDateWindow,
   buildDateTbs,

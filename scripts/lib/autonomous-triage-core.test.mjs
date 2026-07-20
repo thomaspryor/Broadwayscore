@@ -2,6 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const {
@@ -9,9 +11,12 @@ const {
   buildTriagePrompt,
   parseTriageResponse,
   validateTriageResult,
+  findClaimedTask,
   triageCard,
   decide,
   orderQueue,
+  extractCheckPaths,
+  resolveCheckPaths,
 } = require('./autonomous-triage-core.js');
 
 const GOOD = {
@@ -83,6 +88,174 @@ test('checkableDone safe-command allowlist (prompt-injection gate)', () => {
   // Validator enforces it only for eligible cards.
   assert.equal(validateTriageResult({ ...GOOD, checkableDone: 'run the site and click around please' }).ok, false);
   assert.equal(validateTriageResult({ ...GOOD, eligible: false, checkableDone: 'run the site and click around please' }).ok, true);
+});
+
+// ── resolveCheckPaths (card #171: phantom checkableDone paths) ─────────────
+
+function mkFixtureRepo() {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'triage-checkpath-'));
+  fs.mkdirSync(path.join(root, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'tests', 'unit', 'foo.test.mjs'), '// fixture\n');
+  return root;
+}
+
+test('extractCheckPaths pulls file args out of each safe-check form', () => {
+  assert.deepEqual(extractCheckPaths('node --test tests/unit/a.test.mjs tests/unit/b.test.mjs'), ['tests/unit/a.test.mjs', 'tests/unit/b.test.mjs']);
+  assert.deepEqual(extractCheckPaths('test -f docs/x.md'), ['docs/x.md']);
+  assert.deepEqual(extractCheckPaths('npx tsc --noEmit'), []);
+  assert.deepEqual(extractCheckPaths('npx next lint'), []);
+});
+
+test('resolveCheckPaths: path exists as-given → unchanged, no correction flagged', () => {
+  const root = mkFixtureRepo();
+  const r = resolveCheckPaths('node --test tests/unit/foo.test.mjs', { repoRoot: root });
+  assert.equal(r.ok, true);
+  assert.equal(r.checkableDone, 'node --test tests/unit/foo.test.mjs');
+  assert.ok(!r.corrected);
+});
+
+test('resolveCheckPaths: phantom path auto-corrects to the tests/unit/<basename> near-match', () => {
+  const root = mkFixtureRepo();
+  const r = resolveCheckPaths('node --test tests/foo.test.mjs', { repoRoot: root });
+  assert.equal(r.ok, true);
+  assert.equal(r.checkableDone, 'node --test tests/unit/foo.test.mjs');
+  assert.equal(r.corrected, true);
+});
+
+test('resolveCheckPaths: no near-match on disk → ok:false, never a silent pass', () => {
+  const root = mkFixtureRepo();
+  const r = resolveCheckPaths('node --test tests/bar.test.mjs', { repoRoot: root });
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /does not exist on disk: tests\/bar\.test\.mjs/);
+  assert.match(r.reason, /tests\/unit\/bar\.test\.mjs/);
+});
+
+test('resolveCheckPaths: tsc/lint forms carry no path args → pass through', () => {
+  const root = mkFixtureRepo();
+  assert.deepEqual(resolveCheckPaths('npx tsc --noEmit', { repoRoot: root }), { ok: true, checkableDone: 'npx tsc --noEmit' });
+});
+
+test('resolveCheckPaths: never guesses across directory families — a missing scripts/ path is not "corrected" against a same-basename tests/unit/ file', () => {
+  const root = mkFixtureRepo();
+  // foo.test.mjs exists at tests/unit/foo.test.mjs (from mkFixtureRepo), but
+  // the command names scripts/foo.test.mjs — a different, unrelated file
+  // that happens to share a basename. Must fail closed, not cross-correct.
+  const r = resolveCheckPaths('node --test scripts/foo.test.mjs', { repoRoot: root });
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /scripts\/foo\.test\.mjs/);
+  assert.doesNotMatch(r.reason, /tried near-match/);
+});
+
+test('resolveCheckPaths against the REAL repo tree: reproduces the exact card #171 incident', () => {
+  // tests/review-write-guard.test.mjs never existed; the real file is
+  // tests/unit/review-write-guard.test.mjs — this is the literal phantom
+  // path the lint-violator card's triage verdict produced.
+  const r = resolveCheckPaths('node --test tests/review-write-guard.test.mjs');
+  assert.equal(r.ok, true);
+  assert.equal(r.checkableDone, 'node --test tests/unit/review-write-guard.test.mjs');
+  assert.equal(r.corrected, true);
+});
+
+test('triageCard: LLM verdict with a phantom checkableDone path is auto-corrected, stays attempt-eligible', async () => {
+  const root = mkFixtureRepo();
+  const verdict = { ...GOOD, checkableDone: 'node --test tests/foo.test.mjs' };
+  const r = await triageCard(CARD, async () => JSON.stringify(verdict), { repoRoot: root });
+  assert.equal(r.triage.eligible, true);
+  assert.equal(r.triage.checkableDone, 'node --test tests/unit/foo.test.mjs');
+  assert.equal(decide(r), 'attempt');
+});
+
+test('triageCard: LLM verdict with an unresolvable phantom path is marked ineligible, never queued', async () => {
+  const root = mkFixtureRepo();
+  const verdict = { ...GOOD, checkableDone: 'node --test tests/nope.test.mjs' };
+  const r = await triageCard(CARD, async () => JSON.stringify(verdict), { repoRoot: root });
+  assert.equal(r.triage.eligible, false);
+  assert.match(r.triage.reason, /check-path-missing/);
+  assert.equal(decide(r), 'skip');
+});
+
+// ── findClaimedTask (claim visibility, night-2 fix) ─────────────────────────
+
+// taskState shape: { notionMap: {[pageId]: {taskId}}, tasksById: {[taskId]: task} }
+function mkTaskState(notionMap, tasksById) { return { notionMap, tasksById }; }
+
+test('findClaimedTask: mapped taskId in_progress + marker present → claimed', () => {
+  const ts = mkTaskState(
+    { 'abc-123': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', description: '[notion:abc-123] P1 Next · Not started · Admin\nsome notes' } },
+  );
+  const hit = findClaimedTask('abc-123', ts);
+  assert.ok(hit);
+  assert.equal(hit.id, '151');
+});
+
+test('findClaimedTask: mapped taskId not in_progress → not claimed', () => {
+  const ts = mkTaskState(
+    { 'abc-123': { taskId: '151' } },
+    { 151: { id: '151', status: 'pending', description: '[notion:abc-123] P1' } },
+  );
+  assert.equal(findClaimedTask('abc-123', ts), null);
+});
+
+test('findClaimedTask: no map entry for this card → not claimed', () => {
+  const ts = mkTaskState({}, { 151: { id: '151', status: 'in_progress', description: '[notion:other]' } });
+  assert.equal(findClaimedTask('abc-123', ts), null);
+});
+
+test('findClaimedTask: id-reuse guard — mapped taskId in_progress but marker belongs to a DIFFERENT card (numeric id reused by a live session) → not trusted', () => {
+  const ts = mkTaskState(
+    { 'abc-123': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', description: '[notion:some-unrelated-card] fresh native task, id 151 reused' } },
+  );
+  assert.equal(findClaimedTask('abc-123', ts), null);
+});
+
+test('findClaimedTask: fails safe on missing id, missing/empty taskState, malformed entries', () => {
+  const ts = mkTaskState({ x: { taskId: '1' } }, { 1: { id: '1', status: 'in_progress', description: '[notion:x]' } });
+  assert.equal(findClaimedTask(null, ts), null);
+  assert.equal(findClaimedTask('x', null), null);
+  assert.equal(findClaimedTask('x', undefined), null);
+  assert.equal(findClaimedTask('x', mkTaskState({}, {})), null);
+  assert.equal(findClaimedTask('x', mkTaskState({ x: { taskId: '9' } }, {})), null); // taskId not in tasksById
+  assert.equal(findClaimedTask('x', mkTaskState({ x: { taskId: '1' } }, { 1: { id: '1', status: 'in_progress' } })), null); // no description field
+});
+
+// ── triageCard flow ─────────────────────────────────────────────────────────
+
+test('a card claimed in-flight (shared task in_progress) skips without an LLM call', async () => {
+  let calls = 0;
+  const taskState = mkTaskState(
+    { 'card-42': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', description: '[notion:card-42] P1 Next · Not started · Admin' } },
+  );
+  const r = await triageCard({ ...CARD, id: 'card-42' }, async () => { calls++; return JSON.stringify(GOOD); }, { taskState });
+  assert.equal(calls, 0);
+  assert.equal(r.preFilter.eligible, false);
+  assert.match(r.preFilter.reason, /claimed in-flight/);
+  assert.match(r.preFilter.reason, /#151/);
+  assert.equal(decide(r), 'skip');
+});
+
+test('a card with no matching claimed task proceeds to normal pre-filter/LLM flow', async () => {
+  const taskState = mkTaskState(
+    { 'some-other-card': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', description: '[notion:some-other-card] P1 Next · Not started · Admin' } },
+  );
+  let calls = 0;
+  const r = await triageCard({ ...CARD, id: 'card-42' }, async () => { calls++; return JSON.stringify(GOOD); }, { taskState });
+  assert.equal(calls, 1);
+  assert.equal(decide(r), 'attempt');
+});
+
+test('a claimed-but-completed task does not block re-triage', async () => {
+  const taskState = mkTaskState(
+    { 'card-42': { taskId: '151' } },
+    { 151: { id: '151', status: 'completed', description: '[notion:card-42] P1 Next · Done · Admin' } },
+  );
+  let calls = 0;
+  const r = await triageCard({ ...CARD, id: 'card-42' }, async () => { calls++; return JSON.stringify(GOOD); }, { taskState });
+  assert.equal(calls, 1);
+  assert.equal(decide(r), 'attempt');
 });
 
 // ── triageCard flow ─────────────────────────────────────────────────────────

@@ -22,7 +22,9 @@ const {
   getKnownCik,
   extractXmlValue,
   extractXmlPath,
-  getBackoffDelay
+  getBackoffDelay,
+  parseCompanySearchAtom,
+  isOtherMarketCompanyName
 } = require('../../scripts/lib/sec-edgar-scraper.js');
 
 // Get directory path for fixtures
@@ -302,6 +304,110 @@ describe('Form D XML Parsing (fixtures)', () => {
   it('initial filing has zero amount sold', () => {
     const value = extractXmlPath(bookOfMormonXml, ['offeringSalesAmounts', 'totalAmountSold']);
     assert.strictEqual(value, '0');
+  });
+});
+
+// ============================================================================
+// parseCompanySearchAtom Tests (S3-T3, 2026-07-19)
+//
+// searchFormDFilings({showName}) used to just log suggested search
+// patterns and return [] — real live gathering never happened. These
+// fixtures were captured/verified against the actual SEC EDGAR
+// browse-edgar atom endpoint on 2026-07-19 (see edgar-browse-single-match.xml,
+// a REAL response for "Mamma Mia").
+// ============================================================================
+
+describe('parseCompanySearchAtom', () => {
+  const singleMatchXml = fs.readFileSync(
+    path.join(fixturesDir, 'edgar-browse-single-match.xml'),
+    'utf8'
+  );
+  const noMatchXml = fs.readFileSync(
+    path.join(fixturesDir, 'edgar-browse-no-match.xml'),
+    'utf8'
+  );
+  const multiMatchXml = fs.readFileSync(
+    path.join(fixturesDir, 'edgar-browse-multi-match.xml'),
+    'utf8'
+  );
+
+  it('extracts CIK and company name from a real single-company match', () => {
+    const result = parseCompanySearchAtom(singleMatchXml);
+    assert.ok(result, 'should resolve a single-company match');
+    assert.strictEqual(result.cik, '0001588713');
+    assert.strictEqual(result.companyName, 'Mamma Mia Las Vegas Limited Partnership');
+  });
+
+  it('extracts Form D and D/A filings from a single-company match', () => {
+    const result = parseCompanySearchAtom(singleMatchXml);
+    assert.strictEqual(result.filings.length, 2);
+    const forms = result.filings.map(f => f.form).sort();
+    assert.deepStrictEqual(forms, ['D', 'D/A']);
+  });
+
+  it('builds a correct filingUrl from the accession number', () => {
+    const result = parseCompanySearchAtom(singleMatchXml);
+    const initialFiling = result.filings.find(f => f.form === 'D');
+    assert.strictEqual(
+      initialFiling.filingUrl,
+      'https://www.sec.gov/Archives/edgar/data/1588713/000158871313000001/primary_doc.xml'
+    );
+  });
+
+  it('marks D/A filings as amendments', () => {
+    const result = parseCompanySearchAtom(singleMatchXml);
+    const amendment = result.filings.find(f => f.form === 'D/A');
+    assert.strictEqual(amendment.isAmendment, true);
+    const initial = result.filings.find(f => f.form === 'D');
+    assert.strictEqual(initial.isAmendment, false);
+  });
+
+  it('returns null for a no-match response (empty feed)', () => {
+    const result = parseCompanySearchAtom(noMatchXml);
+    assert.strictEqual(result, null);
+  });
+
+  it('returns null for an ambiguous multi-company match (never guesses)', () => {
+    // Ship-check-equivalent design intent: a match here would misattribute
+    // another company's Form D data to our show, so an ambiguous list
+    // must resolve to "no confident match," not a picked candidate.
+    const result = parseCompanySearchAtom(multiMatchXml);
+    assert.strictEqual(result, null, 'multi-company list has no <company-info> block and must not resolve to a guess');
+  });
+});
+
+describe('isOtherMarketCompanyName', () => {
+  it('flags the real Mamma Mia Las Vegas false-positive found during S3-T2 (2026-07-19)', () => {
+    // The exact bug: a bare "Mamma Mia" search resolves to EXACTLY one
+    // company on EDGAR ("Mamma Mia Las Vegas Limited Partnership"), which
+    // passes parseCompanySearchAtom's single-match check, but its filings
+    // (2013-2014) belong to the Mandalay Bay production, not our 2025
+    // Broadway revival at the Winter Garden.
+    const singleMatchXml = fs.readFileSync(
+      path.join(fixturesDir, 'edgar-browse-single-match.xml'),
+      'utf8'
+    );
+    const match = parseCompanySearchAtom(singleMatchXml);
+    assert.strictEqual(isOtherMarketCompanyName(match.companyName), true);
+  });
+
+  it('does not flag a plain Broadway LLC name', () => {
+    assert.strictEqual(isOtherMarketCompanyName('KPOP Broadway LLC'), false);
+  });
+
+  it('does not flag touring-company names (legitimate, desired data)', () => {
+    assert.strictEqual(isOtherMarketCompanyName('Hadestown Touring LLC'), false);
+    assert.strictEqual(isOtherMarketCompanyName('Beetlejuice Tour LLC'), false);
+  });
+
+  it('flags other known non-Broadway markets', () => {
+    assert.strictEqual(isOtherMarketCompanyName('Hamilton Chicago LLC'), true);
+    assert.strictEqual(isOtherMarketCompanyName('Mean Girls London LLC'), true);
+  });
+
+  it('handles null/empty company name gracefully', () => {
+    assert.strictEqual(isOtherMarketCompanyName(null), false);
+    assert.strictEqual(isOtherMarketCompanyName(''), false);
   });
 });
 

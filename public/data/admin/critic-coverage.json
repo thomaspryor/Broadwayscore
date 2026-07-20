@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-07-14T00:23:01.745Z",
+  "generatedAt": "2026-07-20T14:17:38.543Z",
   "current": {
-    "totalCritics": 80,
-    "totalGaps": 772,
+    "totalCritics": 81,
+    "totalGaps": 1076,
     "gapsByBucket": {
-      "A": 36,
-      "B": 17,
-      "C": 709,
-      "D": 10,
+      "A": 45,
+      "B": 20,
+      "C": 1005,
+      "D": 6,
       "E": 0
     },
     "gapsBySource": {
-      "muckrack": 772
+      "muckrack": 1076
     }
   },
   "history": [
@@ -554,6 +554,64 @@
         "Dominic Maxwell": 1,
         "Marianka Swain": 1
       }
+    },
+    {
+      "date": "2026-07-20",
+      "timestamp": "2026-07-20T10:56:29.970Z",
+      "totalCritics": 81,
+      "totalGaps": 1076,
+      "gapsByBucket": {
+        "A": 45,
+        "B": 20,
+        "C": 1005,
+        "D": 6,
+        "E": 0
+      },
+      "gapsBySource": {
+        "muckrack": 1076
+      },
+      "perCritic": {
+        "Chris Jones": 123,
+        "Elysa Gardner": 108,
+        "Jesse Green": 81,
+        "Steven Suskin": 63,
+        "Frank Scheck": 51,
+        "Juan A. Ramirez": 49,
+        "Pete Hempstead": 47,
+        "Laura Collins-Hughes": 40,
+        "Andrzej Lukowski": 39,
+        "Bob Verini": 39,
+        "Melissa Rose Bernardo": 35,
+        "Matt Wolf": 32,
+        "Joey Sims": 32,
+        "Helen Shaw": 30,
+        "David Finkle": 28,
+        "Sarah Hemming": 28,
+        "Roma Torre": 27,
+        "Brittani Samuel": 27,
+        "Anya Ryan": 24,
+        "Matt Windman": 18,
+        "Charles Isherwood": 17,
+        "Johnny Oleksinski": 17,
+        "Patrick Marmion": 17,
+        "Sara Holdren": 16,
+        "Hayley Levitt": 16,
+        "Alice Saville": 15,
+        "Jackson McHenry": 11,
+        "Arifa Akbar": 10,
+        "Tim Teeman": 9,
+        "Dave Fargnoli": 9,
+        "Sam Marlowe": 8,
+        "Marianka Swain": 2,
+        "Joe Dziemianowicz": 1,
+        "David Rooney": 1,
+        "Michael Musto": 1,
+        "Charles McNulty": 1,
+        "David Gordon": 1,
+        "Dominic Maxwell": 1,
+        "Gillian Russo": 1,
+        "Shania Russell": 1
+      }
     }
   ],
   "topCriticsByGap": [
@@ -561,22 +619,22 @@
       "name": "Chris Jones",
       "outlet": "chicagotribune",
       "tier": 2,
-      "missingCount": 120,
+      "missingCount": 123,
       "lastDate": "2026-06-30"
     },
     {
       "name": "Elysa Gardner",
       "outlet": "usatoday",
       "tier": 2,
-      "missingCount": 109,
-      "lastDate": "2026-06-30"
+      "missingCount": 108,
+      "lastDate": "2026-07-16"
     },
     {
       "name": "Jesse Green",
       "outlet": "vulture",
       "tier": 1,
-      "missingCount": 77,
-      "lastDate": "2025-06-25"
+      "missingCount": 81,
+      "lastDate": "2026-04-08"
     },
     {
       "name": "Steven Suskin",
@@ -586,46 +644,46 @@
       "lastDate": "2026-06-24"
     },
     {
-      "name": "Melissa Rose Bernardo",
+      "name": "Frank Scheck",
       "outlet": "nysr",
       "tier": 2,
-      "missingCount": 38,
-      "lastDate": "2026-06-30"
-    },
-    {
-      "name": "Austin Fimmano",
-      "outlet": "nytg",
-      "tier": 2,
-      "missingCount": 29,
-      "lastDate": "2026-07-10"
-    },
-    {
-      "name": "David Finkle",
-      "outlet": "nysr",
-      "tier": 2,
-      "missingCount": 28,
-      "lastDate": "2026-06-29"
-    },
-    {
-      "name": "Tim Bano",
-      "outlet": "financialtimes",
-      "tier": 1,
-      "missingCount": 28,
-      "lastDate": "2026-05-20"
-    },
-    {
-      "name": "Sarah Hemming",
-      "outlet": "financialtimes",
-      "tier": 1,
-      "missingCount": 27,
-      "lastDate": "2026-07-08"
+      "missingCount": 51,
+      "lastDate": "2026-07-14"
     },
     {
       "name": "Juan A. Ramirez",
       "outlet": "theatrely",
       "tier": 2,
-      "missingCount": 23,
+      "missingCount": 49,
       "lastDate": "2026-06-19"
+    },
+    {
+      "name": "Pete Hempstead",
+      "outlet": "theatermania",
+      "tier": 2,
+      "missingCount": 47,
+      "lastDate": "2026-06-08"
+    },
+    {
+      "name": "Laura Collins-Hughes",
+      "outlet": "nytimes",
+      "tier": 1,
+      "missingCount": 40,
+      "lastDate": "2026-06-16"
+    },
+    {
+      "name": "Andrzej Lukowski",
+      "outlet": "timeout-london",
+      "tier": 2,
+      "missingCount": 39,
+      "lastDate": "2026-07-15"
+    },
+    {
+      "name": "Bob Verini",
+      "outlet": "nysr",
+      "tier": 2,
+      "missingCount": 39,
+      "lastDate": "2026-06-16"
     }
   ]
 }

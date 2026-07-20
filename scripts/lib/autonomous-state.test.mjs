@@ -67,6 +67,23 @@ test('wedge d: double-merge oscillation — merge.oscillation fails with auto-re
   assert.equal(result.reason, 'oscillation');
 });
 
+test('wedge e (Sprint 3): deterministic-green diff skips the tap — run.auto-approve is attempted→approved with a mechanical reason', () => {
+  const result = transition('attempted', 'run.auto-approve');
+  assert.equal(result.next, 'approved');
+  assert.equal(result.reason, 'deterministic-green');
+  // From there, the SAME merge path runs as a human-tapped approval — no
+  // separate merge event for the auto-approved case.
+  assert.equal(transition('approved', 'merge.success').next, 'merged');
+});
+
+test('wedge f (Sprint 3): revert only legal from merged — tap.revert', () => {
+  const result = transition('merged', 'tap.revert');
+  assert.equal(result.next, 'reverted');
+  for (const from of ['needs-approval', 'approved', 'rejected', 'failed', 'queued', 'attempted', '']) {
+    assert.throws(() => transition(from, 'tap.revert'), (err) => err.message === `invalid transition: ${disp(from)} + tap.revert`);
+  }
+});
+
 // --- Idempotent replays ---
 
 test('idempotent replays return noop:true and keep the state', () => {
@@ -135,6 +152,7 @@ test('isTerminal truth table', () => {
     rejected: true,
     failed: true,
     'split-proposed': false,
+    reverted: true,
   };
   for (const state of STATES) {
     assert.equal(isTerminal(state), expected[state], `isTerminal(${disp(state)})`);

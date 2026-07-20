@@ -30,6 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeSources } = require('./lib/commercial-sources');
 const { createRunBudget } = require('./lib/run-budget');
+const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-scope');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -264,7 +265,8 @@ Try these in order. Move to the next source only if the previous didn't have wha
 - ${venue && /samuel j\. friedman|helen hayes|todd haimes|vivian beaumont/i.test(venue) ? 'This venue is a nonprofit theater — use "Nonprofit" designation.' : ''}
 - If this is a revival, only report data about THIS production, not prior ones.
 - Capitalization in dollars (15000000 not 15). Weekly costs in dollars (650000 not 650).
-- Designation: Miracle, Windfall, Easy Winner, Trickle, Fizzle, Flop, Nonprofit, or TBD.
+
+## ${DESIGNATION_CRITERIA}
 
 ## Output format
 Write a BRIEF summary (3-5 sentences max) of what you found, then a JSON block:
@@ -530,16 +532,14 @@ async function main() {
       .filter(([slug, v]) => {
         if (!v || v.designation !== 'TBD') return false;
         if (!FORCE && (v.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) return false;
-        const show = showBySlug[slug];
-        if (show && show.category && show.category !== 'broadway') return false;
-        return true;
+        return isCommercialScope(showBySlug[slug]);
       })
       .map(([k]) => k);
 
     // Open Broadway shows without any commercial data
     const uncoveredSlugs = allShows
       .filter(s => s && s.status && ['open', 'previews'].includes(s.status)
-        && (s.market || 'broadway') === 'broadway'
+        && isCommercialScope(s)
         && !commShows[s.slug])
       .map(s => s.slug);
 
@@ -548,7 +548,7 @@ async function main() {
       .filter(([slug, entry]) => {
         const show = showBySlug[slug];
         if (!show || show.status !== 'open') return false;
-        if (show.category && show.category !== 'broadway') return false;
+        if (!isCommercialScope(show)) return false;
         return isSixMonthEligible(entry);
       })
       .map(([k]) => k);
@@ -601,6 +601,23 @@ async function main() {
     // Queue-only mode (no --all-tbd, no --shows)
     targetSlugs = queuedSlugs;
   }
+
+  // Canonical scope gate — covers ALL selection tiers including the queue
+  // file and --shows. The queue writers filtered on `market` for months
+  // ('broadway' = NYC city, so every Off-Broadway show passed) and 25+ OB
+  // shows leaked into commercial.json (2026-07-14). --shows + --force
+  // deliberately bypasses for one-off manual research.
+  targetSlugs = targetSlugs.filter(slug => {
+    const show = showBySlug[slug];
+    if (isCommercialScope(show)) return true;
+    const why = show ? show.category : 'not in shows.json';
+    if (FORCE && SHOW_LIST && SHOW_LIST.includes(slug)) {
+      console.log(`  ⚠ ${slug} out of commercial scope (${why}) — researching anyway (--shows + --force)`);
+      return true;
+    }
+    console.log(`  Skipping ${slug} — out of commercial scope (${why})`);
+    return false;
+  });
 
   // Limit to max shows
   targetSlugs = targetSlugs.slice(0, MAX_SHOWS);

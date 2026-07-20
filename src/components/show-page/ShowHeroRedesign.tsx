@@ -45,13 +45,15 @@ import StarRating from '@/components/user/StarRating';
 import RatingEditor from '@/components/user/RatingEditor';
 import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
+import HoverRateStars from '@/components/user/HoverRateStars';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useUserLists } from '@/hooks/useUserLists';
 import { useToastSafe } from '@/components/ui/Toast';
-import { savePendingAction, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
+import { savePendingAction } from '@/lib/deferred-auth';
+import { usePendingRatingDraft } from '@/hooks/usePendingRatingDraft';
 import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { featureFlags } from '@/config/feature-flags';
@@ -123,9 +125,6 @@ function Inner({
 
   const [ratePanelOpen, setRatePanelOpen] = useState(false);
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
-  // Draft carried across sign-in (rating + typed note + date + target review id).
-  const [pendingDraft, setPendingDraft] = useState<PendingAction | null>(null);
-  const hasExecutedPending = useRef(false);
   const rateBtnRef = useRef<HTMLButtonElement>(null);
   // Return focus to the rate button when the editor closes — the inline
   // (desktop) editor is not a Modal, so nothing else restores focus and it
@@ -167,11 +166,6 @@ function Inner({
   const isClosed = show.status === 'closed';
   const isPreviews = show.status === 'previews' || show.status === 'upcoming';
 
-  // Average rating across user's viewings (multi-viewing card foot)
-  const userAvg = ratingCount > 0
-    ? showReviews.reduce((sum, r) => sum + r.rating, 0) / ratingCount
-    : 0;
-
   // ─── Effects ───────────────────────────────────────────────────────────
 
   // Load on auth
@@ -183,26 +177,23 @@ function Inner({
     }
   }, [isAuthenticated, user, show.id, getReviewsForShow, getWatchlist, getLists]);
 
-  // Consume pending action after deferred auth
-  useEffect(() => {
-    if (!isAuthenticated || !user || hasExecutedPending.current) return;
-    const pending = getPendingAction();
-    if (!pending || pending.showId !== show.id) return;
-    hasExecutedPending.current = true;
-    clearPendingAction();
-
-    if (pending.type === 'rating') {
-      // Resume the draft the user was mid-editing before we gated on sign-in.
+  // Draft carried across sign-in (rating + typed note + date + target review id).
+  const { pendingDraft, setPendingDraft, hasExecutedPending, saveDraft } = usePendingRatingDraft(show.id, {
+    isAuthenticated,
+    user,
+    // Resume the draft the user was mid-editing before we gated on sign-in.
+    onResumeRatingDraft: () => {
       setEditingReview(null);
-      setPendingDraft(pending);
       setRatePanelOpen(true);
-    } else if (pending.type === 'watchlist') {
-      addToWatchlist(show.id)
-        .then(() => showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success'))
-        .catch(() => showToast?.('Failed to add to watchlist.', 'error'));
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, user, show.id]);
+    },
+    onOtherPendingAction: (pending) => {
+      if (pending.type === 'watchlist') {
+        addToWatchlist(show.id)
+          .then(() => showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success'))
+          .catch(() => showToast?.('Failed to add to watchlist.', 'error'));
+      }
+    },
+  });
 
   // ?rate=1 — auto-open rate panel (deferred-auth target for inline-stars CTAs)
   useEffect(() => {
@@ -213,13 +204,7 @@ function Inner({
     // the just-restored draft (typed note included) with a bare stars hint.
     if (hasExecutedPending.current) return;
     if (!isAuthenticated && !authLoading) {
-      savePendingAction({
-        type: 'rating',
-        showId: show.id,
-        ...(autoRateStars != null ? { rating: autoRateStars } : {}),
-        returnUrl: window.location.pathname,
-        timestamp: Date.now(),
-      });
+      saveDraft(autoRateStars != null ? { rating: autoRateStars } : {});
       showSignIn('rating');
     } else {
       // Always a FRESH panel (append), seeded with the ?stars= hint — consistent
@@ -279,7 +264,17 @@ function Inner({
     setEditingReview(null);
     setPendingDraft(null);
     setRatePanelOpen(true);
-  }, []);
+  }, [setPendingDraft]);
+
+  // Poster hover-stars pick — same fresh-panel semantics as handleRateIt, but
+  // seeded with the clicked star count (mirrors the ?rate=1&stars=N deep-link
+  // branch; a same-page deep-link wouldn't re-fire since params are read once).
+  const handlePosterStarsPick = useCallback((stars: number) => {
+    setEditingReview(null);
+    setPendingDraft({ type: 'rating', showId: show.id, rating: stars, returnUrl: '', timestamp: 0 });
+    setRatePanelOpen(true);
+    refocusRateBtn();
+  }, [setPendingDraft, show.id]);
 
 
   // NOTE: RatingEditor owns the saving spinner and, critically, keeps the panel
@@ -296,16 +291,7 @@ function Inner({
       // Gate at Save — persist the full draft, then sign in. The editor stays
       // open behind the sign-in modal ('auth-gated'), so cancelling sign-in
       // loses nothing; completing it lets the pending-action effect resume.
-      savePendingAction({
-        type: 'rating',
-        showId: show.id,
-        rating: data.rating,
-        ...(data.reviewText ? { reviewText: data.reviewText } : {}),
-        ...(data.dateSeen ? { dateSeen: data.dateSeen } : {}),
-        ...(data.reviewId ? { reviewId: data.reviewId } : {}),
-        returnUrl: window.location.pathname,
-        timestamp: Date.now(),
-      });
+      saveDraft(data);
       showSignIn('rating');
       return 'auth-gated';
     }
@@ -345,21 +331,21 @@ function Inner({
     }
     await getReviewsForShow(show.id);
     invalidateRatingsCache();
-  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, isWatchlisted, removeFromWatchlist]);
+  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, isWatchlisted, removeFromWatchlist, saveDraft]);
 
   const handleRateSaved = useCallback(() => {
     setRatePanelOpen(false);
     setEditingReview(null);
     setPendingDraft(null);
     refocusRateBtn();
-  }, []);
+  }, [setPendingDraft]);
 
   const handleCancelRate = useCallback(() => {
     setRatePanelOpen(false);
     setEditingReview(null);
     setPendingDraft(null);
     refocusRateBtn();
-  }, []);
+  }, [setPendingDraft]);
 
   const handleDeleteRating = useCallback(async () => {
     if (!editingReview) return;
@@ -376,7 +362,7 @@ function Inner({
       setEditingReview(null);
       setPendingDraft(null);
     }
-  }, [editingReview, deleteReview, getReviewsForShow, show.id, showToast]);
+  }, [editingReview, deleteReview, getReviewsForShow, show.id, showToast, setPendingDraft]);
 
   // ─── Render ────────────────────────────────────────────────────────────
 
@@ -394,9 +380,12 @@ function Inner({
       {/* Header: poster left + title block right. Poster scales up at desktop. */}
       <div className="flex gap-4 lg:gap-6">
         <div className="flex-shrink-0 w-28 sm:w-36 lg:w-44">
-          <div className="relative aspect-[2/3] rounded-xl overflow-visible shadow-2xl border border-white/10 bg-surface-raised">
+          <div className="group relative aspect-[2/3] rounded-xl overflow-visible shadow-2xl border border-white/10 bg-surface-raised">
             {userFeaturesEnabled && <ShowPageBookmark showId={show.id} size="compact" />}
             <div className="absolute inset-0 rounded-xl overflow-hidden">
+              {userFeaturesEnabled && (
+                <HoverRateStars showId={show.id} showHref={`/show/${show.slug}`} starSize="sm" onPick={handlePosterStarsPick} />
+              )}
               <ShowImage
                 sources={[
                   show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
@@ -545,61 +534,85 @@ function Inner({
         </div>
       )}
 
-      {/* Action buttons row — Want to See / Rate it (icon stacked vertical) */}
+      {/* Action cluster — user buttons + tickets share ONE space-y-2 group so
+          every gap in the button stack is identical (the old split put 16px
+          above Get Tickets but 8px below it — owner report, 2026-07-17). */}
+      <div className="space-y-2">
+      {/* Action buttons row — same geometry as the ticket buttons below
+          (h-10 / rounded-lg / horizontal icon+label); a taller rounder shape
+          here read as mismatched (owner report, 2026-07-17). */}
       {userFeaturesEnabled && (
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
             onClick={handleWantToSee}
-            className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-card border transition-all ${
+            className={`flex items-center justify-center gap-1.5 h-10 px-2 rounded-lg border transition-all whitespace-nowrap ${
               onWatchlist
                 ? 'bg-brand/10 border-brand text-brand'
                 : 'bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25'
             }`}
           >
-            <svg className="w-5 h-5" fill={onWatchlist ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4 shrink-0" fill={onWatchlist ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
-            <span className="text-xs font-semibold">{onWatchlist ? 'On your list' : 'Want to See'}</span>
+            <span className="text-xs sm:text-sm font-semibold">{onWatchlist ? 'On your list' : 'Want to See'}</span>
           </button>
           <button
             type="button"
             ref={rateBtnRef}
             onClick={handleRateIt}
-            className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-card border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all"
+            className="flex items-center justify-center gap-1.5 h-10 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
             </svg>
-            <span className="text-xs font-semibold">
+            <span className="text-xs sm:text-sm font-semibold">
               {!hasRating ? 'Rate it' : 'Log another viewing'}
             </span>
           </button>
         </div>
       )}
 
-      {/* On-list caption — minor indicator (decision: show page stays simple, list mgmt in /my-shows) */}
-      {userFeaturesEnabled && firstListContainingShow && (
-        <p className="text-xs text-gray-500 flex items-center gap-1.5 -mt-2">
+      {/* Membership caption — one line gathering ALL list membership: the
+          Watchlist link first (the "On your list" button is a TOGGLE and must
+          not navigate), then custom lists. Owner design pick, 2026-07-19. */}
+      {userFeaturesEnabled && (onWatchlist || firstListContainingShow) && (
+        <p className="text-xs text-gray-500 flex items-center gap-1.5">
           <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h10" />
           </svg>
           <span className="truncate">
-            Also on{' '}
-            {listsWithShow.length === 1 ? (
-              <Link
-                href={`/my-shows?tab=lists&list=${firstListContainingShow.id}`}
-                className="text-gray-400 hover:text-brand transition-colors border-b border-dotted border-white/10"
-              >
-                {firstListContainingShow.name}
-              </Link>
-            ) : (
-              <Link
-                href="/my-shows?tab=lists"
-                className="text-gray-400 hover:text-brand transition-colors border-b border-dotted border-white/10"
-              >
-                {listsWithShow.length} of your lists
-              </Link>
+            {onWatchlist && (
+              <>
+                On your{' '}
+                <Link
+                  href="/my-shows?tab=watchlist"
+                  className="text-brand/90 hover:text-brand transition-colors border-b border-dotted border-brand/30"
+                >
+                  Watchlist
+                </Link>
+              </>
+            )}
+            {onWatchlist && firstListContainingShow && ' · '}
+            {firstListContainingShow && (
+              <>
+                Also on{' '}
+                {listsWithShow.length === 1 ? (
+                  <Link
+                    href={`/my-shows?tab=lists&list=${firstListContainingShow.id}`}
+                    className="text-gray-400 hover:text-brand transition-colors border-b border-dotted border-white/10"
+                  >
+                    {firstListContainingShow.name}
+                  </Link>
+                ) : (
+                  <Link
+                    href="/my-shows?tab=lists"
+                    className="text-gray-400 hover:text-brand transition-colors border-b border-dotted border-white/10"
+                  >
+                    {listsWithShow.length} of your lists
+                  </Link>
+                )}
+              </>
             )}
           </span>
         </p>
@@ -611,7 +624,6 @@ function Inner({
       {userFeaturesEnabled && hasRating && latestReview && !ratePanelOpen && (
         <YourRatingInline
           reviews={sortedReviews}
-          userAvg={userAvg}
           onEditReview={(r) => { setEditingReview(r); setRatePanelOpen(true); }}
         />
       )}
@@ -679,6 +691,7 @@ function Inner({
           }
         />
       )}
+      </div>{/* /action cluster */}
     </div>
   );
 }
@@ -686,22 +699,25 @@ function Inner({
 // ─── Sub-components ──────────────────────────────────────────────────────
 
 function DateLine({ show }: { show: ComputedShow }) {
+  // One hierarchy step below the venue line (text-sm gray-300) so the two
+  // stacked rows read as place → metadata instead of two identical gray lines.
+  const dateClass = 'text-xs text-gray-500';
   if (show.status === 'closed' && show.openingDate && show.closingDate) {
     return (
-      <p>
+      <p className={dateClass}>
         {formatDate(show.openingDate)} → {formatDate(show.closingDate)}
       </p>
     );
   }
   if (show.status === 'previews' || show.status === 'upcoming') {
     if (show.openingDate) {
-      return <p>Opens {formatDate(show.openingDate)}</p>;
+      return <p className={dateClass}>Opens {formatDate(show.openingDate)}</p>;
     }
     return null;
   }
   // open
   return (
-    <p>
+    <p className={dateClass}>
       {show.openingDate && <>Opened {formatDate(show.openingDate)}</>}
       {show.closingDate && <> · Closes {formatDate(show.closingDate)}</>}
     </p>
@@ -722,28 +738,40 @@ function AwaitingCard({ show, reviewCount }: { show: ComputedShow; reviewCount: 
 
 function YourRatingInline({
   reviews,
-  userAvg,
   onEditReview,
 }: {
   reviews: UserReview[];
-  userAvg: number;
   onEditReview: (review: UserReview) => void;
 }) {
   const isMulti = reviews.length > 1;
   return (
-    <div className="card p-4 space-y-2.5">
+    <div className="card p-4 overflow-hidden">
+      {/* Eyebrow header — same treatment as CRITICS' TAKE above, so the hero
+          reads as a set of sections. Replaces the mid-card "Your rating" label
+          that trailed the stars; the date demotes to a 12px caption
+          (owner design pick "Option A", 2026-07-19). */}
+      <p className="text-xs font-bold uppercase tracking-[0.12em] text-gray-500 mb-2">
+        Your Rating
+      </p>
+      <div className="space-y-2.5">
       {reviews.map((review, i) => (
         <div key={review.id} className={i > 0 ? 'pt-2.5 border-t border-white/5 space-y-1' : 'space-y-1'}>
-          <div className="flex items-center gap-3 min-w-0">
+          <div className="flex items-center gap-2.5 min-w-0">
             <div className="flex-shrink-0">
               <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
             </div>
-            <div className="flex items-baseline gap-1.5 min-w-0 flex-1 text-xs">
-              <span className="font-bold text-gray-200 whitespace-nowrap">
-                {!isMulti ? 'Your rating' : i === 0 ? 'Latest viewing' : 'Earlier viewing'}
-              </span>
+            <span className="flex-shrink-0 text-sm font-bold text-amber-400 tabular-nums">
+              {review.rating.toFixed(1)}
+            </span>
+            {/* min-w-0 + truncate: the caption must SHRINK on narrow
+                viewports — nowrap without an overflow guard ran under the edit
+                pencil and off the card (owner report, 2026-07-17). */}
+            <div className="min-w-0 flex-1 text-xs text-gray-500 truncate">
+              {isMulti && (
+                <span className="text-gray-400">{i === 0 ? 'Latest' : 'Earlier'}</span>
+              )}
               {review.date_seen && (
-                <span className="text-gray-500 whitespace-nowrap">· {formatDate(review.date_seen)}</span>
+                <span>{isMulti ? ' · ' : ''}Seen {formatDate(review.date_seen)}</span>
               )}
             </div>
             <button
@@ -764,11 +792,8 @@ function YourRatingInline({
           )}
         </div>
       ))}
-      {isMulti && (
-        <div className="pt-2 border-t border-white/5 text-xs text-gray-500 text-right">
-          avg {formatStars(userAvg)}
-        </div>
-      )}
+      </div>
+      {/* avg-stars footer removed (owner, 2026-07-17: "not needed") */}
     </div>
   );
 }
@@ -783,9 +808,3 @@ function formatDate(iso: string | null | undefined): string {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-/** Render avg rating as Unicode stars, e.g. 4.5 → "★★★★½". */
-function formatStars(avg: number): string {
-  const full = Math.floor(avg);
-  const half = avg - full >= 0.5;
-  return '★'.repeat(full) + (half ? '½' : '');
-}

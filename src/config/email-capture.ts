@@ -11,6 +11,16 @@ interface EmailCaptureConfig {
   /** Exit intent modal (mouse leaves viewport top) */
   exitIntent: {
     enabled: boolean;
+    /**
+     * Minimum seconds on page before the exit-intent listener arms. Without
+     * this, a reflexive mouse move toward the tab bar/address bar 100ms after
+     * load counts as "exit intent" — a low-intent false positive that inflates
+     * gate_modal_shown (the conversion denominator) without ever representing
+     * real leave-intent (2026-07-14 audit: exit_intent was the single largest
+     * trigger by volume with no dwell gate at all, unlike scroll_depth which
+     * already required minTimeOnPageSec).
+     */
+    minTimeOnPageSec: number;
   };
   /** Page view limit gate (ProGateContext modal) */
   pageViewGate: {
@@ -65,7 +75,7 @@ interface EmailCaptureConfig {
 const presets: Record<string, EmailCaptureConfig> = {
   soft: {
     excludedPaths: ['/feedback', '/submit-review', '/methodology', '/beat-the-critics'],
-    exitIntent: { enabled: false },
+    exitIntent: { enabled: false, minTimeOnPageSec: 8 },
     pageViewGate: { threshold: 8 },
     homepageBanner: {
       visitThreshold: 5,
@@ -89,7 +99,7 @@ const presets: Record<string, EmailCaptureConfig> = {
   },
   aggressive: {
     excludedPaths: ['/feedback', '/submit-review', '/beat-the-critics'],
-    exitIntent: { enabled: true },
+    exitIntent: { enabled: true, minTimeOnPageSec: 5 },
     pageViewGate: { threshold: 2 },
     homepageBanner: {
       visitThreshold: 2,

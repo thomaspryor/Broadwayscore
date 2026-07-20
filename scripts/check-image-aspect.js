@@ -13,6 +13,11 @@
  *   --staged           Check only files staged for commit (pre-commit hook use)
  *   --audit            Scan entire public/images/shows/ and report
  *   --files <paths...> Check specific paths (space-separated)
+ *   --quarantine       With --staged: instead of failing the commit, unstage +
+ *                      restore/delete each violating file and exit 0 so the
+ *                      REST of the batch commits. One landscape thumbnail was
+ *                      aborting entire CI image batches (fetch-all-image-formats
+ *                      failed 2x on 2026-07-14, discarding all fetched images).
  *
  * Thresholds (calibrated from existing catalog distribution + show-page rendering):
  *   poster.*    h/w >= 1.00            (rejects landscape; allows square/portrait)
@@ -31,7 +36,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 
 let sharp;
 try {
@@ -194,6 +199,67 @@ async function main() {
 
   if (mode === 'audit') {
     console.log(`Checked ${checked} role-tagged files.`);
+  }
+
+  if (args.includes('--quarantine') && mode === 'staged' && violations.length > 0) {
+    console.log(`Quarantining ${violations.length} aspect-ratio violation(s) so the rest of the batch can commit:`);
+    const removedNewFiles = []; // repo-relative paths whose file no longer exists
+    for (const v of violations) {
+      const rel = path.relative(ROOT, v.absPath);
+      console.log(`  QUARANTINED ${rel} — role=${v.role} ${v.reason}`);
+      try {
+        execFileSync('git', ['restore', '--staged', '--', rel], { cwd: ROOT });
+        // New file (not in HEAD) → delete it; modified file → restore committed version.
+        const inHead = (() => {
+          try { execFileSync('git', ['cat-file', '-e', `HEAD:${rel}`], { cwd: ROOT, stdio: 'ignore' }); return true; } catch { return false; }
+        })();
+        if (inHead) {
+          execFileSync('git', ['checkout', '--', rel], { cwd: ROOT });
+        } else {
+          fs.unlinkSync(v.absPath);
+          removedNewFiles.push(rel);
+        }
+      } catch (err) {
+        // A failed quarantine leaves the violator staged → the pre-commit
+        // gate will abort the batch exactly like before. Make it loud.
+        console.error(`::error::quarantine failed for ${rel}: ${err.message}`);
+        process.exitCode = 1;
+      }
+    }
+
+    // A deleted image must not stay referenced from shows.json — that's the
+    // dangling-path bug this replaces (steve-burns-alive class). Null the
+    // matching images.{role} field for each removed NEW file and restage.
+    if (removedNewFiles.length > 0) {
+      const showsFile = path.join(ROOT, 'data', 'shows.json');
+      try {
+        const data = JSON.parse(fs.readFileSync(showsFile, 'utf8'));
+        let changed = 0;
+        for (const rel of removedNewFiles) {
+          const m = rel.match(/^public\/images\/shows\/([^/]+)\/(poster|thumbnail|hero)\./i);
+          if (!m) continue;
+          const [, showId, role] = m;
+          const show = data.shows.find(s => s.id === showId);
+          const webPath = '/' + rel.replace(/^public\//, '');
+          if (show && show.images && show.images[role.toLowerCase()] === webPath) {
+            show.images[role.toLowerCase()] = null;
+            changed++;
+            console.log(`  cleared shows.json images.${role.toLowerCase()} for ${showId}`);
+          } else if (show && show.images && show.images[role.toLowerCase()]) {
+            // Path drift between the deleted file and the recorded field means
+            // a dangling reference may ship — the exact bug this fix prevents.
+            console.error(`::warning::deleted ${rel} but ${showId} images.${role.toLowerCase()} is "${show.images[role.toLowerCase()]}" (no exact match) — check for a dangling path`);
+          }
+        }
+        if (changed > 0) {
+          fs.writeFileSync(showsFile, JSON.stringify(data, null, 2) + '\n');
+        }
+      } catch (err) {
+        console.error(`::error::shows.json cleanup failed after quarantine: ${err.message}`);
+        process.exitCode = 1;
+      }
+    }
+    process.exit(0);
   }
 
   process.exit(reportViolations(violations, mode));

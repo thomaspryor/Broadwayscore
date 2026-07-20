@@ -1,6 +1,6 @@
 ---
 name: reference-claude-code-daily-login-keychain-race
-description: "Recurring daily \"401 socket closed / run /login\" on macOS = launchd jobs bypass zshrc and rotate the keychain OAuth grant; fix is static token in every caller"
+description: "Recurring daily 401 / forced /login on macOS: keychain credential BEATS CLAUDE_CODE_OAUTH_TOKEN (env token is only a fallback) — fix is DELETE the keychain entry so everything uses the static token; never /login casually"
 metadata: 
   node_type: memory
   type: reference
@@ -27,12 +27,36 @@ credential is FINE and the "401" is a transport/keychain artifact, not expiry.
 advancing every few min = active rotation = the smoking gun.
 
 **Fix:** give EVERY caller the same long-lived `sk-ant-oat` token (direct bearer,
-no rotation): canonical 600 file `~/.config/claude/token`; `.zshrc` sources it
-(covers interactive + cmux panes, which ARE interactive shells); the token goes
-in each launchd plist's `EnvironmentVariables` dict (they already have one for
-PATH/HOME — matches the existing idiom, no new login-agent or global
-`launchctl setenv`). Full setup + rollback + rotation runbook:
-`~/.config/claude/README.md`; rotate via `~/.config/claude/update-token.sh`.
+no rotation): canonical 600 file `~/.config/claude/token`; **`~/.zshenv` sources
+it** (corrected 2026-07-14: `.zshrc` was WRONG — cmux spawns claude via `zsh -l`
+login NON-interactive, which skips `.zshrc`; `.zshenv` is sourced by every zsh);
+the token goes in each launchd plist's `EnvironmentVariables` dict — the full
+list lives in `update-token.sh`'s PLISTS array (4 jobs as of 2026-07-14). Full
+setup + rollback + rotation runbook: `~/.config/claude/README.md`; rotate via
+`~/.config/claude/update-token.sh`.
+
+**2026-07-15 CORRECTION — the env-token architecture was built on a false premise.**
+Empirical tests (isolated CLAUDE_CONFIG_DIR, valid/invalid tokens, binaries
+2.1.209 + 2.1.210): macOS precedence is **keychain FIRST; CLAUDE_CODE_OAUTH_TOKEN
+is only a fallback when no keychain credential exists**. "Env token overrides
+/login" was inferred from a binary string, never tested — WRONG. Coverage work
+(zshenv, plists) therefore never stopped rotation. Real fix: DELETE the
+"Claude Code-credentials" keychain entry (`purge-keychain-login.sh`) so every
+caller falls back to the static token. /login recreates the entry and re-poisons
+ALL sessions — restart a prompting session instead; check-token.sh emails if the
+entry reappears. Test method that settled it: invalid env token + keychain
+present → works (keychain used); isolated config + valid token → works; isolated
+config + invalid token → 401. Lesson: auth-precedence claims need a
+disprove-test (deliberately invalid credential), not a binary-strings read.
+
+**Recurrence pattern (2026-07-14):** the race came back 2 weeks after the fix
+because NEW headless claude callers were installed tokenless (autonomous-nightly
+2026-07-13, weekly-retro) + the cmux `.zshrc` gap above. Any ONE tokenless
+caller restarts keychain rotation and kills every keychain-path session daily.
+Prevention now encoded: `check-token.sh` (daily 09:30 launchd) audits all
+LaunchAgents for claude-invoking scripts whose plist lacks the token and
+macOS-notifies. When installing any new launchd job that runs claude: add its
+plist to PLISTS in update-token.sh and rerun it with the current token.
 
 **Gotchas confirmed empirically:** `apiKeyHelper` does NOT work for an `sk-ant-oat`
 token — it sends the value as `X-Api-Key` and the server rejects it ("Invalid API

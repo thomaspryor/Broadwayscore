@@ -327,6 +327,7 @@ async function main() {
     driftState,
     criticConsensusDoc,
     now,
+    shows,
   };
 
   const showResults = [];

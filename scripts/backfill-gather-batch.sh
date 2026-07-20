@@ -35,11 +35,16 @@ SHOW_COUNT=$(node -e "console.log(require('$BATCHES_FILE')[$BATCH_IDX].length)")
 
 echo "$(date): Starting batch $BATCH_IDX of $TOTAL_BATCHES ($SHOW_COUNT shows)"
 
-# Trigger gather workflow
-gh workflow run "Gather Review Data" -R "$REPO" \
+# Trigger gather workflow. macOS has no timeout(1); perl's alarm is the
+# portable substitute (same pattern as scripts/deploy-heartbeat.sh and
+# ~/.claude/hooks/gh-poll-block.sh) — without it, a hung `gh` network call
+# wedges this daily launchd job indefinitely with no operator visibility,
+# since `set -e` only catches a non-zero exit, not a hang.
+perl -e 'alarm 30; exec @ARGV' gh workflow run "Gather Review Data" -R "$REPO" \
   -f shows="$SHOWS" \
   -f parallel_jobs=3 \
-  -f max_tier=2
+  -f max_tier=2 \
+  -f no_sb_serp=true
 
 echo "$(date): Batch $BATCH_IDX dispatched"
 

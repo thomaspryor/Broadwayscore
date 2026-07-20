@@ -1,0 +1,114 @@
+name: Supabase Functions
+
+# Two jobs, two triggers:
+# - deploy: keeps the deployed edge functions in lockstep with main. Without
+#   this, a merge (or revert) of supabase/functions/** would silently leave
+#   prod running stale function code — the app deploys via git, functions
+#   must too (plan-review finding, 2026-07-13).
+# - parser-canary: weekly check that the shipped Show Score profile parser
+#   still extracts reviews from the LIVE site. Show Score DOM drift would
+#   otherwise surface only as users importing 0 reviews.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/functions/**'
+  schedule:
+    - cron: '17 9 * * 1' # Mondays 09:17 UTC — parser canary vs live Show Score
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Type-check edge functions
+        # supabase/ is excluded from the app's tsconfig (Deno globals), so
+        # this is the only typed gate the function code gets.
+        run: |
+          deno check supabase/functions/show-score-proxy/index.ts
+          deno check supabase/functions/mezzanine-search/index.ts
+      - name: Verify required schema exists in prod
+        # Both functions hard-depend on their rate-limit log tables (fail
+        # closed without them). Migrations are applied via the Management
+        # API, not this workflow — fail the deploy loudly if the schema is
+        # missing rather than shipping a function that 500s on every call.
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          check_table() {
+            RES=$(curl -s -X POST "https://api.supabase.com/v1/projects/${{ secrets.SUPABASE_PROJECT_REF }}/database/query" \
+              -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" -H "Content-Type: application/json" \
+              -d "{\"query\":\"SELECT 1 FROM pg_class WHERE relname = '$1';\"}")
+            echo "$RES" | grep -q '"?column?":1' || { echo "::error::$1 table missing in prod — apply $2 before deploying"; exit 1; }
+          }
+          check_table import_fetch_log supabase/migrations/20260713_import_fetch_log.sql
+          check_table mezzanine_search_log supabase/migrations/20260714f_mezzanine_search_log.sql
+          check_table user_show_stubs supabase/migrations/20260714e_user_show_stubs.sql
+      - name: Deploy edge functions
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          npx supabase functions deploy show-score-proxy \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
+          npx supabase functions deploy mezzanine-search \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Supabase Functions deploy failed'
+          severity: 'warning'
+
+  parser-canary:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Parse a live Show Score profile with the shipped parser
+        run: |
+          set -euo pipefail
+          UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
+          STATUS=$(curl -s -A "$UA" -o /tmp/profile.html -w "%{http_code}" "https://www.show-score.com/member/tom-300271")
+          BYTES=$(wc -c < /tmp/profile.html)
+          echo "status=$STATUS bytes=$BYTES"
+          # Availability problems (CI IP blocked, site down) are NOT parser
+          # drift — skip with a warning rather than false-alarm. The canary
+          # only fails when a substantial 200 page parses to almost nothing.
+          if [ "$STATUS" != "200" ] || [ "$BYTES" -lt 5000 ]; then
+            echo "::warning::Show Score unreachable from CI (status=$STATUS bytes=$BYTES) — parser canary skipped"
+            exit 0
+          fi
+          node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            import { parseProfileHtml } from "./supabase/functions/show-score-proxy/parser.mjs";
+            const p = parseProfileHtml(readFileSync("/tmp/profile.html", "utf8"));
+            console.log(`parsed ${p.reviews.length} reviews, displayName=${p.displayName}`);
+            if (p.reviews.length < 40) {
+              console.error("PARSER DRIFT: live profile page parsed to <40 reviews — Show Score likely changed their markup. Users importing now get incomplete/empty results.");
+              process.exit(1);
+            }
+          '
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Show Score parser canary failed (DOM drift?)'
+          severity: 'warning'

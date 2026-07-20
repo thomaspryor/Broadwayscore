@@ -1,0 +1,60 @@
+name: Scrapingdog Account Usage
+
+# On-demand readout of the Scrapingdog account API (plan, credit usage,
+# renewal). The key only exists as a repo secret, so local sessions dispatch
+# this to see live SD usage. Calls the account endpoint only — no scraping,
+# so the fetchPage() rule doesn't apply.
+# hygiene-notify-ok: on-demand diagnostic; the dispatching session reads the run output directly
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "usage = read-only account readout; billing-probe = A0 gate (fires ~7 SD calls incl. deliberate failures, ≤25 credits) — see scripts/probe-scrapingdog-billing.js; confirm-empty-authoritative = task #213 live check of the empty-authoritative SERP fix (~4 SD SERP calls, ≤20 credits) — see scripts/confirm-sd-empty-authoritative.js"
+        required: false
+        type: choice
+        default: usage
+        options: [usage, billing-probe, confirm-empty-authoritative]
+
+permissions:
+  contents: read
+
+jobs:
+  usage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        if: ${{ inputs.mode == 'billing-probe' || inputs.mode == 'confirm-empty-authoritative' }}
+      - uses: actions/setup-node@v5
+        if: ${{ inputs.mode == 'billing-probe' || inputs.mode == 'confirm-empty-authoritative' }}
+        with:
+          node-version: 20
+      - name: Install dependencies
+        if: ${{ inputs.mode == 'billing-probe' || inputs.mode == 'confirm-empty-authoritative' }}
+        run: npm ci --ignore-scripts
+      - name: Billing probe (A0)
+        if: ${{ inputs.mode == 'billing-probe' }}
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: node scripts/probe-scrapingdog-billing.js
+      - name: Confirm empty-authoritative SERP fix (task #213)
+        if: ${{ inputs.mode == 'confirm-empty-authoritative' }}
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/confirm-sd-empty-authoritative.js
+      - name: Fetch account usage
+        if: ${{ inputs.mode != 'billing-probe' && inputs.mode != 'confirm-empty-authoritative' }}
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "$SCRAPINGDOG_API_KEY" ]; then
+            echo "SCRAPINGDOG_API_KEY secret is not set"; exit 1
+          fi
+          RESP=$(curl -sS --max-time 30 "https://api.scrapingdog.com/account?api_key=${SCRAPINGDOG_API_KEY}")
+          # Never echo the key; strip any key-like fields defensively.
+          echo "$RESP" | jq 'del(.api_key?, .apiKey?, .key?)' || { echo "Non-JSON response:"; echo "$RESP" | head -c 500; exit 1; }

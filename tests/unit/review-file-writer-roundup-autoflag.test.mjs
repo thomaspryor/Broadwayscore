@@ -75,7 +75,7 @@ describe('review-file-writer Guard E (Review-Roundup auto-flag)', () => {
         outletId: 'broadwayworld',
         outlet: 'BroadwayWorld',
         criticName: 'Test Critic',
-        url: 'https://www.broadwayworld.com/reviews/Hamilton-Broadway-Production',
+        url: 'https://www.broadwayworld.com/article/BWW-Review-Hamilton-Broadway-Production-20150101',
         source: 'opening-night-discovery',
         fields: {
           publishDate: null,
@@ -87,6 +87,29 @@ describe('review-file-writer Guard E (Review-Roundup auto-flag)', () => {
       assert.notEqual(result.action, 'skipped', `expected write, got skipped: ${result.reason}`);
       const written = JSON.parse(fs.readFileSync(result.filepath, 'utf-8'));
       assert.notEqual(written.isRoundupArticle, true, 'non-roundup URL must not be flagged');
+    });
+  });
+
+  test('Guard E1: BWW /reviews/{slug} critics-aggregation page → isRoundupArticle=true (Whoopi Monologues 2026-07-14)', () => {
+    withTempReviewTextsDir('the-whoopi-monologues-off-broadway-2026', (tmp) => {
+      const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer');
+      const result = createOrMergeReviewFile('the-whoopi-monologues-off-broadway-2026', {
+        outletId: 'broadwayworld',
+        outlet: 'BroadwayWorld',
+        criticName: 'Charles Isherwood',
+        url: 'https://www.broadwayworld.com/reviews/the-whoopi-monologues',
+        source: 'serp-discovery',
+        fields: {
+          publishDate: null,
+          fullText: null,
+          contentTier: 'excerpt',
+        },
+      }, { reviewTextsDir: tmp });
+
+      assert.notEqual(result.action, 'skipped', `expected write, got skipped: ${result.reason}`);
+      const written = JSON.parse(fs.readFileSync(result.filepath, 'utf-8'));
+      assert.equal(written.isRoundupArticle, true, 'Guard E1 must auto-flag BWW /reviews/ pages');
+      assert.match(written.roundupArticleReason || '', /reviews.*critics-aggregation/i);
     });
   });
 

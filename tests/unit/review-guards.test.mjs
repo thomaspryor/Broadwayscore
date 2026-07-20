@@ -664,6 +664,60 @@ describe('isRoundupUrl — WhatsOnStage review round-ups', () => {
   });
 });
 
+describe('isRoundupUrl — BWW /reviews/ critics-aggregation page (Whoopi Monologues 2026-07-14)', () => {
+  test('broadwayworld.com/reviews/{slug} → roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/reviews/the-whoopi-monologues');
+    assert.strictEqual(r.isRoundup, true);
+  });
+
+  test('bare-domain (no www) broadwayworld.com/reviews/{slug} → roundup', () => {
+    const r = isRoundupUrl('https://broadwayworld.com/reviews/Hell-s-Kitchen');
+    assert.strictEqual(r.isRoundup, true);
+  });
+
+  test('BWW individual review at /article/BWW-Review-... → NOT roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/article/BWW-Review-NETWORK-20181206');
+    assert.strictEqual(r.isRoundup, false);
+  });
+
+  test('BWW regional /{city}/article/... individual review → NOT roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/boston/article/BWW-Review-SOME-SHOW-20160101');
+    assert.strictEqual(r.isRoundup, false);
+  });
+});
+
+describe('isRoundupUrl — BWW /article/Review-Roundup- compilation (Oresteia 2026-07-19)', () => {
+  test('regional /westend/article/Review-Roundup-... → roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/westend/article/Review-Roundup-Simon-Stones-THE-ORESTEIA-Now-Open-At-The-Bridge-Theatre-20260715');
+    assert.strictEqual(r.isRoundup, true);
+  });
+
+  test('bare /article/Review-Roundup-... (no regional prefix) → roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/article/Review-Roundup-BLACK-SWAN-Opens-at-American-Repertory-Theater-');
+    assert.strictEqual(r.isRoundup, true);
+  });
+
+  test('BWW own review at /article/Review-{SHOW}- (no "Roundup") → NOT roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715');
+    assert.strictEqual(r.isRoundup, false);
+  });
+
+  test('BWW own review at /article/BWW-Review-... → NOT roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/article/BWW-Review-CHESS-Sizzles-at-the-Kennedy-Center-20180216');
+    assert.strictEqual(r.isRoundup, false);
+  });
+
+  test('review-roundup only in query string → NOT roundup', () => {
+    const r = isRoundupUrl('https://www.broadwayworld.com/article/Some-Feature-20260101?from=review-roundup-widget');
+    assert.strictEqual(r.isRoundup, false);
+  });
+
+  test('other-domain review-roundup path stays unflagged (sourced-from-roundup carve-out)', () => {
+    const r = isRoundupUrl('https://example.com/article/review-roundup-some-show');
+    assert.strictEqual(r.isRoundup, false);
+  });
+});
+
 describe('isRoundupPageAsReview — page-as-review vs sourced-from-roundup', () => {
   const wosRoundup = 'https://www.whatsonstage.com/news/did-sam-ryder-reach-for-the-stars-jesus-christ-superstar-review-round-up_1726870/';
   const stageRoundup = 'https://www.thestage.co.uk/review-round-ups/hamilton-review-round-up';
@@ -705,6 +759,28 @@ describe('isRoundupPageAsReview — page-as-review vs sourced-from-roundup', () 
   test('missing url / null data → false', () => {
     assert.strictEqual(isRoundupPageAsReview({ outletId: 'whatsonstage' }), false);
     assert.strictEqual(isRoundupPageAsReview(null), false);
+  });
+
+  test('BWW /reviews/{slug} page + broadwayworld outletId → true (page IS the review, Whoopi Monologues 2026-07-14)', () => {
+    const bwwReviewsPage = 'https://www.broadwayworld.com/reviews/the-whoopi-monologues';
+    assert.strictEqual(isRoundupPageAsReview({ url: bwwReviewsPage, outletId: 'broadwayworld' }), true);
+  });
+
+  test('BWW individual /article/BWW-Review-... URL + broadwayworld outletId → NOT page-as-review', () => {
+    const bwwArticle = 'https://www.broadwayworld.com/article/BWW-Review-NETWORK-20181206';
+    assert.strictEqual(isRoundupPageAsReview({ url: bwwArticle, outletId: 'broadwayworld' }), false);
+  });
+
+  test('BWW /reviews/{slug} page + non-BWW outletId → NOT page-as-review (review SOURCED from the roundup, not the page itself)', () => {
+    const bwwReviewsPage = 'https://www.broadwayworld.com/reviews/the-whoopi-monologues';
+    assert.strictEqual(isRoundupPageAsReview({ url: bwwReviewsPage, outletId: 'nytimes' }), false);
+  });
+
+  test('BWW alias outletIds (bww, broadway-world, broadwayworldcom) + /reviews/ page → true', () => {
+    const bwwReviewsPage = 'https://www.broadwayworld.com/reviews/the-whoopi-monologues';
+    assert.strictEqual(isRoundupPageAsReview({ url: bwwReviewsPage, outletId: 'bww' }), true);
+    assert.strictEqual(isRoundupPageAsReview({ url: bwwReviewsPage, outletId: 'broadway-world' }), true);
+    assert.strictEqual(isRoundupPageAsReview({ url: bwwReviewsPage, outletId: 'broadwayworldcom' }), true);
   });
 });
 

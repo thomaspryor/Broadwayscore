@@ -31,6 +31,8 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { isRelevantPost } = require('./lib/reddit-grosses');
+const { buildGrossesPostResult } = require('./lib/grosses-post-resolver');
 
 const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
 const { CLAUDE_SONNET } = require('./lib/models');
@@ -415,7 +417,7 @@ function httpsRequest(reqOptions, body) {
 async function fetchGrossesAnalysisPost() {
   console.log('Fetching latest Grosses Analysis post...');
 
-  // Primary: search r/Broadway for the post
+  // Tier 1: author-scoped search on r/Broadway
   const searchUrl = 'https://www.reddit.com/r/Broadway/search.json?q=author:Boring_Waltz_9545+Grosses+Analysis&sort=new&restrict_sr=1&limit=1&t=month';
 
   try {
@@ -423,23 +425,14 @@ async function fetchGrossesAnalysisPost() {
 
     if (response?.data?.children?.length > 0) {
       const post = response.data.children[0].data;
-      const title = post.title || '';
-      const weekMatch = title.match(/Week Ending (\d{1,2}\/\d{1,2}\/\d{4})/i);
-
-      console.log(`  Found: "${title}"`);
-      return {
-        selftext: post.selftext || '',
-        title,
-        weekEnding: weekMatch ? weekMatch[1] : null,
-        permalink: post.permalink,
-        createdUtc: post.created_utc
-      };
+      console.log(`  Found: "${post.title || ''}"`);
+      return buildGrossesPostResult(post, 1);
     }
   } catch (e) {
     console.error(`  Search endpoint failed: ${e.message}`);
   }
 
-  // Fallback: user submissions
+  // Tier 2: the author's own profile/submissions feed
   console.log('  Falling back to user submissions endpoint...');
   await sleep(2000);
 
@@ -451,22 +444,40 @@ async function fetchGrossesAnalysisPost() {
       for (const child of response.data.children) {
         const post = child.data;
         if (/grosses\s*analysis/i.test(post.title || '')) {
-          const title = post.title || '';
-          const weekMatch = title.match(/Week Ending (\d{1,2}\/\d{1,2}\/\d{4})/i);
-
-          console.log(`  Found via user profile: "${title}"`);
-          return {
-            selftext: post.selftext || '',
-            title,
-            weekEnding: weekMatch ? weekMatch[1] : null,
-            permalink: post.permalink,
-            createdUtc: post.created_utc
-          };
+          console.log(`  Found via user profile: "${post.title || ''}"`);
+          return buildGrossesPostResult(post, 2);
         }
       }
     }
   } catch (e) {
     console.error(`  User submissions endpoint failed: ${e.message}`);
+  }
+
+  // Tier 3 (2026-07-19, plan-review finding): both author-scoped tiers
+  // return nothing on any week u/Boring_Waltz_9545 doesn't post — a generic
+  // subreddit search, no author filter, catches a substitute poster's
+  // thread that week. Tagged sourceConfidence:'unverified-fallback' by
+  // buildGrossesPostResult (tier 3) since the poster isn't verified — the
+  // caller (applyGrossesAnalysisResults) must route this through
+  // commercial-pending-review.json rather than writing it directly.
+  console.log('  Falling back to generic r/Broadway search (no author filter)...');
+  await sleep(2000);
+
+  try {
+    const genericUrl = 'https://www.reddit.com/r/Broadway/search.json?q=Grosses+Analysis&sort=new&restrict_sr=1&limit=5&t=week';
+    const response = await fetchViaScrapingBee(genericUrl);
+
+    if (response?.data?.children) {
+      for (const child of response.data.children) {
+        const post = child.data;
+        if (isRelevantPost(post)) {
+          console.log(`  Found via generic search (unverified author "${post.author}"): "${post.title || ''}"`);
+          return buildGrossesPostResult(post, 3);
+        }
+      }
+    }
+  } catch (e) {
+    console.error(`  Generic search fallback failed: ${e.message}`);
   }
 
   console.log('  No Grosses Analysis post found');
@@ -1156,41 +1167,39 @@ async function gatherSECFilings(shows, commercial) {
     const title = show.title;
 
     try {
-      // Use BROADWAY_LLC_PATTERNS to generate search terms
-      const searchTerms = secScraper.BROADWAY_LLC_PATTERNS?.map(pattern =>
-        pattern.replace('{show}', title)
-      ) || [`${title} LLC`, `${title} Broadway LLC`];
+      // S3-T3 fix (2026-07-19, ship-check finding — Codex + independent QA
+      // subagent both caught this): this loop used to pre-expand `title`
+      // through BROADWAY_LLC_PATTERNS itself (e.g. "KPOP Broadway LLC"),
+      // THEN pass that already-expanded term as showName to
+      // searchFormDFilings(), which internally calls
+      // searchCompanyByShowName() and re-applies the FULL pattern list
+      // again — producing double-expanded garbage queries like "KPOP
+      // Broadway LLC Broadway LLC". searchCompanyByShowName() already
+      // tries all patterns against the bare title; call it once with the
+      // bare title instead of pre-expanding.
+      const filings = await secScraper.searchFormDFilings({ showName: title });
 
-      for (const term of searchTerms.slice(0, 3)) { // Limit to 3 patterns per show
-        try {
-          const filings = await secScraper.searchFormDFilings({ companyName: term });
+      if (filings && filings.length > 0) {
+        // Most recent filing
+        const latestFiling = filings[0];
+        const parsed = await secScraper.parseFormDFiling(latestFiling.url || latestFiling.filingUrl);
 
-          if (filings && filings.length > 0) {
-            // Parse the most recent filing
-            const latestFiling = filings[0];
-            const parsed = await secScraper.parseFormDFiling(latestFiling.url || latestFiling.filingUrl);
+        if (parsed?.totalOfferingAmount) {
+          results.push({
+            showSlug: slug,
+            capitalization: parsed.totalOfferingAmount,
+            source: `SEC Form D: ${parsed.companyName || title}`,
+            filingUrl: latestFiling.url || latestFiling.filingUrl,
+            filingDate: parsed.filingDate,
+            confidence: 'high' // SEC data is always high confidence
+          });
 
-            if (parsed?.totalOfferingAmount) {
-              results.push({
-                showSlug: slug,
-                capitalization: parsed.totalOfferingAmount,
-                source: `SEC Form D: ${parsed.companyName || term}`,
-                filingUrl: latestFiling.url || latestFiling.filingUrl,
-                filingDate: parsed.filingDate,
-                confidence: 'high' // SEC data is always high confidence
-              });
-
-              console.log(`    Found: ${title} - $${(parsed.totalOfferingAmount / 1e6).toFixed(1)}M`);
-              break; // Found a match, move to next show
-            }
-          }
-        } catch (searchError) {
-          // Non-fatal, continue to next search term
+          console.log(`    Found: ${title} - $${(parsed.totalOfferingAmount / 1e6).toFixed(1)}M`);
         }
-
-        // Rate limiting
-        await sleep(1000);
       }
+
+      // Rate limiting
+      await sleep(1000);
     } catch (e) {
       console.error(`    Error searching for ${title}: ${e.message}`);
     }
@@ -2111,8 +2120,32 @@ function buildValidationSources(gathered) {
 
   // Add Grosses Analysis post parsed data
   if (gathered.grossesPostParsed && gathered.grossesPostParsed.length > 0) {
+    // S1-T7 (2026-07-19, plan-review finding): a tier-3 fallback match
+    // (generic subreddit search, no author filter — see
+    // fetchGrossesAnalysisPost) has an unverified poster and must not
+    // silently corroborate a proposed change the same way a trusted
+    // author-scoped match does. Route it through the SAME "lower
+    // confidence, non-corroborating" shape already used below for
+    // gathered.redditFinancial, instead of building a second gating
+    // mechanism — a change resting solely on this data keeps whatever
+    // base confidence the initial extraction assigned rather than being
+    // boosted toward 'high' by a fabricated extra "supporting source".
+    const isUnverifiedFallback = gathered.grossesPost?.sourceConfidence === 'unverified-fallback';
+
     for (const show of gathered.grossesPostParsed) {
       if (!show.matchedSlug) continue;
+
+      if (isUnverifiedFallback) {
+        sources.push({
+          showSlug: null,
+          field: null,
+          value: null,
+          sourceType: 'Reddit Grosses Analysis (unverified fallback author)',
+          url: gathered.grossesPost?.permalink ? `https://www.reddit.com${gathered.grossesPost.permalink}` : null,
+          rawText: `${show.showName || show.matchedSlug}: weeklyCost=${show.estimatedWeeklyCost ?? 'n/a'}, recoupmentPct=${show.estimatedRecoupmentPct ?? 'n/a'}`
+        });
+        continue;
+      }
 
       // Add each field as a separate source entry
       if (show.estimatedWeeklyCost) {
@@ -2191,7 +2224,7 @@ function buildValidationSources(gathered) {
  * @param {Object[]} allSources - Sources for validation
  * @returns {Object[]} Validated changes with validatedConfidence
  */
-function validateProposedChanges(proposedChanges, allSources) {
+function validateProposedChanges(proposedChanges, allSources, opts = {}) {
   if (!sourceValidator || SKIP_VALIDATION) {
     console.log('  Skipping validation (module not available or --skip-validation flag)');
     return proposedChanges.map(c => ({ ...c, validatedConfidence: c.confidence }));
@@ -2213,18 +2246,37 @@ function validateProposedChanges(proposedChanges, allSources) {
     };
 
     const result = sourceValidator.validateChange(changeForValidator, allSources);
+    let validatedConfidence = result.validatedConfidence;
+    let validationNotes = result.validationNotes;
+    const supportingCount = result.supportingSources?.length || 0;
+
+    // S1-T7 fix (2026-07-19, ship-check finding): calculateConfidence's
+    // "no corroboration" rule PRESERVES the original confidence — it never
+    // downgrades. buildValidationSources() only omits the tier-3 fallback
+    // post as a corroborating source; it never touches validatedConfidence.
+    // Without this, Claude can self-assign 'high'/'medium' to a change
+    // sourced solely from an unverified-fallback Reddit post and it sails
+    // straight through filterByConfidence unchanged. Force 'low' whenever
+    // the fallback was active AND no independent source corroborated it —
+    // legitimate multi-source corroboration (SEC filing, trade press) still
+    // overrides this, since that raises supportingCount above 0.
+    if (opts.unverifiedFallbackActive && supportingCount === 0 &&
+        (change.source || '').toLowerCase().includes('reddit')) {
+      validatedConfidence = 'low';
+      validationNotes = `${validationNotes || 'No corroborating sources found'}; forced low — unverified-fallback Reddit source with no independent corroboration`;
+    }
 
     validated.push({
       ...change,
-      validatedConfidence: result.validatedConfidence,
-      supportingSourcesCount: result.supportingSources?.length || 0,
+      validatedConfidence,
+      supportingSourcesCount: supportingCount,
       contradictingSourcesCount: result.contradictingSources?.length || 0,
-      validationNotes: result.validationNotes
+      validationNotes
     });
 
     // Log if confidence was adjusted
-    if (result.validatedConfidence !== change.confidence) {
-      console.log(`    ${change.slug}.${change.field}: ${change.confidence} -> ${result.validatedConfidence}`);
+    if (validatedConfidence !== change.confidence) {
+      console.log(`    ${change.slug}.${change.field}: ${change.confidence} -> ${validatedConfidence}`);
     }
   }
 
@@ -2464,7 +2516,8 @@ async function main() {
 
   const validatedChanges = validateProposedChanges(
     analysisResult.proposedChanges || [],
-    validationSources
+    validationSources,
+    { unverifiedFallbackActive: gathered.grossesPost?.sourceConfidence === 'unverified-fallback' }
   );
 
   // Replace proposed changes with validated versions
@@ -2592,7 +2645,7 @@ async function main() {
 }
 
 // Exports for unit testing
-module.exports = { filterByConfidence, shadowClassifier };
+module.exports = { filterByConfidence, shadowClassifier, buildValidationSources, validateProposedChanges };
 
 // Run only when executed directly (not when require()'d for testing)
 if (require.main === module) {

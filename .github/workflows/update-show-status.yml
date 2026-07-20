@@ -157,7 +157,10 @@ jobs:
         # opening-night readiness, push) by eating the whole job budget — that
         # cancellation is what made every run go stale and spammed cron-health.
         # Cap it and continue-on-error so the run still succeeds if it overruns.
-        timeout-minutes: 30
+        # 45 min: the 30-min cap was hit on 2026-07-14 (discovery killed mid-run,
+        # masked by continue-on-error) — new-show enrichment after a big skip
+        # list doesn't fit in 30.
+        timeout-minutes: 45
         continue-on-error: true
         run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end --consume-show-score-candidates
 
@@ -372,24 +375,11 @@ jobs:
             echo "No new slugs to queue"
             exit 0
           fi
-          # Filter to Broadway-only (skip OB/WE shows)
+          # Logic lives in scripts/lib/commercial-queue.js (colocated-tested,
+          # see tests/unit/commercial-queue.test.mjs) — this step just wires
+          # the discovered slugs through the CLI wrapper.
+          node scripts/queue-commercial-research.js --new-slugs="$NEW_SLUGS"
           QUEUE_FILE="data/commercial-research-queue.json"
-          node -e "
-            const fs = require('fs');
-            const slugs = '$NEW_SLUGS'.split(',').filter(Boolean);
-            const shows = require('./data/shows.json').shows || [];
-            const bwaySlugs = slugs.filter(slug => {
-              const show = shows.find(s => s.slug === slug || s.id === slug);
-              return show && (show.market || 'broadway') === 'broadway';
-            });
-            if (bwaySlugs.length === 0) { console.log('No Broadway shows to queue'); process.exit(0); }
-            let queue = { shows: [], updatedAt: '' };
-            try { queue = JSON.parse(fs.readFileSync('$QUEUE_FILE', 'utf8')); } catch(e) {}
-            queue.shows = [...new Set([...(queue.shows || []), ...bwaySlugs])];
-            queue.updatedAt = new Date().toISOString();
-            fs.writeFileSync('$QUEUE_FILE', JSON.stringify(queue, null, 2) + '\n');
-            console.log('Queued ' + bwaySlugs.length + ' Broadway shows for commercial research: ' + bwaySlugs.join(', '));
-          "
           git add "$QUEUE_FILE" 2>/dev/null || true
           if ! git diff --staged --quiet; then
             git commit -m "data: Queue new Broadway shows for commercial research"
@@ -399,41 +389,8 @@ jobs:
       - name: Queue pre-opening shows for commercial research
         continue-on-error: true
         run: |
+          node scripts/queue-commercial-research.js --pre-opening
           QUEUE_FILE="data/commercial-research-queue.json"
-          node -e "
-            const fs = require('fs');
-            const shows = require('./data/shows.json').shows || [];
-            const commercial = require('./data/commercial.json');
-            const commShows = commercial.shows || {};
-
-            // Find Broadway shows opening tomorrow (UTC)
-            const tomorrow = new Date();
-            tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
-            const tomorrowStr = tomorrow.toISOString().split('T')[0];
-
-            const preOpening = shows.filter(s => {
-              if (!s || !s.openingDate) return false;
-              if (s.openingDate !== tomorrowStr) return false;
-              if ((s.market || 'broadway') !== 'broadway') return false;
-              // Skip if already has non-TBD commercial data
-              const entry = commShows[s.slug || s.id];
-              if (entry && entry.designation && entry.designation !== 'TBD') return false;
-              return true;
-            }).map(s => s.slug || s.id);
-
-            if (preOpening.length === 0) { console.log('No pre-opening shows for tomorrow'); process.exit(0); }
-
-            let queue = { shows: [], triggers: {}, updatedAt: '' };
-            try { queue = JSON.parse(fs.readFileSync('$QUEUE_FILE', 'utf8')); } catch(e) {}
-            if (!queue.triggers) queue.triggers = {};
-            for (const slug of preOpening) {
-              queue.triggers[slug] = 'pre-opening';
-            }
-            queue.shows = [...new Set([...(queue.shows || []), ...preOpening])];
-            queue.updatedAt = new Date().toISOString();
-            fs.writeFileSync('$QUEUE_FILE', JSON.stringify(queue, null, 2) + '\n');
-            console.log('Queued ' + preOpening.length + ' pre-opening shows: ' + preOpening.join(', '));
-          "
           git add "$QUEUE_FILE" 2>/dev/null || true
           if ! git diff --staged --quiet; then
             git commit -m "data: Queue pre-opening shows for commercial research"
@@ -443,43 +400,8 @@ jobs:
       - name: Queue closing TBD shows for commercial research
         continue-on-error: true
         run: |
+          node scripts/queue-commercial-research.js --closing
           QUEUE_FILE="data/commercial-research-queue.json"
-          node -e "
-            const fs = require('fs');
-            const shows = require('./data/shows.json').shows || [];
-            const commercial = require('./data/commercial.json');
-            const commShows = commercial.shows || {};
-
-            // Detect shows that just closed (status=closed, closingDate within last 7 days)
-            const weekAgo = new Date();
-            weekAgo.setUTCDate(weekAgo.getUTCDate() - 7);
-            const weekAgoStr = weekAgo.toISOString().split('T')[0];
-            const todayStr = new Date().toISOString().split('T')[0];
-
-            const closingTbd = shows.filter(s => {
-              if (!s || s.status !== 'closed') return false;
-              if ((s.market || 'broadway') !== 'broadway') return false;
-              if (!s.closingDate || s.closingDate < weekAgoStr || s.closingDate > todayStr) return false;
-              // Only queue if TBD or uncovered
-              const entry = commShows[s.slug || s.id];
-              if (!entry) return true; // uncovered
-              if (entry.designation === 'TBD') return true;
-              return false;
-            }).map(s => s.slug || s.id);
-
-            if (closingTbd.length === 0) { console.log('No recently closed TBD shows'); process.exit(0); }
-
-            let queue = { shows: [], triggers: {}, updatedAt: '' };
-            try { queue = JSON.parse(fs.readFileSync('$QUEUE_FILE', 'utf8')); } catch(e) {}
-            if (!queue.triggers) queue.triggers = {};
-            for (const slug of closingTbd) {
-              queue.triggers[slug] = 'closing';
-            }
-            queue.shows = [...new Set([...(queue.shows || []), ...closingTbd])];
-            queue.updatedAt = new Date().toISOString();
-            fs.writeFileSync('$QUEUE_FILE', JSON.stringify(queue, null, 2) + '\n');
-            console.log('Queued ' + closingTbd.length + ' closing TBD shows: ' + closingTbd.join(', '));
-          "
           git add "$QUEUE_FILE" 2>/dev/null || true
           if ! git diff --staged --quiet; then
             git commit -m "data: Queue closing TBD shows for commercial research"

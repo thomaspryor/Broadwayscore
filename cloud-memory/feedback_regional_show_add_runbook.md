@@ -19,6 +19,8 @@ The `regional` show category shipped 2026-06-22 (first show: black-swan-regional
 7. **Verify**: dev server `NEXT_PUBLIC_FEATURES=regional npx next dev -p 3099`; the worktree needs real (non-symlink) local copies of shows.json/reviews.json/audience-buzz.json so edits render + survive CI clobber during QA. Confirm score + audience chip + REGIONAL badge/pill/trust line.
 8. **Ship**: push the private data repo with a **commit-immediately + retry-on-reject loop** (`git fetch; git reset --hard origin/main; reapply idempotent deltas; commit; push`). No web push (no code). Cron deploys within ~5-10 min; verify live URL is 200.
 
+**T3-only shows need minReviews+2 (=5 for regional)** — `generate-mobile-show-details.js` adds `T3_ONLY_EXTRA=2` when a show has zero T1/T2 reviews, so 4 all-T3 reviews render a breakdown but NO score. Fix by ingesting a 5th review or re-tiering the market's major metro daily to T2 in outlet-registry (Chicago Tribune precedent; The Tennessean added T2 2026-07-15 for the Dolly Nashville tryout — its review was syndication-misfiled under knox-news T3).
+
 **Score-display thresholds for `regional` live in 3 places** (all set to min-3, matching off-broadway): `src/config/score-buckets.ts`, `src/lib/market-utils.ts` (ScoreBadge), `scripts/generate-mobile-show-details.js`. If adding another sub-market later, update all three.
 
 **Fail-closed**: regional uses `market:'regional'` (NOT 'broadway') so `.market !== 'broadway'` gates (broadcast sender, recoupment/closure pollers) exclude it. `featureFlags.regional` gates detail-page static params + sitemap + search index. `/partners` was a leak (now gated). See [[feedback_dual_repo_data_files.md]], [[feedback_data_repos_clobber_uncommitted.md]].

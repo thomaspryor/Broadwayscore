@@ -8,12 +8,16 @@ interface StarRatingProps {
   size?: 'xs' | 'sm' | 'md' | 'lg';
   readOnly?: boolean;
   hideLabel?: boolean;
+  /** Expand each star's hit target ~12px beyond the glyph (invisible pseudo-element).
+   *  ONLY for poster-overlay strips with empty space around the stars — in dense
+   *  rows (My Shows To-Be-Rated) the halo would swallow taps meant for neighbors. */
+  expandHitTarget?: boolean;
   /** Live hover preview (null on leave) — lets the parent echo the would-be value. */
   onHoverChange?: (value: number | null) => void;
 }
 
 const SIZE_MAP = {
-  xs: { star: 14, gap: 1 },
+  xs: { star: 16, gap: 2 },
   sm: { star: 20, gap: 2 },
   md: { star: 28, gap: 3 },
   lg: { star: 40, gap: 4 },
@@ -66,7 +70,7 @@ function fillFor(displayRating: number, starIndex: number): '0%' | '50%' | '100%
  * is the whole point — the previous isTouchDevice/synthetic-mousemove heuristic
  * broke half-stars on real phones.
  */
-export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false, onHoverChange }: StarRatingProps) {
+export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false, expandHitTarget = false, onHoverChange }: StarRatingProps) {
   const [hoverRating, setHoverRating] = useState<number | null>(null);
   const { star: starSize, gap } = SIZE_MAP[size];
   const uid = useId();
@@ -132,7 +136,10 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
   return (
     <div className="inline-flex flex-col items-start">
       <div
-        className={`inline-flex items-center ${readOnly ? '' : 'cursor-pointer'}`}
+        // star-compact: readOnly display stars must not inherit the mobile
+        // 44px tap-target minimums — they're non-interactive, and the minimums
+        // ballooned xs stars into row-crushing giants (2026-07-19).
+        className={`inline-flex items-center ${readOnly ? 'star-compact' : 'cursor-pointer'}`}
         style={{ gap }}
         onMouseLeave={handleMouseLeave}
         role={readOnly ? 'img' : 'radiogroup'}
@@ -143,7 +150,12 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
             key={starIndex}
             type="button"
             disabled={readOnly}
-            className={`relative rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 ${readOnly ? 'cursor-default' : 'cursor-pointer'}`}
+            className={`relative rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 ${readOnly ? 'cursor-default' : 'cursor-pointer'} ${
+              // Hover-rate stars (xs) render tiny on poster overlays — the visible glyph stays
+              // small on purpose, but the click/tap target expands via an invisible pseudo-element
+              // into the surrounding gap/padding, which has room to spare on the poster.
+              !readOnly && expandHitTarget ? "before:content-[''] before:absolute before:-inset-3" : ''
+            }`}
             style={{ width: starSize, height: starSize }}
             onMouseMove={readOnly ? undefined : e => handleMouseMove(e, starIndex)}
             onClick={readOnly ? undefined : e => handleClick(e, starIndex)}

@@ -7,6 +7,7 @@ import { useClickOutside } from '@/hooks/useClickOutside';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { useIsOperaDomain } from '@/hooks/useIsOperaDomain';
 import { isOperaShowPath } from '@/lib/opera-show-ids';
+import { featureFlags } from '@/config/feature-flags';
 
 interface MarketStats {
   nyc: { openShows: number; theaters: number };
@@ -34,7 +35,8 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // Treat opera show pages as NOT off-broadway for the pill label, even though
   // the URL-derived marketId is 'off-broadway' (shared routing convention).
   const isOffBroadway = marketId === 'off-broadway' && !isOperaShowPage;
-  // Regional (non-NYC US) shows: distinct pill label, no dropdown entry yet (hub deferred).
+  // Regional (non-NYC US) shows: distinct pill label; dropdown links to the
+  // pre-Broadway browse page (no dedicated hub yet).
   const isRegional = marketId === 'regional';
   // Don't apply opera domain branding when user has explicitly navigated to
   // another market (off-broadway, west-end, off-west-end, regional). The opera
@@ -53,27 +55,27 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   }, [marketId]);
 
   return (
-    <div className="flex items-center gap-3 sm:gap-3" ref={dropdownRef}>
+    <div className="flex items-center gap-2 sm:gap-3" ref={dropdownRef}>
       {/* Logo — changes per market AND per domain (operascorecard.com → Opera).
           Opera-domain swap happens client-side after hydration; SSR renders the
           Broadway default so search engines + first-paint stay consistent across
           the shared static export. */}
-      <Link href={isOpera ? '/opera' : (isWestEnd || isOffWestEnd ? '/west-end' : '/')} className="flex items-center group">
+      <Link href={isOpera ? '/opera' : (isWestEnd || isOffWestEnd ? '/west-end' : '/')} className="flex items-center shrink-0 group">
         {isOpera ? (
-          <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span></span>
+          <span className="text-base min-[390px]:text-lg sm:text-3xl font-extrabold text-white tracking-tight">Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span></span>
         ) : isWestEnd || isOffWestEnd ? (
-          <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span></span>
+          <span className="text-base min-[390px]:text-lg sm:text-3xl font-extrabold text-white tracking-tight">WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span></span>
         ) : (
-          <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway<span className="text-gradient">Scorecard</span></span>
+          <span className="text-base min-[390px]:text-lg sm:text-3xl font-extrabold text-white tracking-tight">Broadway<span className="text-gradient">Scorecard</span></span>
         )}
-        <span className="text-[8px] sm:text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
+        <span className="hidden sm:inline text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
       </Link>
 
       {/* Market Pill */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold mt-0.5
+          flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-semibold mt-0.5 shrink-0
           border transition-colors whitespace-nowrap
           ${isOpen
             ? 'bg-white/10 border-white/20 text-white'
@@ -93,7 +95,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
         aria-label="Switch market"
       >
         {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isRegional ? 'Regional' : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
-        <svg className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <svg className={`hidden min-[400px]:block w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
@@ -164,6 +166,28 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
               </svg>
             )}
           </Link>
+          {featureFlags.regional && (
+            <Link
+              href="/browse/pre-broadway-out-of-town-shows"
+              className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
+                isRegional ? 'bg-emerald-500/[0.10]' : 'hover:bg-white/[0.04]'
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              <div className="flex items-center gap-2">
+                <span className={`w-1.5 h-1.5 rounded-full ${isRegional ? 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.5)]' : 'bg-emerald-500/60'}`} />
+                <div>
+                  <div className={`text-sm font-semibold ${isRegional ? 'text-emerald-200' : 'text-white'}`}>Pre-Broadway</div>
+                  <div className="text-[11px] text-gray-500">Out-of-town tryouts · US regional</div>
+                </div>
+              </div>
+              {isRegional && (
+                <svg className="w-4 h-4 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </Link>
+          )}
           <div className="h-px bg-white/[0.06] mx-2 my-1" />
           <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-500">London</div>
           <Link

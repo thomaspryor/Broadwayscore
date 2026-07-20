@@ -53,6 +53,8 @@ const searchEntries = diaryShows.map(show => {
   if (show.city) entry.city = show.city;
   if (show.openingDate) entry.od = show.openingDate;
   if (show.category && show.category !== 'broadway') entry.category = show.category;
+  // Popularity signal for Add-show tiered ranking (Tier B sort: market → rc desc → od desc).
+  if (show.audienceRatingsCount) entry.rc = show.audienceRatingsCount;
   return entry;
 });
 
@@ -61,11 +63,15 @@ fs.writeFileSync(searchPath, JSON.stringify(searchEntries));
 const searchSizeKB = (fs.statSync(searchPath).size / 1024).toFixed(0);
 
 // diary-lookup.json — compact format matching show-lookup.json structure
-// Used by MyShowsClient to display diary-only shows in the user's diary/watchlist
+// Used by MyShowsClient to display diary-only shows in the user's diary/watchlist,
+// and by the /diary-show/[id] lightweight page (poster, city, opening date).
 const lookupEntries = diaryShows.map(show => {
   const entry = { id: show.id, t: show.title, s: show.slug, v: show.venue || '', dy: 1 };
   if (show.category) entry.c = show.category;
   if (show.openingDate) entry.od = show.openingDate;
+  if (show.city) entry.ci = show.city;
+  if (show.country) entry.co = show.country;
+  if (show.posterUrl) entry.p = show.posterUrl;
   return entry;
 });
 

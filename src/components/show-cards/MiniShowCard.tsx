@@ -9,6 +9,7 @@ import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getMarketLabel } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
+import HoverRateStars from '@/components/user/HoverRateStars';
 import type { ShowCardShow } from './types';
 
 export interface MiniShowCardProps {
@@ -61,6 +62,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: Mini
       <div className="relative mb-1.5">
         <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3]">
           <ShowPageBookmark showId={show.id} size="sm" />
+          <HoverRateStars showId={show.id} showHref={`/show/${show.slug}`} />
           <ShowImage
             sources={[
               show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'card') : null,

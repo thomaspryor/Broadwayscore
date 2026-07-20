@@ -1,7 +1,7 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-07-13T08:05:15.139Z",
+  "lastChecked": "2026-07-17T07:40:12.282Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,12 +9,7 @@
     {
       "name": "Workflow repeat-failure: Test Suite",
       "status": "error",
-      "message": "Test Suite failed 4 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Opening Night Poller — auto",
-      "status": "error",
-      "message": "Opening Night Poller — auto failed 3 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 3 times in the last 24h — likely broken, not transient."
     }
   ]
 }

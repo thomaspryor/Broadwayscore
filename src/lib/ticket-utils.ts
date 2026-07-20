@@ -36,9 +36,18 @@ const TICKET_PLATFORM_PRIORITY: Record<string, number> = {
 // which keep TodayTix + Official Site (whose marketing sites route to
 // Ticketmaster anyway), so no official buy path is lost. $0 earned, so hiding
 // it removes CTA clutter and may nudge clicks to revenue-producing TodayTix.
+//
+// Telecharge hidden 2026-07-19: no affiliate program exists (never in
+// AFFILIATE_CONFIG), so every click is unpaid opportunity cost vs TodayTix.
+// 25 shows carry the link; 24 also show TodayTix, and Shubert shows keep an
+// Official Site button whose marketing pages route to Telecharge anyway, so
+// no official buy path is lost. Only the-balusters-2026 (closed) had
+// Telecharge as its sole visible link. Same consolidation logic as the
+// Ticketmaster hide above.
 const HIDDEN_PLATFORMS: Set<string> = new Set([
   'StubHub',
   'Ticketmaster',
+  'Telecharge',
 ]);
 
 export interface TicketLinkData {

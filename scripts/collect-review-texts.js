@@ -121,6 +121,7 @@ const { checkBrowserbaseCaps } = require('./lib/browserbase-caps');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
+const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 
 /**
  * Rename a review-text file to match its in-memory criticName when one of the
@@ -613,6 +614,17 @@ let page = null;
 const loggedInDomains = new Set();
 let browserCrashCount = 0;
 const MAX_BROWSER_CRASHES = 5;
+
+// Bumped by closeBrowser()/setupBrowser() on every restart attempt. Three
+// call sites (ensureBrowserHealthy, the REVIEW_TIMEOUT handler, processReview's
+// fresh-page fallback) can each independently trigger a restart with no mutex
+// between them; withTimeout() bounds the WAIT but never cancels the underlying
+// browser.close()/chromium.launch(), so a "timed out" restart can still finish
+// in the background later. Without this guard it would silently overwrite
+// browser/context/page with a stale instance after a newer restart already
+// succeeded. setupBrowser() checks its captured generation before committing
+// to the module globals; a stale one tears itself down instead.
+let browserGeneration = 0;
 
 // ============================================================================
 // PAGE HELPERS (scroll, paywall dismissal)
@@ -1996,7 +2008,32 @@ function canUseBrowserbase(urlDomain) {
  * Fetch with Browserbase - managed browser cloud with CAPTCHA solving
  * Uses their API to create a browser session and control it
  */
+/**
+ * fetchWithBrowserbase: retries once (fresh session) on "Insufficient text"
+ * before giving up. #221/#224 diagnostic (2026-07-20) found WSJ's real-world
+ * Browserbase hit rate is ~50% per attempt even with valid injected cookies —
+ * NOT a hard block (isBlocked/isPaywalled both pass, the page loads and has a
+ * real <article> with real cookies present) but some sessions render an empty
+ * paragraph tree while an identical retry moments later succeeds. Sampled
+ * data/review-texts wsj--*.json fetchMethod:'browserbase' entries from
+ * 2026-07-10 to 07-19 show real successes (5000+ chars) interleaved with
+ * 0-char failures throughout, not a step-function regression — a single
+ * session-level retry (independent fingerprint/proxy) converts that ~50%
+ * single-shot rate into a ~75% effective rate. Does NOT retry hard failures
+ * (cap reached, missing config, session-creation errors) — those won't
+ * resolve on retry and retrying them just burns a second session for nothing.
+ */
 async function fetchWithBrowserbase(url, review) {
+  try {
+    return await _fetchWithBrowserbaseAttempt(url, review);
+  } catch (error) {
+    if (!/Insufficient text/.test(error.message)) throw error;
+    console.log(`    ⚠ Browserbase returned insufficient text — retrying once with a fresh session...`);
+    return await _fetchWithBrowserbaseAttempt(url, review);
+  }
+}
+
+async function _fetchWithBrowserbaseAttempt(url, review) {
   // Extract domain ONCE — used by both the cap gate and the per-domain counter.
   // canUseBrowserbase needs it to enforce the per-domain cap (otherwise
   // anything that bypasses the shouldRun gate would silently skip the
@@ -3999,41 +4036,11 @@ function extractPublishDateFromHtml(html) {
   return null;
 }
 
-// Extract publishDate from URL path patterns: /YYYY/MM/DD/ or YYYY-MM-DD
-// Fallback for when HTML has no date metadata. Conservative: validates calendar
-// correctness and rejects show-title years (e.g. "1776").
-function extractDateFromUrl(url) {
-  if (!url) return null;
-  const pathOnly = url.split('?')[0].split('#')[0];
-
-  // Pattern 1: /YYYY/MM/DD/ (WordPress-style, most reliable)
-  const slashMatch = pathOnly.match(/\/(\d{4})\/(\d{1,2})\/(\d{1,2})\//);
-  if (slashMatch) {
-    const result = validateUrlDate(slashMatch[1], slashMatch[2], slashMatch[3]);
-    if (result) return result;
-  }
-
-  // Pattern 2: YYYY-MM-DD in path (Bloomberg, LA Times, etc.)
-  const TITLE_YEARS = new Set(['1776', '1984', '1812', '1921', '1992', '1940', '2026']);
-  const dashMatch = pathOnly.match(/(\d{4})-(\d{2})-(\d{2})/);
-  if (dashMatch && !TITLE_YEARS.has(dashMatch[1])) {
-    const result = validateUrlDate(dashMatch[1], dashMatch[2], dashMatch[3]);
-    if (result) return result;
-  }
-
-  return null;
-}
-
-function validateUrlDate(yearStr, monthStr, dayStr) {
-  const year = parseInt(yearStr, 10);
-  const month = parseInt(monthStr, 10);
-  const day = parseInt(dayStr, 10);
-  if (year < 1970 || year > 2027 || month < 1 || month > 12 || day < 1 || day > 31) return null;
-  // Calendar validity — catches Feb 30, etc.
-  const d = new Date(year, month - 1, day);
-  if (d.getFullYear() !== year || d.getMonth() !== month - 1 || d.getDate() !== day) return null;
-  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-}
+// URL-path date fallback (for when HTML has no date metadata) now delegates
+// to the canonical scripts/lib/rebuild-helpers.js extractDateFromUrl — same
+// function rebuild-all-reviews.js and backfill-review-dates.js use, so this
+// collect path gains every pattern (Guardian, BWW-compact, blogspot, Talkin'
+// Broadway /ob/) instead of maintaining a second, narrower copy.
 
 // Extract publishDate from review text byline (first 500 chars).
 // Only fires when exactly ONE date is found. Rejects run/closing dates.
@@ -4201,13 +4208,14 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
 
-  // Fallback: extract publishDate from URL path (e.g. /2025/11/16/ or 2025-11-16)
+  // Fallback: extract publishDate from URL path (e.g. /2025/11/16/, Guardian
+  // /2025/jul/14/, or Talkin' Broadway /ob/07_13_26.html).
   if (!data.publishDate && data.url) {
-    const extractedDate = extractDateFromUrl(data.url);
-    if (extractedDate) {
-      data.publishDate = extractedDate;
-      data.dateSource = 'url';
-      console.log(`    → Extracted publishDate from URL: ${extractedDate}`);
+    const urlDateResult = extractDateFromUrlCanonical(data.url);
+    if (urlDateResult && urlDateResult.date && /^\d{4}-\d{2}-\d{2}$/.test(urlDateResult.date)) {
+      data.publishDate = urlDateResult.date;
+      data.dateSource = urlDateResult.source;
+      console.log(`    → Extracted publishDate from URL: ${urlDateResult.date} (${urlDateResult.source})`);
     }
   }
 
@@ -5770,8 +5778,9 @@ function findReviewsToProcess() {
 
 async function setupBrowser() {
   console.log('\nLaunching browser with stealth...');
+  const myGeneration = ++browserGeneration;
 
-  browser = await chromium.launch({
+  const newBrowser = await chromium.launch({
     headless: true,
     args: [
       '--no-sandbox',
@@ -5783,7 +5792,7 @@ async function setupBrowser() {
     ],
   });
 
-  context = await browser.newContext({
+  const newContext = await newBrowser.newContext({
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
     viewport: { width: 1920, height: 1080 },
     locale: 'en-US',
@@ -5804,7 +5813,7 @@ async function setupBrowser() {
   });
 
   // Enhanced stealth scripts (even with playwright-extra)
-  await context.addInitScript(() => {
+  await newContext.addInitScript(() => {
     // Override webdriver
     Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
 
@@ -5859,27 +5868,42 @@ async function setupBrowser() {
 
   // Inject cookies for paywalled domains (bypasses login entirely)
   for (const domain of Object.keys(COOKIE_DOMAIN_MAP)) {
-    const injected = await injectCookies(context, domain);
+    const injected = await injectCookies(newContext, domain);
     if (injected) {
       cookieInjectedDomains.add(domain);
       loggedInDomains.add(domain); // Mark as "logged in" so loginToSite() is skipped
     }
   }
 
-  page = await context.newPage();
+  const newPage = await newContext.newPage();
+
+  if (myGeneration !== browserGeneration) {
+    // A newer restart (closeBrowser()/another setupBrowser()) superseded this
+    // one while we were launching — this instance is stale. Tear it down
+    // instead of clobbering the globals a later restart already set.
+    console.log('  ⚠ Stale browser launch superseded by a newer restart — discarding');
+    try { await newBrowser.close(); } catch (_) {}
+    return;
+  }
+
+  browser = newBrowser;
+  context = newContext;
+  page = newPage;
   console.log('✓ Browser ready');
 }
 
 async function closeBrowser() {
-  if (browser) {
+  browserGeneration++; // Invalidate any setupBrowser() still launching in the background.
+  const toClose = browser;
+  browser = null;
+  context = null;
+  page = null;
+  if (toClose) {
     try {
-      await browser.close();
+      await toClose.close();
     } catch (e) {
       // Browser may already be closed
     }
-    browser = null;
-    context = null;
-    page = null;
   }
 }
 
@@ -5907,11 +5931,14 @@ async function ensureBrowserHealthy() {
     }
 
     console.log(`  → Restarting browser (crash #${browserCrashCount})...`);
-    await closeBrowser();
+    // Bounded — same hang class as the REVIEW_TIMEOUT recovery path (see
+    // comment there); this is the higher-traffic sibling, hit by every
+    // Tier-1 Playwright call via fetchWithPlaywright().
+    try { await withTimeout(closeBrowser(), 30000, 'closeBrowser'); } catch (_) {}
     await sleep(2000); // Brief pause before restart
 
     try {
-      await setupBrowser();
+      await withTimeout(setupBrowser(), 60000, 'setupBrowser');
       console.log(`  ✓ Browser restarted successfully`);
       return true;
     } catch (restartError) {
@@ -6031,11 +6058,12 @@ async function processReview(review) {
       page = await context.newPage();
     }
   } catch (e) {
-    // Browser likely crashed — try full restart before giving up
+    // Browser likely crashed — try full restart before giving up.
+    // Bounded — same hang class as ensureBrowserHealthy()/REVIEW_TIMEOUT.
     console.log(`  ⚠ Could not create fresh page: ${e.message}`);
     try {
-      await closeBrowser();
-      await setupBrowser();
+      await withTimeout(closeBrowser(), 30000, 'closeBrowser');
+      await withTimeout(setupBrowser(), 60000, 'setupBrowser');
     } catch (restartErr) {
       console.log(`  ⚠ Browser restart failed: ${restartErr.message}`);
     }
@@ -6840,9 +6868,13 @@ async function main() {
       } catch (e) {
         if (e.message === 'REVIEW_TIMEOUT') {
           console.log(`  ✗ TIMEOUT: Review took >${CONFIG.reviewTimeout/1000}s - skipping (${review.outlet} - ${review.critic})`);
-          // Kill and restart browser to clear hung state
-          try { await closeBrowser(); } catch(_) {}
-          try { await setupBrowser(); } catch(_) {}
+          // Kill and restart browser to clear hung state. Bounded — a hung
+          // browser.close()/launch() (zombie process, exhausted resources after
+          // many restarts) otherwise stalls the whole run indefinitely with 0%
+          // CPU (observed 2026-07-15: TB recovery run stuck 7+ hours on this
+          // exact path after a REVIEW_TIMEOUT with no further progress).
+          try { await withTimeout(closeBrowser(), 30000, 'closeBrowser'); } catch(_) {}
+          try { await withTimeout(setupBrowser(), 60000, 'setupBrowser'); } catch(_) {}
         }
         result = { success: false, error: e.message };
       }

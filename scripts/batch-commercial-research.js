@@ -33,6 +33,7 @@ const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { normalizeSources } = require('./lib/commercial-sources');
 const { CLAUDE_SONNET } = require('./lib/models');
+const { isCommercialScope, DESIGNATION_CRITERIA, resolveScopeShow } = require('./lib/commercial-scope');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -218,7 +219,7 @@ Rules:
 4. For weekly running costs, look for "running costs of", "weekly nut", "costs $X per week to operate".
 5. For recoupment, look for "recouped", "paid back", "returned investment", "broke even".
 6. Recoupment dates should be in YYYY-MM format if month is known, YYYY if only year.
-7. For designation, use: Miracle (mega-hit, 10+ year run), Windfall (solid hit, recouped well), Easy Winner (limited run, recouped fast), Trickle (barely broke even), Fizzle (closed, recovered 30%+), Flop (closed, recovered <30%), Nonprofit, TBD (insufficient data).
+7. ${DESIGNATION_CRITERIA}
 8. ALWAYS include source URLs for every claim. If you cannot cite a specific URL from the evidence, say null.
 9. costMethodology should be: "sec-filing" if from SEC, "trade-reported" if from Deadline/Variety/Playbill, "industry-estimate" if uncertain.
 ${isHistorical ? '10. This is a historical show — data may be sparse. Be EXTRA conservative. Use industry-estimate methodology if sources are not definitive.' : ''}
@@ -458,12 +459,40 @@ function applyPending() {
   const pending = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8'));
   const commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
 
+  // Scope lookup — Off-Broadway / West End entries must never be applied.
+  let showsBySlug = {};
+  try {
+    const allShows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows || [];
+    for (const s of allShows) {
+      if (s.slug) showsBySlug[s.slug] = s;
+      if (s.id) showsBySlug[s.id] = s;
+    }
+  } catch {
+    // shows.json unavailable — guard degrades to no-op.
+  }
+
   let applied = 0;
   let skipped = 0;
 
   for (const [showId, entry] of Object.entries(pending.shows || {})) {
-    if (commercial.shows[showId]) {
-      console.log(`  ⏭️  "${showId}" already in commercial.json — skipping`);
+    // commercial.json is keyed by SLUG (memory: feedback_commercial_slug_keys).
+    // Writing (and existence-checking) by showId created ID-keyed duplicates
+    // next to the slug-keyed entries — this script's new Date() firstAdded
+    // stamps match the 13 hand-merged duplicates of 2026-07-19.
+    const resolvedShow = showsBySlug[showId];
+    const commercialKey = entry.slug || (resolvedShow && resolvedShow.slug) || showId;
+    if (commercialKey === showId && !(resolvedShow && resolvedShow.slug === showId)) {
+      console.warn(`  ⚠️ "${showId}" — no slug resolvable from shows.json; keying by show ID (validate-data will flag)`);
+    }
+    if (commercial.shows[commercialKey]) {
+      console.log(`  ⏭️  "${showId}" already in commercial.json as "${commercialKey}" — skipping`);
+      skipped++;
+      continue;
+    }
+
+    const scopeShow = resolveScopeShow(showsBySlug, showId, entry);
+    if (scopeShow && !isCommercialScope(scopeShow)) {
+      console.log(`  ⛔ "${showId}" — out of commercial scope (${scopeShow.category}), skipping`);
       skipped++;
       continue;
     }
@@ -484,8 +513,8 @@ function applyPending() {
       firstAdded: new Date().toISOString(),
     };
 
-    commercial.shows[showId] = commercialEntry;
-    console.log(`  ✅ Applied "${showId}" → ${commercialEntry.designation}`);
+    commercial.shows[commercialKey] = commercialEntry;
+    console.log(`  ✅ Applied "${showId}" → commercial.shows["${commercialKey}"] (${commercialEntry.designation})`);
     applied++;
   }
 
@@ -511,12 +540,14 @@ function selectTargets(shows, commercial, grosses) {
 
   if (SHOW_LIST) {
     return shows.filter(s => SHOW_LIST.includes(s.slug) || SHOW_LIST.includes(s.id))
-      .filter(s => !existingIds.has(s.id));
+      .filter(s => !existingIds.has(s.id))
+      .filter(isCommercialScope);
   }
 
   if (TOP_HISTORICAL) {
     // Rank by all-time gross, filter to shows not in commercial.json
     return shows
+      .filter(isCommercialScope)
       .filter(s => !existingIds.has(s.id))
       .filter(s => s.status === 'closed' || s.status === 'open')
       .map(s => {
@@ -536,13 +567,10 @@ function selectTargets(shows, commercial, grosses) {
   const RECENT_CLOSE_WINDOW_DAYS = 180;
   const cutoff = new Date(Date.now() - RECENT_CLOSE_WINDOW_DAYS * 86400 * 1000)
     .toISOString().slice(0, 10);
-  // Broadway detection: absent category OR explicit 'broadway' — matches
-  // isBroadway() convention across compute-gold-lists.js, generate-guide-editorials.js,
-  // scrape-lottery-rush.js, etc. (West End / off-Broadway / off-West-End are tagged;
-  // Broadway productions are the default state so category is often unset.)
+  // Broadway detection via the canonical scope predicate (category-based,
+  // NEVER `market` — see scripts/lib/commercial-scope.js for the trap).
   return shows
-    .filter(s => !s.category || s.category === 'broadway')
-    .filter(s => !s._devOnly)
+    .filter(isCommercialScope)
     .filter(s => !existingIds.has(s.id))
     .filter(s => {
       if (s.status === 'open' || s.status === 'previews') return true;

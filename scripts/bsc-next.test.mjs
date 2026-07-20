@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
 const require = createRequire(import.meta.url);
 const { actionable, pickTask, completedLaunchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed } = require('./bsc-next.js');
 const { isDoneTitle } = require('./lib/cmux-workspaces.js');
@@ -16,6 +17,15 @@ test('findLiveWorkspaceForTask: matches glyph-prefixed and truncated titles, ski
   assert.equal(findLiveWorkspaceForTask(task, [ws('✅ Triage 27 open needs-manual-review feedback issu')], isDoneTitle), null);
   // unrelated + too-short prefixes don't match
   assert.equal(findLiveWorkspaceForTask(task, [ws('Redesign show pages'), ws('Triage 27')], isDoneTitle), null);
+  // auto-dispatch naming (scope add, card #168): "🤖 <Project>·<subject>" —
+  // the duplicate-dispatch guard must still recognize its own launch title.
+  assert.equal(findLiveWorkspaceForTask(task, [ws('🤖 Infra·Triage 27 open needs-manual-review feedback issu')], isDoneTitle).ref, 'workspace:1');
+  // ship-check P1 catch: a compliant phase-rename APPENDS text after the
+  // launch title (never replaces it — see buildSeed's rename instruction) —
+  // the guard must still recognize the workspace as live on this task.
+  // (task.subject here is exactly 50 chars, so the launch title carries the
+  // FULL subject, unlike the truncation fixtures above.)
+  assert.equal(findLiveWorkspaceForTask(task, [ws('🤖 Infra·Triage 27 open needs-manual-review feedback issues — Sprint 2')], isDoneTitle).ref, 'workspace:1');
 });
 
 const TASKS = [
@@ -107,6 +117,23 @@ test('buildSeed always appends the re-read-before-wrap-up instruction', () => {
   }
 });
 
+test('buildSeed: with a project, instructs the session to APPEND (never replace) phase text on rename', () => {
+  const seed = buildSeed(TASKS[1], { url: 'https://n/x', notes: 'n', priority: 'P1' }, 'Infra');
+  assert.match(seed, /🤖 Infra·P1 pending/);
+  assert.match(seed, /APPEND the current phase after this exact title/);
+  assert.match(seed, /never replace or shorten it/);
+  // ship-check P1: the rename command must carry the FULL unchanged launch
+  // title, not a placeholder — otherwise the ✅ hook / dup-dispatch guard
+  // stop matching the moment a session follows this instruction.
+  assert.match(seed, /cmux workspace-action --action rename --title "🤖 Infra·P1 pending — <current phase>"/);
+});
+
+test('buildSeed: without a project (backward-compat callers), omits the rename instruction entirely', () => {
+  const seed = buildSeed(TASKS[1], { url: 'https://n/x', notes: 'n', priority: 'P1' });
+  assert.doesNotMatch(seed, /APPEND the current phase/);
+  assert.doesNotMatch(seed, /🤖/);
+});
+
 test('category filter: Marketing/Partnerships never default-picked, --id still works', () => {
   const { categoryOf, isExcludedCategory } = require('./bsc-next.js');
   const T = [
@@ -169,4 +196,25 @@ test('bridge tasks with a category keep the ≤5-word product-card carve-out (un
   const bridgeTech = { subject: 'Fix rage clicks', description: '[notion:b] P1 Next · Not started · Product\n' };
   assert.equal(isExcludedCategory(bridgeGate), false);
   assert.equal(isExcludedCategory(bridgeTech), false);
+});
+
+test('dispatch command always passes a resolved --model (never bare, never inherits interactive default)', () => {
+  const src = fs.readFileSync(new URL('./bsc-next.js', import.meta.url), 'utf8');
+  assert.match(src, /claude --model \$\{model\} --dangerously-skip-permissions/);
+  // model is resolved via resolveModel() (task #151), not a blanket 'sonnet'
+  // literal — the sonnet floor now lives in scripts/lib/bsc-next-model.js.
+  assert.match(src, /require\('\.\/lib\/bsc-next-model\.js'\)/);
+  assert.match(src, /const model = resolveModel\(/);
+});
+
+// resolveModel()'s own resolution-order tests (fable-exclusion, size->model,
+// hint precedence) live in scripts/lib/bsc-next-model.test.mjs — this only
+// checks that bsc-next.js wires the explicit --model flag through untouched
+// (layer 1 must always win, verified end-to-end here since resolveModel's
+// own unit tests can't see bsc-next's arg-parsing).
+test('explicit --model flag is threaded through as opts.explicitFlag unchanged', () => {
+  const { resolveModel } = require('./lib/bsc-next-model.js');
+  const task = { id: '1', description: '[notion:x] P1 Next · Not started' };
+  assert.equal(resolveModel({ explicitFlag: 'fable', task, card: null, notionId: null, queuePath: '/nonexistent' }), 'fable');
+  assert.equal(resolveModel({ explicitFlag: 'opus', task, card: null, notionId: null, queuePath: '/nonexistent' }), 'opus');
 });

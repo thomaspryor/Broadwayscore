@@ -77,6 +77,25 @@ for (const vp of VIEWPORTS) {
       await expect(page.locator('input[type="date"]')).toHaveValue(localToday());
     });
 
+    test('late-arriving suggested date (watchlist planned date) replaces the untouched default', async ({ page }) => {
+      // Regression: ?rate=1 opens the editor before the watchlist fetch
+      // resolves, so the diary's "Saw Jun 24" date arrived after mount and the
+      // field stayed on today (owner report, 2026-07-17).
+      await goToEditor(page, '?suggestDelayed=2026-06-24');
+      await expect(page.locator('input[type="date"]')).toHaveValue(localToday());
+      await expect(page.locator('input[type="date"]')).toHaveValue('2026-06-24', { timeout: 5000 });
+      await expect(page.getByTestId('date-seen-display')).toContainText('Jun 24, 2026');
+    });
+
+    test('late suggestion never clobbers a date the user already cleared', async ({ page }) => {
+      await goToEditor(page, '?suggestDelayed=2026-06-24');
+      // User interacts with the date field (clears it) BEFORE the suggestion lands.
+      await page.getByRole('button', { name: 'Clear date' }).click();
+      await expect(page.locator('input[type="date"]')).toHaveValue('');
+      await page.waitForTimeout(1500);
+      await expect(page.locator('input[type="date"]')).toHaveValue('');
+    });
+
     test('date max is today — never the closing date (closed shows stay pickable)', async ({ page }) => {
       // Regression: capping at closingDate anchored the native picker years in
       // the past and read as locked (La Cage aux Folles, 2026-07-13).
@@ -197,10 +216,12 @@ for (const vp of VIEWPORTS) {
         return !!dlg && dlg.contains(document.activeElement);
       });
       await expect.poll(inModal).toBe(true);
-      // Tab many times; focus must never escape the modal.
+      // Tab many times; focus must never escape the modal. Poll each step —
+      // the trap's wrap runs in a keydown listener, and an instant read raced
+      // it into rare false negatives (flake fix, 2026-07-19).
       for (let i = 0; i < 12; i++) {
         await page.keyboard.press('Tab');
-        expect(await inModal()).toBe(true);
+        await expect.poll(inModal).toBe(true);
       }
     });
 

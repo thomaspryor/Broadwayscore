@@ -1,9 +1,9 @@
 {
-  "//": "First-live-night config for the autonomous loop (Sprint 2, S2-T8): $5 night cap, S-cards only, max 3 items. weeklyUSD deliberately null — the email shows a % of budget ONLY when the owner sets one (never invented). Consumed by scripts/autonomous-run.js and scripts/autonomous-email.js; CLI flags override.",
-  "nightUSD": 5,
+  "//": "Autonomous loop config (owner-approved 2026-07-15): $15 night cap — the 2026-07-15 $5 cap could never admit an M card (worst-case $7.50 > $4.50 available), so M-only nights did zero work; $15 fits one M + slack and passes checkSharedDailyCap ($50). S+M cards, max 3 items. L stays disabled — incremental checkpointing (S3-T4) is unit-tested but not yet live-verified end-to-end. weeklyUSD deliberately null — the email shows a % of budget ONLY when the owner sets one (never invented). Consumed by scripts/autonomous-run.js and scripts/autonomous-email.js; CLI flags override.",
+  "nightUSD": 15,
   "weeklyUSD": null,
   "maxItems": 3,
-  "sizes": ["S"],
+  "sizes": ["S", "M"],
   "ownerEmail": null,
   "//ownerEmail": "null here (public repo) — the OWNER_EMAIL env var in .env is the real value; config value, if set, overrides",
   "baseUrl": "https://broadwayscorecard.com",

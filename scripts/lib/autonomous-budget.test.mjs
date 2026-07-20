@@ -54,11 +54,29 @@ test('M card refused when 2-attempt estimate exceeds remaining (VERIFY line)', (
   assert.match(m.reason, /worst-case \$7\.50.*exceeds remaining \$7\.10/);
 });
 
-test('L (or unknown) size has no envelope and is refused', () => {
-  const b = createNightBudget({ nightUSD: 50, sizes: ['S', 'M', 'L'], maxItems: 5 });
-  const r = b.admit('l1', 'L');
+test('a genuinely unknown size has no envelope and is refused', () => {
+  const b = createNightBudget({ nightUSD: 50, sizes: ['S', 'M', 'L', 'XL'], maxItems: 5 });
+  const r = b.admit('xl1', 'XL');
   assert.equal(r.admitted, false);
   assert.match(r.reason, /no budget envelope/);
+});
+
+// L (Sprint 3, S3-T4): has a real envelope now — one S-sized slice per night,
+// no attempt-2 reservation (the checkpoint IS the retry, next night).
+test('L has a one-slice-per-night envelope: incremental, no attempt-2 reservation', () => {
+  assert.equal(ENVELOPES.L.incremental, true);
+  assert.equal(ENVELOPES.L.estAttempt2USD, 0);
+  const b = createNightBudget({ nightUSD: 5, reserveUSD: 0.5, sizes: ['L'], maxItems: 5 });
+  const r = b.admit('l1', 'L');
+  assert.equal(r.admitted, true);
+  assert.equal(r.reservedUSD, ENVELOPES.L.estUSD); // no attempt-2 slice reserved
+});
+
+test('L not enabled tonight is refused just like S/M (same size gate)', () => {
+  const b = createNightBudget({ nightUSD: 50, sizes: ['S', 'M'], maxItems: 5 });
+  const r = b.admit('l1', 'L');
+  assert.equal(r.admitted, false);
+  assert.match(r.reason, /not enabled tonight/);
 });
 
 test('size not enabled tonight is refused (S-only first live night)', () => {

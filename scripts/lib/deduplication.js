@@ -380,6 +380,15 @@ function isMultiProduction(newShow, existing) {
     if (isDefinitelyClosed(newShow) || isDefinitelyClosed(existing)) {
       return true;
     }
+    // One active, one merely announced/upcoming, at CONFIRMED different venues:
+    // separate productions. Mirrors the `venuesKnownDifferent` rule in the
+    // existing-active branch below, which only fires when `existing` is the
+    // active one — without this the check was direction-asymmetric
+    // (2026-07-18: Kew "Jack and the Beanstalk" in previews flagged as a
+    // duplicate of Hackney Empire's announced Christmas panto).
+    if (isNotYetOpen(newShow) || isNotYetOpen(existing)) {
+      return true;
+    }
   }
 
   const newYear = getYear(newShow);
@@ -626,7 +635,26 @@ function filterDuplicates(candidateShows, existingShows) {
  *   category to 'broadway'/'nyc' which would falsely bridge a London
  *   candidate with missing category to NYC twins — refuse to decide
  *   without category evidence)
+ * - the only same-title shows are long-closed (see isLongClosedTwin): a
+ *   candidate currently on sale cannot be the same production as one that
+ *   closed 18+ months ago, so it's a revival, not a duplicate. Without this
+ *   carve-out the guard permanently blocked real revivals every daily run
+ *   (2026-07-14: Seven Guitars/LCT vs 1996, An American Daughter/Signature
+ *   vs 1997, You're a Good Man Charlie Brown/City Center vs 1999, and
+ *   A View from the Bridge/La MaMa vs 2015 the next day).
  */
+const TWIN_LONG_CLOSED_MONTHS = 18;
+
+function isLongClosedTwin(show) {
+  if (show.status !== 'closed') return false;
+  // Prefer closingDate; a closed show with only an openingDate still dates it.
+  const ref = show.closingDate || show.openingDate;
+  if (!ref) return false; // undatable — stay conservative, still counts as a twin
+  const refMs = Date.parse(ref);
+  if (!Number.isFinite(refMs)) return false;
+  return (Date.now() - refMs) > TWIN_LONG_CLOSED_MONTHS * 30.44 * 24 * 60 * 60 * 1000;
+}
+
 function findSameTitleTwinIfNoOpeningDate(candidate, existingShows) {
   if (candidate.openingDate) return null;
   const candTitleLower = (candidate.title || '').toLowerCase().trim();
@@ -636,7 +664,8 @@ function findSameTitleTwinIfNoOpeningDate(candidate, existingShows) {
   return existingShows.find(s =>
     (s.title || '').toLowerCase().trim() === candTitleLower &&
     s.category &&
-    getMarketPool(s.category) === candPool
+    getMarketPool(s.category) === candPool &&
+    !isLongClosedTwin(s)
   ) || null;
 }
 
@@ -652,5 +681,6 @@ module.exports = {
   getMarketPool,
   isSlugContainmentDuplicate,
   findSameTitleTwinIfNoOpeningDate,
+  isLongClosedTwin,
   KNOWN_DUPLICATES
 };

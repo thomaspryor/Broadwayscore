@@ -9,6 +9,7 @@ const require = createRequire(import.meta.url);
 const {
   mergeCommercialJson,
   mergePendingReview,
+  mergeResearchQueue,
 } = require('../../scripts/lib/merge-commercial-data');
 
 describe('mergeCommercialJson', () => {
@@ -97,5 +98,109 @@ describe('mergePendingReview', () => {
     const remote = { shows: { 'giant': { confidence: 'high', detectedAt: '2026-05-24T00:00:00.000Z' } } };
     const { merged } = mergePendingReview(ours, remote);
     assert.equal(merged.shows.giant.confidence, 'high');
+  });
+
+  it('does NOT resurrect a slug remote already applied and deleted (what-else follow-up)', () => {
+    // ours is a stale pre-application snapshot still carrying 'giant';
+    // remote is apply-commercial-pending.js's write after removing it —
+    // its file-level lastUpdated is stamped AFTER giant's own entry
+    // timestamp, proving remote has seen (and intentionally removed) it.
+    const ours = { shows: { 'giant': { confidence: 'high', researchedAt: '2026-07-19T09:00:00.000Z' } } };
+    const remote = { shows: {}, lastUpdated: '2026-07-19T10:00:00.000Z' };
+    const { merged, stats } = mergePendingReview(ours, remote);
+    assert.equal(merged.shows.giant, undefined, 'applied/removed entry must not be resurrected');
+    assert.equal(stats.resolvedAsDeletion, 1);
+  });
+
+  it('still keeps a slug remote has not seen yet (remote predates the local addition)', () => {
+    // remote's last write happened BEFORE ours added 'giant' — remote simply
+    // hasn't seen it, this is NOT a deletion signal.
+    const ours = { shows: { 'giant': { confidence: 'high', researchedAt: '2026-07-19T11:00:00.000Z' } } };
+    const remote = { shows: {}, lastUpdated: '2026-07-19T09:00:00.000Z' };
+    const { merged } = mergePendingReview(ours, remote);
+    assert.equal(merged.shows.giant.confidence, 'high', 'a genuinely new local entry must survive');
+  });
+
+  it('keeps ours when remote has no lastUpdated at all (no evidence of deletion)', () => {
+    const ours = { shows: { 'giant': { confidence: 'high', researchedAt: '2026-07-19T09:00:00.000Z' } } };
+    const remote = { shows: {} };
+    const { merged } = mergePendingReview(ours, remote);
+    assert.equal(merged.shows.giant.confidence, 'high');
+  });
+
+  it('keeps ours on an exact timestamp tie (equality does not prove remote saw it)', () => {
+    const ours = { shows: { 'giant': { confidence: 'high', researchedAt: '2026-07-19T09:00:00.000Z' } } };
+    const remote = { shows: {}, lastUpdated: '2026-07-19T09:00:00.000Z' };
+    const { merged, stats } = mergePendingReview(ours, remote);
+    assert.equal(merged.shows.giant.confidence, 'high', 'a tie must not be treated as proof of deletion');
+    assert.equal(stats.resolvedAsDeletion, 0);
+  });
+});
+
+describe('mergeResearchQueue', () => {
+  it('unions slugs from both sides with no duplicates', () => {
+    const ours = { shows: ['giant', 'ragtime'], triggers: { giant: 'closing' } };
+    const remote = { shows: ['ragtime', 'hairspray'], triggers: { hairspray: 'pre-opening' } };
+    const { merged, stats } = mergeResearchQueue(ours, remote);
+    assert.deepEqual(merged.shows, ['giant', 'ragtime', 'hairspray']);
+    assert.equal(stats.added, 1, 'only hairspray is a genuinely new slug');
+  });
+
+  it('does not silently drop local-only slugs (the bug this fixes)', () => {
+    // Simulates the exact regression: local run added a slug that the remote
+    // side never saw. The old "accept remote" behavior would have dropped it.
+    const ours = { shows: ['locally-added-slug'], triggers: {} };
+    const remote = { shows: [], triggers: {} };
+    const { merged } = mergeResearchQueue(ours, remote);
+    assert.ok(merged.shows.includes('locally-added-slug'));
+  });
+
+  it('merges triggers from both sides', () => {
+    const ours = { shows: ['a'], triggers: { a: 'closing' } };
+    const remote = { shows: ['b'], triggers: { b: 'pre-opening' } };
+    const { merged } = mergeResearchQueue(ours, remote);
+    assert.equal(merged.triggers.a, 'closing');
+    assert.equal(merged.triggers.b, 'pre-opening');
+  });
+
+  it('picks the newer updatedAt', () => {
+    const ours = { shows: [], triggers: {}, updatedAt: '2026-07-14T09:00:00.000Z' };
+    const remote = { shows: [], triggers: {}, updatedAt: '2026-07-15T09:36:30.155Z' };
+    const { merged } = mergeResearchQueue(ours, remote);
+    assert.equal(merged.updatedAt, '2026-07-15T09:36:30.155Z');
+  });
+
+  it('handles null/empty inputs gracefully', () => {
+    assert.deepEqual(mergeResearchQueue(null, null).merged.shows, []);
+    assert.deepEqual(mergeResearchQueue({}, {}).merged.shows, []);
+  });
+
+  it('does NOT resurrect slugs a newer consumption clear already processed (ship-check finding)', () => {
+    // ours is a stale pre-consumption snapshot still carrying 'giant';
+    // remote is deep-research-commercial.js's clear, written after
+    // processing it. A plain union would re-add 'giant' forever.
+    const ours = { shows: ['giant', 'ragtime'], triggers: { giant: 'closing', ragtime: 'pre-opening' }, updatedAt: '2026-07-19T09:00:00.000Z' };
+    const remote = { shows: [], updatedAt: '2026-07-19T10:00:00.000Z' };
+    const { merged, stats } = mergeResearchQueue(ours, remote);
+    assert.deepEqual(merged.shows, [], 'consumed slugs must not be resurrected');
+    assert.equal(stats.resolvedAsConsumption, 'remote');
+  });
+
+  it('does NOT resurrect when local side is the newer consumption clear', () => {
+    const ours = { shows: [], updatedAt: '2026-07-19T10:00:00.000Z' };
+    const remote = { shows: ['giant'], triggers: { giant: 'closing' }, updatedAt: '2026-07-19T09:00:00.000Z' };
+    const { merged, stats } = mergeResearchQueue(ours, remote);
+    assert.deepEqual(merged.shows, []);
+    assert.equal(stats.resolvedAsConsumption, 'ours');
+  });
+
+  it('still unions a producer add that lands AFTER an older consumption clear', () => {
+    // remote's clear is OLDER than ours' add — this is the normal case
+    // (queue producer runs after the researcher already cleared it), not a
+    // race, so the new slug must still be picked up.
+    const ours = { shows: ['newly-queued'], triggers: { 'newly-queued': 'closing' }, updatedAt: '2026-07-19T11:00:00.000Z' };
+    const remote = { shows: [], updatedAt: '2026-07-19T09:00:00.000Z' };
+    const { merged } = mergeResearchQueue(ours, remote);
+    assert.deepEqual(merged.shows, ['newly-queued']);
   });
 });

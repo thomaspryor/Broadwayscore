@@ -305,20 +305,128 @@ async function searchFormDFilings(options = {}) {
     return results;
   }
 
-  // If we have a show name but no CIK, we need to use the company search
-  // The SEC company search requires browser automation (returns HTML)
-  // For now, log a message and return empty - users should use known CIK mappings
+  // If we have a show name but no CIK, search EDGAR's company database by
+  // name (S3-T3, 2026-07-19 — verified live: browse-edgar's atom output is a
+  // plain unauthenticated GET, no browser automation needed despite the old
+  // comment here claiming otherwise. This was previously dead: it just
+  // logged suggested search patterns and returned []).
   if (showName) {
-    console.log(`Note: Full-text search for "${showName}" requires browser automation.`);
-    console.log('Use the SEC company search UI at https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany');
-    console.log('Or provide a known CIK number directly.');
-
-    // Generate search patterns for manual lookup
-    const searchPatterns = patterns.map(p => p.replace('{show}', showName));
-    console.log(`\nSuggested search patterns:\n${searchPatterns.slice(0, 5).join('\n')}`);
+    return searchCompanyByShowName(showName, patterns);
   }
 
   return results;
+}
+
+/**
+ * Company-name substrings that signal a DIFFERENT production of the same
+ * show title, not our Broadway show — e.g. "Mamma Mia Las Vegas Limited
+ * Partnership" (CIK 0001588713) resolved as an exact single-company match
+ * for a bare "Mamma Mia" search, but its filings (2013-2014) belong to the
+ * Mandalay Bay sit-down production, not our 2025 Broadway revival at the
+ * Winter Garden. Confirmed live during S3-T2's coverage audit, 2026-07-19.
+ * Deliberately does NOT include "Tour"/"Touring" — those patterns exist in
+ * BROADWAY_LLC_PATTERNS on purpose (touring-company filings are legitimate,
+ * desired data for the same production lineage).
+ */
+const OTHER_MARKET_COMPANY_NAME_SIGNALS = [
+  'las vegas', 'chicago', 'toronto', 'sydney', 'melbourne', 'london', 'west end'
+];
+
+/**
+ * @param {string|null} companyName
+ * @returns {boolean} true if the name signals a different production/market
+ */
+function isOtherMarketCompanyName(companyName) {
+  const nameLower = (companyName || '').toLowerCase();
+  return OTHER_MARKET_COMPANY_NAME_SIGNALS.some(signal => nameLower.includes(signal));
+}
+
+/**
+ * Search SEC EDGAR's company database by name, trying each Broadway LLC
+ * naming pattern in turn until one resolves to exactly one company.
+ *
+ * Deliberately conservative in two ways:
+ * 1. Only accepts a result when EDGAR's browse-edgar atom feed resolves to
+ *    a SINGLE company (a `<company-info>` block present) — an ambiguous
+ *    multi-company list is treated as "no confident match," never guessed
+ *    at.
+ * 2. Rejects a single exact match whose company name signals a different
+ *    production (see OTHER_MARKET_COMPANY_NAME_SIGNALS) — an exact EDGAR
+ *    match does not guarantee it's the SAME production of a show with a
+ *    long performance history (sit-down runs, prior tours, revivals).
+ * A wrong match here would misattribute another production's Form D
+ * capitalization to our show, which is exactly the kind of unsourced claim
+ * this project's citation rules forbid (see CLAUDE.md's "never mark
+ * recouped without citation").
+ *
+ * @param {string} showName
+ * @param {string[]} [patterns] - defaults to BROADWAY_LLC_PATTERNS
+ * @returns {Promise<Array<{cik: string, companyName: string, filingDate: string, filingUrl: string, form: string, isAmendment: boolean}>>}
+ */
+async function searchCompanyByShowName(showName, patterns = BROADWAY_LLC_PATTERNS) {
+  for (const pattern of patterns) {
+    const query = pattern.replace('{show}', showName);
+    const url = `https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=${encodeURIComponent(query)}&type=D&dateb=&owner=include&count=40&output=atom`;
+
+    let response;
+    try {
+      response = await secFetch(url);
+    } catch (e) {
+      continue; // network hiccup on this pattern — try the next one
+    }
+    if (response.statusCode !== 200) continue;
+
+    const match = parseCompanySearchAtom(response.data);
+    if (!match || match.filings.length === 0) continue; // no match, or exact match with zero filings
+
+    if (isOtherMarketCompanyName(match.companyName)) {
+      continue; // exact match, but signals a different production — keep trying other patterns
+    }
+
+    return match.filings; // exact single-company match, same-market, with Form D filings
+  }
+  return [];
+}
+
+/**
+ * Parse browse-edgar's atom feed for a single-company match. Returns null
+ * if the response doesn't resolve to exactly one company (no match, or an
+ * ambiguous multi-company list — see searchCompanyByShowName's doc comment
+ * for why ambiguous matches are never guessed at).
+ * @param {string} xml
+ * @returns {{cik: string, companyName: string|null, filings: Array}|null}
+ */
+function parseCompanySearchAtom(xml) {
+  const cikMatch = xml.match(/<company-info>[\s\S]*?<cik>(\d+)<\/cik>/);
+  if (!cikMatch) return null;
+
+  const cik = cikMatch[1].padStart(10, '0');
+  const nameMatch = xml.match(/<conformed-name>([^<]*)<\/conformed-name>/);
+  const companyName = nameMatch ? nameMatch[1].trim() : null;
+
+  const filings = [];
+  const entryRe = /<entry>([\s\S]*?)<\/entry>/g;
+  let m;
+  while ((m = entryRe.exec(xml))) {
+    const entry = m[1];
+    const formMatch = entry.match(/<category[^>]*term="([^"]+)"/);
+    if (!formMatch || (formMatch[1] !== 'D' && formMatch[1] !== 'D/A')) continue;
+
+    const accMatch = entry.match(/<accession-number>([^<]+)<\/accession-number>/);
+    const dateMatch = entry.match(/<filing-date>([^<]+)<\/filing-date>/);
+    if (!accMatch) continue;
+
+    const accessionNumber = accMatch[1].replace(/-/g, '');
+    filings.push({
+      cik,
+      companyName,
+      filingDate: dateMatch ? dateMatch[1] : null,
+      filingUrl: `https://www.sec.gov/Archives/edgar/data/${cik.replace(/^0+/, '')}/${accessionNumber}/primary_doc.xml`,
+      form: formMatch[1],
+      isAmendment: formMatch[1] === 'D/A'
+    });
+  }
+  return { cik, companyName, filings };
 }
 
 /**
@@ -453,10 +561,13 @@ module.exports = {
   getShowFilings,
   BROADWAY_LLC_PATTERNS,
   KNOWN_BROADWAY_CIKS,
+  searchCompanyByShowName,
 
   // For testing
   extractXmlValue,
   extractXmlPath,
+  parseCompanySearchAtom,
+  isOtherMarketCompanyName,
   waitForRateLimit,
   getBackoffDelay,
 

@@ -102,6 +102,28 @@ function hasCopyrightChrome(excerpt) {
   return COPYRIGHT_CHROME_PATTERNS.some(re => re.test(excerpt));
 }
 
+// Promo-teaser guard (2026-07-14, Whoopi Monologues audit): New York Theatre
+// Guide / London Theatre articles OPEN with an SEO standfirst ("Read our
+// review of <show>, now in performances at <venue>...") that gets scraped
+// into fullText as its first narrative-shaped sentence. It sailed past every
+// excerpt guard (5+ words, ends with a period, uppercase start, theater
+// vocabulary) and shipped as the displayed pull quote on 6 shows. These
+// patterns are START-anchored (after optional wrapping quotes/whitespace) —
+// a critic writing "...you should read our review" mid-sentence is untouched.
+// Parity-tested against all 18,763 live pull quotes: exactly the 6 known-bad
+// teasers match, zero false positives.
+const PROMO_TEASER_PATTERNS = [
+  /^[\s"'“”‘’«»`(\[]*read\s+(?:our|the|my)\s+(?:full\s+)?review\b/i,
+  /^[\s"'“”‘’«»`(\[]*(?:book|buy|get|find|grab)\s+(?:your\s+)?tickets?\b/i,
+  /^[\s"'“”‘’«»`(\[]*tickets?\s+(?:from|start|are\s+on\s+sale|on\s+sale)\b/i,
+  /^[\s"'“”‘’«»`(\[]*(?:follow\s+us|click\s+here|learn\s+more\s+about)\b/i,
+];
+
+function isPromoTeaser(excerpt) {
+  if (!excerpt || typeof excerpt !== 'string') return false;
+  return PROMO_TEASER_PATTERNS.some(re => re.test(excerpt));
+}
+
 // Bug #13: Off-topic excerpt detection. Very loose — only fires when there are
 // NO theater-domain words AND NO show-title keywords. False positives (blocking
 // a real review) are worse than letting a bad excerpt through.
@@ -144,6 +166,11 @@ const CHROME_LINE_PATTERNS = [
   // "Review: ...", "By Author", "Photo: Photographer", "Credit: ...",
   // "Venue: ...", "Production: ..."
   /^(Review|By|Photo|Credit|Venue|Production)\b/i,
+  // NYTG/LondonTheatre SEO standfirst — "Read our review of <show>, now in
+  // performances at <venue>..." leads the article body (Whoopi 2026-07-14).
+  /^read\s+(?:our|the)\s+(?:full\s+)?review\b/i,
+  // Cititour-style ticket CTA lines ("Tickets from $122", "Buy Tickets")
+  /^(?:buy\s+tickets|tickets\s+from\s+\$)/i,
   // Just-a-name lines (byline or credit on its own line). Two-token Anglo
   // names; intentionally narrow — three-word/initial/hyphenated bylines
   // fall through to the ambiguous-line stop in stripLeadingChrome (we
@@ -246,6 +273,8 @@ module.exports = {
   shouldRejectAsReservation,
   isInternalNote,
   hasCopyrightChrome,
+  isPromoTeaser,
+  PROMO_TEASER_PATTERNS,
   isOffTopicExcerpt,
   COPYRIGHT_CHROME_PATTERNS,
   THEATER_DOMAIN_RE,

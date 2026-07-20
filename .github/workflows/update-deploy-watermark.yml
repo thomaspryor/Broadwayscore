@@ -1,7 +1,27 @@
 name: Update Deploy Watermark
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      # Passed by vercel-deploy.yml so the deployed-live stage-latency event is
+      # committed here (async) instead of inline in the deploy job, where the
+      # commit+push race against busy main burned ~3 min per deploy (2026-07-13).
+      # Empty deployed_at (bare manual dispatch) = watermark-only, no emit.
+      deployed_at:
+        description: 'ISO-8601 time the production deploy went live (empty = skip stage-latency emit)'
+        required: false
+        default: ''
+        type: string
+      deploy_sha:
+        description: 'Commit SHA of the deploy (stage-latency metadata)'
+        required: false
+        default: ''
+        type: string
+      deploy_run_id:
+        description: 'vercel-deploy.yml run ID (stage-latency metadata)'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   update-watermark:
@@ -9,7 +29,12 @@ jobs:
     timeout-minutes: 5
     concurrency:
       group: deploy-watermark-update
-      cancel-in-progress: true  # only latest watermark matters
+      # false (2026-07-13): a RUNNING run now finishes its stage-latency append
+      # + push instead of being killed mid-write by the next deploy's dispatch.
+      # Burst deploys still collapse in the pending queue (GH keeps only the
+      # newest queued run), which is fine — only the latest watermark matters
+      # and the newest deploy's stage-latency event supersedes the queued one.
+      cancel-in-progress: false
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -24,16 +49,41 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Emit deployed-live stage-latency event
+        if: inputs.deployed_at != ''
+        env:
+          DEPLOYED_AT: ${{ inputs.deployed_at }}
+          DEPLOY_SHA: ${{ inputs.deploy_sha }}
+          DEPLOY_RUN_ID: ${{ inputs.deploy_run_id }}
+        run: |
+          # Moved here from vercel-deploy.yml (2026-07-13) — see inputs comment.
+          # Loss mode: cancel-in-progress means a burst of deploys can drop an
+          # older deploy's event; the newer deploy's event supersedes it, which
+          # only slightly overstates latency for reviews that shipped in the
+          # older deploy. Committed below together with the watermark.
+          node -e "
+            const { emitStage } = require('./scripts/lib/stage-latency');
+            // Normalize to toISOString() so the log keeps one timestamp
+            // format (with milliseconds) regardless of the shell date -u
+            // format the deploy workflow captured.
+            emitStage({
+              stage: 'deployed-live',
+              at: new Date(process.env.DEPLOYED_AT).toISOString(),
+              metadata: { runId: process.env.DEPLOY_RUN_ID, sha: process.env.DEPLOY_SHA },
+            });
+          "
+
       - name: Update watermark
         run: |
           node scripts/pre-deploy-check.js > /dev/null 2>&1 || true
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/deploy-watermark.json 2>/dev/null || true
+          git add data/audit/stage-latency.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
-            echo "No changes to watermark"
+            echo "No changes to watermark or stage-latency"
           else
-            git commit -m "chore: Update deploy watermark [skip ci]"
+            git commit -m "chore: Update deploy watermark + stage-latency [skip ci]"
             bash scripts/lib/push-with-retry.sh 3 main
           fi
 

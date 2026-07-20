@@ -34,6 +34,7 @@ describe('provisionalOutletIdFromHost', () => {
     // wordpress.com etc. were producing the junk slug "wordpress" before 2026-06-21.
     assert.strictEqual(provisionalOutletIdFromHost('pagesonstages.wordpress.com'), 'pagesonstages');
     assert.strictEqual(provisionalOutletIdFromHost('someblog.blogspot.com'), 'someblog');
+    assert.strictEqual(provisionalOutletIdFromHost('someblog.medium.com'), 'someblog');
   });
 
   it('takes the registrable label before a multi-part ccTLD (not "co")', () => {
@@ -41,6 +42,10 @@ describe('provisionalOutletIdFromHost', () => {
     // backfill 2026-06-21) — multiple UK shows got an outlet literally named "co".
     assert.strictEqual(provisionalOutletIdFromHost('londontheatre.co.uk'), 'londontheatre');
     assert.strictEqual(provisionalOutletIdFromHost('chorley-guardian.co.uk'), 'chorley-guardian');
+    // Cited in the fix card's evidence alongside the other .co.uk hosts.
+    assert.strictEqual(provisionalOutletIdFromHost('mancunianmatters.co.uk'), 'mancunianmatters');
+    // .org.uk is declared in PROVISIONAL_MULTIPART_SUFFIXES but was untested.
+    assert.strictEqual(provisionalOutletIdFromHost('exampletheatre.org.uk'), 'exampletheatre');
     assert.strictEqual(provisionalOutletIdFromHost('example.com.au'), 'example');
   });
 

@@ -106,6 +106,38 @@ jobs:
           done
           git checkout main
 
+      - name: Capture original branch + tag SHAs (for post-rewrite force-with-lease)
+        if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
+        run: |
+          # Recorded BEFORE filter-repo rewrites history, so the force-push step
+          # can lease against "what origin actually had when we started" instead
+          # of blindly forcing. Tab-separated (not per-file) so branch/tag names
+          # with slashes don't need directory creation.
+          : > /tmp/orig-branch-shas.txt
+          for branch in $(git branch --format='%(refname:short)'); do
+            sha=$(git rev-parse "$branch" 2>/dev/null) || continue
+            printf '%s\t%s\n' "$branch" "$sha" >> /tmp/orig-branch-shas.txt
+          done
+          : > /tmp/orig-tag-shas.txt
+          for tag in $(git tag); do
+            sha=$(git rev-parse "$tag" 2>/dev/null) || continue
+            printf '%s\t%s\n' "$tag" "$sha" >> /tmp/orig-tag-shas.txt
+          done
+          echo "Captured $(wc -l < /tmp/orig-branch-shas.txt) branch SHA(s) and $(wc -l < /tmp/orig-tag-shas.txt) tag SHA(s) before filter-repo rewrite"
+
+          # Persist beyond the job's /tmp (gone the moment the runner is torn
+          # down) so a partial-failure run leaves a durable old-SHA manifest to
+          # recover from, instead of "re-run the destructive rewrite again".
+          {
+            echo "## Original branch/tag SHAs (pre-rewrite, for manual recovery if the push step fails partway)"
+            echo '```'
+            echo "-- branches --"
+            cat /tmp/orig-branch-shas.txt
+            echo "-- tags --"
+            cat /tmp/orig-tag-shas.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Install git-filter-repo
         if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
         run: pip3 install git-filter-repo
@@ -142,6 +174,7 @@ jobs:
           echo "Git dir size after: $(du -sh .git | cut -f1)"
 
       - name: Force push
+        id: force_push
         if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
         run: |
           # filter-repo removes the remote, re-add it
@@ -151,22 +184,67 @@ jobs:
           CURRENT_RUN_ID=${{ github.run_id }}
           RUNNING=$(gh run list --status=in_progress --json databaseId --jq "[.[] | select(.databaseId != $CURRENT_RUN_ID)] | length")
           if [ "$RUNNING" -gt 0 ]; then
-            echo "WARNING: $RUNNING workflows started during filter-repo. Proceeding with force push anyway."
-            echo "Those workflows will fail on their next push (expected — they'll be retried by schedule)."
+            echo "WARNING: $RUNNING workflows started during filter-repo. Proceeding with per-ref"
+            echo "force-with-lease anyway — any ref that moved on origin is rejected below"
+            echo "instead of clobbered (see comment above the push loop)."
           fi
 
-          for attempt in $(seq 1 5); do
-            echo "=== Force push attempt $attempt ==="
-            if git push --force --all origin 2>&1 && git push --force --tags origin 2>&1; then
-              echo "SUCCESS on attempt $attempt!"
-              exit 0
-            fi
-            echo "Failed, retrying in 10s..."
-            sleep 10
-          done
+          # Push each ref (branch or tag) individually with --force-with-lease
+          # against the SHA captured BEFORE filter-repo ran (previous step). If a
+          # ref moved on origin during the (up to ~60min) rewrite window — a
+          # legit commit or tag landed there — the lease check rejects THAT
+          # ref's push instead of silently overwriting it. Same failure class as
+          # the 2026-07-19 incident (card #208: a stale-base force-push
+          # destroyed a concurrently-landed merge commit); this closes this
+          # workflow's own window for it. Tags get the same treatment as
+          # branches — this repo uses them as rollback checkpoints
+          # (pre-purge-web-search etc.), so a blind force here is the same
+          # clobber risk, just on a lower-churn ref.
+          push_with_lease() {
+            local reftype="$1" name="$2" orig_sha="$3"
+            local refpath ref
+            case "$reftype" in
+              branch) refpath="heads" ;;
+              tag) refpath="tags" ;;
+              *) echo "  internal error: unknown reftype '$reftype'"; return 1 ;;
+            esac
+            ref="refs/$refpath/$name"
+            echo "=== Pushing $reftype $name (lease: $orig_sha) ==="
+            for attempt in 1 2 3 4 5; do
+              OUT=$(git push --force-with-lease="$ref:$orig_sha" origin "$ref" 2>&1)
+              RC=$?
+              echo "$OUT"
+              if [ "$RC" -eq 0 ]; then
+                return 0
+              fi
+              if echo "$OUT" | grep -qiE "stale info|rejected"; then
+                echo "  ABORT: $name moved on origin during the rewrite (lease rejected) — leaving it untouched, not retrying with a stale lease"
+                return 1
+              fi
+              echo "  transient failure (attempt $attempt) — retrying in 10s"
+              sleep 10
+            done
+            return 1
+          }
 
-          echo "ERROR: Force push failed after 5 attempts"
-          exit 1
+          FAILED_REFS=""
+          while IFS=$'\t' read -r branch orig_sha; do
+            [ -z "$branch" ] && continue
+            git rev-parse --verify "$branch" >/dev/null 2>&1 || continue
+            push_with_lease branch "$branch" "$orig_sha" || FAILED_REFS="$FAILED_REFS branch:$branch"
+          done < /tmp/orig-branch-shas.txt
+
+          while IFS=$'\t' read -r tag orig_sha; do
+            [ -z "$tag" ] && continue
+            git rev-parse --verify "$tag" >/dev/null 2>&1 || continue
+            push_with_lease tag "$tag" "$orig_sha" || FAILED_REFS="$FAILED_REFS tag:$tag"
+          done < /tmp/orig-tag-shas.txt
+
+          if [ -n "$FAILED_REFS" ]; then
+            echo "::error::Force-with-lease failed or was aborted for:$FAILED_REFS — these refs were NOT rewritten on origin this run. If aborted (moved-ref), a legit commit/tag landed mid-rewrite; re-run the purge next Saturday. If transient (network), investigate before next run. Pre-rewrite SHAs are in this run's step summary."
+            exit 1
+          fi
+          echo "SUCCESS — all refs pushed with lease verification"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
@@ -180,6 +258,12 @@ jobs:
           elif [ "${{ steps.wait.outputs.ready }}" = "false" ]; then
             echo "## Skipped — other workflows active" >> "$GITHUB_STEP_SUMMARY"
             echo "Will retry next Saturday." >> "$GITHUB_STEP_SUMMARY"
+          elif [ "${{ steps.force_push.outcome }}" = "failure" ]; then
+            echo "## History purge PARTIALLY FAILED" >> "$GITHUB_STEP_SUMMARY"
+            echo "Some refs were not rewritten on origin this run (see the Force push step log" >> "$GITHUB_STEP_SUMMARY"
+            echo "above for which, and the pre-rewrite SHA manifest earlier in this summary)." >> "$GITHUB_STEP_SUMMARY"
+            echo "**Do NOT run \`git reset --hard origin/main\` from a local clone** until this" >> "$GITHUB_STEP_SUMMARY"
+            echo "is resolved — origin may be a mix of rewritten and un-rewritten refs." >> "$GITHUB_STEP_SUMMARY"
           else
             echo "## History purge complete" >> "$GITHUB_STEP_SUMMARY"
             echo "GitHub GC will reclaim space within ~24 hours." >> "$GITHUB_STEP_SUMMARY"

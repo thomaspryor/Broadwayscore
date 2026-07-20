@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T00:20:57.126Z",
+  "generatedAt": "2026-07-20T14:15:45.018Z",
   "threshold": 50,
   "summary": {
     "totalSyndicatedPairs": 0,
@@ -99,6 +99,13 @@
   "flagged": [],
   "authorMismatches": [
     {
+      "showId": "birthday-candles-2022",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
+      "pattern": "tail"
+    },
+    {
       "showId": "dog-day-afternoon-2026",
       "file": "nytimes--michael-paulson.json",
       "fileCritic": "michael-paulson",
@@ -111,6 +118,13 @@
       "fileCritic": "cristina-sanza",
       "detectedAuthor": "Theater Cristina",
       "pattern": "tail"
+    },
+    {
+      "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
+      "file": "hollywood-reporter--david-rooney.json",
+      "fileCritic": "david-rooney",
+      "detectedAuthor": "Frank Scheck",
+      "pattern": "head"
     },
     {
       "showId": "how-i-learned-to-drive-2022",
@@ -134,10 +148,24 @@
       "pattern": "head"
     },
     {
+      "showId": "the-piano-lesson-2022",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
+      "pattern": "tail"
+    },
+    {
       "showId": "this-is-not-about-me-off-west-end-2026",
       "file": "thestage--lyn-gardner.json",
       "fileCritic": "lyn-gardner",
       "detectedAuthor": "proves that she",
+      "pattern": "tail"
+    },
+    {
+      "showId": "thoughts-of-a-colored-man-2021",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
       "pattern": "tail"
     }
   ]

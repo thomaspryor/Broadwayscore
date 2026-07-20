@@ -853,7 +853,7 @@ export function getBrowseList(slug: string): BrowseList | undefined {
     : getBroadwayShows();
 
   // Context for data-dependent filters and custom sorts
-  const ctx: BrowseFilterContext = { getAudienceBuzz, getShowCommercial, getShowAwards, getShowGrosses };
+  const ctx: BrowseFilterContext = { getAudienceBuzz, getShowCommercial, getShowAwards, getShowGrosses, getShowById };
 
   let filteredShows = config.dataFilter
     ? allShows.filter(show => config.dataFilter!(show, ctx))
@@ -881,11 +881,17 @@ export function getBrowseList(slug: string): BrowseList | undefined {
       return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
     });
   } else if (config.sort === 'opening-date-asc') {
+    // Fall back to previewsStartDate — upcoming pages list shows whose opening
+    // night isn't announced yet but whose first performance is. Without the
+    // fallback they all sink to the bottom in arbitrary order and interleave
+    // with the date-less "Announced" section (2026-07-14).
     filteredShows = filteredShows.sort((a, b) => {
-      if (!a.openingDate && !b.openingDate) return 0;
-      if (!a.openingDate) return 1;
-      if (!b.openingDate) return -1;
-      return new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime();
+      const aDate = a.openingDate || a.previewsStartDate;
+      const bDate = b.openingDate || b.previewsStartDate;
+      if (!aDate && !bDate) return 0;
+      if (!aDate) return 1;
+      if (!bDate) return -1;
+      return new Date(aDate).getTime() - new Date(bDate).getTime();
     });
   } else if (config.sort === 'closing-date') {
     filteredShows = filteredShows.sort((a, b) => {

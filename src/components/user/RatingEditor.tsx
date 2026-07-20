@@ -3,6 +3,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import Modal from '@/components/show-cards/Modal';
 import StarRating from './StarRating';
+import { sanitizeRating } from '@/lib/rating';
+import DatePickerButton from './DatePickerButton';
 
 export interface RatingEditorSaveData {
   rating: number;
@@ -49,15 +51,6 @@ function localToday(): string {
   return new Date(d.getTime() - offsetMs).toISOString().split('T')[0];
 }
 
-/**
- * Sanitize a rating that may come from an untrusted source (?stars= deep link):
- * NaN/Infinity → 0 (unrated), clamp to [0, 5], snap to half-star steps. The DB
- * has no CHECK constraint yet (Phase 4), so this is the write-path guard.
- */
-function sanitizeRating(r: number): number {
-  if (!Number.isFinite(r)) return 0;
-  return Math.min(5, Math.max(0, Math.round(r * 2) / 2));
-}
 
 const HEADER_COPY: Record<NonNullable<RatingEditorProps['mode']>, string> = {
   new: 'Your rating for',
@@ -100,23 +93,22 @@ export default function RatingEditor({
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // True once the user has interacted with the date field — a late-arriving
+  // suggestion must never clobber a date they picked themselves.
+  const dateTouched = useRef(false);
+
+  // suggestedDateSeen often arrives AFTER mount: the ?rate=1 deep-link opens
+  // this editor as soon as auth resolves, while the watchlist (source of the
+  // "Saw Jun 24" planned date) is still being fetched. The useState initializer
+  // above has already run by then, so without this effect the field stayed on
+  // today's date (owner report, 2026-07-17).
+  useEffect(() => {
+    if (reviewId || initialDateSeen || dateTouched.current || !suggestedDateSeen) return;
+    setDateSeen(suggestedDateSeen > maxDate ? maxDate : suggestedDateSeen);
+  }, [suggestedDateSeen, reviewId, initialDateSeen, maxDate]);
   // Live hover value from the stars — previewed in the big number so half-star
   // targeting is legible before the click (owner report, 2026-07-13).
   const [hoverValue, setHoverValue] = useState<number | null>(null);
-  const dateInputRef = useRef<HTMLInputElement>(null);
-
-  const openDatePicker = useCallback(() => {
-    const el = dateInputRef.current;
-    if (!el) return;
-    try {
-      el.showPicker();
-    } catch {
-      // Pre-showPicker browsers (old Safari): focusing the input opens the
-      // native wheel on iOS; desktop fallback is click.
-      el.focus();
-      el.click();
-    }
-  }, []);
 
   const [isDesktop, setIsDesktop] = useState<boolean>(
     () => typeof window !== 'undefined' && window.matchMedia('(min-width: 640px)').matches,
@@ -188,51 +180,25 @@ export default function RatingEditor({
         <label className="block text-xs font-medium text-gray-400 mb-1">
           Date Seen <span className="text-gray-600">(optional)</span>
         </label>
-        {/* Structural password-manager fix: the tabbable control is a BUTTON —
-            managers only attach to focusable text-entry fields, and the
-            data-1p-ignore attribute route proved advisory-only in the wild
-            (owner's manager ignored it, 2026-07-13). The real date input is
-            visually hidden underneath purely to anchor the native picker. */}
-        <div className="relative w-full sm:w-48">
-          <input
-            ref={dateInputRef}
-            type="date"
-            aria-hidden="true"
-            tabIndex={-1}
-            value={dateSeen}
-            onChange={e => setDateSeen(e.target.value)}
-            min="1950-01-01"
-            max={maxDate}
-            className="absolute inset-0 w-full h-full opacity-0 pointer-events-none [color-scheme:dark]"
-          />
-          <button
-            type="button"
-            onClick={openDatePicker}
-            aria-label="Date seen"
-            className={`w-full flex items-center gap-2 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 transition-colors ${dateSeen ? 'text-white' : 'text-gray-500'} ${dateSeen ? 'pr-9' : ''}`}
-          >
-            <svg className="w-4 h-4 shrink-0 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span data-testid="date-seen-display">
-              {dateSeen
-                ? new Date(dateSeen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                : 'Add a date'}
-            </span>
-          </button>
-          {dateSeen && (
-            <button
-              type="button"
-              onClick={() => setDateSeen('')}
-              aria-label="Clear date"
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1 rounded-full text-gray-500 hover:text-white transition-colors"
-            >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
-        </div>
+        <DatePickerButton
+          value={dateSeen}
+          onChange={(v) => { dateTouched.current = true; setDateSeen(v); }}
+          min="1950-01-01"
+          max={maxDate}
+          ariaLabel="Date seen"
+          wrapClassName="relative w-full sm:w-48"
+          className={`w-full flex items-center gap-2 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 transition-colors ${dateSeen ? 'text-white pr-9' : 'text-gray-500'}`}
+          onClear={() => { dateTouched.current = true; setDateSeen(''); }}
+        >
+          <svg className="w-4 h-4 shrink-0 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span data-testid="date-seen-display">
+            {dateSeen
+              ? new Date(dateSeen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+              : 'Add a date'}
+          </span>
+        </DatePickerButton>
       </div>
 
       {/* Private notes */}
@@ -246,7 +212,10 @@ export default function RatingEditor({
           placeholder="What did you think?"
           rows={3}
           maxLength={MAX_CHARS + 100}
-          className="w-full px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 resize-none"
+          // text-base on mobile is load-bearing: a sub-16px font makes iOS
+          // Safari zoom the whole page on focus and stay zoomed after save
+          // (owner report, 2026-07-17). Never drop below 16px here.
+          className="w-full px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 resize-none"
         />
         <div className="flex items-center justify-between mt-0.5">
           <div className="flex items-center gap-1.5 text-xs text-gray-500">

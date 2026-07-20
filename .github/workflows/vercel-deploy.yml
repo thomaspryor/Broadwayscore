@@ -7,7 +7,8 @@ on:
   # mid-prerender before any could complete, and even the "latest" deploy
   # could be cancelled mid-build by the next push. The cron batches pushes:
   # at most one deploy per 5-min window, and the should-deploy preflight job
-  # below skips ticks where main HEAD hasn't moved. See
+  # below skips ticks with no site-relevant change vs the live deploy
+  # (scripts/lib/should-deploy-gate.js). See
   # memory/feedback_workflow_cascade_prevention.md. The demo workflow solved
   # the same cascade with the same fix in 2026-04 (see vercel-demo.yml L17-19).
   schedule:
@@ -30,105 +31,64 @@ permissions:
 
 jobs:
   # Preflight: decide whether to actually deploy. Runs on every trigger
-  # (~10s). Skips scheduled ticks where main HEAD hasn't moved since the last
-  # successful deploy. Manual dispatch and workflow_run (post-rebuild) always
-  # proceed — they're explicit "I need this NOW" signals. Carries the
-  # Beaches #9 race guard (workflow_run conclusion check) that previously
-  # sat on the deploy job.
+  # (~15s). All skip/proceed logic lives in scripts/lib/should-deploy-gate.js
+  # (pure decide() + colocated test — see its header for the full rules):
+  #   - Baseline = latest READY Vercel production deployment (via
+  #     check-prod-deploy.js --json), NOT GitHub run conclusions — a run can
+  #     report success while its Vercel deploy was CANCELED (2026-06-26), and
+  #     skipped preflights also conclude "success" (stale-baseline bug in the
+  #     old gh-run-list lookup).
+  #   - Scheduled ticks skip only on positive proof: HEAD already live, or no
+  #     site-path diff vs the live SHA while the live deploy is <6h old
+  #     (content-aware gate, 2026-07-19 cost fix: ~93% of main commits are
+  #     bookkeeping that rebuilt an identical site ~139x/day).
+  #   - The 6h staleness backstop bounds staleness for private core-data
+  #     changes (shows.json etc.) that never touch this repo's tree.
+  #   - workflow_dispatch / workflow_run stay "ship NOW" lanes, deduped only
+  #     when HEAD is already live. Any gate-input failure fails OPEN (deploy).
+  # Kill switch: set repo variable DEPLOY_GATE_DISABLED=true to force every
+  # trigger through (phone-operable; no code change).
+  # Carries the Beaches #9 race guard (workflow_run conclusion check).
   should-deploy:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
-    timeout-minutes: 2
+    timeout-minutes: 3
     outputs:
       proceed: ${{ steps.check.outputs.proceed }}
     steps:
-      - name: Checkout (shallow, for git rev-parse origin/main)
+      - name: Checkout (shallow — the gate fetches the live baseline commit itself)
         uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 1
-      - name: Decide whether to deploy
+      - name: Content-aware deploy gate
         id: check
         env:
-          GH_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GATE_EVENT_NAME: ${{ github.event_name }}
+          GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
         run: |
-          # All paths: fetch HEAD and last-successful-deploy SHA first.
-          MAIN_HEAD=$(git rev-parse origin/main)
-          # Use the workflow file path, not the display name — the
-          # Workflows API returns this workflow twice (across pages) and
-          # `--workflow="Deploy to Vercel"` then errors with
-          # `could not resolve to a unique workflow; found: vercel-deploy.yml
-          # vercel-deploy.yml`, which broke every deploy on 2026-05-27.
-          # Fail-safe the gh lookup: under `bash -eo pipefail`, a transient
-          # GitHub API hiccup here used to crash the whole preflight step and
-          # redden the deploy. Capture failure instead of aborting.
-          GH_FAILED=0
-          LAST_DEPLOYED=$(gh run list \
-            --workflow=vercel-deploy.yml \
-            --limit=30 \
-            --json headSha,conclusion \
-            --jq '[.[] | select(.conclusion == "success")][0].headSha // ""') || GH_FAILED=1
-          if [ "$GH_FAILED" = "1" ]; then
-            if [ "${{ github.event_name }}" = "schedule" ]; then
-              # Can't determine last-deployed SHA → can't safely dedup. On a
-              # cron tick the safe choice is SKIP (next 5-min tick retries),
-              # NOT proceed — defaulting to proceed would force a deploy on
-              # every API blip and, with dedup blind, risk the parallel-build
-              # cascade we work hard to prevent.
-              echo "::warning::gh run list failed (transient GitHub API?) — skipping this scheduled tick; next cron retries"
-              echo "proceed=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-            # workflow_dispatch / workflow_run: explicit ship intent. Proceed
-            # without SHA dedup; the vercel-production-deploy concurrency group
-            # collapses any parallel builds.
-            echo "::warning::gh run list failed — proceeding for ${{ github.event_name }} without SHA dedup"
-            LAST_DEPLOYED=""
-          fi
-          echo "Main HEAD:     $MAIN_HEAD"
-          echo "Last deployed: $LAST_DEPLOYED"
-
-          if [ "${{ github.event_name }}" != "schedule" ]; then
-            # workflow_dispatch / workflow_run: explicit "ship it" signals.
-            # Still skip if this exact SHA is already live — prevents the
-            # 5+ parallel builds that fire when gather-reviews, rebuild-fast,
-            # rebuild-reviews, update-show-status, etc. all dispatch within
-            # seconds of each other after completing. Previously each got a
-            # full 15-min build even when the first one already deployed.
-            if [ -n "$LAST_DEPLOYED" ] && [ "$LAST_DEPLOYED" = "$MAIN_HEAD" ]; then
-              echo "::notice::SHA $MAIN_HEAD already live — skipping duplicate ${{ github.event_name }} dispatch"
-              echo "proceed=false" >> "$GITHUB_OUTPUT"
-            else
-              echo "::notice::Event ${{ github.event_name }} — proceeding (new SHA)"
-              echo "proceed=true" >> "$GITHUB_OUTPUT"
-            fi
-            exit 0
-          fi
-
-          # Cron path: skip if main HEAD hasn't moved since the most recent
-          # successful deploy. Looks back 30 runs to find the last success;
-          # ignores cancelled / failed runs (they didn't actually ship).
-          if [ -n "$LAST_DEPLOYED" ] && [ "$LAST_DEPLOYED" = "$MAIN_HEAD" ]; then
-            echo "::notice::No new commits since last deploy ($MAIN_HEAD) — skipping scheduled deploy"
-            echo "proceed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "::notice::New commits since last deploy — proceeding"
-            echo "proceed=true" >> "$GITHUB_OUTPUT"
-          fi
+          # The gate script fails OPEN internally (API/fetch/diff errors →
+          # proceed=true). If the script itself crashes, fail this step LOUDLY
+          # rather than leaving `proceed` unset — an empty output makes the
+          # deploy job's `if:` silently false on every trigger (green runs,
+          # zero deploys, no alerts — the worst failure mode).
+          node scripts/lib/should-deploy-gate.js
+          grep -q '^proceed=' "$GITHUB_OUTPUT" || { echo "::error::[content-gate] gate exited without setting proceed"; exit 1; }
 
   deploy:
     needs: should-deploy
     if: needs.should-deploy.outputs.proceed == 'true'
     runs-on: ubuntu-latest
-    # 25-minute job timeout (raised from 15 on 2026-05-20). The vercel build
-    # step alone takes ~10-12 min for 727+ static pages; the previous 15-min
-    # cap left only 3-5 min for post-deploy steps (smoke tests, Playwright,
-    # stage-latency push). push-with-retry.sh's 7-attempt retry loop (10-45s
-    # jitter each) consumed that window, making jobs show "cancelled" even
-    # after a successful Vercel deploy. The should-deploy SHA check ignores
-    # "cancelled" runs, so the cron kept re-deploying in a self-reinforcing
-    # loop — that's the "1hr+ to go live" pattern. 25 min is still tight
-    # enough to let a hung run be caught quickly.
+    # 25-minute job timeout (raised from 15 on 2026-05-20, when the build took
+    # ~10-12 min and the then-inline stage-latency push-retry loop consumed the
+    # rest, making jobs show "cancelled" even after a successful Vercel deploy.
+    # The should-deploy SHA check ignores "cancelled" runs, so the cron kept
+    # re-deploying in a self-reinforcing loop — the "1hr+ to go live" pattern.)
+    # Since then the build dropped to ~2-3 min (.next/cache persistence,
+    # 2026-05-23) and the stage-latency push moved to the async watermark
+    # workflow (2026-07-13), so 25 min is a generous ceiling that still
+    # catches a hung run quickly.
     timeout-minutes: 25
     concurrency:
       # Per-run group: GH concurrency queue depth is 1, so a shared
@@ -268,6 +228,10 @@ jobs:
       - name: Check if data changed
         id: check-data
         run: |
+          # NOTE: this path regex answers "fast vs FULL prebuild" (HOW to build),
+          # not "deploy or not" — that's the should-deploy gate's SITE_PATHS in
+          # scripts/lib/should-deploy-gate.js. The two lists differ on purpose:
+          # this one is data-only; the gate's covers every build-shaping path.
           # For manual triggers or missing before-sha, assume data changed (full build)
           BEFORE="${{ github.event.before }}"
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
@@ -305,6 +269,7 @@ jobs:
           echo "Build completed in ${BUILD_SECS}s"
 
       - name: Deploy to Production
+        id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
@@ -316,6 +281,7 @@ jobs:
           # Source: https://vercel.com/changelog/cli-archive-deployments-are-now-up-to-30-faster-with-split-tgz-archive
           URL=$(npx vercel deploy --prebuilt --prod --archive=split-tgz --token=$VERCEL_TOKEN)
           echo "Deployed to production: $URL"
+          echo "deployed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
 
       - name: Check build duration
         if: always() && steps.build.outputs.build_seconds
@@ -395,31 +361,23 @@ jobs:
       - name: Content smoke test (Playwright)
         run: npx playwright test --project=chromium tests/e2e/smoke.spec.ts
 
-      - name: Emit deployed-live stage-latency event
-        if: success()
-        continue-on-error: true
-        timeout-minutes: 3
-        env:
-          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          node -e "
-            const { emitStage } = require('./scripts/lib/stage-latency');
-            emitStage({ stage: 'deployed-live', metadata: { runId: '${{ github.run_id }}', sha: '${{ github.sha }}' } });
-          "
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add data/audit/stage-latency.jsonl || true
-          git diff --cached --quiet || git commit -m "audit: stage-latency deployed-live [${{ github.run_id }}]"
-          bash scripts/lib/push-with-retry.sh || echo "::warning::stage-latency push failed (non-critical)"
-
-      - name: Dispatch async watermark update
+      - name: Dispatch async watermark + stage-latency update
         if: success()
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh workflow run update-deploy-watermark.yml || echo "::warning::Watermark dispatch failed (non-critical)"
+          # The deployed-live stage-latency emit rides along with the watermark
+          # workflow (2026-07-13). It used to be an inline commit+push step here,
+          # but push-with-retry lost the race against busy main and burned its
+          # full 3-min timeout on most deploys (~5 CI-hours/day) — often losing
+          # the event anyway. The watermark run appends the event with the
+          # deployed_at timestamp captured above and commits it in one push.
+          gh workflow run update-deploy-watermark.yml \
+            -f deployed_at='${{ steps.deploy.outputs.deployed_at }}' \
+            -f deploy_sha='${{ github.sha }}' \
+            -f deploy_run_id='${{ github.run_id }}' \
+            || echo "::warning::Watermark dispatch failed (non-critical)"
 
       - name: Notify search engines of updated sitemap
         if: success()

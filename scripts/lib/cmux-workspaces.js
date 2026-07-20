@@ -1,11 +1,13 @@
 /**
  * cmux-workspaces — shared Cmux workspace helpers for bsc-next / bsc-prune.
  *
- * Conventions (owner, 2026-07-12):
+ * Conventions (owner, 2026-07-12; closing rules tightened 2026-07-15):
  *  - A finished session retitles its own workspace with a leading ✅ (wrap-up
- *    skill final step). ✅-marked workspaces are prunable: bsc-prune closes
- *    them, and bsc-next sweeps them before every launch as a backstop for
- *    sessions that died before self-closing.
+ *    skill / workspace-mark-done hook). The mark is visual ONLY. Closing is
+ *    owner-triggered exclusively: bsc-prune (run by the owner) closes ✅-marked
+ *    workspaces. Nothing closes automatically — wrap-up self-close and the
+ *    bsc-next dispatch-time sweep were both removed after three same-day
+ *    incidents of tabs closing while the owner was typing in them.
  *  - "Idle" = no running claude_code process in the workspace (cmux top tag).
  *    Idle but un-marked workspaces are listed, never auto-closed.
  *

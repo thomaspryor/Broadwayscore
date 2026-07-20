@@ -134,13 +134,6 @@ async function handle(req: NextRequest, method: 'GET' | 'POST'): Promise<Respons
       `</form>`);
   }
 
-  // revert flow ships in Sprint 3 — signature is valid, but no writes yet.
-  if (autoAction === 'revert') {
-    return html('Revert Not Available Yet',
-      '<h1>Revert Arrives in Sprint 3</h1><p>Nothing was changed. If this is urgent, revert manually.</p>' +
-      '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>');
-  }
-
   const notionKey = process.env.NOTION_API_KEY;
   if (!notionKey) {
     return html('Configuration Error',
@@ -180,6 +173,36 @@ async function handle(req: NextRequest, method: 'GET' | 'POST'): Promise<Respons
     }
   };
 
+  // Dispatch autonomous-merge.yml (Sprint 3). Returns whether the dispatch
+  // itself succeeded — callers must not treat a dispatch failure as fatal,
+  // since the underlying state (approved / still merged) is already correct
+  // either way; the owner can re-tap or the next nightly run will surface it.
+  const dispatchMergeWorkflow = async (mergeAction: 'approve' | 'revert'): Promise<boolean> => {
+    const ghToken = process.env.GH_DISPATCH_TOKEN;
+    const repo = process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore';
+    if (!ghToken) return false;
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${repo}/actions/workflows/autonomous-merge.yml/dispatches`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `token ${ghToken}`,
+            'User-Agent': 'BroadwayScorecard-AutonomousAction',
+            'Content-Type': 'application/json',
+            'Accept': 'application/vnd.github.v3+json',
+          },
+          body: JSON.stringify({ ref: 'main', inputs: { card_id: card, branch, action: mergeAction } }),
+        }
+      );
+      if (!res.ok) console.error(`Merge dispatch (${mergeAction}) failed: ${res.status} ${(await res.text()).slice(0, 200)}`);
+      return res.ok;
+    } catch (err) {
+      console.error(`Merge dispatch (${mergeAction}) error:`, (err as Error).message);
+      return false;
+    }
+  };
+
   if (autoAction === 'approve') {
     if (currentState === 'approved') {
       return html('Already Approved',
@@ -203,43 +226,35 @@ async function handle(req: NextRequest, method: 'GET' | 'POST'): Promise<Respons
         '<h1>Could Not Update the Card</h1><p>Tap the link again in a minute.</p>', 502);
     }
 
-    // Guarded dispatch: autonomous-merge.yml does not exist until Sprint 3,
-    // so any dispatch failure still counts as a recorded approval.
-    let dispatched = false;
-    const ghToken = process.env.GH_DISPATCH_TOKEN;
-    const repo = process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore';
-    if (ghToken) {
-      try {
-        const res = await fetch(
-          `https://api.github.com/repos/${repo}/actions/workflows/autonomous-merge.yml/dispatches`,
-          {
-            method: 'POST',
-            headers: {
-              'Authorization': `token ${ghToken}`,
-              'User-Agent': 'BroadwayScorecard-AutonomousAction',
-              'Content-Type': 'application/json',
-              'Accept': 'application/vnd.github.v3+json',
-            },
-            body: JSON.stringify({
-              ref: 'main',
-              inputs: { card_id: card, branch, action: 'approve' },
-            }),
-          }
-        );
-        dispatched = res.ok;
-        if (!res.ok) {
-          console.error(`Merge dispatch failed: ${res.status} ${(await res.text()).slice(0, 200)}`);
-        }
-      } catch (err) {
-        console.error('Merge dispatch error:', (err as Error).message);
-      }
-    }
-
+    const dispatched = await dispatchMergeWorkflow('approve');
     return html('Approved',
       '<h1>Approved!</h1>' +
       (dispatched
         ? '<p>Approval recorded and the merge is underway. You\'ll see the result on the card.</p>'
-        : '<p>Approval recorded. CI merge goes live in Sprint 3 — this approval is stored on the card.</p>') +
+        : '<p>Approval recorded, but the merge dispatch could not be confirmed. Check the card shortly — re-tap Approve if it\'s still showing needs-approval.</p>') +
+      backLink);
+  }
+
+  if (autoAction === 'revert') {
+    if (currentState === 'reverted') {
+      return html('Already Reverted',
+        '<h1>Already Reverted</h1><p>This card was already reverted — nothing further was changed.</p>' + backLink);
+    }
+    if (currentState !== 'merged') {
+      return html('Cannot Revert',
+        `<h1>Cannot Revert</h1><p>This card is not in a revertable state (state: ${safeState}). Only merged work can be reverted.</p>` + backLink, 409);
+    }
+
+    // No pre-patch here (unlike approve): 'reverted' should only be set once
+    // the git revert actually lands — autonomous-merge.js's revert() flips
+    // Auto atomically after a successful push. A failed dispatch below just
+    // leaves the card at Auto=merged, which is still an accurate state.
+    const dispatched = await dispatchMergeWorkflow('revert');
+    return html('Revert Underway',
+      '<h1>Revert Underway</h1>' +
+      (dispatched
+        ? '<p>The revert is running now. You\'ll see the result on the card shortly.</p>'
+        : '<p>The revert dispatch could not be confirmed. Check the card shortly — re-tap Undo if it\'s still showing merged.</p>') +
       backLink);
   }
 

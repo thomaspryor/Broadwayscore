@@ -7,7 +7,8 @@
  *
  * Validates:
  * 1. Is it a valid URL?
- * 2. Is it a Broadway review (not Off-Broadway, tour, etc.)?
+ * 2. Is it a review of a show in a market we cover — NYC (Broadway or
+ *    Off-Broadway) or London (West End or Off-West-End)?
  * 3. Is the show in our database?
  * 4. Is it from a legitimate outlet?
  * 5. Is it already in our reviews?
@@ -136,7 +137,7 @@ async function validateWithClaude(submissionData) {
   const showsList = shows.map(s => `- ${s.title} (${s.id})`).join('\n');
 
   const today = new Date().toISOString().split('T')[0];
-  const prompt = `You are validating a Broadway review submission for our database. Analyze the following submission and determine if it's valid.
+  const prompt = `You are validating a theater review submission for Broadway Scorecard. We cover all professional theater in New York City (Broadway AND Off-Broadway) and London (West End AND Off-West-End). Analyze the following submission and determine if it's valid.
 
 TODAY'S DATE: ${today} — use this when evaluating publication dates in URLs or metadata. Review URLs with dates in 2025 or 2026 are expected and valid.
 
@@ -153,9 +154,15 @@ ${showsList}
 VALIDATION CRITERIA:
 1. Is this a valid, accessible URL?
 2. Based on the URL domain and path, is this likely a professional theater review (not a news article, listicle, or aggregator page)?
-3. Is this specifically a BROADWAY show review (not Off-Broadway, regional, touring, or international)?
-4. Is the show in our database? If so, which one?
+3. Is this a review of a production in a market we cover — New York City (Broadway or Off-Broadway) OR London (West End or Off-West-End)? A London/West End review is fully in scope. Reject only productions outside these markets (e.g. US regional theater, touring productions, or international productions elsewhere).
+4. Is the show in our database? If so, which one? Match on the show title regardless of market — database IDs may include a market suffix such as "off-west-end" or "off-broadway"; that suffix does NOT disqualify the submission. Set showInDatabase to true whenever the production matches a database entry.
+   IMPORTANT — never guess a show: only set showId (and showInDatabase=true) when you can confidently identify the specific production from the review URL or the user-provided details — e.g. the show title appears in the URL slug/path, or in the Show Name / Additional Notes. You are given ONLY the URL and any user-provided fields; you cannot open the page. If the URL is opaque (e.g. a numeric or hashed id like "post.cfm?p=28354" with no readable show title in the path) and no other field names the show, you CANNOT know which production it is: set showId=null, showInDatabase=false, and recommend "needs-manual-review". Do NOT pick a plausible-looking show id.
 5. Is the outlet a legitimate theater publication or major media outlet?
+
+RECOMMENDATION GUIDANCE:
+- "approve" when the URL is a valid professional review from a legitimate outlet, the production is in a covered market (NYC or London), AND you have confidently matched it to a specific show in our database (showId is set).
+- "needs-manual-review" when it's a valid covered-market review from a legitimate outlet but either the show is NOT yet in our database, OR you cannot confidently identify which production the URL reviews (opaque URL). In both cases set showId=null.
+- "reject" when the URL is not a review, the outlet is illegitimate, or the production is outside our covered markets.
 
 Respond in this JSON format:
 {
@@ -163,7 +170,7 @@ Respond in this JSON format:
   "validationDetails": {
     "isValidUrl": true/false,
     "isReview": true/false,
-    "isBroadway": true/false,
+    "isCoveredMarket": true/false,
     "isLegitimateOutlet": true/false,
     "showInDatabase": true/false
   },
@@ -255,6 +262,30 @@ async function validateSubmission(issueBody) {
   const claudeValidation = await validateWithClaude(submissionData);
 
   console.log('Claude validation result:', JSON.stringify(claudeValidation, null, 2));
+
+  // Guard: an 'approve' recommendation must resolve to a real database show id,
+  // otherwise the downstream scrape job (which gates on approve and needs a
+  // showId to ingest) fails AFTER the submitter already got an approval email.
+  // Fall back to the deterministic title match; if neither resolves, downgrade
+  // to manual review rather than approving a review we can't attach.
+  if (claudeValidation.recommendation === 'approve') {
+    const llmShowId = claudeValidation.extractedData?.showId;
+    const resolvedId =
+      (llmShowId && shows.some(s => s.id === llmShowId) && llmShowId) ||
+      matchedShow?.id ||
+      null;
+    if (resolvedId) {
+      if (claudeValidation.extractedData) {
+        claudeValidation.extractedData.showId = resolvedId;
+      }
+    } else {
+      claudeValidation.recommendation = 'needs-manual-review';
+      claudeValidation.reasoning =
+        `Approved as a covered-market review, but could not resolve a matching show id in our database` +
+        `${llmShowId ? ` (extracted "${llmShowId}" is not a known show id)` : ''}. ` +
+        `Routing to manual review so the show can be added or matched before ingest.`;
+    }
+  }
 
   // Combine results
   return {

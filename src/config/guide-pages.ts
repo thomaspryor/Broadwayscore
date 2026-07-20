@@ -3,6 +3,8 @@
 // These are richer than browse pages: LLM editorial intros, critic consensus, ticket CTAs
 
 import { ComputedShow } from '@/lib/engine';
+import { isAnnouncedCurrent } from '@/config/browse-pages';
+import { isPlatformHidden } from '@/lib/ticket-utils';
 
 export interface GuidePageConfig {
   slug: string;
@@ -314,7 +316,8 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     introFallback: "Great Broadway doesn't have to mean expensive tickets. These {count} shows offer tickets under $100, proving you can experience world-class theater on a budget.",
     filter: (show) => {
       if (show.status !== 'open') return false;
-      const minPrice = Math.min(...(show.ticketLinks?.filter(l => l.priceFrom).map(l => l.priceFrom!) || [Infinity]));
+      // Only price from platforms the user can actually see a button for
+      const minPrice = Math.min(...(show.ticketLinks?.filter(l => l.priceFrom && !isPlatformHidden(l.platform)).map(l => l.priceFrom!) || [Infinity]));
       return minPrice < 100;
     },
     sort: 'score',
@@ -445,12 +448,14 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     metaDescriptionTemplate: '{count} new Broadway shows coming soon in {year}. Preview dates, opening nights, and what to expect.',
     introFallback: 'Exciting new productions are headed to Broadway. These {count} shows are in previews or about to begin performances — get ahead of the crowd and book early.',
     filter: (show) => {
-      if (show.status !== 'previews' && show.status !== 'upcoming') return false;
+      // Keep in sync with the upcoming-broadway-shows browse page: current
+      // announced shows (selling tickets, dates TBD) count as upcoming too.
+      if (show.status !== 'previews' && show.status !== 'upcoming' && !isAnnouncedCurrent(show)) return false;
       return true;
     },
     sort: 'opening-date',
     relatedGuides: ['best-new-broadway-shows', 'best-broadway-shows', 'broadway-shows-closing-soon', 'cheap-broadway-tickets'],
-    relatedBrowse: ['upcoming-broadway-shows', 'new-broadway-shows-2026'],
+    relatedBrowse: ['upcoming-broadway-shows', 'upcoming-off-broadway-shows', 'upcoming-west-end-shows', 'new-broadway-shows-2026'],
   },
 
   // === SHORT SHOWS ===

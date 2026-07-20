@@ -95,6 +95,26 @@ jobs:
           echo "Running: node scripts/scrape-broadway-com-runtimes.js $FLAGS"
           node scripts/scrape-broadway-com-runtimes.js $FLAGS
 
+      # Broadway.com only covers currently-running Broadway shows. Off-Broadway
+      # and West End runtimes come from TodayTix, whose REST API can be stale
+      # (Birthright 2026-07: API said 90min, page said 3hr30). This audits every
+      # active show against the TodayTix PAGE and corrects drift.
+      - name: Audit runtimes vs TodayTix pages
+        if: inputs.mode != 'show'
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            # Exit 1 on mismatch is informational in dry-run mode
+            node scripts/audit-todaytix-runtimes.js || echo "Mismatches found (dry run — not fixing)"
+          else
+            node scripts/audit-todaytix-runtimes.js --fix
+          fi
+
       - name: Run validation
         if: inputs.dry_run != true
         run: node scripts/validate-data.js

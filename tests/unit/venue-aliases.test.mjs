@@ -91,6 +91,53 @@ test('alias table entries have the required shape', () => {
   }
 });
 
+test('all 11 renamed Broadway theaters from broadway-theaters.js have alias entries', () => {
+  // Prevention: any theater later marked .renamed in broadway-theaters.js must
+  // get a VENUE_ALIASES entry, or the CV wrongProduction FP class returns
+  // (333 pre-rename shows, venue-anachronism audit 2026-07-13).
+  const { BROADWAY_THEATERS } = require('../../scripts/lib/broadway-theaters.js');
+  for (const [key, t] of Object.entries(BROADWAY_THEATERS)) {
+    if (!t.renamed) continue;
+    const entry = getVenueAliases(t.canonical, 'broadway');
+    assert.ok(entry, `${key} (${t.canonical}) is renamed but has no VENUE_ALIASES entry`);
+    assert.equal(entry.region, 'nyc', `${key}: renamed Broadway house must be region nyc`);
+    assert.match(entry.note, /\d{4}/, `${key}: note must include rename date context`);
+  }
+});
+
+test('Broadway rename context reaches the CV prompt (king-hedley Virginia case)', () => {
+  const ctx = buildVenueContext('August Wilson Theatre', 'broadway');
+  assert.match(ctx, /Virginia Theatre/);
+  assert.match(ctx, /2005/);
+});
+
+test('same-name venues do not cross regions (the two Lyric Theatres)', () => {
+  // Broadway Lyric (ex-Foxwoods/Hilton/Ford Center) must expand for Broadway…
+  assert.match(buildVenueContext('Lyric Theatre', 'broadway'), /Foxwoods/);
+  // …but a London Lyric (Shaftesbury Ave) show must NOT get Broadway history.
+  assert.equal(buildVenueContext('Lyric Theatre', 'west-end'), 'Lyric Theatre');
+  // And the London Sondheim (ex-Queen's) stays distinct from Stephen Sondheim.
+  assert.match(buildVenueContext('Sondheim Theatre', 'west-end'), /Queen's/);
+  assert.equal(getVenueAliases('Sondheim Theatre', 'broadway'), null);
+});
+
+test('market-less lookups keep legacy behavior (match any region)', () => {
+  assert.match(buildVenueContext("His Majesty's Theatre"), /Her Majesty's/);
+  assert.match(buildVenueContext('Lena Horne Theatre'), /Brooks Atkinson/);
+});
+
+test('off-market variants map to the same region', () => {
+  assert.match(buildVenueContext("His Majesty's Theatre", 'off-west-end'), /Her Majesty's/);
+  assert.match(buildVenueContext('James Earl Jones Theatre', 'off-broadway'), /Cort/);
+});
+
+test('unmapped markets fail closed (no cross-region contamination)', () => {
+  // A regional show at some other city's "Lyric Theatre" must not inherit
+  // Broadway rename history; unknown market ≠ market-less legacy call.
+  assert.equal(buildVenueContext('Lyric Theatre', 'regional'), 'Lyric Theatre');
+  assert.equal(getVenueAliases('August Wilson Theatre', 'regional'), null);
+});
+
 test('content-verifier imports venue-aliases without breaking', () => {
   // Sanity check: the wiring change in scripts/lib/content-verifier.js must
   // not blow up at require time. verifyContent() itself needs API keys +

@@ -119,6 +119,7 @@ Check for:
 5. **Set Tags** — tag with relevant subsystems (scoring, scraping, opening-night, west-end, off-broadway, commercial, email, ios-app, infra, data-quality)
 6. **Set Completed Date** if marking as Done: `"date:Completed Date:start": "YYYY-MM-DD"`
 7. **Set Status** → "Done" or "Paused" (if paused, add reason to Notes explaining what's left and what's blocking it)
+7.5. **If Status is "Done" and this session claimed a shared-task-list task** (via `TaskUpdate` at session start, per the startup seed prompt): mark that task `completed` via `TaskUpdate` now, in THIS still-live turn — not later. This is what lets the workspace-mark-done Stop hook (`~/.claude/hooks/workspace-mark-done.sh`) ✅-mark the workspace automatically on this session's own next Stop event; the hook only reads the local task-list mirror, and nothing else updates it on a normal timescale (Notion→local sync is on-demand, not cron'd). Skip if this session never claimed a task (ad hoc / non-dispatched sessions).
 8. **Create new cards** for any discovered work items (Status="Not started", appropriate Priority and Tags). Every item in "Discovered work" MUST have a card — don't just list them and forget.
    **CRITICAL — every new card must be a self-contained handoff.** Use the Notes field with this template:
    ```
@@ -295,11 +296,9 @@ Close with exactly one line: `Your next action: <nothing | answer the DECISION N
 
 Only say "Clean exit, no loose ends" when you are ALSO not recommending any next-session work — a "recommended next session" IS a loose end and belongs in `### Next`, triaged. Never make the user ask "what's required next?"
 
-### Phase 7: Workspace self-marking & self-close (Cmux sessions only)
+### Phase 7: Workspace self-marking (Cmux sessions only) — mark, NEVER close
 
 **Skip unless this session runs inside a Cmux workspace** — check with `/Applications/cmux.app/Contents/Resources/bin/cmux identify` (succeeds and returns your `workspace_ref`). Finished workspaces must be visually distinct so pruning is at-a-glance (owner rule, 2026-07-12).
-
-**Precondition:** the Notion card Outcome is written and Status is set (Phase 4 done). The Notion record IS the session record — scrollback is redundant once it exists. If the Notion update failed, mark ✅ but do NOT self-close (keep the workspace for forensics).
 
 After delivering the final report:
 ```bash
@@ -309,9 +308,10 @@ $CMUX workspace-action --action rename --workspace "$WS" --title "✅ <short ses
 $CMUX workspace-action --action set-color --workspace "$WS" --color Green
 ```
 
-Then, as the LITERALLY LAST tool call of the session (it kills this terminal — nothing can run after it, so if anything remains in your plan you ordered it wrong):
-```bash
-$CMUX close-workspace --workspace "$WS"
-```
-
-Sessions that die before self-closing still get swept: `bsc-next` closes ✅-marked workspaces before every launch, and `bsc-prune` (alias) / `node scripts/bsc-prune.js` is the manual sweep — it also lists idle un-marked workspaces without closing them.
+**Do NOT self-close the workspace. Ever.** (Owner rule, 2026-07-15: a session's
+Phase-7 self-close killed a tab while the owner was mid-typing in it — their
+unsent text was lost. `workspace-mark-done.sh` had already documented this exact
+hazard; only the ✅-mark is safe.) The mark is the handoff: `bsc-prune` / `node scripts/bsc-prune.js` is the sweep
+the OWNER runs to close ✅-marked workspaces (bsc-next no longer sweeps at
+dispatch — removed 2026-07-15 after it closed in-use tabs) — closing is always
+a human or human-triggered action, never automatic.

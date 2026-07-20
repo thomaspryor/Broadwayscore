@@ -38,7 +38,7 @@ const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome, isPromoTeaser } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -487,7 +487,9 @@ function selectBestExcerpt(data, showTitle) {
   if (data.pullQuote && typeof data.pullQuote === 'string' && data.pullQuote.trim()) {
     const cleaned = cleanExcerpt(data.pullQuote);
     if (cleaned && cleaned.length > 20) {
-      if (!isInternalNote(cleaned) && !hasCopyrightChrome(cleaned)) {
+      // isPromoTeaser also guards this fast-path: a teaser here would come
+      // from a bulk import writing pullQuote, not a human editor's choice.
+      if (!isInternalNote(cleaned) && !hasCopyrightChrome(cleaned) && !isPromoTeaser(cleaned)) {
         return cleaned;
       }
     }
@@ -529,6 +531,17 @@ function selectBestExcerpt(data, showTitle) {
       if (!stats.copyrightChromeRejected) stats.copyrightChromeRejected = [];
       stats.copyrightChromeRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
       console.log(`  🚫 [copyright-chrome] ${showId}: "${source}" rejected for copyright/subscribe text`);
+      return null;
+    }
+
+    // Layer 2c: Promo-teaser guard — reject SEO standfirsts / ticket CTAs
+    // ("Read our review of <show>...", "Buy tickets..."). NYTG/LondonTheatre
+    // articles open with one; it shipped as the displayed quote on 6 shows
+    // (Whoopi Monologues audit, 2026-07-14).
+    if (isPromoTeaser(excerpt)) {
+      if (!stats.promoTeaserRejected) stats.promoTeaserRejected = [];
+      stats.promoTeaserRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [promo-teaser] ${showId}: "${source}" rejected as promo teaser`);
       return null;
     }
 

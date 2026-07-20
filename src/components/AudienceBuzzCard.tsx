@@ -7,14 +7,14 @@ import {
 } from '@/lib/audience-grade-utils';
 import type { AudienceBuzzData } from '@/lib/data-types';
 import type { ShowRanks } from '@/lib/data-show-ranks';
-import { AUDIENCE_SOURCES } from '@/config/audience-sources';
+import { AUDIENCE_SOURCES, type AudienceMarket } from '@/config/audience-sources';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
 
 interface AudienceBuzzCardProps {
   buzz: AudienceBuzzData;
   showScoreUrl?: string;
   limitedSources?: boolean;
-  market?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end';
+  market?: AudienceMarket;
   /** Pre-computed URLs for each audience platform (keyed by source key) */
   platformUrls?: Record<string, string>;
   /** Cross-show rank set. When provided, renders an audience rank line

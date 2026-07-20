@@ -641,12 +641,38 @@ function safeWriteReview(filePath, newData, options = {}) {
         // its state (and the push-review-texts restore exception keys on that
         // breadcrumb). Keep the marker consistent with the live flag. 2026-06-01.
         newData.duplicateClearReason = null;
+      } else if (newData._duplicateOfCleared) {
+        console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} but carries a _duplicateOfCleared breadcrumb — honoring the prior clear, not re-marking`);
       } else {
         // newData carries the real review body and the collider is a thin/empty
         // same-URL stub. Marking newData duplicate here BURIES the real review
         // under the stub and re-forms a byline-explosion cluster on every write
         // (much-ado Sarah Crompton → alun-hood, 2026-07-05). Keep it primary.
         console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} but has the substantive body — keeping primary`);
+      }
+    }
+  }
+
+  // showId backstop (2026-07-18): validate-review-texts --gate hard-fails any
+  // corpus file missing showId, and writers that build payloads from scratch
+  // (show-not-mentioned-recovery URL updates shipped allegra-west-end-2026/
+  // whatsonstage--aliya-al.json without one) can turn the whole Test Suite red
+  // with a single file. The corpus layout guarantees the immediate parent
+  // directory name IS the show id — including under _pending/, whose layout
+  // nests show-id dirs (_pending/{show-id}/file.json) — so derive it at the
+  // write choke point. The underscore/dot skip exists for dirs whose own name
+  // can never be a show id: test-guard dirs, tmp dirs, hidden dirs.
+  {
+    const dirName = path.basename(path.dirname(filePath));
+    if (dirName && !dirName.startsWith('_') && !dirName.startsWith('.')) {
+      if (!newData.showId) {
+        newData.showId = dirName;
+      } else if (newData.showId !== dirName) {
+        // Don't auto-correct: a mismatch means the file is misfiled or carries
+        // a stale id after a move — both need eyes, not silent rewriting.
+        // rebuild groups by data.showId, so this file is being counted under a
+        // show it doesn't live in.
+        console.warn(`[review-write-guard] showId mismatch in ${path.basename(filePath)}: field says "${newData.showId}" but file lives in "${dirName}"`);
       }
     }
   }
@@ -713,10 +739,11 @@ function getEffectiveProtectedFields(existingData) {
  */
 /**
  * Decide whether a URL-collision should mark the NEW file as duplicateOf the
- * collider. Returns false — i.e. keep the new file PRIMARY — only when the new
- * file carries a substantive review body and the collider is a materially
- * thinner (empty/stub) same-URL sibling. Otherwise defer to the collider
- * (historical behavior: the first same-URL file wins).
+ * collider. Returns false — i.e. keep the new file PRIMARY — only when (a) the
+ * new file carries a _duplicateOfCleared breadcrumb from a prior reviewed
+ * clear, or (b) the new file carries a substantive review body and the
+ * collider is a materially thinner (empty/stub) same-URL sibling. Otherwise
+ * defer to the collider (historical behavior: the first same-URL file wins).
  *
  * Why: checkUrlCollision returns the first same-URL sibling in readdir order,
  * regardless of which holds the real review. Blindly marking the new file a
@@ -750,6 +777,13 @@ function wouldFormDuplicateCycle(thisBasename, colliderData) {
 }
 
 function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
+  // A prior cleanup pass explicitly reviewed this URL collision and cleared it
+  // as a false positive (_duplicateOfCleared breadcrumb — e.g. two distinct
+  // critics genuinely publishing under one Guardian/BWW article URL). Without
+  // this check, ANY later write — even an unrelated field like publishDate —
+  // re-flagged the file duplicateOf and silently excluded it from scoring
+  // (163 corpus-wide, 2026-07-15). Honor the breadcrumb: never re-mark.
+  if (newData && newData._duplicateOfCleared) return false;
   // Can't read the collider → defer to historical behavior (mark duplicate). We
   // only keep the new file primary when we can PROVE the collider is thinner.
   if (!colliderData) return true;
@@ -1072,6 +1106,22 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
       delete contentToWrite[field];
       if (field === 'duplicateOf') delete contentToWrite.duplicateReason;
       console.log(`[review-write-guard] stripped self-referential ${field} on rename → ${dstBasename}`);
+    }
+  }
+  // Re-stamp showId to the destination show dir. rebuild-all-reviews groups by
+  // data.showId (not by directory), so a cross-show move that keeps the source
+  // id verbatim files the review under the WRONG show — and validate-review-
+  // texts won't catch it (it derives its key from the directory). The dir name
+  // is the show id by corpus layout (same rule as safeWriteReview's backstop);
+  // skip dirs whose own name can't be a show id (test/tmp/hidden).
+  {
+    const dstDirName = path.basename(path.dirname(dstPath));
+    if (dstDirName && !dstDirName.startsWith('_') && !dstDirName.startsWith('.')
+        && contentToWrite.showId !== dstDirName) {
+      if (contentToWrite.showId) {
+        console.log(`[review-write-guard] re-stamped showId on rename: "${contentToWrite.showId}" → "${dstDirName}" (${dstBasename})`);
+      }
+      contentToWrite.showId = dstDirName;
     }
   }
   fs.writeFileSync(dstPath, JSON.stringify(contentToWrite, null, 2) + '\n');

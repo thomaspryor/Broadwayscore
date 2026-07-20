@@ -65,6 +65,18 @@ runs:
           echo "::warning::No aggregator-archive directory found in private repo"
         fi
 
+        # Snapshot for push-aggregator-archive's file-level diff (same pattern as
+        # checkout-core-data's /tmp/core-data-snapshot — see that action's comment
+        # and memory/CLAUDE-reference.md P0 2026-07-13 incident). Without this
+        # baseline, push-aggregator-archive can only copy the whole directory
+        # back wholesale, which reverts any concurrent workflow's writes to
+        # files this workflow never touched.
+        rm -rf /tmp/aggregator-archive-snapshot
+        mkdir -p /tmp/aggregator-archive-snapshot
+        if [ -d "data/aggregator-archive" ]; then
+          cp -r data/aggregator-archive/. /tmp/aggregator-archive-snapshot/ 2>/dev/null || true
+        fi
+
     - name: Save aggregator-archive cache
       uses: actions/cache/save@v5
       if: always()

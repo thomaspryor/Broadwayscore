@@ -51,6 +51,57 @@ function isSafeCheckCommand(cmd) {
 
 const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/ or scripts/>`, `npx tsc --noEmit`, `npx next lint`, or `test -f <docs|memory|tests path>`';
 
+// isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
+// checks the path is real, so an LLM that invents a plausible-but-wrong test
+// path (e.g. tests/review-write-guard.test.mjs instead of the real
+// tests/unit/review-write-guard.test.mjs) sails through validation, gets
+// queued, and burns a full executor run before failing at the check step
+// (card #171, 2026-07-14: $1.38 spent on a card that could never pass).
+// Extracts the same path tokens isSafeCheckCommand matches on, for a
+// downstream existence check.
+function extractCheckPaths(cmd) {
+  const s = String(cmd || '').trim();
+  for (const form of SAFE_CHECK_FORMS) {
+    const m = form.re.exec(s);
+    if (!m || !form.pathsGroup) continue;
+    return m[form.pathsGroup].trim().split(/\s+/);
+  }
+  return [];
+}
+
+const REPO_ROOT = path.join(__dirname, '..', '..');
+
+// Deterministic post-validation guard: runs once, no extra LLM call (a
+// missing path is a fact about the filesystem, not a model mistake worth a
+// retry). Only meaningful for eligible verdicts — an ineligible card's check
+// never executes. tests/unit/<basename> is the one "obvious near-match" this
+// repo's layout actually produces (every *.test.mjs lives there) — but only
+// within the tests/ family: a missing scripts/*.test.mjs or docs/*.md path
+// must NOT be "corrected" against an unrelated tests/unit/ file that merely
+// shares a basename (ship-check finding — SAFE_CHECK_FORMS explicitly allows
+// scripts/ and docs/|memory/ targets too, so cross-directory guessing risks
+// silently validating the wrong file). Anything else fails closed to
+// ineligible rather than guessing further.
+function resolveCheckPaths(checkableDone, opts = {}) {
+  const repoRoot = opts.repoRoot || REPO_ROOT;
+  const paths = extractCheckPaths(checkableDone);
+  if (paths.length === 0) return { ok: true, checkableDone }; // tsc/lint forms carry no file args
+  const exists = p => { try { return fs.existsSync(path.join(repoRoot, p)); } catch { return false; } };
+  let corrected = checkableDone;
+  let anyCorrection = false;
+  for (const p of paths) {
+    if (exists(p)) continue;
+    const nearMatch = p.startsWith('tests/') ? `tests/unit/${path.basename(p)}` : null;
+    if (nearMatch && nearMatch !== p && exists(nearMatch)) {
+      corrected = corrected.replace(p, nearMatch);
+      anyCorrection = true;
+      continue;
+    }
+    return { ok: false, reason: `checkableDone references a path that does not exist on disk: ${p}${nearMatch ? ` (tried near-match ${nearMatch})` : ''}` };
+  }
+  return { ok: true, checkableDone: corrected, corrected: anyCorrection };
+}
+
 const SCHEMA_PATH = path.join(__dirname, 'triage-schema.json');
 const schema = JSON.parse(fs.readFileSync(SCHEMA_PATH, 'utf8'));
 const SIZE_VALUES = schema.properties.size.enum;
@@ -166,15 +217,49 @@ function validateTriageResult(obj) {
   return { ok: errors.length === 0, errors };
 }
 
+// Cross-session claim visibility (night-2 fix): notion-tasks-sync.js only
+// pushes task COMPLETIONS back to Notion (mergeStatus never downgrades a
+// live claim, but nothing uploads in_progress either — see its header
+// comment), so a card a human/interactive session has already claimed via
+// the shared task list can sit "Not started" in Notion for hours while its
+// mirrored task is in_progress. Without this check triage re-offers that
+// same card to the nightly loop as available work (2026-07-14 near-miss:
+// task-aware-model-selection card was mid-build under task #151 and still
+// triage-eligible).
+//
+// `taskState` is `{ notionMap, tasksById }` — notion-tasks-sync.js's OWN
+// identity layer (`.notion-map.json`: pageId → {taskId,...}, and the numeric
+// task files it writes), not a free-text scan of task descriptions. This
+// mirrors that script's own `taskBelongsTo()` guard: the numeric task id in
+// the map can be reused by a live session for unrelated work, so the mapped
+// task must still carry `[notion:<cardId>]` before it's trusted (ship-check
+// finding — a bare description-substring scan risked a false match on any
+// task whose notes happened to contain the same bracket text).
+function findClaimedTask(cardId, taskState) {
+  if (!cardId || !taskState) return null;
+  const entry = taskState.notionMap && taskState.notionMap[cardId];
+  if (!entry || !entry.taskId) return null;
+  const task = taskState.tasksById && taskState.tasksById[String(entry.taskId)];
+  if (!task || task.status !== 'in_progress') return null;
+  if (typeof task.description !== 'string' || !task.description.includes(`[notion:${cardId}]`)) return null;
+  return task;
+}
+
 /**
  * Triage one card. `callLLM(prompt) → Promise<string>` is injected (real
- * Sonnet in the CLI, a mock in tests). Never throws for model misbehavior —
- * returns one of:
+ * Sonnet in the CLI, a mock in tests). `opts.taskState` (optional, see
+ * findClaimedTask above) is the shared task list snapshot used for the
+ * claim-visibility pre-filter. Never throws for model misbehavior — returns
+ * one of:
  *   { preFilter: {eligible:false, reason} }                       (no LLM call)
  *   { preFilter: {eligible:true}, triage: {...validated result} }
  *   { preFilter: {eligible:true}, failed: 'triage', error, attempts }
  */
-async function triageCard(card, callLLM) {
+async function triageCard(card, callLLM, opts = {}) {
+  const claimedBy = findClaimedTask(card.id, opts.taskState);
+  if (claimedBy) {
+    return { preFilter: { eligible: false, reason: `claimed in-flight (shared task #${claimedBy.id} is in_progress — already being worked interactively)` } };
+  }
   const preFilter = isCardEligible(card);
   if (!preFilter.eligible) return { preFilter };
 
@@ -200,7 +285,19 @@ async function triageCard(card, callLLM) {
       continue;
     }
     const { ok, errors } = validateTriageResult(parsed);
-    if (ok) return { preFilter, triage: parsed };
+    if (ok) {
+      if (parsed.eligible === true) {
+        const pathCheck = resolveCheckPaths(parsed.checkableDone, opts);
+        if (!pathCheck.ok) {
+          return {
+            preFilter,
+            triage: { ...parsed, eligible: false, reason: `${parsed.reason} [check-path-missing: ${pathCheck.reason}]` },
+          };
+        }
+        if (pathCheck.corrected) parsed = { ...parsed, checkableDone: pathCheck.checkableDone };
+      }
+      return { preFilter, triage: parsed };
+    }
     lastErrors = errors;
   }
   return { preFilter, failed: 'triage', error: lastErrors.join('; '), attempts: 2 };
@@ -236,9 +333,12 @@ module.exports = {
   SCHEMA_PATH,
   SAFE_CHECK_FORMS,
   isSafeCheckCommand,
+  extractCheckPaths,
+  resolveCheckPaths,
   buildTriagePrompt,
   parseTriageResponse,
   validateTriageResult,
+  findClaimedTask,
   triageCard,
   decide,
   priorityRank,

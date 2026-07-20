@@ -22,6 +22,7 @@ const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { countByShow, isStuckInPreviews, openSignalFromReviews, chooseOpeningDateBackfill } = require('./lib/opening-signal');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
+const { decideAnnouncedPromotion } = require('./lib/announced-promotion');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_FILE = path.join(__dirname, '..', 'data', 'reviews.json');
@@ -688,6 +689,26 @@ async function updateShowStatuses() {
       }
     }
 
+    // Check 2e: Promote announced shows once real dates exist. Discovery
+    // creates date-less shows as 'announced', and enrichment scripts later
+    // write previewsStartDate/openingDate onto them — but no transition
+    // covered 'announced', so shows stayed invisible on upcoming pages
+    // forever (dolly-an-original-musical-2026, found 2026-07-14). Mirrors
+    // discovery's own initial-status logic (discover-new-shows.js).
+    //
+    // Decision logic (incl. zombie-entry recency guard) lives in
+    // scripts/lib/announced-promotion.js so tests exercise the real function.
+    const announcedDecision = decideAnnouncedPromotion(show);
+    if (announcedDecision.action === 'triage') {
+      console.log(`  ⚠️  ${show.title} (${show.id}): status=announced — ${announcedDecision.reason}`);
+    } else if (announcedDecision.action === 'promote') {
+      changes.status = { from: 'announced', to: announcedDecision.to };
+      changes.note = `announced show has dates (previews: ${show.previewsStartDate || 'null'}, opening: ${show.openingDate || 'null'})`;
+      if (!dryRun) {
+        show.status = announcedDecision.to;
+      }
+    }
+
     // Check 2d: Review-driven open. A show in previews/upcoming that has
     // accumulated enough scored reviews to display a score has demonstrably
     // opened — critics review on/after press night, not during previews. This
@@ -813,11 +834,15 @@ async function updateShowStatuses() {
     fs.appendFileSync(outputFile, `updates_count=${updates.length}\n`);
     fs.appendFileSync(outputFile, `updated_shows=${updates.map(u => u.title).join(', ')}\n`);
 
-    // Separate output for shows transitioning previews→open (for downstream triggers).
-    // Exclude review-driven catch-up flips (Check 2d) — those shows opened days/weeks
-    // ago, so triggering the opening-night poller/broadcast for them would be wrong.
+    // Separate output for shows transitioning to open (for downstream triggers).
+    // Includes previews→open, upcoming→open, and announced→open (Check 2e —
+    // without 'announced' here a late-discovered show whose openingDate just
+    // arrived would open silently, skipping the opening-night poller/broadcast).
+    // Exclude review-driven catch-up flips (Check 2d) — those shows opened
+    // days/weeks ago, so triggering the opening-night pipeline would be wrong.
     const openedShows = updates.filter(u =>
-      u.changes.status?.from === 'previews' && u.changes.status?.to === 'open' && !u.changes.reviewDriven
+      ['previews', 'upcoming', 'announced'].includes(u.changes.status?.from) &&
+      u.changes.status?.to === 'open' && !u.changes.reviewDriven
     );
     fs.appendFileSync(outputFile, `opened_count=${openedShows.length}\n`);
     fs.appendFileSync(outputFile, `opened_slugs=${openedShows.map(u => u.id).join(',')}\n`);

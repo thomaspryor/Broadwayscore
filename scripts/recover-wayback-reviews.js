@@ -857,14 +857,66 @@ function loadNotAttemptedCandidates() {
 }
 
 // ============================================================================
-// Checkpointing (CI only)
+// Checkpointing
 // ============================================================================
+//
+// Runs regardless of CI. A long local run (many minutes for 100+ candidates)
+// leaves every recovered review-text file sitting uncommitted the whole time
+// — this machine also runs scheduled local automation (launchd:
+// autonomous-nightly, backfill-gather) against the SAME data/review-texts
+// checkout, and a concurrent write to the same file is a filesystem race git
+// can't protect against (no conflict is ever raised — whoever's write lands
+// last on disk wins, and `git add` only ever sees the current state).
+// 2026-07-19: a ~40min local run recovered dozens of files; only a handful
+// survived to the final commit because most were silently overwritten
+// mid-run before this script ever got to `git add`. The old CI-only gate
+// meant local runs — the ones actually exposed to this race — never
+// checkpointed at all. Committing every few recoveries shrinks the exposure
+// window from tens of minutes to a couple.
+
+function checkpointReviewTexts(stats) {
+  const reviewTextsDir = path.join(__dirname, '..', 'data', 'review-texts');
+  try {
+    execSync('git add -A', { cwd: reviewTextsDir, stdio: 'pipe' });
+    try {
+      execSync('git diff --staged --quiet', { cwd: reviewTextsDir, stdio: 'pipe' });
+      return; // no changes
+    } catch { /* has staged changes */ }
+    execSync(`git commit -m "data: Wayback recovery checkpoint - ${stats.recovered} recovered so far"`, { cwd: reviewTextsDir, stdio: 'pipe' });
+    for (let i = 0; i < 3; i++) {
+      try {
+        execSync('git pull --rebase -X theirs origin main', { cwd: reviewTextsDir, stdio: 'pipe', timeout: 30000 });
+        // -X theirs favors local commits on conflicting hunks per rebase semantics,
+        // but this codebase has documented, incident-backed evidence that
+        // concurrent writes to the same JSON file's fields still get dropped in
+        // practice — restore-protected-fields.js is the established safety net
+        // (same pattern as rediscover-review-urls.js's pushReviewTextsCheckpoint).
+        try {
+          const restoreScriptPath = path.join(__dirname, 'lib', 'restore-protected-fields.js');
+          const restored = execSync(`node "${restoreScriptPath}" origin/main`, { cwd: reviewTextsDir, encoding: 'utf8', stdio: 'pipe' }).trim();
+          if (parseInt(restored, 10) > 0) {
+            console.log(`  [Checkpoint] restored protected fields in ${restored} file(s) after rebase`);
+            execSync('git add -A', { cwd: reviewTextsDir, stdio: 'pipe' });
+            execSync('git commit --amend --no-edit', { cwd: reviewTextsDir, stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
+          }
+        } catch (restoreErr) {
+          console.log(`  [Checkpoint] restore-protected-fields failed: ${restoreErr.message.slice(0, 200)}`);
+        }
+        execSync('git push origin main', { cwd: reviewTextsDir, stdio: 'pipe', timeout: 30000 });
+        console.log(`  [Checkpoint] review-texts pushed (attempt ${i + 1})`);
+        return;
+      } catch (e) {
+        try { execSync('git rebase --abort', { cwd: reviewTextsDir, stdio: 'pipe' }); } catch {}
+        if (i === 2) console.log(`  [Checkpoint] WARNING: review-texts push failed after 3 attempts: ${e.message.slice(0, 200)}`);
+      }
+    }
+  } catch (e) {
+    console.log(`  [Checkpoint] review-texts error: ${e.message.slice(0, 200)}`);
+  }
+}
 
 function checkpoint(stats) {
-  if (!process.env.GITHUB_ACTIONS) {
-    console.log(`  [Checkpoint] Skipped (not in CI) — ${stats.recovered} recovered so far`);
-    return;
-  }
+  checkpointReviewTexts(stats);
 
   try {
     execSync('git add data/audit/', { stdio: 'pipe', cwd: path.join(__dirname, '..') });
@@ -945,10 +997,16 @@ async function main() {
   const recoveredReviewIds = []; // Track for batch cleanup of failed-fetches.json
   const exhaustedUrls = {}; // Track per-URL failure reasons for wayback-exhausted.json
 
-  // Domain circuit breaker — skip domains with too many consecutive failures
+  // Domain circuit breaker — skip domains with too many consecutive failures.
+  // Disabled when the candidate set is a single domain (e.g. DOMAIN_FILTER=wsj.com):
+  // there's nowhere else for the run to redirect effort, so tripping it just
+  // kills the rest of an intentionally-scoped run after 5 unlucky misses
+  // (180-candidate wsj.com run stopped at candidate 11, 2026-07-19).
   const domainFailures = {};  // { 'cititour.com': 5, ... }
   const skippedDomains = new Set();
   let domainSkipCount = 0;
+  const distinctDomains = new Set(candidates.map(c => c.domain));
+  const circuitBreakerEnabled = distinctDomains.size > 1;
 
   console.log(`\n${'='.repeat(60)}`);
   console.log('Phase 1: CDX Discovery + Fetch\n');
@@ -1024,7 +1082,7 @@ async function main() {
 
       // Domain failure tracking
       domainFailures[c.domain] = (domainFailures[c.domain] || 0) + 1;
-      if (domainFailures[c.domain] >= 5) {
+      if (circuitBreakerEnabled && domainFailures[c.domain] >= 5) {
         skippedDomains.add(c.domain);
         console.log(`  ⚠ Domain ${c.domain} circuit-broken after ${domainFailures[c.domain]} consecutive failures`);
       }
@@ -1119,7 +1177,7 @@ async function main() {
         } else {
           exhaustedUrls[c.url] = { reason: 'content_quality_failed', lastAttempt: new Date().toISOString(), retryable: false };
           domainFailures[c.domain] = (domainFailures[c.domain] || 0) + 1;
-          if (domainFailures[c.domain] >= 5 && !skippedDomains.has(c.domain)) {
+          if (circuitBreakerEnabled && domainFailures[c.domain] >= 5 && !skippedDomains.has(c.domain)) {
             skippedDomains.add(c.domain);
             console.log(`  ⚠ Domain ${c.domain} circuit-broken after ${domainFailures[c.domain]} consecutive failures`);
           }
@@ -1127,7 +1185,7 @@ async function main() {
       } else {
         exhaustedUrls[c.url] = { reason: 'snapshots_paywalled', lastAttempt: new Date().toISOString(), retryable: false };
         domainFailures[c.domain] = (domainFailures[c.domain] || 0) + 1;
-        if (domainFailures[c.domain] >= 5 && !skippedDomains.has(c.domain)) {
+        if (circuitBreakerEnabled && domainFailures[c.domain] >= 5 && !skippedDomains.has(c.domain)) {
           skippedDomains.add(c.domain);
           console.log(`  ⚠ Domain ${c.domain} circuit-broken after ${domainFailures[c.domain]} consecutive failures`);
         }

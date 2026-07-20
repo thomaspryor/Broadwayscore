@@ -3,11 +3,12 @@
 > Caps: 180 lines/20KB (hook-enforced; harness truncates ~200). Always-on index only — 450+ files on disk are recalled on demand. **At cap: add ⇒ remove/merge one.** Last compacted 2026-07-05.
 
 ## 🌐 External APIs & services
-- [Vercel API access](feedback_vercel_api_access.md) — VERCEL_TOKEN in .env; prj_wmBnDUrCQCwabIAYPbnMiIP3wg15
+- [Vercel API + billing](reference_vercel_billing_api.md) — VERCEL_TOKEN in .env; /v1/invoices[/upcoming]; deploy freq = cost lever ([[feedback_vercel_api_access.md]])
 - [Analytics Real Users lens](feedback_analytics_real_users_lens.md) — GA4 bot-inflated; PostHog (proj 332742) is_owner + SG/CN/VN excluded; newsletter email has no UTM ([[feedback_newsletter_no_utm.md]])
 - [Google Search Console API](feedback_gsc_api_auth.md) — gcloud ADC + webmasters scope; X-Goog-User-Project header required
 
 ## 👤 User profile & session discipline
+- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — ✅-only via bsc-prune; --help executes
 - [Terse output default](feedback_terse_output_default.md) — no recap, cut narration, keep proof; estimate in Claude-pace minutes ([[feedback_no_human_day_estimates.md]])
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff"; laptop+phone, infer from message style ([[feedback_user_device_context.md]])
 - [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/visual-qa/approvals myself, report outcomes not process; Stop hook blocks "done", bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
@@ -19,7 +20,7 @@
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — also test wrapper against real data
 - [Show status before external comms](feedback_check_show_status_before_external_comms.md) — surface status/closingDate with show drafts; OB closings lag
 - [Anti-AI-slop writing](feedback_anti_ai_slop_writing.md) — strip em dashes, "not X it's Y", hedges, fake comparisons in external copy ([[feedback_email_drafting.md]])
-- [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — no gh polling loops; NEVER gh run watch, use scripts/lib/wait-for-run.sh; 403 → rate_limit reset + git/raw/prod fallbacks
+- [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — no gh polling loops; NEVER gh run watch, use scripts/lib/wait-for-run.sh
 
 ## 📇 Notion / brain
 - [Notion brain workflow](notion-brain-workflow.md) — IDs, schema, lifecycle; CLI only, never MCP ([[feedback_notion_cli_only.md]])
@@ -45,17 +46,17 @@
 - [Silent workflow failures](feedback_silent_workflow_failures.md) — never || true on git push; git add ||true may stage NOTHING ([[feedback_silent_git_add_failures.md]]); pipefail or pipe masks exit ([[feedback_pipe_masks_exit_code.md]])
 - [Test extraction pattern](feedback_test_extraction_pattern.md) — extract to scripts/lib/ + require(); .mjs node:test, register in test.yml ([[feedback_test_format_node_not_jest.md]])
 - [Branch protection: direct pushes not gated](feedback_branch_protection_direct_push.md) — required checks gate PR merges only; direct pushes land red
-- [Hook stdin format](feedback_hook_stdin_format.md) — PostToolUse stdin under tool_input; jq .tool_input.command
+- [Hook stdin format](feedback_hook_stdin_format.md) — PostToolUse stdin under tool_input; PreToolUse has no model field
 - [Compound shell/git traps](feedback_compound_shell_git_traps.md) — zsh vars don't word-split; never `stash pop` after conditional push (pops another session's stash); `git push` standalone ([[feedback_prepush_gate_stash_push_parser.md]])
 
 ## 🔌 External APIs & verification
-- [404 is not always terminal](feedback_404_not_terminal.md) — check prior state before flipping success→failure
-- [Live-API contract test](feedback_live_api_contract_test.md) — call live API, unit tests miss empirical behavior; verify bug claim before fixing ([[feedback_verify_bug_claim_before_fixing.md]]); normalize JSON keys at load ([[feedback_api_key_whitespace.md]])
+- [Live-API contract test](feedback_live_api_contract_test.md) — call live API, unit tests miss empirical behavior; verify bug claim before fixing ([[feedback_verify_bug_claim_before_fixing.md]], [[feedback_404_not_terminal.md]]); normalize JSON keys at load ([[feedback_api_key_whitespace.md]])
 - [Resend preview ≠ delivered email](feedback_resend_preview_masks_delivered_rendering.md) — preview hides webp/dark-mode; verify in real client (owner Gmail iOS)
 - [Refactor parity test on real data](feedback_refactor_parity_test.md) — old vs new predicate; 0 diffs = safe
 - [Paywalled star outlets not gaps](feedback_paywalled_star_outlets_not_gaps.md) — Stage stubs scored via aggregatorStars-fallback; gap-scans exclude _pending/
 - [CI E2E runs vs production](feedback_e2e_runs_against_production.md) — UI fix stays red until deploy lands; push-triggered run is deploy-lag false-neg; rerun after deploy
-- [Fixture E2E specs: dual registration](feedback_fixture_e2e_specs_dual_registration.md) — /test/* specs go in BOTH playwright testIgnore AND test-ugc.yml run list; TestGuard redirects fixtures to / on prod
+- [Prod curl trips Vercel checkpoint](feedback_prod_curl_vercel_checkpoint.md) — verify via public JSONs / check-prod-deploy.js, not curl loops
+- [Fixture E2E specs: dual registration](feedback_fixture_e2e_specs_dual_registration.md) — /test/* specs go in BOTH playwright testIgnore AND test-ugc.yml run list
 
 ## 📋 Open work
 - [Sprint plans must be durable](feedback_sprint_plans_must_be_durable.md) — cards must point at claude-outputs/repo paths, session scratchpad dies; reconstruct from plan-card Outcome + prior merge commit
@@ -134,4 +135,3 @@
 ## 📚 Reference & repo layout
 - [Repo layout](repo_layout.md) — three repos (web, iOS, data) w/ GitHub names + paths; ~/.claude is private repo via claude-sync ([[reference_claude_config_sync.md]])
 - [Theatre Record reference](reference_theatre_record.md) — paid UK review archive
-- [Competition rank for leaderboards](feedback_competition_rank_for_leaderboards.md) — competition rank (1,1,3) not dense

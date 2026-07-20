@@ -25,7 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { shouldRejectAsReservation } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isPromoTeaser } = require('./lib/pull-quote-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
@@ -267,6 +267,14 @@ function verifyInText(quote, fullText) {
   // Case-insensitive as last resort
   if (straightText.toLowerCase().includes(straightQuote.toLowerCase())) return true;
 
+  // LLMs close a mid-sentence clause with a terminal period ("...Hair
+  // Braiding." where the text continues "...Hair Braiding, which was...").
+  // Try again without the trailing punctuation — the words still must match
+  // verbatim, only the invented terminal mark is forgiven. (Jaja's/Cititour
+  // NOT-IN-TEXT rejections, 2026-07-14.)
+  const noTrail = straightQuote.replace(/[.!?…]+$/, '');
+  if (noTrail.length > 30 && straightText.toLowerCase().includes(noTrail.toLowerCase())) return true;
+
   return false;
 }
 
@@ -387,6 +395,21 @@ async function processReview(entry) {
     }
 
     stats.extracted++;
+
+    // Promo-teaser check: NYTG/LondonTheatre fullText opens with an SEO
+    // standfirst ("Read our review of <show>..."); if the LLM parrots it,
+    // retry once asking for actual critic prose. (Whoopi audit 2026-07-14.)
+    if (isPromoTeaser(quote)) {
+      if (attempt === 1) {
+        stats.promoTeaserRetried = (stats.promoTeaserRetried || 0) + 1;
+        if (VERBOSE) console.log(`  PROMO-TEASER: "${quote.slice(0, 80)}..." — retrying`);
+        hint = 'Your previous attempt was the article\'s promotional standfirst ("Read our review of...") — page furniture, not criticism. Pick a sentence of the critic\'s own evaluative prose from the review body.';
+        continue;
+      }
+      stats.promoTeaserRejected = (stats.promoTeaserRejected || 0) + 1;
+      if (VERBOSE) console.log(`  PROMO-TEASER rejected after retry: ${path.basename(filePath)}`);
+      return;
+    }
 
     // Reservation check: if the review is positive and the quote opens
     // with a hedge word, reject and retry once with a stronger hint.

@@ -21,6 +21,7 @@ import CastUpdatesCard from '@/components/CastUpdatesCard';
 import CastSection from '@/components/CastSection';
 import MiniShowCard from '@/components/show-cards/MiniShowCard';
 import RelatedShows from '@/components/RelatedShows';
+import type { AudienceMarket } from '@/config/audience-sources';
 import type {
   ComputedShow,
   ShowAwards,
@@ -76,6 +77,7 @@ export interface ShowPageBelowFoldProps {
   isOffBroadway: boolean;
   isOffWestEnd: boolean;
   isOpera: boolean;
+  isRegional: boolean;
   isCuratedHistoricalShow: boolean;
   lastUpdated: string | null;
   score: number | undefined;
@@ -138,6 +140,7 @@ export default function ShowPageBelowFold({
   isOffBroadway,
   isOffWestEnd,
   isOpera,
+  isRegional,
   isCuratedHistoricalShow,
   lastUpdated,
   score,
@@ -164,7 +167,7 @@ export default function ShowPageBelowFold({
             buzz={audienceBuzz}
             showScoreUrl={audienceShowScoreUrl}
             limitedSources={isHistorical && sourceCount <= 1}
-            market={(show.category as 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end') || 'broadway'}
+            market={(show.category as AudienceMarket) || 'broadway'}
             platformUrls={audiencePlatformUrls}
             ranks={ranks}
           />
@@ -382,7 +385,7 @@ export default function ShowPageBelowFold({
             ) : null;
           })()}
           {show.status === 'open' && (() => {
-            const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+            const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in its regional run' : 'on Broadway';
             const dur = getBroadwayDuration(show.openingDate, durationSuffix);
             return dur ? (
               <div>

@@ -176,13 +176,17 @@ resolve_conflicts() {
         echo "  Auto-resolving (keep local): $file"
         git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         ;;
-      data/commercial.json|data/commercial-pending-review.json)
+      data/commercial.json|data/commercial-pending-review.json|data/commercial-research-queue.json)
         # Per-slug JSON merge so concurrent writers don't lose entries. The
         # "accept remote" default in this block previously silently dropped
         # local writes to commercial-pending-review.json — caught by ship-check
         # CDX-P0-1. mergeCommercialJson preserves humanReviewed* flags from the
         # loser side; mergePendingReview unions per-slug pending entries by
-        # newest researchedAt.
+        # newest researchedAt. commercial-research-queue.json is written by 5
+        # different cron workflows and previously fell to the generic
+        # "accept remote" case below, silently dropping local queue additions
+        # on conflict (plan-review finding, 2026-07-19) — mergeResearchQueue
+        # unions both sides' slug arrays instead.
         echo "  Auto-resolving (per-slug merge): $file"
         if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
           git add "$file" 2>/dev/null && resolved=true

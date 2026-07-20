@@ -14,7 +14,7 @@
  *   --missing-only  Only fill in null/missing dates (default behavior)
  *   --verify        Compare IBDB dates vs shows.json, report discrepancies (no writes)
  *   --force         Overwrite all dates/creative team with IBDB values
- *   --status=STATUS   Filter by show status (open, previews, closed)
+ *   --status=STATUS   Filter by show status; comma-separated OK (open,previews,announced)
  *   --merge-credits   Merge new IBDB roles into existing creative teams (add missing roles only)
  */
 
@@ -74,7 +74,8 @@ async function main() {
   }
 
   if (statusFilter) {
-    shows = shows.filter(s => s.status === statusFilter);
+    const wanted = statusFilter.split(',').map(s => s.trim()).filter(Boolean);
+    shows = shows.filter(s => wanted.includes(s.status));
   }
 
   // Skip non-Broadway shows — IBDB only covers Broadway productions

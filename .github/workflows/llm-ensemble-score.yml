@@ -492,6 +492,20 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: LLM ensemble scoring"
 
+      # Wall-clock time AFTER the push attempt finished — NOT the local commit's
+      # committer timestamp. push-review-texts can commit locally then spend
+      # several retry/rebase cycles (random 5-15s backoff, up to 5 attempts)
+      # before `git push origin main` actually lands. A rebuild-reviews.yml run
+      # dispatched in that gap has already checked out a ref that predates the
+      # push, even though it's "after" our local commit time — using commit
+      # time there would wrongly mark that run as safe. This timestamp is a
+      # safe upper bound: any run dispatched before it definitely couldn't see
+      # the push (ship-check finding, Notion 39d637c5-416f-81039).
+      - name: Record score-push timestamp
+        if: always()
+        id: score-push-time
+        run: echo "timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+
       - name: Commit and push changes
         if: always() && steps.check-changes.outputs.has_changes == 'true'
         run: |
@@ -575,7 +589,56 @@ jobs:
           WAITING=$(gh run list --workflow="$REBUILD_WF" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
           ACTIVE=$((RUNNING + QUEUED + WAITING))
           if [ "$ACTIVE" -gt 0 ]; then
-            echo "$REBUILD_WF already active ($RUNNING running, $QUEUED queued, $WAITING waiting). Skipping."
+            echo "$REBUILD_WF already active ($RUNNING running, $QUEUED queued, $WAITING waiting)."
+
+            # Stranded-scores gap (Notion 39d637c5-416f-81039, 2026-07-14, run
+            # 29366309506): "skip if active" assumes the active run will pick up
+            # our scores. It won't if that run's "Checkout review-texts" step
+            # already executed before this job's push landed — rebuild-reviews.yml
+            # uses `ref: main` (a live branch ref, re-resolved when the checkout
+            # STEP runs, not frozen at dispatch time), so a merely QUEUED/WAITING
+            # run will actually self-heal once it starts. Only a genuinely
+            # RUNNING run (checkout already behind it) can be stuck stale — which
+            # is exactly what the incident run was ("1 running"). We can't query
+            # "has checkout run yet" via `gh run list`, so createdAt is a safe
+            # proxy: an active run created before the push is treated as
+            # possibly-stale and gets the supplement — a false positive here
+            # (a QUEUED run that would've self-healed) just costs one harmless
+            # extra rebuild-fast.yml dispatch. Without this check the scores sat
+            # stranded until the 4-hourly rebuild-fast safety-net cron (up to 4h
+            # on opening night). Only matters if we actually scored something
+            # this run (has_scored_reviews) — otherwise there's nothing to
+            # strand. Compare the oldest active run's createdAt against the
+            # score-push-time step's timestamp (captured AFTER the push attempt,
+            # not the local commit time — push-review-texts can retry for tens
+            # of seconds before landing, so commit time would wrongly clear a
+            # run dispatched in that gap); if uncertain, dispatch anyway (fail
+            # safe). rebuild-fast.yml has PER-RUN concurrency so this can never
+            # collide with the in-flight rebuild-reviews run.
+            if [ "${{ steps.check-changes.outputs.has_scored_reviews }}" = "true" ]; then
+              SCORE_COMMIT_TIME="${{ steps.score-push-time.outputs.timestamp }}"
+              OLDEST_RUNNING=$(gh run list --workflow="$REBUILD_WF" --status=in_progress --json createdAt --jq 'sort_by(.createdAt) | .[0].createdAt // empty' 2>/dev/null || echo "")
+              OLDEST_QUEUED=$(gh run list --workflow="$REBUILD_WF" --status=queued --json createdAt --jq 'sort_by(.createdAt) | .[0].createdAt // empty' 2>/dev/null || echo "")
+              OLDEST_WAITING=$(gh run list --workflow="$REBUILD_WF" --status=waiting --json createdAt --jq 'sort_by(.createdAt) | .[0].createdAt // empty' 2>/dev/null || echo "")
+              OLDEST_ACTIVE=$(printf '%s\n' "$OLDEST_RUNNING" "$OLDEST_QUEUED" "$OLDEST_WAITING" | grep -v '^$' | sort | head -1)
+
+              NEED_SUPPLEMENT=1
+              if [ -n "$SCORE_COMMIT_TIME" ] && [ -n "$OLDEST_ACTIVE" ]; then
+                SCORE_EPOCH=$(date -d "$SCORE_COMMIT_TIME" +%s 2>/dev/null || echo "")
+                ACTIVE_EPOCH=$(date -d "$OLDEST_ACTIVE" +%s 2>/dev/null || echo "")
+                if [ -n "$SCORE_EPOCH" ] && [ -n "$ACTIVE_EPOCH" ] && [ "$ACTIVE_EPOCH" -ge "$SCORE_EPOCH" ] 2>/dev/null; then
+                  NEED_SUPPLEMENT=0
+                  echo "Active $REBUILD_WF run (created $OLDEST_ACTIVE) postdates score commit ($SCORE_COMMIT_TIME) — it will include these scores. Skipping supplement."
+                fi
+              fi
+
+              if [ "$NEED_SUPPLEMENT" -eq 1 ]; then
+                echo "Active $REBUILD_WF run predates score commit (run=$OLDEST_ACTIVE, scores=$SCORE_COMMIT_TIME) — would strand fresh scores for up to 4h. Dispatching rebuild-fast.yml as a supplement."
+                dispatch_with_retry "rebuild-fast.yml" -f reason="Supplemental fast rebuild — active rebuild-reviews run predates fresh scores" || true
+              fi
+            else
+              echo "No reviews scored this run — nothing to strand. Skipping."
+            fi
             exit 0
           fi
 

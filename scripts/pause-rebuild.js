@@ -27,6 +27,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { REBUILD_PAUSE_PATH, readRebuildPause } = require('./lib/rebuild-pause');
+const { execErrorDetail } = require('./lib/exec-error-detail');
 
 function parseArgs(argv) {
   const args = { clear: false, status: false, cancel: false, minutes: null, reason: '', pausedBy: '' };
@@ -82,7 +83,7 @@ function cancelInFlightRebuilds() {
       );
       runIds = out.split('\n').map((s) => s.trim()).filter(Boolean);
     } catch (e) {
-      console.log(`  (skip ${wf}: gh run list failed — ${e.message.split('\n')[0]})`);
+      console.log(`  (skip ${wf}: gh run list failed — ${execErrorDetail(e)})`);
       continue;
     }
     if (runIds.length === 0) {
@@ -95,7 +96,7 @@ function cancelInFlightRebuilds() {
         console.log(`  ${wf}: cancelled run ${id}`);
         cancelled += 1;
       } catch (e) {
-        console.log(`  ${wf}: failed to cancel ${id} — ${e.message.split('\n')[0]}`);
+        console.log(`  ${wf}: failed to cancel ${id} — ${execErrorDetail(e)}`);
       }
     }
   }

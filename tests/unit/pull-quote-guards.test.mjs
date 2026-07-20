@@ -18,6 +18,7 @@ const {
   isInternalNote,
   hasCopyrightChrome,
   isOffTopicExcerpt,
+  isPromoTeaser,
 } = require('../../scripts/lib/pull-quote-guards.js');
 
 describe('isHedgeOpener', () => {
@@ -318,5 +319,37 @@ describe('isOffTopicExcerpt (Bug #13)', () => {
       true,
       'no theater word, no showId'
     );
+  });
+});
+
+describe('isPromoTeaser', () => {
+  test('rejects NYTG/LondonTheatre SEO standfirsts (all 6 live instances, 2026-07-14)', () => {
+    const live = [
+      "Read our review of The Whoopi Monologues off Broadway, a reimagined version of Whoopi Goldberg's self-titled 1984 solo show now directed by Whitney White.",
+      "Read our review of Jocelyn Bioh's Jaja's African Hair Braiding, now in performances at the Old Vic.",
+      "Read our review of David Hare's play Teeth 'n' Smiles, now in performances at the Duke of York's Theatre.",
+      "Read our review of Ryan Craig's play The Holy Rosenbergs, now in performances at the Menier Chocolate Factory.",
+      "Read our review of The Roommate on Broadway, a comedy play written by Jen Silverman and starring Mia Farrow and Patti LuPone.",
+      "Read our review of The Tempest, now in performances at the Sam Wanamaker Playhouse to 12 April.",
+    ];
+    for (const q of live) assert.strictEqual(isPromoTeaser(q), true, q.slice(0, 50));
+  });
+
+  test('rejects ticket CTAs and wrapped variants', () => {
+    assert.strictEqual(isPromoTeaser('Buy tickets to the best show of the season.'), true);
+    assert.strictEqual(isPromoTeaser('Tickets from $122 for this limited run.'), true);
+    assert.strictEqual(isPromoTeaser('"Read the full review at our site."'), true);
+    assert.strictEqual(isPromoTeaser('\u201dRead our review of the show.\u201d'), true, 'closing-quote wrap');
+    assert.strictEqual(isPromoTeaser('\u2019Buy tickets today.'), true, 'closing-apostrophe wrap');
+    assert.strictEqual(isPromoTeaser('Book your tickets now before it closes.'), true);
+  });
+
+  test('does NOT reject critic prose that mentions reviews or tickets mid-sentence', () => {
+    assert.strictEqual(isPromoTeaser('This revival is worth every penny of the ticket price.'), false);
+    assert.strictEqual(isPromoTeaser('Critics who read our city right will love this.'), false);
+    assert.strictEqual(isPromoTeaser('Reading the play against its 1984 original reveals new depths.'), false);
+    assert.strictEqual(isPromoTeaser('The ticket-buying public deserves better than this.'), false);
+    assert.strictEqual(isPromoTeaser(''), false);
+    assert.strictEqual(isPromoTeaser(null), false);
   });
 });

@@ -24,6 +24,8 @@ const { normalizeSources } = require('./lib/commercial-sources');
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
 const PENDING_PATH = path.join(DATA_DIR, 'commercial-pending-review.json');
+const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
+const { isCommercialScope, resolveScopeShow } = require('./lib/commercial-scope');
 
 // CLI args
 const args = process.argv.slice(2);
@@ -114,9 +116,32 @@ function main() {
   // Sprint 2 2026-07-13).
   const appliedIds = new Set();
 
+  // Scope lookup — pending keys can be show IDs while entries carry slugs.
+  let showsBySlug = {};
+  try {
+    const allShows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows || [];
+    for (const s of allShows) {
+      if (s.slug) showsBySlug[s.slug] = s;
+      if (s.id) showsBySlug[s.id] = s;
+    }
+  } catch {
+    // shows.json unavailable — scope guard degrades to no-op rather than
+    // blocking the apply pipeline.
+  }
+
   for (const showId of showIds) {
     const entry = pending.shows[showId];
     if (!entry) continue;
+
+    // Scope guard — Off-Broadway / West End entries must never land in
+    // commercial.json (Broadway-only feature). Unresolved shows pass: adding
+    // a commercial row ahead of the shows-list update is a supported flow.
+    const scopeShow = resolveScopeShow(showsBySlug, showId, entry);
+    if (scopeShow && !isCommercialScope(scopeShow)) {
+      console.log(`  ⛔ "${showId}" — out of commercial scope (${scopeShow.category}), skipping`);
+      skipped++;
+      continue;
+    }
 
     // Review holds are never appliable — see gate.isReviewHold rationale.
     if (gate.isReviewHold(entry)) {
@@ -157,7 +182,15 @@ function main() {
     // ID-keyed pending entry (e.g. appropriate-2023) updates the existing
     // slug-keyed commercial entry (appropriate) instead of creating an
     // unsourced duplicate that the strict gate would then fail on.
-    const commercialKey = entry.slug || showId;
+    // entry.slug is often absent — resolve the canonical slug from shows.json
+    // before falling back to showId. The bare `entry.slug || showId` fallback
+    // created 13 ID-keyed duplicate entries (doubt-2024 next to doubt, ...)
+    // that were invisible on /biz and had to be hand-merged (2026-07-19).
+    const resolvedShow = showsBySlug[showId];
+    const commercialKey = entry.slug || (resolvedShow && resolvedShow.slug) || showId;
+    if (commercialKey === showId && !(resolvedShow && resolvedShow.slug === showId)) {
+      console.warn(`  ⚠️ "${showId}" — no slug resolvable from shows.json; keying by show ID (validate-data will flag)`);
+    }
     const existing = commercial.shows[commercialKey];
     if (existing && existing.humanReviewedDesignation === true && !SINGLE_SHOW) {
       console.log(`  🔒 "${showId}" — humanReviewedDesignation:true, skipping auto-apply`);
@@ -237,6 +270,13 @@ function main() {
       delete pending.shows[showId];
     }
     if (Object.keys(pending.shows).length > 0) {
+      // Stamp the deletion (/what-else follow-up, 2026-07-19): mergePendingReview
+      // in push-with-retry.sh's conflict path uses this field as a logical
+      // clock to decide whether a slug missing from "remote" was deleted
+      // (respect it) or never seen yet (keep a concurrent producer's copy).
+      // Without this stamp, an applied show could be silently resurrected by
+      // a stale concurrent write on the next push conflict.
+      pending.lastUpdated = new Date().toISOString();
       fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
       console.log(`📋 ${Object.keys(pending.shows).length} shows remaining in pending file`);
     } else {

@@ -14,6 +14,46 @@ function broadcastWatchlist(userId: string, entries: WatchlistEntry[]) {
   }
 }
 
+// Shared in-flight fetch. A browse page renders ~30 poster cards, each a
+// ShowPageBookmark that calls getWatchlist() on mount — without this cache that
+// is ~30 identical watchlist GETs per page view for every signed-in user. All
+// instances share ONE promise instead. Mirrors useMyRating's module cache.
+// (A per-chunk duplicate of this cache costs at most one extra fetch — caching
+// is safe module state, unlike coordination state; see
+// feedback_css_contain_traps_fixed_modals.md.) Mutations invalidate it so a
+// later fresh mount refetches; already-mounted instances stay in sync via the
+// WATCHLIST_SYNC broadcast above.
+let watchlistCache: { userId: string; promise: Promise<WatchlistEntry[]> } | null = null;
+
+async function fetchWatchlist(userId: string): Promise<WatchlistEntry[]> {
+  const client = getSupabaseClient();
+  if (!client) return [];
+  const { data, error: err } = await client
+    .from('watchlist')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+  if (err) throw err;
+  return (data || []) as WatchlistEntry[];
+}
+
+function getWatchlistCached(userId: string): Promise<WatchlistEntry[]> {
+  if (!watchlistCache || watchlistCache.userId !== userId) {
+    const promise = fetchWatchlist(userId).catch(e => {
+      // Never cache a failure — one transient blip must not blank every card's
+      // bookmark for the session. Next mount retries.
+      if (watchlistCache?.promise === promise) watchlistCache = null;
+      throw e;
+    });
+    watchlistCache = { userId, promise };
+  }
+  return watchlistCache.promise;
+}
+
+function invalidateWatchlistCache(): void {
+  watchlistCache = null;
+}
+
 export function useWatchlist(userId: string | null) {
   const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([]);
   const [loading, setLoading] = useState(false);
@@ -30,23 +70,30 @@ export function useWatchlist(userId: string | null) {
     return () => document.removeEventListener(WATCHLIST_SYNC, handler);
   }, [userId]);
 
-  const getWatchlist = useCallback(async (): Promise<WatchlistEntry[]> => {
+  // Pass force=true to bypass the shared cache when fresh data is required
+  // after an out-of-band write (e.g. bulk CSV import, which inserts watchlist
+  // rows directly rather than through addToWatchlist). Mount effects should
+  // omit it so 30 cards dedupe to one GET.
+  const getWatchlist = useCallback(async (force = false): Promise<WatchlistEntry[]> => {
     const client = getSupabaseClient();
     if (!client || !userId) return [];
 
     setLoading(true);
     setError(null);
     try {
-      const { data, error: err } = await client
-        .from('watchlist')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
-
-      if (err) throw err;
-      const result = (data || []) as WatchlistEntry[];
-      setWatchlist(result);
-      broadcastWatchlist(userId, result);
+      if (force) invalidateWatchlistCache();
+      const promise = getWatchlistCached(userId);
+      const result = await promise;
+      // Commit only if this fetch is still the current cache entry. A mutation
+      // (or a forced refresh) that invalidated the cache mid-flight has already
+      // broadcast fresher, post-write state; letting this now-superseded fetch
+      // run setWatchlist/broadcast would silently clobber that truth back to the
+      // pre-write snapshot it captured. Stale in-flight commits were possible in
+      // the pre-cache per-instance fetches too; the shared promise lets us fix it.
+      if (watchlistCache?.promise === promise) {
+        setWatchlist(result);
+        broadcastWatchlist(userId, result);
+      }
       return result;
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to load watchlist';
@@ -71,6 +118,8 @@ export function useWatchlist(userId: string | null) {
 
       track('watchlist_add', { show_id: showId });
 
+      // Later fresh mounts must refetch, not read a cache missing this show.
+      invalidateWatchlistCache();
       // Optimistic update + broadcast to other instances
       setWatchlist(prev => {
         const next = [
@@ -97,6 +146,8 @@ export function useWatchlist(userId: string | null) {
 
       track('watchlist_remove', { show_id: showId });
 
+      // Later fresh mounts must refetch, not read a cache still holding this show.
+      invalidateWatchlistCache();
       // Optimistic update + broadcast to other instances
       setWatchlist(prev => {
         const next = prev.filter(w => w.show_id !== showId);
@@ -115,13 +166,19 @@ export function useWatchlist(userId: string | null) {
 
     setError(null);
     try {
-      const { error: err } = await supabaseRestUpdate(
+      const { data, error: err } = await supabaseRestUpdate(
         'watchlist',
         `user_id=eq.${userId}&show_id=eq.${showId}`,
         { planned_date: plannedDate },
       );
       if (err) throw new Error(err.message);
+      // PostgREST returns 200 + [] when the filter matched nothing (e.g. the
+      // entry was removed in another tab) — that's a failed save, not success.
+      // Same guard as the review-edit path in ShowHeroRedesign.handleSaveReview.
+      if (!data) throw new Error('This show is no longer on your watchlist.');
 
+      // Later fresh mounts must refetch, not read a cache with the stale date.
+      invalidateWatchlistCache();
       // Optimistic update + broadcast to other instances
       setWatchlist(prev => {
         const next = prev.map(w =>
