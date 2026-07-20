@@ -85,7 +85,15 @@ function runOrientationSweep(runFn, opts = {}) {
     runFn('node', ['scripts/notion-brain.js', 'list', '--auto', 'needs-approval,queued', '--limit', '15']));
   const urgent = safe('notion P0 sweep', () =>
     runFn('node', ['scripts/notion-brain.js', 'list', '--priority', 'P0 Now', '--status', 'Not started', '--limit', '10']));
-  return { nextList, ledgerTail, pruneDry, workspaces, radar, needsApproval, urgent };
+  // Backlog-relevance sweep (owner ask 2026-07-19: "do we only have real and
+  // relevant cards?"): Not-started cards untouched for 90+ days are prime
+  // dead-feature/expired-window candidates — 11 obsolete cards (ended Beat
+  // the Critics + post-Tonys + expired soak checks) sat invisible until the
+  // owner stumbled on them. The conductor proposes kill/keep; only the owner
+  // decides.
+  const staleCards = safe('notion stale-card sweep', () =>
+    runFn('node', ['scripts/notion-brain.js', 'list', '--status', 'Not started', '--stale-days', '90', '--limit', '15']));
+  return { nextList, ledgerTail, pruneDry, workspaces, radar, needsApproval, urgent, staleCards };
 }
 
 // ── seed prompt (pure — takes the sweep result, no side effects) ───────────
@@ -141,6 +149,11 @@ function buildSeed(sweep, fetchedAt) {
     ``,
     `## Notion: P0 Now / Not started cards`,
     sweep.urgent,
+    ``,
+    `## Notion: stale cards (Not started, untouched 90+ days) — propose kill/keep`,
+    `For each card below, tell the owner in ONE line whether it still looks relevant (check if its feature/window ` +
+    `still exists) and recommend kill or keep. Close only the ones the owner confirms.`,
+    sweep.staleCards,
     ``,
     `---`,
     ``,
