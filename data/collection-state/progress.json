@@ -2,7 +2,11 @@
   "processed": [
     "shifters-off-broadway-2026/nytg--gillian-russo.json",
     "the-smile-of-her-off-west-end-2026/guardian-uk--arifa-akbar.json",
-    "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
+    "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
+    "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+    "dukes-off-broadway-2026/nytimes--unknown.json"
   ],
   "failed": [
     "dukes-off-broadway-2026/nytimes--unknown.json",
@@ -45,26 +49,38 @@
     "heathers-the-musical-off-west-end-2026/nbcny--robert-kahn.json",
     "heathers-the-musical-off-west-end-2026/times-uk--dominic-maxwell.json",
     "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
-    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json"
+    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
+    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "shifters-off-broadway-2026/nytg--gillian-russo.json",
-      "the-smile-of-her-off-west-end-2026/guardian-uk--arifa-akbar.json"
+      "the-smile-of-her-off-west-end-2026/guardian-uk--arifa-akbar.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
-      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
+      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
+      "dukes-off-broadway-2026/nytimes--unknown.json"
     ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
+    ]
   },
   "startTime": "2026-07-20T17:29:00.342Z",
-  "lastProcessed": "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
   "log": [
     {
       "t": "2026-07-20T17:29:17.435Z",
@@ -85,6 +101,28 @@
     },
     {
       "t": "2026-07-20T17:29:35.202Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-20T20:17:58.318Z",
+      "event": "bb-session",
+      "session": "c1e49d93",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-20T20:17:59.075Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-20T20:18:14.895Z",
+      "event": "bb-session",
+      "session": "c0aec43c",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-20T20:18:15.585Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
