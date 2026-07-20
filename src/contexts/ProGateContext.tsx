@@ -19,6 +19,7 @@ import { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptu
 import { emailCaptureConfig } from '@/config/email-capture';
 import {
   shouldSuppressPassiveGate,
+  hasSeenEnoughPages,
   getMobileGateParams,
   buildGateAbVariant,
   MOBILE_GATE_FLAG,
@@ -38,6 +39,10 @@ const RECAPTURED_KEY = 'bsc_email_recaptured'; // Pre-fix modal submissions (Jan
 // dismissal was React-state only and the same visitor was re-gated every visit
 // (2,992 exit-intent impressions / 2,150 people, 87% mobile dismissal — 2026-07 audit).
 const GATE_DISMISSED_KEY = 'bsc_gate_dismissed_at';
+// Session-scoped page-view counter (sessionStorage — resets per tab), read by
+// triggerGate to hold off any passive gate until the visitor has shown real
+// engagement (emailCaptureConfig.minPageViewsForPassiveGate). See gate-logic.ts.
+const SESSION_PAGEVIEWS_KEY = 'bsc_session_pageviews';
 
 /** Extra analytics props stamped at fire time (A/B variant + demixed source). */
 type GateFireMeta = { trigger_source?: string; ab_variant?: string };
@@ -114,6 +119,23 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     exitIntentPageMountRef.current = Date.now();
   }, [pathname]);
 
+  // Session page-view counter — increments on every pathname change (incl.
+  // first mount), persisted to sessionStorage so it survives SPA navigation.
+  // Read (not depended-on) inside triggerGate, same pattern as the ref above.
+  const sessionPageViewsRef = useRef<number>(0);
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(SESSION_PAGEVIEWS_KEY);
+      const next = (raw ? parseInt(raw, 10) || 0 : 0) + 1;
+      sessionStorage.setItem(SESSION_PAGEVIEWS_KEY, String(next));
+      sessionPageViewsRef.current = next;
+    } catch {
+      // sessionStorage unavailable (private mode) — fail open with a
+      // per-mount-only count so the gate isn't permanently silenced.
+      sessionPageViewsRef.current += 1;
+    }
+  }, [pathname]);
+
   // Load saved user data on mount
   useEffect(() => {
     setIsClient(true);
@@ -178,6 +200,11 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     // after a dismissal. Blocking feature gates are exempt (user clicked the
     // gated action); recapture is already one-shot via RECAPTURED_KEY.
     if (!blocking && trigger !== 'recapture') {
+      // Cold-start guard: don't ask before the visitor has shown real
+      // engagement this session (2026-07-20 audit — see gate-logic.ts).
+      if (!hasSeenEnoughPages(sessionPageViewsRef.current, emailCaptureConfig.minPageViewsForPassiveGate)) {
+        return;
+      }
       try {
         if (shouldSuppressPassiveGate(
           localStorage.getItem(GATE_DISMISSED_KEY),
