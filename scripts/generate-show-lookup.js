@@ -43,6 +43,10 @@ const lookup = relevantShows.map(show => {
   if (show.category) entry.c = show.category;
   if (show.openingDate) entry.od = show.openingDate;
   if (show.closingDate) entry.cd = show.closingDate;
+  // Bookability signals for watchlist labels (owner, 2026-07-20): previews
+  // start date + a tickets-on-sale bit for not-yet-open shows with links.
+  if (show.previewsStartDate) entry.pd = show.previewsStartDate;
+  if ((show.status === 'upcoming' || show.status === 'announced') && show.ticketLinks?.length) entry.tx = 1;
   if (show.images?.poster) entry.p = show.images.poster;
   else if (show.images?.thumbnail) entry.p = show.images.thumbnail;
   return entry;

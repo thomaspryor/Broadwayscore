@@ -46,12 +46,13 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
     type: raw.m ? 'musical' : 'play',
     status: (raw.st as string) || 'closed',
     category: (raw.c as string) || 'broadway',
-    previewDate: null,
+    previewDate: (raw.pd as string) || null,
     openingDate: (raw.od as string) || null,
     closingDate: (raw.cd as string) || null,
     compositeScore: null,
     posterUrl: (raw.p as string) || null,
     diaryOnly: !!raw.dy,
+    ticketsOnSale: !!raw.tx,
   };
 }
 
@@ -469,9 +470,24 @@ export default function MyShowsClient() {
     }
   }, [watchlist, watchlistSort, showMap]);
 
-  // Split watchlist into "not yet booked" vs "booked" (has planned_date)
+  // Split watchlist into UPCOMING (future planned_date — shown at the TOP so
+  // adding a date doesn't read as the show "disappearing" into a below-the-fold
+  // Booked section; owner, 2026-07-20), "not yet booked" (no date), and
+  // past-dated entries (seen — surfaced as To Be Rated, mirroring the Diary).
+  // Local timezone, NOT UTC: with UTC, from ~8pm ET a show planned for
+  // TONIGHT flipped from Upcoming to To Be Rated before curtain
+  // (code-review catch, 2026-07-20). Mirrors RatingEditor.localToday().
+  const wlNow = new Date();
+  const wlToday = new Date(wlNow.getTime() - wlNow.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  const upcomingBookedWatchlist = useMemo(
+    () => sortedWatchlist.filter(e => !!e.planned_date && e.planned_date >= wlToday),
+    [sortedWatchlist, wlToday],
+  );
   const unbookedWatchlist = useMemo(() => sortedWatchlist.filter(e => !e.planned_date), [sortedWatchlist]);
-  const bookedWatchlist = useMemo(() => sortedWatchlist.filter(e => !!e.planned_date), [sortedWatchlist]);
+  const seenToRateWatchlist = useMemo(
+    () => sortedWatchlist.filter(e => !!e.planned_date && e.planned_date < wlToday && !reviews.some(r => r.show_id === e.show_id)),
+    [sortedWatchlist, wlToday, reviews],
+  );
 
   // While mock mode is initializing (useEffect hasn't fired yet), show loading
   const hasMockParam = searchParams.get('mock') === '1';
@@ -1150,10 +1166,57 @@ export default function MyShowsClient() {
             )
           ) : (
             <div className="space-y-6">
+              {/* Upcoming — future planned dates at the TOP so a newly dated
+                  show visibly moves up, not below the fold (owner, 2026-07-20) */}
+              {upcomingBookedWatchlist.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Upcoming</h3>
+                  {watchlistView === 'grid' ? (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                      {upcomingBookedWatchlist.map(entry => (
+                        <WatchlistCard
+                          key={entry.id}
+                          entry={entry}
+                          show={showMap[entry.show_id]}
+                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
+                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRate={openRatingEditor}
+                        />
+                      ))}
+                      {unbookedWatchlist.length === 0 && (
+                        <AddShowCard context="watchlist" onOpen={() => {
+                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                          btn?.click();
+                        }} />
+                      )}
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {upcomingBookedWatchlist.map(entry => (
+                        <WatchlistListItem
+                          key={entry.id}
+                          entry={entry}
+                          show={showMap[entry.show_id]}
+                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
+                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRate={openRatingEditor}
+                        />
+                      ))}
+                      {unbookedWatchlist.length === 0 && (
+                        <AddShowCard context="watchlist" variant="list" onOpen={() => {
+                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                          btn?.click();
+                        }} />
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Not yet booked section */}
               {unbookedWatchlist.length > 0 && (
                 <div>
-                  {bookedWatchlist.length > 0 && (
+                  {(upcomingBookedWatchlist.length > 0 || seenToRateWatchlist.length > 0) && (
                     <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Not yet booked</h3>
                   )}
                   {watchlistView === 'grid' ? (
@@ -1194,49 +1257,23 @@ export default function MyShowsClient() {
                 </div>
               )}
 
-              {/* Booked section */}
-              {bookedWatchlist.length > 0 && (
+              {/* Seen (past planned date, unrated) — mirror the Diary's To Be
+                  Rated treatment instead of hiding them in a dated 'Booked'
+                  pile (owner, 2026-07-20) */}
+              {seenToRateWatchlist.length > 0 && (
                 <div>
-                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Booked</h3>
-                  {watchlistView === 'grid' ? (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                      {bookedWatchlist.map(entry => (
-                        <WatchlistCard
-                          key={entry.id}
-                          entry={entry}
-                          show={showMap[entry.show_id]}
-                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
-                          onRate={openRatingEditor}
-                        />
-                      ))}
-                      {unbookedWatchlist.length === 0 && (
-                        <AddShowCard context="watchlist" onOpen={() => {
-                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
-                          btn?.click();
-                        }} />
-                      )}
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      {bookedWatchlist.map(entry => (
-                        <WatchlistListItem
-                          key={entry.id}
-                          entry={entry}
-                          show={showMap[entry.show_id]}
-                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
-                          onRate={openRatingEditor}
-                        />
-                      ))}
-                      {unbookedWatchlist.length === 0 && (
-                        <AddShowCard context="watchlist" variant="list" onOpen={() => {
-                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
-                          btn?.click();
-                        }} />
-                      )}
-                    </div>
-                  )}
+                  <h3 className="text-xs font-bold text-amber-400/80 uppercase tracking-wider mb-3">To Be Rated</h3>
+                  <div className="space-y-2">
+                    {seenToRateWatchlist.map(entry => (
+                      <ToBeRatedCard
+                        key={`wl-rate-${entry.id}`}
+                        entry={entry}
+                        show={showMap[entry.show_id]}
+                        onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed — no rating needed.', 'info'); }}
+                        onRate={openRatingEditor}
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -1590,6 +1627,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
     const fourWeeks = 28 * 24 * 60 * 60 * 1000;
     return closing.getTime() - now.getTime() < fourWeeks && closing > now;
   })();
+  const bookability = bookabilityLabel(show);
 
   const formattedDate = entry.planned_date
     ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
@@ -1600,9 +1638,16 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
       <CardLinkOrDiv href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay relative">
           <Poster url={show?.posterUrl} iconClass="text-3xl" />
+          {/* Poster badges live TOP-LEFT: the rate strip owns the bottom and
+              the trash owns the top-right (owner, 2026-07-20) */}
           {isClosingSoon && (
-            <span className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">
+            <span className="absolute top-1.5 left-1.5 z-[2] px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">
               Closing Soon
+            </span>
+          )}
+          {!isClosingSoon && bookability && (
+            <span className={`absolute top-1.5 left-1.5 z-[2] px-1.5 py-0.5 text-[9px] font-bold uppercase rounded ${bookability.cls}`}>
+              {bookability.text}
             </span>
           )}
         </div>
@@ -1669,6 +1714,30 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
 }
 
 /** Render mini star icons for grid cards (filled, half, empty — or filled-only) */
+/**
+ * Bookability label for watchlist entries — without it a watchlist full of
+ * announced/closed shows "looks like a lot I could book, but can't actually
+ * yet" (owner, 2026-07-20). Returns null for open/previews shows (bookable —
+ * no label needed; Closing Soon is handled separately).
+ */
+function bookabilityLabel(show?: ShowLookup): { text: string; cls: string } | null {
+  if (!show) return null;
+  if (show.status === 'closed') {
+    return { text: 'Closed', cls: 'bg-gray-600/90 text-white' };
+  }
+  if (show.status === 'upcoming' || show.status === 'announced') {
+    if (show.ticketsOnSale) {
+      return { text: 'Tix on sale', cls: 'bg-emerald-400/90 text-emerald-950' };
+    }
+    const start = show.previewDate || show.openingDate;
+    const text = start
+      ? `Opens ${new Date(start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+      : 'Not yet open';
+    return { text, cls: 'bg-blue-500/80 text-white' };
+  }
+  return null;
+}
+
 function MiniStars({ rating, size = 'sm', filledOnly = false }: { rating: number; size?: 'sm' | 'md' | 'lg'; filledOnly?: boolean }) {
   const uid = useId();
   // NOTE: w-4.5/h-4.5 are NOT in the Tailwind spacing scale — they compile to
@@ -1742,6 +1811,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
     const fourWeeks = 28 * 24 * 60 * 60 * 1000;
     return closing.getTime() - now.getTime() < fourWeeks && closing > now;
   })();
+  const bookability = bookabilityLabel(show);
 
   const formattedDate = entry.planned_date
     ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
@@ -1760,6 +1830,9 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
         {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
         {isClosingSoon && (
           <span className="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">Closing Soon</span>
+        )}
+        {!isClosingSoon && bookability && (
+          <span className={`inline-block mt-1 px-1.5 py-0.5 text-[9px] font-bold uppercase rounded ${bookability.cls}`}>{bookability.text}</span>
         )}
         {show?.closingDate && (
           <p className="text-xs text-gray-500 mt-1">
