@@ -6,7 +6,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-const { shouldSuppressPassiveGate, getMobileGateParams, buildGateAbVariant, MOBILE_GATE_FLAG } =
+const { shouldSuppressPassiveGate, hasSeenEnoughPages, getMobileGateParams, buildGateAbVariant, MOBILE_GATE_FLAG } =
   await import('../../src/lib/gate-logic.ts');
 const { emailCaptureConfig } = await import('../../src/config/email-capture.ts');
 
@@ -70,4 +70,22 @@ test('ab_variant string follows the flag:<name>,<dims> convention shared with an
   assert.equal(buildGateAbVariant('end-of-content'), `flag:${MOBILE_GATE_FLAG},timing:end-of-content`);
   assert.equal(buildGateAbVariant('fallback'), `flag:${MOBILE_GATE_FLAG},timing:fallback`);
   assert.match(buildGateAbVariant('control'), /^flag:mobile-gate-timing,timing:control$/);
+});
+
+test('cold-start: passive gate withheld until the visitor has seen enough pages this session', () => {
+  assert.equal(hasSeenEnoughPages(0, 2), false, 'first page load → too cold');
+  assert.equal(hasSeenEnoughPages(1, 2), false, 'still on page 1 → too cold');
+  assert.equal(hasSeenEnoughPages(2, 2), true, 'second page → eligible');
+  assert.equal(hasSeenEnoughPages(5, 2), true, 'well past threshold → eligible');
+  assert.equal(hasSeenEnoughPages(0, 0), true, 'threshold of 0 → always eligible (config off switch)');
+});
+
+test('config: minPageViewsForPassiveGate present and sane in the active preset', () => {
+  // 2026-07-20 audit: neither prior fix (dismissal cooldown, exit-intent dwell
+  // gate) required any session engagement before a passive ask — a brand-new
+  // visitor's first page load was eligible instantly. Guard against regressing
+  // back to a cold-start ask.
+  assert.equal(typeof emailCaptureConfig.minPageViewsForPassiveGate, 'number');
+  assert.ok(emailCaptureConfig.minPageViewsForPassiveGate >= 2,
+    'passive gates must wait for at least a second page view this session');
 });
