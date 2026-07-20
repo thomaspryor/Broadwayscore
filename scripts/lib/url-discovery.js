@@ -288,32 +288,51 @@ async function _serpViaScrapingdog(query, log, dateRange, geo) {
   // degraded provider doesn't burn a credit + latency on every query before the
   // BD/SB fallback runs. Resets to 0 on any success.
   if (!USE_SCRAPINGDOG || !SCRAPINGDOG_API_KEY || _scrapingdogSerpFailures >= MAX_CONSECUTIVE_FAILURES) return null;
+  // Daily-pace circuit breaker (task #213 A3) — same quota check scraper.js's
+  // fetchWithScrapingdog uses, shared/memoized across both call sites per process.
+  await scraper.checkScrapingdogQuotaOnce();
+  if (scraper.sdQuotaExceeded) return null;
+
   const axios = require('axios');
   let q = query;
   if (dateRange) {
     const fmtD = d => d.toISOString().split('T')[0];
     q += ` after:${fmtD(dateRange.dateMin)} before:${fmtD(dateRange.dateMax)}`;
   }
-  try {
-    const response = await axios.get('https://api.scrapingdog.com/google/', {
-      params: { api_key: SCRAPINGDOG_API_KEY, query: q, results: 10, country: geo || 'us' },
-      timeout: 30000,
-    });
-    const data = response.data || {};
-    const organic = data.organic_results || data.organic_data || [];
-    _scrapingdogSerpFailures = 0;
-    recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: true, status: 200, credits: 5 });
-    return organic.slice(0, 10).map(r => ({
-      url: r.link || r.url || '',
-      title: r.title || '',
-      snippet: r.description || r.snippet || '',
-    })).filter(r => r.url);
-  } catch (error) {
-    _scrapingdogSerpFailures++;
-    recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: error.response?.status || (error.message || 'error').slice(0, 80), credits: 5 });
-    log(`    ✗ Scrapingdog SERP error (${_scrapingdogSerpFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message} — falling back to BD/SB`);
-    return null;
+
+  // Retry once on transient errors (timeouts, network resets, 5xx) before
+  // falling back to BD/SB — these are free per the A0 billing probe and often
+  // clear on a second attempt. Non-transient (4xx) failures are not retried.
+  const MAX_ATTEMPTS = 2;
+  let lastError = null;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const response = await axios.get('https://api.scrapingdog.com/google/', {
+        params: { api_key: SCRAPINGDOG_API_KEY, query: q, results: 10, country: geo || 'us' },
+        timeout: 30000,
+      });
+      const data = response.data || {};
+      const organic = data.organic_results || data.organic_data || [];
+      _scrapingdogSerpFailures = 0;
+      recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: true, status: 200, credits: 5 });
+      return organic.slice(0, 10).map(r => ({
+        url: r.link || r.url || '',
+        title: r.title || '',
+        snippet: r.description || r.snippet || '',
+      })).filter(r => r.url);
+    } catch (error) {
+      lastError = error;
+      const status = error.response?.status;
+      const isTransient = !status || status >= 500;
+      if (isTransient && attempt < MAX_ATTEMPTS) continue;
+      break;
+    }
   }
+
+  _scrapingdogSerpFailures++;
+  recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: lastError.response?.status || (lastError.message || 'error').slice(0, 80), credits: 5 });
+  log(`    ✗ Scrapingdog SERP error (${_scrapingdogSerpFailures}/${MAX_CONSECUTIVE_FAILURES}): ${lastError.message} — falling back to BD/SB`);
+  return null;
 }
 
 async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
@@ -586,6 +605,20 @@ function serpChainOrder(preferSpeed, skips = new Set()) {
   return order.filter(p => !skips.has(p));
 }
 
+/**
+ * Pure decision function (task #213): should a Scrapingdog SERP result of 0
+ * organic hits be accepted as the final answer instead of falling through to
+ * BD/SB? sdResults is the raw return of _serpViaScrapingdog: null means SD
+ * didn't run or its own request failed (must fall through); [] means SD's
+ * request SUCCEEDED and found nothing (empty-authoritative candidate).
+ * preferSpeed (opening-night polling) is exempt — there, empty commonly means
+ * "not published yet," so it must keep checking BD/SB. Extracted for
+ * testability per CLAUDE.md rule 15.
+ */
+function shouldAcceptEmptyScrapingdogSerp(sdResults, preferSpeed) {
+  return sdResults !== null && sdResults.length === 0 && !preferSpeed;
+}
+
 function _effectiveSerpSkips(skipProviders) {
   const skips = new Set(skipProviders || []);
   if (process.env.SERP_NO_SB === '1') skips.add('scrapingbee');
@@ -621,15 +654,27 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     return { results: cached.results, provider: `${cached.provider}-cached` };
   }
 
-  // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). On null/empty it
-  // falls through to the existing BD/SB chain, which stays as the safety net.
+  // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). On a real fetch
+  // failure (null) it falls through to the existing BD/SB chain, which stays
+  // as the safety net.
   if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_skips.has('scrapingdog')) {
     const sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo);
     if (sdResults && sdResults.length > 0) {
-      if (!(preferSpeed && sdResults.length === 0)) {
-        _serpCache.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
-      }
+      _serpCache.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
       return { results: sdResults, provider: 'scrapingdog' };
+    }
+    // Empty-authoritative mode (task #213): sdResults !== null means SD's own
+    // request SUCCEEDED and found 0 organic results — that's an answer, not a
+    // gap. Log analysis of 10 recent CI runs showed 88% of BD SERP calls were
+    // immediately preceded by exactly this case (an SD success with 0 results),
+    // not an SD failure — BD was re-asking a question SD had already answered.
+    // preferSpeed (opening-night polling) is EXEMPT: there, empty commonly means
+    // "review hasn't published yet," so it must still fall through to BD/SB
+    // rather than being cached/accepted as a final answer.
+    if (shouldAcceptEmptyScrapingdogSerp(sdResults, preferSpeed)) {
+      log('    ✓ Scrapingdog SERP: 0 organic results — accepting as authoritative, skipping BD/SB');
+      _serpCache.set(query, cacheOpts, { results: [], provider: 'scrapingdog-empty' });
+      return { results: [], provider: 'scrapingdog-empty' };
     }
   }
 
@@ -1115,6 +1160,7 @@ module.exports = {
   discoverCorrectUrl,
   serpQuery,
   serpChainOrder,
+  shouldAcceptEmptyScrapingdogSerp,
   getShowInfo,
   calculateDateWindow,
   buildDateTbs,
