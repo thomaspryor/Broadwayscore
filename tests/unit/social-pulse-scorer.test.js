@@ -556,3 +556,142 @@ describe('computePositivePct', () => {
     assert.strictEqual(computePositivePct(mentions), 100);
   });
 });
+
+// ---------- Schema v3: Pulse Index (free uncapped counters) ----------
+
+const {
+  computeEffectiveVolume,
+  computeWeeklyMentions,
+  computeRelevanceRates,
+  computeOpinionSample,
+  SIGNAL_WEIGHTS,
+} = require('../../scripts/lib/social-pulse-scorer');
+
+describe('computeRelevanceRates', () => {
+  test('per-platform rates from the classified sample', () => {
+    const mentions = [
+      { platform: 'reddit', relevant: true },
+      { platform: 'reddit', relevant: true },
+      { platform: 'reddit', relevant: false },
+      { platform: 'bluesky', relevant: false },
+      { platform: 'bluesky', relevant: true },
+    ];
+    const rates = computeRelevanceRates(mentions);
+    assert.ok(Math.abs(rates.byPlatform.reddit - 2 / 3) < 1e-9);
+    assert.strictEqual(rates.byPlatform.bluesky, 0.5);
+    assert.strictEqual(rates.overall, 3 / 5);
+  });
+
+  test('unclassified mentions (relevant: null) are excluded', () => {
+    const rates = computeRelevanceRates([{ platform: 'reddit', relevant: null }]);
+    assert.strictEqual(rates.overall, null);
+    assert.strictEqual(rates.byPlatform.reddit, undefined);
+  });
+});
+
+describe('computeWeeklyMentions', () => {
+  test('sums mention-type counters, excludes wikipedia views', () => {
+    assert.strictEqual(
+      computeWeeklyMentions({ reddit: 30, bluesky: 40, x: 200, wikipedia: 30000 }),
+      270,
+    );
+  });
+
+  test('null counters are skipped (dead X token)', () => {
+    assert.strictEqual(computeWeeklyMentions({ reddit: 30, bluesky: 40, x: null }), 70);
+  });
+
+  test('no counters at all → null (legacy data path)', () => {
+    assert.strictEqual(computeWeeklyMentions(null), null);
+    assert.strictEqual(computeWeeklyMentions({ reddit: null, bluesky: null, x: null }), null);
+  });
+});
+
+describe('computeEffectiveVolume', () => {
+  const allRelevant = { byPlatform: {}, overall: 1 };
+
+  test('weights renormalize when a signal is absent — dead X shifts level, not order', () => {
+    const rates = allRelevant;
+    const a = computeEffectiveVolume({ reddit: 40, bluesky: 20, x: 200, wikipedia: 5000 }, rates);
+    const b = computeEffectiveVolume({ reddit: 10, bluesky: 5, x: 50, wikipedia: 1000 }, rates);
+    const aNoX = computeEffectiveVolume({ reddit: 40, bluesky: 20, x: null, wikipedia: 5000 }, rates);
+    const bNoX = computeEffectiveVolume({ reddit: 10, bluesky: 5, x: null, wikipedia: 1000 }, rates);
+    assert.ok(a > b, 'bigger show ranks higher with X');
+    assert.ok(aNoX > bNoX, 'bigger show still ranks higher without X');
+  });
+
+  test('relevance rate discounts contaminated counters (common-word titles)', () => {
+    const clean = computeEffectiveVolume(
+      { reddit: 50, bluesky: 100 },
+      { byPlatform: { reddit: 1, bluesky: 1 }, overall: 1 },
+    );
+    const noisy = computeEffectiveVolume(
+      { reddit: 50, bluesky: 100 },
+      { byPlatform: { reddit: 0.2, bluesky: 0.1 }, overall: 0.15 },
+    );
+    assert.ok(noisy < clean * 0.5, `noisy (${noisy}) should be well under clean (${clean})`);
+  });
+
+  test('wikipedia views carry NO ranking weight (external-review consensus: contamination)', () => {
+    // Collected in counters but excluded from SIGNAL_WEIGHTS — film
+    // adaptations and shared articles across productions contaminate it.
+    const wikiOnly = computeEffectiveVolume({ wikipedia: 100000 }, allRelevant);
+    assert.strictEqual(wikiOnly, null, 'wiki-only show has no rankable signal');
+    const withWiki = computeEffectiveVolume({ reddit: 60, bluesky: 40, x: 300, wikipedia: 100000 }, allRelevant);
+    const withoutWiki = computeEffectiveVolume({ reddit: 60, bluesky: 40, x: 300 }, allRelevant);
+    assert.strictEqual(withWiki, withoutWiki, 'wikipedia counter must not move the index');
+  });
+
+  test('no counters → null', () => {
+    assert.strictEqual(computeEffectiveVolume(null, allRelevant), null);
+    assert.strictEqual(computeEffectiveVolume({}, allRelevant), null);
+  });
+
+  test('weights sum to 1', () => {
+    const sum = Object.values(SIGNAL_WEIGHTS).reduce((a, b) => a + b, 0);
+    assert.ok(Math.abs(sum - 1) < 1e-9);
+  });
+});
+
+describe('computeSocialPulse with counters (schema v3)', () => {
+  function sampleMention(overrides = {}) {
+    return {
+      text: 'This show is fantastic, loved every minute of it',
+      platform: 'reddit',
+      author: 'u/test',
+      url: 'https://reddit.com/x',
+      createdAt: '2026-07-10T00:00:00Z',
+      engagement: 10,
+      relevant: true,
+      sentiment: 'positive',
+      ...overrides,
+    };
+  }
+
+  test('volume comes from counters, not sample size', () => {
+    const mentions = Array.from({ length: 8 }, () => sampleMention());
+    const result = computeSocialPulse({
+      mentions,
+      counters: { reddit: 45, bluesky: 30, x: 150, wikipedia: 9000 },
+      baseline: null,
+      priorVolume: null,
+    });
+    assert.strictEqual(result.volume, 225); // 45+30+150, NOT 8
+    assert.ok(Number.isFinite(result.effectiveVolume) && result.effectiveVolume > 0);
+    assert.strictEqual(result.opinionSample, 8);
+  });
+
+  test('legacy path without counters keeps sample-size volume', () => {
+    const mentions = Array.from({ length: 25 }, () => sampleMention());
+    const result = computeSocialPulse({ mentions, baseline: null, priorVolume: null });
+    assert.strictEqual(result.volume, 25);
+    assert.strictEqual(result.effectiveVolume, 25); // falls back to volume
+  });
+
+  test('bluesky sample posts count in platform breakdown', () => {
+    const mentions = [sampleMention(), sampleMention({ platform: 'bluesky' })];
+    const result = computeSocialPulse({ mentions, baseline: null, priorVolume: null });
+    assert.strictEqual(result.platformBreakdown.bluesky, 1);
+    assert.strictEqual(result.platformBreakdown.reddit, 1);
+  });
+});

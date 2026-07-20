@@ -14,7 +14,7 @@ import TrendingList from '@/components/trending/TrendingList';
 
 const PAGE_TITLE = 'Trending West End Shows';
 const PAGE_DESCRIPTION =
-  'Every West End show ranked by social media buzz — volume and audience sentiment across Reddit, X, TikTok, and Instagram. Updated weekly.';
+  'Every West End show ranked by social media buzz — volume and audience sentiment across Reddit, Bluesky, and X. Updated weekly.';
 
 export const metadata: Metadata = {
   title: {
@@ -107,7 +107,7 @@ export default function WestEndTrendingPage() {
           </h1>
           <p className="text-gray-400 mt-2">
             Every West End show ranked by social media buzz — volume and audience
-            sentiment across Reddit, X, TikTok, and Instagram.
+            sentiment across Reddit, Bluesky, and X.
           </p>
           {updatedLabel && (
             <p className="text-sm text-gray-500 mt-1">
@@ -142,7 +142,7 @@ export default function WestEndTrendingPage() {
             </svg>
           </summary>
           <p className="text-sm text-gray-400 mt-3">
-            Every week we scan Reddit, X, TikTok, and Instagram for mentions of every show, classify each
+            Every week we scan Reddit, Bluesky, and X for mentions of every show, classify each
             post&rsquo;s sentiment, and rank shows by{' '}
             <span className="text-gray-300 font-semibold">volume × positive %</span>. More people
             talking <em>and</em> saying nice things wins. Tiers:{' '}
@@ -185,7 +185,7 @@ export default function WestEndTrendingPage() {
 
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
           <p>
-            Social data aggregated from Reddit, X, TikTok, and Instagram.
+            Social data aggregated from Reddit, Bluesky, and X.
             Sentiment classified by LLM. Updated weekly.
           </p>
         </div>

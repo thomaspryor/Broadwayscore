@@ -82,7 +82,7 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'NYT Critics Picks list is out of date. Runs Mon/Wed/Fri — stale >3 days means the workflow is failing.' },
   { match: /^Freshness: video-reviews\.json$/, urgency: 'this-week', workflow: 'weekly-video-reviews.yml',
     humanFallback: 'Video reviews data is out of date. Runs Mondays — stale >2 weeks means the workflow is failing.' },
-  { match: /^Freshness: social-pulse\/_budget\.json$/, urgency: 'this-week', workflow: 'update-social-pulse.yml',
+  { match: /^Freshness: social-pulse\/_meta\.json$/, urgency: 'this-week', workflow: 'update-social-pulse.yml',
     humanFallback: 'Social Scorecard data is out of date. Runs Mondays — powers /trending pages. Stale >2 weeks means the workflow is failing.' },
 
   // Sync — some auto-fixable
@@ -248,7 +248,7 @@ const FRESHNESS_CHECKS = [
   { file: 'cast-changes.json', field: 'lastUpdated', warnH: 72, errorH: 120, hint: 'Check update-cast-changes workflow in Actions tab (runs Wed+Sat)' },
   { file: 'nyt-critics-picks.json', field: '_meta.lastUpdated', warnH: 72, errorH: 120, hint: 'Check nyt-critics-picks workflow in Actions tab (runs Mon/Wed/Fri)' },
   { file: 'video-reviews.json', field: '_meta.generatedAt', warnH: 192, errorH: 336, hint: 'Check weekly-video-reviews workflow in Actions tab (runs Monday)' },
-  { file: 'social-pulse/_budget.json', field: 'lastUpdated', warnH: 192, errorH: 336, hint: 'Check update-social-pulse workflow in Actions tab (runs Monday); powers /trending' },
+  { file: 'social-pulse/_meta.json', field: 'lastUpdated', warnH: 192, errorH: 336, hint: 'Check update-social-pulse workflow in Actions tab (runs Monday); powers /trending' },
   // Tony odds — only relevant April–June. Large thresholds so stale off-season files don't false-alarm.
   { file: 'tony-win-probabilities.json', field: '_meta.lastUpdated', warnH: 36, errorH: 72, hint: 'Check update-tony-awards workflow — GoldDerby scraper may have failed', seasonMonths: [4, 5, 6] },
   { file: 'tony-polymarket-odds.json', field: '_meta.lastUpdated', warnH: 36, errorH: 72, hint: 'Check update-tony-awards workflow — Polymarket scraper may have failed or returned 0 categories', seasonMonths: [4, 5, 6] },
@@ -496,7 +496,7 @@ function checkSync() {
     };
   }));
 
-  // B2b: Per-show social-pulse freshness. The `Freshness: social-pulse/_budget.json`
+  // B2b: Per-show social-pulse freshness. The `Freshness: social-pulse/_meta.json`
   // check above only proves the WORKFLOW ran — it can't see a still-running show
   // whose own file silently stopped refreshing (the update-social-pulse fetcher
   // can skip individual shows on partial failures). And a show whose status flips

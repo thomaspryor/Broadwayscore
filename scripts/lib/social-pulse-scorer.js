@@ -23,6 +23,36 @@
 /** Min mentions in the last 7 days to show the card at all. Below this, card is hidden. */
 const MIN_MENTIONS_FOR_CARD = 20;
 
+/**
+ * Pulse Index signal weights (schema v3, 2026-07). Keys match the
+ * `counters` object produced by social-pulse-sources.js (+ wikipedia,
+ * attached by fetch-social-pulse.js).
+ *
+ * A signal whose counter is null/absent simply drops out and the remaining
+ * weights are renormalized (see computeEffectiveVolume) — so when the
+ * grandfathered X token dies, or a show has no Wikipedia article, the
+ * index degrades instead of breaking. Adding a future signal (YouTube,
+ * Google Trends) is a one-line entry here.
+ *
+ * Rationale: X and Reddit are the strongest theater-chatter proxies;
+ * Bluesky is real but its theater community is a fraction of X's.
+ *
+ * Wikipedia pageviews are COLLECTED (counters.wikipedia, free) but carry
+ * NO weight — external review (GPT-4o + Gemini, 2026-07-15) converged on
+ * the contamination problem: article views for shows with film
+ * adaptations (Wicked) or articles shared across productions (Hadestown
+ * WE + Broadway) measure something other than THIS production's buzz,
+ * and any weight silently skews rank for exactly the biggest shows.
+ * Ranking on only the platforms the card displays also keeps the rank
+ * explainable from the card itself. Revisit only with adaptation-aware
+ * disambiguation.
+ */
+const SIGNAL_WEIGHTS = Object.freeze({
+  x: 0.45,
+  reddit: 0.35,
+  bluesky: 0.2,
+});
+
 /** Weeks of history required before self-baseline comparisons are meaningful. */
 const BASELINE_REQUIRED_WEEKS = 8;
 
@@ -194,6 +224,117 @@ function filterTopQuotes(mentions, targetSentiment, maxQuotes = QUOTES_ON_CARD) 
 }
 
 /**
+ * Per-platform relevance rates from the LLM-classified text sample.
+ *
+ * The Job A counters are raw query-hit counts and never pass through the
+ * relevance classifier — "Chicago" broadway matches the city and the
+ * street, not just the show. The classified sample (Job B) tells us what
+ * fraction of query hits are actually about the show, per platform, and
+ * computeEffectiveVolume scales each counter by its platform's rate.
+ *
+ * Platforms with no classified posts get null (caller falls back to
+ * `overall`, then 1). `overall` is null when nothing was classified.
+ */
+function computeRelevanceRates(mentions) {
+  const byPlatform = {};
+  let totalRelevant = 0;
+  let totalClassified = 0;
+  for (const m of mentions || []) {
+    if (!m || typeof m.relevant !== 'boolean') continue;
+    const p = m.platform || 'unknown';
+    if (!byPlatform[p]) byPlatform[p] = { relevant: 0, classified: 0 };
+    byPlatform[p].classified++;
+    totalClassified++;
+    if (m.relevant) {
+      byPlatform[p].relevant++;
+      totalRelevant++;
+    }
+  }
+  const rates = {};
+  for (const [p, c] of Object.entries(byPlatform)) {
+    rates[p] = c.classified > 0 ? c.relevant / c.classified : null;
+  }
+  return {
+    byPlatform: rates,
+    overall: totalClassified > 0 ? totalRelevant / totalClassified : null,
+  };
+}
+
+/**
+ * Relevance rate to apply to a counter signal. Sample-backed platforms use
+ * their own rate; X (no text sample since the free-tier death) borrows the
+ * overall rate — same query shape, similar noise profile; Wikipedia is not
+ * a query-hit count so it takes no relevance discount.
+ */
+function relevanceRateFor(signal, rates) {
+  if (signal === 'wikipedia') return 1;
+  const platformRate = rates?.byPlatform?.[signal];
+  if (typeof platformRate === 'number') return platformRate;
+  if (typeof rates?.overall === 'number') return rates.overall;
+  return 1;
+}
+
+/**
+ * The Pulse Index volume: blends the uncapped weekly counters into one
+ * mention-scale number used for RANKING strength (not for display).
+ *
+ *   effectiveVolume = expm1( Σ w_i · log1p(count_i × relevanceRate_i) / Σ w_i )
+ *
+ * i.e. a weighted geometric mean of (1 + relevance-adjusted counts). The
+ * log tames cross-unit scale differences (30k Wikipedia views vs 44
+ * Bluesky posts) so no single signal dominates, and expm1 maps the blend
+ * back to linear mention-like units. Weights renormalize over the signals
+ * actually present, so a dead signal (X) shifts the level smoothly for
+ * ALL shows at once — peer-relative tiers are unaffected.
+ *
+ * Renormalization has a coverage FLOOR: the divisor never drops below
+ * MIN_WEIGHT_COVERAGE. Without it, a show carrying only its weakest
+ * signal would have that signal fully renormalized to weight 1.0 — e.g. a
+ * famous title with zero social chatter but 100k Wikipedia views would
+ * score its raw pageviews and top the leaderboard. With the floor, sparse
+ * coverage dampens the index instead of amplifying the surviving signal.
+ *
+ * Returns null when no counter signal is present at all (legacy data or
+ * total fetch failure) — callers fall back to sample volume.
+ */
+const MIN_WEIGHT_COVERAGE = 0.5;
+
+function computeEffectiveVolume(counters, relevanceRates, weights = SIGNAL_WEIGHTS) {
+  if (!counters || typeof counters !== 'object') return null;
+  let weightedSum = 0;
+  let weightTotal = 0;
+  for (const [signal, weight] of Object.entries(weights)) {
+    const count = counters[signal];
+    if (!Number.isFinite(count) || count < 0) continue; // null/absent → signal drops out
+    const rate = relevanceRateFor(signal, relevanceRates);
+    weightedSum += weight * Math.log1p(count * rate);
+    weightTotal += weight;
+  }
+  if (weightTotal === 0) return null;
+  return Number(Math.expm1(weightedSum / Math.max(weightTotal, MIN_WEIGHT_COVERAGE)).toFixed(1));
+}
+
+/**
+ * The honest, display-facing weekly mention total: raw counts of posts
+ * mentioning the show this week across mention-type platforms (Wikipedia
+ * views are interest, not mentions — excluded). This is what the card
+ * shows and what the MIN_MENTIONS_FOR_CARD gate tests.
+ */
+function computeWeeklyMentions(counters) {
+  if (!counters || typeof counters !== 'object') return null;
+  let any = false;
+  let total = 0;
+  for (const key of ['reddit', 'bluesky', 'x']) {
+    const v = counters[key];
+    if (Number.isFinite(v) && v >= 0) {
+      total += v;
+      any = true;
+    }
+  }
+  return any ? total : null;
+}
+
+/**
  * Composite score blending raw volume with positive sentiment %. Used for
  * peer ranking. A loud-but-hated show shouldn't outrank a smaller positive one.
  *
@@ -230,12 +371,20 @@ function computeCompositeScore(volume, positivePct) {
  * SECONDARY signal (e.g., to flag risers based on WoW growth) but is no
  * longer the primary tier driver.
  */
-function derivePeerTier({ volume, positivePct, peerStats }) {
+function derivePeerTier({ volume, effectiveVolume, positivePct, peerStats }) {
   if (!Number.isFinite(volume) || volume < MIN_MENTIONS_FOR_CARD) {
     return 'Hidden';
   }
 
-  const composite = computeCompositeScore(volume, positivePct);
+  // Ranking strength comes from the Pulse Index effectiveVolume (relevance-
+  // adjusted counter blend) when present; the card gate above stays on the
+  // honest displayed mention count so a visible card is never Hidden-tiered
+  // by an index artifact. Legacy callers without effectiveVolume rank on
+  // volume, exactly as before schema v3.
+  const composite = computeCompositeScore(
+    Number.isFinite(effectiveVolume) ? effectiveVolume : volume,
+    positivePct,
+  );
   const pct = typeof positivePct === 'number' ? positivePct : 0;
   const stats = peerStats || {};
 
@@ -292,7 +441,12 @@ function computePeerStats(shows) {
   if (!Array.isArray(shows) || shows.length === 0) {
     return { compositeP80: 0, compositeP60: 0, volumeP50: 0, marketCount: 0 };
   }
-  const composites = shows.map((s) => computeCompositeScore(s.volume || 0, s.positivePct || 0));
+  const composites = shows.map((s) =>
+    computeCompositeScore(
+      Number.isFinite(s.effectiveVolume) ? s.effectiveVolume : (s.volume || 0),
+      s.positivePct || 0,
+    ),
+  );
   const volumes = shows.map((s) => s.volume || 0);
   return {
     compositeP80: percentile(composites, 80),
@@ -373,9 +527,20 @@ function updateBaseline(oldBaseline, newWeeklyVolume) {
  * carry no sentiment signal, so including them drags every show toward 50%.
  */
 function computePositivePct(mentions) {
+  const { pos, total } = computeOpinionSample(mentions);
+  return total === 0 ? 0 : Math.round((pos / total) * 100);
+}
+
+/**
+ * Counts opinion-bearing posts in the classified sample. The card uses
+ * `total` to hide the sentiment bar when the sample is too thin to mean
+ * anything (schema v3: Reddit+Bluesky samples run smaller than the old
+ * capped X sample, so a 3-post "67% positive" must not render).
+ */
+function computeOpinionSample(mentions) {
   let pos = 0;
   let total = 0;
-  for (const m of mentions) {
+  for (const m of mentions || []) {
     if (!m.relevant) continue;
     if (m.sentiment === 'positive') {
       pos++;
@@ -385,22 +550,23 @@ function computePositivePct(mentions) {
     }
     // 'neutral' intentionally excluded from both pos and total
   }
-  return total === 0 ? 0 : Math.round((pos / total) * 100);
+  return { pos, total };
 }
 
 /**
  * Groups relevant mentions by platform and returns counts.
  * Added Reddit 2026-04-11 — sourced from brand-mention-sources via
- * apify-fetchers.js fetchRedditForShow.
+ * social-pulse-sources.js fetchRedditForShow.
  */
 function computePlatformBreakdown(mentions) {
-  const out = { x: 0, tiktok: 0, instagram: 0, reddit: 0 };
+  const out = { x: 0, tiktok: 0, instagram: 0, reddit: 0, bluesky: 0 };
   for (const m of mentions) {
     if (!m.relevant) continue;
     if (m.platform === 'x' || m.platform === 'twitter') out.x++;
     else if (m.platform === 'tiktok') out.tiktok++;
     else if (m.platform === 'instagram') out.instagram++;
     else if (m.platform === 'reddit') out.reddit++;
+    else if (m.platform === 'bluesky') out.bluesky++;
   }
   return out;
 }
@@ -429,11 +595,19 @@ function computePlatformBreakdown(mentions) {
  *     nextBaseline: { mean, weeksOfHistory },  // to persist for next run
  *   }
  */
-function computeSocialPulse({ mentions, baseline, priorVolume, peerStats }) {
+function computeSocialPulse({ mentions, counters, baseline, priorVolume, peerStats }) {
   const relevant = Array.isArray(mentions) ? mentions.filter((m) => m && m.relevant) : [];
-  const volume = relevant.length;
+
+  // Schema v3: `volume` is the TRUE weekly mention total from the uncapped
+  // counters (Job A), not the classified-sample size. Legacy path (no
+  // counters — old data, tests) falls back to sample size as before.
+  const relevanceRates = computeRelevanceRates(mentions || []);
+  const weeklyMentions = computeWeeklyMentions(counters);
+  const volume = weeklyMentions ?? relevant.length;
+  const effectiveVolume = computeEffectiveVolume(counters, relevanceRates) ?? volume;
 
   const positivePct = computePositivePct(mentions || []);
+  const opinionSample = computeOpinionSample(mentions || []).total;
   const platformBreakdown = computePlatformBreakdown(mentions || []);
 
   const weekOverWeekPct =
@@ -445,7 +619,7 @@ function computeSocialPulse({ mentions, baseline, priorVolume, peerStats }) {
   // after 2026-04-11). Fall back to legacy self-baseline tier for single-show
   // runs where peer stats aren't computed.
   const tier = peerStats
-    ? derivePeerTier({ volume, positivePct, peerStats })
+    ? derivePeerTier({ volume, effectiveVolume, positivePct, peerStats })
     : deriveTier({ currentVolume: volume, baseline, positivePct, weekOverWeekPct });
 
   // Pick quotes matching the tier's dominant sentiment
@@ -471,7 +645,10 @@ function computeSocialPulse({ mentions, baseline, priorVolume, peerStats }) {
   return {
     tier,
     volume,
+    effectiveVolume,
+    relevanceRates,
     positivePct,
+    opinionSample,
     weekOverWeekPct,
     baselineMultiple,
     platformBreakdown,
@@ -488,6 +665,11 @@ module.exports = {
   computeCompositeScore,
   computePeerStats,
   percentile,
+  // Pulse Index (schema v3, 2026-07 — free uncapped counters)
+  computeEffectiveVolume,
+  computeWeeklyMentions,
+  computeRelevanceRates,
+  relevanceRateFor,
   // Legacy self-baseline tier (still exported, not primary)
   deriveTier,
   filterTopQuotes,
@@ -496,6 +678,7 @@ module.exports = {
   meaningfulContentLength,
   updateBaseline,
   computePositivePct,
+  computeOpinionSample,
   computePlatformBreakdown,
   // Constants
   MIN_MENTIONS_FOR_CARD,
@@ -504,4 +687,5 @@ module.exports = {
   QUOTES_ON_CARD,
   TIER_RULES,
   QUOTE_BLOCKLIST,
+  SIGNAL_WEIGHTS,
 };
