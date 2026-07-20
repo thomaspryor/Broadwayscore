@@ -33,6 +33,8 @@ function Inner({ show }: { show: DiaryShowDetail }) {
   const searchParams = useSearchParams();
   const [ratePanelOpen, setRatePanelOpen] = useState(false);
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
+  // Validated ?stars=N from watchlist rate strips — seeds a NEW rating only.
+  const [deepLinkStars, setDeepLinkStars] = useState<number | null>(null);
   // Distinct from useUserReviews' `loading` (which only flips true once the
   // fetch has actually started) — this tracks "has the initial sync settled
   // at least once" so ?edit=1 doesn't race into "new rating" mode against an
@@ -75,6 +77,13 @@ function Inner({ show }: { show: DiaryShowDetail }) {
     }
     if (wantsEdit && !reviewsSynced) return; // wait for latestReview to resolve
     hasHandledQueryParam.current = true;
+    // ?stars=N from the watchlist rate strips — same validation as the show
+    // hero (untrusted input: NaN / out-of-range dropped). Without this the
+    // tapped star was silently ignored for diary-only shows (review, 2026-07-19).
+    const starsRaw = searchParams.get('stars') ? parseFloat(searchParams.get('stars')!) : null;
+    setDeepLinkStars(
+      starsRaw !== null && Number.isFinite(starsRaw) && starsRaw >= 0.5 && starsRaw <= 5 ? starsRaw : null,
+    );
     setEditingReview(wantsEdit ? latestReview : null);
     setPendingDraft(null);
     setRatePanelOpen(true);
@@ -200,7 +209,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
           key={editingReview?.id ?? pendingDraft?.reviewId ?? 'new-viewing'}
           showTitle={show.title}
           reviewId={editingReview?.id ?? pendingDraft?.reviewId}
-          initialRating={editingReview?.rating ?? pendingDraft?.rating ?? 0}
+          initialRating={editingReview?.rating ?? pendingDraft?.rating ?? deepLinkStars ?? 0}
           initialReviewText={editingReview?.review_text ?? pendingDraft?.reviewText ?? null}
           initialDateSeen={editingReview?.date_seen ?? pendingDraft?.dateSeen ?? null}
           presentation="modal"

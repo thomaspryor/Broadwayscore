@@ -136,7 +136,10 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
   return (
     <div className="inline-flex flex-col items-start">
       <div
-        className={`inline-flex items-center ${readOnly ? '' : 'cursor-pointer'}`}
+        // star-compact: readOnly display stars must not inherit the mobile
+        // 44px tap-target minimums — they're non-interactive, and the minimums
+        // ballooned xs stars into row-crushing giants (2026-07-19).
+        className={`inline-flex items-center ${readOnly ? 'star-compact' : 'cursor-pointer'}`}
         style={{ gap }}
         onMouseLeave={handleMouseLeave}
         role={readOnly ? 'img' : 'radiogroup'}

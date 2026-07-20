@@ -26,6 +26,17 @@ export async function goToMock(
 }
 
 /**
+ * Switch the current My Shows tab to LIST view. The diary/watchlist default
+ * became GRID (2026-07-17), so specs asserting list-row UI (h4 titles, edit
+ * links, Delete?/No confirm buttons) must opt in explicitly.
+ */
+export async function switchToListView(page: Page): Promise<void> {
+  const toggle = page.locator('button[aria-label="List view"]:visible').first();
+  await toggle.click();
+  await page.waitForTimeout(250);
+}
+
+/**
  * Navigate to the rating-editor fixture page (the live shared editor).
  * @param query - e.g. '' | '?state=edit' | '?presentation=modal&stack=1'
  */
