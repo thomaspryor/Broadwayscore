@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-20T17:31:53.279Z",
-  "processed": 0,
-  "failed": 4,
-  "successRate": "0%",
+  "updatedAt": "2026-07-20T20:39:03.016Z",
+  "processed": 46,
+  "failed": 258,
+  "successRate": "15.1%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 34,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 7
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-07-20T17:29:17.435Z",
@@ -34,6 +34,50 @@
     },
     {
       "t": "2026-07-20T17:29:35.202Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-20T20:17:58.318Z",
+      "event": "bb-session",
+      "session": "c1e49d93",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-20T20:17:59.075Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-20T20:18:14.895Z",
+      "event": "bb-session",
+      "session": "c0aec43c",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-20T20:18:15.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-20T20:37:41.573Z",
+      "event": "bb-session",
+      "session": "4f12d83a",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
+    },
+    {
+      "t": "2026-07-20T20:37:42.257Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-20T20:37:58.043Z",
+      "event": "bb-session",
+      "session": "74a4fb17",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
+    },
+    {
+      "t": "2026-07-20T20:37:58.705Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
