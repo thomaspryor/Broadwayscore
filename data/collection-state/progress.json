@@ -295,7 +295,17 @@
     "death-of-a-salesman-2026/dailybeast--tim-teeman.json",
     "death-of-a-salesman-2026/exeunt-magazine--juliet-hindell.json",
     "death-of-a-salesman-2026/front-row-center--sarah-downs.json",
-    "death-of-a-salesman-2026/huffpost--mark-kennedy.json"
+    "death-of-a-salesman-2026/huffpost--mark-kennedy.json",
+    "death-of-a-salesman-2026/philadelphia-inquirer--howard-shapiro.json",
+    "death-of-a-salesman-2026/queerty--matthew-wexler.json",
+    "death-of-a-salesman-2026/stagebuddy--elyse-trevers.json",
+    "death-of-a-salesman-2026/theater-pizzazz--carol-rocamora.json",
+    "death-of-a-salesman-2026/usatoday--elysa-gardner.json",
+    "cats-the-jellicle-ball-2026/hollywood-reporter--caitlin-huston.json",
+    "cats-the-jellicle-ball-2026/newyorker--emily-nussbaum.json",
+    "cats-the-jellicle-ball-2026/newyorker--helen-shaw.json",
+    "cats-the-jellicle-ball-2026/nytimes--jesse-green.json",
+    "cats-the-jellicle-ball-2026/newsday--linda-winer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -359,7 +369,7 @@
     ]
   },
   "startTime": "2026-07-20T17:29:00.342Z",
-  "lastProcessed": "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "cats-the-jellicle-ball-2026/newsday--linda-winer.json",
   "log": [
     {
       "t": "2026-07-20T17:29:17.435Z",
@@ -402,6 +412,28 @@
     },
     {
       "t": "2026-07-20T20:18:15.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-20T20:37:41.573Z",
+      "event": "bb-session",
+      "session": "4f12d83a",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
+    },
+    {
+      "t": "2026-07-20T20:37:42.257Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-20T20:37:58.043Z",
+      "event": "bb-session",
+      "session": "74a4fb17",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
+    },
+    {
+      "t": "2026-07-20T20:37:58.705Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
