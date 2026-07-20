@@ -494,10 +494,14 @@ function buildLondonSlugVariants(title, slugFn) {
 
 /**
  * Pick the best production when multiple shows match the same title.
- * If a target year is provided, picks the production with closest opening year.
+ * If an active date is provided, prefers the production whose run window
+ * (openingDate..closingDate, with slack) actually contains that date — this
+ * is strictly more precise than year-proximity and used by historical
+ * backfills where the exact week being resolved is known.
+ * Else if a target year is provided, picks the production with closest opening year.
  * Otherwise, picks the most recent production.
  */
-function pickBestProduction(matches, targetYear, preferredMarket, prefer) {
+function pickBestProduction(matches, targetYear, preferredMarket, prefer, activeDate) {
   if (matches.length === 1) return matches[0];
 
   // Market-aware filtering: if a preferred market is specified (e.g., 'broadway',
@@ -515,6 +519,27 @@ function pickBestProduction(matches, targetYear, preferredMarket, prefer) {
     if (marketMatches.length > 0) {
       matches = marketMatches;
       if (matches.length === 1) return matches[0];
+    }
+  }
+
+  // Active-date containment: if exactly one production's run window (with a
+  // 14-day slack for previews / closing-notice weeks) actually contains the
+  // date, that's a stronger signal than year proximity — it can't be fooled
+  // by two productions opening in adjacent years. Falls through to the
+  // year/prefer logic below if 0 or 2+ productions match the window.
+  if (activeDate && matches.length > 1) {
+    const SLACK_MS = 14 * 24 * 60 * 60 * 1000;
+    const activeMs = new Date(activeDate).getTime();
+    if (!isNaN(activeMs)) {
+      const windowMatches = matches.filter(m => {
+        if (!m.openingDate) return false;
+        const openMs = new Date(m.openingDate).getTime();
+        if (isNaN(openMs) || activeMs < openMs - SLACK_MS) return false;
+        if (!m.closingDate) return true; // still open (or no recorded close) — in range
+        const closeMs = new Date(m.closingDate).getTime();
+        return isNaN(closeMs) || activeMs <= closeMs + SLACK_MS;
+      });
+      if (windowMatches.length === 1) return windowMatches[0];
     }
   }
 
@@ -572,6 +597,7 @@ function pickBestProduction(matches, targetYear, preferredMarket, prefer) {
  * @param {number} [options.year] - Publication year for multi-production disambiguation
  * @param {string} [options.market] - Preferred market ('broadway'|'west-end'|'off-west-end'|'off-broadway') for cross-market disambiguation
  * @param {string} [options.prefer] - 'recent' (default) or 'original' — which production to pick when ambiguous with no year hint
+ * @param {string|Date} [options.date] - Exact date the title is being matched for (e.g. a historical backfill week). Preferred over options.year: filters to the production whose openingDate..closingDate window actually contains this date (14-day slack), before falling back to year/prefer.
  * @returns {{ show: Object, confidence: 'high'|'medium' } | null}
  */
 function matchTitleToShow(externalTitle, shows, options) {
@@ -580,6 +606,7 @@ function matchTitleToShow(externalTitle, shows, options) {
   const targetYear = options?.year || null;
   const preferredMarket = options?.market || null;
   const prefer = options?.prefer || null;
+  const activeDate = options?.date || null;
   const cleaned = cleanExternalTitle(externalTitle);
   // Strip diacritics (NFD decompose then drop combining marks) so accented
   // titles match their plain counterparts in shows.json and KNOWN_ALIASES.
@@ -617,7 +644,7 @@ function matchTitleToShow(externalTitle, shows, options) {
       }
     }
     if (exactMatches.length > 0) {
-      return { show: pickBestProduction(exactMatches, targetYear, preferredMarket, prefer), confidence: 'high' };
+      return { show: pickBestProduction(exactMatches, targetYear, preferredMarket, prefer, activeDate), confidence: 'high' };
     }
 
     // 2. Known aliases → slug → show (collect all for multi-production disambiguation)
@@ -635,7 +662,7 @@ function matchTitleToShow(externalTitle, shows, options) {
         }
       }
       if (aliasMatches.length > 0) {
-        return { show: pickBestProduction(aliasMatches, targetYear, preferredMarket, prefer), confidence: 'high' };
+        return { show: pickBestProduction(aliasMatches, targetYear, preferredMarket, prefer, activeDate), confidence: 'high' };
       }
     }
 
@@ -667,7 +694,7 @@ function matchTitleToShow(externalTitle, shows, options) {
       }
     }
     if (normalizedMatches.length > 0) {
-      return { show: pickBestProduction(normalizedMatches, targetYear, preferredMarket, prefer), confidence: 'high' };
+      return { show: pickBestProduction(normalizedMatches, targetYear, preferredMarket, prefer, activeDate), confidence: 'high' };
     }
   }
 
@@ -683,7 +710,7 @@ function matchTitleToShow(externalTitle, shows, options) {
         }
       }
       if (wordMatches.length > 0) {
-        return { show: pickBestProduction(wordMatches, targetYear, preferredMarket, prefer), confidence: 'medium' };
+        return { show: pickBestProduction(wordMatches, targetYear, preferredMarket, prefer, activeDate), confidence: 'medium' };
       }
     }
   }
