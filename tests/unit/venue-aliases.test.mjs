@@ -131,6 +131,13 @@ test('off-market variants map to the same region', () => {
   assert.match(buildVenueContext('James Earl Jones Theatre', 'off-broadway'), /Cort/);
 });
 
+test('unmapped markets fail closed (no cross-region contamination)', () => {
+  // A regional show at some other city's "Lyric Theatre" must not inherit
+  // Broadway rename history; unknown market ≠ market-less legacy call.
+  assert.equal(buildVenueContext('Lyric Theatre', 'regional'), 'Lyric Theatre');
+  assert.equal(getVenueAliases('August Wilson Theatre', 'regional'), null);
+});
+
 test('content-verifier imports venue-aliases without breaking', () => {
   // Sanity check: the wiring change in scripts/lib/content-verifier.js must
   // not blow up at require time. verifyContent() itself needs API keys +

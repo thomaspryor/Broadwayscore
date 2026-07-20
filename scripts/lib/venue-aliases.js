@@ -142,14 +142,17 @@ const VENUE_ALIASES = {
 /**
  * Map a shows.json market/category value to an alias region.
  * 'west-end' / 'off-west-end' → 'london'; 'broadway' / 'off-broadway' → 'nyc'.
- * Unknown/absent markets return null → no region filtering (legacy behavior).
+ * ABSENT market → null → no region filtering (legacy market-less callers).
+ * Present-but-unmapped market (e.g. 'regional') → 'other' → matches NO
+ * region-tagged entry (fail closed): a regional show at some other city's
+ * "Lyric Theatre" must not inherit Broadway rename history.
  */
 function _marketToRegion(market) {
   if (!market) return null;
   const m = String(market).toLowerCase();
   if (m === 'west-end' || m === 'off-west-end') return 'london';
   if (m === 'broadway' || m === 'off-broadway') return 'nyc';
-  return null;
+  return 'other';
 }
 
 /** All alias strings in a flat set for quick lookup. */

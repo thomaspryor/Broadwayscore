@@ -85,7 +85,15 @@ for (const s of (showsData.shows || showsData)) showsMap.set(s.id, s);
       continue;
     }
 
-    const clean = cv && cv.isValid === true && cv.wrongProduction !== true;
+    // Fully-clean verdict only: wrongArticle (interview/feature) and isFilmTv
+    // are independent blockers — a renamed-venue file that is actually an
+    // interview must not be durably re-admitted via wrongProductionOverride.
+    // verifiedBy must be a real LLM verdict: verifyContent's heuristic
+    // fallback (provider outage) ALWAYS returns wrongProduction:false and
+    // structurally cannot detect wrong productions — never clear on it.
+    const clean = cv && cv.isValid === true && cv.wrongProduction !== true
+      && cv.wrongArticle !== true && cv.isFilmTv !== true
+      && typeof cv.verifiedBy === 'string' && cv.verifiedBy.startsWith('llm');
     console.log(`[${clean ? 'CLEAR-CANDIDATE' : 'UPHELD'}] ${c.show}/${c.file} — isValid=${cv?.isValid} wp=${cv?.wrongProduction} ${String(cv?.reasoning || '').slice(0, 120)}`);
     results.push({ show: c.show, file: c.file, clean, reasoning: cv?.reasoning || '' });
 
