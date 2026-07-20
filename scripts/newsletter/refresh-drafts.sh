@@ -31,6 +31,11 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
+# A mid-loop failure (e.g. Resend 429 after the broadway PATCH) leaves one
+# edition refreshed and the other stale. Re-running IS the reconciliation —
+# every step is idempotent — so say that instead of failing silently.
+trap 'echo "FAILED partway — one edition may be refreshed and the other stale. Re-run this script to reconcile (all steps are idempotent)." >&2' ERR
+
 if [ ! -f .env ]; then
   echo "ERROR: no .env here ($(pwd)) — run from the main configured checkout (needs RESEND_API_KEY), not a worktree/fresh clone." >&2
   exit 1
@@ -69,6 +74,14 @@ for EDITION in broadway west-end; do
   echo ""
   echo "== [$EDITION] generate"
   NEWSLETTER_EDITION=$EDITION NEWSLETTER_OUT_DIR="$OUT" node scripts/newsletter/generate.mjs "$WEEK"
+  # Wrong-week guard: create-broadcast-draft checks meta.edition but not
+  # meta.weekStart — if generate ever wrote valid HTML for a different week
+  # into A-$WEEK.*, we'd PATCH the draft with the wrong issue unnoticed.
+  META_WEEK=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$OUT/A-$WEEK.meta.json','utf8')).weekStart || '')")
+  if [ "$META_WEEK" != "$WEEK" ]; then
+    echo "ERROR: generated meta.weekStart '$META_WEEK' != requested week '$WEEK' — aborting before PATCH." >&2
+    exit 1
+  fi
   echo "== [$EDITION] pre-send check"
   NEWSLETTER_EDITION=$EDITION NEWSLETTER_OUT_DIR="$OUT" node scripts/newsletter/pre-send-check.mjs "$WEEK"
   echo "== [$EDITION] mobile overflow gate"

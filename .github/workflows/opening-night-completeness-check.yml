@@ -104,17 +104,11 @@ jobs:
           WINDOW=$(echo "${{ inputs.window_days || '7' }}" | grep -oE '^[0-9]+$' || echo "7")
           node scripts/verify-opening-night-live.js $SHOW_ARG --window-days="$WINDOW" --alert
 
-      - name: Snapshot updated state for private repo push
-        if: steps.rebuild_check.outputs.skip != 'true'
-        run: |
-          if [ -f "data/audit/opening-night-completeness-state.json" ]; then
-            mkdir -p /tmp/core-data-snapshot
-            cp -f data/audit/opening-night-completeness-state.json /tmp/core-data-snapshot/ 2>/dev/null || true
-          fi
-          if [ -f "data/audit/opening-night-live-state.json" ]; then
-            mkdir -p /tmp/core-data-snapshot
-            cp -f data/audit/opening-night-live-state.json /tmp/core-data-snapshot/ 2>/dev/null || true
-          fi
+      # NOTE: snapshot-copy step removed 2026-07-19. /tmp/core-data-snapshot is
+      # push-core-data's checkout-time baseline and nothing may write to it
+      # (lint-workflow-guards.sh snapshot-overwrite check). These audit files
+      # aren't in push-core-data's CORE_FILES list anyway — the copy was dead
+      # code since the 2026-07-12 push-core-data change.
 
       - name: Commit state file
         if: steps.rebuild_check.outputs.skip != 'true'
