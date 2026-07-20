@@ -24,6 +24,17 @@ export function isOffMarket(category?: string): boolean {
 }
 
 /**
+ * Whether a production has actually reached its stage — previews counts as
+ * arrived. Used for regional→Broadway transfer tense (a tryout has
+ * "transferred" only once the Broadway run exists; before that it is
+ * "transferring"). Single source for the browse sectionGroup, its sort, and
+ * the show-page trust line so the tense can never disagree between surfaces.
+ */
+export function hasReachedStage(status?: string | null): boolean {
+  return status === 'previews' || status === 'open' || status === 'closed';
+}
+
+/**
  * Base minimum-reviews threshold for a market. Delegates to the canonical
  * MIN_REVIEWS_FOR_SCORE_* constants in score-buckets.ts so this never drifts
  * from the live list/show-page gate (West End = 5, Off-West End / Off-Broadway /
