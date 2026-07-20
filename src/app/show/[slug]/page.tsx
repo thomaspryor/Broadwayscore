@@ -22,7 +22,7 @@ import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { featureFlags } from '@/config/feature-flags';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, generateCriticReviewsSchema, BASE_URL } from '@/lib/seo';
 import { isLondonMarket } from '@/lib/venue-classification';
-import { getCurrencySymbol } from '@/lib/market-utils';
+import { getCurrencySymbol, hasReachedStage } from '@/lib/market-utils';
 import { isOperaShow } from '@/lib/show-market';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
@@ -525,7 +525,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                     <span className="font-semibold">Regional production</span>
                     {transfer ? (
                       <span className="text-gray-400">
-                        {transfer.status === 'previews' || transfer.status === 'open' || transfer.status === 'closed'
+                        {hasReachedStage(transfer.status)
                           ? ' — this tryout transferred to Broadway. '
                           : ' — this tryout is transferring to Broadway. '}
                         <Link href={`/show/${transfer.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
