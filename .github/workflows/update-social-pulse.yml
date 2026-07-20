@@ -29,11 +29,11 @@ jobs:
   update-social-pulse:
     name: Fetch + score social mentions for running shows
     runs-on: ubuntu-latest
-    # With 4 platforms (X, TikTok, IG via Apify + Reddit via ScrapingBee),
-    # each show takes ~2 min. 93 shows × 2 min = 186 min fetch + ~15 min
-    # for LLM classification + rank computation + commit. 240 min observed
-    # on run 24309696021 (timed out at 180). 300 gives safe headroom.
-    timeout-minutes: 300
+    # Free-source stack (schema v3, 2026-07): Reddit + Bluesky + X counts +
+    # Wikipedia are all direct JSON APIs — a show takes seconds, not the
+    # ~2 min the Apify sync-runs took. ~120 shows × (fetch + GPT-4o-mini
+    # classify) + ranks + commit fits comfortably in 90.
+    timeout-minutes: 90
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -49,11 +49,29 @@ jobs:
       - name: Install dependencies
         run: npm ci --prefer-offline --no-audit
 
+      - name: Verify Bluesky secrets present
+        # The public Bluesky AppView 403s from GitHub datacenter IPs, so the
+        # authenticated fallback is REQUIRED here, not optional — without it
+        # every show silently loses its Bluesky counter and the fetch script
+        # aborts via the counter-coverage guard (exit 6) anyway. Fail fast
+        # with a clear message instead. Create an app password at
+        # bsky.app → Settings → App Passwords and add both secrets.
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+        run: |
+          if [ -z "$BSKY_HANDLE" ] || [ -z "$BSKY_APP_PASSWORD" ]; then
+            echo "::error::BSKY_HANDLE and BSKY_APP_PASSWORD secrets are required (Bluesky public endpoint 403s from Actions runners)."
+            exit 1
+          fi
+
       - name: Fetch social pulse for running shows
         id: fetch
         env:
-          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Bluesky auth — see the verify step above.
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
           # Reddit fetcher needs ScrapingBee for 403 fallback (GitHub
           # datacenter IPs are blocked by reddit.com). Without this,
           # Reddit silently returns 0 mentions for every show.
@@ -96,7 +114,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Stage only the files this workflow is responsible for:
-          #   - data/social-pulse/*.json (canonical per-show files + _budget.json)
+          #   - data/social-pulse/*.json (canonical per-show files + _meta.json)
           #   - public/data/shows/*.social.json (sibling public files)
           # We do NOT touch the main public/data/shows/{id}.json files — those
           # are owned by rebuild-all-reviews.js (see CLAUDE.md "Public Show
