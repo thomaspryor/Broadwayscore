@@ -70,9 +70,19 @@ function atomicWriteShowsJson(targetPath, newData, options = {}) {
     }
   }
 
-  const tmpPath = `${targetPath}.tmp.${process.pid}`;
+  // Resolve symlinks first: rename() onto a symlink REPLACES the symlink with
+  // a regular file, silently orphaning the real target. Local checkouts have
+  // data/shows.json symlinked into the private core-data clone (2026-07-20:
+  // a runtime sweep's fixes landed in a stray local file this way).
+  let realPath = targetPath;
+  try {
+    realPath = fs.realpathSync(targetPath);
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
+  }
+  const tmpPath = `${realPath}.tmp.${process.pid}`;
   fs.writeFileSync(tmpPath, newJson);
-  fs.renameSync(tmpPath, targetPath);
+  fs.renameSync(tmpPath, realPath);
 
   return { lineCountBefore: currentLines, lineCountAfter: newLines, wrote: true };
 }
