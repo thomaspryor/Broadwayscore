@@ -1,21 +1,32 @@
 {
-  "lastRun": "2026-07-20T00:45:39.521Z",
+  "lastRun": "2026-07-20T00:48:20.901Z",
   "shows": [
     {
-      "showId": "dolly-a-true-original-musical-regional-2025",
-      "query": "\"Dolly: A True Original Musical\" review Nashville",
+      "showId": "wonder-regional-2026",
+      "query": "\"Wonder\" review Cambridge",
       "candidates": 9,
-      "ingested": [],
-      "newOutletCandidates": [
+      "ingested": [
         {
-          "url": "https://www.facebook.com/TessFrizzell/posts/have-any-of-you-seen-the-new-dolly-musical-what-did-you-think-/1309996730927341/",
-          "domain": "facebook.com",
-          "title": "Have any of you seen the new Dolly musical? What did ..."
+          "url": "https://www.netheatregeek.com/2025/12/30/when-kindness-and-representation-arent-enough-wonder-the-musical/",
+          "outletId": "netheatregeek",
+          "action": "new"
         }
       ],
-      "skippedExisting": 3,
-      "skippedUnregistered": 1,
-      "skippedNotReview": 5
+      "newOutletCandidates": [
+        {
+          "url": "https://americanrepertorytheater.org/shows-events/wonder/",
+          "domain": "americanrepertorytheater.org",
+          "title": "Wonder | A.R.T."
+        },
+        {
+          "url": "https://cambridgeusa.org/event/wonder-the-musical-2/",
+          "domain": "cambridgeusa.org",
+          "title": "Wonder: The Musical"
+        }
+      ],
+      "skippedExisting": 4,
+      "skippedUnregistered": 2,
+      "skippedNotReview": 0
     }
   ]
 }
