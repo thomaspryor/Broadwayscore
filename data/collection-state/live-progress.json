@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-07-20T06:33:32.692Z",
-  "processed": 56,
-  "failed": 1010,
-  "successRate": "5.3%",
+  "updatedAt": "2026-07-20T06:34:20.442Z",
+  "processed": 58,
+  "failed": 1018,
+  "successRate": "5.4%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 40,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 1,
@@ -13,7 +13,7 @@
     "archiveToday": 23,
     "archive": 10
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-07-19T17:23:15.324Z",
@@ -87,6 +87,12 @@
       "t": "2026-07-20T06:32:22.086Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-20T06:33:49.937Z",
+      "event": "bb-session",
+      "session": "0fbf27dd",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
     }
   ]
 }
