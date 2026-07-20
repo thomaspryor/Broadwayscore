@@ -1218,13 +1218,20 @@ function checkAPICredits() {
           for (const cust of Object.values(cost)) {
             if (cust && cust.custom && typeof cust.custom.cost === 'number') monthCost += cust.custom.cost;
           }
-        } catch { /* per-zone cost is best-effort; balance is the hard signal */ }
+        } catch { /* per-zone cost is best-effort */ }
       }
+      // BD is pay-as-you-go with MONTHLY INVOICING (verified in dashboard
+      // 2026-07-19: "All bills are paid", next invoice 1st of month). The
+      // prepaid `balance` field is leftover credit, NOT a spending limit —
+      // consumption accrues to the invoice and scraping does NOT hard-stop at
+      // $0 balance. So low balance is normal and must not alert; the real
+      // signal is month-to-date spend (runaway SERP demand). Baseline ~$225/mo
+      // pace July 2026.
       const balance = typeof bal.balance === 'number' ? bal.balance : null;
       const pending = typeof bal.pending_costs === 'number' ? bal.pending_costs : 0;
-      let msg = `balance $${balance !== null ? balance.toFixed(2) : '?'} · pending $${pending.toFixed(2)} · month-to-date $${monthCost.toFixed(2)} (serp+unlocker)`;
-      if (balance !== null && balance < 20) {
-        return { name: 'Credits: Bright Data', status: 'error', message: msg, hint: 'Low BD balance — top up or confirm auto-recharge, or BD tier goes dark.' };
+      let msg = `balance $${balance !== null ? balance.toFixed(2) : '?'} · pending invoice $${pending.toFixed(2)} · month-to-date $${monthCost.toFixed(2)} (serp+unlocker)`;
+      if (monthCost > 400) {
+        return { name: 'Credits: Bright Data', status: 'error', message: msg, hint: 'BD spend above $400/mo pace — runaway SERP/unlocker demand, investigate now (cost report attributes by workflow).' };
       }
       if (monthCost > 250) {
         return { name: 'Credits: Bright Data', status: 'warn', message: msg, hint: 'BD spend above $250/mo pace — check SERP demand.' };
