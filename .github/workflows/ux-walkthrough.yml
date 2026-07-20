@@ -9,12 +9,15 @@ name: Nightly UX Walkthrough
 # assertions miss (they only check that a POST succeeded, not how it looks).
 #
 # Runs after the daily UGC round-trip (same throwaway-user infra, so a dead
-# Supabase project fails there first with its own self-heal) and on its own
-# nightly schedule as a backstop.
+# Supabase project fails there first with its own self-heal). No separate
+# schedule trigger — that would fire on the SAME success path as workflow_run
+# every day (ship-check finding, 2026-07-20: schedule at 13:35 + workflow_run
+# off UGC's 13:17 both pass the `if:` gate below on a normal day), doubling
+# synthetic-user churn and 3-model LLM cost for no benefit. If UGC Auth
+# Round-trip itself ever stops firing, that's caught by its own cron-health
+# entry, not by duplicating this workflow's trigger.
 
 on:
-  schedule:
-    - cron: '35 13 * * *'  # daily 13:35 UTC — 18 min after UGC Auth Round-trip (13:17)
   workflow_dispatch:
   workflow_run:
     workflows: ['UGC Auth Round-trip']
@@ -87,13 +90,18 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Passed via env, NOT spliced into the script string below — the
+          # summary is LLM-authored text and could contain backticks/${...}
+          # that would break or inject into the JS template literal
+          # (ship-check finding, 2026-07-20).
+          FINDINGS_SUMMARY: ${{ steps.findings.outputs.summary }}
         with:
           script: |
             const { sendAlert } = require('./scripts/lib/discord-notify.js');
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             await sendAlert({
               title: 'UX walkthrough: high-priority finding(s) filed',
-              description: `${{ steps.findings.outputs.summary }}`,
+              description: process.env.FINDINGS_SUMMARY || '',
               severity: 'error',
               email: true,
               url: runUrl,

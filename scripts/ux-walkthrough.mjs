@@ -134,6 +134,36 @@ async function deleteUser(serviceKey, id) {
   await adminFetch(serviceKey, 'DELETE', `admin/users/${id}`);
 }
 
+// Best-effort startup sweep for synthetic users a PRIOR run failed to clean
+// up (workflow timeout, runner OOM, cancellation — none of which reach the
+// `finally` block in main()). Only touches @bsc-test.dev accounts older than
+// 1h (safely past any run's ~2-5min duration), so it can't collide with a
+// genuinely concurrent run. Never throws — a sweep failure shouldn't block
+// this run's own mint/seed/capture.
+async function sweepOrphanedTestUsers(serviceKey) {
+  try {
+    const cutoff = Date.now() - 60 * 60 * 1000;
+    let page = 1;
+    let swept = 0;
+    for (;;) {
+      const r = await adminFetch(serviceKey, 'GET', `admin/users?page=${page}&per_page=200`);
+      const users = r.json?.users;
+      if (!r.ok || !Array.isArray(users) || users.length === 0) break;
+      for (const u of users) {
+        if (!u.email?.endsWith('@bsc-test.dev')) continue;
+        if (new Date(u.created_at).getTime() >= cutoff) continue;
+        await deleteUser(serviceKey, u.id).catch(() => {});
+        swept++;
+      }
+      if (users.length < 200) break;
+      page++;
+    }
+    if (swept > 0) console.error(`[ux-walkthrough] swept ${swept} orphaned @bsc-test.dev user(s) from prior run(s)`);
+  } catch (err) {
+    console.error(`[ux-walkthrough] orphan sweep failed (non-fatal): ${err.message}`);
+  }
+}
+
 /** One PostgREST call with a user JWT — mirrors src/lib/supabase-rest.ts. */
 async function rest(token, method, path, body, prefer = 'return=representation') {
   const res = await fetch(`${URL_ENV}/rest/v1/${path}`, {
@@ -372,11 +402,14 @@ function parseFindingsJson(content) {
   })).filter(f => f.summary);
 }
 
-// Cap total images sent to each model — full 2-viewport x ~10-surface matrix
-// is enough context without blowing token/latency budgets. Prioritize the
-// distinct-surface set over duplicating both viewports of everything.
-function pickReviewImages(shots, max = 16) {
-  return shots.slice(0, max);
+// Send the full matrix — ~19-25 screenshots is well within each model's
+// image-input limits, and a positional slice() silently drops whichever
+// surfaces happen to land last (shots is mobile-then-desktop ordered, so an
+// early cap always cut the same desktop screens — ship-check finding,
+// 2026-07-20). If the matrix grows enough to need capping again, cap by
+// deduping near-identical surfaces, not by truncating the list.
+function pickReviewImages(shots) {
+  return shots;
 }
 
 async function reviewWithOpenAI(shots, apiKey) {
@@ -513,7 +546,11 @@ function dedupeFindings(panelResults) {
 
 async function existingCardTitles() {
   try {
-    const out = execFileSync('node', ['scripts/notion-brain.js', 'search', '--text', 'ux-audit', '--limit', '50'], { encoding: 'utf8' });
+    // notion-brain.js --text only matches Name/Notes, NOT tags (ship-check
+    // finding, 2026-07-20) — searching the tag string 'ux-audit' silently
+    // matched zero cards every run, so dedup-vs-existing-cards never fired.
+    // Titles are literally "UX audit: ..." (titleFor below) — search that.
+    const out = execFileSync('node', ['scripts/notion-brain.js', 'search', '--text', 'UX audit', '--limit', '50'], { encoding: 'utf8' });
     const cards = JSON.parse(out.slice(out.indexOf('[')));
     return cards.map(c => c.name);
   } catch (err) {
@@ -576,13 +613,15 @@ async function main() {
   console.error(`[ux-walkthrough] base=${args.baseUrl} out=${outDir}`);
 
   const serviceKey = await resolveServiceRoleKey();
+  await sweepOrphanedTestUsers(serviceKey);
   const user = await makeUser(serviceKey, 'a');
   console.error(`[ux-walkthrough] minted synthetic user ${user.email}`);
 
   let exitCode = 0;
   let seeded = [];
+  let session = null;
   try {
-    const session = await mintSession(serviceKey, user.email);
+    session = await mintSession(serviceKey, user.email);
     const token = session.access_token;
 
     // Mirror AuthContext.ensureProfile — reviews/watchlist/lists FK to profiles(id).
@@ -628,10 +667,13 @@ async function main() {
   } finally {
     if (!args.keep) {
       try {
-        const session = await mintSession(serviceKey, user.email);
-        await cleanup(session.access_token, user.id, seeded);
+        // Reuse the session minted above (still valid — the run takes ~2min,
+        // tokens live ~1h) instead of re-minting a second one right before
+        // teardown, which just adds an avoidable network-failure point.
+        const token = session?.access_token || (await mintSession(serviceKey, user.email)).access_token;
+        await cleanup(token, user.id, seeded);
       } catch (err) {
-        console.error(`[ux-walkthrough] cleanup REST pass failed (continuing to delete auth user): ${err.message}`);
+        console.error(`[ux-walkthrough] cleanup REST pass failed (continuing to delete auth user — FK cascades cover it): ${err.message}`);
       }
       await deleteUser(serviceKey, user.id);
       console.error(`[ux-walkthrough] cleaned up synthetic user ${user.email}`);
