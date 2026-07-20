@@ -44,6 +44,11 @@ const {
 const { checkRSSFeeds } = require('./lib/rss-discovery');
 const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
+// 1 Minute Critic direct-discovery. Its RSS feed isn't in rss-discovery.js's
+// outlet list, and the T3 SERP fallback below is Broadway-only, so without
+// this per-show hook OMC coverage relies entirely on aggregator pickup —
+// which historically missed Giant/Cats/Fallen Angels/Proof at opening.
+const { discoverNewReviews: discoverOMCReviews, OUTLET_NAME: OMC_OUTLET_NAME } = require('./lib/omc-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
@@ -234,6 +239,7 @@ const FORCE_SERP = process.argv.includes('--force-serp');
 // Emergency kill-switch (rarely needed): gh variable set DISABLE_WE_SERP_BURST --body true
 const ENABLE_WE_SERP_BURST = process.env.DISABLE_WE_SERP_BURST !== 'true';
 const SKIP_SITE_SEARCH = process.argv.includes('--skip-site-search');
+const SKIP_OMC = process.argv.includes('--skip-omc');
 const VERBOSE = process.argv.includes('--verbose') || true; // Always verbose for CI logs
 // Escape hatches: bypass SERP discovery when discovery fails (wrong Google result, unindexed page)
 // CLI args take priority; falls back to shows.json fields (bwwRoundupUrl, tbReviewUrl)
@@ -1147,6 +1153,29 @@ async function runRSSFeeds(showTitle, knownUrls, openingDate = null, market = 'b
 }
 
 /**
+ * Run Layer 2b: 1 Minute Critic direct RSS discovery.
+ *
+ * Independent from Layer 2 (rss-discovery.js) — that module's feed list does
+ * not include the OMC feed, and adding it there would apply its market-gated
+ * broad matcher; OMC needs its own per-show matcher (title + date-window +
+ * `-review/`-slug guard). Runs for all markets.
+ *
+ * @param {string} showId
+ * @param {Object} show   Full show object (openingDate/previewsStartDate anchor discovery).
+ */
+async function runOMC(showId, show) {
+  console.log('\n[Layer 2b] 1 Minute Critic RSS...');
+  try {
+    const results = await discoverOMCReviews(showId, show, undefined, { verbose: VERBOSE });
+    console.log(`  [Layer 2b Total] ${results.length} reviews from ${OMC_OUTLET_NAME}`);
+    return results;
+  } catch (err) {
+    console.log(`  OMC error: ${err.message}`);
+    return [];
+  }
+}
+
+/**
  * Run Layer 3: Direct Site Search
  * @param {string} showTitle
  * @param {string[]} missingOutletIds
@@ -1440,6 +1469,7 @@ async function pollCycle() {
   // JS-rendered site-search (ScrapingBee cost) runs after, with missing-outlet filter,
   // to avoid burning SB credits on outlets already found by aggregators/RSS.
   if (SKIP_SITE_SEARCH) console.log('\n[Layer 3] Site Search... SKIPPED (--skip-site-search)');
+  if (SKIP_OMC) console.log('\n[Layer 2b] 1 Minute Critic RSS... SKIPPED (--skip-omc)');
 
   // SSR outlets are free (plain HTTP) — run unconditionally in parallel.
   // JS-rendered outlets cost SB credits — run only for still-missing outlets after parallel phase.
@@ -1455,23 +1485,25 @@ async function pollCycle() {
       })
     : [];
 
-  const [aggSettled, rssSettled, ssrSettled] = await Promise.allSettled([
+  const [aggSettled, rssSettled, ssrSettled, omcSettled] = await Promise.allSettled([
     runAggregators(show),
     runRSSFeeds(show.title, knownUrls, show.openingDate || null, market),
     ssrSiteSearchIds.length > 0
       ? runSiteSearch(show.title, ssrSiteSearchIds, knownUrls, market, show.openingDate || null, show)
       : Promise.resolve([]),
+    SKIP_OMC ? Promise.resolve([]) : runOMC(SHOW_ID, show),
   ]);
   const aggResults = aggSettled.status === 'fulfilled' ? aggSettled.value : (console.log(`  [Layer 1] ERROR: ${aggSettled.reason?.message}`), []);
   const rssResults = rssSettled.status === 'fulfilled' ? rssSettled.value : (console.log(`  [Layer 2] ERROR: ${rssSettled.reason?.message}`), []);
   const ssrSiteSearchResults = ssrSettled.status === 'fulfilled' ? ssrSettled.value : (console.log(`  [Layer 3 SSR] ERROR: ${ssrSettled.reason?.message}`), []);
+  const omcResults = omcSettled.status === 'fulfilled' ? omcSettled.value : (console.log(`  [Layer 2b] ERROR: ${omcSettled.reason?.message}`), []);
 
   // JS-rendered site-search: only for outlets still missing after parallel phase.
   // Prevents burning SB credits on outlets aggregators/RSS already found.
   let jsSiteSearchResults = [];
   if (!SKIP_SITE_SEARCH) {
     const foundAfterParallel = getFoundOutletIds(SHOW_ID);
-    for (const r of [...aggResults, ...rssResults, ...ssrSiteSearchResults]) {
+    for (const r of [...aggResults, ...rssResults, ...ssrSiteSearchResults, ...omcResults]) {
       if (r.outletId) foundAfterParallel.add(r.outletId.toLowerCase());
     }
     const missingJsIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
@@ -1554,7 +1586,7 @@ async function pollCycle() {
   let serpResults = [];
   if ((!SKIP_SERP && shouldRunSerp()) || serpBurstActive) {
     const foundOutletIds = getFoundOutletIds(SHOW_ID);
-    for (const r of [...aggResults, ...rssResults, ...siteSearchResults]) {
+    for (const r of [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults]) {
       if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
     }
     // Sort T1 before T2 so the 30-call SERP budget goes to highest-value outlets first
@@ -1699,7 +1731,7 @@ async function pollCycle() {
   // else: ENABLE_WE_SERP_BURST on but burst disallowed — the "burst not allowed" line above already logged it
 
   // ── Process discovered reviews ──
-  const allDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...serpResults];
+  const allDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...serpResults, ...omcResults];
   console.log(`\n━━━ Processing ${allDiscovered.length} discovered reviews ━━━`);
 
   const { created, skipped, rejected } = processDiscoveredReviews(
@@ -1744,7 +1776,7 @@ async function pollCycle() {
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('  POLL CYCLE RESULTS');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log(`  Discovered: ${allDiscovered.length} (agg:${aggResults.length} rss:${rssResults.length} site:${siteSearchResults.length} serp:${serpResults.length}) [parallel: layers 1-3]`);
+  console.log(`  Discovered: ${allDiscovered.length} (agg:${aggResults.length} rss:${rssResults.length} site:${siteSearchResults.length} serp:${serpResults.length} omc:${omcResults.length}) [parallel: layers 1-3+2b]`);
   console.log(`  Files created: ${created} | Skipped: ${skipped} | Rejected: ${rejected}`);
   console.log(`  Scored reviews: ${preStatus.total} → ${postStatus.total} (+${newReviews})`);
   console.log(`  T1: ${postStatus.t1} | T2: ${postStatus.t2} | Hi-conf: ${postStatus.highConfidence}`);

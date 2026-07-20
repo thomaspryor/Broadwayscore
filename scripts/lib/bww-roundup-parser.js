@@ -33,7 +33,12 @@ const NAME_CAPTURE = `${LEADING_INITIAL}${NAME_WORD}${MIDDLE_INITIAL}\\s+${NAME_
 // end before "Faith" and the next match would absorb "Faith Joe Dziemianowicz"
 // as one critic name. Mirrors the original two-word boundary pre-fix.
 const NAME_LOOKAHEAD = `${LEADING_INITIAL}${NAME_WORD}${MIDDLE_INITIAL}\\s+${NAME_WORD}`;
-const OUTLET = "[A-Za-z][A-Za-z\\s&'.]+";
+// Optional leading digit-group so digit-prefixed outlet names ("1 Minute
+// Critic", "5th Estate Theatre") parse. Without it the whole entry was
+// silently dropped AND its quote was absorbed into the previous outlet's quote
+// (the "Matthew Wexler, 1 Minute Critic:" miss). Body still requires
+// letters-only, so a stray number ending the prior quote can't be misread.
+const OUTLET = "(?:[0-9]+\\s+)?[A-Za-z][A-Za-z\\s&'.]+";
 
 const CRITIC_OUTLET_PATTERN = new RegExp(
   `(${NAME_CAPTURE}),\\s+(${OUTLET}):\\s*([^]+?)(?=(?:${NAME_LOOKAHEAD},\\s+${OUTLET}:)|Photo Credit:|$)`,
