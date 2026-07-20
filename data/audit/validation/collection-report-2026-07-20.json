@@ -1,76 +1,75 @@
 {
-  "runDate": "2026-07-20T06:30:49.014Z",
+  "runDate": "2026-07-20T06:36:13.661Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-jonathan-larson-project-off-west-end-2026",
+    "showFilter": "tender-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 0,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 1,
+    "browserbase": 1,
+    "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 2,
     "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 2,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 4,
+    "totalFailed": 7,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
-  ],
+  "processed": [],
   "failed": [
-    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
-    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
-    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
-    "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/theupcoming--unknown.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
   ],
   "tierDetails": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
-    "directCookies": [
-      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    "browserbase": [
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
     ],
+    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
-    ],
+    "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
