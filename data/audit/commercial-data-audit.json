@@ -1,15 +1,15 @@
 {
   "_meta": {
     "description": "Commercial data audit report",
-    "generatedAt": "2026-07-18T20:56:25.465Z",
+    "generatedAt": "2026-07-20T00:38:34.582Z",
     "scriptVersion": "1.0.0"
   },
   "summary": {
-    "totalEntries": 242,
-    "totalShowsInShowsJson": 2776,
+    "totalEntries": 229,
+    "totalShowsInShowsJson": 2778,
     "matchStats": {
       "matchedBySlug": 229,
-      "matchedById": 13,
+      "matchedById": 0,
       "orphaned": 0
     },
     "designationDistribution": {
@@ -17,142 +17,58 @@
       "Windfall": 18,
       "Trickle": 3,
       "Fizzle": 24,
-      "Flop": 65,
+      "Flop": 61,
       "Easy Winner": 18,
-      "TBD": 31,
-      "Nonprofit": 72,
+      "TBD": 27,
+      "Nonprofit": 67,
       "Tour Stop": 2
     },
     "recoupmentStats": {
       "recouped": 48,
-      "notRecouped": 122,
-      "nullOrMissing": 72
+      "notRecouped": 116,
+      "nullOrMissing": 65
     },
     "modelFalseNegatives": {
-      "count": 6,
+      "count": 1,
       "baseline": 2,
       "shows": [
-        "our-town",
-        "hairspray-2002",
-        "come-from-away-2017",
-        "just-for-us",
-        "giant",
-        "what-the-constitution-means-to-me-2019"
+        "our-town"
       ]
     },
     "dataCompleteness": {
-      "hasCapitalization": 129,
-      "hasWeeklyRunningCost": 83,
-      "hasCostMethodology": 136,
-      "hasSources": 170,
+      "hasCapitalization": 122,
+      "hasWeeklyRunningCost": 82,
+      "hasCostMethodology": 129,
+      "hasSources": 162,
       "hasDeepResearch": 165
     },
     "openShowCoverage": {
-      "totalOpenPreviewsShows": 180,
+      "totalOpenPreviewsShows": 174,
       "withCommercialData": 31,
-      "withoutCommercialData": 149,
-      "coveragePct": 17
+      "withoutCommercialData": 143,
+      "coveragePct": 18
     },
     "issuesSummary": {
-      "total": 327,
+      "total": 297,
       "bySeverity": {
-        "high": 6,
-        "medium": 25,
-        "low": 296
+        "high": 0,
+        "medium": 11,
+        "low": 286
       },
       "byType": {
-        "id-mismatch": 13,
-        "source-quality": 116,
+        "source-quality": 111,
         "financial-sanity": 1,
         "methodology": 8,
         "stale-data": 6,
-        "closed-show-tbd": 12,
+        "closed-show-tbd": 11,
         "nonprofit-classification": 15,
         "recoupment-pct": 1,
-        "coverage-gap": 149,
-        "model-false-negative": 6
+        "coverage-gap": 143,
+        "model-false-negative": 1
       }
     }
   },
   "issues": [
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "doubt-2024",
-      "detail": "Commercial key \"doubt-2024\" matches show ID but not slug. Show slug is \"doubt\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "i-need-that-2023",
-      "detail": "Commercial key \"i-need-that-2023\" matches show ID but not slug. Show slug is \"i-need-that\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "mary-jane-2024",
-      "detail": "Commercial key \"mary-jane-2024\" matches show ID but not slug. Show slug is \"mary-jane\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "prayer-for-the-french-republic-2024",
-      "detail": "Commercial key \"prayer-for-the-french-republic-2024\" matches show ID but not slug. Show slug is \"prayer-for-the-french-republic\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "boop-2025",
-      "detail": "Commercial key \"boop-2025\" matches show ID but not slug. Show slug is \"boop\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "operation-mincemeat-2025",
-      "detail": "Commercial key \"operation-mincemeat-2025\" matches show ID but not slug. Show slug is \"operation-mincemeat\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "death-becomes-her-2024",
-      "detail": "Commercial key \"death-becomes-her-2024\" matches show ID but not slug. Show slug is \"death-becomes-her\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "the-great-gatsby-2024",
-      "detail": "Commercial key \"the-great-gatsby-2024\" matches show ID but not slug. Show slug is \"the-great-gatsby\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "lempicka-2024",
-      "detail": "Commercial key \"lempicka-2024\" matches show ID but not slug. Show slug is \"lempicka\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "queen-versailles-2025",
-      "detail": "Commercial key \"queen-versailles-2025\" matches show ID but not slug. Show slug is \"queen-of-versailles\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "here-lies-love-2023",
-      "detail": "Commercial key \"here-lies-love-2023\" matches show ID but not slug. Show slug is \"here-lies-love\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "harry-potter-2021",
-      "detail": "Commercial key \"harry-potter-2021\" matches show ID but not slug. Show slug is \"harry-potter\". Consider renaming the key to match the slug."
-    },
-    {
-      "type": "id-mismatch",
-      "severity": "medium",
-      "showId": "becky-shaw-2026",
-      "detail": "Commercial key \"becky-shaw-2026\" matches show ID but not slug. Show slug is \"becky-shaw\". Consider renaming the key to match the slug."
-    },
     {
       "type": "source-quality",
       "severity": "low",
@@ -210,6 +126,18 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "harry-potter",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "harry-potter",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "stereophonic",
       "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
     },
@@ -247,24 +175,18 @@
       "type": "source-quality",
       "severity": "low",
       "showId": "boop",
-      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "boop",
+      "detail": "sources[3] missing date."
     },
     {
       "type": "source-quality",
       "severity": "low",
       "showId": "our-town",
-      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "death-becomes-her",
-      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "the-great-gatsby",
       "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
     },
     {
@@ -283,12 +205,6 @@
       "type": "source-quality",
       "severity": "low",
       "showId": "buena-vista-social-club",
-      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "operation-mincemeat",
       "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
     },
     {
@@ -355,7 +271,7 @@
       "type": "source-quality",
       "severity": "low",
       "showId": "queen-of-versailles",
-      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+      "detail": "sources[0] missing date."
     },
     {
       "type": "source-quality",
@@ -534,26 +450,8 @@
     {
       "type": "source-quality",
       "severity": "low",
-      "showId": "boop-2025",
-      "detail": "sources[1] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "boop-2025",
+      "showId": "lempicka",
       "detail": "sources[3] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "lempicka-2024",
-      "detail": "sources[1] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "queen-versailles-2025",
-      "detail": "sources[0] missing date."
     },
     {
       "type": "source-quality",
@@ -566,18 +464,6 @@
       "severity": "low",
       "showId": "dana-h-2021",
       "detail": "sources[0] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "harry-potter-2021",
-      "detail": "sources[1] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "harry-potter-2021",
-      "detail": "sources[2] missing date."
     },
     {
       "type": "source-quality",
@@ -907,109 +793,103 @@
       "type": "stale-data",
       "severity": "low",
       "showId": "the-great-gatsby",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (171 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (173 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "stranger-things",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (165 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (167 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "buena-vista-social-club",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (150 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (152 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "operation-mincemeat",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (171 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (173 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "two-strangers",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-11\" (157 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-11\" (159 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "maybe-happy-ending",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-03-04\" (136 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-03-04\" (138 days ago)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "death-becomes-her",
-      "detail": "Show is closed (closed 20 days ago on 2026-06-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 22 days ago on 2026-06-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "chess",
-      "detail": "Show is closed (closed 27 days ago on 2026-06-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 29 days ago on 2026-06-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "leopoldstadt-2022",
-      "detail": "Show is closed (closed 1112 days ago on 2023-07-02) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 1114 days ago on 2023-07-02) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "dog-day-afternoon",
-      "detail": "Show is closed (closed 6 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
-    },
-    {
-      "type": "closed-show-tbd",
-      "severity": "medium",
-      "showId": "death-becomes-her-2024",
-      "detail": "Show is closed (closed 20 days ago on 2026-06-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 8 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "a-christmas-carol-2019",
-      "detail": "Show is closed (closed 2386 days ago on 2020-01-05) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 2388 days ago on 2020-01-05) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-lyons-2012",
-      "detail": "Show is closed (closed 5130 days ago on 2012-07-01) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 5132 days ago on 2012-07-01) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "jerusalem-2011",
-      "detail": "Show is closed (closed 5445 days ago on 2011-08-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 5447 days ago on 2011-08-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "job-2024",
-      "detail": "Show is closed (closed 629 days ago on 2024-10-27) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 631 days ago on 2024-10-27) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "torch-song-2018",
-      "detail": "Show is closed (closed 2750 days ago on 2019-01-06) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 2752 days ago on 2019-01-06) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-fear-of-13",
-      "detail": "Show is closed (closed 6 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 8 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "celebrity-autobiography",
-      "detail": "Show is closed (closed 27 days ago on 2026-06-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 29 days ago on 2026-06-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "nonprofit-classification",
@@ -1410,12 +1290,6 @@
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "the-boy-who-harnessed-the-wind-west-end",
-      "detail": "Open/previews show \"The Boy Who Harnessed the Wind\" at Soho Place has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
       "showId": "the-phantom-of-the-opera-west-end",
       "detail": "Open/previews show \"The Phantom of the Opera\" at His Majesty's Theatre has no commercial data entry."
     },
@@ -1428,20 +1302,8 @@
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "relics-west-end",
-      "detail": "Open/previews show \"Relics\" at Lyric Hammersmith has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
       "showId": "pride-west-end",
       "detail": "Open/previews show \"Pride\" at Dorfman Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "sting-west-end",
-      "detail": "Open/previews show \"Sting\" at The Maria Theatre has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1578,12 +1440,6 @@
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "a-midsummer-nights-dream-west-end",
-      "detail": "Open/previews show \"A Midsummer Night's Dream\" at Regent's Park Open Air Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
       "showId": "tender-off-west-end",
       "detail": "Open/previews show \"Tender\" at Bush Theatre has no commercial data entry."
     },
@@ -1664,12 +1520,6 @@
       "severity": "low",
       "showId": "hot-mess-a-new-musical-off-west-end",
       "detail": "Open/previews show \"Hot Mess: A New Musical\" at The Other Palace - Main Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "glengarry-glen-ross-west-end",
-      "detail": "Open/previews show \"Glengarry Glen Ross\" at The Old Vic has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1824,12 +1674,6 @@
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "liberace-and-liza-a-tribute-west-end",
-      "detail": "Open/previews show \"Liberace & Liza: A Tribute\" at TBA has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
       "showId": "ride-the-cyclone-off-west-end",
       "detail": "Open/previews show \"Ride The Cyclone\" at Southwark Playhouse has no commercial data entry."
     },
@@ -1868,12 +1712,6 @@
       "severity": "low",
       "showId": "the-black-mirror-experience-off-broadway",
       "detail": "Open/previews show \"The Black Mirror Experience\" at The Shed has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "dad-dont-read-this-off-broadway",
-      "detail": "Open/previews show \"Dad Don't Read This\" at Greenwich House Theater  has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1962,12 +1800,6 @@
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "yes-to-the-unknown-a-night-with-gloria-steinem-off-broadway",
-      "detail": "Open/previews show \"YES TO THE UNKNOWN: A Night with Gloria Steinem\" at Audible’s Minetta Lane Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
       "showId": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway",
       "detail": "Open/previews show \"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" at Midtown E has no commercial data entry."
     },
@@ -1980,8 +1812,20 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end",
+      "detail": "Open/previews show \"The Wind in the Willows - Theatre On Kew\" at Theatre on Kew has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "the-traitors-live-experience-off-west-end",
       "detail": "Open/previews show \"The Traitors: Live Experience\" at The Traitors: Live Experience has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end",
+      "detail": "Open/previews show \"Jack and the Beanstalk - Theatre on Kew\" at Theatre on Kew has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -2003,39 +1847,9 @@
     },
     {
       "type": "model-false-negative",
-      "severity": "high",
+      "severity": "low",
       "showId": "our-town",
-      "detail": "Announced recouped (2025-01) but modelRecouped=false (range 27–51.9–75%). Count 6 vs baseline 2 — diagnose model inputs if this grows."
-    },
-    {
-      "type": "model-false-negative",
-      "severity": "high",
-      "showId": "hairspray-2002",
-      "detail": "Announced recouped (2003-05) but modelRecouped=false (range -277.4–-37.4–172.7%). Count 6 vs baseline 2 — diagnose model inputs if this grows."
-    },
-    {
-      "type": "model-false-negative",
-      "severity": "high",
-      "showId": "come-from-away-2017",
-      "detail": "Announced recouped (2017-10) but modelRecouped=false (range -450.9–33.9–360.4%). Count 6 vs baseline 2 — diagnose model inputs if this grows."
-    },
-    {
-      "type": "model-false-negative",
-      "severity": "high",
-      "showId": "just-for-us",
-      "detail": "Announced recouped (2023-10) but modelRecouped=false (range 54.8–69.3–82.6%). Count 6 vs baseline 2 — diagnose model inputs if this grows."
-    },
-    {
-      "type": "model-false-negative",
-      "severity": "high",
-      "showId": "giant",
-      "detail": "Announced recouped (2026-05) but modelRecouped=false (range 54.7–82.4–108%). Count 6 vs baseline 2 — diagnose model inputs if this grows."
-    },
-    {
-      "type": "model-false-negative",
-      "severity": "high",
-      "showId": "what-the-constitution-means-to-me-2019",
-      "detail": "Announced recouped (2019-07) but modelRecouped=false (range -243.9–-188.7–-136%). Count 6 vs baseline 2 — diagnose model inputs if this grows."
+      "detail": "Announced recouped (2025-01) but modelRecouped=false (range 55.6–83.6–109.6%). Count 1 vs baseline 2 — diagnose model inputs if this grows."
     }
   ]
 }

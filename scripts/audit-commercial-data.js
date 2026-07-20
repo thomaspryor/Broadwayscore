@@ -18,6 +18,16 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 const COMMERCIAL_FILE = path.join(DATA_DIR, 'commercial.json');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
 const OUTPUT_FILE = path.join(DATA_DIR, 'audit', 'commercial-data-audit.json');
+// S2-T1: rolling-history sibling file (mirrors check-seo-health.js's
+// seo-performance-history.json pattern). Does NOT change OUTPUT_FILE's
+// existing schema — a new file, written only when --write-history is passed
+// (see "CLI reporting flags" below). Kept flag-gated rather than
+// unconditional-on-every-run because audit-commercial-data.js's default
+// (flagless) full-report path is also invoked from update-commercial.yml
+// (manual-dispatch fallback); only commercial-weekly.yml's weekly cron is
+// meant to advance the rolling history.
+const HISTORY_FILE = path.join(DATA_DIR, 'audit', 'commercial-data-history.json');
+const HISTORY_MAX_ENTRIES = 52;
 
 // ============================================
 // Constants
@@ -128,6 +138,22 @@ function getBannedSources(data) {
   );
 }
 
+// True when an entry has no capitalization figure. Checks ONLY
+// data.capitalization itself (ship-check finding, 2026-07-19): an earlier
+// version also suppressed on capitalizationSource being set, or on
+// deepResearch.verifiedFields including 'capitalization' -- but neither
+// guarantees a NUMBER was actually found (a source note or a "verified as
+// not found" research pass could set either without capitalization ever
+// being written), which would silently hide a show that still has a real
+// gap. Currently 0 commercial.json entries hit that ambiguity, but the
+// schema doesn't distinguish "confirmed absent" from "attempted," so
+// checking capitalization directly is the only signal that can't lie.
+// Stateless recompute from commercial.json every run -- no persisted
+// "researched" list to drift out of sync with reality.
+function needsManualResearch(data) {
+  return !data.capitalization;
+}
+
 // ============================================
 // CLI reporting flags (exit before the full audit runs)
 // ============================================
@@ -154,6 +180,32 @@ if (cliArgs.includes('--list-chatgpt-sources')) {
     }
   }
   console.error(`${count} chatgpt-source entries`);
+  process.exit(0);
+}
+
+if (cliArgs.includes('--list-unresearched')) {
+  // Sorted by relevance: currently-open shows first (most reader-visible,
+  // most actionable for the owner's next Deep Research pass), then shows
+  // with an active weeklyRunningCost read (we're already tracking them
+  // financially, a capitalization gap is more actionable than for a show
+  // with no data at all), then alphabetically as a stable tiebreak.
+  const rows = [];
+  for (const [key, data] of commercialEntries) {
+    if (!needsManualResearch(data)) continue;
+    const show = showBySlug[key] || showById[key];
+    rows.push({
+      key,
+      isOpen: show?.status === 'open',
+      hasWeeklyCost: !!data.weeklyRunningCost,
+    });
+  }
+  rows.sort((a, b) => {
+    if (a.isOpen !== b.isOpen) return a.isOpen ? -1 : 1;
+    if (a.hasWeeklyCost !== b.hasWeeklyCost) return a.hasWeeklyCost ? -1 : 1;
+    return a.key.localeCompare(b.key);
+  });
+  for (const row of rows) console.log(row.key);
+  console.error(`${rows.length} shows need manual research`);
   process.exit(0);
 }
 
@@ -927,6 +979,81 @@ function checkModelFalseNegatives() {
 }
 
 // ============================================
+// Rolling history (S2-T1)
+// ============================================
+// Mirrors scripts/check-seo-health.js's loadHistory()/saveSnapshot() pattern:
+// history.push({...}) then cap at HISTORY_MAX_ENTRIES, oldest dropped first.
+
+function loadCommercialHistory() {
+  try {
+    return JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
+  } catch {
+    return [];
+  }
+}
+
+// modelDesignationFlag is a free-text contradiction note (set by
+// merge-model-recoupment.js) when the recoupment model's implied % disagrees
+// with the human-set designation, e.g. "Model: 364% vs designation: Trickle".
+function computeModelDesignationFlags() {
+  const flagged = commercialEntries
+    .filter(([, data]) => !!data.modelDesignationFlag)
+    .map(([key, data]) => ({ show: key, flag: data.modelDesignationFlag }));
+  return { count: flagged.length, entries: flagged };
+}
+
+function computeModelMethodBreakdown() {
+  const breakdown = {};
+  for (const [, data] of commercialEntries) {
+    const method = data.modelMethod || 'missing';
+    breakdown[method] = (breakdown[method] || 0) + 1;
+  }
+  return breakdown;
+}
+
+function computeAiEstimatedShows() {
+  return commercialEntries
+    .filter(([, data]) => data.modelMethod === 'ai-estimated')
+    .map(([key]) => key)
+    .sort();
+}
+
+function saveCommercialHistory() {
+  const dir = path.dirname(HISTORY_FILE);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+
+  const history = loadCommercialHistory();
+  const priorEntry = history.length > 0 ? history[history.length - 1] : null;
+  const priorAiEstimated = new Set(priorEntry?.aiEstimatedShows || []);
+
+  const modelDesignationFlags = computeModelDesignationFlags();
+  const modelMethodBreakdown = computeModelMethodBreakdown();
+  const aiEstimatedShows = computeAiEstimatedShows();
+  const currentAiEstimated = new Set(aiEstimatedShows);
+
+  // Week-over-week ai-estimated tier churn: shows that newly appeared in
+  // (entered) or left (exited) the ai-estimated tier vs the previous entry.
+  const aiEstimatedEntered = aiEstimatedShows.filter(s => !priorAiEstimated.has(s));
+  const aiEstimatedExited = [...priorAiEstimated].filter(s => !currentAiEstimated.has(s)).sort();
+
+  history.push({
+    date: new Date().toISOString(),
+    modelDesignationFlagCount: modelDesignationFlags.count,
+    modelDesignationFlags: modelDesignationFlags.entries,
+    modelMethodBreakdown,
+    aiEstimatedCount: aiEstimatedShows.length,
+    aiEstimatedShows,
+    aiEstimatedEntered,
+    aiEstimatedExited,
+  });
+  while (history.length > HISTORY_MAX_ENTRIES) history.shift();
+
+  fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2) + '\n');
+  console.log(`Saved commercial model history (${history.length} entries) to ${HISTORY_FILE}`);
+  return history;
+}
+
+// ============================================
 // RUN ALL CHECKS
 // ============================================
 
@@ -1031,6 +1158,15 @@ if (!fs.existsSync(auditDir)) {
 }
 
 fs.writeFileSync(OUTPUT_FILE, JSON.stringify(report, null, 2) + '\n');
+
+// S2-T1/S2-T2: rolling history — only advanced when explicitly requested
+// (commercial-weekly.yml's weekly cron), so ad hoc/manual full-report runs
+// elsewhere (e.g. update-commercial.yml's dispatch fallback) don't pollute
+// the weekly cadence. See HISTORY_FILE comment above for why this is
+// flag-gated rather than unconditional.
+if (cliArgs.includes('--write-history')) {
+  saveCommercialHistory();
+}
 
 // ============================================
 // Print summary

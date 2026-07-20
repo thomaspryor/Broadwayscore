@@ -67,10 +67,15 @@ jobs:
           if [ "${{ github.event.inputs.gather_only }}" = "true" ]; then
             ARGS="$ARGS --gather-only"
           fi
-          # Add SEC gathering if enabled and credentials available
-          if [ -n "$SEC_EDGAR_ENABLED" ] && [ "$SEC_EDGAR_ENABLED" != "false" ]; then
-            ARGS="$ARGS --gather-sec"
-          fi
+          # SEC EDGAR gathering (S3-T1, 2026-07-19): the previous
+          # `[ -n "$SEC_EDGAR_ENABLED" ]` shell gate checked an env var never
+          # set anywhere in this workflow (no job/step env: block, no repo
+          # secret/variable) — --gather-sec has never fired since inception.
+          # The underlying script already gates SEC gathering behind its own
+          # module-availability feature flag (scripts/update-commercial-data.js
+          # SEC_EDGAR_ENABLED, sec-edgar-scraper.js require() success), so
+          # this CLI flag just needs to always be passed.
+          ARGS="$ARGS --gather-sec"
           node scripts/update-commercial-data.js $ARGS
         # Continue even if there are Deep Research conflicts (they're logged, not failures)
         continue-on-error: true
