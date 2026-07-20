@@ -216,10 +216,12 @@ for (const vp of VIEWPORTS) {
         return !!dlg && dlg.contains(document.activeElement);
       });
       await expect.poll(inModal).toBe(true);
-      // Tab many times; focus must never escape the modal.
+      // Tab many times; focus must never escape the modal. Poll each step —
+      // the trap's wrap runs in a keydown listener, and an instant read raced
+      // it into rare false negatives (flake fix, 2026-07-19).
       for (let i = 0; i < 12; i++) {
         await page.keyboard.press('Tab');
-        expect(await inModal()).toBe(true);
+        await expect.poll(inModal).toBe(true);
       }
     });
 

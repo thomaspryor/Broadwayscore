@@ -134,6 +134,15 @@ test.describe('Click behaviors — mobile (390px)', () => {
     // CRITICAL CHECK: should still be on My Shows page, NOT navigated to show page
     expect(page.url(), 'Watchlist add navigated away from My Shows page').toContain('/my-shows');
     expect(page.url()).not.toContain('/show/');
+
+    // In-place follow-up: the just-added prompt confirms the add and offers
+    // the planned date without hunting for the entry (owner, 2026-07-19).
+    await expect(page.getByTestId('just-added-prompt')).toBeVisible();
+    await expect(page.getByTestId('just-added-prompt')).toContainText('Wicked');
+    await expect(page.getByTestId('just-added-prompt').getByRole('button', { name: 'Planned date' })).toBeVisible();
+    // Skip dismisses it.
+    await page.getByTestId('just-added-prompt').getByRole('button', { name: 'Skip' }).click();
+    await expect(page.getByTestId('just-added-prompt')).not.toBeVisible();
   });
 
   test('diary "Add show" search navigates to show page for rating', async ({ page }) => {
