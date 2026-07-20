@@ -256,9 +256,10 @@ test.describe('My Shows — Tabs', () => {
     await page.getByRole('tab', { name: /Watchlist/ }).click();
     // URL should update
     await expect(page).toHaveURL(/tab=watchlist/);
-    // Watchlist defaults to grid — check poster images exist (no h4 in grid)
+    // Watchlist defaults to grid — poster cards for upcoming/undated entries;
+    // past-dated ones render as To Be Rated rows since 2026-07-20.
     const posters = page.locator('.aspect-\\[2\\/3\\]');
-    expect(await posters.count()).toBeGreaterThanOrEqual(6);
+    expect(await posters.count()).toBeGreaterThanOrEqual(4);
     // Switch to list view and verify titles
     await page.getByRole('button', { name: 'List view' }).click();
     await expect(page.getByRole('heading', { name: 'Gypsy', level: 4 })).toBeVisible();
@@ -380,10 +381,13 @@ test.describe('My Shows — Delete Flow', () => {
 test.describe('My Shows — Watchlist', () => {
   test('shows all 6 watchlist items', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Grid view: count poster cards (aspect-[2/3] areas, excluding AddShowCard)
+    // Since the 2026-07-20 restructure, past-dated entries render as To Be
+    // Rated ROWS (no poster card): mock has 6 entries, 2 past-dated → 4
+    // poster cards + 2 rows, all 6 titles visible in list view.
     const posters = page.locator('[role="tabpanel"] .aspect-\\[2\\/3\\]');
-    expect(await posters.count()).toBeGreaterThanOrEqual(6);
-    // Switch to list view to verify titles are present
+    expect(await posters.count()).toBeGreaterThanOrEqual(4);
+    await expect(page.getByRole('heading', { name: 'To Be Rated' })).toBeVisible();
+    // Switch to list view to verify all titles are present
     await page.getByRole('button', { name: 'List view' }).click();
     const titles = page.locator('[role="tabpanel"] h4');
     expect(await titles.count()).toBeGreaterThanOrEqual(6);
