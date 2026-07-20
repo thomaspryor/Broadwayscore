@@ -14,7 +14,7 @@
     "processed": 0,
     "failed": 14,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -23,7 +23,7 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
@@ -50,7 +50,9 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+  ],
   "failed": [
     "heathers-the-musical-off-west-end-2026/hollywood-reporter--david-rooney.json",
     "heathers-the-musical-off-west-end-2026/nytimes--ben-brantley.json",
@@ -74,7 +76,9 @@
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
