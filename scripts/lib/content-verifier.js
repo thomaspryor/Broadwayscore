@@ -395,7 +395,7 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
   // Venue context expands known renames ("His Majesty's" → "formerly Her Majesty's...")
   // so the LLM doesn't flag legitimate pre-rename reviews as wrongProduction.
   // See memory WE long-runner CV hardening card 34c637c5-416f-812b.
-  const venueContext = venue ? `\n- ${mc.venueLabel}: ${_expandVenueContext(venue)}` : '';
+  const venueContext = venue ? `\n- ${mc.venueLabel}: ${_expandVenueContext(venue, effectiveMarket)}` : '';
   const excerptContext = excerpt ? `\n- Known excerpt: "${excerpt.substring(0, 300)}"` : '';
 
   // Temporal proximity: if review published within 30 days of opening, very likely correct production
