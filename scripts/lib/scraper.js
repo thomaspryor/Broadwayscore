@@ -86,6 +86,7 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
   'stagebuddy.com',     // WordPress blog — free Playwright works reliably
   'londontheatre.co.uk', // React SPA (Material-UI) — BD returns empty, Playwright renders JS
   'bachtrack.com',      // review body (.pcm-walled-full) renders only in a real browser; BD/SB (even render_js) get a shell with meta description only. Verified Playwright renders full body 2026-07-13 (Met opera backfill)
+  'todaytix.com',       // Public server-rendered show pages (run time, metadata) — no anti-bot; keeps bulk runtime audits off BD/SB credits
 ]);
 
 // --- Domains where ScrapingBee MUST use render_js=true (JS-rendered content) ---
