@@ -10,7 +10,7 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
-const { isRealUrl, isUnsourcedRecouped } = require('../../scripts/lib/commercial-citation-guards');
+const { isRealUrl, isUnsourcedRecouped, UNSOURCEABLE_RECOUPMENT_EXCEPTIONS } = require('../../scripts/lib/commercial-citation-guards');
 
 describe('isRealUrl', () => {
   it('accepts http and https URLs', () => {
@@ -31,6 +31,14 @@ describe('isRealUrl', () => {
   it('rejects non-string values', () => {
     assert.equal(isRealUrl(12345), false);
     assert.equal(isRealUrl({ url: 'https://example.com' }), false);
+  });
+
+  it('accepts a URL followed by explanatory prose (the shape this session wrote for moulin-rouge/hadestown)', () => {
+    assert.equal(isRealUrl('https://www.broadwaynews.com/moulin-rouge-recoups-on-broadway/ (Broadway News, citing SEC filing: recouped Nov 2022, $28M capitalization)'), true);
+  });
+
+  it('does not treat a URL embedded mid-sentence (no leading match) as real', () => {
+    assert.equal(isRealUrl('per https://example.com/article'), false);
   });
 });
 
@@ -80,5 +88,26 @@ describe('isUnsourcedRecouped', () => {
     assert.equal(isUnsourcedRecouped(null), false);
     assert.equal(isUnsourcedRecouped(undefined), false);
     assert.equal(isUnsourcedRecouped({}), false);
+  });
+
+  it('a show in UNSOURCEABLE_RECOUPMENT_EXCEPTIONS is never flagged, even with no citation at all', () => {
+    const [exemptKey] = Object.keys(UNSOURCEABLE_RECOUPMENT_EXCEPTIONS);
+    const data = { recouped: true, recoupedSource: null, sources: [] };
+    // Sanity: the same data WOULD be flagged for a non-exempt key...
+    assert.equal(isUnsourcedRecouped(data, 'not-the-exempt-key'), true);
+    // ...but is suppressed once the key matches the allowlist.
+    assert.equal(isUnsourcedRecouped(data, exemptKey), false);
+  });
+
+  it('a show NOT in the exceptions list is still flagged even with a similar shape', () => {
+    const data = { recouped: true, recoupedSource: null, sources: [] };
+    assert.equal(isUnsourcedRecouped(data, 'some-other-show'), true);
+  });
+
+  it('every exception entry has a non-empty human-readable reason', () => {
+    for (const [key, reason] of Object.entries(UNSOURCEABLE_RECOUPMENT_EXCEPTIONS)) {
+      assert.equal(typeof reason, 'string', `${key} reason must be a string`);
+      assert.ok(reason.length > 20, `${key} reason must be a real explanation, not a stub`);
+    }
   });
 });

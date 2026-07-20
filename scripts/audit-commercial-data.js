@@ -158,7 +158,7 @@ const cliArgs = process.argv.slice(2);
 if (cliArgs.includes('--list-unsourced-recouped')) {
   let count = 0;
   for (const [key, data] of commercialEntries) {
-    if (!isUnsourcedRecouped(data)) continue;
+    if (!isUnsourcedRecouped(data, key)) continue;
     console.log(key);
     count++;
   }
@@ -208,7 +208,7 @@ if (cliArgs.includes('--strict')) {
   let violationCount = 0;
 
   for (const [key, data] of commercialEntries) {
-    if (isUnsourcedRecouped(data)) {
+    if (isUnsourcedRecouped(data, key)) {
       console.error(`${key}: recouped=true with no recoupedSource and no sourced sources[].url`);
       violationCount++;
     }

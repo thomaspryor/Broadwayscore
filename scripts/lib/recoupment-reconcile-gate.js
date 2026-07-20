@@ -22,14 +22,14 @@ function normalizeRecoupedDate(raw) {
 
 // A pending recouped-claim entry is a stale duplicate when commercial.json
 // already carries recouped:true for the same slug AND that existing entry
-// carries an actual sources[].url citation (not just prose in
-// recoupedSource) — i.e. some prior pipeline (Friday scraper, deep-research,
-// manual apply) already resolved and machine-verifiably cited this claim,
-// and the pending copy is just leftover. Deliberately stricter than
-// audit-commercial-data.js's isUnsourcedRecouped (which also accepts prose
-// recoupedSource as "sourced") — closing a pending entry with no new
-// verification should require the same bar the reconciler itself writes
-// (a fetched, trusted-host URL), not take someone else's prose on faith.
+// carries an actual sources[].url citation — i.e. some prior pipeline
+// (Friday scraper, deep-research, manual apply) already resolved and
+// machine-verifiably cited this claim, and the pending copy is just
+// leftover. As of 2026-07-20 this uses the SAME bar as
+// audit-commercial-data.js's isUnsourcedRecouped (a real, extractable URL in
+// recoupedSource or sources[].url; see scripts/lib/commercial-citation-guards.js)
+// — previously that check also accepted plain-text prose as "sourced", which
+// this reconciler deliberately did not; the gap has since closed.
 //
 // pendingEntry is optional but strongly recommended: if the pending claim
 // carries its own recoupedDate and it names a DIFFERENT year than the
