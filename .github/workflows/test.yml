@@ -240,6 +240,17 @@ on:
       # scripts/test-opening-night-fixes.js (run in the opening-night step). Without these,
       # changes to core discovery/scoring-guard logic push with ZERO CI coverage.
       - 'scripts/lib/url-discovery.js'
+      # Cost round-2 (plan: claude-outputs/2026-07-19-scraping-cost-round2-plan.md
+      # Step 0): every file the SD-fix + direct-SB-migration workstreams touch
+      # must be path-listed BEFORE edits land, or those edits ship with ZERO CI
+      # (allow-list gate, feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/scraper.js'
+      - 'scripts/scrape-show-score-audience.js'
+      - 'scripts/check-cookie-health.js'
+      - 'scripts/recollect-for-scores.js'
+      - 'scripts/lib/ibdb-dates.js'
+      - 'scripts/lib/ibdb-cast.js'
+      - 'scripts/probe-scrapingdog-billing.js'
       # SERP provider-chain ordering + SB-SERP skip (invisible-burn fix 2026-07).
       # Colocated test runs in the lib-test glob; path-listed so a solo edit
       # triggers CI (allow-list gate).

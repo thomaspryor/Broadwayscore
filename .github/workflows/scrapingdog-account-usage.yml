@@ -8,6 +8,13 @@ name: Scrapingdog Account Usage
 
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "usage = read-only account readout; billing-probe = A0 gate (fires ~7 SD calls incl. deliberate failures, ≤25 credits) — see scripts/probe-scrapingdog-billing.js"
+        required: false
+        type: choice
+        default: usage
+        options: [usage, billing-probe]
 
 permissions:
   contents: read
@@ -15,9 +22,24 @@ permissions:
 jobs:
   usage:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
+      - uses: actions/checkout@v5
+        if: ${{ inputs.mode == 'billing-probe' }}
+      - uses: actions/setup-node@v5
+        if: ${{ inputs.mode == 'billing-probe' }}
+        with:
+          node-version: 20
+      - name: Install dependencies
+        if: ${{ inputs.mode == 'billing-probe' }}
+        run: npm ci --ignore-scripts
+      - name: Billing probe (A0)
+        if: ${{ inputs.mode == 'billing-probe' }}
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: node scripts/probe-scrapingdog-billing.js
       - name: Fetch account usage
+        if: ${{ inputs.mode != 'billing-probe' }}
         env:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
         run: |
