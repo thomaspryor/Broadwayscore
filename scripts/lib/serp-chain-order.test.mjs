@@ -36,23 +36,32 @@ test('unknown skip entries are ignored', () => {
 // shouldAcceptEmptyScrapingdogSerp — task #213 empty-authoritative mode.
 // Sizing: 10-run CI log sample showed 88% of BD SERP calls were preceded by
 // an SD SERP call that SUCCEEDED with 0 organic results, not an SD failure.
+//
+// Second arg is emptyAuthoritative (default true), NOT preferSpeed — a
+// codebase-review pass found opening-night-poller.js (the one flow where
+// empty can mean "not published yet") calls with preferSpeed:false, so
+// gating on preferSpeed would have left that exact flow unprotected.
 
-test('routine query: SD success with 0 results is accepted (no BD/SB fallback)', () => {
-  assert.equal(shouldAcceptEmptyScrapingdogSerp([], false), true);
+test('default (emptyAuthoritative=true): SD success with 0 results is accepted (no BD/SB fallback)', () => {
+  assert.equal(shouldAcceptEmptyScrapingdogSerp([], true), true);
 });
 
-test('routine query: SD success with results is not the empty-authoritative path', () => {
-  assert.equal(shouldAcceptEmptyScrapingdogSerp([{ url: 'https://example.com' }], false), false);
+test('emptyAuthoritative omitted (undefined) defaults to accept, matching _serpWithChain default', () => {
+  assert.equal(shouldAcceptEmptyScrapingdogSerp([], undefined), true);
 });
 
-test('routine query: SD failure (null) always falls through to BD/SB', () => {
-  assert.equal(shouldAcceptEmptyScrapingdogSerp(null, false), false);
+test('SD success with results is not the empty-authoritative path', () => {
+  assert.equal(shouldAcceptEmptyScrapingdogSerp([{ url: 'https://example.com' }], true), false);
 });
 
-test('preferSpeed (opening-night polling): empty SD is NOT authoritative — must still check BD/SB', () => {
-  assert.equal(shouldAcceptEmptyScrapingdogSerp([], true), false);
-});
-
-test('preferSpeed: SD failure (null) still falls through to BD/SB', () => {
+test('SD failure (null) always falls through to BD/SB', () => {
   assert.equal(shouldAcceptEmptyScrapingdogSerp(null, true), false);
+});
+
+test('emptyAuthoritative:false (opening-night-poller.js): empty SD is NOT authoritative — must still check BD/SB', () => {
+  assert.equal(shouldAcceptEmptyScrapingdogSerp([], false), false);
+});
+
+test('emptyAuthoritative:false: SD failure (null) still falls through to BD/SB', () => {
+  assert.equal(shouldAcceptEmptyScrapingdogSerp(null, false), false);
 });

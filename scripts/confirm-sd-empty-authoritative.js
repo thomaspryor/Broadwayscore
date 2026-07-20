@@ -4,10 +4,15 @@
  *
  * Verifies the empty-authoritative fix in url-discovery.js's _serpWithChain:
  * a Scrapingdog SERP call that SUCCEEDS with 0 organic results should be
- * accepted (provider: 'scrapingdog-empty') on routine queries, but must still
- * fall through to BD/SB on preferSpeed (opening-night) queries. Log analysis
- * (2026-07-19/20, 10 CI runs) showed 88% of BD SERP calls were preceded by
- * exactly the case this fix now short-circuits.
+ * accepted (provider: 'scrapingdog-empty') by default, but must still fall
+ * through to BD/SB when emptyAuthoritative:false (the opening-night-poller.js
+ * flow, where empty can mean "not published yet" rather than a genuine zero).
+ * Log analysis (2026-07-19/20, 10 CI runs) showed 88% of BD SERP calls were
+ * preceded by exactly the case this fix now short-circuits.
+ *
+ * NOTE: this is NOT preferSpeed — a codebase-review pass found
+ * opening-night-poller.js calls with preferSpeed:false, so the exemption is
+ * wired as its own explicit option (see shouldAcceptEmptyScrapingdogSerp).
  *
  * Dispatched via scrapingdog-account-usage.yml (mode=confirm-empty-authoritative)
  * since SCRAPINGDOG_API_KEY only exists as a CI secret. Cost: ~5-8 SD SERP
@@ -21,31 +26,31 @@ const { serpQuery } = require('./lib/url-discovery');
 
 // A query near-guaranteed to have 0 organic Google results — the empty-
 // authoritative candidate. A generic query near-guaranteed to have results —
-// the non-empty control. Both run under routine (preferSpeed=false) and
-// opening-night (preferSpeed=true) modes.
+// the non-empty control. Both run under default (emptyAuthoritative=true) and
+// opted-out (emptyAuthoritative=false, opening-night-poller.js's mode).
 const NONSENSE_QUERY = 'zzqxvbroadwayscorecardnonexistentquerystring987654321';
 const CONTROL_QUERY = 'broadway theater reviews';
 
 async function run() {
   const results = [];
 
-  for (const preferSpeed of [false, true]) {
+  for (const emptyAuthoritative of [true, false]) {
     for (const [label, query] of [['empty-candidate', NONSENSE_QUERY], ['control-nonempty', CONTROL_QUERY]]) {
-      const { results: hits, provider } = await serpQuery(query, { preferSpeed });
-      results.push({ preferSpeed, label, provider, hitCount: Array.isArray(hits) ? hits.length : null });
+      const { results: hits, provider } = await serpQuery(query, { emptyAuthoritative });
+      results.push({ emptyAuthoritative, label, provider, hitCount: Array.isArray(hits) ? hits.length : null });
     }
   }
 
   console.log(JSON.stringify(results, null, 2));
 
-  const empty_routine = results.find(r => !r.preferSpeed && r.label === 'empty-candidate');
-  const empty_speed = results.find(r => r.preferSpeed && r.label === 'empty-candidate');
-  const control_routine = results.find(r => !r.preferSpeed && r.label === 'control-nonempty');
+  const empty_default = results.find(r => r.emptyAuthoritative && r.label === 'empty-candidate');
+  const empty_optedOut = results.find(r => !r.emptyAuthoritative && r.label === 'empty-candidate');
+  const control_default = results.find(r => r.emptyAuthoritative && r.label === 'control-nonempty');
 
   const checks = [
-    { name: 'routine empty query accepted as scrapingdog-empty (no BD/SB)', pass: empty_routine?.provider === 'scrapingdog-empty' },
-    { name: 'preferSpeed empty query does NOT stop at scrapingdog-empty', pass: empty_speed?.provider !== 'scrapingdog-empty' },
-    { name: 'routine control query returns real hits via scrapingdog', pass: control_routine?.provider === 'scrapingdog' && control_routine?.hitCount > 0 },
+    { name: 'default (emptyAuthoritative=true): empty query accepted as scrapingdog-empty (no BD/SB)', pass: empty_default?.provider === 'scrapingdog-empty' },
+    { name: 'emptyAuthoritative=false: empty query does NOT stop at scrapingdog-empty', pass: empty_optedOut?.provider !== 'scrapingdog-empty' },
+    { name: 'default: control query returns real hits via scrapingdog', pass: control_default?.provider === 'scrapingdog' && control_default?.hitCount > 0 },
   ];
 
   console.log('\n--- Verdict ---');

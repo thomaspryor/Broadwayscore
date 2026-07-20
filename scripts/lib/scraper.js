@@ -360,7 +360,11 @@ async function fetchWithScrapingdog(url, options = {}) {
     return null;
   }
 
-  await _checkScrapingdogQuotaOnce();
+  // Fire-and-forget (not awaited): a live /account HTTP round-trip must never
+  // add latency to the scraping hot path, especially opening-night polling.
+  // The very first SD call in a process may proceed before the check resolves
+  // — acceptable, since this is a soft daily-pace breaker, not a hard limit.
+  _checkScrapingdogQuotaOnce();
   if (_sdQuotaExceeded) {
     return null;
   }
@@ -381,10 +385,6 @@ async function fetchWithScrapingdog(url, options = {}) {
     return null;
   }
 
-  // Count credit spend before the call — like SB, the provider charges on error too.
-  _scraperStats.sdRequests++;
-  _scraperStats.sdCredits += creditCost;
-
   const params = new URLSearchParams({
     api_key: SCRAPINGDOG_API_KEY,
     url,
@@ -403,20 +403,41 @@ async function fetchWithScrapingdog(url, options = {}) {
   // handles those domains instead (task #213 A2).
   const MAX_ATTEMPTS = 2;
   let lastError = null;
+  let attemptsMade = 0;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    // Budget guard + credit accounting per attempt (not once up front) — a
+    // retried call can bill twice, and the local ledger/SD_CREDIT_BUDGET must
+    // reflect the worst case, not just the first attempt (codebase-review finding).
+    if (SD_CREDIT_BUDGET > 0 && _scraperStats.sdCredits + creditCost > SD_CREDIT_BUDGET) {
+      if (!_scraperStats.sdBudgetExceeded) {
+        console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD for remaining requests`);
+      }
+      _scraperStats.sdBudgetExceeded = true;
+      if (attemptsMade === 0) return null;
+      break;
+    }
+    _scraperStats.sdRequests++;
+    _scraperStats.sdCredits += creditCost;
+    attemptsMade++;
     try {
       const response = await new Promise((resolve, reject) => {
-        https.get(apiUrl, (res) => {
+        // Explicit timeout: without one, a hung SD request waits indefinitely —
+        // and now that a transient failure retries once, an unbounded first
+        // attempt could block the retry from ever running. 45s matches the
+        // longest observed SD render/premium latency.
+        const req = https.get(apiUrl, { timeout: 45000 }, (res) => {
           let data = '';
           res.on('data', chunk => data += chunk);
           res.on('end', () => {
             if (res.statusCode === 200) resolve(data);
             else reject(new Error(`Scrapingdog HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
           });
-        }).on('error', reject);
+        });
+        req.on('error', reject);
+        req.on('timeout', () => { req.destroy(); reject(new Error('Scrapingdog request timeout')); });
       });
 
-      recordSdCall({ url, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: true, status: 200, credits: creditCost });
+      recordSdCall({ url, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: true, status: 200, credits: creditCost * attemptsMade });
       return {
         content: response,
         format: 'html',
@@ -431,7 +452,7 @@ async function fetchWithScrapingdog(url, options = {}) {
   }
 
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-  recordSdCall({ host: hostname, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost });
+  recordSdCall({ host: hostname, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade });
   console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}, domain=${hostname}): ${lastError.message}`);
   return null;
 }
