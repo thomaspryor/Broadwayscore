@@ -23,12 +23,16 @@ export default function robots(): MetadataRoute.Robots {
       // AI search bots (ALLOWED — shows us in AI search results with citations)
       { userAgent: 'OAI-SearchBot', allow: '/', disallow: '/admin/' },
       { userAgent: 'PerplexityBot', allow: '/', disallow: '/admin/' },
+      // ClaudeBot: allowed 2026-07-19 (owner decision) — Anthropic has no
+      // retrieval/training crawler split, and blocking it removed the site from
+      // Claude's answers entirely. CCBot: allowed same date so the domain enters
+      // the Common Crawl graph (authority measurement + smaller AI search tools).
+      { userAgent: 'ClaudeBot', allow: '/', disallow: '/admin/' },
+      { userAgent: 'CCBot', allow: '/', disallow: '/admin/' },
       // AI training crawlers (BLOCKED — prevent content from training AI models)
       { userAgent: 'GPTBot', disallow: '/' },
       { userAgent: 'Google-Extended', disallow: '/' },
-      { userAgent: 'CCBot', disallow: '/' },
       { userAgent: 'anthropic-ai', disallow: '/' },
-      { userAgent: 'ClaudeBot', disallow: '/' },
       { userAgent: 'Bytespider', disallow: '/' },
       { userAgent: 'Cohere-ai', disallow: '/' },
       { userAgent: 'Meta-ExternalAgent', disallow: '/' },
