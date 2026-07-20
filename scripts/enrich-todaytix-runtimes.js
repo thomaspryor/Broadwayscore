@@ -1,19 +1,22 @@
 #!/usr/bin/env node
 /**
- * Enrich shows.json with runtime data from TodayTix API.
+ * Enrich shows.json with runtime data from TodayTix.
  *
- * Fetches individual show detail pages from TodayTix for shows that have
- * a todaytixId but no runtime. TodayTix returns structured runtime data
- * as { runningTime: { minutes: N, display: "N minutes" } }.
+ * Runtime source: the show PAGE's displayed run time (Contentful CMS field),
+ * NOT the REST API's runningTime — the API can be stale (Birthright 2026-07:
+ * API said 90 min, page said 3hr 30min). See scripts/lib/todaytix-runtime.js.
+ * The API is still used for age recommendation and as a runtime fallback when
+ * the page has no parseable run time.
  *
- * Also extracts age recommendation from show descriptions when available.
- *
- * Usage: node scripts/enrich-todaytix-runtimes.js [--dry-run] [--category=off-broadway|west-end|broadway]
+ * Usage: node scripts/enrich-todaytix-runtimes.js [--dry-run] [--category=off-broadway|west-end|broadway] [--limit=N]
  */
 
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { fetchPage, cleanup } = require('./lib/scraper');
+const { extractRunTimeDisplay, parseRunTimeDisplay, todaytixPageUrl } = require('./lib/todaytix-runtime');
+const { atomicWriteShowsJson } = require('./lib/atomic-shows-write');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -99,6 +102,9 @@ async function main() {
     console.log(`Filtering to category: ${CATEGORY_FILTER}`);
   }
 
+  const limit = parseInt(process.argv.find(a => a.startsWith('--limit='))?.split('=')[1] || '0', 10);
+  if (limit > 0) targets = targets.slice(0, limit);
+
   console.log(`Total shows: ${shows.length}`);
   console.log(`Targets (has TodayTix ID, needs runtime or age rec): ${targets.length}`);
   console.log(`DRY_RUN: ${DRY_RUN}\n`);
@@ -123,9 +129,25 @@ async function main() {
 
       const parts = [];
 
-      // Runtime (only if show doesn't have one yet)
+      // Runtime (only if show doesn't have one yet).
+      // Prefer the show PAGE's displayed run time — the API's runningTime is
+      // often stale. Fall back to the API only when the page yields nothing.
       if (!show.runtime) {
-        if (ttShow.runningTime && ttShow.runningTime.minutes) {
+        let pageRuntime = null;
+        const pageUrl = todaytixPageUrl(show);
+        try {
+          const pageResult = await fetchPage(pageUrl, { renderJs: false, fast: true });
+          pageRuntime = parseRunTimeDisplay(extractRunTimeDisplay(pageResult && pageResult.content));
+        } catch { /* fall through to API */ }
+
+        if (pageRuntime) {
+          if (!DRY_RUN) {
+            show.runtime = pageRuntime.runtime;
+            if (pageRuntime.intermissions != null) show.intermissions = pageRuntime.intermissions;
+          }
+          parts.push(`runtime=${pageRuntime.runtime} (page)`);
+          runtimeEnriched++;
+        } else if (ttShow.runningTime && ttShow.runningTime.minutes) {
           const mins = ttShow.runningTime.minutes;
           const display = ttShow.runningTime.display || '';
 
@@ -190,6 +212,8 @@ async function main() {
     await new Promise(r => setTimeout(r, 300));
   }
 
+  await cleanup();
+
   console.log(`\n=== Summary ===`);
   console.log(`Runtime enriched: ${runtimeEnriched}`);
   console.log(`Age recommendation enriched: ${ageEnriched}`);
@@ -197,7 +221,7 @@ async function main() {
   console.log(`Errors: ${errors}`);
 
   if (!DRY_RUN && (runtimeEnriched > 0 || ageEnriched > 0)) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    atomicWriteShowsJson(SHOWS_PATH, showsData);
     console.log(`\nshows.json updated.`);
   } else if (DRY_RUN) {
     console.log(`\n(dry run — no files written)`);
