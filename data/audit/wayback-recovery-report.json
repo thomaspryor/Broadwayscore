@@ -1,20 +1,22 @@
 {
-  "totalCandidates": 1,
-  "cdxFound": 0,
-  "cdxNotFound": 1,
-  "recovered": 0,
+  "totalCandidates": 11,
+  "cdxFound": 3,
+  "cdxNotFound": 3,
+  "recovered": 3,
   "recoveredByTier": {
-    "1": 0,
+    "1": 3,
     "2": 0,
     "3": 0
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "wsj.com": 3
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 0,
-  "notInArchive": 1,
+  "errors": 5,
+  "notInArchive": 3,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
