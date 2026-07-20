@@ -51,6 +51,13 @@ function restoreFromSnapshot(filepath, snapshot) {
 }
 
 function atomicWrite(filepath, contents) {
+  // Resolve symlinks: rename() onto a symlink replaces the link with a regular
+  // file, orphaning the real target (same trap fixed in atomic-shows-write.js).
+  try {
+    filepath = fs.realpathSync(filepath);
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
+  }
   const dir = path.dirname(filepath);
   const tmp = path.join(dir, `.${path.basename(filepath)}.tmp.${process.pid}.${Date.now()}`);
   fs.writeFileSync(tmp, contents);
