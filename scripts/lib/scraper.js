@@ -807,8 +807,8 @@ async function fetchPage(url, options = {}) {
     }
   }
 
-  // Fall back to ScrapingBee (skip if credits exhausted, budget exceeded, or domain-skipped)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !skips.has('scrapingbee')) {
+  // Fall back to ScrapingBee (skip if credits exhausted, budget exceeded, page-exhausted, or domain-skipped)
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted && !skips.has('scrapingbee')) {
     console.log('  → Trying ScrapingBee...');
     const raw = await fetchWithScrapingBee(url, options);
     if (raw) {
@@ -869,7 +869,7 @@ async function fetchJSON(url, options = {}) {
   const headers = { Accept: 'application/json', ...options.headers };
 
   // Try ScrapingBee first (cheapest: 1 credit with render_js=false)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded) {
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted) {
     try {
       const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
       const response = await new Promise((resolve, reject) => {
@@ -878,7 +878,11 @@ async function fetchJSON(url, options = {}) {
           res.on('data', chunk => data += chunk);
           res.on('end', () => {
             if (res.statusCode === 200) resolve(data);
-            else reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
+            else {
+              const err = new Error(`ScrapingBee HTTP ${res.statusCode}`);
+              err.statusCode = res.statusCode;
+              reject(err);
+            }
           });
         }).on('error', reject);
       });
@@ -889,6 +893,10 @@ async function fetchJSON(url, options = {}) {
     } catch (err) {
       recordSbCall({ url, fn: 'json', success: false, status: (err.message || 'error').slice(0, 80), credits: 1 });
       console.log(`  fetchJSON ScrapingBee failed: ${err.message}`);
+      if ([401, 403, 429].includes(err.statusCode)) {
+        _scrapingBeePageExhausted = true;
+        console.warn(`  ⚠️  ScrapingBee disabled for the rest of this process (HTTP ${err.statusCode})`);
+      }
     }
   }
 
