@@ -35,7 +35,9 @@ permissions:
 jobs:
   enrich-runtimes:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # The TodayTix page audit fetches ~250 show pages via Playwright (~25 min
+    # observed 2026-07-20 — run 29749778141 finished at 29 of 30 min).
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v5
