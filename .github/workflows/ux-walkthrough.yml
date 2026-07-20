@@ -1,0 +1,126 @@
+name: Nightly UX Walkthrough
+
+# Signed-in UX walkthrough: mints a throwaway @bsc-test.dev user, seeds
+# realistic diary/watchlist/list data, captures a screenshot matrix of the
+# signed-in surfaces on demo.broadwayscorecard.com, and runs them past a
+# 3-model vision review panel (GPT-4o, Gemini, Claude). Findings 2-of-3
+# models agree on get filed as Notion cards automatically. See card #219 —
+# this catches flow/consistency/affordance/hierarchy issues that narrow e2e
+# assertions miss (they only check that a POST succeeded, not how it looks).
+#
+# Runs after the daily UGC round-trip (same throwaway-user infra, so a dead
+# Supabase project fails there first with its own self-heal). No separate
+# schedule trigger — that would fire on the SAME success path as workflow_run
+# every day (ship-check finding, 2026-07-20: schedule at 13:35 + workflow_run
+# off UGC's 13:17 both pass the `if:` gate below on a normal day), doubling
+# synthetic-user churn and 3-model LLM cost for no benefit. If UGC Auth
+# Round-trip itself ever stops firing, that's caught by its own cron-health
+# entry, not by duplicating this workflow's trigger.
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ['UGC Auth Round-trip']
+    types: [completed]
+
+concurrency:
+  group: ux-walkthrough
+  cancel-in-progress: false
+
+jobs:
+  walkthrough:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-node
+
+      - uses: ./.github/actions/setup-playwright
+        with:
+          browsers: chromium
+
+      - name: Run walkthrough
+        id: walkthrough
+        continue-on-error: true
+        run: node scripts/ux-walkthrough.mjs --out ux-walkthrough-run
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+
+      - name: Upload screenshot + review artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ux-walkthrough-${{ github.run_id }}
+          path: ux-walkthrough-run/
+          retention-days: 14
+          if-no-files-found: ignore
+
+      - name: Check for high-priority findings
+        id: findings
+        if: steps.walkthrough.outcome == 'success'
+        run: |
+          node -e "
+            const fs = require('fs');
+            const path = 'ux-walkthrough-run/review.json';
+            if (!fs.existsSync(path)) { console.log('no review.json (skip-review or panel failure)'); process.exit(0); }
+            const { deduped, filed } = JSON.parse(fs.readFileSync(path, 'utf8'));
+            const filedSet = new Set(filed);
+            const highPriority = (deduped || []).filter(f => filedSet.has(\`UX audit: \${f.summary}\`.slice(0, 120)) && f.severity === 'high');
+            console.log(\`filed=\${(filed||[]).length} highPriority=\${highPriority.length}\`);
+            const summary = highPriority.map(f => \`- [\${f.agreementCount}/3] \${f.summary}\`).join('\n');
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, \`has_high=\${highPriority.length > 0}\n\`);
+            if (summary) {
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, 'summary<<EOF\n' + summary + '\nEOF\n');
+            }
+          "
+
+      - name: Email digest — high-priority findings only
+        if: steps.findings.outputs.has_high == 'true'
+        uses: actions/github-script@v7
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Passed via env, NOT spliced into the script string below — the
+          # summary is LLM-authored text and could contain backticks/${...}
+          # that would break or inject into the JS template literal
+          # (ship-check finding, 2026-07-20).
+          FINDINGS_SUMMARY: ${{ steps.findings.outputs.summary }}
+        with:
+          script: |
+            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await sendAlert({
+              title: 'UX walkthrough: high-priority finding(s) filed',
+              description: process.env.FINDINGS_SUMMARY || '',
+              severity: 'error',
+              email: true,
+              url: runUrl,
+              fields: [{ name: 'Run', value: `[View screenshots + findings](${runUrl})` }],
+            }).catch(e => console.error('Digest email failed:', e.message));
+
+      - name: Fail job if walkthrough errored
+        if: steps.walkthrough.outcome == 'failure'
+        run: |
+          echo "::error::UX walkthrough failed — synthetic user cleanup still runs in the script's finally block. Check the run log for which phase (auth/seed/capture/panel) failed."
+          exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Nightly UX Walkthrough Failed'
+          description: 'Signed-in screenshot matrix or review panel failed — check auth minting, seeding, or Playwright capture in the run log.'
+          severity: 'error'
+          email: 'true'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
