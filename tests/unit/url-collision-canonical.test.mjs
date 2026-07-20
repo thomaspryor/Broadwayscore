@@ -34,3 +34,24 @@ test('a short (<500) new body defers to collider even if collider is empty', () 
 test('unreadable collider (null) falls back to marking duplicate', () => {
   assert.equal(shouldMarkUrlCollisionDuplicate({ fullText: body(3000) }, null), true);
 });
+
+test('a _duplicateOfCleared breadcrumb blocks re-marking, even for a thin file', () => {
+  // betrayal-2013 guardian--david-cote: a prior pass cleared the collision as
+  // different-critics-same-URL; a later unrelated write (publishDate backfill)
+  // must NOT re-flag duplicateOf (163 corpus-wide re-flags, 2026-07-15).
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(300), _duplicateOfCleared: 'auto:2026-04-12 different critics' },
+    { fullText: body(3000) }
+  ), false);
+});
+
+test('a _duplicateOfCleared breadcrumb also blocks the unreadable-collider fallback', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: '', _duplicateOfCleared: 'auto:2026-04-12 different critics' },
+    null
+  ), false);
+});
+
+test('without the breadcrumb, genuine duplicates still flag (no regression)', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate({ fullText: body(3000), _duplicateOfCleared: null }, { fullText: body(2900) }), true);
+});

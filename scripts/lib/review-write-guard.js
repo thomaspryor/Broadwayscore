@@ -641,6 +641,8 @@ function safeWriteReview(filePath, newData, options = {}) {
         // its state (and the push-review-texts restore exception keys on that
         // breadcrumb). Keep the marker consistent with the live flag. 2026-06-01.
         newData.duplicateClearReason = null;
+      } else if (newData._duplicateOfCleared) {
+        console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} but carries a _duplicateOfCleared breadcrumb — honoring the prior clear, not re-marking`);
       } else {
         // newData carries the real review body and the collider is a thin/empty
         // same-URL stub. Marking newData duplicate here BURIES the real review
@@ -737,10 +739,11 @@ function getEffectiveProtectedFields(existingData) {
  */
 /**
  * Decide whether a URL-collision should mark the NEW file as duplicateOf the
- * collider. Returns false — i.e. keep the new file PRIMARY — only when the new
- * file carries a substantive review body and the collider is a materially
- * thinner (empty/stub) same-URL sibling. Otherwise defer to the collider
- * (historical behavior: the first same-URL file wins).
+ * collider. Returns false — i.e. keep the new file PRIMARY — only when (a) the
+ * new file carries a _duplicateOfCleared breadcrumb from a prior reviewed
+ * clear, or (b) the new file carries a substantive review body and the
+ * collider is a materially thinner (empty/stub) same-URL sibling. Otherwise
+ * defer to the collider (historical behavior: the first same-URL file wins).
  *
  * Why: checkUrlCollision returns the first same-URL sibling in readdir order,
  * regardless of which holds the real review. Blindly marking the new file a
@@ -774,6 +777,13 @@ function wouldFormDuplicateCycle(thisBasename, colliderData) {
 }
 
 function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
+  // A prior cleanup pass explicitly reviewed this URL collision and cleared it
+  // as a false positive (_duplicateOfCleared breadcrumb — e.g. two distinct
+  // critics genuinely publishing under one Guardian/BWW article URL). Without
+  // this check, ANY later write — even an unrelated field like publishDate —
+  // re-flagged the file duplicateOf and silently excluded it from scoring
+  // (163 corpus-wide, 2026-07-15). Honor the breadcrumb: never re-mark.
+  if (newData && newData._duplicateOfCleared) return false;
   // Can't read the collider → defer to historical behavior (mark duplicate). We
   // only keep the new file primary when we can PROVE the collider is thinner.
   if (!colliderData) return true;
