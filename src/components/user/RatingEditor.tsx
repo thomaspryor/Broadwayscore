@@ -93,6 +93,13 @@ export default function RatingEditor({
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Delete now renders as a full-weight button (same size as Save) rather
+  // than a faint text link, so it needs its own confirm step to avoid
+  // accidental taps — mirrors the arm/confirm/auto-revert pattern already
+  // shipped for "Delete List" in MyShowsClient's ListsTab.tsx.
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const deleteTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (deleteTimerRef.current) clearTimeout(deleteTimerRef.current); }, []);
   // True once the user has interacted with the date field — a late-arriving
   // suggestion must never clobber a date they picked themselves.
   const dateTouched = useRef(false);
@@ -259,14 +266,43 @@ export default function RatingEditor({
           Cancel
         </button>
         {onDelete && reviewId && (
-          <button
-            type="button"
-            onClick={onDelete}
-            disabled={saving}
-            className="btn ml-auto bg-score-skip-bg text-score-skip border border-score-skip/30 hover:bg-score-skip/20 hover:border-score-skip/50 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Delete this rating
-          </button>
+          confirmDelete ? (
+            <div className="ml-auto flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  if (deleteTimerRef.current) clearTimeout(deleteTimerRef.current);
+                  onDelete();
+                }}
+                className="btn bg-score-skip-bg text-score-skip border border-score-skip/30 hover:bg-score-skip/20 hover:border-score-skip/50 text-sm"
+              >
+                Confirm delete
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (deleteTimerRef.current) clearTimeout(deleteTimerRef.current);
+                  setConfirmDelete(false);
+                }}
+                className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors"
+              >
+                No
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                setConfirmDelete(true);
+                if (deleteTimerRef.current) clearTimeout(deleteTimerRef.current);
+                deleteTimerRef.current = setTimeout(() => setConfirmDelete(false), 4000);
+              }}
+              disabled={saving}
+              className="btn ml-auto bg-score-skip-bg text-score-skip border border-score-skip/30 hover:bg-score-skip/20 hover:border-score-skip/50 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Delete this rating
+            </button>
+          )
         )}
       </div>
     </div>
