@@ -62,3 +62,33 @@ test('isNonTheaterContent still filters legacy excluded titles', () => {
     assert.equal(isNonTheaterContent(gateCandidate(title)), true, `legacy filter still applies: ${title}`);
   }
 });
+
+// shouldExcludeVenueShow: the WE solo-performer heuristic ("FirstName LastName"
+// two-word titles = concerts) must exempt determiner-led show titles. "The
+// Producers" at the Menier was silently dropped by this filter (2026-07-21,
+// found while adding Menier venue discovery after the Midnight at the Never
+// Get reader-reported miss).
+const { shouldExcludeVenueShow } = require('../../scripts/discover-new-shows.js');
+
+test('shouldExcludeVenueShow keeps determiner-led two-word titles', () => {
+  const keep = [
+    'The Producers',   // Menier 2026 — the real miss
+    'A Number',        // Caryl Churchill
+    'An Inspector',    // determiner + single noun
+  ];
+  for (const title of keep) {
+    assert.equal(shouldExcludeVenueShow(title), false, `should NOT exclude: ${title}`);
+  }
+});
+
+test('shouldExcludeVenueShow still drops FirstName LastName concert listings', () => {
+  const reject = ['Barbara Streisand', 'Elton John', 'Ruthie Henshall'];
+  for (const title of reject) {
+    assert.equal(shouldExcludeVenueShow(title), true, `should exclude solo performer: ${title}`);
+  }
+});
+
+test('shouldExcludeVenueShow still drops workshops and masterclasses', () => {
+  assert.equal(shouldExcludeVenueShow('Comedy Workshop'), true);
+  assert.equal(shouldExcludeVenueShow('Acting Masterclass'), true);
+});

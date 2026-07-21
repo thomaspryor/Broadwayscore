@@ -111,8 +111,11 @@ const WE_EXTRA_PATTERNS = [
   'discovering dinosaurs', 'prehistoric planet',
   'classic penguins', // comedy fringe acts
 ];
-// Solo performer names (no show title) — likely concerts not theater
-const WE_SOLO_PERFORMER_PATTERN = /^[A-Z][a-z]+ [A-Z][a-z]+$/; // "FirstName LastName" only
+// Solo performer names (no show title) — likely concerts not theater.
+// Determiner-led titles ("The Producers", "A Number", "An Inspector") are never
+// performer names — the lookahead exempts them (The Producers at the Menier was
+// silently dropped by this filter, found 2026-07-21).
+const WE_SOLO_PERFORMER_PATTERN = /^(?!(?:The|A|An) )[A-Z][a-z]+ [A-Z][a-z]+$/; // "FirstName LastName" only
 
 // Known non-show titles that TodayTix lists but aren't theatrical productions
 const EXCLUDED_TITLES = [
@@ -800,8 +803,12 @@ const VENUE_LISTING_PAGES = [
   { name: 'Marylebone Theatre', url: 'https://marylebonetheatre.com/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   // Premier Off-West-End venues per Stuart King 2026-04-27: A-list performers, strong critic coverage.
   // Patterns probed 2026-05-01 — only static-HTML venues added here. Donmar (JS-rendered),
-  // Menier (ticketing-system-only static HTML), Regent's Park Open Air (JS-rendered) need
-  // Playwright-based discovery — tracked separately.
+  // Regent's Park Open Air (JS-rendered) need Playwright-based discovery — tracked separately.
+  // Menier re-probed 2026-07-21: homepage now serves plain /tickets/<slug> links in static
+  // HTML (site changed since the 2026-05-01 "ticketing-system-only" assessment, which caused
+  // the Midnight at the Never Get miss — reader-reported gap). /tickets/series/* is the
+  // booking system, excluded via lookahead.
+  { name: 'Menier Chocolate Factory', url: 'https://www.menierchocolatefactory.com/', linkPattern: /\/tickets\/(?!series\b)[a-z0-9-]+/, titleFromSlug: true, category: 'off-west-end' },
   { name: 'Hampstead Theatre', url: 'https://www.hampsteadtheatre.com/whats-on/', linkPattern: /\/whats-on\/\d{4}\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   { name: 'Kiln Theatre', url: 'https://kilntheatre.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   { name: 'Southwark Playhouse', url: 'https://southwarkplayhouse.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
@@ -2315,4 +2322,6 @@ module.exports = {
   EXCLUDED_TITLES,
   NON_THEATER_PATTERNS,
   VENUE_LISTING_PAGES,
+  fetchSingleVenuePage,
+  shouldExcludeVenueShow,
 };
