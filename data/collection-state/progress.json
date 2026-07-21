@@ -1,15 +1,15 @@
 {
-  "processed": [
-    "hershey-felder-the-piano-and-me-off-broadway-2026/off-off-online--deirdre-donovan.json"
-  ],
+  "processed": [],
   "failed": [
-    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
+    "dukes-off-broadway-2026/nytimes--helen-shaw.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
   ],
+  "failed": [],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "hershey-felder-the-piano-and-me-off-broadway-2026/off-off-online--deirdre-donovan.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -18,7 +18,30 @@
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-21T16:14:11.262Z",
-  "lastProcessed": "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-  "log": []
+  "startTime": "2026-07-21T16:19:09.937Z",
+  "lastProcessed": "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+  "log": [
+    {
+      "t": "2026-07-21T16:19:21.398Z",
+      "event": "bb-session",
+      "session": "1e38d4ba",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-21T16:19:22.121Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T16:19:37.946Z",
+      "event": "bb-session",
+      "session": "5885c99b",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-21T16:19:38.587Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
