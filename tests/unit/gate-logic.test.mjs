@@ -5,6 +5,11 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const SRC_DIR = join(dirname(fileURLToPath(import.meta.url)), '../../src');
 
 const {
   shouldSuppressPassiveGate, hasSeenEnoughPages,
@@ -131,4 +136,39 @@ test('EXPERIMENT LOCK: gate config values are frozen while gate-cold-start runs'
     'LOCKED: shared exit-intent dwell gate');
   assert.equal(emailCaptureConfig.mobileScrollGate.enabled, true,
     'LOCKED: disabling the scroll gate mid-experiment removes the mobile trigger from both arms');
+});
+
+test('EXPERIMENT LOCK: gate-cold-start client wiring intact + no PostHog identity calls in src/', () => {
+  // Source-level invariants the config lock can't see (2026-07-21 adversarial
+  // review): (1) the arm must still gate the page-minimum and be stamped on
+  // events — removing either silently un-blinds the experiment; (2) a
+  // posthog.identify()/alias()/reset() call added anywhere in src/ can flip a
+  // visitor's flag assignment mid-session, corrupting arm stickiness. If this
+  // test blocked you, read docs/experiments/gate-cold-start.md first.
+  const ctx = readFileSync(join(SRC_DIR, 'contexts/ProGateContext.tsx'), 'utf8');
+  assert.ok(ctx.includes('coldStartCheckApplies(coldStartArm)'),
+    'LOCKED: triggerGate must gate the page-minimum on the experiment arm');
+  assert.ok(ctx.includes('ab_cold_start: coldStartArm'),
+    'LOCKED: triggerGate must stamp the arm on gate events for the analyzer');
+  assert.ok(ctx.includes('COLD_START_FLAG'),
+    'LOCKED: the flag poll must remain wired');
+
+  const offenders = [];
+  const walk = (dir) => {
+    for (const name of readdirSync(dir)) {
+      const p = join(dir, name);
+      if (statSync(p).isDirectory()) { walk(p); continue; }
+      if (!/\.(ts|tsx)$/.test(name)) continue;
+      // Strip comment lines first — TicketLink.tsx legitimately WARNS about
+      // identify() in a comment; only actual code calls are violations.
+      const code = readFileSync(p, 'utf8').split('\n')
+        .filter(l => { const t = l.trim(); return !t.startsWith('//') && !t.startsWith('*') && !t.startsWith('/*'); })
+        .map(l => l.replace(/\/\/.*$/, ''))
+        .join('\n');
+      if (/posthog\s*[.?]+\s*(identify|alias|reset)\s*\(/.test(code)) offenders.push(p);
+    }
+  };
+  walk(SRC_DIR);
+  assert.deepEqual(offenders, [],
+    `LOCKED: posthog.identify/alias/reset calls change distinct_id and can flip a visitor's gate-cold-start arm mid-session. Found in: ${offenders.join(', ')}`);
 });

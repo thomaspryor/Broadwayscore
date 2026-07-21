@@ -10,17 +10,26 @@
  * (2) fallback-labeled rows (flag never resolved) must be EXCLUDED, never
  * merged into control (2026-07-20 analysis, card 3a3637c5-416f-816c).
  *
- * What it reports, per arm:
- *   EXPOSED   distinct persons with $feature_flag_called for this flag
- *             (true per-arm ITT denominator — better than the /2 assumption
- *             in analyze-gate-ab.js, which predates exposure tracking here)
- *   SHOWN / DISMISSED / CAPTURED  modal events carrying ab_cold_start
+ * ATTRIBUTION MODEL — person-level ITT (2026-07-21 adversarial review fix):
+ * a person's arm = the FIRST $feature_flag_called response in-window, and ALL
+ * of that person's modal events count for that arm — including any events the
+ * client stamped 'fallback' because they fired in the seconds before the flag
+ * resolved. Event-label attribution (the first draft) dropped those events
+ * from the numerator while keeping the person in the denominator — classic
+ * ITT contamination. Under person-attribution the pre-resolution race can
+ * only attenuate the measured effect toward null, never bias an arm.
+ * Persons with gate events but NO exposure event (flags endpoint ad-blocked)
+ * are reported as 'unexposed' and excluded from comparison.
+ *
+ * Per arm:
+ *   EXPOSED   distinct persons whose first $feature_flag_called response = arm
+ *   SHOWN / DISMISSED / CAPTURED  those persons' modal events (captured =
+ *             trigger != '' only, excluding inline header/footer forms)
  *   PRIMARY   modal captures per exposed person (ITT)
  *   GUARDRAILS absolute captures/week, impressions split, dismissal rate
  *
  * Plus a FLAG HEALTH check via the PostHog management API — alerts if the
- * flag was deleted, deactivated, or its 50/50 split was edited (protection
- * against a session or UI edit silently breaking the experiment).
+ * flag was deleted, deactivated, or its 50/50 split was edited.
  *
  * Usage: node scripts/analyze-gate-cold-start.js [--days=28] [--json]
  * Env: POSTHOG_PERSONAL_API_KEY
@@ -78,52 +87,69 @@ async function flagHealth() {
 async function main() {
   const summary = { days: DAYS, flagHealthy: false, arms: {} };
   const say = (...a) => { if (!JSON_OUT) console.log(...a); };
-  say(`gate-cold-start A/B — since ${EXPERIMENT_START}, window ${DAYS}d (real users)\n${'='.repeat(60)}`);
+  say(`gate-cold-start A/B — since ${EXPERIMENT_START}, window ${DAYS}d (real users, person-level ITT)\n${'='.repeat(64)}`);
 
   const health = await flagHealth();
   summary.flagHealthy = health.ok;
   say(`FLAG HEALTH: ${health.ok ? '✅ active, 50/50, 100% rollout' : `🛑 ${health.problem}`}`);
   if (!health.ok) say('  → fix the flag BEFORE reading any numbers below; data during the broken window is contaminated.');
 
-  // Per-arm exposure (ITT denominators) from PostHog's own flag-called events.
+  // Person → arm from the FIRST flag response in-window (sticky assignment
+  // means later responses should agree; first-wins makes the mapping stable).
   const exposure = await hogql(`
-    SELECT JSONExtractString(properties,'$feature_flag_response') AS arm,
-      count(DISTINCT person_id) AS people
+    SELECT person_id,
+      argMin(JSONExtractString(properties,'$feature_flag_response'), timestamp) AS arm
     FROM events
     WHERE event = '$feature_flag_called'
       AND JSONExtractString(properties,'$feature_flag') = '${FLAG_KEY}'
       AND ${WINDOW} AND ${REAL_USERS}
-    GROUP BY arm`);
-  const exposed = Object.fromEntries(exposure.map(([arm, n]) => [arm, n]));
+    GROUP BY person_id`);
+  const personArm = new Map(exposure.map(([pid, arm]) => [pid, arm]));
 
-  // Per-arm modal funnel. trigger != '' excludes inline header/footer captures
-  // that share the email_captured event name.
-  const funnel = await hogql(`
-    SELECT JSONExtractString(properties,'ab_cold_start') AS arm, event,
-      count(DISTINCT person_id) AS people
+  // ALL modal events per person in-window (label-agnostic — see header).
+  // captured = trigger != '' excludes inline header/footer captures that
+  // share the email_captured event name.
+  const perPerson = await hogql(`
+    SELECT person_id, event, count() AS n
     FROM events
-    WHERE event IN ('gate_modal_shown','gate_modal_dismissed','email_captured')
-      AND JSONExtractString(properties,'ab_cold_start') != ''
-      AND (event != 'email_captured' OR JSONExtractString(properties,'trigger') != '')
+    WHERE ((event IN ('gate_modal_shown','gate_modal_dismissed') AND JSONExtractString(properties,'ab_cold_start') != '')
+        OR (event = 'email_captured' AND JSONExtractString(properties,'trigger') != ''))
       AND ${WINDOW} AND ${REAL_USERS}
-    GROUP BY arm, event`);
+    GROUP BY person_id, event`);
 
-  const arms = {};
-  for (const [arm, event, people] of funnel) {
-    arms[arm] = arms[arm] || {};
-    arms[arm][event] = people;
+  const arms = { control: {}, 'cold-start': {}, unexposed: {} };
+  const seen = { control: new Set(), 'cold-start': new Set(), unexposed: new Set() };
+  for (const [pid, event, n] of perPerson) {
+    const rawArm = personArm.get(pid);
+    const arm = rawArm === 'control' || rawArm === 'cold-start' ? rawArm : 'unexposed';
+    const bucket = arms[arm];
+    // People counts, not event counts — one person converting twice is one person.
+    bucket[event] = bucket[event] || new Set();
+    bucket[event].add(pid);
+    seen[arm].add(pid);
   }
-  const weeks = Math.max(DAYS / 7, 1 / 7);
 
-  for (const arm of ['control', 'cold-start', 'fallback']) {
-    const ev = arms[arm] || {};
-    const exp = exposed[arm] || 0;
-    const shown = ev.gate_modal_shown || 0;
-    const dismissed = ev.gate_modal_dismissed || 0;
-    const captured = ev.email_captured || 0;
-    const excluded = arm === 'fallback';
+  // Elapsed-time-aware weeks: never divide by more time than the experiment
+  // has existed (2026-07-21 review: DAYS/7 on day 1 understated rates ~28x).
+  const msSinceStart = Date.now() - new Date(`${EXPERIMENT_START}T00:00:00Z`).getTime();
+  const effectiveDays = Math.max(Math.min(DAYS, msSinceStart / 86400000), 1 / 24);
+  const weeks = effectiveDays / 7;
+  say(`Window in effect: ${effectiveDays.toFixed(1)} days of experiment runtime`);
+
+  const exposedCount = { control: 0, 'cold-start': 0 };
+  for (const [, arm] of exposure) {
+    if (arm === 'control' || arm === 'cold-start') exposedCount[arm]++;
+  }
+
+  for (const arm of ['control', 'cold-start', 'unexposed']) {
+    const ev = arms[arm];
+    const exp = arm === 'unexposed' ? seen.unexposed.size : exposedCount[arm];
+    const shown = ev.gate_modal_shown?.size || 0;
+    const dismissed = ev.gate_modal_dismissed?.size || 0;
+    const captured = ev.email_captured?.size || 0;
+    const excluded = arm === 'unexposed';
     summary.arms[arm] = { exposed: exp, shown, dismissed, captured };
-    say(`\n— ${arm}${excluded ? '  [EXCLUDED from comparison: flag never resolved]' : ''}`);
+    say(`\n— ${arm}${excluded ? '  [EXCLUDED from comparison: no flag exposure event — flags endpoint blocked]' : ''}`);
     say(`  exposed: ${exp} | shown: ${shown} | dismissed: ${dismissed} (${pct(dismissed, shown)}) | captured: ${captured}`);
     if (!excluded) {
       say(`  PRIMARY captures/exposed (ITT): ${pct(captured, exp)}`);
@@ -131,12 +157,11 @@ async function main() {
     }
   }
 
-  // Pre-registered guardrails + decision reminders
-  const totalCapturesPerWeek = ((arms['control']?.email_captured || 0) + (arms['cold-start']?.email_captured || 0)) / weeks;
+  const totalCapturesPerWeek = ((arms['control'].email_captured?.size || 0) + (arms['cold-start'].email_captured?.size || 0)) / weeks;
   summary.totalCapturesPerWeek = +totalCapturesPerWeek.toFixed(2);
   say(`\nGUARDRAIL combined modal captures/week: ${totalCapturesPerWeek.toFixed(2)} (baseline ~4/wk pre-experiment; alert < 1/wk for 2 consecutive weeks → revert per pre-registration)`);
-  const cShown = arms['control']?.gate_modal_shown || 0;
-  const tShown = arms['cold-start']?.gate_modal_shown || 0;
+  const cShown = arms['control'].gate_modal_shown?.size || 0;
+  const tShown = arms['cold-start'].gate_modal_shown?.size || 0;
   say(`GUARDRAIL impression split control:treatment = ${cShown}:${tShown} (expect roughly 10:1 — parity would mean the treatment gate is NOT applying)`);
   say(`\nRules: minimum 4 weeks before judging the primary (from ${EXPERIMENT_START}); full pre-registration in docs/experiments/gate-cold-start.md.`);
   if (JSON_OUT) console.log(JSON.stringify(summary));

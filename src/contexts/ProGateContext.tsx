@@ -147,10 +147,16 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   // ⚠️ LIVE EXPERIMENT — see docs/experiments/gate-cold-start.md before
   // editing. Resolves the arm once per provider mount (sticky per-visitor via
   // PostHog's distinct_id hash). Same poll-then-fallback shape as the
-  // mobile-timing flag below: 250ms x 20; unresolved after 5s → null, which
-  // getColdStartArm maps to 'fallback' (control BEHAVIOR, excluded from
-  // analysis). Stored in a REF because triggerGate reads it outside its
-  // dependency array (same pattern as sessionPageViewsRef above).
+  // mobile-timing flag below but with a LONGER budget — 250ms x 40 (10s, vs
+  // the earliest possible passive trigger at 5s exit-intent dwell) — so the
+  // window where a trigger can fire before the arm resolves is as small as
+  // slow networks allow (2026-07-21 adversarial review: pre-resolution fires
+  // get control behavior + 'fallback' label; the canonical analyzer's
+  // person-level ITT attribution makes any residue attenuate toward null
+  // rather than bias an arm). Unresolved after 10s → null → 'fallback'
+  // (control BEHAVIOR, excluded from analysis). Stored in a REF because
+  // triggerGate reads it outside its dependency array (same pattern as
+  // sessionPageViewsRef above).
   const coldStartFlagRef = useRef<string | boolean | null | undefined>(undefined);
   useEffect(() => {
     if (!isClient) return;
@@ -162,7 +168,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       if (typeof value === 'string' || value === true) {
         coldStartFlagRef.current = value;
         clearInterval(poll);
-      } else if (tries >= 20) {
+      } else if (tries >= 40) {
         coldStartFlagRef.current = null; // ad blocker / opt-out / flag missing → fallback
         clearInterval(poll);
       }
