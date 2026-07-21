@@ -711,6 +711,14 @@ function Inner({
           }
         />
       )}
+
+      {/* Closed shows: replace the vanished CTA with an explicit note instead of
+          leaving a silent gap where the ticket button used to be — users hunting
+          for a "Get Tickets" button on a recently-closed show rage-clicked the
+          empty space (CLAUDE.md card #228). */}
+      {isClosed && sortedTicketLinks.length > 0 && (
+        <p className="text-xs text-gray-500">This show has closed — tickets are no longer available.</p>
+      )}
       </div>{/* /action cluster */}
     </div>
   );

@@ -738,6 +738,14 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 buttonClassName="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
               />
 
+              {/* Closed shows: replace the vanished CTA with an explicit note instead of
+                  leaving a silent gap where the ticket button used to be — users hunting
+                  for a "Get Tickets" button on a recently-closed show rage-clicked the
+                  empty space (CLAUDE.md card #228). */}
+              {show.status === 'closed' && sortedTicketLinks.length > 0 && (
+                <p className="w-full text-xs text-gray-500">This show has closed — tickets are no longer available.</p>
+              )}
+
               {/* Lottery/Rush — subdued style, not a revenue link */}
               {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
                 <a
