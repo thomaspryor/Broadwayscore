@@ -40,7 +40,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome, isPromoTeaser } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -2282,6 +2282,18 @@ showDirs.forEach(showId => {
         }
       }
 
+      // Pre-opening temporal gate: never-opened shows (announced/upcoming/
+      // previews) cannot carry reviews published long before their own previews
+      // window. Hard gate because the async wrongProduction classifier is
+      // best-effort — Benjamin Button OB (2026-07-21) had 2 of 5 title-matched
+      // 2023 London reviews slip through it and get scored. Canonical logic
+      // (priorRuns + manual-clear overrides) lives in review-guards.
+      if (isPrematureReviewForUnopenedShow(data, showById[showId])) {
+        logExclusion("skippedPrematurePreOpening", showId, file, data);
+        stats.skippedPrematurePreOpening = (stats.skippedPrematurePreOpening || 0) + 1;
+        return;
+      }
+
       // Auto-reject reviews with blocked URLs (ticket pages, aggregators, social media)
       // This catches URLs that slipped through gather-reviews before the isBlockedReviewUrl guard
       // was added. Uses the same domain-filters.js shared with gather-reviews.
@@ -4344,6 +4356,7 @@ const output = {
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
       skippedUnknownOutletDedup: stats.skippedUnknownOutletDedup || 0,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
+      skippedPrematurePreOpening: stats.skippedPrematurePreOpening || 0,
       skippedFabricated: stats.skippedFabricated || 0,
       skippedCrossShowUrl: stats.skippedCrossShowUrl || 0,
       skippedCrossMarket: stats.skippedCrossMarket || 0,
@@ -4673,6 +4686,7 @@ console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletD
 console.log(`  Allowed (multi-critic cross-outlet URL): ${stats.allowedMultiCriticUrlCrossOutlet || 0}`);
 console.log(`  Skipped (corrupted/invalid JSON): ${stats.skippedCorrupted || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
+console.log(`  Skipped (premature pre-opening): ${stats.skippedPrematurePreOpening || 0}`);
 if (stats.contentVerificationPromoted > 0) {
   console.log(`  ⚠️  contentVerification → top-level promoted: ${stats.contentVerificationPromoted}`);
 }

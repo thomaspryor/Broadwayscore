@@ -227,12 +227,16 @@ describe('shouldUseAnchoredMode (Phase B-WE W1-T3)', () => {
     assert.strictEqual(shouldUseAnchoredMode({ category: 'broadway', envFlag: true }), true);
   });
 
-  it('broadway + envFlag=false → unanchored', () => {
-    assert.strictEqual(shouldUseAnchoredMode({ category: 'broadway', envFlag: false }), false);
+  it('broadway + envFlag=false → anchored (in ANCHORED_MARKETS since the 2026-07-20 NYC rollout)', () => {
+    assert.strictEqual(shouldUseAnchoredMode({ category: 'broadway', envFlag: false }), true);
   });
 
-  it('off-broadway + envFlag=false → unanchored', () => {
-    assert.strictEqual(shouldUseAnchoredMode({ category: 'off-broadway', envFlag: false }), false);
+  it('off-broadway + envFlag=false → anchored (in ANCHORED_MARKETS since the 2026-07-20 NYC rollout)', () => {
+    assert.strictEqual(shouldUseAnchoredMode({ category: 'off-broadway', envFlag: false }), true);
+  });
+
+  it('regional + envFlag=false → unanchored (not in ANCHORED_MARKETS)', () => {
+    assert.strictEqual(shouldUseAnchoredMode({ category: 'regional', envFlag: false }), false);
   });
 
   it('category=null → unanchored even with envFlag=true (deny-list drift safety)', () => {

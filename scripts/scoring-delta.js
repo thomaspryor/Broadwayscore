@@ -412,6 +412,15 @@ function decideInclusion(review, show, guards) {
   if (review.contentTier === 'invalid') return { included: false, reason: 'contentTier:invalid' };
   if (review.assignedScore == null) return { included: false, reason: 'no score' };
 
+  // Pre-opening temporal gate (Benjamin Button 2026-07-21). The guard honors
+  // priorRuns + every manual-clear/early-date override internally, so it can
+  // run before the manual-clear bypass below. Optional-typed because the
+  // baseline (HEAD) guards module may predate the function.
+  if (typeof guards.isPrematureReviewForUnopenedShow === 'function'
+      && guards.isPrematureReviewForUnopenedShow(review, show)) {
+    return { included: false, reason: 'premature pre-opening review' };
+  }
+
   // Manual-clear bypass: treat as included for both versions identically.
   // Mirrors rebuild's shouldSkipWrongProductionAudit() + allowCrossMarket/allowEarlyDate semantics.
   const manuallyCleared =
@@ -598,6 +607,12 @@ function main() {
         && String(baseline.__dateGuard?.PRE_WINDOW_DAYS) === String(working.__dateGuard?.PRE_WINDOW_DAYS)
         && String(baseline.__dateGuard?.PRE_WINDOW_DAYS_BROADWAY) === String(working.__dateGuard?.PRE_WINDOW_DAYS_BROADWAY)
         && (baseline.__priorRunLib?.isWithinPriorRun?.toString() || '') === (working.__priorRunLib?.isWithinPriorRun?.toString() || '')
+        // Canonical inclusion predicate + pre-opening gate. isIncludableForRebuild
+        // was NOT in this list before 2026-07-21, so edits to the canonical
+        // predicate silently skipped Phase A ("decisions identical") — the
+        // Benjamin Button pre-opening gate was invisible to this tool.
+        && (baseline.isIncludableForRebuild?.toString() || '') === (working.isIncludableForRebuild?.toString() || '')
+        && (baseline.isPrematureReviewForUnopenedShow?.toString() || '') === (working.isPrematureReviewForUnopenedShow?.toString() || '')
         && registryHash === baselineRegistryHash;
       if (guardsIdentical && !dataFlagDiff) {
         log('[scoring-delta] Phase A: review-guards.js decisions + critic-registry identical — skipping inclusion replay.');
@@ -665,6 +680,7 @@ function main() {
     showById.set(s.id, {
       id: s.id,
       openingDate: s.openingDate || null,
+      previewsStartDate: s.previewsStartDate || null,
       earliestDate,
       category: s.category || 'broadway',
       status: s.status || 'open',

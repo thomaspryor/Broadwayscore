@@ -602,3 +602,128 @@ describe('isIncludableForRebuild — contamination regression (date-guard FP cle
     );
   });
 });
+
+// ---------------------------------------------------------------------------
+// Pre-opening temporal gate (isPrematureReviewForUnopenedShow)
+// Benjamin Button OB incident, 2026-07-21: WET title-match attached 2023
+// Southwark Playhouse reviews to the unopened 2026 Public Theater entry; the
+// async wrongProduction classifier caught 3 of 5 and the 2 leaked reviews were
+// scored, moving the show 67→78 in the daily digest.
+// ---------------------------------------------------------------------------
+const { isPrematureReviewForUnopenedShow } = require('../../scripts/lib/review-guards');
+
+// Fixed "now" for deterministic tests: 2026-07-21T12:00:00Z
+const NOW = Date.parse('2026-07-21T12:00:00Z');
+
+describe('isPrematureReviewForUnopenedShow', () => {
+  const bbShow = { status: 'announced', previewsStartDate: null, openingDate: null };
+  const bbReview = { publishDate: '2023-06-09', fullText: 'London review.' };
+
+  it('Benjamin Button case: 2023 review on dateless announced show → premature', () => {
+    assert.strictEqual(isPrematureReviewForUnopenedShow(bbReview, bbShow, NOW), true);
+  });
+
+  it('fresh review on a dateless announced show is NOT premature (review-driven flip backstop)', () => {
+    assert.strictEqual(
+      isPrematureReviewForUnopenedShow({ publishDate: '2026-07-18' }, bbShow, NOW),
+      false
+    );
+  });
+
+  it('review 3 years before previewsStartDate on a previews show → premature', () => {
+    assert.strictEqual(
+      isPrematureReviewForUnopenedShow(
+        { publishDate: '2023-06-09' },
+        { status: 'previews', previewsStartDate: '2026-08-01' },
+        NOW
+      ),
+      true
+    );
+  });
+
+  it('review just before previews (within 60-day lead) is NOT premature', () => {
+    assert.strictEqual(
+      isPrematureReviewForUnopenedShow(
+        { publishDate: '2026-07-15' },
+        { status: 'previews', previewsStartDate: '2026-08-01' },
+        NOW
+      ),
+      false
+    );
+  });
+
+  it('open / closed shows are never gated (unreliable historical publishDates)', () => {
+    for (const status of ['open', 'closed']) {
+      assert.strictEqual(
+        isPrematureReviewForUnopenedShow(bbReview, { ...bbShow, status }, NOW),
+        false
+      );
+    }
+  });
+
+  it('declared priorRuns bypasses the gate (returning productions)', () => {
+    assert.strictEqual(
+      isPrematureReviewForUnopenedShow(bbReview, { ...bbShow, priorRuns: [{ openingDate: '2023-05-01' }] }, NOW),
+      false
+    );
+  });
+
+  it('manual-clear / early-date overrides bypass the gate', () => {
+    for (const override of [
+      { wrongProductionManualClear: true },
+      { wrongProductionOverride: true },
+      { humanReviewedWrongProduction: false },
+      { allowEarlyDate: true },
+      { allowCrossMarket: true },
+    ]) {
+      assert.strictEqual(
+        isPrematureReviewForUnopenedShow({ ...bbReview, ...override }, bbShow, NOW),
+        false,
+        `override ${JSON.stringify(override)} must bypass`
+      );
+    }
+  });
+
+  it('missing / unparseable publishDate is not judged', () => {
+    assert.strictEqual(isPrematureReviewForUnopenedShow({ publishDate: null }, bbShow, NOW), false);
+    assert.strictEqual(isPrematureReviewForUnopenedShow({ publishDate: 'garbage' }, bbShow, NOW), false);
+  });
+
+  it('missing show object is not judged', () => {
+    assert.strictEqual(isPrematureReviewForUnopenedShow(bbReview, null, NOW), false);
+    assert.strictEqual(isPrematureReviewForUnopenedShow(bbReview, undefined, NOW), false);
+  });
+});
+
+describe('isIncludableForRebuild — pre-opening temporal gate integration', () => {
+  it('excludes a years-early review filed under an unopened dated show', () => {
+    assert.strictEqual(
+      isIncludableForRebuild(
+        { publishDate: '2023-06-09', fullText: 'London review of the 2023 run.' },
+        { status: 'announced', openingDate: '2026-10-01' }
+      ),
+      false
+    );
+  });
+
+  it('includes the same review when the show declares priorRuns', () => {
+    assert.strictEqual(
+      isIncludableForRebuild(
+        { publishDate: '2023-06-09', fullText: 'London review of the 2023 run.' },
+        { status: 'announced', openingDate: '2026-10-01', priorRuns: [{ openingDate: '2023-05-01' }] }
+      ),
+      true
+    );
+  });
+
+  it('includes an in-window review on a previews show', () => {
+    const nearNow = new Date(Date.now() - 5 * 86400000).toISOString().slice(0, 10);
+    assert.strictEqual(
+      isIncludableForRebuild(
+        { publishDate: nearNow, fullText: 'Fresh previews review.' },
+        { status: 'previews', previewsStartDate: nearNow }
+      ),
+      true
+    );
+  });
+});

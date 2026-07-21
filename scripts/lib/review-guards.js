@@ -296,6 +296,66 @@ function isSameTitleDifferentYearFalsePositive(show, publishDate, targetShow = n
   return true;
 }
 
+// Pre-opening temporal gate (Benjamin Button OB, 2026-07-21). A show that has
+// never opened (status announced/upcoming/previews) can only carry reviews
+// published near its own previews/opening window — anything published long
+// before that window is a different production (title-matched aggregator
+// contamination: WET attached 2023 Southwark Playhouse reviews to the unopened
+// 2026 Public Theater entry, the async wrongProduction classifier caught only
+// 3 of 5, and the 2 leaked reviews moved the show 67→78 in the daily digest).
+// Lead is deliberately wider than isReviewWithinOwnProductionWindow's 21 days:
+// this is a hard exclusion, so it must never clip legitimate early coverage
+// (Talkin' Broadway publishes 24h early; previews reviews trail previewsStart).
+const PRE_OPENING_LEAD_DAYS = 60;
+// A never-opened show with NO dates at all cannot have been reviewed — but a
+// stale 'announced' entry whose reviews just landed must keep them so the
+// review-driven status-flip backstop still sees review activity. One year of
+// recent-past grace keeps that path alive while excluding prior-production
+// history.
+const UNSCHEDULED_MAX_AGE_DAYS = 365;
+
+/**
+ * True when `data` is a review that cannot belong to this never-opened
+ * production: published more than PRE_OPENING_LEAD_DAYS before the show's own
+ * previews/opening date, or (for shows with no dates at all) more than
+ * UNSCHEDULED_MAX_AGE_DAYS in the past.
+ *
+ * Inactive for open/closed shows (historical publishDates are often
+ * LLM-stamped and unreliable — see feedback_llm_wrongprod_false_positives),
+ * for shows with declared priorRuns (returning productions legitimately carry
+ * prior-run reviews), and for reviews carrying any of the manual-clear /
+ * early-date override flags the wrongProduction gates honor.
+ *
+ * Pure — no I/O. `nowMs` injectable for tests.
+ *
+ * @param {object} data - review file contents
+ * @param {object|null|undefined} show - shows.json entry the review is filed under
+ * @param {number} [nowMs]
+ * @returns {boolean}
+ */
+function isPrematureReviewForUnopenedShow(data, show, nowMs = Date.now()) {
+  if (!data || !show) return false;
+  const status = String(show.status || '').toLowerCase();
+  if (status !== 'announced' && status !== 'upcoming' && status !== 'previews') return false;
+  if (Array.isArray(show.priorRuns) && show.priorRuns.length > 0) return false;
+  if (
+    data.wrongProductionManualClear === true ||
+    data.wrongProductionOverride === true ||
+    data.humanReviewedWrongProduction === false ||
+    data.allowEarlyDate === true ||
+    data.allowCrossMarket === true
+  ) return false;
+  const publishMs = new Date(data.publishDate || '').getTime();
+  if (isNaN(publishMs)) return false;
+  const start = show.previewsStartDate || show.openingDate;
+  if (start) {
+    const startMs = new Date(start).getTime();
+    if (isNaN(startMs)) return false;
+    return publishMs < startMs - PRE_OPENING_LEAD_DAYS * 86400000;
+  }
+  return publishMs < nowMs - UNSCHEDULED_MAX_AGE_DAYS * 86400000;
+}
+
 /**
  * Festival / public-theater venue carve-out (R&J Delacorte 2026 incident).
  *
@@ -2424,6 +2484,10 @@ function isIncludableForRebuild(data, show, filePath) {
     if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return false;
   }
   if (data.wrongAttribution === true) return false;
+  // Pre-opening temporal gate: a never-opened show cannot carry reviews
+  // published long before its own previews window (helper honors priorRuns +
+  // every manual-clear/early-date override — see its docstring).
+  if (isPrematureReviewForUnopenedShow(data, show)) return false;
   // duplicateOf: when filePath is provided, mirror rebuild-all-reviews.js's
   // circular-duplicate-recovery logic (BUG F / Heated Rivalry nyt-theater--*
   // pair, 2026-05-27). The rebuild keeps the lexically-LOWER filename when
@@ -2919,6 +2983,7 @@ module.exports = {
   applyTemporalOverrides,
   isReviewWithinOwnProductionWindow,
   isSameTitleDifferentYearFalsePositive,
+  isPrematureReviewForUnopenedShow,
   applyVenueClassificationCarveout,
   isVenueClassificationObjection,
   showHasFestivalVenue,

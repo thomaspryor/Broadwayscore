@@ -28,8 +28,12 @@ describe('needsLateStarReanchor', () => {
     assert.ok(needsLateStarReanchor(weStar({ category: 'off-west-end' })));
   });
 
-  test('does NOT flag a Broadway review (not an anchored market — llm-v6 is expected)', () => {
-    assert.equal(needsLateStarReanchor(weStar({ category: 'broadway' })), null);
+  test('flags a Broadway review (anchored since the 2026-07-20 NYC rollout)', () => {
+    assert.ok(needsLateStarReanchor(weStar({ category: 'broadway' })));
+  });
+
+  test('does NOT flag a regional review (not an anchored market)', () => {
+    assert.equal(needsLateStarReanchor(weStar({ category: 'regional' })), null);
   });
 
   test('does NOT flag an already-anchored review', () => {
@@ -99,8 +103,12 @@ describe('needsLateStarReanchor — non-v6 stamp extension', () => {
     assert.equal(needsLateStarReanchor(overwritten({ scoreSource: 'css-stars' })), null);
   });
 
-  test('does NOT flag on Broadway (not an anchored market)', () => {
-    assert.equal(needsLateStarReanchor(overwritten({ category: 'broadway' })), null);
+  test('flags on Broadway (anchored since the 2026-07-20 NYC rollout)', () => {
+    assert.ok(needsLateStarReanchor(overwritten({ category: 'broadway' })));
+  });
+
+  test('does NOT flag on regional (not an anchored market)', () => {
+    assert.equal(needsLateStarReanchor(overwritten({ category: 'regional' })), null);
   });
 
   test('does NOT flag an adjudicated review (adjudication wins at read time)', () => {
