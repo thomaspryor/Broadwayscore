@@ -83,6 +83,11 @@ jobs:
           # covers local runs; first prod run (29875151498) died on the stale
           # deleted zone because this was missing.
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          # Reddit official OAuth (preferred path — reddit-api.js uses it when
+          # set and only falls back to the proxy chain without it). Mint at
+          # reddit.com/prefs/apps (script app).
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
           # Free X API for uncapped tweet volume counts (no Apify cost)
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           INPUT_SHOW: ${{ inputs.show }}

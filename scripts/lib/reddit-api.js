@@ -18,7 +18,7 @@
 
 const https = require('https');
 
-const USER_AGENT = 'BroadwayScorecard/1.0 (broadway buzz aggregator)';
+const USER_AGENT = 'web:broadwayscorecard:v1.0 (by /u/bwayscorecard)';
 const MAX_RETRIES = 3;
 
 // Adaptive rate limiting
@@ -35,6 +35,19 @@ let scrapingBeeDown = false; // Set true on 401/402 (invalid key OR no credits) 
 let scrapingBeeSwitchTime = 0;
 let rateLimitCount = 0;
 let lastRequestTime = 0;
+
+// Reddit official OAuth (client-credentials). When REDDIT_CLIENT_ID +
+// REDDIT_CLIENT_SECRET are set, all fetches go through oauth.reddit.com with
+// a bearer token — no proxies needed (free tier: 100 req/min). Added
+// 2026-07-21 after reddit.com hard-403'd unauthenticated JSON everywhere
+// (direct, BD robots-gated, SD renders truncated, SB capped).
+const REDDIT_TOKEN_URL = process.env.REDDIT_TOKEN_URL || 'https://www.reddit.com/api/v1/access_token';
+const REDDIT_OAUTH_BASE = process.env.REDDIT_OAUTH_BASE || 'https://oauth.reddit.com';
+let oauthToken = null;
+let oauthTokenExpiry = 0;
+let oauthDown = false; // latched on credential failure — fall back to proxy chain
+let lastOauthRequestTime = 0;
+const OAUTH_DELAY = 700; // Reddit OAuth allows 100/min; keep a small gap
 
 // Proxy state
 let brightDataDown = false;
@@ -356,6 +369,87 @@ async function fetchRedditDirect(url) {
 /**
  * Fetch URL with direct Reddit access, fallback to ScrapingBee
  */
+function hasOauthCreds() {
+  return Boolean(process.env.REDDIT_CLIENT_ID && process.env.REDDIT_CLIENT_SECRET) && !oauthDown;
+}
+
+/** Fetch (and cache) an app-only OAuth token via client_credentials. */
+function getOauthToken() {
+  if (oauthToken && Date.now() < oauthTokenExpiry - 60_000) {
+    return Promise.resolve(oauthToken);
+  }
+  const body = 'grant_type=client_credentials';
+  const basic = Buffer.from(`${process.env.REDDIT_CLIENT_ID}:${process.env.REDDIT_CLIENT_SECRET}`).toString('base64');
+  const u = new URL(REDDIT_TOKEN_URL);
+  const client = u.protocol === 'http:' ? require('http') : https;
+  return new Promise((resolve, reject) => {
+    const req = client.request(u, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${basic}`,
+        'User-Agent': USER_AGENT,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(body)
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        if (res.statusCode !== 200) {
+          if (res.statusCode === 401 || res.statusCode === 403) oauthDown = true;
+          reject(new Error(`Reddit OAuth token ${res.statusCode}: ${data.slice(0, 120)} — check REDDIT_CLIENT_ID/REDDIT_CLIENT_SECRET`));
+          return;
+        }
+        try {
+          const j = JSON.parse(data);
+          oauthToken = j.access_token;
+          oauthTokenExpiry = Date.now() + (j.expires_in || 3600) * 1000;
+          resolve(oauthToken);
+        } catch (e) { reject(new Error(`Reddit OAuth token parse failed: ${data.slice(0, 80)}`)); }
+      });
+    });
+    req.on('error', reject);
+    req.end(body);
+  });
+}
+
+/** Fetch a reddit .json URL via oauth.reddit.com with a bearer token. */
+async function fetchViaOauth(url, isRetry = false) {
+  const token = await getOauthToken();
+  const oauthUrl = url.replace(/https:\/\/(www|old)\.reddit\.com/, REDDIT_OAUTH_BASE);
+  const u = new URL(oauthUrl);
+  const client = u.protocol === 'http:' ? require('http') : https;
+  stats.redditDirect++;
+  return new Promise((resolve, reject) => {
+    client.get(u, { headers: { 'Authorization': `Bearer ${token}`, 'User-Agent': USER_AGENT } }, (res) => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', async () => {
+        if (res.statusCode === 200) {
+          try { resolve(JSON.parse(data)); }
+          catch (e) { reject(new Error(`Reddit OAuth response not JSON: ${data.slice(0, 80)}`)); }
+        } else if (res.statusCode === 401 && !isRetry) {
+          // Token expired server-side — refresh once
+          oauthToken = null;
+          oauthTokenExpiry = 0;
+          try { resolve(await fetchViaOauth(url, true)); } catch (e2) { reject(e2); }
+        } else if (res.statusCode === 401 && isRetry) {
+          // Fresh token also rejected — app suspended/blocked. Latch so the
+          // fleet doesn't pay a doomed mint + double-401 on every call.
+          oauthDown = true;
+          reject(new Error('Reddit OAuth 401 with fresh token — app blocked/suspended; disabling OAuth for this run'));
+        } else if (res.statusCode === 429) {
+          rateLimitCount++;
+          stats.rateLimits++;
+          reject(new Error('Reddit OAuth 429 rate limited'));
+        } else {
+          reject(new Error(`Reddit OAuth HTTP ${res.statusCode}: ${data.slice(0, 80)}`));
+        }
+      });
+    }).on('error', reject);
+  });
+}
+
 async function fetchWithFallback(url, retryCount = 0) {
   // Circuit breaker: if too many consecutive failures, stop wasting time
   if (circuitBroken) {
@@ -378,6 +472,22 @@ async function fetchWithFallback(url, retryCount = 0) {
 }
 
 async function _fetchWithFallbackInner(url, retryCount = 0) {
+  // Official OAuth API first when credentials exist — free, uncapped enough
+  // (100/min), no proxy needed. Falls through to the proxy chain on failure.
+  if (hasOauthCreds()) {
+    try {
+      // OAuth-specific spacing (not enforceRateLimit): decoupled from the
+      // proxy path's clock so an OAuth failure that falls through doesn't
+      // double-wait, and 100/min headroom doesn't crawl at proxy pace.
+      const gap = OAUTH_DELAY - (Date.now() - lastOauthRequestTime);
+      if (gap > 0) await sleep(gap);
+      lastOauthRequestTime = Date.now();
+      return await fetchViaOauth(url);
+    } catch (e) {
+      console.warn(`  Reddit OAuth failed: ${e.message}`);
+    }
+  }
+
   // Check if we should try Reddit direct again after cooldown
   if (useScrapingBee && (Date.now() - scrapingBeeSwitchTime) > SCRAPINGBEE_COOLDOWN) {
     console.log('  Cooldown elapsed, retrying Reddit direct...');
@@ -627,6 +737,9 @@ function getStats() {
  * Reset state (for testing)
  */
 function resetFallbackState() {
+  oauthToken = null;
+  oauthTokenExpiry = 0;
+  oauthDown = false;
   useScrapingBee = false;
   scrapingBeeDown = false;
   brightDataDown = false;
@@ -641,6 +754,8 @@ function resetFallbackState() {
 }
 
 module.exports = {
+  fetchViaOauth,
+  _oauthState: () => ({ oauthDown, hasCreds: hasOauthCreds() }),
   searchSubreddit,
   getPostComments,
   flattenComments,
