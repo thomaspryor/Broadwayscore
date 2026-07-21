@@ -6,8 +6,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-const { shouldSuppressPassiveGate, hasSeenEnoughPages, getMobileGateParams, buildGateAbVariant, MOBILE_GATE_FLAG } =
-  await import('../../src/lib/gate-logic.ts');
+const {
+  shouldSuppressPassiveGate, hasSeenEnoughPages,
+  getColdStartArm, coldStartCheckApplies, COLD_START_FLAG,
+  getMobileGateParams, buildGateAbVariant, MOBILE_GATE_FLAG,
+} = await import('../../src/lib/gate-logic.ts');
 const { emailCaptureConfig } = await import('../../src/config/email-capture.ts');
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -88,4 +91,44 @@ test('config: minPageViewsForPassiveGate present and sane in the active preset',
   assert.equal(typeof emailCaptureConfig.minPageViewsForPassiveGate, 'number');
   assert.ok(emailCaptureConfig.minPageViewsForPassiveGate >= 2,
     'passive gates must wait for at least a second page view this session');
+});
+
+// ─── gate-cold-start A/B (LIVE EXPERIMENT since 2026-07-21) ─────────────────
+
+test('cold-start A/B: arm mapping follows the fallback-exclusion convention', () => {
+  assert.equal(getColdStartArm('cold-start'), 'cold-start');
+  assert.equal(getColdStartArm('control'), 'control');
+  // Unresolved / blocked / typo'd flag values must NEVER be silently merged
+  // into a real arm — they get control BEHAVIOR but the excluded 'fallback' label.
+  assert.equal(getColdStartArm(null), 'fallback', 'flag never resolved → fallback');
+  assert.equal(getColdStartArm(undefined), 'fallback', 'poll still in flight → fallback');
+  assert.equal(getColdStartArm(true), 'fallback', 'boolean flag (misconfigured) → fallback');
+  assert.equal(getColdStartArm('some-typo'), 'fallback', 'unknown variant → fallback');
+  assert.equal(COLD_START_FLAG, 'gate-cold-start');
+});
+
+test('cold-start A/B: page-minimum applies ONLY to the treatment arm', () => {
+  assert.equal(coldStartCheckApplies('cold-start'), true);
+  assert.equal(coldStartCheckApplies('control'), false, 'control must reproduce pre-2026-07-20 behavior');
+  assert.equal(coldStartCheckApplies('fallback'), false, 'fallback gets control behavior');
+});
+
+test('EXPERIMENT LOCK: gate config values are frozen while gate-cold-start runs', () => {
+  // ⚠️ If this test failed on your change: a LIVE A/B experiment
+  // ('gate-cold-start', started 2026-07-21) depends on these exact values.
+  // Changing them mid-experiment silently invalidates the arms and wastes
+  // weeks of data — the previous experiment (mobile-gate-timing) died because
+  // nothing protected its launch conditions. Read
+  // docs/experiments/gate-cold-start.md; conclude or formally amend the
+  // experiment there FIRST, then update this lock in the same commit.
+  assert.equal(emailCaptureConfig.minPageViewsForPassiveGate, 2,
+    'LOCKED: treatment-arm page minimum (see docs/experiments/gate-cold-start.md)');
+  assert.equal(emailCaptureConfig.passiveGateCooldownDays, 14,
+    'LOCKED: shared cooldown — changing it shifts BOTH arms mid-experiment');
+  assert.equal(emailCaptureConfig.exitIntent.enabled, true,
+    'LOCKED: disabling exit_intent mid-experiment removes the largest trigger from both arms');
+  assert.equal(emailCaptureConfig.exitIntent.minTimeOnPageSec, 5,
+    'LOCKED: shared exit-intent dwell gate');
+  assert.equal(emailCaptureConfig.mobileScrollGate.enabled, true,
+    'LOCKED: disabling the scroll gate mid-experiment removes the mobile trigger from both arms');
 });
