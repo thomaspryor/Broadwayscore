@@ -201,7 +201,7 @@ function fetchViaBrightData(url) {
   const token = process.env.BRIGHTDATA_TOKEN;
   if (!token) return Promise.resolve(null);
 
-  const zone = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+  const zone = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
   const apiUrl = 'https://api.brightdata.com/request';
   const body = JSON.stringify({ zone, url, format: 'raw' });
 

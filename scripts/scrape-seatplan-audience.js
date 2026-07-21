@@ -17,7 +17,7 @@
  *
  * Environment variables:
  *   BRIGHTDATA_TOKEN - BrightData API token (fallback, optional)
- *   BRIGHTDATA_ZONE  - BrightData zone (default: mcp_unlocker)
+ *   BRIGHTDATA_ZONE  - BrightData zone (default: web_unlocker2)
  */
 
 const fs = require('fs');
@@ -29,7 +29,7 @@ const { buildLondonSlugVariants } = require('./lib/show-matching');
 const { batchDiscoverSlugs } = require('./lib/serp-slug-discovery');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
-const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
 
 /**
  * Fetch page via BrightData Web Unlocker (inlined to avoid scraper.js Playwright dependency)

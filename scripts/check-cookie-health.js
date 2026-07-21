@@ -389,7 +389,7 @@ async function fetchWithBrightDataCookies(url) {
   if (!cookieHeader) return { ok: false, error: 'no cookies for domain' };
 
   const bodyObj = {
-    zone: process.env.BRIGHTDATA_ZONE || 'mcp_unlocker',
+    zone: process.env.BRIGHTDATA_ZONE || 'web_unlocker2',
     url,
     format: 'raw',
     headers: { Cookie: cookieHeader },

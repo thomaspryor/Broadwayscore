@@ -213,7 +213,7 @@ function scrapingDogRequest(apiKey, url, tier) {
 /**
  * Fetch via Bright Data (primary proxy fallback)
  * Sends params in POST body (API validates body, not query params).
- * Tries mcp_unlocker (simple proxy) then mcp_browser (browser-based).
+ * Uses BRIGHTDATA_ZONE (default web_unlocker2 — matches scraper.js; mcp_unlocker was deleted in the 2026 zone migration).
  */
 async function fetchViaBrightData(url) {
   const token = process.env.BRIGHTDATA_TOKEN;
@@ -221,8 +221,8 @@ async function fetchViaBrightData(url) {
 
   stats.brightData++;
 
-  // Try zone from env (default: mcp_unlocker)
-  const zones = [process.env.BRIGHTDATA_ZONE || 'mcp_unlocker'];
+  // Try zone from env (default: web_unlocker2)
+  const zones = [process.env.BRIGHTDATA_ZONE || 'web_unlocker2'];
 
   for (const zone of zones) {
     try {
@@ -494,7 +494,7 @@ async function searchSubreddit(subreddit, query, options = {}) {
 
   if (after) params.set('after', after);
 
-  const url = `https://old.reddit.com/r/${subreddit}/search.json?${params}`;
+  const url = `https://www.reddit.com/r/${subreddit}/search.json?${params}`;
   return fetchWithFallback(url);
 }
 
@@ -503,7 +503,7 @@ async function searchSubreddit(subreddit, query, options = {}) {
  */
 async function getPostComments(subreddit, postId, options = {}) {
   const { limit = 500, depth = 10 } = options;
-  const url = `https://old.reddit.com/r/${subreddit}/comments/${postId}.json?limit=${limit}&depth=${depth}&raw_json=1`;
+  const url = `https://www.reddit.com/r/${subreddit}/comments/${postId}.json?limit=${limit}&depth=${depth}&raw_json=1`;
   return fetchWithFallback(url);
 }
 

@@ -79,6 +79,10 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          # Zone must be passed explicitly — reddit-api.js's env default only
+          # covers local runs; first prod run (29875151498) died on the stale
+          # deleted zone because this was missing.
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           # Free X API for uncapped tweet volume counts (no Apify cost)
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           INPUT_SHOW: ${{ inputs.show }}
