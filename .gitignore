@@ -198,7 +198,15 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 /debug-output.txt
 
 # Internal docs, plans, audit narratives
-/docs/
+# /docs/* (not /docs/) + a negation below: git can't re-include a path whose
+# PARENT directory is itself excluded, so a blanket `/docs/` would make
+# `!/docs/experiments/` a no-op (git never traverses into an excluded dir).
+/docs/*
+# Experiment pre-registration docs are referenced by code comments as the
+# canonical source of truth (analyze-gate-cold-start.js, flag-registry.js,
+# docs/experiments/README.md's setup contract) and must be committed for
+# other sessions to find them — not scratch/local like the rest of /docs/.
+!/docs/experiments/
 /memory/
 /data/deep-research/
 /data/theater-research/
