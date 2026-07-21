@@ -11,6 +11,7 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURE_DIR = path.join(__dirname, '__fixtures__', 'fake-flag-src');
+const AMBIGUOUS_FIXTURE_DIR = path.join(__dirname, '__fixtures__', 'ambiguous-const-src');
 
 test('extractReferencedFlagKeys finds every real flag key currently used in src/', () => {
   const { keys, unresolved } = extractReferencedFlagKeys();
@@ -43,6 +44,18 @@ test('checkFlagParity flags an unregistered flag key (synthetic fixture)', () =>
   const { missing } = checkFlagParity(keys, REGISTERED_FLAGS);
   assert.equal(missing.length, 1);
   assert.equal(missing[0].key, 'totally-fake-flag');
+});
+
+// Two files defining the SAME identifier name with DIFFERENT string values
+// must NOT silently resolve to whichever file was scanned first — that would
+// misattribute a real getFeatureFlag() call to the wrong key (a false
+// negative for whichever key is actually referenced). It must come back
+// unresolved so CI fails loud instead of the registry silently missing it.
+test('extractReferencedFlagKeys treats an ambiguous identifier (2+ distinct definitions) as unresolved, not a silent guess', () => {
+  const { keys, unresolved } = extractReferencedFlagKeys(AMBIGUOUS_FIXTURE_DIR);
+  assert.deepEqual(keys, []);
+  assert.equal(unresolved.length, 1);
+  assert.equal(unresolved[0].arg, 'SHARED_FLAG');
 });
 
 test('checkFlagParity: a registered key is never reported missing', () => {
