@@ -692,6 +692,20 @@ async function captureMatrix({ browser, session, baseUrl, outDir }) {
       // ── my-shows: diary, grid + list ──
       await page.goto(`${baseUrl}/my-shows?tab=diary`, { waitUntil: 'load', timeout: 20000 });
       await page.waitForTimeout(1500);
+      // Fatal, not a finding: featureFlags.userAccounts (src/config/feature-flags.ts)
+      // is env-driven (NEXT_PUBLIC_FEATURES) and only auto-true on the
+      // demo.broadwayscorecard.com hostname — never on localhost. A local run
+      // without the flag silently renders "This feature is not yet available"
+      // for the whole signed-in surface; the rest of this script still runs
+      // and reports a clean 0-findings pass while having tested nothing (cost
+      // ~20min to diagnose during card #258 verification, 2026-07-20). CI is
+      // unaffected — it defaults to the demo hostname.
+      if (await page.getByText('This feature is not yet available.', { exact: true }).count() > 0) {
+        throw new Error(
+          `[ux-walkthrough] FATAL: ${baseUrl} rendered the userAccounts feature-flag-off state — every check below would silently test nothing. ` +
+          `Re-run with NEXT_PUBLIC_FEATURES including "userAccounts" (e.g. PORT=3411 NEXT_PUBLIC_FEATURES="$NEXT_PUBLIC_FEATURES,userAccounts" npm run dev), or point --base-url at demo.broadwayscorecard.com.`
+        );
+      }
       await pushShot(`${vp.label}__diary_grid`);
 
       // ── Import sheet — never opened by the matrix before card #239 ──
