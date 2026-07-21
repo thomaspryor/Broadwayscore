@@ -56,6 +56,42 @@ const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { execErrorDetail } = require('./lib/exec-error-detail');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// Same incident class as scripts/autonomous-run.js / autonomous-probe.js /
+// autonomous-merge.js (tasks #260/#264): this script spawns real `gh`
+// subprocesses (workflow dispatch at dispatchGatherFor, repo-variable
+// read/write in the self-proving auto-enable block) with no --help guard.
+// USAGE / hasHelpFlag(argv) is checked as the FIRST line of main(), before
+// loadShows() or anything else runs, so `--help` combined with a real action
+// flag (--dispatch-gather, --ingest-missing) can never fall through.
+const USAGE = `audit-show-review-gap.js — show-centric review gap audit vs Playbill Verdict / BWW Review Roundup.
+
+Usage:
+  node scripts/audit-show-review-gap.js --show=ID
+  node scripts/audit-show-review-gap.js --window=21 --dispatch-gather
+  node scripts/audit-show-review-gap.js --window=21 --fail-on-gap   # CI
+
+Modes:
+  --show=ID             one show only
+  --window=14            every open show opened within N days (default 21)
+  --fail-on-gap          exit 1 when any in-window show has missing URLs
+  --dispatch-gather      gh workflow run gather-reviews.yml for each show
+                         that has a gap > 0 (rate-limited at 1 dispatch/show)
+  --ingest-missing       run scripts/ingest-review-from-url.js directly for
+                         each missing aggregator URL whose outlet is in the
+                         registry
+  --ingest-cap=N         per-show ingest cap (default 5)
+  --checkpoint           process least-recently-audited shows first, skip
+                         shows audited within a freshness window
+  --include-closed       also audit closed shows (back-catalogue backfill)
+  --time-budget-min=N    soft time budget for --checkpoint runs (default 20)
+  --freshness-hours=N    checkpoint freshness window (default 12)
+  --dry-run              don't write audit file
+  --verbose              log per-show details to stdout
+  --help, -h             print this usage and exit
+
+Output: data/audit/show-review-gap.json`;
 const {
   FLAGGED_RECOVERY_CAP,
   isEmptyBodyFile,
@@ -1061,7 +1097,18 @@ function recoverEmptyBodyFlaggedMiss(showId, m) {
 
 // CLI entry — guarded so the module can be require()'d by unit tests without
 // running the audit (CLAUDE.md §15: test the real urlMatchesShow/titleTokens).
-if (require.main === module) (async () => {
+// Extracted to a named, argv-taking function (rather than the previous bare
+// IIFE) so --help can be proven, in-process, to return before loadShows() or
+// any gh subprocess runs (task #266 — same pattern as autonomous-merge.js).
+// NOTE: the argv param only feeds hasHelpFlag() — every other flag below
+// (showFilter, dispatchGather, useCheckpoint, etc.) still reads the
+// module-level consts parsed from real process.argv at require time. That's
+// fine for the real CLI (argv defaults to the same process.argv) and for
+// --help (which always returns before any flag is consulted); a
+// programmatic caller passing a DIFFERENT argv would still route real
+// actions off the module-level parse, not the passed argv.
+async function main(argv = process.argv.slice(2)) {
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const allShows = loadShows();
   let targets;
   if (showFilter) {
@@ -1554,14 +1601,20 @@ if (require.main === module) (async () => {
   const exitCode = (failOnGap && audit.counts.withGap > 0) ? 1 : 0;
   try { await scraperCleanup(); } catch { /* best-effort */ }
   process.exit(exitCode);
-})().catch(async (e) => {
-  console.error('Fatal:', e.message);
-  try { await scraperCleanup(); } catch { /* best-effort */ }
-  process.exit(1);
-});
+}
+
+if (require.main === module) {
+  main().catch(async (e) => {
+    console.error('Fatal:', e.message);
+    try { await scraperCleanup(); } catch { /* best-effort */ }
+    process.exit(1);
+  });
+}
 
 // bumpRecoveryCount is exported for the integration test that proves the retry
 // cap actually persists to disk (acceptance: "retry cap proven"). It writes to
 // the module-level REVIEW_TEXTS_DIR captured at require time, so the test sets
 // REVIEW_TEXTS_DIR before requiring this module.
-module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount };
+// main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
+// prove --help never falls through to a real gh call (task #266).
+module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, main, USAGE };
