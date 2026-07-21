@@ -113,14 +113,24 @@ function walkFiles(dir, exts, out = []) {
 // or as an imported UPPER_SNAKE constant (ProGateContext.tsx's COLD_START_FLAG /
 // MOBILE_GATE_FLAG, defined in src/lib/gate-logic.ts) — resolve constants by
 // searching all scanned files for their `const IDENT = 'value'` definition.
+// If two files define the SAME identifier name with DIFFERENT values, silently
+// taking the first match risks misattributing a real getFeatureFlag() call to
+// the wrong key (a false negative for the real flag — exactly the failure
+// mode this scanner exists to prevent). Collect every definition found and
+// only resolve when they agree; an ambiguous or absent definition returns
+// null, which the caller reports as `unresolved` — loud, not silent.
 function resolveIdentifier(ident, files, fileCache) {
-  const defRe = new RegExp(`(?:export\\s+)?const\\s+${ident}\\s*=\\s*['"]([^'"]+)['"]`);
+  const defRe = new RegExp(`(?:export\\s+)?const\\s+${ident}\\s*=\\s*['"]([^'"]+)['"]`, 'g');
+  const values = new Set();
   for (const file of files) {
     const content = fileCache.get(file);
-    const m = content.match(defRe);
-    if (m) return m[1];
+    defRe.lastIndex = 0;
+    let m;
+    while ((m = defRe.exec(content))) {
+      values.add(m[1]);
+    }
   }
-  return null;
+  return values.size === 1 ? [...values][0] : null;
 }
 
 /**

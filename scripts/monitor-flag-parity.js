@@ -37,24 +37,35 @@ function loadState() {
   try { return JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')); } catch { return {}; }
 }
 
+// One `?search=` lookup per registered flag (bounded by REGISTERED_FLAGS.length,
+// not by how many flags exist in the PostHog project) — mirrors the proven
+// per-flag flagHealth() pattern in analyze-gate-cold-start.js rather than
+// paging a `?limit=N` listing, which would silently stop seeing flags past N
+// if the project ever grows past that page size.
+async function fetchLiveFlag(apiKey, key) {
+  const res = await fetch(`https://us.posthog.com/api/projects/${PROJECT_ID}/feature_flags/?search=${encodeURIComponent(key)}`, {
+    headers: { Authorization: `Bearer ${apiKey}` },
+  });
+  if (!res.ok) throw new Error(`PostHog feature_flags API ${res.status} for '${key}': ${(await res.text()).slice(0, 200)}`);
+  const results = (await res.json()).results || [];
+  const f = results.find((r) => r.key === key);
+  if (!f) return null;
+  return {
+    active: f.active,
+    variants: (f.filters?.multivariate?.variants || []).map((v) => ({ key: v.key, pct: v.rollout_percentage })),
+    rollout: f.filters?.groups?.[0]?.rollout_percentage,
+  };
+}
+
 async function fetchLiveFlags() {
   if (FIXTURE_PATH) {
     return JSON.parse(fs.readFileSync(FIXTURE_PATH, 'utf8'));
   }
   const apiKey = process.env.POSTHOG_PERSONAL_API_KEY;
   if (!apiKey) throw new Error('POSTHOG_PERSONAL_API_KEY not set');
-  const res = await fetch(`https://us.posthog.com/api/projects/${PROJECT_ID}/feature_flags/?limit=200`, {
-    headers: { Authorization: `Bearer ${apiKey}` },
-  });
-  if (!res.ok) throw new Error(`PostHog feature_flags API ${res.status}: ${(await res.text()).slice(0, 200)}`);
-  const results = (await res.json()).results || [];
   const byKey = new Map();
-  for (const f of results) {
-    byKey.set(f.key, {
-      active: f.active,
-      variants: (f.filters?.multivariate?.variants || []).map((v) => ({ key: v.key, pct: v.rollout_percentage })),
-      rollout: f.filters?.groups?.[0]?.rollout_percentage,
-    });
+  for (const entry of REGISTERED_FLAGS) {
+    byKey.set(entry.key, await fetchLiveFlag(apiKey, entry.key));
   }
   return byKey;
 }
@@ -101,9 +112,11 @@ async function main() {
     fs.writeFileSync(STATE_PATH, JSON.stringify(nextState, null, 2) + '\n');
     console.log(`State saved: ${STATE_PATH}`);
   }
-
-  const anyUnhealthy = flagHealth.some((f) => !f.ok) || unregistered.length > 0;
-  if (anyUnhealthy) process.exitCode = 1;
+  // Deliberately exits 0 even when flags are unhealthy — the email alert IS
+  // the signal, same as monitor-gate-cold-start.js / monitor-gate-ab.js. A
+  // nonzero exit here would turn the workflow red every week an alert is
+  // cooling down (not just the week it fires), risking a "Workflow
+  // repeat-failure" digest promotion on top of the already-targeted email.
 }
 
 main().catch((err) => { console.error('Fatal:', err.message); process.exit(1); });
