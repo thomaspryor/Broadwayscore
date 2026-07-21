@@ -404,6 +404,14 @@ function locateTarget(page, target) {
 async function testControlForDeadness(page, target) {
   const loc = locateTarget(page, target);
   if (await loc.count() === 0) return null;
+  // Playwright's :visible (in locateTarget) checks bounding box + CSS
+  // visibility but NOT opacity — discoverInteractiveTargets' own filter
+  // does. If a future breakpoint duplicate is hidden via opacity:0 instead
+  // of display/size collapse, :visible alone would resolve to it again,
+  // reproducing the exact false-positive class the :visible fix closed for
+  // the display/size case (second-opinion review finding, 2026-07-21).
+  const opacity = await loc.evaluate(el => parseFloat(getComputedStyle(el).opacity)).catch(() => 1);
+  if (opacity === 0) return null;
   const beforeUrl = page.url();
   // Park the pointer off-element before EITHER screenshot: Playwright's
   // .click() leaves the mouse hovering the target, and hover:scale/shadow
