@@ -35,6 +35,41 @@ interface SearchShow {
   cd?: string;
   /** True for diary-only (unscored) catalog entries — see mergeDiaryShows. */
   dy?: boolean;
+  /** Production year (base catalog) — falls back to od's year for display. */
+  year?: string;
+  /** City for diary-catalog regional/international productions. */
+  city?: string;
+}
+
+/** Short market label for a matched production — Broadway is the unlabeled
+ *  default in search-shows.json; regional/international entries are most
+ *  useful identified by their city. */
+function marketLabel(s: SearchShow): string {
+  switch (s.category) {
+    case undefined:
+    case 'broadway': return 'Broadway';
+    case 'off-broadway': return 'Off-Broadway';
+    case 'west-end': return 'West End';
+    case 'off-west-end': return 'Off-West End';
+    case 'us-regional': return s.city || 'US Regional';
+    case 'uk-regional': return s.city || 'UK Regional';
+    case 'international': return s.city || 'International';
+    default: return s.city || s.category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  }
+}
+
+/** "Broadway 2017 · Gerald Schoenfeld Theatre" — market + year + venue. */
+function matchContext(s: SearchShow): string {
+  const year = s.year || s.od?.slice(0, 4);
+  return [[marketLabel(s), year].filter(Boolean).join(' '), s.venue].filter(Boolean).join(' · ');
+}
+
+/** Format a YYYY-MM-DD diary date without Date-parse timezone shifts. */
+function formatDateSeen(iso: string): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  if (!y || !m || !d) return iso;
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${MONTHS[m - 1]} ${d}, ${y}`;
 }
 
 interface MatchedEntry {
@@ -350,8 +385,14 @@ export default function ImportShows({
   // being a straight partition of `entries`).
   const indexedEntries = useMemo(() => entries.map((entry, idx) => ({ entry, idx })), [entries]);
   const isUnmatched = (e: MatchedEntry) => !e.match || (e.matchScore <= 0.7 && !e.dateSuspect);
-  const diaryRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.type === 'diary' && !isUnmatched(entry)), [indexedEntries]);
-  const watchlistRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.type === 'watchlist' && !isUnmatched(entry)), [indexedEntries]);
+  // Date-mismatch rows get their own section (owner request, 2026-07-21):
+  // buried in the Diary list they were unfindable. Membership is by the
+  // dateSuspect flag, so ticking "import anyway" keeps the row here, while
+  // picking a different production via find-it (which clears the flag)
+  // graduates it into the normal Diary/Watchlist list.
+  const dateSuspectRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.dateSuspect && !isUnmatched(entry)), [indexedEntries]);
+  const diaryRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.type === 'diary' && !entry.dateSuspect && !isUnmatched(entry)), [indexedEntries]);
+  const watchlistRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.type === 'watchlist' && !entry.dateSuspect && !isUnmatched(entry)), [indexedEntries]);
   // Grouped instead of scattered through the main list, and re-shown on the
   // done step: these are the user's to-do list for manual adds (owner
   // request, 2026-07-14).
@@ -408,7 +449,11 @@ export default function ImportShows({
     supabaseRestInsert('user_show_stubs', stubRowFromCandidate(candidate, userId)).catch(() => {});
     setEntries(prev => prev.map((e, i) => i === index ? {
       ...e,
-      match: { id: candidate.id, title: candidate.title, slug: candidate.id, status: 'closed', dy: true },
+      match: {
+        id: candidate.id, title: candidate.title, slug: candidate.id, status: 'closed', dy: true,
+        category: candidate.category, venue: candidate.venue || undefined,
+        city: candidate.city || undefined, od: candidate.openingDate || undefined,
+      },
       matchScore: 1,
       selected: true,
       dateSuspect: false,
@@ -507,7 +552,7 @@ export default function ImportShows({
   }
 
   return (
-    <Modal isOpen={true} onClose={handleClose} maxWidth="lg" bottomSheet ariaLabel="Import shows">
+    <Modal isOpen={true} onClose={handleClose} maxWidth="xl" bottomSheet ariaLabel="Import shows">
       <div className="flex flex-col overflow-hidden max-h-[85vh]">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
@@ -624,13 +669,43 @@ export default function ImportShows({
                   ` ${selectedDiary.filter(e => !e.sourceDate).length} of your reviews have no date — they'll land in a "No date" section where you can add one.`}
               </p>
 
+              {/* Date-mismatch rows: own section, with the WHY and a way out
+                  (owner request, 2026-07-21 — buried in the Diary list they
+                  were unfindable and the skip looked arbitrary). */}
+              {dateSuspectRows.length > 0 && (
+                <div className="mb-4">
+                  <h4 className="text-xs font-bold text-yellow-500 uppercase tracking-wider mb-1">
+                    Not selected — date mismatch ({dateSuspectRows.length})
+                  </h4>
+                  <p className="text-xs text-gray-500 mb-2">
+                    The date you logged falls outside this production&apos;s run, so we didn&apos;t
+                    auto-select it — you may have seen a different production (a tour or revival)
+                    of the same title. Tick the box to import into the matched production anyway,
+                    or use &quot;Find the production I saw&quot; to pick the right one.
+                  </p>
+                  <div className="space-y-1 max-h-48 sm:max-h-[35vh] overflow-y-auto">
+                    {dateSuspectRows.map(({ entry, idx }) => (
+                      <ImportEntryRow
+                        key={`s-${idx}`}
+                        entry={entry}
+                        index={idx}
+                        onToggle={toggleEntry}
+                        liveResolve={liveResolve[idx]}
+                        onFindIt={findItForRow}
+                        onPickCandidate={pickCandidateForRow}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Diary entries */}
               {diaryRows.length > 0 && (
                 <div className="mb-4">
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                    Diary — {selectedDiary.length} of {diaryRows.length} selected
+                    Diary — {diaryRows.filter(({ entry }) => entry.selected).length} of {diaryRows.length} selected
                   </h4>
-                  <div className="space-y-1 max-h-48 overflow-y-auto">
+                  <div className="space-y-1 max-h-48 sm:max-h-[40vh] overflow-y-auto">
                     {diaryRows.map(({ entry, idx }) => (
                       <ImportEntryRow key={`d-${idx}`} entry={entry} index={idx} onToggle={toggleEntry} />
                     ))}
@@ -642,9 +717,9 @@ export default function ImportShows({
               {watchlistRows.length > 0 && (
                 <div className="mb-4">
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                    Watchlist — {selectedWatchlist.length} of {watchlistRows.length} selected
+                    Watchlist — {watchlistRows.filter(({ entry }) => entry.selected).length} of {watchlistRows.length} selected
                   </h4>
-                  <div className="space-y-1 max-h-32 overflow-y-auto">
+                  <div className="space-y-1 max-h-32 sm:max-h-[30vh] overflow-y-auto">
                     {watchlistRows.map(({ entry, idx }) => (
                       <ImportEntryRow key={`w-${idx}`} entry={entry} index={idx} onToggle={toggleEntry} />
                     ))}
@@ -788,11 +863,15 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
         {entry.match && !noMatch ? (
           <div className="text-xs text-gray-500 truncate">
             → {entry.match.title}
+            <span className="text-gray-600"> · {matchContext(entry.match)}</span>
+            {entry.sourceDate && (
+              <span className="text-gray-600"> · you logged {formatDateSeen(entry.sourceDate)}</span>
+            )}
             {entry.alreadyOwned && (
               <span className="text-gray-600"> · already in your shows{entry.selected ? ' — will add another viewing' : ''}</span>
             )}
             {entry.dateSuspect && (
-              <span className="text-yellow-600"> · your date is outside this production&apos;s run — tick to import anyway</span>
+              <span className="text-yellow-600"> · date is outside this run</span>
             )}
           </div>
         ) : (
@@ -803,11 +882,11 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
         <span className="text-xs text-gray-600 flex-shrink-0">{entry.listName}</span>
       )}
     </label>
-    {noMatch && onFindIt && (
+    {(noMatch || entry.dateSuspect) && onFindIt && (
       <div className="pl-8 pb-1.5 -mt-1">
         {(!liveResolve) && (
           <button type="button" onClick={() => onFindIt(index)} className="text-xs text-brand hover:underline">
-            Find it
+            {noMatch ? 'Find it' : 'Find the production I saw'}
           </button>
         )}
         {liveResolve?.status === 'searching' && (

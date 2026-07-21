@@ -93,7 +93,7 @@ export function mergeDiaryShows<T extends MergeableShow>(baseShows: T[], diarySh
       for (const p of s.prods) {
         const venue = p.v || '';
         if (venue && !baseSet?.has(venue.toLowerCase())) {
-          merged.push({ id: p.id, title: s.title, slug: p.id, status: s.status || 'closed', venue, category: p.cat, dy: true } as unknown as T);
+          merged.push({ id: p.id, title: s.title, slug: p.id, status: s.status || 'closed', venue, category: p.cat, city: p.ci, dy: true } as unknown as T);
         }
       }
       continue;
