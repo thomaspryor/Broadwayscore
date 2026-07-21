@@ -303,7 +303,9 @@ export default function ImportShows({
     setStep('preview');
 
     // Fire-and-forget: don't await, don't block the preview step on this.
-    for (const { raw } of unmatchedRows) {
+    // Mock mode (Playwright QA) must not feed fixture titles to the nightly
+    // Mezzanine resolver.
+    for (const { raw } of userId === 'mock-user' ? [] : unmatchedRows) {
       supabaseRestInsert('unmatched_imports', {
         user_id: userId,
         source: sourceId,
@@ -370,10 +372,14 @@ export default function ImportShows({
     () => entries.filter(e => e.alreadyOwned && !e.selected && e.match && (e.matchScore > 0.7 || e.dateSuspect)).length,
     [entries],
   );
-  const untickedCount = useMemo(
-    () => entries.filter(e => !e.alreadyOwned && !e.selected && e.match && (e.matchScore > 0.7 || e.dateSuspect)).length,
+  // Kept as entries (not a bare count) so the summary can NAME the unticked
+  // shows — a "2 not selected" with no titles sent the owner scrolling a
+  // 98-row list looking for them (2026-07-21).
+  const untickedEntries = useMemo(
+    () => entries.filter(e => !e.alreadyOwned && !e.selected && e.match && (e.matchScore > 0.7 || e.dateSuspect)),
     [entries],
   );
+  const untickedCount = untickedEntries.length;
 
   const toggleEntry = (index: number) => {
     setEntries(prev => prev.map((e, i) => i === index ? { ...e, selected: !e.selected } : e));
@@ -600,7 +606,12 @@ export default function ImportShows({
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm mb-2">
                 <span className="text-green-400">{selectedDiary.length + selectedWatchlist.length} selected to import</span>
                 {skippedOwnedCount > 0 && <span className="text-gray-400">{skippedOwnedCount} skipped — already in your shows</span>}
-                {untickedCount > 0 && <span className="text-gray-400">{untickedCount} not selected</span>}
+                {untickedCount > 0 && (
+                  <span className="text-gray-400">
+                    {untickedCount} not selected — {untickedEntries.slice(0, 3).map(e => e.sourceTitle).join(', ')}
+                    {untickedCount > 3 ? ` +${untickedCount - 3} more` : ''}
+                  </span>
+                )}
                 {unmatchedCount > 0 && <span className="text-yellow-400">{unmatchedCount} not on Broadway Scorecard</span>}
               </div>
               {notices.map((n, i) => (
@@ -719,7 +730,7 @@ export default function ImportShows({
               disabled={selectedDiary.length + selectedWatchlist.length === 0}
               className="btn-primary text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Import {selectedDiary.length + selectedWatchlist.length} Shows
+              Import {selectedDiary.length + selectedWatchlist.length} Show{selectedDiary.length + selectedWatchlist.length === 1 ? '' : 's'}
             </button>
           </div>
         )}
