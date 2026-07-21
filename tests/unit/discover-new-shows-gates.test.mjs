@@ -92,3 +92,13 @@ test('shouldExcludeVenueShow still drops workshops and masterclasses', () => {
   assert.equal(shouldExcludeVenueShow('Comedy Workshop'), true);
   assert.equal(shouldExcludeVenueShow('Acting Masterclass'), true);
 });
+
+test('Menier linkPattern admits show slugs, rejects booking-system and utility slugs', () => {
+  const { VENUE_LISTING_PAGES } = require('../../scripts/discover-new-shows.js');
+  const menier = VENUE_LISTING_PAGES.find(v => v.name === 'Menier Chocolate Factory');
+  assert.ok(menier, 'Menier config present');
+  const admit = ['/tickets/midnight-at-the-never-get', '/tickets/the-producers', '/tickets/tru', '/tickets/gifted'];
+  const reject = ['/tickets/series/MATNG', '/tickets/gift-vouchers', '/tickets/vouchers', '/tickets/membership', '/tickets/support-us', '/tickets/donate', '/tickets/access'];
+  for (const href of admit) assert.ok(menier.linkPattern.test(href), `should admit: ${href}`);
+  for (const href of reject) assert.ok(!menier.linkPattern.test(href), `should reject: ${href}`);
+});
