@@ -1,21 +1,13 @@
 {
-  "processed": [],
-  "failed": [
-    "heathers-the-musical-off-west-end-2026/hollywood-reporter--david-rooney.json",
-    "heathers-the-musical-off-west-end-2026/nytimes--ben-brantley.json",
-    "heathers-the-musical-off-west-end-2026/vulture--jesse-green.json",
-    "heathers-the-musical-off-west-end-2026/abc-news--peter-santilli.json",
-    "heathers-the-musical-off-west-end-2026/guardian--giselle-au-nhien-nguyen.json",
-    "heathers-the-musical-off-west-end-2026/nypost--elisabeth-vincentelli.json",
-    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
-    "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
-    "heathers-the-musical-off-west-end-2026/nbcny--robert-kahn.json",
-    "heathers-the-musical-off-west-end-2026/thestage--holly-omahony.json",
-    "heathers-the-musical-off-west-end-2026/times-uk--dominic-maxwell.json",
-    "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
-    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json"
+  "processed": [
+    "dukes-off-broadway-2026/nytimes--helen-shaw.json"
   ],
+  "failed": [
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+  ],
+  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
@@ -23,11 +15,36 @@
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "dukes-off-broadway-2026/nytimes--helen-shaw.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-21T06:55:34.570Z",
-  "lastProcessed": "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
-  "log": []
+  "startTime": "2026-07-21T06:54:03.382Z",
+  "lastProcessed": "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+  "log": [
+    {
+      "t": "2026-07-21T06:54:17.973Z",
+      "event": "bb-session",
+      "session": "12b44c85",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-21T06:54:18.685Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T06:54:34.505Z",
+      "event": "bb-session",
+      "session": "d83d2a87",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-21T06:54:35.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
