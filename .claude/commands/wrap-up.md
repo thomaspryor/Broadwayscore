@@ -292,7 +292,21 @@ The user pastes the prompt into a fresh session and it works with zero extra con
 - **DEFERRED** — user-decision or different-machine items ONLY, with the deferral bar + HANDOFF PROMPT (format above)
 - **BACKLOG** — one line on why it can safely wait; no user action needed
 
-Close with exactly one line: `Your next action: <nothing | answer the DECISION NEEDED above | paste the handoff prompt above into a new session (non-dispatchable items only)>`.
+**Close with the SESSION STATUS block** — plain prose lines, NEVER inside a code fence (`exit-status-gate.sh` strips fences and enforces the SAFE/NOT SAFE line; the owner asked for this exact scannable shape 2026-07-20 so they don't parse walls of text):
+
+──────────────────────────────────────────
+DONE        <what shipped, and how it was verified — one line>
+CONTINUING  <none | workspace/session name — what it's doing>
+NEEDS YOU   <nothing | answer the DECISION NEEDED above | paste the handoff prompt above (non-dispatchable items only)>
+SAFE TO EXIT — <one-line reason>
+──────────────────────────────────────────
+
+**A pending DECISION NEEDED always means NOT SAFE TO EXIT** — "nothing running" is not the bar, "nothing needed from the owner" is (owner rule 2026-07-20; exit-status-gate blocks SAFE TO EXIT when a decision block is present). The SAFE/NOT SAFE line is the hook-required part and must be the last content line (the closing rule is fine). Its three valid forms:
+- `SAFE TO EXIT — <what finished and how it was verified>` — only when nothing is running anywhere (no deploy, no CI, no dispatched follow-up you're responsible for watching) and every claim was verified
+- `NOT SAFE TO EXIT — CONTINUING IN <workspace/session>: <what it's doing>` — work continues elsewhere; NAME the workspace/session
+- `NOT SAFE TO EXIT — <what's still running/blocked and what happens next>`
+
+If a DECISION NEEDED block exists, it must sit immediately above the SESSION STATUS block, fully restated (never "the decision I asked earlier"), using the full template: `DECISION NEEDED:` / `Why this is your call:` / `Option A — name: upside / downside` / `Option B — name: upside / downside` / `My recommendation:` / `Default:`.
 
 Only say "Clean exit, no loose ends" when you are ALSO not recommending any next-session work — a "recommended next session" IS a loose end and belongs in `### Next`, triaged. Never make the user ask "what's required next?"
 
