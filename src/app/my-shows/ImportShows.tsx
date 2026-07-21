@@ -18,6 +18,8 @@ import {
   MEZZANINE_SEARCH_ERROR_COPY,
   type MezzanineCandidate,
 } from '@/lib/mezzanine-search';
+import { getMarketLabel } from '@/lib/market-utils';
+import { marketLabel as diaryMarketLabel } from '@/lib/diary-show-types';
 
 // Our search-shows.json shape (also covers diary-search.json grouped entries)
 interface SearchShow {
@@ -42,19 +44,19 @@ interface SearchShow {
 }
 
 /** Short market label for a matched production — Broadway is the unlabeled
- *  default in search-shows.json; regional/international entries are most
- *  useful identified by their city. */
+ *  default in search-shows.json (getMarketLabel's default covers it);
+ *  diary-catalog regional/international entries are most useful identified
+ *  by their city, falling back to the canonical diary market labels. */
 function marketLabel(s: SearchShow): string {
   switch (s.category) {
     case undefined:
-    case 'broadway': return 'Broadway';
-    case 'off-broadway': return 'Off-Broadway';
-    case 'west-end': return 'West End';
-    case 'off-west-end': return 'Off-West End';
-    case 'us-regional': return s.city || 'US Regional';
-    case 'uk-regional': return s.city || 'UK Regional';
-    case 'international': return s.city || 'International';
-    default: return s.city || s.category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    case 'broadway':
+    case 'off-broadway':
+    case 'west-end':
+    case 'off-west-end':
+      return getMarketLabel(s.category);
+    default:
+      return s.city || diaryMarketLabel(s.category ?? null);
   }
 }
 
@@ -67,7 +69,7 @@ function matchContext(s: SearchShow): string {
 /** Format a YYYY-MM-DD diary date without Date-parse timezone shifts. */
 function formatDateSeen(iso: string): string {
   const [y, m, d] = iso.split('-').map(Number);
-  if (!y || !m || !d) return iso;
+  if (!y || !m || !d || m < 1 || m > 12) return iso;
   const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return `${MONTHS[m - 1]} ${d}, ${y}`;
 }
@@ -390,9 +392,13 @@ export default function ImportShows({
   // dateSuspect flag, so ticking "import anyway" keeps the row here, while
   // picking a different production via find-it (which clears the flag)
   // graduates it into the normal Diary/Watchlist list.
-  const dateSuspectRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.dateSuspect && !isUnmatched(entry)), [indexedEntries]);
-  const diaryRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.type === 'diary' && !entry.dateSuspect && !isUnmatched(entry)), [indexedEntries]);
-  const watchlistRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.type === 'watchlist' && !entry.dateSuspect && !isUnmatched(entry)), [indexedEntries]);
+  // alreadyOwned rows are excluded even when dateSuspect: they're skipped as
+  // duplicates and belong under "already in your shows" — showing them here
+  // too made the same row read as both "skipped" and "needs a date check"
+  // (ship-check finding, 2026-07-21).
+  const dateSuspectRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.dateSuspect && !entry.alreadyOwned && !isUnmatched(entry)), [indexedEntries]);
+  const diaryRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.type === 'diary' && (!entry.dateSuspect || entry.alreadyOwned) && !isUnmatched(entry)), [indexedEntries]);
+  const watchlistRows = useMemo(() => indexedEntries.filter(({ entry }) => entry.type === 'watchlist' && (!entry.dateSuspect || entry.alreadyOwned) && !isUnmatched(entry)), [indexedEntries]);
   // Grouped instead of scattered through the main list, and re-shown on the
   // done step: these are the user's to-do list for manual adds (owner
   // request, 2026-07-14).
