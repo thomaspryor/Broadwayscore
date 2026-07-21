@@ -1,18 +1,131 @@
 {
-  "updatedAt": "2026-07-21T06:57:59.576Z",
-  "processed": 0,
-  "failed": 3,
-  "successRate": "0%",
+  "updatedAt": "2026-07-21T06:16:03.662Z",
+  "processed": 86,
+  "failed": 818,
+  "successRate": "9.5%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 55,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
+    "browserbase": 9,
+    "directCookies": 2,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 0
+    "brightdata": 8,
+    "archiveToday": 2,
+    "archive": 17
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 9,
+  "recentActivity": [
+    {
+      "t": "2026-07-20T20:18:14.895Z",
+      "event": "bb-session",
+      "session": "c0aec43c",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-20T20:18:15.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-20T20:37:41.573Z",
+      "event": "bb-session",
+      "session": "4f12d83a",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
+    },
+    {
+      "t": "2026-07-20T20:37:42.257Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-20T20:37:58.043Z",
+      "event": "bb-session",
+      "session": "74a4fb17",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
+    },
+    {
+      "t": "2026-07-20T20:37:58.705Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T05:52:20.432Z",
+      "event": "bb-session",
+      "session": "7e472016",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/julia-garner-true-crime-drama-guilt"
+    },
+    {
+      "t": "2026-07-21T05:54:38.722Z",
+      "event": "bb-session",
+      "session": "8d62ab9c",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGA"
+    },
+    {
+      "t": "2026-07-21T05:54:39.113Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-21T05:54:54.685Z",
+      "event": "bb-session",
+      "session": "dd1f7700",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGA"
+    },
+    {
+      "t": "2026-07-21T05:54:55.010Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-21T05:54:56.968Z",
+      "event": "bb-session",
+      "session": "b9b96d21",
+      "url": "https://deadline.com/2026/07/broadway-two-strangers-carry-a-cake-taylor-swift-12"
+    },
+    {
+      "t": "2026-07-21T05:57:00.837Z",
+      "event": "bb-session",
+      "session": "9e17be3a",
+      "url": "https://www.thetimes.com/article/8ea532e7-98a0-4100-b982-3e8323151aac"
+    },
+    {
+      "t": "2026-07-21T05:57:01.230Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-21T06:04:30.356Z",
+      "event": "bb-session",
+      "session": "497bb895",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-07-21T06:04:30.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T06:04:46.247Z",
+      "event": "bb-session",
+      "session": "d493879a",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-07-21T06:04:46.600Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T06:07:59.052Z",
+      "event": "bb-session",
+      "session": "8876e002",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-21T06:08:13.726Z",
+      "event": "bb-session",
+      "session": "6cd5a2e1",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    }
+  ]
 }
