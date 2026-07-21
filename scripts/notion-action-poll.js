@@ -42,6 +42,33 @@ const LOG_DIR = path.join(require('os').homedir(), 'Library', 'Logs');
 const MEMORY_DIR = path.join(__dirname, 'agent-memory');
 const DATABASE_ID = 'fa7b3ff2-c073-4097-b54c-0a78e56e06b6';
 
+// Reply-loop state: per-card session IDs + comment watermarks so owner comments
+// resume the SAME Claude session (conversation continuity from the Notion app).
+const STATE_DIR = path.join(require('os').homedir(), '.claude-action-dispatcher');
+const STATE_FILE = path.join(STATE_DIR, 'state.json');
+const REPLY_WINDOW_DAYS = 7; // stop watching a card's comments this long after last activity
+const MAX_ATTEMPTS = 3; // failed runs before the card is un-queued (prevents 5-min crash loops)
+
+function loadState() {
+  try {
+    return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+  } catch {
+    return { cards: {} };
+  }
+}
+
+function saveState(state) {
+  fs.mkdirSync(STATE_DIR, { recursive: true });
+  fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+}
+
+// Unique per-card slug for logs/branches/temp files. Notion page IDs created
+// close in time share their leading bytes (UUIDv7-style), so slice(0,8)
+// collides across same-day cards — use the random tail instead.
+function cardSlug(id) {
+  return id.replace(/-/g, '').slice(-12);
+}
+
 // Tag → agent memory file mapping
 const TAG_MEMORY_MAP = {
   scraping: 'agent-scraper.md',
@@ -348,7 +375,7 @@ Be thorough but concise. Focus on actionable information.`;
 // we fall back to REPO_DIR (prior behavior), so this can never break the dispatcher.
 function provisionActionWorktree(card) {
   try {
-    const branch = `action-${card.id.slice(0, 8)}`;
+    const branch = `action-${cardSlug(card.id)}`;
     const wtPath = path.join(REPO_DIR, '.claude', 'worktrees', branch);
     execSync('git fetch origin main --quiet', { cwd: REPO_DIR, timeout: 60000, stdio: 'ignore' });
     // Idempotent: clear any stale worktree/branch left by a previous run of this card.
@@ -372,8 +399,9 @@ function provisionActionWorktree(card) {
   }
 }
 
+// Returns true if the worktree was KEPT (unpushed commits), false if removed/none.
 function teardownActionWorktree(wt) {
-  if (!wt) return;
+  if (!wt) return false;
   try {
     // Preserve the session's work if it committed but did NOT push/merge to main —
     // never delete a branch with unpushed commits.
@@ -384,35 +412,51 @@ function teardownActionWorktree(wt) {
     } catch { /* if we can't tell, err on the side of keeping it */ unpushed = '?'; }
     if (unpushed !== '0') {
       log(`  KEEPING worktree ${wt.path} — ${unpushed} unpushed commit(s); session work not on main, review manually`);
-      return;
+      return true;
     }
     execSync(`git worktree remove --force "${wt.path}"`, { cwd: REPO_DIR, stdio: 'ignore' });
     try { execSync(`git branch -D "${wt.branch}"`, { cwd: REPO_DIR, stdio: 'ignore' }); } catch {}
+    return false;
   } catch (e) {
     log(`  worktree teardown skipped: ${e.message}`);
+    return false;
   }
 }
 
 // ── Run Claude CLI ───────────────────────────────────────────────────
 
-function runClaude(prompt, card) {
-  const logFile = path.join(LOG_DIR, `action-dispatcher-${card.id.slice(0, 8)}.log`);
-  log(`Spawning Claude for "${card.name}" (${card.action}). Log: ${logFile}`);
+// opts.resumeSessionId — continue a prior session (owner replied in comments).
+// opts.reuseRunDir    — cwd of the original run, if it still exists (kept worktree
+//                       or REPO_DIR). Session transcripts are keyed by cwd, and
+//                       provisionActionWorktree() paths are deterministic per card,
+//                       so a re-provisioned worktree resolves to the same transcript.
+function runClaude(prompt, card, opts = {}) {
+  const logFile = path.join(LOG_DIR, `action-dispatcher-${cardSlug(card.id)}.log`);
+  log(`Spawning Claude for "${card.name}" (${card.action}${opts.resumeSessionId ? ', resume' : ''}). Log: ${logFile}`);
 
   // Write prompt to temp file to avoid shell escaping issues
-  const tmpPrompt = path.join(require('os').tmpdir(), `action-prompt-${card.id.slice(0, 8)}.txt`);
+  const tmpPrompt = path.join(require('os').tmpdir(), `action-prompt-${cardSlug(card.id)}.txt`);
 
   // Isolate the automated session in its own worktree (falls back to REPO_DIR).
-  const wt = provisionActionWorktree(card);
-  const runDir = wt ? wt.path : REPO_DIR;
+  let wt = null;
+  let runDir;
+  if (opts.reuseRunDir && fs.existsSync(opts.reuseRunDir)) {
+    runDir = opts.reuseRunDir; // kept worktree (or REPO_DIR fallback) from the original run
+  } else {
+    wt = provisionActionWorktree(card);
+    runDir = wt ? wt.path : REPO_DIR;
+  }
 
+  let keptWorktree = false;
   try {
     fs.writeFileSync(tmpPrompt, prompt);
 
-    // Pipe prompt via stdin; --print for non-interactive, --verbose for logging
-    // --dangerously-skip-permissions so automated session can operate freely
-    const result = execSync(
-      `cat "${tmpPrompt}" | claude --print --dangerously-skip-permissions --verbose`,
+    // Pipe prompt via stdin; --print + JSON output so we capture session_id for
+    // the comment-reply loop; --dangerously-skip-permissions so the automated
+    // session can operate freely.
+    const resume = opts.resumeSessionId ? ` --resume "${opts.resumeSessionId}"` : '';
+    const raw = execSync(
+      `cat "${tmpPrompt}" | claude --print --output-format json --dangerously-skip-permissions${resume}`,
       {
         cwd: runDir,
         timeout: 30 * 60 * 1000, // 30 min max
@@ -426,25 +470,48 @@ function runClaude(prompt, card) {
       }
     );
 
-    // Write full output to log
-    fs.writeFileSync(logFile, result);
+    // Write full output to log (append on resume so the card's history accumulates)
+    if (opts.resumeSessionId) fs.appendFileSync(logFile, `\n\n===== RESUME ${new Date().toISOString()} =====\n${raw}`);
+    else fs.writeFileSync(logFile, raw);
+
+    // --output-format json → single JSON object with .result and .session_id.
+    // Fall back to raw text if parsing fails (e.g. CLI change).
+    let text = raw;
+    let sessionId = opts.resumeSessionId || null;
+    try {
+      const parsed = JSON.parse(raw);
+      if (typeof parsed.result === 'string') text = parsed.result;
+      if (parsed.session_id) sessionId = parsed.session_id;
+    } catch { /* keep raw text */ }
 
     // Extract result and memory update between markers (single pass)
-    const resultMatch = result.match(/===ACTION_RESULT_START===([\s\S]*?)===ACTION_RESULT_END===/);
-    const memoryMatch = result.match(/===MEMORY_UPDATE_START===([\s\S]*?)===MEMORY_UPDATE_END===/);
+    const resultMatch = text.match(/===ACTION_RESULT_START===([\s\S]*?)===ACTION_RESULT_END===/);
+    const memoryMatch = text.match(/===MEMORY_UPDATE_START===([\s\S]*?)===MEMORY_UPDATE_END===/);
 
     return {
-      result: resultMatch ? resultMatch[1].trim() : result.slice(-3000),
+      result: resultMatch ? resultMatch[1].trim() : text.slice(-3000),
       memoryUpdate: memoryMatch ? memoryMatch[1].trim() : null,
+      sessionId,
+      runDir,
+      failed: false,
+      get keptWorktree() { return keptWorktree; },
     };
   } catch (err) {
     const errMsg = `Claude session failed: ${err.message}`;
     log(errMsg);
     fs.appendFileSync(logFile, `\n\nERROR: ${errMsg}`);
-    return { result: `[Automated session error] ${err.message.slice(0, 500)}`, memoryUpdate: null };
+    const stdoutTail = err.stdout ? String(err.stdout).slice(-300) : '';
+    return {
+      result: `[Automated session error] ${err.message.slice(0, 500)}${stdoutTail ? ` | stdout: ${stdoutTail}` : ''}`,
+      memoryUpdate: null,
+      sessionId: opts.resumeSessionId || null,
+      runDir,
+      failed: true,
+      get keptWorktree() { return keptWorktree; },
+    };
   } finally {
     try { fs.unlinkSync(tmpPrompt); } catch {}
-    teardownActionWorktree(wt);
+    keptWorktree = teardownActionWorktree(wt);
   }
 }
 
@@ -495,12 +562,25 @@ async function addComment(card, result) {
       {
         type: 'text',
         text: {
-          content: `Action Dispatcher completed "${card.action}" for this card.\n\n${summary}`,
+          content: `Action Dispatcher completed "${card.action}" for this card.\n\n${summary}\n\n💬 Reply in these comments to ask follow-ups or request changes — I'll pick it up within ~5 minutes and answer here.`,
         },
       },
     ],
   }), 'addComment');
   log(`Added comment to "${card.name}"`);
+}
+
+// Fire-and-forget comments (start / failure) — never let a notification error
+// break card processing.
+async function addInfoComment(cardId, content, label) {
+  try {
+    await withRetry(() => notion.comments.create({
+      parent: { page_id: cardId },
+      rich_text: [{ type: 'text', text: { content: content.slice(0, 1900) } }],
+    }), label);
+  } catch (err) {
+    log(`  ${label} comment failed (non-fatal): ${err.message}`);
+  }
 }
 
 async function clearAction(card) {
@@ -514,6 +594,110 @@ async function clearAction(card) {
   log(`Cleared Action for "${card.name}"`);
 }
 
+// ── Comment-reply loop ───────────────────────────────────────────────
+// For every card the dispatcher has worked (state entry, ≤REPLY_WINDOW_DAYS old),
+// look for NEW owner comments and resume the card's Claude session with them.
+// The reply is posted back as a comment → push notification on the owner's phone.
+
+async function listAllComments(cardId) {
+  const all = [];
+  let cursor;
+  do {
+    const resp = await withRetry(() => notion.comments.list({
+      block_id: cardId,
+      ...(cursor ? { start_cursor: cursor } : {}),
+    }), 'listComments');
+    all.push(...resp.results);
+    cursor = resp.has_more ? resp.next_cursor : null;
+  } while (cursor);
+  return all;
+}
+
+async function pollReplies(state, botId) {
+  const now = Date.now();
+  for (const [cardId, entry] of Object.entries(state.cards)) {
+    if (now - new Date(entry.updatedAt || 0).getTime() > REPLY_WINDOW_DAYS * 86400000) {
+      delete state.cards[cardId];
+      continue;
+    }
+    if (!entry.sessionId) continue;
+
+    let comments;
+    try {
+      comments = await listAllComments(cardId);
+    } catch (err) {
+      log(`  Comment poll failed for "${entry.name}": ${err.message}`);
+      continue;
+    }
+
+    const watermark = new Date(entry.lastCommentCheck || 0);
+    const fresh = comments.filter(c =>
+      c.created_by.id !== botId && new Date(c.created_time) > watermark
+    );
+    if (fresh.length === 0) continue;
+
+    const followUp = fresh
+      .map(c => c.rich_text.map(t => t.plain_text).join(''))
+      .join('\n\n')
+      .trim();
+    // Advance watermark BEFORE running so a crash can't re-process the same
+    // comment every 5 minutes forever.
+    entry.lastCommentCheck = new Date().toISOString();
+    saveState(state);
+    if (!followUp) continue;
+
+    log(`Owner replied on "${entry.name}" — resuming session ${entry.sessionId.slice(0, 8)}…`);
+    const prompt = `The owner replied on the Notion card "${entry.name}" (this is a continuation of your earlier session on it):
+
+${followUp}
+
+Respond helpfully. If they're asking a question, answer it from your existing context (re-verify against the code/data if needed). If they're asking for additional work, DO the work now — you have full repo access — then summarize what you did. Keep the reply under 1500 characters; it will be posted as a Notion comment. Output ONLY the reply text between markers:
+===ACTION_RESULT_START===
+[your reply]
+===ACTION_RESULT_END===`;
+
+    const pseudoCard = { id: cardId, name: entry.name, action: 'Reply' };
+    let run = runClaude(prompt, pseudoCard, {
+      resumeSessionId: entry.sessionId,
+      reuseRunDir: entry.runDir,
+    });
+
+    // Transcript unreachable (pruned, or original cwd gone) → fall back to a
+    // fresh session seeded with the card's current Notes + Outcome so the
+    // owner still gets a useful answer instead of a dead error.
+    if (run.failed && /No conversation found/i.test(run.result)) {
+      log(`  Resume unavailable for "${entry.name}" — falling back to fresh session with card context`);
+      let cardContext = '';
+      try {
+        const page = await withRetry(() => notion.pages.retrieve({ page_id: cardId }), 'retrieveCard');
+        const notes = getRichTextValue(page.properties?.Notes);
+        const outcome = getRichTextValue(page.properties?.Outcome);
+        cardContext = `\n\n## Card Notes\n${notes || '(none)'}\n\n## Card Outcome so far\n${outcome || '(none)'}`;
+      } catch { /* answer without context if the fetch fails */ }
+      run = runClaude(
+        `You are answering a follow-up comment on the Notion card "${entry.name}". You do NOT have the prior session's context — rely on the card content below and re-verify against the repo as needed.${cardContext}\n\n## Owner's comment\n${followUp}\n\nRespond helpfully; if they ask for work, do it. Keep the reply under 1500 characters. Output ONLY the reply text between markers:\n===ACTION_RESULT_START===\n[your reply]\n===ACTION_RESULT_END===`,
+        pseudoCard,
+        {}
+      );
+    }
+
+    if (run.sessionId) entry.sessionId = run.sessionId;
+    entry.updatedAt = new Date().toISOString();
+    // Only touch runDir if this run provisioned its own dir (a reused kept
+    // worktree is still on disk — leave its path alone).
+    if (run.runDir !== entry.runDir) {
+      entry.runDir = (run.keptWorktree || run.runDir === REPO_DIR) ? run.runDir : null;
+    }
+    saveState(state);
+
+    await addInfoComment(cardId, run.failed
+      ? `⚠️ I hit an error picking up your reply — see ~/Library/Logs/action-dispatcher-${cardSlug(cardId)}.log. Reply again to retry.`
+      : run.result, 'replyComment');
+    log(`Replied on "${entry.name}"`);
+  }
+  saveState(state);
+}
+
 // ── Main ─────────────────────────────────────────────────────────────
 
 async function main() {
@@ -523,16 +707,14 @@ async function main() {
   }
 
   log('Polling Notion Action Queue...');
+  const state = loadState();
   const cards = await getActionableCards();
 
-  if (cards.length === 0) {
-    log('No actionable cards. Exiting.');
-    return;
-  }
-
-  log(`Found ${cards.length} actionable card(s):`);
-  for (const card of cards) {
-    log(`  - "${card.name}" [${card.action}] (${card.priority || 'no priority'})`);
+  if (cards.length > 0) {
+    log(`Found ${cards.length} actionable card(s):`);
+    for (const card of cards) {
+      log(`  - "${card.name}" [${card.action}] (${card.priority || 'no priority'})`);
+    }
   }
 
   for (const card of cards) {
@@ -546,20 +728,80 @@ async function main() {
       continue;
     }
 
+    const entry = state.cards[card.id] || { attempts: 0 };
+
+    // Retry cap: a persistently-failing card must not crash-loop every 5 min.
+    if (entry.attempts >= MAX_ATTEMPTS) {
+      log(`"${card.name}" has failed ${entry.attempts}x — un-queuing.`);
+      await addInfoComment(card.id,
+        `⚠️ "${card.action}" failed ${entry.attempts} times — pausing. Log: ~/Library/Logs/action-dispatcher-${cardSlug(card.id)}.log. Set the Action again to retry.`,
+        'failureComment');
+      try { await clearAction(card); entry.attempts = 0; } catch (err) { log(`  clearAction failed: ${err.message}`); }
+      state.cards[card.id] = { ...entry, name: card.name, updatedAt: new Date().toISOString() };
+      saveState(state);
+      continue;
+    }
+
+    await addInfoComment(card.id,
+      `🤖 Started "${card.action}" — working on it now. You'll get a comment here when it's done.`,
+      'startComment');
+
+    // Watermark from BEFORE the run: owner comments posted while the session is
+    // working are picked up by the reply loop on the next poll (bot comments are
+    // author-filtered, so the start/completion comments don't trigger replies).
+    const startedAt = new Date().toISOString();
     const prompt = buildPrompt(card);
-    const { result, memoryUpdate } = runClaude(prompt, card);
+    const run = runClaude(prompt, card);
+
+    if (run.failed) {
+      entry.attempts += 1;
+      state.cards[card.id] = {
+        ...entry,
+        name: card.name,
+        sessionId: run.sessionId,
+        runDir: (run.keptWorktree || run.runDir === REPO_DIR) ? run.runDir : null,
+        updatedAt: new Date().toISOString(),
+        lastCommentCheck: entry.lastCommentCheck || startedAt,
+      };
+      saveState(state);
+      log(`Session failed (attempt ${entry.attempts}/${MAX_ATTEMPTS}) — Action left set for retry.`);
+      continue;
+    }
 
     try {
-      await updateCardOutcome(card, result);
-      await addComment(card, result);
-      if (memoryUpdate) {
-        writeMemoryUpdate(card, memoryUpdate);
+      await updateCardOutcome(card, run.result);
+      await addComment(card, run.result);
+      if (run.memoryUpdate) {
+        writeMemoryUpdate(card, run.memoryUpdate);
       }
       await clearAction(card);
+      state.cards[card.id] = {
+        name: card.name,
+        action: card.action,
+        sessionId: run.sessionId,
+        runDir: (run.keptWorktree || run.runDir === REPO_DIR) ? run.runDir : null,
+        attempts: 0,
+        lastCommentCheck: startedAt,
+        updatedAt: new Date().toISOString(),
+      };
+      saveState(state);
       log(`Done processing "${card.name}"`);
     } catch (err) {
       log(`ERROR updating Notion for "${card.name}": ${err.message}`);
       // Don't clear Action on error — card stays in queue for retry
+    }
+  }
+
+  // Reply loop runs every poll, even when no new Action cards exist.
+  if (!DRY_RUN) {
+    try {
+      const me = await withRetry(() => notion.users.me(), 'usersMe');
+      // Test-only: lets an E2E test author "owner" comments with the bot token
+      // (real owner-vs-bot detection is verified separately via users.me).
+      const botId = process.env.POLL_REPLIES_BOT_ID_OVERRIDE || me.id;
+      await pollReplies(state, botId);
+    } catch (err) {
+      log(`Reply loop error (non-fatal): ${err.message}`);
     }
   }
 
