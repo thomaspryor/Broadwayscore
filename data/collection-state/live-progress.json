@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-07-21T19:13:12.767Z",
-  "processed": 63,
-  "failed": 577,
+  "updatedAt": "2026-07-21T19:14:40.012Z",
+  "processed": 64,
+  "failed": 586,
   "successRate": "9.8%",
   "tierBreakdown": {
     "playwright": 41,
@@ -11,9 +11,9 @@
     "scrapingbee": 0,
     "brightdata": 9,
     "archiveToday": 0,
-    "archive": 12
+    "archive": 13
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-07-21T17:22:47.625Z",
@@ -34,6 +34,28 @@
     },
     {
       "t": "2026-07-21T17:23:05.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T19:13:35.198Z",
+      "event": "bb-session",
+      "session": "38169bee",
+      "url": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html"
+    },
+    {
+      "t": "2026-07-21T19:13:35.934Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T19:13:51.769Z",
+      "event": "bb-session",
+      "session": "cfb7f9c5",
+      "url": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html"
+    },
+    {
+      "t": "2026-07-21T19:13:52.508Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

@@ -62,7 +62,8 @@
     "oh-mary-west-end-2025/variety--ellise-shafer.json",
     "oh-mary-west-end-2025/deadline--greg-evans.json",
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-    "the-producers-west-end-2025/west-end-best-friend--unknown.json"
+    "the-producers-west-end-2025/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-broadway-2025/nytimes--ben-brantley.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -641,7 +642,16 @@
     "the-producers-west-end-2025/financialtimes--unknown.json",
     "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
     "burlesque-west-end-2026/people--unknown.json",
-    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json"
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/theatreandtonic--unknown.json",
+    "hercules-west-end-2025/telegraph--unknown.json",
+    "hercules-west-end-2025/times-uk--clive-davis.json",
+    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json",
+    "heathers-the-musical-off-broadway-2025/ew--kyle-anderson.json",
+    "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json",
+    "heathers-the-musical-off-broadway-2025/observer--unknown.json",
+    "heathers-the-musical-off-broadway-2025/thereviewshub--unknown.json",
+    "heathers-the-musical-off-broadway-2025/all-that-dazzles-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -718,11 +728,12 @@
       "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
+      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+      "heathers-the-musical-off-broadway-2025/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-07-21T16:28:57.494Z",
-  "lastProcessed": "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/all-that-dazzles-uk--unknown.json",
   "log": [
     {
       "t": "2026-07-21T17:22:47.625Z",
@@ -743,6 +754,28 @@
     },
     {
       "t": "2026-07-21T17:23:05.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T19:13:35.198Z",
+      "event": "bb-session",
+      "session": "38169bee",
+      "url": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html"
+    },
+    {
+      "t": "2026-07-21T19:13:35.934Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T19:13:51.769Z",
+      "event": "bb-session",
+      "session": "cfb7f9c5",
+      "url": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html"
+    },
+    {
+      "t": "2026-07-21T19:13:52.508Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
