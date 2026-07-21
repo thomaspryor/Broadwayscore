@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 // The real CLI guard lives at scripts/check-orphan-commits.js — require it so a
 // change to its detection logic breaks this test (CLAUDE.md §15).
-const { findOrphanCommits, resolveRange, parseArgs } = require('../check-orphan-commits.js');
+const { findOrphanCommits, findOrphanShasFromCompare, resolveRange, parseArgs } = require('../check-orphan-commits.js');
 
 test('flags a commit line with no parents (a root/orphan commit)', () => {
   // `git rev-list --parents` output: "<commit> [<parent>...]".
@@ -67,4 +67,40 @@ test('parseArgs handles --k=v and bare flags', () => {
   const a = parseArgs(['--range=a..b', '--verbose']);
   assert.equal(a.range, 'a..b');
   assert.equal(a.verbose, true);
+});
+
+// --- compare API mode (CI path — no local git history) ---
+
+test('findOrphanShasFromCompare flags a commit whose parents array is empty', () => {
+  const compare = {
+    commits: [
+      { sha: 'aaaa', parents: [{ sha: '0000' }] }, // normal
+      { sha: 'bbbb', parents: [] }, // ORPHAN (root)
+      { sha: 'cccc', parents: [{ sha: 'aaaa' }, { sha: 'zzzz' }] }, // merge
+    ],
+  };
+  assert.deepEqual(findOrphanShasFromCompare(compare), ['bbbb']);
+});
+
+test('findOrphanShasFromCompare passes a normal push (all parented)', () => {
+  const compare = {
+    commits: [
+      { sha: 'aaaa', parents: [{ sha: '0000' }] },
+      { sha: 'bbbb', parents: [{ sha: 'aaaa' }] },
+    ],
+  };
+  assert.deepEqual(findOrphanShasFromCompare(compare), []);
+});
+
+test('findOrphanShasFromCompare fails OPEN on missing/malformed parents (does not flag)', () => {
+  // A commit with no `parents` field can't be judged → must NOT be flagged, else
+  // a payload quirk would block a legitimate main push.
+  const compare = { commits: [{ sha: 'aaaa' }, { sha: 'bbbb', parents: 'weird' }] };
+  assert.deepEqual(findOrphanShasFromCompare(compare), []);
+});
+
+test('findOrphanShasFromCompare tolerates empty / missing commits array', () => {
+  assert.deepEqual(findOrphanShasFromCompare({}), []);
+  assert.deepEqual(findOrphanShasFromCompare({ commits: [] }), []);
+  assert.deepEqual(findOrphanShasFromCompare(null), []);
 });
