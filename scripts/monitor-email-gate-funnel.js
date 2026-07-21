@@ -25,8 +25,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
-const { sendAlert } = require('./lib/discord-notify');
+const { runWeeklyMonitor, runAnalyzerJson } = require('./lib/weekly-monitor-runner');
 const { decideEmailGateFunnelAlerts } = require('./lib/email-gate-funnel-rules');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -35,50 +34,18 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const FIXTURE_FILE = process.env.EMAIL_GATE_FUNNEL_FIXTURE || null;
 const STATE_PATH = process.env.EMAIL_GATE_FUNNEL_STATE_FILE
   || path.join(__dirname, '..', 'data', 'audit', 'email-gate-funnel-monitor-state.json');
+const ANALYZER = path.join(__dirname, 'analyze-email-gate-funnel.js');
 
-function loadState() {
-  try { return JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')); } catch { return {}; }
+function loadData() {
+  return FIXTURE_FILE
+    ? JSON.parse(fs.readFileSync(FIXTURE_FILE, 'utf8'))
+    : runAnalyzerJson(ANALYZER, ['--days=7']);
 }
 
-function runAnalyzer() {
-  const raw = execFileSync('node', [path.join(__dirname, 'analyze-email-gate-funnel.js'), '--json', '--days=7'], {
-    encoding: 'utf8', timeout: 120000,
-  }).trim();
-  // --json prints exactly one JSON line last; tolerate stray warnings above it.
-  const jsonLine = raw.split('\n').filter(l => l.trim().startsWith('{')).pop();
-  if (!jsonLine) throw new Error(`analyze-email-gate-funnel.js --json produced no JSON (got: ${raw.slice(0, 200)})`);
-  return JSON.parse(jsonLine);
-}
-
-async function main() {
-  const summary = FIXTURE_FILE ? JSON.parse(fs.readFileSync(FIXTURE_FILE, 'utf8')) : runAnalyzer();
-  const state = loadState();
-  const { alerts, state: nextState } = decideEmailGateFunnelAlerts(summary, state, Date.now());
-  nextState.lastRunAt = new Date().toISOString();
-  nextState.lastSummary = summary;
-
-  console.log(`Summary(7d): ${JSON.stringify(summary)}`);
-  console.log(`Decisions: ${alerts.map(a => a.kind).join(', ') || 'none'}`);
-
-  for (const a of alerts) {
-    if (DRY_RUN) { console.log(`[dry-run] would send ${a.kind}: ${a.title}`); continue; }
-    if (a.logOnly) { console.log(`[log-only] ${a.kind}: ${a.description}`); continue; }
-    const delivered = await sendAlert({ title: a.title, description: a.description, severity: a.severity, email: a.email });
-    if (a.email && !delivered && a.stampKey) {
-      // Delivery failed (Resend down / env missing): revert the sent-stamp so
-      // this alert RETRIES next week instead of being silently lost.
-      delete nextState[a.stampKey];
-      console.log(`delivery FAILED for ${a.kind} — stamp ${a.stampKey} reverted, will retry next run`);
-    } else {
-      console.log(`sent ${a.kind} (${a.severity}${a.email ? ', email' : ''})`);
-    }
-  }
-
-  if (!DRY_RUN) {
-    fs.mkdirSync(path.dirname(STATE_PATH), { recursive: true });
-    fs.writeFileSync(STATE_PATH, JSON.stringify(nextState, null, 2) + '\n');
-    console.log(`State saved: ${STATE_PATH}`);
-  }
-}
-
-main().catch((err) => { console.error('Fatal:', err.message); process.exit(1); });
+runWeeklyMonitor({
+  loadData,
+  decideFn: decideEmailGateFunnelAlerts,
+  statePath: STATE_PATH,
+  dryRun: DRY_RUN,
+  logData: (summary) => console.log(`Summary(7d): ${JSON.stringify(summary)}`),
+}).catch((err) => { console.error('Fatal:', err.message); process.exit(1); });
