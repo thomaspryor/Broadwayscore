@@ -101,6 +101,11 @@ function decideEmailGateFunnelAlerts(summary = {}, state = {}, nowMs = 0) {
 
   // Sustained multi-week decline: only meaningful weeks count, so a stall
   // doesn't masquerade as "3 low weeks" — funnel-stalled already covers that.
+  // A non-meaningful (ramp-up/gap) week must RESET the rolling history, not
+  // leave it untouched — otherwise low/low/gap/low reads as "3 consecutive
+  // low weeks" even though the gap week sits between them (2026-07-21
+  // adversarial review caught the identical bug in gate-cold-start-rules.js's
+  // capture-collapse streak counter; this is the same pattern here).
   if (hasMeaningfulTraffic) {
     next.recentCaptures = [...(next.recentCaptures || []), capturesPerWeek].slice(-SUSTAINED_DECLINE_WEEKS);
     if (
@@ -119,6 +124,8 @@ function decideEmailGateFunnelAlerts(summary = {}, state = {}, nowMs = 0) {
         });
       }
     }
+  } else {
+    next.recentCaptures = [];
   }
 
   alerts.push({

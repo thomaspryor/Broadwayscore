@@ -108,6 +108,21 @@ test(`sustained-decline: ${SUSTAINED_DECLINE_WEEKS} consecutive weeks below ${SU
   assert.equal(third.state.recentCaptures.length, SUSTAINED_DECLINE_WEEKS);
 });
 
+test('sustained-decline history resets across a non-meaningful gap week (low / low / ramp-up / low is NOT 3 consecutive)', () => {
+  let st = {};
+  let last;
+  for (let i = 0; i < SUSTAINED_DECLINE_WEEKS - 1; i++) {
+    last = decideEmailGateFunnelAlerts({ impressions: 100, captured: 2, capturesPerWeek: 2 }, st, NOW + i * 7 * DAY);
+    st = last.state;
+  }
+  assert.equal(st.recentCaptures.length, SUSTAINED_DECLINE_WEEKS - 1, 'two low meaningful weeks recorded so far');
+  const gapWeek = decideEmailGateFunnelAlerts({ impressions: 5, captured: 0, capturesPerWeek: 0 }, st, NOW + (SUSTAINED_DECLINE_WEEKS - 1) * 7 * DAY);
+  assert.deepEqual(gapWeek.state.recentCaptures, [], 'a non-meaningful window must reset the rolling history, not leave it dangling');
+  const third = decideEmailGateFunnelAlerts({ impressions: 100, captured: 2, capturesPerWeek: 2 }, gapWeek.state, NOW + SUSTAINED_DECLINE_WEEKS * 7 * DAY);
+  assert.ok(!kinds(third).includes('sustained-decline'), 'low / low / gap / low is only 1 consecutive meaningful week after the reset, not 3');
+  assert.equal(third.state.recentCaptures.length, 1);
+});
+
 test('sustained-decline does not fire if any recent week hit the hard collapse floor (capture-collapse already covers it)', () => {
   let st = {};
   const weeks = [2, 0.5, 2]; // middle week trips capture-collapse instead
