@@ -382,16 +382,36 @@ async function discoverInteractiveTargets(page) {
 }
 
 function locateTarget(page, target) {
+  // :visible matters here, not just style: this app renders duplicate
+  // same-label controls for different breakpoints (e.g. two "Grid view"
+  // buttons — one for the desktop-inline row, one for the mobile row —
+  // sharing an aria-label, with the inactive one collapsed to a 0x0 rect by
+  // its hidden ancestor rather than removed from the DOM). Without :visible,
+  // .first() returns DOM order, which can be the 0x0 one; a real click on it
+  // is a no-op that Playwright's actionability check rejects, swallowed by
+  // testControlForDeadness's .catch() — screenshots then look byte-identical
+  // and a genuinely-working control files as a false dead-control (confirmed
+  // reproducible on demo.broadwayscorecard.com, 2026-07-21 — increasing the
+  // post-click wait had zero effect, which is what exposed this as a
+  // selector bug rather than a render-timing race).
   if (target.hasAriaLabel) {
-    return page.locator(`${target.tag}[aria-label="${escapeAttr(target.label)}"]`).first();
+    return page.locator(`${target.tag}[aria-label="${escapeAttr(target.label)}"]:visible`).first();
   }
-  return page.locator(target.tag).filter({ hasText: target.label }).first();
+  return page.locator(`${target.tag}:visible`).filter({ hasText: target.label }).first();
 }
 
 /** Click one control, viewport-diff before/after. Navigation always counts as a visible change. */
 async function testControlForDeadness(page, target) {
   const loc = locateTarget(page, target);
   if (await loc.count() === 0) return null;
+  // Playwright's :visible (in locateTarget) checks bounding box + CSS
+  // visibility but NOT opacity — discoverInteractiveTargets' own filter
+  // does. If a future breakpoint duplicate is hidden via opacity:0 instead
+  // of display/size collapse, :visible alone would resolve to it again,
+  // reproducing the exact false-positive class the :visible fix closed for
+  // the display/size case (second-opinion review finding, 2026-07-21).
+  const opacity = await loc.evaluate(el => parseFloat(getComputedStyle(el).opacity)).catch(() => 1);
+  if (opacity === 0) return null;
   const beforeUrl = page.url();
   // Park the pointer off-element before EITHER screenshot: Playwright's
   // .click() leaves the mouse hovering the target, and hover:scale/shadow
@@ -405,7 +425,17 @@ async function testControlForDeadness(page, target) {
   let before;
   try { before = await page.screenshot({ fullPage: false }); } catch { return null; }
   await loc.click({ timeout: 5000 }).catch(() => {});
-  await page.waitForTimeout(600);
+  // 1500ms, matching this file's own convention for post-interaction settle
+  // waits elsewhere (captureMatrix uses 1200-1500ms after navigations). Live
+  // verification runs against the real demo showed the Grid/List view
+  // re-render intermittently landing after 600-1000ms under real network/
+  // data-fetch load, occasionally misclassifying a working toggle as dead —
+  // adversarial review's timing-budget concern, confirmed empirically
+  // 2026-07-21 (flagged on ~1-2 of ~60 controls per run, not the same
+  // control every run — a genuine timing flake, not a logic bug: DOM
+  // inspection confirmed aria-pressed correctly reflects state and only the
+  // truly-visible mobile toggle is ever selected as the test target).
+  await page.waitForTimeout(1500);
   const afterUrl = page.url();
   if (afterUrl !== beforeUrl) return { dead: false, navigated: true };
   await page.mouse.move(0, 0).catch(() => {});
