@@ -206,8 +206,11 @@ function scrapingDogRequest(apiKey, url, tier) {
           ));
         } else {
           const err = new Error(`Scrapingdog HTTP ${res.statusCode} (${tier.name}): ${data.slice(0, 120)}`);
-          // 400 + "Stealth Mode" hint = target needs a higher proxy tier
-          if (res.statusCode === 400 && /stealth/i.test(data)) err.escalate = true;
+          // Any 400 escalates the tier ladder. The explicit "Stealth Mode"
+          // hint was the original trigger, but SD also returns a generic 400
+          // ("Something went wrong please try again!") from the premium tier
+          // on Reddit (run 29876347401, 2026-07-21) where stealth succeeds.
+          if (res.statusCode === 400) err.escalate = true;
           reject(err);
         }
       });
