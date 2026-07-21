@@ -34,6 +34,17 @@ const server = http.createServer((req, res) => {
       res.writeHead(200);
       res.end('');
     }
+  } else if (target.includes('generic-400')) {
+    // Mirrors real Scrapingdog behavior on reddit (2026-07-21, run
+    // 29876347401): premium tier 400s with a GENERIC error (no stealth
+    // hint); only stealth succeeds. Any 400 must escalate the ladder.
+    if (u.searchParams.get('stealth_mode') === 'true') {
+      res.writeHead(200);
+      res.end(JSON.stringify({ data: { children: [], tier: 'stealth' } }));
+    } else {
+      res.writeHead(400);
+      res.end('{"message":"Something went wrong please try again!","status":400,"success":false}');
+    }
   } else if (target.includes('wrapped')) {
     res.writeHead(200);
     res.end('<html><body>{"data":{"children":[]}}</body></html>');
@@ -120,6 +131,16 @@ test('fetchViaScrapingDog escalates on empty-200 body (reddit block signature)',
   assert.equal(result.data.tier, 'premium');
   // plain empty-200 + premium 200 = 2 requests
   assert.equal(getStats().scrapingDog, 2, 'empty-200 should escalate to premium');
+});
+
+test('fetchViaScrapingDog escalates on generic 400 without stealth hint', async () => {
+  const { fetchViaScrapingDog, getStats, resetFallbackState } = load();
+  resetFallbackState();
+  const result = await fetchViaScrapingDog('https://www.reddit.com/r/broadway/generic-400.json');
+  assert.equal(result.data.tier, 'stealth');
+  // plain 400 + premium 400 + stealth 200 = 3 requests, one-time toll per
+  // run — sdTierIndex latches so later calls skip straight to stealth
+  assert.equal(getStats().scrapingDog, 3, 'generic 400 should walk the full ladder once');
 });
 
 test('fetchViaScrapingDog rejects when no key is configured', async () => {
