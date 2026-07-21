@@ -1,41 +1,50 @@
 {
-  "processed": [],
-  "failed": [
-    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
-    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
-    "tender-off-west-end-2026/radio-times--unknown.json",
-    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
-    "tender-off-west-end-2026/theupcoming--unknown.json",
-    "tender-off-west-end-2026/times-uk--richard-morrison.json",
-    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
-    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
+  "processed": [
+    "dukes-off-broadway-2026/nytimes--helen-shaw.json"
   ],
+  "failed": [
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+  ],
+  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "dukes-off-broadway-2026/nytimes--helen-shaw.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-21T06:54:47.178Z",
-  "lastProcessed": "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+  "startTime": "2026-07-21T06:54:03.382Z",
+  "lastProcessed": "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
   "log": [
     {
-      "t": "2026-07-21T06:56:09.369Z",
+      "t": "2026-07-21T06:54:17.973Z",
       "event": "bb-session",
-      "session": "b847939a",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+      "session": "12b44c85",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
     },
     {
-      "t": "2026-07-21T06:56:10.037Z",
+      "t": "2026-07-21T06:54:18.685Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T06:54:34.505Z",
+      "event": "bb-session",
+      "session": "d83d2a87",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-21T06:54:35.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
