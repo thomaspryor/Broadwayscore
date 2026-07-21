@@ -171,7 +171,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
     displayMode === 'model' &&
     modelQualityOk &&
     commercial.modelBreakeven &&
-    weeklyGross &&
+    weeklyGross != null &&
     showStatus === 'open'
       ? { gross: weeklyGross, breakeven: commercial.modelBreakeven, above: weeklyGross >= commercial.modelBreakeven }
       : null;
