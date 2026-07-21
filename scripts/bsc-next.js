@@ -26,8 +26,24 @@ const { execFileSync, spawnSync } = require('child_process');
 const REPO = '/Users/tompryor/Broadwayscore';
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 const cmuxws = require('./lib/cmux-workspaces.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const LIST_ID = process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore';
 const TASKS_DIR = path.join(os.homedir(), '.claude', 'tasks', LIST_ID);
+
+const USAGE = `bsc-next — open a new Cmux workspace already running Claude Code on your top
+prioritized task, seeded with its full Notion context.
+
+Usage:
+  bsc-next                 launch a Cmux workspace on the top actionable task
+  bsc-next --pick 3        launch on the 3rd task in the actionable list
+  bsc-next --id 12         launch on task #12 specifically
+  bsc-next --list          show the top actionable tasks, launch nothing
+  bsc-next --dry-run       print the chosen task + seed prompt, launch nothing
+  bsc-next --exec          run \`claude\` in THIS terminal instead of a Cmux workspace
+  bsc-next --model <m>     override the resolved model for this dispatch
+  bsc-next --force         bypass the completed-task / duplicate-workspace guards
+  bsc-next --help, -h      show this message, do nothing else
+`;
 
 function parseArgs(argv) {
   const a = { _: [] };
@@ -303,8 +319,14 @@ function launchCmux(task, seed, commandOverride, model = 'sonnet', project = nul
 }
 
 // ── main ───────────────────────────────────────────────────────────────────
-function main() {
-  const args = parseArgs(process.argv.slice(2));
+// argv is a test seam (default is the real argv). --help/-h is checked
+// BEFORE loadTasks/fetchCard/launchCmux ever run (2026-07-14 incident class:
+// `node scripts/bsc-next.js --help` used to fall through parseArgs as an
+// unrecognized flag and launch a real Cmux workspace on the top task).
+function main(argv = process.argv.slice(2)) {
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+
+  const args = parseArgs(argv);
   const tasks = loadTasks(TASKS_DIR);
   if (!tasks.length) {
     console.error(`[bsc-next] shared task list '${LIST_ID}' is empty (${TASKS_DIR}).`);
@@ -415,4 +437,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES };
+module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE };

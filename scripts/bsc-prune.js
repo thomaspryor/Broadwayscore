@@ -9,14 +9,29 @@
  *
  *   bsc-prune            close every ✅-marked workspace, list idle un-marked
  *   bsc-prune --dry-run  show what would close, close nothing
+ *   bsc-prune --help, -h show this message, do nothing else
  */
 
 const {
   cmuxAvailable, listWorkspaces, isDoneTitle, claudeRunningIn, pruneDone,
 } = require('./lib/cmux-workspaces.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
-function main() {
-  const dryRun = process.argv.includes('--dry-run');
+const USAGE = `bsc-prune — close finished Cmux workspaces.
+
+Usage:
+  bsc-prune            close every ✅-marked workspace, list idle un-marked
+  bsc-prune --dry-run  show what would close, close nothing
+  bsc-prune --help, -h show this message, do nothing else
+`;
+
+// argv is a test seam (default is the real argv). --help/-h is checked
+// BEFORE any cmux call (2026-07-14 incident class: --help must never execute
+// the tool's real action).
+function main(argv = process.argv.slice(2)) {
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+
+  const dryRun = argv.includes('--dry-run');
   if (!cmuxAvailable()) {
     console.error('[bsc-prune] cmux CLI not found — is cmux.app installed?');
     process.exit(1);
@@ -45,4 +60,6 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { main, USAGE };

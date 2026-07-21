@@ -2,9 +2,49 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { actionable, pickTask, completedLaunchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed } = require('./bsc-next.js');
+const { actionable, pickTask, completedLaunchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE } = require('./bsc-next.js');
 const { isDoneTitle } = require('./lib/cmux-workspaces.js');
+
+// 2026-07-14 incident class + scope add (2026-07-20): `--help` used to fall
+// through parseArgs as an unrecognized flag and launch a real Cmux workspace
+// on the top task instead of printing usage. main() checks hasHelpFlag()
+// BEFORE loadTasks/fetchCard/launchCmux run, so calling it directly here
+// never touches the real task-list directory or cmux.
+test('--help / -h return before loadTasks/dispatch ever runs', () => {
+  const logged = [];
+  const origLog = console.log;
+  console.log = (...a) => logged.push(a.join(' '));
+  try {
+    assert.doesNotThrow(() => main(['--help']));
+    assert.doesNotThrow(() => main(['--id', '12', '-h']));
+  } finally {
+    console.log = origLog;
+  }
+  assert.equal(logged.length, 2);
+  assert.match(logged[0], /open a new Cmux workspace/);
+  assert.match(logged[1], /open a new Cmux workspace/);
+});
+
+test('USAGE documents the flags this CLI accepts', () => {
+  for (const flag of ['--pick', '--id', '--list', '--dry-run', '--exec', '--model', '--force', '--help, -h']) {
+    assert.ok(USAGE.includes(flag), `USAGE missing ${flag}`);
+  }
+});
+
+// Belt-and-suspenders: run the real CLI as a subprocess. If the --help guard
+// were ever removed, this would fall through to loadTasks()/dispatch instead
+// of printing usage — this test would then either error on a missing task
+// list or (worse) actually open a Cmux workspace.
+test('node scripts/bsc-next.js --help prints usage and exits 0 (real process)', () => {
+  const out = execFileSync('node', [new URL('./bsc-next.js', import.meta.url).pathname, '--help'],
+    { encoding: 'utf8', timeout: 10_000 });
+  assert.match(out, /Usage:/);
+  assert.match(out, /--pick 3/);
+  assert.doesNotMatch(out, /shared task list/);
+  assert.doesNotMatch(out, /opened Cmux workspace/);
+});
 
 test('findLiveWorkspaceForTask: matches glyph-prefixed and truncated titles, skips ✅ and unrelated', () => {
   const task = { id: '46', subject: 'Triage 27 open needs-manual-review feedback issues' };
