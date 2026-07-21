@@ -1,18 +1,18 @@
 {
-  "runDate": "2026-07-21T06:57:52.828Z",
+  "runDate": "2026-07-21T06:58:06.164Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-jonathan-larson-project-off-west-end-2026",
+    "showFilter": "the-smile-of-her-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 0,
+    "failed": 3,
     "skipped": 0,
     "successRate": "20.0%"
   },
@@ -23,30 +23,30 @@
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 3,
     "archive": 0
   },
   "statistics": {
     "tier1Attempts": 3,
-    "tier1Success": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 3,
     "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 2,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 3,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 4,
+    "totalFailed": 3,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -54,10 +54,9 @@
     "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
   ],
   "failed": [
-    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
-    "the-jonathan-larson-project-off-west-end-2026/daily-echo--unknown.json",
-    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
-    "the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
+    "the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
+    "the-smile-of-her-off-west-end-2026/nottingham-confidential--unknown.json",
+    "the-smile-of-her-off-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -69,7 +68,9 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-jonathan-larson-project-off-west-end-2026/thestage--unknown.json"
+      "data/review-texts/the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
+      "data/review-texts/the-smile-of-her-off-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/the-smile-of-her-off-west-end-2026/thestage--dave-fargnoli.json"
     ],
     "archive": []
   },
