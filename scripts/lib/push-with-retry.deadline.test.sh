@@ -24,7 +24,7 @@ setup_repo() {
 
 # --- Case 1: deadline=0 → break before any attempt, exit 1, warning present ---
 TMP1=$(mktemp -d)
-trap 'rm -rf "$TMP1" "${TMP2:-}"' EXIT
+trap 'rm -rf "$TMP1" "${TMP2:-}" "${TMP3:-}"' EXIT
 setup_repo "$TMP1"
 # A staged (clean) change so there is real work queued; no remote is configured,
 # so a push WOULD fail — but deadline=0 must short-circuit before that.
@@ -58,6 +58,35 @@ elif ! grep -q "overall deadline .* exceeded" <<<"$out2"; then
   echo "FAIL[2]: no deadline warning. Output:"; echo "$out2"; fail=1
 else
   echo "PASS[2]: bounded to ${elapsed}s under 50 failing retries (exit 1 + warning)"
+fi
+
+# --- Case 3: a genuinely HUNG push is killed by the per-op timeout, not waited out.
+# Uses git's ext:: transport to run a 120s sleep AS the push transport (the exact
+# stall class from the incident: an open-but-idle connection). With GIT_NET_TIMEOUT_SEC=2
+# the _timeout wrapper must SIGKILL it in ~2s so the whole run finishes fast. Requires
+# a `timeout`/`gtimeout` binary (the wrapper fails OPEN without one — documented), so
+# SKIP on hosts lacking it (stock macOS) rather than hang the suite for 120s. ---
+if command -v timeout >/dev/null 2>&1 || command -v gtimeout >/dev/null 2>&1; then
+  TMP3=$(mktemp -d)
+  setup_repo "$TMP3"
+  git -C "$TMP3" config protocol.ext.allow always   # ext:: is user-gated by default
+  git -C "$TMP3" remote add origin "ext::sh -c 'sleep 120'"
+  printf '{ "ok": 3 }\n' > "$TMP3/state.json"
+  git -C "$TMP3" add state.json
+  start=$SECONDS
+  out3=$( cd "$TMP3" && GIT_NET_TIMEOUT_SEC=2 PUSH_DEADLINE_SEC=6 bash "$PUSH_SCRIPT" 3 main 2>&1 ); code3=$?
+  elapsed=$(( SECONDS - start ))
+  # 3 attempts × (2s timeout kill + short backoff), bounded by the 6s deadline: must be
+  # well under the 120s a single un-killed sleep would take. Generous 40s ceiling for CI.
+  if [ "$elapsed" -ge 40 ]; then
+    echo "FAIL[3]: took ${elapsed}s — hung push was NOT killed by the per-op timeout"; fail=1
+  elif [ "$code3" -eq 0 ]; then
+    echo "FAIL[3]: push unexpectedly succeeded against a sleeping transport (code $code3)"; fail=1
+  else
+    echo "PASS[3]: hung push killed in ${elapsed}s (per-op timeout works; exit $code3)"
+  fi
+else
+  echo "SKIP[3]: no timeout/gtimeout binary — per-op hard kill unavailable here (fail-open by design)"
 fi
 
 if [ "$fail" -ne 0 ]; then

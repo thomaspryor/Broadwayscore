@@ -60,8 +60,9 @@ _timeout() {  # _timeout <secs> <cmd...> — fail-open (run directly) if no bina
     "$@"
   fi
 }
-# Network-op wrappers: hard timeout + git-native low-speed abort. lowSpeed config
-# is HTTP-only (no-op for SSH remotes), so it's safe everywhere.
+# Network-op wrappers: hard timeout + git-native low-speed abort. The lowSpeed
+# config is HTTP-only (no-op on SSH remotes); the timeout wraps ALL transports
+# (intended — a hung SSH push should die too, and 90s is generous for a real one).
 git_fetch() {
   _timeout "$GIT_NET_TIMEOUT_SEC" \
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" fetch "$@"
@@ -307,9 +308,13 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # Overall wall-clock deadline (hang guard, task #183). $SECONDS counts from this
   # script's start. If a prior attempt's git op stalled up to its per-op timeout,
   # bail out here rather than starting another expensive round — the job must reach
-  # a conclusion even under heavy churn. Failing here takes the normal exhausted-
-  # retries path (pushed=false → exit 1), which callers already handle (the health
-  # step warns; real pushers surface ::error::).
+  # a conclusion even under heavy churn. Failing here takes the SAME path as normal
+  # retry exhaustion (pushed=false → exit 1) — no new failure mode: callers that
+  # tolerate a failed push (health steps: `|| echo ::warning::`) still warn, and
+  # callers that fail hard on exit 1 now get a bounded red in ~4 min instead of the
+  # 6h hang. A commit resolved just before the deadline is still pushed: the
+  # in-iteration push after conflict resolution (below) publishes it before we can
+  # break here.
   if [ "$SECONDS" -ge "$PUSH_DEADLINE_SEC" ]; then
     echo "::warning::push-with-retry: overall deadline ${PUSH_DEADLINE_SEC}s exceeded after $((i - 1)) attempt(s); giving up to avoid hanging the job"
     break
@@ -448,6 +453,17 @@ for i in $(seq 1 "$MAX_RETRIES"); do
           || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
         ;;
     esac
+  fi
+
+  # If this iteration rewrote history to be pushable, publish it NOW rather than
+  # looping back to the top — the deadline guard there could otherwise break after
+  # a successful resolution but before the now-pushable commit is ever pushed
+  # (ship-check finding, task #183). Bounded by the same per-op timeout; a failure
+  # just falls through to the normal backoff + next attempt.
+  if [ "$history_changed" = "true" ] && git_push origin "$BRANCH"; then
+    echo "Push succeeded after conflict resolution (attempt $i)"
+    pushed=true
+    break
   fi
 
   # Backoff before retry. Shaped fast-then-growing instead of the old flat
