@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-07-21T16:17:50.082Z",
+  "runDate": "2026-07-21T16:20:04.040Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "tender-off-west-end-2026",
+    "showFilter": "loves-labours-lost-globe-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 8,
+    "failed": 11,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -23,43 +23,46 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 1
+    "archiveToday": 1,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 2,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 8,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 11,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 5,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 9,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [],
   "failed": [
-    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
-    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
-    "tender-off-west-end-2026/radio-times--unknown.json",
-    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
-    "tender-off-west-end-2026/theupcoming--unknown.json",
-    "tender-off-west-end-2026/times-uk--richard-morrison.json",
-    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
-    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
+    "loves-labours-lost-globe-west-end-2026/london-theatre--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/thestage--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--holly-williams.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--matt-trueman.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json"
   ],
   "failed": [],
   "tierDetails": {
@@ -71,10 +74,10 @@
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": [
-      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
-    ]
+    "archiveToday": [
+      "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--unknown.json"
+    ],
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
