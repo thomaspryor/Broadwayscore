@@ -195,6 +195,21 @@ resolve_conflicts() {
           git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         fi
         ;;
+      data/diary-shows.json)
+        # Array-of-shows merge so concurrent Mezzanine writers (import-mezzanine-
+        # historical, resolve-unmatched-imports, refresh-mezzanine-catalog) don't
+        # lose each other's newly-added shows. The generic "accept remote" case
+        # below would drop this run's additions wholesale (card #176, same class
+        # as commercial.json CDX-P0-1). mergeDiaryShows unions both sides by
+        # mezzanineId; ours wins on shared keys.
+        echo "  Auto-resolving (diary-shows merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::diary-shows merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
       *)
         # Other data files: accept remote (other workflows' changes)
         echo "  Auto-resolving (keep remote): $file"

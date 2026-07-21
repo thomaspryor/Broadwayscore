@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
  * Helper invoked by push-with-retry.sh during conflict resolution on
- * data/commercial.json, data/commercial-pending-review.json, or
- * data/commercial-research-queue.json.
+ * data/commercial.json, data/commercial-pending-review.json,
+ * data/commercial-research-queue.json, or data/diary-shows.json.
  *
  * Usage:
  *   node scripts/lib/merge-commercial-conflict.js <file> <keep_local_flag> <keep_remote_flag>
@@ -30,6 +30,7 @@ if (!file || !keepLocal || !keepRemote) {
 }
 
 const { mergeCommercialJson, mergePendingReview, mergeResearchQueue } = require('./merge-commercial-data');
+const { mergeDiaryShows } = require('./merge-diary-shows');
 
 function readSide(flag) {
   execSync(`git checkout ${flag} -- ${JSON.stringify(file)}`, { stdio: 'pipe' });
@@ -42,15 +43,21 @@ try {
   const remoteData = readSide(keepRemote);
 
   let mergedResult;
+  let trailingNewline = true;
   if (file.endsWith('commercial-pending-review.json')) {
     mergedResult = mergePendingReview(localData, remoteData);
   } else if (file.endsWith('commercial-research-queue.json')) {
     mergedResult = mergeResearchQueue(localData, remoteData);
+  } else if (file.endsWith('diary-shows.json')) {
+    mergedResult = mergeDiaryShows(localData, remoteData);
+    // diary-shows.json is written by its three producers without a trailing
+    // newline; match that so a no-op merge is byte-identical.
+    trailingNewline = false;
   } else {
     mergedResult = mergeCommercialJson(localData, remoteData);
   }
 
-  fs.writeFileSync(file, JSON.stringify(mergedResult.merged, null, 2) + '\n');
+  fs.writeFileSync(file, JSON.stringify(mergedResult.merged, null, 2) + (trailingNewline ? '\n' : ''));
   console.log(`merge-commercial-conflict: ${file} merged — ${JSON.stringify(mergedResult.stats)}`);
 } catch (e) {
   console.error('merge-commercial-conflict FAILED:', e.message);
