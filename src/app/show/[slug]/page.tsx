@@ -738,12 +738,18 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 buttonClassName="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
               />
 
-              {/* Closed shows: replace the vanished CTA with an explicit note instead of
-                  leaving a silent gap where the ticket button used to be — users hunting
-                  for a "Get Tickets" button on a recently-closed show rage-clicked the
-                  empty space (CLAUDE.md card #228). */}
-              {show.status === 'closed' && sortedTicketLinks.length > 0 && (
+              {/* Closed/not-yet-on-sale shows: replace the vanished CTA with an
+                  explicit note instead of leaving a silent gap where the ticket
+                  button used to be — users hunting for a "Get Tickets" button
+                  rage-clicked the empty space (CLAUDE.md card #228). Checks raw
+                  show.ticketLinks, not the platform-filtered sortedTicketLinks,
+                  so a show whose only link is a HIDDEN_PLATFORMS entry (e.g.
+                  Telecharge) still gets the closed note. */}
+              {show.status === 'closed' && (show.ticketLinks?.length ?? 0) > 0 && (
                 <p className="w-full text-xs text-gray-500">This show has closed — tickets are no longer available.</p>
+              )}
+              {show.status === 'announced' && !sortedTicketLinks.some(l => l.priceFrom != null) && (show.ticketLinks?.length ?? 0) > 0 && (
+                <p className="w-full text-xs text-gray-500">Tickets not yet on sale — check back closer to opening.</p>
               )}
 
               {/* Lottery/Rush — subdued style, not a revenue link */}
