@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-21T05:55:46.713Z",
+  "updatedAt": "2026-07-21T05:57:23.735Z",
   "processed": 63,
-  "failed": 581,
-  "successRate": "9.8%",
+  "failed": 591,
+  "successRate": "9.6%",
   "tierBreakdown": {
     "playwright": 44,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 5,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 6,
     "archiveToday": 1,
     "archive": 10
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-07-20T17:29:17.435Z",
@@ -114,6 +114,17 @@
       "event": "bb-session",
       "session": "b9b96d21",
       "url": "https://deadline.com/2026/07/broadway-two-strangers-carry-a-cake-taylor-swift-12"
+    },
+    {
+      "t": "2026-07-21T05:57:00.837Z",
+      "event": "bb-session",
+      "session": "9e17be3a",
+      "url": "https://www.thetimes.com/article/8ea532e7-98a0-4100-b982-3e8323151aac"
+    },
+    {
+      "t": "2026-07-21T05:57:01.230Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

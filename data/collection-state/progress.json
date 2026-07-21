@@ -645,7 +645,17 @@
     "ragtime-2025/whatsonstage--zachary-stewart.json",
     "masquerade-off-broadway-2025/theater-life--unknown.json",
     "the-producers-west-end-2025/deadline--unknown.json",
-    "the-producers-west-end-2025/financialtimes--unknown.json"
+    "the-producers-west-end-2025/financialtimes--unknown.json",
+    "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
+    "burlesque-west-end-2026/people--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/theatreandtonic--unknown.json",
+    "hercules-west-end-2025/telegraph--unknown.json",
+    "hercules-west-end-2025/the-sun--dominic-maxwell.json",
+    "hercules-west-end-2025/times-uk--clive-davis.json",
+    "heathers-the-musical-off-broadway-2025/nytimes--ben-brantley.json",
+    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json",
+    "heathers-the-musical-off-broadway-2025/ew--kyle-anderson.json"
   ],
   "failed": [],
   "skipped": [],
@@ -701,7 +711,8 @@
       "data/review-texts/the-guilty-west-end-2026/hollywood-reporter--rick-porter.json",
       "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json",
       "data/review-texts/two-strangers-bway-2025/deadline--greg-evans.json",
-      "two-strangers-bway-2025/deadline--greg-evans.json"
+      "two-strangers-bway-2025/deadline--greg-evans.json",
+      "data/review-texts/hercules-west-end-2025/the-sun--dominic-maxwell.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -730,7 +741,7 @@
     ]
   },
   "startTime": "2026-07-20T17:29:00.342Z",
-  "lastProcessed": "the-producers-west-end-2025/west-end-best-friend--unknown.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/ew--kyle-anderson.json",
   "log": [
     {
       "t": "2026-07-20T17:29:17.435Z",
@@ -831,6 +842,17 @@
       "event": "bb-session",
       "session": "b9b96d21",
       "url": "https://deadline.com/2026/07/broadway-two-strangers-carry-a-cake-taylor-swift-12"
+    },
+    {
+      "t": "2026-07-21T05:57:00.837Z",
+      "event": "bb-session",
+      "session": "9e17be3a",
+      "url": "https://www.thetimes.com/article/8ea532e7-98a0-4100-b982-3e8323151aac"
+    },
+    {
+      "t": "2026-07-21T05:57:01.230Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
