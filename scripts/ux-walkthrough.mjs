@@ -547,11 +547,24 @@ async function probeImpossibleRatingActions(page) {
     for (const g of document.querySelectorAll('[role="radiogroup"]')) {
       const label = g.getAttribute('aria-label') || '';
       if (!/^rate /i.test(label)) continue;
-      let container = g;
-      for (let i = 0; i < 6 && container.parentElement; i++) container = container.parentElement;
-      const text = container.textContent || '';
-      if (/upcoming/i.test(text)) {
-        out.push({ label, context: text.replace(/\s+/g, ' ').slice(0, 120) });
+      // Ground-truth marker (MyShowsClient.tsx WatchlistCard/WatchlistListItem):
+      // data-watchlist-future-dated reflects the actual isFutureDated gate the
+      // component renders from. The old approach — walk 6 ancestors and
+      // text-match "upcoming" — false-positived on the "Not yet booked"
+      // section, a DOM sibling of the "Upcoming" section header, so the walk
+      // picked up the sibling's heading text regardless of which section a
+      // given card was actually in (card #258: the underlying render bug was
+      // already fixed elsewhere; this was the probe misreading sibling-section
+      // bleed-through). No fallback heuristic: every `[role="radiogroup"]`
+      // whose aria-label matches /^rate /i in this app is WatchlistCard's
+      // inline span (MyShowsClient.tsx:1696) — the shared StarRating
+      // component used everywhere else labels its radiogroup "Star rating",
+      // which never reaches this branch. If a future control adds a
+      // "Rate ..."-labeled radiogroup without this marker, prefer adding the
+      // marker over reviving the disproven text-walk.
+      const marked = g.closest('[data-watchlist-future-dated]');
+      if (marked && marked.getAttribute('data-watchlist-future-dated') === 'true') {
+        out.push({ label, context: (marked.textContent || '').replace(/\s+/g, ' ').slice(0, 120) });
       }
     }
     return out;
