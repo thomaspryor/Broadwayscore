@@ -1,27 +1,47 @@
 {
-  "processed": [
-    "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
-    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json"
+  "processed": [],
+  "failed": [
+    "dukes-off-broadway-2026/nytimes--helen-shaw.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-07-21T16:17:07.237Z",
-  "lastProcessed": "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
-  "log": []
+  "startTime": "2026-07-21T16:19:09.937Z",
+  "lastProcessed": "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+  "log": [
+    {
+      "t": "2026-07-21T16:19:21.398Z",
+      "event": "bb-session",
+      "session": "1e38d4ba",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-21T16:19:22.121Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T16:19:37.946Z",
+      "event": "bb-session",
+      "session": "5885c99b",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-21T16:19:38.587Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
