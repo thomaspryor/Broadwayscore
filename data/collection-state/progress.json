@@ -42,7 +42,9 @@
     "the-rocky-horror-show-2026/playbill--unknown.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
+    "cats-the-jellicle-ball-2026/nytimes--jesse-green.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -291,7 +293,15 @@
     "death-of-a-salesman-2026/dailybeast--tim-teeman.json",
     "death-of-a-salesman-2026/exeunt-magazine--juliet-hindell.json",
     "death-of-a-salesman-2026/front-row-center--sarah-downs.json",
-    "death-of-a-salesman-2026/huffpost--mark-kennedy.json"
+    "death-of-a-salesman-2026/huffpost--mark-kennedy.json",
+    "death-of-a-salesman-2026/philadelphia-inquirer--howard-shapiro.json",
+    "death-of-a-salesman-2026/queerty--matthew-wexler.json",
+    "death-of-a-salesman-2026/stagebuddy--elyse-trevers.json",
+    "death-of-a-salesman-2026/theater-pizzazz--carol-rocamora.json",
+    "death-of-a-salesman-2026/usatoday--elysa-gardner.json",
+    "cats-the-jellicle-ball-2026/hollywood-reporter--caitlin-huston.json",
+    "cats-the-jellicle-ball-2026/newyorker--emily-nussbaum.json",
+    "cats-the-jellicle-ball-2026/newyorker--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -325,7 +335,8 @@
       "joe-turners-come-and-gone-2026/ny1--spectrum-news-staff.json",
       "the-rocky-horror-show-2026/ew--dalton-ross.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-      "the-rocky-horror-show-2026/playbill--unknown.json"
+      "the-rocky-horror-show-2026/playbill--unknown.json",
+      "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -334,7 +345,8 @@
     ],
     "scrapingbee": [],
     "brightdata": [
-      "schmigadoon-2026/thewrap--robert-hofler.json"
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "cats-the-jellicle-ball-2026/nytimes--jesse-green.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -352,6 +364,29 @@
     ]
   },
   "startTime": "2026-07-21T16:28:57.494Z",
-  "lastProcessed": "death-of-a-salesman-2026/huffpost--mark-kennedy.json",
-  "log": []
+  "lastProcessed": "cats-the-jellicle-ball-2026/nytimes--jesse-green.json",
+  "log": [
+    {
+      "t": "2026-07-21T17:22:47.625Z",
+      "event": "bb-session",
+      "session": "609f027a",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
+    },
+    {
+      "t": "2026-07-21T17:22:48.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T17:23:04.465Z",
+      "event": "bb-session",
+      "session": "bdeaf6d9",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
+    },
+    {
+      "t": "2026-07-21T17:23:05.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
