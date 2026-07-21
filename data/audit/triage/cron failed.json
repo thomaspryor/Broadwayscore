@@ -1,15 +1,25 @@
 {
   "system": "cron failed",
   "status": "warn",
-  "lastChecked": "2026-07-20T12:44:04.111Z",
+  "lastChecked": "2026-07-21T07:48:54.351Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
+      "name": "Cron failed: Rebuild Reviews",
+      "status": "warn",
+      "message": "Last run failed (1h ago)"
+    },
+    {
       "name": "Cron failed: Test Suite",
       "status": "warn",
-      "message": "Last run failed (6h ago)"
+      "message": "Last run failed (1h ago)"
+    },
+    {
+      "name": "Cron failed: Update Social Pulse",
+      "status": "warn",
+      "message": "Last run failed (17h ago)"
     }
   ]
 }

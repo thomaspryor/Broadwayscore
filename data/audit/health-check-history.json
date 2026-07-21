@@ -1,61 +1,61 @@
 {
-  "lastRun": "2026-07-20T12:44:04.109Z",
-  "consecutiveErrorDays": 2,
+  "lastRun": "2026-07-21T07:48:54.348Z",
+  "consecutiveErrorDays": 3,
   "results": [
     {
       "name": "Freshness: reviews.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: shows.json",
       "status": "pass",
-      "message": "4h old"
+      "message": "23h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "5d old"
+      "message": "6d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "4h old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "2d old"
+      "message": "18h old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "21h old"
     },
     {
       "name": "Freshness: cast-changes.json",
-      "status": "pass",
-      "message": "3d old"
+      "status": "warn",
+      "message": "3d old (warn threshold: 3d)"
     },
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "5h old"
+      "message": "24h old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "7h old"
+      "message": "1d old"
     },
     {
-      "name": "Freshness: social-pulse/_budget.json",
+      "name": "Freshness: social-pulse/_meta.json",
       "status": "pass",
-      "message": "4h old"
+      "message": "7d old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",
@@ -75,7 +75,7 @@
     {
       "name": "Push verify: shows.json",
       "status": "pass",
-      "message": "Data synced (4h old, workflow 4h ago)"
+      "message": "Data synced (23h old, workflow 23h ago)"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -110,22 +110,22 @@
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 19109 vs baseline 19121"
+      "message": "Reviews dropped: 19099 vs baseline 19125"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 7/12/2026 (8d ago)"
+      "message": "weekEnding 7/12/2026 (9d ago)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
       "status": "pass",
-      "message": "Last success 1h ago"
+      "message": "Last success 2h ago"
     },
     {
       "name": "Pipeline: update-show-status",
       "status": "pass",
-      "message": "Last success 3h ago"
+      "message": "Last success 22h ago"
     },
     {
       "name": "Pipeline: collect-review-texts",
@@ -135,22 +135,22 @@
     {
       "name": "Pipeline: weekly-grosses",
       "status": "pass",
-      "message": "Last success 5d ago"
+      "message": "Last success 6d ago"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "warn",
-      "message": "Last success 22d ago (threshold: 10d)"
+      "message": "Last success 23d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: test",
       "status": "pass",
-      "message": "Last success 5h ago"
+      "message": "Last success 3h ago"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.4% scored (19109/19410)"
+      "message": "98.5% scored (19099/19395)"
     },
     {
       "name": "Quality: corpus drift",
@@ -170,7 +170,7 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (1d ago)"
+      "message": "All metrics within thresholds (2d ago)"
     },
     {
       "name": "SEO: health",
@@ -180,77 +180,77 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "4h ago, success"
+      "message": "23h ago, success"
     },
     {
-      "name": "Cron: Rebuild Reviews",
-      "status": "pass",
-      "message": "1h ago, success"
+      "name": "Cron failed: Rebuild Reviews",
+      "status": "warn",
+      "message": "Last run failed (1h ago)"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "1h ago, "
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "0h ago, "
     },
     {
       "name": "Cron failed: Test Suite",
       "status": "warn",
-      "message": "Last run failed (6h ago)"
+      "message": "Last run failed (1h ago)"
     },
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "21h ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "5d ago, success"
+      "message": "6d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
       "status": "pass",
-      "message": "4h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "3h ago, success"
+      "message": "7h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "5h ago, success"
+      "message": "24h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "1d ago, success"
     },
     {
-      "name": "Cron: Update Social Pulse",
-      "status": "pass",
-      "message": "6h ago, success"
+      "name": "Cron failed: Update Social Pulse",
+      "status": "warn",
+      "message": "Last run failed (17h ago)"
     },
     {
       "name": "Secrets: health",
-      "status": "pass",
-      "message": "Last check passed (7d ago)"
+      "status": "error",
+      "message": "Last check FAILED (19h ago)"
     },
     {
       "name": "Credits: ScrapingBee",
@@ -260,32 +260,47 @@
     {
       "name": "Credits: ScrapingDog",
       "status": "warn",
-      "message": "107k credits left (10%) · 33k/day burn · renews in 2d"
+      "message": "82k credits left (8%) · 33k/day burn · renews in 1d"
     },
     {
       "name": "Credits: Bright Data",
       "status": "pass",
-      "message": "balance $58.19 · pending invoice $156.42 · month-to-date $150.13 (serp+unlocker)"
+      "message": "balance $52.79 · pending invoice $161.82 · month-to-date $158.42 (serp+unlocker)"
     },
     {
       "name": "Credits: Browserbase",
       "status": "pass",
-      "message": "4373 browser minutes used (cumulative)"
+      "message": "4558 browser minutes used (cumulative)"
     },
     {
       "name": "Deploy: production freshness",
       "status": "pass",
-      "message": "Latest READY production deploy: 4c8dce09b5, age 0.1h"
+      "message": "Latest READY production deploy: 30d8d50d37, age 0.0h"
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite",
+      "status": "error",
+      "message": "Test Suite failed 11 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test UGC Features",
+      "status": "error",
+      "message": "Test UGC Features failed 5 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
+      "status": "warn",
+      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: OB closing candidates awaiting review",
       "status": "warn",
-      "message": "5 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
+      "message": "9 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "1 discovered review(s) not reaching the composite score (0 T1). First: a-walk-on-the-moon-off-broadway-2026 — talkinbroadway (empty-body)"
+      "message": "1 discovered review(s) not reaching the composite score (0 T1). First: jesus-christ-superstar-west-end-2026 — artsdesk (empty-body)"
     }
   ],
   "lastCleanStreak": 0
