@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { PROJECTS, projectOf, buildAutoTitle, stripAutoPrefix, AUTO_GLYPH } = require('./workspace-naming.js');
+const { PROJECTS, projectOf, buildAutoTitle, stripAutoPrefix, AUTO_GLYPH, modelGlyph } = require('./workspace-naming.js');
 
 test('projectOf: tag-based inference wins over category', () => {
   assert.equal(projectOf({ tags: 'commercial, data-quality', category: 'Product' }), 'Biz');
@@ -62,4 +62,27 @@ test('stripAutoPrefix: leaves non-prefixed titles untouched', () => {
 test('stripAutoPrefix: does not false-positive on a subject that merely starts with a project word', () => {
   // "Data" without the middle dot must NOT be stripped — avoids eating real content.
   assert.equal(stripAutoPrefix('Data integrity sweep'), 'Data integrity sweep');
+});
+
+test('modelGlyph: maps each model family; unknown/empty -> no glyph', () => {
+  assert.equal(modelGlyph('claude-fable-5'), '🧠');
+  assert.equal(modelGlyph('claude-fable-5[1m]'), '🧠');
+  assert.equal(modelGlyph('opus'), '🔮');
+  assert.equal(modelGlyph('claude-sonnet-5'), '⚡');
+  assert.equal(modelGlyph('claude-haiku-4-5-20251001'), '🪶');
+  assert.equal(modelGlyph('gpt-4o'), '');
+  assert.equal(modelGlyph(null), '');
+});
+
+test('buildAutoTitle: model glyph rides next to the auto glyph and stays matcher-invisible', () => {
+  const t = buildAutoTitle({ subject: 'Fix the thing', project: 'Data', model: 'sonnet' });
+  assert.equal(t, `${AUTO_GLYPH}⚡ Data·Fix the thing`);
+  // The exact strip both matchers apply (leading non-letter/digit, '[' kept):
+  const cleaned = t.replace(/^[^\p{L}\p{N}[]+/u, '');
+  assert.equal(stripAutoPrefix(cleaned), 'Fix the thing');
+});
+
+test('buildAutoTitle: omitted model keeps the pre-glyph title byte-for-byte', () => {
+  assert.equal(buildAutoTitle({ subject: 'Fix the thing', project: 'Data' }),
+    `${AUTO_GLYPH} Data·Fix the thing`);
 });
