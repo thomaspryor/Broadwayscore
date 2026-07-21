@@ -12,6 +12,13 @@ const DAY = 24 * 60 * 60 * 1000;
 const NOW = 1_800_000_000_000;
 const kinds = (r) => r.alerts.map((a) => a.kind);
 
+test('capturesPerWeek fallback: falls back to summary.captured when capturesPerWeek is missing (matches --days=7 production call)', () => {
+  const collapsed = decideEmailGateFunnelAlerts({ impressions: 100, captured: 0 }, {}, NOW);
+  assert.ok(kinds(collapsed).includes('capture-collapse'), 'missing capturesPerWeek must still detect a collapse via captured');
+  const healthy = decideEmailGateFunnelAlerts({ impressions: 100, captured: 5 }, {}, NOW);
+  assert.ok(!kinds(healthy).includes('capture-collapse'), 'missing capturesPerWeek must not false-positive when captured is healthy');
+});
+
 test('ramp-up window (impressions below floor): no collapse alert, logged as ramp-up', () => {
   const r = decideEmailGateFunnelAlerts({ impressions: 21, captured: 0, capturesPerWeek: 0 }, {}, NOW);
   assert.ok(!kinds(r).includes('capture-collapse'), 'must not judge collapse off a near-empty window');

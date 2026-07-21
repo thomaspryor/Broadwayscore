@@ -74,7 +74,14 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/gate-ab-monitor-state.json data/audit/email-gate-funnel-monitor-state.json
+          # Per-file guard: `git add existing missing` exits 128 and stages
+          # NEITHER file (verified) — under this step's default `bash -e`,
+          # that would crash the whole step and lose the OTHER monitor's
+          # earned state too. Matters on the funnel monitor's first-ever run,
+          # before its state file exists in the repo tree.
+          for f in data/audit/gate-ab-monitor-state.json data/audit/email-gate-funnel-monitor-state.json; do
+            [ -f "$f" ] && git add "$f"
+          done
           if git diff --cached --quiet; then
             echo "No state change to commit"
             exit 0
