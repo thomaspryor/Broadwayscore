@@ -1,5 +1,6 @@
 'use client';
 
+import { useId } from 'react';
 import Link from 'next/link';
 import type { ShowGrosses } from '@/lib/data-types';
 import type { BoxOfficeHistoryStats } from '@/lib/data-grosses-history';
@@ -122,6 +123,7 @@ function StatCard({ value, valueTitle, label, wowChange, yoyChange }: StatCardPr
 // Trailing gross sparkline (endpoint-emphasized, no axes) per the approved
 // Box Office Scorecard mockup. Renders inside a stat-tile-style container.
 function TrendSparkline({ points }: { points: { weekEnding: string; gross: number }[] }) {
+  const gradientId = useId();
   if (points.length < 2) return null;
 
   const grossValues = points.map((p) => p.gross);
@@ -148,7 +150,7 @@ function TrendSparkline({ points }: { points: { weekEnding: string; gross: numbe
           {points.length}-week trend
         </span>
         <span className="text-[11px] text-gray-500 tabular-nums">
-          {formatCurrency(min)} — {formatCurrency(max)}
+          {min === max ? formatCurrency(min) : `${formatCurrency(min)} — ${formatCurrency(max)}`}
         </span>
       </div>
       <svg
@@ -159,12 +161,12 @@ function TrendSparkline({ points }: { points: { weekEnding: string; gross: numbe
         role="img"
       >
         <defs>
-          <linearGradient id="bo-spark-fill" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stopColor="currentColor" stopOpacity="0.28" />
             <stop offset="1" stopColor="currentColor" stopOpacity="0" />
           </linearGradient>
         </defs>
-        <path d={area} fill="url(#bo-spark-fill)" />
+        <path d={area} fill={`url(#${gradientId})`} />
         <path d={line} fill="none" stroke="currentColor" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
         <circle cx={last.x} cy={last.y} r="3" fill="currentColor" />
       </svg>
@@ -190,19 +192,23 @@ export default function BoxOfficeStats({ grosses, weekEnding, history }: BoxOffi
   const atpWoW = grosses.thisWeek ? calcPercentChange(grosses.thisWeek.atp, grosses.thisWeek.atpPrevWeek) : null;
   const atpYoY = grosses.thisWeek ? calcPercentChange(grosses.thisWeek.atp, grosses.thisWeek.atpYoY) : null;
 
+  // undefined (not null) when history is absent so StatCard skips the change
+  // row entirely instead of rendering an empty container.
   const attendanceWoW =
     grosses.thisWeek && history
       ? calcPercentChange(grosses.thisWeek.attendance, history.attendancePrevWeek)
-      : null;
+      : undefined;
   const attendanceYoY =
     grosses.thisWeek && history
       ? calcPercentChange(grosses.thisWeek.attendance, history.attendanceYoY)
-      : null;
+      : undefined;
   const hasAttendanceTile = hasThisWeek && grosses.thisWeek?.attendance != null;
 
+  // One decimal below 10% (rounded to a whole number above), and suppressed
+  // entirely under 0.05% — "0.0% market share" is worse than no chip.
   const marketShareLabel =
-    history?.marketSharePct != null && history.marketSharePct > 0
-      ? `${history.marketSharePct < 10 ? history.marketSharePct.toFixed(1) : Math.round(history.marketSharePct)}% market share`
+    history?.marketSharePct != null && history.marketSharePct >= 0.05
+      ? `${history.marketSharePct >= 9.95 ? Math.round(history.marketSharePct) : history.marketSharePct.toFixed(1)}% market share`
       : null;
   const rankLabel =
     hasThisWeek && history?.rank ? ` · rank #${history.rank} on Broadway` : '';
@@ -235,7 +241,7 @@ export default function BoxOfficeStats({ grosses, weekEnding, history }: BoxOffi
           )}
           {(history?.weeksOnBoards ?? 0) > 1 && (
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-gray-300 bg-surface-overlay border border-white/5">
-              Week {history!.weeksOnBoards} of run
+              {history!.weeksOnBoards!.toLocaleString()} weeks played
             </span>
           )}
         </div>
