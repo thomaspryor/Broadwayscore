@@ -79,7 +79,7 @@ const { resolveModel } = require('./lib/bsc-next-model.js');
 // Cmux workspace naming (owner scope-add, card #168, 2026-07-14): auto-
 // dispatched workspaces get "🤖 <Project>·<subject>" so the sidebar is
 // scannable without opening every tab. See scripts/lib/workspace-naming.js.
-const { projectOf, buildAutoTitle, stripAutoPrefix } = require('./lib/workspace-naming.js');
+const { projectOf, buildAutoTitle, stripAutoPrefix, modelGlyph } = require('./lib/workspace-naming.js');
 // The triage queue is a single canonical instance on the main checkout (like
 // notion-brain.js above) — anchor to REPO, not __dirname, so a dispatch
 // launched from inside a worktree still reads the real queue, not an empty
@@ -142,7 +142,7 @@ function notionIdOf(task) {
   return m ? m[1] : null;
 }
 
-function buildSeed(task, card, project) {
+function buildSeed(task, card, project, model) {
   const url = (card && card.url) || ((task.description || '').match(/https?:\/\/\S+/) || [''])[0];
   const notes = (card && card.notes) || task.description || '(no description)';
   const meta = [
@@ -177,7 +177,7 @@ function buildSeed(task, card, project) {
     // the same task goes undetected. The instruction below therefore tells
     // the session to APPEND phase text after the unchanged launch title,
     // never to replace it.
-    project ? `This workspace is named "${buildAutoTitle({ subject: task.subject, project })}" — the 🤖 marks it as auto-dispatched (safe to ignore; it reports via cards+email), "${project}" is its project bucket. If this card has multiple phases/sprints, you may APPEND the current phase after this exact title (never replace or shorten it — the ✅ auto-mark hook and duplicate-dispatch guard match on this title as a prefix): \`cmux workspace-action --action rename --title "${buildAutoTitle({ subject: task.subject, project })} — <current phase>"\`.` : null,
+    project ? `This workspace is named "${buildAutoTitle({ subject: task.subject, project, model })}" — the 🤖 marks it as auto-dispatched (safe to ignore; it reports via cards+email), the model glyph shows which model runs it, "${project}" is its project bucket. If this card has multiple phases/sprints, you may APPEND the current phase after this exact title (never replace or shorten it — the ✅ auto-mark hook and duplicate-dispatch guard match on this title as a prefix): \`cmux workspace-action --action rename --title "${buildAutoTitle({ subject: task.subject, project, model })} — <current phase>"\`.` : null,
     ``,
     // Standing anti-stale-seed instruction (chain break #1, 2026-07-12): a
     // launched session's seed is a snapshot — directives added to the card
@@ -227,11 +227,16 @@ function setAutoColor(ref) {
 function launchCmux(task, seed, commandOverride, model = 'sonnet', project = null) {
   const seedFile = path.join(os.tmpdir(), `bsc-seed-${task.id}.txt`);
   fs.writeFileSync(seedFile, seed);
-  // Auto-dispatch naming (scope add, card #168): "🤖 <Project>·<subject>" so
-  // the cmux sidebar is scannable at a glance. project is only null in the
-  // --exec test seam / callers that bypass main()'s inference — falls back
-  // to the plain subject slice (pre-existing behavior) so nothing breaks.
-  const title = project ? buildAutoTitle({ subject: task.subject, project }) : task.subject.slice(0, 50);
+  // Auto-dispatch naming (scope add, card #168): "🤖<model-glyph> <Project>·<subject>"
+  // so the cmux sidebar shows the MODEL before the tab is ever opened (owner
+  // request 2026-07-20 — hard work accidentally given to Sonnet sessions).
+  // project is only null in the --exec test seam / callers that bypass
+  // main()'s inference — falls back to the subject slice with just the model
+  // glyph (leading emoji are stripped by both title matchers, so this stays
+  // match-compatible with the pre-existing bare-subject convention).
+  const title = project
+    ? buildAutoTitle({ subject: task.subject, project, model })
+    : `${modelGlyph(model) ? modelGlyph(model) + ' ' : ''}${task.subject.slice(0, 50)}`;
   // The wrapper script expands $(cat …) so the multi-line prompt survives
   // without brittle inline quoting. `claude "<prompt>"` opens interactive on it.
   // --dangerously-skip-permissions: launched sessions must never permission-ping
@@ -351,13 +356,14 @@ function main() {
     category: (card && card.category) || categoryOf(task),
     subject: task.subject,
   });
-  const seed = buildSeed(task, card, project);
-
   // Dispatched sessions never inherit the user's interactive default (Fable —
   // 9 Fable workspaces in one night, 2026-07-13): explicit --model wins,
   // otherwise a card hint or the loop's own pickModel()-by-triage-size picks
   // Opus for genuinely hard cards, floor is Sonnet. See resolveModel().
+  // Resolved BEFORE the seed: the seed quotes the workspace title, which now
+  // carries the model glyph.
   const model = resolveModel({ explicitFlag: explicitModel, task, card, notionId: pid, queuePath: QUEUE_PATH });
+  const seed = buildSeed(task, card, project, model);
 
   if (args['dry-run'] || args['print-prompt']) {
     console.log(`# would launch on: #${task.id} [${task.status}] ${task.subject}\n`);
