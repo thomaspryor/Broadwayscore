@@ -2,10 +2,12 @@
 
 import Link from 'next/link';
 import type { ShowGrosses } from '@/lib/data-types';
+import type { BoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 
 interface BoxOfficeStatsProps {
   grosses: ShowGrosses;
   weekEnding: string;
+  history?: BoxOfficeHistoryStats | null;
 }
 
 function formatCurrency(value: number | null | undefined): string {
@@ -117,7 +119,60 @@ function StatCard({ value, valueTitle, label, wowChange, yoyChange }: StatCardPr
   );
 }
 
-export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsProps) {
+// Trailing gross sparkline (endpoint-emphasized, no axes) per the approved
+// Box Office Scorecard mockup. Renders inside a stat-tile-style container.
+function TrendSparkline({ points }: { points: { weekEnding: string; gross: number }[] }) {
+  if (points.length < 2) return null;
+
+  const grossValues = points.map((p) => p.gross);
+  const min = Math.min(...grossValues);
+  const max = Math.max(...grossValues);
+  const W = 400;
+  const H = 42;
+  const TOP = 6;
+  const BOTTOM = 34;
+  const span = max - min;
+  const coords = points.map((p, i) => {
+    const x = (i / (points.length - 1)) * W;
+    const y = span === 0 ? (TOP + BOTTOM) / 2 : BOTTOM - ((p.gross - min) / span) * (BOTTOM - TOP);
+    return { x, y };
+  });
+  const line = coords.map((c, i) => `${i === 0 ? 'M' : 'L'}${c.x.toFixed(1)},${c.y.toFixed(1)}`).join(' ');
+  const area = `${line} L${W},${H} L0,${H} Z`;
+  const last = coords[coords.length - 1];
+
+  return (
+    <div className="bg-surface-overlay rounded-lg sm:rounded-xl border border-white/5 px-3.5 py-3 mb-4">
+      <div className="flex items-baseline justify-between mb-1">
+        <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500">
+          {points.length}-week trend
+        </span>
+        <span className="text-[11px] text-gray-500 tabular-nums">
+          {formatCurrency(min)} — {formatCurrency(max)}
+        </span>
+      </div>
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="none"
+        className="block w-full h-[42px] text-brand"
+        aria-label={`Weekly gross over the last ${points.length} weeks, from ${formatCurrency(min)} to ${formatCurrency(max)}`}
+        role="img"
+      >
+        <defs>
+          <linearGradient id="bo-spark-fill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="currentColor" stopOpacity="0.28" />
+            <stop offset="1" stopColor="currentColor" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d={area} fill="url(#bo-spark-fill)" />
+        <path d={line} fill="none" stroke="currentColor" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+        <circle cx={last.x} cy={last.y} r="3" fill="currentColor" />
+      </svg>
+    </div>
+  );
+}
+
+export default function BoxOfficeStats({ grosses, weekEnding, history }: BoxOfficeStatsProps) {
   const hasThisWeek = grosses.thisWeek && (grosses.thisWeek.gross !== null || grosses.thisWeek.capacity !== null);
   const hasAllTime = grosses.allTime.gross !== null || grosses.allTime.performances !== null;
 
@@ -135,17 +190,56 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
   const atpWoW = grosses.thisWeek ? calcPercentChange(grosses.thisWeek.atp, grosses.thisWeek.atpPrevWeek) : null;
   const atpYoY = grosses.thisWeek ? calcPercentChange(grosses.thisWeek.atp, grosses.thisWeek.atpYoY) : null;
 
+  const attendanceWoW =
+    grosses.thisWeek && history
+      ? calcPercentChange(grosses.thisWeek.attendance, history.attendancePrevWeek)
+      : null;
+  const attendanceYoY =
+    grosses.thisWeek && history
+      ? calcPercentChange(grosses.thisWeek.attendance, history.attendanceYoY)
+      : null;
+  const hasAttendanceTile = hasThisWeek && grosses.thisWeek?.attendance != null;
+
+  const marketShareLabel =
+    history?.marketSharePct != null && history.marketSharePct > 0
+      ? `${history.marketSharePct < 10 ? history.marketSharePct.toFixed(1) : Math.round(history.marketSharePct)}% market share`
+      : null;
+  const rankLabel =
+    hasThisWeek && history?.rank ? ` · rank #${history.rank} on Broadway` : '';
+
   return (
     <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="box-office-scorecard-heading">
-      {/* Unified scorecard chrome: eyebrow + lowercase meta */}
-      <header className="flex items-center justify-between gap-3 mb-4">
+      {/* Unified scorecard chrome: eyebrow + source attribution */}
+      <header className="flex items-center justify-between gap-3 mb-1">
         <h2 id="box-office-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Box Office Scorecard</h2>
-        {hasThisWeek && weekEnding && (
-          <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
-            week of {weekEnding}
-          </span>
-        )}
+        <span className="text-[10px] tracking-[0.06em] text-gray-500 italic shrink-0">
+          source · Broadway League, public
+        </span>
       </header>
+      {hasThisWeek && weekEnding ? (
+        <p className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase italic m-0 mb-3">
+          week of {weekEnding}{rankLabel}
+        </p>
+      ) : (
+        <div className="mb-3" />
+      )}
+
+      {/* Chips: market share + weeks on the boards */}
+      {hasThisWeek && (marketShareLabel || (history?.weeksOnBoards ?? 0) > 1) && (
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          {marketShareLabel && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-brand bg-brand/10 border border-brand/30">
+              {marketShareLabel}
+              <span className="font-bold text-brand-light">this wk</span>
+            </span>
+          )}
+          {(history?.weeksOnBoards ?? 0) > 1 && (
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-gray-300 bg-surface-overlay border border-white/5">
+              Week {history!.weeksOnBoards} of run
+            </span>
+          )}
+        </div>
+      )}
 
       {/* This Week Row */}
       {hasThisWeek && grosses.thisWeek && (
@@ -153,7 +247,7 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
           <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500 mb-2">
             This Week
           </div>
-          <div className="flex gap-2 sm:gap-3">
+          <div className={`grid grid-cols-2 ${hasAttendanceTile ? 'sm:grid-cols-4' : 'sm:grid-cols-3'} gap-2 sm:gap-3`}>
             <StatCard
               value={formatCurrency(grosses.thisWeek.gross)}
               label="Gross"
@@ -181,6 +275,14 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
               wowChange={atpWoW}
               yoyChange={atpYoY}
             />
+            {hasAttendanceTile && (
+              <StatCard
+                value={(grosses.thisWeek.attendance as number).toLocaleString()}
+                label="Attendance"
+                wowChange={attendanceWoW}
+                yoyChange={attendanceYoY}
+              />
+            )}
           </div>
           {(grosses.thisWeek.capacity ?? 0) > 100 && (
             <p className="text-[10px] sm:text-xs text-gray-500 mt-2">
@@ -188,6 +290,11 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
             </p>
           )}
         </div>
+      )}
+
+      {/* 12-week gross trend */}
+      {hasThisWeek && history && history.sparkline.length > 0 && (
+        <TrendSparkline points={history.sparkline} />
       )}
 
       {/* All Time Row */}

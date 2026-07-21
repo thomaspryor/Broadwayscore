@@ -164,17 +164,67 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   const recoupedDateLabel = formatRecoupedDate(commercial.recoupedDate);
   const editorialRecoupment = isEditorialRecoupment(commercial);
 
+  // Break-even vs current gross floor (mockup's warning path). Model-derived,
+  // so it obeys the same quality floor and never renders on recouped shows.
+  const breakevenComparison =
+    !commercial.recouped &&
+    displayMode === 'model' &&
+    modelQualityOk &&
+    commercial.modelBreakeven &&
+    weeklyGross &&
+    showStatus === 'open'
+      ? { gross: weeklyGross, breakeven: commercial.modelBreakeven, above: weeklyGross >= commercial.modelBreakeven }
+      : null;
+
+  // Confidence label: producer announcements are facts; model output inherits
+  // the model's own data-quality grade.
+  const confidence: { level: 'high' | 'medium' | 'low'; label: string; basis: string } | null =
+    displayMode === 'announced'
+      ? { level: 'high', label: 'High confidence', basis: editorialRecoupment ? 'Scorecard editorial assessment' : 'Producer announcement' }
+      : displayMode === 'model' && modelQualityOk
+        ? {
+            level: commercial.modelDataQuality === 'high' ? 'high' : commercial.modelDataQuality === 'low' ? 'low' : 'medium',
+            label: `${commercial.modelDataQuality === 'high' ? 'High' : commercial.modelDataQuality === 'low' ? 'Low' : 'Medium'} confidence`,
+            basis: 'Scorecard commercial model',
+          }
+        : null;
+  const confidenceStyles: Record<'high' | 'medium' | 'low', { text: string; dot: string }> = {
+    high: { text: 'text-emerald-400', dot: 'bg-emerald-400' },
+    medium: { text: 'text-brand', dot: 'bg-brand' },
+    low: { text: 'text-orange-400', dot: 'bg-orange-400' },
+  };
+
   return (
     <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="commercial-scorecard-heading">
-      {/* Unified scorecard chrome — eyebrow on left, recoup status on right */}
-      <header className="flex items-center justify-between gap-3 mb-4">
+      {/* Unified scorecard chrome — eyebrow on left, source attribution right */}
+      <header className="flex items-center justify-between gap-3 mb-1">
         <h2 id="commercial-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
           Commercial Scorecard
         </h2>
-        <div className="shrink-0">
-          <RecoupmentBadge recouped={commercial.recouped} />
-        </div>
+        <span className="text-[10px] tracking-[0.06em] text-gray-500 italic shrink-0">
+          source · modelled + press
+        </span>
       </header>
+      <p className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase italic m-0 mb-3">
+        estimates unless noted
+      </p>
+
+      {/* Status chips: recoupment, trend, break-even position */}
+      <div className="flex flex-wrap gap-1.5 mb-4">
+        <RecoupmentBadge recouped={commercial.recouped} />
+        {showTrend && <TrendIndicator trend={trend} />}
+        {breakevenComparison && (
+          <span
+            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium border ${
+              breakevenComparison.above
+                ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25'
+                : 'bg-orange-500/15 text-orange-400 border-orange-500/25'
+            }`}
+          >
+            {breakevenComparison.above ? 'Above break-even' : '⚠ Under break-even'}
+          </span>
+        )}
+      </div>
 
       {/* Main Content */}
       <div className="space-y-4">
@@ -186,7 +236,6 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             <span className={`font-extrabold text-xl sm:text-[1.375rem] uppercase tracking-[0.04em] leading-[1.15] ${style.textClass}`}>
               {commercial.designation}
             </span>
-            {showTrend && <TrendIndicator trend={trend} />}
           </div>
           <p className="text-[13px] text-gray-400 mt-1.5 leading-[1.4]">
             {style.description}
@@ -232,8 +281,9 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             </div>
           )}
 
-          {/* Weekly Breakeven (from model — hidden below the quality floor) */}
-          {commercial.modelBreakeven && !commercial.recouped && modelQualityOk && (
+          {/* Weekly Breakeven (from model — hidden below the quality floor;
+              redundant when the break-even vs floor bar below shows the same number) */}
+          {commercial.modelBreakeven && !commercial.recouped && modelQualityOk && !breakevenComparison && (
             <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-gray-300 tracking-tight">
                 {formatCurrency(commercial.modelBreakeven)}
@@ -289,7 +339,31 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           <RecoupmentProgressBar
             estimatedPct={commercial.modelRecoupmentPct}
             modelMethod={commercial.modelMethod}
+            variant="headline"
           />
+        )}
+
+        {/* Break-even vs current gross floor (mockup warning path) */}
+        {breakevenComparison && (
+          <div className="bg-surface-overlay rounded-lg sm:rounded-xl border border-white/5 px-3.5 py-3">
+            <div className="flex items-baseline justify-between gap-3 mb-1.5 flex-wrap">
+              <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500">
+                Break-even vs floor
+              </span>
+              <span className="text-xs text-gray-300 tabular-nums">
+                <span className={`font-semibold ${breakevenComparison.above ? 'text-emerald-400' : 'text-red-400'}`}>
+                  {formatCurrency(breakevenComparison.gross)}
+                </span>{' '}
+                gross · <span className="text-gray-400">{formatCurrency(breakevenComparison.breakeven)}</span> est. break-even
+              </span>
+            </div>
+            <div className="relative w-full bg-white/5 rounded-full h-1.5" aria-hidden="true">
+              <div
+                className={`h-1.5 rounded-full ${breakevenComparison.above ? 'bg-emerald-500' : 'bg-orange-400'}`}
+                style={{ width: `${Math.min(100, Math.round((breakevenComparison.gross / breakevenComparison.breakeven) * 100))}%` }}
+              />
+            </div>
+          </div>
         )}
 
         {/* ROI Indicator (for recouped shows still running) */}
@@ -352,6 +426,16 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
                 )}
               </div>
             )}
+          </div>
+        )}
+        {/* Confidence label (mockup): how firmly to read the numbers above */}
+        {confidence && (
+          <div className="flex items-center justify-between gap-3 pt-2.5 border-t border-white/5">
+            <span className={`inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.06em] ${confidenceStyles[confidence.level].text}`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${confidenceStyles[confidence.level].dot}`} aria-hidden="true" />
+              {confidence.label}
+            </span>
+            <span className="text-[11px] text-gray-500 italic text-right">{confidence.basis}</span>
           </div>
         )}
       </div>

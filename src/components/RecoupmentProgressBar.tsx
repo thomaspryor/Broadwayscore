@@ -4,6 +4,12 @@ interface RecoupmentProgressBarProps {
   /** Model output [pessimistic, central, optimistic] (legacy [low, high] AI shape still supported) */
   estimatedPct: [number, number] | [number, number, number];
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
+  /**
+   * 'compact' (default): small inline label + bar, used in the /biz table.
+   * 'headline': show-page card treatment per the approved mockup — uppercase
+   * "Est. recoupment" label with the percentage as a large brand-toned number.
+   */
+  variant?: 'compact' | 'headline';
 }
 
 function getBarColor(value: number): string {
@@ -28,7 +34,7 @@ function formatMultiple(pct: number): string {
   return `${(pct / 100).toFixed(1)}x`;
 }
 
-export default function RecoupmentProgressBar({ estimatedPct, modelMethod }: RecoupmentProgressBarProps) {
+export default function RecoupmentProgressBar({ estimatedPct, modelMethod, variant = 'compact' }: RecoupmentProgressBarProps) {
   const isModel = estimatedPct.length === 3;
   // Clamp at 0: the model can emit negative percentages for deep flops
   // (e.g. cabaret-2024 [-168, -120, -74]); "-120% recouped" is nonsense copy.
@@ -62,6 +68,39 @@ export default function RecoupmentProgressBar({ estimatedPct, modelMethod }: Rec
   const ariaLabel = asMultiple
     ? `Estimated ${formatMultiple(central)} returned to investors (range ${formatMultiple(low)} to ${formatMultiple(high)})`
     : `Estimated ${central} percent recouped (range ${low} to ${high})`;
+
+  if (variant === 'headline') {
+    const headlineValue = asMultiple ? `~${formatMultiple(central)}` : `${central}%`;
+    return (
+      <div data-testid="recoupment-progress" className="mt-1">
+        <div className="flex items-baseline justify-between mb-1.5">
+          <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500">
+            {asMultiple ? 'Est. return to investors' : 'Est. recoupment'}
+          </span>
+          <span className="text-[22px] leading-none font-extrabold tracking-tight text-brand-light tabular-nums">
+            {headlineValue}
+          </span>
+        </div>
+        {!asMultiple && (
+          <div className="relative w-full bg-surface-overlay/50 rounded-full h-1.5">
+            <div
+              role="progressbar"
+              aria-valuenow={central}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label={ariaLabel}
+              className={`h-1.5 rounded-full bg-gradient-to-r ${barColor} transition-all`}
+              style={{ width: `${barWidth}%` }}
+            />
+          </div>
+        )}
+        <div className="flex items-center justify-between mt-1.5">
+          {rangeLabel && <span className="text-[10px] text-gray-500">{rangeLabel}</span>}
+          {methodLabel && <span className="text-[10px] text-gray-400">{methodLabel}</span>}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div data-testid="recoupment-progress" className="mt-1">

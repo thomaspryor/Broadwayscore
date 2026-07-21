@@ -38,6 +38,7 @@ import type {
 import type { VideoReview } from '@/lib/data-video-reviews';
 import type { TicketLinkData } from '@/lib/ticket-utils';
 import type { ShowRanks } from '@/lib/data-show-ranks';
+import type { BoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
 import type { SocialPulsePayload } from '@/components/show-page/SocialPulseCard';
@@ -52,6 +53,7 @@ export interface ShowPageBelowFoldProps {
   tonyNamesByCategory: Record<string, string[]> | null;
   grosses: ShowGrosses | null;
   weekEnding: string | null;
+  boxOfficeHistory: BoxOfficeHistoryStats | null;
   commercial: ShowCommercial | undefined;
   recoupmentTrend: RecoupmentTrend;
   ranks: ShowRanks | null;
@@ -115,6 +117,7 @@ export default function ShowPageBelowFold({
   tonyNamesByCategory,
   grosses,
   weekEnding,
+  boxOfficeHistory,
   commercial,
   recoupmentTrend,
   ranks,
@@ -192,11 +195,15 @@ export default function ShowPageBelowFold({
       <div id="awards" className="scroll-mt-20" />
       {awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} tonyNamesByCategory={tonyNamesByCategory ?? undefined} />}
 
-      {/* Box Office Scorecard — Broadway only (no public OB/WE gross data) */}
+      {/* Box Office Scorecard — Broadway only (no public OB/WE gross data).
+          NOTE: the approved mockup showed BO + Commercial side by side on
+          desktop; tried and reverted — the show page's max-w-3xl (768px)
+          column crushes both cards' stat tiles at 3/5 + 2/5 widths. Cards
+          stay stacked, mockup order preserved (facts first, then model). */}
       <div id="box-office" className="scroll-mt-20" />
       {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && (
         grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
-          <BoxOfficeStats grosses={grosses} weekEnding={weekEnding ?? ''} />
+          <BoxOfficeStats grosses={grosses} weekEnding={weekEnding ?? ''} history={boxOfficeHistory} />
         ) : show.status === 'previews' || show.status === 'upcoming' ? (
           <section className="card p-5 sm:p-6 mb-6">
             <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
