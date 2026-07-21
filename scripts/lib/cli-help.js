@@ -10,7 +10,10 @@
  * otherwise swallow a bare `-h` into the positional list.
  */
 function hasHelpFlag(argv) {
-  return argv.includes('--help') || argv.includes('-h');
+  // '--help=1'-style tokens (ship-check finding, task #260): a parser that
+  // splits on '=' would still treat this as help, so the raw-argv check must
+  // match the prefix too, not just the exact '--help' token.
+  return argv.some(a => a === '--help' || a === '-h' || a.startsWith('--help='));
 }
 
 module.exports = { hasHelpFlag };

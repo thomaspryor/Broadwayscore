@@ -11,6 +11,14 @@ test('hasHelpFlag: detects --help and -h anywhere in argv', () => {
   assert.equal(hasHelpFlag(['--id', '12', '-h']), true);
 });
 
+// task #260 ship-check finding: a '--help=1'-style token still means "show
+// help" even though none of this repo's parsers currently emit that shape —
+// a future wrapper script easily could.
+test('hasHelpFlag: detects --help=VALUE tokens too', () => {
+  assert.equal(hasHelpFlag(['--help=1']), true);
+  assert.equal(hasHelpFlag(['--live', '--help=true']), true);
+});
+
 test('hasHelpFlag: false when neither flag is present', () => {
   assert.equal(hasHelpFlag([]), false);
   assert.equal(hasHelpFlag(['--dry-run', '--model', 'opus']), false);
