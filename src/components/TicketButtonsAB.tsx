@@ -175,7 +175,13 @@ export default function TicketButtonsAB({
   // Don't render anything until flags load (or fallback fires after 5s)
   // This eliminates the multi-default flicker that biased early clicks to control.
   if (!flagsLoaded) return null;
-  if (showStatus === 'closed' || visibleLinks.length === 0) return null;
+  // `announced` shows with no priceFrom on any link haven't gone on sale yet — the
+  // ticket record exists (we found the future TodayTix listing) but there's nothing
+  // bookable behind it. Rendering the same bold "Get Tickets" primary CTA used for
+  // live shows overpromises and dead-ends; suppress until a price appears (rage-click
+  // root cause on the-visitors-off-broadway-2026, CLAUDE.md card #228).
+  const notYetOnSale = showStatus === 'announced' && !sorted.some(l => l.priceFrom != null);
+  if (showStatus === 'closed' || notYetOnSale || visibleLinks.length === 0) return null;
 
   // Helpers — same TicketLink shape used by both modes; only the wrapper layout differs.
   // `withArrow` adds a trailing `→` (split-variant primary CTA emphasis only).

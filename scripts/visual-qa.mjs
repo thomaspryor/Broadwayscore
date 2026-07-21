@@ -269,6 +269,7 @@ async function captureScreenshots({ url, paths, branch, outDir, elements }) {
   const screenshots = [];
   const elementCrops = [];
   const overflowReport = [];
+  const redirectReport = [];
   try {
     for (const path of paths) {
       const pathSlug = slugify(path);
@@ -286,6 +287,22 @@ async function captureScreenshots({ url, paths, branch, outDir, elements }) {
             // use a small fixed wait instead.
             await page.waitForTimeout(2000);
           }, `goto ${path} @ ${width}`);
+
+          // Client-side redirects (feature-flag gates, auth guards, dead
+          // routes) land the browser somewhere else AFTER 'load' fires, so
+          // the goto() above succeeds while the screenshot below silently
+          // captures the WRONG page. Compare pathname+search, not full URL
+          // (origin can differ on redirect to a different host/port) and not
+          // trailing-slash-sensitive. A session burned ~1hr on exactly this:
+          // /test/rating-editor-fixture bounced to '/' via a feature-flag
+          // guard, and every screenshot + overflow probe below was quietly
+          // auditing the homepage instead (2026-07-21).
+          const expected = new URL(url + path);
+          const actual = new URL(page.url());
+          const norm = u => u.pathname.replace(/\/$/, '') + u.search;
+          if (norm(actual) !== norm(expected)) {
+            redirectReport.push({ path, viewport: width, expected: path, actual: actual.pathname + actual.search });
+          }
 
           const file = join(dir, `${width}.png`);
           await page.screenshot({ path: file, fullPage: true });
@@ -334,7 +351,7 @@ async function captureScreenshots({ url, paths, branch, outDir, elements }) {
   } finally {
     await browser.close();
   }
-  return { screenshots, elementCrops, overflowReport };
+  return { screenshots, elementCrops, overflowReport, redirectReport };
 }
 
 // ── LLM review ──────────────────────────────────────────────────────────────
@@ -648,11 +665,17 @@ Then re-run this command.`);
 
   mkdirSync(outDir, { recursive: true });
   const t0 = Date.now();
-  const { screenshots, elementCrops, overflowReport } = await captureScreenshots({
+  const { screenshots, elementCrops, overflowReport, redirectReport } = await captureScreenshots({
     url: args.url, paths: args.paths, branch, outDir, elements: args.elements,
   });
   const elapsed = Math.round((Date.now() - t0) / 1000);
   console.error(`[visual-qa] captured ${screenshots.length} full-page + ${elementCrops.length} element crop(s) + ${overflowReport.length} overflow finding(s) in ${elapsed}s`);
+  if (redirectReport.length > 0) {
+    console.error('[visual-qa] 🛑 REDIRECT MISMATCH — screenshots below are of the WRONG PAGE:');
+    for (const r of redirectReport) {
+      console.error(`  - ${r.viewport}px requested "${r.path}" but landed on "${r.actual}" — likely a feature-flag/auth guard or dead route. Fix the redirect cause (e.g. NEXT_PUBLIC_FEATURES=userAccounts) and re-run before trusting any finding below.`);
+    }
+  }
   if (overflowReport.length > 0) {
     console.error('[visual-qa] OVERFLOW FINDINGS:');
     for (const o of overflowReport.slice(0, 10)) {
@@ -689,9 +712,11 @@ Then re-run this command.`);
     }
   }
 
-  const overallPass = verdicts
-    ? verdicts.openai.verdict === 'PASS' && verdicts.gemini.verdict === 'PASS'
-    : true; // structural-only mode (no refs) trusts the agent + user to eye the screenshots
+  const overallPass = redirectReport.length > 0
+    ? false // screenshots are of the wrong page — nothing below can be trusted
+    : verdicts
+      ? verdicts.openai.verdict === 'PASS' && verdicts.gemini.verdict === 'PASS'
+      : true; // structural-only mode (no refs) trusts the agent + user to eye the screenshots
 
   // Build the verdict using stable inputs only — see scripts/lib/verdict-hash.mjs
   // for the full inputs list. Anything mutable (timestamps, runIds, raw file
@@ -726,6 +751,7 @@ Then re-run this command.`);
     screenshotsDigest,
     elementCropsDigest,
     overflowReportForHash,
+    redirectReport,
     verdicts,
     overallPass,
     // Metadata — NOT part of hash:
@@ -761,6 +787,12 @@ Then re-run this command.`);
   console.log(`URL: ${args.url}  Paths: ${args.paths.join(', ')}`);
   console.log(`Content hash: ${verdict.contentHash}`);
   console.log(`Screenshots: ${screenshots.length}, element crops: ${elementCrops.length}, overflow findings: ${overflowReport.length}`);
+  if (redirectReport.length > 0) {
+    console.log('');
+    console.log(`🛑 REDIRECT MISMATCH (${redirectReport.length}) — every screenshot above is of the WRONG PAGE, not the requested path:`);
+    for (const r of redirectReport) console.log(`  - requested "${r.path}" @ ${r.viewport}px → landed on "${r.actual}"`);
+    console.log('  Fix the redirect cause and re-run before reading any crop or trusting overallPass.');
+  }
   if (verdicts) {
     console.log(`OpenAI: ${verdicts.openai.verdict}${verdicts.openai.issues.length ? ' — ' + verdicts.openai.issues.slice(0, 3).join(' | ') : ''}`);
     console.log(`Gemini: ${verdicts.gemini.verdict}${verdicts.gemini.issues.length ? ' — ' + verdicts.gemini.issues.slice(0, 3).join(' | ') : ''}`);

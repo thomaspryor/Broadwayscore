@@ -33,6 +33,45 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MAX_RETRIES=${1:-7}
 BRANCH=${2:-main}
 
+# ── Hang guards (Notion 39d637c5 / task #183) ────────────────────────────────
+# Under high commit churn on a busy main, a `git fetch`/`git push` can stall on an
+# open-but-idle HTTP connection to the remote (git has NO default low-speed abort),
+# so the retry loop — bounded only in its *sleeps*, not its git ops — could sit
+# in_progress for 20-25+ min. The `Record pipeline success` step in test.yml hung
+# exactly this way (8 consecutive Data Validation jobs, 2026-07-14), and the job
+# has no timeout-minutes so it rode the 6h default. Three layers below bound the
+# wall-clock regardless of remote behaviour:
+#   1. GIT low-speed config on every network op → git self-aborts a stalled xfer.
+#   2. A portable `timeout` wrapper → hard SIGTERM/SIGKILL if git ignores (1).
+#   3. An overall loop deadline (checked between attempts) → never exceed budget.
+# All fail-OPEN: a missing `timeout` binary (stock macOS dev boxes) or a slow-but-
+# progressing transfer is never blocked — the guards only kill genuine stalls.
+GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}   # hard cap per fetch/push op
+GIT_LOW_SPEED_TIME=${GIT_LOW_SPEED_TIME:-45}     # git aborts if <1KB/s this long
+PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}      # overall wall-clock budget (~4 min)
+
+# coreutils `timeout` on Linux/CI, `gtimeout` on macOS+coreutils, else absent.
+_TIMEOUT_BIN="$(command -v timeout 2>/dev/null || command -v gtimeout 2>/dev/null || true)"
+_timeout() {  # _timeout <secs> <cmd...> — fail-open (run directly) if no binary
+  local secs="$1"; shift
+  if [ -n "$_TIMEOUT_BIN" ]; then
+    "$_TIMEOUT_BIN" -k 10 "$secs" "$@"
+  else
+    "$@"
+  fi
+}
+# Network-op wrappers: hard timeout + git-native low-speed abort. The lowSpeed
+# config is HTTP-only (no-op on SSH remotes); the timeout wraps ALL transports
+# (intended — a hung SSH push should die too, and 90s is generous for a real one).
+git_fetch() {
+  _timeout "$GIT_NET_TIMEOUT_SEC" \
+    git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" fetch "$@"
+}
+git_push() {
+  _timeout "$GIT_NET_TIMEOUT_SEC" \
+    git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push "$@"
+}
+
 # Pre-push conflict-marker guard (root-cause fix, 2026-06-29 / Notion 38e637c5).
 # A bad enrich-reviews rebase once committed unresolved git conflict markers into a
 # review-text JSON file (commit 09e78a7a), making it invalid JSON; the file was then
@@ -266,19 +305,34 @@ restore_protected_fields() {
 
 pushed=false
 for i in $(seq 1 "$MAX_RETRIES"); do
+  # Overall wall-clock deadline (hang guard, task #183). $SECONDS counts from this
+  # script's start. If a prior attempt's git op stalled up to its per-op timeout,
+  # bail out here rather than starting another expensive round — the job must reach
+  # a conclusion even under heavy churn. Failing here takes the SAME path as normal
+  # retry exhaustion (pushed=false → exit 1) — no new failure mode: callers that
+  # tolerate a failed push (health steps: `|| echo ::warning::`) still warn, and
+  # callers that fail hard on exit 1 now get a bounded red in ~4 min instead of the
+  # 6h hang. A commit resolved just before the deadline is still pushed: the
+  # in-iteration push after conflict resolution (below) publishes it before we can
+  # break here.
+  if [ "$SECONDS" -ge "$PUSH_DEADLINE_SEC" ]; then
+    echo "::warning::push-with-retry: overall deadline ${PUSH_DEADLINE_SEC}s exceeded after $((i - 1)) attempt(s); giving up to avoid hanging the job"
+    break
+  fi
+
   # Re-scan before each attempt: catches both pre-existing committed markers (the
   # 09e78a7a corruption class) and any marker a prior iteration's rebase/merge
   # resolution might have left in the now-outgoing commits.
   assert_no_conflict_markers
   assert_no_orphan_commit
-  if git push origin "$BRANCH"; then
+  if git_push origin "$BRANCH"; then
     echo "Push succeeded on attempt $i"
     pushed=true
     break
   fi
 
   echo "Push failed (attempt $i/$MAX_RETRIES), fetching remote and rebasing..."
-  git fetch origin "$PULL_BRANCH" 2>/dev/null || true
+  git_fetch origin "$PULL_BRANCH" 2>/dev/null || true
 
   # Capture pre-rebase HEAD so the post-rebase survival check (Sprint 5)
   # can diff against the commit we expect to preserve. Guards against
@@ -399,6 +453,17 @@ for i in $(seq 1 "$MAX_RETRIES"); do
           || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
         ;;
     esac
+  fi
+
+  # If this iteration rewrote history to be pushable, publish it NOW rather than
+  # looping back to the top — the deadline guard there could otherwise break after
+  # a successful resolution but before the now-pushable commit is ever pushed
+  # (ship-check finding, task #183). Bounded by the same per-op timeout; a failure
+  # just falls through to the normal backoff + next attempt.
+  if [ "$history_changed" = "true" ] && git_push origin "$BRANCH"; then
+    echo "Push succeeded after conflict resolution (attempt $i)"
+    pushed=true
+    break
   fi
 
   # Backoff before retry. Shaped fast-then-growing instead of the old flat
