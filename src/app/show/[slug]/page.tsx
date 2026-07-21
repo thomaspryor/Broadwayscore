@@ -255,7 +255,6 @@ export default async function ShowPage({ params }: { params: { slug: string } })
       !m.flags?.includes('Understudy')
     )
     .map(m => ({ name: m.name }));
-  const showSchema = generateShowSchema(show, lastUpdated || undefined, performers);
   const isWestEnd = isLondonMarket(show.category);
   const isOffWestEnd = show.category === 'off-west-end';
   const isOffBroadway = show.category === 'off-broadway';
@@ -264,6 +263,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
   // Theater scorecard lookup (Broadway only) — regional/off-broadway venues aren't Broadway houses
   const theater = !isWestEnd && !isOffBroadway && !isRegional && show.venue ? getTheaterBySlug(slugify(show.venue)) : undefined;
+  const showSchema = generateShowSchema(show, lastUpdated || undefined, performers, theater ? `${BASE_URL}/theater/${theater.slug}` : undefined);
 
   const breadcrumbSchema = isOpera
     ? generateBreadcrumbSchema([
