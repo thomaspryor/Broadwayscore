@@ -9,7 +9,7 @@
 
 ## 👤 User profile & session discipline
 - [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — ✅-only via bsc-prune; --help executes
-- [Terse output default](feedback_terse_output_default.md) — no recap, cut narration, keep proof; estimate in Claude-pace minutes ([[feedback_no_human_day_estimates.md]])
+- [Terse output default](feedback_terse_output_default.md) — no recap, keep proof; Claude-pace estimates; ADHD shaping in global CLAUDE.md, plugin rejected ([[feedback_no_human_day_estimates.md]])
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff"; laptop+phone, infer from message style ([[feedback_user_device_context.md]])
 - [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/visual-qa/approvals myself, report outcomes not process; Stop hook blocks "done", bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
 - [Always wait for async](feedback_always_wait_async.md) — never end turn while deploy/rebuild runs; flag-gated features verify on demo URL ([[feedback_flag_gated_verify_on_demo.md]])
