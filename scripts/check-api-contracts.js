@@ -106,7 +106,7 @@ async function checkPlaybill() {
 async function checkReddit() {
   console.log('\n--- Reddit JSON API ---');
   try {
-    const res = await fetch('https://old.reddit.com/r/Broadway/hot.json?limit=3', {
+    const res = await fetch('https://www.reddit.com/r/Broadway/hot.json?limit=3', {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' }
     });
     const data = await res.json();

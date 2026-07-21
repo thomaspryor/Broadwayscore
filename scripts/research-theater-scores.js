@@ -197,9 +197,9 @@ async function fetchAVFMS(theaterName) {
 }
 
 async function fetchReddit(theaterName) {
-  // Use old.reddit.com search which is more scrapable
+  // Use www.reddit.com search (old.reddit serves HTML where JSON expected since 2026-07)
   const query = encodeURIComponent(`"${theaterName}" seats OR sightlines OR legroom OR sound`);
-  const url = `https://old.reddit.com/r/Broadway/search?q=${query}&restrict_sr=on&sort=relevance&t=all`;
+  const url = `https://www.reddit.com/r/Broadway/search?q=${query}&restrict_sr=on&sort=relevance&t=all`;
   try {
     const result = await fetchPage(url, { preferPlaywright: true });
     if (result && result.content && result.content.length > 200) {
