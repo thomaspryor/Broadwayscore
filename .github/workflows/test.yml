@@ -415,6 +415,9 @@ on:
       - 'src/contexts/ProGateContext.tsx'
       - 'src/components/EmailCaptureModal.tsx'
       - 'tests/unit/gate-logic.test.mjs'
+      # Shared weekly-monitor runner boilerplate (card #249) — used by all 3
+      # gate monitors below; without this entry edits get ZERO CI.
+      - 'scripts/lib/weekly-monitor-runner.js'
       # Gate A/B weekly monitor (pure rules + runner; colocated test runs in the lib glob).
       - 'scripts/lib/gate-ab-monitor-rules.js'
       - 'scripts/lib/gate-ab-monitor-rules.test.mjs'
