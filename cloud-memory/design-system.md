@@ -3,6 +3,7 @@ name: design-system
 description: "Surfaces, score tiers, shared components, CSS classes, banned patterns."
 type: reference
 originSessionId: 03331355-b799-4a61-9faa-8c76f85a8e6e
+modified: 2026-07-21T22:47:46.777Z
 ---
 # BWSC Design System Reference
 
@@ -88,7 +89,7 @@ Import: `import { ComponentName } from '@/components/show-cards'`
 | `ScoreToggle` | Critics vs. audience score switcher |
 | `StatGrid` | Grid layout for statistics |
 | `ColumnHeader` | Sortable table header with direction indicators |
-| `Modal` / `ModalCloseButton` | Modal dialog container — portals to `<body>` (safe inside `.card`, whose `contain: layout style` would otherwise trap `position:fixed`) |
+| `Modal` / `ModalCloseButton` | Modal dialog container — portals to `<body>` (safe inside `.card`, whose `contain: layout style` would otherwise trap `position:fixed`). `maxWidth`: `sm` \| `md` \| `lg` (520px) \| `xl` (`max-w-3xl`, added 2026-07-21 for the Review Import preview) |
 | `ShowSearchDropdown` | Search/autocomplete for shows |
 | `MustSeeCrown` | Crown icon for Critical Gold scores |
 
