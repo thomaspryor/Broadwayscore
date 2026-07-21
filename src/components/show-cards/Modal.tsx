@@ -10,7 +10,7 @@ interface ModalProps {
   /** z-index layer (default 100) */
   zIndex?: number;
   /** Max width class: 'sm' (384px), 'md' (448px), 'lg' (520px) */
-  maxWidth?: 'sm' | 'md' | 'lg';
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl';
   /** Whether backdrop click closes modal (default true) */
   closeOnBackdrop?: boolean;
   /** Whether Escape key closes modal (default true) */
@@ -25,6 +25,7 @@ const MAX_WIDTH_CLASS = {
   sm: 'sm:max-w-sm',
   md: 'sm:max-w-md',
   lg: 'sm:max-w-[520px]',
+  xl: 'sm:max-w-3xl',
 } as const;
 
 /**
