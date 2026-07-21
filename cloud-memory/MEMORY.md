@@ -11,6 +11,7 @@
 - [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — prune owner-only, skips live claudes ([[cmux-closed-tab-restore-recipe]])
 - [Terse output default](feedback_terse_output_default.md) — no recap, keep proof; Claude-pace estimates; ADHD shaping in global CLAUDE.md ([[feedback_no_human_day_estimates.md]])
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff"; laptop+phone, infer from message style ([[feedback_user_device_context.md]])
+- [Deliverable venue rules](feedback_session_handoff_and_deliverable_format.md) — design asks: confirm venue first; 2 rejections = stop & ask; verify output before pointing owner
 - [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/visual-qa/approvals myself, report outcomes not process; Stop hook blocks "done", bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
 - [Always wait for async](feedback_always_wait_async.md) — never end turn while deploy/rebuild runs; flag-gated features verify on demo URL ([[feedback_flag_gated_verify_on_demo.md]])
 - [Probe before scale backfills](feedback_investigate_premise_before_scaling.md) — 5-20 file probe first; save findings to memory ([[feedback_save_research_findings.md]])
@@ -19,12 +20,11 @@
 - [Review rituals](feedback_sprint_plan_needs_review.md) — /plan-review before multi-sprint plans; GPT-4o+Gemini parallel on screenshots ([[feedback_two_model_ui_review.md]], [[feedback_three_model_audit_modality.md]])
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — also test wrapper against real data
 - [Show status before external comms](feedback_check_show_status_before_external_comms.md) — surface status/closingDate with show drafts; OB closings lag
-- [Anti-AI-slop writing](feedback_anti_ai_slop_writing.md) — strip em dashes, "not X it's Y", hedges, fake comparisons in external copy ([[feedback_email_drafting.md]])
 - [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — no gh polling loops; NEVER gh run watch, use scripts/lib/wait-for-run.sh
 
 ## 📇 Notion / brain
 - [Notion brain workflow](notion-brain-workflow.md) — IDs, schema, lifecycle; CLI only, never MCP ([[feedback_notion_cli_only.md]])
-- [Notion cards need context](feedback_notion_card_context.md) — paths, commands, root cause, repro; on create read FULL output, never pipe to grep, avoid "rejected" word ([[feedback_notion_create_verify.md]], [[feedback_notion_create_hook_false_rejection.md]])
+- [Notion cards need context](feedback_notion_card_context.md) — paths, commands, root cause, repro; read FULL create output, avoid "rejected" ([[feedback_notion_create_verify.md]], [[feedback_notion_create_hook_false_rejection.md]])
 
 ## 🌳 Worktrees & git
 - [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; launch bg watchers from MAIN repo cwd ([[feedback_background_watchers_worktree_cwd.md]])
@@ -73,7 +73,7 @@
 - [SERP opening night timing](feedback_serp_opening_night_timing.md) — Google indexes major outlets 2.9h+ post-pub; 3h gate
 - [shows.json category at scheduling](feedback_shows_json_category_at_schedule.md) — null category/market must fail validate-data.js
 - [Opening night corrections](feedback_opening_night_corrections.md) — disable orchestrator first; humanReviewScore only override
-- [Email rules](email-broadcast-rules.md) — no direct broadcast API; quality bar + 7-9am ([[feedback_broadcast_quality_bar.md]]); pause = disable workflow ([[feedback_orchestrator_pause_does_not_pause_broadcast.md]]); alerts = ACTION only, warning/info no email ([[feedback_actionable_only_email_alerts.md]])
+- [Email rules](email-broadcast-rules.md) — no direct broadcast API; quality bar + 7-9am; pause = disable workflow; alerts = ACTION only, no warning/info email
 - [PROTECTED_FIELDS 3-way sync](feedback_protected_fields_three_way_sync.md) — write-guard + push action + restore must all carry overrides
 
 ## 🏆 Awards & Tony
@@ -83,7 +83,7 @@
 
 ## 📊 Data pipeline & scraping
 - [Scraper architecture](feedback_scraper_architecture.md) — use fetchPage(); BD empty 200s, Playwright 404s as success ([[feedback_fetchpage_gotchas.md]]); BWW soft-404 returns 200 homepage, check <title> ([[feedback_aggregator_soft_404.md]])
-- [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — _serpViaScrapingBee logs nothing; preferSpeed+SD-empty fallthrough = 60-100K cr/day; audit via usage-counter sampling. BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]], [[feedback_sb_credit_budget.md]])
+- [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — _serpViaScrapingBee logs nothing; preferSpeed+SD-empty fallthrough = 60-100K cr/day; BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]], [[feedback_sb_credit_budget.md]])
 - [Closing-date automation gaps](feedback_closing_date_audit_gaps.md) — 4 silent gaps; broadway.org/TodayTix lag; WE=0 automation
 - [WET venue-page wrong-show ingestion](feedback_wet_venue_page_wrong_show_ingestion.md) — same-venue predecessor show's reviews attach via venue corroboration; check rv URL slugs; flag needs wrongShowReason + delete WET cache
 - [In-place URL update preserves stale state](feedback_inplace_url_update_preserves_stale_state.md) — real reviews merged into flagged slots stay suppressed; check file's CURRENT url before assuming discovery failed; run isScoreable() directly for hidden blockers
@@ -101,14 +101,14 @@
 - [Manual review protection fields](feedback_manual_review_protection_fields.md) — need ALL 8 fields or guards re-flag; carve-out extends to wrongShow ([[feedback_manual_clear_covers_all_rejection_types.md]], [[feedback_protected_fields_every_write.md]])
 - [Anchored-v6 leaks](feedback_anchored_v6_stamp_and_rescore_starvation.md) — numeric relay ≠ star; llmScore.band = anchored proof; drain rescore queue ([[feedback_star_score_cap.md]])
 - [Reviews.json dual repo push](feedback_reviews_json_dual_repo_push.md) — flag + rebuild + push data repo
-- [Returning production → priorRuns](feedback_returning_production_priorRuns.md) — WE return/transfer shows few reviews b/c majors reviewed earlier run; declare priorRuns {openingDate/closingDate/venue} to re-include ([[feedback_stale_flag_collision_drops_current_production.md]])
+- [Returning production → priorRuns](feedback_returning_production_priorRuns.md) — majors reviewed the earlier run; declare priorRuns {openingDate/closingDate/venue} to re-include ([[feedback_stale_flag_collision_drops_current_production.md]])
 - [Review recovery pipeline gaps](feedback_review_recovery_pipeline_gaps.md) — run verify-review-recovery.js; 5 steps fail independently
 - [Pseudonymous bylines ≠ multi-author](feedback_pseudonymous_bylines.md) — pen names w/ scraper-invented drift; URL-date guards gate on Unknown byline ([[feedback_url_date_guards_critic_gate.md]])
 - [Curated historical 4-review threshold](feedback_curated_historical_4review_threshold.md) — isCuratedHistorical → 4-review min when ≥1 T1/T2
 - [Regex bare-keyword/fragment FPs](feedback_content_quality_regex_fps.md) — audit patterns against real corpus before edit; anchor + URL filter ([[feedback_regex_url_fragment_fps.md]])
 - [Market/season routing](feedback_same_title_disambiguation.md) — extend classifyMarketRouting, ≥2-signal cascade; new UK ceremony MUST be in UK_CEREMONIES or fallback routes WE→BW ([[feedback_uk_ceremonies_strict_season.md]])
 - [Stale-flag CI gates](feedback_duplicate_of_url_mismatch.md) — duplicateOf w/o matching URLs = bug, CI gate + self-heal; orphan slim show files gate --fix deletes ([[feedback_orphan_slim_show_files.md]])
-- [Outlet merges: no flag-and-keep tombstones](feedback_outlet_merge_no_flag_and_keep.md) — rebuild folds flagged loser into live winner (flags+URL) then cascade-deletes; DELETE worthless losers instead
+- [Outlet merges: no flag-and-keep tombstones](feedback_outlet_merge_no_flag_and_keep.md) — rebuild folds flagged loser into winner then cascade-deletes; DELETE worthless losers
 - [Self-referential duplicate pointers](feedback_self_referential_duplicate_pointers.md) — rename-onto-pointer-target makes file a dupe of itself, silently dropped; check duplicateTextOf too; drift actual>expected = rebuild will drop
 - [In-sample accuracy needs LOSO](feedback_in_sample_accuracy_claims_need_loso.md) — never publish in-sample backtest % as "Accuracy"
 
