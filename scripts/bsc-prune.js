@@ -9,21 +9,47 @@
  *
  *   bsc-prune            close every ✅-marked workspace, list idle un-marked
  *   bsc-prune --dry-run  show what would close, close nothing
+ *   bsc-prune --help, -h show this message, do nothing else
  */
 
 const {
   cmuxAvailable, listWorkspaces, isDoneTitle, claudeRunningIn, pruneDone,
 } = require('./lib/cmux-workspaces.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
-function main() {
-  const dryRun = process.argv.includes('--dry-run');
-  if (!cmuxAvailable()) {
+const USAGE = `bsc-prune — close finished Cmux workspaces.
+
+Usage:
+  bsc-prune            close every ✅-marked workspace, list idle un-marked
+  bsc-prune --dry-run  show what would close, close nothing
+  bsc-prune --help, -h show this message, do nothing else
+`;
+
+// argv + deps are test seams (defaults are the real argv + real cmux calls).
+// --help/-h is checked BEFORE any cmux call (2026-07-14 incident class:
+// --help must never execute the tool's real action). deps are injectable
+// (not just argv) so a test can prove zero cmux calls happen for --help by
+// making every dep throw, rather than trusting the guard is still correctly
+// placed.
+function main(argv = process.argv.slice(2), deps = {}) {
+  const {
+    cmuxAvailable: cmuxAvailableFn = cmuxAvailable,
+    listWorkspaces: listWorkspacesFn = listWorkspaces,
+    pruneDone: pruneDoneFn = pruneDone,
+    isDoneTitle: isDoneTitleFn = isDoneTitle,
+    claudeRunningIn: claudeRunningInFn = claudeRunningIn,
+  } = deps;
+
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+
+  const dryRun = argv.includes('--dry-run');
+  if (!cmuxAvailableFn()) {
     console.error('[bsc-prune] cmux CLI not found — is cmux.app installed?');
     process.exit(1);
   }
 
-  const all = listWorkspaces();
-  const { closed, skipped } = pruneDone({ dryRun });
+  const all = listWorkspacesFn();
+  const { closed, skipped } = pruneDoneFn({ dryRun });
   if (closed.length) {
     console.log(`${dryRun ? '[dry-run] would close' : 'Closed'} ${closed.length} ✅ workspace(s):`);
     closed.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
@@ -37,12 +63,14 @@ function main() {
 
   const closedRefs = new Set(closed.map(w => w.ref));
   const idle = all
-    .filter(w => !closedRefs.has(w.ref) && !isDoneTitle(w.title))
-    .filter(w => !claudeRunningIn(w.ref));
+    .filter(w => !closedRefs.has(w.ref) && !isDoneTitleFn(w.title))
+    .filter(w => !claudeRunningInFn(w.ref));
   if (idle.length) {
     console.log(`\nIdle but un-marked (no running claude — NOT closed, review yourself):`);
     idle.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
   }
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { main, USAGE };

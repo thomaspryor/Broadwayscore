@@ -26,8 +26,24 @@ const { execFileSync, spawnSync } = require('child_process');
 const REPO = '/Users/tompryor/Broadwayscore';
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 const cmuxws = require('./lib/cmux-workspaces.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const LIST_ID = process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore';
 const TASKS_DIR = path.join(os.homedir(), '.claude', 'tasks', LIST_ID);
+
+const USAGE = `bsc-next — open a new Cmux workspace already running Claude Code on your top
+prioritized task, seeded with its full Notion context.
+
+Usage:
+  bsc-next                 launch a Cmux workspace on the top actionable task
+  bsc-next --pick 3        launch on the 3rd task in the actionable list
+  bsc-next --id 12         launch on task #12 specifically
+  bsc-next --list          show the top actionable tasks, launch nothing
+  bsc-next --dry-run       print the chosen task + seed prompt, launch nothing
+  bsc-next --exec          run \`claude\` in THIS terminal instead of a Cmux workspace
+  bsc-next --model <m>     override the resolved model for this dispatch
+  bsc-next --force         bypass the completed-task / duplicate-workspace guards
+  bsc-next --help, -h      show this message, do nothing else
+`;
 
 function parseArgs(argv) {
   const a = { _: [] };
@@ -303,9 +319,27 @@ function launchCmux(task, seed, commandOverride, model = 'sonnet', project = nul
 }
 
 // ── main ───────────────────────────────────────────────────────────────────
-function main() {
-  const args = parseArgs(process.argv.slice(2));
-  const tasks = loadTasks(TASKS_DIR);
+// argv + deps are test seams (defaults are the real argv + real side-effecting
+// calls). --help/-h is checked BEFORE loadTasks/fetchCard/launchCmux/cmux ever
+// run (2026-07-14 incident class: `node scripts/bsc-next.js --help` used to
+// fall through parseArgs as an unrecognized flag and launch a real Cmux
+// workspace on the top task). deps are injectable (not just argv) so a test
+// can prove zero side-effecting calls happen for --help by making every dep
+// throw, rather than trusting the guard is still correctly placed.
+function main(argv = process.argv.slice(2), deps = {}) {
+  const {
+    loadTasks: loadTasksFn = loadTasks,
+    fetchCard: fetchCardFn = fetchCard,
+    launchCmux: launchCmuxFn = launchCmux,
+    cmuxAvailable: cmuxAvailableFn = cmuxws.cmuxAvailable,
+    listWorkspaces: listWorkspacesFn = cmuxws.listWorkspaces,
+    isDoneTitle: isDoneTitleFn = cmuxws.isDoneTitle,
+  } = deps;
+
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+
+  const args = parseArgs(argv);
+  const tasks = loadTasksFn(TASKS_DIR);
   if (!tasks.length) {
     console.error(`[bsc-next] shared task list '${LIST_ID}' is empty (${TASKS_DIR}).`);
     console.error(`Run 'node scripts/notion-tasks-sync.js pull' to mirror your Notion backlog first.`);
@@ -347,7 +381,7 @@ function main() {
   if (guardErr) { console.error(`[bsc-next] ${guardErr}`); process.exit(1); }
 
   const pid = notionIdOf(task);
-  const card = pid ? fetchCard(pid) : null;
+  const card = pid ? fetchCardFn(pid) : null;
   // Project bucket for auto-dispatch naming/coloring (scope add, card #168):
   // prefer the full card's tags/category (richer than the task-mirror line),
   // fall back to the mirror's categoryOf() for native/bridge-less tasks.
@@ -385,11 +419,11 @@ function main() {
   // still reading or typing in the tab, so dispatch-time sweeps closed tabs
   // out from under the owner mid-keystroke. ✅ workspaces don't block
   // re-dispatch either way — findLiveWorkspaceForTask() skips isDoneTitle().
-  if (cmuxws.cmuxAvailable()) {
+  if (cmuxAvailableFn()) {
     // Duplicate-dispatch guard (✅-marked twins never count as live).
     if (!args.force) {
       try {
-        const dup = findLiveWorkspaceForTask(task, cmuxws.listWorkspaces(), cmuxws.isDoneTitle);
+        const dup = findLiveWorkspaceForTask(task, listWorkspacesFn(), isDoneTitleFn);
         if (dup) {
           console.error(`[bsc-next] a live workspace already matches task #${task.id}: ${dup.ref}  "${dup.title}".`);
           console.error(`  Another session may be on this task. Check it (cmux read-screen --workspace ${dup.ref}),`);
@@ -400,7 +434,7 @@ function main() {
     }
   }
 
-  const res = launchCmux(task, seed, undefined, model, project);
+  const res = launchCmuxFn(task, seed, undefined, model, project);
   if (res.ok) {
     console.log(`[bsc-next] opened Cmux workspace ${res.ref} on #${task.id}: ${task.subject} (claude verified running)`);
   } else {
@@ -415,4 +449,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES };
+module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE };

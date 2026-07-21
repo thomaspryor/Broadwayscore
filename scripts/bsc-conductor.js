@@ -24,11 +24,22 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execFileSync, spawnSync } = require('child_process');
+const { execFileSync, spawnSync: realSpawnSync } = require('child_process');
 
 const REPO = '/Users/tompryor/Broadwayscore';
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { execErrorDetail } = require('./lib/exec-error-detail.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `bsc-conductor — one word, one fresh orchestrator session.
+
+Usage:
+  bsc-conductor                 run the sweep, open a session on it
+  bsc-conductor --model sonnet  override the default model (opus)
+  bsc-conductor --effort xhigh  override the default effort (high)
+  bsc-conductor --dry-run       print the sweep + seed prompt, launch nothing
+  bsc-conductor --help, -h      show this message, do nothing else
+`;
 
 function parseArgs(argv) {
   const a = { _: [] };
@@ -174,12 +185,18 @@ function realRun(cmd, args) {
   return execFileSync(cmd, args, { cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 }
 
-function main() {
-  const args = parseArgs(process.argv.slice(2));
+// argv/runFn/spawnSync are test seams (defaults are the real argv + real
+// child_process calls) — a --help/-h check is the FIRST thing that happens,
+// before runFn or spawnSync are ever touched (2026-07-14 incident: --help ran
+// the full sweep + opened a real session instead of printing usage).
+function main(argv = process.argv.slice(2), runFn = realRun, spawnSync = realSpawnSync) {
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+
+  const args = parseArgs(argv);
   const model = typeof args.model === 'string' ? args.model : 'opus';
   const effort = typeof args.effort === 'string' ? args.effort : 'high';
 
-  const sweep = runOrientationSweep(realRun);
+  const sweep = runOrientationSweep(runFn);
   const seed = buildSeed(sweep, new Date().toISOString());
 
   if (args['dry-run'] || args['print-prompt']) {
@@ -196,4 +213,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, tailLines, formatWorkspaces, runOrientationSweep, buildSeed, STANDING_RULES };
+module.exports = { parseArgs, tailLines, formatWorkspaces, runOrientationSweep, buildSeed, STANDING_RULES, main, USAGE };

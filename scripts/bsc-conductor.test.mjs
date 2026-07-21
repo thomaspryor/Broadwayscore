@@ -2,8 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { parseArgs, tailLines, formatWorkspaces, runOrientationSweep, buildSeed, STANDING_RULES } =
+const { parseArgs, tailLines, formatWorkspaces, runOrientationSweep, buildSeed, STANDING_RULES, main, USAGE } =
   require('./bsc-conductor.js');
 
 test('parseArgs: flags with values vs bare boolean flags', () => {
@@ -132,6 +133,45 @@ test('main() defaults to --model opus --effort high, never a bare/inherited mode
   // no --dangerously-skip-permissions: this is the owner's own interactive
   // session, unlike bsc-next's unattended dispatch targets.
   assert.doesNotMatch(src, /--dangerously-skip-permissions/);
+});
+
+// 2026-07-14 incident + scope add: `--help` used to run the full orientation
+// sweep and open a real session. Guard: stub runFn/spawnSync and prove
+// neither is ever invoked when --help/-h is passed.
+test('--help exits before the orientation sweep or claude launch (zero cmux/LLM calls)', () => {
+  const calls = [];
+  const runFn = (...a) => { calls.push(a); throw new Error('runFn must not be called for --help'); };
+  const spawnFn = () => { throw new Error('spawnSync must not be called for --help'); };
+  assert.doesNotThrow(() => main(['--help'], runFn, spawnFn));
+  assert.equal(calls.length, 0);
+  assert.doesNotThrow(() => main(['--model', 'sonnet', '--help'], runFn, spawnFn));
+  assert.equal(calls.length, 0);
+});
+
+test('-h is recognized the same as --help', () => {
+  const runFn = () => { throw new Error('runFn must not be called for -h'); };
+  const spawnFn = () => { throw new Error('spawnSync must not be called for -h'); };
+  assert.doesNotThrow(() => main(['-h'], runFn, spawnFn));
+});
+
+test('USAGE mentions every documented flag', () => {
+  assert.match(USAGE, /--model/);
+  assert.match(USAGE, /--effort/);
+  assert.match(USAGE, /--dry-run/);
+  assert.match(USAGE, /--help, -h/);
+});
+
+// Belt-and-suspenders: run the real CLI as a subprocess. If the --help guard
+// were ever removed, this would fall through to a real orientation sweep and
+// then spawnSync('claude', ..., { stdio: 'inherit' }) — an interactive
+// launch that would hang this test until the timeout killed it, instead of
+// exiting immediately with usage text.
+test('node scripts/bsc-conductor.js --help prints usage and exits 0 (real process)', () => {
+  const out = execFileSync('node', [new URL('./bsc-conductor.js', import.meta.url).pathname, '--help'],
+    { encoding: 'utf8', timeout: 10_000 });
+  assert.match(out, /Usage:/);
+  assert.match(out, /--dry-run/);
+  assert.doesNotMatch(out, /orientation sweep done/);
 });
 
 test('seed embeds the stale-card kill/keep section (review gap fix)', () => {
