@@ -60,7 +60,8 @@
     "oh-mary-west-end-2025/nytg--unknown.json",
     "oh-mary-west-end-2025/nytimes--jesse-green.json",
     "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json",
-    "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
+    "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+    "two-strangers-bway-2025/deadline--greg-evans.json"
   ],
   "failed": [
     "dukes-off-broadway-2026/nytimes--unknown.json",
@@ -625,7 +626,16 @@
     "paranormal-activity-west-end-2025/times-square-chronicles--unknown.json",
     "paranormal-activity-west-end-2025/variety--peter-debruge.json",
     "paddington-the-musical-west-end-2025/nyt-theater--unknown.json",
-    "paddington-the-musical-west-end-2025/nytg--unknown.json"
+    "paddington-the-musical-west-end-2025/nytg--unknown.json",
+    "paddington-the-musical-west-end-2025/here--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/buy-tickets-direct-from-the-theatre--unknown.json",
+    "two-strangers-bway-2025/daily-mail--patrick-marmion.json",
+    "two-strangers-bway-2025/financialtimes--sarah-hemming.json",
+    "two-strangers-bway-2025/independent--alice-saville.json",
+    "two-strangers-bway-2025/standard--nick-curtis.json",
+    "two-strangers-bway-2025/telegraph--marianka-swain.json",
+    "two-strangers-bway-2025/thestage--paul-vale.json",
+    "two-strangers-bway-2025/times-uk--clive-davis.json"
   ],
   "failed": [],
   "skipped": [],
@@ -634,7 +644,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/the-guilty-west-end-2026/hollywood-reporter--rick-porter.json",
-      "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json"
+      "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json",
+      "data/review-texts/two-strangers-bway-2025/deadline--greg-evans.json",
+      "two-strangers-bway-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -646,7 +658,9 @@
       "data/review-texts/the-smile-of-her-off-west-end-2026/nottingham-confidential--unknown.json",
       "data/review-texts/the-smile-of-her-off-west-end-2026/thestage--dave-fargnoli.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json"
+    ],
     "archive": [
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
       "jesus-christ-superstar-west-end-2026/observer--kate-kellaway.json",
@@ -661,7 +675,7 @@
     ]
   },
   "startTime": "2026-07-20T17:29:00.342Z",
-  "lastProcessed": "paddington-the-musical-west-end-2025/nytg--unknown.json",
+  "lastProcessed": "two-strangers-bway-2025/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-07-20T17:29:17.435Z",
@@ -745,6 +759,23 @@
       "t": "2026-07-21T05:54:39.113Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-21T05:54:54.685Z",
+      "event": "bb-session",
+      "session": "dd1f7700",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGA"
+    },
+    {
+      "t": "2026-07-21T05:54:55.010Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-21T05:54:56.968Z",
+      "event": "bb-session",
+      "session": "b9b96d21",
+      "url": "https://deadline.com/2026/07/broadway-two-strangers-carry-a-cake-taylor-swift-12"
     }
   ]
 }

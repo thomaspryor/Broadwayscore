@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-21T05:54:51.257Z",
-  "processed": 61,
-  "failed": 563,
+  "updatedAt": "2026-07-21T05:55:20.230Z",
+  "processed": 62,
+  "failed": 572,
   "successRate": "9.8%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 6,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 10
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-07-20T17:29:17.435Z",
@@ -97,6 +97,23 @@
       "t": "2026-07-21T05:54:39.113Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-21T05:54:54.685Z",
+      "event": "bb-session",
+      "session": "dd1f7700",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGA"
+    },
+    {
+      "t": "2026-07-21T05:54:55.010Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-21T05:54:56.968Z",
+      "event": "bb-session",
+      "session": "b9b96d21",
+      "url": "https://deadline.com/2026/07/broadway-two-strangers-carry-a-cake-taylor-swift-12"
     }
   ]
 }
