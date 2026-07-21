@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-07-21T06:03:15.436Z",
-  "processed": 72,
-  "failed": 642,
-  "successRate": "10.1%",
+  "updatedAt": "2026-07-21T06:06:06.808Z",
+  "processed": 76,
+  "failed": 648,
+  "successRate": "10.5%",
   "tierBreakdown": {
     "playwright": 51,
     "amp": 0,
     "browserbase": 5,
     "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 7,
+    "brightdata": 8,
     "archiveToday": 1,
-    "archive": 11
+    "archive": 14
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-07-20T17:29:17.435Z",
-      "event": "bb-session",
-      "session": "eb46ef04",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
-    {
-      "t": "2026-07-20T17:29:18.356Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-20T17:29:34.268Z",
-      "event": "bb-session",
-      "session": "b9845047",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
-    {
-      "t": "2026-07-20T17:29:35.202Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-20T20:17:58.318Z",
       "event": "bb-session",
@@ -125,6 +103,28 @@
       "t": "2026-07-21T05:57:01.230Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-21T06:04:30.356Z",
+      "event": "bb-session",
+      "session": "497bb895",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-07-21T06:04:30.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T06:04:46.247Z",
+      "event": "bb-session",
+      "session": "d493879a",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-07-21T06:04:46.600Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
