@@ -305,15 +305,22 @@ async function withPage(browser, session, viewport, fn) {
 
 async function shoot(page, outDir, name) {
   const file = join(outDir, `${name}.png`);
-  // Cap capture height: Anthropic's vision API rejects images with any
-  // dimension > 8000px — oversized fullPage shots 400'd the Claude reviewer
-  // out of every run, silently degrading the panel to 2 models (verification,
-  // 2026-07-20). Capture full page first, then check the REAL rendered height
-  // from the PNG header and re-capture clipped if oversized — scrollHeight
-  // can't be trusted (the bottom-sheet scroll lock made it report 844 while
-  // fullPage rendered 10935). 4000px keeps everything reviewers need and is
-  // consistent input for all three models.
-  const MAX_CAPTURE_HEIGHT = 4000;
+  // Cap capture height: Anthropic's vision API caps image dimensions at
+  // 8000px for a normal request, but drops to ~2000px longest-side once a
+  // single request carries MORE than 20 images ("many-image requests" in
+  // its own error text) — oversized fullPage shots 400'd the Claude
+  // reviewer out of every run under the 8000px tier (verification,
+  // 2026-07-20), fixed then with a 4000px cap. Card #239's additions (Create
+  // List/Import/date-picker/sign-in captures, the iOS sim shot) pushed the
+  // matrix from ~19 shots to 26 — permanently over the 20-image line — so
+  // the still-4000px-capped shots started tripping the STRICTER many-image
+  // limit instead, silently killing Claude out of every run again
+  // (verification, 2026-07-21). 2000px matches the tier this script is now
+  // unconditionally in. Capture full page first, then check the REAL
+  // rendered height from the PNG header and re-capture clipped if oversized
+  // — scrollHeight can't be trusted (the bottom-sheet scroll lock made it
+  // report 844 while fullPage rendered 10935).
+  const MAX_CAPTURE_HEIGHT = 2000;
   await page.screenshot({ path: file, fullPage: true });
   const header = readFileSync(file).subarray(16, 24);
   const pngHeight = header.readUInt32BE(4);
