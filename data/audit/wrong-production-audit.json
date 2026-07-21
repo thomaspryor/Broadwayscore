@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-21T17:25:48.819Z",
+  "timestamp": "2026-07-21T18:09:03.462Z",
   "stats": {
     "totalReviews": 40300,
     "alreadyFlagged": 17700,
     "dateGuardCatches": 49,
     "directorMismatch": 914,
-    "tvFilmSignals": 1106,
+    "tvFilmSignals": 1107,
     "londonSignals": 752,
     "offBroadwaySignals": 473,
     "yearMismatch": 85,
@@ -3932,6 +3932,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
