@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-21T07:22:32.616Z",
+    "generatedAt": "2026-07-21T08:04:52.053Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -18,7 +18,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40938\nHas fullText: 32492\n\n--- Quality Breakdown ---\n  full: 22281 (68.6%)\n  truncated: 9504 (29.3%)\n  partial: 325 (1.0%)\n  excerpt: 319 (1.0%)\n  stub: 45 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6734\n  has_footer_junk: 1511\n  ends_with_ellipsis: 132\n  has_footer_text: 109\n  paywall_or_login_prompt: 75\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.6% (min: 25%)\n  ✅ Truncated: 29.3% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40938\nHas fullText: 32493\n\n--- Quality Breakdown ---\n  full: 22280 (68.6%)\n  truncated: 9506 (29.3%)\n  partial: 325 (1.0%)\n  excerpt: 319 (1.0%)\n  stub: 45 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6734\n  has_footer_junk: 1511\n  ends_with_ellipsis: 132\n  has_footer_text: 109\n  paywall_or_login_prompt: 75\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.6% (min: 25%)\n  ✅ Truncated: 29.3% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 9 flagged, 12 exempt, 30 covered\n  ⚠️   118  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️   117  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️   116  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️   108  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    66  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    57  data/audit/t1-silent-gaps.json  — no merge driver; needs a decision\n  ⚠️    52  data/audit/we-gate-proving.json  — no merge driver; needs a decision\n  ⚠️    51  data/audit/validation/collection-report-2026-07-19.json  — no merge driver; needs a decision\n  ⚠️    31  data/audit/validation/collection-report-2026-07-20.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 9 flagged, 12 exempt, 30 covered\n  ⚠️   117  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️   116  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️   114  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️   107  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    66  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    58  data/audit/t1-silent-gaps.json  — no merge driver; needs a decision\n  ⚠️    52  data/audit/we-gate-proving.json  — no merge driver; needs a decision\n  ⚠️    51  data/audit/validation/collection-report-2026-07-19.json  — no merge driver; needs a decision\n  ⚠️    31  data/audit/validation/collection-report-2026-07-20.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -108,7 +108,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 35164 scored reviews\nAlready rejected: 432\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
+      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 35163 scored reviews\nAlready rejected: 433\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
     },
     {
       "name": "review-texts",
@@ -162,7 +162,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[stuck-rescore] 16 stuck needsRescore flag(s) (non-scoreable) of 13976 flagged; threshold --max=25\n    10  bw-v6-decompression\n     6  late-star-anchor\n    - a-dolls-house-part-2-2017/wsj--terry-teachout.json  [bw-v6-decompression]\n    - an-enemy-of-the-people-2024/guardian--susannah-clapp.json  [late-star-anchor]\n    - an-enemy-of-the-people-2024/telegraph--dominic-cavendish.json  [late-star-anchor]\n    - caroline-or-change-2021/guardian--adrian-horton.json  [late-star-anchor]\n    - frozen-2018/wsj--terry-teachout.json  [bw-v6-decompression]\n    - hadestown-2019/vox--constance-grady.json  [bw-v6-decompression]\n    - harry-potter-2021/limelight-magazine-au--clive-paget.json  [bw-v6-decompression]\n    - little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json  [bw-v6-decompression]\n    - little-shop-of-horrors-off-broadway-2019/thestage--john-murphy.json  [bw-v6-decompression]\n    - little-shop-of-horrors-off-broadway-2019/whatsonstage--ron-simpson.json  [bw-v6-decompression]\n    - mean-girls-2018/wsj--terry-teachout.json  [bw-v6-decompression]\n    - queen-versailles-2025/one-minute-critic--matthew-wexler.json  [late-star-anchor]\n    - tammy-faye-2024/guardian--adrian-horton.json  [late-star-anchor]\n    - the-great-gatsby-2024/broadwayworld--aliya-al-hassan.json  [bw-v6-decompression]\n    - the-lehman-trilogy-2021/guardian--adrian-horton.json  [late-star-anchor]\n    - torch-song-2018/wsj--matt-windman.json  [bw-v6-decompression]"
+      "detail": "[stuck-rescore] 19 stuck needsRescore flag(s) (non-scoreable) of 13586 flagged; threshold --max=25\n    13  bw-v6-decompression\n     6  late-star-anchor\n    - a-dolls-house-part-2-2017/wsj--terry-teachout.json  [bw-v6-decompression]\n    - an-enemy-of-the-people-2024/guardian--susannah-clapp.json  [late-star-anchor]\n    - an-enemy-of-the-people-2024/telegraph--dominic-cavendish.json  [late-star-anchor]\n    - caroline-or-change-2021/guardian--adrian-horton.json  [late-star-anchor]\n    - chicago-1996/whatsonstage--neil-smith.json  [bw-v6-decompression]\n    - frozen-2018/wsj--terry-teachout.json  [bw-v6-decompression]\n    - hadestown-2019/vox--constance-grady.json  [bw-v6-decompression]\n    - harry-potter-2021/limelight-magazine-au--clive-paget.json  [bw-v6-decompression]\n    - little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json  [bw-v6-decompression]\n    - little-shop-of-horrors-off-broadway-2019/thestage--john-murphy.json  [bw-v6-decompression]\n    - little-shop-of-horrors-off-broadway-2019/whatsonstage--ron-simpson.json  [bw-v6-decompression]\n    - mean-girls-2018/wsj--terry-teachout.json  [bw-v6-decompression]\n    - queen-versailles-2025/one-minute-critic--matthew-wexler.json  [late-star-anchor]\n    - tammy-faye-2024/guardian--adrian-horton.json  [late-star-anchor]\n    - the-great-gatsby-2024/broadwayworld--aliya-al-hassan.json  [bw-v6-decompression]\n    - the-lehman-trilogy-2021/guardian--adrian-horton.json  [late-star-anchor]\n    - the-lion-king-1997/newsday--linda-winer.json  [bw-v6-decompression]\n    - torch-song-2018/wsj--matt-windman.json  [bw-v6-decompression]\n    - wicked-2003/washpost--peter-marks.json  [bw-v6-decompression]"
     }
   ]
 }
