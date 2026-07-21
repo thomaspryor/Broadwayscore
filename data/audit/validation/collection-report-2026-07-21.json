@@ -14,13 +14,13 @@
     "processed": 0,
     "failed": 3,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 0,
+    "browserbase": 0,
+    "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 3,
@@ -50,7 +50,9 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+  ],
   "failed": [
     "the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
     "the-smile-of-her-off-west-end-2026/nottingham-confidential--unknown.json",
@@ -59,10 +61,10 @@
   "tierDetails": {
     "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+    "browserbase": [],
+    "directCookies": [
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
     ],
-    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
