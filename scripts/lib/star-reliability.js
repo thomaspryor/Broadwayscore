@@ -131,17 +131,14 @@ function detectBandFromReviewFile(data) {
  * Rollout policy (Phase B):
  *   - Markets in ANCHORED_MARKETS (src/config/scoring.ts) → always anchored.
  *     2026-05-17: West End + Off-West-End.
- *     POST-TONYS: Broadway + Off-Broadway will be added there.
+ *     2026-07-20: Broadway + Off-Broadway added (NYC rollout).
  *   - All other markets → anchored only when ANCHORED_BANDS_PILOT=1 env flag.
  *
  * Deny-list safety (per memory/feedback_shows_json_category_at_schedule.md):
  *   - category === null / undefined / '' → REFUSED even with envFlag, because
  *     shows.json drift around schedule-time has left categories null in the
- *     past and we don't want a new BW show with null category to silently
- *     pick up anchored scoring.
- *   - category === 'broadway' / 'off-broadway' → only anchored when envFlag
- *     is true (explicit pilot opt-in). This is the path BW will eventually
- *     take post-Tonys via the ANCHORED_MARKETS config change.
+ *     past and we don't want a new show with null category to silently pick
+ *     up anchored scoring.
  *
  * @param {{category: string|null|undefined, envFlag: boolean}} opts
  * @returns {boolean} true → use anchored V6 path
@@ -151,7 +148,8 @@ function shouldUseAnchoredMode({ category, envFlag }) {
   // src/config/scoring.ts ANCHORED_MARKETS set is the human-edited source
   // of truth; we mirror it here. Keep both in sync — Sprint 5 cleanup can
   // unify via a JSON-backed config if both ever drift.
-  const ANCHORED_MARKETS = new Set(['west-end', 'off-west-end']);
+  // 2026-07-20: broadway + off-broadway added (NYC rollout).
+  const ANCHORED_MARKETS = new Set(['west-end', 'off-west-end', 'broadway', 'off-broadway']);
 
   // Deny-list: missing category never auto-anchors, regardless of envFlag.
   if (category === null || category === undefined || category === '') {
