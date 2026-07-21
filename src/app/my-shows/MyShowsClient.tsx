@@ -1657,7 +1657,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
     : null;
 
   return (
-    <div className="group/wl flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
+    <div className="group/wl flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden" data-watchlist-future-dated={isFutureDated}>
       <CardLinkOrDiv href={href} className="relative">
         <div className="aspect-[2/3] bg-surface-overlay relative">
           <Poster url={show?.posterUrl} iconClass="text-3xl" />
@@ -1847,7 +1847,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
     : null;
 
   return (
-    <div className="group/wl relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
+    <div className="group/wl relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors" data-watchlist-future-dated={isFutureDated}>
       {href && <Link href={href} className="absolute inset-0 z-0" aria-label={`View ${title}`} />}
 
       <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay">
