@@ -732,11 +732,21 @@ Respond helpfully. If they're asking a question, answer it from your existing co
       : run.result, 'replyComment');
     if (!delivered) {
       // Reply never reached the owner — roll the watermark back so the next
-      // poll re-processes their comment instead of dropping it.
-      entry.lastCommentCheck = priorWatermark;
+      // poll re-processes their comment instead of dropping it. Capped: each
+      // retry re-runs a full Claude session, so persistent Notion-write
+      // failure must not become an uncapped 5-min loop (same class as the
+      // main-loop retry cap).
+      entry.deliveryFailures = (entry.deliveryFailures || 0) + 1;
+      if (entry.deliveryFailures <= MAX_ATTEMPTS) {
+        entry.lastCommentCheck = priorWatermark;
+        log(`  Reply delivery failed for "${entry.name}" (${entry.deliveryFailures}/${MAX_ATTEMPTS}) — watermark rolled back for retry`);
+      } else {
+        log(`  Reply delivery failed ${entry.deliveryFailures}x for "${entry.name}" — giving up on this comment (watermark kept)`);
+      }
       saveState(state);
-      log(`  Reply delivery failed for "${entry.name}" — watermark rolled back for retry`);
     } else {
+      entry.deliveryFailures = 0;
+      saveState(state);
       log(`Replied on "${entry.name}"`);
     }
   }
@@ -857,6 +867,10 @@ async function main() {
         ...entry,
         name: card.name,
         sessionId: run.sessionId || entry.sessionId || null,
+        // MUST record a kept worktree here too: the run itself SUCCEEDED, so
+        // unpushed commits may exist — losing this path would let a later
+        // resume's provisionActionWorktree() force-remove that work.
+        runDir: (run.keptWorktree || run.runDir === REPO_DIR) ? run.runDir : (entry.runDir || null),
         updatedAt: new Date().toISOString(),
         lastCommentCheck: entry.lastCommentCheck || startedAt,
       };
@@ -887,6 +901,8 @@ async function main() {
 
 main().catch(err => {
   log(`Fatal error: ${err.message}`);
-  releaseLock();
+  // Only release if this process could have held the lock — a crashing
+  // --dry-run must not delete a live instance's lock out from under it.
+  if (!DRY_RUN) releaseLock();
   process.exit(1);
 });
