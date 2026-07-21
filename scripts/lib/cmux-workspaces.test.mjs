@@ -79,6 +79,42 @@ test('hasLiveClaude: column-exact — title mentioning claude_code is not a tag 
   assert.equal(hasLiveClaude(titleTrap), false);
 });
 
+test('hasLiveClaude: stale tag row with NO process rows is NOT live (prunable)', () => {
+  // Hypothetical crash leftover: tag survives, processes gone. Prune must
+  // still be able to sweep it (codex ship-check finding, 2026-07-21).
+  const staleTag = `2.7\t1\t0\ttag\tworkspace:X:tag:claude_code\tworkspace:9\t`;
+  assert.equal(hasLiveClaude(staleTag), false);
+});
+
+test('hasLiveClaude: other agents (codex tag) do not count as a live claude', () => {
+  const codexOnly = `2.7\t1\t1\ttag\tworkspace:X:tag:codex\tworkspace:9\t
+2.7\t1\t1\tprocess\t123\tworkspace:X:tag:codex\tcodex`;
+  assert.equal(hasLiveClaude(codexOnly), false);
+});
+
+test('pruneDone: skips waiting-at-prompt tabs; closes only dead ones; throw = alive', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [
+      { ref: 'workspace:1', title: '✅ waiting tab' },
+      { ref: 'workspace:2', title: '✅ dead tab' },
+      { ref: 'workspace:3', title: '✅ cmux-error tab' },
+      { ref: 'workspace:4', title: 'unmarked live tab' },
+    ],
+    claudeAliveIn: ref => {
+      if (ref === 'workspace:1') return true;             // waiting at prompt
+      if (ref === 'workspace:2') return false;            // truly dead
+      throw new Error('socket busy');                     // transient error
+    },
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, ['workspace:2']);
+  assert.deepEqual(closed.map(w => w.ref), ['workspace:2']);
+  // the throw path must NOT close: seam throws → pruneDone must treat as alive
+  assert.deepEqual(skipped.map(w => w.ref).sort(), ['workspace:1', 'workspace:3']);
+});
+
 test('hasRunningClaude: column-exact — no substring false positives', () => {
   // Status other than exactly "Running" on the tag row
   const notRunning = `5.8\t1\t1\ttag\tworkspace:X:tag:claude_code\tworkspace:9\tNotRunning`;
