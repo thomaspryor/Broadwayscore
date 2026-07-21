@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-07-21T16:22:01.176Z",
+  "runDate": "2026-07-21T16:21:36.637Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "dukes-off-broadway-2026",
+    "showFilter": "shifters-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 4,
+    "processed": 1,
+    "failed": 10,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "9.1%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,37 +28,47 @@
   },
   "statistics": {
     "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 3,
+    "totalFailed": 10,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.1,
-    "urlDiscoveryAttempts": 2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 10,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "shifters-off-broadway-2026/nytg--gillian-russo.json"
+  ],
   "failed": [
-    "dukes-off-broadway-2026/nytimes--helen-shaw.json",
-    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
-    "dukes-off-broadway-2026/theatermania--unknown.json",
-    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+    "shifters-off-broadway-2026/independent--alice-saville.json",
+    "shifters-off-broadway-2026/standard--nick-curtis.json",
+    "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+    "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "shifters-off-broadway-2026/nytg--gillian-russo.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
