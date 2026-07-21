@@ -16,6 +16,14 @@
  * canonical, tested mirror of that logic (CLAUDE.md §15). If you change one,
  * change both — tests/unit/core-data-sync-decision.test.mjs pins the table.
  *
+ * Downstream consumer (card #268): the action also writes a
+ * /tmp/.core-data-changed-files manifest listing every file that resolved to
+ * 'copy-changed' or 'copy-new' here. The post-rebase reconciliation merge for
+ * commercial.json/diary-shows.json only runs for files in that manifest —
+ * merging a workflow's untouched (and possibly stale) "ours" copy against
+ * remote can silently revert a concurrent fix. If you add a new branch here,
+ * make sure the bash mirror's manifest-append still lines up with it.
+ *
  * Note: the action-level failsafe (whole /tmp/core-data-snapshot directory
  * missing → copy-all with ::warning::) is deliberately NOT part of this
  * per-file table; it bypasses it entirely.
