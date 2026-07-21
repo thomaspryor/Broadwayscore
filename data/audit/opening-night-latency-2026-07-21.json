@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-21T11:00:14.286Z",
+  "generatedAt": "2026-07-21T11:55:52.873Z",
   "date": "2026-07-21",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 183271,
+  "entryCount": 184820,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 25,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4446,7 +4446,7 @@
     },
     {
       "showId": "glengarry-glen-ross-2025",
-      "reviewCount": 34,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4551,7 +4551,7 @@
     },
     {
       "showId": "redwood-2025",
-      "reviewCount": 36,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4611,7 +4611,7 @@
     },
     {
       "showId": "gypsy-2024",
-      "reviewCount": 43,
+      "reviewCount": 42,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11752,6 +11752,21 @@
     {
       "showId": "eurydice-off-broadway-2026",
       "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "this-is-my-favorite-song-off-broadway-2024",
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
