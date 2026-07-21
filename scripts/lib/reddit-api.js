@@ -191,7 +191,12 @@ function scrapingDogRequest(apiKey, url, tier) {
             if (jsonMatch) {
               try { resolve(JSON.parse(jsonMatch[0])); return; } catch (_) { /* fall through */ }
             }
-            reject(new Error(`Scrapingdog response not JSON: ${data.slice(0, 100)}`));
+            // Empty or HTML 200 = the plain tier got blocked by the target
+            // (Reddit returns empty/interstitial bodies to datacenter proxies).
+            // Escalate the tier ladder — same contract as the 400 stealth hint.
+            const err = new Error(`Scrapingdog response not JSON: ${data.slice(0, 100)}`);
+            err.escalate = true;
+            reject(err);
           }
         } else if (res.statusCode === 401 || res.statusCode === 403) {
           scrapingDogDown = true;

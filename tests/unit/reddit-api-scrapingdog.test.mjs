@@ -23,6 +23,17 @@ const server = http.createServer((req, res) => {
       res.writeHead(400);
       res.end('Oops! Something went wrong. You can try enabling Stealth Mode using stealth_mode=true.');
     }
+  } else if (target.includes('empty-on-plain')) {
+    // Mirrors real Scrapingdog behavior on reddit (2026-07-21): the plain
+    // tier 200s with an EMPTY body (target blocked the datacenter proxy);
+    // premium succeeds. Empty-200 must escalate like the 400 stealth hint.
+    if (u.searchParams.get('premium') === 'true' || u.searchParams.get('stealth_mode') === 'true') {
+      res.writeHead(200);
+      res.end(JSON.stringify({ data: { children: [], tier: 'premium' } }));
+    } else {
+      res.writeHead(200);
+      res.end('');
+    }
   } else if (target.includes('wrapped')) {
     res.writeHead(200);
     res.end('<html><body>{"data":{"children":[]}}</body></html>');
@@ -100,6 +111,15 @@ test('fetchViaScrapingDog escalates plain -> premium -> stealth on 400 stealth h
   const again = await fetchViaScrapingDog('https://old.reddit.com/r/broadway/needs-stealth.json');
   assert.equal(again.data.tier, 'stealth');
   assert.equal(getStats().scrapingDog, 4, 'latched tier should not re-probe lower tiers');
+});
+
+test('fetchViaScrapingDog escalates on empty-200 body (reddit block signature)', async () => {
+  const { fetchViaScrapingDog, getStats, resetFallbackState } = load();
+  resetFallbackState();
+  const result = await fetchViaScrapingDog('https://www.reddit.com/r/broadway/empty-on-plain.json');
+  assert.equal(result.data.tier, 'premium');
+  // plain empty-200 + premium 200 = 2 requests
+  assert.equal(getStats().scrapingDog, 2, 'empty-200 should escalate to premium');
 });
 
 test('fetchViaScrapingDog rejects when no key is configured', async () => {
