@@ -50,9 +50,29 @@ function projectOf({ tags, category, subject } = {}) {
   return 'Data';
 }
 
-// Matches bsc-next.js's existing 50-char subject truncation.
-function buildAutoTitle({ subject, project }) {
-  return `${AUTO_GLYPH} ${project}·${String(subject || '').slice(0, 50)}`;
+// Model glyphs (owner request 2026-07-20: "I've accidentally used auto-spun-up
+// sessions for hard work, only to realize they're on Sonnet" — the model must
+// be visible in the cmux sidebar BEFORE opening the tab). Pure emoji ON
+// PURPOSE: both title matchers (workspace-mark-done hook + the duplicate-
+// dispatch guard) strip leading non-letter/non-digit chars before comparing,
+// so emoji are invisible to them — a text tag like "[S]" would NOT be (their
+// strip regex deliberately preserves '[').
+const MODEL_GLYPHS = [
+  { re: /fable|mythos/i, glyph: '🧠' },
+  { re: /opus/i, glyph: '🔮' },
+  { re: /sonnet/i, glyph: '⚡' },
+  { re: /haiku/i, glyph: '🪶' },
+];
+
+function modelGlyph(model) {
+  const hit = MODEL_GLYPHS.find(({ re }) => re.test(String(model || '')));
+  return hit ? hit.glyph : '';
+}
+
+// Matches bsc-next.js's existing 50-char subject truncation. model is
+// optional — omitted keeps the pre-glyph title shape byte-for-byte.
+function buildAutoTitle({ subject, project, model }) {
+  return `${AUTO_GLYPH}${modelGlyph(model)} ${project}·${String(subject || '').slice(0, 50)}`;
 }
 
 // Strips a "<Project>·" prefix from an ALREADY glyph-cleaned title (i.e.
@@ -67,4 +87,4 @@ function stripAutoPrefix(cleanedTitle) {
   return m ? cleanedTitle.slice(m[0].length) : cleanedTitle;
 }
 
-module.exports = { AUTO_GLYPH, PROJECTS, PROJECT_RULES, CATEGORY_DEFAULT, projectOf, buildAutoTitle, stripAutoPrefix };
+module.exports = { AUTO_GLYPH, PROJECTS, PROJECT_RULES, CATEGORY_DEFAULT, MODEL_GLYPHS, projectOf, modelGlyph, buildAutoTitle, stripAutoPrefix };

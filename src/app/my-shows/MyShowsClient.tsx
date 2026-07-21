@@ -821,6 +821,7 @@ export default function MyShowsClient() {
               onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'grid')}
               className={`inline-flex items-center justify-center w-8 h-full outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="Grid view"
+              aria-pressed={(activeTab === 'diary' ? diaryView : watchlistView) === 'grid'}
             >
               <svg className="w-4 h-4 block shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -831,6 +832,7 @@ export default function MyShowsClient() {
               onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'list')}
               className={`inline-flex items-center justify-center w-8 h-full outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
+              aria-pressed={(activeTab === 'diary' ? diaryView : watchlistView) === 'list'}
             >
               <svg className="w-4 h-4 block shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
@@ -889,6 +891,7 @@ export default function MyShowsClient() {
               onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'list')}
               className={`inline-flex items-center justify-center w-11 h-full outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
+              aria-pressed={(activeTab === 'diary' ? diaryView : watchlistView) === 'list'}
             >
               <svg className="w-4 h-4 block shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
