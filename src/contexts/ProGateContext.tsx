@@ -114,13 +114,10 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   // Recapture: true when pre-fix modal user needs to be re-shown the modal to capture via Formspree
   const [needsRecapture, setNeedsRecapture] = useState(false);
   // Per-PAGE dwell clock for the exit-intent gate — resets on every pathname
-  // change, unlike the mobile-timing effect's mountTimeRef below (that one is
-  // intentionally session-lifetime-scoped and belongs to the live
-  // mobile-gate-timing A/B test; left untouched here to avoid disturbing its
-  // exposure conditions). A provider-lifetime clock would let a visitor who's
-  // dwelled 5s+ anywhere in the session arm exit-intent instantly on every new
-  // page thereafter — same "reflexive fire" bug this gate exists to prevent,
-  // just deferred to the second page instead of the first (2026-07-14 review).
+  // change. A provider-lifetime clock would let a visitor who's dwelled 5s+
+  // anywhere in the session arm exit-intent instantly on every new page
+  // thereafter — same "reflexive fire" bug this gate exists to prevent, just
+  // deferred to the second page instead of the first (2026-07-14 review).
   const exitIntentPageMountRef = useRef<number>(0);
   useEffect(() => {
     exitIntentPageMountRef.current = Date.now();
@@ -326,12 +323,12 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       // move toward the tab/address bar milliseconds after a page loads counted
       // as "exit intent" (2026-07-14 audit: exit_intent was the single largest
       // gate trigger by volume — 2,253 shown/30d — with zero dwell gate, unlike
-      // scroll_depth which already required minTimeOnPageSec). Uses
-      // exitIntentPageMountRef (resets per pathname), NOT the mobile-timing
-      // effect's mountTimeRef below — that ref is session-lifetime-scoped
-      // (ProGateProvider mounts once in the root layout) and reusing it here
-      // let dwell time carry over between page navigations, arming exit-intent
-      // instantly on every page after the first few seconds of a session.
+      // scroll_depth which already required minTimeOnPageSec). Uses its own
+      // exitIntentPageMountRef (resets per pathname) — kept separate from the
+      // mobile-timing effect's mountTimeRef below even though both are now
+      // page-scoped, since exit-intent and the mobile scroll gate are
+      // mutually exclusive by device (desktop vs touch) and independently
+      // tunable.
       const elapsedSec = (Date.now() - exitIntentPageMountRef.current) / 1000;
       if (e.clientY <= 0 && !modalOpen && elapsedSec >= emailCaptureConfig.exitIntent.minTimeOnPageSec) {
         // Only latch "fired" on an actual open — a suppressed attempt (still
@@ -357,12 +354,8 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   // fallback so analysis EXCLUDES those users rather than polluting control).
   // undefined = still resolving (listener stays unarmed); string|null = resolved.
   const [mobileGateFlag, setMobileGateFlag] = useState<string | null | undefined>(undefined);
-  // Time-on-page clock starts at mount, NOT at listener arming — otherwise flag
-  // latency would silently extend control's min-time and bias the comparison.
-  const mountTimeRef = useRef<number>(0);
   useEffect(() => {
     if (!isClient) return;
-    mountTimeRef.current = Date.now();
     if (!emailCaptureConfig.mobileScrollGate.enabled) return;
     // Only resolve on touch devices — the experiment exists only there, and
     // resolving on desktop would put desktop users in PostHog's exposure cohort.
@@ -383,6 +376,21 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     }, 250);
     return () => clearInterval(poll);
   }, [isClient]);
+  // Per-PAGE dwell clock for the mobile scroll gate — resets on every pathname
+  // change, same pattern as exitIntentPageMountRef above. Previously this was
+  // a single mountTimeRef set once per ProGateProvider mount (the provider
+  // lives in the root layout, so it mounts once per tab session): a visitor
+  // who'd already dwelled past minTimeOnPageSec on an earlier page would have
+  // the scroll gate armed instantly on every subsequent page navigation,
+  // regardless of how long they'd been on the NEW page (2026-07-21 audit,
+  // card 39d637c5416f81db8daaf14a98daf533 — filed as a live-experiment
+  // deferral, then confirmed via the PostHog API that the 'mobile-gate-timing'
+  // flag has never been created, so there is no live split to protect; this
+  // is a plain production dwell-gate bug, same class as the exit-intent fix).
+  const mountTimeRef = useRef<number>(0);
+  useEffect(() => {
+    mountTimeRef.current = Date.now();
+  }, [pathname]);
 
   // Mobile scroll-depth detection — replaces exit intent for touch devices
   const [scrollFired, setScrollFired] = useState(false);
