@@ -32,6 +32,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const https = require('https');
 const { transition } = require('./lib/autonomous-state.js');
@@ -985,15 +986,42 @@ function num(v, dflt) {
 
 function round2(n) { return Math.round(n * 100) / 100; }
 
-function main() {
-  const args = parseArgs(process.argv.slice(2));
+const USAGE = `autonomous-run.js — the nightly autonomous executor.
+
+Usage:
+  node scripts/autonomous-run.js --dry-run                 plan only, ZERO writes
+  node scripts/autonomous-run.js --live                     real night (claude implementer + gh dispatch)
+  node scripts/autonomous-run.js --live --mock-implementer <path>   real night with a mock implementer (test only)
+
+Options (both modes):
+  --night-budget N       USD budget for the night (default from .claude/autonomous-config.json)
+  --max-items N          max cards to attempt
+  --sizes S,M            card sizes to admit (--live only; default from config)
+  --queue <path>         override the queue file (default data/audit/autonomous-queue.json)
+  --card <id>            restrict the run to one card id
+
+  --help, -h             print this usage and exit — no claude/gh calls, no writes
+
+Reads data/audit/autonomous-queue.json (written by scripts/autonomous-triage.js).
+See the file header comment for the full claim → branch → implement → verify → push
+→ needs-approval invariants.`;
+
+// dryRunFn/liveFn are injectable so tests can prove --help never reaches
+// either real path (2026-07-20 cousin fix: same incident class as
+// bsc-conductor.js's 2026-07-14 --help-executes-a-real-run bug — see
+// scripts/lib/cli-help.js). Checked against raw argv, not parsed flags, so
+// `--live --help` / `--dry-run --help` are caught too, not just a bare
+// `--help`.
+function main(argv = process.argv.slice(2), dryRunFn = dryRun, liveFn = live) {
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+  const args = parseArgs(argv);
   const cfg = loadConfig();
-  if (args['dry-run']) return dryRun(args, cfg);
-  if (args.live) return live(args, cfg);
+  if (args['dry-run']) return dryRunFn(args, cfg);
+  if (args.live) return liveFn(args, cfg);
   console.error('[run] pass --dry-run (plan only) or --live (real night)');
   process.exit(1);
 }
 
 if (require.main === module) main();
 
-module.exports = { planCard, branchNameFor, attemptCard, attemptDataCard, runRecovery, readQueue, preflightAuth, sendMorningEmail, releaseStaleTaskClaim };
+module.exports = { planCard, branchNameFor, attemptCard, attemptDataCard, runRecovery, readQueue, preflightAuth, sendMorningEmail, releaseStaleTaskClaim, main, USAGE };
