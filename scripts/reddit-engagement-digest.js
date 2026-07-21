@@ -137,7 +137,7 @@ function callClaude(systemPrompt, userMessage, maxTokens = 4000, timeoutMs = 120
 // ── Reddit Data ─────────────────────────────────────────────────────────────
 
 async function getSubredditListing(sort) {
-  const url = `https://old.reddit.com/r/${SUBREDDIT}/${sort}.json?limit=${MAX_LISTING}&raw_json=1`;
+  const url = `https://www.reddit.com/r/${SUBREDDIT}/${sort}.json?limit=${MAX_LISTING}&raw_json=1`;
   return fetchWithFallback(url);
 }
 
@@ -202,7 +202,7 @@ async function enrichWithComments(threads) {
 
   for (const post of threads) {
     try {
-      const url = `https://old.reddit.com/r/${SUBREDDIT}/comments/${post.id}.json?limit=${MAX_COMMENTS_PER_THREAD}&depth=2&raw_json=1`;
+      const url = `https://www.reddit.com/r/${SUBREDDIT}/comments/${post.id}.json?limit=${MAX_COMMENTS_PER_THREAD}&depth=2&raw_json=1`;
       const response = await fetchWithFallback(url);
       const comments = flattenComments(response);
 

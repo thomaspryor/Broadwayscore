@@ -160,7 +160,7 @@ async function fetchRedditMentions(keywords = DEFAULT_KEYWORDS, { limit = 50, ti
     // (e.g., "broadway" or "west end") but does NOT affect the containsKeyword
     // check — we still verify the show title itself appears in the post text.
     const searchQuery = searchQualifier ? `"${keyword}" ${searchQualifier}` : keyword;
-    const url = `https://old.reddit.com/search.json?q=${encodeURIComponent(searchQuery)}&sort=new&restrict_sr=off&limit=${limit}&t=${encodeURIComponent(timeWindow)}&raw_json=1`;
+    const url = `https://www.reddit.com/search.json?q=${encodeURIComponent(searchQuery)}&sort=new&restrict_sr=off&limit=${limit}&t=${encodeURIComponent(timeWindow)}&raw_json=1`;
     let data;
     try {
       data = await fetchWithFallback(url);

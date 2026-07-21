@@ -8,9 +8,9 @@ on:
         required: false
         default: ''
       bright_data_zone:
-        description: 'Bright Data zone name (optional, defaults to mcp_unlocker)'
+        description: 'Bright Data zone name (optional, defaults to web_unlocker2)'
         required: false
-        default: 'mcp_unlocker'
+        default: 'web_unlocker2'
 
 jobs:
   archive-pages:
@@ -74,8 +74,8 @@ jobs:
 
           // TIER 2: Bright Data (fallback)
           async function fetchWithBrightData(url, apiKey, customerId, zoneName) {
-            // Use provided zone name or default to 'mcp_unlocker'
-            const zone = zoneName && zoneName.trim() !== '' ? zoneName.trim() : 'mcp_unlocker';
+            // Use provided zone name or default to 'web_unlocker2'
+            const zone = zoneName && zoneName.trim() !== '' ? zoneName.trim() : 'web_unlocker2';
 
             const proxy = {
               host: 'brd.superproxy.io',
@@ -177,7 +177,7 @@ jobs:
               scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY,
               brightDataKey: process.env.BRIGHTDATA_TOKEN,
               brightDataCustomerId: process.env.BRIGHTDATA_CUSTOMER_ID,
-              brightDataZone: process.env.BRIGHTDATA_ZONE || 'mcp_unlocker',
+              brightDataZone: process.env.BRIGHTDATA_ZONE || 'web_unlocker2',
             };
 
             // Check that at least one scraping service is configured

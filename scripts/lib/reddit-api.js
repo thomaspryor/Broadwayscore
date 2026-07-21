@@ -191,7 +191,12 @@ function scrapingDogRequest(apiKey, url, tier) {
             if (jsonMatch) {
               try { resolve(JSON.parse(jsonMatch[0])); return; } catch (_) { /* fall through */ }
             }
-            reject(new Error(`Scrapingdog response not JSON: ${data.slice(0, 100)}`));
+            // Empty or HTML 200 = the plain tier got blocked by the target
+            // (Reddit returns empty/interstitial bodies to datacenter proxies).
+            // Escalate the tier ladder — same contract as the 400 stealth hint.
+            const err = new Error(`Scrapingdog response not JSON: ${data.slice(0, 100)}`);
+            err.escalate = true;
+            reject(err);
           }
         } else if (res.statusCode === 401 || res.statusCode === 403) {
           scrapingDogDown = true;
@@ -201,8 +206,11 @@ function scrapingDogRequest(apiKey, url, tier) {
           ));
         } else {
           const err = new Error(`Scrapingdog HTTP ${res.statusCode} (${tier.name}): ${data.slice(0, 120)}`);
-          // 400 + "Stealth Mode" hint = target needs a higher proxy tier
-          if (res.statusCode === 400 && /stealth/i.test(data)) err.escalate = true;
+          // Any 400 escalates the tier ladder. The explicit "Stealth Mode"
+          // hint was the original trigger, but SD also returns a generic 400
+          // ("Something went wrong please try again!") from the premium tier
+          // on Reddit (run 29876347401, 2026-07-21) where stealth succeeds.
+          if (res.statusCode === 400) err.escalate = true;
           reject(err);
         }
       });
@@ -213,7 +221,7 @@ function scrapingDogRequest(apiKey, url, tier) {
 /**
  * Fetch via Bright Data (primary proxy fallback)
  * Sends params in POST body (API validates body, not query params).
- * Tries mcp_unlocker (simple proxy) then mcp_browser (browser-based).
+ * Uses BRIGHTDATA_ZONE (default web_unlocker2 — matches scraper.js; mcp_unlocker was deleted in the 2026 zone migration).
  */
 async function fetchViaBrightData(url) {
   const token = process.env.BRIGHTDATA_TOKEN;
@@ -221,8 +229,8 @@ async function fetchViaBrightData(url) {
 
   stats.brightData++;
 
-  // Try zone from env (default: mcp_unlocker)
-  const zones = [process.env.BRIGHTDATA_ZONE || 'mcp_unlocker'];
+  // Try zone from env (default: web_unlocker2)
+  const zones = [process.env.BRIGHTDATA_ZONE || 'web_unlocker2'];
 
   for (const zone of zones) {
     try {
@@ -494,7 +502,7 @@ async function searchSubreddit(subreddit, query, options = {}) {
 
   if (after) params.set('after', after);
 
-  const url = `https://old.reddit.com/r/${subreddit}/search.json?${params}`;
+  const url = `https://www.reddit.com/r/${subreddit}/search.json?${params}`;
   return fetchWithFallback(url);
 }
 
@@ -503,7 +511,7 @@ async function searchSubreddit(subreddit, query, options = {}) {
  */
 async function getPostComments(subreddit, postId, options = {}) {
   const { limit = 500, depth = 10 } = options;
-  const url = `https://old.reddit.com/r/${subreddit}/comments/${postId}.json?limit=${limit}&depth=${depth}&raw_json=1`;
+  const url = `https://www.reddit.com/r/${subreddit}/comments/${postId}.json?limit=${limit}&depth=${depth}&raw_json=1`;
   return fetchWithFallback(url);
 }
 

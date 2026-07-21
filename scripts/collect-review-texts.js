@@ -2484,7 +2484,7 @@ async function fetchWithBrightData(url) {
 
   // Use Bright Data Web Unlocker Direct API
   // See: https://docs.brightdata.com/scraping-automation/web-unlocker/web-unlocker-api
-  const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+  const zoneName = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
   const keyPreview = CONFIG.brightDataKey.substring(0, 8) + '...';
   console.log(`    Bright Data API (zone=${zoneName}, key=${keyPreview})`);
 

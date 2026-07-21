@@ -230,18 +230,18 @@ function sleep(ms) {
 
 /**
  * Fetch a Reddit .json endpoint directly (no proxy needed).
- * Reddit JSON API is publicly accessible via old.reddit.com.
+ * Uses www.reddit.com — old.reddit.com serves HTML where JSON is expected
+ * as of 2026-07 (the old host was the "reliable" one historically; inverted).
  *
- * @param {string} url - Reddit URL (will be converted to old.reddit.com if needed)
+ * @param {string} url - Reddit URL (old.reddit.com is rewritten to www)
  * @returns {Promise<Object|null>} Parsed JSON or null on failure
  */
 async function fetchRedditJsonDirect(url, retries = 2) {
-  // Convert to old.reddit.com for reliable JSON access
-  const oldRedditUrl = url.replace('www.reddit.com', 'old.reddit.com');
+  const normalizedUrl = url.replace('old.reddit.com', 'www.reddit.com');
 
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
-      const resp = await fetch(oldRedditUrl, {
+      const resp = await fetch(normalizedUrl, {
         headers: {
           'User-Agent': 'BroadwayScorecard/1.0 (commercial-data-updater)',
           'Accept': 'application/json'

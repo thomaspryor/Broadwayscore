@@ -1065,7 +1065,7 @@ async function scrapeReddit(targetShows) {
 
     try {
       const encoded = encodeURIComponent(query);
-      const url = `https://old.reddit.com/r/broadway/search.json?q=${encoded}&sort=new&t=month&restrict_sr=on&limit=25`;
+      const url = `https://www.reddit.com/r/broadway/search.json?q=${encoded}&sort=new&t=month&restrict_sr=on&limit=25`;
 
       const data = await fetchRedditJson(url);
       stats.redditSearches++;
