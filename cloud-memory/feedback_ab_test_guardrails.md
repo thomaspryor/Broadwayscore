@@ -3,6 +3,7 @@ name: A/B test guardrails — never kill, never unilaterally change rollout
 description: "Never kill running tests or PATCH rollouts without approval."
 type: feedback
 originSessionId: ba2676a0-1232-4de7-b090-d7af31195aa2
+modified: 2026-07-21T01:44:28.546Z
 ---
 **Hard rules for A/B tests. Violate these and you're wasting real traffic and invalidating weeks of data.**
 
@@ -65,6 +66,14 @@ At current traffic (~4 clicks/day through the A/B filter):
 - 400 clicks per variant (20% lift): **~200 days**
 
 This is a slow-burn test. **Do not declare a winner before the sample is adequate.** Analyzer prints a stat-sig verdict; wait for it.
+
+## 8. Verify the flag actually exists before deferring "it's a live experiment"
+
+Before citing "live A/B test, needs user approval" as a reason to defer a fix, confirm the flag is real: `GET /api/projects/332742/feature_flags/?search=<name>` (add `&deleted=true` to also catch removed ones). Code comments claiming "LIVE EXPERIMENT" are not proof — they can describe an experiment that was planned/coded but never actually created in PostHog.
+
+**Why:** the `mobile-gate-timing` flag was treated as live (dwell-clock bug fix deferred 2026-07-14 as "needs user decision, live experiment") but the flag had never been created — confirmed via the API search returning 0 results including deleted. `analyze-gate-ab.js` showed 0 non-fallback impressions in 30 days, i.e. 100% of traffic was hitting the 5s poll timeout and running control behavior, not actually split. There was no live experiment to protect; the deferral reason was wrong, and the fix (2026-07-21, task #179) was a plain production bug fix, same class as the exit-intent dwell-gate fix.
+
+**How to apply:** any time you're about to defer a change because it would "touch a live experiment," check the flag exists first. If it doesn't, the guardrail doesn't apply — proceed as a normal bug fix (still worth telling the user what you found, since it changes the risk calculus of any decision you already posed).
 
 ## Files involved
 
