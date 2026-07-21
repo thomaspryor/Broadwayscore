@@ -218,3 +218,9 @@ test('explicit --model flag is threaded through as opts.explicitFlag unchanged',
   assert.equal(resolveModel({ explicitFlag: 'fable', task, card: null, notionId: null, queuePath: '/nonexistent' }), 'fable');
   assert.equal(resolveModel({ explicitFlag: 'opus', task, card: null, notionId: null, queuePath: '/nonexistent' }), 'opus');
 });
+
+test('buildSeed: with a model, the quoted title carries the model glyph (production path)', () => {
+  const seed = buildSeed(TASKS[1], { url: 'https://n/x', notes: 'n', priority: 'P1' }, 'Infra', 'sonnet');
+  assert.match(seed, /🤖⚡ Infra·P1 pending/);
+  assert.match(seed, /cmux workspace-action --action rename --title "🤖⚡ Infra·P1 pending — <current phase>"/);
+});
