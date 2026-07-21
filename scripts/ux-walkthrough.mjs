@@ -361,6 +361,14 @@ async function discoverInteractiveTargets(page) {
       if (el.getAttribute('aria-pressed') === 'true') continue;
       if (el.getAttribute('aria-checked') === 'true' && el.getAttribute('role') !== 'switch') continue;
       if (el.hasAttribute('aria-current')) continue;
+      // Date-picker triggers (DatePickerButton) open the OS-native picker via
+      // showPicker()/focus() on a sibling hidden `input[type=date]` — that UI
+      // is outside the DOM, so a correct click is byte-identical to a dead
+      // one in a headless screenshot. Structural detection (sibling date
+      // input) generalizes across every trigger label ("Add date", "Edit
+      // date", ...) instead of hardcoding text (adversarial review finding,
+      // 2026-07-21 — confirmed false-positive on "Add date").
+      if (el.parentElement?.querySelector('input[type="date"]')) continue;
       const label = (el.getAttribute('aria-label') || el.textContent || '').trim().replace(/\s+/g, ' ');
       if (!label) continue;
       if (patterns.some(p => new RegExp(p.source, p.flags).test(label))) continue;
@@ -411,6 +419,13 @@ async function testControlForDeadness(page, target) {
   return { dead: before.equals(after) };
 }
 
+// Worst case per control (20s goto timeout + 1.2s settle + 5s click timeout
+// + 0.6s + mouse-park pauses) is far above the typical case — cap wall-clock
+// per state so a degraded demo instance can't burn the whole run here alone
+// (ship-check finding, 2026-07-21: unbounded, 3 states × 20 controls could
+// exceed the 15-minute run budget on a slow runner with no early exit).
+const INTERACTIVE_PASS_BUDGET_MS = 4 * 60 * 1000;
+
 async function runInteractivePass(page, stateUrl, vpLabel, stateName) {
   const findings = [];
   const targets = await discoverInteractiveTargets(page);
@@ -418,13 +433,20 @@ async function runInteractivePass(page, stateUrl, vpLabel, stateName) {
   if (targets.length > capped.length) {
     console.error(`[ux-walkthrough] interactive pass: ${stateName}/${vpLabel} has ${targets.length} controls, testing first ${capped.length}`);
   }
+  const deadline = Date.now() + INTERACTIVE_PASS_BUDGET_MS;
   let tested = 0;
+  let budgetHit = false;
   for (let i = 0; i < capped.length; i++) {
+    if (Date.now() > deadline) {
+      budgetHit = true;
+      console.error(`[ux-walkthrough] interactive pass ${stateName}/${vpLabel}: hit ${INTERACTIVE_PASS_BUDGET_MS / 1000}s budget after ${tested}/${capped.length} controls — stopping early`);
+      break;
+    }
     if (i > 0) {
       // Reset between controls so one click's side effects can't mask or
       // fake out the next control's before/after diff.
       await page.goto(stateUrl, { waitUntil: 'load', timeout: 20000 }).catch(() => {});
-      await page.waitForTimeout(1000);
+      await page.waitForTimeout(1200);
     }
     const target = capped[i];
     const result = await testControlForDeadness(page, target);
@@ -439,7 +461,7 @@ async function runInteractivePass(page, stateUrl, vpLabel, stateName) {
       });
     }
   }
-  console.error(`[ux-walkthrough] interactive pass ${stateName}/${vpLabel}: tested ${tested} control(s), ${findings.length} dead`);
+  console.error(`[ux-walkthrough] interactive pass ${stateName}/${vpLabel}: tested ${tested} control(s), ${findings.length} dead${budgetHit ? ' (budget-limited)' : ''}`);
   return findings;
 }
 
@@ -568,9 +590,19 @@ async function runStaticProbes(page, vpLabel, stateName) {
 async function simulateIosDateWheelCommitOnOpen(page) {
   return page.evaluate(async () => {
     const panel = document.querySelector('[data-testid="my-shows-content"]') || document.body;
-    const input = panel.querySelector('input[type="date"]');
-    if (!input) return { skipped: 'no date input on page' };
+    // Scope to the "Not yet booked" card specifically — the same lookup the
+    // e2e regression spec uses. A bare first-date-input-on-page query picks
+    // up the Upcoming entry instead (it renders above Not-yet-booked and
+    // already has a set date), testing the wrong card's picker entirely
+    // (ship-check finding, 2026-07-21).
+    const nb = [...panel.querySelectorAll('h3')].find(h => /not yet booked/i.test(h.textContent || ''))?.parentElement;
+    const input = nb?.querySelector('input[type="date"]');
+    if (!input) return { skipped: 'no "Not yet booked" date input on page' };
     const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+    // Diff against the WHOLE panel, not just `nb` — a commit-on-open re-sort
+    // can move the card OUT of the Not-yet-booked section entirely (the
+    // original incident), which changes panel content but may leave the `nb`
+    // node reference stale/detached rather than reflecting the removal.
     const beforeText = panel.textContent || '';
     // iOS: `change` fires with TODAY the instant the wheel opens, before the
     // user has picked anything.
@@ -766,14 +798,20 @@ async function captureMatrix({ browser, session, baseUrl, outDir }) {
 // surface the model panel and calibration are tuned against.
 async function captureIosDateWheelSim({ browser, session, baseUrl, outDir }) {
   const vp = VIEWPORTS.find(v => v.label === 'mobile');
-  const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, hasTouch: true, isMobile: true });
-  await context.addInitScript((sessionJson) => {
-    window.localStorage.setItem('bsc_auth', sessionJson);
-  }, JSON.stringify(session));
-  const page = await context.newPage();
   const shots = [];
   const findings = [];
+  // newContext/newPage/addInitScript inside the try: a throw here (browser
+  // crashed, OOM) used to escape uncaught past this function into main()'s
+  // unguarded finally, losing every screenshot captureMatrix already took
+  // (manifest.json/review.json never get written) — ship-check finding,
+  // 2026-07-21.
+  let context;
   try {
+    context = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, hasTouch: true, isMobile: true });
+    await context.addInitScript((sessionJson) => {
+      window.localStorage.setItem('bsc_auth', sessionJson);
+    }, JSON.stringify(session));
+    const page = await context.newPage();
     await page.goto(`${baseUrl}/my-shows?tab=watchlist`, { waitUntil: 'load', timeout: 20000 });
     await page.waitForTimeout(1500);
     const result = await simulateIosDateWheelCommitOnOpen(page).catch(err => ({ error: err.message }));
@@ -792,7 +830,7 @@ async function captureIosDateWheelSim({ browser, session, baseUrl, outDir }) {
   } catch (err) {
     console.error(`[ux-walkthrough] iOS date-wheel sim failed: ${err.message}`);
   } finally {
-    await context.close();
+    if (context) await context.close().catch(() => {});
   }
   return { shots, findings };
 }
@@ -805,9 +843,13 @@ async function captureSignInModal({ browser, baseUrl, outDir }) {
   const shots = [];
   const findings = [];
   for (const vp of VIEWPORTS) {
-    const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
-    const page = await context.newPage();
+    // newContext/newPage inside the try (same fix as captureIosDateWheelSim,
+    // ship-check finding 2026-07-21): a throw here used to escape uncaught
+    // into main()'s unguarded finally.
+    let context;
     try {
+      context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+      const page = await context.newPage();
       await page.goto(`${baseUrl}/`, { waitUntil: 'load', timeout: 20000 });
       await page.waitForTimeout(1000);
       if (vp.label === 'mobile') {
@@ -837,7 +879,7 @@ async function captureSignInModal({ browser, baseUrl, outDir }) {
     } catch (err) {
       console.error(`[ux-walkthrough] sign-in modal capture (${vp.label}) failed: ${err.message}`);
     } finally {
-      await context.close();
+      if (context) await context.close().catch(() => {});
     }
   }
   return { shots, findings };
@@ -1023,6 +1065,27 @@ function dedupeFindings(panelResults) {
   }));
 }
 
+// Deterministic findings (dead-control/probe/ios-quirk) were filed as a bare
+// concat with the model-panel's deduped list — a probe catching the same bug
+// a model also flagged (e.g. a deformed toggle) filed as two separate Notion
+// cards instead of merging into one (ship-check finding, 2026-07-21). Same
+// similarity() grouping as dedupeFindings, just across both sources; the
+// deterministic flag survives the merge so it still bypasses the agreement
+// gate in fileNotionCards.
+function mergeFindingSources(modelFindings, deterministicFindings) {
+  const merged = modelFindings.map(f => ({ ...f }));
+  for (const det of deterministicFindings) {
+    const existing = merged.find(f => similarity(det.summary, f.summary) >= 0.5);
+    if (existing) {
+      existing.deterministic = true;
+      existing.models = [...new Set([...(existing.models || []), ...det.models])];
+    } else {
+      merged.push({ ...det });
+    }
+  }
+  return merged;
+}
+
 async function existingCardTitles() {
   try {
     // notion-brain.js --text only matches Name/Notes, NOT tags (ship-check
@@ -1198,7 +1261,7 @@ async function main() {
           summary: f.summary, screenshot: f.screenshot, severity: f.severity,
           models: [`ux-walkthrough:${f.tag}`], agreementCount: 2, deterministic: true,
         }));
-        const allFindings = [...deduped, ...deterministicAsDeduped];
+        const allFindings = mergeFindingSources(deduped, deterministicAsDeduped);
         const existingTitles = await existingCardTitles();
         const respondingCount = panel.filter(p => !p.error).length;
         const filed = args.noFile ? [] : await fileNotionCards(allFindings, existingTitles, respondingCount);
