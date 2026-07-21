@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-07-21T16:29:39.933Z",
-  "processed": 0,
-  "failed": 14,
-  "successRate": "0%",
+  "updatedAt": "2026-07-21T17:23:42.495Z",
+  "processed": 45,
+  "failed": 255,
+  "successRate": "15.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 31,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 11
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-07-21T17:22:47.625Z",
+      "event": "bb-session",
+      "session": "609f027a",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
+    },
+    {
+      "t": "2026-07-21T17:22:48.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T17:23:04.465Z",
+      "event": "bb-session",
+      "session": "bdeaf6d9",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
+    },
+    {
+      "t": "2026-07-21T17:23:05.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
