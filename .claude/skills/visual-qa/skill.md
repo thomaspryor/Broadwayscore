@@ -26,6 +26,14 @@ nohup npm run dev > /tmp/dev.log 2>&1 &
 # Wait for "Ready in" in the log before continuing
 ```
 
+**Never run `npm run build` while this dev server is up** — the build wipes
+`.next` out from under it and the sweep captures unstyled HTML (both LLM
+reviewers then report "total CSS failure / plain text"). If a build ran,
+restart the dev server before re-running the sweep (2026-07-20 incident).
+
+```bash
+```
+
 ### 2. Run the skill
 
 ```bash
