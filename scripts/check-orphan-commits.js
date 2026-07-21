@@ -16,19 +16,26 @@
  * inside a push RANGE (A..B) is by definition a bug — the true repo root is an
  * ancestor of A and never appears in A..B.
  *
- * Usage:
+ * Usage (local / full-history git — used by push-with-retry.sh):
  *   node scripts/check-orphan-commits.js --range=<base>..<head>
  *   node scripts/check-orphan-commits.js --base=<ref> [--head=<ref>]   (head defaults HEAD)
  *   node scripts/check-orphan-commits.js --before=<sha> --after=<sha>  (GitHub push payload)
  *
- * Exit 0: no parentless commits in range (or range empty / base missing → nothing to check).
+ * Usage (CI — no local history needed; feed the GitHub compare API payload):
+ *   gh api "repos/$REPO/compare/$BEFORE...$AFTER" --paginate > /tmp/c.json
+ *   node scripts/check-orphan-commits.js --compare-json=/tmp/c.json
+ *   The compare payload's `.commits[].parents` gives parent counts directly, so a
+ *   guard that runs on EVERY push to main never has to clone the repo's history.
+ *
+ * Exit 0: no parentless commits (or range empty / base missing → nothing to check).
  * Exit 1: one or more parentless commits found (prints them).
  * Exit 2: usage / git error.
  *
- * The pure detector `findOrphanCommits(revListParentsOutput)` is exported for unit
- * tests (scripts/lib/... test requires the real function — CLAUDE.md rule 15).
+ * The pure detectors `findOrphanCommits(revListParentsOutput)` and
+ * `findOrphanShasFromCompare(compareObj)` are exported for unit tests (CLAUDE.md §15).
  */
 
+const fs = require('fs');
 const { execFileSync } = require('child_process');
 
 /**
@@ -47,6 +54,29 @@ function findOrphanCommits(revListParentsOutput) {
     const fields = line.split(/\s+/);
     // fields[0] = the commit; fields[1..] = its parents. No parents → orphan.
     if (fields.length === 1) orphans.push(fields[0]);
+  }
+  return orphans;
+}
+
+/**
+ * Given a parsed GitHub "compare" API response (or any object with a `.commits`
+ * array whose items carry a `.parents` array), return the SHAs of commits that
+ * have NO parents (root/parentless). The compare payload always includes an empty
+ * `parents: []` for a root commit, so this needs no local git history.
+ * @param {{commits?: Array<{sha?: string, parents?: unknown[]}>}} compareObj
+ * @returns {string[]}
+ */
+function findOrphanShasFromCompare(compareObj) {
+  const commits = compareObj && Array.isArray(compareObj.commits) ? compareObj.commits : [];
+  const orphans = [];
+  for (const c of commits) {
+    if (!c || typeof c !== 'object') continue;
+    // Only flag a GENUINE root (parents present and empty). A missing/malformed
+    // parents field means we can't determine parentage → fail OPEN (skip), never
+    // block a main push on a payload quirk.
+    if (Array.isArray(c.parents) && c.parents.length === 0) {
+      orphans.push(c.sha || '(unknown-sha)');
+    }
   }
   return orphans;
 }
@@ -81,8 +111,50 @@ function gitOrNull(gitArgs) {
   }
 }
 
+/** CI path: detect orphans from a GitHub compare API payload (no git history). */
+function runCompareJson(compareJsonPath) {
+  let raw;
+  try {
+    raw = fs.readFileSync(compareJsonPath, 'utf8');
+  } catch (e) {
+    console.error(`check-orphan-commits: cannot read --compare-json file "${compareJsonPath}": ${e.message}`);
+    process.exit(2);
+  }
+  if (!raw.trim()) {
+    // Empty body = comparison had no commits (e.g. before===after). Nothing to check.
+    console.log('check-orphan-commits: empty compare payload — nothing to check.');
+    process.exit(0);
+  }
+  let obj;
+  try {
+    obj = JSON.parse(raw);
+  } catch (e) {
+    console.error(`check-orphan-commits: --compare-json is not valid JSON: ${e.message}`);
+    process.exit(2);
+  }
+  const orphans = findOrphanShasFromCompare(obj);
+  if (orphans.length === 0) {
+    console.log('check-orphan-commits: OK — no parentless commits in the pushed range (compare API).');
+    process.exit(0);
+  }
+  console.error(
+    `::error::check-orphan-commits: ${orphans.length} PARENTLESS (root) commit(s) pushed to main. ` +
+      'A parentless commit in a push is a bug (a second repo root) — it doubles clone weight and ' +
+      'corrupts per-file history. See task #209. Find the write path that produced a rootless commit ' +
+      '(usually a shallow checkout feeding a rebase/merge/reset) and fix its checkout to fetch-depth: 0.'
+  );
+  for (const sha of orphans) console.error(`  parentless: ${sha}`);
+  process.exit(1);
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
+
+  if (args['compare-json']) {
+    runCompareJson(args['compare-json']);
+    return;
+  }
+
   const range = resolveRange(args);
 
   if (!range) {
@@ -139,4 +211,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { findOrphanCommits, resolveRange, parseArgs };
+module.exports = { findOrphanCommits, findOrphanShasFromCompare, resolveRange, parseArgs };
