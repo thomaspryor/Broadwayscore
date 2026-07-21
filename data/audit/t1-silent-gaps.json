@@ -1,20 +1,6 @@
 {
-  "generatedAt": "2026-07-21T16:08:42.211Z",
+  "generatedAt": "2026-07-21T18:25:30.933Z",
   "windowDays": 45,
   "showsScanned": 54,
-  "gaps": [
-    {
-      "showId": "jesus-christ-superstar-west-end-2026",
-      "title": "Jesus Christ Superstar",
-      "openingDate": "2026-07-07",
-      "file": "artsdesk--rachel-halliburton.json",
-      "outletId": "artsdesk",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original",
-      "recovery": null,
-      "recoveryCount": 3,
-      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original --outlet=artsdesk --critic=\"Rachel Halliburton\"   # run LOCALLY (cookie jar lives on the Mac)"
-    }
-  ]
+  "gaps": []
 }
