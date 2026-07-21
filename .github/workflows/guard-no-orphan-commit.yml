@@ -1,0 +1,56 @@
+name: Guard — No Orphan Commit
+
+# Fails (red + digest alert) if a push to main introduced a PARENTLESS ("root")
+# commit. Background: task #209 / Notion 3a2637c5 — on 2026-07-19 the opening-
+# night poller fast-path committed a rootless full-tree commit (53ff06a4a7a) that
+# a rebase/merge path folded into main, leaving main with a SECOND repo root
+# (double clone weight + corrupted per-file history). The source enabler (shallow
+# checkout) is fixed on the poller and push-with-retry.sh now refuses to push a
+# rootless commit; this workflow is the detection backstop at the branch boundary
+# — direct pushes aren't gated by branch protection, so a guard that only lives
+# in the push helper can be bypassed by any other write path.
+#
+# A legitimate repo never gains a second root through normal work: the true root
+# is an ancestor of every prior main tip and can't appear in a before..after push
+# range. So any parentless commit in the range is a bug.
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: guard-no-orphan-commit-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v5
+        with:
+          # Full history so github.event.before and the range are resolvable.
+          fetch-depth: 0
+
+      - name: Fail on any parentless commit in the pushed range
+        run: |
+          BEFORE='${{ github.event.before }}'
+          AFTER='${{ github.event.after }}'
+          echo "Push range: ${BEFORE}..${AFTER}"
+          node scripts/check-orphan-commits.js --before="$BEFORE" --after="$AFTER"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Orphan commit pushed to main'
+          description: >-
+            A parentless (root) commit was pushed to main — see task #209. This
+            doubles clone weight and corrupts per-file history. Identify the write
+            path that produced a rootless commit (usually a shallow checkout feeding
+            a rebase/merge/reset) and fix its checkout to fetch-depth: 0.
+          severity: 'warning'

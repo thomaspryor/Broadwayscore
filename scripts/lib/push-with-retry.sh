@@ -77,6 +77,31 @@ assert_no_conflict_markers() {
   fi
 }
 
+# Pre-push parentless-commit guard (root-cause fix, task #209 / Notion 3a2637c5).
+# On 2026-07-19 the opening-night poller fast-path (which pushes through THIS
+# helper) committed a PARENTLESS root commit (53ff06a4a7a) whose tree was a full
+# repo snapshot, then a merge/rebase path here folded it into main via an
+# unrelated-histories merge — leaving main with a SECOND repo root that doubled
+# clone weight and corrupted per-file history. The shallow-checkout enabler is
+# fixed at the source (fetch-depth: 0 on the poller), but this is the catch-all:
+# NO commit ahead of the remote tip may be parentless, regardless of how HEAD
+# got unborn. The true repo root is an ancestor of origin/$PULL_BRANCH and never
+# appears in origin/$PULL_BRANCH..HEAD, so any parentless outgoing commit is a
+# bug. RUNS BEFORE EVERY push attempt (like the conflict-marker guard) so a
+# parentless commit produced by this script's own rebase/merge/reset resolution
+# can't slip through on a later iteration. Detector: scripts/check-orphan-commits.js
+# (unit-tested). Fail-open if the base ref or node is unavailable.
+assert_no_orphan_commit() {
+  command -v node >/dev/null 2>&1 || return 0  # detector needs node; skip if absent
+  [ -f "$SCRIPT_DIR/../check-orphan-commits.js" ] || return 0
+  git rev-parse --verify --quiet "origin/$PULL_BRANCH" >/dev/null 2>&1 || return 0
+
+  if ! node "$SCRIPT_DIR/../check-orphan-commits.js" --range="origin/$PULL_BRANCH..HEAD"; then
+    echo "::error::Refusing to push: an outgoing commit has NO parent (a second repo root). See task #209 — a shallow checkout feeding a rebase/merge/reset path produced a rootless full-tree commit. Do NOT push this; investigate how HEAD became unborn."
+    exit 1
+  fi
+}
+
 # BRANCH may be a refspec like "HEAD:main" (for push) or a plain branch
 # name like "main". Pull commands need the remote branch name only.
 if [[ "$BRANCH" == *:* ]]; then
@@ -245,6 +270,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # 09e78a7a corruption class) and any marker a prior iteration's rebase/merge
   # resolution might have left in the now-outgoing commits.
   assert_no_conflict_markers
+  assert_no_orphan_commit
   if git push origin "$BRANCH"; then
     echo "Push succeeded on attempt $i"
     pushed=true
