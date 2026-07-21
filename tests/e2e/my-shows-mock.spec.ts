@@ -542,3 +542,36 @@ test.describe('My Shows — Visual Regression', () => {
     });
   });
 });
+
+// ─── iOS date-wheel semantics (regression, 2026-07-20) ─────────────────
+// iOS Safari fires `change` with TODAY the moment the wheel opens, before
+// the user picks. The shared DatePickerButton must stage coarse-pointer
+// changes and commit ONCE on close — the old per-change commit saved today
+// instantly, re-sorted the card under the open wheel and dismissed it.
+test.describe('Date picker — touch commit-on-close', () => {
+  test('mid-wheel change does not commit; picked date lands on close', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'coarse-pointer (staging) path only');
+    await goToMock(page, 'watchlist');
+    const result = await page.evaluate(async () => {
+      const panel = document.querySelector('[role="tabpanel"]')!;
+      const nb = Array.from(panel.querySelectorAll('h3')).find(h => /Not yet booked/i.test(h.textContent || ''))?.parentElement;
+      const input = nb?.querySelector('input[type="date"]') as HTMLInputElement | null;
+      if (!input) return { error: 'no input' };
+      const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')!.set!;
+      const today = new Date().toISOString().split('T')[0];
+      // iOS: change fires with today at wheel-open
+      setter.call(input, today);
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      await new Promise(r => setTimeout(r, 350));
+      const committedMidWheel = /Upcoming/.test(nb!.textContent || '') === false && panel.textContent!.includes('Sep 21');
+      // user scrolls to Sep 21, closes the wheel (focusout)
+      setter.call(input, '2026-09-21');
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      input.dispatchEvent(new Event('focusout', { bubbles: true }));
+      await new Promise(r => setTimeout(r, 700));
+      return { committedMidWheel, landedOnClose: /Sep 21/.test(panel.textContent || '') };
+    });
+    expect(result.committedMidWheel ?? false, 'date committed while wheel still open').toBe(false);
+    expect(result.landedOnClose, 'picked date did not land after closing the wheel').toBe(true);
+  });
+});
