@@ -161,6 +161,21 @@ for f in "${GENERATED_FILES[@]}"; do
 done
 [ "$GEN_COUNT" -gt 0 ] && echo "Generated files: $GEN_COUNT copied from main checkout"
 
+# Env files (gitignored — symlinks can't be committed; needed for
+# `npm run build` in a fresh worktree: .env has API tokens, .env.local has
+# NEXT_PUBLIC_SANITY_* — blog pages fail to build without them). Symlinked,
+# not copied, so worktrees stay fresh when keys rotate in the main checkout.
+ENV_COUNT=0
+for f in .env .env.local; do
+  src="$MAIN_REPO/$f"
+  dst="$PROJECT_DIR/$f"
+  if [ ! -e "$dst" ] && [ -f "$src" ] && [ "$src" != "$dst" ]; then
+    ln -s "$src" "$dst"
+    ENV_COUNT=$((ENV_COUNT + 1))
+  fi
+done
+[ "$ENV_COUNT" -gt 0 ] && echo "Env files: $ENV_COUNT symlinked from main checkout"
+
 # Verify key files
 if [ ! -f "$DATA_DIR/shows.json" ] || [ ! -f "$DATA_DIR/reviews.json" ]; then
   echo "WARNING: shows.json or reviews.json missing after copy!"

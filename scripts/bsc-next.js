@@ -291,10 +291,12 @@ function launchCmux(task, seed, commandOverride, model = 'sonnet', project = nul
     lastWs = ws || lastWs;
     // VERIFY the launch (scope add 3): a workspace whose command was mangled
     // never starts claude and never self-marks ✅, so nothing would notice.
-    // Poll for a running claude_code process. 30s window: shell init (direnv)
-    // + claude cold start can exceed 15s post-reboot, and a false timeout
-    // kills a healthy launch (ship-check reviewer finding, 2026-07-12).
-    if (ws && pollUntil(() => cmuxws.claudeRunningIn(ws.ref), 30)) {
+    // Poll for a LIVE claude_code process (any status — a fast launch can
+    // reach waiting-at-prompt inside the window, and the Running-only check
+    // would kill that healthy session as a corpse; ship-check 2026-07-21).
+    // 30s window: shell init (direnv) + claude cold start can exceed 15s
+    // post-reboot, and a false timeout kills a healthy launch (2026-07-12).
+    if (ws && pollUntil(() => cmuxws.claudeAliveIn(ws.ref), 30)) {
       if (project) setAutoColor(ws.ref);
       return { ok: true, ref: ws.ref, seedFile, command };
     }
@@ -302,7 +304,7 @@ function launchCmux(task, seed, commandOverride, model = 'sonnet', project = nul
       // Verify-before-close: one last check after a beat, so a claude that
       // registered at the buzzer isn't killed as a corpse.
       sleepSec(2);
-      if (ws && cmuxws.claudeRunningIn(ws.ref)) {
+      if (ws && cmuxws.claudeAliveIn(ws.ref)) {
         if (project) setAutoColor(ws.ref);
         return { ok: true, ref: ws.ref, seedFile, command };
       }

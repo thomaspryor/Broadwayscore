@@ -13,7 +13,7 @@
  */
 
 const {
-  cmuxAvailable, listWorkspaces, isDoneTitle, claudeRunningIn, pruneDone,
+  cmuxAvailable, listWorkspaces, isDoneTitle, claudeAliveIn, pruneDone,
 } = require('./lib/cmux-workspaces.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -37,7 +37,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     listWorkspaces: listWorkspacesFn = listWorkspaces,
     pruneDone: pruneDoneFn = pruneDone,
     isDoneTitle: isDoneTitleFn = isDoneTitle,
-    claudeRunningIn: claudeRunningInFn = claudeRunningIn,
+    claudeAliveIn: claudeAliveInFn = claudeAliveIn,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -57,16 +57,16 @@ function main(argv = process.argv.slice(2), deps = {}) {
     console.log('No ✅-marked workspaces to close.');
   }
   if (skipped.length) {
-    console.log(`Skipped ${skipped.length} ✅ workspace(s) with claude still running (finishing wrap-up?):`);
+    console.log(`Skipped ${skipped.length} ✅ workspace(s) with a live claude (running or waiting at the prompt):`);
     skipped.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
   }
 
   const closedRefs = new Set(closed.map(w => w.ref));
   const idle = all
     .filter(w => !closedRefs.has(w.ref) && !isDoneTitleFn(w.title))
-    .filter(w => !claudeRunningInFn(w.ref));
+    .filter(w => !claudeAliveInFn(w.ref));
   if (idle.length) {
-    console.log(`\nIdle but un-marked (no running claude — NOT closed, review yourself):`);
+    console.log(`\nDead but un-marked (no claude process at all — NOT closed, review yourself):`);
     idle.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
   }
 }
