@@ -68,6 +68,12 @@ interface EmailCaptureConfig {
    * page_view_limit) and recapture are exempt — same list as
    * passiveGateCooldownDays; page_view_limit already has its own explicit
    * view-count threshold via BizPageTracker.
+   *
+   * ⚠️ LIVE EXPERIMENT VALUE — this is the TREATMENT arm of the
+   * 'gate-cold-start' A/B (control arm skips the check entirely; see
+   * docs/experiments/gate-cold-start.md). LOCKED at 2 by
+   * tests/unit/gate-logic.test.mjs while the experiment runs — do not change
+   * without concluding the experiment first.
    */
   minPageViewsForPassiveGate: number;
   /**

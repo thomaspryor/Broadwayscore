@@ -420,6 +420,13 @@ on:
       - 'scripts/lib/gate-ab-monitor-rules.test.mjs'
       - 'scripts/monitor-gate-ab.js'
       - 'scripts/analyze-gate-ab.js'
+      # Overall email-gate funnel monitor (card #240) — pure rules + runner +
+      # analyzer; colocated test runs in the scripts/lib/*.test.mjs glob step.
+      - 'scripts/lib/email-gate-funnel-rules.js'
+      - 'scripts/lib/email-gate-funnel-rules.test.mjs'
+      - 'scripts/monitor-email-gate-funnel.js'
+      - 'scripts/analyze-email-gate-funnel.js'
+      - 'scripts/lib/posthog-query.js'
       - 'scripts/lib/email-templates-headline.test.mjs'
       # Score-tier label display/data decoupling contract (Skippable wire key vs Mixed display).
       - 'scripts/lib/score-tier-label-contract.test.mjs'
