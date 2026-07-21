@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const {
-  DATA_REPO_URLS, cloneDataRepo, verifyRebaseData, countPriorMerges, redactSecrets,
+  DATA_REPO_URLS, cloneDataRepo, verifyRebaseData, countPriorMerges, redactSecrets, main, USAGE,
 } = require('./autonomous-merge.js');
 
 function git(cwd, args) {
@@ -152,4 +152,94 @@ test('countPriorMerges scopes the oscillation grep to the given cwd, not the mai
   assert.equal(countPriorMerges('some-card-id', clone), 1);
   // A different card id must not match.
   assert.equal(countPriorMerges('other-card-id', clone), 0);
+});
+
+test('USAGE documents --card, --branch, --action, and --help', () => {
+  assert.match(USAGE, /--card/);
+  assert.match(USAGE, /--branch/);
+  assert.match(USAGE, /--action/);
+  assert.match(USAGE, /--help, -h/);
+});
+
+// Same incident class as the 2026-07-14 bsc-conductor bug and the
+// 2026-07-20 autonomous-run.js/autonomous-probe.js cousin fix (task #260):
+// --help must never fall through to approve()/revert(), which call real
+// `gh`/`git` subprocesses (PR merge, revert, push to main). approveFn/revertFn
+// are stubbed to THROW so this proves zero calls happen, not just that the
+// guard exists somewhere in the source.
+test('--help / -h / combined-with-action exit before approve or revert is called', () => {
+  const approveFn = () => { throw new Error('approve must not be called for --help'); };
+  const revertFn = () => { throw new Error('revert must not be called for --help'); };
+  const logged = [];
+  const origLog = console.log;
+  console.log = (...a) => logged.push(a.join(' '));
+  try {
+    assert.doesNotThrow(() => main(['--help'], approveFn, revertFn));
+    assert.doesNotThrow(() => main(['-h'], approveFn, revertFn));
+    // The actual reported risk: --help combined with a real action flag.
+    assert.doesNotThrow(() => main(['--card', 'abc123', '--branch', 'auto/foo', '--action', 'approve', '--help'], approveFn, revertFn));
+    assert.doesNotThrow(() => main(['--card', 'abc123', '--branch', 'auto/foo', '--action', 'revert', '--help'], approveFn, revertFn));
+    assert.doesNotThrow(() => main(['--card', 'abc123', '--branch', 'auto/foo', '--action', 'approve', '--help=1'], approveFn, revertFn));
+  } finally {
+    console.log = origLog;
+  }
+  assert.equal(logged.length, 5);
+  for (const line of logged) assert.match(line, /autonomous-merge\.js — CI-side merge\/revert executor/);
+});
+
+test('without --help, a real action routes to the matching approveFn/revertFn', () => {
+  const calls = [];
+  const approveFn = (cardId, branch) => calls.push(['approve', cardId, branch]);
+  const revertFn = (cardId, branch) => calls.push(['revert', cardId, branch]);
+  main(['--card', 'abc123', '--branch', 'auto/foo', '--action', 'approve'], approveFn, revertFn);
+  main(['--card', 'abc123', '--branch', 'auto/foo', '--action', 'revert'], approveFn, revertFn);
+  assert.equal(calls.length, 2);
+  assert.deepEqual(calls[0], ['approve', 'abc123', 'auto/foo']);
+  assert.deepEqual(calls[1], ['revert', 'abc123', 'auto/foo']);
+});
+
+// Belt-and-suspenders: run the real CLI as a subprocess with `gh` and `git`
+// stubbed on PATH to record any invocation and exit nonzero. If the --help
+// guard were ever removed or moved after the action routing, `--action
+// approve --help` would reach approve()'s git fetch/gh calls and the stub
+// marker file would appear.
+function withStubbedBins(names, fn) {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'autonomous-merge-help-'));
+  const marker = path.join(tmp, 'spawned.txt');
+  for (const bin of names) {
+    const binPath = path.join(tmp, bin);
+    fs.writeFileSync(binPath, `#!/bin/sh\necho "$0 $*" >> "${marker}"\nexit 1\n`);
+    fs.chmodSync(binPath, 0o755);
+  }
+  try {
+    fn({ tmp, marker });
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+}
+
+test('node scripts/autonomous-merge.js --help never spawns gh or git (real process, PATH-stubbed)', () => {
+  withStubbedBins(['gh', 'git'], ({ tmp, marker }) => {
+    const script = new URL('./autonomous-merge.js', import.meta.url).pathname;
+    const out = execFileSync(process.execPath, [script, '--help'], {
+      encoding: 'utf8', timeout: 10_000,
+      env: { ...process.env, PATH: `${tmp}:${process.env.PATH}` },
+    });
+    assert.match(out, /Usage:/);
+    assert.equal(fs.existsSync(marker), false, 'gh/git stub must never be invoked for --help');
+  });
+});
+
+test('node scripts/autonomous-merge.js --action approve --help never spawns gh or git (real process)', () => {
+  withStubbedBins(['gh', 'git'], ({ tmp, marker }) => {
+    const script = new URL('./autonomous-merge.js', import.meta.url).pathname;
+    const out = execFileSync(process.execPath, [
+      script, '--card', 'abc123', '--branch', 'auto/foo', '--action', 'approve', '--help',
+    ], {
+      encoding: 'utf8', timeout: 10_000,
+      env: { ...process.env, PATH: `${tmp}:${process.env.PATH}` },
+    });
+    assert.match(out, /Usage:/);
+    assert.equal(fs.existsSync(marker), false, 'gh/git stub must never be invoked for --action approve --help');
+  });
 });
