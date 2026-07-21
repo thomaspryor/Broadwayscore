@@ -559,11 +559,15 @@ test.describe('Date picker — touch commit-on-close', () => {
       if (!input) return { error: 'no input' };
       const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')!.set!;
       const today = new Date().toISOString().split('T')[0];
+      // A today-commit would MOVE this undated entry out of Not-yet-booked
+      // (today sorts as Upcoming) — card count dropping is the discriminator
+      // the old per-change-commit code fails on.
+      const cardsBefore = nb!.querySelectorAll('input[type="date"]').length;
       // iOS: change fires with today at wheel-open
       setter.call(input, today);
       input.dispatchEvent(new Event('change', { bubbles: true }));
       await new Promise(r => setTimeout(r, 350));
-      const committedMidWheel = /Upcoming/.test(nb!.textContent || '') === false && panel.textContent!.includes('Sep 21');
+      const committedMidWheel = nb!.querySelectorAll('input[type="date"]').length !== cardsBefore;
       // user scrolls to Sep 21, closes the wheel (focusout)
       setter.call(input, '2026-09-21');
       input.dispatchEvent(new Event('change', { bubbles: true }));
