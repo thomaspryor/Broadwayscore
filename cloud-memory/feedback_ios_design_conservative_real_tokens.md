@@ -1,15 +1,24 @@
 ---
 name: feedback-ios-design-conservative-real-tokens
-description: "Owner prefers the EXISTING iOS app layouts — design proposals must be incremental (approve/skip per change), and mockups must use the app's exact tokens (constants/theme.ts) or real simulator screenshots, never hand-approximated colors."
-metadata: 
+description: "HARD RULE: iOS design proposals must be rendered IN THE APP (worktree + simulator screenshot) — HTML/CSS mockups of app UI are BANNED, even token-accurate ones. Offer 2-3 rendered options when direction isn't obvious. Owner escalated twice (2026-07-20)."
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 96f1f818-d58a-4563-b84f-6e1953558609
-  modified: 2026-07-20T14:53:49.257Z
+  modified: 2026-07-21T02:43:03.678Z
 ---
 
-2026-07-20, iOS redesign session: owner reviewed hand-drawn HTML mockups and said they "don't seem to match our styling at all… don't look great. Currently I prefer the existing iOS layouts to the ones you shared."
+Two escalations, same day (2026-07-20/21):
+1. First session: hand-drawn HTML mockups with web-palette colors → "don't seem to match our styling at all."
+2. Second session (same day!) read this memory, then STILL shipped HTML mockups — twice — first with invented grays, then "token-accurate" ones. Owner: "random mocks in a design language that doesn't exist when we have our own design system? What the heck is going on… so lazy and weird and frustrating."
 
-**Why:** The mockups used web-design-system colors (amber-400 tiers, bg-surface-overlay #2a2a38) where the app actually uses #FFD700 gold and #252530 overlay (constants/theme.ts) — close-but-wrong colors read as fake and undermined the whole proposal. And the proposals replaced whole layouts when the owner wanted the current structure kept.
+**Why:** The design system is not a hex list — it IS the code (constants/theme.ts + components/ rendered by RN). Any HTML re-creation, however token-accurate, differs in font rendering, spacing, radii, shadows, and real content, and reads as fake. The "exact tokens" allowance in the previous version of this rule was the loophole that let it happen again.
 
-**How to apply:** For any BroadwayScorecard-app design work: (1) baseline = current app, presented as real simulator screenshots (build → simctl boot/install → Maestro-driven tour → simctl io screenshot); (2) proposals = one small change each, framed approve/skip, rendered with EXACT values from constants/theme.ts; (3) never propose layout rework unless the owner asks. Simulator tour recipe worked 2026-07-20: Metro bg + dev-client deep link, Maestro taps (JAVA_HOME=/opt/homebrew/opt/openjdk@17; NativeTabs tab labels are NOT tappable by text — use point taps).
+**How to apply (no exceptions):**
+1. **BANNED:** HTML/CSS/artifact mockups of BroadwayScorecard-app UI. If you catch yourself writing `<div>` to depict an app screen, stop.
+2. **Design proposal = code + screenshot.** Implement the variant in a worktree of BroadwayScorecard-app, render it in the simulator, `simctl io screenshot`, and present REAL captures (before/after side by side). JS-only changes: dev-client + Metro (`npx expo start` from the WORKTREE, deep link `broadwayscorecard://expo-development-client/?url=http%3A%2F%2F127.0.0.1%3A8081`) — verify the installed sim app is actually a dev client first (production builds silently ignore the dev-client URL and just foreground). If no dev client installed: `eas build --profile development` (or sim-prod) → simctl install.
+3. **Options, not one-shots:** when direction isn't obvious, implement 2-3 variants (they're usually a few lines apart) and screenshot each. The owner explicitly asked for options: "it's fine to have a couple of options, not just try and one-shot it."
+4. Baseline stays: current app is the reference; proposals incremental, approve/skip each.
+5. Maestro gotchas: JAVA_HOME=/opt/homebrew/opt/openjdk@17; add `launchApp` first (taps land on whatever's foregrounded otherwise, e.g. Safari); NativeTabs labels not tappable by text — point taps (tab bar Y≈94%).
+
+Mirrored in BroadwayScorecard-app/CLAUDE.md (Design Proposals section) so app-repo sessions load it natively.
