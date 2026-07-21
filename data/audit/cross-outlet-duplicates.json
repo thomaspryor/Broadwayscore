@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-14T05:55:12.245Z",
+    "generatedAt": "2026-07-21T06:08:24.465Z",
     "threshold": 40,
-    "showsScanned": 1797,
-    "reviewsScanned": 34047,
-    "duplicatesFound": 74,
+    "showsScanned": 1806,
+    "reviewsScanned": 34316,
+    "duplicatesFound": 72,
     "byMethod": {
       "similarity": [
         {
@@ -122,9 +122,9 @@
           "secondaryFile": "theatermania--linda-buchwald.json",
           "secondaryOutlet": "TheaterMania",
           "secondaryCritic": "Linda Buchwald",
-          "primaryScore": 89,
+          "primaryScore": 91,
           "secondaryScore": 89,
-          "scoreDiff": 0,
+          "scoreDiff": 2,
           "textSource": "fullText"
         },
         {
@@ -143,6 +143,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "cult-of-love-2024",
+          "method": "similarity",
+          "similarity": 98,
+          "primaryFile": "variety--aramide-tinubu.json",
+          "primaryOutlet": "Variety",
+          "primaryCritic": "Aramide Tinubu",
+          "secondaryFile": "hollywood-reporter--david-rooney.json",
+          "secondaryOutlet": "The Hollywood Reporter",
+          "secondaryCritic": "David Rooney",
+          "primaryScore": 70,
+          "secondaryScore": 67,
+          "scoreDiff": 3,
+          "textSource": "fullText"
+        },
+        {
           "showId": "david-copperfield-59e59-theaters-off-broadway-2026",
           "method": "similarity",
           "similarity": 85,
@@ -152,9 +167,9 @@
           "secondaryFile": "theater-pizzazz--alix-cohen.json",
           "secondaryOutlet": "Theater Pizzazz",
           "secondaryCritic": "Alix Cohen",
-          "primaryScore": 73,
+          "primaryScore": 59,
           "secondaryScore": 76,
-          "scoreDiff": 3,
+          "scoreDiff": 17,
           "textSource": "fullText"
         },
         {
@@ -548,21 +563,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "noises-off-2016",
-          "method": "similarity",
-          "similarity": 81,
-          "primaryFile": "njcom--christopher-kelly.json",
-          "primaryOutlet": "NJ.com",
-          "primaryCritic": "Christopher Kelly",
-          "secondaryFile": "huffpost--steven-suskin.json",
-          "secondaryOutlet": "Huffington Post",
-          "secondaryCritic": "Steven Suskin",
-          "primaryScore": 63,
-          "secondaryScore": 62,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
           "showId": "oh-mary-west-end-2025",
           "method": "similarity",
           "similarity": 97,
@@ -575,21 +575,6 @@
           "primaryScore": 14,
           "secondaryScore": 15,
           "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "on-the-twentieth-century-2015",
-          "method": "similarity",
-          "similarity": 58,
-          "primaryFile": "front-row-center--tulis-mccall.json",
-          "primaryOutlet": "The Front Row Center",
-          "primaryCritic": "Tulis McCall",
-          "secondaryFile": "nytg--brian-scott-lipton.json",
-          "secondaryOutlet": "New York Theatre Guide",
-          "secondaryCritic": "Brian Scott Lipton",
-          "primaryScore": 93,
-          "secondaryScore": 91,
-          "scoreDiff": 2,
           "textSource": "fullText"
         },
         {
@@ -1015,21 +1000,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "peter-pan-goes-wrong-2023",
-          "method": "similarity+llm",
-          "similarity": 69,
-          "primaryFile": "nydailynews--new-york-daily-news.json",
-          "primaryOutlet": "New York Daily News",
-          "primaryCritic": "New York Daily News",
-          "secondaryFile": "chicagotribune--chris-jones.json",
-          "secondaryOutlet": "Chicago Tribune",
-          "secondaryCritic": "Chris Jones",
-          "primaryScore": 83,
-          "secondaryScore": 84,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
           "showId": "the-price-2017",
           "method": "similarity+llm",
           "similarity": 64,
@@ -1285,9 +1255,9 @@
       "secondaryFile": "theatermania--linda-buchwald.json",
       "secondaryOutlet": "TheaterMania",
       "secondaryCritic": "Linda Buchwald",
-      "primaryScore": 89,
+      "primaryScore": 91,
       "secondaryScore": 89,
-      "scoreDiff": 0,
+      "scoreDiff": 2,
       "textSource": "fullText"
     },
     {
@@ -1306,6 +1276,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "cult-of-love-2024",
+      "method": "similarity",
+      "similarity": 98,
+      "primaryFile": "variety--aramide-tinubu.json",
+      "primaryOutlet": "Variety",
+      "primaryCritic": "Aramide Tinubu",
+      "secondaryFile": "hollywood-reporter--david-rooney.json",
+      "secondaryOutlet": "The Hollywood Reporter",
+      "secondaryCritic": "David Rooney",
+      "primaryScore": 70,
+      "secondaryScore": 67,
+      "scoreDiff": 3,
+      "textSource": "fullText"
+    },
+    {
       "showId": "david-copperfield-59e59-theaters-off-broadway-2026",
       "method": "similarity",
       "similarity": 85,
@@ -1315,9 +1300,9 @@
       "secondaryFile": "theater-pizzazz--alix-cohen.json",
       "secondaryOutlet": "Theater Pizzazz",
       "secondaryCritic": "Alix Cohen",
-      "primaryScore": 73,
+      "primaryScore": 59,
       "secondaryScore": 76,
-      "scoreDiff": 3,
+      "scoreDiff": 17,
       "textSource": "fullText"
     },
     {
@@ -1801,21 +1786,6 @@
       "textSource": "excerpts"
     },
     {
-      "showId": "noises-off-2016",
-      "method": "similarity",
-      "similarity": 81,
-      "primaryFile": "njcom--christopher-kelly.json",
-      "primaryOutlet": "NJ.com",
-      "primaryCritic": "Christopher Kelly",
-      "secondaryFile": "huffpost--steven-suskin.json",
-      "secondaryOutlet": "Huffington Post",
-      "secondaryCritic": "Steven Suskin",
-      "primaryScore": 63,
-      "secondaryScore": 62,
-      "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
       "showId": "oh-mary-west-end-2025",
       "method": "fingerprint",
       "similarity": 100,
@@ -1843,21 +1813,6 @@
       "primaryScore": 14,
       "secondaryScore": 15,
       "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "on-the-twentieth-century-2015",
-      "method": "similarity",
-      "similarity": 58,
-      "primaryFile": "front-row-center--tulis-mccall.json",
-      "primaryOutlet": "The Front Row Center",
-      "primaryCritic": "Tulis McCall",
-      "secondaryFile": "nytg--brian-scott-lipton.json",
-      "secondaryOutlet": "New York Theatre Guide",
-      "secondaryCritic": "Brian Scott Lipton",
-      "primaryScore": 93,
-      "secondaryScore": 91,
-      "scoreDiff": 2,
       "textSource": "fullText"
     },
     {
@@ -1903,21 +1858,6 @@
       "primaryScore": 78,
       "secondaryScore": 90,
       "scoreDiff": 12,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "peter-pan-goes-wrong-2023",
-      "method": "similarity+llm",
-      "similarity": 69,
-      "primaryFile": "nydailynews--new-york-daily-news.json",
-      "primaryOutlet": "New York Daily News",
-      "primaryCritic": "New York Daily News",
-      "secondaryFile": "chicagotribune--chris-jones.json",
-      "secondaryOutlet": "Chicago Tribune",
-      "secondaryCritic": "Chris Jones",
-      "primaryScore": 83,
-      "secondaryScore": 84,
-      "scoreDiff": 1,
       "textSource": "fullText"
     },
     {
