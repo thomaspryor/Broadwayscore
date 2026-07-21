@@ -28,6 +28,8 @@ const { extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/co
 const { normalizeCritic } = require('./lib/review-normalization');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
+const { extractPublishDate } = require('./lib/article-extractor');
+const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 
 // Non-theatre news sections. Same-title film articles (the Beetlejuice *film*) carry
 // the show title in their <title>, so show-match passes them — but they are wrong
@@ -46,10 +48,18 @@ const NON_THEATRE_SECTIONS = new Set([
  *   1. Aggregator / listing / ticket / feature-interview URL (isBlockedReviewUrl).
  *   2. Non-theatre news section (film/tv/lifestyle) — wrong production, same title.
  *   3. verifyAggregatorUrl show-match fails — different show.
- * @param {string} url  @param {string} html  @param {{id,title,venue,openingDate}} show
+ *   4. Article publish date is outside THIS production's window (before previews −
+ *      grace, or after close + grace) and not within any declared priorRun — the
+ *      SAME title covering an EARLIER/LATER production. Same-title revivals share
+ *      the title token, so checks 1–3 pass them; only the date separates them.
+ *      (Treneman/Oresteia leak 2026-07-19: a 2017 Edinburgh "Oresteia: This Restless
+ *      House" Times review promoted into the-oresteia-west-end-2026 and scored 40.)
+ * @param {string} url  @param {string} html  @param {{id,title,venue,openingDate,previewsStartDate,closingDate,category,market,priorRuns}} show
+ * @param {string} [publishDate] pre-extracted article date; when omitted it is
+ *   extracted from `html` (kept optional so 3-arg unit-test calls still work).
  * @returns {string|null}
  */
-function pendingPromoteRejectReason(url, html, show) {
+function pendingPromoteRejectReason(url, html, show, publishDate) {
   if (isBlockedReviewUrl(url)) return 'aggregator/listing/feature URL, not an outlet review';
   let seg = [];
   try { seg = new URL(url).pathname.toLowerCase().split('/').filter(Boolean); } catch { /* malformed */ }
@@ -57,6 +67,15 @@ function pendingPromoteRejectReason(url, html, show) {
   if (badSection) return `non-theatre section (${badSection}) — wrong production`;
   const v = verifyAggregatorUrl({ url, html, show, openingDate: show && show.openingDate });
   if (!v.isValid) return `not this show (${v.rejectReason})`;
+  // Temporal wrong-production gate. verifyAggregatorUrl matches on the title
+  // token, so a same-title earlier/later production sails through it — the
+  // article's publish date is the only signal that separates them. Reuse the
+  // canonical date-window decision (UK-outlet grace + priorRuns exemption) that
+  // fetch-guardian-reviews.js already uses for the identical revival scenario.
+  const pd = publishDate !== undefined ? publishDate : extractPublishDate(html, url);
+  if (pd && isArticleOutsideProductionWindow(show, pd)) {
+    return `article published ${String(pd).slice(0, 10)} is outside this production's window — earlier/later production of the same title`;
+  }
   return null;
 }
 
@@ -165,6 +184,7 @@ async function processShow(showId) {
 
     let byline = null;
     let html = null;
+    let publishDate = null;
     try {
       const result = await fetchPage(url);
       html = result?.content;
@@ -173,13 +193,14 @@ async function processShow(showId) {
         kept++;
         continue;
       }
+      publishDate = extractPublishDate(html, url);
       // Validate BEFORE promoting. _pending for open shows holds junk beyond real
       // stranded reviews (Beetlejuice exposed this 2026-06-04): aggregator URLs
       // misattributed to an outlet (a westendtheatre roundup filed under 'telegraph'
       // fabricates a fake Telegraph review with the roundup author's byline), same-title
       // wrong-production articles (the Beetlejuice *film* / a Tim Burton interview filed
       // under 'times-uk'), and wrong-show hits. Promoting these contaminates the show.
-      const rejectReason = pendingPromoteRejectReason(url, html, show);
+      const rejectReason = pendingPromoteRejectReason(url, html, show, publishDate);
       if (rejectReason) {
         // KEEP, never delete. The URL-level checks have false positives (outlets file
         // real theatre reviews under odd sections; verifyAggregatorUrl can miss on opaque
@@ -226,6 +247,11 @@ async function processShow(showId) {
     data.criticName = byline;
     data.bylineSource = 'replay-pending-bylines';
     data.bylineExtractedAt = new Date().toISOString();
+    // Persist the extracted date. The pre-fix promoted files carried
+    // publishDate:null, so the downstream date guards (flag-wrong-production-by-date)
+    // could not re-catch a wrong-production leak post-promotion either. Writing it
+    // here closes both the promotion gate AND that second-layer gap.
+    if (publishDate && !data.publishDate) data.publishDate = publishDate;
 
     if (dryRun) {
       console.log(`  [${file}] DRY → would promote to ${newFilename} (byline: ${byline})`);
