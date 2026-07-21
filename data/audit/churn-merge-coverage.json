@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-21T16:47:58.670Z",
+    "generatedAt": "2026-07-21T19:51:50.992Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,23 +16,23 @@
   "flagged": [
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 119
+      "churn": 121
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 118
+      "churn": 120
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 106
+      "churn": 105
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 94
+      "churn": 93
     },
     {
       "path": "data/audit/t1-silent-gaps.json",
-      "churn": 65
+      "churn": 63
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
@@ -44,7 +44,7 @@
     },
     {
       "path": "data/audit/we-gate-proving.json",
-      "churn": 50
+      "churn": 48
     },
     {
       "path": "data/audit/validation/collection-report-2026-07-20.json",
@@ -54,31 +54,31 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 135
+      "churn": 133
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 131
+      "churn": 130
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 96
+      "churn": 97
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 96
+      "churn": 97
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 96
+      "churn": 97
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 82
+      "churn": 83
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 69
+      "churn": 67
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -86,7 +86,7 @@
     },
     {
       "path": "data/show-score-urls.json",
-      "churn": 39
+      "churn": 38
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
@@ -94,58 +94,58 @@
     },
     {
       "path": "public/data/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 34
+      "churn": 33
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 843,
+      "churn": 911,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 834,
+      "churn": 901,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 657,
+      "churn": 658,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 646,
+      "churn": 650,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 257,
+      "churn": 269,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 241,
+      "churn": 243,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 241,
+      "churn": 243,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 152,
+      "churn": 153,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 121,
+      "churn": 123,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 96,
+      "churn": 97,
       "mergeAttr": "ours"
     },
     {
@@ -160,22 +160,17 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 82,
+      "churn": 83,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 82,
+      "churn": 83,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 82,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 62,
+      "churn": 83,
       "mergeAttr": "ours"
     },
     {
@@ -184,13 +179,18 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/gap-audit-checkpoint.json",
+      "churn": 61,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/show-review-gap.json",
-      "churn": 62,
+      "churn": 61,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 62,
+      "churn": 61,
       "mergeAttr": "ours"
     },
     {
@@ -199,13 +199,13 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/drift-state.json",
-      "churn": 50,
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 51,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/collection-state/browserbase-usage.json",
-      "churn": 49,
+      "path": "data/audit/drift-state.json",
+      "churn": 48,
       "mergeAttr": "ours"
     },
     {
@@ -240,7 +240,7 @@
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 35,
+      "churn": 36,
       "mergeAttr": "ours"
     },
     {
