@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-07-21T11:00:59.639Z",
-  "processed": 88,
-  "failed": 258,
-  "successRate": "25.4%",
+  "updatedAt": "2026-07-21T11:01:29.941Z",
+  "processed": 89,
+  "failed": 267,
+  "successRate": "25.0%",
   "tierBreakdown": {
     "playwright": 57,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 11,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 8,
     "archiveToday": 2,
     "archive": 17
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-07-20T20:37:58.043Z",
-      "event": "bb-session",
-      "session": "74a4fb17",
-      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
-    },
     {
       "t": "2026-07-20T20:37:58.705Z",
       "event": "bb-cookie-inject",
@@ -126,6 +120,12 @@
       "t": "2026-07-21T10:54:23.790Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-21T11:01:06.364Z",
+      "event": "bb-session",
+      "session": "f4a5c2a6",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
     }
   ]
 }
