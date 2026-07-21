@@ -167,19 +167,22 @@ test('USAGE documents --card, --branch, --action, and --help', () => {
 // `gh`/`git` subprocesses (PR merge, revert, push to main). approveFn/revertFn
 // are stubbed to THROW so this proves zero calls happen, not just that the
 // guard exists somewhere in the source.
-test('--help / -h / combined-with-action exit before approve or revert is called', () => {
+test('--help / -h / combined-with-action exit before approve or revert is called', async () => {
   const approveFn = () => { throw new Error('approve must not be called for --help'); };
   const revertFn = () => { throw new Error('revert must not be called for --help'); };
   const logged = [];
   const origLog = console.log;
   console.log = (...a) => logged.push(a.join(' '));
   try {
-    assert.doesNotThrow(() => main(['--help'], approveFn, revertFn));
-    assert.doesNotThrow(() => main(['-h'], approveFn, revertFn));
+    // main() is async — await the returned promise (not just doesNotThrow on
+    // the synchronous call) so a future regression that moves the hasHelpFlag
+    // check after an await would surface as a rejected promise here too.
+    await assert.doesNotReject(main(['--help'], approveFn, revertFn));
+    await assert.doesNotReject(main(['-h'], approveFn, revertFn));
     // The actual reported risk: --help combined with a real action flag.
-    assert.doesNotThrow(() => main(['--card', 'abc123', '--branch', 'auto/foo', '--action', 'approve', '--help'], approveFn, revertFn));
-    assert.doesNotThrow(() => main(['--card', 'abc123', '--branch', 'auto/foo', '--action', 'revert', '--help'], approveFn, revertFn));
-    assert.doesNotThrow(() => main(['--card', 'abc123', '--branch', 'auto/foo', '--action', 'approve', '--help=1'], approveFn, revertFn));
+    await assert.doesNotReject(main(['--card', 'abc123', '--branch', 'auto/foo', '--action', 'approve', '--help'], approveFn, revertFn));
+    await assert.doesNotReject(main(['--card', 'abc123', '--branch', 'auto/foo', '--action', 'revert', '--help'], approveFn, revertFn));
+    await assert.doesNotReject(main(['--card', 'abc123', '--branch', 'auto/foo', '--action', 'approve', '--help=1'], approveFn, revertFn));
   } finally {
     console.log = origLog;
   }
