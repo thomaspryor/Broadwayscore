@@ -22,7 +22,7 @@ test('--help / -h return before any cmux call', () => {
     listWorkspaces: () => { throw new Error('listWorkspaces must not be called for --help'); },
     pruneDone: () => { throw new Error('pruneDone must not be called for --help'); },
     isDoneTitle: () => { throw new Error('isDoneTitle must not be called for --help'); },
-    claudeRunningIn: () => { throw new Error('claudeRunningIn must not be called for --help'); },
+    claudeAliveIn: () => { throw new Error('claudeAliveIn must not be called for --help'); },
   };
   const logged = [];
   const origLog = console.log;

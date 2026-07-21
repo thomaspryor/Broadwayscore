@@ -4,12 +4,12 @@
 
 ## 🌐 External APIs & services
 - [Vercel API + billing](reference_vercel_billing_api.md) — VERCEL_TOKEN in .env; /v1/invoices[/upcoming]; deploy freq = cost lever ([[feedback_vercel_api_access.md]])
-- [Analytics Real Users lens](feedback_analytics_real_users_lens.md) — GA4 bot-inflated; PostHog (proj 332742) is_owner + SG/CN/VN excluded; newsletter email has no UTM ([[feedback_newsletter_no_utm.md]])
+- [Analytics Real Users lens](feedback_analytics_real_users_lens.md) — GA4 bot-inflated; PostHog (proj 332742) is_owner + SG/CN/VN excluded ([[feedback_newsletter_no_utm.md]])
 - [Google Search Console API](feedback_gsc_api_auth.md) — gcloud ADC + webmasters scope; X-Goog-User-Project header required
 
 ## 👤 User profile & session discipline
-- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — ✅-only via bsc-prune; --help executes
-- [Terse output default](feedback_terse_output_default.md) — no recap, keep proof; Claude-pace estimates; ADHD shaping in global CLAUDE.md, plugin rejected ([[feedback_no_human_day_estimates.md]])
+- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — prune owner-only, skips live claudes ([[cmux-closed-tab-restore-recipe]])
+- [Terse output default](feedback_terse_output_default.md) — no recap, keep proof; Claude-pace estimates; ADHD shaping in global CLAUDE.md ([[feedback_no_human_day_estimates.md]])
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff"; laptop+phone, infer from message style ([[feedback_user_device_context.md]])
 - [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/visual-qa/approvals myself, report outcomes not process; Stop hook blocks "done", bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
 - [Always wait for async](feedback_always_wait_async.md) — never end turn while deploy/rebuild runs; flag-gated features verify on demo URL ([[feedback_flag_gated_verify_on_demo.md]])

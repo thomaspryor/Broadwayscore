@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { parseWorkspaces, isDoneTitle, hasRunningClaude } = require('./cmux-workspaces.js');
+const { parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude } = require('./cmux-workspaces.js');
 
 // Captured from `cmux list-workspaces` 2026-07-12 (cmux 0.64.6)
 const LIST_SAMPLE = `  workspace:2  ⠂ Box office card improvements
@@ -51,6 +51,68 @@ test('hasRunningClaude: detects the claude_code Running tag row', () => {
   assert.equal(hasRunningClaude(TOP_RUNNING), true);
   assert.equal(hasRunningClaude(TOP_IDLE), false);
   assert.equal(hasRunningClaude(''), false);
+});
+
+// Captured from `cmux top --workspace workspace:194 --processes --format tsv`
+// 2026-07-21 (cmux 0.64.17): a claude WAITING at the prompt — tag row present,
+// status column empty. This is the shape prune wrongly closed as "idle".
+const TOP_WAITING = `2.7\t955809792\t6\tworkspace\tworkspace:194\twindow:1\tData·iOS design proposals
+2.7\t944504832\t3\ttag\tworkspace:CD32EC51-13AE-49DF-9921-4FF9F8382FB0:tag:claude_code\tworkspace:194\t
+2.7\t570261504\t1\tprocess\t78491\tworkspace:CD32EC51-13AE-49DF-9921-4FF9F8382FB0:tag:claude_code\t2.1.216`;
+
+test('hasLiveClaude: waiting-at-prompt claude (no status) counts as LIVE', () => {
+  assert.equal(hasLiveClaude(TOP_WAITING), true);
+  // 2026-07-21 incident guard: the Running-only check must NOT treat it as
+  // running — the two predicates intentionally diverge on this shape, and
+  // pruneDone must use the live one.
+  assert.equal(hasRunningClaude(TOP_WAITING), false);
+});
+
+test('hasLiveClaude: running claude is live; dead workspace is not', () => {
+  assert.equal(hasLiveClaude(TOP_RUNNING), true);
+  assert.equal(hasLiveClaude(TOP_IDLE), false);
+  assert.equal(hasLiveClaude(''), false);
+});
+
+test('hasLiveClaude: column-exact — title mentioning claude_code is not a tag row', () => {
+  const titleTrap = `5.9\t1\t2\tworkspace\tworkspace:9\twindow:1\tRunning tag:claude_code experiments`;
+  assert.equal(hasLiveClaude(titleTrap), false);
+});
+
+test('hasLiveClaude: stale tag row with NO process rows is NOT live (prunable)', () => {
+  // Hypothetical crash leftover: tag survives, processes gone. Prune must
+  // still be able to sweep it (codex ship-check finding, 2026-07-21).
+  const staleTag = `2.7\t1\t0\ttag\tworkspace:X:tag:claude_code\tworkspace:9\t`;
+  assert.equal(hasLiveClaude(staleTag), false);
+});
+
+test('hasLiveClaude: other agents (codex tag) do not count as a live claude', () => {
+  const codexOnly = `2.7\t1\t1\ttag\tworkspace:X:tag:codex\tworkspace:9\t
+2.7\t1\t1\tprocess\t123\tworkspace:X:tag:codex\tcodex`;
+  assert.equal(hasLiveClaude(codexOnly), false);
+});
+
+test('pruneDone: skips waiting-at-prompt tabs; closes only dead ones; throw = alive', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [
+      { ref: 'workspace:1', title: '✅ waiting tab' },
+      { ref: 'workspace:2', title: '✅ dead tab' },
+      { ref: 'workspace:3', title: '✅ cmux-error tab' },
+      { ref: 'workspace:4', title: 'unmarked live tab' },
+    ],
+    claudeAliveIn: ref => {
+      if (ref === 'workspace:1') return true;             // waiting at prompt
+      if (ref === 'workspace:2') return false;            // truly dead
+      throw new Error('socket busy');                     // transient error
+    },
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, ['workspace:2']);
+  assert.deepEqual(closed.map(w => w.ref), ['workspace:2']);
+  // the throw path must NOT close: seam throws → pruneDone must treat as alive
+  assert.deepEqual(skipped.map(w => w.ref).sort(), ['workspace:1', 'workspace:3']);
 });
 
 test('hasRunningClaude: column-exact — no substring false positives', () => {
