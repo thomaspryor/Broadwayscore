@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-21T17:48:37.973Z",
+  "generatedAt": "2026-07-21T18:46:00.260Z",
   "date": "2026-07-21",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 196893,
+  "entryCount": 198446,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -11827,6 +11827,21 @@
     {
       "showId": "stereophonic-off-broadway-2023",
       "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "kinky-boots-off-broadway-2026",
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
