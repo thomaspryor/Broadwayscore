@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-21T21:26:20.605Z",
+  "timestamp": "2026-07-21T23:35:03.410Z",
   "stats": {
-    "totalReviews": 40300,
-    "alreadyFlagged": 17704,
+    "totalReviews": 40299,
+    "alreadyFlagged": 17710,
     "dateGuardCatches": 49,
     "directorMismatch": 912,
-    "tvFilmSignals": 1107,
+    "tvFilmSignals": 1105,
     "londonSignals": 752,
     "offBroadwaySignals": 472,
     "yearMismatch": 85,
-    "noPublishDate": 3549
+    "noPublishDate": 3515
   },
   "findings": [
     {
@@ -777,7 +777,7 @@
     {
       "showId": "all-my-sons-2019",
       "file": "broadwaynews--elizabeth-bradley.json",
-      "score": 88,
+      "score": 90,
       "publishDate": "2019-04-22",
       "url": "https://broadway.news/2019/04/22/review-a-superb-all-my-sons-revitalizes-a-classic-drama/",
       "findings": [
@@ -815,7 +815,7 @@
     {
       "showId": "all-my-sons-2019",
       "file": "hollywood-reporter--frank-scheck.json",
-      "score": 88,
+      "score": 87,
       "publishDate": "April 22, 2019",
       "url": "https://www.hollywoodreporter.com/review/all-my-sons-theater-review-1203756",
       "findings": [
@@ -829,7 +829,7 @@
     {
       "showId": "all-my-sons-2019",
       "file": "latimes--charles-mcnulty.json",
-      "score": 77,
+      "score": 75,
       "publishDate": "2019-04-22",
       "url": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-all-my-sons-review-20190422-story.html",
       "findings": [
@@ -857,7 +857,7 @@
     {
       "showId": "all-my-sons-2019",
       "file": "nytimes--jesse-green.json",
-      "score": 59,
+      "score": 49,
       "publishDate": "April 22, 2019",
       "url": "https://www.nytimes.com/2019/04/22/theater/all-my-sons-review.html",
       "findings": [
@@ -1109,7 +1109,7 @@
     {
       "showId": "american-son-2018",
       "file": "curtainup--elyse-sommer.json",
-      "score": 65,
+      "score": 74,
       "publishDate": null,
       "url": "https://www.curtainup.com/americansonbway.html",
       "findings": [
@@ -1137,7 +1137,7 @@
     {
       "showId": "american-son-2018",
       "file": "vulture--sara-holdren.json",
-      "score": 15,
+      "score": 11,
       "publishDate": "November 4th, 2018",
       "url": "http://www.vulture.com/2018/11/theater-review-the-good-intentions-of-american-son.html?utm_source=nym&utm_medium=f1&utm_campaign=feed-full",
       "findings": [
@@ -1815,7 +1815,7 @@
     {
       "showId": "be-more-chill-2019",
       "file": "latimes--charles-mcnulty.json",
-      "score": 48,
+      "score": 42,
       "publishDate": "March 10th, 2019",
       "url": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-be-more-chill-review-20190310-story.html",
       "findings": [
@@ -3073,7 +3073,7 @@
     {
       "showId": "burn-this-2019",
       "file": "broadwayworld--michael-dale.json",
-      "score": 42,
+      "score": 69,
       "publishDate": "2019-04-17",
       "url": "https://www.broadwayworld.com/article/BWW-Review-Adam-Driver-and-Keri-Russell-Star-in-Lanford-Wilsons-Drama-of-Sex-and-Grieving-BURN-THIS-20190417",
       "findings": [
@@ -3087,7 +3087,7 @@
     {
       "showId": "burn-this-2019",
       "file": "dctheatrescene--jonathan-mandell.json",
-      "score": 45,
+      "score": 62,
       "publishDate": "2019-04-16",
       "url": "https://dctheatrescene.com/2019/04/16/burn-this-review-adam-driver-and-keri-russell-rant-and-dance-in-lanford-wilsons-1987-play/",
       "findings": [
@@ -3129,7 +3129,7 @@
     {
       "showId": "burn-this-2019",
       "file": "theater-scene--ron-cohen.json",
-      "score": 79,
+      "score": 78,
       "publishDate": null,
       "url": "https://theaterscene.com/Burn_This_review_April_2019.html",
       "findings": [
@@ -3143,7 +3143,7 @@
     {
       "showId": "burn-this-2019",
       "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 68,
+      "score": 75,
       "publishDate": "April 17th, 2019",
       "url": "https://t2conline.com/burn-this-has-star-wattage/",
       "findings": [
@@ -4522,7 +4522,7 @@
     {
       "showId": "choir-boy-2019",
       "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 89,
+      "score": 93,
       "publishDate": "January 13th, 2019",
       "url": "https://t2conline.com/choir-boy-grabs-you-musically-and-emotionally/",
       "findings": [
@@ -5142,19 +5142,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
-        }
-      ]
-    },
-    {
-      "showId": "cyrano-de-bergerac-west-end-2026",
-      "file": "standard--unknown.json",
-      "publishDate": "2026-06-26",
-      "url": "https://www.standard.co.uk/culture/theatre/cyrano-de-bergerac-noel-coward-theatre-review-b1287720.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
@@ -8012,7 +7999,7 @@
     {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
       "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 57,
+      "score": 65,
       "publishDate": "April 27th, 2019",
       "url": "https://t2conline.com/gary-a-sequel-to-titus-andronicus-has-some-wonderful-tidbits-if-you-can-get-past-what-is-suppose-to-pass-as-humor/",
       "findings": [
@@ -10769,7 +10756,7 @@
     {
       "showId": "hillary-and-clinton-2019",
       "file": "ny1--roma-torre.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2019-04-19",
       "url": "https://ny1.com/nyc/all-boroughs/theater-reviews/2019/04/19/theater-reviews---hillary-and-clinton--",
       "findings": [
@@ -11567,7 +11554,7 @@
     {
       "showId": "ink-2019",
       "file": "nypost--johnny-oleksinski.json",
-      "score": 78,
+      "score": 91,
       "publishDate": "2019-04-24T20:16:59-04:00",
       "url": "https://nypost.com/2019/04/24/ink-review-broadways-latest-is-a-scrappy-seductive-tabloid-tale/?utm_medium=SocialFlow&amp;utm_campaign=SocialFlow&amp;utm_source=NYPTwitter",
       "findings": [
@@ -11600,7 +11587,7 @@
     {
       "showId": "ink-2019",
       "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "May 4th, 2019",
       "url": "https://t2conline.com/ink-an-intelligent-person-play/",
       "findings": [
@@ -13456,7 +13443,7 @@
     {
       "showId": "kiss-me-kate-2019",
       "file": "broadway-blog--matthew-wexler.json",
-      "score": 49,
+      "score": 44,
       "publishDate": "March 15th, 2019",
       "url": "https://thebroadwayblog.com/kiss-me-kate-broadway-review/",
       "findings": [
@@ -13470,7 +13457,7 @@
     {
       "showId": "kiss-me-kate-2019",
       "file": "hollywood-reporter--david-rooney.json",
-      "score": 72,
+      "score": 78,
       "publishDate": "March 15, 2019",
       "url": "http://www.hollywoodreporter.com/review/kiss-me-kate-theater-review-1194513",
       "findings": [
@@ -13484,7 +13471,7 @@
     {
       "showId": "kiss-me-kate-2019",
       "file": "njcom--christopher-kelly.json",
-      "score": 42,
+      "score": 44,
       "publishDate": "2019-03-15",
       "url": "https://www.nj.com/entertainment/2019/03/kiss-me-kate-never-gets-out-of-first-gear-but-be-more-chill-has-charm-broadway-reviews.html",
       "findings": [
@@ -13498,7 +13485,7 @@
     {
       "showId": "kiss-me-kate-2019",
       "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 73,
+      "score": 74,
       "publishDate": "March 23rd, 2019",
       "url": "https://t2conline.com/kiss-me-kate-where-the-hell-cat-has-been-tamed-into-a-beautiful-sophisticated-songbird/",
       "findings": [
@@ -16512,7 +16499,7 @@
     {
       "showId": "oklahoma-2019",
       "file": "curtainup--elyse-sommer.json",
-      "score": 78,
+      "score": 81,
       "publishDate": null,
       "url": "https://www.curtainup.com/oklahomabway19.html",
       "findings": [
@@ -16545,7 +16532,7 @@
     {
       "showId": "oklahoma-2019",
       "file": "nytimes--ben-brantley.json",
-      "score": 95,
+      "score": 96,
       "publishDate": "April 7, 2019",
       "url": "https://www.nytimes.com/2019/04/07/theater/oklahoma-review.html",
       "findings": [
@@ -16553,20 +16540,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from oklahoma-2002"
-        }
-      ]
-    },
-    {
-      "showId": "oklahoma-2019",
-      "file": "rollingstone--david-fear.json",
-      "score": 75,
-      "publishDate": "April 8, 2019",
-      "url": "https://www.rollingstone.com/music/music-lists/new-christmas-albums-2019-reviewed-930467/#:~:text=Oklahoma%20the%20indie%20Xmas%20music,but%20these%20folks%20get%20it.&text=LISTENING%3A%20Very%20traditional%2C%20very%20belt%2Dy%2C,very%20Broadway%2FWest%20End.",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -22645,7 +22618,7 @@
     {
       "showId": "the-cher-show-2018",
       "file": "cabaret-scenes--elizabeth-ahlfors.json",
-      "score": 72,
+      "score": 77,
       "publishDate": "2019-01-24",
       "url": "https://cabaretscenes.org/2019/01/24/the-cher-show-2/",
       "findings": [
@@ -22659,7 +22632,7 @@
     {
       "showId": "the-cher-show-2018",
       "file": "curtainup--elyse-sommer.json",
-      "score": 62,
+      "score": 67,
       "publishDate": null,
       "url": "https://www.curtainup.com/chershow18.html",
       "findings": [
@@ -22673,7 +22646,7 @@
     {
       "showId": "the-cher-show-2018",
       "file": "dctheatrescene--jonathan-mandell.json",
-      "score": 62,
+      "score": 63,
       "publishDate": "2018-12-07",
       "url": "https://dctheatrescene.com/2018/12/07/the-cher-show-review-glitz-hits-and-highlights/",
       "findings": [
@@ -22687,7 +22660,7 @@
     {
       "showId": "the-cher-show-2018",
       "file": "deadline--greg-evans.json",
-      "score": 62,
+      "score": 44,
       "publishDate": "December 3, 2018",
       "url": "https://deadline.com/2018/12/the-cher-show-broadway-review-powerhouse-performances-skimpy-story-1202512841/",
       "findings": [
@@ -22701,7 +22674,7 @@
     {
       "showId": "the-cher-show-2018",
       "file": "latimes--charles-mcnulty.json",
-      "score": 62,
+      "score": 66,
       "publishDate": "2018-12-14",
       "url": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-cher-show-review-20181214-story.html",
       "findings": [
@@ -22715,7 +22688,7 @@
     {
       "showId": "the-cher-show-2018",
       "file": "nydailynews--chris-jones.json",
-      "score": 72,
+      "score": 77,
       "publishDate": "December 3rd, 2018",
       "url": "https://www.nydailynews.com/entertainment/broadway/ny-ent-cher-show-review-1203-story.html",
       "findings": [
@@ -22729,7 +22702,7 @@
     {
       "showId": "the-cher-show-2018",
       "file": "theater-scene--joel-benjamin.json",
-      "score": 76,
+      "score": 81,
       "publishDate": "2018-12-17",
       "url": "https://www.theaterscene.net/musicals/broadway/the-cher-show/joel-benjamin/",
       "findings": [
@@ -23323,7 +23296,7 @@
     {
       "showId": "the-ferryman-2018",
       "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 86,
+      "score": 88,
       "publishDate": "October 30th, 2018",
       "url": "https://t2conline.com/she-says-jez-butterworths-the-ferryman-grabs-you-and-lets-you-know-how-deep-seeded-hate-sprouts/",
       "findings": [
@@ -23337,7 +23310,7 @@
     {
       "showId": "the-ferryman-2018",
       "file": "wsj--terry-teachout.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "October 25th, 2018",
       "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470",
       "findings": [
@@ -24277,7 +24250,7 @@
     {
       "showId": "the-new-one-2018",
       "file": "dailybeast--tim-teeman.json",
-      "score": 88,
+      "score": 90,
       "publishDate": null,
       "url": "https://www.thedailybeast.com/mike-birbiglia-and-michael-c-hall-star-in-two-very-different-theatrical-monologues/",
       "findings": [
@@ -24291,7 +24264,7 @@
     {
       "showId": "the-new-one-2018",
       "file": "front-row-center--brittany-crowell.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2018-11-17T16:01:58",
       "url": "https://thefrontrowcenter.com/2018/11/the-new-one/",
       "findings": [
@@ -24305,7 +24278,7 @@
     {
       "showId": "the-new-one-2018",
       "file": "newsday--barbara-schuler.json",
-      "score": 78,
+      "score": 80,
       "publishDate": null,
       "url": "https://www.newsday.com/entertainment/theater/the-new-one-mike-birbiglia-1.23170467",
       "findings": [
@@ -25085,7 +25058,7 @@
     {
       "showId": "the-prom-2018",
       "file": "dailybeast--tim-teeman.json",
-      "score": 64,
+      "score": 60,
       "publishDate": "November 15, 2018",
       "url": "https://www.thedailybeast.com/the-prom-on-broadway-shows-the-limitations-of-lgbt-stories-on-stage/?source=articles&via=rss&utm_source=dlvr.it&utm_medium=twitter",
       "findings": [
@@ -25113,7 +25086,7 @@
     {
       "showId": "the-prom-2018",
       "file": "showbiz411--roger-friedman.json",
-      "score": 86,
+      "score": 87,
       "publishDate": "2018-11-17",
       "url": "https://www.showbiz411.com/2018/11/17/broadway-opening-of-hilarious-musical-the-prom-started-an-hour-late-thanks-to-weather-and-it-was-worth-it",
       "findings": [
@@ -25155,7 +25128,7 @@
     {
       "showId": "the-prom-2018",
       "file": "vulture--sara-holdren.json",
-      "score": 82,
+      "score": 87,
       "publishDate": "November 15th, 2018",
       "url": "https://www.vulture.com/2018/11/theater-the-prom-where-theater-geeks-belt-without-shame.html",
       "findings": [
@@ -25618,7 +25591,7 @@
     {
       "showId": "the-waverly-gallery-2018",
       "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 85,
+      "score": 88,
       "publishDate": null,
       "url": "https://t2conline.com/the-waverly-gallery-is-chilling-look-at-dementia/",
       "findings": [
@@ -26184,7 +26157,7 @@
     {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "May 7th, 2019",
       "url": "https://thebroadwayblog.com/tootsie-broadway-review/",
       "findings": [
@@ -26198,7 +26171,7 @@
     {
       "showId": "tootsie-2019",
       "file": "variety--marilyn-stasio.json",
-      "score": 86,
+      "score": 90,
       "publishDate": "April 23, 2019",
       "url": "https://variety.com/2019/legit/reviews/tootsie-review-broadway-musical-1203194758/",
       "findings": [
@@ -26320,7 +26293,7 @@
     {
       "showId": "torch-song-2018",
       "file": "vulture--sara-holdren.json",
-      "score": 45,
+      "score": 62,
       "publishDate": "November 2nd, 2018",
       "url": "http://www.vulture.com/2018/11/theater-a-slightly-tamed-torch-song-returns-to-broadway.html",
       "findings": [
@@ -26557,7 +26530,7 @@
     {
       "showId": "true-west-2019",
       "file": "talkinbroadway--matthew-murray.json",
-      "score": 87,
+      "score": 84,
       "publishDate": "January 25, 2019",
       "url": "https://www.talkinbroadway.com/world/TrueWest.html",
       "findings": [
@@ -27788,7 +27761,7 @@
     {
       "showId": "what-the-constitution-means-to-me-2019",
       "file": "njcom--christopher-kelly.json",
-      "score": 84,
+      "score": 89,
       "publishDate": null,
       "url": "https://www.nj.com/entertainment/2019/04/what-the-constitution-mean-to-me-and-lehman-trilogy-are-two-thrilling-history-lessons-reviews.html",
       "findings": [
@@ -28834,7 +28807,7 @@
     {
       "showId": "aint-too-proud-2019",
       "file": "nytimes--ben-brantley.json",
-      "score": 78,
+      "score": 86,
       "publishDate": "March 22, 2019",
       "url": "https://www.nytimes.com/2019/03/21/theater/aint-too-proud-review-the-temptations.html?partner=IFTTT",
       "findings": [
@@ -28848,7 +28821,7 @@
     {
       "showId": "aint-too-proud-2019",
       "file": "nytimes--jesse-green.json",
-      "score": 79,
+      "score": 86,
       "publishDate": "March 22, 2019",
       "url": "https://www.nytimes.com/2019/03/21/theater/aint-too-proud-review-the-temptations.html",
       "findings": [
@@ -31123,7 +31096,7 @@
     {
       "showId": "choir-boy-2019",
       "file": "dailybeast--tim-teeman.json",
-      "score": 72,
+      "score": 71,
       "publishDate": "January 8, 2019",
       "url": "https://www.thedailybeast.com/tarell-alvin-mccraney-won-an-oscar-choir-boy-marks-his-broadway-debut?source=articles&via=rss",
       "findings": [
@@ -31137,8 +31110,8 @@
     {
       "showId": "choir-boy-2019",
       "file": "theatres-leiter-side--samuel-l-leiter.json",
-      "score": 68,
-      "publishDate": null,
+      "score": 74,
+      "publishDate": "2019-01-01",
       "url": "https://slleiter.blogspot.com/2019/01/143-2018-2019-choir-boy-seen-january-9.html",
       "findings": [
         {
@@ -32584,7 +32557,7 @@
     {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
       "file": "theater-scene--victor-gluck.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2019-04-26",
       "url": "https://www.theaterscene.net/plays/broadway-plays/gary-a-sequel-to-titus-andronicus/victor-gluck/",
       "findings": [
@@ -33778,7 +33751,7 @@
     {
       "showId": "hillary-and-clinton-2019",
       "file": "dailybeast--tim-teeman.json",
-      "score": 58,
+      "score": 61,
       "publishDate": null,
       "url": "https://www.thedailybeast.com/laurie-metcalf-in-hillary-and-clinton-on-broadway-reveals-the-making-of-a-presidential-loser/",
       "findings": [
@@ -34152,7 +34125,7 @@
     {
       "showId": "ink-2019",
       "file": "exeunt-magazine--juliet-hindell.json",
-      "score": 82,
+      "score": 88,
       "publishDate": "2019-04-29",
       "url": "https://exeuntnyc.com/reviews/review-ink-at-samuel-j-friedman-theatre/",
       "findings": [
@@ -34166,7 +34139,7 @@
     {
       "showId": "ink-2019",
       "file": "frontmezzjunkies--steven-ross.json",
-      "score": 88,
+      "score": 90,
       "publishDate": "2019-05-04",
       "url": "https://frontmezzjunkies.com/2019/05/04/manhattan-theatre-club-ink/",
       "findings": [
@@ -34180,7 +34153,7 @@
     {
       "showId": "ink-2019",
       "file": "hollywood-reporter--david-rooney.json",
-      "score": 42,
+      "score": 61,
       "publishDate": "April 24, 2019",
       "url": "https://www.hollywoodreporter.com/review/ink-theater-1204291",
       "findings": [
@@ -34208,7 +34181,7 @@
     {
       "showId": "ink-2019",
       "file": "theater-scene--david-kaufman.json",
-      "score": 45,
+      "score": 62,
       "publishDate": "2019-05-03",
       "url": "https://www.theaterscene.net/plays/broadway-plays/ink/david-kaufman/",
       "findings": [
@@ -34236,7 +34209,7 @@
     {
       "showId": "ink-2019",
       "file": "variety--christopher-kelly.json",
-      "score": 42,
+      "score": 62,
       "publishDate": "April 24, 2019",
       "url": "https://variety.com/2019/legit/reviews/ink-review-broadway-jonny-lee-miller-1203196513/",
       "findings": [
@@ -34822,7 +34795,7 @@
     {
       "showId": "king-lear-2019",
       "file": "dctheatrescene--jonathan-mandell.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2019-04-04",
       "url": "https://dctheatrescene.com/2019/04/04/king-lear-review-glenda-jackson-in-must-see-if-imperfect-shakespeare/",
       "findings": [
@@ -36446,7 +36419,7 @@
     {
       "showId": "network-2018",
       "file": "amny--matt-windman.json",
-      "score": 88,
+      "score": 90,
       "publishDate": "2018-12-06",
       "url": "https://www.amny.com/entertainment/broadway-review-network-cranston-1.24287410/",
       "findings": [
@@ -36530,7 +36503,7 @@
     {
       "showId": "network-2018",
       "file": "wnyc--jennifer-vanasco.json",
-      "score": 58,
+      "score": 57,
       "publishDate": null,
       "url": "https://www.wnyc.org/story/review-network-cranston-mad-as-hell-do-we-care/",
       "findings": [
@@ -41226,7 +41199,7 @@
     {
       "showId": "the-ferryman-2018",
       "file": "british-theatre--philip-fisher.json",
-      "score": 91,
+      "score": 92,
       "publishDate": "January 16th, 2019",
       "url": "https://www.britishtheatreguide.info/reviews/the-ferryman-bernard-b-jaco-17010",
       "findings": [
@@ -41240,7 +41213,7 @@
     {
       "showId": "the-ferryman-2018",
       "file": "broadway-blog--samuel-l-leiter.json",
-      "score": 92,
+      "score": 94,
       "publishDate": null,
       "url": "https://thebroadwayblog.com/ferryman-broadway-review/",
       "findings": [
@@ -41254,7 +41227,7 @@
     {
       "showId": "the-ferryman-2018",
       "file": "catholic-transcript--bernard-carragher.json",
-      "score": 91,
+      "score": 93,
       "publishDate": null,
       "url": "https://www.catholictranscript.org/arts-media/theater-reviews/5961-broadway-s-the-ferryman.html",
       "findings": [
@@ -41268,7 +41241,7 @@
     {
       "showId": "the-ferryman-2018",
       "file": "cititour--brian-scott-lipton.json",
-      "score": 91,
+      "score": 93,
       "publishDate": null,
       "url": "https://cititour.com/NYC_Broadway/The-Ferryman/454",
       "findings": [
@@ -41282,7 +41255,7 @@
     {
       "showId": "the-ferryman-2018",
       "file": "frontmezzjunkies--steven-ross.json",
-      "score": 92,
+      "score": 91,
       "publishDate": "2018-10-23",
       "url": "https://frontmezzjunkies.com/2018/10/23/broadway-the-ferryman/",
       "findings": [
@@ -41296,7 +41269,7 @@
     {
       "showId": "the-ferryman-2018",
       "file": "hudsonreview--erick-neher.json",
-      "score": 70,
+      "score": 91,
       "publishDate": "February 22nd, 2019",
       "url": "https://hudsonreview.com/2019/02/theater-big-and-small-the-fall-season-in-new-york/#.XGWGZlVKiJA",
       "findings": [
@@ -41310,7 +41283,7 @@
     {
       "showId": "the-ferryman-2018",
       "file": "this-week-in-new-york--mark-rifkin.json",
-      "score": 92,
+      "score": 94,
       "publishDate": "2019-01-09",
       "url": "https://twi-ny.com/blog/2019/01/09/the-ferryman/",
       "findings": [
@@ -43703,7 +43676,7 @@
     {
       "showId": "true-west-2019",
       "file": "hollywood-reporter--frank-scheck.json",
-      "score": 52,
+      "score": 67,
       "publishDate": null,
       "url": "https://www.hollywoodreporter.com/review/true-west-review-1177735",
       "findings": [
@@ -43997,7 +43970,7 @@
     {
       "showId": "what-the-constitution-means-to-me-2019",
       "file": "broadwayworld--michael-dale.json",
-      "score": 85,
+      "score": 88,
       "publishDate": "March 31st, 2019",
       "url": "https://www.broadwayworld.com/article/BWW-Review-Heidi-Schrecks-Pulitzer-Worthy-WHAT-THE-CONSTITUTION-MEANS-TO-ME-Moves-To-Broadway-20190331",
       "findings": [
@@ -44011,8 +43984,8 @@
     {
       "showId": "what-the-constitution-means-to-me-2019",
       "file": "curtainup--deirdre-donovan.json",
-      "score": 82,
-      "publishDate": null,
+      "score": 78,
+      "publishDate": "2019-04-04",
       "url": "https://www.curtainup.com/whattheconstitutionmeans.html",
       "findings": [
         {
@@ -44025,7 +43998,7 @@
     {
       "showId": "what-the-constitution-means-to-me-2019",
       "file": "frontmezzjunkies--steven-ross.json",
-      "score": 81,
+      "score": 85,
       "publishDate": "2019-04-04",
       "url": "https://frontmezzjunkies.com/2019/04/04/constitution-broadway/",
       "findings": [
@@ -44053,8 +44026,8 @@
     {
       "showId": "what-the-constitution-means-to-me-2019",
       "file": "the-theatre-times--michael-appler.json",
-      "score": 92,
-      "publishDate": null,
+      "score": 91,
+      "publishDate": "2019-04-01",
       "url": "https://thetheatretimes.com/on-broadway-what-the-constitution-means-to-me-exorcises-a-troubled-american-ethos/",
       "findings": [
         {
@@ -44067,8 +44040,8 @@
     {
       "showId": "what-the-constitution-means-to-me-2019",
       "file": "thewrap--thom-geier.json",
-      "score": 80,
-      "publishDate": null,
+      "score": 85,
+      "publishDate": "2019-03-18",
       "url": "https://www.thewrap.com/what-constitution-means-to-me-theater-review-heidi-schreck/",
       "findings": [
         {
@@ -44081,7 +44054,7 @@
     {
       "showId": "what-the-constitution-means-to-me-2019",
       "file": "timteeman--tim-teeman.json",
-      "score": 72,
+      "score": 89,
       "publishDate": "March 31st, 2019",
       "url": "http://www.timteeman.com/2019/03/31/what-the-constitution-means-to-me-how-heidi-schreck-wins-the-argument-on-broadway/",
       "findings": [
@@ -44095,7 +44068,7 @@
     {
       "showId": "what-the-constitution-means-to-me-2019",
       "file": "vulture--sara-holdren.json",
-      "score": 88,
+      "score": 91,
       "publishDate": "March 31st, 2019",
       "url": "https://www.vulture.com/2019/03/theater-debating-what-the-constitution-means-to-me.html",
       "findings": [
