@@ -205,6 +205,14 @@ runs:
           [ -f "commercial.json" ] && cp commercial.json /tmp/our-commercial.json
           [ -f "commercial-pending-review.json" ] && cp commercial-pending-review.json /tmp/our-commercial-pending.json
 
+          # Save remote's diary-shows.json + our pre-rebase copy. diary-shows.json
+          # is an array-of-shows with THREE independent writers (import-mezzanine-
+          # historical, resolve-unmatched-imports nightly, refresh-mezzanine-catalog
+          # weekly). -X ours alone silently drops the side that lost the race's
+          # newly-added shows — same data-loss class as commercial.json (card #176).
+          git show origin/main:diary-shows.json > /tmp/remote-diary-shows.json 2>/dev/null || true
+          [ -f "diary-shows.json" ] && cp diary-shows.json /tmp/our-diary-shows.json
+
           # Rebase with -X ours: our version wins on conflicts.
           # Post-rebase reconciliation below restores any remote-only changes
           # that -X ours silently dropped (manual corrections to shows.json, audience-buzz).
@@ -404,6 +412,38 @@ runs:
               git add commercial-pending-review.json
               git commit --amend --no-edit
               echo "Amended commit with reconciled commercial-pending-review.json"
+            fi
+          fi
+
+          # Reconcile diary-shows.json. Array-of-shows keyed by mezzanineId, with
+          # three independent append/update-only writers (import-mezzanine-
+          # historical, resolve-unmatched-imports, refresh-mezzanine-catalog).
+          # -X ours would keep only our side wholesale, silently dropping any
+          # shows the other side added. mergeDiaryShows unions both sides by
+          # mezzanineId (fallback id); ours wins on shared keys (matches -X ours),
+          # remote-only shows are re-added. Card #176 (same class as CDX-P0-2).
+          if [ -f "/tmp/our-diary-shows.json" ] && [ -f "/tmp/remote-diary-shows.json" ] && [ -f "diary-shows.json" ]; then
+            node -e '
+              const path = require("path");
+              const ws = process.env.GITHUB_WORKSPACE;
+              const fs = require("fs");
+              try {
+                const { mergeDiaryShows } = require(path.join(ws, "scripts/lib/merge-diary-shows"));
+                const ours = JSON.parse(fs.readFileSync("/tmp/our-diary-shows.json", "utf8"));
+                const remote = JSON.parse(fs.readFileSync("/tmp/remote-diary-shows.json", "utf8"));
+                const { merged, stats } = mergeDiaryShows(ours, remote);
+                // Match the three writers on-disk format (no trailing newline)
+                // so a no-op merge produces a byte-identical file and skips the amend.
+                fs.writeFileSync("diary-shows.json", JSON.stringify(merged, null, 2));
+                console.log("Reconciled diary-shows.json: " + JSON.stringify(stats));
+              } catch (e) {
+                console.error("diary-shows.json reconciliation failed (non-fatal):", e.message);
+              }
+            ' 2>&1 || true
+            if ! git diff --quiet diary-shows.json 2>/dev/null; then
+              git add diary-shows.json
+              git commit --amend --no-edit
+              echo "Amended commit with reconciled diary-shows.json"
             fi
           fi
 
