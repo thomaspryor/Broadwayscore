@@ -452,8 +452,11 @@ async function reviewWithGemini({ refPaths, refRoles, implPaths, apiKey, model =
     body: JSON.stringify({
       contents: [{ parts }],
       // gemini-2.5-pro REQUIRES thinking mode (thinkingBudget=0 → HTTP 400).
-      // Omit thinkingConfig to use the model's default budget.
-      generationConfig: { temperature: 0, maxOutputTokens: 2048 },
+      // Omit thinkingConfig to use the model's default budget. maxOutputTokens
+      // must cover thinking tokens TOO — at 2048 the model's thoughts alone hit
+      // the cap and it returns no content (finishReason=MAX_TOKENS, empty
+      // candidates) on multi-ref reviews. 8192 leaves room for both.
+      generationConfig: { temperature: 0, maxOutputTokens: 8192 },
     }),
     signal: AbortSignal.timeout(60000),
   });

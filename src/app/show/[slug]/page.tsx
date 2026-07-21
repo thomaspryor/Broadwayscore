@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { getShowBySlug, getShowById, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
+import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import { getShowAwards } from '@/lib/data-awards';
 import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
 import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
@@ -285,6 +286,9 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const score = show.criticScore?.score;
   const grosses = getShowGrosses(params.slug);
   const weekEnding = getGrossesWeekEnding();
+  // History-derived card extras (sparkline, rank, market share, attendance
+  // deltas). Server-only import — keeps the 5.5 MB history out of the client.
+  const boxOfficeHistory = grosses ? getBoxOfficeHistoryStats(params.slug) : null;
   const awards = getShowAwards(show.id);
   const tonyNamesByCategory = getTonyNamesByCategory(show.id);
   const audienceBuzz = getAudienceBuzz(show.id);
@@ -926,6 +930,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           tonyNamesByCategory={tonyNamesByCategory}
           grosses={grosses ?? null}
           weekEnding={weekEnding}
+          boxOfficeHistory={boxOfficeHistory}
           commercial={commercial}
           recoupmentTrend={recoupmentTrend}
           ranks={ranks}
