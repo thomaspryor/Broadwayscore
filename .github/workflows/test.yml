@@ -427,6 +427,12 @@ on:
       - 'scripts/monitor-email-gate-funnel.js'
       - 'scripts/analyze-email-gate-funnel.js'
       - 'scripts/lib/posthog-query.js'
+      # gate-cold-start A/B weekly monitor (card #247) — pure rules + runner +
+      # analyzer; colocated test runs in the scripts/lib/*.test.mjs glob step.
+      - 'scripts/lib/gate-cold-start-rules.js'
+      - 'scripts/lib/gate-cold-start-rules.test.mjs'
+      - 'scripts/monitor-gate-cold-start.js'
+      - 'scripts/analyze-gate-cold-start.js'
       - 'scripts/lib/email-templates-headline.test.mjs'
       # Score-tier label display/data decoupling contract (Skippable wire key vs Mixed display).
       - 'scripts/lib/score-tier-label-contract.test.mjs'

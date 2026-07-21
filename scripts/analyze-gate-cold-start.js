@@ -80,7 +80,7 @@ async function flagHealth() {
     return { ok: false, problem: `variant split drifted from pre-registered 50/50: [${split}]` };
   }
   const rollout = f.filters?.groups?.[0]?.rollout_percentage;
-  if (rollout !== 100 && rollout != null) return { ok: false, problem: `release rollout is ${rollout}% (expected 100%)` };
+  if (rollout !== 100) return { ok: false, problem: `release rollout is ${rollout}% (expected 100%)` };
   return { ok: true, problem: null };
 }
 
@@ -91,6 +91,7 @@ async function main() {
 
   const health = await flagHealth();
   summary.flagHealthy = health.ok;
+  summary.flagHealthProblem = health.problem;
   say(`FLAG HEALTH: ${health.ok ? '✅ active, 50/50, 100% rollout' : `🛑 ${health.problem}`}`);
   if (!health.ok) say('  → fix the flag BEFORE reading any numbers below; data during the broken window is contaminated.');
 
@@ -135,6 +136,11 @@ async function main() {
   const effectiveDays = Math.max(Math.min(DAYS, msSinceStart / 86400000), 1 / 24);
   const weeks = effectiveDays / 7;
   say(`Window in effect: ${effectiveDays.toFixed(1)} days of experiment runtime`);
+  // For monitor-gate-cold-start.js's 4-week milestone check — meaningful only
+  // when --days is large enough that effectiveDays isn't itself clipped by DAYS
+  // (i.e. the cumulative window, not the 7d recent one).
+  summary.effectiveDays = +effectiveDays.toFixed(2);
+  summary.experimentStart = EXPERIMENT_START;
 
   const exposedCount = { control: 0, 'cold-start': 0 };
   for (const [, arm] of exposure) {

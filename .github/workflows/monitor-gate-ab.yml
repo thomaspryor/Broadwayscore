@@ -1,8 +1,10 @@
 name: Monitor Gate A/B
 
-# Weekly guardrail monitor for the mobile-gate-timing email-capture A/B, PLUS
-# (card #240) the overall email-gate funnel monitor — nothing previously
-# watched the funnel itself, only the (never-launched) A/B's guardrails.
+# Weekly guardrail monitor for the mobile-gate-timing email-capture A/B, the
+# overall email-gate funnel (card #240), PLUS (card #247) the gate-cold-start
+# A/B — analyze-gate-cold-start.js landed 2026-07-21 with full ITT analysis +
+# flag-health checks but no cron/alert wiring, the same gap #240 closed for
+# the overall funnel.
 #
 # Step 1 (mobile-gate-timing A/B): emails the owner proactively when the
 # experiment goes live, when it reaches the pre-registered power floor (950
@@ -16,8 +18,16 @@ name: Monitor Gate A/B
 # regardless of conversion rate. Full context:
 # ~/Documents/claude-outputs/email-gate-analysis-2026-07-20.md
 #
-# Weekly summaries are log-only (no Discord). Neither step judges a primary
-# metric or touches gate/flag config — those stay owner decisions.
+# Step 3 (gate-cold-start A/B): flag health (exists/active/50-50/100%
+# rollout), combined captures/week collapse (2 consecutive meaningful weeks
+# below ~1/wk vs a ~4/wk baseline), impression-split sanity (control:cold-start
+# should stay roughly 10:1 — parity means the 2-page-minimum filter stopped
+# applying), and a once-only "4 weeks elapsed — time to judge the ITT primary"
+# nudge. Never judges the primary itself. Pre-registered rules live as
+# comments in analyze-gate-cold-start.js (no separate doc exists yet).
+#
+# Weekly summaries are log-only (no Discord). No step judges a primary metric
+# or touches gate/flag config — those stay owner decisions.
 
 on:
   schedule:
@@ -65,28 +75,36 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/monitor-email-gate-funnel.js ${{ inputs.dry_run && '--dry-run' || '' }}
 
+      - name: Run gate-cold-start A/B monitor (card #247)
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/monitor-gate-cold-start.js ${{ inputs.dry_run && '--dry-run' || '' }}
+
       - name: Commit monitor state
-        # always() so a failure in EITHER monitor step still commits whatever
-        # state the OTHER step already earned this run (e.g. step 1's
-        # liveAlertedAt stamp) — without it, a step-2 failure would skip this
-        # entirely and step 1's already-sent alert would resend next week.
+        # always() so a failure in ANY monitor step still commits whatever
+        # state the OTHER steps already earned this run (e.g. step 1's
+        # liveAlertedAt stamp) — without it, a later-step failure would skip
+        # this entirely and an earlier step's already-sent alert would resend
+        # next week.
         if: ${{ always() && !inputs.dry_run }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Per-file guard: `git add existing missing` exits 128 and stages
           # NEITHER file (verified) — under this step's default `bash -e`,
-          # that would crash the whole step and lose the OTHER monitor's
-          # earned state too. Matters on the funnel monitor's first-ever run,
-          # before its state file exists in the repo tree.
-          for f in data/audit/gate-ab-monitor-state.json data/audit/email-gate-funnel-monitor-state.json; do
+          # that would crash the whole step and lose the OTHER monitors'
+          # earned state too. Matters on a monitor's first-ever run, before
+          # its state file exists in the repo tree.
+          for f in data/audit/gate-ab-monitor-state.json data/audit/email-gate-funnel-monitor-state.json data/audit/gate-cold-start-monitor-state.json; do
             [ -f "$f" ] && git add "$f"
           done
           if git diff --cached --quiet; then
             echo "No state change to commit"
             exit 0
           fi
-          git commit -m "data: gate A/B + email-gate funnel monitor state [skip ci]"
+          git commit -m "data: gate A/B + email-gate funnel + gate-cold-start monitor state [skip ci]"
           bash scripts/lib/push-with-retry.sh
 
       - name: Notify on failure
