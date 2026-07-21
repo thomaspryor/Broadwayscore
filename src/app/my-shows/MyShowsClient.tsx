@@ -708,10 +708,13 @@ export default function MyShowsClient() {
 
       {/* Stats bar removed — the To Be Rated / Upcoming sections carry their
           own headers, so the counts only pushed content down (owner, 2026-07-17). */}
-      {!isMockMode && user && (
+      {/* Mock mode (localhost-only) renders the importer only on explicit
+          opt-in (&importer=1) so Playwright can drive the preview modal via a
+          file upload without shifting the mock-page visual baselines. */}
+      {(user || (isMockMode && searchParams.get('importer') === '1')) && (
         <div className="mb-4 sm:mb-6">
           <ImportShows
-            userId={user.id}
+            userId={user?.id ?? 'mock-user'}
             existingReviewShowIds={new Set(reviews.map(r => r.show_id))}
             existingWatchlistShowIds={new Set(watchlist.map(w => w.show_id))}
             onImportComplete={() => { getAllReviews(); getWatchlist(true); }}

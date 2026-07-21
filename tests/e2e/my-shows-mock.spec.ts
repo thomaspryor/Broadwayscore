@@ -579,3 +579,44 @@ test.describe('Date picker — touch commit-on-close', () => {
     expect(result.landedOnClose, 'picked date did not land after closing the wheel').toBe(true);
   });
 });
+
+// ─── Import preview (mock-mode importer) ───────────────────────
+
+test.describe('My Shows — Import preview', () => {
+  // Titles/venues pinned to closed historical productions so the catalog's
+  // od/cd never drift: Come From Away (2017) + Hadestown (2019) with
+  // pre-run dates exercise the dateSuspect deselection; venue forces the
+  // Broadway production over undated diary-tour twins of the same title.
+  const fixture = {
+    appVersion: 'e2e-fixture',
+    data: {
+      diaryEntries: [
+        { show: { name: 'The Lion King', id: 'fx1' }, rating: 3.5, date: '2019-01-05', review: null },
+        { show: { name: 'Come From Away', id: 'fx2' }, rating: 4, date: '2005-06-01', review: null, production: { theater: { name: 'Gerald Schoenfeld Theatre' } } },
+        { show: { name: 'Hadestown', id: 'fx3' }, rating: 4.5, date: '2000-01-01', review: null, production: { theater: { name: 'Walter Kerr Theatre' } } },
+      ],
+      lists: [],
+    },
+  };
+
+  test('summary names the not-selected (date-suspect) shows; singular CTA', async ({ page }) => {
+    // &importer=1: the importer is opt-in in mock mode so the mock-page
+    // visual baselines stay importer-free.
+    await page.goto(`${MOCK_URL}&importer=1`);
+    await waitForMockData(page);
+    await page.getByText('Import from Show Score or Mezzanine').click();
+    await page.locator('input[type="file"]').setInputFiles({
+      name: 'mezz-export.json',
+      mimeType: 'application/json',
+      buffer: Buffer.from(JSON.stringify(fixture)),
+    });
+    await expect(page.getByRole('heading', { name: 'Review Import' })).toBeVisible();
+    // The "not selected" chip must NAME the shows, not just count them —
+    // a bare count sent the owner scrolling a 98-row list (2026-07-21).
+    await expect(page.getByText('2 not selected — Come From Away, Hadestown')).toBeVisible();
+    // Both deselected rows carry the inline date-mismatch explanation.
+    await expect(page.getByText(/outside this production.s run/)).toHaveCount(2);
+    // Pluralization: exactly one selected show → "Import 1 Show", not "1 Shows".
+    await expect(page.getByRole('button', { name: 'Import 1 Show', exact: true })).toBeVisible();
+  });
+});
