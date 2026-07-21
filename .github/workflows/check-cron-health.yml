@@ -29,6 +29,7 @@ jobs:
           CRITICAL_CRONS=(
             "opening-night-broadcast.yml|36|Opening Night Broadcast"
             "monitor-gate-ab.yml|184|Monitor Gate A/B"
+            "check-flag-parity.yml|184|Check Flag Parity"
             "opening-night-orchestrator.yml|25|Opening Night Orchestrator"
             "update-show-status.yml|36|Update Show Status"
             "rebuild-reviews.yml|36|Rebuild Reviews"

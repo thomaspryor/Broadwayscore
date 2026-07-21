@@ -415,6 +415,9 @@ on:
       - 'src/contexts/ProGateContext.tsx'
       - 'src/components/EmailCaptureModal.tsx'
       - 'tests/unit/gate-logic.test.mjs'
+      # Shared weekly-monitor runner boilerplate (card #249) — used by all 3
+      # gate monitors below; without this entry edits get ZERO CI.
+      - 'scripts/lib/weekly-monitor-runner.js'
       # Gate A/B weekly monitor (pure rules + runner; colocated test runs in the lib glob).
       - 'scripts/lib/gate-ab-monitor-rules.js'
       - 'scripts/lib/gate-ab-monitor-rules.test.mjs'
@@ -433,6 +436,14 @@ on:
       - 'scripts/lib/gate-cold-start-rules.test.mjs'
       - 'scripts/monitor-gate-cold-start.js'
       - 'scripts/analyze-gate-cold-start.js'
+      # Flag-parity guardrail (card #250) — registry + static scanner + CI
+      # gate + weekly live-PostHog monitor; colocated tests run in the
+      # scripts/lib/*.test.mjs glob step.
+      - 'scripts/lib/flag-registry.js'
+      - 'scripts/lib/flag-registry.test.mjs'
+      - 'scripts/lib/flag-parity-rules.js'
+      - 'scripts/lib/flag-parity-rules.test.mjs'
+      - 'scripts/monitor-flag-parity.js'
       - 'scripts/lib/email-templates-headline.test.mjs'
       # Score-tier label display/data decoupling contract (Skippable wire key vs Mixed display).
       - 'scripts/lib/score-tier-label-contract.test.mjs'
