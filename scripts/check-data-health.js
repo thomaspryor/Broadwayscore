@@ -14,10 +14,12 @@
  */
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { execSync } = require('child_process');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
+const PRIVATE_REPO = process.env.BSC_DATA_REPO || path.join(os.homedir(), 'broadway-scorecard-data');
 const BASELINE_FILE = path.join(DATA_DIR, 'audit', 'validation-baseline.json');
 
 const CORE_FILES = [
@@ -47,6 +49,40 @@ let hasWarning = false;
 const missing = [];
 const empty = [];
 let oldestMtime = Date.now();
+
+// mtime lies for files that are symlinked into (or cp-skipped as identical to)
+// the private data repo: their mtime is the last content change, not the last
+// sync. For those, freshness = when the clone was last synced with origin.
+function privateRepoSyncMs() {
+  let t = 0;
+  try { t = fs.statSync(path.join(PRIVATE_REPO, '.git', 'FETCH_HEAD')).mtimeMs; } catch { /* never fetched */ }
+  try {
+    const head = parseInt(execSync('git log -1 --format=%ct', {
+      cwd: PRIVATE_REPO, stdio: ['ignore', 'pipe', 'ignore'], timeout: 5000,
+    }).toString().trim(), 10) * 1000;
+    if (head > t) t = head;
+  } catch { /* not a clone */ }
+  return t || null;
+}
+const repoSyncMs = privateRepoSyncMs();
+
+function matchesPrivateRepo(filePath, stat) {
+  // CORE_FILES currently all live at the private repo ROOT; also try data/ so a
+  // future subdir move degrades to a compare-miss, not a silent false-stale.
+  // A wrong-file candidate is harmless: it can only fail the identity compare.
+  for (const counterpart of [
+    path.join(PRIVATE_REPO, path.basename(filePath)),
+    path.join(PRIVATE_REPO, 'data', path.basename(filePath)),
+  ]) {
+    try {
+      const cstat = fs.statSync(counterpart);
+      if (fs.realpathSync(filePath) === fs.realpathSync(counterpart)) return true;
+      if (stat.size !== cstat.size) continue;
+      if (fs.readFileSync(filePath).equals(fs.readFileSync(counterpart))) return true;
+    } catch { /* counterpart missing at this location */ }
+  }
+  return false;
+}
 
 for (const file of CORE_FILES) {
   const filePath = path.join(DATA_DIR, file);
@@ -80,8 +116,12 @@ for (const file of CORE_FILES) {
     }
   }
 
-  if (stat.mtimeMs < oldestMtime) {
-    oldestMtime = stat.mtimeMs;
+  let effectiveMtime = stat.mtimeMs;
+  if (repoSyncMs && repoSyncMs > effectiveMtime && matchesPrivateRepo(filePath, stat)) {
+    effectiveMtime = repoSyncMs;
+  }
+  if (effectiveMtime < oldestMtime) {
+    oldestMtime = effectiveMtime;
   }
 }
 
