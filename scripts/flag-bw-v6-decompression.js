@@ -55,10 +55,14 @@ let scanned = 0;
 const byShow = {};
 for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json'))) {
   const showId = path.basename(path.dirname(f));
-  const category = marketById.get(showId);
-  if (!BW_MARKETS.has(category)) continue;
   let d;
   try { d = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { continue; }
+  // Fall back to the review file's own embedded category when the show is
+  // missing from shows.json (renamed slug, deleted show, mid-migration) —
+  // mirrors needsLateStarReanchor's ctx.category fallback in
+  // lib/late-star-anchor.js so an orphaned show dir isn't silently skipped.
+  const category = marketById.has(showId) ? marketById.get(showId) : d.category;
+  if (!BW_MARKETS.has(category)) continue;
   scanned++;
   if (d.needsRescore === true) continue; // already queued (e.g. Component 1)
   if (ALREADY_V6.has(d.scoreSource)) continue; // already on the new path
