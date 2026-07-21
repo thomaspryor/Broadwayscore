@@ -10,15 +10,27 @@ const { isDoneTitle } = require('./lib/cmux-workspaces.js');
 // 2026-07-14 incident class + scope add (2026-07-20): `--help` used to fall
 // through parseArgs as an unrecognized flag and launch a real Cmux workspace
 // on the top task instead of printing usage. main() checks hasHelpFlag()
-// BEFORE loadTasks/fetchCard/launchCmux run, so calling it directly here
-// never touches the real task-list directory or cmux.
-test('--help / -h return before loadTasks/dispatch ever runs', () => {
+// BEFORE loadTasks/fetchCard/launchCmux/cmux ever run. Every dep is stubbed
+// to throw here (not just left as the real implementation) so this test
+// actually PROVES zero side-effecting calls happen for --help/-h, instead of
+// merely trusting the guard is still correctly placed — ship-check catch
+// (2026-07-20): a test that calls real main() with real deps would itself
+// perform a live dispatch if the guard were ever moved.
+test('--help / -h return before loadTasks/fetchCard/launchCmux/cmux ever run', () => {
+  const throwingDeps = {
+    loadTasks: () => { throw new Error('loadTasks must not be called for --help'); },
+    fetchCard: () => { throw new Error('fetchCard must not be called for --help'); },
+    launchCmux: () => { throw new Error('launchCmux must not be called for --help'); },
+    cmuxAvailable: () => { throw new Error('cmuxAvailable must not be called for --help'); },
+    listWorkspaces: () => { throw new Error('listWorkspaces must not be called for --help'); },
+    isDoneTitle: () => { throw new Error('isDoneTitle must not be called for --help'); },
+  };
   const logged = [];
   const origLog = console.log;
   console.log = (...a) => logged.push(a.join(' '));
   try {
-    assert.doesNotThrow(() => main(['--help']));
-    assert.doesNotThrow(() => main(['--id', '12', '-h']));
+    assert.doesNotThrow(() => main(['--help'], throwingDeps));
+    assert.doesNotThrow(() => main(['--id', '12', '-h'], throwingDeps));
   } finally {
     console.log = origLog;
   }

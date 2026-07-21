@@ -319,15 +319,27 @@ function launchCmux(task, seed, commandOverride, model = 'sonnet', project = nul
 }
 
 // ── main ───────────────────────────────────────────────────────────────────
-// argv is a test seam (default is the real argv). --help/-h is checked
-// BEFORE loadTasks/fetchCard/launchCmux ever run (2026-07-14 incident class:
-// `node scripts/bsc-next.js --help` used to fall through parseArgs as an
-// unrecognized flag and launch a real Cmux workspace on the top task).
-function main(argv = process.argv.slice(2)) {
+// argv + deps are test seams (defaults are the real argv + real side-effecting
+// calls). --help/-h is checked BEFORE loadTasks/fetchCard/launchCmux/cmux ever
+// run (2026-07-14 incident class: `node scripts/bsc-next.js --help` used to
+// fall through parseArgs as an unrecognized flag and launch a real Cmux
+// workspace on the top task). deps are injectable (not just argv) so a test
+// can prove zero side-effecting calls happen for --help by making every dep
+// throw, rather than trusting the guard is still correctly placed.
+function main(argv = process.argv.slice(2), deps = {}) {
+  const {
+    loadTasks: loadTasksFn = loadTasks,
+    fetchCard: fetchCardFn = fetchCard,
+    launchCmux: launchCmuxFn = launchCmux,
+    cmuxAvailable: cmuxAvailableFn = cmuxws.cmuxAvailable,
+    listWorkspaces: listWorkspacesFn = cmuxws.listWorkspaces,
+    isDoneTitle: isDoneTitleFn = cmuxws.isDoneTitle,
+  } = deps;
+
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
 
   const args = parseArgs(argv);
-  const tasks = loadTasks(TASKS_DIR);
+  const tasks = loadTasksFn(TASKS_DIR);
   if (!tasks.length) {
     console.error(`[bsc-next] shared task list '${LIST_ID}' is empty (${TASKS_DIR}).`);
     console.error(`Run 'node scripts/notion-tasks-sync.js pull' to mirror your Notion backlog first.`);
@@ -369,7 +381,7 @@ function main(argv = process.argv.slice(2)) {
   if (guardErr) { console.error(`[bsc-next] ${guardErr}`); process.exit(1); }
 
   const pid = notionIdOf(task);
-  const card = pid ? fetchCard(pid) : null;
+  const card = pid ? fetchCardFn(pid) : null;
   // Project bucket for auto-dispatch naming/coloring (scope add, card #168):
   // prefer the full card's tags/category (richer than the task-mirror line),
   // fall back to the mirror's categoryOf() for native/bridge-less tasks.
@@ -407,11 +419,11 @@ function main(argv = process.argv.slice(2)) {
   // still reading or typing in the tab, so dispatch-time sweeps closed tabs
   // out from under the owner mid-keystroke. ✅ workspaces don't block
   // re-dispatch either way — findLiveWorkspaceForTask() skips isDoneTitle().
-  if (cmuxws.cmuxAvailable()) {
+  if (cmuxAvailableFn()) {
     // Duplicate-dispatch guard (✅-marked twins never count as live).
     if (!args.force) {
       try {
-        const dup = findLiveWorkspaceForTask(task, cmuxws.listWorkspaces(), cmuxws.isDoneTitle);
+        const dup = findLiveWorkspaceForTask(task, listWorkspacesFn(), isDoneTitleFn);
         if (dup) {
           console.error(`[bsc-next] a live workspace already matches task #${task.id}: ${dup.ref}  "${dup.title}".`);
           console.error(`  Another session may be on this task. Check it (cmux read-screen --workspace ${dup.ref}),`);
@@ -422,7 +434,7 @@ function main(argv = process.argv.slice(2)) {
     }
   }
 
-  const res = launchCmux(task, seed, undefined, model, project);
+  const res = launchCmuxFn(task, seed, undefined, model, project);
   if (res.ok) {
     console.log(`[bsc-next] opened Cmux workspace ${res.ref} on #${task.id}: ${task.subject} (claude verified running)`);
   } else {

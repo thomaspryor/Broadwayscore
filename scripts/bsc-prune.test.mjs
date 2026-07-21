@@ -11,16 +11,25 @@ test('USAGE documents --dry-run and --help', () => {
 });
 
 // 2026-07-14 incident class: a bare --help must never fall through to the
-// real cmux sweep. main() here is a pure function of argv (no cmux calls
-// happen before the help check), so calling it directly with a stubbed
-// console proves the early return without touching cmuxAvailable/listWorkspaces.
+// real cmux sweep. Every dep is stubbed to throw (not left as the real
+// cmux-workspaces implementation) so this test actually PROVES zero cmux
+// calls happen, instead of merely trusting the guard is still correctly
+// placed — ship-check catch (2026-07-20): a test that calls real main() with
+// real deps would itself perform a live prune if the guard were ever moved.
 test('--help / -h return before any cmux call', () => {
+  const throwingDeps = {
+    cmuxAvailable: () => { throw new Error('cmuxAvailable must not be called for --help'); },
+    listWorkspaces: () => { throw new Error('listWorkspaces must not be called for --help'); },
+    pruneDone: () => { throw new Error('pruneDone must not be called for --help'); },
+    isDoneTitle: () => { throw new Error('isDoneTitle must not be called for --help'); },
+    claudeRunningIn: () => { throw new Error('claudeRunningIn must not be called for --help'); },
+  };
   const logged = [];
   const origLog = console.log;
   console.log = (...a) => logged.push(a.join(' '));
   try {
-    main(['--help']);
-    main(['-h']);
+    assert.doesNotThrow(() => main(['--help'], throwingDeps));
+    assert.doesNotThrow(() => main(['-h'], throwingDeps));
   } finally {
     console.log = origLog;
   }
