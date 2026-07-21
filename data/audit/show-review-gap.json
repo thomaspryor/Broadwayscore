@@ -1,53 +1,75 @@
 {
-  "generatedAt": "2026-07-20T23:07:04.253Z",
+  "generatedAt": "2026-07-21T00:09:03.713Z",
   "windowDays": 1095,
   "targets": 5,
   "counts": {
-    "withGap": 3,
-    "totalMissing": 17,
+    "withGap": 4,
+    "totalMissing": 12,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 3,
+    "totalFlaggedMisses": 6,
     "totalRecoverable": 0,
     "totalRecovered": 0
   },
   "results": [
     {
-      "showId": "shifters-off-broadway-2026",
-      "title": "Shifters",
-      "openingDate": "2026-07-16",
+      "showId": "trainspotting-the-musical-west-end-2026",
+      "title": "Trainspotting the musical",
+      "openingDate": "2026-07-22",
+      "status": "previews",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "title": "Heated Rivalry: The Unauthorized Musical Parody",
+      "openingDate": "2026-05-12",
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-shifters-off-broadway"
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-heated-rivalry-the-unauthorized-musical-parody",
+        "https://www.broadwayworld.com/article/Review-Roundup-HEATED-RIVALRY-THE-UNAUTHORIZED-MUSICAL-PARODY-Opens-Off-Broadway-20260526"
       ],
       "aggregatorListedUrls": [
-        "https://culturesauce.com/shifters-off-broadway-review/",
-        "https://exeuntnyc.com/reviews/review-shifters-at-the-cherry-lane-theatre/",
-        "https://newyorktheater.me/2026/07/15/shifters-review/",
-        "https://www.newyorktheatreguide.com/reviews/shifters-off-broadway-review",
-        "https://www.nytimes.com/2026/07/17/theater/shifters-review.html",
-        "https://nystagereview.com/2026/07/15/shifters-love-and-romance-profoundly-revisited/",
-        "https://www.theatermania.com/news/review-in-shifters-piecing-together-a-first-great-love_1845923/"
+        "https://1minutecritic.com/heated-rivalry-parody-review/",
+        "https://gaycitynews.com/heated-rivalry-musical-parody-slap-shots-slapstick/",
+        "https://newyorktheater.me/2026/05/26/heated-rivalry-the-unauthorized-musical-parody-review/",
+        "https://www.newyorktheatreguide.com/reviews/heated-rivalry-the-unauthorized-musical-parody-off-broadway-review",
+        "https://stageandcinema.com/2026/05/26/heated-rivalry-unauthorized-musical-parody-review/",
+        "https://thequeerreview.com/2026/05/26/theatre-review-heated-rivalry-the-unauthorized-musical-parody-the-culture-club-off-broadway/",
+        "https://www.theatermania.com/news/review-a-heated-rivalry-musical-parody-comes-hard-for-the-worlds-wine-moms_1838355/"
       ],
-      "dirFiles": 24,
-      "dirClean": 8,
-      "inReviewsJson": 9,
+      "dirFiles": 17,
+      "dirClean": 9,
+      "inReviewsJson": 8,
       "missing": [],
       "dirOnly": [
         {
-          "host": "nysun.com",
+          "host": "offoffonline.com",
           "count": 1
         },
         {
-          "host": "wsj.com",
+          "host": "theaterscene.org",
+          "count": 1
+        },
+        {
+          "host": "timeout.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://culturesauce.com/shifters-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
+          "url": "https://www.newyorktheatreguide.com/reviews/heated-rivalry-the-unauthorized-musical-parody-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -55,14 +77,14 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "culturesauce--thom-geier.json",
+              "file": "nytg--gillian-russo.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://culturesauce.com/shifters-off-broadway-review/"
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/heated-rivalry-the-unauthorized-musical-parody-off-broadway-review"
             },
             {
-              "file": "culturesauce--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://culturesauce.com/shifters-off-broadway-review/"
+              "file": "nytg--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/heated-rivalry-the-unauthorized-musical-parody-off-broadway-review"
             }
           ]
         }
@@ -71,357 +93,24 @@
       "weReference": null
     },
     {
-      "showId": "the-oresteia-west-end-2026",
-      "title": "The Oresteia",
-      "openingDate": "2026-07-14",
-      "status": "open",
-      "category": "west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-heres-what-critics-think-of-robert-ickes-oresteia-off-broadway"
-      ],
-      "aggregatorListedUrls": [
-        "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-        "https://newyorktheater.me/2022/07/27/oresteia-review/",
-        "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-        "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-        "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-        "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-        "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-        "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
-        "https://www.londontheatre.co.uk/reviews/the-oresteia-review-bridge-theatre",
-        "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
-        "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
-        "https://www.ft.com/content/72ed002f-cbf6-4a25-ab42-8f60cfec48a6",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-oresteia-review-david-morrissey-the-bridge-b3015202.html",
-        "https://www.whatsonstage.com/news/the-oresteia-at-the-bridge-theatre-review_1727392/",
-        "https://www.theguardian.com/stage/2026/jul/15/the-oresteia-review-bridge-theatre-london-david-morrissey-mary-louise-parker",
-        "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
-        "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-oresteia-bridge-theatre-review/",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david-morrissey-bg8qzzhhn"
-      ],
-      "dirFiles": 36,
-      "dirClean": 21,
-      "inReviewsJson": 23,
-      "missing": [
-        {
-          "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theartsdesk.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "london-unattached.com",
-          "count": 1
-        },
-        {
-          "host": "playsinternational.org.uk",
-          "count": 1
-        },
-        {
-          "host": "theatrevibe.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 11,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 1
-          },
-          "theatre-reviews": {
-            "found": true,
-            "rows": 11,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 11,
-        "corroborated": 11,
-        "perSource": {
-          "theatre-reviews": {
-            "cited": 11,
-            "corroborated": 11
-          }
-        }
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-heres-what-critics-think-of-robert-ickes-oresteia-off-broadway",
-          "publishDate": "2022-07-29"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
-          "host": "newyorktheater.me",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-          "host": "wsj.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-whoopi-monologues-off-broadway-2026",
-      "title": "The Whoopi Monologues",
-      "openingDate": "2026-07-14",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-the-whoopi-monologues-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-WHOOPI-MONOLOGUES-Opens-Off-Broadway-20260714"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/the-whoopi-monologues-review-kerry-washington/",
-        "https://cititour.com/NYC_Broadway/The-Whoopi-Monologues/1386",
-        "https://culturesauce.com/whoopi-goldberg-monologues-off-broadway-review/",
-        "https://exeuntnyc.com/reviews/review-the-whoopi-monologues-at-the-mitzi-e-newhouse-theater/",
-        "https://nystagereview.com/2026/07/13/the-whoopi-monologues-goldbergs-characters-still-charm-and-disarm/",
-        "https://nystagereview.com/2026/07/13/the-whoopi-monologues-five-whoopis-are-less-than-one/",
-        "https://www.newyorktheatreguide.com/reviews/the-whoopi-monologues-off-broadway-review-kerry-washington-kara-young-whoopi-goldberg",
-        "https://www.wsj.com/articles/the-whoopi-monologues-review-goldberg-variations-off-broadway-0ee39174",
-        "https://www.thewrap.com/creative-content/theater/the-whoopi-monologues-off-broadway-review-kerry-washington/",
-        "https://www.nytimes.com/2026/07/14/theater/the-whoopi-monologues-review-kerry-washington-kara-young.html",
-        "https://www.theatermania.com/news/review-the-whoopi-monologues-shines-even-without-whoopi-goldberg_1845713/",
-        "https://www.talkinbroadway.com/page/ob/07_13_26.html",
-        "https://newyorktheater.me/2026/07/19/the-whoopi-monologues-review/",
-        "https://www.interestedbystander.com/2026/07/theater-reviews-two-buzzy-women-driven.html"
-      ],
-      "dirFiles": 20,
-      "dirClean": 16,
-      "inReviewsJson": 16,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.org",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null
-    },
-    {
-      "showId": "the-black-mirror-experience-off-broadway-2026",
-      "title": "The Black Mirror Experience",
-      "openingDate": "2026-06-22",
+      "showId": "milk-and-honey-amt-theater-off-broadway-2026",
+      "title": "Milk and Honey (AMT Theater)",
+      "openingDate": "2026-04-16",
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://culturesauce.com/black-mirror-experience-off-broadway-review/"
-      ],
-      "dirFiles": 5,
-      "dirClean": 5,
-      "inReviewsJson": 5,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "newyorktheatreguide.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
-          "host": "therecs.co.uk",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null
-    },
-    {
-      "showId": "mercury-off-broadway-2026",
-      "title": "Mercury",
-      "openingDate": "2026-04-30",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-MERCURY-FUR-Opens-Off-Broadway-20150821"
-      ],
-      "aggregatorListedUrls": [
-        "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html",
-        "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
-        "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/",
-        "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667",
         "https://dalyklerwhmui.cloudfront.net",
         "https://fonts.gstatic.com",
         "https://fonts.googleapis.com/css2",
-        "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202606180101/gpt",
         "https://maps.google.com/",
         "https://www.todaytixgroup.com/careers",
         "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
       ],
-      "dirFiles": 9,
-      "dirClean": 2,
-      "inReviewsJson": 1,
+      "dirFiles": 2,
+      "dirClean": 0,
+      "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://dalyklerwhmui.cloudfront.net",
           "host": "cloudfront.net",
@@ -435,11 +124,6 @@
         {
           "url": "https://fonts.googleapis.com/css2",
           "host": "googleapis.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202606180101/gpt",
-          "host": "doubleclick.net",
           "knownOutletId": null
         },
         {
@@ -458,78 +142,10 @@
           "knownOutletId": null
         }
       ],
-      "dirOnly": [
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        },
-        {
-          "host": "washingtonpost.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--ben-brantley.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nypost--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-MERCURY-FUR-Opens-Off-Broadway-20150821",
-          "publishDate": "2015-08-21"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
       "ingestResults": [
         {
           "url": "https://dalyklerwhmui.cloudfront.net",
@@ -556,12 +172,251 @@
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fonts.googleapis.com): Scrapingdog HTTP 400: Oops! Som"
         },
         {
-          "url": "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202606180101/gpt",
-          "host": "doubleclick.net",
-          "outletId": "doubleclick",
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "outletId": "google",
+          "provisional": true,
+          "ok": false,
+          "reason": "Fetch returned no usable HTML (got 442 chars)"
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup",
           "provisional": true,
           "ok": false,
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "outletId": "google"
+        }
+      ]
+    },
+    {
+      "showId": "small-off-broadway-2026",
+      "title": "Small",
+      "openingDate": "2026-05-29",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Robert-Montanos-SMALL-Off-Broadway-20260601"
+      ],
+      "aggregatorListedUrls": [
+        "https://culturesauce.com/robert-montano-small-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/small-off-broadway-review-robert-montano",
+        "https://therecs.co.uk/small/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TGDTOQ",
+        "https://www.theaterscene.net/plays/solo-plays/small/victor-gluck/",
+        "https://theaterlife.com/small/",
+        "https://pagesonstages.com/2026/05/28/small/",
+        "https://www.interestedbystander.com/2026/05/theater-reviews-girls-chance-music-is.html",
+        "https://www.wsj.com/articles/pay-the-writer-and-small-reviews-dramas-of-discontent-56f1154d",
+        "https://www.broadwayworld.com/off-off-broadway/article/Review-SMALL-at-59E59-Theaters--Robert-Montanos-Excellent-One-Man-Show-20230817"
+      ],
+      "dirFiles": 31,
+      "dirClean": 8,
+      "inReviewsJson": 8,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theaterscene.net/plays/solo-plays/small/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-scene--victor-gluck.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theaterscene.net/plays/solo-plays/small/victor-gluck/"
+            }
+          ]
+        },
+        {
+          "url": "https://pagesonstages.com/2026/05/28/small/",
+          "host": "pagesonstages.com",
+          "knownOutletId": "pages-on-stages",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "pages-on-stages--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://pagesonstages.com/2026/05/28/small/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.interestedbystander.com/2026/05/theater-reviews-girls-chance-music-is.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-interested-bystander--cary-wong.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.interestedbystander.com/2026/05/theater-reviews-girls-chance-music-is.html?m=0"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/pay-the-writer-and-small-reviews-dramas-of-discontent-56f1154d",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wsj--charles-isherwood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.wsj.com/articles/pay-the-writer-and-small-reviews-dramas-of-discontent-56f1154d"
+            }
+          ]
+        },
+        {
+          "url": "https://www.broadwayworld.com/off-off-broadway/article/Review-SMALL-at-59E59-Theaters--Robert-Montanos-Excellent-One-Man-Show-20230817",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--chloe-rabinowitz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.broadwayworld.com/article/Review-Roundup-Robert-Montanos-SMALL-Off-Broadway-20260601"
+            },
+            {
+              "file": "broadwayworld--marina-kennedy.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.broadwayworld.com/off-off-broadway/article/Review-SMALL-at-59E59-Theaters--Robert-Montanos-Excellent-One-Man-Show-20230817"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null
+    },
+    {
+      "showId": "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026",
+      "title": "The Mystery of Edwin Drood (AMT Theater)",
+      "openingDate": "2026-05-14",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://dalyklerwhmui.cloudfront.net",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://maps.google.com/",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+      ],
+      "dirFiles": 6,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "therecs.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "ingestResults": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=dalyklerwhmui.cloudfront.net): Scrapingdog HTTP 400: O"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "outletId": "gstatic",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fonts.gstatic.com): Scrapingdog HTTP 404: {\"message\":\""
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "outletId": "googleapis",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fonts.googleapis.com): Scrapingdog HTTP 400: Oops! Som"
         },
         {
           "url": "https://maps.google.com/",
@@ -570,14 +425,17 @@
           "provisional": true,
           "ok": false,
           "reason": "Fetch returned no usable HTML (got 442 chars)"
-        }
-      ],
-      "ingestSkippedByCap": [
+        },
         {
           "url": "https://www.todaytixgroup.com/careers",
           "host": "todaytixgroup.com",
-          "outletId": "todaytixgroup"
-        },
+          "outletId": "todaytixgroup",
+          "provisional": true,
+          "ok": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        }
+      ],
+      "ingestSkippedByCap": [
         {
           "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
           "host": "google.com",
