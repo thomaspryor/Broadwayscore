@@ -43,7 +43,17 @@ function loadShowTitles() {
   try {
     const j = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
     for (const s of (j.shows || j)) {
-      if (s.id && s.title) map.set(s.id, { title: s.title });
+      if (s.id && s.title) map.set(s.id, {
+        title: s.title,
+        // Pre-opening temporal gate fields (isPrematureReviewForUnopenedShow):
+        // without these, isScoreable says includable for files the rebuild
+        // drops as skippedPrematurePreOpening — wasted rescore cycles.
+        status: s.status,
+        previewDate: s.previewDate,
+        previewsStartDate: s.previewsStartDate,
+        openingDate: s.openingDate,
+        priorRuns: s.priorRuns,
+      });
     }
   } catch { /* fall through — predicate fails safe to exclude wrongShow files */ }
   return map;

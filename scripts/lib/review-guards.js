@@ -303,10 +303,13 @@ function isSameTitleDifferentYearFalsePositive(show, publishDate, targetShow = n
 // contamination: WET attached 2023 Southwark Playhouse reviews to the unopened
 // 2026 Public Theater entry, the async wrongProduction classifier caught only
 // 3 of 5, and the 2 leaked reviews moved the show 67→78 in the daily digest).
-// Lead is deliberately wider than isReviewWithinOwnProductionWindow's 21 days:
-// this is a hard exclusion, so it must never clip legitimate early coverage
-// (Talkin' Broadway publishes 24h early; previews reviews trail previewsStart).
-const PRE_OPENING_LEAD_DAYS = 60;
+// Lead is deliberately much wider than isReviewWithinOwnProductionWindow's 21
+// days: this is a hard exclusion, so it must never clip legitimate early
+// coverage (Talkin' Broadway publishes 24h early; previews reviews trail
+// previewsStart; 33 unopened shows carry only an openingDate, and a preview
+// period can run 8-9 weeks before it). Contamination in this class is YEARS
+// early, so a 120-day lead loses nothing against it.
+const PRE_OPENING_LEAD_DAYS = 120;
 // A never-opened show with NO dates at all cannot have been reviewed — but a
 // stale 'announced' entry whose reviews just landed must keep them so the
 // review-driven status-flip backstop still sees review activity. One year of
@@ -337,7 +340,13 @@ function isPrematureReviewForUnopenedShow(data, show, nowMs = Date.now()) {
   if (!data || !show) return false;
   const status = String(show.status || '').toLowerCase();
   if (status !== 'announced' && status !== 'upcoming' && status !== 'previews') return false;
-  if (Array.isArray(show.priorRuns) && show.priorRuns.length > 0) return false;
+  // Only a priorRuns entry that actually carries a date is a usable prior-run
+  // declaration — a junk `[{}]` must not disable the gate (matches the shape
+  // isWithinPriorRun in wrong-production-autoclear.js treats as meaningful).
+  if (
+    Array.isArray(show.priorRuns) &&
+    show.priorRuns.some(r => r && (r.openingDate || r.closingDate || r.previewsStartDate))
+  ) return false;
   if (
     data.wrongProductionManualClear === true ||
     data.wrongProductionOverride === true ||
@@ -347,7 +356,10 @@ function isPrematureReviewForUnopenedShow(data, show, nowMs = Date.now()) {
   ) return false;
   const publishMs = new Date(data.publishDate || '').getTime();
   if (isNaN(publishMs)) return false;
-  const start = show.previewsStartDate || show.openingDate;
+  // MIN of previewDate/previewsStartDate/openingDate — same anchor as the
+  // date-guard window logic, so an inverted/stale date pair can never push the
+  // window start later than the true first performance.
+  const start = require('./date-guard').earliestShowDate(show);
   if (start) {
     const startMs = new Date(start).getTime();
     if (isNaN(startMs)) return false;
@@ -2984,6 +2996,8 @@ module.exports = {
   isReviewWithinOwnProductionWindow,
   isSameTitleDifferentYearFalsePositive,
   isPrematureReviewForUnopenedShow,
+  PRE_OPENING_LEAD_DAYS,
+  UNSCHEDULED_MAX_AGE_DAYS,
   applyVenueClassificationCarveout,
   isVenueClassificationObjection,
   showHasFestivalVenue,
