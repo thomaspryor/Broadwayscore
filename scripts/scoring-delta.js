@@ -613,6 +613,11 @@ function main() {
         // Benjamin Button pre-opening gate was invisible to this tool.
         && (baseline.isIncludableForRebuild?.toString() || '') === (working.isIncludableForRebuild?.toString() || '')
         && (baseline.isPrematureReviewForUnopenedShow?.toString() || '') === (working.isPrematureReviewForUnopenedShow?.toString() || '')
+        // Threshold constants are free variables of the pre-opening gate — a
+        // constant-only edit leaves the function source identical (same trap
+        // as PRE_WINDOW_DAYS above), so compare by value.
+        && String(baseline.PRE_OPENING_LEAD_DAYS) === String(working.PRE_OPENING_LEAD_DAYS)
+        && String(baseline.UNSCHEDULED_MAX_AGE_DAYS) === String(working.UNSCHEDULED_MAX_AGE_DAYS)
         && registryHash === baselineRegistryHash;
       if (guardsIdentical && !dataFlagDiff) {
         log('[scoring-delta] Phase A: review-guards.js decisions + critic-registry identical — skipping inclusion replay.');

@@ -641,7 +641,7 @@ describe('isPrematureReviewForUnopenedShow', () => {
     );
   });
 
-  it('review just before previews (within 60-day lead) is NOT premature', () => {
+  it('review just before previews (within the 120-day lead) is NOT premature', () => {
     assert.strictEqual(
       isPrematureReviewForUnopenedShow(
         { publishDate: '2026-07-15' },
@@ -649,6 +649,37 @@ describe('isPrematureReviewForUnopenedShow', () => {
         NOW
       ),
       false
+    );
+  });
+
+  it('openingDate-only show: review 90d before opening (long preview period) is NOT premature', () => {
+    assert.strictEqual(
+      isPrematureReviewForUnopenedShow(
+        { publishDate: '2026-07-03' },
+        { status: 'previews', previewsStartDate: null, openingDate: '2026-10-01' },
+        NOW
+      ),
+      false
+    );
+  });
+
+  it('anchor is MIN of dates — inverted previewsStartDate cannot push the window later', () => {
+    // previewsStartDate wrongly recorded AFTER openingDate; a review near the
+    // (earlier) openingDate must not be excluded.
+    assert.strictEqual(
+      isPrematureReviewForUnopenedShow(
+        { publishDate: '2026-07-01' },
+        { status: 'previews', previewsStartDate: '2026-12-04', openingDate: '2026-08-22' },
+        NOW
+      ),
+      false
+    );
+  });
+
+  it('junk priorRuns entries without dates do NOT bypass the gate', () => {
+    assert.strictEqual(
+      isPrematureReviewForUnopenedShow(bbReview, { ...bbShow, priorRuns: [{}] }, NOW),
+      true
     );
   });
 
