@@ -57,6 +57,15 @@ runs:
         # scripts/lib/core-data-sync-decision.js and
         # tests/unit/core-data-sync-decision.test.mjs — change both together.
         CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json"
+        # Manifest of files this workflow actually modified — consumed by the
+        # "Commit and push core data" step below to decide whether the
+        # per-slug reconciliation merge (commercial.json, diary-shows.json) is
+        # safe to run. Same staleness class as the sync logic itself (see
+        # comment below): a workflow that never touched a file has nothing
+        # meaningful to contribute to a merge, and capturing its stale on-disk
+        # copy as "ours" can out-vote a concurrent fix that landed on remote
+        # mid-run (ties in mergeCommercialJson's pickNewer default to "ours").
+        : > /tmp/.core-data-changed-files
         if [ ! -d "/tmp/core-data-snapshot" ]; then
           # Failsafe: no snapshot dir means we can't tell which files this
           # workflow modified (checkout-core-data predates snapshotting, or was
@@ -69,6 +78,7 @@ runs:
             if [ -f "data/$f" ]; then
               cp -f "data/$f" /tmp/core-data-checkout/
               COPIED="$COPIED $f"
+              echo "$f" >> /tmp/.core-data-changed-files
             fi
           done
           echo "Synced core data files (copy-all fallback):$COPIED"
@@ -83,11 +93,13 @@ runs:
             elif [ ! -f "/tmp/core-data-snapshot/$f" ]; then
               cp -f "data/$f" /tmp/core-data-checkout/
               echo "copied (new): $f"
+              echo "$f" >> /tmp/.core-data-changed-files
             elif cmp -s "data/$f" "/tmp/core-data-snapshot/$f"; then
               echo "skipped (unchanged): $f"
             else
               cp -f "data/$f" /tmp/core-data-checkout/
               echo "copied (changed): $f"
+              echo "$f" >> /tmp/.core-data-changed-files
             fi
           done
         fi
@@ -199,19 +211,39 @@ runs:
           # before rebase overwrites them. With RSS poller + scraper + sweep
           # all writing to these, multi-writer concurrency demands a real merge.
           # Ship-check CDX-P0-2.
-          git show origin/main:commercial.json > /tmp/remote-commercial.json 2>/dev/null || true
-          git show origin/main:commercial-pending-review.json > /tmp/remote-commercial-pending.json 2>/dev/null || true
-          # Snapshot our pre-rebase copies so the merge has both sides.
-          [ -f "commercial.json" ] && cp commercial.json /tmp/our-commercial.json
-          [ -f "commercial-pending-review.json" ] && cp commercial-pending-review.json /tmp/our-commercial-pending.json
+          #
+          # Guard: only capture "ours" (and therefore only run the merge) for
+          # files this workflow's Sync step actually copied into the checkout
+          # (see /tmp/.core-data-changed-files, written above). If this job
+          # never touched commercial.json, "ours" is whatever was on disk at
+          # checkout time — possibly tens of minutes stale — and merging it
+          # against remote can out-vote a fix that landed on remote mid-run
+          # (mergeCommercialJson's pickNewer defaults to "ours" on a tie, e.g.
+          # a manual field-only edit that didn't bump lastUpdated). Without
+          # this guard, the rebase above already resolves correctly on its
+          # own — our commit has no diff for an untouched file, so there's no
+          # conflict and remote's content simply carries through. Card #268,
+          # 2026-07-21: opening-night-poller's fast_path job never writes
+          # commercial.json, yet its stale "ours" snapshot reverted a
+          # concurrent one-line fix via this exact merge.
+          if grep -qxF "commercial.json" /tmp/.core-data-changed-files 2>/dev/null; then
+            git show origin/main:commercial.json > /tmp/remote-commercial.json 2>/dev/null || true
+            git show origin/main:commercial-pending-review.json > /tmp/remote-commercial-pending.json 2>/dev/null || true
+            # Snapshot our pre-rebase copies so the merge has both sides.
+            [ -f "commercial.json" ] && cp commercial.json /tmp/our-commercial.json
+            [ -f "commercial-pending-review.json" ] && cp commercial-pending-review.json /tmp/our-commercial-pending.json
+          fi
 
           # Save remote's diary-shows.json + our pre-rebase copy. diary-shows.json
           # is an array-of-shows with THREE independent writers (import-mezzanine-
           # historical, resolve-unmatched-imports nightly, refresh-mezzanine-catalog
           # weekly). -X ours alone silently drops the side that lost the race's
           # newly-added shows — same data-loss class as commercial.json (card #176).
-          git show origin/main:diary-shows.json > /tmp/remote-diary-shows.json 2>/dev/null || true
-          [ -f "diary-shows.json" ] && cp diary-shows.json /tmp/our-diary-shows.json
+          # Same staleness guard as commercial.json above (card #268).
+          if grep -qxF "diary-shows.json" /tmp/.core-data-changed-files 2>/dev/null; then
+            git show origin/main:diary-shows.json > /tmp/remote-diary-shows.json 2>/dev/null || true
+            [ -f "diary-shows.json" ] && cp diary-shows.json /tmp/our-diary-shows.json
+          fi
 
           # Rebase with -X ours: our version wins on conflicts.
           # Post-rebase reconciliation below restores any remote-only changes
