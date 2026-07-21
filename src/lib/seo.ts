@@ -120,7 +120,7 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
 }
 
 // TheaterEvent Schema with full details (enhanced)
-export function generateShowSchema(show: ComputedShow, lastUpdated?: string, performers?: { name: string }[]) {
+export function generateShowSchema(show: ComputedShow, lastUpdated?: string, performers?: { name: string }[], organizerUrl?: string) {
   const isLondon = isLondonMarket(show.category);
   const country = getMarketCountry(show.category);
   const currency = getMarketCurrency(show.category);
@@ -141,9 +141,12 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
     },
     // GSC flags Events missing "organizer". We don't track producers, so the
     // presenting theater is the closest honest entity we always have.
+    // organizerUrl (our /theater/{slug} entity page, Broadway-only) clears the
+    // follow-up "Missing field 'url' (in 'organizer')" GSC warning.
     organizer: {
       '@type': 'Organization',
       name: show.venue,
+      ...(organizerUrl && { url: organizerUrl }),
     },
     ...(startDate && { startDate }),
     ...(show.closingDate && { endDate: show.closingDate }),
