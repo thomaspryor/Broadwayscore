@@ -213,26 +213,36 @@ runs:
           # Ship-check CDX-P0-2.
           #
           # Guard: only capture "ours" (and therefore only run the merge) for
-          # files this workflow's Sync step actually copied into the checkout
-          # (see /tmp/.core-data-changed-files, written above). If this job
-          # never touched commercial.json, "ours" is whatever was on disk at
-          # checkout time — possibly tens of minutes stale — and merging it
-          # against remote can out-vote a fix that landed on remote mid-run
-          # (mergeCommercialJson's pickNewer defaults to "ours" on a tie, e.g.
-          # a manual field-only edit that didn't bump lastUpdated). Without
-          # this guard, the rebase above already resolves correctly on its
-          # own — our commit has no diff for an untouched file, so there's no
-          # conflict and remote's content simply carries through. Card #268,
-          # 2026-07-21: opening-night-poller's fast_path job never writes
-          # commercial.json, yet its stale "ours" snapshot reverted a
-          # concurrent one-line fix via this exact merge.
+          # commercial.json if this workflow's Sync step actually copied it
+          # into the checkout (see /tmp/.core-data-changed-files, written
+          # above). If this job never touched commercial.json, "ours" is
+          # whatever was on disk at checkout time — possibly tens of minutes
+          # stale — and merging it against remote can out-vote a fix that
+          # landed on remote mid-run (mergeCommercialJson's pickNewer defaults
+          # to "ours" on a tie, e.g. a manual field-only edit that didn't bump
+          # lastUpdated). Without this guard, the rebase above already
+          # resolves correctly on its own — our commit has no diff for an
+          # untouched file, so there's no conflict and remote's content
+          # simply carries through. Card #268, 2026-07-21:
+          # opening-night-poller's fast_path job never writes commercial.json,
+          # yet its stale "ours" snapshot reverted a concurrent one-line fix
+          # via this exact merge.
+          #
+          # commercial-pending-review.json is intentionally NOT gated the same
+          # way: it isn't in CORE_FILES (see Sync step above), so the Sync
+          # step never syncs it from data/ and the manifest never carries an
+          # entry for it — there is no reliable "did this job touch it"
+          # signal to gate on. Capturing it unconditionally here matches its
+          # pre-existing (already-imprecise, separately tracked) behavior;
+          # tying its capture to commercial.json's manifest flag would be an
+          # arbitrary coupling between two unrelated files (ship-check
+          # finding, 2026-07-21).
           if grep -qxF "commercial.json" /tmp/.core-data-changed-files 2>/dev/null; then
             git show origin/main:commercial.json > /tmp/remote-commercial.json 2>/dev/null || true
-            git show origin/main:commercial-pending-review.json > /tmp/remote-commercial-pending.json 2>/dev/null || true
-            # Snapshot our pre-rebase copies so the merge has both sides.
             [ -f "commercial.json" ] && cp commercial.json /tmp/our-commercial.json
-            [ -f "commercial-pending-review.json" ] && cp commercial-pending-review.json /tmp/our-commercial-pending.json
           fi
+          git show origin/main:commercial-pending-review.json > /tmp/remote-commercial-pending.json 2>/dev/null || true
+          [ -f "commercial-pending-review.json" ] && cp commercial-pending-review.json /tmp/our-commercial-pending.json
 
           # Save remote's diary-shows.json + our pre-rebase copy. diary-shows.json
           # is an array-of-shows with THREE independent writers (import-mezzanine-
