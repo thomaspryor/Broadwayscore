@@ -56,6 +56,7 @@ const path = require('path');
 const https = require('https');
 const { execFileSync, spawnSync } = require('child_process');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { transition } = require('./lib/autonomous-state.js');
 const { isDiffAllowed, isDataRepoDiffAllowed } = require('./lib/autonomous-eligibility.js');
 const { decideChecks, cardCheckArgv } = require('./lib/autonomous-run-core.js');
@@ -71,6 +72,18 @@ const {
 const REPO = path.join(__dirname, '..');
 const CHECK_TIMEOUT_MS = 5 * 60 * 1000;
 const MAX_MERGE_ATTEMPTS = 2;
+
+const USAGE = `autonomous-merge.js — CI-side merge/revert executor for the autonomous nightly loop.
+
+Usage:
+  node scripts/autonomous-merge.js --card <notion-id> --branch <name> --action approve
+  node scripts/autonomous-merge.js --card <notion-id> --branch <name> --action revert
+
+  --help, -h    print this usage and exit — no gh/git calls, no writes
+
+Invoked by .github/workflows/autonomous-merge.yml via workflow_dispatch.
+approve: rebase the branch onto origin/main, re-verify, then fast-forward-merge to main.
+revert: locate the merge commit for the card and revert the full range back to main.`;
 
 function parseArgs(argv) {
   const a = {};
@@ -631,8 +644,14 @@ async function revertDataCard(cardId, evidence) {
   }
 }
 
-async function main() {
-  const args = parseArgs(process.argv.slice(2));
+// approveFn/revertFn are injectable so tests can prove --help never reaches
+// either real path (same incident class as scripts/autonomous-run.js /
+// scripts/autonomous-probe.js, task #260 — see scripts/lib/cli-help.js).
+// Checked against raw argv, not parsed flags, so `--action approve --help`
+// is caught too, not just a bare `--help`.
+async function main(argv = process.argv.slice(2), approveFn = approve, revertFn = revert) {
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+  const args = parseArgs(argv);
   const cardId = args.card;
   const branch = args.branch;
   const action = args.action;
@@ -640,8 +659,8 @@ async function main() {
     console.error('usage: node scripts/autonomous-merge.js --card <id> --branch <name> --action approve|revert');
     process.exit(2);
   }
-  if (action === 'approve') await approve(cardId, branch);
-  else await revert(cardId, branch);
+  if (action === 'approve') await approveFn(cardId, branch);
+  else await revertFn(cardId, branch);
 }
 
 if (require.main === module) {
@@ -649,6 +668,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  main, USAGE,
   approve, revert, verifyRebase, countPriorMerges, runChecks,
   approveDataCard, revertDataCard, verifyRebaseData, cloneDataRepo, dispatchRebuildFast, DATA_REPO_URLS,
   redactSecrets,
