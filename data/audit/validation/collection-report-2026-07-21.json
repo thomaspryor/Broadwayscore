@@ -1,0 +1,82 @@
+{
+  "runDate": "2026-07-21T06:55:09.269Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "shifters-off-broadway-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 1,
+    "failed": 10,
+    "skipped": 0,
+    "successRate": "9.1%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 1,
+    "tier1Success": 1,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 10,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 10,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "shifters-off-broadway-2026/nytg--gillian-russo.json"
+  ],
+  "failed": [
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+    "shifters-off-broadway-2026/independent--alice-saville.json",
+    "shifters-off-broadway-2026/standard--nick-curtis.json",
+    "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+    "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "shifters-off-broadway-2026/nytg--gillian-russo.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
