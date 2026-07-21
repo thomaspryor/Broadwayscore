@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-21T08:04:33.218Z",
+    "generatedAt": "2026-07-21T09:18:50.045Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,11 +16,11 @@
   "flagged": [
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 117
+      "churn": 116
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 116
+      "churn": 115
     },
     {
       "path": "data/audit/processed-feedback.json",
@@ -28,7 +28,7 @@
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 107
+      "churn": 106
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
@@ -36,7 +36,7 @@
     },
     {
       "path": "data/audit/t1-silent-gaps.json",
-      "churn": 58
+      "churn": 59
     },
     {
       "path": "data/audit/we-gate-proving.json",
@@ -54,11 +54,11 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 130
+      "churn": 129
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 126
+      "churn": 125
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -78,7 +78,7 @@
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 74
+      "churn": 73
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -94,7 +94,7 @@
     },
     {
       "path": "public/data/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 37
+      "churn": 38
     },
     {
       "path": "public/data/shows/the-oresteia-west-end-2026.json",
@@ -104,17 +104,17 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 884,
+      "churn": 851,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 874,
+      "churn": 842,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 661,
+      "churn": 659,
       "mergeAttr": "ours"
     },
     {
@@ -124,22 +124,22 @@
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 244,
+      "churn": 242,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 244,
+      "churn": 242,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 173,
+      "churn": 186,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 153,
+      "churn": 154,
       "mergeAttr": "ours"
     },
     {
@@ -154,12 +154,12 @@
     },
     {
       "path": "data/audit/poller-backoff/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 89,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
-      "churn": 89,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
@@ -184,7 +184,7 @@
     },
     {
       "path": "data/audit/poller-backoff/a-walk-on-the-moon-off-broadway-2026.json",
-      "churn": 63,
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
@@ -204,12 +204,12 @@
     },
     {
       "path": "data/audit/drift-state.json",
-      "churn": 50,
+      "churn": 48,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 46,
+      "churn": 45,
       "mergeAttr": "ours"
     },
     {
@@ -249,7 +249,7 @@
     },
     {
       "path": "data/audit/poller-backoff/to-kill-a-mockingbird-west-end-2026.json",
-      "churn": 31,
+      "churn": 30,
       "mergeAttr": "ours"
     }
   ]
