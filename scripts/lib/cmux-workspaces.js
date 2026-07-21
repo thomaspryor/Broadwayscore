@@ -63,6 +63,20 @@ function hasRunningClaude(tsvText) {
   });
 }
 
+// A claude_code tag row with ANY status (or none). A claude waiting at the
+// prompt has the tag row but NOT status "Running" — it is still a live
+// session. 2026-07-21 incident: pruneDone used the Running-only check, so a
+// conductor's sweep closed 10 ✅-marked tabs whose claude was alive and
+// waiting on the owner (✅ auto-marks land when the task completes, even with
+// user review pending). Prune's charter is sweeping sessions that DIED —
+// process presence, not activity, is the closability test.
+function hasLiveClaude(tsvText) {
+  return String(tsvText).split('\n').some(l => {
+    const c = l.split('\t');
+    return c[3] === 'tag' && /:tag:claude_code$/.test(c[4] || '');
+  });
+}
+
 // ── socket wrappers ─────────────────────────────────────────────────────────
 
 function listWorkspaces() {
@@ -81,18 +95,27 @@ function claudeRunningIn(ref) {
   }
 }
 
-// Close every ✅-marked workspace WITHOUT a running claude. A ✅ title with
-// claude still alive is a session finishing its final turn (wrap-up marks ✅
-// before memory-sync/self-close) or a user-marked workspace they're still in —
-// closing it would kill claude mid-push (ship-check reviewer finding,
-// 2026-07-12). Those are skipped and reported; the next sweep gets them.
+function claudeAliveIn(ref) {
+  try {
+    return hasLiveClaude(run(['top', '--workspace', ref, '--processes', '--format', 'tsv']));
+  } catch {
+    return false; // workspace vanished mid-check → not alive
+  }
+}
+
+// Close every ✅-marked workspace WITHOUT a LIVE claude process. Alive-but-
+// waiting counts as live: ✅ auto-marks land when a task completes even while
+// the owner is still reviewing in the tab, and closing kills claude (10 tabs
+// lost mid-review, 2026-07-21). Only tabs whose claude process is GONE — the
+// script's original charter, "sessions that died before self-closing" — are
+// closable. Skipped tabs are reported; the owner closes them by hand.
 // Returns { closed, skipped }; failures to close one workspace don't abort.
 function pruneDone(opts = {}) {
   const done = listWorkspaces().filter(w => isDoneTitle(w.title));
   const closed = [];
   const skipped = [];
   for (const w of done) {
-    if (claudeRunningIn(w.ref)) { skipped.push(w); continue; }
+    if (claudeAliveIn(w.ref)) { skipped.push(w); continue; }
     if (opts.dryRun) { closed.push(w); continue; }
     try { closeWorkspace(w.ref); closed.push(w); }
     catch (e) { console.error(`[cmux-workspaces] failed to close ${w.ref}: ${e.message}`); }
@@ -102,6 +125,6 @@ function pruneDone(opts = {}) {
 
 module.exports = {
   CMUX, cmuxAvailable, run,
-  parseWorkspaces, isDoneTitle, hasRunningClaude,
-  listWorkspaces, closeWorkspace, claudeRunningIn, pruneDone,
+  parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude,
+  listWorkspaces, closeWorkspace, claudeRunningIn, claudeAliveIn, pruneDone,
 };

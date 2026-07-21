@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { parseWorkspaces, isDoneTitle, hasRunningClaude } = require('./cmux-workspaces.js');
+const { parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude } = require('./cmux-workspaces.js');
 
 // Captured from `cmux list-workspaces` 2026-07-12 (cmux 0.64.6)
 const LIST_SAMPLE = `  workspace:2  ⠂ Box office card improvements
@@ -51,6 +51,32 @@ test('hasRunningClaude: detects the claude_code Running tag row', () => {
   assert.equal(hasRunningClaude(TOP_RUNNING), true);
   assert.equal(hasRunningClaude(TOP_IDLE), false);
   assert.equal(hasRunningClaude(''), false);
+});
+
+// Captured from `cmux top --workspace workspace:194 --processes --format tsv`
+// 2026-07-21 (cmux 0.64.17): a claude WAITING at the prompt — tag row present,
+// status column empty. This is the shape prune wrongly closed as "idle".
+const TOP_WAITING = `2.7\t955809792\t6\tworkspace\tworkspace:194\twindow:1\tData·iOS design proposals
+2.7\t944504832\t3\ttag\tworkspace:CD32EC51-13AE-49DF-9921-4FF9F8382FB0:tag:claude_code\tworkspace:194\t
+2.7\t570261504\t1\tprocess\t78491\tworkspace:CD32EC51-13AE-49DF-9921-4FF9F8382FB0:tag:claude_code\t2.1.216`;
+
+test('hasLiveClaude: waiting-at-prompt claude (no status) counts as LIVE', () => {
+  assert.equal(hasLiveClaude(TOP_WAITING), true);
+  // 2026-07-21 incident guard: the Running-only check must NOT treat it as
+  // running — the two predicates intentionally diverge on this shape, and
+  // pruneDone must use the live one.
+  assert.equal(hasRunningClaude(TOP_WAITING), false);
+});
+
+test('hasLiveClaude: running claude is live; dead workspace is not', () => {
+  assert.equal(hasLiveClaude(TOP_RUNNING), true);
+  assert.equal(hasLiveClaude(TOP_IDLE), false);
+  assert.equal(hasLiveClaude(''), false);
+});
+
+test('hasLiveClaude: column-exact — title mentioning claude_code is not a tag row', () => {
+  const titleTrap = `5.9\t1\t2\tworkspace\tworkspace:9\twindow:1\tRunning tag:claude_code experiments`;
+  assert.equal(hasLiveClaude(titleTrap), false);
 });
 
 test('hasRunningClaude: column-exact — no substring false positives', () => {
