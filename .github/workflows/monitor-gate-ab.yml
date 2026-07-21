@@ -66,7 +66,11 @@ jobs:
         run: node scripts/monitor-email-gate-funnel.js ${{ inputs.dry_run && '--dry-run' || '' }}
 
       - name: Commit monitor state
-        if: ${{ !inputs.dry_run }}
+        # always() so a failure in EITHER monitor step still commits whatever
+        # state the OTHER step already earned this run (e.g. step 1's
+        # liveAlertedAt stamp) — without it, a step-2 failure would skip this
+        # entirely and step 1's already-sent alert would resend next week.
+        if: ${{ always() && !inputs.dry_run }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

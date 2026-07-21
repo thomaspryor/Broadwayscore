@@ -18,13 +18,25 @@
  * ramp-up window (e.g. 21 shown in the first 7.5h post-launch) — wait for a
  * week with real gate traffic before treating a low capture count as signal.
  *
+ * Two secondary guardrails close gaps a hard <1/wk floor alone would miss
+ * (both found in adversarial review, 2026-07-20):
+ *   - funnel-stalled: if impressions EVER reached the floor and then drop
+ *     back below it, that's not "still ramping up" — the modal stopped
+ *     rendering or an instrumentation rename broke event tracking. Silently
+ *     logging "ramp-up" forever would hide a real outage.
+ *   - sustained-decline: a steady 2-3/wk (below half the baseline, but never
+ *     individually dipping under the hard floor) never trips capture-collapse
+ *     on any single week. Tracks a short rolling history to catch the trend.
+ *
  * Full analysis: ~/Documents/claude-outputs/email-gate-analysis-2026-07-20.md
  */
 
 const BASELINE_CAPTURES_PER_DAY = 0.93;
 const ALERT_CAPTURES_PER_WEEK = 1;
 const MIN_IMPRESSIONS_FOR_ALERT = 30;
-// Just under 7d so a weekly cron always re-alerts while the collapse persists,
+const SUSTAINED_DECLINE_WEEKS = 3;
+const SUSTAINED_DECLINE_THRESHOLD = 3; // roughly half the ~6.5/wk baseline
+// Just under 7d so a weekly cron always re-alerts while a problem persists,
 // but a same-week manual re-run (dry-run debugging, retry) doesn't double-send.
 const COLLAPSE_COOLDOWN_MS = 6 * 24 * 60 * 60 * 1000;
 
@@ -41,8 +53,13 @@ function decideEmailGateFunnelAlerts(summary = {}, state = {}, nowMs = 0) {
   const impressions = summary.impressions || 0;
   const capturesPerWeek = typeof summary.capturesPerWeek === 'number' ? summary.capturesPerWeek : (summary.captured || 0);
   const baselinePerWeek = +(BASELINE_CAPTURES_PER_DAY * 7).toFixed(1);
+  const hasMeaningfulTraffic = impressions >= MIN_IMPRESSIONS_FOR_ALERT;
 
-  const belowFloor = impressions >= MIN_IMPRESSIONS_FOR_ALERT && capturesPerWeek < ALERT_CAPTURES_PER_WEEK;
+  // Factual, never reverted: has the funnel ever produced a meaningful week?
+  const everReachedFloor = !!next.everReachedFloor;
+  if (hasMeaningfulTraffic) next.everReachedFloor = true;
+
+  const belowFloor = hasMeaningfulTraffic && capturesPerWeek < ALERT_CAPTURES_PER_WEEK;
   const cooled = !next.lastCollapseAlertAt || nowMs - next.lastCollapseAlertAt >= COLLAPSE_COOLDOWN_MS;
 
   if (belowFloor && cooled) {
@@ -56,13 +73,52 @@ function decideEmailGateFunnelAlerts(summary = {}, state = {}, nowMs = 0) {
         `The gate's 66%-converter-retention estimate may be wrong — consider reverting the cold-start gate. ` +
         `See ~/Documents/claude-outputs/email-gate-analysis-2026-07-20.md.`,
     });
-  } else if (impressions < MIN_IMPRESSIONS_FOR_ALERT) {
-    alerts.push({
-      kind: 'ramp-up', severity: 'warning', email: false, logOnly: true,
-      title: 'Email gate funnel: still ramping up',
-      description: `Only ${impressions} impressions this window (below the ${MIN_IMPRESSIONS_FOR_ALERT}-impression floor) — ` +
-        `too early to judge captures/week. Captures so far: ${summary.captured ?? 0}.`,
-    });
+  } else if (!hasMeaningfulTraffic) {
+    if (everReachedFloor) {
+      // The funnel WAS producing meaningful traffic and just fell below the
+      // floor — not ramp-up, a regression. Actionable, not log-only.
+      const stalledCooled = !next.lastStalledAlertAt || nowMs - next.lastStalledAlertAt >= COLLAPSE_COOLDOWN_MS;
+      if (stalledCooled) {
+        next.lastStalledAlertAt = nowMs;
+        alerts.push({
+          kind: 'funnel-stalled', severity: 'error', email: true, stampKey: 'lastStalledAlertAt',
+          title: 'Email gate funnel: impressions collapsed',
+          description: `Only ${impressions} gate impressions this window, down from a previously-healthy level ` +
+            `(below the ${MIN_IMPRESSIONS_FOR_ALERT}-impression floor). This funnel was working before — check ` +
+            `whether the modal still renders and whether gate_modal_shown/email_captured events are still firing ` +
+            `in PostHog (node scripts/analyze-email-gate-funnel.js), not just conversion rate.`,
+        });
+      }
+    } else {
+      alerts.push({
+        kind: 'ramp-up', severity: 'warning', email: false, logOnly: true,
+        title: 'Email gate funnel: still ramping up',
+        description: `Only ${impressions} impressions this window (below the ${MIN_IMPRESSIONS_FOR_ALERT}-impression floor) — ` +
+          `too early to judge captures/week. Captures so far: ${summary.captured ?? 0}.`,
+      });
+    }
+  }
+
+  // Sustained multi-week decline: only meaningful weeks count, so a stall
+  // doesn't masquerade as "3 low weeks" — funnel-stalled already covers that.
+  if (hasMeaningfulTraffic) {
+    next.recentCaptures = [...(next.recentCaptures || []), capturesPerWeek].slice(-SUSTAINED_DECLINE_WEEKS);
+    if (
+      next.recentCaptures.length === SUSTAINED_DECLINE_WEEKS
+      && next.recentCaptures.every((v) => v >= ALERT_CAPTURES_PER_WEEK && v < SUSTAINED_DECLINE_THRESHOLD)
+    ) {
+      const declineCooled = !next.lastDeclineAlertAt || nowMs - next.lastDeclineAlertAt >= COLLAPSE_COOLDOWN_MS;
+      if (declineCooled) {
+        next.lastDeclineAlertAt = nowMs;
+        alerts.push({
+          kind: 'sustained-decline', severity: 'error', email: true, stampKey: 'lastDeclineAlertAt',
+          title: 'Email gate funnel: sustained multi-week decline',
+          description: `Captures/wk for the last ${SUSTAINED_DECLINE_WEEKS} weeks: ${next.recentCaptures.join(', ')} — ` +
+            `each stayed above the hard ${ALERT_CAPTURES_PER_WEEK}/wk collapse floor but all are below half the ` +
+            `~${baselinePerWeek}/wk baseline. List growth is fading gradually rather than collapsing outright.`,
+        });
+      }
+    }
   }
 
   alerts.push({
@@ -82,4 +138,6 @@ module.exports = {
   BASELINE_CAPTURES_PER_DAY,
   ALERT_CAPTURES_PER_WEEK,
   MIN_IMPRESSIONS_FOR_ALERT,
+  SUSTAINED_DECLINE_WEEKS,
+  SUSTAINED_DECLINE_THRESHOLD,
 };
