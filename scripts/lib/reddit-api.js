@@ -186,10 +186,21 @@ function scrapingDogRequest(apiKey, url, tier) {
           try {
             resolve(JSON.parse(data));
           } catch (e) {
-            // Reddit sometimes ships JSON inside an HTML wrapper via proxies
+            // Reddit sometimes ships JSON inside an HTML wrapper via proxies.
+            // Scrapingdog's stealth tier renders in a real browser, so raw
+            // JSON arrives as <body><pre>{...}</pre> with HTML-escaped
+            // entities (&quot; for every quote — run 29876609047). Prefer the
+            // <pre> content and unescape entities before parsing.
+            const unescapeHtml = (t) => t
+              .replace(/&quot;/g, '"').replace(/&#0?39;/g, "'")
+              .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+            const preMatch = data.match(/<pre[^>]*>([\s\S]*?)<\/pre>/i);
+            const candidates = [];
+            if (preMatch) candidates.push(unescapeHtml(preMatch[1]));
             const jsonMatch = data.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
-            if (jsonMatch) {
-              try { resolve(JSON.parse(jsonMatch[0])); return; } catch (_) { /* fall through */ }
+            if (jsonMatch) { candidates.push(jsonMatch[0], unescapeHtml(jsonMatch[0])); }
+            for (const c of candidates) {
+              try { resolve(JSON.parse(c)); return; } catch (_) { /* try next */ }
             }
             // Empty or HTML 200 = the plain tier got blocked by the target
             // (Reddit returns empty/interstitial bodies to datacenter proxies).

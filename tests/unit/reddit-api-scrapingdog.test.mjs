@@ -45,6 +45,11 @@ const server = http.createServer((req, res) => {
       res.writeHead(400);
       res.end('{"message":"Something went wrong please try again!","status":400,"success":false}');
     }
+  } else if (target.includes('browser-pre')) {
+    // Mirrors Scrapingdog stealth tier (run 29876609047): a real-browser
+    // render wraps raw JSON in <pre> with HTML-escaped entities.
+    res.writeHead(200);
+    res.end('<html><head><meta charset="utf-8"></head><body><pre>{&quot;data&quot;:{&quot;children&quot;:[{&quot;kind&quot;:&quot;t3&quot;,&quot;data&quot;:{&quot;id&quot;:&quot;pre1&quot;,&quot;title&quot;:&quot;Tom &amp; Jerry &lt;live&gt;&quot;}}]}}</pre></body></html>');
   } else if (target.includes('wrapped')) {
     res.writeHead(200);
     res.end('<html><body>{"data":{"children":[]}}</body></html>');
@@ -141,6 +146,14 @@ test('fetchViaScrapingDog escalates on generic 400 without stealth hint', async 
   // plain 400 + premium 400 + stealth 200 = 3 requests, one-time toll per
   // run — sdTierIndex latches so later calls skip straight to stealth
   assert.equal(getStats().scrapingDog, 3, 'generic 400 should walk the full ladder once');
+});
+
+test('fetchViaScrapingDog parses browser-rendered <pre> JSON with escaped entities', async () => {
+  const { fetchViaScrapingDog, resetFallbackState } = load();
+  resetFallbackState();
+  const result = await fetchViaScrapingDog('https://www.reddit.com/r/broadway/browser-pre.json');
+  assert.equal(result.data.children[0].data.id, 'pre1');
+  assert.equal(result.data.children[0].data.title, 'Tom & Jerry <live>');
 });
 
 test('fetchViaScrapingDog rejects when no key is configured', async () => {
