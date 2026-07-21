@@ -5,13 +5,21 @@
  * (llm-v6) with a late-arriving high-reliability star, OR carrying an ensemble
  * LLM verdict under a non-v6 scoreSource stamp (scored pre-v6, or the v6 stamp
  * was overwritten by a later star extraction) so the rebuild serves the flat
- * star conversion instead of a within-band sentiment score. Backfills ALL West
- * End / off-West-End shows (the anchored markets) corpus-wide — closing the
- * opening-night late-arriving-star race (see scripts/lib/late-star-anchor.js).
+ * star conversion instead of a within-band sentiment score. Backfills ALL
+ * ANCHORED_MARKETS shows corpus-wide (west-end, off-west-end, broadway,
+ * off-broadway) — closing the opening-night late-arriving-star race (see
+ * scripts/lib/late-star-anchor.js).
  *
  * Sets needsRescore=true + rescoreReason='late-star-anchor'. Then run:
- *   ANCHORED_BANDS_PILOT unnecessary for WE/OWE (auto-anchored):
+ *   ANCHORED_BANDS_PILOT unnecessary for ANCHORED_MARKETS (auto-anchored):
  *   npx tsx scripts/llm-scoring/index.ts --needs-rescore --rescore-reason=late-star-anchor
+ *
+ * 2026-07-20 (NYC rollout): market scoping is no longer hardcoded to WE/OWE
+ * here — it defers entirely to needsLateStarReanchor's internal
+ * shouldUseAnchoredMode(category) check, which reads the same ANCHORED_MARKETS
+ * set (now broadway + off-broadway + west-end + off-west-end) that the
+ * scorer itself uses. This file only needs `category` to pass through as
+ * context; it never re-implements the market gate.
  *
  * Usage: node scripts/flag-late-star-reanchor.js [--apply] [--limit=N]
  */
@@ -37,7 +45,6 @@ const byShow = {};
 for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json'))) {
   const showId = path.basename(path.dirname(f));
   const category = marketById.get(showId);
-  if (category !== 'west-end' && category !== 'off-west-end') continue; // anchored markets only
   let d;
   try { d = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { continue; }
   if (d.needsRescore === true) continue; // already queued
@@ -61,6 +68,6 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
   }
   if (LIMIT && flagged >= LIMIT) break;
 }
-console.log(`${APPLY ? 'Flagged' : 'Would flag'} ${flagged} WE/OWE reviews needing anchored re-score (late star or non-v6 stamp), across ${Object.keys(byShow).length} shows:`);
+console.log(`${APPLY ? 'Flagged' : 'Would flag'} ${flagged} reviews needing anchored re-score (late star or non-v6 stamp), across ${Object.keys(byShow).length} shows:`);
 for (const [s, n] of Object.entries(byShow).sort((a, b) => b[1] - a[1])) console.log(`  ${n}  ${s}`);
 if (!APPLY) console.log('\n(dry run — pass --apply to write needsRescore flags)');

@@ -30,12 +30,15 @@ export const LOW_CONF_SCORE_SOURCES = new Set([
 // use V5 unless the ANCHORED_BANDS_PILOT env flag is set explicitly.
 //
 // Rollout sequence:
-//   2026-05-17 (this commit): WE + Off-West-End soft-launched
-//   POST-TONYS 2026:          add 'broadway' (and 'off-broadway') — one-line
-//                             data change in this Set, no engine edit required
+//   2026-05-17: WE + Off-West-End soft-launched
+//   2026-07-20 (this commit): broadway + off-broadway added (NYC rollout,
+//                             Notion card 39a637c5416f8137a105f2c88ea166ee).
+//                             Mirror change: scripts/lib/star-reliability.js
 export const ANCHORED_MARKETS: ReadonlySet<string> = new Set([
   'west-end',
   'off-west-end',
+  'broadway',
+  'off-broadway',
 ]);
 
 // Shows pre-dating the 2005 cutoff that have been manually curated with
