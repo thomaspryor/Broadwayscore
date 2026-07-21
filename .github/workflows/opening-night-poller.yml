@@ -89,6 +89,15 @@ jobs:
         uses: actions/checkout@v5
         with:
           ref: main
+          # fetch-depth: 0 (full history) is REQUIRED, not an optimization. The
+          # fast-path commits directly to the web repo main via push-with-retry.sh.
+          # On a shallow (default depth-1) checkout, a graft-boundary HEAD lets the
+          # push-retry rebase/merge/reset path treat local vs origin/main as
+          # unrelated histories and produce a PARENTLESS root commit — that is the
+          # #209 incident (53ff06a4a7a, 2026-07-19: a second root merged into main,
+          # doubling clone weight + corrupting per-file history). Full history keeps
+          # merge-base resolvable so every commit stays properly parented.
+          fetch-depth: 0
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
