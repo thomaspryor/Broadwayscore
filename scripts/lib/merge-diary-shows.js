@@ -26,11 +26,18 @@
 //   * On key collision (both sides carry the entry): keep OURS. This matches
 //     the "-X ours" strategy the rebase already applied, and is safe because
 //     the three writers only ADD or field-UPDATE entries — none ever deletes,
-//     so a union can never resurrect an intentionally-removed show. A field
-//     update on a shared entry that loses the race is re-applied on the writer's
-//     next scheduled run (Mezzanine re-reports it); a dropped ADDITION is not
-//     (the source stub is consumed), which is why additions are the thing this
-//     protects.
+//     so a union can never resurrect an intentionally-removed show.
+//     KNOWN LIMITATION: a field update on a shared entry that loses the race
+//     (e.g. refresh-mezzanine-catalog bumping audienceScore in place) is
+//     dropped and not guaranteed to self-heal — refresh advances its watermark
+//     on the same run, so it only re-fetches that production if Mezzanine
+//     re-touches it. This is accepted: there is no per-entry timestamp to
+//     arbitrate concurrent field writes (a file-level lastUpdated tiebreak
+//     would just lose the symmetric case instead), and the fields at stake are
+//     audience metrics on the secondary diary-only catalog, not scored data.
+//     A dropped ADDITION, by contrast, is unrecoverable (the source stub is
+//     consumed) — which is why additions are the thing this reconciler exists
+//     to protect, and both sides' additions always survive regardless.
 //   * Order: ours first (original order preserved), then remote-only entries
 //     appended in remote order — deterministic, minimal diff.
 //   * lastUpdated: the newer of the two ISO timestamps.
