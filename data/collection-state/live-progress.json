@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-07-22T22:27:09.357Z",
+  "updatedAt": "2026-07-22T22:46:50.905Z",
   "processed": 63,
-  "failed": 837,
-  "successRate": "7.0%",
+  "failed": 847,
+  "successRate": "6.9%",
   "tierBreakdown": {
     "playwright": 45,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 9,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 6,
-    "archiveToday": 7,
+    "archiveToday": 9,
     "archive": 9
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-07-22T19:16:01.430Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-22T19:24:52.261Z",
-      "event": "bb-session",
-      "session": "bbff1ac1",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
-    {
-      "t": "2026-07-22T19:24:52.635Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-22T19:25:08.209Z",
-      "event": "bb-session",
-      "session": "b61326f8",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
     {
       "t": "2026-07-22T19:25:08.555Z",
       "event": "bb-cookie-inject",
@@ -125,6 +103,28 @@
       "event": "bb-session",
       "session": "62cfd891",
       "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+    },
+    {
+      "t": "2026-07-22T22:43:25.865Z",
+      "event": "bb-session",
+      "session": "47b0d668",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-22T22:43:26.875Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-22T22:44:54.079Z",
+      "event": "bb-session",
+      "session": "fb6bcf0f",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-22T22:44:55.036Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
