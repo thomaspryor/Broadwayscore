@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-22T05:27:28.508Z",
+  "generatedAt": "2026-07-22T07:13:07.908Z",
   "date": "2026-07-22",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 216201,
+  "entryCount": 217818,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -776,7 +776,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 37850421,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1641,7 +1641,7 @@
     },
     {
       "showId": "waitress-2016",
-      "reviewCount": 29,
+      "reviewCount": 28,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1766,7 +1766,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 174706365,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1776,12 +1776,12 @@
     },
     {
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
-      "reviewCount": 48,
+      "reviewCount": 47,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 174924125,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1791,7 +1791,7 @@
     },
     {
       "showId": "cats-2016",
-      "reviewCount": 35,
+      "reviewCount": 34,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1811,7 +1811,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 176078257,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1901,7 +1901,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 176325353,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -7911,7 +7911,7 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
-      "reviewCount": 35,
+      "reviewCount": 34,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8046,7 +8046,7 @@
     },
     {
       "showId": "the-encounter-2016",
-      "reviewCount": 50,
+      "reviewCount": 49,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11921,7 +11921,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 11174798,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -11962,6 +11962,66 @@
     {
       "showId": "amelie-a-new-musical-2017",
       "reviewCount": 7,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "motown-the-musical-2016",
+      "reviewCount": 8,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "an-act-of-god-2016",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "midnight-at-the-never-get-west-end-2026",
+      "reviewCount": 14,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "are-you-mad-at-me-off-broadway-2026",
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
