@@ -43,9 +43,15 @@ shows.forEach(s => {
   titleFamilies.get(baseTitle).push(s);
 });
 
-// Get pre-2005 Broadway shows that have review-text directories
+// Get pre-2005 Broadway shows that have review-text directories.
+// `category` used to be unset for Broadway shows (hence the old `if
+// (s.category) return false` presence check), but every open Broadway show
+// now has category:"broadway" set explicitly, which made this filter match
+// zero shows — a silent no-op audit (found live 2026-07-22, same root-cause
+// class as the Hargitay cast-changes P0: a stale "Broadway = no category"
+// assumption baked into an eligibility filter).
 const pre2005Shows = shows.filter(s => {
-  if (s.category) return false;
+  if (s.category && s.category !== 'broadway') return false;
   if (!s.openingDate) return false;
   const year = new Date(s.openingDate).getFullYear();
   return year < 2005;
