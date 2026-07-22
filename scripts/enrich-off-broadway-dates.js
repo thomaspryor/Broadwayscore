@@ -195,6 +195,7 @@ module.exports = {
  * to parse — this is a genuine source outage, not a selector-drift bug.
  */
 function parseLortelCurrentlyPlaying(html) {
+  if (!html) return [];
   const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
   const pageTitle = titleMatch ? titleMatch[1].trim() : null;
   if (pageTitle && /page not found/i.test(pageTitle)) {
