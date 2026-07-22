@@ -79,14 +79,26 @@ export default function AnalyticsWrapper() {
         // Always expose on window — even if already loaded from a prior render.
         // TicketLink and other components use window.posthog.capture() for native events.
         (window as unknown as Record<string, unknown>).posthog = posthog;
+      }).catch(() => {
+        // Blocked import (ad blocker / network) — window.posthog stays undefined.
+        // Every consumer (TicketButtonsAB, ProGateContext, TicketLink,
+        // promo-tracking) already optional-chains + falls back to a labeled
+        // 'fallback'/'anonymous' state after its own poll timeout, so this is
+        // silent-by-design, not silent-by-accident (adversarial review finding,
+        // card #311) — nothing further to do here.
       });
     };
 
+    // Timeout capped lower than Sentry's (below) — TicketButtonsAB blocks
+    // rendering ticket buttons on window.posthog.getFeatureFlag() and gives
+    // up after 5s total. A longer cap here eats directly into that budget
+    // on busy pages and delays a revenue-critical CTA, not just an analytics
+    // nice-to-have (ship-check finding, card #311).
     if (typeof window.requestIdleCallback === 'function') {
-      const idleId = window.requestIdleCallback(loadPostHog, { timeout: 4000 });
+      const idleId = window.requestIdleCallback(loadPostHog, { timeout: 1500 });
       return () => window.cancelIdleCallback?.(idleId);
     }
-    const timeoutId = setTimeout(loadPostHog, 2000);
+    const timeoutId = setTimeout(loadPostHog, 1500);
     return () => clearTimeout(timeoutId);
   }, []);
 
