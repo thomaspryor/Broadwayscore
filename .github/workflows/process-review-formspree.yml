@@ -8,6 +8,17 @@ on:
     - cron: '0 6 * * 1'
   workflow_dispatch: # Manual trigger
 
+# Serialize schedule + manual-dispatch runs against
+# data/audit/processed-review-submissions.json — the dedup tracker that
+# prevents the same Formspree submission from creating a duplicate GitHub
+# issue. A race between the weekly cron and a manual run could let both
+# process the same new submission before either's tracking write lands. Same
+# class as the update-cast-changes.yml incident (Notion 3a5637c5-416f-812a).
+# Queued, not cancelled.
+concurrency:
+  group: process-review-formspree
+  cancel-in-progress: false
+
 jobs:
   process-submissions:
     runs-on: ubuntu-latest
