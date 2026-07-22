@@ -1004,6 +1004,7 @@ export default function MyShowsClient() {
                             href={entryHref}
                             posterUrl={entryShow?.posterUrl ?? undefined}
                             date={entryFormattedDate}
+                            title={entryShow?.title || entry.show_id}
                             onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from watchlist.', 'info'); }}
                           />
                         );
@@ -1465,7 +1466,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
   );
 }
 
-function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string | null; posterUrl?: string; date: string | null; onRemove: () => void }) {
+function UpcomingGridCard({ href, posterUrl, date, title, onRemove }: { href: string | null; posterUrl?: string; date: string | null; title: string; onRemove: () => void }) {
   const [confirmRemove, setConfirmRemove] = useState(false);
   useEffect(() => {
     if (!confirmRemove) return;
@@ -1475,7 +1476,7 @@ function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string | 
 
   return (
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <CardLinkOrDiv href={href} className="relative">
+      <CardLinkOrDiv href={href} className="relative" ariaLabel={`View ${title}`}>
         <div className="aspect-[2/3] bg-surface-overlay">
           <Poster url={posterUrl} iconClass="text-3xl" />
         </div>
