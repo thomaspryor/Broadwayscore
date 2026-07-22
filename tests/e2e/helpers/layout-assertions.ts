@@ -25,6 +25,19 @@ async function getInteractiveBounds(container: Locator): Promise<BoundingBox[]> 
   const selector = 'button, a, [role="button"], input, select, [role="tab"]';
   const elements = container.locator(selector);
   const count = await elements.count();
+  // A 0 count here makes every caller (assertNoOverlaps, assertNothingOffScreen,
+  // assertMinimumTapTargets) pass trivially — expect([]).toEqual([]) is always
+  // true. If the interactive-elements selector drifts, these asserts silently
+  // stop checking anything instead of failing loudly. Callers already guard
+  // the container's own visibility before calling in; a 0 count past that
+  // point means the selector itself broke, not that the container is
+  // legitimately empty.
+  expect(
+    count,
+    `getInteractiveBounds found 0 interactive elements (selector: ${selector}) — ` +
+      `either the container is unexpectedly empty or the selector drifted, and ` +
+      `every layout assertion built on this would pass having checked nothing`
+  ).toBeGreaterThan(0);
   const boxes: BoundingBox[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -126,6 +139,13 @@ export async function assertRowAlignment(
 ): Promise<void> {
   const children = row.locator(':scope > *');
   const count = await children.count();
+  // Same silent-no-op risk as getInteractiveBounds above: a 0 count here
+  // falls through the "midpoints.length < 2" early-return below and the
+  // caller sees a clean pass having verified nothing.
+  expect(
+    count,
+    'assertRowAlignment found 0 direct children — selector or row locator drifted'
+  ).toBeGreaterThan(0);
   const midpoints: { label: string; midY: number }[] = [];
 
   for (let i = 0; i < count; i++) {

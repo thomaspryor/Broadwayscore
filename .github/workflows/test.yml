@@ -666,6 +666,11 @@ on:
       - 'scripts/lib/commercial-model-drift.test.mjs'
       - 'scripts/audit-commercial-data.js'
       - 'scripts/health-check.js'
+      # Playwright count()-without-assertion silent-no-op detector. Runs in
+      # lint-workflows against tests/e2e/*.spec.ts directly (no colocated
+      # test); path-listed so a solo edit still triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/audit-playwright-count-assertions.js'
   pull_request:
     branches: [main]
   schedule:
@@ -864,6 +869,28 @@ jobs:
         # The fix shipped here uses Playwright actionable clicks; this audit
         # prevents the next test from reintroducing the pattern.
         run: node scripts/audit-playwright-evaluate-click.js
+
+      - name: Audit — Playwright count() silent no-op (non-blocking)
+        # `const count = await locator.count()` used to bound a loop
+        # (Math.min(count, N)) with no assertion that count > 0 first: if the
+        # selector drifts, count silently becomes 0, the loop body never runs,
+        # and the test passes having verified nothing. Same failure class as
+        # this repo's audit-pre2005-reviews.js category-filter incident.
+        #
+        # Why non-blocking: new to the suite (2026-07-21/22) — two real
+        # instances were found and fixed manually this session
+        # (my-shows-functional.spec.ts, user-flows.spec.ts; one was the root
+        # cause of the recurring "Test UGC red 5x/day" incident), but the
+        # detector hasn't run against a wide range of future PRs yet. Warn
+        # here first; promote to blocking (drop `|| true`) once it's proven
+        # itself against real traffic, per the audit-regex-patterns.js /
+        # check-corpus-drift.yml precedent for new empirical gates.
+        run: |
+          OUT=$(node scripts/audit-playwright-count-assertions.js || true)
+          echo "$OUT"
+          if echo "$OUT" | grep -q "unguarded count() assignment"; then
+            echo "::warning::Playwright count()-without-assertion pattern found — a selector drift here would silently pass having checked nothing. Run: node scripts/audit-playwright-count-assertions.js"
+          fi
 
       - name: Audit — Tony LOSO snapshot co-change
         # If TONY_RECIPES, TONY_RECIPES_TIER2, or categoryAwardsScore changes
