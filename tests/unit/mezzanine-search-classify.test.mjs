@@ -70,6 +70,15 @@ test('normalizeQuery strips curly quotes/ampersand like ImportShows.tsx normTitl
   assert.equal(normalizeQuery('Cocktail Magique'), 'cocktail magique');
 });
 
+test('normalizeQuery folds accents before stripping punctuation (card 3a5637c5, 2026-07-21)', () => {
+  // Un-fixed behavior was [^a-z0-9]+ stripping accented letters as
+  // punctuation: 'La Bohème' -> 'la boh me', which matches nothing against
+  // Mezzanine's plain-ASCII searchableName 'la boheme'.
+  assert.equal(normalizeQuery('La Bohème'), 'la boheme');
+  assert.equal(normalizeQuery('Les Misérables'), 'les miserables');
+  assert.equal(normalizeQuery('Così fan tutte'), 'cosi fan tutte');
+});
+
 test('rankCandidates collapses Mezzanine duplicate records (same title+venue+year, casing/leading-the variants)', () => {
   // Owner repro 2026-07-19: 14 copies of "The Trouble With Dead Boyfriends" and
   // 3 of "I Mostly Blame Myself", all at the Players Theatre with venue-string
