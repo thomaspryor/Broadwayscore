@@ -1,17 +1,8 @@
 {
   "processed": [],
   "failed": [
-    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
-    "loves-labours-lost-globe-west-end-2026/london-theatre--unknown.json",
-    "loves-labours-lost-globe-west-end-2026/thestage--unknown.json",
-    "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
-    "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
-    "loves-labours-lost-globe-west-end-2026/times-uk--holly-williams.json",
-    "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
-    "loves-labours-lost-globe-west-end-2026/whatsonstage--matt-trueman.json",
-    "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json",
-    "loves-labours-lost-globe-west-end-2026/whatsonstage--sarah-crompton.json",
-    "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json"
+    "dukes-off-broadway-2026/nytimes--helen-shaw.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -21,13 +12,33 @@
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--unknown.json",
-      "data/review-texts/loves-labours-lost-globe-west-end-2026/times-uk--holly-williams.json"
-    ],
+    "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-22T06:56:25.148Z",
-  "lastProcessed": "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
-  "log": []
+  "startTime": "2026-07-22T06:57:15.570Z",
+  "lastProcessed": "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+  "log": [
+    {
+      "t": "2026-07-22T06:57:21.083Z",
+      "event": "bb-session",
+      "session": "c7e98edc",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-22T06:57:22.097Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-22T06:57:38.023Z",
+      "event": "bb-session",
+      "session": "e827e59b",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-22T06:57:39.061Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
