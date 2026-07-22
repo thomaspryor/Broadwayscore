@@ -29,6 +29,7 @@ const MIN_REVIEWS_BY_CATEGORY = {
   'off-broadway': 3,
   'west-end': 5,
   'off-west-end': 3,
+  regional: 3,
 };
 const MIN_REVIEWS_DEFAULT = 5;
 const MIN_REVIEWS_CURATED_HISTORICAL = 4;
