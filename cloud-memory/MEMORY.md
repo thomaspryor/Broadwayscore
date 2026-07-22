@@ -5,19 +5,19 @@
 ## 🌐 External APIs & services
 - [Vercel API + billing](reference_vercel_billing_api.md) — VERCEL_TOKEN in .env; /v1/invoices[/upcoming]; deploy freq = cost lever ([[feedback_vercel_api_access.md]])
 - [Analytics Real Users lens](feedback_analytics_real_users_lens.md) — GA4 bot-inflated; PostHog (proj 332742) is_owner + SG/CN/VN excluded ([[feedback_newsletter_no_utm.md]])
-- [Google Search Console API](feedback_gsc_api_auth.md) — gcloud ADC + webmasters scope; X-Goog-User-Project header required
+- [Google Search Console API](feedback_gsc_api_auth.md) — ADC + webmasters scope + X-Goog-User-Project
 
 ## 👤 User profile & session discipline
 - [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — prune owner-only, skips live claudes ([[cmux-closed-tab-restore-recipe]])
-- [Terse output default](feedback_terse_output_default.md) — no recap, keep proof; Claude-pace estimates; ADHD shaping in global CLAUDE.md ([[feedback_no_human_day_estimates.md]])
+- [Terse output default](feedback_terse_output_default.md) — no recap, keep proof; ADHD shaping in global CLAUDE.md ([[feedback_no_human_day_estimates.md]])
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff"; laptop+phone, infer from message style ([[feedback_user_device_context.md]])
-- [Deliverable venue rules](feedback_session_handoff_and_deliverable_format.md) — design asks: confirm venue first; 2 rejections = stop & ask; verify output before pointing owner
-- [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/visual-qa/approvals myself, report outcomes not process; Stop hook blocks "done", bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
+- [Deliverable venue rules](feedback_session_handoff_and_deliverable_format.md) — design asks: confirm venue first; 2 rejections = stop & ask; verify before pointing owner
+- [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/approvals myself, report outcomes not process; bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
 - [Always wait for async](feedback_always_wait_async.md) — never end turn while deploy/rebuild runs; flag-gated features verify on demo URL ([[feedback_flag_gated_verify_on_demo.md]])
 - [Probe before scale backfills](feedback_investigate_premise_before_scaling.md) — 5-20 file probe first; save findings to memory ([[feedback_save_research_findings.md]])
 - [/ship-check catches real P1s](feedback_ship_check_finds_real_bugs.md) — never skip; enforced for scripts/lib/ + workflows
 - [Systematic fix: threat model + parity test](feedback_systematic_fix_threat_model_first.md) — check trigger frequency; parity-test bad URLs
-- [Review rituals](feedback_sprint_plan_needs_review.md) — /plan-review before multi-sprint plans; GPT-4o+Gemini parallel on screenshots ([[feedback_two_model_ui_review.md]], [[feedback_three_model_audit_modality.md]])
+- [Review rituals](feedback_sprint_plan_needs_review.md) — /plan-review before multi-sprint plans; GPT-4o+Gemini on screenshots ([[feedback_two_model_ui_review.md]], [[feedback_three_model_audit_modality.md]])
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — also test wrapper against real data
 - [Show status before external comms](feedback_check_show_status_before_external_comms.md) — surface status/closingDate with show drafts; OB closings lag
 - [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — no gh polling loops; NEVER gh run watch, use scripts/lib/wait-for-run.sh
@@ -28,7 +28,7 @@
 
 ## 🌳 Worktrees & git
 - [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; launch bg watchers from MAIN repo cwd ([[feedback_background_watchers_worktree_cwd.md]])
-- [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ BEFORE writing; plan "parallel" = subagents; same-name worktree may be another session's LIVE one, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
+- [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ before writing; "parallel" = subagents; same-name worktree may be another LIVE session, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
 - [Dual repo data files](feedback_dual_repo_data_files.md) — private repo authoritative, fix BOTH; review-texts NOT a symlink ([[feedback_review_texts_not_symlink.md]]); NEVER rebuild-all-reviews.js locally ([[feedback_local_rebuild_stale_clone_hazard.md]])
 - [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; use listShowDirs()
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction
@@ -50,7 +50,7 @@
 - [Compound shell/git traps](feedback_compound_shell_git_traps.md) — zsh vars don't word-split; never `stash pop` after conditional push (pops another session's stash); `git push` standalone ([[feedback_prepush_gate_stash_push_parser.md]])
 
 ## 🔌 External APIs & verification
-- [Live-API contract test](feedback_live_api_contract_test.md) — call live API, unit tests miss empirical behavior; verify bug claim before fixing ([[feedback_verify_bug_claim_before_fixing.md]], [[feedback_404_not_terminal.md]]); normalize JSON keys at load ([[feedback_api_key_whitespace.md]])
+- [Live-API contract test](feedback_live_api_contract_test.md) — call live API; verify bug claim first ([[feedback_verify_bug_claim_before_fixing.md]], [[feedback_404_not_terminal.md]]); normalize JSON keys at load ([[feedback_api_key_whitespace.md]])
 - [Resend preview ≠ delivered email](feedback_resend_preview_masks_delivered_rendering.md) — preview hides webp/dark-mode; verify in real client (owner Gmail iOS)
 - [Refactor parity test on real data](feedback_refactor_parity_test.md) — old vs new predicate; 0 diffs = safe
 - [Paywalled star outlets not gaps](feedback_paywalled_star_outlets_not_gaps.md) — Stage stubs scored via aggregatorStars-fallback; gap-scans exclude _pending/
@@ -82,7 +82,7 @@
 - [Tony predictions](project_tony_predictions_accuracy.md) — recipe weights, 93% accuracy; FREEZE audience grades for closed seasons ([[feedback_freeze_tony_audience_grades.md]])
 
 ## 📊 Data pipeline & scraping
-- [NEVER ask user to create a Reddit app](feedback_reddit_app_creation_broken.md) — prefs/apps broken for their account for months, repeat asks flagged 2026-07-21; Reddit via SB post-reset + null-counter degradation
+- [NEVER ask user to create a Reddit app](feedback_reddit_app_creation_broken.md) — prefs/apps broken for months; Reddit via SB post-reset + null-counter degradation
 - [Scraper architecture](feedback_scraper_architecture.md) — use fetchPage(); BD empty 200s, Playwright 404s as success ([[feedback_fetchpage_gotchas.md]]); BWW soft-404 returns 200 homepage, check <title> ([[feedback_aggregator_soft_404.md]])
 - [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — _serpViaScrapingBee logs nothing; preferSpeed+SD-empty fallthrough = 60-100K cr/day; BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]], [[feedback_sb_credit_budget.md]])
 - [Closing-date automation gaps](feedback_closing_date_audit_gaps.md) — 4 silent gaps; broadway.org/TodayTix lag; WE=0 automation
@@ -102,7 +102,7 @@
 - [Manual review protection fields](feedback_manual_review_protection_fields.md) — need ALL 8 fields or guards re-flag; carve-out extends to wrongShow ([[feedback_manual_clear_covers_all_rejection_types.md]], [[feedback_protected_fields_every_write.md]])
 - [Anchored-v6 leaks](feedback_anchored_v6_stamp_and_rescore_starvation.md) — numeric relay ≠ star; llmScore.band = anchored proof; drain rescore queue ([[feedback_star_score_cap.md]])
 - [Reviews.json dual repo push](feedback_reviews_json_dual_repo_push.md) — flag + rebuild + push data repo
-- [Returning production → priorRuns](feedback_returning_production_priorRuns.md) — majors reviewed the earlier run; declare priorRuns {openingDate/closingDate/venue} to re-include ([[feedback_stale_flag_collision_drops_current_production.md]])
+- [Returning production → priorRuns](feedback_returning_production_priorRuns.md) — declare priorRuns {dates/venue} to re-include earlier run's reviews ([[feedback_stale_flag_collision_drops_current_production.md]])
 - [Review recovery pipeline gaps](feedback_review_recovery_pipeline_gaps.md) — run verify-review-recovery.js; 5 steps fail independently
 - [Pseudonymous bylines ≠ multi-author](feedback_pseudonymous_bylines.md) — pen names w/ scraper-invented drift; URL-date guards gate on Unknown byline ([[feedback_url_date_guards_critic_gate.md]])
 - [Curated historical 4-review threshold](feedback_curated_historical_4review_threshold.md) — isCuratedHistorical → 4-review min when ≥1 T1/T2
@@ -110,7 +110,7 @@
 - [Market/season routing](feedback_same_title_disambiguation.md) — extend classifyMarketRouting, ≥2-signal cascade; new UK ceremony MUST be in UK_CEREMONIES or fallback routes WE→BW ([[feedback_uk_ceremonies_strict_season.md]])
 - [Stale-flag CI gates](feedback_duplicate_of_url_mismatch.md) — duplicateOf w/o matching URLs = bug, CI gate + self-heal; orphan slim show files gate --fix deletes ([[feedback_orphan_slim_show_files.md]])
 - [Outlet merges: no flag-and-keep tombstones](feedback_outlet_merge_no_flag_and_keep.md) — rebuild folds flagged loser into winner then cascade-deletes; DELETE worthless losers
-- [Self-referential duplicate pointers](feedback_self_referential_duplicate_pointers.md) — rename-onto-pointer-target makes file a dupe of itself, silently dropped; check duplicateTextOf too; drift actual>expected = rebuild will drop
+- [Self-referential duplicate pointers](feedback_self_referential_duplicate_pointers.md) — rename-onto-pointer-target = dupe of itself, silently dropped; check duplicateTextOf
 - [In-sample accuracy needs LOSO](feedback_in_sample_accuracy_claims_need_loso.md) — never publish in-sample backtest % as "Accuracy"
 
 ## 🤖 LLM / evals
@@ -134,6 +134,6 @@
 - [Recoupment RSS poller](feedback_recoupment_rss_poller_architecture.md) — hourly Variety+Deadline; shared classify lib; trackRecoupment flag
 
 ## 📚 Reference & repo layout
-- [Paywall subs status](reference_paywall_subscriptions_status.md) — Bloomberg/Telegraph/newspapers.com cancelled Jul 2026; check before cookie/Browserbase advice
+- [Paywall subs status](reference_paywall_subscriptions_status.md) — cancelled subs Jul 2026; check before cookie/Browserbase advice
 - [Repo layout](repo_layout.md) — three repos (web, iOS, data) w/ GitHub names + paths; ~/.claude is private repo via claude-sync ([[reference_claude_config_sync.md]])
 - [Theatre Record reference](reference_theatre_record.md) — paid UK review archive
