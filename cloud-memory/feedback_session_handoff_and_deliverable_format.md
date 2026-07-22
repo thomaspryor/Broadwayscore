@@ -4,7 +4,7 @@ description: "Four rules from the 2026-07-21 iOS-design fiasco (6 rejected deliv
 metadata: 
   node_type: memory
   type: feedback
-  modified: 2026-07-22T01:10:24.218Z
+  modified: 2026-07-22T01:16:14.968Z
   originSessionId: 78c06e5a-3954-45b7-ae27-6f6790082fbf
 ---
 
@@ -23,3 +23,5 @@ Related: [[feedback-ios-design-conservative-real-tokens]] (HTML mockups banned; 
 **Addendum 2026-07-21 (same night):** API-level verification is NOT owner-level verification. DesignSync listed the project as isOwned:true, but the owner's browser got "no access" (authorization org ≠ browser org), and the design-SYSTEM pane was the wrong venue category for design PROPOSALS anyway. Rule sharpened: before reporting a deliverable ready, exercise the exact link the owner will click, and match the venue's CATEGORY to the content (proposal ≠ design system). Venue still unvalidated — see task #293.
 
 **Addendum 2026-07-22 (task #293):** Venue confirmed with owner — "Design (Labs)" in their claude.ai sidebar. Found a dedicated DesignSync project already existed (`iOS App — Proposed Designs`, `d21b75cc-0388-4721-81f5-d886f744919f`) with all 10 proposal groups, separate from the design-system project — fixes the category mismatch. Deleted the duplicate `ios-design-proposals/` subtree that was still sitting inside `Broadway Scorecard Design System` (`469cbecf-...`) so that project is pure design-system content again. **Could not diagnose or fix the underlying no-permission bug** — no tool in this session's toolset exposes which claude.ai account/org a DesignSync authorization is bound to, and there's no `/design-login` skill/command locally to re-run; this is a claude.ai-side account/org selection that only the owner's own browser can resolve (e.g. their org switcher). Left as an owner-verification gate: both project links are asserted-but-unverified until the owner clicks one and confirms.
+
+**Resolution 2026-07-22 (same session):** Owner click-tested BOTH DesignSync projects (design-system + the dedicated proposals project made to fix the category issue) — "You don't have access to this project" on both. This is not an org-switcher fix: DesignSync's authorization is bound to an account the owner's claude.ai login can't reach at all, on any project. **Verdict: DesignSync/Claude Design is not a usable venue for this owner, full stop — stop retrying it.** Venue settled on the Artifact tool (`https://claude.ai/code/artifact/708007ba-4153-4d88-bb06-581e3388e8c9`, republish same URL on revision), previously logged as the working fallback. `BroadwayScorecard-app/CLAUDE.md` §Design Proposals rewritten accordingly (commit `1c234ce`). Any future session tempted to use DesignSync for this owner: check this entry first, don't rediscover the same dead end.
