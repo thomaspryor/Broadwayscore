@@ -2988,6 +2988,87 @@ function areSameCriticFuzzy(a, b) {
   return _levenshtein(na, nb) <= FUZZY_CRITIC_MAX_EDIT_DISTANCE;
 }
 
+/* ──────────────────────────────────────────────────────────────────────────
+ * T1-retrieval canonical predicates (Sprint 1, task #291)
+ *
+ * These unify the "is this outlet's review retrieved / a real review?" checks
+ * that previously lived in the now-deleted scripts/lib/review-text-scoreable.js
+ * mirror. Two DISTINCT axes:
+ *
+ *   SCORED axis    — "will this file reach reviews.json?" — is
+ *                    isIncludableForRebuild (above) AND hasValidScore (below).
+ *                    Consumers: validate-data, audit-t1-silent-gaps,
+ *                    check-review-count-drift, t1-silent-gap.
+ *
+ *   RETRIEVED axis — "do we physically hold this outlet's real review, so stop
+ *                    re-discovering it?" — is isRetrieved / blocksRediscovery
+ *                    (below). Consumer: opening-night-poller getFoundOutletIds /
+ *                    getKnownUrls (scoped to in-window T1/T2 — see the poller).
+ *
+ * The two axes are NOT the same predicate: a file excluded from the SCORE by a
+ * rebuild context guard (cross-market, date, syndication dedup) but carrying
+ * real text IS retrieved and must keep blocking rediscovery — so isRetrieved is
+ * intentionally NARROWER than isIncludableForRebuild and does NOT call it
+ * (plan "Changes from Critique": task-breakdown reviewer).
+ * Cross-ref: memory/feedback_includability_predicates_must_be_canonical.md
+ * ────────────────────────────────────────────────────────────────────────── */
+
+// rejectionReason values that mean "the fetched page is NOT a review of
+// anything" (wrong KIND of article, or unusable garbage). Deliberately EXCLUDES
+// wrong_production / wrong_show — those are a real review MIS-ATTRIBUTED, which
+// must NOT reopen rediscovery: the Proof-2026-04-17 scored-wrongProd-FP carve-out
+// and the Grace stale-flag class both stay "retrieved". truncated_text is a
+// fetch-QUALITY failure (a better fetch recovers the review), not a non-review.
+const NON_REVIEW_REJECTION_REASONS = new Set(['not_a_review', 'garbage_text']);
+
+// contentVerification.articleType values that classify the fetched page as a
+// non-review editorial artifact. Scoped to the four the plan enumerates; other
+// CV types (listicle, obituary, box-office) are left out deliberately to keep
+// the discovery-unblocking blast radius small (plan's ≤30-cell gate).
+const NON_REVIEW_CV_ARTICLE_TYPES = new Set(['interview', 'feature', 'preview', 'news']);
+
+/**
+ * True when a review-text file is a REJECTED NON-REVIEW: the fetched content is
+ * definitively the wrong kind of article (interview / feature / preview / news),
+ * flagged wrongArticle by content-verification, an ensemble not_a_review /
+ * garbage_text rejection, or an invalid content tier — and no human has cleared
+ * it. Deliberately EXCLUDES wrongProduction / wrongShow (mis-attribution, not
+ * non-review) so scored / stale-flag files keep blocking rediscovery.
+ *
+ * Union of the four real 2026-07-21 encodings (fixtures in review-guards.test.mjs):
+ *   AP/Beaches feature   — cv.articleType='feature' + cv.wrongArticle + invalid
+ *   THR interview        — cv.articleType='interview'
+ *   BN news              — cv.articleType='news'
+ *   Cyrano garbage       — contentTier='invalid' (no manual clear)
+ * Counter-example (returns FALSE): Grace stale wrongProduction flag on a real,
+ * scored review — mis-attribution, not a non-review.
+ *
+ * Pure — no I/O beyond a lazy KNOWN_STAR_OUTLETS require (mirrors the other
+ * gates in this file).
+ * @param {object} data - review-text JSON
+ * @returns {boolean}
+ */
+function isRejectedNonReview(data) {
+  if (!data) return false;
+  // Manual clear is a human verdict that the file IS a real review of this show.
+  if (wrongShowCleared(data)) return false;
+  // not_a_review at a known-star outlet whose json-ld carries the critic's star
+  // IS a scored verdict (isIncludableForRebuild includes it, lines ~2599) — not a
+  // non-review. Keeps this predicate in lock-step with the rebuild gate.
+  const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
+    (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
+    require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
+  if (isJsonLdStarNotAReview) return false;
+  if (NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
+  const cv = data.contentVerification;
+  if (cv && cv.wrongArticle === true) return true;
+  if (cv && NON_REVIEW_CV_ARTICLE_TYPES.has(cv.articleType)) return true;
+  // contentTier 'invalid' with no manual clear (the wrongShowCleared escape above
+  // already returned for the human-cleared case) → garbage / unusable page.
+  if (data.contentTier === 'invalid') return true;
+  return false;
+}
+
 module.exports = {
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
@@ -3043,6 +3124,9 @@ module.exports = {
   recordSerpAttempt,
   pickRerouteTarget,
   isIncludableForRebuild,
+  isRejectedNonReview,
+  NON_REVIEW_REJECTION_REASONS,
+  NON_REVIEW_CV_ARTICLE_TYPES,
   isVerifiedDiscoverySource,
   shouldRouteUnknownCriticToPending,
   hasHighConfidenceLlmScore,
