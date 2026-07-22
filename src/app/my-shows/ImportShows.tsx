@@ -867,7 +867,9 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
           ) : null}
         </div>
         {entry.match && !noMatch ? (
-          <div className="text-xs text-gray-500 truncate">
+          // Mobile wraps — a truncated context line hid "you logged …" and
+          // the status labels at 390px; sm+ keeps the single line.
+          <div className="text-xs text-gray-500 sm:truncate">
             → {entry.match.title}
             <span className="text-gray-600"> · {matchContext(entry.match)}</span>
             {entry.sourceDate && (
