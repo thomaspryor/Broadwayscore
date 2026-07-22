@@ -55,7 +55,11 @@ const TARGET_KEYWORDS = [
 // Key pages to check Core Web Vitals for (covers main page types)
 const CWV_PAGES = [
   `${SITE_HOST}/`,
-  `${SITE_HOST}/browse/best-broadway-musicals`,
+  // /browse/best-broadway-musicals now 308-redirects to /guides/best-broadway-musicals
+  // (guides feature migration) — PSI/Lighthouse was scoring the redirect stub, not the
+  // real page, which is a plausible contributor to the erratic scores that triggered
+  // card #311 (2026-07-21 CWV regression false-alarm investigation).
+  `${SITE_HOST}/guides/best-broadway-musicals`,
   `${SITE_HOST}/show/hamilton`,
   `${SITE_HOST}/west-end`,
   `${SITE_HOST}/off-broadway`,
