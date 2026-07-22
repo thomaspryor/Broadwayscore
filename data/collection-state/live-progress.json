@@ -1,41 +1,74 @@
 {
-  "updatedAt": "2026-07-22T15:09:43.203Z",
-  "processed": 56,
-  "failed": 574,
-  "successRate": "8.9%",
+  "updatedAt": "2026-07-22T20:16:44.585Z",
+  "processed": 48,
+  "failed": 252,
+  "successRate": "16.0%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 37,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
+    "browserbase": 1,
+    "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 9,
-    "archiveToday": 8,
-    "archive": 9
+    "brightdata": 2,
+    "archiveToday": 2,
+    "archive": 8
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-07-22T16:21:23.444Z",
+      "t": "2026-07-22T19:16:01.001Z",
       "event": "bb-session",
-      "session": "518150e3",
+      "session": "3b3d97e7",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-22T19:16:01.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-22T19:24:52.261Z",
+      "event": "bb-session",
+      "session": "bbff1ac1",
       "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
     },
     {
-      "t": "2026-07-22T16:21:24.324Z",
+      "t": "2026-07-22T19:24:52.635Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-07-22T16:21:40.237Z",
+      "t": "2026-07-22T19:25:08.209Z",
       "event": "bb-session",
-      "session": "3ae979c6",
+      "session": "b61326f8",
       "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
     },
     {
-      "t": "2026-07-22T16:21:40.939Z",
+      "t": "2026-07-22T19:25:08.555Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-22T19:35:30.147Z",
+      "event": "bb-session",
+      "session": "a9abb858",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650851"
+    },
+    {
+      "t": "2026-07-22T19:35:30.597Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-22T19:35:46.117Z",
+      "event": "bb-session",
+      "session": "c53f0424",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650851"
+    },
+    {
+      "t": "2026-07-22T19:35:46.548Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
