@@ -237,6 +237,10 @@ for (const vp of VIEWPORTS) {
 
       const editLinks = page.getByRole('link', { name: 'Edit rating' });
       const count = await editLinks.count();
+      // switchToListView's click + waitForTimeout isn't retry-backed like
+      // expect() — a race here would silently drop count to 0 and let the
+      // loop below skip every assertion (test-red incident, 2026-07-21).
+      expect(count).toBeGreaterThan(0);
       for (let i = 0; i < Math.min(count, 3); i++) {
         const href = await editLinks.nth(i).getAttribute('href');
         if (href) {
