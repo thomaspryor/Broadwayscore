@@ -20,9 +20,11 @@
 const fs = require('fs');
 const path = require('path');
 
-// Single source of truth for "would rebuild include this review-text file?"
-// Shared with scripts/check-review-count-drift.js so both stay in sync.
-const { wouldBeIncludedInRebuild, passesFlagFilters, hasValidScore } = require('./lib/review-text-scoreable');
+// Canonical "would rebuild include this review-text file?" predicate, shared
+// with scripts/check-review-count-drift.js so both stay in sync. isIncludable
+// ForRebuild is the flag/context filter; hasValidScore is the score-presence
+// half. (Sprint 1 unification — the review-text-scoreable.js mirror is deleted.)
+const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards');
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
@@ -3114,7 +3116,7 @@ function validateUnscoredReviewTexts() {
     return;
   }
 
-  // Load shows.json once so passesFlagFilters can apply the
+  // Load shows.json once so isIncludableForRebuild can apply the
   // isLikelyStaleWrongShow override consistently with the rebuild gate
   // (Notion 34e637c5-416f-8121).
   const showsJsonPath = path.join(DATA_DIR, 'shows.json');
@@ -3149,11 +3151,12 @@ function validateUnscoredReviewTexts() {
         continue; // JSON parse errors caught elsewhere
       }
 
-      // Skip filters + score-presence check live in scripts/lib/review-text-scoreable.js
-      // so this validator and scripts/check-review-count-drift.js never drift apart.
-      // See that file for the exact flag list and dedup-field-naming gotchas.
+      // Skip filters + score-presence check live in scripts/lib/review-guards.js
+      // (isIncludableForRebuild + hasValidScore) so this validator and
+      // scripts/check-review-count-drift.js never drift apart. filePath is passed
+      // so duplicateOf circular-recovery matches the drift checker exactly.
       // A silent gap = passes every skip filter BUT has no valid score.
-      if (!passesFlagFilters(r, showById[showDir]) || hasValidScore(r)) continue;
+      if (!isIncludableForRebuild(r, showById[showDir], path.join(dirPath, file)) || hasValidScore(r)) continue;
 
       // This file passes every skip filter and has no score — silent gap.
       const ageDays = r.textFetchedAt

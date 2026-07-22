@@ -44,7 +44,7 @@ test('rejection re-fetched AFTER rejectedAt is revalidated (canonical) → unsco
 
 test('content present, never scored, past the grace window → unscored', () => {
   const gap = classify({
-    url: 'https://x', fullText: 'y'.repeat(1000), contentTier: 'complete',
+    url: 'https://www.thetimes.com/culture/theatre/article/show-review-abc123', fullText: 'y'.repeat(1000), contentTier: 'complete',
     textFetchedAt: '2026-07-17T00:00:00Z',
   }, { tier: 2 });
   assert.deepEqual(gap, { type: 'unscored', recoverable: false });
@@ -52,7 +52,7 @@ test('content present, never scored, past the grace window → unscored', () => 
 
 test('content fetched within the 12h grace window is NOT yet a gap', () => {
   assert.equal(classify({
-    url: 'https://x', fullText: 'y'.repeat(1000), contentTier: 'complete',
+    url: 'https://www.thetimes.com/culture/theatre/article/show-review-abc123', fullText: 'y'.repeat(1000), contentTier: 'complete',
     textFetchedAt: '2026-07-18T09:00:00Z',
   }), null);
 });
@@ -105,13 +105,13 @@ test('wrong-URL discovery phantoms (QA finding) are not gaps and never recovered
 
 test('scored + includable file is not a gap (canonical predicate says it reaches reviews.json)', () => {
   assert.equal(classify({
-    url: 'https://x', fullText: 'y'.repeat(5000),
+    url: 'https://www.thetimes.com/culture/theatre/article/show-review-abc123', fullText: 'y'.repeat(5000),
     llmScore: { score: 39 }, assignedScore: 39,
   }), null);
 });
 
 test('adjudicated star-stub (The Stage class) is scored, not a gap', () => {
-  assert.equal(classify({ url: 'https://x', fullText: '', contentTier: 'excerpt', adjudicatedScore: 62 }), null);
+  assert.equal(classify({ url: 'https://www.thetimes.com/culture/theatre/article/show-review-abc123', fullText: '', contentTier: 'excerpt', adjudicatedScore: 62 }), null);
 });
 
 test('empty stub with contentTier=stub (flag-excluded but not editorial) is a recoverable gap', () => {

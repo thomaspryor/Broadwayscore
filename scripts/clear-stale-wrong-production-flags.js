@@ -15,8 +15,8 @@
  * Default mode runs an LLM second-opinion (Anthropic Claude Sonnet) per
  * candidate. Predicate alone has ~88% precision (manual sample 8/9);
  * LLM lifts to ~95%+. The sweep sets `wrongProduction = false` directly
- * (so the bare gate checks at is-scoreable.js:12, review-text-scoreable.js:49,
- * and llm-scoring/is-scoreable.ts:15 also pass without further refactor)
+ * (so the bare gate checks at is-scoreable.js:12, review-guards.js
+ * isIncludableForRebuild, and llm-scoring/is-scoreable.ts:15 also pass without further refactor)
  * AND writes `wrongProductionManualClear = true` as a durable breadcrumb
  * so future audit/restore-protected-fields don't re-flag the file.
  *

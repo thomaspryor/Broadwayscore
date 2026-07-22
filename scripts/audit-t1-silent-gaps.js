@@ -39,7 +39,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const { classifySilentGap, shouldAlertGap } = require('./lib/t1-silent-gap');
-const { wouldBeIncludedInRebuild } = require('./lib/review-text-scoreable');
+const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards');
 const { getTier } = require('./lib/outlet-tiers');
 const { AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
 const { decideEmptyBodyRecovery, nextRecoveryCount } = require('./lib/flagged-recovery');
@@ -103,8 +103,9 @@ function scoredOutletsByShow() {
 
 // A sibling file for the same outlet that WILL reach reviews.json (canonical
 // predicate) — covers the scoring→rebuild window where reviews.json is stale.
+// SCORED axis = isIncludableForRebuild (flag/context filters) AND hasValidScore.
 function fileCountsAsScored(d, show) {
-  return wouldBeIncludedInRebuild(d, show);
+  return isIncludableForRebuild(d, show) && hasValidScore(d);
 }
 
 function recoverFromOwnUrl(showId, fileName, d, show) {

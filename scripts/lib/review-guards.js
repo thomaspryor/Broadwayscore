@@ -952,7 +952,7 @@ function isRoundupUrl(url) {
  *   - Cross-show contamination poisoned excerpt fields, which (in older
  *     heuristics) read as roundup summaries.
  *
- * The flag blocks LLM scoring (is-scoreable / review-text-scoreable / rebuild),
+ * The flag blocks LLM scoring (is-scoreable / isIncludableForRebuild / rebuild),
  * silently dropping legitimate reviews. This predicate is whitelist-based: it
  * returns true only when the URL matches a per-outlet "individual review" URL
  * pattern that we know is one show per page. A blacklist (anything not on
@@ -1168,7 +1168,7 @@ function isLikelyStaleWrongShow(data, show) {
  *   - wrongProductionOverride === true
  *   - humanReviewedWrongProduction === false
  * The sweep sets `wrongProduction = false` directly so the bare gate checks
- * (is-scoreable.js:12, review-text-scoreable.js:49, llm-scoring/is-scoreable.ts:15)
+ * (is-scoreable.js:12, review-guards.js isIncludableForRebuild, llm-scoring/is-scoreable.ts:15)
  * also pass without further refactor — and writes wrongProductionManualClear=true
  * as a durable breadcrumb so future audit/restore-protected-fields don't
  * re-flag the file.
