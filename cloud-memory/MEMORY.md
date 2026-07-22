@@ -134,5 +134,6 @@
 - [Recoupment RSS poller](feedback_recoupment_rss_poller_architecture.md) — hourly Variety+Deadline; shared classify lib; trackRecoupment flag
 
 ## 📚 Reference & repo layout
+- [Paywall subscriptions status](reference_paywall_subscriptions_status.md) — Bloomberg/Telegraph/newspapers.com CANCELLED Jul 2026, Backstage/Newsday never existed; check before cookie-refresh/Browserbase advice
 - [Repo layout](repo_layout.md) — three repos (web, iOS, data) w/ GitHub names + paths; ~/.claude is private repo via claude-sync ([[reference_claude_config_sync.md]])
 - [Theatre Record reference](reference_theatre_record.md) — paid UK review archive
