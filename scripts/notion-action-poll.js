@@ -871,9 +871,15 @@ async function main() {
     let stagesToRun = stages;
     let outcomeAccum = card.outcome;
     if (entry.pipelineAction === card.action && Array.isArray(entry.pipelineRemaining) && entry.pipelineRemaining.length) {
-      stagesToRun = entry.pipelineRemaining.filter(s => stages.includes(s));
-      if (typeof entry.pipelineOutcome === 'string') outcomeAccum = entry.pipelineOutcome;
-      log(`  Resuming "${card.action}" pipeline at stage ${stagesToRun[0]}`);
+      const remaining = entry.pipelineRemaining.filter(s => stages.includes(s));
+      // If the pipeline definition changed and nothing survives the filter,
+      // fall back to the full pipeline — an empty stage list would leave
+      // `run` null and crash below.
+      if (remaining.length) {
+        stagesToRun = remaining;
+        if (typeof entry.pipelineOutcome === 'string') outcomeAccum = entry.pipelineOutcome;
+        log(`  Resuming "${card.action}" pipeline at stage ${stagesToRun[0]}`);
+      }
     }
     let run = null;
     let failedStage = null;
@@ -884,11 +890,11 @@ async function main() {
       if (run.failed) { failedStage = stage; break; }
       outcomeAccum = prependOutcome(outcomeAccum, stage, run.result);
       if (run.memoryUpdate) writeMemoryUpdate(stageCard, run.memoryUpdate);
-      if (isPipeline && i < stages.length - 1) {
+      if (isPipeline && i < stagesToRun.length - 1) {
         // Persist per-stage progress so a mid-pipeline crash loses at most one
         // stage, and the owner can watch it move in real time.
         try { await setCardOutcome(card.id, outcomeAccum); } catch (err) { log(`  stage outcome write failed (non-fatal): ${err.message}`); }
-        await addInfoComment(card.id, `✅ ${stage} done → ${stages[i + 1]}…`, 'stageComment');
+        await addInfoComment(card.id, `✅ ${stage} done → ${stagesToRun[i + 1]}…`, 'stageComment');
       }
     }
 
