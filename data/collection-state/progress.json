@@ -31,7 +31,15 @@
     "shifters-off-broadway-2026/times-uk--donald-hutera.json",
     "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
     "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
-    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json"
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
+    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "dukes-off-broadway-2026/nytimes--helen-shaw.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -56,14 +64,15 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json"
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ],
     "archive": [
       "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
     ]
   },
   "startTime": "2026-07-22T08:01:37.705Z",
-  "lastProcessed": "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
+  "lastProcessed": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
   "log": [
     {
       "t": "2026-07-22T08:01:48.412Z",
@@ -97,6 +106,28 @@
       "t": "2026-07-22T10:20:30.271Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-22T12:04:32.772Z",
+      "event": "bb-session",
+      "session": "3a8fc693",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-22T12:04:33.392Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-22T12:04:49.095Z",
+      "event": "bb-session",
+      "session": "3b67a22f",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-22T12:04:49.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
