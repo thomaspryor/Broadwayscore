@@ -769,49 +769,73 @@ async function checkCoreWebVitals() {
     console.log('  WARN: PAGESPEED_API_KEY not set — using anonymous quota (often 429, CWV may be empty)');
   }
 
+  // Single-run lab metrics (performanceScore/lcpLab/tbt) are noisy — one PSI
+  // call swung /show/hamilton between 64 and 81 week over week with no code
+  // change (card #311, 2026-07-21), triggering false-alarm "regression"
+  // anomalies. lighthouse-post-deploy.yml already runs 3x and takes the best
+  // score for its URLs; mirror that here, but ONLY when an API key is set —
+  // the anonymous quota is already scarce (routine 429s), so tripling those
+  // calls would just burn it 3x faster for no benefit.
+  const RUNS_PER_URL = psKey ? 3 : 1;
+
+  const fetchOnce = async (url) => {
+    const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&category=PERFORMANCE&strategy=MOBILE${psKey ? `&key=${psKey}` : ''}`;
+    // PageSpeed runs a full Lighthouse audit server-side; legitimately slow. Give it
+    // 60s (vs the 30s default) before aborting so we don't false-timeout a real result.
+    const response = await fetchT(apiUrl, {}, 60000);
+
+    if (!response.ok) {
+      if (response.status === 429) return { rateLimited: true };
+      console.log(`  Failed for ${url}: ${response.status}`);
+      return null;
+    }
+
+    const data = await response.json();
+    const crux = data.loadingExperience?.metrics || {};
+    const lighthouse = data.lighthouseResult?.audits || {};
+
+    return {
+      url,
+      lcp: crux.LARGEST_CONTENTFUL_PAINT_MS?.percentile ?? null,
+      fid: crux.FIRST_INPUT_DELAY_MS?.percentile ?? null,
+      cls: crux.CUMULATIVE_LAYOUT_SHIFT_SCORE?.percentile != null
+        ? crux.CUMULATIVE_LAYOUT_SHIFT_SCORE.percentile / 100
+        : null,
+      inp: crux.INTERACTION_TO_NEXT_PAINT?.percentile ?? null,
+      performanceScore: data.lighthouseResult?.categories?.performance?.score != null
+        ? Math.round(data.lighthouseResult.categories.performance.score * 100)
+        : null,
+      lcpLab: lighthouse['largest-contentful-paint']?.numericValue
+        ? Math.round(lighthouse['largest-contentful-paint'].numericValue)
+        : null,
+      clsLab: lighthouse['cumulative-layout-shift']?.numericValue ?? null,
+      tbt: lighthouse['total-blocking-time']?.numericValue
+        ? Math.round(lighthouse['total-blocking-time'].numericValue)
+        : null,
+    };
+  };
+
   for (const url of CWV_PAGES) {
     try {
-      const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&category=PERFORMANCE&strategy=MOBILE${psKey ? `&key=${psKey}` : ''}`;
-      // PageSpeed runs a full Lighthouse audit server-side; legitimately slow. Give it
-      // 60s (vs the 30s default) before aborting so we don't false-timeout a real result.
-      const response = await fetchT(apiUrl, {}, 60000);
-
-      if (!response.ok) {
-        if (response.status === 429) {
-          console.log(`  Rate limited on PageSpeed API. Stopping CWV check.`);
-          break;
+      let best = null;
+      let rateLimited = false;
+      for (let i = 0; i < RUNS_PER_URL; i++) {
+        const attempt = await fetchOnce(url);
+        if (attempt?.rateLimited) { rateLimited = true; break; }
+        if (attempt && (best === null || (attempt.performanceScore ?? -1) > (best.performanceScore ?? -1))) {
+          best = attempt;
         }
-        console.log(`  Failed for ${url}: ${response.status}`);
-        continue;
       }
+      if (rateLimited) {
+        console.log(`  Rate limited on PageSpeed API. Stopping CWV check.`);
+        break;
+      }
+      if (!best) continue;
 
-      const data = await response.json();
-      const crux = data.loadingExperience?.metrics || {};
-      const lighthouse = data.lighthouseResult?.audits || {};
-
-      const cwv = {
-        url,
-        lcp: crux.LARGEST_CONTENTFUL_PAINT_MS?.percentile ?? null,
-        fid: crux.FIRST_INPUT_DELAY_MS?.percentile ?? null,
-        cls: crux.CUMULATIVE_LAYOUT_SHIFT_SCORE?.percentile != null
-          ? crux.CUMULATIVE_LAYOUT_SHIFT_SCORE.percentile / 100
-          : null,
-        inp: crux.INTERACTION_TO_NEXT_PAINT?.percentile ?? null,
-        performanceScore: data.lighthouseResult?.categories?.performance?.score != null
-          ? Math.round(data.lighthouseResult.categories.performance.score * 100)
-          : null,
-        lcpLab: lighthouse['largest-contentful-paint']?.numericValue
-          ? Math.round(lighthouse['largest-contentful-paint'].numericValue)
-          : null,
-        clsLab: lighthouse['cumulative-layout-shift']?.numericValue ?? null,
-        tbt: lighthouse['total-blocking-time']?.numericValue
-          ? Math.round(lighthouse['total-blocking-time'].numericValue)
-          : null,
-      };
-
+      const cwv = best;
       results.push(cwv);
       console.log(`  ${url}:`);
-      if (cwv.performanceScore !== null) console.log(`    Lighthouse Score: ${cwv.performanceScore}/100`);
+      if (cwv.performanceScore !== null) console.log(`    Lighthouse Score: ${cwv.performanceScore}/100 (best of ${RUNS_PER_URL})`);
       if (cwv.lcp !== null) console.log(`    LCP (field): ${cwv.lcp}ms`);
       if (cwv.inp !== null) console.log(`    INP (field): ${cwv.inp}ms`);
       if (cwv.cls !== null) console.log(`    CLS (field): ${cwv.cls}`);
