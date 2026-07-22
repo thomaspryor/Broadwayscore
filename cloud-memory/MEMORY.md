@@ -82,6 +82,7 @@
 - [Tony predictions](project_tony_predictions_accuracy.md) — recipe weights, 93% accuracy; FREEZE audience grades for closed seasons ([[feedback_freeze_tony_audience_grades.md]])
 
 ## 📊 Data pipeline & scraping
+- [NEVER ask user to create a Reddit app](feedback_reddit_app_creation_broken.md) — prefs/apps broken for their account for months, repeat asks flagged 2026-07-21; Reddit via SB post-reset + null-counter degradation
 - [Scraper architecture](feedback_scraper_architecture.md) — use fetchPage(); BD empty 200s, Playwright 404s as success ([[feedback_fetchpage_gotchas.md]]); BWW soft-404 returns 200 homepage, check <title> ([[feedback_aggregator_soft_404.md]])
 - [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — _serpViaScrapingBee logs nothing; preferSpeed+SD-empty fallthrough = 60-100K cr/day; BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]], [[feedback_sb_credit_budget.md]])
 - [Closing-date automation gaps](feedback_closing_date_audit_gaps.md) — 4 silent gaps; broadway.org/TodayTix lag; WE=0 automation
