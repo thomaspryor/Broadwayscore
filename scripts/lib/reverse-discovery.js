@@ -35,6 +35,8 @@ function decodeEntities(s) {
  * WET roundup post titles: "<Show Title> Reviews: <editorial blurb>" (case
  * varies on "Reviews"). Returns the show title, or null when the post title
  * doesn't follow the per-show roundup shape (season previews, features).
+ * Known limit: a PARTIAL format change (some posts in a new shape) passes the
+ * CLI's parsed>0 drift guard — only a full format change alarms.
  */
 function extractShowTitleFromWetRoundup(postTitle) {
   const decoded = decodeEntities(postTitle).trim();
@@ -47,16 +49,14 @@ function extractShowTitleFromWetRoundup(postTitle) {
 }
 
 /**
- * DTLI show-page slugs → display-ish title, or null for slugs that can't be
- * a title. Slugs carry SEO noise tails ("-broadway-theater-review(s)") and
- * WordPress collision suffixes ("giant-2", "death-of-a-salesman-3") that
- * aren't part of the show title. Some DTLI pages use a review HEADLINE as
- * the slug ("kelli-ohara-and-rose-byrne-are-a-great-slapstick-duo-in-…") —
- * those can't be matched by title, so they're rejected (null) rather than
- * surfaced as noise candidates (observed FP classes, real sitemap 2026-07-21).
+ * DTLI show-page slugs → display-ish title. Slugs carry SEO noise tails
+ * ("-broadway-theater-review(s)") and WordPress collision suffixes
+ * ("giant-2", "death-of-a-salesman-3") that aren't part of the show title.
+ * Headline-style slugs ("kelli-ohara-and-rose-byrne-are-a-great-…") pass
+ * through untrimmed — titleMatchesIndex handles them via containment, so a
+ * headline naming a missing show still surfaces (long real titles like The
+ * Curious Incident… must not be dropped here).
  */
-const DTLI_HEADLINE_MAX_WORDS = 6;
-
 function titleFromDtliSlug(slug) {
   const NOISE_TAIL = new Set(['review', 'reviews', 'broadway', 'theater', 'theatre', 'off']);
   const words = String(slug || '').toLowerCase().split('-').filter(Boolean);
@@ -65,8 +65,7 @@ function titleFromDtliSlug(slug) {
   // part of a real title ("giant-2", "death-of-a-salesman-3"). Multi-digit
   // trailing numbers are real title words ("The Fear of 13" — live FP 2026-07).
   if (words.length > 1 && /^[2-9]$/.test(words[words.length - 1])) words.pop();
-  if (words.length === 0 || words.length > DTLI_HEADLINE_MAX_WORDS) return null;
-  return words.join(' ');
+  return words.length ? words.join(' ') : null;
 }
 
 /**
@@ -95,30 +94,62 @@ function titleVariants(normalized) {
   return out;
 }
 
+const NYC_CATEGORIES = new Set(['broadway', 'off-broadway']);
+const WE_CATEGORIES = new Set(['west-end', 'off-west-end']);
+
 /**
- * Index every show title under its normalized variants. Titles also index
- * their pre-" - " head ("Mother Courage and Her Children - Globe" carries a
- * venue tail after " - " — live FP class).
+ * Index show titles under their normalized variants, optionally scoped to a
+ * market ('we' | 'nyc'). Scoping matters: shows.json keeps SEPARATE entries
+ * per market, so a WET roundup for a title catalogued only on Broadway means
+ * the West End production IS missing — a global index would swallow it
+ * (reviewer finding, 2026-07-21). Shows with no category land in every
+ * market's index (conservative: unknown-market entries suppress candidates).
+ * Titles also index their pre-" - " head ("Mother Courage and Her Children -
+ * Globe" carries a venue tail after " - " — live FP class).
+ *
+ * Returns { exact: Set<variant>, containment: string[] } — containment holds
+ * multi-word (≥2 words, ≥8 chars) base titles for substring matching of
+ * headline-style items.
  */
-function buildShowTitleIndex(shows) {
-  const index = new Set();
+function buildShowTitleIndex(shows, market = null) {
+  const exact = new Set();
+  const containment = new Set();
   for (const s of shows) {
+    if (market) {
+      const cat = s.category || null;
+      if (cat && market === 'we' && !WE_CATEGORIES.has(cat)) continue;
+      if (cat && market === 'nyc' && !NYC_CATEGORIES.has(cat)) continue;
+    }
     const raws = [s.title, s.slug ? s.slug.replace(/-/g, ' ') : null];
     if (s.title && s.title.includes(' - ')) raws.push(s.title.split(' - ')[0]);
     for (const raw of raws) {
       if (!raw) continue;
       const n = normalizeTitle(raw);
       if (!n) continue;
-      for (const v of titleVariants(n)) index.add(v);
+      for (const v of titleVariants(n)) exact.add(v);
+      if (n.includes(' ') && n.length >= 8) containment.add(n);
     }
   }
-  return index;
+  return { exact, containment: [...containment] };
 }
+
+const HEADLINE_WORD_THRESHOLD = 6;
 
 function titleMatchesIndex(title, index) {
   const n = normalizeTitle(title);
   if (!n) return true; // unparseable → never a candidate
-  for (const v of titleVariants(n)) if (index.has(v)) return true;
+  for (const v of titleVariants(n)) if (index.exact.has(v)) return true;
+  // Headline-style items (DTLI slugs that are review headlines, not titles)
+  // can't match exactly — but a headline NAMING a catalogued show should not
+  // surface ("kelli ohara and rose byrne … in fallen angels" when Fallen
+  // Angels is catalogued). Containment only for long items so short real
+  // titles can't be swallowed by a longer catalogued title.
+  if (n.split(' ').length > HEADLINE_WORD_THRESHOLD) {
+    const padded = ` ${n} `;
+    for (const t of index.containment) {
+      if (padded.includes(` ${t} `)) return true;
+    }
+  }
   return false;
 }
 
@@ -137,6 +168,7 @@ module.exports = {
   decodeEntities,
   extractShowTitleFromWetRoundup,
   titleFromDtliSlug,
+  titleVariants,
   buildShowTitleIndex,
   titleMatchesIndex,
   findUnmatchedCandidates,

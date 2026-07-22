@@ -7,8 +7,9 @@
 # WET review roundups (WE/OWE) and DTLI show-sitemap entries (BW/OB) whose
 # title matches nothing in shows.json are missing-show candidates.
 #
-# NEVER writes shows.json — commits data/audit/reverse-discovery-*.json and
-# fires a Discord warning for candidates not seen before.
+# NEVER writes shows.json — commits data/audit/reverse-discovery-*.json.
+# Candidates surface in the DAILY DIGEST via health-check.js
+# (reverseDiscoveryBacklogResults), same pattern as detect-ob-closings.
 name: Reverse Discovery Audit
 
 on:
@@ -26,6 +27,12 @@ on:
 
 permissions:
   contents: write
+
+# Queued, never cancelled: overlapping runs would clobber each other's
+# state file (push-with-retry resolves data/audit/* conflicts keep-local).
+concurrency:
+  group: audit-reverse-discovery
+  cancel-in-progress: false
 
 jobs:
   audit:

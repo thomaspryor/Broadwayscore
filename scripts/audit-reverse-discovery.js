@@ -57,8 +57,12 @@ async function main(argv = process.argv.slice(2)) {
 
   const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
   const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows;
-  const index = buildShowTitleIndex(shows);
-  console.log(`Loaded ${shows.length} shows (${index.size} normalized title variants)`);
+  // Market-scoped: shows.json keeps separate entries per market, so a WET
+  // roundup for a title catalogued only on Broadway means the WE production
+  // IS missing — a global index would swallow it.
+  const weIndex = buildShowTitleIndex(shows, 'we');
+  const nycIndex = buildShowTitleIndex(shows, 'nyc');
+  console.log(`Loaded ${shows.length} shows (${weIndex.exact.size} WE / ${nycIndex.exact.size} NYC title variants)`);
 
   const items = [];
   let sourcesOk = 0, sourcesTried = 0;
@@ -100,17 +104,19 @@ async function main(argv = process.argv.slice(2)) {
         .sort((a, b) => Number(a[2]) - Number(b[2]))
         .map(m => m[1]);
       if (maps.length === 0) throw new Error('DTLI sitemap index had no shows-sitemaps');
-      let found = 0, headlineSkipped = 0;
+      let found = 0, noLastmod = 0, totalEntries = 0;
       for (const url of maps.slice(-2)) {
         const xml = (await fetchPage(url)).content;
         const entries = [...xml.matchAll(
           /<url>\s*<loc>https:\/\/didtheylikeit\.com\/shows\/([^/<]+)\/<\/loc>\s*(?:<lastmod>([^<]+)<\/lastmod>)?/g
         )];
+        totalEntries += entries.length;
         for (const [, slug, lastmod] of entries) {
           const ts = lastmod ? Date.parse(lastmod) : NaN;
+          if (!lastmod) { noLastmod++; continue; }
           if (!Number.isFinite(ts) || ts < cutoff) continue;
           const title = titleFromDtliSlug(slug);
-          if (!title) { headlineSkipped++; continue; }
+          if (!title) continue;
           found++;
           items.push({
             title, source: 'dtli-sitemap',
@@ -118,7 +124,12 @@ async function main(argv = process.argv.slice(2)) {
           });
         }
       }
-      console.log(`DTLI: ${found} show pages touched within ${days}d (${headlineSkipped} headline-style slugs skipped as unmatchable)`);
+      // Structure-drift guard (parallel to WET's): sitemaps that fetch but
+      // parse to ZERO <url> entries mean the regex no longer matches DTLI's
+      // markup — fail loudly rather than report a clean 0-candidate run.
+      if (totalEntries === 0) throw new Error('DTLI sitemap format drift: fetched sitemaps parsed to 0 entries');
+      if (noLastmod > 0) console.log(`DTLI: ${noLastmod} entries without <lastmod> skipped (no recency signal)`);
+      console.log(`DTLI: ${found} show pages touched within ${days}d (of ${totalEntries} entries in last 2 sitemaps)`);
       sourcesOk++;
     } catch (e) {
       console.error(`DTLI source failed: ${e.message}`);
@@ -130,7 +141,10 @@ async function main(argv = process.argv.slice(2)) {
     return 1;
   }
 
-  const candidates = findUnmatchedCandidates(items, index);
+  const candidates = [
+    ...findUnmatchedCandidates(items.filter(i => i.market === 'west-end'), weIndex),
+    ...findUnmatchedCandidates(items.filter(i => i.market === 'nyc'), nycIndex),
+  ];
   console.log(`\n${candidates.length} missing-show candidate(s) of ${items.length} recent items:`);
   for (const c of candidates) console.log(`  [${c.source}] "${c.title}" — ${c.url}`);
 
@@ -154,6 +168,10 @@ async function main(argv = process.argv.slice(2)) {
   fs.writeFileSync(statePath, JSON.stringify(state, null, 2) + '\n');
   console.log(`Wrote ${outPath} (${candidates.length}) — ${fresh.length} new since last run`);
 
+  // Surfacing channel is the DAILY DIGEST: health-check.js reads the
+  // candidates file (reverseDiscoveryBacklogResults) — same pattern as
+  // detect-ob-closings. sendAlert without email:true is LOG-ONLY by design
+  // (alert-volume policy), so this just annotates the CI step output.
   if (fresh.length > 0) {
     const { sendAlert } = require('./lib/discord-notify');
     await sendAlert({
