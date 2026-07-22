@@ -1,6 +1,20 @@
 {
-  "generatedAt": "2026-07-22T04:11:44.310Z",
+  "generatedAt": "2026-07-22T05:57:41.893Z",
   "windowDays": 45,
   "showsScanned": 56,
-  "gaps": []
+  "gaps": [
+    {
+      "showId": "white-rabbit-red-rabbit-west-end-2026",
+      "title": "White Rabbit Red Rabbit",
+      "openingDate": "2026-06-09",
+      "file": "broadwayworld--mica-blackwell.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "unscored",
+      "url": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047.html",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=white-rabbit-red-rabbit-west-end-2026"
+    }
+  ]
 }
