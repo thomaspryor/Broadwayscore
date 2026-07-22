@@ -220,14 +220,19 @@ test.describe('My Shows — Sorting', () => {
 
   test('diary "Oldest" sort shows oldest first', async ({ page }) => {
     await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17); DiaryGridCard titles aren't <h4> so this test found 0 matches without it (2026-07-22)
     await page.getByRole('combobox', { name: 'Sort diary' }).selectOption('date-asc');
     // Book of Mormon (Mar 2024) should appear before Wicked (Dec 2025) in Past Shows
     const cards = await page.locator('h4').allTextContents();
     const mormonIndex = cards.indexOf('The Book of Mormon');
     const wickedIndex = cards.indexOf('Wicked');
-    if (mormonIndex >= 0 && wickedIndex >= 0) {
-      expect(mormonIndex).toBeLessThan(wickedIndex);
-    }
+    // Both cards must actually be found — an `if (mormonIndex >= 0 && wickedIndex >= 0)`
+    // guard here would let a selector drift (h4 rename, both indexOf() calls
+    // returning -1) pass this test having verified nothing (same class as the
+    // count()-without-assertion bug this session's audit script targets).
+    expect(mormonIndex, `"The Book of Mormon" not found in: ${cards.join(', ')}`).toBeGreaterThanOrEqual(0);
+    expect(wickedIndex, `"Wicked" not found in: ${cards.join(', ')}`).toBeGreaterThanOrEqual(0);
+    expect(mormonIndex).toBeLessThan(wickedIndex);
   });
 
   test('watchlist "A-Z" sort orders alphabetically', async ({ page }) => {
