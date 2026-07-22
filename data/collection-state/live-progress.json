@@ -1,41 +1,18 @@
 {
-  "updatedAt": "2026-07-22T02:07:14.234Z",
-  "processed": 2,
-  "failed": 3,
-  "successRate": "40.0%",
+  "updatedAt": "2026-07-22T02:51:55.710Z",
+  "processed": 6,
+  "failed": 4,
+  "successRate": "60.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 5,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 3,
     "archive": 1
   },
-  "browserbaseSessions": 2,
-  "recentActivity": [
-    {
-      "t": "2026-07-22T02:06:15.698Z",
-      "event": "bb-session",
-      "session": "4fba668a",
-      "url": "https://www.nytimes.com/2024/04/28/arts/music/asmik-grigorian-madama-butterfly-r"
-    },
-    {
-      "t": "2026-07-22T02:06:16.126Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-22T02:06:31.802Z",
-      "event": "bb-session",
-      "session": "94fbcd5a",
-      "url": "https://www.nytimes.com/2024/04/28/arts/music/asmik-grigorian-madama-butterfly-r"
-    },
-    {
-      "t": "2026-07-22T02:06:32.207Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }

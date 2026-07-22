@@ -1,67 +1,76 @@
 {
-  "runDate": "2026-07-22T02:07:20.208Z",
+  "runDate": "2026-07-22T02:52:03.562Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "madama-butterfly-off-broadway-2024,la-boheme-off-broadway-2024",
+    "showFilter": "burnt-up-love-off-west-end-2026,soldiers-of-tomorrow-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 3,
+    "processed": 6,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "40.0%"
+    "successRate": "60.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 5,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 3,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 9,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 2,
+    "tier3Attempts": 4,
+    "tier3Success": 2,
+    "tier3_6Attempts": 4,
+    "tier3_6Success": 3,
+    "tier4Attempts": 3,
     "tier4Success": 1,
     "totalFailed": 3,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "madama-butterfly-off-broadway-2024/nytimes--unknown.json",
-    "madama-butterfly-off-broadway-2024/front-row-center--edward-kliszus.json"
+    "soldiers-of-tomorrow-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "soldiers-of-tomorrow-off-west-end-2026/timeout-london--unknown.json",
+    "soldiers-of-tomorrow-off-west-end-2026/daily-echo--unknown.json",
+    "soldiers-of-tomorrow-off-west-end-2026/londontheatre1--unknown.json",
+    "soldiers-of-tomorrow-off-west-end-2026/sierz-co-uk--unknown.json",
+    "burnt-up-love-off-west-end-2026/thereviewshub--the-reviews-hub-london.json"
   ],
   "failed": [
-    "la-boheme-off-broadway-2024/observer--unknown.json",
-    "la-boheme-off-broadway-2024/broadwayworld--steve-callahan.json",
-    "la-boheme-off-broadway-2024/thestage--unknown.json"
+    "soldiers-of-tomorrow-off-west-end-2026/evening-chronicle--unknown.json",
+    "soldiers-of-tomorrow-off-west-end-2026/telegraph-uk--unknown.json",
+    "soldiers-of-tomorrow-off-west-end-2026/thestage--fergus-morgan.json",
+    "soldiers-of-tomorrow-off-west-end-2026/thestage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "madama-butterfly-off-broadway-2024/front-row-center--edward-kliszus.json"
+      "soldiers-of-tomorrow-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "soldiers-of-tomorrow-off-west-end-2026/timeout-london--unknown.json",
+      "soldiers-of-tomorrow-off-west-end-2026/daily-echo--unknown.json",
+      "soldiers-of-tomorrow-off-west-end-2026/londontheatre1--unknown.json",
+      "soldiers-of-tomorrow-off-west-end-2026/sierz-co-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -69,10 +78,12 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/la-boheme-off-broadway-2024/thestage--unknown.json"
+      "data/review-texts/soldiers-of-tomorrow-off-west-end-2026/evening-chronicle--unknown.json",
+      "data/review-texts/soldiers-of-tomorrow-off-west-end-2026/telegraph-uk--unknown.json",
+      "data/review-texts/soldiers-of-tomorrow-off-west-end-2026/thestage--fergus-morgan.json"
     ],
     "archive": [
-      "madama-butterfly-off-broadway-2024/nytimes--unknown.json"
+      "burnt-up-love-off-west-end-2026/thereviewshub--the-reviews-hub-london.json"
     ]
   },
   "failuresByOutlet": {},
