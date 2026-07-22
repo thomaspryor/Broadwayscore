@@ -341,7 +341,17 @@
     "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
     "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
     "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
-    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json"
+    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "dukes-off-broadway-2026/nytimes--helen-shaw.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -398,7 +408,8 @@
     ],
     "archiveToday": [
       "data/review-texts/trainspotting-the-musical-west-end-2026/thestage--unknown.json",
-      "data/review-texts/iceboy-regional-2026/talkinbroadway--unknown.json"
+      "data/review-texts/iceboy-regional-2026/talkinbroadway--unknown.json",
+      "data/review-texts/dukes-off-broadway-2026/nytimes--helen-shaw.json"
     ],
     "archive": [
       "trainspotting-the-musical-west-end-2026/broadwayworld--team-bww.json",
@@ -412,7 +423,7 @@
     ]
   },
   "startTime": "2026-07-22T19:11:20.727Z",
-  "lastProcessed": "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
+  "lastProcessed": "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-07-22T19:16:01.001Z",
@@ -468,6 +479,28 @@
       "t": "2026-07-22T19:35:46.548Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-22T20:46:10.403Z",
+      "event": "bb-session",
+      "session": "87299345",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-22T20:46:10.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-22T20:46:26.388Z",
+      "event": "bb-session",
+      "session": "609fdc0c",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-22T20:46:26.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
