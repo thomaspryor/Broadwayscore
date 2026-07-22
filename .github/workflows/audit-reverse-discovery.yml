@@ -1,0 +1,117 @@
+# Reverse discovery audit — ALERT ONLY.
+#
+# Forward discovery (TodayTix/OLT/LT.co.uk feeds, venue listing pages,
+# Broadway.org) misses shows whose venue sits outside every configured path
+# (Midnight at the Never Get, Menier, 2026-07: 14 outlets reviewed it while
+# it was invisible to the site). This workflow inverts the signal: recent
+# WET review roundups (WE/OWE) and DTLI show-sitemap entries (BW/OB) whose
+# title matches nothing in shows.json are missing-show candidates.
+#
+# NEVER writes shows.json — commits data/audit/reverse-discovery-*.json.
+# Candidates surface in the DAILY DIGEST via health-check.js
+# (reverseDiscoveryBacklogResults), same pattern as detect-ob-closings.
+name: Reverse Discovery Audit
+
+on:
+  schedule:
+    - cron: '25 10 * * *'  # Daily 10:25 UTC (after 08:xx update-show-status discovery)
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Recency window in days'
+        default: '45'
+      dry_run:
+        description: 'Print candidates only, no writes/alerts'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+# Queued, never cancelled: overlapping runs would clobber each other's
+# state file (push-with-retry resolves data/audit/* conflicts keep-local).
+concurrency:
+  group: audit-reverse-discovery
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Run reverse discovery audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run reverse discovery audit
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          ARGS="--days=${{ inputs.days || '45' }}"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/audit-reverse-discovery.js $ARGS
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git status --porcelain data/audit/reverse-discovery-candidates.json data/audit/reverse-discovery-state.json | grep -q .; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/audit/reverse-discovery-candidates.json data/audit/reverse-discovery-state.json
+
+          SUMMARY=$(node -e "
+            const r = require('./data/audit/reverse-discovery-candidates.json');
+            console.log(r.candidates.length + ' missing-show candidate(s)');
+          ")
+
+          git commit -m "audit: Reverse discovery ($SUMMARY) [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Reverse Discovery Audit (alert-only)" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f data/audit/reverse-discovery-candidates.json ]; then
+            node -e "
+              const r = require('./data/audit/reverse-discovery-candidates.json');
+              console.log('**Candidates:** ' + r.candidates.length + ' (window ' + r.windowDays + 'd)');
+              r.candidates.forEach(c => console.log('- [' + c.source + '] ' + c.title + ' — ' + c.url));
+            " >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No candidates file produced (dry run or all sources failed)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Reverse Discovery Audit Failed'
+          severity: 'warning'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

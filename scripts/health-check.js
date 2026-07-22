@@ -1451,6 +1451,21 @@ function obClosingBacklogResults(report) {
   }];
 }
 
+// Daily-digest surfacing for reverse-discovery missing-show candidates
+// (data/audit/reverse-discovery-candidates.json, written daily by
+// audit-reverse-discovery.yml). This is the detector's ONLY human-facing
+// channel — sendAlert in the CLI is log-only by alert-volume policy.
+function reverseDiscoveryBacklogResults(report) {
+  if (!report || !Array.isArray(report.candidates) || report.candidates.length === 0) return [];
+  const first = report.candidates[0];
+  return [{
+    name: 'Data: reviewed shows missing from shows.json',
+    status: 'warn',
+    message: `${report.candidates.length} aggregator-reviewed show(s) not in the catalogue. First: "${first.title}" (${first.source})`,
+    hint: 'Review data/audit/reverse-discovery-candidates.json; validate each via node scripts/validate-show-venue.js, then add per CLAUDE.md §3.',
+  }];
+}
+
 // Daily-digest surfacing for T1/T2 silent review gaps (data/audit/
 // t1-silent-gaps.json, written hourly by audit-t1-silent-gaps.js). Real-time
 // CRITICAL email only fires for gaps on near-opening shows; everything else
@@ -2213,6 +2228,11 @@ async function main() {
       const gapReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/t1-silent-gaps.json'), 'utf8'));
       allResults.push(...silentGapBacklogResults(gapReport));
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
+
+    try {
+      const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
+      allResults.push(...reverseDiscoveryBacklogResults(rdReport));
+    } catch { /* report absent (detector not yet run) — nothing to surface */ }
   }
 
   // Print console summary
@@ -2300,4 +2320,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, getDigestSubject, getPlaybookEntry };
+module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, getDigestSubject, getPlaybookEntry };
