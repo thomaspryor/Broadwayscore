@@ -390,11 +390,23 @@ async function main() {
     // Guard 6b: Reddit fleet-wide zero. The Reddit fetcher swallows proxy
     // failures into empty results, so per-show zero is legal but fleet-wide
     // zero means the pipeline (or SCRAPINGBEE_API_KEY) is broken.
-    const redditZero = ok.filter((r) => !r.counters.reddit).length;
-    if (redditZero / ok.length > 0.9) {
+    const redditNull = ok.filter((r) => r.counters.reddit === null).length;
+    const redditZero = ok.filter((r) => r.counters.reddit === 0).length;
+    if (redditNull / ok.length > 0.9) {
+      // Every provider is down and the fetcher SAID so (null = signal
+      // absent). This is the designed degraded mode: the scorer drops the
+      // Reddit signal and renormalizes with the coverage floor. Publish,
+      // loudly — 2026-07: direct 403s, BD robots-gated, SD renders broken,
+      // SB capped until its monthly reset.
+      console.warn(
+        `COUNTER COVERAGE DEGRADED: ${redditNull}/${ok.length} shows have Reddit=ABSENT ` +
+          '(all providers down). Publishing with renormalized weights; Reddit rejoins ' +
+          'automatically when a provider recovers.',
+      );
+    } else if (redditZero / ok.length > 0.9) {
       console.error(
-        `COUNTER COVERAGE FAILED: ${redditZero}/${ok.length} shows have Reddit=0. ` +
-          'Reddit search or its ScrapingBee fallback is broken fleet-wide.',
+        `COUNTER COVERAGE FAILED: ${redditZero}/${ok.length} shows have Reddit=0 ` +
+          '(searches "succeeded" but found nothing fleet-wide — silent breakage).',
       );
       process.exit(6);
     }
@@ -404,9 +416,14 @@ async function main() {
     // relevant classified mentions means the classifier or both text
     // sources broke.
     const zeroSample = ok.filter((r) => r.relevantCount === 0).length;
-    if (zeroSample / ok.length > 0.3) {
+    // When Reddit is ABSENT fleet-wide (Guard 6b degraded mode), samples come
+    // from Bluesky alone — zero-relevant is expected for quiet shows, so the
+    // threshold relaxes; the guard still catches a Bluesky/classifier break.
+    const redditAbsentFleetWide = redditNull / ok.length > 0.9;
+    const zeroSampleThreshold = redditAbsentFleetWide ? 0.6 : 0.3;
+    if (zeroSample / ok.length > zeroSampleThreshold) {
       console.error(
-        `HEALTH CHECK FAILED: ${zeroSample}/${ok.length} shows returned 0 relevant sample mentions (${Math.round((zeroSample / ok.length) * 100)}%).`,
+        `HEALTH CHECK FAILED: ${zeroSample}/${ok.length} shows returned 0 relevant sample mentions (${Math.round((zeroSample / ok.length) * 100)}%${redditAbsentFleetWide ? ', degraded threshold 60% — Reddit absent' : ''}).`,
       );
       process.exit(4);
     }

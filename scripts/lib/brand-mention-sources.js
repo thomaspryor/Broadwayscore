@@ -151,7 +151,7 @@ function containsKeyword(text, keywords) {
  *     Default 'month' for backwards compat with brand-mention-monitor. The
  *     Socials Scorecard pipeline passes 'week' for rolling 7-day volume.
  */
-async function fetchRedditMentions(keywords = DEFAULT_KEYWORDS, { limit = 50, timeWindow = 'month', searchQualifier } = {}) {
+async function fetchRedditMentions(keywords = DEFAULT_KEYWORDS, { limit = 50, timeWindow = 'month', searchQualifier, strict = false } = {}) {
   const mentions = [];
   const detected = nowIso();
 
@@ -166,6 +166,13 @@ async function fetchRedditMentions(keywords = DEFAULT_KEYWORDS, { limit = 50, ti
       data = await fetchWithFallback(url);
     } catch (e) {
       console.warn(`[reddit] search failed for "${keyword}": ${e.message}`);
+      // strict callers (Social Pulse counters) need "provider outage" to be
+      // distinguishable from "searched and found nothing" — rethrow so the
+      // counter can be recorded as null (signal absent), not 0. NOTE: the
+      // rethrow discards mentions already gathered from earlier keywords in
+      // the same call — only safe for single-keyword callers (the only kind
+      // of strict caller today).
+      if (strict) throw e;
       continue;
     }
 

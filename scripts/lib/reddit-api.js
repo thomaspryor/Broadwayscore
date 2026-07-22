@@ -38,6 +38,11 @@ let lastRequestTime = 0;
 
 // Reddit official OAuth (client-credentials). When REDDIT_CLIENT_ID +
 // REDDIT_CLIENT_SECRET are set, all fetches go through oauth.reddit.com with
+// NOTE (owner, 2026-07-21): Reddit app creation at reddit.com/prefs/apps has
+// been broken for the owner's account(s) FOR MONTHS — do NOT ask the owner to
+// create a Reddit app again. This path stays dormant until Reddit fixes app
+// creation or credentials arrive some other way; SB carries Reddit after its
+// monthly reset, and null-counter degradation covers the gaps.
 // a bearer token — no proxies needed (free tier: 100 req/min). Added
 // 2026-07-21 after reddit.com hard-403'd unauthenticated JSON everywhere
 // (direct, BD robots-gated, SD renders truncated, SB capped).

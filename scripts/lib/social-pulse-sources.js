@@ -79,6 +79,7 @@ async function fetchRedditForShow({ showTitle, marketQualifier, maxItems = 100, 
       limit: Math.min(maxItems, 100),
       timeWindow: 'week',
       searchQualifier: marketQualifier || 'broadway',
+      strict: true,
     });
     const mentions = rawMentions.map(normalizeRedditPost).filter(Boolean);
     if (rawMentions.length >= 100) {
@@ -90,7 +91,9 @@ async function fetchRedditForShow({ showTitle, marketQualifier, maxItems = 100, 
     return { mentions, rawCount: rawMentions.length };
   } catch (err) {
     logger.warn(`[${showTitle}] Reddit fetch failed: ${err.message}`);
-    return { mentions: [], rawCount: 0 };
+    // null = signal ABSENT (provider outage) — scorer drops the signal and
+    // renormalizes. 0 is reserved for "searched successfully, found nothing".
+    return { mentions: [], rawCount: null };
   }
 }
 
@@ -235,8 +238,11 @@ async function fetchAllPulseSources({ showTitle, marketQualifier, redditMax = 10
 
   if (redditRes.status === 'fulfilled') {
     result.mentions.push(...redditRes.value.mentions);
-    result.rawCounts.reddit = redditRes.value.rawCount;
+    result.rawCounts.reddit = redditRes.value.rawCount ?? 0;
     result.counters.reddit = redditRes.value.rawCount;
+    if (redditRes.value.rawCount === null) {
+      result.errors.push({ platform: 'reddit', error: 'all providers down (see log)' });
+    }
   } else {
     result.errors.push({ platform: 'reddit', error: redditRes.reason.message });
   }
