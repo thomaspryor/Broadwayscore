@@ -826853,17 +826853,23 @@
     ]
   },
   {
-    "startedAt": "2026-07-22T19:52:22.098Z",
-    "completedAt": "2026-07-22T19:52:27.241Z",
-    "totalReviews": 3,
-    "processed": 1,
-    "skipped": 2,
-    "errors": 0,
+    "startedAt": "2026-07-22T19:54:13.519Z",
+    "completedAt": "2026-07-22T19:54:13.714Z",
+    "totalReviews": 8,
+    "processed": 0,
+    "skipped": 7,
+    "errors": 1,
     "tokensUsed": {
-      "input": 8144,
-      "output": 308,
-      "total": 12643
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "trainspotting-the-musical-west-end-2026",
+        "outletId": "broadwayworld",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
