@@ -76,6 +76,16 @@ function canonicalizeUrl(rawUrl) {
     }
   }
 
+  // Threads: threads.net/threads.com are the same site, and Google rotates
+  // between the bare post URL (/@acct/post/{id}) and a slugged variant
+  // (/@acct/post/{id}/human-readable-slug/) for the same post — strip the slug
+  // so both forms hash identically.
+  if (/(^|\.)threads\.(net|com)$/.test(url.hostname)) {
+    url.hostname = 'www.threads.com';
+    const m = url.pathname.match(/^\/(@[^/]+)\/post\/([\w-]+)/);
+    if (m) url.pathname = `/${m[1]}/post/${m[2]}`;
+  }
+
   // Strip tracking query params
   const tracking = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
                     'fbclid', 'gclid', 'mc_cid', 'mc_eid', 'ref', 'ref_src', 'ref_url',
@@ -102,6 +112,7 @@ function normalizeExcerpt(excerpt) {
   if (!excerpt) return '';
   return String(excerpt)
     .replace(/^\s*\d+\s+(second|minute|hour|day|week|month|year)s?\s+ago\s*[—–-]\s*/i, '')
+    .replace(/^\s*(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2},\s+\d{4}\s*[—–-]\s*/i, '')
     .replace(/\bread more\b\.?\s*$/i, '')
     .replace(/[…….]+\s*$/, '')
     .replace(/\s+/g, ' ')

@@ -29,6 +29,7 @@ const OWNER_ACCOUNTS = {
   hn: ['thomaspryor', 'thepinkmusical'],
   github: ['thomaspryor'],
   instagram: ['bwayscorecard', 'broadwayscorecard', 'thomaspryor'],
+  threads: ['bwayscorecard', 'broadwayscorecard', 'thomaspryor'],
   // Safety net — matched on every platform in addition to the platform-specific list
   generic: ['broadwayscorecard', 'bwayscorecard', 'thomaspryor', 'thepinkmusical'],
 };
@@ -46,6 +47,7 @@ const OWNER_ACCOUNTS = {
 // to the content-based keyword check and are evaluated by the drafter.
 const OWNER_URL_PATTERNS = [
   /^https?:\/\/(?:www\.)?instagram\.com\/(?:bwayscorecard|broadwayscorecard)(?:\/|$)/i,
+  /^https?:\/\/(?:www\.)?threads\.(?:com|net)\/@?(?:bwayscorecard|broadwayscorecard)(?:\/|$)/i,
   /^https?:\/\/(?:www\.)?broadwayscorecard\.com(?:\/|$)/i,
   /^https?:\/\/github\.com\/thomaspryor\/Broadwayscore(?:\/|$)/i,
   /^https?:\/\/bsky\.app\/profile\/(?:broadwayscorecard|bwayscorecard|thomaspryor)/i,
@@ -78,6 +80,16 @@ const OWNER_CONTENT_FINGERPRINTS = [
   /broadwayscorecard\.com\s+this is a public episode/i,
   // Substack newsletter byline
   /substack\s+[·•]\s+broadwayscorecard\.com/i,
+  // Owner's Threads reply-comments under third-party posts (@officialbroadwayworld
+  // etc.): Google's snippet for the post page surfaces the owner's comment because
+  // it contains the brand term, so the mention's author/URL are the third party's.
+  // Fingerprint the actual posted comment texts — specific phrasings, not generic
+  // CTAs, so genuine third-party recommendations still pass.
+  /could brandon uranowitz split the best actor vote/i,
+  /check out more tony predictions at broadwayscorecard\.com/i,
+  /find more (?:prediction data|stats to impress your tony part(?:y|ies)) at broadwayscorecard\.com/i,
+  /do you have a favorite supporting performance this season\?\s*broadwayscorecard\.com/i,
+  /check out what audiences thought of all of the nominated revivals!\s*broadwayscorecard\.com/i,
 ];
 
 /**

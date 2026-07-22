@@ -17,7 +17,8 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { _internal } = require('../../scripts/lib/brand-mention-serp.js');
-const { normalizeExcerpt } = _internal;
+const { normalizeExcerpt, canonicalizeUrl, urlHash } = _internal;
+const { filterOwnerAccounts } = require('../../scripts/lib/owner-accounts.js');
 
 test('normalizeExcerpt collapses the recurring Threads blurb to one key', () => {
   const a = 'Could Brandon Uranowitz split the Best Actor vote? Check out more Tony predictions at broadwayscorecard.com/tony….';
@@ -81,6 +82,62 @@ test('free-source mention with same text is NOT deduped by excerpt', () => {
   const seenExcerpts = { [normalizeExcerpt(blurb)]: true };
   const redditPost = { source: 'reddit', url: 'https://reddit.com/r/Broadway/x', title: 't', excerpt: blurb };
   assert.equal(isExcerptDup(redditPost, seenExcerpts, new Set(), SERP), false);
+});
+
+// 2026-07-22 false positive: Google re-surfaced the same Caissie Levy Threads
+// post (first seen Jun 23 with a slugged URL) under the bare /post/{id} URL, and
+// prefixed the recycled snippet with an absolute date ("Jun 9, 2026 — ") that
+// the relative-time regex didn't strip — both dedup layers missed.
+test('normalizeExcerpt strips absolute-date prefix (Jun 9, 2026 —)', () => {
+  const dated = 'Jun 9, 2026 — Could Brandon Uranowitz split the Best Actor vote? Check out more Tony predictions at broadwayscorecard.com/tony….Read more';
+  const bare = 'Could Brandon Uranowitz split the Best Actor vote? Check out more Tony predictions at broadwayscorecard.com/tony….';
+  assert.equal(normalizeExcerpt(dated), normalizeExcerpt(bare));
+});
+
+test('canonicalizeUrl collapses Threads slugged/bare post URL variants', () => {
+  const slugged = 'https://www.threads.com/@officialbroadwayworld/post/DZXM95eEfVh/caissie-levy-took-home-a-tony-award-best-performance-by-an-actress-in-a-leading/';
+  const bare = 'https://www.threads.com/@officialbroadwayworld/post/DZXM95eEfVh';
+  assert.equal(canonicalizeUrl(slugged), canonicalizeUrl(bare));
+  assert.equal(urlHash(slugged), urlHash(bare));
+  // threads.net and threads.com are the same site
+  assert.equal(
+    canonicalizeUrl('https://threads.net/@x/post/ABC123/slug-here/'),
+    canonicalizeUrl('https://www.threads.com/@x/post/ABC123')
+  );
+  // Different posts stay distinct
+  assert.notEqual(canonicalizeUrl(bare), canonicalizeUrl('https://www.threads.com/@officialbroadwayworld/post/DZw9ryQlGbA'));
+});
+
+test('owner Threads reply-comments under third-party posts are filtered as owner content', () => {
+  const mentions = [
+    {
+      source: 'google', author: null,
+      url: 'https://www.threads.com/@keepitmovingkt/post/DZU_3DTjp8f/last-night-was-the-th-annual-tony-awards/',
+      title: 'Last night was the 79th Annual Tony Awards, the best of ...',
+      excerpt: 'Jun 8, 2026 — Could Brandon Uranowitz split the Best Actor vote? Check out more Tony predictions at broadwayscorecard.com/tony….Read more',
+    },
+    {
+      source: 'google', author: null,
+      url: 'https://www.threads.com/@bwayscorecard/post/DZF-lb-FXVe',
+      title: 'bwayscorecard on Threads',
+      excerpt: 'Check out what audiences thought of all of the nominated revivals! broadwayscorecard.com/tony…',
+    },
+  ];
+  const { kept, dropped } = filterOwnerAccounts(mentions);
+  assert.equal(dropped.length, 2);
+  assert.equal(kept.length, 0);
+});
+
+test('genuine third-party recommendation is NOT owner-filtered', () => {
+  const mentions = [{
+    source: 'google', author: null,
+    url: 'https://www.threads.com/@somefan/post/XYZ789',
+    title: 'best broadway review site',
+    excerpt: 'I always check broadwayscorecard.com before buying tickets, great critic roundups',
+  }];
+  const { kept, dropped } = filterOwnerAccounts(mentions);
+  assert.equal(kept.length, 1);
+  assert.equal(dropped.length, 0);
 });
 
 test('genuinely new SERP snippet passes through', () => {

@@ -113,6 +113,35 @@ function loadState() {
     state.mentions = dedupedMentions;
     console.log(`[state] migration: built seenUrls with ${Object.keys(state.seenUrls).length} canonical URLs`);
   }
+  // Normalization rules evolve (Threads slug stripping, absolute-date prefixes).
+  // Re-key stored dedup sets through the CURRENT canonicalize/normalize so old
+  // entries keep matching new fetches; idempotent, runs every load.
+  const rekeyedUrls = {};
+  for (const k of Object.keys(state.seenUrls)) rekeyedUrls[canonicalizeUrl(k)] = true;
+  state.seenUrls = rekeyedUrls;
+  const rekeyedExcerpts = {};
+  for (const k of Object.keys(state.seenExcerpts)) {
+    const norm = normalizeExcerpt(k);
+    if (norm) rekeyedExcerpts[norm] = true;
+  }
+  state.seenExcerpts = rekeyedExcerpts;
+  // Also seed excerpt keys from stored SERP mentions: entries that predate a
+  // fingerprint/normalization fix may exist in mentions[] without a current-form
+  // excerpt key.
+  for (const m of state.mentions) {
+    if (m && SERP_SOURCES.has(m.source)) {
+      const norm = normalizeExcerpt(m.excerpt);
+      if (norm) state.seenExcerpts[norm] = true;
+    }
+  }
+  // Retroactive owner filter: owner-account/fingerprint rules also evolve. Drop
+  // stored mentions that today's rules classify as owner content (their seenIds/
+  // seenUrls/seenExcerpts keys stay, so nothing re-alerts as "new").
+  const { kept: organicStored, dropped: ownerStored } = filterOwnerAccounts(state.mentions);
+  if (ownerStored.length > 0) {
+    state.mentions = organicStored;
+    console.log(`[state] migration: dropped ${ownerStored.length} stored owner-content mentions`);
+  }
   return state;
 }
 
