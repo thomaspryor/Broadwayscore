@@ -56,6 +56,20 @@ on:
 permissions:
   contents: write
 
+# Serialize schedule + manual-dispatch runs against data/precursors/ and
+# data/awards.json. Both cron entries fire at 17:00 UTC, so on any Monday that
+# falls in April/May they trigger simultaneously — and a manual dispatch can
+# land in the same window during precursor season. Both files are pushed via
+# the plain public-repo push-with-retry.sh, whose generic conflict fallback is
+# "accept remote" (no per-ceremony merge across pushes — the writePrecursorJson
+# merge only covers a single run's local writes). A losing run's freshly-
+# scraped nominees/winners would be silently discarded — same class as the
+# update-cast-changes.yml incident (Notion 3a5637c5-416f-812a). Queued, not
+# cancelled, so neither run's scrape is lost.
+concurrency:
+  group: update-precursor-awards
+  cancel-in-progress: false
+
 jobs:
   update-precursors:
     runs-on: ubuntu-latest
