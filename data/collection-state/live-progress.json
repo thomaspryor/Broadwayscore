@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-22T06:58:13.753Z",
-  "processed": 61,
-  "failed": 539,
-  "successRate": "10.2%",
+  "updatedAt": "2026-07-22T06:58:53.096Z",
+  "processed": 63,
+  "failed": 547,
+  "successRate": "10.3%",
   "tierBreakdown": {
     "playwright": 42,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 7,
+    "brightdata": 8,
     "archiveToday": 5,
     "archive": 11
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-07-22T06:55:24.787Z",
@@ -48,6 +48,12 @@
       "t": "2026-07-22T06:57:26.977Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-22T06:58:32.739Z",
+      "event": "bb-session",
+      "session": "10ee3950",
+      "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
     }
   ]
 }
