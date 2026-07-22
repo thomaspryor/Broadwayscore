@@ -351,7 +351,17 @@
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
-    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json"
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+    "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
+    "trainspotting-the-musical-west-end-2026/telegraph--unknown.json",
+    "trainspotting-the-musical-west-end-2026/thestage--unknown.json",
+    "trainspotting-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
+    "loves-labours-lost-globe-west-end-2026/london-theatre--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -396,6 +406,8 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
     ],
     "directCookies": [
@@ -409,7 +421,9 @@
     "archiveToday": [
       "data/review-texts/trainspotting-the-musical-west-end-2026/thestage--unknown.json",
       "data/review-texts/iceboy-regional-2026/talkinbroadway--unknown.json",
-      "data/review-texts/dukes-off-broadway-2026/nytimes--helen-shaw.json"
+      "data/review-texts/dukes-off-broadway-2026/nytimes--helen-shaw.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "trainspotting-the-musical-west-end-2026/broadwayworld--team-bww.json",
@@ -423,7 +437,7 @@
     ]
   },
   "startTime": "2026-07-22T19:11:20.727Z",
-  "lastProcessed": "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "loves-labours-lost-globe-west-end-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-07-22T19:16:01.001Z",
@@ -501,6 +515,28 @@
       "t": "2026-07-22T20:46:26.720Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-22T20:54:04.213Z",
+      "event": "bb-session",
+      "session": "5ee0543b",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-22T20:54:05.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-22T20:55:51.275Z",
+      "event": "bb-session",
+      "session": "db86876f",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-22T20:55:52.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
