@@ -51,6 +51,10 @@ interface OffBroadwayPageClientProps {
   startingSoonShows?: OffBroadwayShow[];
   /** Recently opened OB shows still awaiting a score (computed server-side). */
   justOpenedShows?: OffBroadwayShow[];
+  /** When true, the hero + Gold List CTA + Top Recent Shows shelf are rendered
+   *  server-side by the page (page.tsx) so the LCP image lands in static HTML.
+   *  This client then skips them to avoid a duplicate. See #317. */
+  skipAboveFold?: boolean;
 }
 
 // URL parameter values
@@ -127,7 +131,7 @@ function FeaturedRow({ title, shows, minShows = 4, href }: { title: string; show
 }
 
 // Inner component that uses searchParams
-function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCounts, awardWinnerSets, startingSoonShows = [], justOpenedShows = [] }: OffBroadwayPageClientProps) {
+function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCounts, awardWinnerSets, startingSoonShows = [], justOpenedShows = [], skipAboveFold = false }: OffBroadwayPageClientProps) {
   const initialSearchParams = useSearchParams();
   const router = useRouter();
 
@@ -387,35 +391,38 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
   const shouldHideStatus = statusFilter !== 'all';
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
-      {/* Hero */}
-      <div className="mb-4 sm:mb-8">
-        <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
-          Off-Broadway<span className="text-gradient">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
-        </h1>
-        <p className="text-gray-400 text-lg sm:text-xl">
-          Every show. Every review. One score.
-        </p>
-        <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
-        </p>
-      </div>
-
-      {/* Gold List discovery CTA */}
-      <GoldListCTA listType="critical-gold-off-broadway" />
-
-      {/* Top Recent Shows - Featured Shelf */}
-      {topRecentShows.length > 3 && (
-        <section className="mb-4 sm:mb-6">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-bold text-white">Top Recent Shows</h2>
+    <div className={`max-w-3xl mx-auto px-4 sm:px-6 ${skipAboveFold ? 'pb-5 sm:pb-12' : 'py-5 sm:py-12'}`}>
+      {/* Hero + Gold List CTA + Top Recent Shows shelf — rendered server-side
+          (page.tsx) when skipAboveFold, so the LCP poster is in static HTML. #317 */}
+      {!skipAboveFold && (
+        <>
+          <div className="mb-4 sm:mb-8">
+            <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
+              Off-Broadway<span className="text-gradient">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+            </h1>
+            <p className="text-gray-400 text-lg sm:text-xl">
+              Every show. Every review. One score.
+            </p>
+            <p className="text-gray-500 text-sm sm:text-base mt-1">
+              {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
+            </p>
           </div>
-          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-            {topRecentShows.map((show, index) => (
-              <MiniShowCard key={show.id} show={show} priority={index < 2} />
-            ))}
-          </div>
-        </section>
+
+          <GoldListCTA listType="critical-gold-off-broadway" />
+
+          {topRecentShows.length > 3 && (
+            <section className="mb-4 sm:mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-base font-bold text-white">Top Recent Shows</h2>
+              </div>
+              <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+                {topRecentShows.map((show, index) => (
+                  <MiniShowCard key={show.id} show={show} priority={index < 2} />
+                ))}
+              </div>
+            </section>
+          )}
+        </>
       )}
 
       {/* Search */}
@@ -623,15 +630,17 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
 export default function OffBroadwayPageClient(props: OffBroadwayPageClientProps) {
   return (
     <Suspense fallback={
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <div className="mb-8 sm:mb-10">
-          <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
-            Off-Broadway<span className="text-gradient">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+      <div className={`max-w-3xl mx-auto px-4 sm:px-6 ${props.skipAboveFold ? 'pb-8 sm:pb-12' : 'py-8 sm:py-12'}`}>
+        {!props.skipAboveFold && (
+          <div className="mb-8 sm:mb-10">
+            <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
+              Off-Broadway<span className="text-gradient">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+            </div>
+            <p className="text-gray-400 text-lg sm:text-xl">
+              Every show. Every review. One score.
+            </p>
           </div>
-          <p className="text-gray-400 text-lg sm:text-xl">
-            Every show. Every review. One score.
-          </p>
-        </div>
+        )}
         <div className="animate-pulse space-y-4">
           <div className="h-12 bg-surface-overlay rounded-xl"></div>
           <div className="h-8 bg-surface-overlay rounded w-3/4"></div>

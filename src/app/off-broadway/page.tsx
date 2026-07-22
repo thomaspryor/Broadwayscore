@@ -6,8 +6,12 @@ import { getAwardWinnerSets } from '@/lib/data-awards';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
+import { getOptimizedImageUrl } from '@/lib/images';
+import { hasEnoughReviews } from '@/config/score-buckets';
 import OffBroadwayPageClient from '@/components/OffBroadwayPageClient';
 import type { OffBroadwayShow } from '@/components/OffBroadwayPageClient';
+import FeaturedRowServer from '@/components/FeaturedRowServer';
+import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import { featureFlags } from '@/config/feature-flags';
 
 const currentYear = new Date().getFullYear();
@@ -106,12 +110,65 @@ export default function OffBroadwayPage() {
     .sort((a, b) => openMs(b) - openMs(a))
     .map(s => ({ ...serializeShow(s), subtitle: `Opened ${shortDate(s.openingDate)}`, subtitleColor: 'text-emerald-400' }));
 
+  // Top Recent Shows shelf — computed here (not in the client) so the LCP poster
+  // lands in the static HTML. The client renders `skipAboveFold` to avoid a
+  // duplicate. Mirrors the client's topRecentShows predicate exactly (#317).
+  const obHasEnoughReviews = (s: OffBroadwayShow) => hasEnoughReviews(
+    s.criticScore?.reviewCount ?? 0,
+    'off-broadway',
+    (s.criticScore?.tier1Count ?? 0) + (s.criticScore?.tier2Count ?? 0),
+  );
+  const twelveMonthsAgo = new Date();
+  twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+  const topRecentShows = serializedShows
+    .filter(s => {
+      if (!s.criticScore?.score || !obHasEnoughReviews(s)) return false;
+      if (s.status === 'previews' || s.status === 'upcoming') return false;
+      return new Date(s.openingDate) >= twelveMonthsAgo;
+    })
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+
+  const preloadPosterUrls = topRecentShows
+    .slice(0, 4)
+    .map(s => {
+      const img = s.images?.poster || s.images?.thumbnail || s.images?.hero;
+      return img ? getOptimizedImageUrl(img, 'card') : null;
+    })
+    .filter((u): u is string => !!u);
+
+  // Client only renders the Top Recent shelf when there are >3 shows; match that
+  // so the above-fold layout is identical whether server- or client-rendered.
+  const showServerShelf = topRecentShows.length > 3;
+
   return (
     <>
+      {showServerShelf && preloadPosterUrls.map((url, i) => (
+        <link key={`preload-${i}`} rel="preload" as="image" href={url} fetchPriority={i === 0 ? 'high' : undefined} />
+      ))}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
+
+      {/* Server-rendered hero + Gold List CTA + Top Recent Shows shelf — LCP image
+          appears in the initial HTML. The client below renders skipAboveFold. */}
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-5 sm:pt-12">
+        <div className="mb-4 sm:mb-8">
+          <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
+            Off-Broadway<span className="text-gradient">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+          </h1>
+          <p className="text-gray-400 text-lg sm:text-xl">
+            Every show. Every review. One score.
+          </p>
+          <p className="text-gray-500 text-sm sm:text-base mt-1">
+            {activeShows.length} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
+          </p>
+        </div>
+        <GoldListCTA listType="critical-gold-off-broadway" />
+        {showServerShelf && (
+          <FeaturedRowServer shows={topRecentShows} title="Top Recent Shows" />
+        )}
+      </div>
 
       <Suspense>
         <OffBroadwayPageClient
@@ -125,6 +182,7 @@ export default function OffBroadwayPage() {
             offBroadway: getMarketStats().offBroadway?.openShows ?? 0,
           }}
           awardWinnerSets={getAwardWinnerSets()}
+          skipAboveFold
         />
       </Suspense>
     </>

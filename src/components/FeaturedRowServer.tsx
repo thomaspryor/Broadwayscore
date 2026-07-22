@@ -13,9 +13,22 @@ import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import HoverRateStars from '@/components/user/HoverRateStars';
-import type { HomepageShow } from '@/components/HomePageClient';
 
-function ServerMiniShowCard({ show, priority }: { show: HomepageShow; priority: boolean }) {
+/**
+ * Minimal structural shape used by the server shelf. HomepageShow / WestEndShow /
+ * OffBroadwayShow all satisfy it, so the same shelf can front any market page.
+ */
+export interface ServerShelfShow {
+  id: string;
+  slug: string;
+  title: string;
+  type: string;
+  category?: string;
+  images?: { thumbnail?: string; poster?: string; hero?: string };
+  criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
+}
+
+function ServerMiniShowCard({ show, priority }: { show: ServerShelfShow; priority: boolean }) {
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const rawScore = show.criticScore?.score;
@@ -83,20 +96,33 @@ const ChevronRightIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
 );
 
-export default function FeaturedRowServer({ shows }: { shows: HomepageShow[] }) {
+export default function FeaturedRowServer({
+  shows,
+  title = 'Best Recent Shows',
+  viewAllHref,
+}: {
+  shows: ServerShelfShow[];
+  /** Shelf heading. Defaults to the homepage's "Best Recent Shows". */
+  title?: string;
+  /** When set, renders a "See all" link to this href. Omit to hide it (matches
+   *  the West End / Off-Broadway inline shelves, which have no See-all link). */
+  viewAllHref?: string;
+}) {
   if (shows.length === 0) return null;
 
   return (
     <section className="mb-4 sm:mb-6">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-base font-bold text-white">Best Recent Shows</h2>
-        <Link
-          href="/browse/best-recent-shows"
-          prefetch={false}
-          className="flex items-center gap-1 text-xs text-gray-400 hover:text-brand transition-colors"
-        >
-          See all <ChevronRightIcon />
-        </Link>
+        <h2 className="text-base font-bold text-white">{title}</h2>
+        {viewAllHref && (
+          <Link
+            href={viewAllHref}
+            prefetch={false}
+            className="flex items-center gap-1 text-xs text-gray-400 hover:text-brand transition-colors"
+          >
+            See all <ChevronRightIcon />
+          </Link>
+        )}
       </div>
       <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
         {shows.map((show, index) => (

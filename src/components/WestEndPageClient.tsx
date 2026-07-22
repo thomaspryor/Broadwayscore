@@ -53,6 +53,10 @@ interface WestEndPageClientProps {
   /** Open-show counts for the market pills */
   marketOpenCounts: { westEnd: number; offWestEnd: number };
   awardWinnerSets?: AwardWinnerSets;
+  /** When true, the hero + Top Musicals shelf are rendered server-side by the
+   *  page (page.tsx) so the LCP image lands in static HTML. This client then
+   *  skips them to avoid a duplicate. See #317. */
+  skipAboveFold?: boolean;
 }
 
 // URL parameter values
@@ -124,7 +128,7 @@ function FeaturedRow({ title, subtitle, shows }: { title: string; subtitle?: str
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], marketOpenCounts, awardWinnerSets }: WestEndPageClientProps) {
+function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], marketOpenCounts, awardWinnerSets, skipAboveFold = false }: WestEndPageClientProps) {
   const initialSearchParams = useSearchParams();
   const router = useRouter();
 
@@ -457,33 +461,37 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
   const shouldHideStatus = statusFilter !== 'all';
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
-      {/* Hero */}
-      <div className="mb-4 sm:mb-8">
-        <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
-          WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-pink-400 border border-pink-400/30 bg-pink-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
-        </h1>
-        <p className="text-gray-400 text-lg sm:text-xl">
-          Every show. Every review. One score.
-        </p>
-        <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {scoredShows} scored shows. {totalReviews.toLocaleString()} critic reviews. And counting.
-        </p>
-      </div>
+    <div className={`max-w-3xl mx-auto px-4 sm:px-6 ${skipAboveFold ? 'pb-5 sm:pb-12' : 'py-5 sm:py-12'}`}>
+      {/* Hero + Top Musicals shelf — rendered server-side (page.tsx) when
+          skipAboveFold, so the LCP poster is in static HTML. See #317. */}
+      {!skipAboveFold && (
+        <>
+          <div className="mb-4 sm:mb-8">
+            <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
+              WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-pink-400 border border-pink-400/30 bg-pink-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+            </h1>
+            <p className="text-gray-400 text-lg sm:text-xl">
+              Every show. Every review. One score.
+            </p>
+            <p className="text-gray-500 text-sm sm:text-base mt-1">
+              {scoredShows} scored shows. {totalReviews.toLocaleString()} critic reviews. And counting.
+            </p>
+          </div>
 
-      {/* Top Musicals - Featured Shelf */}
-      {topMusicals.length > 0 && (
-        <section className="mb-4 sm:mb-6">
-          <div className="flex items-center justify-between mb-1">
-            <h2 className="text-base font-bold text-white">Top Musicals</h2>
-          </div>
-          <p className="text-xs text-gray-500 mb-2">Ranked by critical consensus</p>
-          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-            {topMusicals.map((show, index) => (
-              <MiniShowCard key={show.id} show={show} priority={index < 2} />
-            ))}
-          </div>
-        </section>
+          {topMusicals.length > 0 && (
+            <section className="mb-4 sm:mb-6">
+              <div className="flex items-center justify-between mb-1">
+                <h2 className="text-base font-bold text-white">Top Musicals</h2>
+              </div>
+              <p className="text-xs text-gray-500 mb-2">Ranked by critical consensus</p>
+              <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+                {topMusicals.map((show, index) => (
+                  <MiniShowCard key={show.id} show={show} priority={index < 2} />
+                ))}
+              </div>
+            </section>
+          )}
+        </>
       )}
 
       {/* Search */}
@@ -721,15 +729,17 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
 export default function WestEndPageClient(props: WestEndPageClientProps) {
   return (
     <Suspense fallback={
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <div className="mb-8 sm:mb-10">
-          <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
-            WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-pink-400 border border-pink-400/30 bg-pink-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+      <div className={`max-w-3xl mx-auto px-4 sm:px-6 ${props.skipAboveFold ? 'pb-8 sm:pb-12' : 'py-8 sm:py-12'}`}>
+        {!props.skipAboveFold && (
+          <div className="mb-8 sm:mb-10">
+            <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
+              WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-pink-400 border border-pink-400/30 bg-pink-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+            </div>
+            <p className="text-gray-400 text-lg sm:text-xl">
+              Every show. Every review. One score.
+            </p>
           </div>
-          <p className="text-gray-400 text-lg sm:text-xl">
-            Every show. Every review. One score.
-          </p>
-        </div>
+        )}
         <div className="animate-pulse space-y-4">
           <div className="h-12 bg-surface-overlay rounded-xl"></div>
           <div className="h-8 bg-surface-overlay rounded w-3/4"></div>

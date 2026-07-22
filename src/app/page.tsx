@@ -346,7 +346,7 @@ export default function HomePage() {
             trackingId="homepage_above_fold_tony_predictions"
           />
         )}
-        <FeaturedRowServer shows={bestRecentShows} />
+        <FeaturedRowServer shows={bestRecentShows} title="Best Recent Shows" viewAllHref="/browse/best-recent-shows" />
       </div>
       <Suspense>
         <HomePageClient

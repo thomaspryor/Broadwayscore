@@ -7,8 +7,11 @@ import { getWestEndShows, getMarketStats } from '@/lib/data-core';
 import { getAwardWinnerSets } from '@/lib/data-awards';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
+import { getOptimizedImageUrl } from '@/lib/images';
+import { hasEnoughReviews } from '@/config/score-buckets';
 import WestEndPageClient from '@/components/WestEndPageClient';
 import type { WestEndShow } from '@/components/WestEndPageClient';
+import FeaturedRowServer from '@/components/FeaturedRowServer';
 import { featureFlags } from '@/config/feature-flags';
 
 export const metadata: Metadata = {
@@ -117,12 +120,55 @@ export default function WestEndPage() {
     offWestEnd: stats.offWestEnd?.openShows ?? 0,
   };
 
+  // Top Musicals shelf — computed here (not in the client) so the LCP poster
+  // lands in the static HTML. The client renders `skipAboveFold` to avoid a
+  // duplicate. Mirrors the client's topMusicals predicate exactly (#317).
+  const weHasEnoughReviews = (s: WestEndShow) => hasEnoughReviews(
+    s.criticScore?.reviewCount ?? 0,
+    s.category || 'west-end',
+    (s.criticScore?.tier1Count ?? 0) + (s.criticScore?.tier2Count ?? 0),
+  );
+  const topMusicals = serializedShows
+    .filter(s => s.type === 'musical' && s.status === 'open' && s.criticScore?.score && weHasEnoughReviews(s))
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+
+  // Preload the first few posters so the LCP image starts downloading early.
+  const preloadPosterUrls = topMusicals
+    .slice(0, 4)
+    .map(s => {
+      const img = s.images?.poster || s.images?.thumbnail || s.images?.hero;
+      return img ? getOptimizedImageUrl(img, 'card') : null;
+    })
+    .filter((u): u is string => !!u);
+
   return (
     <>
+      {preloadPosterUrls.map((url, i) => (
+        <link key={`preload-${i}`} rel="preload" as="image" href={url} fetchPriority={i === 0 ? 'high' : undefined} />
+      ))}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
+
+      {/* Server-rendered hero + Top Musicals shelf — LCP image appears in the
+          initial HTML, no JS needed. The client below renders skipAboveFold. */}
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-5 sm:pt-12">
+        <div className="mb-4 sm:mb-8">
+          <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
+            WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-pink-400 border border-pink-400/30 bg-pink-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+          </h1>
+          <p className="text-gray-400 text-lg sm:text-xl">
+            Every show. Every review. One score.
+          </p>
+          <p className="text-gray-500 text-sm sm:text-base mt-1">
+            {scoredShows.length} scored shows. {totalReviews.toLocaleString()} critic reviews. And counting.
+          </p>
+        </div>
+        {topMusicals.length > 0 && (
+          <FeaturedRowServer shows={topMusicals} title="Top Musicals" />
+        )}
+      </div>
 
       <Suspense>
         <WestEndPageClient
@@ -134,6 +180,7 @@ export default function WestEndPage() {
           rushShows={rushShowsList}
           marketOpenCounts={marketOpenCounts}
           awardWinnerSets={getAwardWinnerSets()}
+          skipAboveFold
         />
       </Suspense>
     </>
