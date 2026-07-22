@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-07-22T21:36:59.502Z",
-  "processed": 61,
-  "failed": 529,
-  "successRate": "10.3%",
+  "updatedAt": "2026-07-22T21:39:42.401Z",
+  "processed": 63,
+  "failed": 537,
+  "successRate": "10.5%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 45,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 7,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 6,
     "archiveToday": 3,
     "archive": 9
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-07-22T19:16:01.001Z",
-      "event": "bb-session",
-      "session": "3b3d97e7",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
-    },
     {
       "t": "2026-07-22T19:16:01.430Z",
       "event": "bb-cookie-inject",
@@ -125,6 +119,12 @@
       "t": "2026-07-22T21:35:42.332Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-22T21:37:07.338Z",
+      "event": "bb-session",
+      "session": "62cfd891",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
     }
   ]
 }
