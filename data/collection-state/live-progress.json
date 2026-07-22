@@ -1,61 +1,39 @@
 {
-  "updatedAt": "2026-07-22T01:27:08.291Z",
-  "processed": 70,
-  "failed": 1213,
-  "successRate": "5.5%",
+  "updatedAt": "2026-07-22T02:07:14.234Z",
+  "processed": 2,
+  "failed": 3,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 2,
+    "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 10,
-    "archiveToday": 15,
-    "archive": 14
+    "brightdata": 0,
+    "archiveToday": 1,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-07-21T17:22:47.625Z",
+      "t": "2026-07-22T02:06:15.698Z",
       "event": "bb-session",
-      "session": "609f027a",
-      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
+      "session": "4fba668a",
+      "url": "https://www.nytimes.com/2024/04/28/arts/music/asmik-grigorian-madama-butterfly-r"
     },
     {
-      "t": "2026-07-21T17:22:48.499Z",
+      "t": "2026-07-22T02:06:16.126Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-07-21T17:23:04.465Z",
+      "t": "2026-07-22T02:06:31.802Z",
       "event": "bb-session",
-      "session": "bdeaf6d9",
-      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.ht"
+      "session": "94fbcd5a",
+      "url": "https://www.nytimes.com/2024/04/28/arts/music/asmik-grigorian-madama-butterfly-r"
     },
     {
-      "t": "2026-07-21T17:23:05.396Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-21T19:13:35.198Z",
-      "event": "bb-session",
-      "session": "38169bee",
-      "url": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html"
-    },
-    {
-      "t": "2026-07-21T19:13:35.934Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-21T19:13:51.769Z",
-      "event": "bb-session",
-      "session": "cfb7f9c5",
-      "url": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html"
-    },
-    {
-      "t": "2026-07-21T19:13:52.508Z",
+      "t": "2026-07-22T02:06:32.207Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

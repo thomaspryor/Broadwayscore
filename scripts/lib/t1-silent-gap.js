@@ -9,10 +9,10 @@
  * lists, and no alert ever fires for a discovered-but-unscoreable file).
  *
  * Inclusion semantics are DELEGATED to the canonical predicate
- * (scripts/lib/review-text-scoreable.js — the same single-source-of-truth
- * validate-data.js and check-review-count-drift.js use), per
- * memory/feedback_includability_predicates_must_be_canonical.md. This module
- * only decides, for a file the canonical predicate says will NOT reach
+ * (scripts/lib/review-guards.js isIncludableForRebuild + hasValidScore — the
+ * same single-source-of-truth validate-data.js and check-review-count-drift.js
+ * use), per memory/feedback_includability_predicates_must_be_canonical.md. This
+ * module only decides, for a file the canonical predicate says will NOT reach
  * reviews.json, whether that absence is a legitimate editorial exclusion or
  * a silent gap worth recovering/escalating.
  *
@@ -22,9 +22,8 @@
 
 'use strict';
 
-const { wouldBeIncludedInRebuild, passesFlagFilters, hasValidScore } = require('./review-text-scoreable');
 const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
-const { isRoundupPageAsReview } = require('./review-guards');
+const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggregatorExcerpt } = require('./review-guards');
 
 // Tiers considered "cannot silently miss". 1 = NYT/Times/Guardian class,
 // 2 = TheaterMania/Standard/Telegraph class.
@@ -44,7 +43,7 @@ const UNSCORED_GRACE_HOURS = 12;
 const EDITORIAL_REJECTIONS = new Set(['not_a_review', 'wrong_production', 'wrong_show']);
 
 // Editorial verdicts: the review is correctly absent from the score. Mirrors
-// the exclusion families in review-text-scoreable.js passesFlagFilters —
+// the exclusion families in review-guards.js isIncludableForRebuild —
 // everything here is "right review judgment", never "bad fetch".
 function hasEditorialExclusion(f) {
   return f.wrongProduction === true || f.wrongShow === true
@@ -56,6 +55,13 @@ function hasEditorialExclusion(f) {
     || !!f.duplicateOf || !!f.duplicateTextOf
     || f.humanReviewedWrongProduction === true
     || !!(f.contentVerification && f.contentVerification.wrongArticle === true)
+    // showNotMentioned without an aggregator excerpt = the show name isn't in the
+    // fetched text (likely wrong content) → correct absence. The deleted mirror
+    // suppressed this in passesFlagFilters; isIncludableForRebuild does NOT model
+    // it (documented context-dependent omission), so restore it here or a
+    // showNotMentioned file with text-but-no-score would falsely escalate as
+    // 'unscored' (ship-check finding, S1-T5). Excerpt present ⇒ real content ⇒ not excluded.
+    || (f.showNotMentioned === true && !hasAggregatorExcerpt(f))
     || EDITORIAL_REJECTIONS.has(f.rejectionReason);
 }
 
@@ -100,8 +106,11 @@ function classifySilentGap({ file, show, tier, outletScored, now }) {
   if (outletScored) return null;
 
   // Canonical: this file will contribute a reviews.json entry — rebuild or
-  // deploy lag at worst, never a gap.
-  if (wouldBeIncludedInRebuild(file, show)) return null;
+  // deploy lag at worst, never a gap. SCORED axis = isIncludableForRebuild
+  // (flag/context filters) AND hasValidScore (score-presence half). No filePath
+  // here (pure classifier) → duplicateOf falls back to unconditional skip, which
+  // matches the deleted mirror's passesFlagFilters behavior.
+  if (isIncludableForRebuild(file, show) && hasValidScore(file)) return null;
 
   // Editorial verdicts and wrong-URL phantoms are correct absences regardless
   // of which branch below they'd land in.
@@ -114,8 +123,8 @@ function classifySilentGap({ file, show, tier, outletScored, now }) {
   // (2026-07-19: shifters playbill--unknown husk emailed a CRITICAL alert).
   if (isRoundupPageAsReview(file)) return null;
 
-  if (passesFlagFilters(file, show)) {
-    // Includable content, but no valid score yet.
+  if (isIncludableForRebuild(file, show)) {
+    // Includable content (flags + context clean), but no valid score yet.
     if (isEmptyBodyFile(file)) {
       return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) };
     }
@@ -170,4 +179,54 @@ function shouldAlertGap(lastAlertedAt, now) {
   return now.getTime() - last >= REALERT_DAYS * 24 * 60 * 60 * 1000;
 }
 
-module.exports = { classifySilentGap, shouldAlertGap, MAJOR_TIER_MAX, REALERT_DAYS, UNSCORED_GRACE_HOURS };
+// Self-heal-before-paging policy for 'unscored' gaps (2026-07-21: the sweep
+// emailed the operator `gh workflow run "LLM Ensemble Score Reviews" ...` as
+// the fix — a command the sweep can dispatch itself). One scoring dispatch
+// per show per DISPATCH_RETRY_HOURS; the gap only emails once a dispatch
+// that old has failed to heal it.
+const DISPATCH_RETRY_HOURS = 6;
+
+/**
+ * Should the sweep dispatch a scoring run for this show now?
+ * @param {string|null} lastDispatchAt ISO timestamp of the sweep's previous
+ *                                     scoring dispatch for this show (null = never)
+ * @param {Date} now
+ */
+function shouldDispatchScoring(lastDispatchAt, now) {
+  if (!lastDispatchAt) return true;
+  const last = Date.parse(lastDispatchAt);
+  if (Number.isNaN(last)) return true;
+  return now.getTime() - last >= DISPATCH_RETRY_HOURS * 3600000;
+}
+
+/**
+ * Should an 'unscored' gap page the operator? Only after self-heal had its
+ * chance: a scoring dispatch happened at least DISPATCH_RETRY_HOURS ago and
+ * the gap still classifies. Never-dispatched or freshly-dispatched gaps stay
+ * out of the email (they are recorded in the report either way).
+ *
+ * A PRESENT-but-unparseable stamp escalates (returns true): treating garbage
+ * as "never dispatched" here while shouldDispatchScoring treats it as
+ * "dispatch now" would re-dispatch forever with zero operator visibility
+ * (ship-check finding). One email + one re-dispatch, and a successful
+ * dispatch overwrites the corrupt stamp.
+ * @param {string|null} lastDispatchAt
+ * @param {Date} now
+ */
+function shouldEmailUnscoredGap(lastDispatchAt, now) {
+  if (!lastDispatchAt) return false;
+  const last = Date.parse(lastDispatchAt);
+  if (Number.isNaN(last)) return true;
+  return now.getTime() - last >= DISPATCH_RETRY_HOURS * 3600000;
+}
+
+module.exports = {
+  classifySilentGap,
+  shouldAlertGap,
+  shouldDispatchScoring,
+  shouldEmailUnscoredGap,
+  MAJOR_TIER_MAX,
+  REALERT_DAYS,
+  UNSCORED_GRACE_HOURS,
+  DISPATCH_RETRY_HOURS,
+};

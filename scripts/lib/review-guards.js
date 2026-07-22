@@ -952,7 +952,7 @@ function isRoundupUrl(url) {
  *   - Cross-show contamination poisoned excerpt fields, which (in older
  *     heuristics) read as roundup summaries.
  *
- * The flag blocks LLM scoring (is-scoreable / review-text-scoreable / rebuild),
+ * The flag blocks LLM scoring (is-scoreable / isIncludableForRebuild / rebuild),
  * silently dropping legitimate reviews. This predicate is whitelist-based: it
  * returns true only when the URL matches a per-outlet "individual review" URL
  * pattern that we know is one show per page. A blacklist (anything not on
@@ -1168,7 +1168,7 @@ function isLikelyStaleWrongShow(data, show) {
  *   - wrongProductionOverride === true
  *   - humanReviewedWrongProduction === false
  * The sweep sets `wrongProduction = false` directly so the bare gate checks
- * (is-scoreable.js:12, review-text-scoreable.js:49, llm-scoring/is-scoreable.ts:15)
+ * (is-scoreable.js:12, review-guards.js isIncludableForRebuild, llm-scoring/is-scoreable.ts:15)
  * also pass without further refactor — and writes wrongProductionManualClear=true
  * as a durable breadcrumb so future audit/restore-protected-fields don't
  * re-flag the file.
@@ -2988,6 +2988,170 @@ function areSameCriticFuzzy(a, b) {
   return _levenshtein(na, nb) <= FUZZY_CRITIC_MAX_EDIT_DISTANCE;
 }
 
+/* ──────────────────────────────────────────────────────────────────────────
+ * T1-retrieval canonical predicates (Sprint 1, task #291)
+ *
+ * These unify the "is this outlet's review retrieved / a real review?" checks
+ * that previously lived in the now-deleted the deleted scoreable-mirror mirror
+ * mirror. Two DISTINCT axes:
+ *
+ *   SCORED axis    — "will this file reach reviews.json?" — is
+ *                    isIncludableForRebuild (above) AND hasValidScore (below).
+ *                    Consumers: validate-data, audit-t1-silent-gaps,
+ *                    check-review-count-drift, t1-silent-gap.
+ *
+ *   RETRIEVED axis — "do we physically hold this outlet's real review, so stop
+ *                    re-discovering it?" — is isRetrieved / blocksRediscovery
+ *                    (below). Consumer: opening-night-poller getFoundOutletIds /
+ *                    getKnownUrls (scoped to in-window T1/T2 — see the poller).
+ *
+ * The two axes are NOT the same predicate: a file excluded from the SCORE by a
+ * rebuild context guard (cross-market, date, syndication dedup) but carrying
+ * real text IS retrieved and must keep blocking rediscovery — so isRetrieved is
+ * intentionally NARROWER than isIncludableForRebuild and does NOT call it
+ * (plan "Changes from Critique": task-breakdown reviewer).
+ * Cross-ref: memory/feedback_includability_predicates_must_be_canonical.md
+ * ────────────────────────────────────────────────────────────────────────── */
+
+// rejectionReason values that mean "the fetched page is NOT a review of
+// anything" (wrong KIND of article, or unusable garbage). Deliberately EXCLUDES
+// wrong_production / wrong_show — those are a real review MIS-ATTRIBUTED, which
+// must NOT reopen rediscovery: the Proof-2026-04-17 scored-wrongProd-FP carve-out
+// and the Grace stale-flag class both stay "retrieved". truncated_text is a
+// fetch-QUALITY failure (a better fetch recovers the review), not a non-review.
+const NON_REVIEW_REJECTION_REASONS = new Set(['not_a_review', 'garbage_text']);
+
+// contentVerification.articleType values that classify the fetched page as a
+// non-review editorial artifact. Scoped to the four the plan enumerates; other
+// CV types (listicle, obituary, box-office) are left out deliberately to keep
+// the discovery-unblocking blast radius small (plan's ≤30-cell gate).
+const NON_REVIEW_CV_ARTICLE_TYPES = new Set(['interview', 'feature', 'preview', 'news']);
+
+/**
+ * True when a review-text file is a REJECTED NON-REVIEW: the fetched content is
+ * definitively the wrong kind of article (interview / feature / preview / news),
+ * flagged wrongArticle by content-verification, an ensemble not_a_review /
+ * garbage_text rejection, or an invalid content tier — and no human has cleared
+ * it. Deliberately EXCLUDES wrongProduction / wrongShow (mis-attribution, not
+ * non-review) so scored / stale-flag files keep blocking rediscovery.
+ *
+ * Union of the four real 2026-07-21 encodings (fixtures in review-guards.test.mjs):
+ *   AP/Beaches feature   — cv.articleType='feature' + cv.wrongArticle + invalid
+ *   THR interview        — cv.articleType='interview'
+ *   BN news              — cv.articleType='news'
+ *   Cyrano garbage       — contentTier='invalid' (no manual clear)
+ * Counter-example (returns FALSE): Grace stale wrongProduction flag on a real,
+ * scored review — mis-attribution, not a non-review.
+ *
+ * Pure — no I/O beyond a lazy KNOWN_STAR_OUTLETS require (mirrors the other
+ * gates in this file).
+ * @param {object} data - review-text JSON
+ * @returns {boolean}
+ */
+function isRejectedNonReview(data) {
+  if (!data) return false;
+  // Manual clear is a human verdict that the file IS a real review of this show.
+  if (wrongShowCleared(data)) return false;
+  // not_a_review at a known-star outlet whose json-ld carries the critic's star
+  // IS a scored verdict (isIncludableForRebuild includes it, lines ~2599) — not a
+  // non-review. Keeps this predicate in lock-step with the rebuild gate.
+  const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
+    (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
+    require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
+  if (isJsonLdStarNotAReview) return false;
+  if (NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
+  const cv = data.contentVerification;
+  // wrongArticle gated on high confidence to match isIncludableForRebuild's
+  // exact exclusion (line ~2588): a medium/low-confidence CV false-positive on a
+  // real T1/T2 review must NOT reopen discovery / mark it non-retrieved.
+  if (cv && cv.wrongArticle === true && cv.confidence === 'high') return true;
+  // articleType is a distinct classification signal (rebuild doesn't gate on it);
+  // an interview/feature/preview/news classification is a non-review regardless
+  // of the wrongArticle-boolean confidence.
+  if (cv && NON_REVIEW_CV_ARTICLE_TYPES.has(cv.articleType)) return true;
+  // contentTier 'invalid' with no manual clear (the wrongShowCleared escape above
+  // already returned for the human-cleared case) → garbage / unusable page.
+  if (data.contentTier === 'invalid') return true;
+  return false;
+}
+
+// Aggregator excerpt fields that count as retrievable content even when the
+// first-party fullText is absent. Moved verbatim from the deleted
+// the deleted review-text mirror so the RETRIEVED axis has one home.
+function hasAggregatorExcerpt(data) {
+  return !!(
+    data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt ||
+    data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt
+  );
+}
+
+/**
+ * Does this review-text file have any valid score path? Mirrors
+ * rebuild-helpers.js:getBestScore priority list (human → adjudicated →
+ * originalScore → llmScore → assignedScore → aggregatorStars).
+ * Moved verbatim from the deleted review-text mirror (Sprint 1 unification) — the
+ * SCORED axis's score-presence half. originalScore must be a value rebuild can
+ * actually use (a stored normalized number, or a raw string the parser accepts):
+ * a truthy-but-unparseable string ("N/A") is NOT a score.
+ *
+ * @param {object} data - review-text JSON
+ * @returns {boolean}
+ */
+function hasValidScore(data) {
+  if (!data) return false;
+  const { parseOriginalScore } = require('./score-parsers');
+  const hasHuman = data.humanReviewScore >= 1 && data.humanReviewScore <= 100;
+  const hasAdj = data.adjudicatedScore >= 1 && data.adjudicatedScore <= 100;
+  const normOk = typeof data.originalScoreNormalized === 'number'
+    && data.originalScoreNormalized >= 1 && data.originalScoreNormalized <= 100;
+  const hasOrig = !data.originalScoreCleared && !!data.originalScore
+    && (normOk || parseOriginalScore(String(data.originalScore)) != null);
+  const hasLlm = data.llmScore && data.llmScore.score >= 1 && data.llmScore.score <= 100;
+  const hasAssigned = data.assignedScore >= 1 && data.assignedScore <= 100;
+  const hasAggStars = !!data.aggregatorStars;
+  return !!(hasHuman || hasAdj || hasOrig || hasLlm || hasAssigned || hasAggStars);
+}
+
+/**
+ * RETRIEVED axis — true when we physically hold this outlet's real review of
+ * this show: usable content (fullText / aggregator excerpt), OR an explicit
+ * score (scored ⇒ retrieved — preserves the Proof-2026-04-17 carve-out), OR a
+ * human manual-clear — AND the file is not a rejected non-review.
+ *
+ * Narrower than isIncludableForRebuild ON PURPOSE: a file excluded from the
+ * SCORE by a rebuild context guard (cross-market, date, syndication dedup) but
+ * carrying real text IS retrieved and must keep suppressing rediscovery. Do NOT
+ * "unify" this by delegating to isIncludableForRebuild (plan Changes from
+ * Critique) — its context exclusions would wrongly reopen discovery on files we
+ * already hold, blowing past the ≤30-cell SERP gate.
+ *
+ * Pure — no I/O.
+ * @param {object} data - review-text JSON
+ * @returns {boolean}
+ */
+function isRetrieved(data) {
+  if (!data) return false;
+  if (isRejectedNonReview(data)) return false;
+  const hasText = !!(data.fullText && data.fullText.trim());
+  return hasText || hasAggregatorExcerpt(data) || hasValidScore(data) || wrongShowCleared(data);
+}
+
+/**
+ * Does this file block URL / outlet rediscovery? Identical to isRetrieved: if we
+ * already hold the outlet's review (content, score, or manual-clear) we must not
+ * re-spend SERP budget re-finding it. `show` is accepted for call-site symmetry
+ * with the other guards but unused (the decision is per-file). Scoping the
+ * unblocking to in-window T1/T2 is the CALLER's job (opening-night-poller), not
+ * this predicate's.
+ *
+ * @param {object} data - review-text JSON
+ * @param {object} [show] - unused; accepted for signature symmetry
+ * @returns {boolean}
+ */
+function blocksRediscovery(data, show) { // eslint-disable-line no-unused-vars
+  return isRetrieved(data);
+}
+
 module.exports = {
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
@@ -3043,6 +3207,13 @@ module.exports = {
   recordSerpAttempt,
   pickRerouteTarget,
   isIncludableForRebuild,
+  isRejectedNonReview,
+  isRetrieved,
+  blocksRediscovery,
+  hasValidScore,
+  hasAggregatorExcerpt,
+  NON_REVIEW_REJECTION_REASONS,
+  NON_REVIEW_CV_ARTICLE_TYPES,
   isVerifiedDiscoverySource,
   shouldRouteUnknownCriticToPending,
   hasHighConfidenceLlmScore,

@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "the-lost-boys-2026",
   "showTitle": "The Lost Boys",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:45:48.973Z",
+  "fetchedAt": "2026-07-22T01:05:53.442Z",
   "tier": "Rising",
-  "volume": 180,
-  "positivePct": 77,
-  "weekOverWeekPct": -4,
-  "baselineMultiple": 1,
+  "volume": 41,
+  "effectiveVolume": 11.6,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.8571428571428571,
+      "bluesky": 0.8888888888888888
+    },
+    "overall": 0.875
+  },
+  "positivePct": 80,
+  "opinionSample": 5,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 145,
-    "tiktok": 17,
-    "instagram": 9,
-    "reddit": 9
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 6,
+    "bluesky": 8
   },
   "topQuotes": [
-    {
-      "text": "The Lost Boys cast rehearsing for flying during their early process of the show last fall! 💜 (🎥: @masonolshavsky)…",
-      "platform": "instagram",
-      "author": "@deathbylostboys",
-      "url": "https://www.instagram.com/p/Da_DY09CdHD/"
-    },
     {
       "text": "Ensemble Singing in The Lost Boys Just saw The Lost Boys, and along with a number of positive things that have been…",
       "platform": "reddit",
       "author": "u/CurbyCupcake",
       "url": "https://www.reddit.com/r/Broadway/comments/1uyi6zo/ensemble_singing_in_the_lost_boys/"
+    },
+    {
+      "text": "Will be listening to Shoshana Bean singing Wild for the rest of the year",
+      "platform": "bluesky",
+      "author": "@dylanlyons.bsky.social",
+      "url": "https://bsky.app/profile/dylanlyons.bsky.social/post/3mqrg5jylmk2j"
     }
   ],
-  "xTrueVolume": 19,
-  "baseline": {
-    "mean": 179.28042340581305,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 7,
+    "bluesky": 10,
+    "x": 24,
+    "wikipedia": 4433
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "The Lost Boys (musical)",
+  "baseline": {
+    "mean": 41,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 10,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 7,
+    "bluesky": 10
   },
   "errors": [],
   "rank": {
-    "position": 14,
-    "total": 35,
-    "text": "14/35 Broadway"
+    "position": 9,
+    "total": 30,
+    "text": "9/30 Broadway"
   },
-  "compositeScore": 138.6
+  "compositeScore": 9.28
 }

@@ -1,0 +1,80 @@
+{
+  "runDate": "2026-07-22T02:07:20.208Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "madama-butterfly-off-broadway-2024,la-boheme-off-broadway-2024",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 2,
+    "failed": 3,
+    "skipped": 0,
+    "successRate": "40.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 1,
+    "archive": 1
+  },
+  "statistics": {
+    "tier1Attempts": 3,
+    "tier1Success": 2,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 1.1,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "madama-butterfly-off-broadway-2024/nytimes--unknown.json",
+    "madama-butterfly-off-broadway-2024/front-row-center--edward-kliszus.json"
+  ],
+  "failed": [
+    "la-boheme-off-broadway-2024/observer--unknown.json",
+    "la-boheme-off-broadway-2024/broadwayworld--steve-callahan.json",
+    "la-boheme-off-broadway-2024/thestage--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "madama-butterfly-off-broadway-2024/front-row-center--edward-kliszus.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/la-boheme-off-broadway-2024/thestage--unknown.json"
+    ],
+    "archive": [
+      "madama-butterfly-off-broadway-2024/nytimes--unknown.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}

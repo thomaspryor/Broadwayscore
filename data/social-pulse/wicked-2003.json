@@ -1,51 +1,68 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "wicked-2003",
   "showTitle": "Wicked",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:53:17.941Z",
+  "fetchedAt": "2026-07-22T01:09:52.975Z",
   "tier": "Steady",
-  "volume": 170,
-  "positivePct": 72,
-  "weekOverWeekPct": 4,
-  "baselineMultiple": 1,
+  "volume": 341,
+  "effectiveVolume": 119.4,
+  "relevanceRates": {
+    "byPlatform": {
+      "bluesky": 0.875
+    },
+    "overall": 0.875
+  },
+  "positivePct": 50,
+  "opinionSample": 2,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 135,
-    "tiktok": 20,
-    "instagram": 15,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 0,
+    "bluesky": 14
   },
   "topQuotes": [
     {
-      "text": "Vamos a desafiar la gravedad 💚🧙‍♀️ #dragqueen #dragshow #elphaba #wicked #babydrag",
-      "platform": "instagram",
-      "author": "@_hanna_luxe",
-      "url": "https://www.instagram.com/p/DbADjWwDR01/"
+      "text": "Saw Wicked and Lost Boys on Broadway, so that's a huge bucket list item crossed off. Wish I could see all the shows.",
+      "platform": "bluesky",
+      "author": "@trinaburke.bsky.social",
+      "url": "https://bsky.app/profile/trinaburke.bsky.social/post/3mqrs2sxfqs2r"
     },
     {
-      "text": "Megan Thee Stallion and actress Lencia Kebede (First Black actress to play Elphaba full time in Wicked on Broadway)❤️…",
-      "platform": "x",
-      "author": "@Standing4Megan",
-      "url": "https://x.com/Standing4Megan/status/2064837832561107366"
+      "text": "I just don't really Get it, y'know? The Amount of backlash. We've had so many different stories that have been…",
+      "platform": "bluesky",
+      "author": "@snorlaxationkh.bsky.social",
+      "url": "https://bsky.app/profile/snorlaxationkh.bsky.social/post/3mqw2fswgok2x"
     }
   ],
-  "xTrueVolume": 340,
-  "baseline": {
-    "mean": 170.40389057889115,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": null,
+    "bluesky": 19,
+    "x": 322,
+    "wikipedia": 8831
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Wicked (musical)",
+  "baseline": {
+    "mean": 341,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
     "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "bluesky": 19
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "reddit",
+      "error": "all providers down (see log)"
+    }
+  ],
   "rank": {
-    "position": 22,
-    "total": 35,
-    "text": "22/35 Broadway"
+    "position": 2,
+    "total": 30,
+    "text": "2/30 Broadway"
   },
-  "compositeScore": 122.4
+  "compositeScore": 59.7
 }

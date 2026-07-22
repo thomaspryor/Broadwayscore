@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "aladdin-2014",
   "showTitle": "Aladdin",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:04:58.341Z",
+  "fetchedAt": "2026-07-22T00:48:20.509Z",
   "tier": "Steady",
-  "volume": 149,
-  "positivePct": 72,
-  "weekOverWeekPct": -3,
-  "baselineMultiple": 0.95,
+  "volume": 23,
+  "effectiveVolume": 3.3,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.6666666666666666,
+      "bluesky": 0.25
+    },
+    "overall": 0.42857142857142855
+  },
+  "positivePct": 100,
+  "opinionSample": 2,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 130,
-    "tiktok": 16,
-    "instagram": 3,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 2,
+    "bluesky": 1
   },
   "topQuotes": [
     {
-      "text": "It was a big weekend in the big apple🍎 Friday's win kicked off with the cast of Aladdin on Broadway and an appearance…",
-      "platform": "x",
-      "author": "@TheSavBananas",
-      "url": "https://x.com/TheSavBananas/status/2048734386066018331"
+      "text": "I performed a concert with an actual Disney Princess tonight! This is Lea Salonga who was the singing voice of both…",
+      "platform": "bluesky",
+      "author": "@quitestudios.com",
+      "url": "https://bsky.app/profile/quitestudios.com/post/3mqsn2evd622i"
     },
     {
-      "text": "So magical but how #nyc #aladdin #broadway #newamsterdam #newyork",
-      "platform": "tiktok",
-      "author": "@christinavanw",
-      "url": "https://www.tiktok.com/@christinavanw/video/7583463435103505695"
+      "text": "M 26 NYC Who wants to meet and go watch Aladdin at 2pm today at broadway Hey guys heard it here first I have two…",
+      "platform": "reddit",
+      "author": "u/Ok-Mobile-7462",
+      "url": "https://www.reddit.com/r/MakeNewFriendsHere/comments/1ux8a3k/m_26_nyc_who_wants_to_meet_and_go_watch_aladdin/"
     }
   ],
-  "xTrueVolume": 19,
-  "baseline": {
-    "mean": 156.07895425382594,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 3,
+    "bluesky": 4,
+    "x": 16,
+    "wikipedia": 1098
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Aladdin (2011 musical)",
+  "baseline": {
+    "mean": 23,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 3,
+    "bluesky": 4
   },
   "errors": [],
   "rank": {
-    "position": 25,
-    "total": 35,
-    "text": "25/35 Broadway"
+    "position": 17,
+    "total": 30,
+    "text": "17/30 Broadway"
   },
-  "compositeScore": 107.28
+  "compositeScore": 3.3
 }

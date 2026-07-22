@@ -59,7 +59,7 @@ const SCORE_SIGNALS = [
   'dtliThumb', 'bwwThumb',
 ];
 // Mirror the excerpt fields treated as scoreable signal elsewhere in the repo
-// (review-text-scoreable.js, content-quality.js). Missing any of these makes the
+// (review-guards.js hasAggregatorExcerpt, content-quality.js). Missing any of these makes the
 // triage mislabel a real aggregator excerpt-stub as contentless. (2026-06-21:
 // showScoreExcerpt/stagedoorExcerpt/lboRoundupExcerpt were missing and caused a
 // real scored review to be deleted — see ship-check.)

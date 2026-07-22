@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "maybe-happy-ending-2024",
   "showTitle": "Maybe Happy Ending",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:26:22.850Z",
-  "tier": "Buzzing",
-  "volume": 190,
-  "positivePct": 79,
-  "weekOverWeekPct": 4,
-  "baselineMultiple": 1.03,
+  "fetchedAt": "2026-07-22T00:58:24.523Z",
+  "tier": "Steady",
+  "volume": 24,
+  "effectiveVolume": 4.3,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.6153846153846154,
+      "bluesky": 0.3333333333333333
+    },
+    "overall": 0.5625
+  },
+  "positivePct": 50,
+  "opinionSample": 4,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 149,
-    "tiktok": 20,
-    "instagram": 12,
-    "reddit": 9
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 8,
+    "bluesky": 1
   },
   "topQuotes": [
     {
-      "text": "700 gasps at *that* moment 👀 ㅤ We've officially hit 700 performances at the Belasco Theatre! Thank you for keeping…",
-      "platform": "instagram",
-      "author": "@maybehappyending",
-      "url": "https://www.instagram.com/p/Da77fEgkzU2/"
+      "text": "Will I like Schmigadoon? (Or other suggestions?) I'm visiting NYC next week, and I'm trying to figure out if I should…",
+      "platform": "reddit",
+      "author": "u/DataWonderer",
+      "url": "https://www.reddit.com/r/Broadway/comments/1v0dl9t/will_i_like_schmigadoon_or_other_suggestions/"
     },
     {
-      "text": "no like yall don’t understand. hudson williams seeing a broadway show that celebrated as a milestone for AAPI…",
-      "platform": "x",
-      "author": "@jyndjarin",
-      "url": "https://x.com/jyndjarin/status/2021791500623855843"
+      "text": "I'd recommend Maybe Happy Ending or Just In Time. MHE = really cool staging, the current female lead was the original…",
+      "platform": "bluesky",
+      "author": "@wardamnmegs.bsky.social",
+      "url": "https://bsky.app/profile/wardamnmegs.bsky.social/post/3mquhkobto22r"
     }
   ],
-  "xTrueVolume": 4,
-  "baseline": {
-    "mean": 185.1617954868707,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 13,
+    "bluesky": 3,
+    "x": 8,
+    "wikipedia": 3803
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Maybe Happy Ending",
+  "baseline": {
+    "mean": 24,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 15,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 13,
+    "bluesky": 3
   },
   "errors": [],
   "rank": {
-    "position": 8,
-    "total": 35,
-    "text": "8/35 Broadway"
+    "position": 19,
+    "total": 30,
+    "text": "19/30 Broadway"
   },
-  "compositeScore": 150.1
+  "compositeScore": 2.15
 }

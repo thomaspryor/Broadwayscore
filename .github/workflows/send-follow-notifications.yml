@@ -4,6 +4,18 @@ on:
     - cron: '0 14 * * 1'  # Monday 2 PM UTC (morning US)
   workflow_dispatch: {}
 
+# Serialize schedule + manual-dispatch runs against data/audit/follow-send-
+# checkpoint.json. This checkpoint is the double-send guard for user email
+# notifications — push-with-retry.sh's generic conflict rule for data/audit/*
+# is "keep local," so a losing run's checkpoint update (which may already
+# reflect a notification just sent) can be overwritten by a run that started
+# from a stale base, silently reverting the "already sent" record and risking
+# a duplicate email next run. Same class as the update-cast-changes.yml
+# incident (Notion 3a5637c5-416f-812a). Queued, not cancelled.
+concurrency:
+  group: send-follow-notifications
+  cancel-in-progress: false
+
 jobs:
   notify:
     runs-on: ubuntu-latest

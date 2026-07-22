@@ -36,6 +36,22 @@ on:
         default: 'false'
         type: boolean
 
+# Per-run (not static) group: update-show-status.yml dispatches this workflow
+# once per newly-opened show in a tight loop with no delay, so a multi-show
+# opening night can fire several back-to-back dispatches. A static group would
+# queue them, but GitHub only holds ONE pending run per group — a 3rd dispatch
+# while one run is active and one is queued silently cancels the queued run's
+# social post (see the Cats 2026-04-07 poller postmortem; same fix applied to
+# update-mezzanine.yml/update-show-score.yml/update-reddit-sentiment.yml). This
+# group is unique per run by construction, so it does NOT serialize concurrent
+# runs against each other — concurrent pushes to data/social-post-history.json
+# are expected and handled by a real merge (mergeSocialPostHistory, wired into
+# push-with-retry.sh's resolve_conflicts()) instead, the same pattern used for
+# diary-shows.json's multi-writer race.
+concurrency:
+  group: social-post-${{ github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   post:
     runs-on: ubuntu-latest

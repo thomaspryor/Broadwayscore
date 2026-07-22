@@ -56,6 +56,7 @@ const { sendAlert } = require('./lib/discord-notify');
 // inclusion logic (Codex 2026-04-27 P0: bespoke predicate would silently miss
 // stale-cleared wrongShow files, fullTextWrongAuthor + excerpt cases, etc).
 const { isIncludableForRebuild } = require('./lib/review-guards');
+const { dispatchRescore: dispatchRescoreShared } = require('./lib/dispatch-rescore');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const DATA_DIR = path.join(REPO_ROOT, 'data');
@@ -264,44 +265,11 @@ function gcStaleMarkers(seenShowIds) {
 }
 
 async function dispatchRescore(showId) {
-  const token = process.env.GITHUB_TOKEN || process.env.REVIEW_TEXTS_TOKEN;
-  if (!token) {
+  const result = await dispatchRescoreShared(showId, { reason: 'verify-all-scored' });
+  if (result.error === 'no-token') {
     console.warn('[verify-all-scored] No GITHUB_TOKEN/REVIEW_TEXTS_TOKEN — skipping rescore dispatch');
-    return { ok: false, error: 'no-token' };
   }
-  const body = {
-    ref: 'main',
-    inputs: {
-      show_id: showId,
-      fast_rebuild: 'true',
-      run_calibration: 'false',
-      run_validation: 'false',
-      // Per-show concurrency lane (matches /ingest pattern). Without a
-      // per-show suffix every dispatch queues into the same default group.
-      rescore_reason: `verify-all-scored-${showId}`,
-    },
-  };
-  try {
-    const url = `https://api.github.com/repos/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions/workflows/llm-ensemble-score.yml/dispatches`;
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/vnd.github+json',
-        Authorization: `Bearer ${token}`,
-        'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'broadwayscorecard-verify-all-scored',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-    if (!res.ok) {
-      const text = await res.text();
-      return { ok: false, error: `${res.status} ${text}` };
-    }
-    return { ok: true };
-  } catch (err) {
-    return { ok: false, error: err && err.message ? err.message : String(err) };
-  }
+  return result;
 }
 
 // ─── Audit a single show ─────────────────────────────────────────────────────

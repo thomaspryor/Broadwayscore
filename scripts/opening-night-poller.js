@@ -405,13 +405,41 @@ function preWipePreOpeningFiles(showId, openingDate) {
   return marked;
 }
 
+// S1-T5: discovery-unblock window. A file only stops suppressing rediscovery
+// via the canonical isRejectedNonReview path when its show is within ±45d of
+// previews/opening AND the outlet is T1/T2 — this bounds the SERP-volume blast
+// radius (dry-run measured 1 newly-unblocked cell corpus-wide). Outside the
+// window / for T3+ outlets, the historical skip conditions apply unchanged.
+const DISCOVERY_UNBLOCK_WINDOW_DAYS = 45;
+function isInDiscoveryUnblockWindow(show, nowMs = Date.now()) {
+  if (!show) return false;
+  const anchor = show.previewsStartDate || show.openingDate;
+  if (!anchor) return true; // dateless active show — poller only runs on live shows
+  const ms = new Date(anchor).getTime();
+  if (isNaN(ms)) return true;
+  return Math.abs(nowMs - ms) <= DISCOVERY_UNBLOCK_WINDOW_DAYS * 86400000;
+}
+
 /**
- * Get all known URLs for a show (from existing review-text files on disk)
+ * Get all known URLs for a show (from existing review-text files on disk).
+ * @param {string} showId
+ * @param {{show?: object, market?: string}} [ctx] - when provided, in-window
+ *   T1/T2 rejected-non-review files (interview/feature/preview/news, garbage,
+ *   invalid tier) also stop blocking rediscovery (S1-T5). Omit for the historical
+ *   behavior (used by non-poller callers).
  */
-function getKnownUrls(showId) {
+function getKnownUrls(showId, ctx) {
   const urls = new Set();
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) return urls;
+
+  const scoped = !!(ctx && ctx.show && isInDiscoveryUnblockWindow(ctx.show));
+  let isRejectedNonReview, getTier, showCategory;
+  if (scoped) {
+    ({ isRejectedNonReview } = require('./lib/review-guards'));
+    ({ getTier } = require('./lib/outlet-tiers'));
+    showCategory = isLondonMarket(ctx.market) ? 'west-end' : 'broadway';
+  }
 
   for (const file of fs.readdirSync(showDir)) {
     if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
@@ -427,6 +455,13 @@ function getKnownUrls(showId) {
       // Skip confirmed non-reviews — interviews/news/previews should not block the real review URL
       if ((data.wrongProduction || data.wrongShow) && !isScored) continue;
       if (data.isPreviewPlaceholder || data.rejectionReason === 'not_a_review') continue;
+      // S1-T5: in-window T1/T2 — a rejected NON-review occupying the outlet slot
+      // must not block the real review's URL. Guarded by !isScored so the
+      // scored-wrongProd-FP carve-out above is preserved (isRejectedNonReview
+      // also excludes wrongProduction/wrongShow by construction).
+      if (scoped && !isScored && data.outletId
+          && getTier(data.outletId.toLowerCase(), { showCategory }) <= 2
+          && isRejectedNonReview(data)) continue;
       if (data.url) urls.add(data.url);
       if (data.reviewUrl) urls.add(data.reviewUrl);
     } catch {}
@@ -435,12 +470,22 @@ function getKnownUrls(showId) {
 }
 
 /**
- * Get found outlet IDs for a show (from existing review-text files)
+ * Get found outlet IDs for a show (from existing review-text files).
+ * @param {string} showId
+ * @param {{show?: object, market?: string}} [ctx] - see getKnownUrls (S1-T5).
  */
-function getFoundOutletIds(showId) {
+function getFoundOutletIds(showId, ctx) {
   const outletIds = new Set();
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) return outletIds;
+
+  const scoped = !!(ctx && ctx.show && isInDiscoveryUnblockWindow(ctx.show));
+  let isRejectedNonReview, getTier, showCategory;
+  if (scoped) {
+    ({ isRejectedNonReview } = require('./lib/review-guards'));
+    ({ getTier } = require('./lib/outlet-tiers'));
+    showCategory = isLondonMarket(ctx.market) ? 'west-end' : 'broadway';
+  }
 
   for (const file of fs.readdirSync(showDir)) {
     if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
@@ -449,6 +494,15 @@ function getFoundOutletIds(showId) {
       // Skip wrongProduction/wrongShow files — they shouldn't block re-discovery
       // Skip confirmed non-reviews (interviews, news, previews) — same reason
       if (data.wrongProduction || data.wrongShow || data.rejectionReason === 'not_a_review') continue;
+      // S1-T5: in-window T1/T2 — reopen discovery for a rejected non-review
+      // (garbage / invalid tier / CV interview-feature-preview-news) so its
+      // outlet slot doesn't read as "found". !isScored preserves the scored-
+      // wrongProd carve-out (isRejectedNonReview excludes wrongProduction).
+      if (scoped && data.outletId) {
+        const isScored = (data.llmScore && data.llmScore.score != null) || data.humanReviewScore != null;
+        if (!isScored && getTier(data.outletId.toLowerCase(), { showCategory }) <= 2
+            && isRejectedNonReview(data)) continue;
+      }
       if (data.outletId) outletIds.add(data.outletId.toLowerCase());
     } catch {}
   }
@@ -463,10 +517,10 @@ function getFoundOutletIds(showId) {
  * would treat NYT as T1 for West End shows even though it's effectively T2
  * cross-coverage.
  */
-function getMissingT1T2Outlets(showId, market) {
+function getMissingT1T2Outlets(showId, market, show) {
   const registry = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
   const outlets = registry.outlets || registry;
-  const foundIds = getFoundOutletIds(showId);
+  const foundIds = getFoundOutletIds(showId, { show, market });
 
   const { getTier } = require('./lib/outlet-tiers');
   // Map market to showCategory for tier lookup
@@ -1428,7 +1482,7 @@ async function pollCycle() {
   }
 
   // Pre-poll state
-  const knownUrls = getKnownUrls(SHOW_ID);
+  const knownUrls = getKnownUrls(SHOW_ID, { show, market });
   const preStatus = checkReadiness(SHOW_ID, market);
   console.log(`\nPre-poll: ${preStatus.total} scored reviews (T1:${preStatus.t1} T2:${preStatus.t2} hi-conf:${preStatus.highConfidence})`);
   if (preStatus.ready) {
@@ -1470,7 +1524,7 @@ async function pollCycle() {
   // Prevents burning SB credits on outlets aggregators/RSS already found.
   let jsSiteSearchResults = [];
   if (!SKIP_SITE_SEARCH) {
-    const foundAfterParallel = getFoundOutletIds(SHOW_ID);
+    const foundAfterParallel = getFoundOutletIds(SHOW_ID, { show, market });
     for (const r of [...aggResults, ...rssResults, ...ssrSiteSearchResults]) {
       if (r.outletId) foundAfterParallel.add(r.outletId.toLowerCase());
     }
@@ -1553,12 +1607,12 @@ async function pollCycle() {
 
   let serpResults = [];
   if ((!SKIP_SERP && shouldRunSerp()) || serpBurstActive) {
-    const foundOutletIds = getFoundOutletIds(SHOW_ID);
+    const foundOutletIds = getFoundOutletIds(SHOW_ID, { show, market });
     for (const r of [...aggResults, ...rssResults, ...siteSearchResults]) {
       if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
     }
     // Sort T1 before T2 so the 30-call SERP budget goes to highest-value outlets first
-    let missingOutlets = getMissingT1T2Outlets(SHOW_ID, market)
+    let missingOutlets = getMissingT1T2Outlets(SHOW_ID, market, show)
       .filter(o => !foundOutletIds.has(o.id.toLowerCase()))
       .sort((a, b) => (a.tier || 3) - (b.tier || 3));
     // For WE shows on day 1+: also search notable T3 WE outlets
@@ -1848,4 +1902,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds, preWipePreOpeningFiles, pollMode, shouldRunSerpForMode, isBrightDataAllowedForShow, SERP_BUDGET, runSERPBackup, loadSerpBurstLedger, incrementSerpBurstLedger, SERP_BURST_LEDGER_PATH, loadSerpSessionLedger, incrementSerpSessionLedger, SERP_SESSION_LEDGER_PATH };
+module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getKnownUrls, getFoundOutletIds, isInDiscoveryUnblockWindow, getThresholds, preWipePreOpeningFiles, pollMode, shouldRunSerpForMode, isBrightDataAllowedForShow, SERP_BUDGET, runSERPBackup, loadSerpBurstLedger, incrementSerpBurstLedger, SERP_BURST_LEDGER_PATH, loadSerpSessionLedger, incrementSerpSessionLedger, SERP_SESSION_LEDGER_PATH };

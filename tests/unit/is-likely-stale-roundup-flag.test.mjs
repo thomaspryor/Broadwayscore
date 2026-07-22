@@ -15,9 +15,8 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { isLikelyStaleRoundupFlag } = require('../../scripts/lib/review-guards.js');
+const { isLikelyStaleRoundupFlag, isIncludableForRebuild } = require('../../scripts/lib/review-guards.js');
 const { isScoreable } = require('../../scripts/lib/is-scoreable.js');
-const { passesFlagFilters } = require('../../scripts/lib/review-text-scoreable.js');
 
 const longReviewText = 'A real critic review with substance. '.repeat(40); // ~1480 chars
 
@@ -162,7 +161,7 @@ describe('isScoreable — stale roundup flag override', () => {
   });
 });
 
-describe('passesFlagFilters — stale roundup flag override', () => {
+describe('isIncludableForRebuild — stale roundup flag override', () => {
   test('JP Stuart King regression — file passes flag filters', () => {
     const data = {
       isRoundupArticle: true,
@@ -171,10 +170,10 @@ describe('passesFlagFilters — stale roundup flag override', () => {
       url: 'https://www.londonboxoffice.co.uk/news/post/royal-court-john-proctor-review',
       contentTier: 'complete',
     };
-    assert.strictEqual(passesFlagFilters(data), true);
+    assert.strictEqual(isIncludableForRebuild(data), true);
   });
 
-  test('genuine roundup page still excluded by passesFlagFilters', () => {
+  test('genuine roundup page still excluded by isIncludableForRebuild', () => {
     const data = {
       isRoundupArticle: true,
       fullText: longReviewText,
@@ -182,6 +181,6 @@ describe('passesFlagFilters — stale roundup flag override', () => {
       url: 'https://westendtheatre.com/some-show/reviews/',
       contentTier: 'complete',
     };
-    assert.strictEqual(passesFlagFilters(data), false);
+    assert.strictEqual(isIncludableForRebuild(data), false);
   });
 });

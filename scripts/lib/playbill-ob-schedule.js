@@ -102,6 +102,19 @@ function extractVenue(plain) {
  * Splitting on <strong>...<a>TITLE</a>...</strong> chunks the document.
  */
 function parsePlaybillOBSchedule(html) {
+  // Distinguish a genuine soft-404 (page removed, HTTP 200 per fetchPage —
+  // see memory/feedback_aggregator_soft_404.md) from a real selector/layout
+  // change, so a future break here doesn't need the same re-investigation
+  // this class of bug took on lortel.org/currently-playing/ (2026-07-22,
+  // see scripts/enrich-off-broadway-dates.js parseLortelCurrentlyPlaying).
+  if (html) {
+    const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+    const pageTitle = titleMatch ? titleMatch[1].trim() : null;
+    if (pageTitle && /page not found/i.test(pageTitle)) {
+      console.warn(`  WARNING: Playbill OB schedule page soft-404s ("${pageTitle}") — the page has been removed or moved, not a layout change.`);
+      return [];
+    }
+  }
   if (!validatePageTitle(html, 'Off-Broadway')) {
     console.warn('  WARNING: Playbill OB schedule page title did not match — refusing to parse');
     return [];

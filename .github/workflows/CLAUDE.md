@@ -327,11 +327,12 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Rate limiting:** 1.5s between IBDB requests, 30-minute timeout
 
 ## `process-review-formspree.yml`
-- **Runs:** Daily at 6 AM UTC (1 AM EST), or manually
+- **Runs:** Weekly on Mondays at 6 AM UTC (1 AM EST) — safety net now that `/api/submit-review` creates+dispatches instantly on submit — or manually
 - **Does:** Polls Formspree review submission form, creates GitHub Issues for each new submission in the format `process-review-submission.yml` expects. Tracks processed IDs to prevent duplicates.
 - **User-facing page:** `/submit-review` (Formspree form)
 - **Script:** `scripts/process-review-formspree.js`
 - **Tracking:** `data/audit/processed-review-submissions.json`
+- **Concurrency:** `process-review-formspree` group (queued, not cancelled) — added 2026-07-22 (Notion 3a5637c5-416f-812a) so an overlapping schedule/manual run can't both process the same submission and create a duplicate issue before either's tracking write lands.
 - **Requires:** `FORMSPREE_TOKEN`, `GITHUB_TOKEN`
 - **Flow:** Formspree form → this workflow creates Issue → `process-review-submission.yml` auto-triggers
 
@@ -366,11 +367,12 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Note:** Session token may expire. To refresh, intercept Mezzanine iOS app traffic via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.
 
 ## `update-lottery-rush.yml`
-- **Runs:** Weekly (Mondays 10 AM UTC / 5 AM EST), or manually
+- **Runs:** Twice-weekly (Mondays + Thursdays 10 AM UTC / 5 AM EST), or manually
 - **Does:** Scrapes BwayRush.com (ScrapingBee with JS rendering → HTML→markdown → regex parsing) and Playbill lottery/rush article (ScrapingBee → Claude Sonnet LLM extraction). Incrementally merges into `data/lottery-rush.json`, syncs tags in `data/shows.json`.
 - **Script:** `scripts/scrape-lottery-rush.js`
 - **Requires:** `SCRAPINGBEE_API_KEY`, `ANTHROPIC_API_KEY`
 - **Optional:** `BRIGHTDATA_TOKEN` (fallback, currently zone not configured)
+- **Concurrency:** `update-lottery-rush` group (queued, not cancelled) — added 2026-07-22 (Notion 3a5637c5-416f-812a) after auditing for the update-cast-changes.yml race class: schedule + workflow_dispatch both read-modify-write `data/lottery-rush.json`/`data/show-schedules.json` via plain `push-with-retry.sh` (generic "accept remote" fallback, no per-file merge), so an overlapping run could silently lose the other's scrape.
 - **Safety features:**
   - Pre-write backup (keeps last 5)
   - Incremental merge (scrapers add/update, never delete)

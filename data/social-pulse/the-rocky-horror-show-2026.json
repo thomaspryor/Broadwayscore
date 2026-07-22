@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "the-rocky-horror-show-2026",
   "showTitle": "The Rocky Horror Show",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:48:59.635Z",
+  "fetchedAt": "2026-07-22T01:07:00.389Z",
   "tier": "Buzzing",
-  "volume": 176,
-  "positivePct": 87,
-  "weekOverWeekPct": 0,
-  "baselineMultiple": 1.07,
+  "volume": 96,
+  "effectiveVolume": 13.2,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.5,
+      "bluesky": 0.8333333333333334
+    },
+    "overall": 0.8
+  },
+  "positivePct": 100,
+  "opinionSample": 4,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 148,
-    "tiktok": 12,
-    "instagram": 14,
-    "reddit": 2
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 1,
+    "bluesky": 15
   },
   "topQuotes": [
     {
-      "text": "Valentina sigue demostrando que el drag también puede conquistar los escenarios más importantes del mundo. 🌈✨ La…",
-      "platform": "instagram",
-      "author": "@aguantamagazine",
-      "url": "https://www.instagram.com/p/Da9wF6Vy5mW/"
+      "text": "Side note: Just saw Rachel Dratch on Broadway in the Rocky Horror Show. 🥰🥰🥰",
+      "platform": "bluesky",
+      "author": "@karimala.bsky.social",
+      "url": "https://bsky.app/profile/karimala.bsky.social/post/3mqyifl5br222"
     },
     {
-      "text": "✨NEW✨ Jonny visiting The Rocky Horror Show on Broadway 😍 As always he looks magnificent!!! 📸: @Anania00 ♥️…",
-      "platform": "x",
-      "author": "@jbaileydaily",
-      "url": "https://x.com/jbaileydaily/status/2055108444105867343"
+      "text": "Omg Valentina in The Rocky Horror Show I didn’t take any show pictures because we live in a society but I had no idea…",
+      "platform": "reddit",
+      "author": "u/saint-of-awe",
+      "url": "https://www.reddit.com/r/rupaulsdragrace/comments/1v08sk8/omg_valentina_in_the_rocky_horror_show/"
     }
   ],
-  "xTrueVolume": 160,
-  "baseline": {
-    "mean": 165.66600106086116,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 2,
+    "bluesky": 18,
+    "x": 76,
+    "wikipedia": 6495
   },
-  "costUsd": 0.10670000000000002,
+  "wikipediaTitle": "The Rocky Horror Show",
+  "baseline": {
+    "mean": 96,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
     "reddit": 2,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "bluesky": 18
   },
   "errors": [],
   "rank": {
-    "position": 6,
-    "total": 35,
-    "text": "6/35 Broadway"
+    "position": 7,
+    "total": 30,
+    "text": "7/30 Broadway"
   },
-  "compositeScore": 153.12
+  "compositeScore": 13.2
 }

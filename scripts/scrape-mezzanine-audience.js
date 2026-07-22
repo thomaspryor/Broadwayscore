@@ -37,13 +37,24 @@ const SESSION_TOKEN = process.env.MEZZANINE_SESSION_TOKEN;
 // Manual overrides: our show ID → Mezzanine show name (for titles that differ)
 const MEZZANINE_OVERRIDES = {
   'summer-2018': 'Summer: The Donna Summer Musical',
-  'cabaret-at-the-kit-kat-club-west-end-2021': 'Cabaret',
+  // "Cabaret" is one of the most-revived musicals in the world (100+ Mezzanine
+  // productions with ratings, from Studio 54 to a high school gym). A bare
+  // override was pulling in stray London one-off productions alongside our
+  // real Playhouse Theatre run (found via /what-else audit of card #313 —
+  // same bug class as the Romeo and Juliet fix below). Venue pin isolates ours.
+  'cabaret-at-the-kit-kat-club-west-end-2021': { name: 'Cabaret', venue: 'Playhouse' },
   'harry-potter-and-the-cursed-child-both-parts-west-end-2021': 'Harry Potter and the Cursed Child',
   'six-the-musical-west-end-2021': 'Six',
   // OB shows where our title appends "the Musical" but Mezzanine uses short title
   'heathers-the-musical-off-broadway-2025': 'Heathers',
-  'little-women-the-musical-off-broadway-2026': 'Little Women',
-  'the-little-mermaid-the-musical-off-broadway-2026': 'The Little Mermaid',
+  // "Little Women" bare override was merging our small off-Broadway revival
+  // with the unrelated 2005 Virginia Theatre Broadway production (30 ratings,
+  // wrong show). Venue pin restricts to our 92NY run — currently 0 Mezzanine
+  // matches for that venue, which is correct (no data beats wrong data).
+  'little-women-the-musical-off-broadway-2026': { name: 'Little Women', venue: '92NY' },
+  // Same bug: bare "The Little Mermaid" was merging in the 2008 Lunt-Fontanne
+  // Broadway production (241 ratings) into our small off-Broadway revival.
+  'the-little-mermaid-the-musical-off-broadway-2026': { name: 'The Little Mermaid', venue: 'Players Theatre' },
   'friends-the-musical-parody-off-broadway-2022': 'Friends! The Musical Parody',
   // Subtitle differences vs Mezzanine's short title
   'beaches-2026': 'Beaches',
@@ -51,8 +62,10 @@ const MEZZANINE_OVERRIDES = {
   'the-tragedy-of-coriolanus-off-broadway-2026': 'Coriolanus',
   // Censored vs uncensored title
   'meat-suit-or-the-stshow-of-motherhood-off-broadway-2026': 'Meat Suit, or the shitshow of motherhood',
-  // We embed venue in title; Mezzanine uses bare title. Override aligns to Mezz.
-  'the-fever-greenwich-house-theater-off-broadway-2026': 'The Fever',
+  // We embed venue in title; Mezzanine uses bare title. A bare override was also
+  // merging in an unrelated "The Fever" (Wallace Shawn's solo play) run at La
+  // Mama. Venue pin restricts to our Greenwich House Theater run.
+  'the-fever-greenwich-house-theater-off-broadway-2026': { name: 'The Fever', venue: 'Greenwich House' },
   // Short title (<8 chars) where Mezzanine has parenthesized disambiguator —
   // prefix-match guard requires shorter≥8 chars; explicit override needed.
   'trash-off-broadway-2026': 'Trash (Comedy, Caverly/Morrill)',
@@ -63,6 +76,20 @@ const MEZZANINE_OVERRIDES = {
   // name-only override would merge all of them. The {name, venue} form pins the
   // match to a single venue so only the City Center Encores run is attached.
   'encores-la-cage-aux-folles-off-broadway-2026': { name: 'La Cage aux Folles', venue: 'City Center' },
+  // We use "+" as a stylized separator; Mezzanine spells out "and". normalizeTitle
+  // only strips "and" from titleTokens (jaccard), not from the exact-match string,
+  // so Strategy 1 never fired even though the coverage audit's jaccard=1 masked it.
+  // "Romeo and Juliet" is one of the most-produced titles in the English language —
+  // a bare override would merge in unrelated NYC productions (2013 Richard Rodgers
+  // revival, 2023 Classic Stage Co., 2026 Shakespeare in the Park, a Columbia
+  // University student show). Venue pin restricts to our Circle in the Square run.
+  'romeo-juliet-2024': { name: 'Romeo and Juliet', venue: 'Circle in the Square' },
+  // Mezzanine's bare "Hot Mess" is a low-confidence prefix match against our
+  // "Hot Mess: A New Musical" (normalizes to "hot mess a new") because the show
+  // has no openingDate yet (only previewsStartDate), so year-verification can't
+  // promote it past 'low' confidence and it gets dropped. Covers both the
+  // Southwark Playhouse Elephant tryout and The Other Palace transfer.
+  'hot-mess-a-new-musical-off-west-end-2026': 'Hot Mess',
 };
 
 // Paths
@@ -373,7 +400,13 @@ function matchProductions(productions, shows) {
       // Strategy 1: Normalized exact match
       // Exact title match is always high confidence — year mismatch is common for
       // long-running shows (WE Phantom 1986 vs our 2021, Mousetrap 1952, etc.)
-      if (confidence === 'none' && mName === normTitle) {
+      // Skip when this show has a venue-pinned override: that pin exists
+      // specifically because bare-title matching is unsafe (a common title
+      // colliding with unrelated productions — e.g. "Little Women" matching
+      // the 2005 Virginia Theatre Broadway run instead of our small revival).
+      // Without this guard Strategy 1 fires unconditionally and bypasses the
+      // pin entirely, since it runs independent of MEZZANINE_OVERRIDES.
+      if (confidence === 'none' && !overrideVenue && mName === normTitle) {
         confidence = 'high';
       }
 

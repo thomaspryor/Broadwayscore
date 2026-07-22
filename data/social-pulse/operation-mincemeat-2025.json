@@ -1,51 +1,62 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "operation-mincemeat-2025",
   "showTitle": "Operation Mincemeat",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:33:00.894Z",
-  "tier": "Rising",
-  "volume": 183,
-  "positivePct": 82,
-  "weekOverWeekPct": 2,
-  "baselineMultiple": 1.02,
+  "fetchedAt": "2026-07-22T01:00:47.190Z",
+  "tier": "Hidden",
+  "volume": 5,
+  "effectiveVolume": 1.3,
+  "relevanceRates": {
+    "byPlatform": {
+      "bluesky": 0.5
+    },
+    "overall": 0.5
+  },
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 148,
-    "tiktok": 20,
-    "instagram": 15,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 0,
+    "bluesky": 1
   },
   "topQuotes": [
     {
-      "text": "i am having far too much fun with these lil doodle guys. presenting the morgue assistant who deserves his cake, juan!!…",
-      "platform": "instagram",
-      "author": "@slozhnos.art",
-      "url": "https://www.instagram.com/p/Da_jPXqPS9C/"
-    },
-    {
-      "text": "'Operation Mincemeat' Review: Broadway Transfer of the Olivier-Winning Musical Has Absurdity, Laughs and Heart…",
-      "platform": "x",
-      "author": "@Variety",
-      "url": "https://x.com/Variety/status/1902903043705757892"
+      "text": "Honestly ‘Operation Mincemeat’ might be the best show on Broadway right now.",
+      "platform": "bluesky",
+      "author": "@rachelrakov.bsky.social",
+      "url": "https://bsky.app/profile/rachelrakov.bsky.social/post/3mqss4vl4ac26"
     }
   ],
-  "xTrueVolume": 4,
-  "baseline": {
-    "mean": 179.88608435099013,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": null,
+    "bluesky": 2,
+    "x": 3,
+    "wikipedia": 5377
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Operation Mincemeat (musical)",
+  "baseline": {
+    "mean": 5,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
     "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "bluesky": 2
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "reddit",
+      "error": "all providers down (see log)"
+    }
+  ],
   "rank": {
-    "position": 9,
-    "total": 35,
-    "text": "9/35 Broadway"
+    "position": 21,
+    "total": 30,
+    "text": "21/30 Broadway"
   },
-  "compositeScore": 150.06
+  "compositeScore": 1.3
 }

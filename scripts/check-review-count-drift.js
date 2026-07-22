@@ -53,8 +53,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { isIncludableForRebuild, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
-const { hasValidScore } = require('./lib/review-text-scoreable');
+const { isIncludableForRebuild, isReviewWithinOwnProductionWindow, hasValidScore } = require('./lib/review-guards');
 const { generateReviewFilename } = require('./lib/review-normalization');
 const { unwrapRedirectUrl } = require('./lib/scraper');
 

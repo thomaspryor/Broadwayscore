@@ -1,51 +1,68 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "hamilton-2015",
   "showTitle": "Hamilton",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:19:42.247Z",
+  "fetchedAt": "2026-07-22T00:55:39.022Z",
   "tier": "Steady",
-  "volume": 149,
-  "positivePct": 61,
-  "weekOverWeekPct": -10,
-  "baselineMultiple": 0.93,
+  "volume": 237,
+  "effectiveVolume": 81.6,
+  "relevanceRates": {
+    "byPlatform": {
+      "bluesky": 0.7307692307692307
+    },
+    "overall": 0.7307692307692307
+  },
+  "positivePct": 40,
+  "opinionSample": 10,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 127,
-    "tiktok": 19,
-    "instagram": 3,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 0,
+    "bluesky": 19
   },
   "topQuotes": [
     {
-      "text": "Shout it to the rooftops! Happy Pride from the Broadway company of Hamilton. ❤️🧡💛💚💙💜 📸: Steven C Boroughs…",
-      "platform": "x",
-      "author": "@HamiltonMusical",
-      "url": "https://x.com/HamiltonMusical/status/2069147950383579250"
+      "text": "Had a couple of amazing days down in London with my daughter this weekend to watch Hamilton staring one of the…",
+      "platform": "bluesky",
+      "author": "@pauliehughes.bsky.social",
+      "url": "https://bsky.app/profile/pauliehughes.bsky.social/post/3mqyznw4fn223"
     },
     {
-      "text": "HOW DO YOU WRITE EVERY SECOND YOURE ALIVE??? #hamiltonmusical #alexanderhamilton #broadway #hamilton #fyp #musical",
-      "platform": "tiktok",
-      "author": "@user156399783",
-      "url": "https://www.tiktok.com/@user156399783/video/7519872211675712775"
+      "text": "Not the Broadway cast but I had suuuuch a good cast I remember being really impressed by my Hamilton and burr. I even…",
+      "platform": "bluesky",
+      "author": "@aforestfield.bsky.social",
+      "url": "https://bsky.app/profile/aforestfield.bsky.social/post/3mqokpwrph22m"
     }
   ],
-  "xTrueVolume": 215,
-  "baseline": {
-    "mean": 158.96151910486333,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": null,
+    "bluesky": 26,
+    "x": 211,
+    "wikipedia": 23351
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Hamilton (musical)",
+  "baseline": {
+    "mean": 237,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
     "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "bluesky": 26
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "reddit",
+      "error": "all providers down (see log)"
+    }
+  ],
   "rank": {
-    "position": 29,
-    "total": 35,
-    "text": "29/35 Broadway"
+    "position": 3,
+    "total": 30,
+    "text": "3/30 Broadway"
   },
-  "compositeScore": 90.89
+  "compositeScore": 32.64
 }

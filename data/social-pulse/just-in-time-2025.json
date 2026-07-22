@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "just-in-time-2025",
   "showTitle": "Just in Time",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:24:39.928Z",
-  "tier": "Steady",
-  "volume": 154,
-  "positivePct": 83,
-  "weekOverWeekPct": -9,
-  "baselineMultiple": 0.91,
+  "fetchedAt": "2026-07-22T00:57:37.590Z",
+  "tier": "Rising",
+  "volume": 32,
+  "effectiveVolume": 8.9,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.8461538461538461,
+      "bluesky": 0.7142857142857143
+    },
+    "overall": 0.8
+  },
+  "positivePct": 78,
+  "opinionSample": 9,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 132,
-    "tiktok": 20,
-    "instagram": 2,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 11,
+    "bluesky": 5
   },
   "topQuotes": [
     {
-      "text": "@olivia_holt YOU DID AMAZING!! #broadway #justintime #fyp #nyc #oliviaholt",
-      "platform": "tiktok",
-      "author": "@sarahdurbinn",
-      "url": "https://www.tiktok.com/@sarahdurbinn/video/7645881413698358558"
+      "text": "I'd recommend Maybe Happy Ending or Just In Time. MHE = really cool staging, the current female lead was the original…",
+      "platform": "bluesky",
+      "author": "@wardamnmegs.bsky.social",
+      "url": "https://bsky.app/profile/wardamnmegs.bsky.social/post/3mquhkobto22r"
     },
     {
-      "text": "Noah Wyle at Isa Briones’s Just In Time Broadway show tonight. He was clapping, cheering, dancing and beaming with…",
-      "platform": "x",
-      "author": "@somuchhappenin_",
-      "url": "https://x.com/somuchhappenin_/status/2054787151079018959"
+      "text": "Jeremy Jordan Performs 'Mack The Knife' From Just in Time",
+      "platform": "reddit",
+      "author": "u/CuteAct9019",
+      "url": "https://www.reddit.com/r/Broadway/comments/1uykdyr/jeremy_jordan_performs_mack_the_knife_from_just/"
     }
   ],
-  "xTrueVolume": 5,
-  "baseline": {
-    "mean": 166.88709335791646,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 13,
+    "bluesky": 7,
+    "x": 12,
+    "wikipedia": 3272
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Just in Time (musical)",
+  "baseline": {
+    "mean": 32,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 13,
+    "bluesky": 7
   },
   "errors": [],
   "rank": {
-    "position": 20,
-    "total": 35,
-    "text": "20/35 Broadway"
+    "position": 11,
+    "total": 30,
+    "text": "11/30 Broadway"
   },
-  "compositeScore": 127.82
+  "compositeScore": 6.94
 }

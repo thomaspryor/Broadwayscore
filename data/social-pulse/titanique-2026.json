@@ -1,51 +1,58 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "titanique-2026",
   "showTitle": "Titanique",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:50:45.639Z",
-  "tier": "Buzzing",
-  "volume": 181,
-  "positivePct": 88,
-  "weekOverWeekPct": -6,
-  "baselineMultiple": 1,
+  "fetchedAt": "2026-07-22T01:07:55.661Z",
+  "tier": "Rising",
+  "volume": 31,
+  "effectiveVolume": 7.2,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.6666666666666666,
+      "bluesky": 0.6666666666666666
+    },
+    "overall": 0.6666666666666666
+  },
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 147,
-    "tiktok": 20,
-    "instagram": 14,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 6,
+    "bluesky": 4
   },
   "topQuotes": [
     {
-      "text": "💙My heart is full!!💙 I loved every minute and haven’t laughed so hard in a long time. If you can see…",
-      "platform": "instagram",
-      "author": "@mantone72",
-      "url": "https://www.instagram.com/p/Da-0H8UDnYZ/"
-    },
-    {
-      "text": "Petition to turn the Tony Award for Juiciest 🍑 into a real thing! TBH, thank you all for the lurve yesterday.…",
-      "platform": "tiktok",
-      "author": "@titaniquemusical",
-      "url": "https://www.tiktok.com/@titaniquemusical/video/7636843898089868558"
+      "text": "My FIrst Time in NYC! Finally able to go to NYC soon for my wife's birthday. I just booked our travel and show…",
+      "platform": "reddit",
+      "author": "u/loafofbread13",
+      "url": "https://www.reddit.com/r/Broadway/comments/1uzygug/my_first_time_in_nyc/"
     }
   ],
-  "xTrueVolume": 21,
-  "baseline": {
-    "mean": 180.26828378706705,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 9,
+    "bluesky": 7,
+    "x": 15,
+    "wikipedia": 5115
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Titanique",
+  "baseline": {
+    "mean": 31,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 9,
+    "bluesky": 7
   },
   "errors": [],
   "rank": {
-    "position": 3,
-    "total": 35,
-    "text": "3/35 Broadway"
+    "position": 10,
+    "total": 30,
+    "text": "10/30 Broadway"
   },
-  "compositeScore": 159.28
+  "compositeScore": 7.2
 }

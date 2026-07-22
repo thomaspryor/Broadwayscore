@@ -5,7 +5,7 @@ import {
   assertMinimumTapTargets,
   assertNoHorizontalOverflow,
 } from './helpers/layout-assertions';
-import { VIEWPORTS, goToMock } from './helpers/mock-helpers';
+import { VIEWPORTS, goToMock, switchToListView } from './helpers/mock-helpers';
 
 /**
  * Functional E2E tests for My Shows page.
@@ -229,6 +229,11 @@ for (const vp of VIEWPORTS) {
 
     test('edit pencil links have correct href pattern', async ({ page }) => {
       await goToMock(page, 'diary');
+      // list-row UI — grid (the diary default) renders edit as a <button> that
+      // pushes the route in its onClick, not an <a href>; only list view has
+      // a real Link for this (2026-07-19 code-review fix split them to avoid
+      // nested anchors in the grid card).
+      await switchToListView(page);
 
       const editLinks = page.getByRole('link', { name: 'Edit rating' });
       const count = await editLinks.count();

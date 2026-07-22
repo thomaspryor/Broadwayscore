@@ -8,7 +8,7 @@
  * helpers here back the gate-side defensive override that lets confirmed-stale
  * files pass through rebuild + isScoreable, and the manual-clear plumbing that
  * was previously asymmetric across the four gate sites
- * (isIncludableForRebuild, isScoreable, passesFlagFilters, llm-scoring/is-scoreable.ts).
+ * (isIncludableForRebuild, isScoreable, llm-scoring/is-scoreable.ts).
  */
 
 import { test, describe } from 'node:test';
@@ -16,9 +16,8 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { isLikelyStaleWrongShow, wrongShowCleared } = require('../../scripts/lib/review-guards.js');
+const { isLikelyStaleWrongShow, wrongShowCleared, isIncludableForRebuild } = require('../../scripts/lib/review-guards.js');
 const { isScoreable } = require('../../scripts/lib/is-scoreable.js');
-const { passesFlagFilters } = require('../../scripts/lib/review-text-scoreable.js');
 
 // Build a 1500+-char fullText with the show title embedded as a phrase.
 function buildText(title) {
@@ -300,7 +299,7 @@ describe('isScoreable — wrongShow manual-clear symmetry', () => {
   });
 });
 
-describe('passesFlagFilters — wrongShow manual-clear symmetry', () => {
+describe('isIncludableForRebuild — wrongShow manual-clear symmetry', () => {
   test('manually-cleared wrongShow file passes (drift-checker no longer over-counts)', () => {
     const data = {
       wrongShow: true,
@@ -309,7 +308,7 @@ describe('passesFlagFilters — wrongShow manual-clear symmetry', () => {
       url: 'https://www.nytimes.com/2026/04/22/theater/giant-review.html',
       contentTier: 'complete',
     };
-    assert.strictEqual(passesFlagFilters(data), true);
+    assert.strictEqual(isIncludableForRebuild(data), true);
   });
 
   test('un-cleared wrongShow + show context + strict signals → passes', () => {
@@ -319,7 +318,7 @@ describe('passesFlagFilters — wrongShow manual-clear symmetry', () => {
       url: 'https://www.telegraph.co.uk/theatre/what-to-see/hadestown-lyric-theatre-review/',
       contentTier: 'complete',
     };
-    assert.strictEqual(passesFlagFilters(data, { id: 'hadestown-west-end-2024', title: 'Hadestown', openingDate: '2024-02-22' }), true);
+    assert.strictEqual(isIncludableForRebuild(data, { id: 'hadestown-west-end-2024', title: 'Hadestown', openingDate: '2024-02-22' }), true);
   });
 
   test('un-cleared wrongShow without show context still excluded (back-compat)', () => {
@@ -329,6 +328,6 @@ describe('passesFlagFilters — wrongShow manual-clear symmetry', () => {
       url: 'https://www.telegraph.co.uk/theatre/what-to-see/hadestown-lyric-theatre-review/',
       contentTier: 'complete',
     };
-    assert.strictEqual(passesFlagFilters(data), false);
+    assert.strictEqual(isIncludableForRebuild(data), false);
   });
 });

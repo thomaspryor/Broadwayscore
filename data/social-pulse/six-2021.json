@@ -1,51 +1,55 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "six-2021",
   "showTitle": "SIX",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:39:38.404Z",
-  "tier": "Steady",
-  "volume": 63,
-  "positivePct": 85,
-  "weekOverWeekPct": -9,
-  "baselineMultiple": 0.79,
-  "platformBreakdown": {
-    "x": 38,
-    "tiktok": 20,
-    "instagram": 5,
-    "reddit": 0
-  },
-  "topQuotes": [
-    {
-      "text": "The videos from my trip in May🫶🏻🥹 1. Recording Noah’s Ponyboy walk, & forgetting how to zoom out apparently 🤣 2.…",
-      "platform": "instagram",
-      "author": "@k3lsie.lyn",
-      "url": "https://www.instagram.com/p/DbAByy3DWJO/"
+  "fetchedAt": "2026-07-22T01:03:09.323Z",
+  "tier": "Troubled",
+  "volume": 96,
+  "effectiveVolume": 12.3,
+  "relevanceRates": {
+    "byPlatform": {
+      "bluesky": 0.23809523809523808
     },
-    {
-      "text": "oh you really can tell this is someone who played #the yearner of all time for six months on broadway jesus fucking…",
-      "platform": "x",
-      "author": "@proudssuga",
-      "url": "https://x.com/proudssuga/status/2074834160833675302"
-    }
-  ],
-  "xTrueVolume": 96,
-  "baseline": {
-    "mean": 77.76069004961755,
-    "weeksOfHistory": 8
+    "overall": 0.23809523809523808
   },
-  "costUsd": 0.1263,
+  "positivePct": 0,
+  "opinionSample": 0,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
+  "platformBreakdown": {
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 0,
+    "bluesky": 5
+  },
+  "topQuotes": [],
+  "counters": {
+    "reddit": null,
+    "bluesky": 21,
+    "x": 75,
+    "wikipedia": 7849
+  },
+  "wikipediaTitle": "Six (musical)",
+  "baseline": {
+    "mean": 96,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
     "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "bluesky": 21
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "reddit",
+      "error": "all providers down (see log)"
+    }
+  ],
   "rank": {
-    "position": 34,
-    "total": 35,
-    "text": "34/35 Broadway"
+    "position": 27,
+    "total": 30,
+    "text": "27/30 Broadway"
   },
-  "compositeScore": 53.55
+  "compositeScore": 0
 }

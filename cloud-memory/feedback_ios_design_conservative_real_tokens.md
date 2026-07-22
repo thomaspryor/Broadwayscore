@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 96f1f818-d58a-4563-b84f-6e1953558609
-  modified: 2026-07-21T02:43:03.678Z
+  modified: 2026-07-22T01:36:18.023Z
 ---
 
 Two escalations, same day (2026-07-20/21):
@@ -24,3 +24,12 @@ Two escalations, same day (2026-07-20/21):
 Authoritative version: BroadwayScorecard-app/CLAUDE.md "Design Proposals (principles)" — 4 principles incl. venue-confirmation with a validation checkpoint (Claude Design preference recorded 2026-07-21, unvalidated until first delivery). This file adds the pipeline gotchas.
 
 **Amendment 2026-07-21 late:** the conservatism rule above applies to UNSOLICITED rework only. When the owner asks "how could this be better," incremental garnish is a FAILURE — owner on the timid option set: "nothing interesting… all minor changes and most of them are bad." Requirement for solicited design rounds: per screen, one faithful-polish option AND at least one genuinely bold, opinionated reimagining (Mezzanine/Letterboxd-grade ambition, still on our tokens/components). Use a top-tier model for design conception; implementation can be cheaper.
+
+**Amendment 2026-07-21 latest (sharpens the one above — read together):** "bold" means LAYOUT / hierarchy / information-architecture, NEVER styling. On the #295 Diary round I shipped serif (Georgia) mastheads + month chapters and a monospace ticket-stub motif; owner rejected on sight: "we are NOT changing our design system. Not the font. Not the coloring. We are making a great NATIVE version of our EXISTING site… clear and usable WITHIN the existing design system." So: no new typefaces (system font only — no serif/mono display), no new colors (only theme.ts tokens: surface/text/brand #d4a574/score-tiers), no skeuomorphism. A bold LAYOUT (grouped diary timeline vs stats+wall vs card feed) rendered in the plain shipped visual language is the target; a "Mezzanine-grade" look that introduces Mezzanine's TYPE/palette is out of bounds. Litmus test before rendering any option: would a screenshot be indistinguishable in font+color from the current app? If not, it's a restyle, not a layout — stop.
+
+**Pipeline gotchas added 2026-07-22 (task #300, parallel design rounds):**
+- Two design sessions can render simultaneously: boot a SECOND simulator (`xcrun simctl boot <other iPhone>`, install the dev-client .app from the booted sim's app container) and run Metro on a different port (`npx expo start --port 8082`, deep link `...url=http%3A%2F%2F127.0.0.1%3A8082`). Port 8081 busy = another session's Metro; never share it.
+- Worktrees need `ln -s ../../../node_modules node_modules`; the app repo's old `node_modules/` gitignore pattern missed the SYMLINK form, so `git add -A` committed it once (fixed on main 926c54c — bare `node_modules` pattern added). 
+- After editing module-level constants (sizing consts, the variant flag), fast refresh can render a stale/hybrid layout (phantom columns). Terminate + relaunch via the dev-client deep link before trusting a capture.
+- RN yoga traps hit twice: flexWrap + percentage-width + aspectRatio over-computes container height (phantom rows), and flex:1 + aspectRatio over-sizes row children. For calendar-like grids compute a fixed cell size in JS from Dimensions and use explicit week rows.
+- LogBox error toasts photobomb captures: `LogBox.ignoreAllLogs(true)` gated behind the design flag.

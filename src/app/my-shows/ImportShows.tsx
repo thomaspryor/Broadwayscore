@@ -99,7 +99,16 @@ interface MatchedEntry {
   sourceMezzShowId?: string;
 }
 
-type LiveResolveState = { status: 'searching' } | { status: 'results'; candidates: MezzanineCandidate[] } | { status: 'empty' } | { status: 'error'; message: string };
+/** A "find it" result is either one of OUR merged-catalog productions
+ *  (same title, e.g. a Met Opera season Mezzanine has no coverage of —
+ *  card 3a5637c5) or a live Mezzanine catalog candidate. Picking a 'catalog'
+ *  entry sets match directly (it's already a real show); picking a
+ *  'mezzanine' entry still creates a user_show_stubs row. */
+type FindItCandidate =
+  | { source: 'catalog'; show: SearchShow }
+  | { source: 'mezzanine'; candidate: MezzanineCandidate };
+
+type LiveResolveState = { status: 'searching' } | { status: 'results'; candidates: FindItCandidate[] } | { status: 'empty' } | { status: 'error'; message: string };
 
 type ImportSourceId = 'mezzanine' | 'show-score';
 type ImportStep = 'closed' | 'source' | 'matching' | 'preview' | 'importing' | 'done';
@@ -172,12 +181,18 @@ export default function ImportShows({
   };
 
   /** Normalize a title for comparison: fancy quotes/dashes → plain, & → and,
-   *  strip punctuation, collapse whitespace. Show Score renders titles with
-   *  curly quotes and ampersands ('CATS: \u201cThe Jellicle Ball\u201d',
-   *  'Guys & Dolls') that broke both the exact-match and containment checks
-   *  against our plain-ASCII catalog titles (owner import, 2026-07-14). */
+   *  accents folded, strip punctuation, collapse whitespace. Show Score
+   *  renders titles with curly quotes and ampersands ('CATS: \u201cThe
+   *  Jellicle Ball\u201d', 'Guys & Dolls') that broke both the exact-match
+   *  and containment checks against our plain-ASCII catalog titles (owner
+   *  import, 2026-07-14). Accents must fold BEFORE the [^a-z0-9]+ strip, or
+   *  'La Boh\u00e8me' becomes 'la boh me' and matches nothing (owner import,
+   *  2026-07-21) — mirrors normalizeQuery in
+   *  supabase/functions/mezzanine-search/classify.mjs, kept in sync manually. */
   const normTitle = (t: string) =>
     t.toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
       .replace(/[\u2018\u2019\u201a\u2032']/g, '')
       .replace(/[\u201c\u201d\u201e\u2033"]/g, '')
       .replace(/&/g, ' and ')
@@ -442,30 +457,76 @@ export default function ImportShows({
     if (!entry) return;
     setLiveResolve(prev => ({ ...prev, [index]: { status: 'searching' } }));
     try {
-      const candidates = entry.sourceMezzShowId
+      await ensureSearchData();
+    } catch (err) {
+      // Without this, a failed catalog fetch stranded the row on "Searching…"
+      // forever — the "Find it" button only re-renders when !liveResolve.
+      setLiveResolve(prev => ({ ...prev, [index]: { status: 'error', message: err instanceof Error ? err.message : MEZZANINE_SEARCH_ERROR_COPY.internal } }));
+      return;
+    }
+    // Our own merged catalog first — covers productions Mezzanine's
+    // user-generated database has no coverage of at all (e.g. the Met Opera
+    // has zero Mezzanine productions, card 3a5637c5) — shown above Mezzanine
+    // results. Excludes the show already assigned as entry.match so a
+    // dateSuspect row doesn't just re-offer its own current match.
+    const nameNorm = normTitle(entry.sourceTitle);
+    const currentMatchId = entry.match?.id;
+    const ownShows = showsRef.current.filter(s => normTitle(s.title) === nameNorm && s.id !== currentMatchId);
+    const ownIds = new Set(ownShows.map(s => s.id));
+    const ownCandidates: FindItCandidate[] = ownShows.map(show => ({ source: 'catalog', show }));
+
+    let mezzCandidates: FindItCandidate[] = [];
+    try {
+      const mezzResults = entry.sourceMezzShowId
         ? await resolveMezzanineShow(entry.sourceMezzShowId)
         : await searchMezzanineCatalog(entry.sourceTitle);
-      setLiveResolve(prev => ({ ...prev, [index]: candidates.length > 0 ? { status: 'results', candidates } : { status: 'empty' } }));
+      mezzCandidates = mezzResults.filter(c => !ownIds.has(c.id)).map(candidate => ({ source: 'mezzanine', candidate }));
     } catch (err) {
-      setLiveResolve(prev => ({ ...prev, [index]: { status: 'error', message: err instanceof Error ? err.message : MEZZANINE_SEARCH_ERROR_COPY.internal } }));
+      // Own-catalog candidates are still usable even if the wider Mezzanine
+      // search failed — only surface the error when we have nothing to show.
+      if (ownCandidates.length === 0) {
+        setLiveResolve(prev => ({ ...prev, [index]: { status: 'error', message: err instanceof Error ? err.message : MEZZANINE_SEARCH_ERROR_COPY.internal } }));
+        return;
+      }
     }
-  }, [entries]);
 
-  const pickCandidateForRow = useCallback((index: number, candidate: MezzanineCandidate) => {
-    supabaseRestInsert('user_show_stubs', stubRowFromCandidate(candidate, userId)).catch(() => {});
+    const candidates = [...ownCandidates, ...mezzCandidates];
+    setLiveResolve(prev => ({ ...prev, [index]: candidates.length > 0 ? { status: 'results', candidates } : { status: 'empty' } }));
+  }, [entries, ensureSearchData]);
+
+  const pickCandidateForRow = useCallback((index: number, candidate: FindItCandidate) => {
+    if (candidate.source === 'catalog') {
+      const show = candidate.show;
+      // Mirror matchAndPreview's alreadyOwned check (line ~304/326) — a
+      // picked catalog show can be one the user already reviewed/watchlisted,
+      // and without this it displays as a fresh importable row.
+      const alreadyOwned = existingReviewShowIds.has(show.id) || existingWatchlistShowIds.has(show.id);
+      setEntries(prev => prev.map((e, i) => i === index ? {
+        ...e,
+        match: show,
+        matchScore: 1,
+        selected: !alreadyOwned,
+        alreadyOwned,
+        dateSuspect: false,
+      } : e));
+      setLiveResolve(prev => { const next = { ...prev }; delete next[index]; return next; });
+      return;
+    }
+    const mezz = candidate.candidate;
+    supabaseRestInsert('user_show_stubs', stubRowFromCandidate(mezz, userId)).catch(() => {});
     setEntries(prev => prev.map((e, i) => i === index ? {
       ...e,
       match: {
-        id: candidate.id, title: candidate.title, slug: candidate.id, status: 'closed', dy: true,
-        category: candidate.category, venue: candidate.venue || undefined,
-        city: candidate.city || undefined, od: candidate.openingDate || undefined,
+        id: mezz.id, title: mezz.title, slug: mezz.id, status: 'closed', dy: true,
+        category: mezz.category, venue: mezz.venue || undefined,
+        city: mezz.city || undefined, od: mezz.openingDate || undefined,
       },
       matchScore: 1,
       selected: true,
       dateSuspect: false,
     } : e));
     setLiveResolve(prev => { const next = { ...prev }; delete next[index]; return next; });
-  }, [userId]);
+  }, [userId, existingReviewShowIds, existingWatchlistShowIds]);
 
   const handleImport = useCallback(async () => {
     setStep('importing');
@@ -838,7 +899,7 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
   /** Only present on rows rendered in the "Not on Broadway Scorecard" list. */
   liveResolve?: LiveResolveState;
   onFindIt?: (index: number) => void;
-  onPickCandidate?: (index: number, candidate: MezzanineCandidate) => void;
+  onPickCandidate?: (index: number, candidate: FindItCandidate) => void;
 }) {
   const noMatch = !entry.match || (entry.matchScore <= 0.7 && !entry.dateSuspect);
   return (
@@ -911,18 +972,28 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
         )}
         {liveResolve?.status === 'results' && (
           <div className="space-y-1 mt-1">
-            {liveResolve.candidates.map(candidate => (
-              <button
-                key={candidate.id}
-                type="button"
-                onClick={() => onPickCandidate?.(index, candidate)}
-                className="block w-full text-left text-xs text-gray-300 hover:text-white hover:bg-white/5 rounded px-1.5 py-1"
-              >
-                {candidate.title}{candidate.venue ? ` — ${candidate.venue}` : ''}{candidate.openingDate ? ` (${candidate.openingDate.slice(0, 4)})` : ''}
-                {(candidate.ratingsCount ?? 0) > 0 && <span className="text-gray-500"> · {candidate.ratingsCount} ratings</span>}
-                {candidate.city && <span className="text-gray-500"> · {candidate.city}</span>}
-              </button>
-            ))}
+            {liveResolve.candidates.map(fic => {
+              const isCatalog = fic.source === 'catalog';
+              const title = isCatalog ? fic.show.title : fic.candidate.title;
+              const venue = isCatalog ? fic.show.venue : fic.candidate.venue;
+              const year = isCatalog ? (fic.show.year || fic.show.od?.slice(0, 4)) : fic.candidate.openingDate?.slice(0, 4);
+              const city = isCatalog ? fic.show.city : fic.candidate.city;
+              const ratingsCount = isCatalog ? 0 : (fic.candidate.ratingsCount ?? 0);
+              const key = isCatalog ? `catalog:${fic.show.id}` : `mezz:${fic.candidate.id}`;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => onPickCandidate?.(index, fic)}
+                  className="block w-full text-left text-xs text-gray-300 hover:text-white hover:bg-white/5 rounded px-1.5 py-1"
+                >
+                  {title}{venue ? ` — ${venue}` : ''}{year ? ` (${year})` : ''}
+                  {isCatalog && <span className="text-gray-500"> · on Broadway Scorecard</span>}
+                  {ratingsCount > 0 && <span className="text-gray-500"> · {ratingsCount} ratings</span>}
+                  {city && <span className="text-gray-500"> · {city}</span>}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>

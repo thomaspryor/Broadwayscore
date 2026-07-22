@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "ragtime-2025",
   "showTitle": "Ragtime",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:36:12.949Z",
+  "fetchedAt": "2026-07-22T01:01:23.842Z",
   "tier": "Steady",
-  "volume": 153,
-  "positivePct": 73,
-  "weekOverWeekPct": -9,
-  "baselineMultiple": 0.92,
+  "volume": 35,
+  "effectiveVolume": 9.3,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.8461538461538461,
+      "bluesky": 0.625
+    },
+    "overall": 0.7619047619047619
+  },
+  "positivePct": 43,
+  "opinionSample": 7,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 127,
-    "tiktok": 19,
-    "instagram": 7,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 11,
+    "bluesky": 5
   },
   "topQuotes": [
     {
-      "text": "Seeing the Tony Winning Broadway Show! @ragtimemusical #ragtime #playbill #broadway",
-      "platform": "instagram",
-      "author": "@paigegebler",
-      "url": "https://www.instagram.com/p/Da_DQuEs_3i/"
+      "text": "Big day today! I decided to get out of my comfort zone so making my Broadway debut! The book is tuba, euphonium, and…",
+      "platform": "bluesky",
+      "author": "@drewphish.bsky.social",
+      "url": "https://bsky.app/profile/drewphish.bsky.social/post/3mqoqrm6i622f"
     },
     {
-      "text": "Opening night at the Hollywood Bowl - Best of Broadway!! I ugly cried the whole time hearing original Coalhouse, Brian…",
-      "platform": "tiktok",
-      "author": "@hellosweetiepies",
-      "url": "https://www.tiktok.com/@hellosweetiepies/video/7653785980209499406"
+      "text": "Help! I need to choose a show this Wednesday night. I visit NYC 2-3 times a year while visiting family and won’t be…",
+      "platform": "reddit",
+      "author": "u/PapayaOk4902",
+      "url": "https://www.reddit.com/r/Broadway/comments/1v22noy/help/"
     }
   ],
-  "xTrueVolume": 19,
-  "baseline": {
-    "mean": 165.32406822405756,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 13,
+    "bluesky": 8,
+    "x": 14,
+    "wikipedia": 5803
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Ragtime (musical)",
+  "baseline": {
+    "mean": 35,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 13,
+    "bluesky": 8
   },
   "errors": [],
   "rank": {
-    "position": 24,
-    "total": 35,
-    "text": "24/35 Broadway"
+    "position": 15,
+    "total": 30,
+    "text": "15/30 Broadway"
   },
-  "compositeScore": 111.69
+  "compositeScore": 4
 }

@@ -1,51 +1,62 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "hercules-west-end-2025",
   "showTitle": "Hercules",
   "market": "West End",
-  "fetchedAt": "2026-07-20T08:08:28.057Z",
-  "tier": "Steady",
-  "volume": 136,
-  "positivePct": 63,
-  "weekOverWeekPct": 1,
-  "baselineMultiple": 1.06,
+  "fetchedAt": "2026-07-22T01:18:02.819Z",
+  "tier": "Hidden",
+  "volume": 12,
+  "effectiveVolume": 2.5,
+  "relevanceRates": {
+    "byPlatform": {
+      "bluesky": 0.4
+    },
+    "overall": 0.4
+  },
+  "positivePct": 0,
+  "opinionSample": 1,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 116,
-    "tiktok": 18,
-    "instagram": 2,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 0,
+    "bluesky": 2
   },
   "topQuotes": [
     {
-      "text": "When Luke Brady (Hercules), Craig Gallivan (Bob), and Lee Zarrett (Charles) became Gaston and two LeFous to sing…",
-      "platform": "tiktok",
-      "author": "@aeronjamesuk",
-      "url": "https://www.tiktok.com/@aeronjamesuk/video/7569170292753304854"
-    },
-    {
-      "text": "West End Hercules cast absolutely stacked with beefcakes cheerio pip pip boys crush me with THIGHS real theatre is BACK",
-      "platform": "x",
-      "author": "@defnotthanos",
-      "url": "https://x.com/defnotthanos/status/1932189911467118765"
+      "text": "Disney’s Hercules in London is colourful, energetic and carried by the Muses but I wanted more magic. “Zero to Hero”…",
+      "platform": "bluesky",
+      "author": "@kekelmb.bsky.social",
+      "url": "https://bsky.app/profile/kekelmb.bsky.social/post/3mr74qkavey2g"
     }
   ],
-  "xTrueVolume": 11,
-  "baseline": {
-    "mean": 129.6854358437704,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": null,
+    "bluesky": 5,
+    "x": 7,
+    "wikipedia": 917
   },
-  "costUsd": 0.1307,
+  "wikipediaTitle": "Hercules (musical)",
+  "baseline": {
+    "mean": 12,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
     "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "bluesky": 5
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "reddit",
+      "error": "all providers down (see log)"
+    }
+  ],
   "rank": {
-    "position": 27,
-    "total": 50,
-    "text": "27/50 West End"
+    "position": 19,
+    "total": 46,
+    "text": "19/46 West End"
   },
-  "compositeScore": 85.68
+  "compositeScore": 0
 }
