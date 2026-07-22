@@ -129,11 +129,16 @@ export function rankCandidates(candidates, limit = 10) {
 }
 
 /** Normalize a search query the same way ImportShows.tsx's normTitle does
- *  (curly quotes/ampersand/punctuation) before it becomes a Mezzanine
- *  searchableName regex — mirrors ImportShows.tsx, kept in sync manually. */
+ *  (curly quotes/ampersand/punctuation/accents) before it becomes a
+ *  Mezzanine searchableName regex — mirrors ImportShows.tsx, kept in sync
+ *  manually. Accents are folded (NFD + strip combining marks) BEFORE the
+ *  [^a-z0-9]+ strip, or 'La Bohème' becomes 'la boh me' and never matches
+ *  Mezzanine's plain-ASCII searchableName 'la boheme' (owner import, 2026-07-21). */
 export function normalizeQuery(q) {
   return q
     .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
     .replace(/[‘’‚′']/g, '')
     .replace(/[“”„″"]/g, '')
     .replace(/&/g, ' and ')
