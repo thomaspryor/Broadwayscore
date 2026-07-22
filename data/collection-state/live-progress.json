@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-22T06:56:35.295Z",
-  "processed": 59,
-  "failed": 531,
-  "successRate": "10.0%",
+  "updatedAt": "2026-07-22T06:58:13.753Z",
+  "processed": 61,
+  "failed": 539,
+  "successRate": "10.2%",
   "tierBreakdown": {
-    "playwright": 41,
+    "playwright": 42,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 6,
+    "brightdata": 7,
     "archiveToday": 5,
     "archive": 11
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-07-22T06:55:24.787Z",
@@ -26,6 +26,28 @@
       "event": "bb-session",
       "session": "a5d7f006",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-07-22T06:57:10.670Z",
+      "event": "bb-session",
+      "session": "009f427b",
+      "url": "https://www.nytimes.com/2025/12/19/theater/oh-mary-trafalgar-theater-london.html"
+    },
+    {
+      "t": "2026-07-22T06:57:11.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-22T06:57:26.647Z",
+      "event": "bb-session",
+      "session": "aeda7ada",
+      "url": "https://www.nytimes.com/2025/12/19/theater/oh-mary-trafalgar-theater-london.html"
+    },
+    {
+      "t": "2026-07-22T06:57:26.977Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

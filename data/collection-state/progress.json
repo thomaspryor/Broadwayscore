@@ -58,7 +58,9 @@
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
     "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+    "oh-mary-west-end-2025/nytg--olivia-rook.json",
+    "oh-mary-west-end-2025/nytimes--jesse-green.json"
   ],
   "failed": [
     "soldiers-of-tomorrow-off-west-end-2026/evening-chronicle--unknown.json",
@@ -591,7 +593,15 @@
     "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json",
     "gotta-dance-off-broadway-2026/the-interested-bystander--cary-wong.json",
     "every-brilliant-thing-2026/latimes--unknown.json",
-    "every-brilliant-thing-2026/standard--nick-curtis.json"
+    "every-brilliant-thing-2026/standard--nick-curtis.json",
+    "every-brilliant-thing-2026/telegraph--marianka-swain.json",
+    "every-brilliant-thing-2026/thestage--dave-fargnoli.json",
+    "every-brilliant-thing-2026/times-uk--alice-jones.json",
+    "every-brilliant-thing-2026/whatsonstage--julia-rank.json",
+    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -636,7 +646,8 @@
       "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+      "oh-mary-west-end-2025/nytg--olivia-rook.json"
     ],
     "amp": [],
     "browserbase": [
@@ -655,7 +666,8 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "avenue-q-west-end-2026/telegraph--marianka-swain.json"
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+      "oh-mary-west-end-2025/nytimes--jesse-green.json"
     ],
     "archiveToday": [
       "data/review-texts/soldiers-of-tomorrow-off-west-end-2026/evening-chronicle--unknown.json",
@@ -679,7 +691,7 @@
     ]
   },
   "startTime": "2026-07-22T02:45:07.780Z",
-  "lastProcessed": "every-brilliant-thing-2026/standard--nick-curtis.json",
+  "lastProcessed": "oh-mary-west-end-2025/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-07-22T06:55:24.787Z",
@@ -692,6 +704,28 @@
       "event": "bb-session",
       "session": "a5d7f006",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-07-22T06:57:10.670Z",
+      "event": "bb-session",
+      "session": "009f427b",
+      "url": "https://www.nytimes.com/2025/12/19/theater/oh-mary-trafalgar-theater-london.html"
+    },
+    {
+      "t": "2026-07-22T06:57:11.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-22T06:57:26.647Z",
+      "event": "bb-session",
+      "session": "aeda7ada",
+      "url": "https://www.nytimes.com/2025/12/19/theater/oh-mary-trafalgar-theater-london.html"
+    },
+    {
+      "t": "2026-07-22T06:57:26.977Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
