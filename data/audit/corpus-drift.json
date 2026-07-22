@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-22T03:07:05.469Z",
+    "generatedAt": "2026-07-22T03:19:56.510Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -18,7 +18,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40976\nHas fullText: 32526\n\n--- Quality Breakdown ---\n  full: 22296 (68.5%)\n  truncated: 9519 (29.3%)\n  partial: 325 (1.0%)\n  excerpt: 322 (1.0%)\n  stub: 46 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6745\n  has_footer_junk: 1515\n  ends_with_ellipsis: 132\n  has_footer_text: 109\n  paywall_or_login_prompt: 75\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.5% (min: 25%)\n  ✅ Truncated: 29.3% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40976\nHas fullText: 32526\n\n--- Quality Breakdown ---\n  full: 22299 (68.6%)\n  truncated: 9519 (29.3%)\n  partial: 325 (1.0%)\n  excerpt: 319 (1.0%)\n  stub: 46 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6745\n  has_footer_junk: 1515\n  ends_with_ellipsis: 132\n  has_footer_text: 109\n  paywall_or_login_prompt: 75\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.6% (min: 25%)\n  ✅ Truncated: 29.3% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 11 flagged, 9 exempt, 30 covered\n  ⚠️   118  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️   117  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️   101  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    88  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    60  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    58  data/audit/t1-silent-gaps.json  — no merge driver; needs a decision\n  ⚠️    47  data/audit/validation/collection-report-2026-07-19.json  — no merge driver; needs a decision\n  ⚠️    44  data/audit/we-gate-proving.json  — no merge driver; needs a decision\n  ⚠️    31  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    31  data/audit/validation/collection-report-2026-07-20.json  — no merge driver; needs a decision\n  ⚠️    31  data/audit/validation/collection-report-2026-07-21.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 11 flagged, 9 exempt, 30 covered\n  ⚠️   118  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️   117  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️   101  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    88  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    61  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    58  data/audit/t1-silent-gaps.json  — no merge driver; needs a decision\n  ⚠️    47  data/audit/validation/collection-report-2026-07-19.json  — no merge driver; needs a decision\n  ⚠️    44  data/audit/we-gate-proving.json  — no merge driver; needs a decision\n  ⚠️    31  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    31  data/audit/validation/collection-report-2026-07-20.json  — no merge driver; needs a decision\n  ⚠️    31  data/audit/validation/collection-report-2026-07-21.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
