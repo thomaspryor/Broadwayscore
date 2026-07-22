@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-22T19:32:13.047Z",
-  "processed": 17,
-  "failed": 83,
-  "successRate": "17.0%",
+  "updatedAt": "2026-07-22T19:36:48.053Z",
+  "processed": 18,
+  "failed": 92,
+  "successRate": "16.4%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 13,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 4
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-07-22T19:16:01.001Z",
@@ -47,6 +47,28 @@
       "t": "2026-07-22T19:25:08.555Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-22T19:35:30.147Z",
+      "event": "bb-session",
+      "session": "a9abb858",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650851"
+    },
+    {
+      "t": "2026-07-22T19:35:30.597Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-22T19:35:46.117Z",
+      "event": "bb-session",
+      "session": "c53f0424",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650851"
+    },
+    {
+      "t": "2026-07-22T19:35:46.548Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
