@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-22T03:27:18.534Z",
+  "generatedAt": "2026-07-22T05:27:28.508Z",
   "date": "2026-07-22",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 211950,
+  "entryCount": 216201,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -1731,7 +1731,7 @@
     },
     {
       "showId": "come-from-away-2017",
-      "reviewCount": 58,
+      "reviewCount": 57,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2286,7 +2286,7 @@
     },
     {
       "showId": "oslo-2017",
-      "reviewCount": 44,
+      "reviewCount": 42,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7836,7 +7836,7 @@
     },
     {
       "showId": "sweat-2017",
-      "reviewCount": 36,
+      "reviewCount": 34,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7851,7 +7851,7 @@
     },
     {
       "showId": "miss-saigon-2017",
-      "reviewCount": 34,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7896,7 +7896,7 @@
     },
     {
       "showId": "significant-other-2017",
-      "reviewCount": 40,
+      "reviewCount": 37,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11932,6 +11932,36 @@
     {
       "showId": "burnt-up-love-off-west-end-2026",
       "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "la-boheme-off-broadway-2024",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "amelie-a-new-musical-2017",
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
