@@ -3069,6 +3069,83 @@ function isRejectedNonReview(data) {
   return false;
 }
 
+// Aggregator excerpt fields that count as retrievable content even when the
+// first-party fullText is absent. Moved verbatim from the deleted
+// review-text-scoreable.js so the RETRIEVED axis has one home.
+function hasAggregatorExcerpt(data) {
+  return !!(
+    data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt ||
+    data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt
+  );
+}
+
+/**
+ * Does this review-text file have any valid score path? Mirrors
+ * rebuild-helpers.js:getBestScore priority list (human → adjudicated →
+ * originalScore → llmScore → assignedScore → aggregatorStars).
+ * Moved verbatim from review-text-scoreable.js (Sprint 1 unification) — the
+ * SCORED axis's score-presence half. originalScore must be a value rebuild can
+ * actually use (a stored normalized number, or a raw string the parser accepts):
+ * a truthy-but-unparseable string ("N/A") is NOT a score.
+ *
+ * @param {object} data - review-text JSON
+ * @returns {boolean}
+ */
+function hasValidScore(data) {
+  if (!data) return false;
+  const { parseOriginalScore } = require('./score-parsers');
+  const hasHuman = data.humanReviewScore >= 1 && data.humanReviewScore <= 100;
+  const hasAdj = data.adjudicatedScore >= 1 && data.adjudicatedScore <= 100;
+  const normOk = typeof data.originalScoreNormalized === 'number'
+    && data.originalScoreNormalized >= 1 && data.originalScoreNormalized <= 100;
+  const hasOrig = !data.originalScoreCleared && !!data.originalScore
+    && (normOk || parseOriginalScore(String(data.originalScore)) != null);
+  const hasLlm = data.llmScore && data.llmScore.score >= 1 && data.llmScore.score <= 100;
+  const hasAssigned = data.assignedScore >= 1 && data.assignedScore <= 100;
+  const hasAggStars = !!data.aggregatorStars;
+  return !!(hasHuman || hasAdj || hasOrig || hasLlm || hasAssigned || hasAggStars);
+}
+
+/**
+ * RETRIEVED axis — true when we physically hold this outlet's real review of
+ * this show: usable content (fullText / aggregator excerpt), OR an explicit
+ * score (scored ⇒ retrieved — preserves the Proof-2026-04-17 carve-out), OR a
+ * human manual-clear — AND the file is not a rejected non-review.
+ *
+ * Narrower than isIncludableForRebuild ON PURPOSE: a file excluded from the
+ * SCORE by a rebuild context guard (cross-market, date, syndication dedup) but
+ * carrying real text IS retrieved and must keep suppressing rediscovery. Do NOT
+ * "unify" this by delegating to isIncludableForRebuild (plan Changes from
+ * Critique) — its context exclusions would wrongly reopen discovery on files we
+ * already hold, blowing past the ≤30-cell SERP gate.
+ *
+ * Pure — no I/O.
+ * @param {object} data - review-text JSON
+ * @returns {boolean}
+ */
+function isRetrieved(data) {
+  if (!data) return false;
+  if (isRejectedNonReview(data)) return false;
+  const hasText = !!(data.fullText && data.fullText.trim());
+  return hasText || hasAggregatorExcerpt(data) || hasValidScore(data) || wrongShowCleared(data);
+}
+
+/**
+ * Does this file block URL / outlet rediscovery? Identical to isRetrieved: if we
+ * already hold the outlet's review (content, score, or manual-clear) we must not
+ * re-spend SERP budget re-finding it. `show` is accepted for call-site symmetry
+ * with the other guards but unused (the decision is per-file). Scoping the
+ * unblocking to in-window T1/T2 is the CALLER's job (opening-night-poller), not
+ * this predicate's.
+ *
+ * @param {object} data - review-text JSON
+ * @param {object} [show] - unused; accepted for signature symmetry
+ * @returns {boolean}
+ */
+function blocksRediscovery(data, show) { // eslint-disable-line no-unused-vars
+  return isRetrieved(data);
+}
+
 module.exports = {
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
@@ -3125,6 +3202,10 @@ module.exports = {
   pickRerouteTarget,
   isIncludableForRebuild,
   isRejectedNonReview,
+  isRetrieved,
+  blocksRediscovery,
+  hasValidScore,
+  hasAggregatorExcerpt,
   NON_REVIEW_REJECTION_REASONS,
   NON_REVIEW_CV_ARTICLE_TYPES,
   isVerifiedDiscoverySource,
