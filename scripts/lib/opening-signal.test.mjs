@@ -34,6 +34,7 @@ test('thresholds mirror src/config/score-buckets.ts MIN_REVIEWS_FOR_SCORE*', () 
   assert.equal(MIN_REVIEWS_BY_CATEGORY['off-broadway'], 3);
   assert.equal(MIN_REVIEWS_BY_CATEGORY['west-end'], 5);
   assert.equal(MIN_REVIEWS_BY_CATEGORY['off-west-end'], 3);
+  assert.equal(MIN_REVIEWS_BY_CATEGORY.regional, 3);
   assert.equal(MIN_REVIEWS_CURATED_HISTORICAL, 4);
   assert.equal(T3_ONLY_EXTRA_REVIEWS, 2);
   assert.equal(minReviewsForCategory('off-broadway'), 3);
