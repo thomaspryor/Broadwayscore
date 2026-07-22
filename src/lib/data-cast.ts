@@ -13,7 +13,7 @@ interface CastChangesFile {
 const castChanges = showsData as unknown as CastChangesFile;
 
 // Drops [AUTO-FLAGGED] unverified entries and sorts most-recent-stint-first.
-function filterPublicHistory(entries: CastHistoryEntry[]): CastHistoryEntry[] {
+export function filterPublicHistory(entries: CastHistoryEntry[]): CastHistoryEntry[] {
   return entries
     .filter(e => !e.note?.includes('[AUTO-FLAGGED]'))
     .sort((a, b) => (b.until || b.since || '').localeCompare(a.until || a.since || ''));

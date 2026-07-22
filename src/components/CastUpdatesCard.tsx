@@ -232,9 +232,11 @@ function HistoryEntryRow({ entry }: { entry: CastHistoryEntry }) {
           {(entry.since || entry.until) && (
             <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-400">
               <span>
-                {entry.since ? formatEventDate(entry.since) : '?'}
-                {' – '}
-                {entry.until ? formatEventDate(entry.until) : 'present'}
+                {entry.since && entry.until
+                  ? `${formatEventDate(entry.since)} – ${formatEventDate(entry.until)}`
+                  : entry.until
+                  ? `Through ${formatEventDate(entry.until)}`
+                  : `Since ${formatEventDate(entry.since as string)}`}
               </span>
             </div>
           )}
