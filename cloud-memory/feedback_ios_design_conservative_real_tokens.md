@@ -22,3 +22,5 @@ Two escalations, same day (2026-07-20/21):
 5. Maestro gotchas: JAVA_HOME=/opt/homebrew/opt/openjdk@17; add `launchApp` first (taps land on whatever's foregrounded otherwise, e.g. Safari); NativeTabs labels not tappable by text — point taps (tab bar Y≈94%).
 
 Authoritative version: BroadwayScorecard-app/CLAUDE.md "Design Proposals (principles)" — 4 principles incl. venue-confirmation with a validation checkpoint (Claude Design preference recorded 2026-07-21, unvalidated until first delivery). This file adds the pipeline gotchas.
+
+**Amendment 2026-07-21 late:** the conservatism rule above applies to UNSOLICITED rework only. When the owner asks "how could this be better," incremental garnish is a FAILURE — owner on the timid option set: "nothing interesting… all minor changes and most of them are bad." Requirement for solicited design rounds: per screen, one faithful-polish option AND at least one genuinely bold, opinionated reimagining (Mezzanine/Letterboxd-grade ambition, still on our tokens/components). Use a top-tier model for design conception; implementation can be cheaper.
