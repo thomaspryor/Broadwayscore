@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "the-great-gatsby-2024",
   "showTitle": "The Great Gatsby",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:42:50.761Z",
-  "tier": "Steady",
-  "volume": 170,
-  "positivePct": 78,
-  "weekOverWeekPct": 2,
-  "baselineMultiple": 1.07,
+  "fetchedAt": "2026-07-22T01:04:29.520Z",
+  "tier": "Buzzing",
+  "volume": 3875,
+  "effectiveVolume": 108.6,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.6428571428571429,
+      "bluesky": 0.5
+    },
+    "overall": 0.5714285714285714
+  },
+  "positivePct": 91,
+  "opinionSample": 11,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 144,
-    "tiktok": 20,
-    "instagram": 6,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 9,
+    "bluesky": 7
   },
   "topQuotes": [
     {
-      "text": "🍾 The Great Gatsby Musical 🍾 This has been the weekend of adaptations for me! After seeing The Odyssey on Friday…",
-      "platform": "instagram",
-      "author": "@thereflectivebookshelf",
-      "url": "https://www.instagram.com/p/Da_awbyofvz/"
+      "text": "Mrs Uma Herself CHINA ANNE MCLAIN IS GOING TO BE ON BROADWAY! Ryan McCartan and China Anne McClain is going to be the…",
+      "platform": "reddit",
+      "author": "u/Amazing_Sundae7489",
+      "url": "https://www.reddit.com/r/Descendants/comments/1uxqf3v/mrs_uma_herself_china_anne_mclain_is_going_to_be/"
     },
     {
-      "text": "Yayyyy! 🎉 China Anne McClain set to make Broadway debut as Daisy in 'The Great Gatsby’ 🎭👏🏾 ✍🏾: #TSRStaffLG…",
-      "platform": "x",
-      "author": "@TheShadeRoom",
-      "url": "https://x.com/TheShadeRoom/status/2077775242374602970"
+      "text": "China Anne McClain will make her Broadway debut in ‘The Great Gatsby’, where she’ll play Daisy Buchanan.",
+      "platform": "bluesky",
+      "author": "@buzzingpop-bot.bsky.social",
+      "url": "https://bsky.app/profile/buzzingpop-bot.bsky.social/post/3mqqxvbii7q2t"
     }
   ],
-  "xTrueVolume": 3841,
-  "baseline": {
-    "mean": 159.76623287808616,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 14,
+    "bluesky": 15,
+    "x": 3846,
+    "wikipedia": 3202
   },
-  "costUsd": 0.1307,
+  "wikipediaTitle": "The Great Gatsby (musical)",
+  "baseline": {
+    "mean": 3875,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 14,
+    "bluesky": 15
   },
   "errors": [],
   "rank": {
-    "position": 18,
-    "total": 35,
-    "text": "18/35 Broadway"
+    "position": 1,
+    "total": 30,
+    "text": "1/30 Broadway"
   },
-  "compositeScore": 132.6
+  "compositeScore": 98.83
 }

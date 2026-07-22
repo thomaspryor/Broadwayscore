@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "hadestown-2019",
   "showTitle": "Hadestown",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:17:58.942Z",
-  "tier": "Rising",
-  "volume": 179,
-  "positivePct": 81,
-  "weekOverWeekPct": -1,
-  "baselineMultiple": 0.93,
+  "fetchedAt": "2026-07-22T00:54:22.484Z",
+  "tier": "Buzzing",
+  "volume": 253,
+  "effectiveVolume": 29.5,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.4444444444444444,
+      "bluesky": 0.5652173913043478
+    },
+    "overall": 0.5121951219512195
+  },
+  "positivePct": 73,
+  "opinionSample": 11,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 145,
-    "tiktok": 20,
-    "instagram": 14,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 8,
+    "bluesky": 13
   },
   "topQuotes": [
     {
-      "text": "\"It's a sad song... but we sing it anyway.\" Last night, we took our final trip to the Underworld, and our hearts are…",
-      "platform": "instagram",
-      "author": "@rauecenterschoolforthearts",
-      "url": "https://www.instagram.com/p/Da_Qf-Bj-BB/"
+      "text": "#Short&Quick When Persephone met Orpheus Allison Russell ✍🏽 I want everybody to know about Chibueze Ohuoma I met him…",
+      "platform": "bluesky",
+      "author": "@arqandtheclouds.bsky.social",
+      "url": "https://bsky.app/profile/arqandtheclouds.bsky.social/post/3mr6mcjm5ys2b"
     },
     {
-      "text": "Rousing. Soul-stirring. Achingly romantic. Once you've gone way down to Hadestown, part of you never really leaves. 🌹…",
-      "platform": "tiktok",
-      "author": "@bleeckerstfilms",
-      "url": "https://www.tiktok.com/@bleeckerstfilms/video/7660627976513490206"
+      "text": "Help me pick a show! Edit: thank you all for the advice! I looked up Ragtime and the cheapest ticket for my date was…",
+      "platform": "reddit",
+      "author": "u/neliza3000",
+      "url": "https://www.reddit.com/r/Broadway/comments/1v0ajri/help_me_pick_a_show/"
     }
   ],
-  "xTrueVolume": 138,
-  "baseline": {
-    "mean": 190.164540562022,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 18,
+    "bluesky": 24,
+    "x": 211,
+    "wikipedia": 26195
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Hadestown",
+  "baseline": {
+    "mean": 253,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 18,
+    "bluesky": 23
   },
   "errors": [],
   "rank": {
-    "position": 10,
-    "total": 35,
-    "text": "10/35 Broadway"
+    "position": 5,
+    "total": 30,
+    "text": "5/30 Broadway"
   },
-  "compositeScore": 144.99
+  "compositeScore": 21.54
 }

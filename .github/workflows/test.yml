@@ -625,6 +625,12 @@ on:
       - 'scripts/lib/t1-silent-gap.js'
       - 'scripts/lib/t1-silent-gap.test.mjs'
       - 'scripts/audit-t1-silent-gaps.js'
+      # Shared llm-ensemble-score.yml dispatch helper (T1 sweep self-heal +
+      # verify-all-scored) and the rebuild-drop analyzer it de-noises
+      # (guard-explained drops + persisted cooldown/signature dedup).
+      - 'scripts/lib/dispatch-rescore.js'
+      - 'scripts/analyze-rebuild-drops.js'
+      - 'scripts/verify-all-scored.js'
       # Sprint 4, S4-T4: autonomous-merge.yml/.js 'data' action (Tier-2 CI
       # merge/revert against the private repos). scripts/autonomous-merge.js
       # is already path-listed above (and .github/workflows/** is globbed at

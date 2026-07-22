@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "cats-the-jellicle-ball-2026",
   "showTitle": "CATS: The Jellicle Ball",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:11:14.425Z",
-  "tier": "Steady",
-  "volume": 185,
-  "positivePct": 48,
-  "weekOverWeekPct": 1,
-  "baselineMultiple": 0.98,
+  "fetchedAt": "2026-07-22T00:51:13.045Z",
+  "tier": "Troubled",
+  "volume": 94,
+  "effectiveVolume": 17.3,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.7142857142857143,
+      "bluesky": 0.7058823529411765
+    },
+    "overall": 0.7073170731707317
+  },
+  "positivePct": 22,
+  "opinionSample": 18,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 150,
-    "tiktok": 20,
-    "instagram": 15,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 5,
+    "bluesky": 24
   },
   "topQuotes": [
     {
-      "text": "Skimbleshanks Summer x3 🩵🩵🩵 Shoutout to the amazing Skimbleshanks I have seen! All I’m missing is thee amazing…",
-      "platform": "instagram",
-      "author": "@bway_bean",
-      "url": "https://www.instagram.com/p/Da3WL8nGvB-/"
+      "text": "Single Day trip to NYC to see CATS: The Jellicle Ball! If it wasn't closing, I don't think I would have bit the…",
+      "platform": "reddit",
+      "author": "u/KayakerMel",
+      "url": "https://www.reddit.com/r/Broadway/comments/1v2nidb/single_day_trip_to_nyc_to_see_cats_the_jellicle/"
     },
     {
-      "text": "Cats: The Jellicle Ball the Musical is a queer reimagining of the classical musical but on glitter heroine, and it is…",
-      "platform": "tiktok",
-      "author": "@bluetsunami2026",
-      "url": "https://www.tiktok.com/@bluetsunami2026/video/7647563392248466701"
+      "text": "#NowWatching CATS: THE JELLICLE BALL on Broadway Everything you heard is true. This show is 2.5 hours of nonstop…",
+      "platform": "bluesky",
+      "author": "@screamqueenz.bsky.social",
+      "url": "https://bsky.app/profile/screamqueenz.bsky.social/post/3mqsb4lsidk2g"
     }
   ],
-  "xTrueVolume": 183,
-  "baseline": {
-    "mean": 188.50109341712394,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 7,
+    "bluesky": 37,
+    "x": 50,
+    "wikipedia": 10426
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Cats (musical)",
+  "baseline": {
+    "mean": 94,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 7,
+    "bluesky": 37
   },
   "errors": [],
   "rank": {
-    "position": 30,
-    "total": 35,
-    "text": "30/35 Broadway"
+    "position": 16,
+    "total": 30,
+    "text": "16/30 Broadway"
   },
-  "compositeScore": 88.8
+  "compositeScore": 3.81
 }

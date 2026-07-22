@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "hamilton-west-end-2021",
   "showTitle": "Hamilton",
   "market": "West End",
-  "fetchedAt": "2026-07-20T08:06:14.240Z",
-  "tier": "Steady",
-  "volume": 96,
-  "positivePct": 83,
-  "weekOverWeekPct": 16,
-  "baselineMultiple": 1,
+  "fetchedAt": "2026-07-22T01:16:24.505Z",
+  "tier": "Rising",
+  "volume": 80,
+  "effectiveVolume": 5.2,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.1794871794871795,
+      "bluesky": 0.2222222222222222
+    },
+    "overall": 0.1875
+  },
+  "positivePct": 60,
+  "opinionSample": 5,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 74,
-    "tiktok": 20,
-    "instagram": 2,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 7,
+    "bluesky": 2
   },
   "topQuotes": [
     {
-      "text": "leslie odom jr in london was 10/10 #hamilton",
-      "platform": "tiktok",
-      "author": "@israa.zip",
-      "url": "https://www.tiktok.com/@israa.zip/video/7659161045746961686"
+      "text": "learnt yesterday that Leslie Odom Jr. was doing a limited West End run on Hamilton, coming back as Burr, and spent an…",
+      "platform": "bluesky",
+      "author": "@youngvulgarian.marieleconte.com",
+      "url": "https://bsky.app/profile/youngvulgarian.marieleconte.com/post/3mqsb3r67us2g"
     },
     {
-      "text": "i can’t stress enough how serious i am about the victoria hamilton-barritt west end hel campaign like guys she has got…",
-      "platform": "x",
-      "author": "@judybernlys",
-      "url": "https://x.com/judybernlys/status/2043446476005675091"
+      "text": "Neighboring patron trying to film/photo I attended tonight’s sublime, transcendent performance of Hamilton on the West…",
+      "platform": "reddit",
+      "author": "u/Hour-Technician4071",
+      "url": "https://www.reddit.com/r/hamiltonmusical/comments/1v0bguy/neighboring_patron_trying_to_filmphoto/"
     }
   ],
-  "xTrueVolume": 28,
-  "baseline": {
-    "mean": 95.95242231560405,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 39,
+    "bluesky": 9,
+    "x": 32,
+    "wikipedia": 23351
   },
-  "costUsd": 0.1307,
+  "wikipediaTitle": "Hamilton (musical)",
+  "baseline": {
+    "mean": 80,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 39,
+    "bluesky": 9
   },
   "errors": [],
   "rank": {
-    "position": 29,
-    "total": 50,
-    "text": "29/50 West End"
+    "position": 3,
+    "total": 46,
+    "text": "3/46 West End"
   },
-  "compositeScore": 79.68
+  "compositeScore": 3.12
 }

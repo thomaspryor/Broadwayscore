@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "chicago-1996",
   "showTitle": "Chicago",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:12:49.530Z",
-  "tier": "Steady",
-  "volume": 77,
-  "positivePct": 79,
-  "weekOverWeekPct": -15,
-  "baselineMultiple": 0.72,
+  "fetchedAt": "2026-07-22T00:52:07.450Z",
+  "tier": "Rising",
+  "volume": 234,
+  "effectiveVolume": 12.7,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.13636363636363635,
+      "bluesky": 0.28125
+    },
+    "overall": 0.2222222222222222
+  },
+  "positivePct": 78,
+  "opinionSample": 9,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 57,
-    "tiktok": 19,
-    "instagram": 1,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 3,
+    "bluesky": 9
   },
   "topQuotes": [
     {
-      "text": "All I (He) Care(s) About is Seeing Matteo in Chicago through July 19 (Love) @Matteo Lane #matteolane #chicago…",
-      "platform": "tiktok",
-      "author": "@chicagomusical",
-      "url": "https://www.tiktok.com/@chicagomusical/video/7662755128289643807"
+      "text": "Jerry Orbach, for me, had always been Lennie Briscoe for me. Was exactly my dad's age. Felt very of that generation.…",
+      "platform": "bluesky",
+      "author": "@robhanna.bsky.social",
+      "url": "https://bsky.app/profile/robhanna.bsky.social/post/3mqz442lnw22l"
     },
     {
-      "text": "Oh, yes, oh, yes, oh, yes! Krysta Rodriguez and Matteo Lane star as Roxie Hart and Billy Flynn in CHICAGO on Broadway.…",
-      "platform": "x",
-      "author": "@broadwaycom",
-      "url": "https://x.com/broadwaycom/status/2070221623861379234"
+      "text": "capped off my working 12 days straight by going to see Chicago on Broadway",
+      "platform": "bluesky",
+      "author": "@samundomiel.bsky.social",
+      "url": "https://bsky.app/profile/samundomiel.bsky.social/post/3mqvdmefhpc2d"
     }
   ],
-  "xTrueVolume": 192,
-  "baseline": {
-    "mean": 102.8250236827007,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 22,
+    "bluesky": 33,
+    "x": 179,
+    "wikipedia": 6597
   },
-  "costUsd": 0.1307,
+  "wikipediaTitle": "Chicago (musical)",
+  "baseline": {
+    "mean": 234,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 22,
+    "bluesky": 33
   },
   "errors": [],
   "rank": {
-    "position": 33,
-    "total": 35,
-    "text": "33/35 Broadway"
+    "position": 8,
+    "total": 30,
+    "text": "8/30 Broadway"
   },
-  "compositeScore": 60.83
+  "compositeScore": 9.91
 }

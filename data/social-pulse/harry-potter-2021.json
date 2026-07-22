@@ -1,51 +1,58 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "harry-potter-2021",
   "showTitle": "Harry Potter and the Cursed Child",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:21:26.947Z",
-  "tier": "Buzzing",
-  "volume": 176,
-  "positivePct": 86,
-  "weekOverWeekPct": -1,
-  "baselineMultiple": 1.01,
+  "fetchedAt": "2026-07-22T00:56:21.251Z",
+  "tier": "Hidden",
+  "volume": 8,
+  "effectiveVolume": 1.1,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.5,
+      "bluesky": 0.3333333333333333
+    },
+    "overall": 0.4
+  },
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 144,
-    "tiktok": 18,
-    "instagram": 14,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 1,
+    "bluesky": 1
   },
   "topQuotes": [
     {
-      "text": "✨Harry Potter and the Cursed Child✨Amazing show! Meeting Draco and Scorpius Malfoy has made my year🐍#broadway…",
-      "platform": "instagram",
-      "author": "@behindthescenesbyluz",
-      "url": "https://www.instagram.com/p/Da9EDE0DPVS/"
-    },
-    {
-      "text": "✨ Just saw Harry Potter and the Cursed Child on Broadway — and yes… Tom Felton was there. #harrypotter #broadway…",
-      "platform": "tiktok",
-      "author": "@ps5queens_ak",
-      "url": "https://www.tiktok.com/@ps5queens_ak/video/7615653906269490463"
+      "text": "✨ We'd like to cast a spell of gratitude! 🪄💜 A huge thank you to our sponsor, Avenue of the Arts Hotel, for…",
+      "platform": "bluesky",
+      "author": "@segerstromarts.bsky.social",
+      "url": "https://bsky.app/profile/segerstromarts.bsky.social/post/3mqxhwyqcn424"
     }
   ],
-  "xTrueVolume": 2,
-  "baseline": {
-    "mean": 174.60238953137014,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 2,
+    "bluesky": 3,
+    "x": 3,
+    "wikipedia": 10555
   },
-  "costUsd": 0.1307,
+  "wikipediaTitle": "Harry Potter and the Cursed Child",
+  "baseline": {
+    "mean": 8,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 2,
+    "bluesky": 3
   },
   "errors": [],
   "rank": {
-    "position": 7,
-    "total": 35,
-    "text": "7/35 Broadway"
+    "position": 22,
+    "total": 30,
+    "text": "22/30 Broadway"
   },
-  "compositeScore": 151.36
+  "compositeScore": 1.1
 }
