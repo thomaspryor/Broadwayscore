@@ -286,6 +286,10 @@ on:
       # triggers CI (allow-list gate).
       - 'scripts/lib/serp-chain-order.test.mjs'
       - 'scripts/lib/review-guards.js'
+      # T1-retrieval Sprint 1 (card #291): canonical isRejectedNonReview /
+      # isRetrieved / blocksRediscovery predicates. Colocated test runs in the
+      # lib-test glob; path-listed so a solo edit triggers CI (allow-list gate).
+      - 'scripts/lib/review-guards.test.mjs'
       # Pre-window inclusion predicate + priorRuns window logic (card 386637c5).
       # These decide review inclusion exactly like review-guards.js — without
       # these entries an edit to them pushes with ZERO CI coverage.
@@ -620,6 +624,12 @@ on:
       - 'scripts/lib/t1-silent-gap.js'
       - 'scripts/lib/t1-silent-gap.test.mjs'
       - 'scripts/audit-t1-silent-gaps.js'
+      # T1-retrieval Sprint 1 (card #291): remaining consumers migrated off the
+      # deleted review-text-scoreable mirror onto review-guards canonical
+      # predicates. Path-listed so a solo edit triggers CI (allow-list gate).
+      - 'scripts/check-review-count-drift.js'
+      - 'scripts/clear-stale-wrong-production-flags.js'
+      - 'scripts/triage-unknown-critic-stubs.js'
       # Sprint 4, S4-T4: autonomous-merge.yml/.js 'data' action (Tier-2 CI
       # merge/revert against the private repos). scripts/autonomous-merge.js
       # is already path-listed above (and .github/workflows/** is globbed at
