@@ -63,6 +63,20 @@ const MEZZANINE_OVERRIDES = {
   // name-only override would merge all of them. The {name, venue} form pins the
   // match to a single venue so only the City Center Encores run is attached.
   'encores-la-cage-aux-folles-off-broadway-2026': { name: 'La Cage aux Folles', venue: 'City Center' },
+  // We use "+" as a stylized separator; Mezzanine spells out "and". normalizeTitle
+  // only strips "and" from titleTokens (jaccard), not from the exact-match string,
+  // so Strategy 1 never fired even though the coverage audit's jaccard=1 masked it.
+  // "Romeo and Juliet" is one of the most-produced titles in the English language —
+  // a bare override would merge in unrelated NYC productions (2013 Richard Rodgers
+  // revival, 2023 Classic Stage Co., 2026 Shakespeare in the Park, a Columbia
+  // University student show). Venue pin restricts to our Circle in the Square run.
+  'romeo-juliet-2024': { name: 'Romeo and Juliet', venue: 'Circle in the Square' },
+  // Mezzanine's bare "Hot Mess" is a low-confidence prefix match against our
+  // "Hot Mess: A New Musical" (normalizes to "hot mess a new") because the show
+  // has no openingDate yet (only previewsStartDate), so year-verification can't
+  // promote it past 'low' confidence and it gets dropped. Covers both the
+  // Southwark Playhouse Elephant tryout and The Other Palace transfer.
+  'hot-mess-a-new-musical-off-west-end-2026': 'Hot Mess',
 };
 
 // Paths
