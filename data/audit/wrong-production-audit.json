@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-22T06:03:30.703Z",
+  "timestamp": "2026-07-22T09:01:11.631Z",
   "stats": {
-    "totalReviews": 40331,
-    "alreadyFlagged": 17746,
+    "totalReviews": 40334,
+    "alreadyFlagged": 17745,
     "dateGuardCatches": 60,
-    "directorMismatch": 911,
+    "directorMismatch": 910,
     "tvFilmSignals": 1105,
     "londonSignals": 753,
-    "offBroadwaySignals": 469,
-    "yearMismatch": 85,
-    "noPublishDate": 3402
+    "offBroadwaySignals": 468,
+    "yearMismatch": 84,
+    "noPublishDate": 3405
   },
   "findings": [
     {
@@ -13703,25 +13703,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "lend-me-a-tenor-1989",
-      "file": "playbill--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://playbill.com/production/lend-me-a-tenor-music-box-theatre-vault-0000002561",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stanley tucci\" from lend-me-a-tenor-2010"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2010 (5x) more than 1989 (0x). 2010 matches production: lend-me-a-tenor-2010"
         }
       ]
     },
@@ -38931,7 +38912,7 @@
     {
       "showId": "soldiers-of-tomorrow-off-west-end-2026",
       "file": "sierz-co-uk--unknown.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2026-06-16",
       "url": "https://sierz.co.uk/reviews/soldiers-of-tomorrow-finborough-theatre/",
       "findings": [
@@ -42751,20 +42732,6 @@
     },
     {
       "showId": "the-potluck-off-broadway-2026",
-      "file": "one-minute-critic--steven-vargas.json",
-      "score": 63,
-      "publishDate": "2026-07-15",
-      "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&#038;utm_medium=rss&",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "the-potluck-off-broadway-2026",
       "file": "one-minute-critic--unknown.json",
       "publishDate": "2026-07-15",
       "url": "https://1minutecritic.com/the-potluck-review-cesar-alvarez/?utm_source=rss&",
@@ -43810,6 +43777,19 @@
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/jun/10/under-the-shadow-review-leila-farzad-tehran-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "under-the-shadow-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 77,
       "publishDate": "2026-06-11",
@@ -44211,19 +44191,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "white-rabbit-red-rabbit-west-end-2026",
-      "file": "broadwayworld--mica-blackwell.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
