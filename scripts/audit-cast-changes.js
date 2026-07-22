@@ -42,6 +42,7 @@ const {
   resolveClosureArrivalContradictions,
   detectCrossShowConflicts,
   dedupeByPersonShow,
+  detectDuplicateCastEntries,
   normalizeIdentifier,
   noteMatchesClosurePhrase,
   reconcileClosureDateWithClosingDate,
@@ -225,12 +226,32 @@ function main() {
     staleAutoFlaggedDropped: 0,
     nameVariantDedupes: 0,
     inCastArrivalsDropped: 0,
+    duplicateCastEntriesFlagged: 0,
     contradictionsByShow: {},
+    duplicateCastEntriesByShow: {},
     crossShowConflicts: [],
   };
 
   for (const [showId, show] of Object.entries(data.shows || {})) {
     report.showsExamined++;
+
+    // Detection gate (flag-only, NOT auto-healed): currentCast entries
+    // duplicated by person (different role text for the same actor — e.g. a
+    // departed star lingering under 4 role-variant entries, the Daniel
+    // Radcliffe P0). Deliberately NOT auto-collapsed by --write: some
+    // "duplicates" are genuinely different roles for the same actor (an
+    // ensemble swing covering two named parts), and blindly merging by name
+    // alone would silently destroy that second-role record across the whole
+    // corpus with no human review. dedupeCurrentCastByName is available
+    // (and unit-tested) for a human to apply per-show after checking the
+    // source. Runs unconditionally, independent of `upcoming` — a show with
+    // an empty upcoming queue can still carry stale currentCast duplicates.
+    const castDupes = detectDuplicateCastEntries(show.currentCast || []);
+    if (castDupes.length > 0) {
+      report.duplicateCastEntriesByShow[showId] = castDupes;
+      report.duplicateCastEntriesFlagged += castDupes.reduce((n, d) => n + d.entries.length - 1, 0);
+    }
+
     let upcoming = show.upcoming || [];
     if (upcoming.length === 0) continue;
 
@@ -315,6 +336,7 @@ function main() {
   console.log(`  Stale [AUTO-FLAGGED] entries dropped:        ${report.staleAutoFlaggedDropped}`);
   console.log(`  Name-variant dedupes:                        ${report.nameVariantDedupes}`);
   console.log(`  Redundant in-cast arrivals dropped:          ${report.inCastArrivalsDropped}`);
+  console.log(`  Duplicate currentCast entries flagged:       ${report.duplicateCastEntriesFlagged}`);
   console.log(`  Cross-show overlap conflicts flagged:        ${report.crossShowConflicts.length}`);
   if (Object.keys(report.contradictionsByShow).length > 0) {
     console.log('\n  Contradictions detected per show:');
@@ -337,7 +359,25 @@ function main() {
       console.log(`    - ${w.name}: ${w.showA} (${w.datesA.start}..${w.datesA.end || '?'}) vs ${w.showB} (${w.datesB.start}..${w.datesB.end || '?'})`);
     }
   }
+  if (Object.keys(report.duplicateCastEntriesByShow).length > 0) {
+    console.log('\n  Duplicate currentCast entries by person (NOT auto-collapsed — verify per-show before merging,');
+    console.log('  some may be legitimate dual-role castings rather than scrape artifacts):');
+    for (const [showId, dupes] of Object.entries(report.duplicateCastEntriesByShow)) {
+      for (const d of dupes) {
+        const roles = d.entries.map(e => `${e.role || 'Unknown'} (since ${e.since || '?'})`).join(', ');
+        console.log(`    [${showId}] ${d.name}: ${roles}`);
+      }
+    }
+  }
 
+  // NOTE: duplicateCastEntriesFlagged is intentionally NOT summed here.
+  // Every other term is a count of something this run just AUTO-HEALED via
+  // --write, so totalIssues > 0 on a rerun means --write itself is broken.
+  // Duplicate currentCast entries are deliberately never auto-collapsed (see
+  // the detection-gate comment above), so they'd persist across every run
+  // and permanently trip --strict in the scheduled workflow. They're
+  // reported (duplicateCastEntriesByShow, printed above) for human review /
+  // the daily digest, same treatment as contradictionsByShow.
   const totalIssues =
     report.staleClosureDatesRepaired +
     report.departuresReclassifiedAsClosure +

@@ -38,6 +38,12 @@ const {
   mergePreservingAddedDate,
   findClosureDupe,
 } = require('./lib/cast-changes-filters');
+const {
+  applyDepartureToCast,
+  addArrivalToCast,
+  buildHistoryEntryFromDeparture,
+  buildHistoryEntryFromExpiredArrival,
+} = require('./lib/cast-changes-apply');
 const { CLAUDE_SONNET } = require('./lib/models');
 
 // ==================== Configuration ====================
@@ -837,9 +843,16 @@ async function scrapePlaybillCast(targetShows, existing) {
     return {};
   }
 
-  // Filter to Broadway-only shows with Playbill URLs
+  // Filter to Broadway-only shows with Playbill URLs. The old check
+  // (`if (s.category) return false`) assumed Broadway shows carry no
+  // `category` field — true when this was written, but every open Broadway
+  // show now has `category: "broadway"` explicitly set, so that check
+  // excluded ALL 95 open Broadway shows from Playbill cast-page diffing (the
+  // only source the twice-weekly scheduled cron runs), which is how Mariska
+  // Hargitay's entire EBT stint went undetected (P0, 2026-07-21). Match the
+  // category value directly instead of its presence/absence.
   const eligible = targetShows.filter(s => {
-    if (s.category) return false; // Broadway shows have no category
+    if (s.category !== 'broadway') return false;
     return !!playbillUrls[s.id];
   });
 
@@ -885,7 +898,7 @@ async function scrapePlaybillCast(targetShows, existing) {
       if (!existing.shows[show.id] || !existing.shows[show.id].currentCast || existing.shows[show.id].currentCast.length === 0) {
         // First time seeing this show — set baseline, don't generate events
         if (castMembers.length >= 3) { // Minimum threshold to trust the data
-          existing.shows[show.id] = existing.shows[show.id] || { currentCast: [], upcoming: [] };
+          existing.shows[show.id] = existing.shows[show.id] || { currentCast: [], upcoming: [], history: [] };
           existing.shows[show.id].currentCast = castMembers.map(name => ({
             name,
             role: 'Unknown', // Playbill doesn't always show roles inline
@@ -1222,7 +1235,7 @@ function mergeEvents(existing, newEvents, source) {
 
   for (const [showId, events] of Object.entries(newEvents)) {
     if (!existing.shows[showId]) {
-      existing.shows[showId] = { currentCast: [], upcoming: [] };
+      existing.shows[showId] = { currentCast: [], upcoming: [], history: [] };
     }
 
     const showData = existing.shows[showId];
@@ -1389,34 +1402,45 @@ function cleanExpiredEvents(existing) {
 
       // Event has passed — process it
       if (event.type === 'departure') {
-        // Remove from currentCast
-        showData.currentCast = (showData.currentCast || []).filter(c =>
-          !(c.name === event.name && c.role === event.role)
-        );
+        // Remove ALL currentCast entries for this person (matched by
+        // normalized name, not exact name+role — scraped role text varies by
+        // source, e.g. "Narrator/Protagonist" vs "Nameless protagonist" for
+        // the same actor, and an exact match silently left stale entries
+        // behind). Record each removed stint to history.
+        showData.currentCast = showData.currentCast || [];
+        showData.history = showData.history || [];
+        const { currentCast: castAfterDeparture, removed } = applyDepartureToCast(showData.currentCast, event);
+        showData.currentCast = castAfterDeparture;
+        for (const member of removed) {
+          showData.history.push(buildHistoryEntryFromDeparture(member, event));
+        }
         event.appliedAt = TODAY;
         changes.push({ showId, type: 'applied-departure', event });
         stats.eventsCleaned++;
       } else if (event.type === 'arrival') {
         if (event.endDate && event.endDate < TODAY) {
-          // Limited engagement is over — don't add to currentCast
+          // Limited engagement is over by the time it was discovered (late
+          // scrape/backfill) — don't add to currentCast, but DO record the
+          // stint to history so it isn't silently lost (the Mariska Hargitay
+          // P0: her entire EBT run vanished because this branch used to just
+          // discard the event with no trace anywhere).
+          showData.history = showData.history || [];
+          showData.history.push(buildHistoryEntryFromExpiredArrival(event));
           event.appliedAt = TODAY;
           changes.push({ showId, type: 'cleaned-expired-arrival', event });
           stats.eventsCleaned++;
         } else {
-          // Add to currentCast
-          const alreadyInCast = (showData.currentCast || []).some(c =>
-            c.name === event.name && c.role === event.role
-          );
-          if (!alreadyInCast) {
-            showData.currentCast = showData.currentCast || [];
-            showData.currentCast.push({
-              name: event.name,
-              role: event.role,
-              since: event.date,
-            });
+          // Add to currentCast unless this person (by normalized name) is
+          // already present — prevents duplicate role-text-variant entries.
+          showData.currentCast = showData.currentCast || [];
+          const { currentCast: castAfterArrival, added } = addArrivalToCast(showData.currentCast, event);
+          showData.currentCast = castAfterArrival;
+          if (added) {
+            changes.push({ showId, type: 'applied-arrival', event });
+          } else {
+            changes.push({ showId, type: 'skipped-duplicate-arrival', event });
           }
           event.appliedAt = TODAY;
-          changes.push({ showId, type: 'applied-arrival', event });
           stats.eventsCleaned++;
         }
       } else if (event.type === 'note') {
@@ -1666,6 +1690,9 @@ async function main() {
       console.log(`[Warn] ${showId} missing upcoming array — initializing`);
       showData.upcoming = [];
     }
+    if (!Array.isArray(showData.history)) {
+      showData.history = [];
+    }
   }
 
   // Step 3: Determine target shows
@@ -1911,4 +1938,4 @@ if (require.main === module) {
     .finally(() => scraperCleanup());
 }
 
-module.exports = { validateEvent, suppressClosureRedundantDepartures, mergeEvents };
+module.exports = { validateEvent, suppressClosureRedundantDepartures, mergeEvents, cleanExpiredEvents };
