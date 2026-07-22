@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-22T03:06:46.586Z",
+    "generatedAt": "2026-07-22T03:19:37.211Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -32,7 +32,7 @@
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 60
+      "churn": 61
     },
     {
       "path": "data/audit/t1-silent-gaps.json",
@@ -62,11 +62,11 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 128
+      "churn": 127
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 122
+      "churn": 121
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -86,7 +86,7 @@
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 61
+      "churn": 62
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
@@ -110,32 +110,32 @@
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 653,
+      "churn": 650,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 639,
+      "churn": 635,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 313,
+      "churn": 312,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 242,
+      "churn": 243,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 242,
+      "churn": 243,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 144,
+      "churn": 143,
       "mergeAttr": "ours"
     },
     {
@@ -144,18 +144,23 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
+      "churn": 88,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/verify-all-scored-state.json",
       "churn": 88,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 86,
+      "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
+      "churn": 79,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
-      "churn": 79,
+      "path": "data/audit/poller-backoff/shifters-off-broadway-2026.json",
+      "churn": 74,
       "mergeAttr": "ours"
     },
     {
@@ -171,11 +176,6 @@
     {
       "path": "data/audit/wrong-production-audit.json",
       "churn": 74,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/shifters-off-broadway-2026.json",
-      "churn": 72,
       "mergeAttr": "ours"
     },
     {
@@ -195,7 +195,7 @@
     },
     {
       "path": "data/audit/drift-state.json",
-      "churn": 48,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
