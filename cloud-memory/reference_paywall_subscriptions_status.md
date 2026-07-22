@@ -5,6 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: e02aeafc-deda-4880-86b6-03c60e59e534
+  modified: 2026-07-22T00:55:36.348Z
 ---
 
 Owner's paywall subscription status (as of 2026-07-21):
@@ -19,6 +20,6 @@ NYT, WSJ, New Yorker, WaPo, FT, Times UK, The Stage, Variety, Vulture, Standard,
 
 **No subscription exists (never prompt for login):**
 - Backstage — jar is only a cf_clearance bot cookie; no credentials, no Gmail receipts in 2 years.
-- Newsday — not logged in per extractor; content arrives without auth (collection gap ≠ auth gap, see task #280).
+- Newsday — not logged in per extractor; content arrives without auth. Task #280 (2026-07-22): "62 reviews in 2026" was a historical-backfill artifact (old 2005-2019 reviews reprocessed Jan-Jun 2026), not new coverage — Newsday's dedicated Broadway reviewing ended ~2019-2021 (2 exceptions in 2025); nothing published Jan-Jul 2026 for our pipeline to miss. Don't reopen as a "discovery gap" without a fresh site:newsday.com "Theater Review" SERP check first.
 
 **How to apply:** before recommending a cookie refresh, subscription, or Browserbase batch against a paywalled outlet, check this list — cancelled/nonexistent subs make those paths permanently dead ([[feedback_cookie_health_body_length_not_expiry]]).
