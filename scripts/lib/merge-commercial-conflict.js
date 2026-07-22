@@ -31,6 +31,7 @@ if (!file || !keepLocal || !keepRemote) {
 
 const { mergeCommercialJson, mergePendingReview, mergeResearchQueue } = require('./merge-commercial-data');
 const { mergeDiaryShows } = require('./merge-diary-shows');
+const { mergeSocialPostHistory } = require('./merge-social-post-history');
 
 function readSide(flag) {
   execSync(`git checkout ${flag} -- ${JSON.stringify(file)}`, { stdio: 'pipe' });
@@ -53,6 +54,8 @@ try {
     // diary-shows.json is written by its three producers without a trailing
     // newline; match that so a no-op merge is byte-identical.
     trailingNewline = false;
+  } else if (file.endsWith('social-post-history.json')) {
+    mergedResult = mergeSocialPostHistory(localData, remoteData);
   } else {
     mergedResult = mergeCommercialJson(localData, remoteData);
   }
