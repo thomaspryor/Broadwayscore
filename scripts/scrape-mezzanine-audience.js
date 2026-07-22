@@ -37,6 +37,11 @@ const SESSION_TOKEN = process.env.MEZZANINE_SESSION_TOKEN;
 // Manual overrides: our show ID → Mezzanine show name (for titles that differ)
 const MEZZANINE_OVERRIDES = {
   'summer-2018': 'Summer: The Donna Summer Musical',
+  // The "regional" pool is everything that isn't NYC or London, so the 2024
+  // UK premiere at The Lowry (Salford) lands in the same pool as our Chicago
+  // Shakespeare tryout and a bare-title match merged both (157 UK + 122 US
+  // ratings). Venue pin restricts to the Chicago run.
+  '42-balloons-regional-2025': { name: '42 Balloons', venue: 'Chicago Shakespeare' },
   // "Cabaret" is one of the most-revived musicals in the world (100+ Mezzanine
   // productions with ratings, from Studio 54 to a high school gym). A bare
   // override was pulling in stray London one-off productions alongside our
