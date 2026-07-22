@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-22T11:00:04.347Z",
+  "generatedAt": "2026-07-22T11:56:50.453Z",
   "date": "2026-07-22",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 229917,
+  "entryCount": 231454,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 27,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2036,7 +2036,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 195038909,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -2046,7 +2046,7 @@
     },
     {
       "showId": "sylvia-2015",
-      "reviewCount": 41,
+      "reviewCount": 40,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2066,7 +2066,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 195619830,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -2081,7 +2081,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 195771590,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -8271,7 +8271,7 @@
     },
     {
       "showId": "allegiance-2015",
-      "reviewCount": 52,
+      "reviewCount": 51,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8316,7 +8316,7 @@
     },
     {
       "showId": "fool-for-love-2015",
-      "reviewCount": 46,
+      "reviewCount": 45,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
