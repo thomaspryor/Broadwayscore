@@ -55,6 +55,12 @@ on:
       - 'scripts/lib/byline-recovery.js'
       - 'scripts/lib/byline-recovery.test.mjs'
       - 'scripts/recover-unknown-bylines.js'
+      # Reverse discovery (task #101 / Midnight at the Never Get miss): parsing +
+      # matching in scripts/lib/reverse-discovery.js (colocated *.test.mjs runs in
+      # the lib-test glob); path-listed so a solo edit triggers CI.
+      - 'scripts/lib/reverse-discovery.js'
+      - 'scripts/lib/reverse-discovery.test.mjs'
+      - 'scripts/audit-reverse-discovery.js'
       # Feedback pipeline pending-diagnoses persistence (2026-07-10, cancelled-run
       # recovery). Test lives in tests/unit/pending-diagnoses.test.mjs; path-listed
       # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
