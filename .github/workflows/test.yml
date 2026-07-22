@@ -141,6 +141,11 @@ on:
       - 'scripts/lib/verify-opening-night-live.test.mjs'
       - 'scripts/lib/dedup-by-critic.js'
       - 'scripts/lib/dedup-by-critic.test.mjs'
+      # Pre-open press-night trust whitelist used by the opening-night
+      # orchestrator selector (opening-night-orchestrator.yml). Colocated
+      # *.test.mjs runs via the lib glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/press-night-trust.js'
+      - 'scripts/lib/press-night-trust.test.mjs'
       # URL-shaped critic-name GC sweep (byline link href captured as criticName)
       # + the SERP discovery writer that bypasses the shared review-file-writer.
       # Without these entries a solo edit triggers ZERO CI (allow-list gate).
