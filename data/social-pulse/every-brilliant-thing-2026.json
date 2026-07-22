@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "every-brilliant-thing-2026",
   "showTitle": "Every Brilliant Thing",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:16:05.723Z",
+  "fetchedAt": "2026-07-22T00:53:38.788Z",
   "tier": "Buzzing",
-  "volume": 168,
-  "positivePct": 97,
-  "weekOverWeekPct": -13,
-  "baselineMultiple": 0.89,
+  "volume": 541,
+  "effectiveVolume": 47.2,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.9,
+      "bluesky": 0.5555555555555556
+    },
+    "overall": 0.7368421052631579
+  },
+  "positivePct": 67,
+  "opinionSample": 6,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 148,
-    "tiktok": 13,
-    "instagram": 7,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 9,
+    "bluesky": 5
   },
   "topQuotes": [
     {
-      "text": "✨From a little girl with dreams in her heart to a woman standing beneath the Broadway lights, 🎭✨👏..sharing every…",
-      "platform": "instagram",
-      "author": "@marshmelonfan",
-      "url": "https://www.instagram.com/p/Da7SZ39jHKS/"
+      "text": "Michael Kors at Every Brilliant Thing tonight? Saw Every Brilliant Thing tonight (Tracee Ellis Ross is beyond…",
+      "platform": "reddit",
+      "author": "u/likeaglove13",
+      "url": "https://www.reddit.com/r/Broadway/comments/1uwu0cw/michael_kors_at_every_brilliant_thing_tonight/"
     },
     {
-      "text": "Always love seeing a #Girlfriends reunion 😍 The ladies came to NYC to see Tracee in the Broadway show \"Every…",
-      "platform": "x",
-      "author": "@106th",
-      "url": "https://x.com/106th/status/2078239942824599556"
+      "text": "Tracee Ellis Ross takes Broadway debut now in EVERY BRILLIANT THING on her gala night",
+      "platform": "reddit",
+      "author": "u/BlackOnyx1906",
+      "url": "https://www.reddit.com/r/PocBuzz_Entertainment/comments/1uzi8c1/tracee_ellis_ross_takes_broadway_debut_now_in/"
     }
   ],
-  "xTrueVolume": 520,
-  "baseline": {
-    "mean": 185.97716572369973,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 10,
+    "bluesky": 11,
+    "x": 520,
+    "wikipedia": 2319
   },
-  "costUsd": 0.1307,
+  "wikipediaTitle": "Every Brilliant Thing",
+  "baseline": {
+    "mean": 541,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 10,
+    "bluesky": 10
   },
   "errors": [],
   "rank": {
-    "position": 2,
-    "total": 35,
-    "text": "2/35 Broadway"
+    "position": 4,
+    "total": 30,
+    "text": "4/30 Broadway"
   },
-  "compositeScore": 162.96
+  "compositeScore": 31.62
 }

@@ -179,10 +179,31 @@ module.exports = {
  *     <p>{Opening Night: ...}</p>
  *   </div>
  * (Approximation — selectors validated at test-time.)
+ *
+ * 2026-07-22 investigation: lortel.org/currently-playing/ now soft-404s
+ * (WordPress "Page not found" template, HTTP 200 per fetchPage/Bright Data —
+ * classic soft-404, see memory/feedback_aggregator_soft_404.md). Wayback's
+ * last good capture (2026-05-21) confirms the page existed with this exact
+ * title check passing; it was removed from the site since then, not
+ * re-laid-out. Probed 6 likely successor paths on lortel.org (shows/,
+ * now-playing/, whats-on/, on-stage/, performances/, productions/) — all
+ * soft-404. The org's successor site (offbroadway.org → www.offbroadway.com,
+ * "Off-Broadway League") has no equivalent structured listing: /home is an
+ * image-only poster gallery (no First Preview/Opening Night text) and
+ * /calendar-1 is a generic Squarespace/Google-Calendar embed with no
+ * server-rendered event text. There is currently no live replacement source
+ * to parse — this is a genuine source outage, not a selector-drift bug.
  */
 function parseLortelCurrentlyPlaying(html) {
+  if (!html) return [];
+  const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+  const pageTitle = titleMatch ? titleMatch[1].trim() : null;
+  if (pageTitle && /page not found/i.test(pageTitle)) {
+    console.warn('  WARNING: lortel.org/currently-playing/ soft-404s ("Page not found") — the page has been removed from the site, not a layout change. No known replacement source; proceeding with Playbill-only validation.');
+    return [];
+  }
   if (!validatePageTitle(html, 'Lortel')) {
-    console.warn('  WARNING: Lortel page title did not match — refusing to parse');
+    console.warn(`  WARNING: Lortel page title did not match (got "${pageTitle || 'no <title>'}") — refusing to parse`);
     return [];
   }
   const $ = cheerio.load(html);

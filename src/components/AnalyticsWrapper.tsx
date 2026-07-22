@@ -43,39 +43,63 @@ export default function AnalyticsWrapper() {
   // of 1M free tier with autocapture ON. Turn autocapture back OFF if monthly
   // events approach 700K (10x current traffic). Recording cost is capped by the
   // 10% sample rate — leave it alone, Sentry covers error debugging.
+  // Deferred to idle time (same pattern as Sentry below) — the recorder+surveys
+  // bundle (~85KB) was competing with hydration for main-thread time during the
+  // LCP-critical window on every page (card #311, 2026-07-21 CWV regression).
   useEffect(() => {
-    import('posthog-js').then(({ default: posthog }) => {
-      if (!posthog.__loaded) {
-        posthog.init(POSTHOG_KEY, {
-          api_host: 'https://us.i.posthog.com',
-          autocapture: true,
-          // 'history_change' captures $pageview on client-side route changes
-          // (pushState/popstate). `true` only fires on initial load, which
-          // caused PostHog to miss ~63% of pageviews in Apr 2026 comparison
-          // (25K vs Vercel+GA 67K). App Router navigations need this.
-          capture_pageview: 'history_change',
-          capture_pageleave: true,
-          enable_heatmaps: false,
-          person_profiles: 'identified_only',
-          session_recording: { maskAllInputs: false, sampleRate: 0.1 },
-          loaded: (ph) => {
-            if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
-          },
-        });
-      }
-      // Stamp every event with is_owner if this device is the owner.
-      // register() = super-property, no person profile created (free-tier safe).
-      try {
-        if (localStorage.getItem('bwsc-owner') === 'true') {
-          posthog.register({ is_owner: true });
+    const loadPostHog = () => {
+      import('posthog-js').then(({ default: posthog }) => {
+        if (!posthog.__loaded) {
+          posthog.init(POSTHOG_KEY, {
+            api_host: 'https://us.i.posthog.com',
+            autocapture: true,
+            // 'history_change' captures $pageview on client-side route changes
+            // (pushState/popstate). `true` only fires on initial load, which
+            // caused PostHog to miss ~63% of pageviews in Apr 2026 comparison
+            // (25K vs Vercel+GA 67K). App Router navigations need this.
+            capture_pageview: 'history_change',
+            capture_pageleave: true,
+            enable_heatmaps: false,
+            person_profiles: 'identified_only',
+            session_recording: { maskAllInputs: false, sampleRate: 0.1 },
+            loaded: (ph) => {
+              if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
+            },
+          });
         }
-      } catch {
-        // ignore
-      }
-      // Always expose on window — even if already loaded from a prior render.
-      // TicketLink and other components use window.posthog.capture() for native events.
-      (window as unknown as Record<string, unknown>).posthog = posthog;
-    });
+        // Stamp every event with is_owner if this device is the owner.
+        // register() = super-property, no person profile created (free-tier safe).
+        try {
+          if (localStorage.getItem('bwsc-owner') === 'true') {
+            posthog.register({ is_owner: true });
+          }
+        } catch {
+          // ignore
+        }
+        // Always expose on window — even if already loaded from a prior render.
+        // TicketLink and other components use window.posthog.capture() for native events.
+        (window as unknown as Record<string, unknown>).posthog = posthog;
+      }).catch(() => {
+        // Blocked import (ad blocker / network) — window.posthog stays undefined.
+        // Every consumer (TicketButtonsAB, ProGateContext, TicketLink,
+        // promo-tracking) already optional-chains + falls back to a labeled
+        // 'fallback'/'anonymous' state after its own poll timeout, so this is
+        // silent-by-design, not silent-by-accident (adversarial review finding,
+        // card #311) — nothing further to do here.
+      });
+    };
+
+    // Timeout capped lower than Sentry's (below) — TicketButtonsAB blocks
+    // rendering ticket buttons on window.posthog.getFeatureFlag() and gives
+    // up after 5s total. A longer cap here eats directly into that budget
+    // on busy pages and delays a revenue-critical CTA, not just an analytics
+    // nice-to-have (ship-check finding, card #311).
+    if (typeof window.requestIdleCallback === 'function') {
+      const idleId = window.requestIdleCallback(loadPostHog, { timeout: 1500 });
+      return () => window.cancelIdleCallback?.(idleId);
+    }
+    const timeoutId = setTimeout(loadPostHog, 1500);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   // Lightweight Sentry init — loads SDK from CDN, no npm dependency

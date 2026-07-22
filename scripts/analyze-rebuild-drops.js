@@ -23,10 +23,16 @@ const https = require('https');
 const { execSync } = require('child_process');
 const { CLAUDE_SONNET } = require('./lib/models');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
+const { isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
+const { hasValidScore, passesFlagFilters } = require('./lib/review-text-scoreable');
+
+// BSC_DATA_ROOT: worktree sessions point at the main checkout's data/ (the
+// private review-texts clone only exists there).
+const DATA_DIR = path.join(process.env.BSC_DATA_ROOT || path.join(__dirname, '..'), 'data');
 const AUDIT_DIR = path.join(DATA_DIR, 'audit');
 const TRIAGE_DIR = path.join(AUDIT_DIR, 'triage');
 const PIPELINE_DIR = path.join(AUDIT_DIR, 'pipeline-health');
+const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCE = process.argv.includes('--force');
@@ -72,10 +78,61 @@ function isFromThisRun(data) {
 const regressions = (regressionData && isFromThisRun(regressionData)) ? (regressionData.regressions || []) : [];
 const drifts = (driftData && isFromThisRun(driftData)) ? (driftData.shows || []) : [];
 
+// ─── Guard-explained drops (unopened-show prior-run exclusions) ───────────────
+//
+// The pre-opening temporal gate in review-guards.js excludes prior-production
+// reviews filed under a never-opened show (announced/upcoming/previews, no
+// priorRuns). Those drops are the guard WORKING — but they carry zero quality
+// flags, so they read as "unexplained" and paged 4 identical NEEDS_REVIEW
+// emails in 2h on 2026-07-21 (orlando/burnt-up-love/soldiers-of-tomorrow
+// off-west-end-2026). Count them with the canonical predicate so they explain
+// their show's drop the same way quality flags do.
+
+const showsById = (() => {
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'shows.json'), 'utf8'));
+    const list = Array.isArray(raw) ? raw : raw.shows || [];
+    return new Map(list.map(s => [s.id, s]));
+  } catch { return new Map(); }
+})();
+
+function countGuardExcluded(showId) {
+  const show = showsById.get(showId);
+  if (!show) return 0;
+  let n = 0;
+  try {
+    for (const f of fs.readdirSync(path.join(REVIEW_TEXTS_DIR, showId))) {
+      if (!f.endsWith('.json')) continue;
+      try {
+        const d = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, showId, f), 'utf8'));
+        // Only SCORED, UNFLAGGED premature files can explain a drop:
+        //  - a regression counts scored reviews that vanished, so an unscored
+        //    premature husk never contributed to the old count (Codex finding)
+        //  - a file already carrying wrongProduction/wrongShow/etc. is counted
+        //    by the rebuild's own flaggedScored — counting it here too would
+        //    double-credit one file (ship-check finding); passesFlagFilters is
+        //    the canonical flag gate.
+        if (isPrematureReviewForUnopenedShow(d, show) && hasValidScore(d) && passesFlagFilters(d, show)) n++;
+      } catch { /* unreadable file — not evidence either way */ }
+    }
+  } catch { return 0; }
+  return n;
+}
+
+for (const r of regressions) {
+  r.guardExcluded = countGuardExcluded(r.showId);
+}
+
 // ─── Check thresholds ─────────────────────────────────────────────────────────
 
+const explainedFor = (r) => (r.flaggedScored || 0) + (r.guardExcluded || 0);
+const unexplainedDropFor = (r) => Math.max(0, r.dropped - explainedFor(r));
+
 const totalDropped = regressions.reduce((sum, r) => sum + r.dropped, 0);
-const maxSingleDrop = regressions.length > 0 ? Math.max(...regressions.map(r => r.dropped)) : 0;
+// Thresholds fire on the UNEXPLAINED portion only — flag-explained and
+// guard-explained drops are intentional exclusions, not incidents.
+const totalUnexplained = regressions.reduce((sum, r) => sum + unexplainedDropFor(r), 0);
+const maxSingleDrop = regressions.length > 0 ? Math.max(...regressions.map(r => unexplainedDropFor(r))) : 0;
 const significantDrift = drifts.filter(d => Math.abs(d.delta) > 8); // only flag large drifts
 
 // Inverse-drop check: when --expect-add=N is set, sum positive per-show deltas
@@ -93,14 +150,14 @@ if (EXPECT_ADD > 0) {
   }
 }
 
-const hasSignificantDrops = totalDropped > TOTAL_DROP_THRESHOLD || maxSingleDrop > SINGLE_SHOW_THRESHOLD;
+const hasSignificantDrops = totalUnexplained > TOTAL_DROP_THRESHOLD || maxSingleDrop > SINGLE_SHOW_THRESHOLD;
 const hasSignificantDrift = significantDrift.length >= 5;
 
 if (!hasSignificantDrops && !hasSignificantDrift && !inverseDropFired) {
   const inverseNote = EXPECT_ADD > 0
     ? `, expect-add: ${actualAdded}/${EXPECT_ADD} ratio=${(inverseRatio * 100).toFixed(1)}%`
     : '';
-  console.log(`[Drop Analysis] No significant drops (total: ${totalDropped}, max single: ${maxSingleDrop}, drift: ${drifts.length}${inverseNote}). Skipping.`);
+  console.log(`[Drop Analysis] No significant drops (total: ${totalDropped}, unexplained: ${totalUnexplained}, max single unexplained: ${maxSingleDrop}, drift: ${drifts.length}${inverseNote}). Skipping.`);
   process.exit(0);
 }
 
@@ -108,13 +165,31 @@ console.log(`[Drop Analysis] Significant drops detected: ${totalDropped} total, 
 
 // ─── 48h cooldown ─────────────────────────────────────────────────────────────
 
+// NOTE: this state file must be COMMITTED by the calling workflow or the
+// cooldown is a no-op — each CI run starts from a fresh checkout (2026-07-21:
+// 4 identical NEEDS_REVIEW emails in 2h because the file was written but
+// never staged; rebuild-reviews.yml's `git add data/audit/*.json` glob does
+// not descend into triage/).
 const cooldownFile = path.join(TRIAGE_DIR, 'drop-analysis-alert.json');
+// Same-incident signature: the set of affected shows and their drop counts.
+// A repeat of an already-emailed incident stays silent for 7 days even after
+// the 48h global cooldown lapses; a DIFFERENT drop pattern emails normally.
+// Unexplained total is part of the signature: the same raw drop pattern whose
+// explained portion shrinks (drops turn unexplained) is a NEW incident.
+const dropSignature = regressions
+  .map(r => `${r.showId}:-${r.dropped}`)
+  .sort()
+  .join('|') + `|u${totalUnexplained}`;
 if (!FORCE && !DRY_RUN) {
   const cooldown = loadJSON(cooldownFile);
   if (cooldown?.lastSent) {
     const hoursSince = (now - new Date(cooldown.lastSent).getTime()) / (1000 * 60 * 60);
     if (hoursSince < 48) {
       console.log(`[Drop Analysis] Cooldown active — last sent ${Math.round(hoursSince)}h ago. Use --force to bypass.`);
+      process.exit(0);
+    }
+    if (cooldown.signature && cooldown.signature === dropSignature && hoursSince < 7 * 24) {
+      console.log(`[Drop Analysis] Identical drop signature already emailed ${Math.round(hoursSince)}h ago — suppressing repeat. Use --force to bypass.`);
       process.exit(0);
     }
   }
@@ -139,12 +214,11 @@ try {
 
 // ─── Pattern analysis ─────────────────────────────────────────────────────────
 
-// Classify drops: flag-explained vs unexplained
+// Classify drops: explained (quality flags + unopened-show guard) vs unexplained
 let flagExplained = 0;
 let unexplained = 0;
 for (const r of regressions) {
-  // If flaggedScored ≥ dropped, the drop is fully explained by quality flags
-  if ((r.flaggedScored || 0) >= r.dropped) {
+  if (explainedFor(r) >= r.dropped) {
     flagExplained++;
   } else {
     unexplained++;
@@ -166,6 +240,7 @@ const top10 = regressions.slice(0, 10).map(r =>
   `  - ${r.showId}: ${r.oldCount}→${r.newCount} (-${r.dropped})` +
   (r.scoredOnDisk != null ? `, scored on disk: ${r.scoredOnDisk}` : '') +
   (r.flaggedScored ? `, quality-flagged: ${r.flaggedScored}` : '') +
+  (r.guardExcluded ? `, unopened-show guard-excluded: ${r.guardExcluded}` : '') +
   (r.reason ? ` [${r.reason}]` : '')
 ).join('\n');
 
@@ -178,7 +253,7 @@ const prompt = `A Broadway Scorecard reviews rebuild just completed and review c
 SUMMARY:
 - Total reviews dropped: ${totalDropped} across ${regressions.length} shows
 - Largest single-show drop: ${maxSingleDrop} reviews
-- Drop classification: ${flagExplained} shows explained by quality flags (wrongShow/wrongProduction/roundup), ${unexplained} shows with unexplained drops
+- Drop classification: ${flagExplained} shows fully explained (quality flags and/or the unopened-show prior-run guard), ${unexplained} shows with unexplained drops (${totalUnexplained} unexplained reviews total)
 - Era distribution of affected shows: ${topEras || 'unknown'}
 - Score drift (>8pt shift without new reviews): ${significantDrift.length} shows
 
@@ -194,7 +269,8 @@ ${recentActivity}
 CONTEXT:
 - "scored files exist but being dropped" = files have scores on disk but rebuild excluded them (dedup, cross-market guard, URL-year mismatch, or isScoreable=false)
 - "quality-flagged" = files marked wrongShow/wrongProduction/isRoundupArticle (intentional exclusions)
-- Flag-explained drops are almost always routine data quality work
+- "unopened-show guard-excluded" = the pre-opening temporal gate correctly excluding prior-production reviews filed under a never-opened show (intentional, systematic — NOT a bug)
+- Flag-explained and guard-explained drops are almost always routine data quality work
 - Unexplained drops (scored files on disk but not in output) can indicate a logic change or bug
 
 Please respond in exactly this format:
@@ -305,11 +381,13 @@ async function main() {
 
   // Build top-10 table
   const tableRows = regressions.slice(0, 15).map(r => {
-    const explainedPct = r.flaggedScored ? Math.round((r.flaggedScored / r.dropped) * 100) : 0;
-    const explainedNote = r.flaggedScored >= r.dropped
-      ? `<span style="color:#2ecc71">fully flag-explained</span>`
-      : r.flaggedScored > 0
-        ? `<span style="color:#f39c12">${explainedPct}% flag-explained</span>`
+    const explained = explainedFor(r);
+    const explainedPct = explained ? Math.round((explained / r.dropped) * 100) : 0;
+    const guardNote = r.guardExcluded ? ' (unopened-show guard)' : '';
+    const explainedNote = explained >= r.dropped
+      ? `<span style="color:#2ecc71">fully explained${guardNote}</span>`
+      : explained > 0
+        ? `<span style="color:#f39c12">${explainedPct}% explained${guardNote}</span>`
         : `<span style="color:#e74c3c">unexplained</span>`;
     return `<tr>
       <td style="padding:5px 10px;border-bottom:1px solid #333;color:#ccc;font-size:12px;">${r.showId}</td>
@@ -414,7 +492,7 @@ ${significantDrift.length > 0 ? `
     console.log('[Drop Analysis] Email sent:', subject);
     // Record send time for cooldown
     fs.mkdirSync(TRIAGE_DIR, { recursive: true });
-    fs.writeFileSync(cooldownFile, JSON.stringify({ lastSent: new Date().toISOString(), verdict, totalDropped, shows: regressions.length }) + '\n');
+    fs.writeFileSync(cooldownFile, JSON.stringify({ lastSent: new Date().toISOString(), verdict, totalDropped, shows: regressions.length, signature: dropSignature }) + '\n');
   } catch (err) {
     console.error('[Drop Analysis] Email failed:', err.message);
     process.exit(1);

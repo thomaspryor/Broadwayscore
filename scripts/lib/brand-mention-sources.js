@@ -163,7 +163,11 @@ async function fetchRedditMentions(keywords = DEFAULT_KEYWORDS, { limit = 50, ti
     const url = `https://www.reddit.com/search.json?q=${encodeURIComponent(searchQuery)}&sort=new&restrict_sr=off&limit=${limit}&t=${encodeURIComponent(timeWindow)}&raw_json=1`;
     let data;
     try {
-      data = await fetchWithFallback(url);
+      // allowRss: this caller treats Reddit as a capped counter/sample source
+      // (Social Pulse, brand monitor) — the RSS fallback's 25-entry cap with
+      // no real pagination cursor is an accepted tradeoff here. Deep-pagination
+      // callers (searchAllPosts via searchSubreddit) do NOT opt in.
+      data = await fetchWithFallback(url, 0, { allowRss: true });
     } catch (e) {
       console.warn(`[reddit] search failed for "${keyword}": ${e.message}`);
       // strict callers (Social Pulse counters) need "provider outage" to be

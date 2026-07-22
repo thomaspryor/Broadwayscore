@@ -161,8 +161,11 @@ jobs:
             cutoff.setHours(0,0,0,0);
             const market = '$MARKET';
             // Trusted sources for WE press night dates — only fire orchestrator
-            // when we're confident the date is a real press night, not a preview
-            const TRUSTED_SOURCES = new Set(['theatremonkey', 'playbill', 'ibdb', 'manual']);
+            // pre-open when we're confident the date is a real press night, not
+            // a preview. Canonical whitelist lives in scripts/lib/press-night-trust.js
+            // (NOT date-source-confidence.js — that predicate has the opposite
+            // default and would trust estimated:*/review-open-signal dates).
+            const { isTrustedPressNightSource } = require('./scripts/lib/press-night-trust.js');
             const opened = shows.filter(s => {
               const cat = s.category || 'broadway';
               // OB/OWE shows frequently open "cold" with no formal press night, so
@@ -193,7 +196,7 @@ jobs:
               // Safe to enable: broadcasts are never auto-sent — they only create an
               // owner-reviewed Resend draft — so the source-quality risk lives on the
               // broadcast (manual-approval) side, not discovery. Notion: WE discovery gap.
-              if (cat === 'west-end' && !TRUSTED_SOURCES.has(s.openingDateSource)
+              if (cat === 'west-end' && !isTrustedPressNightSource(s.openingDateSource)
                   && s.status !== 'open') {
                 return false;
               }

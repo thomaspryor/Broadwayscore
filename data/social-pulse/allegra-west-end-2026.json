@@ -1,51 +1,58 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "allegra-west-end-2026",
   "showTitle": "Allegra",
   "market": "West End",
-  "fetchedAt": "2026-07-20T07:55:00.200Z",
-  "tier": "Steady",
-  "volume": 32,
-  "positivePct": 93,
-  "weekOverWeekPct": 3,
-  "baselineMultiple": 1.03,
+  "fetchedAt": "2026-07-22T01:11:11.710Z",
+  "tier": "Hidden",
+  "volume": 10,
+  "effectiveVolume": 1.4,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0,
+      "bluesky": 1
+    },
+    "overall": 0.5
+  },
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 21,
-    "tiktok": 9,
-    "instagram": 2,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 0,
+    "bluesky": 1
   },
   "topQuotes": [
     {
       "text": "Never one to waste a weekend. I’m back in the West End today see the wonderful Dame Maureen Lipman in ‘Allegra.…",
-      "platform": "instagram",
-      "author": "@terrye29",
-      "url": "https://www.instagram.com/p/Da-dl1KsSZ5/"
-    },
-    {
-      "text": "Dame Maureen Lipman stars in Allegra - playing in London’s West End this summer ☀️ #actor #london #theatre #comedy #fyp",
-      "platform": "tiktok",
-      "author": "@johnnyljenkins",
-      "url": "https://www.tiktok.com/@johnnyljenkins/video/7661559506752572694"
+      "platform": "bluesky",
+      "author": "@terrye63.bsky.social",
+      "url": "https://bsky.app/profile/terrye63.bsky.social/post/3mqyuz7t7ck2s"
     }
   ],
-  "xTrueVolume": 8,
-  "baseline": {
-    "mean": 31.5,
-    "weeksOfHistory": 2
+  "counters": {
+    "reddit": 1,
+    "bluesky": 1,
+    "x": 8,
+    "wikipedia": null
   },
-  "costUsd": 0.10276,
+  "wikipediaTitle": null,
+  "baseline": {
+    "mean": 10,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 33,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 1,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 43,
-    "total": 50,
-    "text": "43/50 West End"
+    "position": 7,
+    "total": 46,
+    "text": "7/46 West End"
   },
-  "compositeScore": 29.76
+  "compositeScore": 1.4
 }

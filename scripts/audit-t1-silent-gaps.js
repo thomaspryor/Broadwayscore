@@ -38,11 +38,12 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const { classifySilentGap, shouldAlertGap } = require('./lib/t1-silent-gap');
+const { classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap } = require('./lib/t1-silent-gap');
 const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards');
 const { getTier } = require('./lib/outlet-tiers');
 const { AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
-const { decideEmptyBodyRecovery, nextRecoveryCount } = require('./lib/flagged-recovery');
+const { decideEmptyBodyRecovery, nextRecoveryCount, FLAGGED_RECOVERY_CAP } = require('./lib/flagged-recovery');
+const { dispatchRescore } = require('./lib/dispatch-rescore');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { sendAlert } = require('./lib/discord-notify');
 const { execErrorDetail } = require('./lib/exec-error-detail');
@@ -241,10 +242,54 @@ async function main() {
   }
   console.log(`\n${gaps.length} silent gap(s) across ${shows.length} in-window show(s).`);
 
+  const state = loadJson(ALERT_STATE_PATH, {});
+  const now = new Date();
+
+  // Self-heal 'unscored' gaps: dispatch the scoring workflow ourselves instead
+  // of emailing the operator the dispatch command (2026-07-21 Midnight at the
+  // Never Get CRITICAL email). One dispatch per show per DISPATCH_RETRY_HOURS,
+  // stamped in the alert-state file (committed by the workflow) so consecutive
+  // hourly runs don't re-dispatch while scoring is still in flight.
+  let stateDirty = false;
+  if (DO_RECOVER && !DRY_RUN) {
+    const unscoredShowIds = [...new Set(gaps.filter((g) => g.type === 'unscored').map((g) => g.showId))];
+    for (const showId of unscoredShowIds) {
+      const key = `dispatch:${showId}`;
+      if (!shouldDispatchScoring(state[key] || null, now)) continue;
+      const res = await dispatchRescore(showId, { reason: 't1-silent-gap' });
+      if (res.ok) {
+        state[key] = now.toISOString();
+        stateDirty = true;
+        console.log(`  🚀 dispatched LLM Ensemble scoring for ${showId}`);
+      } else {
+        console.warn(`  ⚠️  scoring dispatch failed for ${showId}: ${res.error}`);
+      }
+    }
+  }
+
+  // Email eligibility per gap type — the report file always carries everything:
+  //  - unscored: only after a self-heal dispatch DISPATCH_RETRY_HOURS+ ago
+  //    failed to heal it (never-dispatched gaps get dispatched, not emailed)
+  //  - empty-body with a URL: only once the shared auto-recovery retry cap is
+  //    exhausted (while retries remain, the hourly recover pass owns it)
+  //  - empty-body without a URL / rejected-unscoreable: page immediately —
+  //    there is no automated path
+  const emailEligible = (g) => {
+    if (g.type === 'unscored') return shouldEmailUnscoredGap(state[`dispatch:${g.showId}`] || null, now);
+    if (g.type === 'empty-body' && g.url) return (g.recoveryCount || 0) >= FLAGGED_RECOVERY_CAP;
+    return true;
+  };
+
+  // Persist dispatch stamps even when no email flows this run — without this,
+  // every hourly run re-dispatches the same show until an email happens to fire.
+  if (stateDirty) {
+    fs.mkdirSync(AUDIT_DIR, { recursive: true });
+    fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
+  }
+
   if (DO_ALERT && gaps.length > 0 && !DRY_RUN) {
-    const state = loadJson(ALERT_STATE_PATH, {});
-    const now = new Date();
-    const due = gaps.filter((g) => shouldAlertGap(state[`${g.showId}/${g.file}`], now));
+    const due = gaps.filter(emailEligible)
+      .filter((g) => shouldAlertGap(state[`${g.showId}/${g.file}`], now));
     // One alert field per show+outlet (byline-explosion clusters produce many
     // files for the same missing outlet — the ACTION is the same fix command).
     const seen = new Set();
@@ -301,7 +346,7 @@ async function main() {
         fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
       }
     } else {
-      console.log('All current gaps already alerted within the re-alert window.');
+      console.log('No gaps due to email (already alerted, self-heal dispatch pending, or auto-recovery retries remaining).');
     }
   }
 

@@ -352,11 +352,21 @@ jobs:
             echo "Changes detected in public show JSONs"
             git diff --stat public/data/shows/ | tail -5
           fi
-          if [ "$REVIEWS_CHANGED" = "true" ] || [ "$PUBLIC_CHANGED" = "true" ]; then
+          # Alert cooldown/dedup state (drop-analysis) must ride this commit even
+          # when the rebuild output itself is unchanged — otherwise a run that
+          # emailed but produced no diff never persists its cooldown and the
+          # next run re-emails (Codex review finding on the 2026-07-21 fix).
+          # --porcelain (not diff) so a brand-new untracked state file counts.
+          TRIAGE_CHANGED=false
+          if [ -n "$(git status --porcelain data/audit/triage/ 2>/dev/null)" ]; then
+            TRIAGE_CHANGED=true
+            echo "Changes detected in data/audit/triage/ (alert state)"
+          fi
+          if [ "$REVIEWS_CHANGED" = "true" ] || [ "$PUBLIC_CHANGED" = "true" ] || [ "$TRIAGE_CHANGED" = "true" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No changes to reviews.json or public show JSONs"
+            echo "No changes to reviews.json, public show JSONs, or alert state"
           fi
 
       - name: Check for large files
@@ -379,6 +389,10 @@ jobs:
           # Core data files pushed to private repo by push-core-data action
           # Stage all audit files modified by rebuild (not just critic-outlet-affinity)
           git add data/audit/*.json 2>/dev/null || true
+          # Alert cooldown/dedup state — the *.json glob above does not descend
+          # into triage/, so the drop-analysis 48h cooldown never persisted and
+          # identical NEEDS_REVIEW emails fired every rebuild (2026-07-21: 4 in 2h).
+          git add data/audit/triage/*.json 2>/dev/null || true
           # Stage deletions of orphan-unscored marker files. verify-all-scored.js
           # deletes them when scores have filled in; without -u those deletions
           # never make it back to main and the broadcast gate stays permanently

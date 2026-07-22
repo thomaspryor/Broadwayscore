@@ -13,6 +13,17 @@ on:
         required: false
         default: false
 
+# Serialize schedule + manual-dispatch runs against the same data/lottery-rush.json
+# (+ data/show-schedules.json). Both files are pushed via the plain public-repo
+# push-with-retry.sh, whose generic conflict fallback is "accept remote" — on a
+# push race, the losing run's freshly-scraped policy changes are silently
+# discarded (same class as the update-cast-changes.yml incident, Notion
+# 3a5637c5-416f-812a). Same shape here: a Mon/Thu 10 AM UTC cron overlapping a
+# manual dispatch. Queued, not cancelled, to avoid losing either run's writes.
+concurrency:
+  group: update-lottery-rush
+  cancel-in-progress: false
+
 jobs:
   update-lottery-rush:
     runs-on: ubuntu-latest

@@ -1,51 +1,58 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "the-outsiders-2024",
   "showTitle": "The Outsiders",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:47:31.367Z",
-  "tier": "Steady",
-  "volume": 165,
-  "positivePct": 82,
-  "weekOverWeekPct": -4,
-  "baselineMultiple": 1.01,
+  "fetchedAt": "2026-07-22T01:06:24.397Z",
+  "tier": "Hidden",
+  "volume": 16,
+  "effectiveVolume": 1.6,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.3333333333333333,
+      "bluesky": 0
+    },
+    "overall": 0.2857142857142857
+  },
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 145,
-    "tiktok": 19,
-    "instagram": 1,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 2,
+    "bluesky": 0
   },
   "topQuotes": [
     {
-      "text": "I have seen many musicals and THE OUTSIDERS has made it’s way to my top 5 coming in as number 2. Wow, i am truly…",
-      "platform": "tiktok",
-      "author": "@aboostofserotonin",
-      "url": "https://www.tiktok.com/@aboostofserotonin/video/7625380342572141838"
-    },
-    {
-      "text": "kudos to the outsiders on broadway for having their first ponyboy who's not marked with evil",
-      "platform": "x",
-      "author": "@bobbystivic",
-      "url": "https://x.com/bobbystivic/status/2019051822132904412"
+      "text": "Saw The Outsiders musical on Friday!! When Ponyboy made his way thru the aisles and up to the stage, the lights were…",
+      "platform": "reddit",
+      "author": "u/crystalbethjo",
+      "url": "https://www.reddit.com/r/Broadway/comments/1v0pota/saw_the_outsiders_musical_on_friday/"
     }
   ],
-  "xTrueVolume": 14,
-  "baseline": {
-    "mean": 164.08290059643332,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 6,
+    "bluesky": 1,
+    "x": 9,
+    "wikipedia": 2802
   },
-  "costUsd": 0.1307,
+  "wikipediaTitle": "The Outsiders (musical)",
+  "baseline": {
+    "mean": 16,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 6,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 17,
-    "total": 35,
-    "text": "17/35 Broadway"
+    "position": 20,
+    "total": 30,
+    "text": "20/30 Broadway"
   },
-  "compositeScore": 135.3
+  "compositeScore": 1.6
 }

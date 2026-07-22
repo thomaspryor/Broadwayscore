@@ -627,9 +627,10 @@ export interface ShowCastChanges {
   currentCast?: CastMember[];
   upcoming?: CastEvent[];
   // Past stints no longer in currentCast, written by
-  // scripts/scrape-cast-changes.js:cleanExpiredEvents. Not currently read by
-  // getCastChanges() (data-cast.ts) — an audit trail for now, not wired into
-  // the public /cast-changes page.
+  // scripts/scrape-cast-changes.js:cleanExpiredEvents. Surfaced on the show
+  // page via getCastChanges() (data-cast.ts) + CastUpdatesCard's "Previously
+  // in This Show" section — NOT read by the /cast-changes aggregator page,
+  // which only shows live upcoming events.
   history?: CastHistoryEntry[];
 }
 
