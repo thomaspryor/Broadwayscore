@@ -456,7 +456,14 @@ export default function ImportShows({
     const entry = entries[index];
     if (!entry) return;
     setLiveResolve(prev => ({ ...prev, [index]: { status: 'searching' } }));
-    await ensureSearchData();
+    try {
+      await ensureSearchData();
+    } catch (err) {
+      // Without this, a failed catalog fetch stranded the row on "Searching…"
+      // forever — the "Find it" button only re-renders when !liveResolve.
+      setLiveResolve(prev => ({ ...prev, [index]: { status: 'error', message: err instanceof Error ? err.message : MEZZANINE_SEARCH_ERROR_COPY.internal } }));
+      return;
+    }
     // Our own merged catalog first — covers productions Mezzanine's
     // user-generated database has no coverage of at all (e.g. the Met Opera
     // has zero Mezzanine productions, card 3a5637c5) — shown above Mezzanine
@@ -490,11 +497,16 @@ export default function ImportShows({
   const pickCandidateForRow = useCallback((index: number, candidate: FindItCandidate) => {
     if (candidate.source === 'catalog') {
       const show = candidate.show;
+      // Mirror matchAndPreview's alreadyOwned check (line ~304/326) — a
+      // picked catalog show can be one the user already reviewed/watchlisted,
+      // and without this it displays as a fresh importable row.
+      const alreadyOwned = existingReviewShowIds.has(show.id) || existingWatchlistShowIds.has(show.id);
       setEntries(prev => prev.map((e, i) => i === index ? {
         ...e,
         match: show,
         matchScore: 1,
-        selected: true,
+        selected: !alreadyOwned,
+        alreadyOwned,
         dateSuspect: false,
       } : e));
       setLiveResolve(prev => { const next = { ...prev }; delete next[index]; return next; });
@@ -514,7 +526,7 @@ export default function ImportShows({
       dateSuspect: false,
     } : e));
     setLiveResolve(prev => { const next = { ...prev }; delete next[index]; return next; });
-  }, [userId]);
+  }, [userId, existingReviewShowIds, existingWatchlistShowIds]);
 
   const handleImport = useCallback(async () => {
     setStep('importing');
