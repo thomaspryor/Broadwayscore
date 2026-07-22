@@ -195,13 +195,19 @@ function shouldDispatchScoring(lastDispatchAt, now) {
  * chance: a scoring dispatch happened at least DISPATCH_RETRY_HOURS ago and
  * the gap still classifies. Never-dispatched or freshly-dispatched gaps stay
  * out of the email (they are recorded in the report either way).
+ *
+ * A PRESENT-but-unparseable stamp escalates (returns true): treating garbage
+ * as "never dispatched" here while shouldDispatchScoring treats it as
+ * "dispatch now" would re-dispatch forever with zero operator visibility
+ * (ship-check finding). One email + one re-dispatch, and a successful
+ * dispatch overwrites the corrupt stamp.
  * @param {string|null} lastDispatchAt
  * @param {Date} now
  */
 function shouldEmailUnscoredGap(lastDispatchAt, now) {
   if (!lastDispatchAt) return false;
   const last = Date.parse(lastDispatchAt);
-  if (Number.isNaN(last)) return false;
+  if (Number.isNaN(last)) return true;
   return now.getTime() - last >= DISPATCH_RETRY_HOURS * 3600000;
 }
 

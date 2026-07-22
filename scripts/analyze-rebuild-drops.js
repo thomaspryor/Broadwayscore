@@ -24,6 +24,7 @@ const { execSync } = require('child_process');
 const { CLAUDE_SONNET } = require('./lib/models');
 
 const { isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
+const { hasValidScore, passesFlagFilters } = require('./lib/review-text-scoreable');
 
 // BSC_DATA_ROOT: worktree sessions point at the main checkout's data/ (the
 // private review-texts clone only exists there).
@@ -104,7 +105,14 @@ function countGuardExcluded(showId) {
       if (!f.endsWith('.json')) continue;
       try {
         const d = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, showId, f), 'utf8'));
-        if (isPrematureReviewForUnopenedShow(d, show)) n++;
+        // Only SCORED, UNFLAGGED premature files can explain a drop:
+        //  - a regression counts scored reviews that vanished, so an unscored
+        //    premature husk never contributed to the old count (Codex finding)
+        //  - a file already carrying wrongProduction/wrongShow/etc. is counted
+        //    by the rebuild's own flaggedScored — counting it here too would
+        //    double-credit one file (ship-check finding); passesFlagFilters is
+        //    the canonical flag gate.
+        if (isPrematureReviewForUnopenedShow(d, show) && hasValidScore(d) && passesFlagFilters(d, show)) n++;
       } catch { /* unreadable file — not evidence either way */ }
     }
   } catch { return 0; }
@@ -166,10 +174,12 @@ const cooldownFile = path.join(TRIAGE_DIR, 'drop-analysis-alert.json');
 // Same-incident signature: the set of affected shows and their drop counts.
 // A repeat of an already-emailed incident stays silent for 7 days even after
 // the 48h global cooldown lapses; a DIFFERENT drop pattern emails normally.
+// Unexplained total is part of the signature: the same raw drop pattern whose
+// explained portion shrinks (drops turn unexplained) is a NEW incident.
 const dropSignature = regressions
   .map(r => `${r.showId}:-${r.dropped}`)
   .sort()
-  .join('|');
+  .join('|') + `|u${totalUnexplained}`;
 if (!FORCE && !DRY_RUN) {
   const cooldown = loadJSON(cooldownFile);
   if (cooldown?.lastSent) {

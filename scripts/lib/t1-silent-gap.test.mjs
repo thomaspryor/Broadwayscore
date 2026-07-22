@@ -175,9 +175,10 @@ test('dispatch policy: never-dispatched dispatches; <6h suppresses; 7h-old re-di
   assert.equal(shouldDispatchScoring('garbage', NOW), true);
 });
 
-test('unscored email policy: never-dispatched never emails; fresh dispatch suppresses; stale failed dispatch escalates', () => {
+test('unscored email policy: never-dispatched never emails; fresh dispatch suppresses; stale failed dispatch escalates; corrupt stamp escalates', () => {
   assert.equal(shouldEmailUnscoredGap(null, NOW), false);
-  assert.equal(shouldEmailUnscoredGap('garbage', NOW), false);
+  // Present-but-corrupt stamp escalates — silent forever-redispatch guard.
+  assert.equal(shouldEmailUnscoredGap('garbage', NOW), true);
   assert.equal(shouldEmailUnscoredGap('2026-07-18T08:00:00Z', NOW), false); // 4h ago — scoring still in flight
   assert.equal(shouldEmailUnscoredGap('2026-07-18T05:00:00Z', NOW), true); // 7h ago and still gapped
 });
