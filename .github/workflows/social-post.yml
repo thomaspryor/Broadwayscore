@@ -42,12 +42,12 @@ on:
 # queue them, but GitHub only holds ONE pending run per group — a 3rd dispatch
 # while one run is active and one is queued silently cancels the queued run's
 # social post (see the Cats 2026-04-07 poller postmortem; same fix applied to
-# update-mezzanine.yml/update-show-score.yml/update-reddit-sentiment.yml).
-# Residual risk: two runs racing on data/social-post-history.json (pushed via
-# plain push-with-retry.sh, generic "accept remote" fallback) could drop one
-# run's history entry — narrower and lower-severity than losing an entire
-# show's post outright, and it only self-corrects wrong if the lost entry was
-# guarding against a real duplicate-post check next run.
+# update-mezzanine.yml/update-show-score.yml/update-reddit-sentiment.yml). This
+# group is unique per run by construction, so it does NOT serialize concurrent
+# runs against each other — concurrent pushes to data/social-post-history.json
+# are expected and handled by a real merge (mergeSocialPostHistory, wired into
+# push-with-retry.sh's resolve_conflicts()) instead, the same pattern used for
+# diary-shows.json's multi-writer race.
 concurrency:
   group: social-post-${{ github.run_id }}
   cancel-in-progress: false

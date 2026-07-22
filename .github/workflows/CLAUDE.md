@@ -367,7 +367,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Note:** Session token may expire. To refresh, intercept Mezzanine iOS app traffic via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.
 
 ## `update-lottery-rush.yml`
-- **Runs:** Weekly (Mondays 10 AM UTC / 5 AM EST), or manually
+- **Runs:** Twice-weekly (Mondays + Thursdays 10 AM UTC / 5 AM EST), or manually
 - **Does:** Scrapes BwayRush.com (ScrapingBee with JS rendering → HTML→markdown → regex parsing) and Playbill lottery/rush article (ScrapingBee → Claude Sonnet LLM extraction). Incrementally merges into `data/lottery-rush.json`, syncs tags in `data/shows.json`.
 - **Script:** `scripts/scrape-lottery-rush.js`
 - **Requires:** `SCRAPINGBEE_API_KEY`, `ANTHROPIC_API_KEY`

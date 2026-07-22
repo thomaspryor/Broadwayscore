@@ -274,6 +274,24 @@ resolve_conflicts() {
           git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         fi
         ;;
+      data/social-post-history.json)
+        # Array-of-posts merge. social-post.yml uses a PER-RUN concurrency group
+        # (not static — update-show-status.yml dispatches it per-show in a tight
+        # loop, and a static group risks GitHub's 1-pending-queue limit dropping a
+        # show's post), so concurrent pushes for different shows are expected and
+        # need a real merge here rather than serialization. The generic "accept
+        # remote" case below would silently drop one run's new post entry,
+        # defeating generate-social-post.js's duplicate-post check on the next
+        # run. mergeSocialPostHistory unions both sides by tweetId; ours wins on
+        # shared keys. Card 3a5637c5-416f-812a.
+        echo "  Auto-resolving (social-post-history merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::social-post-history merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
       *)
         # Other data files: accept remote (other workflows' changes)
         echo "  Auto-resolving (keep remote): $file"
