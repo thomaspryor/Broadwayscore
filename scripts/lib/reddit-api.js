@@ -307,6 +307,8 @@ function parseRedditAtom(xml) {
     let author = authorMatch ? decodeXmlEntities(authorMatch[1]).trim() : undefined;
     if (author) author = author.replace(/^\/u\//, '');
 
+    const parsedTs = publishedMatch ? Date.parse(publishedMatch[1]) : NaN;
+
     return {
       kind: 't3',
       data: {
@@ -317,17 +319,29 @@ function parseRedditAtom(xml) {
         title: titleMatch ? decodeXmlEntities(titleMatch[1]).trim() : '',
         selftext: contentText,
         author,
-        created_utc: publishedMatch ? Date.parse(publishedMatch[1]) / 1000 : undefined,
+        created_utc: Number.isFinite(parsedTs) ? parsedTs / 1000 : undefined,
         num_comments: numCommentsMatch ? parseInt(numCommentsMatch[1], 10) : undefined,
       },
     };
   }).filter((c) => c.data.id); // drop entries we couldn't extract a post ID from
 
+  if (children.length < entryBlocks.length) {
+    console.warn(`  Reddit RSS: dropped ${entryBlocks.length - children.length}/${entryBlocks.length} entries (no parseable comments permalink)`);
+  }
+
   return { data: { children, after: null } };
 }
 
-/** Fetch a reddit search.rss feed via native fetch() (same TLS-fingerprint trick as fetchRedditDirect). */
+/**
+ * Fetch a reddit search.rss feed via native fetch() (same TLS-fingerprint
+ * trick as fetchRedditDirect). Shares the adaptive rate-limit clock with the
+ * JSON path (enforceRateLimit) so repeated per-show calls in a pipeline loop
+ * don't hammer Reddit at zero pacing, and a 429 here escalates the SAME
+ * backoff the JSON path uses — RSS getting rate-limited is still "Reddit is
+ * rate-limiting us," not a separate problem.
+ */
 async function fetchViaRedditRSS(url) {
+  await enforceRateLimit();
   const rssUrl = toRssUrl(url);
   const res = await fetch(rssUrl, {
     headers: {
@@ -335,6 +349,11 @@ async function fetchViaRedditRSS(url) {
       'Accept': 'application/atom+xml, application/rss+xml, text/xml',
     },
   });
+  if (res.status === 429) {
+    rateLimitCount++;
+    stats.rateLimits++;
+    throw new Error('Reddit RSS HTTP 429 rate limited');
+  }
   if (res.status !== 200) {
     throw new Error(`Reddit RSS HTTP ${res.status}`);
   }
@@ -555,14 +574,14 @@ async function fetchViaOauth(url, isRetry = false) {
   });
 }
 
-async function fetchWithFallback(url, retryCount = 0) {
+async function fetchWithFallback(url, retryCount = 0, opts = {}) {
   // Circuit breaker: if too many consecutive failures, stop wasting time
   if (circuitBroken) {
     throw new Error('Circuit breaker open: all Reddit sources failing consistently. Aborting to save time.');
   }
 
   try {
-    const result = await _fetchWithFallbackInner(url, retryCount);
+    const result = await _fetchWithFallbackInner(url, retryCount, opts);
     // Success — reset circuit breaker counter
     consecutiveFailures = 0;
     return result;
@@ -576,7 +595,7 @@ async function fetchWithFallback(url, retryCount = 0) {
   }
 }
 
-async function _fetchWithFallbackInner(url, retryCount = 0) {
+async function _fetchWithFallbackInner(url, retryCount = 0, opts = {}) {
   // Official OAuth API first when credentials exist — free, uncapped enough
   // (100/min), no proxy needed. Falls through to the proxy chain on failure.
   if (hasOauthCreds()) {
@@ -649,15 +668,15 @@ async function _fetchWithFallbackInner(url, retryCount = 0) {
       if (retryCount < MAX_RETRIES) {
         stats.backoffRetries++;
         await sleep(delay);
-        return _fetchWithFallbackInner(url, retryCount + 1);
+        return _fetchWithFallbackInner(url, retryCount + 1, opts);
       }
       // Max retries — try proxies
-      return switchToProxy(url);
+      return switchToProxy(url, opts);
     }
 
     if (e.code === 'FORBIDDEN' || e.code === 'HTML_RESPONSE') {
       console.warn(`  Reddit ${e.code}, switching to proxy`);
-      return switchToProxy(url);
+      return switchToProxy(url, opts);
     }
 
     // Other errors
@@ -669,10 +688,16 @@ async function _fetchWithFallbackInner(url, retryCount = 0) {
 /**
  * Switch to proxy fallback chain: Bright Data → Scrapingdog → ScrapingBee
  */
-async function switchToProxy(url) {
+async function switchToProxy(url, opts = {}) {
   // RSS fallback first: free, unauthenticated, and independent of every
   // proxy's credit budget. Only search endpoints have a .rss sibling.
-  if (url.includes('/search.json')) {
+  // Opt-in only (opts.allowRss) — RSS caps at 25 results with no real `after`
+  // cursor (parseRedditAtom always returns after:null), which would silently
+  // truncate callers that paginate for deep result sets (searchAllPosts via
+  // searchSubreddit, used by scrape-reddit-sentiment.js requesting up to 300).
+  // Only brand-mention-sources.js's fetchRedditMentions opts in — it already
+  // treats Reddit as a capped counter/sample source, not a paginated corpus.
+  if (opts.allowRss && url.includes('/search.json')) {
     try {
       console.warn('  Reddit JSON blocked — trying RSS fallback (search.rss)...');
       return await fetchViaRedditRSS(url);
