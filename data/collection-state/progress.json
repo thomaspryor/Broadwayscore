@@ -1,44 +1,27 @@
 {
-  "processed": [],
-  "failed": [
-    "dukes-off-broadway-2026/nytimes--helen-shaw.json",
-    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+  "processed": [
+    "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json"
   ],
+  "failed": [],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "the-whoopi-monologues-off-broadway-2026/thewrap--robert-hofler.json"
+    ]
   },
-  "startTime": "2026-07-22T06:57:15.570Z",
-  "lastProcessed": "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-  "log": [
-    {
-      "t": "2026-07-22T06:57:21.083Z",
-      "event": "bb-session",
-      "session": "c7e98edc",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
-    {
-      "t": "2026-07-22T06:57:22.097Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-22T06:57:38.023Z",
-      "event": "bb-session",
-      "session": "e827e59b",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
-    {
-      "t": "2026-07-22T06:57:39.061Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "startTime": "2026-07-22T06:57:01.678Z",
+  "lastProcessed": "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+  "log": []
 }
