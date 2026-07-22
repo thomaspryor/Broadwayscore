@@ -367,6 +367,16 @@ async function main() {
   for (const r of ok) byTier[r.tier] = (byTier[r.tier] || 0) + 1;
   console.log(`Processed ${ok.length}/${results.length}, failures: ${failed}`);
   console.log('Tier breakdown:', byTier);
+  // Reddit source mix — the .rss fallback (scripts/lib/reddit-api.js) is the
+  // free, SB-independent path this pipeline relies on. If redditRss silently
+  // drops to 0 while scrapingDog/scrapingBee climb, Reddit has started
+  // blocking the RSS endpoint too and the "free path" premise has quietly
+  // failed — this line is the only place that would show it.
+  const redditStats = require('./lib/reddit-api').getStats();
+  console.log(
+    `Reddit source mix: rss=${redditStats.redditRss} direct=${redditStats.redditDirect} ` +
+      `brightData=${redditStats.brightData} scrapingDog=${redditStats.scrapingDog} scrapingBee=${redditStats.scrapingBee}`,
+  );
 
   // ---------- Fleet health guards ----------
   // Only meaningful for multi-show runs; a single-show run can't establish
