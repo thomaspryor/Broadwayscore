@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-21T22:23:19.971Z",
+  "generatedAt": "2026-07-22T00:22:17.081Z",
   "windowDays": 45,
-  "showsScanned": 54,
+  "showsScanned": 55,
   "gaps": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -10,11 +10,97 @@
       "file": "artsdesk--rachel-halliburton.json",
       "outletId": "artsdesk",
       "tier": 2,
-      "type": "empty-body",
+      "type": "unscored",
       "url": "https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original",
       "recovery": null,
       "recoveryCount": 3,
-      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original --outlet=artsdesk --critic=\"Rachel Halliburton\"   # run LOCALLY (cookie jar lives on the Mac)"
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=jesus-christ-superstar-west-end-2026"
+    },
+    {
+      "showId": "midnight-at-the-never-get-west-end-2026",
+      "title": "Midnight at the Never Get",
+      "openingDate": "2026-07-20",
+      "file": "london-theatre--aliya-al-hassan.json",
+      "outletId": "london-theatre",
+      "tier": 2,
+      "type": "unscored",
+      "url": null,
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=midnight-at-the-never-get-west-end-2026"
+    },
+    {
+      "showId": "midnight-at-the-never-get-west-end-2026",
+      "title": "Midnight at the Never Get",
+      "openingDate": "2026-07-20",
+      "file": "telegraph--marianka-swain.json",
+      "outletId": "telegraph",
+      "tier": 1,
+      "type": "unscored",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/midnight-at-the-never-get-review/",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=midnight-at-the-never-get-west-end-2026"
+    },
+    {
+      "showId": "midnight-at-the-never-get-west-end-2026",
+      "title": "Midnight at the Never Get",
+      "openingDate": "2026-07-20",
+      "file": "theatre-weekly--greg-stewart.json",
+      "outletId": "theatre-weekly",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://theatreweekly.com/review-midnight-at-the-never-get-at-menier-chocolate-factory/",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 126 chars — pattern may be missing for this outlet. Add an entry to scri"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=midnight-at-the-never-get-west-end-2026 --url=https://theatreweekly.com/review-midnight-at-the-never-get-at-menier-chocolate-factory/ --outlet=theatre-weekly --critic=\"Greg Stewart\"   # run LOCALLY (cookie jar lives on the Mac)"
+    },
+    {
+      "showId": "midnight-at-the-never-get-west-end-2026",
+      "title": "Midnight at the Never Get",
+      "openingDate": "2026-07-20",
+      "file": "thestage--holly-omahony.json",
+      "outletId": "thestage",
+      "tier": 1,
+      "type": "unscored",
+      "url": "https://www.thestage.co.uk/reviews/midnight-at-the-never-get-review-menier-chocolate-factory-ben-platt",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=midnight-at-the-never-get-west-end-2026"
+    },
+    {
+      "showId": "midnight-at-the-never-get-west-end-2026",
+      "title": "Midnight at the Never Get",
+      "openingDate": "2026-07-20",
+      "file": "timeout-london--tom-wicker.json",
+      "outletId": "timeout-london",
+      "tier": 1,
+      "type": "unscored",
+      "url": "https://www.timeout.com/london/theatre/midnight-at-the-never-get-review",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=midnight-at-the-never-get-west-end-2026"
+    },
+    {
+      "showId": "midnight-at-the-never-get-west-end-2026",
+      "title": "Midnight at the Never Get",
+      "openingDate": "2026-07-20",
+      "file": "times-uk--clive-davis.json",
+      "outletId": "times-uk",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/midnight-at-the-never-get-review-menier-chocolate-factory-jskrl77l9#:~:text=Gregor%20Milne%20as%20Arthur%20and,Clive%20Davis%2C%20Chief%20Theatre%20Critic",
+      "recovery": {
+        "attempted": true,
+        "ok": true,
+        "reason": null
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=midnight-at-the-never-get-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/midnight-at-the-never-get-review-menier-chocolate-factory-jskrl77l9#:~:text=Gregor%20Milne%20as%20Arthur%20and,Clive%20Davis%2C%20Chief%20Theatre%20Critic --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)"
     }
   ]
 }
