@@ -1505,10 +1505,15 @@ function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string | 
 
 /** Wraps card content in a Link when href is set, plain div otherwise. In
  *  practice getShowHref() always returns a URL now (diary-only shows link to
- *  /diary-show/[id]) — this is defensive for a future caller that passes null. */
-function CardLinkOrDiv({ href, className, children }: { href: string | null; className?: string; children: ReactNode }) {
+ *  /diary-show/[id]) — this is defensive for a future caller that passes null.
+ *  ariaLabel is required whenever children include their own labelled
+ *  buttons (Edit/Delete/Remove) — without it, an unlabelled anchor's
+ *  accessible name is computed FROM those descendants' text, so a query for
+ *  e.g. "Edit rating" matches this whole-card link too (test-red incident,
+ *  2026-07-21). */
+function CardLinkOrDiv({ href, className, children, ariaLabel }: { href: string | null; className?: string; children: ReactNode; ariaLabel?: string }) {
   if (href) {
-    return <Link href={href} className={className}>{children}</Link>;
+    return <Link href={href} className={className} aria-label={ariaLabel}>{children}</Link>;
   }
   return <div className={className}>{children}</div>;
 }
@@ -1539,7 +1544,7 @@ function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview;
 
   return (
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <CardLinkOrDiv href={href} className="relative">
+      <CardLinkOrDiv href={href} className="relative" ariaLabel={`View ${title}`}>
         <div className="aspect-[2/3] bg-surface-overlay">
           <Poster url={show?.posterUrl} iconClass="text-3xl" />
         </div>
@@ -1661,7 +1666,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
 
   return (
     <div className="group/wl flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden" data-watchlist-future-dated={isFutureDated}>
-      <CardLinkOrDiv href={href} className="relative">
+      <CardLinkOrDiv href={href} className="relative" ariaLabel={`View ${title}`}>
         <div className="aspect-[2/3] bg-surface-overlay relative">
           <Poster url={show?.posterUrl} iconClass="text-3xl" />
           {/* Poster badges live TOP-LEFT: the rate strip owns the bottom and

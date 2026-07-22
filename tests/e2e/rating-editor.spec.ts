@@ -81,8 +81,15 @@ for (const vp of VIEWPORTS) {
       // Regression: ?rate=1 opens the editor before the watchlist fetch
       // resolves, so the diary's "Saw Jun 24" date arrived after mount and the
       // field stayed on today (owner report, 2026-07-17).
+      //
+      // No assertion on the pre-suggestion "today" value here — the fixture's
+      // 800ms delay can already have elapsed by the time this check runs on a
+      // loaded CI runner (page nav + hydration alone can exceed 800ms), so
+      // asserting the transient state was a race (test-red incident,
+      // 2026-07-21). That starting state is covered separately by 'date
+      // defaults to today for a new rating' above; this test only needs to
+      // verify the late value lands correctly.
       await goToEditor(page, '?suggestDelayed=2026-06-24');
-      await expect(page.locator('input[type="date"]')).toHaveValue(localToday());
       await expect(page.locator('input[type="date"]')).toHaveValue('2026-06-24', { timeout: 5000 });
       await expect(page.getByTestId('date-seen-display')).toContainText('Jun 24, 2026');
     });
