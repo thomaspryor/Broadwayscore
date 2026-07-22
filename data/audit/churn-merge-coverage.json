@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-22T02:56:09.442Z",
+    "generatedAt": "2026-07-22T03:06:46.586Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -40,7 +40,7 @@
     },
     {
       "path": "data/audit/validation/collection-report-2026-07-19.json",
-      "churn": 48
+      "churn": 47
     },
     {
       "path": "data/audit/we-gate-proving.json",
@@ -86,7 +86,7 @@
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 62
+      "churn": 61
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
@@ -100,22 +100,22 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 870,
+      "churn": 866,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 860,
+      "churn": 855,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 654,
+      "churn": 653,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 637,
+      "churn": 639,
       "mergeAttr": "union"
     },
     {
@@ -125,12 +125,12 @@
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 244,
+      "churn": 242,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 244,
+      "churn": 242,
       "mergeAttr": "ours"
     },
     {
@@ -144,18 +144,18 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 89,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/verify-all-scored-state.json",
       "churn": 88,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
+      "churn": 86,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
-      "churn": 82,
+      "churn": 79,
       "mergeAttr": "ours"
     },
     {
@@ -224,18 +224,18 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/a-walk-on-the-moon-off-broadway-2026.json",
-      "churn": 45,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/poller-backoff/the-guilty-west-end-2026.json",
       "churn": 45,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/a-walk-on-the-moon-off-broadway-2026.json",
+      "churn": 42,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 43,
+      "churn": 42,
       "mergeAttr": "ours"
     },
     {
