@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:ugc": "NEXT_PUBLIC_FEATURES=criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions,userAccounts next dev",
     "postinstall": "bash scripts/setup-git-hooks.sh 2>/dev/null || true",
     "prebuild": "bash scripts/prebuild.sh",
     "build": "next build",
+    "build:ugc": "NEXT_PUBLIC_FEATURES=criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions,userAccounts NEXT_PUBLIC_SANITY_DATASET=production SKIP_HEAVY_PREBUILD=true next build",
     "start": "next start",
     "lint": "next lint",
     "lint:design": "node scripts/lint-design-tokens.js",
