@@ -5,7 +5,7 @@
  *   - `flaggedForReview=true && flagReason='cv-promotion-deferred'` reviews
  *     ARE includable (they appear in reviews.json — that's the entire point
  *     of the S3-T5 defer mechanism).
- *   - `passesFlagFilters` in review-text-scoreable.js mirrors this — these
+ *   - the canonical isIncludableForRebuild handles this — these
  *     reviews are scoreable.
  *   - `flaggedForReview=true` with a *different* flagReason must continue
  *     to follow the existing semantics (no new gating on flaggedForReview
@@ -21,8 +21,10 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { isIncludableForRebuild } = require('../../scripts/lib/review-guards.js');
-const { passesFlagFilters, wouldBeIncludedInRebuild } = require('../../scripts/lib/review-text-scoreable.js');
+const { isIncludableForRebuild, hasValidScore } = require('../../scripts/lib/review-guards.js');
+// Sprint 1 unification: the review-text-scoreable.js mirror is deleted. Its
+// passesFlagFilters → isIncludableForRebuild; its wouldBeIncludedInRebuild →
+// isIncludableForRebuild && hasValidScore (the SCORED axis).
 
 function makeBaseReview(overrides = {}) {
   return {
@@ -47,20 +49,20 @@ describe('S3-T6: cv-promotion-deferred carve-out', () => {
     assert.strictEqual(isIncludableForRebuild(data), true);
   });
 
-  test('passesFlagFilters: cv-promotion-deferred review passes', () => {
+  test('isIncludableForRebuild: cv-promotion-deferred review passes', () => {
     const data = makeBaseReview({
       flaggedForReview: true,
       flagReason: 'cv-promotion-deferred',
     });
-    assert.strictEqual(passesFlagFilters(data), true);
+    assert.strictEqual(isIncludableForRebuild(data), true);
   });
 
-  test('wouldBeIncludedInRebuild: cv-promotion-deferred review qualifies', () => {
+  test('isIncludableForRebuild+hasValidScore: cv-promotion-deferred review qualifies', () => {
     const data = makeBaseReview({
       flaggedForReview: true,
       flagReason: 'cv-promotion-deferred',
     });
-    assert.strictEqual(wouldBeIncludedInRebuild(data), true);
+    assert.strictEqual((isIncludableForRebuild(data) && hasValidScore(data)), true);
   });
 
   test('flaggedForReview alone (different flagReason) — existing semantics unchanged for clean review', () => {
@@ -74,7 +76,7 @@ describe('S3-T6: cv-promotion-deferred carve-out', () => {
       flagReason: 'some-other-reason',
     });
     assert.strictEqual(isIncludableForRebuild(data), true);
-    assert.strictEqual(passesFlagFilters(data), true);
+    assert.strictEqual(isIncludableForRebuild(data), true);
   });
 
   test('cv-promotion-deferred + wrongProduction (uncleared) — still excluded by wrongProduction rule', () => {
@@ -86,7 +88,7 @@ describe('S3-T6: cv-promotion-deferred carve-out', () => {
       wrongProduction: true,
     });
     assert.strictEqual(isIncludableForRebuild(data), false);
-    assert.strictEqual(passesFlagFilters(data), false);
+    assert.strictEqual(isIncludableForRebuild(data), false);
   });
 
   test('cv-promotion-deferred + wrongProduction (cleared) — included', () => {
@@ -104,6 +106,6 @@ describe('S3-T6: cv-promotion-deferred carve-out', () => {
   test('no flaggedForReview + no flagReason — clean review still includable', () => {
     const data = makeBaseReview();
     assert.strictEqual(isIncludableForRebuild(data), true);
-    assert.strictEqual(passesFlagFilters(data), true);
+    assert.strictEqual(isIncludableForRebuild(data), true);
   });
 });

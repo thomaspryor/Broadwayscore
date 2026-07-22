@@ -23,7 +23,7 @@ const path = require('path');
 // Canonical "would rebuild include this review-text file?" predicate, shared
 // with scripts/check-review-count-drift.js so both stay in sync. isIncludable
 // ForRebuild is the flag/context filter; hasValidScore is the score-presence
-// half. (Sprint 1 unification — the review-text-scoreable.js mirror is deleted.)
+// half. (Sprint 1 unification — the the deleted scoreable-mirror mirror is deleted.)
 const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards');
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.

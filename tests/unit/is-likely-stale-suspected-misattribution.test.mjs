@@ -24,8 +24,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { isLikelyStaleSuspectedMisattribution } = require('../../scripts/lib/review-guards.js');
-const { passesFlagFilters } = require('../../scripts/lib/review-text-scoreable.js');
+const { isLikelyStaleSuspectedMisattribution, isIncludableForRebuild } = require('../../scripts/lib/review-guards.js');
 
 const longReviewText = 'A real critic review with substance. '.repeat(40);
 
@@ -238,15 +237,15 @@ describe('isLikelyStaleSuspectedMisattribution', () => {
   });
 });
 
-describe('passesFlagFilters — stale suspectedMisattribution override', () => {
-  // passesFlagFilters reads the registry via getCriticRegistry() — disk-backed.
+describe('isIncludableForRebuild — stale suspectedMisattribution override', () => {
+  // isIncludableForRebuild reads the registry via getCriticRegistry() — disk-backed.
   // Cannot inject a registry, so this test exercises the integration with whatever
   // registry the worktree has on disk. Susannah Clapp / guardian must be in
   // knownOutlets there; if not, the regression has regressed.
   test('Susannah Clapp / guardian regression — file passes flag filters', () => {
     const data = { ...SUSANNAH_CLAPP_FLAGGED };
     assert.strictEqual(
-      passesFlagFilters(data),
+      isIncludableForRebuild(data),
       true,
       'Critic-registry must list guardian in knownOutlets for Susannah Clapp; otherwise the gate-side override does not protect the cleared sweep set'
     );
@@ -264,6 +263,6 @@ describe('passesFlagFilters — stale suspectedMisattribution override', () => {
       isFullReview: true,
       contentTier: 'complete',
     };
-    assert.strictEqual(passesFlagFilters(data), false);
+    assert.strictEqual(isIncludableForRebuild(data), false);
   });
 });

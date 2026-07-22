@@ -2992,7 +2992,7 @@ function areSameCriticFuzzy(a, b) {
  * T1-retrieval canonical predicates (Sprint 1, task #291)
  *
  * These unify the "is this outlet's review retrieved / a real review?" checks
- * that previously lived in the now-deleted scripts/lib/review-text-scoreable.js
+ * that previously lived in the now-deleted the deleted scoreable-mirror mirror
  * mirror. Two DISTINCT axes:
  *
  *   SCORED axis    — "will this file reach reviews.json?" — is
@@ -3071,7 +3071,7 @@ function isRejectedNonReview(data) {
 
 // Aggregator excerpt fields that count as retrievable content even when the
 // first-party fullText is absent. Moved verbatim from the deleted
-// review-text-scoreable.js so the RETRIEVED axis has one home.
+// the deleted review-text mirror so the RETRIEVED axis has one home.
 function hasAggregatorExcerpt(data) {
   return !!(
     data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt ||
@@ -3083,7 +3083,7 @@ function hasAggregatorExcerpt(data) {
  * Does this review-text file have any valid score path? Mirrors
  * rebuild-helpers.js:getBestScore priority list (human → adjudicated →
  * originalScore → llmScore → assignedScore → aggregatorStars).
- * Moved verbatim from review-text-scoreable.js (Sprint 1 unification) — the
+ * Moved verbatim from the deleted review-text mirror (Sprint 1 unification) — the
  * SCORED axis's score-presence half. originalScore must be a value rebuild can
  * actually use (a stored normalized number, or a raw string the parser accepts):
  * a truthy-but-unparseable string ("N/A") is NOT a score.
