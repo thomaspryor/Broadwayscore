@@ -15,6 +15,9 @@ aggregator-url-watcher.yml
 audit-aggregator-coverage.yml
 audit-aggregator-gap.yml
 audit-bww-rr-attributions.yml
+# Reverse discovery (missing-show detector): candidates surface in the daily
+# digest via health-check.js; a stale run means at-worst 1-day-late candidates.
+audit-reverse-discovery.yml
 audit-critic-coverage.yml
 audit-cross-production-weekly.yml
 audit-cross-production.yml
