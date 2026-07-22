@@ -49,6 +49,15 @@ const STATE_FILE = path.join(STATE_DIR, 'state.json');
 const REPLY_WINDOW_DAYS = 7; // stop watching a card's comments this long after last activity
 const MAX_ATTEMPTS = 3; // failed runs before the card is un-queued (prevents 5-min crash loops)
 
+// Multi-stage pipelines: one Action click runs the full chain, each stage a
+// FRESH headless session (so Review genuinely has independent eyes on Plan).
+// "Fix" = end-to-end, zero owner involvement. "Plan+Review" = stops after the
+// reviewed plan lands on the card; owner sets Action=Start when satisfied.
+const PIPELINES = {
+  Fix: ['Investigate', 'Plan', 'Review', 'Start'],
+  'Plan+Review': ['Investigate', 'Plan', 'Review'],
+};
+
 function loadState() {
   try {
     return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
@@ -82,13 +91,21 @@ function acquireLock() {
       return true;
     } catch {
       try {
-        const age = Date.now() - fs.statSync(LOCK_FILE).mtimeMs;
-        if (age > 35 * 60 * 1000) {
-          fs.unlinkSync(LOCK_FILE);
-          continue; // stale — retry acquisition once
+        // Liveness first: a dead holder's lock is stale immediately, and a
+        // LIVE holder's lock is never stolen — a Fix pipeline can legitimately
+        // hold it for hours (4 stages × 30 min). Age is only the fallback for
+        // unreadable/foreign PIDs.
+        const holderPid = parseInt(fs.readFileSync(LOCK_FILE, 'utf8'), 10);
+        let holderAlive = false;
+        if (Number.isFinite(holderPid) && holderPid > 0) {
+          try { process.kill(holderPid, 0); holderAlive = true; } catch { holderAlive = false; }
         }
+        if (holderAlive) return false;
+        const age = Date.now() - fs.statSync(LOCK_FILE).mtimeMs;
+        if (!Number.isFinite(holderPid) && age < 150 * 60 * 1000) return false; // unreadable PID: age fallback
+        fs.unlinkSync(LOCK_FILE);
+        continue; // stale — retry acquisition once
       } catch { continue; } // lock vanished between open and stat — retry
-      return false;
     }
   }
   return false;
@@ -331,17 +348,23 @@ Run ALL of these and check output — "looks correct" is not verification:
 
 If ANY check fails, fix before pushing.
 
-## Phase 3: Push & Verify Deploy
-- Push to main
-- If push touches src/public/config: confirm deploy workflow triggered via \`gh run list --limit 3\`
-- If deploy fails: fix it NOW, do not leave it broken
-
-## Phase 4: Ship Check
-After pushing, review your own changes as if you were a different engineer:
-- Read the full diff (\`git diff HEAD~1\`)
+## Phase 3: Ship Check (BEFORE pushing — the push gate enforces this)
+Review your own changes as if you were a different engineer:
+- Read the full diff (\`git diff origin/main\`)
 - Are there any regressions, missing edge cases, or broken callers?
 - Did you introduce any security issues (hardcoded secrets, injection, XSS)?
 - Are there related files that need the same fix but were missed?
+Fix everything you find. THEN record the review verdict — the local pre-push
+gate blocks any push of >30 gated code lines without it:
+\`node scripts/lib/review-gate.mjs --query=record --reviewer=ship-check --result=pass\`
+Record pass ONLY if your review genuinely found no remaining issues; if you fixed
+findings after recording, re-run the record command so the verdict covers the
+final code.
+
+## Phase 4: Push & Verify Deploy
+- Push to main
+- If push touches src/public/config: confirm deploy workflow triggered via \`gh run list --limit 3\`
+- If deploy fails: fix it NOW, do not leave it broken
 
 ## Phase 5: What Else? (Adjacent discoveries)
 Before wrapping up, apply these lenses to what you just built:
@@ -565,23 +588,21 @@ async function withRetry(fn, label, retries = 2) {
 
 // ── Update card after processing ─────────────────────────────────────
 
-async function updateCardOutcome(card, result) {
+function prependOutcome(existing, action, result) {
   const date = new Date().toISOString().slice(0, 10);
-  const header = `## ${date} — Automated ${card.action}`;
-  const newOutcome = card.outcome
-    ? `${header}\n\n${result}\n\n---\n\n${card.outcome}`
-    : `${header}\n\n${result}`;
+  const header = `## ${date} — Automated ${action}`;
+  return existing ? `${header}\n\n${result}\n\n---\n\n${existing}` : `${header}\n\n${result}`;
+}
 
-  // 1. Update Outcome (prepend new result) — with retry for network timeouts
+async function setCardOutcome(cardId, text) {
   await withRetry(() => notion.pages.update({
-    page_id: card.id,
+    page_id: cardId,
     properties: {
       Outcome: {
-        rich_text: [{ type: 'text', text: { content: newOutcome.slice(0, 2000) } }],
+        rich_text: [{ type: 'text', text: { content: text.slice(0, 2000) } }],
       },
     },
   }), 'updateOutcome');
-  log(`Updated Outcome for "${card.name}"`);
 }
 
 async function addComment(card, result) {
@@ -768,6 +789,25 @@ async function main() {
 
   log('Polling Notion Action Queue...');
   const state = loadState();
+
+  // Reply loop FIRST: replies are quick and a Fix pipeline can hold this
+  // process for hours — the owner's follow-up comments must not wait for it.
+  if (!DRY_RUN) {
+    try {
+      const me = await withRetry(() => notion.users.me(), 'usersMe');
+      // Test-only: lets an E2E test author "owner" comments with the bot token.
+      // Requires BOTH the env var and the explicit CLI flag — an env var alone
+      // leaking into prod .env must not disable the self-reply guard (that
+      // would make the bot answer its own comments in a 5-min loop).
+      const botId = (process.env.POLL_REPLIES_BOT_ID_OVERRIDE && process.argv.includes('--test-bot-override'))
+        ? process.env.POLL_REPLIES_BOT_ID_OVERRIDE
+        : me.id;
+      await pollReplies(state, botId);
+    } catch (err) {
+      log(`Reply loop error (non-fatal): ${err.message}`);
+    }
+  }
+
   const cards = await getActionableCards();
 
   if (cards.length > 0) {
@@ -809,18 +849,51 @@ async function main() {
       continue;
     }
 
+    // Pipeline actions (Fix / Plan+Review) run every stage back-to-back, each
+    // as a FRESH session — the Review stage has genuinely independent eyes on
+    // the Plan. Single actions are a 1-stage pipeline through the same path.
+    const stages = PIPELINES[card.action] || [card.action];
+    const isPipeline = stages.length > 1;
+
     await addInfoComment(card.id,
-      `🤖 Started "${card.action}" — working on it now. You'll get a comment here when it's done.`,
+      isPipeline
+        ? `🤖 Started "${card.action}" pipeline: ${stages.join(' → ')}. Each stage runs hands-free; you'll get a comment as stages land and a full summary at the end.`
+        : `🤖 Started "${card.action}" — working on it now. You'll get a comment here when it's done.`,
       'startComment');
 
     // Watermark from BEFORE the run: owner comments posted while the session is
     // working are picked up by the reply loop on the next poll (bot comments are
     // author-filtered, so the start/completion comments don't trigger replies).
     const startedAt = new Date().toISOString();
-    const prompt = buildPrompt(card);
-    const run = runClaude(prompt, card);
+
+    // Pipeline resume: a retry after a stage failure continues from the FAILED
+    // stage — never re-runs completed stages (no duplicate sessions/outcome).
+    let stagesToRun = stages;
+    let outcomeAccum = card.outcome;
+    if (entry.pipelineAction === card.action && Array.isArray(entry.pipelineRemaining) && entry.pipelineRemaining.length) {
+      stagesToRun = entry.pipelineRemaining.filter(s => stages.includes(s));
+      if (typeof entry.pipelineOutcome === 'string') outcomeAccum = entry.pipelineOutcome;
+      log(`  Resuming "${card.action}" pipeline at stage ${stagesToRun[0]}`);
+    }
+    let run = null;
+    let failedStage = null;
+    for (let i = 0; i < stagesToRun.length; i++) {
+      const stage = stagesToRun[i];
+      const stageCard = { ...card, action: stage, outcome: outcomeAccum };
+      run = runClaude(buildPrompt(stageCard), stageCard);
+      if (run.failed) { failedStage = stage; break; }
+      outcomeAccum = prependOutcome(outcomeAccum, stage, run.result);
+      if (run.memoryUpdate) writeMemoryUpdate(stageCard, run.memoryUpdate);
+      if (isPipeline && i < stages.length - 1) {
+        // Persist per-stage progress so a mid-pipeline crash loses at most one
+        // stage, and the owner can watch it move in real time.
+        try { await setCardOutcome(card.id, outcomeAccum); } catch (err) { log(`  stage outcome write failed (non-fatal): ${err.message}`); }
+        await addInfoComment(card.id, `✅ ${stage} done → ${stages[i + 1]}…`, 'stageComment');
+      }
+    }
 
     if (run.failed) {
+      log(`Stage "${failedStage}" failed for "${card.name}".`);
       entry.attempts += 1;
       state.cards[card.id] = {
         ...entry,
@@ -830,6 +903,11 @@ async function main() {
         runDir: (run.keptWorktree || run.runDir === REPO_DIR) ? run.runDir : (entry.runDir || null),
         updatedAt: new Date().toISOString(),
         lastCommentCheck: entry.lastCommentCheck || startedAt,
+        // Pipeline resume point: retry continues at the failed stage with the
+        // completed stages' output intact (no duplicate sessions).
+        pipelineAction: card.action,
+        pipelineRemaining: stagesToRun.slice(stagesToRun.indexOf(failedStage)),
+        pipelineOutcome: outcomeAccum,
       };
       saveState(state);
       log(`Session failed (attempt ${entry.attempts}/${MAX_ATTEMPTS}) — Action left set for retry.`);
@@ -837,11 +915,9 @@ async function main() {
     }
 
     try {
-      await updateCardOutcome(card, run.result);
+      await setCardOutcome(card.id, outcomeAccum);
+      log(`Updated Outcome for "${card.name}"`);
       await addComment(card, run.result);
-      if (run.memoryUpdate) {
-        writeMemoryUpdate(card, run.memoryUpdate);
-      }
       await clearAction(card);
       state.cards[card.id] = {
         name: card.name,
@@ -875,23 +951,6 @@ async function main() {
         lastCommentCheck: entry.lastCommentCheck || startedAt,
       };
       saveState(state);
-    }
-  }
-
-  // Reply loop runs every poll, even when no new Action cards exist.
-  if (!DRY_RUN) {
-    try {
-      const me = await withRetry(() => notion.users.me(), 'usersMe');
-      // Test-only: lets an E2E test author "owner" comments with the bot token.
-      // Requires BOTH the env var and the explicit CLI flag — an env var alone
-      // leaking into prod .env must not disable the self-reply guard (that
-      // would make the bot answer its own comments in a 5-min loop).
-      const botId = (process.env.POLL_REPLIES_BOT_ID_OVERRIDE && process.argv.includes('--test-bot-override'))
-        ? process.env.POLL_REPLIES_BOT_ID_OVERRIDE
-        : me.id;
-      await pollReplies(state, botId);
-    } catch (err) {
-      log(`Reply loop error (non-fatal): ${err.message}`);
     }
   }
 
