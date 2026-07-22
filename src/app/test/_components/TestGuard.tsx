@@ -12,6 +12,10 @@ import { featureFlags } from '@/config/feature-flags';
 // flag (depends on `window`), so the SSR check returned false unconditionally
 // and only worked on demo via the build-time source rewrite. Moving the gate
 // to a client component drops the source-rewrite dependency.
+//
+// Local dev/build against a /test/* route (or its Playwright specs) needs
+// `userAccounts` in NEXT_PUBLIC_FEATURES or this silently redirects to home —
+// use `npm run dev:ugc` / `npm run build:ugc` (test-red incident, 2026-07-21).
 
 export function TestGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();

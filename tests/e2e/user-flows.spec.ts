@@ -303,6 +303,10 @@ test.describe('Show Page - No Layout Overflow', () => {
     // Check all star rating containers don't overflow
     const ratingContainers = page.locator('[class*="flex-shrink-0"][class*="flex-col"]');
     const count = await ratingContainers.count();
+    // A selector drift silently dropping count to 0 must fail loudly, not
+    // pass having checked nothing (sibling of the test-red incident fixed
+    // in my-shows-functional.spec.ts, 2026-07-21).
+    expect(count).toBeGreaterThan(0);
 
     for (let i = 0; i < Math.min(count, 5); i++) {
       const container = ratingContainers.nth(i);
