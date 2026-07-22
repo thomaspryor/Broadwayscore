@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "oh-mary-west-end-2025",
   "showTitle": "Oh, Mary!",
   "market": "West End",
-  "fetchedAt": "2026-07-20T08:20:16.158Z",
+  "fetchedAt": "2026-07-22T01:24:49.241Z",
   "tier": "Buzzing",
-  "volume": 174,
-  "positivePct": 82,
-  "weekOverWeekPct": -2,
-  "baselineMultiple": 1.03,
+  "volume": 134,
+  "effectiveVolume": 13.9,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 1,
+      "bluesky": 0.6190476190476191
+    },
+    "overall": 0.6363636363636364
+  },
+  "positivePct": 100,
+  "opinionSample": 5,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 144,
-    "tiktok": 20,
-    "instagram": 10,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 1,
+    "bluesky": 13
   },
   "topQuotes": [
     {
-      "text": "Nothing better for your heart than spending the day with one of your babies!! No. 1 of a 2 day show! #OhMary…",
-      "platform": "instagram",
-      "author": "@karitsays",
-      "url": "https://www.instagram.com/p/Da3jkCeFBjw/"
+      "text": "YESSSSSS!! #OhMary deadline.com/2026/07/oh-m...",
+      "platform": "bluesky",
+      "author": "@fauxpinky.bsky.social",
+      "url": "https://bsky.app/profile/fauxpinky.bsky.social/post/3mqpr4bxfas2t"
     },
     {
-      "text": "What an absolutely chaotic show! #ohmary #fintothewoods #westend #theatre #masonalexanderpark",
-      "platform": "tiktok",
-      "author": "@fintothewoods",
-      "url": "https://www.tiktok.com/@fintothewoods/video/7615373439766940950"
+      "text": "MICHAEL URIE PRESERVED FOREVER AS MARY'S TEACHER playbill.com/article/oh-m...",
+      "platform": "bluesky",
+      "author": "@2460fun.bsky.social",
+      "url": "https://bsky.app/profile/2460fun.bsky.social/post/3mqov52plvs2e"
     }
   ],
-  "xTrueVolume": 111,
-  "baseline": {
-    "mean": 169.09411694202572,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 1,
+    "bluesky": 22,
+    "x": 111,
+    "wikipedia": 8005
   },
-  "costUsd": 0.1307,
+  "wikipediaTitle": "Oh, Mary!",
+  "baseline": {
+    "mean": 134,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 1,
+    "bluesky": 22
   },
   "errors": [],
   "rank": {
-    "position": 11,
-    "total": 50,
-    "text": "11/50 West End"
+    "position": 1,
+    "total": 46,
+    "text": "1/46 West End"
   },
-  "compositeScore": 142.68
+  "compositeScore": 13.9
 }

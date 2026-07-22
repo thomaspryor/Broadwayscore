@@ -1,51 +1,58 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "book-of-mormon-2011",
   "showTitle": "The Book of Mormon",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:08:05.671Z",
-  "tier": "Steady",
-  "volume": 170,
-  "positivePct": 58,
-  "weekOverWeekPct": -4,
-  "baselineMultiple": 0.99,
+  "fetchedAt": "2026-07-22T00:49:32.569Z",
+  "tier": "Hidden",
+  "volume": 9,
+  "effectiveVolume": 3.2,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 1,
+      "bluesky": 1
+    },
+    "overall": 1
+  },
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 145,
-    "tiktok": 20,
-    "instagram": 5,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 4,
+    "bluesky": 1
   },
   "topQuotes": [
     {
-      "text": "The @bookofmormonmusical is celebrating 15 years on Broadway! 🎭 Watch the cast bring down the house with a…",
-      "platform": "tiktok",
-      "author": "@theviewabc",
-      "url": "https://www.tiktok.com/@theviewabc/video/7647968968535198989"
-    },
-    {
-      "text": "Happy 15th anniversary to the Broadway company of THE BOOK OF MORMON! Thanks to the original Broadway cast for…",
-      "platform": "x",
-      "author": "@BookofMormon",
-      "url": "https://x.com/BookofMormon/status/2036598081484206418"
+      "text": "Andrew Rannells returns to 'The Book of Mormon' to celebrate the musical's 15th anniversary with a spectacular…",
+      "platform": "bluesky",
+      "author": "@thatericalper.com",
+      "url": "https://bsky.app/profile/thatericalper.com/post/3mqwxps5uox2s"
     }
   ],
-  "xTrueVolume": 2,
-  "baseline": {
-    "mean": 171.357469139999,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 4,
+    "bluesky": 1,
+    "x": 4,
+    "wikipedia": 16887
   },
-  "costUsd": 0.1307,
+  "wikipediaTitle": "The Book of Mormon (musical)",
+  "baseline": {
+    "mean": 9,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 4,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 26,
-    "total": 35,
-    "text": "26/35 Broadway"
+    "position": 18,
+    "total": 30,
+    "text": "18/30 Broadway"
   },
-  "compositeScore": 98.6
+  "compositeScore": 3.2
 }

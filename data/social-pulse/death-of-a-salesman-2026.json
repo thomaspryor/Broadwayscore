@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "death-of-a-salesman-2026",
   "showTitle": "Death of a Salesman",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:14:27.010Z",
-  "tier": "Rising",
-  "volume": 175,
-  "positivePct": 79,
-  "weekOverWeekPct": 2,
-  "baselineMultiple": 0.97,
+  "fetchedAt": "2026-07-22T00:52:44.499Z",
+  "tier": "Hidden",
+  "volume": 17,
+  "effectiveVolume": 4.2,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.6666666666666666,
+      "bluesky": 1
+    },
+    "overall": 0.7142857142857143
+  },
+  "positivePct": 100,
+  "opinionSample": 2,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 139,
-    "tiktok": 20,
-    "instagram": 13,
-    "reddit": 3
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 4,
+    "bluesky": 1
   },
   "topQuotes": [
     {
-      "text": "Last night was a life changing experience I am still unpacking everything that I saw and felt and experienced watching…",
-      "platform": "instagram",
-      "author": "@billcoynespeaks",
-      "url": "https://www.instagram.com/p/Da6W20NFi16/"
+      "text": "Still thinking about Laurie Metcalf in Death of a Salesman",
+      "platform": "reddit",
+      "author": "u/Heavy-Fruit8618",
+      "url": "https://www.reddit.com/r/Broadway/comments/1v2kajk/still_thinking_about_laurie_metcalf_in_death_of_a/"
     },
     {
-      "text": "“Death of a Salesman\" tells the story of Willy Loman, a traveling salesman chasing the American Dream, but never quite…",
-      "platform": "x",
-      "author": "@NewsHour",
-      "url": "https://x.com/NewsHour/status/2059773645782704626"
+      "text": "7/19 Death Of A Salesman on Broadway. Saw gestures and facial expressions in Nathan Lane's acting that I thought were…",
+      "platform": "bluesky",
+      "author": "@drmirror.net",
+      "url": "https://bsky.app/profile/drmirror.net/post/3mr4jnmkkak2a"
     }
   ],
-  "xTrueVolume": 12,
-  "baseline": {
-    "mean": 179.57440084962582,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 6,
+    "bluesky": 1,
+    "x": 10,
+    "wikipedia": 11322
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Death of a Salesman",
+  "baseline": {
+    "mean": 17,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 4,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 6,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 15,
-    "total": 35,
-    "text": "15/35 Broadway"
+    "position": 14,
+    "total": 30,
+    "text": "14/30 Broadway"
   },
-  "compositeScore": 138.25
+  "compositeScore": 4.2
 }

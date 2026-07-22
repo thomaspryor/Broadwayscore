@@ -1,51 +1,64 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "schmigadoon-2026",
   "showTitle": "Schmigadoon!",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:37:56.333Z",
+  "fetchedAt": "2026-07-22T01:01:51.575Z",
   "tier": "Rising",
-  "volume": 180,
-  "positivePct": 78,
-  "weekOverWeekPct": 0,
-  "baselineMultiple": 0.95,
+  "volume": 21,
+  "effectiveVolume": 5.4,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.7,
+      "bluesky": 1
+    },
+    "overall": 0.7272727272727273
+  },
+  "positivePct": 100,
+  "opinionSample": 3,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 149,
-    "tiktok": 20,
-    "instagram": 11,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 7,
+    "bluesky": 1
   },
   "topQuotes": [
     {
-      "text": "Look who I ran into at SCHMIGADOON! @schmigadoon the Musical? None other than… Brandon and his Mom! @brandon_dancestar…",
-      "platform": "instagram",
-      "author": "@briust_theatredancebrian",
-      "url": "https://www.instagram.com/p/Da1TLpGOhwe/"
+      "text": "NYC Summer Trip!! Little bit late with my post, BUT… 11 Shows in 10 days World Cup Started Knicks won the Finals A…",
+      "platform": "reddit",
+      "author": "u/Technicolor_M",
+      "url": "https://www.reddit.com/r/Broadway/comments/1v1q58r/nyc_summer_trip/"
     },
     {
-      "text": "As if #Schmigadoon on B’way wasn’t special enough (and it is), here’s the cast of tonight’s show paying tribute to…",
-      "platform": "x",
-      "author": "@alunjohnhood",
-      "url": "https://x.com/alunjohnhood/status/2050028755280646474"
+      "text": "Best Usher Ever Shout-out to the usher who ran down the aisle Saturday night at “Schmigadoon” demanding a man turn his…",
+      "platform": "reddit",
+      "author": "u/royaltatto1960",
+      "url": "https://www.reddit.com/r/Broadway/comments/1v1pgzn/best_usher_ever/"
     }
   ],
-  "xTrueVolume": 6,
-  "baseline": {
-    "mean": 188.14868650550488,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 10,
+    "bluesky": 2,
+    "x": 9,
+    "wikipedia": 3565
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Schmigadoon! (musical)",
+  "baseline": {
+    "mean": 21,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 10,
+    "bluesky": 2
   },
   "errors": [],
   "rank": {
-    "position": 13,
-    "total": 35,
-    "text": "13/35 Broadway"
+    "position": 12,
+    "total": 30,
+    "text": "12/30 Broadway"
   },
-  "compositeScore": 140.4
+  "compositeScore": 5.4
 }

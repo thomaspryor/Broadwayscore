@@ -1,51 +1,51 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "the-lion-king-1997",
   "showTitle": "The Lion King",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:44:25.330Z",
+  "fetchedAt": "2026-07-22T01:05:04.861Z",
   "tier": "Steady",
-  "volume": 156,
-  "positivePct": 56,
-  "weekOverWeekPct": 1,
-  "baselineMultiple": 1,
-  "platformBreakdown": {
-    "x": 131,
-    "tiktok": 19,
-    "instagram": 5,
-    "reddit": 1
-  },
-  "topQuotes": [
-    {
-      "text": "The Lion King team bringing the energy to the brewery as they celebrated their 100th performance. What a night 🤩🦁…",
-      "platform": "instagram",
-      "author": "@sydneybrewery_surryhills",
-      "url": "https://www.instagram.com/p/DbAJylTka1f/"
+  "volume": 23,
+  "effectiveVolume": 2.2,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.16666666666666666,
+      "bluesky": 1
     },
-    {
-      "text": "Talented 12-year-old Black actress Nia Thompson made history on Broadway, stepping into the iconic role of Young Nala…",
-      "platform": "x",
-      "author": "@skiistiredasf",
-      "url": "https://x.com/skiistiredasf/status/2060295180880605579"
-    }
-  ],
-  "xTrueVolume": 23,
-  "baseline": {
-    "mean": 155.75722231622785,
-    "weeksOfHistory": 8
+    "overall": 0.2857142857142857
   },
-  "costUsd": 0.1263,
+  "positivePct": 0,
+  "opinionSample": 0,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
+  "platformBreakdown": {
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 1,
+    "bluesky": 1
+  },
+  "topQuotes": [],
+  "counters": {
+    "reddit": 6,
+    "bluesky": 1,
+    "x": 16,
+    "wikipedia": 2865
+  },
+  "wikipediaTitle": "The Lion King (musical)",
+  "baseline": {
+    "mean": 23,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 3,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 6,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 31,
-    "total": 35,
-    "text": "31/35 Broadway"
+    "position": 29,
+    "total": 30,
+    "text": "29/30 Broadway"
   },
-  "compositeScore": 87.36
+  "compositeScore": 0
 }

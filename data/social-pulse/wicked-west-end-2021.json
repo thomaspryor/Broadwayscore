@@ -1,19 +1,29 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "wicked-west-end-2021",
   "showTitle": "Wicked",
   "market": "West End",
-  "fetchedAt": "2026-07-20T08:57:12.841Z",
+  "fetchedAt": "2026-07-22T01:42:05.884Z",
   "tier": "Steady",
-  "volume": 74,
-  "positivePct": 82,
-  "weekOverWeekPct": 1,
-  "baselineMultiple": 0.89,
+  "volume": 60,
+  "effectiveVolume": 5.6,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.18181818181818182,
+      "bluesky": 0.75
+    },
+    "overall": 0.2692307692307692
+  },
+  "positivePct": 50,
+  "opinionSample": 2,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 41,
-    "tiktok": 19,
-    "instagram": 9,
-    "reddit": 5
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 4,
+    "bluesky": 3
   },
   "topQuotes": [
     {
@@ -23,29 +33,32 @@
       "url": "https://www.reddit.com/r/UniversalOrlando/comments/1uze5ih/land_of_oz_wicked_land_in_epic_islands_of/"
     },
     {
-      "text": "The West End cast of Wicked get the T20 World Cup underway in style! 🫧🧹 https://t.co/Ey1l4NxKZG",
-      "platform": "x",
-      "author": "@SkyCricket",
-      "url": "https://x.com/SkyCricket/status/2065488502830117085"
+      "text": "DESCENDANTS SIX THEORY okay so…. if u haven’t seen descendants wicked wonderland, MOVE ALONGGGGG. alright, so….…",
+      "platform": "reddit",
+      "author": "u/just_korbinnn",
+      "url": "https://www.reddit.com/r/Descendants/comments/1v0f779/descendants_six_theory/"
     }
   ],
-  "xTrueVolume": 35,
-  "baseline": {
-    "mean": 82.22532414924353,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 22,
+    "bluesky": 4,
+    "x": 34,
+    "wikipedia": 8831
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "Wicked (musical)",
+  "baseline": {
+    "mean": 60,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 21,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 22,
+    "bluesky": 4
   },
   "errors": [],
   "rank": {
-    "position": 35,
-    "total": 50,
-    "text": "35/50 West End"
+    "position": 5,
+    "total": 46,
+    "text": "5/46 West End"
   },
-  "compositeScore": 60.68
+  "compositeScore": 2.8
 }

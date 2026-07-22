@@ -1,51 +1,58 @@
 {
-  "_v": 2,
+  "_v": 3,
   "showId": "and-juliet-2022",
   "showTitle": "& Juliet",
   "market": "Broadway",
-  "fetchedAt": "2026-07-20T07:06:38.571Z",
+  "fetchedAt": "2026-07-22T00:49:26.051Z",
   "tier": "Steady",
-  "volume": 133,
-  "positivePct": 86,
-  "weekOverWeekPct": -6,
-  "baselineMultiple": 1.01,
+  "volume": 55,
+  "effectiveVolume": 9.5,
+  "relevanceRates": {
+    "byPlatform": {
+      "reddit": 0.6666666666666666,
+      "bluesky": 0.6
+    },
+    "overall": 0.6363636363636364
+  },
+  "positivePct": 50,
+  "opinionSample": 2,
+  "weekOverWeekPct": null,
+  "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 113,
-    "tiktok": 19,
-    "instagram": 1,
-    "reddit": 0
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 4,
+    "bluesky": 3
   },
   "topQuotes": [
     {
-      "text": "‘This Is Us’ star Chrissy Metz was all smiles as she took the stage while making her Broadway debut in ‘& Juliet.’…",
-      "platform": "tiktok",
-      "author": "@entertainmenttonight",
-      "url": "https://www.tiktok.com/@entertainmenttonight/video/7652209107641928990"
-    },
-    {
-      "text": "‘This Is Us’ star Chrissy Metz was all smiles as she took the stage while making her Broadway debut in ‘&amp; Juliet.’…",
-      "platform": "x",
-      "author": "@etnow",
-      "url": "https://x.com/etnow/status/2067092877289931226"
+      "text": "7 shows in 5 days - the good, the okay, and the meh Through various fortunate circumstances, I was able to hit seven…",
+      "platform": "reddit",
+      "author": "u/Lumpy_Magazine_1882",
+      "url": "https://www.reddit.com/r/Broadway/comments/1v0dxmm/7_shows_in_5_days_the_good_the_okay_and_the_meh/"
     }
   ],
-  "xTrueVolume": 33,
-  "baseline": {
-    "mean": 131.5898521940835,
-    "weeksOfHistory": 8
+  "counters": {
+    "reddit": 6,
+    "bluesky": 5,
+    "x": 44,
+    "wikipedia": 7226
   },
-  "costUsd": 0.1263,
+  "wikipediaTitle": "& Juliet",
+  "baseline": {
+    "mean": 55,
+    "weeksOfHistory": 1
+  },
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 6,
+    "bluesky": 5
   },
   "errors": [],
   "rank": {
-    "position": 23,
-    "total": 35,
-    "text": "23/35 Broadway"
+    "position": 13,
+    "total": 30,
+    "text": "13/30 Broadway"
   },
-  "compositeScore": 114.38
+  "compositeScore": 4.75
 }
