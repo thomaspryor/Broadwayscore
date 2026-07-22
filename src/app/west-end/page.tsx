@@ -166,7 +166,7 @@ export default function WestEndPage() {
           </p>
         </div>
         {topMusicals.length > 0 && (
-          <FeaturedRowServer shows={topMusicals} title="Top Musicals" />
+          <FeaturedRowServer shows={topMusicals} title="Top Musicals" subtitle="Ranked by critical consensus" />
         )}
       </div>
 

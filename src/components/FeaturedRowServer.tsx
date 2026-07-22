@@ -99,11 +99,14 @@ const ChevronRightIcon = () => (
 export default function FeaturedRowServer({
   shows,
   title = 'Best Recent Shows',
+  subtitle,
   viewAllHref,
 }: {
   shows: ServerShelfShow[];
   /** Shelf heading. Defaults to the homepage's "Best Recent Shows". */
   title?: string;
+  /** Optional caption below the heading (e.g. "Ranked by critical consensus"). */
+  subtitle?: string;
   /** When set, renders a "See all" link to this href. Omit to hide it (matches
    *  the West End / Off-Broadway inline shelves, which have no See-all link). */
   viewAllHref?: string;
@@ -112,7 +115,7 @@ export default function FeaturedRowServer({
 
   return (
     <section className="mb-4 sm:mb-6">
-      <div className="flex items-center justify-between mb-3">
+      <div className={`flex items-center justify-between ${subtitle ? 'mb-1' : 'mb-3'}`}>
         <h2 className="text-base font-bold text-white">{title}</h2>
         {viewAllHref && (
           <Link
@@ -124,6 +127,7 @@ export default function FeaturedRowServer({
           </Link>
         )}
       </div>
+      {subtitle && <p className="text-xs text-gray-500 mb-2">{subtitle}</p>}
       <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
         {shows.map((show, index) => (
           <ServerMiniShowCard key={show.id} show={show} priority={index < 4} />
