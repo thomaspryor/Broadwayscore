@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { ShowCastChanges, CastEvent } from '@/lib/data-types';
+import type { ShowCastChanges, CastEvent, CastHistoryEntry } from '@/lib/data-types';
 
 interface CastUpdatesCardProps {
   castChanges: ShowCastChanges;
@@ -9,6 +9,7 @@ interface CastUpdatesCardProps {
 }
 
 const INITIAL_COUNT = 3;
+const INITIAL_HISTORY_COUNT = 3;
 
 function PersonIcon() {
   return (
@@ -203,6 +204,62 @@ function CastEventRow({ event }: { event: CastEvent }) {
   );
 }
 
+function ClockIcon() {
+  return (
+    <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+}
+
+function HistoryEntryRow({ entry }: { entry: CastHistoryEntry }) {
+  return (
+    <div className="bg-surface-overlay border border-white/5 rounded-lg p-3 sm:p-4">
+      <div className="flex items-start gap-3">
+        <div className="flex-shrink-0 mt-0.5 text-gray-500">
+          <ClockIcon />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            {entry.name ? (
+              <span className="text-white font-semibold text-sm">{entry.name}</span>
+            ) : null}
+            {entry.role && entry.role !== 'Unknown' && (
+              <span className="text-gray-500 text-xs">as {entry.role}</span>
+            )}
+          </div>
+
+          {(entry.since || entry.until) && (
+            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-400">
+              <span>
+                {entry.since ? formatEventDate(entry.since) : '?'}
+                {' – '}
+                {entry.until ? formatEventDate(entry.until) : 'present'}
+              </span>
+            </div>
+          )}
+
+          {entry.note && (
+            <p className="mt-1 text-xs text-gray-400 leading-relaxed">{entry.note}</p>
+          )}
+
+          {entry.sourceUrl && (
+            <a
+              href={entry.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 mt-1.5 py-1 px-1 -ml-1 text-xs text-gray-400 hover:text-white hover:brightness-125 transition-all"
+            >
+              Source
+              <ExternalLinkIcon />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function sortEvents(events: CastEvent[]): CastEvent[] {
   const typeOrder: Record<string, number> = { closure: -1, departure: 0, arrival: 1, absence: 2, note: 3 };
   return [...events].sort((a, b) => {
@@ -218,19 +275,23 @@ function sortEvents(events: CastEvent[]): CastEvent[] {
 
 export default function CastUpdatesCard({ castChanges, showStatus }: CastUpdatesCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const [historyExpanded, setHistoryExpanded] = useState(false);
 
-  // Don't show for closed shows
-  if (showStatus === 'closed') return null;
+  // Upcoming events don't make sense once a show has closed; history still does.
+  const upcoming = showStatus === 'closed' ? [] : (castChanges.upcoming || []);
+  const history = castChanges.history || [];
 
-  const upcoming = castChanges.upcoming || [];
-
-  // Don't render if nothing upcoming
-  if (upcoming.length === 0) return null;
+  // Don't render if there's nothing upcoming and no past-cast history
+  if (upcoming.length === 0 && history.length === 0) return null;
 
   const sorted = sortEvents(upcoming);
   const hasMore = sorted.length > INITIAL_COUNT;
   const displayed = expanded ? sorted : sorted.slice(0, INITIAL_COUNT);
   const hiddenCount = sorted.length - INITIAL_COUNT;
+
+  const hasMoreHistory = history.length > INITIAL_HISTORY_COUNT;
+  const displayedHistory = historyExpanded ? history : history.slice(0, INITIAL_HISTORY_COUNT);
+  const hiddenHistoryCount = history.length - INITIAL_HISTORY_COUNT;
 
   return (
     <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-4 sm:mb-6" aria-labelledby="cast-updates-heading">
@@ -242,11 +303,13 @@ export default function CastUpdatesCard({ castChanges, showStatus }: CastUpdates
         </h2>
       </header>
 
-      <div className="space-y-3">
-        {displayed.map((event, i) => (
-          <CastEventRow key={`${event.type}-${event.name}-${event.date || i}`} event={event} />
-        ))}
-      </div>
+      {sorted.length > 0 && (
+        <div className="space-y-3">
+          {displayed.map((event, i) => (
+            <CastEventRow key={`${event.type}-${event.name}-${event.date || i}`} event={event} />
+          ))}
+        </div>
+      )}
 
       {hasMore && (
         <button
@@ -256,6 +319,28 @@ export default function CastUpdatesCard({ castChanges, showStatus }: CastUpdates
           {expanded ? 'Show less' : `Show ${hiddenCount} more update${hiddenCount === 1 ? '' : 's'}`}
           <ChevronDownIcon className={`w-4 h-4 transition-transform ${expanded ? 'rotate-180' : ''}`} />
         </button>
+      )}
+
+      {history.length > 0 && (
+        <div className={sorted.length > 0 ? 'mt-5 pt-4 border-t border-white/5' : ''}>
+          <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 leading-none m-0 mb-3">
+            Previously in This Show
+          </h3>
+          <div className="space-y-3">
+            {displayedHistory.map((entry, i) => (
+              <HistoryEntryRow key={`${entry.name}-${entry.since || i}`} entry={entry} />
+            ))}
+          </div>
+          {hasMoreHistory && (
+            <button
+              onClick={() => setHistoryExpanded(!historyExpanded)}
+              className="mt-3 w-full flex items-center justify-center gap-1.5 py-2 text-sm font-medium text-gray-400 hover:text-white bg-surface-overlay hover:bg-white/10 rounded-lg transition-colors border border-white/5"
+            >
+              {historyExpanded ? 'Show less' : `Show ${hiddenHistoryCount} more past cast member${hiddenHistoryCount === 1 ? '' : 's'}`}
+              <ChevronDownIcon className={`w-4 h-4 transition-transform ${historyExpanded ? 'rotate-180' : ''}`} />
+            </button>
+          )}
+        </div>
       )}
     </section>
   );
