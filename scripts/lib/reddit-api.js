@@ -80,6 +80,7 @@ let circuitBroken = false;
 // Session stats
 const stats = {
   redditDirect: 0,
+  redditRss: 0,
   brightData: 0,
   scrapingDog: 0,
   scrapingBee: 0,
@@ -245,6 +246,105 @@ function scrapingDogRequest(apiKey, url, tier) {
       });
     }).on('error', reject);
   });
+}
+
+/**
+ * Reddit RSS/Atom fallback for search endpoints. Reddit's `.rss` feeds are
+ * public, unauthenticated, and (per 2026-07-21 probe from a residential IP,
+ * see Notion 3a5637c5) return 200 with real entries where the `.json` API
+ * hard-403s. Free and independent of every proxy budget (BD/SD/SB) — tried
+ * BEFORE the paid proxy chain in switchToProxy(). Only search endpoints have
+ * an `.rss` sibling (comments/listing endpoints don't), so callers gate on
+ * `/search.json` before invoking this.
+ */
+const XML_ENTITIES = [
+  [/&quot;/g, '"'], [/&#0?39;/g, "'"], [/&apos;/g, "'"],
+  [/&lt;/g, '<'], [/&gt;/g, '>'], [/&amp;/g, '&'],
+];
+function decodeXmlEntities(text) {
+  return XML_ENTITIES.reduce((t, [re, rep]) => t.replace(re, rep), text || '');
+}
+
+function stripHtmlTags(html) {
+  return decodeXmlEntities(html.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
+}
+
+/** Rewrite a reddit `.json` search URL to its `.rss` equivalent, capping limit at 25 (RSS feed cap). */
+function toRssUrl(jsonUrl) {
+  const u = new URL(jsonUrl);
+  u.pathname = u.pathname.replace(/\.json$/, '.rss');
+  const limit = parseInt(u.searchParams.get('limit'), 10);
+  if (Number.isFinite(limit) && limit > 25) u.searchParams.set('limit', '25');
+  u.searchParams.delete('raw_json'); // JSON-only param, meaningless for RSS
+  return u.toString();
+}
+
+/**
+ * Parse a reddit search.rss Atom feed into the same shape fetchWithFallback
+ * callers already expect from the JSON API: { data: { children: [{ kind:
+ * 't3', data: {...} }], after: null } }. RSS entries carry no score/vote
+ * count and only an HTML content blob (no separate title/selftext split
+ * beyond title), so those fields are best-effort/undefined rather than
+ * absent-as-zero — callers already treat `score`/`num_comments` as optional.
+ * Returns null if the body has no <entry> blocks (not a valid Atom feed).
+ */
+function parseRedditAtom(xml) {
+  const entryBlocks = xml.match(/<entry>[\s\S]*?<\/entry>/g);
+  if (!entryBlocks || entryBlocks.length === 0) return null;
+
+  const children = entryBlocks.map((block) => {
+    const linkMatch = block.match(/<link[^>]*href="([^"]*)"/);
+    const href = linkMatch ? decodeXmlEntities(linkMatch[1]) : '';
+    const titleMatch = block.match(/<title>([\s\S]*?)<\/title>/);
+    const authorMatch = block.match(/<author>[\s\S]*?<name>([\s\S]*?)<\/name>/);
+    const publishedMatch = block.match(/<published>([\s\S]*?)<\/published>/) || block.match(/<updated>([\s\S]*?)<\/updated>/);
+    const contentMatch = block.match(/<content[^>]*>([\s\S]*?)<\/content>/);
+
+    const postIdMatch = href.match(/\/comments\/([a-z0-9]+)\//i);
+    const subredditMatch = href.match(/\/r\/([^/]+)\//i);
+    const contentText = contentMatch ? stripHtmlTags(decodeXmlEntities(contentMatch[1])) : '';
+    const numCommentsMatch = contentText.match(/\[(\d+)\s+comments?\]/i);
+    let author = authorMatch ? decodeXmlEntities(authorMatch[1]).trim() : undefined;
+    if (author) author = author.replace(/^\/u\//, '');
+
+    return {
+      kind: 't3',
+      data: {
+        name: postIdMatch ? `t3_${postIdMatch[1]}` : undefined,
+        id: postIdMatch ? postIdMatch[1] : undefined,
+        subreddit: subredditMatch ? subredditMatch[1] : undefined,
+        permalink: href ? new URL(href).pathname : undefined,
+        title: titleMatch ? decodeXmlEntities(titleMatch[1]).trim() : '',
+        selftext: contentText,
+        author,
+        created_utc: publishedMatch ? Date.parse(publishedMatch[1]) / 1000 : undefined,
+        num_comments: numCommentsMatch ? parseInt(numCommentsMatch[1], 10) : undefined,
+      },
+    };
+  }).filter((c) => c.data.id); // drop entries we couldn't extract a post ID from
+
+  return { data: { children, after: null } };
+}
+
+/** Fetch a reddit search.rss feed via native fetch() (same TLS-fingerprint trick as fetchRedditDirect). */
+async function fetchViaRedditRSS(url) {
+  const rssUrl = toRssUrl(url);
+  const res = await fetch(rssUrl, {
+    headers: {
+      'User-Agent': USER_AGENT,
+      'Accept': 'application/atom+xml, application/rss+xml, text/xml',
+    },
+  });
+  if (res.status !== 200) {
+    throw new Error(`Reddit RSS HTTP ${res.status}`);
+  }
+  const xml = await res.text();
+  const parsed = parseRedditAtom(xml);
+  if (!parsed) {
+    throw new Error(`Reddit RSS response not a parseable Atom feed: ${xml.slice(0, 150)}`);
+  }
+  stats.redditRss++;
+  return parsed;
 }
 
 /**
@@ -570,6 +670,17 @@ async function _fetchWithFallbackInner(url, retryCount = 0) {
  * Switch to proxy fallback chain: Bright Data → Scrapingdog → ScrapingBee
  */
 async function switchToProxy(url) {
+  // RSS fallback first: free, unauthenticated, and independent of every
+  // proxy's credit budget. Only search endpoints have a .rss sibling.
+  if (url.includes('/search.json')) {
+    try {
+      console.warn('  Reddit JSON blocked — trying RSS fallback (search.rss)...');
+      return await fetchViaRedditRSS(url);
+    } catch (e) {
+      console.warn(`  Reddit RSS fallback failed: ${e.message}`);
+    }
+  }
+
   useScrapingBee = true;
   scrapingBeeSwitchTime = Date.now();
 
@@ -770,5 +881,9 @@ module.exports = {
   resetFallbackState,
   fetchWithFallback,
   fetchViaScrapingBee,
-  fetchViaScrapingDog
+  fetchViaScrapingDog,
+  fetchViaRedditRSS,
+  toRssUrl,
+  parseRedditAtom,
+  switchToProxy
 };
