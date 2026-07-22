@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-22T07:23:30.786Z",
+    "generatedAt": "2026-07-22T10:16:37.263Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,27 +8,27 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 11,
+    "flaggedCount": 10,
     "exemptCount": 10,
     "coveredCount": 29,
-    "highChurnTracked": 50
+    "highChurnTracked": 49
   },
   "flagged": [
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 117
+      "churn": 115
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 116
+      "churn": 114
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 101
+      "churn": 99
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 87
+      "churn": 85
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
@@ -36,7 +36,7 @@
     },
     {
       "path": "data/audit/t1-silent-gaps.json",
-      "churn": 58
+      "churn": 57
     },
     {
       "path": "data/audit/we-gate-proving.json",
@@ -44,10 +44,6 @@
     },
     {
       "path": ".github/workflows/test.yml",
-      "churn": 32
-    },
-    {
-      "path": "data/audit/validation/collection-report-2026-07-19.json",
       "churn": 32
     },
     {
@@ -62,11 +58,11 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 125
+      "churn": 123
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 117
+      "churn": 111
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -82,7 +78,7 @@
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 71
+      "churn": 69
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -109,12 +105,12 @@
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 853,
+      "churn": 852,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 654,
+      "churn": 655,
       "mergeAttr": "ours"
     },
     {
@@ -124,17 +120,17 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 331,
+      "churn": 329,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 244,
+      "churn": 243,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 244,
+      "churn": 243,
       "mergeAttr": "ours"
     },
     {
@@ -144,7 +140,7 @@
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 101,
+      "churn": 99,
       "mergeAttr": "ours"
     },
     {
@@ -154,7 +150,7 @@
     },
     {
       "path": "data/audit/poller-backoff/shifters-off-broadway-2026.json",
-      "churn": 88,
+      "churn": 89,
       "mergeAttr": "ours"
     },
     {
@@ -163,43 +159,43 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 71,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/syndicated-duplicates.json",
-      "churn": 71,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/wrong-production-audit.json",
-      "churn": 71,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
       "churn": 70,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/pre2005-wrong-production.json",
+      "churn": 69,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/syndicated-duplicates.json",
+      "churn": 69,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/wrong-production-audit.json",
+      "churn": 69,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 57,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/show-review-gap.json",
-      "churn": 57,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 57,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/drift-state.json",
-      "churn": 46,
+      "churn": 45,
       "mergeAttr": "ours"
     },
     {
@@ -229,22 +225,22 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 44,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-guilty-west-end-2026.json",
       "churn": 43,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/the-guilty-west-end-2026.json",
+      "churn": 40,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/gather-collisions.json",
-      "churn": 37,
+      "churn": 36,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/loves-labours-lost-globe-west-end-2026.json",
-      "churn": 34,
+      "churn": 36,
       "mergeAttr": "ours"
     }
   ]
