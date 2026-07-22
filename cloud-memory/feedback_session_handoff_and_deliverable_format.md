@@ -19,3 +19,5 @@ metadata:
 4. **Refer to sessions by their VISIBLE title.** The cmux dashboard shows titles like `🤖🧠 Data·iOS: HIGH-FIDELITY proposed designs (images, with ` — "workspace:200" and "task #277" are internal IDs the owner cannot find. Always quote the title prefix from `buildAutoTitle` (bsc-next prints it), e.g. "the workspace named '🤖 Data·iOS: HIGH-FIDELITY proposed designs…'".
 
 Related: [[feedback-ios-design-conservative-real-tokens]] (HTML mockups banned; Claude Design venue also in BroadwayScorecard-app/CLAUDE.md).
+
+**Addendum 2026-07-21 (same night):** API-level verification is NOT owner-level verification. DesignSync listed the project as isOwned:true, but the owner's browser got "no access" (authorization org ≠ browser org), and the design-SYSTEM pane was the wrong venue category for design PROPOSALS anyway. Rule sharpened: before reporting a deliverable ready, exercise the exact link the owner will click, and match the venue's CATEGORY to the content (proposal ≠ design system). Venue still unvalidated — see task #293.
