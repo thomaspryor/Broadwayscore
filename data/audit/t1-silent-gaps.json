@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-07-22T05:57:41.893Z",
+  "generatedAt": "2026-07-22T07:53:00.704Z",
   "windowDays": 45,
   "showsScanned": 56,
   "gaps": [
     {
-      "showId": "white-rabbit-red-rabbit-west-end-2026",
-      "title": "White Rabbit Red Rabbit",
-      "openingDate": "2026-06-09",
-      "file": "broadwayworld--mica-blackwell.json",
-      "outletId": "broadwayworld",
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "title": "Jesus Christ Superstar",
+      "openingDate": "2026-07-07",
+      "file": "artsdesk--rachel-halliburton.json",
+      "outletId": "artsdesk",
       "tier": 2,
-      "type": "unscored",
-      "url": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047.html",
+      "type": "empty-body",
+      "url": "https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original",
       "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=white-rabbit-red-rabbit-west-end-2026"
+      "recoveryCount": 3,
+      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original --outlet=artsdesk --critic=\"Rachel Halliburton\"   # run LOCALLY (cookie jar lives on the Mac)"
     }
   ]
 }
