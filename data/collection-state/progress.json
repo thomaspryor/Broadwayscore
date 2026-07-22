@@ -51,7 +51,11 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
     "sinatra-the-musical-west-end-2026/theatre-vibe--lizzie-loveridge.json",
     "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
-    "avenue-q-west-end-2026/telegraph--marianka-swain.json"
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+    "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "soldiers-of-tomorrow-off-west-end-2026/evening-chronicle--unknown.json",
@@ -571,7 +575,13 @@
     "cats-the-jellicle-ball-2026/newsday--linda-winer.json",
     "cats-the-jellicle-ball-2026/huffpost--david-finkle.json",
     "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
-    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json"
+    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
+    "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -612,10 +622,16 @@
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
       "sinatra-the-musical-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-      "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+      "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+      "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
+    ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
     ],
@@ -649,6 +665,13 @@
     ]
   },
   "startTime": "2026-07-22T02:45:07.780Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
-  "log": []
+  "lastProcessed": "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+  "log": [
+    {
+      "t": "2026-07-22T06:55:24.787Z",
+      "event": "bb-session",
+      "session": "adb194d4",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    }
+  ]
 }
