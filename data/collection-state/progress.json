@@ -1,28 +1,40 @@
 {
   "processed": [
-    "dukes-off-broadway-2026/theatermania--unknown.json"
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "midnight-at-the-never-get-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "are-you-mad-at-me-off-broadway-2026/one-minute-critic--jerry-portwood.json"
   ],
   "failed": [
     "dukes-off-broadway-2026/nytimes--helen-shaw.json",
-    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
+    "trainspotting-the-musical-west-end-2026/telegraph--unknown.json",
+    "trainspotting-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "dukes-off-broadway-2026/theatermania--unknown.json"
+      "dukes-off-broadway-2026/theatermania--unknown.json",
+      "midnight-at-the-never-get-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "are-you-mad-at-me-off-broadway-2026/one-minute-critic--jerry-portwood.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json"
     ],
     "archive": []
   },
   "startTime": "2026-07-22T08:01:37.705Z",
-  "lastProcessed": "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+  "lastProcessed": "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
   "log": [
     {
       "t": "2026-07-22T08:01:48.412Z",
@@ -45,6 +57,17 @@
       "t": "2026-07-22T08:02:06.183Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-22T10:20:29.422Z",
+      "event": "bb-session",
+      "session": "e51be82b",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-22T10:20:30.271Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
