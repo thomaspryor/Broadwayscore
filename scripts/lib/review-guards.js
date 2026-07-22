@@ -3061,7 +3061,13 @@ function isRejectedNonReview(data) {
   if (isJsonLdStarNotAReview) return false;
   if (NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
   const cv = data.contentVerification;
-  if (cv && cv.wrongArticle === true) return true;
+  // wrongArticle gated on high confidence to match isIncludableForRebuild's
+  // exact exclusion (line ~2588): a medium/low-confidence CV false-positive on a
+  // real T1/T2 review must NOT reopen discovery / mark it non-retrieved.
+  if (cv && cv.wrongArticle === true && cv.confidence === 'high') return true;
+  // articleType is a distinct classification signal (rebuild doesn't gate on it);
+  // an interview/feature/preview/news classification is a non-review regardless
+  // of the wrongArticle-boolean confidence.
   if (cv && NON_REVIEW_CV_ARTICLE_TYPES.has(cv.articleType)) return true;
   // contentTier 'invalid' with no manual clear (the wrongShowCleared escape above
   // already returned for the human-cleared case) → garbage / unusable page.

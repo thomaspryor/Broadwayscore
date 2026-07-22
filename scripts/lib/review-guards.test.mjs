@@ -128,6 +128,24 @@ test('json-ld star not_a_review at a known-star outlet is a scored verdict, NOT 
   assert.equal(isRejectedNonReview(file), false);
 });
 
+test('medium-confidence cv.wrongArticle on a review-type file is NOT a non-review (matches rebuild high-only gate)', () => {
+  assert.equal(isRejectedNonReview({
+    outletId: 'nytimes',
+    contentTier: 'complete',
+    fullText: 'A real review. '.repeat(50),
+    contentVerification: { articleType: 'review', wrongArticle: true, confidence: 'medium' },
+  }), false);
+});
+
+test('high-confidence cv.wrongArticle (no non-review articleType) IS a non-review', () => {
+  assert.equal(isRejectedNonReview({
+    outletId: 'nytimes',
+    contentTier: 'complete',
+    fullText: 'x'.repeat(500),
+    contentVerification: { articleType: 'other', wrongArticle: true, confidence: 'high' },
+  }), true);
+});
+
 test('clean CV review type with text → NOT a non-review', () => {
   assert.equal(isRejectedNonReview({
     outletId: 'nytimes',

@@ -84,10 +84,23 @@ test('legitimate editorial exclusions are not gaps', () => {
     { rejectedAt: '2026-07-01T00:00:00Z', rejectionReason: 'not_a_review' },
     { humanReviewedWrongProduction: true },
     { contentVerification: { wrongArticle: true, confidence: 'high' } },
+    { showNotMentioned: true },
   ]) {
     assert.equal(classify({ ...TIMES_EMPTY_STUB, ...excl }), null,
       `expected null for ${JSON.stringify(excl)}`);
   }
+});
+
+test('showNotMentioned with real text but no score is NOT a gap (mirror suppression preserved, S1-T5)', () => {
+  // Would falsely escalate as {unscored} after the passesFlagFilters→
+  // isIncludableForRebuild migration (isIncludableForRebuild does not model
+  // showNotMentioned) without the hasEditorialExclusion restore.
+  const f = { url: 'https://www.thetimes.com/x/foo-review-abc', fullText: 'y'.repeat(1500),
+    contentTier: 'complete', textFetchedAt: '2026-07-01T00:00:00Z', showNotMentioned: true };
+  assert.equal(classify(f), null);
+  // …but an aggregator excerpt provides real content → NOT suppressed.
+  const withExcerpt = { ...f, bwwExcerpt: 'A rave from the critic.' };
+  assert.notEqual(classify(withExcerpt), null);
 });
 
 test('wrong-URL discovery phantoms (QA finding) are not gaps and never recovered', () => {

@@ -23,7 +23,7 @@
 'use strict';
 
 const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
-const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore } = require('./review-guards');
+const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggregatorExcerpt } = require('./review-guards');
 
 // Tiers considered "cannot silently miss". 1 = NYT/Times/Guardian class,
 // 2 = TheaterMania/Standard/Telegraph class.
@@ -55,6 +55,13 @@ function hasEditorialExclusion(f) {
     || !!f.duplicateOf || !!f.duplicateTextOf
     || f.humanReviewedWrongProduction === true
     || !!(f.contentVerification && f.contentVerification.wrongArticle === true)
+    // showNotMentioned without an aggregator excerpt = the show name isn't in the
+    // fetched text (likely wrong content) → correct absence. The deleted mirror
+    // suppressed this in passesFlagFilters; isIncludableForRebuild does NOT model
+    // it (documented context-dependent omission), so restore it here or a
+    // showNotMentioned file with text-but-no-score would falsely escalate as
+    // 'unscored' (ship-check finding, S1-T5). Excerpt present ⇒ real content ⇒ not excluded.
+    || (f.showNotMentioned === true && !hasAggregatorExcerpt(f))
     || EDITORIAL_REJECTIONS.has(f.rejectionReason);
 }
 
