@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { classifySilentGap, shouldAlertGap } = require('./t1-silent-gap.js');
+const { classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap } = require('./t1-silent-gap.js');
 
 const NOW = new Date('2026-07-18T12:00:00Z');
 const classify = (file, over = {}) =>
@@ -166,4 +166,18 @@ test('alert dedupe: never-alerted fires, recent alert suppresses, 8-day-old re-f
   assert.equal(shouldAlertGap('2026-07-17T12:00:00Z', NOW), false);
   assert.equal(shouldAlertGap('2026-07-10T11:00:00Z', NOW), true);
   assert.equal(shouldAlertGap('garbage', NOW), true);
+});
+
+test('dispatch policy: never-dispatched dispatches; <6h suppresses; 7h-old re-dispatches; garbage dispatches', () => {
+  assert.equal(shouldDispatchScoring(null, NOW), true);
+  assert.equal(shouldDispatchScoring('2026-07-18T08:00:00Z', NOW), false); // 4h ago
+  assert.equal(shouldDispatchScoring('2026-07-18T05:00:00Z', NOW), true); // 7h ago
+  assert.equal(shouldDispatchScoring('garbage', NOW), true);
+});
+
+test('unscored email policy: never-dispatched never emails; fresh dispatch suppresses; stale failed dispatch escalates', () => {
+  assert.equal(shouldEmailUnscoredGap(null, NOW), false);
+  assert.equal(shouldEmailUnscoredGap('garbage', NOW), false);
+  assert.equal(shouldEmailUnscoredGap('2026-07-18T08:00:00Z', NOW), false); // 4h ago — scoring still in flight
+  assert.equal(shouldEmailUnscoredGap('2026-07-18T05:00:00Z', NOW), true); // 7h ago and still gapped
 });

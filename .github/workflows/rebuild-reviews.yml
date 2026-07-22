@@ -379,6 +379,10 @@ jobs:
           # Core data files pushed to private repo by push-core-data action
           # Stage all audit files modified by rebuild (not just critic-outlet-affinity)
           git add data/audit/*.json 2>/dev/null || true
+          # Alert cooldown/dedup state — the *.json glob above does not descend
+          # into triage/, so the drop-analysis 48h cooldown never persisted and
+          # identical NEEDS_REVIEW emails fired every rebuild (2026-07-21: 4 in 2h).
+          git add data/audit/triage/*.json 2>/dev/null || true
           # Stage deletions of orphan-unscored marker files. verify-all-scored.js
           # deletes them when scores have filled in; without -u those deletions
           # never make it back to main and the broadcast gate stays permanently

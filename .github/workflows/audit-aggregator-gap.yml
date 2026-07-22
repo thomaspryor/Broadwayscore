@@ -177,6 +177,10 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Self-heal: 'unscored' gaps dispatch llm-ensemble-score.yml instead
+          # of emailing the dispatch command to the operator (workflow-level
+          # permissions already grant actions: write).
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/audit-t1-silent-gaps.js --recover --alert
 
       - name: Commit audit JSON (public repo)

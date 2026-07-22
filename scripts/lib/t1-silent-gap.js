@@ -170,4 +170,48 @@ function shouldAlertGap(lastAlertedAt, now) {
   return now.getTime() - last >= REALERT_DAYS * 24 * 60 * 60 * 1000;
 }
 
-module.exports = { classifySilentGap, shouldAlertGap, MAJOR_TIER_MAX, REALERT_DAYS, UNSCORED_GRACE_HOURS };
+// Self-heal-before-paging policy for 'unscored' gaps (2026-07-21: the sweep
+// emailed the operator `gh workflow run "LLM Ensemble Score Reviews" ...` as
+// the fix — a command the sweep can dispatch itself). One scoring dispatch
+// per show per DISPATCH_RETRY_HOURS; the gap only emails once a dispatch
+// that old has failed to heal it.
+const DISPATCH_RETRY_HOURS = 6;
+
+/**
+ * Should the sweep dispatch a scoring run for this show now?
+ * @param {string|null} lastDispatchAt ISO timestamp of the sweep's previous
+ *                                     scoring dispatch for this show (null = never)
+ * @param {Date} now
+ */
+function shouldDispatchScoring(lastDispatchAt, now) {
+  if (!lastDispatchAt) return true;
+  const last = Date.parse(lastDispatchAt);
+  if (Number.isNaN(last)) return true;
+  return now.getTime() - last >= DISPATCH_RETRY_HOURS * 3600000;
+}
+
+/**
+ * Should an 'unscored' gap page the operator? Only after self-heal had its
+ * chance: a scoring dispatch happened at least DISPATCH_RETRY_HOURS ago and
+ * the gap still classifies. Never-dispatched or freshly-dispatched gaps stay
+ * out of the email (they are recorded in the report either way).
+ * @param {string|null} lastDispatchAt
+ * @param {Date} now
+ */
+function shouldEmailUnscoredGap(lastDispatchAt, now) {
+  if (!lastDispatchAt) return false;
+  const last = Date.parse(lastDispatchAt);
+  if (Number.isNaN(last)) return false;
+  return now.getTime() - last >= DISPATCH_RETRY_HOURS * 3600000;
+}
+
+module.exports = {
+  classifySilentGap,
+  shouldAlertGap,
+  shouldDispatchScoring,
+  shouldEmailUnscoredGap,
+  MAJOR_TIER_MAX,
+  REALERT_DAYS,
+  UNSCORED_GRACE_HOURS,
+  DISPATCH_RETRY_HOURS,
+};
