@@ -27,6 +27,7 @@
 - [Notion cards need context](feedback_notion_card_context.md) — paths, commands, root cause, repro; read FULL create output, avoid "rejected" ([[feedback_notion_create_verify.md]], [[feedback_notion_create_hook_false_rejection.md]])
 
 ## 🌳 Worktrees & git
+- [Headless resume is cwd-scoped](feedback_headless_resume_cwd_scoped.md) — claude -p --resume fails outside original cwd; deterministic paths fix it
 - [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; launch bg watchers from MAIN repo cwd ([[feedback_background_watchers_worktree_cwd.md]])
 - [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ before writing; "parallel" = subagents; same-name worktree may be another LIVE session, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
 - [Dual repo data files](feedback_dual_repo_data_files.md) — private repo authoritative, fix BOTH; review-texts NOT a symlink ([[feedback_review_texts_not_symlink.md]]); NEVER rebuild-all-reviews.js locally ([[feedback_local_rebuild_stale_clone_hazard.md]])
