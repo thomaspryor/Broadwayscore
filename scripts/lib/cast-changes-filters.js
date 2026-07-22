@@ -502,6 +502,62 @@ function reconcileClosureDateWithClosingDate(events, canonicalClosingDate) {
   return { events: out, repaired };
 }
 
+/**
+ * Detection gate: currentCast entries that are duplicates of the same person
+ * under different role text (e.g. "Narrator/Protagonist" vs "Nameless
+ * protagonist" vs "Protagonist (nameless)" for the SAME actor). This is the
+ * accumulation pattern behind the Daniel Radcliffe P0 (2026-07-21) — 4
+ * role-variant duplicate entries lingered in EBT's currentCast after he'd
+ * departed, because departure/arrival matching used exact name+role equality
+ * and every scraped variant created (or failed to remove) its own entry.
+ * Matches by normalizeIdentifier(name); returns one group per duplicated
+ * person. Pure/read-only — callers decide whether to auto-heal or just flag.
+ */
+function detectDuplicateCastEntries(currentCast) {
+  const byName = new Map();
+  for (const member of currentCast || []) {
+    if (!member || !member.name) continue;
+    const key = normalizeIdentifier(member.name);
+    if (!byName.has(key)) byName.set(key, []);
+    byName.get(key).push(member);
+  }
+  const duplicates = [];
+  for (const entries of byName.values()) {
+    if (entries.length > 1) {
+      duplicates.push({ name: entries[0].name, entries });
+    }
+  }
+  return duplicates;
+}
+
+/**
+ * Collapse currentCast entries for the same person (by normalized name) down
+ * to one: keeps the EARLIEST `since` date (their true run start — a later
+ * scrape re-adding the same person under different role text must not push
+ * their start date forward) and the most descriptive (longest, non-"Unknown")
+ * role text among the duplicates.
+ */
+function dedupeCurrentCastByName(currentCast) {
+  const byName = new Map();
+  const order = [];
+  for (const member of currentCast || []) {
+    if (!member || !member.name) continue;
+    const key = normalizeIdentifier(member.name);
+    if (!byName.has(key)) {
+      byName.set(key, { ...member });
+      order.push(key);
+      continue;
+    }
+    const existing = byName.get(key);
+    const earlierSince = earliestAddedDate(existing.since, member.since);
+    if (earlierSince != null) existing.since = earlierSince;
+    const existingRole = existing.role && existing.role !== 'Unknown' ? existing.role : '';
+    const newRole = member.role && member.role !== 'Unknown' ? member.role : '';
+    if (newRole.length > existingRole.length) existing.role = member.role;
+  }
+  return order.map(key => byName.get(key));
+}
+
 function applyPublicFilters(events, today = new Date(), opts = {}) {
   const maxAddedAgeDays = opts.maxAddedAgeDays != null ? opts.maxAddedAgeDays : 60;
   const keepDaysAfter = opts.keepDaysAfter != null ? opts.keepDaysAfter : 7;
@@ -525,6 +581,8 @@ module.exports = {
   filterPastEvents,
   filterStaleAddedDates,
   dedupeByPersonShow,
+  detectDuplicateCastEntries,
+  dedupeCurrentCastByName,
   reconcileClosure,
   detectContradictions,
   resolveClosureArrivalContradictions,

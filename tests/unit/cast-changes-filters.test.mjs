@@ -6,6 +6,8 @@ import {
   filterPastEvents,
   filterStaleAddedDates,
   dedupeByPersonShow,
+  detectDuplicateCastEntries,
+  dedupeCurrentCastByName,
   reconcileClosure,
   detectContradictions,
   resolveClosureArrivalContradictions,
@@ -22,6 +24,38 @@ import {
 } from '../../scripts/lib/cast-changes-filters.js';
 
 const TODAY = new Date('2026-05-23');
+
+test('detectDuplicateCastEntries finds role-text-variant duplicates by normalized name', () => {
+  const currentCast = [
+    { name: 'Daniel Radcliffe', role: 'Narrator/Protagonist', since: '2026-03-12' },
+    { name: 'Daniel Radcliffe', role: 'Nameless protagonist', since: '2026-02-21' },
+    { name: 'Tracee Ellis Ross', role: 'Narrator/Protagonist', since: '2026-07-07' },
+  ];
+  const dupes = detectDuplicateCastEntries(currentCast);
+  assert.equal(dupes.length, 1);
+  assert.equal(dupes[0].name, 'Daniel Radcliffe');
+  assert.equal(dupes[0].entries.length, 2);
+});
+
+test('detectDuplicateCastEntries returns [] when every cast member is unique', () => {
+  const currentCast = [
+    { name: 'Daniel Radcliffe', role: 'Narrator/Protagonist', since: '2026-03-12' },
+    { name: 'Tracee Ellis Ross', role: 'Narrator/Protagonist', since: '2026-07-07' },
+  ];
+  assert.deepEqual(detectDuplicateCastEntries(currentCast), []);
+});
+
+test('dedupeCurrentCastByName collapses to the earliest since + most descriptive role', () => {
+  const currentCast = [
+    { name: 'Daniel Radcliffe', role: 'Narrator/Protagonist', since: '2026-03-12' },
+    { name: 'Daniel Radcliffe', role: 'nameless protagonist', since: '2026-03-12' },
+    { name: 'Daniel Radcliffe', role: 'Nameless protagonist', since: '2026-02-21' },
+    { name: 'Daniel Radcliffe', role: 'Protagonist (nameless)', since: '2026-02-21' },
+  ];
+  const out = dedupeCurrentCastByName(currentCast);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].since, '2026-02-21', 'keeps the earliest (true) start date');
+});
 
 test('filterAutoFlagged removes [AUTO-FLAGGED] entries', () => {
   const events = [

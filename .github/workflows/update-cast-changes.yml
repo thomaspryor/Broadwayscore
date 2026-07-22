@@ -27,6 +27,16 @@ on:
         type: boolean
         default: false
 
+# Serialize schedule + manual-dispatch runs against the same data/cast-changes.json.
+# Without this, an overlapping run reads a stale in-memory snapshot and its final
+# writeFileSync can silently clobber the other run's currentCast/upcoming/history
+# transitions (found during the 2026-07-21 Hargitay P0 review — this workflow fires
+# on both the Wed/Sat cron AND near-daily workflow_dispatch runs). Queued, not
+# cancelled: a cancel mid-writeFileSync risks a partially-written currentCast.
+concurrency:
+  group: update-cast-changes
+  cancel-in-progress: false
+
 jobs:
   update-cast-changes:
     runs-on: ubuntu-latest

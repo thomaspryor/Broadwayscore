@@ -613,9 +613,24 @@ export interface CastEvent {
   addedDate?: string;
 }
 
+export interface CastHistoryEntry {
+  name: string;
+  role: string;
+  since?: string;
+  until?: string;
+  note?: string;
+  sourceUrl?: string;
+  sourceType?: string;
+}
+
 export interface ShowCastChanges {
   currentCast?: CastMember[];
   upcoming?: CastEvent[];
+  // Past stints no longer in currentCast, written by
+  // scripts/scrape-cast-changes.js:cleanExpiredEvents. Not currently read by
+  // getCastChanges() (data-cast.ts) — an audit trail for now, not wired into
+  // the public /cast-changes page.
+  history?: CastHistoryEntry[];
 }
 
 // ============================================
