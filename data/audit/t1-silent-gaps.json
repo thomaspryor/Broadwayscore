@@ -1,25 +1,8 @@
 {
-  "generatedAt": "2026-07-23T08:49:22.295Z",
+  "generatedAt": "2026-07-23T10:49:17.697Z",
   "windowDays": 45,
   "showsScanned": 56,
   "gaps": [
-    {
-      "showId": "jesus-christ-superstar-west-end-2026",
-      "title": "Jesus Christ Superstar",
-      "openingDate": "2026-07-07",
-      "file": "artsdesk--rachel-halliburton.json",
-      "outletId": "artsdesk",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original",
-      "recovery": null,
-      "recoveryCount": 3,
-      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original --outlet=artsdesk --critic=\"Rachel Halliburton\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": null,
-      "fileAgeHours": null,
-      "gapSeenAt": "2026-07-23T04:17:38.327Z",
-      "nonTerminalAgeHours": 4.52888
-    },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
       "title": "White Rabbit Red Rabbit",
@@ -33,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=white-rabbit-red-rabbit-west-end-2026",
       "firstSeen": "2026-07-22T19:54:48.656Z",
-      "fileAgeHours": 12.909336388888889,
+      "fileAgeHours": 14.908057777777778,
       "gapSeenAt": "2026-07-23T08:49:22.295Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 1.9987225
     }
   ],
   "contradictions": []
