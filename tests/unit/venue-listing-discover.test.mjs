@@ -41,6 +41,11 @@ const EXPECTED = {
   // St. Ann's Warehouse (added to OB_VENUE_CONFIGS 9b07b87295). Homepage
   // /show/<slug>/ links; fixture captured 2026-05-28 (~59KB) parsed 6 shows.
   'St. Ann\'s Warehouse': { min: 4, max: 10, mustInclude: ['the-maids', 'anna-christie'] },
+  // S5-T2 (2026-07-22): added from the late-add venue ranking (both venues
+  // directly produced a real late-add gap in the corpus). Fixtures captured
+  // live 2026-07-22 (curl, no JS rendering needed for either page).
+  'Bedlam': { min: 10, max: 25, mustInclude: ['new-portfolio-item', 'hamlet'] },
+  'Audible\'s Minetta Lane Theatre': { min: 1, max: 6, mustInclude: ['gloria-steinem'] },
 };
 
 for (const venue of OB_VENUE_CONFIGS) {

@@ -250,6 +250,12 @@ on:
       # review-census.test.mjs never runs (silent-gate class, feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/review-census.js'
       - 'scripts/lib/review-census.test.mjs'
+      # OB venue listing discovery (S5-T2 added Bedlam + Audible's Minetta Lane
+      # Theatre 2026-07-22). Colocated tests/unit/venue-listing-discover.test.mjs
+      # runs in the tests/unit node --test batch (not globbed); path-listed so
+      # a solo lib edit triggers CI.
+      - 'scripts/lib/venue-listing-discover.js'
+      - 'tests/unit/venue-listing-discover.test.mjs'
       - 'scripts/lib/thestage-extract.js'
       - 'scripts/scrape-thestage-roundups.js'
       # T1 coverage ledger state machine (S2-T3). Colocated t1-ledger.test.mjs runs
