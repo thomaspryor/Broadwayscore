@@ -15,12 +15,17 @@
  * return null there and never reach this. So every gap the sweep produces IS a
  * non-terminal state by construction — the backstop only adds the AGE test.
  *
- * AGE is measured from the file's immutable firstSeenAt (S2-T4 — stamped at
- * creation, never changed on merge), falling back to collectedAt / textFetchedAt
- * / rejectedAt for pre-firstSeenAt files. If none is parseable the age is
- * unknown and the backstop does NOT fire (it can't prove >24h — no false page).
+ * AGE is measured from when the file first became a GAP, not from file creation.
+ * The sweep tracks a gapSeen:showId/file timestamp in its alert-state and passes
+ * THAT in as the anchor — a file created weeks ago that only regressed into a
+ * gap today is NOT "stuck >24h" and must not page immediately (ship-check/Codex
+ * finding). gapFirstSeen() (firstSeenAt/collectedAt/textFetchedAt/rejectedAt) is
+ * retained only for the report's informational "how long we've HAD the file"
+ * field. If the supplied anchor is unparseable the age is unknown and the
+ * backstop does NOT fire (it can't prove >24h — no false page).
  *
- * Pure — no I/O. The sweep supplies the gap + file; the unit test drives it.
+ * Pure — no I/O. The sweep supplies the gap-first-seen timestamp; the unit test
+ * drives it directly.
  */
 
 'use strict';

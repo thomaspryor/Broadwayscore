@@ -20,19 +20,31 @@
  * Flag coverage:
  *   - wrongProduction  → contradicted when a newer CV says wrongProduction:false
  *                        AND isValid:true (a clean right-production verdict).
- *   - wrongShow        → contradicted when a newer CV affirms a valid,
- *                        right-production, real review (isValid:true,
- *                        wrongProduction:false, wrongArticle:false).
- *   - duplicateOf      → INTENTIONALLY out of scope: duplicateOf is a cross-file
- *                        relationship a contentVerification verdict never
- *                        assesses (CV reads one file's text, not the pair), so a
- *                        CV verdict cannot contradict it. Escalating it on CV
- *                        grounds would be pure noise. It stays flag-only.
+ *                        "Newer" is measured ONLY against wrongProductionFlaggedAt
+ *                        — the field the wrongProduction setters actually stamp
+ *                        (233 files in corpus). The generic `flaggedAt` field is
+ *                        NOT used: it is also written by unrelated flows
+ *                        (flag-rescore-needed, rebuild metadata), so trusting it
+ *                        would both invent contradictions (an old unrelated
+ *                        flaggedAt) and suppress real ones (a newer unrelated
+ *                        flaggedAt) — ship-check/Codex finding.
+ *   - wrongShow        → OUT OF SCOPE. There is NO reliable flag-set timestamp
+ *                        for wrongShow in the corpus (wrongShowFlaggedAt does not
+ *                        exist; the setters stamp only retry/recovery times), so
+ *                        the "newer than flag" test cannot be established safely.
+ *                        Rather than fire on the unreliable generic flaggedAt,
+ *                        the detector leaves wrongShow to the escalate-only stale
+ *                        -flag guards already in review-guards.js.
+ *   - duplicateOf      → OUT OF SCOPE: duplicateOf is a cross-file relationship a
+ *                        contentVerification verdict never assesses (CV reads one
+ *                        file's text, not the pair), so a CV verdict cannot
+ *                        contradict it. Escalating it on CV grounds would be pure
+ *                        noise. It stays flag-only.
  *
- * The NEWER requirement is strict: if the flag carries no timestamp we cannot
- * prove the CV post-dates it, so we do NOT escalate. An escalate-only detector
- * must stay low-noise — a same-run CV that SET the flag must never read as a
- * contradiction of it.
+ * The NEWER requirement is strict: if the flag carries no wrongProductionFlaggedAt
+ * we cannot prove the CV post-dates it, so we do NOT escalate. An escalate-only
+ * detector must stay low-noise — a same-run CV that SET the flag must never read
+ * as a contradiction of it.
  *
  * Pure — no I/O. The sweep runner (audit-t1-silent-gaps.js) and the unit test
  * share this module (CLAUDE.md §15).
@@ -58,12 +70,13 @@ function isHumanDecided(f) {
   return wrongShowCleared(f);
 }
 
-// The flag's own timestamp. Setters stamp wrongProductionFlaggedAt (233 files in
-// corpus) or the generic flaggedAt (70); wrongShow uses wrongShowFlaggedAt or
-// flaggedAt. Returns null when no flag timestamp is present.
+// The wrongProduction flag's own set-time. ONLY wrongProductionFlaggedAt — the
+// dedicated field the wrongProduction setters stamp (233 files). Deliberately
+// NOT the generic `flaggedAt` (written by unrelated rescore/rebuild flows) nor
+// any wrongShow field (no reliable wrongShow set-time exists). Returns null when
+// absent → the contradiction cannot be proven newer, so it does not fire.
 function flagTimestamp(f) {
-  return f.wrongProductionFlaggedAt || f.wrongShowFlaggedAt
-    || f.flaggedAt || f.duplicateFlaggedAt || null;
+  return (f && f.wrongProductionFlaggedAt) || null;
 }
 
 // The CV verdict post-dates the flag. Requires BOTH a parseable cv.verifiedAt
@@ -109,21 +122,16 @@ function detectFlagContradiction(file) {
 
   const flagTs = flagTimestamp(file);
 
-  // wrongProduction: a newer CV says it's a valid, right-production review.
+  // wrongProduction: a newer CV (post-dating wrongProductionFlaggedAt) says it's
+  // a valid, right-production review. This is the Grace Pervades stale-flag class.
   if (file.wrongProduction === true
       && cv.wrongProduction === false && cv.isValid === true
       && cvIsNewerThanFlag(cv, flagTs)) {
     return buildContradiction('wrongProduction', file, cv, flagTs);
   }
 
-  // wrongShow: a newer CV affirms a valid right-production real review.
-  if (file.wrongShow === true
-      && cv.isValid === true && cv.wrongProduction === false && cv.wrongArticle === false
-      && cvIsNewerThanFlag(cv, flagTs)) {
-    return buildContradiction('wrongShow', file, cv, flagTs);
-  }
-
-  // duplicateOf: CV can't assess it — see module header. Not a contradiction.
+  // wrongShow + duplicateOf: out of scope (no reliable flag-set timestamp / CV
+  // can't assess duplication) — see module header. Not a contradiction here.
   return null;
 }
 

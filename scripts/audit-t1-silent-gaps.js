@@ -212,6 +212,11 @@ async function main() {
   // shadow log this run. Auto-clear itself stays OFF (escalate-only).
   const shadowObservations = [];
 
+  // Files emailed via the normal gap-alert path this run — the >24h backstop
+  // excludes these so one file can't page twice in a single run (once as a
+  // near-opening gap, once as backstop; ship-check/Codex cross-path finding).
+  const pagedGapOutletKeys = new Set();
+
   for (const show of shows) {
     const dir = path.join(REVIEW_TEXTS_DIR, show.id);
     let files;
@@ -318,11 +323,40 @@ async function main() {
         recovery,
         recoveryCount: d.aggUrlRecoveryCount || 0,
         fix: fixCommand(show.id, f, d, gap.type),
-        // S3-T6 backstop inputs: immutable first-seen stamp + non-terminal age.
+        // Immutable file-creation stamp (informational — the report shows how
+        // long we have HAD the file). The S3-T6 backstop age is tracked
+        // separately below from when the file first became a GAP, not from file
+        // creation (a long-lived file that regressed today is not "stuck >24h").
         firstSeen: gapFirstSeen(d),
-        nonTerminalAgeHours: nonTerminalAgeHours(d, new Date()),
+        fileAgeHours: nonTerminalAgeHours(d, new Date()),
       });
       console.log(`  🕳  ${show.id} — ${outletId} (T${tier}) ${gap.type}${recovery && recovery.attempted ? ` [recovery failed: ${recovery.reason || 'still empty'}]` : ''}`);
+    }
+  }
+
+  const state = loadJson(ALERT_STATE_PATH, {});
+  const now = new Date();
+
+  // Gap-age tracking (S3-T6 backstop): record when each file FIRST became a
+  // non-terminal gap (gapSeen:showId/file) so the >24h backstop measures how
+  // long the file has been STUCK, not how long we have had the file. A file
+  // created weeks ago that regressed into a gap today must start its clock now,
+  // not page instantly (ship-check/Codex finding). Self-cleaning on full scans:
+  // a healed file's gapSeen is pruned so a future regression restarts the clock.
+  // Runs BEFORE the report write so the report carries gapSeenAt + gap age.
+  let gapStateDirty = false;
+  const currentGapKeys = new Set(gaps.map((g) => `${g.showId}/${g.file}`));
+  for (const g of gaps) {
+    const k = `gapSeen:${g.showId}/${g.file}`;
+    if (!state[k]) { state[k] = now.toISOString(); gapStateDirty = true; }
+    g.gapSeenAt = state[k];
+    g.nonTerminalAgeHours = nonTerminalAgeHours({ firstSeenAt: g.gapSeenAt }, now);
+  }
+  if (!ONLY_SHOW) {
+    for (const k of Object.keys(state)) {
+      if (k.startsWith('gapSeen:') && !currentGapKeys.has(k.slice('gapSeen:'.length))) {
+        delete state[k]; gapStateDirty = true;
+      }
     }
   }
 
@@ -369,9 +403,6 @@ async function main() {
         `${breakerDenied.length} skipped by the breaker.`);
     }
   }
-
-  const state = loadJson(ALERT_STATE_PATH, {});
-  const now = new Date();
 
   // Self-heal 'unscored' gaps: dispatch the scoring workflow ourselves instead
   // of emailing the operator the dispatch command (2026-07-21 Midnight at the
@@ -442,6 +473,8 @@ async function main() {
       };
       const urgent = dueDeduped.filter(isUrgent);
       const emailBatch = urgent.slice(0, 15);
+      // Record what actually paged so the >24h backstop won't re-page it.
+      for (const g of emailBatch) pagedGapOutletKeys.add(`${g.showId}/${g.outletId}`);
       const fields = emailBatch.map((g) => ({
         name: `${g.title} — ${g.outletId} (T${g.tier}, ${g.type})`,
         value: `${g.url || 'no url'}\nFix: ${g.fix}`,
@@ -516,7 +549,12 @@ async function main() {
   // regardless of near-opening urgency — because the self-heal refetch + scoring
   // self-dispatch should have resolved it within hours; >24h means they didn't.
   if (DO_ALERT && !DRY_RUN) {
-    const aged = gaps.filter((g) => isAgedNonTerminalGap({ file: { firstSeenAt: g.firstSeen }, now }));
+    // Age measured from when the file first became a GAP (gapSeenAt), not file
+    // creation. Exclude files that already paged via the normal gap path this
+    // run (cross-path dedupe).
+    const aged = gaps.filter((g) =>
+      isAgedNonTerminalGap({ file: { firstSeenAt: g.gapSeenAt }, now })
+      && !pagedGapOutletKeys.has(`${g.showId}/${g.outletId}`));
     const dueB = aged.filter((g) => shouldBackstopAlert(state[`backstop:${g.showId}/${g.file}`], now));
     if (dueB.length > 0) {
       const fields = dueB.slice(0, 15).map((g) => ({
@@ -538,6 +576,13 @@ async function main() {
     } else if (aged.length > 0) {
       console.log(`${aged.length} aged (>24h) gap(s) already backstop-alerted within the window.`);
     }
+  }
+
+  // Persist gap-age tracking (gapSeen: keys) even when no alert fired this run —
+  // without this, a gap's clock never starts and the >24h backstop can't fire.
+  if (!DRY_RUN && gapStateDirty) {
+    fs.mkdirSync(AUDIT_DIR, { recursive: true });
+    fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
   }
 
   if (has('fail-on-gap') && gaps.length > 0) process.exit(1);

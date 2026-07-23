@@ -95,21 +95,31 @@ test('flag with NO timestamp does NOT trigger (can not prove CV is newer)', () =
   assert.equal(detectFlagContradiction(noStamp), null);
 });
 
-test('wrongShow flag vs newer clean CV triggers', () => {
+test('wrongShow is OUT OF SCOPE (no reliable flag-set timestamp) — does NOT fire', () => {
+  // wrongShowFlaggedAt does not exist in the corpus, and generic flaggedAt is
+  // written by unrelated flows, so the "newer than flag" test can't be trusted.
   const wrongShow = {
     showId: 'giant-2026',
     outletId: 'nytimes',
     wrongShow: true,
-    flaggedAt: '2026-04-22T00:00:00.000Z',
+    flaggedAt: '2026-04-22T00:00:00.000Z', // generic — NOT trusted
     contentVerification: {
       isValid: true, wrongProduction: false, wrongArticle: false,
       articleType: 'review', reasoning: 'Valid Broadway review of Giant.',
       verifiedAt: '2026-05-01T00:00:00.000Z',
     },
   };
-  const c = detectFlagContradiction(wrongShow);
-  assert.ok(c);
-  assert.equal(c.flag, 'wrongShow');
+  assert.equal(detectFlagContradiction(wrongShow), null);
+});
+
+test('wrongProduction with ONLY generic flaggedAt (no wrongProductionFlaggedAt) does NOT fire', () => {
+  // Guards the Codex finding: generic flaggedAt must not establish "newer".
+  const genericOnly = {
+    showId: 'x', outletId: 'nytimes', wrongProduction: true,
+    flaggedAt: '2026-04-15T00:00:00.000Z', // generic, unrelated writer
+    contentVerification: { isValid: true, wrongProduction: false, verifiedAt: '2026-06-06T00:00:00.000Z' },
+  };
+  assert.equal(detectFlagContradiction(genericOnly), null);
 });
 
 test('duplicateOf is out of scope (CV can not contradict duplication)', () => {
