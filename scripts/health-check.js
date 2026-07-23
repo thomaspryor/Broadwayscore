@@ -1111,6 +1111,60 @@ function checkDeployFreshness() {
   })];
 }
 
+// --- Category: Stuck Work (silent Notion-brain states) ---
+//
+// Closes the blind spot found 2026-07-22 (alert-router card 3a4637c5): a P1
+// card sat "Paused" with its build unshipped and NOTHING surfaced it — the
+// nightly loop skips out-of-tier cards, the "stalling the loop" email only
+// reports Auto-tagged cards, and session-start stale checks look at
+// In-progress only. First live run found 41 paused P0/P1 + 50 in-progress
+// cards idle >48h (oldest 89 days). Warn-level (visible in NEEDS YOUR
+// ATTENTION) rather than error so a chronic backlog doesn't permanently
+// red-flag the subject line.
+
+async function checkStuckWork() {
+  if (!process.env.NOTION_API_KEY) {
+    return [{ name: 'Stuck work: brain cards', status: 'warn', message: 'Skipped — no NOTION_API_KEY available' }];
+  }
+  const { classifyStuckCards, fetchBrainCards } = require('./lib/stuck-work');
+  let cards;
+  try {
+    cards = await fetchBrainCards(process.env.NOTION_API_KEY);
+  } catch (err) {
+    return [{ name: 'Stuck work: brain cards', status: 'warn', message: `Notion unreachable — stuck-work check skipped this run (${err.message.slice(0, 120)})` }];
+  }
+  const { pausedCritical, pausedStale, orphaned } = classifyStuckCards(cards, Date.now());
+  const results = [];
+  const fmt = (c) => `${c.name.slice(0, 60)} (${Math.round(c.idleHours / 24)}d)`;
+
+  if (pausedCritical.length > 0) {
+    results.push({
+      name: 'Stuck work: paused P0/P1 cards',
+      status: 'warn',
+      message: `${pausedCritical.length} P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: ${pausedCritical.slice(0, 3).map(fmt).join('; ')}`,
+      hint: 'Triage: node scripts/notion-brain.js search --status Paused — un-pause + dispatch (bsc-next), or close',
+    });
+  } else {
+    results.push({ name: 'Stuck work: paused P0/P1 cards', status: 'pass', message: 'No paused P0/P1 cards' });
+  }
+
+  if (orphaned.length > 0) {
+    results.push({
+      name: 'Stuck work: orphaned in-progress cards',
+      status: 'warn',
+      message: `${orphaned.length} In-progress card(s) untouched >48h — owning session likely dead. Oldest: ${orphaned.slice(0, 3).map(fmt).join('; ')}`,
+      hint: 'Triage: node scripts/notion-brain.js search --status "In progress" — re-dispatch, pause with a reason, or close',
+    });
+  } else {
+    results.push({ name: 'Stuck work: orphaned in-progress cards', status: 'pass', message: 'No in-progress cards idle >48h' });
+  }
+
+  if (pausedStale.length > 0) {
+    results.push({ name: 'Stuck work: paused P2/other cards', status: 'warn', message: `${pausedStale.length} lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)` });
+  }
+  return results;
+}
+
 // --- Category J: API Credits ---
 
 function checkAPICredits() {
@@ -2195,6 +2249,7 @@ async function main() {
     ...checkSecretsHealth(),
     ...checkAPICredits(),
     ...checkDeployFreshness(),
+    ...(await checkStuckWork()),
   ];
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
