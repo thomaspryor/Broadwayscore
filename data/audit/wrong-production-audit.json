@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-23T02:57:10.671Z",
+  "timestamp": "2026-07-23T04:01:44.605Z",
   "stats": {
-    "totalReviews": 40337,
+    "totalReviews": 40354,
     "alreadyFlagged": 17780,
     "dateGuardCatches": 59,
     "directorMismatch": 905,
-    "tvFilmSignals": 1104,
+    "tvFilmSignals": 1107,
     "londonSignals": 753,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
@@ -3431,6 +3431,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming series\""
+        }
+      ]
+    },
+    {
+      "showId": "caroline-off-broadway-2026",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": "2025-10-07T19:42:47",
+      "url": "https://theaterlife.com/caroline/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
@@ -14329,6 +14342,19 @@
     },
     {
       "showId": "lets-love-off-broadway-2026",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": "2025-10-31T17:00:33",
+      "url": "https://theaterlife.com/lets-love-1-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "lets-love-off-broadway-2026",
       "file": "theater-scene--victor-gluck.json",
       "score": 61,
       "publishDate": "2025-10-26",
@@ -16945,6 +16971,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "orlando-off-broadway-2026",
+      "file": "theater-life--alix-cohen.json",
+      "publishDate": "2024-04-23T09:27:57",
+      "url": "https://theaterlife.com/orlando/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
