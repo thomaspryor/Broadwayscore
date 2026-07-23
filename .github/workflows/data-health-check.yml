@@ -38,7 +38,9 @@ jobs:
           # Deploy: production freshness check (should-deploy gate watchdog)
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           # Stuck work: paused/orphaned Notion-brain card detection (raw REST,
-          # no npm ci needed — scripts/lib/stuck-work.js uses global fetch)
+          # no npm ci needed — scripts/lib/stuck-work.js uses global fetch).
+          # Also used by owner-alert-router.js (#279): humanAction items file
+          # Action Queue cards instead of a raw paste-prompt in the email.
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
         run: node scripts/health-check.js
 
@@ -54,6 +56,8 @@ jobs:
           git add data/audit/health-check-history.json
           git add data/audit/digest-history.json 2>/dev/null || true
           git add data/audit/triage/ 2>/dev/null || true
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check data changes"
           else

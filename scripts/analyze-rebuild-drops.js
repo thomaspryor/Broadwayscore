@@ -20,11 +20,12 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const crypto = require('crypto');
 const { execSync } = require('child_process');
 const { CLAUDE_SONNET } = require('./lib/models');
 
-const { isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
-const { hasValidScore, passesFlagFilters } = require('./lib/review-text-scoreable');
+const { isPrematureReviewForUnopenedShow, hasValidScore, isIncludableForRebuild } = require('./lib/review-guards');
+const { routeAlert } = require('./lib/owner-alert-router.js');
 
 // BSC_DATA_ROOT: worktree sessions point at the main checkout's data/ (the
 // private review-texts clone only exists there).
@@ -110,9 +111,10 @@ function countGuardExcluded(showId) {
         //    premature husk never contributed to the old count (Codex finding)
         //  - a file already carrying wrongProduction/wrongShow/etc. is counted
         //    by the rebuild's own flaggedScored — counting it here too would
-        //    double-credit one file (ship-check finding); passesFlagFilters is
-        //    the canonical flag gate.
-        if (isPrematureReviewForUnopenedShow(d, show) && hasValidScore(d) && passesFlagFilters(d, show)) n++;
+        //    double-credit one file (ship-check finding); isIncludableForRebuild
+        //    (review-guards.js) is the canonical flag gate — the former mirror
+        //    passesFlagFilters() was deleted 2026-07-21 (T1-retrieval S1-T4).
+        if (isPrematureReviewForUnopenedShow(d, show) && hasValidScore(d) && isIncludableForRebuild(d, show)) n++;
       } catch { /* unreadable file — not evidence either way */ }
     }
   } catch { return 0; }
@@ -317,38 +319,6 @@ async function callClaude(userPrompt) {
   });
 }
 
-// ─── Send email via Resend ────────────────────────────────────────────────────
-
-async function sendEmail(subject, htmlBody) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const ownerEmail = process.env.OWNER_EMAIL;
-  if (!apiKey || !ownerEmail) throw new Error('RESEND_API_KEY or OWNER_EMAIL not set');
-
-  return new Promise((resolve, reject) => {
-    const data = JSON.stringify({
-      from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
-      to: [ownerEmail],
-      subject,
-      html: htmlBody,
-    });
-    const req = https.request({
-      hostname: 'api.resend.com',
-      path: '/emails',
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}`, 'Content-Length': Buffer.byteLength(data) },
-    }, (res) => {
-      let body = '';
-      res.on('data', chunk => body += chunk);
-      res.on('end', () => {
-        if (res.statusCode >= 200 && res.statusCode < 300) resolve(true);
-        else reject(new Error(`Resend error: ${res.statusCode} ${body}`));
-      });
-    });
-    req.on('error', reject);
-    req.end(data);
-  });
-}
-
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -372,129 +342,53 @@ async function main() {
     console.error('[Drop Analysis] Claude call failed:', err.message);
   }
 
-  // Verdict styling
-  const verdictStyle = {
-    ROUTINE:      { color: '#2ecc71', bg: '#0d2b1a', label: 'ROUTINE',      emoji: '✅' },
-    NEEDS_REVIEW: { color: '#f39c12', bg: '#2b1e0d', label: 'NEEDS REVIEW', emoji: '⚠️' },
-    SUSPICIOUS:   { color: '#e74c3c', bg: '#2b0d0d', label: 'SUSPICIOUS',   emoji: '🚨' },
-  }[verdict] || { color: '#aaa', bg: '#222', label: verdict, emoji: '❓' };
-
-  // Build top-10 table
-  const tableRows = regressions.slice(0, 15).map(r => {
-    const explained = explainedFor(r);
-    const explainedPct = explained ? Math.round((explained / r.dropped) * 100) : 0;
-    const guardNote = r.guardExcluded ? ' (unopened-show guard)' : '';
-    const explainedNote = explained >= r.dropped
-      ? `<span style="color:#2ecc71">fully explained${guardNote}</span>`
-      : explained > 0
-        ? `<span style="color:#f39c12">${explainedPct}% explained${guardNote}</span>`
-        : `<span style="color:#e74c3c">unexplained</span>`;
-    return `<tr>
-      <td style="padding:5px 10px;border-bottom:1px solid #333;color:#ccc;font-size:12px;">${r.showId}</td>
-      <td style="padding:5px 10px;border-bottom:1px solid #333;color:#e74c3c;text-align:center;font-size:12px;">-${r.dropped}</td>
-      <td style="padding:5px 10px;border-bottom:1px solid #333;font-size:11px;">${explainedNote}</td>
-    </tr>`;
-  }).join('');
-
-  const driftRows = significantDrift.slice(0, 8).map(d =>
-    `<tr>
-      <td style="padding:5px 10px;border-bottom:1px solid #333;color:#ccc;font-size:12px;">${d.showId}</td>
-      <td style="padding:5px 10px;border-bottom:1px solid #333;color:#f39c12;text-align:center;font-size:12px;">${d.delta > 0 ? '+' : ''}${d.delta}pts</td>
-      <td style="padding:5px 10px;border-bottom:1px solid #333;color:#888;font-size:11px;">${d.oldMean}→${d.newMean} (${d.oldCount}→${d.newCount} reviews)</td>
-    </tr>`
-  ).join('');
-
-  const claudePromptForEmail = `The Broadway Scorecard rebuild dropped ${totalDropped} reviews across ${regressions.length} shows. ${analysis} Is this safe to leave, or should I investigate?
-
-To see details: check data/audit/rebuild-regression.json
-To investigate: open Claude Code and paste this message`;
-
-  const html = `<!DOCTYPE html><html><body style="background:#1a1a1a;color:#ddd;font-family:sans-serif;padding:24px;max-width:640px;margin:0 auto;">
-
-<h2 style="margin:0 0 4px;color:#fff;">Broadway Scorecard — Rebuild Drop Analysis</h2>
-<p style="color:#888;margin:0 0 20px;font-size:13px;">${totalDropped} reviews dropped across ${regressions.length} shows · ${new Date().toUTCString()}</p>
-
-<!-- Verdict -->
-<div style="background:${verdictStyle.bg};border-left:4px solid ${verdictStyle.color};padding:16px 20px;border-radius:4px;margin-bottom:20px;">
-  <span style="display:inline-block;background:${verdictStyle.color};color:#fff;font-weight:bold;font-size:13px;padding:3px 10px;border-radius:3px;letter-spacing:1px;">${verdictStyle.emoji} ${verdictStyle.label}</span>
-  <p style="margin:10px 0 6px;color:#ddd;font-size:14px;line-height:1.5;">${analysis}</p>
-  <p style="margin:0;color:#aaa;font-size:13px;font-style:italic;">${action}</p>
-</div>
-
-<!-- Stats row -->
-<div style="display:flex;gap:12px;margin-bottom:20px;">
-  <div style="flex:1;background:#222;padding:12px;border-radius:4px;text-align:center;">
-    <div style="font-size:24px;font-weight:bold;color:#e74c3c;">${totalDropped}</div>
-    <div style="font-size:11px;color:#888;margin-top:2px;">reviews dropped</div>
-  </div>
-  <div style="flex:1;background:#222;padding:12px;border-radius:4px;text-align:center;">
-    <div style="font-size:24px;font-weight:bold;color:#f39c12;">${regressions.length}</div>
-    <div style="font-size:11px;color:#888;margin-top:2px;">shows affected</div>
-  </div>
-  <div style="flex:1;background:#222;padding:12px;border-radius:4px;text-align:center;">
-    <div style="font-size:24px;font-weight:bold;color:${unexplained > 0 ? '#e74c3c' : '#2ecc71'};">${unexplained}</div>
-    <div style="font-size:11px;color:#888;margin-top:2px;">unexplained drops</div>
-  </div>
-  <div style="flex:1;background:#222;padding:12px;border-radius:4px;text-align:center;">
-    <div style="font-size:24px;font-weight:bold;color:#9b59b6;">${drifts.length}</div>
-    <div style="font-size:11px;color:#888;margin-top:2px;">score shifts</div>
-  </div>
-</div>
-
-<!-- Drop table -->
-${regressions.length > 0 ? `
-<h3 style="margin:0 0 8px;font-size:13px;color:#aaa;text-transform:uppercase;letter-spacing:1px;">Affected Shows</h3>
-<table style="width:100%;border-collapse:collapse;background:#222;border-radius:4px;margin-bottom:20px;">
-  <thead><tr>
-    <th style="padding:8px 10px;text-align:left;color:#888;font-size:11px;border-bottom:1px solid #444;">Show</th>
-    <th style="padding:8px 10px;text-align:center;color:#888;font-size:11px;border-bottom:1px solid #444;">Dropped</th>
-    <th style="padding:8px 10px;text-align:left;color:#888;font-size:11px;border-bottom:1px solid #444;">Explanation</th>
-  </tr></thead>
-  <tbody>${tableRows}</tbody>
-  ${regressions.length > 15 ? `<tfoot><tr><td colspan="3" style="padding:6px 10px;color:#666;font-size:11px;">...and ${regressions.length - 15} more shows</td></tr></tfoot>` : ''}
-</table>` : ''}
-
-<!-- Drift table -->
-${significantDrift.length > 0 ? `
-<h3 style="margin:0 0 8px;font-size:13px;color:#aaa;text-transform:uppercase;letter-spacing:1px;">Score Drift (>8pts)</h3>
-<table style="width:100%;border-collapse:collapse;background:#222;border-radius:4px;margin-bottom:20px;">
-  <thead><tr>
-    <th style="padding:8px 10px;text-align:left;color:#888;font-size:11px;border-bottom:1px solid #444;">Show</th>
-    <th style="padding:8px 10px;text-align:center;color:#888;font-size:11px;border-bottom:1px solid #444;">Shift</th>
-    <th style="padding:8px 10px;text-align:left;color:#888;font-size:11px;border-bottom:1px solid #444;">Detail</th>
-  </tr></thead>
-  <tbody>${driftRows}</tbody>
-</table>` : ''}
-
-<!-- Claude prompt -->
-<h3 style="margin:0 0 8px;font-size:13px;color:#aaa;text-transform:uppercase;letter-spacing:1px;">To Investigate: Paste into Claude Code</h3>
-<div style="background:#111;border:1px solid #444;border-radius:4px;padding:12px;margin-bottom:16px;">
-  <pre style="margin:0;white-space:pre-wrap;font-size:12px;color:#adf;line-height:1.5;">${claudePromptForEmail}</pre>
-</div>
-
-<p style="color:#555;font-size:11px;margin:0;">Broadway Scorecard · 48h cooldown · <a href="https://github.com/thomaspryor/Broadwayscore/actions" style="color:#555;">View Actions</a></p>
-</body></html>`;
-
   const subjectEmoji = { ROUTINE: '✅', NEEDS_REVIEW: '⚠️', SUSPICIOUS: '🚨' }[verdict] || '❓';
   const subject = `${subjectEmoji} BSC Rebuild: ${totalDropped} reviews dropped [${verdict}]`;
+  // Owner-alert-router migration (Notion 3a4637c5-416f-81eb, #279): ROUTINE
+  // verdicts ("flag-explained, nothing to see here") no longer email at all —
+  // that was pure noise (4 identical emails in 2h on 2026-07-21 were mostly
+  // this). NEEDS_REVIEW/SUSPICIOUS dispatch an Action Queue investigation
+  // card instead of a raw email; the 48h/7-day cooldown above still gates
+  // whether we even get this far.
+  const needsInvestigation = verdict === 'NEEDS_REVIEW' || verdict === 'SUSPICIOUS';
 
   if (DRY_RUN) {
-    console.log('\n[Drop Analysis] DRY RUN — would send:');
-    console.log('Subject:', subject);
-    console.log('Verdict:', verdict);
+    console.log('\n[Drop Analysis] DRY RUN — would route:');
+    console.log('Verdict:', verdict, needsInvestigation ? '(would dispatch a card)' : '(routine — no dispatch)');
     console.log('Analysis:', analysis);
     console.log('Action:', action);
     process.exit(0);
   }
 
+  fs.mkdirSync(TRIAGE_DIR, { recursive: true });
+  // Record every run (not just dispatches) so the 48h/7-day cooldown covers
+  // ROUTINE verdicts too — without this, a recurring routine drop pattern
+  // would re-trigger a full Claude analysis every rebuild forever.
+  fs.writeFileSync(cooldownFile, JSON.stringify({ lastSent: new Date().toISOString(), verdict, totalDropped, shows: regressions.length, signature: dropSignature }) + '\n');
+
+  if (!needsInvestigation) {
+    console.log(`[Drop Analysis] Verdict ${verdict} — routine, no dispatch. ${subject}`);
+    return;
+  }
+
+  const conditionKey = `rebuild-drops:${crypto.createHash('sha1').update(dropSignature).digest('hex').slice(0, 12)}`;
+  const description = `${analysis}\n\n${action}\n\nTop affected shows:\n${top10}${regressions.length > 10 ? `\n...and ${regressions.length - 10} more` : ''}\n\nFull details: data/audit/rebuild-regression.json`;
   try {
-    await sendEmail(subject, html);
-    console.log('[Drop Analysis] Email sent:', subject);
-    // Record send time for cooldown
-    fs.mkdirSync(TRIAGE_DIR, { recursive: true });
-    fs.writeFileSync(cooldownFile, JSON.stringify({ lastSent: new Date().toISOString(), verdict, totalDropped, shows: regressions.length, signature: dropSignature }) + '\n');
+    await routeAlert({
+      conditionKey,
+      title: subject,
+      description,
+      severity: verdict === 'SUSPICIOUS' ? 'error' : 'warning',
+      disposition: 'auto',
+      fields: [
+        { name: 'Total dropped', value: String(totalDropped) },
+        { name: 'Shows affected', value: String(regressions.length) },
+        { name: 'Score drift shows', value: String(drifts.length) },
+      ],
+    });
+    console.log('[Drop Analysis] Routed:', subject);
   } catch (err) {
-    console.error('[Drop Analysis] Email failed:', err.message);
+    console.error('[Drop Analysis] Alert routing failed:', err.message);
     process.exit(1);
   }
 }
