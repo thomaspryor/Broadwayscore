@@ -7,7 +7,8 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { unionCensus, censusVerdict, buildCensusFromArchives, CI_UNFETCHABLE_OUTLETS } = require('./review-census.js');
+const { unionCensus, censusVerdict, buildCensusFromArchives, CI_UNFETCHABLE_OUTLETS,
+  sourceExtractors, parseBwwRoundup, parseShowScore } = require('./review-census.js');
 
 test('unionCensus dedups by normalized outlet, merges sources, keeps URL + real critic', () => {
   const c = unionCensus([
@@ -253,6 +254,84 @@ test('validation is a no-op without opts.show (back-compat) and for non-validate
   const census = buildCensusFromArchives('s', { archiveDir: dir, sources, show: { title: 'Whatever' } });
   assert.equal(census.count, 1, 'non-validate source extracts normally');
   assert.equal(census.wrongRoundup.length, 0);
+});
+
+// ─── NYC census sources (BWW / DTLI / Playbill Verdict / Show Score) ──────────
+// Every new NYC extractor needs a both-shapes test (the WET two-shapes lesson has
+// NYC cousins): BWW ships BlogPosting-per-critic AND single-article articleBody.
+
+const LD = (obj) => `<script type="application/ld+json">${JSON.stringify(obj)}</script>`;
+
+test('parseBwwRoundup shape 1: JSON-LD BlogPosting-per-critic (author "Outlet - Critic")', () => {
+  const html = '<html><body>' +
+    LD([
+      { '@type': 'BlogPosting', author: { name: 'The New York Times - Jesse Green' }, url: 'https://nyt/r' },
+      { '@type': 'BlogPosting', author: { name: 'Variety - Naveen Kumar' }, url: 'https://variety/r' },
+      { '@type': 'BlogPosting', author: { name: 'Time Out New York' }, url: 'https://to/r' }, // outlet only, no critic
+    ]) + '</body></html>';
+  const rows = parseBwwRoundup(html, 'show-x');
+  assert.equal(rows.length, 3);
+  const nyt = rows.find((r) => /New York Times/.test(r.outlet));
+  assert.equal(nyt.critic, 'Jesse Green');
+  assert.equal(nyt.url, 'https://nyt/r');
+  assert.equal(rows.find((r) => /Time Out/.test(r.outlet)).critic, 'Unknown', 'outlet-only author → Unknown critic');
+});
+
+test('parseBwwRoundup shape 2: articleBody "Critic, Outlet:" fallback when no BlogPosting', () => {
+  const body = "Let's see what the critics had to say... " +
+    'Jesse Green, The New York Times: A triumph. ' +
+    'Adam Feldman, Time Out: Dazzling.';
+  const html = '<html><body>' + LD({ '@type': 'NewsArticle', articleBody: body }) + '</body></html>';
+  const rows = parseBwwRoundup(html, 'show-y');
+  const outlets = rows.map((r) => r.outlet);
+  assert.ok(outlets.some((o) => /New York Times/.test(o)), 'articleBody NYT parsed');
+  assert.ok(outlets.some((o) => /Time Out/.test(o)), 'articleBody Time Out parsed');
+  assert.ok(rows.every((r) => r.url === ''), 'articleBody pairs carry no per-review URL');
+});
+
+test('parseBwwRoundup drops junk "outlets" (sentence fragments as authors)', () => {
+  const html = '<html><body>' + LD([
+    { '@type': 'BlogPosting', author: { name: 'Variety - Naveen Kumar' }, url: 'u1' },
+    { '@type': 'BlogPosting', author: { name: 'are likely to inspire a heavy outpouring of adjectives and superlatives' }, url: 'u2' },
+  ]) + '</body></html>';
+  const rows = parseBwwRoundup(html, 'show-z');
+  assert.deepEqual(rows.map((r) => r.outlet), ['Variety'], 'sentence-fragment author filtered by isJunkOutlet');
+});
+
+test('parseShowScore soft-fails on an asset-shell page (0 rows, no throw)', () => {
+  // Archived Show Score pages are often SPA shells whose only links are CDN assets.
+  const html = '<html><body><a href="https://d2kbhv4d9rykxy.cloudfront.net/app.css">css</a></body></html>';
+  const rows = parseShowScore(html, 'show-ss');
+  assert.deepEqual(rows, [], 'no registry outlet resolvable → empty, not an error');
+});
+
+test('sourceExtractors routes market: NYC set vs West End set', () => {
+  const nyc = sourceExtractors('broadway').map((s) => s.name);
+  assert.deepEqual(nyc, ['bww-roundup', 'dtli', 'playbill-verdict', 'show-score']);
+  const ss = sourceExtractors('broadway').find((s) => s.name === 'show-score');
+  assert.equal(ss.softFail, true, 'show-score is soft-fail (SPA shells extract 0 normally)');
+  const we = sourceExtractors('west-end').map((s) => s.name);
+  assert.ok(we.includes('westendtheatre'), 'WE set unchanged');
+  assert.ok(!we.includes('bww-roundup'), 'NYC sources not in the WE set');
+  // default (legacy callers) stays West End
+  assert.ok(sourceExtractors().map((s) => s.name).includes('westendtheatre'));
+});
+
+test('softFail source: present archive extracting 0 does NOT trip zeroExtract', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-soft-'));
+  fs.mkdirSync(path.join(dir, 'good'));
+  fs.mkdirSync(path.join(dir, 'soft'));
+  fs.writeFileSync(path.join(dir, 'good', 'show-s.html'), '<html>ok</html>');
+  fs.writeFileSync(path.join(dir, 'soft', 'show-s.html'), '<html>spa shell</html>');
+  const sources = [
+    { name: 'good', dir: 'good', fn: () => [{ outletId: 'nytimes', outlet: 'NYT', critic: 'A', url: 'u' }] },
+    { name: 'soft', dir: 'soft', softFail: true, fn: () => [] },
+  ];
+  const c = buildCensusFromArchives('show-s', { archiveDir: dir, sources });
+  assert.deepEqual(c.archivesPresent.sort(), ['good', 'soft']);
+  assert.deepEqual(c.zeroExtract, [], 'soft-fail source present-but-0 is NOT flagged broken');
+  assert.equal(c.count, 1);
+  fs.rmSync(dir, { recursive: true, force: true });
 });
 
 test('fail-open: an unverifiable zero-token title (2:22) is NOT rejected as wrong-show', () => {
