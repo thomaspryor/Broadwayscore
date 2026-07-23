@@ -564,6 +564,11 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist). notion-brain.js
       # was never path-listed before — its bsc-next/tasks-sync consumers were.
       - 'scripts/notion-brain.js'
+      # Owner alert router (Notion 3a4637c5-416f-81eb, #279) — path-listed for
+      # the same reason (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/owner-alert-router.js'
+      - 'scripts/lib/owner-alert-router.test.mjs'
+      - 'scripts/lint-resend-calls.js'
       - 'scripts/lib/autonomous-eligibility.js'
       - 'scripts/lib/autonomous-eligibility.test.mjs'
       - 'scripts/lib/autonomous-state.js'
@@ -805,6 +810,15 @@ jobs:
         # Root cause for each rule: (a) baseline rot via SKIP-VISUAL-CHECK in red CI,
         # (b) browser cache miss wastes 15s/run, (c) bare || echo swallows push failures.
         run: node scripts/audit-workflow-hygiene.js
+
+      - name: Audit — no direct Resend calls outside alert-router allowlist
+        # Email-consolidation Sprint 1 (Notion 3a4637c5-416f-81eb, #279): every
+        # owner-facing alert must route through scripts/lib/owner-alert-router.js
+        # instead of a new ad-hoc direct-Resend-API caller. Without this gate, the
+        # "route new alerts through the router" convention is one a future
+        # session can silently forget — same class as the 34 senders this
+        # sprint is consolidating in the first place.
+        run: node scripts/lint-resend-calls.js
 
       - name: Audit — CLAUDE.md integrity anchors + byte cap
         # Single source of truth: scripts/lib/claude-md-anchors.json. Every listed
@@ -2164,9 +2178,12 @@ jobs:
       #      `LAST_CONCLUSION == "failure"` warning branch is dead (the query forces
       #      success). Direct pushes to main aren't gated by required checks
       #      (memory/feedback_branch_protection_direct_push.md), so red code lands.
-      # This step pages the owner the moment main goes red two pushes in a row.
-      # It fires ONLY on the transition into the streak (prev failed, the run before
-      # it did not) so it alerts once per streak instead of on every red push.
+      # Owner-alert-router migration (Notion 3a4637c5-416f-81eb, #279): the streak
+      # transition (2nd consecutive failure) now dispatches an "auto" Notion Action
+      # Queue card instead of emailing directly — notion-action-poll.js works it
+      # hands-free. Escalates to a real HUMAN email only if main is STILL red 2
+      # failures later (4th consecutive) — "already dispatched; here's the card"
+      # instead of "go run Claude Code."
       - name: Detect consecutive main test failures
         id: streak
         if: failure() && github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -2181,7 +2198,7 @@ jobs:
                 branch: 'main',
                 event: 'push',
                 status: 'completed',
-                per_page: 20,
+                per_page: 30,
               });
               // API returns newest-first. Drop this run (still in progress) and any
               // cancelled/skipped runs — only success/failure conclusions count as a
@@ -2189,46 +2206,118 @@ jobs:
               const prior = (data.workflow_runs || [])
                 .filter(r => r.id !== context.runId)
                 .filter(r => r.conclusion === 'success' || r.conclusion === 'failure');
-              const prev = prior[0];
-              const prevPrev = prior[1];
-              // This run failed (we're inside if: failure()). Alert when the most
-              // recent prior completed run also failed (≥2 consecutive) AND the one
-              // before it did not — i.e. this is the second failure of the streak.
-              const shouldAlert = !!prev && prev.conclusion === 'failure'
-                && (!prevPrev || prevPrev.conclusion === 'success');
-              console.log(`[streak] prev=${prev ? prev.conclusion : 'none'} prevPrev=${prevPrev ? prevPrev.conclusion : 'none'} shouldAlert=${shouldAlert}`);
-              core.setOutput('should_alert', shouldAlert ? 'true' : 'false');
-              core.setOutput('prev_failed_url', shouldAlert && prev ? prev.html_url : '');
+              // This run failed (we're inside if: failure()) — count it, then walk
+              // backward through prior completed runs while they keep failing.
+              let streak = 1;
+              for (const r of prior) {
+                if (r.conclusion === 'failure') streak++;
+                else break;
+              }
+              const prevFailedUrl = prior[0] && prior[0].conclusion === 'failure' ? prior[0].html_url : '';
+              // >= thresholds, not exact-match: a windowing quirk (cancel-cascade
+              // dropping a run out of the per_page:30 history, or two near-
+              // simultaneous pushes each excluding the other's in-progress run)
+              // can skip past an exact streak count entirely. Each condition's
+              // own ledger entry (see routeAlert below) is what actually
+              // prevents re-notifying every run — not hitting an exact number.
+              const shouldDispatch = streak >= 2;
+              const shouldEscalate = streak >= 4;
+              console.log(`[streak] streak=${streak} shouldDispatch=${shouldDispatch} shouldEscalate=${shouldEscalate}`);
+              core.setOutput('streak', String(streak));
+              core.setOutput('should_dispatch', shouldDispatch ? 'true' : 'false');
+              core.setOutput('should_escalate', shouldEscalate ? 'true' : 'false');
+              core.setOutput('prev_failed_url', prevFailedUrl);
             } catch (e) {
               // Don't spam on transient API errors — the daily digest backstops.
               console.log(`[streak] run-history lookup failed (${e.message}); skipping alert.`);
-              core.setOutput('should_alert', 'false');
+              core.setOutput('should_dispatch', 'false');
+              core.setOutput('should_escalate', 'false');
             }
 
+      # Single checkout for the whole alert-router block below (dispatch/escalate
+      # on failure, resolve on success, and the ledger commit) — always fetches
+      # on a main push regardless of pass/fail so the ledger write always has a
+      # repo to commit into.
       - name: Checkout (for alert lib)
-        if: failure() && steps.streak.outputs.should_alert == 'true'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/checkout@v5
 
-      - name: Page owner — main red 2+ pushes in a row
-        if: failure() && steps.streak.outputs.should_alert == 'true'
+      - name: Route alert — main test.yml red on consecutive pushes
+        if: failure() && steps.streak.outputs.should_dispatch == 'true'
         uses: actions/github-script@v7
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           PREV_FAILED_URL: ${{ steps.streak.outputs.prev_failed_url }}
+          SHOULD_ESCALATE: ${{ steps.streak.outputs.should_escalate }}
+          STREAK: ${{ steps.streak.outputs.streak }}
         with:
           script: |
-            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const prevUrl = process.env.PREV_FAILED_URL || '';
-            await sendAlert({
+            const streak = process.env.STREAK || '?';
+            const fields = [
+              { name: 'This failed run', value: `[View logs](${runUrl})` },
+              { name: 'Previous failed run', value: prevUrl ? `[View logs](${prevUrl})` : 'n/a' },
+              { name: 'Consecutive failures', value: streak },
+            ];
+
+            // Independent conditionKey/disposition per severity tier — each gets
+            // its own ledger entry, so the router's normal cooldown/dedup does
+            // the "notify once per open incident" work with no special-casing
+            // here. No cooldownHours override: a real Notion/Resend outage
+            // retries next run instead of a failed send silently marking the
+            // incident "notified" (see routeAlert's notifyOk gate).
+            await routeAlert({
+              conditionKey: 'test-yml:main-streak',
               title: 'main test.yml red on 2+ consecutive pushes',
-              description: 'The Test Suite has failed on at least two consecutive pushes to main. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.',
+              description: 'The Test Suite has failed on at least two consecutive pushes to main. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. A fix-main card has been filed to the Action Queue.',
               severity: 'error',
-              email: true,
-              fields: [
-                { name: 'This failed run', value: `[View logs](${runUrl})` },
-                { name: 'Previous failed run', value: prevUrl ? `[View logs](${prevUrl})` : 'n/a' },
-              ],
+              disposition: 'auto',
+              cardAction: 'Fix',
+              fields,
               url: runUrl,
-            }).catch(e => console.error('Consecutive-failure alert failed:', e.message));
+            }).catch(e => console.error('Consecutive-failure card dispatch failed:', e.message));
+
+            if (process.env.SHOULD_ESCALATE === 'true') {
+              // Separate conditionKey, 24h cooldown: re-pages once a day while
+              // main stays red 4+ in a row, instead of firing every push (spam)
+              // or firing exactly once ever (the old cooldownHours:0 hack, which
+              // also fully bypassed the ledger's own dedup).
+              await routeAlert({
+                conditionKey: 'test-yml:main-streak-escalation',
+                title: 'main test.yml STILL red — auto-dispatch did not resolve it',
+                description: `main test.yml is STILL red after ${streak} consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.`,
+                severity: 'error',
+                disposition: 'human',
+                fields,
+                url: runUrl,
+                cooldownHours: 24,
+              }).catch(e => console.error('Consecutive-failure escalation email failed:', e.message));
+            }
+
+      # Close both incidents the moment main goes green again — lets a FUTURE
+      # streak notify immediately instead of waiting out the cooldown.
+      - name: Resolve alert — main test.yml green again
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('test-yml:main-streak')"
+          node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('test-yml:main-streak-escalation')"
+
+      # The ledger/digest-queue writes above only exist on the ephemeral runner's
+      # disk until committed — without this, cooldown/resolve state resets every
+      # run and the router's "notify once per open incident" guarantee is a no-op.
+      - name: Commit alert-router ledger changes
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -m "data: alert-router ledger update [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No ledger changes to commit."
+          fi

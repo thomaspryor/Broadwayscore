@@ -37,6 +37,10 @@ jobs:
           ALERT_TOKEN_SECRET: ${{ secrets.ALERT_TOKEN_SECRET }}
           # Deploy: production freshness check (should-deploy gate watchdog)
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # Owner-alert-router (#279): humanAction items now file Action Queue
+          # cards via scripts/lib/owner-alert-router.js instead of a raw
+          # paste-prompt in the email.
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
         run: node scripts/health-check.js
 
       # Daily failure digest removed — workflow failure summary is included
@@ -51,6 +55,8 @@ jobs:
           git add data/audit/health-check-history.json
           git add data/audit/digest-history.json 2>/dev/null || true
           git add data/audit/triage/ 2>/dev/null || true
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check data changes"
           else

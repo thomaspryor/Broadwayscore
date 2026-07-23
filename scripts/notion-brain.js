@@ -9,7 +9,8 @@
  * and disconnects randomly. This script is ~200ms per call via curl-equivalent.
  *
  * Usage:
- *   node scripts/notion-brain.js create "Card title" [--status "In progress"] [--priority "P1 Next"] [--category Product] [--type "New Feature"] [--tags scoring,scraping] --notes "## Problem\n...\n## Suggested approach\n...\n## Acceptance criteria\n..."
+ *   node scripts/notion-brain.js create "Card title" [--status "In progress"] [--priority "P1 Next"] [--category Product] [--type "New Feature"] [--tags scoring,scraping] [--action Investigate] --notes "## Problem\n...\n## Suggested approach\n...\n## Acceptance criteria\n..."
+ *     (--action sets the Action Queue property — Investigate/Plan/Review/Start/Fix/Plan+Review — so notion-action-poll.js dispatches it automatically.)
  *     (notes are REQUIRED and validated — sparse cards are rejected. Backlog cards must have Problem + Suggested approach + Acceptance criteria. Use --force "<reason ≥10 chars>" to bypass in the rare case you need a skeleton card.)
  *   node scripts/notion-brain.js update <page-id> [--status Done] [--outcome "## What changed\n..."] [--tags scoring] [--notes "..."] [--completed-date 2026-03-31] [--key-files "..."]
  *   node scripts/notion-brain.js search [--status "In progress"] [--priority "P0 Now"] [--text "keyword"]
@@ -498,6 +499,14 @@ async function createCard(args) {
     properties.Tags = {
       multi_select: args.tags.split(',').map(t => ({ name: t.trim() })),
     };
+  }
+
+  if (args.action) {
+    // Sets the Action Queue select property (Investigate/Plan/Review/Start/Fix/
+    // Plan+Review) — notion-action-poll.js polls for this being non-empty and
+    // dispatches a headless Claude session for the card. Used by
+    // scripts/lib/owner-alert-router.js to auto-file machine-actionable alerts.
+    properties.Action = { select: { name: args.action } };
   }
 
   if (args['due-date']) {
