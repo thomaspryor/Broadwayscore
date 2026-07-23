@@ -88,7 +88,7 @@ When asked "is everything ready for opening night?", check the AUTOMATION CHAIN,
 1. `gh run list --limit 50 --json name,createdAt --jq '.[] | select(.name == "Opening Night Orchestrator") | .createdAt'` — confirm the 3 AM UTC Broadway cron has actually fired before for this market (not just the 10 PM UTC West End cron)
 2. Verify `opening-night-orchestrator.yml` is in `check-cron-health.yml`'s CRITICAL_CRONS list
 3. `gh workflow run opening-night-orchestrator.yml -f show_id=SHOW_ID -f market=broadway` to manually trigger if the cron is late (GitHub crons can lag 15-30 min or miss entirely on new workflows)
-4. **ScrapingBee credits:** `gh workflow run check-secrets-health.yml` and check output — needs >25% remaining. Check-secrets-health warns at 50% (monitor) and 75% (opening nights at risk).
+4. **Scraper credits:** `gh workflow run check-secrets-health.yml` — confirm Bright Data zone active + credits (BD is the workhorse). ScrapingBee is DEPRECATED (off by default; its 401/cap is expected, not a gap) — ignore SB warnings.
 5. **`category` + `status` + pre-scores check:** `category` must be `'broadway'`/`'west-end'` not `null` (orchestrator defaults fragile); verify `status='open'` is actually pushed to private repo (update-show-status.yml has logged-but-not-pushed); `ls data/llm-scores/{show-id}/` and add `wrongProduction:true` to any prior-production scores.
 6. **DTLI auto-discovery (Broadway only):** Chain is slug-map → homepage scan → sitemap → URL guessing. Missing slug-map entry pre-opening is expected — homepage scan catches it within seconds of DTLI publishing. Full detail in `memory/opening-night-discovery-chains.md`.
 7. **Bright Data zone:** `gh workflow run check-secrets-health.yml` checks zone status. Active zone is `$BRIGHTDATA_ZONE` (`web_unlocker2`); ignore `mcp_unlocker` trial alarms. Disabled zone needs UI recovery. Swap: `printf 'NEW_ZONE' | gh secret set BRIGHTDATA_ZONE`. See `memory/feedback_brightdata_zone_migration.md`.
@@ -124,8 +124,8 @@ Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mar
 **After ANY manual review recovery** (clearing flags, creating stubs, ingesting URLs): run `node scripts/verify-review-recovery.js --show=SHOW_ID --production`. The pipeline has 5 steps that silently fail independently (conflict markers, scoring cancellation, rebuild timing). This script checks all of them and prints the exact fix command for each failure.
 
 ### Web Scraping
-Fallback chain: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper.js`).
-**Rule:** All new scraping scripts MUST use `fetchPage()` from `scripts/lib/scraper.js` — never call BD/SB APIs directly. Workflows that scrape must pass both `BRIGHTDATA_TOKEN` AND `SCRAPINGBEE_API_KEY`. CI enforces this in `test.yml` (`lint-workflows` job). If a new workflow is legitimately exempt (health check, credential validator), add it to the exempt list in test.yml with a comment.
+Fallback chain: Bright Data → Playwright (`scripts/lib/scraper.js`). ScrapingBee is DEPRECATED (2026-07-05, unfunded/capped — off unless `SCRAPER_USE_SCRAPINGBEE=1`); BD covers everything. Optional cheap tier ahead of BD: Scrapingdog (`SCRAPER_USE_SCRAPINGDOG=1`).
+**Rule:** All new scraping scripts MUST use `fetchPage()` from `scripts/lib/scraper.js` — never call BD APIs directly. Scraping workflows must pass `BRIGHTDATA_TOKEN`. CI enforces BD presence in `test.yml` (`lint-workflows` job). If a new workflow is legitimately exempt (health check, credential validator), add it to the exempt list in test.yml with a comment.
 **Broadway aggregators:** Show Score, DTLI, BWW Roundups, BWW Reviews Pages, Playbill Verdict, NYC Theatre Roundups.
 **WE aggregators:** WestEndTheatre.com (WET), theatre.reviews (TR), Stagedoor (SD), The Stage roundups (TS), London Box Office (LBO). Integrated in both `gather-reviews.js` and `opening-night-poller.js`.
 

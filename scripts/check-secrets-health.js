@@ -148,6 +148,15 @@ async function checkScrapingBee() {
   const key = process.env.SCRAPINGBEE_API_KEY;
   if (!key) return { name: 'ScrapingBee', status: 'skip', message: 'Key not set' };
 
+  // ScrapingBee is DEPRECATED (2026-07-05) — the plan is unfunded and pinned at
+  // its monthly cap, and the scraper only uses it when SCRAPER_USE_SCRAPINGBEE=1
+  // (default off; Bright Data covers everything). A capped/401 account is the
+  // expected steady state, so don't warn/fail on it — report an informational
+  // skip. Re-enabling means both re-funding the plan and setting that flag.
+  if (process.env.SCRAPER_USE_SCRAPINGBEE !== '1') {
+    return { name: 'ScrapingBee', status: 'skip', message: 'Deprecated — disabled (Bright Data covers scraping). Set SCRAPER_USE_SCRAPINGBEE=1 to re-enable.' };
+  }
+
   // ScrapingBee usage endpoint
   const res = await httpsGet(`https://app.scrapingbee.com/api/v1/usage?api_key=${key}`);
 

@@ -3,9 +3,14 @@
  * Universal Web Scraper with Fallback
  *
  * Tries multiple scraping services with smart ordering:
- * - Public sites (IBDB, Broadway.com): Playwright first (free), then BD/SB
+ * - Public sites (IBDB, Broadway.com): Playwright first (free), then Bright Data
  * - BroadwayWorld: Playwright first (complex JS rendering)
- * - All other sites: Bright Data → ScrapingBee → Playwright
+ * - All other sites: Bright Data → Playwright
+ *
+ * ScrapingBee is DEPRECATED (2026-07-05): the plan is unfunded and pinned at
+ * its 2M monthly cap, so every call 401s. Bright Data covers 100% of what SB
+ * used to serve. The SB code path is retained but gated OFF by default behind
+ * SCRAPER_USE_SCRAPINGBEE=1 (see below) so it can be revived if we ever re-fund.
  *
  * Usage:
  *   const { fetchPage } = require('./lib/scraper');
@@ -14,7 +19,8 @@
  * Environment variables:
  *   BRIGHTDATA_TOKEN - Bright Data API token (primary)
  *   BRIGHTDATA_ZONE - Bright Data zone name (default: web_unlocker2)
- *   SCRAPINGBEE_API_KEY - ScrapingBee API key (fallback)
+ *   SCRAPINGBEE_API_KEY - ScrapingBee API key (DEPRECATED; inert unless
+ *                         SCRAPER_USE_SCRAPINGBEE=1 is also set)
  */
 
 const https = require('https');
@@ -147,6 +153,15 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
+// ScrapingBee — DEPRECATED (2026-07-05). The plan is unfunded and sits at its
+// 2M monthly cap, so every live call 401s and falls through to Bright Data,
+// which covers 100% of what SB used to serve (verified 2026-07-05, incl. the
+// londonboxoffice.co.uk news-sitemap that was SB's last real user). The code
+// path is kept but gated OFF by default so future sessions don't mistake the
+// 401 noise for a live outage. Set SCRAPER_USE_SCRAPINGBEE=1 to re-enable if a
+// plan is ever re-funded. See memory/feedback_scraper_architecture.md.
+const USE_SCRAPINGBEE = process.env.SCRAPER_USE_SCRAPINGBEE === '1';
+
 // Scrapingdog — flag-gated cheap tier inserted AHEAD of Bright Data. BD Web
 // Unlocker is ~$1.50/1k req; Scrapingdog plain HTML is ~$0.09/1k (1 credit),
 // dynamic ~$0.45/1k (5cr). Bake-off (2026-06-21) confirmed content-identical
@@ -169,6 +184,9 @@ async function checkScrapingBeeCredits() {
   if (_sbCreditCheckDone) return !_sbCreditsLow;
   _sbCreditCheckDone = true;
 
+  // SB is deprecated and off by default — don't waste a usage-API round-trip
+  // (or emit misleading [SB Credits] logs) unless it's explicitly re-enabled.
+  if (!USE_SCRAPINGBEE) { _sbCreditsLow = true; return false; }
   if (!SCRAPINGBEE_KEY) return false;
 
   return new Promise((resolve) => {
@@ -694,8 +712,9 @@ async function fetchPage(url, options = {}) {
     }
   }
 
-  // Fall back to ScrapingBee (skip if credits exhausted, budget exceeded, or domain-skipped)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !skips.has('scrapingbee')) {
+  // Fall back to ScrapingBee (DEPRECATED — off unless SCRAPER_USE_SCRAPINGBEE=1;
+  // also skip if credits exhausted, budget exceeded, or domain-skipped)
+  if (USE_SCRAPINGBEE && SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !skips.has('scrapingbee')) {
     console.log('  → Trying ScrapingBee...');
     const raw = await fetchWithScrapingBee(url, options);
     if (raw) {
@@ -756,7 +775,8 @@ async function fetchJSON(url, options = {}) {
   const headers = { Accept: 'application/json', ...options.headers };
 
   // Try ScrapingBee first (cheapest: 1 credit with render_js=false)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded) {
+  // DEPRECATED — off unless SCRAPER_USE_SCRAPINGBEE=1; Bright Data path below covers it.
+  if (USE_SCRAPINGBEE && SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded) {
     try {
       const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
       const response = await new Promise((resolve, reject) => {
