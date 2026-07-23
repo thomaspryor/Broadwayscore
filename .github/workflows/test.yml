@@ -265,6 +265,10 @@ on:
       - 'scripts/backfill-first-seen.js'
       - 'scripts/backfill-first-seen.test.mjs'
       - 'scripts/audit-opening-night-coverage.js'
+      # S5-T1: late-add defect detection (dad-dont-read-this class). Colocated
+      # test runs in the lib-test glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/late-add-detector.js'
+      - 'scripts/lib/late-add-detector.test.mjs'
       # S4-T3: NO_REVIEW_EXPECTED 14d decay + reactivation detection. Colocated
       # coverage-expectation.test.mjs runs in the lib-test glob; path-listed so
       # a solo edit triggers CI.

@@ -20,6 +20,7 @@ const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = requi
 const { classifyCell, mergeLedger, serializeLedger } = require('./lib/t1-ledger');
 const { buildDigest } = require('./lib/t1-digest');
 const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
+const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const LEDGER_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-ledger.json');
@@ -157,14 +158,27 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   const target = shows.filter(s => s.status === 'open' || (s.openingDate && s.openingDate >= cutoff));
   const freshShows = [];
   const reactivations = []; // S4-T3: { showId, title, outletId }
+  const lateAdds = []; // S5-T1: { showId, title, ...detectLateAdd() }
   for (const show of target) {
+    const showId = show.id || show.slug;
     const { cells, reactivations: showReactivations } = computeShowCells(show, reviews, outlets, nowMs);
     for (const outletId of showReactivations) {
-      reactivations.push({ showId: show.id || show.slug, title: show.title, outletId });
+      reactivations.push({ showId, title: show.title, outletId });
     }
+
+    // S5-T1: late-add defect — earliest scored review predates our own
+    // previews/opening clock by more than a normal preview window (the
+    // dad-dont-read-this class: we catalog a transfer's dates, but critics
+    // reviewed the earlier run over a month before). Measured across ALL
+    // reviews for the show (any outlet/tier), not just census-missing cells.
+    const showReviews = reviews.filter((r) => r.showId === showId);
+    const catalogClock = show.previewsStartDate || show.openingDate || null;
+    const lateAdd = detectLateAdd(showReviews, catalogClock);
+    if (lateAdd.isLateAdd) lateAdds.push({ showId, title: show.title, ...lateAdd });
+
     if (cells.length === 0) continue;
     freshShows.push({
-      showId: show.id || show.slug,
+      showId,
       title: show.title,
       market: censusMarket(show.category || 'broadway'),
       openingDate: show.openingDate || null,
@@ -188,7 +202,13 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
     console.log(`\n⚠️  Reactivation: ${reactivations.length} scored review(s) from a registry "no review expected" outlet:`);
     for (const r of reactivations) console.log(`  ${r.showId} / ${r.outletId} — update outlet-registry.json coverageExpectation`);
   }
-  return { changed, shows: freshShows.length, cells: cellCount, gaps: gapCount, reactivations };
+  if (lateAdds.length) {
+    console.log(`\n⚠️  Late-add defect: ${lateAdds.length} show(s) whose earliest scored review predates our catalog clock by >${LATE_ADD_GRACE_DAYS}d:`);
+    for (const r of lateAdds) {
+      console.log(`  ${r.showId} — earliest ${r.earliestOutletId} review ${r.earliestReviewDate}, catalog clock ${r.catalogClock} (${r.gapDays}d early). Check for a missing priorRuns entry or wrong openingDate.`);
+    }
+  }
+  return { changed, shows: freshShows.length, cells: cellCount, gaps: gapCount, reactivations, lateAdds };
 }
 
 // Run the daily digest over the ledger. Prints the full GAP burn-down; with --alert,
