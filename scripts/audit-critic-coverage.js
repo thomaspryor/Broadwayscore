@@ -24,6 +24,8 @@ const bww = require(path.join(__dirname, 'lib/author-pages/bww.js'));
 const nysun = require(path.join(__dirname, 'lib/author-pages/nysun.js'));
 const nysr = require(path.join(__dirname, 'lib/author-pages/nysr.js'));
 const { looksLikeReview } = require(path.join(__dirname, 'lib/author-pages/headline-classifier.js'));
+const { buildCadenceReport } = require(path.join(__dirname, 'lib/outlet-cadence.js'));
+const { updateHeartbeatState } = require(path.join(__dirname, 'lib/outlet-heartbeat-state.js'));
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 
@@ -49,6 +51,7 @@ function resolveDataFile(relPath) {
 const reg = JSON.parse(fs.readFileSync(resolveDataFile('data/critic-registry.json')));
 const rev = JSON.parse(fs.readFileSync(resolveDataFile('data/reviews.json')));
 const outlets = JSON.parse(fs.readFileSync(resolveDataFile('data/outlet-registry.json')));
+const showsData = JSON.parse(fs.readFileSync(resolveDataFile('data/shows.json')));
 
 // Load author-page overrides (may not exist yet — non-fatal)
 let authorOverrides = {};
@@ -241,6 +244,69 @@ async function runBatch() {
   }
 }
 
+// ── S4-T1/T2: outlet heartbeat ────────────────────────────────────────────────
+// Per-(outlet,market) cadence, digest-first: printed + written every run, but
+// only crosses into an ACTION Discord alert after 2 CONSECUTIVE red runs
+// (this audit is weekly, so that's 2 consecutive weeks) — see
+// outlet-heartbeat-state.js. A single red week is common noise (a market
+// lull, a one-off scrape hiccup) and stays digest-only.
+const HEARTBEAT_STATE_PATH = path.join(REPO_ROOT, 'data/audit/outlet-heartbeat-state.json');
+const HEARTBEAT_OUT_PATH = path.join(REPO_ROOT, 'data/audit/outlet-heartbeat.json');
+
+function marketOfCategory(cat) {
+  if (cat === 'west-end' || cat === 'off-west-end') return 'west-end';
+  if (cat === 'off-broadway') return 'off-broadway';
+  if (cat === 'broadway') return 'broadway';
+  return null;
+}
+
+async function runOutletHeartbeat() {
+  const shows = showsData.shows || showsData;
+  const showCat = {};
+  for (const s of shows) if (s.id) showCat[s.id] = s.category;
+  const marketOf = (showId) => marketOfCategory(showCat[showId]);
+  const outletsMap = outlets.outlets || outlets;
+  const reviews = rev.reviews || [];
+
+  const cadenceRows = buildCadenceReport(reviews, outletsMap, { marketOf, nowMs: Date.now() });
+
+  let prevState = {};
+  try { prevState = JSON.parse(fs.readFileSync(HEARTBEAT_STATE_PATH, 'utf8')); } catch (_) { prevState = {}; }
+  const nowIso = new Date().toISOString();
+  const { state, newlyActionable } = updateHeartbeatState(prevState, cadenceRows, nowIso);
+
+  const redRows = cadenceRows.filter((r) => r.status === 'red').sort((a, b) => b.silentDays - a.silentDays);
+  console.error(`\n=== Outlet heartbeat (${cadenceRows.length} outlet×market rows, ${redRows.length} red) ===`);
+  for (const r of redRows.slice(0, 30)) {
+    console.error(`  RED  ${r.outletId} / ${r.market}  silent ${r.silentDays}d (threshold ${r.thresholdDays}d, median gap ${r.medianGapDays}d)`);
+  }
+  if (redRows.length > 30) console.error(`  … ${redRows.length - 30} more red`);
+
+  const auditDir = path.join(REPO_ROOT, 'data/audit');
+  if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+  fs.writeFileSync(HEARTBEAT_OUT_PATH, JSON.stringify({ generatedAt: nowIso, rows: cadenceRows }, null, 2));
+  fs.writeFileSync(HEARTBEAT_STATE_PATH, JSON.stringify(state, null, 2));
+  console.error(`Wrote ${HEARTBEAT_OUT_PATH} and ${HEARTBEAT_STATE_PATH}`);
+
+  if (newlyActionable.length) {
+    console.error(`\n⚠️  ${newlyActionable.length} outlet(s) crossed 2 consecutive red weeks — sending ACTION alert.`);
+    try {
+      const { sendAlert } = require(path.join(__dirname, 'lib/discord-notify.js'));
+      await sendAlert({
+        title: 'Outlet heartbeat — 2 consecutive red weeks',
+        description: `${newlyActionable.length} outlet(s) have been silent beyond their own cadence for 2 straight weekly audits.`,
+        severity: 'warning',
+        fields: newlyActionable.slice(0, 10).map((r) => ({
+          name: `${r.outletId} / ${r.market}`,
+          value: `silent ${r.silentDays}d (threshold ${r.thresholdDays}d) — investigate extractor/discovery`,
+        })),
+      });
+    } catch (e) { console.error('Outlet heartbeat alert failed:', e.message); }
+  } else {
+    console.error('No outlets crossed the 2-consecutive-red-week ACTION threshold this run.');
+  }
+}
+
 (async () => {
   await runBatch();
   REPORT.sort((a,b) => (b.missingCount||0) - (a.missingCount||0));
@@ -253,4 +319,10 @@ async function runBatch() {
   fs.writeFileSync(outPath, JSON.stringify(REPORT, null, 2));
   console.error(`\nWrote ${outPath}`);
   console.error(`Total review-looking gaps: ${REPORT.reduce((s,r)=>s+(r.missingCount||0),0)}`);
+
+  // Outlet heartbeat runs alongside the default weekly sweep only — historical
+  // mode and single-critic debug runs (--only) don't touch the shared state file.
+  if (mode === 'default' && !onlyArg) {
+    await runOutletHeartbeat();
+  }
 })();

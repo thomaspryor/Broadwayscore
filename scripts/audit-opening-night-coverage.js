@@ -19,6 +19,8 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
 const { classifyCell, mergeLedger, serializeLedger } = require('./lib/t1-ledger');
 const { buildDigest } = require('./lib/t1-digest');
+const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
+const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const LEDGER_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-ledger.json');
@@ -97,27 +99,32 @@ function censusMarket(category) {
 }
 
 // Registry evidence that an outlet does not review this market → NO_REVIEW_EXPECTED.
-// Fields are populated in S4-T4 (Outlet determinations); until then this is empty
-// and no cell ever reads NO_REVIEW_EXPECTED — the state machine is ready regardless.
-function outletNoReviewExpected(outlets, outletId) {
-  const o = outlets[outletId];
-  return !!(o && (o.coverageExpectation === 'none' || o.reviewsTheater === false));
+// S4-T3: decay-aware — delegates to coverage-expectation.js so a determination
+// older than 14 days (or missing its coverageExpectationDecidedAt evidence
+// timestamp) stops suppressing and the cell falls back to normal GAP evaluation.
+function outletNoReviewExpected(outlets, outletId, nowMs) {
+  return isNoReviewExpectedActive(outlets, outletId, nowMs);
 }
 
 // Compute the ledger cells (missing/suppressed T1 outlets) for one show. Reuses the
 // exact census + verdict the console audit uses. Soft-missing (supplementary-source-
 // only, e.g. tryout-city critics) are EXCLUDED — they are alert-only noise, not real
 // T1 retrieval gaps, so they must not pollute the SLA burn-down.
+//
+// Also returns `reactivations` (S4-T3): outlets with a SCORED review this run whose
+// registry entry statically claims they don't review theatre — always surfaced,
+// decayed or not, since a real review directly contradicts the determination.
 function computeShowCells(show, reviews, outlets, nowMs) {
   const showId = show.id || show.slug;
   const category = show.category || 'broadway';
   const scoredOutlets = new Set(
     reviews.filter(r => r.showId === showId && r.assignedScore != null).map(r => r.outletId).filter(Boolean)
   );
+  const reactivations = detectReactivation(outlets, scoredOutlets);
   let census = null;
   try { census = buildCensusFromArchives(showId, { show, market: censusMarket(category) }); }
-  catch (_) { return []; }
-  if (!census || !census.hadAnySource) return [];
+  catch (_) { return { cells: [], reactivations }; }
+  if (!census || !census.hadAnySource) return { cells: [], reactivations };
   const cVerdict = censusVerdict(census, scoredOutlets, { suppressed: CI_UNFETCHABLE_OUTLETS });
 
   // Clock start: max(openingDate, showCreatedAt) is the S2-T6 refinement; here we
@@ -131,7 +138,7 @@ function computeShowCells(show, reviews, outlets, nowMs) {
     const srcs = m.sources || [];
     if (srcs.length > 0 && srcs.every((s) => SUPPLEMENTARY_CENSUS_SOURCES.has(s))) continue; // soft — skip
     const state = classifyCell({
-      noReviewExpected: outletNoReviewExpected(outlets, m.outletId),
+      noReviewExpected: outletNoReviewExpected(outlets, m.outletId, nowMs),
       suppressed: false,
       clockAgeHours,
     });
@@ -140,7 +147,7 @@ function computeShowCells(show, reviews, outlets, nowMs) {
   for (const m of cVerdict.suppressedMissing) {
     cells.push({ outletId: m.outletId, state: 'SUPPRESSED', url: m.url || '' });
   }
-  return cells;
+  return { cells, reactivations };
 }
 
 // Build + write the T1 coverage ledger. Scans shows that are open OR opened within
@@ -150,11 +157,28 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   const cutoff = new Date(nowMs - opts.ledgerDays * 86400000).toISOString().split('T')[0];
   const target = shows.filter(s => s.status === 'open' || (s.openingDate && s.openingDate >= cutoff));
   const freshShows = [];
+  const reactivations = []; // S4-T3: { showId, title, outletId }
+  const lateAdds = []; // S5-T1: { showId, title, ...detectLateAdd() }
   for (const show of target) {
-    const cells = computeShowCells(show, reviews, outlets, nowMs);
+    const showId = show.id || show.slug;
+    const { cells, reactivations: showReactivations } = computeShowCells(show, reviews, outlets, nowMs);
+    for (const outletId of showReactivations) {
+      reactivations.push({ showId, title: show.title, outletId });
+    }
+
+    // S5-T1: late-add defect — earliest scored review predates our own
+    // previews/opening clock by more than a normal preview window (the
+    // dad-dont-read-this class: we catalog a transfer's dates, but critics
+    // reviewed the earlier run over a month before). Measured across ALL
+    // reviews for the show (any outlet/tier), not just census-missing cells.
+    const showReviews = reviews.filter((r) => r.showId === showId);
+    const catalogClock = show.previewsStartDate || show.openingDate || null;
+    const lateAdd = detectLateAdd(showReviews, catalogClock);
+    if (lateAdd.isLateAdd) lateAdds.push({ showId, title: show.title, ...lateAdd });
+
     if (cells.length === 0) continue;
     freshShows.push({
-      showId: show.id || show.slug,
+      showId,
       title: show.title,
       market: censusMarket(show.category || 'broadway'),
       openingDate: show.openingDate || null,
@@ -174,7 +198,17 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   const cellCount = freshShows.reduce((n, s) => n + s.cells.length, 0);
   const gapCount = freshShows.reduce((n, s) => n + s.cells.filter(c => c.state === 'GAP').length, 0);
   console.log(`T1 coverage ledger: ${freshShows.length} shows, ${cellCount} open cells (${gapCount} GAP) → ${opts.ledgerPath} ${changed ? '[written]' : '[unchanged — no commit]'}`);
-  return { changed, shows: freshShows.length, cells: cellCount, gaps: gapCount };
+  if (reactivations.length) {
+    console.log(`\n⚠️  Reactivation: ${reactivations.length} scored review(s) from a registry "no review expected" outlet:`);
+    for (const r of reactivations) console.log(`  ${r.showId} / ${r.outletId} — update outlet-registry.json coverageExpectation`);
+  }
+  if (lateAdds.length) {
+    console.log(`\n⚠️  Late-add defect: ${lateAdds.length} show(s) whose earliest scored review predates our catalog clock by >${LATE_ADD_GRACE_DAYS}d:`);
+    for (const r of lateAdds) {
+      console.log(`  ${r.showId} — earliest ${r.earliestOutletId} review ${r.earliestReviewDate}, catalog clock ${r.catalogClock} (${r.gapDays}d early). Check for a missing priorRuns entry or wrong openingDate.`);
+    }
+  }
+  return { changed, shows: freshShows.length, cells: cellCount, gaps: gapCount, reactivations, lateAdds };
 }
 
 // Run the daily digest over the ledger. Prints the full GAP burn-down; with --alert,
@@ -239,7 +273,22 @@ async function main() {
     const outletRegistry = loadJSON('outlet-registry.json');
     const outlets = outletRegistry.outlets || outletRegistry;
     const now = new Date();
-    writeLedger(opts, shows, reviews, outlets, now.toISOString(), now.getTime());
+    const result = writeLedger(opts, shows, reviews, outlets, now.toISOString(), now.getTime());
+    if (opts.alert && result.reactivations.length) {
+      try {
+        const { sendAlert } = require('./lib/discord-notify');
+        await sendAlert({
+          title: 'T1 Coverage — outlet reactivation',
+          description: `${result.reactivations.length} scored review(s) landed from an outlet the registry marks as not reviewing theatre.`,
+          severity: 'warning',
+          fields: result.reactivations.slice(0, 10).map(r => ({
+            name: `${r.title} — ${r.outletId}`,
+            value: 'Update outlet-registry.json coverageExpectation/reviewsTheater',
+          })),
+        });
+        console.log(`\nSent reactivation alert for ${result.reactivations.length} outlet(s).`);
+      } catch (e) { console.error('Reactivation alert failed:', e.message); }
+    }
     return;
   }
 
