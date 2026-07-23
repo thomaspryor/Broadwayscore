@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-07-23T05:07:10.472Z",
+  "timestamp": "2026-07-23T06:21:30.831Z",
   "stats": {
-    "totalReviews": 40353,
-    "alreadyFlagged": 17781,
+    "totalReviews": 40355,
+    "alreadyFlagged": 17780,
     "dateGuardCatches": 59,
     "directorMismatch": 905,
     "tvFilmSignals": 1107,
-    "londonSignals": 753,
+    "londonSignals": 754,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
     "noPublishDate": 3259
@@ -33003,6 +33003,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2024-02-22",
+      "url": "https://www.londonboxoffice.co.uk/news/post/hadestown-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
