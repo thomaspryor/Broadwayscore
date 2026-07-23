@@ -559,6 +559,11 @@ on:
       - 'scripts/lib/workspace-naming.test.mjs'
       - 'scripts/lib/cmux-workspaces.js'
       - 'scripts/lib/cmux-workspaces.test.mjs'
+      # Dispatch-attempt ledger (task #334) — colocated test runs in the
+      # lib-test glob (scripts/lib/*.test.mjs); path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/dispatch-ledger.js'
+      - 'scripts/lib/dispatch-ledger.test.mjs'
       # Autonomous nightly loop (Sprint 1, Notion 39b637c5). Colocated
       # *.test.mjs run in the lib-test glob; path-listed so a solo edit
       # triggers CI (feedback_test_yml_push_path_allowlist). notion-brain.js
