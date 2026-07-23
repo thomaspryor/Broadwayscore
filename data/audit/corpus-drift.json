@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-23T03:41:37.391Z",
+    "generatedAt": "2026-07-23T03:53:56.872Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 10 flagged, 10 exempt, 32 covered\n  ⚠️   103  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️   103  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️    87  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    73  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    49  data/audit/t1-silent-gaps.json  — no merge driver; needs a decision\n  ⚠️    41  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    40  data/audit/we-gate-proving.json  — no merge driver; needs a decision\n  ⚠️    35  data/audit/validation/collection-report-2026-07-22.json  — no merge driver; needs a decision\n  ⚠️    31  data/audit/validation/collection-report-2026-07-20.json  — no merge driver; needs a decision\n  ⚠️    31  data/audit/validation/collection-report-2026-07-21.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 10 flagged, 10 exempt, 32 covered\n  ⚠️   103  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️   103  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️    87  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    73  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    49  data/audit/t1-silent-gaps.json  — no merge driver; needs a decision\n  ⚠️    42  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    40  data/audit/we-gate-proving.json  — no merge driver; needs a decision\n  ⚠️    35  data/audit/validation/collection-report-2026-07-22.json  — no merge driver; needs a decision\n  ⚠️    31  data/audit/validation/collection-report-2026-07-20.json  — no merge driver; needs a decision\n  ⚠️    31  data/audit/validation/collection-report-2026-07-21.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
