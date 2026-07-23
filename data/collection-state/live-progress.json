@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-07-23T21:05:10.711Z",
-  "processed": 62,
-  "failed": 531,
-  "successRate": "10.5%",
+  "updatedAt": "2026-07-23T21:06:49.505Z",
+  "processed": 64,
+  "failed": 539,
+  "successRate": "10.6%",
   "tierBreakdown": {
-    "playwright": 47,
+    "playwright": 48,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 8,
     "archiveToday": 5,
     "archive": 8
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-07-23T18:02:09.222Z",
-      "event": "bb-session",
-      "session": "f906b536",
-      "url": "https://www.nytimes.com/2026/07/23/arts/trainspotting-the-musical-review.html"
-    },
     {
       "t": "2026-07-23T18:02:09.638Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-07-23T20:31:49.140Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-23T21:05:25.338Z",
+      "event": "bb-session",
+      "session": "bec457a7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
     }
   ]
 }
