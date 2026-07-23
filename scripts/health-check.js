@@ -1126,16 +1126,31 @@ async function checkStuckWork() {
   if (!process.env.NOTION_API_KEY) {
     return [{ name: 'Stuck work: brain cards', status: 'warn', message: 'Skipped — no NOTION_API_KEY available' }];
   }
-  const { classifyStuckCards, fetchBrainCards } = require('./lib/stuck-work');
-  let cards;
+  // Entire body is guarded: this is the only async check awaited bare in
+  // main(), so an uncaught throw here would reject main() and kill the WHOLE
+  // digest — the exact silent-failure class this check exists to catch.
   try {
-    cards = await fetchBrainCards(process.env.NOTION_API_KEY);
+    return await checkStuckWorkInner();
   } catch (err) {
-    return [{ name: 'Stuck work: brain cards', status: 'warn', message: `Notion unreachable — stuck-work check skipped this run (${err.message.slice(0, 120)})` }];
+    return [{ name: 'Stuck work: brain cards', status: 'warn', message: `Stuck-work check crashed — skipped this run (${err.message.slice(0, 160)})` }];
   }
-  const { pausedCritical, pausedStale, orphaned } = classifyStuckCards(cards, Date.now());
+}
+
+async function checkStuckWorkInner() {
+  const { classifyStuckCards, fetchBrainCards } = require('./lib/stuck-work');
+  const cards = await fetchBrainCards(process.env.NOTION_API_KEY);
+  if (cards.length === 0) {
+    // ~120 cards sit in these states on a normal day. Zero means the status
+    // names drifted (query filters match nothing) far more likely than a
+    // genuinely empty brain — surface it instead of reporting a clean pass.
+    return [{ name: 'Stuck work: brain cards', status: 'warn', message: 'Notion returned 0 Paused/In-progress cards — status names may have been renamed (check stuck-work.js filters)' }];
+  }
+  const { pausedCritical, pausedStale, orphaned, invalidDates } = classifyStuckCards(cards, Date.now());
   const results = [];
-  const fmt = (c) => `${c.name.slice(0, 60)} (${Math.round(c.idleHours / 24)}d)`;
+  // Card names are free text typed into Notion and land in the HTML email —
+  // escape them (first check to inject arbitrary text into the digest).
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const fmt = (c) => `${esc(c.name.slice(0, 60))} (${Math.round(c.idleHours / 24)}d)`;
 
   if (pausedCritical.length > 0) {
     results.push({
@@ -1161,6 +1176,9 @@ async function checkStuckWork() {
 
   if (pausedStale.length > 0) {
     results.push({ name: 'Stuck work: paused P2/other cards', status: 'warn', message: `${pausedStale.length} lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)` });
+  }
+  if (invalidDates > 0) {
+    results.push({ name: 'Stuck work: unparseable timestamps', status: 'warn', message: `${invalidDates} card(s) skipped — last_edited_time did not parse (they may be hiding stuck work)` });
   }
   return results;
 }

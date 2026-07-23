@@ -11,11 +11,19 @@
  * fetchBrainCards below; tests supply fixtures.
  */
 
-const DATABASE_ID = 'fa7b3ff2-c073-4097-b54c-0a78e56e06b6'; // same brain DB as notion-brain.js
-const NOTION_VERSION = '2025-09-03';
+const { BRAIN_DATABASE_ID: DATABASE_ID, NOTION_VERSION } = require('./notion-constants');
 
 const ORPHAN_HOURS_DEFAULT = 48;
 const PAUSED_LOW_PRIORITY_DAYS = 7;
+// Backstop against runaway pagination (100 cards/page). The brain DB is ~1.4k
+// cards total, ~120 in the queried states — 20 pages is far beyond plausible.
+const MAX_PAGES = 20;
+
+// KNOWN LIMITATION: "activity" here is Notion's last_edited_time, which bots
+// (notion-action-poll, auto-fix-friction-card, tags sync) also bump — a dead
+// card touched by automation looks fresh and hides from the orphan bucket.
+// Good enough as a v1 heuristic (first live run still surfaced 50 orphans);
+// per-actor activity needs the #279 alert-ledger.
 
 /**
  * @param {Array<{name:string,status:string,priority:string|null,lastEditedAt:string,url?:string}>} cards
@@ -28,11 +36,15 @@ function classifyStuckCards(cards, nowMs, opts = {}) {
   const pausedCritical = [];
   const pausedStale = [];
   const orphaned = [];
+  let invalidDates = 0;
 
   for (const card of cards) {
     const editedMs = Date.parse(card.lastEditedAt);
-    if (Number.isNaN(editedMs)) continue;
+    if (Number.isNaN(editedMs)) { invalidDates++; continue; }
     const idleHours = (nowMs - editedMs) / 3600000;
+    // Matches the DB's stable select values "P0 Now" / "P1 Next" (and excludes
+    // "P2 Later"). A vocabulary rename would silently declassify — if priority
+    // names ever change, update this alongside notion-brain.js.
     const critical = /^P[01]\b/.test(card.priority || '');
 
     if (card.status === 'Paused') {
@@ -49,7 +61,7 @@ function classifyStuckCards(cards, nowMs, opts = {}) {
   pausedCritical.sort(byIdle);
   pausedStale.sort(byIdle);
   orphaned.sort(byIdle);
-  return { pausedCritical, pausedStale, orphaned };
+  return { pausedCritical, pausedStale, orphaned, invalidDates };
 }
 
 /**
@@ -60,7 +72,9 @@ function classifyStuckCards(cards, nowMs, opts = {}) {
 async function fetchBrainCards(apiKey, fetchImpl = fetch) {
   const cards = [];
   let cursor;
+  let pages = 0;
   do {
+    if (++pages > MAX_PAGES) throw new Error(`Notion pagination exceeded ${MAX_PAGES} pages — aborting instead of truncating silently`);
     const res = await fetchImpl(`https://api.notion.com/v1/data_sources/${DATABASE_ID}/query`, {
       method: 'POST',
       headers: {
