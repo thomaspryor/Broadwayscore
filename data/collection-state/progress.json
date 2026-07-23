@@ -45,7 +45,8 @@
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+    "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "are-you-mad-at-me-off-broadway-2026/one-minute-critic--unknown.json",
@@ -326,7 +327,16 @@
     "death-of-a-salesman-2026/newsday--linda-winer.json",
     "death-of-a-salesman-2026/newsweek--joe-westerfield.json",
     "death-of-a-salesman-2026/backstage--erik-haagensen.json",
-    "death-of-a-salesman-2026/bloomberg--jeremy-gerard.json"
+    "death-of-a-salesman-2026/bloomberg--jeremy-gerard.json",
+    "death-of-a-salesman-2026/dailybeast--tim-teeman.json",
+    "death-of-a-salesman-2026/exeunt-magazine--juliet-hindell.json",
+    "death-of-a-salesman-2026/front-row-center--sarah-downs.json",
+    "death-of-a-salesman-2026/google--unknown.json",
+    "death-of-a-salesman-2026/huffpost--mark-kennedy.json",
+    "death-of-a-salesman-2026/philadelphia-inquirer--howard-shapiro.json",
+    "death-of-a-salesman-2026/queerty--matthew-wexler.json",
+    "death-of-a-salesman-2026/stagebuddy--elyse-trevers.json",
+    "death-of-a-salesman-2026/theater-pizzazz--carol-rocamora.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -364,7 +374,8 @@
       "the-rocky-horror-show-2026/ew--dalton-ross.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "the-rocky-horror-show-2026/playbill--unknown.json",
-      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -377,7 +388,8 @@
     ],
     "archiveToday": [
       "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/death-of-a-salesman-2026/google--unknown.json"
     ],
     "archive": [
       "trainspotting-the-musical-west-end-2026/broadwayworld--team-bww.json",
@@ -393,7 +405,7 @@
     ]
   },
   "startTime": "2026-07-23T11:43:54.936Z",
-  "lastProcessed": "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+  "lastProcessed": "death-of-a-salesman-2026/theater-pizzazz--carol-rocamora.json",
   "log": [
     {
       "t": "2026-07-23T11:45:27.645Z",
@@ -460,6 +472,18 @@
       "t": "2026-07-23T15:40:03.136Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-23T16:13:18.252Z",
+      "event": "bb-session",
+      "session": "107de541",
+      "url": "https://mail.google.com/mail/u/0/"
+    },
+    {
+      "t": "2026-07-23T16:13:34.920Z",
+      "event": "bb-session",
+      "session": "b8f0b462",
+      "url": "https://mail.google.com/mail/u/0/"
     }
   ]
 }

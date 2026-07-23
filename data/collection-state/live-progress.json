@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-23T16:12:10.224Z",
-  "processed": 46,
-  "failed": 279,
-  "successRate": "14.2%",
+  "updatedAt": "2026-07-23T16:14:37.693Z",
+  "processed": 47,
+  "failed": 288,
+  "successRate": "14.0%",
   "tierBreakdown": {
-    "playwright": 34,
+    "playwright": 35,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 2,
+    "archiveToday": 3,
     "archive": 10
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-07-23T11:45:27.645Z",
@@ -80,6 +80,18 @@
       "t": "2026-07-23T15:40:03.136Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-23T16:13:18.252Z",
+      "event": "bb-session",
+      "session": "107de541",
+      "url": "https://mail.google.com/mail/u/0/"
+    },
+    {
+      "t": "2026-07-23T16:13:34.920Z",
+      "event": "bb-session",
+      "session": "b8f0b462",
+      "url": "https://mail.google.com/mail/u/0/"
     }
   ]
 }
