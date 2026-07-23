@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-07-23T03:54:42.606Z",
+  "liveObservations": 0,
+  "windowHours": 0,
+  "replay": {
+    "grace (positive)": {
+      "expectClear": true,
+      "got": true,
+      "correct": true
+    },
+    "cyrano (negative)": {
+      "expectClear": false,
+      "got": false,
+      "correct": true
+    }
+  },
+  "replayAllCorrect": true,
+  "evidence": {
+    "verdict": "insufficient-evidence",
+    "candidates": 0,
+    "reviewed": 0,
+    "agreed": 0,
+    "disagreed": 0,
+    "windowHours": 0,
+    "reasons": [
+      "only 0 live candidate(s) observed (need ≥3) — extend the window",
+      "observation window 0.0h < 48h"
+    ]
+  },
+  "autoClearEnableAllowed": false
+}
