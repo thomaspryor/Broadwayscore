@@ -58,4 +58,31 @@ describe('updateHeartbeatState', () => {
     assert.equal(state['x::broadway'].redStreak, 0);
     assert.deepEqual(newlyActionable, []);
   });
+
+  test('a row missing from this run (transient data gap) is carried forward unchanged, not dropped or reset', () => {
+    const prev = {
+      'broadwaynews::broadway': { redStreak: 1, lastStatus: 'red', lastCheckedAt: 'w1' },
+    };
+    // This run's cadenceRows doesn't include broadwaynews at all (e.g. a partial
+    // reviews.json read) — only an unrelated outlet reported.
+    const { state, newlyActionable } = updateHeartbeatState(
+      prev, [{ outletId: 'nytimes', market: 'broadway', status: 'green' }], 'w2',
+    );
+    assert.deepEqual(state['broadwaynews::broadway'], prev['broadwaynews::broadway'],
+      'missing row must be carried forward byte-identical, not deleted or reset to 0');
+    assert.deepEqual(newlyActionable, []);
+  });
+
+  test('a carried-forward row resumes its streak correctly once data returns', () => {
+    let state = { 'broadwaynews::broadway': { redStreak: 1, lastStatus: 'red', lastCheckedAt: 'w1' } };
+    // w2: transient gap, row absent
+    ({ state } = updateHeartbeatState(state, [{ outletId: 'nytimes', market: 'broadway', status: 'green' }], 'w2'));
+    assert.equal(state['broadwaynews::broadway'].redStreak, 1, 'streak survived the gap');
+    // w3: data returns, still red -> should cross the 2-consecutive threshold
+    const r3 = updateHeartbeatState(
+      state, [{ outletId: 'broadwaynews', market: 'broadway', status: 'red' }], 'w3',
+    );
+    assert.equal(r3.state['broadwaynews::broadway'].redStreak, 2);
+    assert.equal(r3.newlyActionable.length, 1);
+  });
 });
