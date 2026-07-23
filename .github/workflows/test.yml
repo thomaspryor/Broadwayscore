@@ -662,6 +662,15 @@ on:
       # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/t1-silent-gap.js'
       - 'scripts/lib/t1-silent-gap.test.mjs'
+      # T1-retrieval Sprint 3 (card #298): self-heal refetch circuit breaker
+      # (global 10/day cap + audit-side per-file attempt history) and the
+      # file-flag-vs-newer-CV contradiction detector. Colocated *.test.mjs run
+      # via the lib-test glob; path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/refetch-circuit-breaker.js'
+      - 'scripts/lib/refetch-circuit-breaker.test.mjs'
+      - 'scripts/lib/flag-contradiction.js'
+      - 'scripts/lib/flag-contradiction.test.mjs'
       # Stuck-work detector (2026-07-22): paused/orphaned Notion-brain cards
       # surfaced in the daily digest. Colocated test runs in the lib-test glob;
       # path-listed so a solo edit triggers CI.
