@@ -43,6 +43,10 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 const { getTier } = require('./lib/outlet-tiers');
 const { AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
 const { decideEmptyBodyRecovery, nextRecoveryCount, FLAGGED_RECOVERY_CAP } = require('./lib/flagged-recovery');
+const {
+  loadRecoveryState, saveRecoveryState, decideRefetch, recordRefetch,
+  DEFAULT_REFETCH_CONFIG,
+} = require('./lib/refetch-circuit-breaker');
 const { dispatchRescore } = require('./lib/dispatch-rescore');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { sendAlert } = require('./lib/discord-notify');
@@ -55,6 +59,10 @@ const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const AUDIT_DIR = path.join(ROOT, 'data', 'audit');
 const REPORT_PATH = path.join(AUDIT_DIR, 't1-silent-gaps.json');
 const ALERT_STATE_PATH = path.join(AUDIT_DIR, 't1-silent-gap-alerts.json');
+// Circuit-breaker state for the self-heal refetch (S3-T1/T2). Global 10/day
+// budget + audit-side per-file attempt history — NEVER stored in per-review
+// JSON. Single writer = this hourly job.
+const RECOVERY_STATE_PATH = path.join(AUDIT_DIR, 't1-recovery-state.json');
 
 const args = process.argv.slice(2);
 const opt = (name, dflt) => {
@@ -171,6 +179,21 @@ async function main() {
   // whatsonstage stubs would starve the cap).
   const attemptedUrls = new Set();
 
+  // Circuit-breaker state (S3-T2): the GLOBAL daily refetch budget lives here,
+  // spanning all hourly runs — the per-run --fetch-cap alone can't bound a day.
+  // Loaded once; mutated + persisted after EVERY attempt so a crash preserves
+  // the budget already spent (single-writer, commit-on-change discipline).
+  let recoveryState = loadRecoveryState(RECOVERY_STATE_PATH, new Date());
+  const persistRecoveryState = () => {
+    if (DRY_RUN) return;
+    fs.mkdirSync(AUDIT_DIR, { recursive: true });
+    saveRecoveryState(RECOVERY_STATE_PATH, recoveryState);
+  };
+  // Dry-run visibility: candidates that WOULD refetch and where the breaker
+  // stands. Printed at the end so a --dry-run shows the budget math (S3-T2 VERIFY).
+  let dryRunCandidates = 0;
+  const breakerDenied = [];
+
   for (const show of shows) {
     const dir = path.join(REVIEW_TEXTS_DIR, show.id);
     let files;
@@ -193,11 +216,34 @@ async function main() {
       if (!gap) continue;
 
       let recovery = null;
-      if (gap.type === 'empty-body' && gap.recoverable && DO_RECOVER && !DRY_RUN
-          && fetches < FETCH_CAP && d.url && !attemptedUrls.has(d.url)) {
+      // A file is a refetch candidate when it's a recoverable empty-body gap
+      // with a usable URL we haven't already spent a slot on this run.
+      const isRefetchCandidate = gap.type === 'empty-body' && gap.recoverable
+        && d.url && !attemptedUrls.has(d.url);
+
+      if (isRefetchCandidate && DO_RECOVER && DRY_RUN) {
+        // Dry-run: count what WOULD refetch (consult the breaker read-only so
+        // the count reflects the real budget, but never mutate/persist state).
+        const dec = decideRefetch(recoveryState, { showId: show.id, fileName: f, now: new Date() });
         attemptedUrls.add(d.url);
-        recovery = recoverFromOwnUrl(show.id, f, d, show);
-        if (recovery.attempted) fetches++;
+        if (dec.allowed) dryRunCandidates++;
+        else breakerDenied.push({ showId: show.id, file: f, reason: dec.reason });
+      } else if (isRefetchCandidate && DO_RECOVER && !DRY_RUN && fetches < FETCH_CAP) {
+        attemptedUrls.add(d.url);
+        // GLOBAL daily budget + per-file cap (audit-side state), checked BEFORE
+        // the per-run --fetch-cap fires. A denied refetch is logged (never a
+        // silent no-op) and the file still reports as a gap below.
+        const dec = decideRefetch(recoveryState, { showId: show.id, fileName: f, now: new Date() });
+        if (!dec.allowed) {
+          recovery = { attempted: false, reason: `circuit-breaker:${dec.reason}` };
+          breakerDenied.push({ showId: show.id, file: f, reason: dec.reason });
+        } else {
+          // Record the attempt (bump global + per-file) and PERSIST before the
+          // fetch — a crash mid-fetch must still count the spend.
+          recoveryState = recordRefetch(dec.state, { showId: show.id, fileName: f, now: new Date() });
+          persistRecoveryState();
+          recovery = recoverFromOwnUrl(show.id, f, d, show);
+          if (recovery.attempted) fetches++;
         // Healed only if a re-classification agrees — a re-ingest that lands
         // another bot stub must NOT suppress the gap (Codex review finding).
         const fresh = loadJson(path.join(dir, f), null);
@@ -208,9 +254,10 @@ async function main() {
           outletScored: scoredOutlets.has(outletId),
           now: new Date(),
         });
-        if (fresh && freshGap == null) {
-          console.log(`  ♻️  recovered ${show.id}/${f} from its own URL`);
-          continue;
+          if (fresh && freshGap == null) {
+            console.log(`  ♻️  recovered ${show.id}/${f} from its own URL`);
+            continue;
+          }
         }
       }
 
@@ -241,6 +288,27 @@ async function main() {
     }, null, 2) + '\n');
   }
   console.log(`\n${gaps.length} silent gap(s) across ${shows.length} in-window show(s).`);
+
+  // Refetch circuit-breaker budget math (S3-T2). Printed every run; on a
+  // --dry-run this is the primary output (candidates that WOULD refetch +
+  // remaining budget), on a live --recover run it's a post-hoc summary.
+  {
+    const rolled = require('./lib/refetch-circuit-breaker').rolloverDay(recoveryState, new Date());
+    const spentToday = rolled.globalCount || 0;
+    const remaining = Math.max(0, DEFAULT_REFETCH_CONFIG.dailyGlobalCap - spentToday);
+    if (DRY_RUN && DO_RECOVER) {
+      console.log(`\n💧 refetch budget (dry-run): ${dryRunCandidates} candidate(s) would refetch; ` +
+        `${spentToday}/${DEFAULT_REFETCH_CONFIG.dailyGlobalCap} used today, ${remaining} remaining. ` +
+        `${breakerDenied.length} candidate(s) would be denied by the breaker.`);
+      for (const b of breakerDenied.slice(0, 10)) {
+        console.log(`   ⛔ ${b.showId}/${b.file} — ${b.reason}`);
+      }
+    } else if (DO_RECOVER) {
+      console.log(`💧 refetch budget: ${fetches} fetch(es) this run; ` +
+        `${spentToday}/${DEFAULT_REFETCH_CONFIG.dailyGlobalCap} used today (global), ${remaining} remaining. ` +
+        `${breakerDenied.length} skipped by the breaker.`);
+    }
+  }
 
   const state = loadJson(ALERT_STATE_PATH, {});
   const now = new Date();
