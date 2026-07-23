@@ -16,9 +16,15 @@ import { chromium, Browser, Page } from 'playwright';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as https from 'https';
+import * as cheerio from 'cheerio';
 
 // Use the shared show-matching utility (260+ aliases, multi-level matching)
 const { matchTitleToShow, loadShows: loadShowsFromMatching } = require('./lib/show-matching');
+// Bright Data / Scrapingdog — proxy through non-CI IPs. See scrape-grosses.ts
+// for the full incident writeup (2026-07-21/22): ScrapingBee quota-exhausted
+// and this script's bare Playwright fallback both fail identically when BWW
+// throttles/blocks the GitHub Actions IP range.
+const { fetchWithBrightData, fetchWithScrapingdog } = require('./lib/scraper');
 
 const BASE_URL = 'https://www.broadwayworld.com/grossescumulative.cfm';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
@@ -144,6 +150,42 @@ async function scrapePageWithScrapingBee(url: string): Promise<ScrapedRow[]> {
     }).on('error', reject)
       .on('timeout', () => reject(new Error('ScrapingBee timeout')));
   });
+}
+
+// Parse the cumulative-grosses table from raw HTML (BD/Scrapingdog tier).
+// Mirrors the Playwright $$eval extraction in scrapePage() below.
+function parseAllTimeHtml(html: string): ScrapedRow[] {
+  const $ = cheerio.load(html);
+  const rows: ScrapedRow[] = [];
+
+  $('table tr').each((_i, rowEl) => {
+    const cells = $(rowEl).find('td');
+    if (cells.length < 5) return;
+
+    const showTheater = $(cells[0]).text().trim();
+    const lines = showTheater.split('\n').map(s => s.trim()).filter(Boolean);
+    const showTitle = lines[0] || '';
+    const gross = $(cells[1]).text().trim();
+    if (!showTitle || !gross.includes('$')) return;
+
+    rows.push({
+      showTitle,
+      gross,
+      attendance: $(cells[3]).text().trim(),
+      performances: $(cells[4]).text().trim(),
+    });
+  });
+
+  return rows;
+}
+
+async function fetchAllTimeHtmlProvider(
+  url: string,
+  fetchFn: (url: string) => Promise<{ content: string } | null>
+): Promise<ScrapedRow[]> {
+  const result = await fetchFn(url);
+  if (!result || !result.content) return [];
+  return parseAllTimeHtml(result.content);
 }
 
 // Scrape a single cumulative page with Playwright (fallback)
@@ -277,12 +319,36 @@ async function scrapeAllTime(): Promise<void> {
         }
       }
 
-      // Tier 2: Playwright (fallback)
+      // Tier 2: Bright Data (proxied — survives a BWW-side block of the CI IP)
+      if (rows.length === 0) {
+        try {
+          console.log(`\n--- ${label} [Tier 2: Bright Data] ---`);
+          rows = await fetchAllTimeHtmlProvider(url, fetchWithBrightData);
+          if (rows.length > 0) scrapeSource = 'brightdata';
+          else console.log('  [BrightData] Empty result');
+        } catch (error: any) {
+          console.log(`  [BrightData] ${error.message}`);
+        }
+      }
+
+      // Tier 3: Scrapingdog (proxied, cheaper than BD for a static page)
+      if (rows.length === 0) {
+        try {
+          console.log(`\n--- ${label} [Tier 3: Scrapingdog] ---`);
+          rows = await fetchAllTimeHtmlProvider(url, (u: string) => fetchWithScrapingdog(u, { renderJs: false }));
+          if (rows.length > 0) scrapeSource = 'scrapingdog';
+          else console.log('  [Scrapingdog] Empty result');
+        } catch (error: any) {
+          console.log(`  [Scrapingdog] ${error.message}`);
+        }
+      }
+
+      // Tier 4: Playwright (last resort, no proxy)
       if (rows.length === 0) {
         const page = await context.newPage();
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
           try {
-            console.log(`\n--- ${label} [Tier 2: Playwright] (attempt ${attempt}/${MAX_RETRIES}) ---`);
+            console.log(`\n--- ${label} [Tier 4: Playwright] (attempt ${attempt}/${MAX_RETRIES}) ---`);
             rows = await scrapePage(page, url);
             if (rows.length > 0) {
               scrapeSource = 'playwright';
