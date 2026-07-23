@@ -193,10 +193,12 @@ jobs:
 
       # T1 coverage digest (S2-T7). Reads the ledger just rebuilt above; ACTION-emails
       # only NEW post-rollout gaps that crossed 24h, deduped via the digest-state file
-      # (committed below). Hourly is safe: each gap emails at most once, ever; the
-      # first --alert run stamps rolloutAt, freezing the pre-existing backlog as
-      # digest-only. NOTE: step env does NOT inherit — this step needs its own
-      # RESEND_API_KEY/OWNER_EMAIL or sendAlert silently resolves undelivered.
+      # (committed below). Hourly is safe: a gap emails once per gap LIFETIME — a
+      # gap that closes and later regresses re-alerts by design, re-damped by the
+      # 24h grace (its ledger firstSeenAt resets too). The first --alert run stamps
+      # rolloutAt, freezing the pre-existing backlog as digest-only. NOTE: step env
+      # does NOT inherit — this step needs its own RESEND_API_KEY/OWNER_EMAIL or
+      # sendAlert silently resolves undelivered.
       - name: T1 coverage digest (ACTION alerts)
         if: always()
         env:
