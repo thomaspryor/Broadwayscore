@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-23T07:21:13.067Z",
+    "generatedAt": "2026-07-23T10:48:52.227Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,19 +8,19 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 9,
+    "flaggedCount": 10,
     "exemptCount": 10,
-    "coveredCount": 35,
+    "coveredCount": 34,
     "highChurnTracked": 54
   },
   "flagged": [
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 93
+      "churn": 94
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 93
+      "churn": 94
     },
     {
       "path": "data/audit/processed-feedback.json",
@@ -28,7 +28,7 @@
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 62
+      "churn": 63
     },
     {
       "path": "data/audit/t1-silent-gaps.json",
@@ -47,6 +47,10 @@
       "churn": 35
     },
     {
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
+      "churn": 34
+    },
+    {
       "path": "data/audit/validation/collection-report-2026-07-21.json",
       "churn": 31
     }
@@ -54,23 +58,23 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 119
+      "churn": 120
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 102
+      "churn": 100
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 75
+      "churn": 77
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 75
+      "churn": 77
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 75
+      "churn": 77
     },
     {
       "path": "public/opening-night-status.json",
@@ -82,36 +86,31 @@
     },
     {
       "path": "public/data/shows/the-outsiders-2024.json",
-      "churn": 40
-    },
-    {
-      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 38
+      "churn": 39
     },
     {
       "path": "public/data/shows/art-2025.json",
+      "churn": 36
+    },
+    {
+      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
       "churn": 36
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 864,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/progress.json",
-      "churn": 840,
+      "churn": 822,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 665,
+      "churn": 670,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 637,
+      "churn": 639,
       "mergeAttr": "union"
     },
     {
@@ -121,37 +120,37 @@
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 240,
+      "churn": 243,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 240,
+      "churn": 243,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 135,
+      "churn": 136,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 101,
+      "churn": 102,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/shifters-off-broadway-2026.json",
-      "churn": 101,
+      "churn": 102,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 89,
+      "churn": 91,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 75,
+      "churn": 77,
       "mergeAttr": "ours"
     },
     {
@@ -175,11 +174,6 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/collection-state/browserbase-usage.json",
-      "churn": 52,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/show-review-gap.json",
       "churn": 50,
       "mergeAttr": "ours"
@@ -195,8 +189,13 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 48,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/drift-state.json",
-      "churn": 44,
+      "churn": 45,
       "mergeAttr": "ours"
     },
     {
@@ -210,6 +209,11 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/loves-labours-lost-globe-west-end-2026.json",
+      "churn": 43,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/poller-backoff/tender-off-west-end-2026.json",
       "churn": 43,
       "mergeAttr": "ours"
@@ -217,11 +221,6 @@
     {
       "path": "data/audit/poller-backoff/the-oresteia-west-end-2026.json",
       "churn": 43,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/loves-labours-lost-globe-west-end-2026.json",
-      "churn": 42,
       "mergeAttr": "ours"
     },
     {
@@ -240,33 +239,33 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/churn-merge-coverage.json",
+      "path": "data/audit/poller-backoff/are-you-mad-at-me-off-broadway-2026.json",
       "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/churn-merge-coverage.json",
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/are-you-mad-at-me-off-broadway-2026.json",
-      "churn": 31,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/dukes-off-broadway-2026.json",
-      "churn": 31,
+      "churn": 32,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/hershey-felder-the-piano-and-me-off-broadway-2026.json",
-      "churn": 31,
+      "churn": 32,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026.json",
-      "churn": 31,
+      "churn": 32,
       "mergeAttr": "ours"
     }
   ]
