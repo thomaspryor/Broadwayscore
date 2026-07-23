@@ -10,16 +10,24 @@ const { inadmissibleSizes, ENVELOPES, DEFAULTS } = require('./autonomous-budget.
 // triage spend and attempts nothing, silently. inadmissibleSizes() is the
 // detection the run warns on.
 
-test('$5 night with S,M: M is dead, S is fine (the 2026-07-15 deadlock)', () => {
-  const dead = inadmissibleSizes({ nightUSD: 5, sizes: ['S', 'M'] });
+// Envelope raise 2026-07-22 (owner): M worst-case is now estUSD 4 +
+// estAttempt2USD 8 = $12. The 2026-07-15 deadlock scenario is preserved with
+// the new numbers: a night below M's worst case must flag M as dead.
+test('$10 night with S,M: M is dead, S is fine (the 2026-07-15 deadlock class)', () => {
+  const dead = inadmissibleSizes({ nightUSD: 10, sizes: ['S', 'M'] });
   assert.equal(dead.length, 1);
   assert.equal(dead[0].size, 'M');
-  assert.equal(dead[0].worstCaseUSD, 7.5);
-  assert.equal(dead[0].availableUSD, 4.5);
+  assert.equal(dead[0].worstCaseUSD, 12);
+  assert.equal(dead[0].availableUSD, 9.5);
 });
 
-test('$8 night with S,M: nothing dead (M worst-case 7.50 ≤ 7.50 available)', () => {
-  assert.deepEqual(inadmissibleSizes({ nightUSD: 8, sizes: ['S', 'M'] }), []);
+test('$5 night with S,M: BOTH dead (S worst-case 6 > 4.5 available)', () => {
+  const dead = inadmissibleSizes({ nightUSD: 5, sizes: ['S', 'M'] });
+  assert.deepEqual(dead.map(d => d.size).sort(), ['M', 'S']);
+});
+
+test('$12.50 night with S,M: nothing dead (M worst-case 12 ≤ 12 available)', () => {
+  assert.deepEqual(inadmissibleSizes({ nightUSD: 12.5, sizes: ['S', 'M'] }), []);
 });
 
 test('L is never reported dead — incremental cards are not admitted whole', () => {
