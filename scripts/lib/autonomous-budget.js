@@ -33,10 +33,14 @@ const { DEFAULT_CAPS } = require('./opening-night-budget.js');
 // is 0 on purpose: an L card gets exactly one S-sized slice per night; if it
 // doesn't finish, tomorrow night's slice IS the retry (a checkpoint branch,
 // not a second same-night attempt) — see scripts/lib/autonomous-checkpoint.js.
+// Owner raise 2026-07-22: previous caps starved the loop — a real S card
+// (High Society, Sonnet, 4.4M tokens in) cost $2.35 against a $1.50 cap and
+// was killed AFTER doing the work. Caps now sized so a normal attempt fits
+// with headroom; sustained spend is bounded by weeklyUSD, not per-card caps.
 const ENVELOPES = Object.freeze({
-  S: Object.freeze({ maxUSD: 1.5, maxWallMin: 30, estUSD: 0.8, estAttempt2USD: 1.6 }),
-  M: Object.freeze({ maxUSD: 3.0, maxWallMin: 90, estUSD: 2.5, estAttempt2USD: 5.0 }),
-  L: Object.freeze({ maxUSD: 1.5, maxWallMin: 30, estUSD: 0.8, estAttempt2USD: 0, incremental: true }),
+  S: Object.freeze({ maxUSD: 4, maxWallMin: 45, estUSD: 2, estAttempt2USD: 4 }),
+  M: Object.freeze({ maxUSD: 10, maxWallMin: 120, estUSD: 4, estAttempt2USD: 8 }),
+  L: Object.freeze({ maxUSD: 4, maxWallMin: 45, estUSD: 2, estAttempt2USD: 0, incremental: true }),
 });
 
 const DEFAULTS = Object.freeze({
@@ -186,6 +190,22 @@ function inadmissibleSizes({ nightUSD, sizes, reserveUSD = DEFAULTS.reserveUSD }
 // inadmissibleSizes() must agree or the warning lies about admissibility.
 function worstCaseUSD(env) { return round2(env.estUSD + env.estAttempt2USD); }
 
+// Weekly spend clamp (owner 2026-07-22: "$60/night, but I doubt we can spend
+// that much multiple days in a row"). Pure: given the configured night cap,
+// the weekly cap (null = no weekly limit), and the ledger's trailing-7-day
+// spend, returns the effective night budget. A heavy night is allowed; the
+// following nights shrink until the trailing week drops back under the cap.
+function clampNightToWeekly(nightUSD, weeklyUSD, spent7dUSD) {
+  if (!Number.isFinite(weeklyUSD) || weeklyUSD <= 0) return { nightUSD, clamped: false };
+  const weekRemaining = round2(weeklyUSD - (Number(spent7dUSD) || 0));
+  if (weekRemaining >= nightUSD) return { nightUSD, clamped: false };
+  return {
+    nightUSD: Math.max(0, weekRemaining),
+    clamped: true,
+    reason: `weekly cap: $${(Number(spent7dUSD) || 0).toFixed(2)} spent in the last 7 days of $${weeklyUSD} — tonight capped at $${Math.max(0, weekRemaining).toFixed(2)} (config night cap $${nightUSD})`,
+  };
+}
+
 // The loop shares the Anthropic daily dollar pool with opening-night
 // automation — refuse a night config that could eat the whole shared cap.
 function checkSharedDailyCap(nightUSD, caps = DEFAULT_CAPS) {
@@ -206,6 +226,7 @@ module.exports = {
   estimateUSD,
   pickModel,
   createNightBudget,
+  clampNightToWeekly,
   checkSharedDailyCap,
   inadmissibleSizes,
 };

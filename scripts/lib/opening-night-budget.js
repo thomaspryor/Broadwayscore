@@ -36,7 +36,7 @@ const DEFAULT_PER_SHOW = Object.freeze({
 const DEFAULT_CAPS = Object.freeze({
   scrapingbee: { totalCap: 5350000, softFloorPct: 0.5 }, // soft floor used as informational threshold
   browserbase: { dailyCap: 30, hardCap: 200 },
-  anthropic: { dailyDollarCap: 50 },
+  anthropic: { dailyDollarCap: 100 }, // raised 50→100 (owner 2026-07-22: $60/night autonomous loop must pass checkSharedDailyCap; sustained spend bounded by the loop's weeklyUSD, not this)
   openai: { dailyDollarCap: 30 },
   gemini: { dailyDollarCap: 10 },
   gha_minutes: { monthlyCap: 2000 },

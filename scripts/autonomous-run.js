@@ -38,7 +38,7 @@ const https = require('https');
 const { transition } = require('./lib/autonomous-state.js');
 const { isDiffAllowed, isDiffDeterministicGreen, classifyDataCard, DATA_CLASS_REPO, isDataRepoDiffAllowed } = require('./lib/autonomous-eligibility.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
-const { createNightBudget, checkSharedDailyCap, pickModel, ENVELOPES, inadmissibleSizes } = require('./lib/autonomous-budget.js');
+const { createNightBudget, clampNightToWeekly, checkSharedDailyCap, pickModel, ENVELOPES, inadmissibleSizes } = require('./lib/autonomous-budget.js');
 const ledger = require('./lib/autonomous-ledger.js');
 const {
   buildImplementerPrompt, buildDataImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks, cardCheckArgv, shouldThrottle, preflightVerdict,
@@ -880,7 +880,7 @@ function attemptDataCard(item, budget, cfg, runId) {
 async function live(args, cfg) {
   const mockScript = args['mock-implementer'] || null;
   const mockEmail = args['mock-email'] || null;
-  const nightUSD = num(args['night-budget'], cfg.nightUSD ?? 5);
+  const configNightUSD = num(args['night-budget'], cfg.nightUSD ?? 5);
   const maxItems = num(args['max-items'], cfg.maxItems ?? 3);
   const sizes = args.sizes ? String(args.sizes).split(',').map(s => s.trim()) : (cfg.sizes || ['S']);
 
@@ -891,6 +891,17 @@ async function live(args, cfg) {
     console.log(`[run] already running (pid ${lock.holder?.pid}, started ${lock.holder?.startedAt}) — exiting`);
     process.exit(0);
   }
+
+  // Weekly clamp: a high nightly ceiling must not compound into 7x that per
+  // week. Read AFTER acquiring the singleton so two near-simultaneous starts
+  // can't both see the same headroom (codex ship-check). Sums the ledger's
+  // `usd` fields only — terminal events (card-fail/card-pass) carry totalUSD
+  // that DUPLICATES their implement rows' usd, so adding both would double-
+  // count; this matches usageStats()'s week number in the morning email.
+  const spent7d = ledger.sumUSD(ledger.entriesSince(ledger.readEntries().entries, new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString()));
+  const weekly = clampNightToWeekly(configNightUSD, cfg.weeklyUSD ?? null, spent7d);
+  const nightUSD = weekly.nightUSD;
+  if (weekly.clamped) console.error(`[run] ${weekly.reason}`);
   try {
     const cap = checkSharedDailyCap(nightUSD);
     // return (not process.exit): a hard exit here would skip the `finally`
@@ -898,6 +909,7 @@ async function live(args, cfg) {
     // still tell the owner nothing ran, not go silent.
     if (!cap.ok) { console.error(`[run] ${cap.message}`); return; }
     if (cap.warning) console.error(`[run] WARN ${cap.warning}`);
+
 
     // Missing/stale queue throws (readQueue never process.exit()s) — caught
     // here so the finally below still runs: release the lock AND send
@@ -920,12 +932,29 @@ async function live(args, cfg) {
       dataPlan = dataPlan.filter(p => p.id === args.card || p.id.replace(/-/g, '') === String(args.card).replace(/-/g, ''));
     }
 
-    ledger.appendEntry({ event: 'run-start', runId, note: `budget $${nightUSD} · max ${maxItems} · sizes ${sizes.join(',')} · ${plan.length} plan item(s) + ${dataPlan.length} data-plan item(s)${mockScript ? ' · MOCK implementer' : ''}` });
+    // A partially-clamped night must be self-explanatory in the ledger (the
+    // email reads it) — a $30 budget on a $60 config with no reason recorded
+    // reads as a malfunction (QA review 2026-07-22).
+    const clampNote = weekly.clamped ? ` · weekly-clamped from $${configNightUSD} ($${spent7d.toFixed(2)} spent in trailing 7d of $${cfg.weeklyUSD})` : '';
+    ledger.appendEntry({ event: 'run-start', runId, note: `budget $${nightUSD}${clampNote} · max ${maxItems} · sizes ${sizes.join(',')} · ${plan.length} plan item(s) + ${dataPlan.length} data-plan item(s)${mockScript ? ' · MOCK implementer' : ''}` });
+
+    // Weekly cap fully spent → skip the night gracefully (the `finally`
+    // below still sends the email; the ledger explains why nothing ran).
+    if (weekly.clamped && nightUSD < 1) {
+      ledger.appendEntry({ event: 'run-skip', runId, note: weekly.reason });
+      ledger.appendEntry({ event: 'run-end', runId, note: `skipped: weekly cap` });
+      console.log(`[run] WEEKLY CAP — ${weekly.reason}. No attempts tonight.`);
+      return;
+    }
 
     // Config-vs-envelope deadlock: an enabled size whose worst-case reservation
     // exceeds even a fresh night's budget can NEVER be admitted — a night whose
     // plan is all that size burns triage spend and attempts nothing.
-    const dead = inadmissibleSizes({ nightUSD, sizes });
+    // Checked against the CONFIG budget, not tonight's clamped one: a size
+    // that's merely squeezed by the weekly clamp is fine config, and warning
+    // "raise nightUSD or drop M" on it would tell the owner to break correct
+    // settings (QA review 2026-07-22).
+    const dead = inadmissibleSizes({ nightUSD: configNightUSD, sizes });
     for (const d of dead) {
       const note = `config-warning: size ${d.size} is enabled but can never be admitted — worst-case $${d.worstCaseUSD.toFixed(2)} > $${d.availableUSD.toFixed(2)} available on a fresh night. Raise nightUSD or drop ${d.size} from sizes.`;
       ledger.appendEntry({ event: 'config-warning', runId, note });

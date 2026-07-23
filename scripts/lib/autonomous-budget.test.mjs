@@ -3,9 +3,10 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+const budget = require('./autonomous-budget.js');
 const {
   ENVELOPES, pickModel, createNightBudget, checkSharedDailyCap, FORBIDDEN_MODEL_RE, estimateUSD,
-} = require('./autonomous-budget.js');
+} = budget;
 
 // ── pickModel policy ────────────────────────────────────────────────────────
 
@@ -37,21 +38,21 @@ test('fable/mythos tier is never selectable by pickModel', () => {
 // ── Admission + reservation ─────────────────────────────────────────────────
 
 test('admission reserves worst case (both attempts)', () => {
-  const b = createNightBudget({ nightUSD: 5, reserveUSD: 0.5, sizes: ['S'] });
+  const b = createNightBudget({ nightUSD: 10, reserveUSD: 0.5, sizes: ['S'] });
   const r = b.admit('c1', 'S');
   assert.equal(r.admitted, true);
-  assert.equal(r.reservedUSD, 2.4); // estUSD 0.8 + estAttempt2USD 1.6
-  assert.equal(b.remaining(), 2.1); // 4.5 - 2.4
+  assert.equal(r.reservedUSD, 6); // estUSD 2 + estAttempt2USD 4
+  assert.equal(b.remaining(), 3.5); // 9.5 - 6
 });
 
 test('M card refused when 2-attempt estimate exceeds remaining (VERIFY line)', () => {
-  // Night $10 → available $9.5. One S card reserves $2.4 → remaining $7.1.
-  // M worst case is $7.5 → refused even though $7.1 (≈41% spent) remains.
-  const b = createNightBudget({ nightUSD: 10, reserveUSD: 0.5, sizes: ['S', 'M'], maxItems: 5 });
+  // Night $18 → available $17.5. One S card reserves $6 → remaining $11.5.
+  // M worst case is $12 → refused even though $11.5 remains.
+  const b = createNightBudget({ nightUSD: 18, reserveUSD: 0.5, sizes: ['S', 'M'], maxItems: 5 });
   assert.equal(b.admit('s1', 'S').admitted, true);
   const m = b.admit('m1', 'M');
   assert.equal(m.admitted, false);
-  assert.match(m.reason, /worst-case \$7\.50.*exceeds remaining \$7\.10/);
+  assert.match(m.reason, /worst-case \$12\.00.*exceeds remaining \$11\.50/);
 });
 
 test('a genuinely unknown size has no envelope and is refused', () => {
@@ -98,32 +99,32 @@ test('night item cap refuses further admissions', () => {
 // ── Attempt-2 refund (carry-forward #3) ─────────────────────────────────────
 
 test('refundAttempt2 returns the attempt-2 slice to the pool when attempt 1 lands', () => {
-  const b = createNightBudget({ nightUSD: 5, reserveUSD: 0.5, sizes: ['S'] });
-  b.admit('c1', 'S'); // remaining 2.1 — a second S ($2.4 worst case) would be refused
+  const b = createNightBudget({ nightUSD: 10, reserveUSD: 0.5, sizes: ['S'] });
+  b.admit('c1', 'S'); // remaining 3.5 — a second S ($6 worst case) would be refused
   assert.equal(b.admit('c2', 'S').admitted, false);
   const refund = b.refundAttempt2('c1', 'S');
-  assert.equal(refund, ENVELOPES.S.estAttempt2USD); // 1.6 back
-  assert.equal(b.remaining(), 3.7);
+  assert.equal(refund, ENVELOPES.S.estAttempt2USD); // 4 back
+  assert.equal(b.remaining(), 7.5);
   assert.equal(b.admit('c2', 'S').admitted, true, 'refund restores headroom for the next card');
 });
 
 test('settle swaps the rest of the reservation for actual spend', () => {
-  const b = createNightBudget({ nightUSD: 5, reserveUSD: 0.5, sizes: ['S'] });
+  const b = createNightBudget({ nightUSD: 10, reserveUSD: 0.5, sizes: ['S'] });
   b.admit('c1', 'S');
   b.refundAttempt2('c1', 'S');
-  b.settle('c1', 0.55); // actual < est 0.8
+  b.settle('c1', 0.55); // actual < est 2
   const s = b.state();
   assert.equal(s.reserved, 0);
   assert.equal(s.spent, 0.55);
-  assert.equal(b.remaining(), 3.95);
+  assert.equal(b.remaining(), 8.95);
 });
 
 test('settle on a card that used attempt 2 keeps both attempts of spend', () => {
-  const b = createNightBudget({ nightUSD: 5, reserveUSD: 0.5, sizes: ['S'] });
+  const b = createNightBudget({ nightUSD: 10, reserveUSD: 0.5, sizes: ['S'] });
   b.admit('c1', 'S');
-  b.settle('c1', 2.1); // spent through the retry — no refund was taken
-  assert.equal(b.state().spent, 2.1);
-  assert.equal(b.remaining(), 2.4); // available 4.5 − spent 2.1
+  b.settle('c1', 5.1); // spent through the retry — no refund was taken
+  assert.equal(b.state().spent, 5.1);
+  assert.equal(b.remaining(), 4.4); // available 9.5 − spent 5.1
 });
 
 // ── Runaway card cut at sub-budget (VERIFY line) ────────────────────────────
@@ -131,10 +132,10 @@ test('settle on a card that used attempt 2 keeps both attempts of spend', () => 
 test('shouldAbort cuts a runaway card at its per-card sub-budget', () => {
   const b = createNightBudget({ nightUSD: 50, sizes: ['S'] });
   assert.equal(b.shouldAbort('S', { elapsedMin: 5, attemptUSD: 0.4 }).abort, false);
-  const overUSD = b.shouldAbort('S', { elapsedMin: 5, attemptUSD: 1.6 });
+  const overUSD = b.shouldAbort('S', { elapsedMin: 5, attemptUSD: 4.2 });
   assert.equal(overUSD.abort, true);
-  assert.match(overUSD.reason, /per-card cap \$1\.50/);
-  const overWall = b.shouldAbort('S', { elapsedMin: 31, attemptUSD: 0.1 });
+  assert.match(overUSD.reason, /per-card cap \$4\.00/);
+  const overWall = b.shouldAbort('S', { elapsedMin: 46, attemptUSD: 0.1 });
   assert.equal(overWall.abort, true);
   assert.match(overWall.reason, /wall clock/);
 });
@@ -144,8 +145,36 @@ test('shouldAbort cuts a runaway card at its per-card sub-budget', () => {
 test('checkSharedDailyCap: $5 ok, half-cap warns, over-cap refuses', () => {
   assert.equal(checkSharedDailyCap(5).ok, true);
   assert.equal(checkSharedDailyCap(5).warning, undefined);
-  assert.ok(checkSharedDailyCap(30).warning);
-  assert.equal(checkSharedDailyCap(60).ok, false);
+  assert.ok(checkSharedDailyCap(60).warning); // >50% of the $100 shared cap
+  assert.equal(checkSharedDailyCap(60).ok, true); // owner 2026-07-22: $60 nights must pass
+  assert.equal(checkSharedDailyCap(120).ok, false);
+});
+
+// ── Weekly clamp (owner 2026-07-22: high nightly ceiling, bounded week) ─────
+
+test('clampNightToWeekly: no weekly cap → untouched', () => {
+  const { clampNightToWeekly } = budget;
+  assert.deepEqual(clampNightToWeekly(60, null, 999), { nightUSD: 60, clamped: false });
+});
+
+test('clampNightToWeekly: under the weekly cap → untouched', () => {
+  const { clampNightToWeekly } = budget;
+  assert.deepEqual(clampNightToWeekly(60, 150, 80), { nightUSD: 60, clamped: false });
+});
+
+test('clampNightToWeekly: trailing spend shrinks tonight', () => {
+  const { clampNightToWeekly } = budget;
+  const r = clampNightToWeekly(60, 150, 120);
+  assert.equal(r.clamped, true);
+  assert.equal(r.nightUSD, 30);
+  assert.match(r.reason, /weekly cap/);
+});
+
+test('clampNightToWeekly: exhausted week floors at $0, never negative', () => {
+  const { clampNightToWeekly } = budget;
+  const r = clampNightToWeekly(60, 150, 170);
+  assert.equal(r.clamped, true);
+  assert.equal(r.nightUSD, 0);
 });
 
 test('config validation: bad nightUSD/maxItems throw', () => {
