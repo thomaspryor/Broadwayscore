@@ -199,6 +199,49 @@ const OB_VENUE_CONFIGS = [
     preferPlaywright: false,
     category: 'off-broadway',
   },
+  // ── S5-T2 (2026-07-22): venues ranked from the late-add defect analysis
+  // (scripts/lib/late-add-detector.js output; doc in claude-outputs). Both
+  // venues below directly produced a real late-add gap in the corpus —
+  // adding their listings closes exactly the discovery hole that caused it.
+  {
+    name: 'Bedlam',
+    // music-city-off-broadway-2026's earliest review predated our catalog
+    // clock by 491d; Bedlam's own priorRuns venue for that show was Bedlam.
+    // /shows/ is Bedlam's FULL production archive (current + years of past
+    // shows), not a curated current-season page — same shape as Signature's
+    // .type-event (upcoming+past mixed, see above). Accept all; the existing
+    // cross-validation gate (promote-ob-venue-candidates.js) rejects
+    // anything not corroborated by Playbill/Lortel before promotion, so
+    // historical noise never reaches shows.json.
+    // KNOWN LIMITATION: Bedlam's current show (Music City, verified 2026-07-22)
+    // sits at the Squarespace-default unedited slug /shows/new-portfolio-item
+    // — extractByLink derives its title from the slug, so this candidate
+    // surfaces as "New Portfolio Item," which won't fuzzy-title-match
+    // Playbill/Lortel at the cross-validation gate. Real signal (right show,
+    // wrong derived title) rather than noise; flagged here so a future
+    // session doesn't waste time re-diagnosing it as a parser bug.
+    url: 'https://bedlam.org/shows',
+    strategy: 'link',
+    linkPattern: /\/shows\/[a-z0-9-]+\/?$/,
+    excludeTitlePatterns: [
+      ...COMMON_OB_EXCLUDE_PATTERNS,
+      /^project (one|two|three|four|five|six)\b/i, // Squarespace placeholder items, never-published slots
+    ],
+    preferPlaywright: false,
+    category: 'off-broadway',
+  },
+  {
+    name: "Audible's Minetta Lane Theatre",
+    // sexual-misconduct-of-the-middle-classes-off-broadway-2026's earliest
+    // review predated our catalog clock by 313d, at this exact venue —
+    // its own listing wasn't in the discovery rotation at all.
+    url: 'https://audiblexminetta.com/event-calendar',
+    strategy: 'link',
+    linkPattern: /shows\/[a-z0-9-]+$/,
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    preferPlaywright: false,
+    category: 'off-broadway',
+  },
 ];
 
 // ============================================================
