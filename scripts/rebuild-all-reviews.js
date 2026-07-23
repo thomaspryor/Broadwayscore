@@ -4764,6 +4764,21 @@ console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe
 if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
   stats.crossShowDupeDetails.forEach(d => console.log(`    - ${d}`));
 }
+{
+  // Persist every dropped cross-show/within-show fingerprint collision to a durable
+  // audit file so future collisions surface automatically instead of requiring a
+  // manual full-catalog scan (card #344, 2026-07-23 — 51 collisions found this way).
+  const collisionAuditDir = path.join(__dirname, '../data/audit');
+  if (!fs.existsSync(collisionAuditDir)) fs.mkdirSync(collisionAuditDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(collisionAuditDir, 'cross-show-fingerprint-collisions.json'),
+    JSON.stringify({
+      timestamp: new Date().toISOString(),
+      droppedCrossShow: stats.crossShowDupeDetails || [],
+      droppedWithinShow: stats.withinShowDupeDetails || [],
+    }, null, 2) + '\n'
+  );
+}
 console.log(`  Skipped (within-show duplicate text): ${stats.skippedWithinShowDupe || 0}`);
 if (stats.withinShowDupeDetails && stats.withinShowDupeDetails.length > 0) {
   stats.withinShowDupeDetails.slice(0, 30).forEach(d => console.log(`    - ${d}`));
