@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-23T08:55:53.923Z",
+  "generatedAt": "2026-07-23T10:39:11.003Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "special",
       "openingDate": "2026-07-23",
-      "status": "upcoming",
+      "status": "open",
       "slug": "hugo-marchand-artists-at-the-center-off-broadway",
       "thumbnail": "/images/shows/hugo-marchand-artists-at-the-center-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -396,28 +396,26 @@
       "status": "open",
       "slug": "trainspotting-the-musical-west-end",
       "thumbnail": "/images/shows/trainspotting-the-musical-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 49,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "siteScore": 30.65,
+      "liveScore": 31,
+      "scoreDrift": 0.3500000000000014,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
-      "t1": 2,
-      "t2": 1,
+      "total": 6,
+      "t1": 4,
+      "t2": 2,
       "t3": 0,
       "positive": 0,
       "mixed": 1,
-      "negative": 2,
+      "negative": 5,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
-          "T1:2/3",
-          "T2:1/2",
-          "hi-conf:1/6"
+          "6/8 total",
+          "hi-conf:4/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -463,10 +461,6 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -480,6 +474,18 @@
           "p": 0,
           "m": 1,
           "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-23T10:39:11.003Z",
+          "rc": 6,
+          "s": 30.65,
+          "t1": 4,
+          "t2": 2,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 5,
           "bc": "waiting"
         }
       ]
@@ -495,7 +501,7 @@
       "slug": "are-you-mad-at-me-off-broadway",
       "thumbnail": "/images/shows/are-you-mad-at-me-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 70,
+      "liveScore": 71,
       "scoreDrift": null,
       "belowThreshold": true,
       "reviewsNeeded": 1,
@@ -868,6 +874,18 @@
           "t": "2026-07-22T10:00:55.842Z",
           "rc": 2,
           "s": 70,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 1,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-23T10:39:11.003Z",
+          "rc": 2,
+          "s": 71,
           "t1": 0,
           "t2": 1,
           "t3": 1,
