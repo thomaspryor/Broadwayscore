@@ -1,55 +1,5 @@
 [
   {
-    "startedAt": "2026-07-20T06:09:17.244Z",
-    "completedAt": "2026-07-20T06:13:11.896Z",
-    "totalReviews": 40989,
-    "processed": 38,
-    "skipped": 40923,
-    "errors": 7,
-    "tokensUsed": {
-      "input": 374039,
-      "output": 10869,
-      "total": 574120
-    },
-    "errorDetails": [
-      {
-        "showId": "just-in-time-2025",
-        "outletId": "newyorker",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-holy-rosenbergs-west-end-2026",
-        "outletId": "daily-mail",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "yellow-face-2024",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "paradise-square-2022",
-        "outletId": "ew",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "beetlejuice-2019",
-        "outletId": "stageandcinema",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "travesties-2018",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "a-bronx-tale-the-musical-2016",
-        "outletId": "timeout",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-07-20T06:31:59.404Z",
     "completedAt": "2026-07-20T06:34:02.374Z",
     "totalReviews": 40990,
@@ -615445,6 +615395,26 @@
           "total": 1
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-07-23T09:14:24.610Z",
+    "completedAt": "2026-07-23T09:14:24.803Z",
+    "totalReviews": 19,
+    "processed": 0,
+    "skipped": 18,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "trainspotting-the-musical-west-end-2026",
+        "outletId": "guardian-uk",
+        "error": "input_validation_failed:body_too_short"
       }
     ]
   }
