@@ -38,7 +38,8 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const { classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap } = require('./lib/t1-silent-gap');
+const { classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap, MAJOR_TIER_MAX } = require('./lib/t1-silent-gap');
+const { detectFlagContradiction, contradictionFixCommand, shouldAlertContradiction } = require('./lib/flag-contradiction');
 const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards');
 const { getTier } = require('./lib/outlet-tiers');
 const { AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
@@ -194,6 +195,13 @@ async function main() {
   let dryRunCandidates = 0;
   const breakerDenied = [];
 
+  // Stale-flag contradictions (S3-T3), ESCALATE-ONLY. A file-level flag that a
+  // NEWER contentVerification verdict contradicts — collected independently of
+  // the gap classification (a wrongProduction file is a "correct absence" for
+  // the gap classifier, so it never appears as a gap, yet its flag may be
+  // stale). Emitted as a deduped ACTION alert with the exact clear command.
+  const contradictions = [];
+
   for (const show of shows) {
     const dir = path.join(REVIEW_TEXTS_DIR, show.id);
     let files;
@@ -212,6 +220,23 @@ async function main() {
       const outletId = f.split('--')[0];
       if (AGGREGATOR_OUTLET_IDS.has(outletId)) continue;
       const tier = getTier(outletId, { showCategory: show.category });
+
+      // Stale-flag contradiction (S3-T3, escalate-only): runs on EVERY T1/T2
+      // file BEFORE the `if (!gap) continue` below — a wrongProduction file is
+      // a "correct absence" for the gap classifier (returns null), so this is
+      // the only place its stale flag would ever surface.
+      if (tier != null && tier <= MAJOR_TIER_MAX) {
+        const contra = detectFlagContradiction(d);
+        if (contra) {
+          contradictions.push({
+            showId: show.id, title: show.title, openingDate: show.openingDate,
+            file: f, outletId, tier, ...contra,
+            fix: contradictionFixCommand(show.id, f, contra.flag),
+          });
+          console.log(`  ⚠️  ${show.id} — ${outletId} (T${tier}) stale ${contra.flag} flag contradicted by newer CV (${contra.verifiedAt})`);
+        }
+      }
+
       let gap = classifySilentGap({ file: d, show, tier, outletScored: scoredOutlets.has(outletId), now: new Date() });
       if (!gap) continue;
 
@@ -285,7 +310,11 @@ async function main() {
       windowDays: WINDOW_DAYS,
       showsScanned: shows.length,
       gaps,
+      contradictions,
     }, null, 2) + '\n');
+  }
+  if (contradictions.length > 0) {
+    console.log(`⚠️  ${contradictions.length} stale-flag contradiction(s) (escalate-only).`);
   }
   console.log(`\n${gaps.length} silent gap(s) across ${shows.length} in-window show(s).`);
 
@@ -415,6 +444,38 @@ async function main() {
       }
     } else {
       console.log('No gaps due to email (already alerted, self-heal dispatch pending, or auto-recovery retries remaining).');
+    }
+  }
+
+  // Stale-flag contradiction ACTION alert (S3-T3), ESCALATE-ONLY. Deduped per
+  // show+file on a 7-day window using the same alert-state file (namespaced
+  // `contradiction:`). A contradiction is a live suppressed review — it always
+  // pages (no near-opening gate): a newer CV already ruled the flag stale, so
+  // the fix is a one-command clear the operator can run immediately.
+  if (DO_ALERT && contradictions.length > 0 && !DRY_RUN) {
+    const dueC = contradictions.filter((c) =>
+      shouldAlertContradiction(state[`contradiction:${c.showId}/${c.file}`], now));
+    if (dueC.length > 0) {
+      const fields = dueC.slice(0, 15).map((c) => ({
+        name: `${c.title || c.showId} — ${c.outletId} (T${c.tier}, stale ${c.flag})`,
+        value: `Newer CV (${c.verifiedAt}) contradicts the flag set ${c.flaggedAt}.\nFix: ${c.fix}`,
+      }));
+      const delivered = await sendAlert({
+        title: `Stale exclusion flag contradicted by newer CV: ${dueC.length} suppressed review(s)`,
+        description: 'A file-level wrongProduction/wrongShow flag is contradicted by a NEWER contentVerification verdict — the review is being suppressed from the score by a stale flag. Each needs the listed clear command (run locally). Escalate-only: nothing is auto-cleared.',
+        severity: 'error',
+        email: true,
+        fields,
+      });
+      if (delivered) {
+        for (const c of dueC.slice(0, 15)) {
+          state[`contradiction:${c.showId}/${c.file}`] = now.toISOString();
+        }
+        fs.mkdirSync(AUDIT_DIR, { recursive: true });
+        fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
+      }
+    } else {
+      console.log('No stale-flag contradictions due to alert (already alerted within the window).');
     }
   }
 
