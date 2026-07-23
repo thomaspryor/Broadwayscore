@@ -25,8 +25,9 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { normalizeOutlet } = require('./review-normalization');
+const { normalizeOutlet, resolveOutletFromUrl, isJunkOutlet } = require('./review-normalization');
 const { verifyAggregatorUrl } = require('./show-match-verifier');
+const { parseArticleBodyReviews } = require('./bww-roundup-parser');
 
 // Pull the canonical/og URL out of an archived roundup page so verifyAggregatorUrl
 // can score the slug. Falls back to '' (it then relies on the page <title> + venue).
@@ -88,12 +89,137 @@ function parseWetArchive(content /*, showId */) {
     }));
 }
 
+// ── NYC (Broadway / Off-Broadway) census readers ─────────────────────────────
+// The NYC roundups list every critic, the same way the WE roundups do. Each
+// reader is a pure fn(content, showId) -> [{outlet, critic, stars, url, outletId?}]
+// and is playwright-FREE. We REUSE the existing per-source extractors rather than
+// re-implement parsing (the drift trap). Two of them (Show Score, Playbill Verdict)
+// run their real script bodies at require-time (no `require.main` guard) or ship
+// as pure libs — so we pull the PURE lib extractors, never the scraper scripts.
+//
+// outletId: unlike the WET archives (which carry a FROZEN baked id from an old
+// normalizeOutlet — see normalizeWetRow), these readers derive outletId LIVE at
+// census time (normalizeOutlet(name) or resolveOutletFromUrl(url)). Live derivation
+// is exactly what the WET lesson asks for, so it's safe to carry outletId through.
+
+// BroadwayWorld "Review Roundup" article. Newer articles embed one JSON-LD
+// BlogPosting per critic (author = "Outlet - Critic" or "Outlet"); older ones
+// only have a single article with an articleBody of "Critic, Outlet: quote"
+// pairs. Mirror extract-bww-reviews.js's extractReviewsFromFile precedence
+// (BlogPosting first, articleBody fallback) so the census matches ingestion.
+function parseBwwRoundup(content, showId) { // eslint-disable-line no-unused-vars
+  const rows = [];
+  const scripts = content.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g);
+  for (const m of scripts) {
+    let json;
+    try { json = JSON.parse(m[1].replace(/[\x00-\x1F\x7F]/g, ' ')); } catch (_) { continue; }
+    const arr = Array.isArray(json) ? json : [json];
+    for (const j of arr) {
+      if (!j || j['@type'] !== 'BlogPosting' || !j.author) continue;
+      const authorName = Array.isArray(j.author) ? j.author[0] && j.author[0].name : j.author.name;
+      if (!authorName) continue;
+      let outlet = authorName, critic = '';
+      if (authorName.includes(' - ')) {
+        const parts = authorName.split(' - ');
+        outlet = parts[0].trim();
+        critic = (parts[1] || '').trim();
+      }
+      if (!outlet || isJunkOutlet(outlet)) continue;  // drop sentence-fragment "authors"
+      rows.push({ outlet, critic: critic || 'Unknown', stars: null, url: j.url || '' });
+    }
+  }
+  if (rows.length) return rows;
+  // Fallback: single-article articleBody "Critic, Outlet:" pairs (older roundups).
+  const jm = content.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  if (jm) {
+    try {
+      const j = JSON.parse(jm[1].replace(/[\x00-\x1F\x7F]/g, ' '));
+      if (j.articleBody) {
+        for (const p of parseArticleBodyReviews(j.articleBody)) {
+          if (isJunkOutlet(p.outletRaw)) continue;
+          rows.push({ outlet: p.outletRaw, critic: p.criticName || 'Unknown', stars: null, url: '' });
+        }
+      }
+    } catch (_) { /* no fallback */ }
+  }
+  return rows;
+}
+
+// Did They Like It — extractReviewsFromDTLI is already exported + content-based
+// (has a require.main guard, so requiring it is side-effect-free).
+function parseDtli(content, showId) {
+  let fn = null;
+  try { ({ extractReviewsFromDTLI: fn } = require('../extract-dtli-reviews')); } catch (_) { return []; }
+  if (!fn) return [];
+  const raw = fn(content, showId) || [];
+  return raw
+    .filter((r) => r && r.outlet && !isJunkOutlet(r.outlet))
+    .map((r) => ({ outlet: r.outlet, critic: r.criticName || r.critic || 'Unknown', stars: null, url: r.url || '' }));
+}
+
+// Playbill "Verdict" article — the pure lib extractor returns
+// {url, outlet, outletDomain, critic}. Resolve the canonical outletId off the
+// review URL when possible (the anchor text can be a display name or a bare host).
+function parsePlaybillVerdict(content, showId) {
+  let fn = null;
+  try { ({ extractReviewLinksFromArticle: fn } = require('./playbill-verdict-discover')); } catch (_) { return []; }
+  if (!fn) return [];
+  const raw = fn(content, showId) || [];
+  const rows = [];
+  for (const r of raw) {
+    const resolved = r.url ? resolveOutletFromUrl(r.url) : null;
+    const outletId = resolved && resolved.outletId ? resolved.outletId : (r.outlet ? normalizeOutlet(r.outlet) : null);
+    if (!outletId) continue;
+    rows.push({ outlet: r.outlet || outletId, critic: r.critic || 'Unknown', stars: null, url: r.url || '', outletId });
+  }
+  return rows;
+}
+
+// Show Score — SUPPLEMENTARY, soft-fail. Show Score server-renders only the first
+// handful of critic tiles and the rest paginate via JS, so an archived page often
+// captures ZERO review tiles (an asset-shell of CDN/font URLs). We resolve only
+// URLs that map to a registry outlet; a 0-row result is NORMAL here (softFail),
+// never a "broken extractor" alarm. Defensive because Show Score's own
+// show-score-discover.js documents the SSR-partial behavior.
+function parseShowScore(content, showId) { // eslint-disable-line no-unused-vars
+  let fn = null;
+  try { ({ extractShowScoreReviewUrls: fn } = require('./show-score-discover')); } catch (_) { return []; }
+  if (!fn) return [];
+  const urls = fn(content) || [];
+  const rows = [];
+  const seen = new Set();
+  for (const u of urls) {
+    let resolved = null;
+    try { resolved = resolveOutletFromUrl(u); } catch (_) { resolved = null; }
+    if (!resolved || !resolved.outletId || seen.has(resolved.outletId)) continue;
+    seen.add(resolved.outletId);
+    rows.push({ outlet: resolved.outletId, critic: 'Unknown', stars: null, url: u, outletId: resolved.outletId });
+  }
+  return rows;
+}
+
 // Each source: archive subdir, file ext (default 'html'), and a reader
 // fn(content, showId) -> [{outlet, critic, stars, url}]. Every source loaded here
 // is playwright-FREE — the census runs inside the coverage audit, which must not
 // spin up a browser. (The Stage scraper imports playwright, so we pull its pure
 // extractor from lib/thestage-extract instead of requiring the scraper.)
-function sourceExtractors() {
+//
+// `market` selects the roundup set: London roundups for the West End, NYC roundups
+// (BWW / DTLI / Playbill Verdict / Show Score) otherwise. Defaults to 'west-end'
+// for backward compatibility with the original WE-only census callers.
+function sourceExtractors(market = 'west-end') {
+  if (market === 'nyc' || market === 'broadway' || market === 'off-broadway') {
+    return [
+      // validate:true → page-level cross-show guard (a roundup mis-saved under the
+      // wrong show's id). Fails OPEN on unjudgeable titles, same as the WE sources.
+      { name: 'bww-roundup', dir: 'bww-roundups', fn: parseBwwRoundup, validate: true },
+      { name: 'dtli', dir: 'dtli', fn: parseDtli, validate: true },
+      { name: 'playbill-verdict', dir: 'playbill-verdict', fn: parsePlaybillVerdict, validate: true },
+      // softFail: an archived Show Score page routinely captures 0 tiles (SPA
+      // pagination) — that is not a broken parser, so it must not trip zeroExtract.
+      { name: 'show-score', dir: 'show-score', fn: parseShowScore, validate: false, softFail: true },
+    ];
+  }
   const { extractReviews } = require('../scrape-theatre-reviews');
   const sources = [
     // validate:true → page-level cross-show check before extracting. theatre.reviews
@@ -153,7 +279,10 @@ function unionCensus(perSource) {
  */
 function buildCensusFromArchives(showId, opts = {}) {
   const archiveDir = opts.archiveDir || ARCHIVE;
-  const sources = opts.sources || sourceExtractors();
+  // Market routing: WE shows read London roundups; everything else reads the NYC
+  // roundup set. Callers pass `market` ('nyc'|'broadway'|'off-broadway'|'west-end')
+  // or an injected `sources` array (tests). Defaults to WE for legacy callers.
+  const sources = opts.sources || sourceExtractors(opts.market || 'west-end');
   const perSource = [];
   // Track which archives EXISTED vs which yielded 0 reviews. A file present but
   // extracting 0 (DOM drift / parser break) is otherwise indistinguishable from
@@ -184,7 +313,9 @@ function buildCensusFromArchives(showId, opts = {}) {
     }
     let reviews = [];
     try { reviews = s.fn(html, showId) || []; } catch (_) { reviews = []; }
-    if (!Array.isArray(reviews) || reviews.length === 0) zeroExtract.push(s.name);
+    // softFail sources (e.g. Show Score SPA shells) legitimately extract 0 from a
+    // present archive — that is NOT a broken parser, so don't flag zeroExtract.
+    if ((!Array.isArray(reviews) || reviews.length === 0) && !s.softFail) zeroExtract.push(s.name);
     perSource.push({ source: s.name, reviews });
   }
   return { ...unionCensus(perSource), archivesPresent, zeroExtract, wrongRoundup };
@@ -228,4 +359,7 @@ function censusVerdict(census, coveredScoredOutlets, opts = {}) {
   return { verdict, missing, suppressedMissing };
 }
 
-module.exports = { buildCensusFromArchives, unionCensus, censusVerdict, CI_UNFETCHABLE_OUTLETS };
+module.exports = {
+  buildCensusFromArchives, unionCensus, censusVerdict, CI_UNFETCHABLE_OUTLETS,
+  sourceExtractors, parseBwwRoundup, parseDtli, parsePlaybillVerdict, parseShowScore,
+};
