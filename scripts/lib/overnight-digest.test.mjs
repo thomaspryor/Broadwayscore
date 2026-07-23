@@ -42,10 +42,11 @@ test('parseWorkspaces finds open 🤖 sessions and duplicate dispatches', () => 
     '  workspace:229  🤖🔮 Data·T1-retrieval Sprint 2: NYC census + SLA ledger in',
     '* workspace:209  🤖🔮 Data·iOS bold redesign, Round 1: ONE screen',
     '  workspace:300  ✅ 🤖⚡ Data·finished thing',
+    '  workspace:301  ⠂ ✅ 🤖⚡ Data·finished behind an activity glyph',
   ].join('\n');
   const r = parseWorkspaces(raw);
   assert.equal(r.autoOpen.length, 3);
-  assert.equal(r.autoDone, 1);
+  assert.equal(r.autoDone, 2); // plain ✅ AND glyph-prefixed "⠂ ✅" both count as done
   assert.equal(r.duplicates.length, 1);
   assert.match(r.duplicates[0], /^2× /);
 });

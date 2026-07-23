@@ -884,13 +884,6 @@ async function live(args, cfg) {
   const maxItems = num(args['max-items'], cfg.maxItems ?? 3);
   const sizes = args.sizes ? String(args.sizes).split(',').map(s => s.trim()) : (cfg.sizes || ['S']);
 
-  // Weekly clamp: a high nightly ceiling must not compound into 7x that per
-  // week. Trailing-7-day ledger spend shrinks tonight's effective budget.
-  const spent7d = ledger.sumUSD(ledger.entriesSince(ledger.readEntries().entries, new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString()));
-  const weekly = clampNightToWeekly(configNightUSD, cfg.weeklyUSD ?? null, spent7d);
-  const nightUSD = weekly.nightUSD;
-  if (weekly.clamped) console.error(`[run] ${weekly.reason}`);
-
   const lock = ledger.acquireSingleton();
   if (!lock.acquired) {
     // Another --live process holds the run — it (not this exit) is
@@ -898,6 +891,17 @@ async function live(args, cfg) {
     console.log(`[run] already running (pid ${lock.holder?.pid}, started ${lock.holder?.startedAt}) — exiting`);
     process.exit(0);
   }
+
+  // Weekly clamp: a high nightly ceiling must not compound into 7x that per
+  // week. Read AFTER acquiring the singleton so two near-simultaneous starts
+  // can't both see the same headroom (codex ship-check). Sums the ledger's
+  // `usd` fields only — terminal events (card-fail/card-pass) carry totalUSD
+  // that DUPLICATES their implement rows' usd, so adding both would double-
+  // count; this matches usageStats()'s week number in the morning email.
+  const spent7d = ledger.sumUSD(ledger.entriesSince(ledger.readEntries().entries, new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString()));
+  const weekly = clampNightToWeekly(configNightUSD, cfg.weeklyUSD ?? null, spent7d);
+  const nightUSD = weekly.nightUSD;
+  if (weekly.clamped) console.error(`[run] ${weekly.reason}`);
   try {
     const cap = checkSharedDailyCap(nightUSD);
     // return (not process.exit): a hard exit here would skip the `finally`

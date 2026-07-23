@@ -22,6 +22,9 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+// Done-marker detection is a known bug class (cmux prepends activity glyphs
+// before ✅) — reuse the hardened predicate instead of reimplementing it.
+const { isDoneTitle } = require('./cmux-workspaces.js');
 
 const CMUX_BIN = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
@@ -63,7 +66,7 @@ function summarizeCommits(logLines) {
     if (ROUTINE.test(s)) continue;
     // Anything left is real merged work (a fix/feature a session or human
     // landed) — surface the subject itself, bot bookkeeping already filtered.
-    if (!/\[skip ci\]/.test(s)) mergedWork.push(author && !/github-actions/.test(author) ? s : s);
+    if (!/\[skip ci\]/.test(s)) mergedWork.push(s);
   }
 
   const lines = [];
@@ -87,7 +90,7 @@ function parseWorkspaces(rawText) {
     if (!m) continue;
     const title = m[2].trim();
     if (!title.includes('🤖')) continue;
-    if (title.startsWith('✅')) { autoDone++; continue; }
+    if (isDoneTitle(title)) { autoDone++; continue; }
     auto.push({ ref: `workspace:${m[1]}`, title });
   }
   // Duplicate titles = the same card dispatched more than once (the exact
@@ -113,7 +116,10 @@ function summarizeWorktrees(entries) {
 
 function gatherDigest({ repo, hours = 24 } = {}) {
   const digest = { generatedAt: new Date().toISOString(), hours, commits: null, stuck: {}, errors: [] };
-  const run = (cmd, args, cwd) => execFileSync(cmd, args, { cwd: cwd || repo, encoding: 'utf8', timeout: 30000, stdio: ['ignore', 'pipe', 'pipe'] });
+  // timeoutMs param: worktree-scan git calls run up to ~3× per worktree ×
+  // ~20 worktrees — cap them at 5s each so a wedged repo can't stall the
+  // morning email for minutes (codex ship-check). Coarse calls keep 30s.
+  const run = (cmd, args, cwd, timeoutMs = 30000) => execFileSync(cmd, args, { cwd: cwd || repo, encoding: 'utf8', timeout: timeoutMs, stdio: ['ignore', 'pipe', 'pipe'] });
 
   // 1. What landed on origin/main (fetch first so we see CI's commits, not
   //    the possibly-stale local main).
@@ -132,12 +138,12 @@ function gatherDigest({ repo, hours = 24 } = {}) {
     for (const name of fs.existsSync(wtRoot) ? fs.readdirSync(wtRoot) : []) {
       const wt = path.join(wtRoot, name);
       try {
-        const branch = run('git', ['branch', '--show-current'], wt).trim();
+        const branch = run('git', ['branch', '--show-current'], wt, 5000).trim();
         if (!branch || branch === 'main') continue;
-        const ahead = Number(run('git', ['rev-list', '--count', `origin/main..${branch}`], wt).trim());
+        const ahead = Number(run('git', ['rev-list', '--count', `origin/main..${branch}`], wt, 5000).trim());
         let lastCommitDays = null;
         try {
-          const ts = Number(run('git', ['log', '-1', '--format=%ct'], wt).trim()) * 1000;
+          const ts = Number(run('git', ['log', '-1', '--format=%ct'], wt, 5000).trim()) * 1000;
           lastCommitDays = Math.floor((Date.now() - ts) / 86400000);
         } catch { /* cosmetic only */ }
         entries.push({ name, ahead, lastCommitDays });
