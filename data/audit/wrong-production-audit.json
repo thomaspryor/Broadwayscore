@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-23T00:30:27.704Z",
+  "timestamp": "2026-07-23T02:57:10.671Z",
   "stats": {
-    "totalReviews": 40368,
-    "alreadyFlagged": 17794,
+    "totalReviews": 40337,
+    "alreadyFlagged": 17780,
     "dateGuardCatches": 59,
-    "directorMismatch": 909,
+    "directorMismatch": 905,
     "tvFilmSignals": 1104,
     "londonSignals": 753,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3273
+    "noPublishDate": 3261
   },
   "findings": [
     {
@@ -21593,20 +21593,6 @@
     },
     {
       "showId": "sunset-boulevard-2017",
-      "file": "vulture--jesse-green.json",
-      "score": 85,
-      "publishDate": "February 10, 2017",
-      "url": "https://www.vulture.com/2017/02/theater-review-sunset-boulevard.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-2017",
       "file": "wsj--terry-teachout.json",
       "score": 45,
       "publishDate": "2017-02-10",
@@ -23514,20 +23500,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from the-gin-game-1977"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-1975",
-      "file": "dailybeast--tim-teeman.json",
-      "score": 88,
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from the-glass-menagerie-2017"
         }
       ]
     },
@@ -26636,34 +26608,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from true-west-2000"
-        }
-      ]
-    },
-    {
-      "showId": "twelfth-night-1972",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 89,
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"tim carroll\" from twelfth-night-2013"
-        }
-      ]
-    },
-    {
-      "showId": "twelfth-night-1998",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 89,
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"tim carroll\" from twelfth-night-2013"
         }
       ]
     },
