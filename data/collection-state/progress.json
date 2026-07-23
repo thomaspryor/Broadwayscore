@@ -63,7 +63,12 @@
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
     "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+    "oh-mary-west-end-2025/nytg--olivia-rook.json",
+    "oh-mary-west-end-2025/nytimes--jesse-green.json",
+    "oh-mary-west-end-2025/variety--ellise-shafer.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json",
+    "oh-mary-west-end-2025/deadline--unknown.json"
   ],
   "failed": [
     "trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
@@ -604,7 +609,12 @@
     "every-brilliant-thing-2026/thestage--dave-fargnoli.json",
     "every-brilliant-thing-2026/times-uk--alice-jones.json",
     "every-brilliant-thing-2026/whatsonstage--julia-rank.json",
-    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json"
+    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -656,7 +666,8 @@
       "beetlejuice-west-end-2026/british-theatre--susan-novak.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+      "oh-mary-west-end-2025/nytg--olivia-rook.json"
     ],
     "amp": [],
     "browserbase": [
@@ -665,7 +676,11 @@
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--unknown.json",
+      "oh-mary-west-end-2025/deadline--unknown.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -679,7 +694,9 @@
       "dukes-off-broadway-2026/nytimes--helen-shaw.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "avenue-q-west-end-2026/telegraph--marianka-swain.json",
-      "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json"
+      "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
+      "oh-mary-west-end-2025/nytimes--jesse-green.json",
+      "oh-mary-west-end-2025/variety--ellise-shafer.json"
     ],
     "archiveToday": [
       "data/review-texts/trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
@@ -704,7 +721,7 @@
     ]
   },
   "startTime": "2026-07-23T18:01:51.136Z",
-  "lastProcessed": "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
+  "lastProcessed": "oh-mary-west-end-2025/deadline--unknown.json",
   "log": [
     {
       "t": "2026-07-23T18:02:09.222Z",
@@ -821,6 +838,40 @@
       "event": "bb-session",
       "session": "bec457a7",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-07-23T21:07:48.234Z",
+      "event": "bb-session",
+      "session": "4c71884b",
+      "url": "https://www.nytimes.com/2025/12/19/theater/oh-mary-trafalgar-theater-london.html"
+    },
+    {
+      "t": "2026-07-23T21:07:48.917Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-23T21:08:04.977Z",
+      "event": "bb-session",
+      "session": "445f2a8d",
+      "url": "https://www.nytimes.com/2025/12/19/theater/oh-mary-trafalgar-theater-london.html"
+    },
+    {
+      "t": "2026-07-23T21:08:05.631Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-23T21:09:33.193Z",
+      "event": "bb-session",
+      "session": "b82b700e",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+    },
+    {
+      "t": "2026-07-23T21:09:50.080Z",
+      "event": "bb-session",
+      "session": "cecd4d38",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
     }
   ]
 }
