@@ -25,6 +25,13 @@ const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-a
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const LEDGER_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-ledger.json');
 const DIGEST_STATE_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-digest-state.json');
+// S4-T3/S5-T1 signals (reactivations, late-adds): sendAlert() at 'warning'
+// severity is log-only by design in this codebase (discord-notify.js — no
+// Discord webhook, no email at non-critical severity), so without a durable
+// file these findings existed only in a transient GitHub Actions run log
+// (ship-check finding, 2026-07-23). Every hourly --write-ledger run
+// overwrites this with the CURRENT findings — it's a snapshot, not a log.
+const SIGNALS_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-signals.json');
 
 // Expected-outlet authority: the multi-source aggregator CENSUS (review-census.js),
 // not a hardcoded list. Every market — Broadway, Off-Broadway, West End — now flows
@@ -171,6 +178,19 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
     // dad-dont-read-this class: we catalog a transfer's dates, but critics
     // reviewed the earlier run over a month before). Measured across ALL
     // reviews for the show (any outlet/tier), not just census-missing cells.
+    //
+    // NOTE the precedence is deliberately REVERSED from computeShowCells'
+    // GAP-clock above (`openingDate || previewsStartDate`, S2-T6) — these are
+    // two different clocks answering two different questions, not one clock
+    // duplicated with a bug. The GAP clock asks "how long has retrieval had
+    // to work" and defaults to the later, more conservative date so it never
+    // starts the SLA before a T1 review could plausibly exist. This clock
+    // asks "what's the earliest date a review would NOT be suspicious" and
+    // needs the earlier, more generous date — previews start weeks before
+    // opening and legitimately draw reviews, so anchoring on openingDate here
+    // would flag every ordinary early-preview review as a false late-add.
+    // (ship-check finding, 2026-07-23 — do not "fix" this into matching the
+    // other clock without re-deriving both from first principles.)
     const showReviews = reviews.filter((r) => r.showId === showId);
     const catalogClock = show.previewsStartDate || show.openingDate || null;
     const lateAdd = detectLateAdd(showReviews, catalogClock);
@@ -208,6 +228,15 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
       console.log(`  ${r.showId} — earliest ${r.earliestOutletId} review ${r.earliestReviewDate}, catalog clock ${r.catalogClock} (${r.gapDays}d early). Check for a missing priorRuns entry or wrong openingDate.`);
     }
   }
+  // Persist reactivations + lateAdds as a snapshot (not a log) — sendAlert() at
+  // 'warning' severity is log-only in this codebase (no Discord webhook, no
+  // email below 'critical'), so without this file these findings only ever
+  // existed in a transient GitHub Actions run log that nobody reads on a
+  // healthy hourly cron (ship-check finding, 2026-07-23).
+  try {
+    fs.mkdirSync(path.dirname(SIGNALS_PATH), { recursive: true });
+    fs.writeFileSync(SIGNALS_PATH, JSON.stringify({ generatedAt: nowIso, reactivations, lateAdds }, null, 2));
+  } catch (e) { console.error('Failed to write t1-coverage-signals.json:', e.message); }
   return { changed, shows: freshShows.length, cells: cellCount, gaps: gapCount, reactivations, lateAdds };
 }
 
