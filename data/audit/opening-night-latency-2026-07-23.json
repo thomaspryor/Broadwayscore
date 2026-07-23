@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-23T12:50:27.587Z",
+  "generatedAt": "2026-07-23T13:59:08.762Z",
   "date": "2026-07-23",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 278917,
+  "entryCount": 282480,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -56,7 +56,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1210345,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -951,7 +951,7 @@
     },
     {
       "showId": "shifters-off-broadway-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12011,7 +12011,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 334226,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
