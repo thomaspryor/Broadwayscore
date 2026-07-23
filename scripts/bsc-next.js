@@ -177,6 +177,23 @@ function deadDispatchGuard(task, ledgerEntries, opts) {
     `handling — see task #289). Re-run with --force to dispatch anyway.`;
 }
 
+// Pure composition of the self-heal + refusal check (no I/O — main() does the
+// actual ledger append and process.exit). Split out so the burst scenario
+// that motivated task #334 is directly unit-testable: waiting for a 'dead'
+// breadcrumb that only bsc-prune.js writes (typically once/day) would let a
+// same-SESSION burst of redispatches sail through, since no sweep runs
+// between dispatch #2 dying and dispatch #3 launching (ship-check adversarial
+// finding, 2026-07-22). Here bsc-next.js computes idle-and-unmarked itself,
+// from the live cmux list, using the SAME predicate bsc-prune.js uses —
+// dispatch #3 then sees dispatch #1 and #2's now-idle workspaces as fresh
+// 'dead' breadcrumbs without needing a sweep in between.
+function checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitleFn, claudeAliveInFn, opts) {
+  const idle = workspaces.filter(w => !isDoneTitleFn(w.title) && !claudeAliveInFn(w.ref));
+  const freshDead = dispatchLedger.deadBreadcrumbs(idle, ledgerEntries);
+  const refusal = deadDispatchGuard(task, ledgerEntries.concat(freshDead), opts);
+  return { freshDead, refusal };
+}
+
 function notionIdOf(task) {
   const m = /\[notion:([a-f0-9-]+)\]/i.exec(task.description || '');
   return m ? m[1] : null;
@@ -360,6 +377,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     cmuxAvailable: cmuxAvailableFn = cmuxws.cmuxAvailable,
     listWorkspaces: listWorkspacesFn = cmuxws.listWorkspaces,
     isDoneTitle: isDoneTitleFn = cmuxws.isDoneTitle,
+    claudeAliveIn: claudeAliveInFn = cmuxws.claudeAliveIn,
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
   } = deps;
@@ -408,9 +426,6 @@ function main(argv = process.argv.slice(2), deps = {}) {
   const guardErr = completedLaunchGuard(task, args);
   if (guardErr) { console.error(`[bsc-next] ${guardErr}`); process.exit(1); }
 
-  const deadErr = deadDispatchGuard(task, readLedgerEntriesFn(), args);
-  if (deadErr) { console.error(`[bsc-next] ${deadErr}`); process.exit(1); }
-
   const pid = notionIdOf(task);
   const card = pid ? fetchCardFn(pid) : null;
   // Project bucket for auto-dispatch naming/coloring (scope add, card #168):
@@ -451,10 +466,28 @@ function main(argv = process.argv.slice(2), deps = {}) {
   // out from under the owner mid-keystroke. ✅ workspaces don't block
   // re-dispatch either way — findLiveWorkspaceForTask() skips isDoneTitle().
   if (cmuxAvailableFn()) {
+    let workspaces = null;
+    try { workspaces = listWorkspacesFn(); } catch (e) { console.error(`[bsc-next] workspace list failed (continuing): ${e.message}`); }
+
+    if (workspaces) {
+      // Dead-dispatch self-heal (task #334 ship-check follow-up): journaling
+      // freshDead here is a local jsonl append only, never a cmux mutation —
+      // it does NOT reintroduce the dispatch-time auto-prune/close behavior
+      // the owner removed 2026-07-15 (feedback_never_close_unmarked_cmux_workspaces.md).
+      // See checkDeadDispatch's header comment for why this can't just wait
+      // for bsc-prune.js's own (typically once/day) sweep to write the
+      // breadcrumb.
+      try {
+        const { freshDead, refusal } = checkDeadDispatch(task, workspaces, readLedgerEntriesFn(), isDoneTitleFn, claudeAliveInFn, args);
+        freshDead.forEach(b => { try { appendLedgerEntryFn(b); } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger self-heal write failed for ${b.workspaceRef}: ${e.message}`); } });
+        if (refusal) { console.error(`[bsc-next] ${refusal}`); process.exit(1); }
+      } catch (e) { console.error(`[bsc-next] dead-dispatch check failed (continuing): ${e.message}`); }
+    }
+
     // Duplicate-dispatch guard (✅-marked twins never count as live).
     if (!args.force) {
       try {
-        const dup = findLiveWorkspaceForTask(task, listWorkspacesFn(), isDoneTitleFn);
+        const dup = findLiveWorkspaceForTask(task, workspaces || listWorkspacesFn(), isDoneTitleFn);
         if (dup) {
           console.error(`[bsc-next] a live workspace already matches task #${task.id}: ${dup.ref}  "${dup.title}".`);
           console.error(`  Another session may be on this task. Check it (cmux read-screen --workspace ${dup.ref}),`);
@@ -485,4 +518,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE };
+module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE };

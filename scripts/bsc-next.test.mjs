@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { actionable, pickTask, completedLaunchGuard, deadDispatchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE } = require('./bsc-next.js');
+const { actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE } = require('./bsc-next.js');
 const { isDoneTitle } = require('./lib/cmux-workspaces.js');
 
 // 2026-07-14 incident class + scope add (2026-07-20): `--help` used to fall
@@ -24,6 +24,7 @@ test('--help / -h return before loadTasks/fetchCard/launchCmux/cmux ever run', (
     cmuxAvailable: () => { throw new Error('cmuxAvailable must not be called for --help'); },
     listWorkspaces: () => { throw new Error('listWorkspaces must not be called for --help'); },
     isDoneTitle: () => { throw new Error('isDoneTitle must not be called for --help'); },
+    claudeAliveIn: () => { throw new Error('claudeAliveIn must not be called for --help'); },
     readLedgerEntries: () => { throw new Error('readLedgerEntries must not be called for --help'); },
     appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for --help'); },
   };
@@ -162,6 +163,60 @@ test('deadDispatchGuard allows dispatch under the limit, and ignores deaths for 
   ];
   assert.equal(deadDispatchGuard(task, otherTaskDeaths, {}), null);
   assert.equal(deadDispatchGuard(task, [], {}), null);
+});
+
+// Ship-check adversarial finding (2026-07-22): a 'dead' breadcrumb written
+// ONLY by bsc-prune.js's own sweep would miss a same-SESSION burst — the
+// actual #297 incident shape (3 dispatches in one sitting, no sweep in
+// between). checkDeadDispatch composes the self-heal (idle-workspace →
+// breadcrumb) with the refusal check in one pure call so this exact scenario
+// is provable without needing process.exit.
+test('checkDeadDispatch catches a same-session burst with ZERO prior dead breadcrumbs (the real #297 shape)', () => {
+  const task = { id: '297', subject: 'T1-retrieval Sprint 2' };
+  // Two PRIOR launches from earlier in this same session, both now idle
+  // (no live claude, not ✅-marked) — but bsc-prune.js has NEVER run, so the
+  // ledger has no 'dead' entries yet, only the two 'launch' records.
+  const ledgerEntries = [
+    { event: 'launch', taskId: '297', subject: 'T1-retrieval Sprint 2', workspaceRef: 'workspace:227' },
+    { event: 'launch', taskId: '297', subject: 'T1-retrieval Sprint 2', workspaceRef: 'workspace:229' },
+  ];
+  const workspaces = [
+    { ref: 'workspace:227', title: 'T1-retrieval Sprint 2' },
+    { ref: 'workspace:229', title: 'T1-retrieval Sprint 2' },
+  ];
+  const isDoneTitle = () => false; // neither ✅-marked
+  const claudeAliveIn = () => false; // neither has a live claude — both idle/dead
+
+  const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitle, claudeAliveIn, {});
+  assert.equal(freshDead.length, 2); // both self-healed from idle workspaces, no sweep needed
+  assert.match(refusal, /died 2x already/);
+  assert.match(refusal, /workspace:227, workspace:229/);
+});
+
+test('checkDeadDispatch: a task with only 1 dead/idle workspace is NOT refused (under the limit)', () => {
+  const task = { id: '297', subject: 'T1-retrieval Sprint 2' };
+  const ledgerEntries = [{ event: 'launch', taskId: '297', workspaceRef: 'workspace:227' }];
+  const workspaces = [{ ref: 'workspace:227', title: 'T1-retrieval Sprint 2' }];
+  const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, () => false, () => false, {});
+  assert.equal(freshDead.length, 1);
+  assert.equal(refusal, null);
+});
+
+test('checkDeadDispatch: a live or ✅-marked workspace from a past launch is NOT counted as dead', () => {
+  const task = { id: '297', subject: 'T1-retrieval Sprint 2' };
+  const ledgerEntries = [
+    { event: 'launch', taskId: '297', workspaceRef: 'workspace:227' },
+    { event: 'launch', taskId: '297', workspaceRef: 'workspace:229' },
+  ];
+  const workspaces = [
+    { ref: 'workspace:227', title: 'T1-retrieval Sprint 2' },        // still alive
+    { ref: 'workspace:229', title: '✅ T1-retrieval Sprint 2' },      // finished successfully
+  ];
+  const isDoneTitle = (t) => t.startsWith('✅');
+  const claudeAliveIn = (ref) => ref === 'workspace:227';
+  const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitle, claudeAliveIn, {});
+  assert.equal(freshDead.length, 0);
+  assert.equal(refusal, null);
 });
 
 test('notionIdOf extracts the embedded page id, null when absent', () => {
