@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-23T06:21:35.868Z",
+  "generatedAt": "2026-07-23T08:55:53.923Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -397,27 +397,27 @@
       "slug": "trainspotting-the-musical-west-end",
       "thumbnail": "/images/shows/trainspotting-the-musical-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 49,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
+      "total": 3,
+      "t1": 2,
+      "t2": 1,
       "t3": 0,
       "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "mixed": 1,
+      "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "3/8 total",
+          "T1:2/3",
+          "T2:1/2",
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -467,6 +467,20 @@
         {
           "name": "WhatsOnStage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-07-23T08:55:53.923Z",
+          "rc": 3,
+          "s": 49,
+          "t1": 2,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -874,18 +888,18 @@
       "status": "open",
       "slug": "midnight-at-the-never-get-west-end",
       "thumbnail": "/images/shows/midnight-at-the-never-get-west-end-2026/thumbnail.webp",
-      "siteScore": 77.62,
-      "liveScore": 78,
-      "scoreDrift": 0.37999999999999545,
+      "siteScore": 77.17,
+      "liveScore": 77,
+      "scoreDrift": -0.1700000000000017,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
+      "total": 18,
       "t1": 8,
       "t2": 6,
-      "t3": 3,
+      "t3": 4,
       "positive": 14,
-      "mixed": 3,
+      "mixed": 4,
       "negative": 0,
       "readiness": {
         "ready": true,
@@ -984,6 +998,18 @@
           "t3": 3,
           "p": 14,
           "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-23T08:55:53.923Z",
+          "rc": 18,
+          "s": 77.17,
+          "t1": 8,
+          "t2": 6,
+          "t3": 4,
+          "p": 14,
+          "m": 4,
           "n": 0,
           "bc": "waiting"
         }
