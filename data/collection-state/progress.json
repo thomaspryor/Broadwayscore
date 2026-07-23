@@ -12,7 +12,8 @@
     "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
     "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
     "midnight-at-the-never-get-west-end-2026/independent--unknown.json",
-    "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json"
+    "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json",
+    "midnight-at-the-never-get-west-end-2026/theatreandtonic--unknown.json"
   ],
   "failed": [
     "trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
@@ -21,7 +22,9 @@
     "trainspotting-the-musical-west-end-2026/thestage--sam-marlowe.json",
     "trainspotting-the-musical-west-end-2026/theupcoming--unknown.json",
     "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
-    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json"
+    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -35,10 +38,14 @@
       "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
       "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
       "midnight-at-the-never-get-west-end-2026/independent--unknown.json",
-      "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json"
+      "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json",
+      "midnight-at-the-never-get-west-end-2026/theatreandtonic--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
@@ -55,7 +62,7 @@
     "archive": []
   },
   "startTime": "2026-07-23T18:01:51.136Z",
-  "lastProcessed": "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json",
+  "lastProcessed": "midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
   "log": [
     {
       "t": "2026-07-23T18:02:09.222Z",
@@ -100,6 +107,28 @@
       "t": "2026-07-23T18:03:30.149Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-23T18:15:41.467Z",
+      "event": "bb-session",
+      "session": "50958046",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-23T18:15:41.962Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-23T18:16:38.167Z",
+      "event": "bb-session",
+      "session": "153f9fe2",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-23T18:16:38.654Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
