@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-23T03:41:18.845Z",
+    "generatedAt": "2026-07-23T03:53:37.495Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -36,7 +36,7 @@
     },
     {
       "path": ".github/workflows/test.yml",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "data/audit/we-gate-proving.json",
@@ -58,11 +58,11 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 120
+      "churn": 119
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 103
+      "churn": 102
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -115,12 +115,12 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 637,
+      "churn": 636,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 415,
+      "churn": 414,
       "mergeAttr": "ours"
     },
     {
@@ -245,12 +245,12 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
