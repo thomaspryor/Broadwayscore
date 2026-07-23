@@ -1,0 +1,25 @@
+{
+  "system": "stuck work",
+  "status": "warn",
+  "lastChecked": "2026-07-23T07:49:51.500Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Stuck work: paused P0/P1 cards",
+      "status": "warn",
+      "message": "41 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Social Media Starter Posts (101d); Reddit Launch (Staggered Rollout) (101d); Brian Fenty Meeting (101d)"
+    },
+    {
+      "name": "Stuck work: orphaned in-progress cards",
+      "status": "warn",
+      "message": "48 In-progress card(s) untouched >48h — owning session likely dead. Oldest: iOS app resubmission — address 4.2.2 rejection (90d); S0-T2 finding: BWW fallback not needed — Wikipedia sub-cat p (66d); Remove Deadline from Press Picks column (61d)"
+    },
+    {
+      "name": "Stuck work: paused P2/other cards",
+      "status": "warn",
+      "message": "28 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)"
+    }
+  ]
+}
