@@ -3206,7 +3206,15 @@ showDirs.forEach(showId => {
       //   - Within-show misattribution (same Vulture review filed under multiple critic names)
       // Within-show wins go to the file with the better critic attribution: prefer files
       // without "(Pt. 2)" / "unknown" / lowercased typo variants in the critic name.
-      if (data.fullText && data.fullText.length > 200 && !skipCrossShowDupeIds.has(showId)) {
+      //
+      // allowCrossShowDuplicate: true is a manual carve-out for genuine repertory
+      // productions where one critic files a single joint article covering two shows
+      // (e.g. twelfth-night-2013 / richard-iii-2013, Mark Rylance's Globe rep season at
+      // the Belasco — same URL/text legitimately belongs to both). Without it, whichever
+      // show's directory is processed first (alphabetical showDirs order) wins the
+      // fingerprint and the other show's identical, equally-legitimate copy is silently
+      // dropped as "cross-show contamination" (2026-07-22, rebuild-regression.json).
+      if (data.fullText && data.fullText.length > 200 && !skipCrossShowDupeIds.has(showId) && !data.allowCrossShowDuplicate) {
         const cleanedForFp = (cleanText(data.fullText) || '').toLowerCase().replace(/\s+/g, '');
         if (cleanedForFp.length > 200) {
           const fp = crypto.createHash('sha256').update(cleanedForFp).digest('hex').substring(0, 16);
