@@ -40,6 +40,7 @@ const { execFileSync } = require('child_process');
 
 const { classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap, MAJOR_TIER_MAX } = require('./lib/t1-silent-gap');
 const { detectFlagContradiction, contradictionFixCommand, shouldAlertContradiction } = require('./lib/flag-contradiction');
+const { wouldAutoClear, shadowObservation } = require('./lib/autoclear-shadow');
 const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards');
 const { getTier } = require('./lib/outlet-tiers');
 const { AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
@@ -60,6 +61,10 @@ const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const AUDIT_DIR = path.join(ROOT, 'data', 'audit');
 const REPORT_PATH = path.join(AUDIT_DIR, 't1-silent-gaps.json');
 const ALERT_STATE_PATH = path.join(AUDIT_DIR, 't1-silent-gap-alerts.json');
+// Auto-clear shadow log (S3-T4): append-only record of live would-auto-clear
+// candidates so a real 48h window can be measured before auto-clear is ever
+// enabled (S3-T5). This job is the single writer.
+const SHADOW_LOG_PATH = path.join(AUDIT_DIR, 'autoclear-shadow.jsonl');
 // Circuit-breaker state for the self-heal refetch (S3-T1/T2). Global 10/day
 // budget + audit-side per-file attempt history — NEVER stored in per-review
 // JSON. Single writer = this hourly job.
@@ -202,6 +207,10 @@ async function main() {
   // stale). Emitted as a deduped ACTION alert with the exact clear command.
   const contradictions = [];
 
+  // S3-T4 shadow observations (would-auto-clear candidates) appended to the
+  // shadow log this run. Auto-clear itself stays OFF (escalate-only).
+  const shadowObservations = [];
+
   for (const show of shows) {
     const dir = path.join(REVIEW_TEXTS_DIR, show.id);
     let files;
@@ -234,6 +243,16 @@ async function main() {
             fix: contradictionFixCommand(show.id, f, contra.flag),
           });
           console.log(`  ⚠️  ${show.id} — ${outletId} (T${tier}) stale ${contra.flag} flag contradicted by newer CV (${contra.verifiedAt})`);
+
+          // S3-T4 shadow: record what an auto-clearer WOULD do (append-only).
+          // Escalate-only stays the behavior; this only observes.
+          const decision = wouldAutoClear(d);
+          if (decision.clear) {
+            shadowObservations.push(shadowObservation({
+              showId: show.id, file: f, outletId, tier,
+              decision, observedAt: new Date().toISOString(),
+            }));
+          }
         }
       }
 
@@ -315,6 +334,14 @@ async function main() {
   }
   if (contradictions.length > 0) {
     console.log(`⚠️  ${contradictions.length} stale-flag contradiction(s) (escalate-only).`);
+  }
+  // Append this run's would-auto-clear observations to the shadow log (S3-T4).
+  // Append-only so a real 48h window accumulates; the report CLI reads it.
+  if (!DRY_RUN && shadowObservations.length > 0) {
+    fs.mkdirSync(AUDIT_DIR, { recursive: true });
+    fs.appendFileSync(SHADOW_LOG_PATH,
+      shadowObservations.map((o) => JSON.stringify(o)).join('\n') + '\n');
+    console.log(`🕶️  logged ${shadowObservations.length} auto-clear shadow observation(s).`);
   }
   console.log(`\n${gaps.length} silent gap(s) across ${shows.length} in-window show(s).`);
 

@@ -191,6 +191,13 @@ jobs:
         if: always()
         run: node scripts/audit-opening-night-coverage.js --write-ledger
 
+      # Auto-clear shadow report (S3-T4): refresh the evidence verdict from the
+      # shadow log the sweep just appended to. Auto-clear stays OFF until this
+      # verdict is 'clean' (≥3 live candidates over ≥48h, 0 human disagreements).
+      - name: Refresh auto-clear shadow report
+        if: always()
+        run: node scripts/shadow-autoclear-report.js
+
       - name: Commit audit JSON (public repo)
         if: always()
         env:
@@ -205,7 +212,7 @@ jobs:
           # MUST be committed so the global 10/day refetch budget + per-file
           # attempt history survive across hourly runs (otherwise the daily
           # counter resets every tick and the cap can never bind).
-          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-recovery-state.json || true
+          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json || true
           if git diff --cached --quiet; then
             echo "No audit changes to commit"
           else

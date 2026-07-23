@@ -671,6 +671,12 @@ on:
       - 'scripts/lib/refetch-circuit-breaker.test.mjs'
       - 'scripts/lib/flag-contradiction.js'
       - 'scripts/lib/flag-contradiction.test.mjs'
+      # S3-T4: auto-clear shadow mode (would-clear decision + 48h/≥3-candidate
+      # evidence gate) and its report CLI. Colocated *.test.mjs runs via the
+      # lib-test glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/autoclear-shadow.js'
+      - 'scripts/lib/autoclear-shadow.test.mjs'
+      - 'scripts/shadow-autoclear-report.js'
       # Stuck-work detector (2026-07-22): paused/orphaned Notion-brain cards
       # surfaced in the daily digest. Colocated test runs in the lib-test glob;
       # path-listed so a solo edit triggers CI.
