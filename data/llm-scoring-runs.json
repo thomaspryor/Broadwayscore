@@ -470022,17 +470022,28 @@
     ]
   },
   {
-    "startedAt": "2026-07-23T18:20:51.289Z",
-    "completedAt": "2026-07-23T18:20:56.288Z",
-    "totalReviews": 30,
-    "processed": 1,
-    "skipped": 29,
-    "errors": 0,
+    "startedAt": "2026-07-23T18:21:08.426Z",
+    "completedAt": "2026-07-23T18:21:20.192Z",
+    "totalReviews": 28,
+    "processed": 2,
+    "skipped": 24,
+    "errors": 2,
     "tokensUsed": {
-      "input": 8484,
-      "output": 328,
-      "total": 13152
+      "input": 17495,
+      "output": 735,
+      "total": 27088
     },
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "trainspotting-the-musical-west-end-2026",
+        "outletId": "guardian-uk",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "trainspotting-the-musical-west-end-2026",
+        "outletId": "radio-times",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
