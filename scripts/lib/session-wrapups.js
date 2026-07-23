@@ -56,14 +56,20 @@ function sessionLabel(firstMsg, max = 90) {
 }
 
 // Last assistant message that contains any text (scanning backwards past
-// trailing relocated / file-history-snapshot / hook entries).
-function finalAssistantText(entries) {
+// trailing relocated / file-history-snapshot / hook entries). Returns the
+// text AND its timestamp — the wrap-up time, which is the honest "finished
+// at" (transcript mtime moves on relocation, hours after the session ends).
+function finalAssistantEntry(entries) {
   for (let i = entries.length - 1; i >= 0; i--) {
     if (entries[i].type !== 'assistant') continue;
     const t = messageText(entries[i]).trim();
-    if (t) return t;
+    if (t) return { text: t, timestamp: entries[i].timestamp || '' };
   }
-  return '';
+  return { text: '', timestamp: '' };
+}
+
+function finalAssistantText(entries) {
+  return finalAssistantEntry(entries).text;
 }
 
 // The SESSION STATUS verdict line out of a wrap-up message. Every completion
@@ -91,5 +97,5 @@ function workspaceVerdict({ done, alive }) {
 
 module.exports = {
   parseJsonLines, messageText, firstUserMessage, sessionLabel,
-  finalAssistantText, statusLine, workspaceVerdict,
+  finalAssistantEntry, finalAssistantText, statusLine, workspaceVerdict,
 };

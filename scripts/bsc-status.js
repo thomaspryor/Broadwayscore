@@ -33,7 +33,7 @@ const {
   cmuxAvailable, listWorkspaces, isDoneTitle, claudeAliveIn,
 } = require('./lib/cmux-workspaces.js');
 const {
-  parseJsonLines, firstUserMessage, sessionLabel, finalAssistantText,
+  parseJsonLines, firstUserMessage, sessionLabel, finalAssistantEntry,
   statusLine, workspaceVerdict,
 } = require('./lib/session-wrapups.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -72,24 +72,38 @@ function readSlice(file, position, length) {
 
 function transcriptSummary(file) {
   const size = fs.statSync(file).size;
-  const head = parseJsonLines(readSlice(file, 0, Math.min(HEAD_BYTES, size)));
-  const tail = size > TAIL_BYTES
-    ? parseJsonLines(readSlice(file, size - TAIL_BYTES, TAIL_BYTES))
-    : head.concat(parseJsonLines(readSlice(file, Math.min(HEAD_BYTES, size), Math.max(0, size - HEAD_BYTES))));
-  const final = finalAssistantText(tail);
+  // Files up to TAIL_BYTES are read whole — stitching two slices tears the
+  // JSON line straddling the boundary and can silently drop the wrap-up
+  // (codex ship-check finding). Bigger files get bounded head+tail reads;
+  // the tail's first line may be torn, which parseJsonLines skips — fine,
+  // since the wrap-up lives at the very end.
+  let head, tail;
+  if (size <= TAIL_BYTES) {
+    head = tail = parseJsonLines(readSlice(file, 0, size));
+  } else {
+    head = parseJsonLines(readSlice(file, 0, HEAD_BYTES));
+    tail = parseJsonLines(readSlice(file, size - TAIL_BYTES, TAIL_BYTES));
+  }
+  const finalEntry = finalAssistantEntry(tail);
   return {
     label: sessionLabel(firstUserMessage(head)),
-    status: statusLine(final),
+    status: statusLine(finalEntry.text),
+    // Wrap-up timestamp, NOT file mtime: transcript relocation (worktree
+    // removal) touches mtime long after the session actually finished.
+    endedAt: finalEntry.timestamp || null,
   };
 }
 
 // Session ids with a live claude process — those sessions still own an open
-// tab and are covered by the workspace section, not "finished".
+// tab and are covered by the workspace section, not "finished". Sessions
+// launched without either flag can't be recognized here and will show as
+// finished with "(no SESSION STATUS line)" — accepted: cmux launches always
+// pass --session-id, and erring visible beats hiding.
 function liveSessionIds(psOutput) {
   const ids = new Set();
-  const re = /--(?:session-id|resume)[ =]([0-9a-f-]{36})/g;
+  const re = /--(?:session-id|resume)[ =]([0-9a-fA-F-]{36})/g;
   let m;
-  while ((m = re.exec(String(psOutput)))) ids.add(m[1]);
+  while ((m = re.exec(String(psOutput)))) ids.add(m[1].toLowerCase());
   return ids;
 }
 
@@ -106,6 +120,9 @@ function main(argv = process.argv.slice(2)) {
     console.log(`Open cmux workspaces (${workspaces.length}):\n`);
     const rows = workspaces.map(w => {
       const done = isDoneTitle(w.title);
+      // claudeAliveIn treats cmux-socket errors as alive (its close-path
+      // fail-safe). For display that biases toward WORKING/leave-open — the
+      // safe direction for an owner deciding what to close, so kept as-is.
       const alive = claudeAliveIn(w.ref);
       const launch = dispatchLedger.launchByRef(w.ref, ledgerEntries);
       return {
@@ -149,7 +166,7 @@ function main(argv = process.argv.slice(2)) {
     let s;
     try { s = transcriptSummary(e.full); } catch (err) { s = { label: e.f, status: `(unreadable: ${err.message})` }; }
     if (!s.label && !s.status) continue; // empty shell transcript
-    const when = new Date(e.mtime).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    const when = new Date(s.endedAt || e.mtime).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
     console.log(`  ${when}  ${s.label || '(no prompt)'}`);
     console.log(`          ${s.status || '(no SESSION STATUS line — ended without wrap-up)'}`);
   }

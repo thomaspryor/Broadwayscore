@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   parseJsonLines, messageText, firstUserMessage, sessionLabel,
-  finalAssistantText, statusLine, workspaceVerdict,
+  finalAssistantEntry, finalAssistantText, statusLine, workspaceVerdict,
 } from './session-wrapups.js';
 
 const line = obj => JSON.stringify(obj);
@@ -41,12 +41,16 @@ test('sessionLabel keeps the [#N] title, drops dispatch boilerplate, truncates',
 
 test('finalAssistantText scans backwards past relocated/snapshot entries', () => {
   const entries = [
-    { type: 'assistant', message: { content: 'early' } },
-    { type: 'assistant', message: { content: 'the wrap-up' } },
+    { type: 'assistant', message: { content: 'early' }, timestamp: '2026-07-23T02:00:00Z' },
+    { type: 'assistant', message: { content: 'the wrap-up' }, timestamp: '2026-07-23T02:55:00Z' },
     { type: 'relocated' },
     { type: 'file-history-snapshot' },
   ];
   assert.equal(finalAssistantText(entries), 'the wrap-up');
+  // Timestamp is the wrap-up's, not any later bookkeeping entry's — this is
+  // what bsc-status displays as "finished at" instead of relocated mtime.
+  assert.deepEqual(finalAssistantEntry(entries), { text: 'the wrap-up', timestamp: '2026-07-23T02:55:00Z' });
+  assert.deepEqual(finalAssistantEntry([{ type: 'relocated' }]), { text: '', timestamp: '' });
 });
 
 test('statusLine grabs the LAST SAFE/NOT-SAFE line, prefers NOT SAFE when final', () => {
