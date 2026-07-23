@@ -24,7 +24,17 @@
 const fs = require('fs');
 const path = require('path');
 
-const REPO = path.join(__dirname, '..', '..');
+// Hardcoded (not path.join(__dirname, '..', '..')) on purpose: both callers
+// of this module (bsc-next.js, bsc-prune.js) are interactive tools an owner
+// routinely runs from inside a worktree (this session included) — a
+// __dirname-relative REPO would resolve to that worktree's own
+// scripts/lib/, splitting the ledger into a worktree-local copy instead of
+// the single canonical file every dispatch/sweep needs to share. Same fix
+// bsc-next.js already applies to its own REPO/QUEUE_PATH, with the same
+// rationale in its header comment. (autonomous-ledger.js gets away with the
+// relative pattern because autonomous-run.js only ever runs from the
+// canonical checkout via launchd — never from a worktree.)
+const REPO = '/Users/tompryor/Broadwayscore';
 const LEDGER_PATH = path.join(REPO, 'data', 'audit', 'dispatch-ledger.jsonl');
 
 // A task with this many recorded 'dead' entries blocks further blind
