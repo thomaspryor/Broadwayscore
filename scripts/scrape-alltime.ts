@@ -321,25 +321,43 @@ async function scrapeAllTime(): Promise<void> {
 
       // Tier 2: Bright Data (proxied — survives a BWW-side block of the CI IP)
       if (rows.length === 0) {
-        try {
-          console.log(`\n--- ${label} [Tier 2: Bright Data] ---`);
-          rows = await fetchAllTimeHtmlProvider(url, fetchWithBrightData);
-          if (rows.length > 0) scrapeSource = 'brightdata';
-          else console.log('  [BrightData] Empty result');
-        } catch (error: any) {
-          console.log(`  [BrightData] ${error.message}`);
+        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+          try {
+            console.log(`\n--- ${label} [Tier 2: Bright Data] (attempt ${attempt}/${MAX_RETRIES}) ---`);
+            rows = await fetchAllTimeHtmlProvider(url, fetchWithBrightData);
+            if (rows.length > 0) {
+              scrapeSource = 'brightdata';
+              break;
+            }
+            console.log('  [BrightData] Empty result');
+          } catch (error: any) {
+            console.log(`  [BrightData] ${error.message}`);
+          }
+          if (attempt < MAX_RETRIES) {
+            console.log(`  Retrying in ${3 * attempt}s...`);
+            await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
+          }
         }
       }
 
       // Tier 3: Scrapingdog (proxied, cheaper than BD for a static page)
       if (rows.length === 0) {
-        try {
-          console.log(`\n--- ${label} [Tier 3: Scrapingdog] ---`);
-          rows = await fetchAllTimeHtmlProvider(url, (u: string) => fetchWithScrapingdog(u, { renderJs: false }));
-          if (rows.length > 0) scrapeSource = 'scrapingdog';
-          else console.log('  [Scrapingdog] Empty result');
-        } catch (error: any) {
-          console.log(`  [Scrapingdog] ${error.message}`);
+        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+          try {
+            console.log(`\n--- ${label} [Tier 3: Scrapingdog] (attempt ${attempt}/${MAX_RETRIES}) ---`);
+            rows = await fetchAllTimeHtmlProvider(url, (u: string) => fetchWithScrapingdog(u, { renderJs: false }));
+            if (rows.length > 0) {
+              scrapeSource = 'scrapingdog';
+              break;
+            }
+            console.log('  [Scrapingdog] Empty result');
+          } catch (error: any) {
+            console.log(`  [Scrapingdog] ${error.message}`);
+          }
+          if (attempt < MAX_RETRIES) {
+            console.log(`  Retrying in ${3 * attempt}s...`);
+            await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
+          }
         }
       }
 
