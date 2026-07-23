@@ -8,7 +8,9 @@
     "trainspotting-the-musical-west-end-2026/broadwayworld--team-bww.json",
     "midnight-at-the-never-get-west-end-2026/guardian-uk--unknown.json",
     "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
-    "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json"
+    "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
+    "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
   ],
   "failed": [
     "are-you-mad-at-me-off-broadway-2026/one-minute-critic--unknown.json",
@@ -86,7 +88,15 @@
     "heathers-the-musical-off-west-end-2026/all-that-dazzles-uk--unknown.json",
     "heathers-the-musical-off-west-end-2026/broadwayworld--abbie-grundy.json",
     "heathers-the-musical-off-west-end-2026/nbcny--robert-kahn.json",
-    "heathers-the-musical-off-west-end-2026/times-uk--dominic-maxwell.json"
+    "heathers-the-musical-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
+    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--rebecca-davison.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "dukes-off-broadway-2026/nytimes--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -102,7 +112,9 @@
     ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
@@ -110,11 +122,12 @@
       "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ],
     "archive": [
-      "trainspotting-the-musical-west-end-2026/broadwayworld--team-bww.json"
+      "trainspotting-the-musical-west-end-2026/broadwayworld--team-bww.json",
+      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
     ]
   },
   "startTime": "2026-07-23T11:43:54.936Z",
-  "lastProcessed": "heathers-the-musical-off-west-end-2026/times-uk--dominic-maxwell.json",
+  "lastProcessed": "dukes-off-broadway-2026/nytimes--helen-shaw.json",
   "log": [
     {
       "t": "2026-07-23T11:45:27.645Z",
@@ -157,6 +170,28 @@
     },
     {
       "t": "2026-07-23T12:38:12.919Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-23T15:39:46.668Z",
+      "event": "bb-session",
+      "session": "7da56f91",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-23T15:39:47.107Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-23T15:40:02.715Z",
+      "event": "bb-session",
+      "session": "fca1938a",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-23T15:40:03.136Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
