@@ -41,7 +41,7 @@ test('in-progress flags only past the 48h orphan threshold', () => {
   assert.deepEqual(r.orphaned.map((c) => c.name), ['F']);
 });
 
-test('sorted oldest-first and other statuses ignored', () => {
+test('sorted oldest-first, other statuses ignored, bad dates counted', () => {
   const r = classifyStuckCards(
     [
       { name: 'newer', status: 'In progress', priority: null, lastEditedAt: hoursAgo(72) },
@@ -53,6 +53,15 @@ test('sorted oldest-first and other statuses ignored', () => {
   );
   assert.deepEqual(r.orphaned.map((c) => c.name), ['older', 'newer']);
   assert.equal(r.pausedCritical.length, 0);
+  assert.equal(r.invalidDates, 1);
+});
+
+test('fetchBrainCards aborts past the page cap instead of truncating silently', async () => {
+  const fetchImpl = async () => ({
+    ok: true,
+    json: async () => ({ has_more: true, next_cursor: 'again', results: [] }),
+  });
+  await assert.rejects(() => fetchBrainCards('key', fetchImpl), /pagination exceeded/);
 });
 
 test('fetchBrainCards paginates and maps properties', async () => {
