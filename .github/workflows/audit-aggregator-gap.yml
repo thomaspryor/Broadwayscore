@@ -201,7 +201,7 @@ jobs:
           # Audit JSON lives in the public repo. Commit the checkpoint too — it's
           # what lets consecutive runs resume instead of re-auditing the same
           # first shows (the 25-min-timeout fix).
-          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json || true
+          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-signals.json || true
           if git diff --cached --quiet; then
             echo "No audit changes to commit"
           else
