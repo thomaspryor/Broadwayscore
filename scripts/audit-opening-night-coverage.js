@@ -17,8 +17,10 @@ const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
+const { classifyCell, mergeLedger, serializeLedger } = require('./lib/t1-ledger');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
+const LEDGER_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-ledger.json');
 
 // Expected-outlet authority: the multi-source aggregator CENSUS (review-census.js),
 // not a hardcoded list. Every market — Broadway, Off-Broadway, West End — now flows
@@ -50,15 +52,25 @@ const FLOOR_WINDOW_MAX_HOURS = 72;
 
 function parseArgs() {
   const args = process.argv.slice(2);
-  const opts = { days: 3, dispatch: false, alert: false, showId: null };
+  const opts = { days: 3, dispatch: false, alert: false, showId: null,
+    writeLedger: false, ledgerPath: LEDGER_PATH, ledgerDays: 90 };
   for (const arg of args) {
     if (arg.startsWith('--days=')) opts.days = parseInt(arg.split('=')[1], 10);
     if (arg.startsWith('--show=')) opts.showId = arg.split('=')[1];
     if (arg === '--dispatch') opts.dispatch = true;
     if (arg === '--alert') opts.alert = true;
+    // Ledger mode (S2-T3): rebuild data/audit/t1-coverage-ledger.json. Single
+    // writer = audit-aggregator-gap.yml; commit-on-change (deterministic bytes).
+    if (arg === '--write-ledger') opts.writeLedger = true;
+    if (arg.startsWith('--ledger-path=')) opts.ledgerPath = arg.split('=')[1];
+    if (arg.startsWith('--ledger-days=')) opts.ledgerDays = parseInt(arg.split('=')[1], 10);
   }
   return opts;
 }
+
+// Census market key for a category (which roundup set to read).
+// (kept adjacent to parseArgs so both entrypoints can use it)
+
 
 function loadJSON(filename) {
   const filepath = path.join(DATA_DIR, filename);
@@ -77,8 +89,102 @@ function censusMarket(category) {
   return 'broadway';
 }
 
+// Registry evidence that an outlet does not review this market → NO_REVIEW_EXPECTED.
+// Fields are populated in S4-T4 (Outlet determinations); until then this is empty
+// and no cell ever reads NO_REVIEW_EXPECTED — the state machine is ready regardless.
+function outletNoReviewExpected(outlets, outletId) {
+  const o = outlets[outletId];
+  return !!(o && (o.coverageExpectation === 'none' || o.reviewsTheater === false));
+}
+
+// Compute the ledger cells (missing/suppressed T1 outlets) for one show. Reuses the
+// exact census + verdict the console audit uses. Soft-missing (supplementary-source-
+// only, e.g. tryout-city critics) are EXCLUDED — they are alert-only noise, not real
+// T1 retrieval gaps, so they must not pollute the SLA burn-down.
+function computeShowCells(show, reviews, outlets, nowMs) {
+  const showId = show.id || show.slug;
+  const category = show.category || 'broadway';
+  const scoredOutlets = new Set(
+    reviews.filter(r => r.showId === showId && r.assignedScore != null).map(r => r.outletId).filter(Boolean)
+  );
+  let census = null;
+  try { census = buildCensusFromArchives(showId, { show, market: censusMarket(category) }); }
+  catch (_) { return []; }
+  if (!census || !census.hadAnySource) return [];
+  const cVerdict = censusVerdict(census, scoredOutlets, { suppressed: CI_UNFETCHABLE_OUTLETS });
+
+  // Clock start: max(openingDate, showCreatedAt) is the S2-T6 refinement; here we
+  // use openingDate/previewsStartDate. No date → null clock → IN_FLIGHT (never a GAP).
+  const clockStr = show.openingDate || show.previewsStartDate || null;
+  const clockMs = clockStr ? Date.parse(clockStr + 'T23:00:00-04:00') : NaN;
+  const clockAgeHours = Number.isFinite(clockMs) ? (nowMs - clockMs) / 3600000 : null;
+
+  const cells = [];
+  for (const m of cVerdict.missing) {
+    const srcs = m.sources || [];
+    if (srcs.length > 0 && srcs.every((s) => SUPPLEMENTARY_CENSUS_SOURCES.has(s))) continue; // soft — skip
+    const state = classifyCell({
+      noReviewExpected: outletNoReviewExpected(outlets, m.outletId),
+      suppressed: false,
+      clockAgeHours,
+    });
+    cells.push({ outletId: m.outletId, state, url: m.url || '' });
+  }
+  for (const m of cVerdict.suppressedMissing) {
+    cells.push({ outletId: m.outletId, state: 'SUPPRESSED', url: m.url || '' });
+  }
+  return cells;
+}
+
+// Build + write the T1 coverage ledger. Scans shows that are open OR opened within
+// the window; merges with the prior ledger (preserving each gap's firstSeenAt) and
+// writes deterministic bytes so an unchanged corpus produces NO file diff.
+function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
+  const cutoff = new Date(nowMs - opts.ledgerDays * 86400000).toISOString().split('T')[0];
+  const target = shows.filter(s => s.status === 'open' || (s.openingDate && s.openingDate >= cutoff));
+  const freshShows = [];
+  for (const show of target) {
+    const cells = computeShowCells(show, reviews, outlets, nowMs);
+    if (cells.length === 0) continue;
+    freshShows.push({
+      showId: show.id || show.slug,
+      title: show.title,
+      market: censusMarket(show.category || 'broadway'),
+      openingDate: show.openingDate || null,
+      cells,
+    });
+  }
+  let prev = {};
+  try { prev = JSON.parse(fs.readFileSync(opts.ledgerPath, 'utf8')); } catch (_) { prev = {}; }
+  const ledger = mergeLedger(prev, freshShows, nowIso);
+  const bytes = serializeLedger(ledger);
+  const before = fs.existsSync(opts.ledgerPath) ? fs.readFileSync(opts.ledgerPath, 'utf8') : '';
+  const changed = before !== bytes;
+  if (changed) {
+    fs.mkdirSync(path.dirname(opts.ledgerPath), { recursive: true });
+    fs.writeFileSync(opts.ledgerPath, bytes);
+  }
+  const cellCount = freshShows.reduce((n, s) => n + s.cells.length, 0);
+  const gapCount = freshShows.reduce((n, s) => n + s.cells.filter(c => c.state === 'GAP').length, 0);
+  console.log(`T1 coverage ledger: ${freshShows.length} shows, ${cellCount} open cells (${gapCount} GAP) → ${opts.ledgerPath} ${changed ? '[written]' : '[unchanged — no commit]'}`);
+  return { changed, shows: freshShows.length, cells: cellCount, gaps: gapCount };
+}
+
 async function main() {
   const opts = parseArgs();
+
+  if (opts.writeLedger) {
+    const showsData = loadJSON('shows.json');
+    const shows = showsData.shows || showsData;
+    const reviewsData = loadJSON('reviews.json');
+    const reviews = reviewsData.reviews || reviewsData;
+    const outletRegistry = loadJSON('outlet-registry.json');
+    const outlets = outletRegistry.outlets || outletRegistry;
+    const now = new Date();
+    writeLedger(opts, shows, reviews, outlets, now.toISOString(), now.getTime());
+    return;
+  }
+
 
   // Load data
   const showsData = loadJSON('shows.json');

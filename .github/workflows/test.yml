@@ -252,6 +252,12 @@ on:
       - 'scripts/lib/review-census.test.mjs'
       - 'scripts/lib/thestage-extract.js'
       - 'scripts/scrape-thestage-roundups.js'
+      # T1 coverage ledger state machine (S2-T3). Colocated t1-ledger.test.mjs runs
+      # in the lib-test glob; path-listed so a solo edit triggers CI. The ledger
+      # consumer audit-opening-night-coverage.js is covered by its own path below.
+      - 'scripts/lib/t1-ledger.js'
+      - 'scripts/lib/t1-ledger.test.mjs'
+      - 'scripts/audit-opening-night-coverage.js'
       - 'scripts/lib/feedback-dedup.js'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.
