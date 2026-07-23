@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-23T10:39:05.909Z",
+  "timestamp": "2026-07-23T13:19:17.742Z",
   "stats": {
-    "totalReviews": 40372,
-    "alreadyFlagged": 17786,
+    "totalReviews": 40376,
+    "alreadyFlagged": 17783,
     "dateGuardCatches": 59,
     "directorMismatch": 905,
     "tvFilmSignals": 1107,
-    "londonSignals": 754,
+    "londonSignals": 753,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3264
+    "noPublishDate": 3266
   },
   "findings": [
     {
@@ -44091,19 +44091,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "white-rabbit-red-rabbit-west-end-2026",
-      "file": "broadwayworld--mica-blackwell.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
