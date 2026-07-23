@@ -191,6 +191,19 @@ jobs:
         if: always()
         run: node scripts/audit-opening-night-coverage.js --write-ledger
 
+      # T1 coverage digest (S2-T7). Reads the ledger just rebuilt above; ACTION-emails
+      # only NEW post-rollout gaps that crossed 24h, deduped via the digest-state file
+      # (committed below). Hourly is safe: each gap emails at most once, ever; the
+      # first --alert run stamps rolloutAt, freezing the pre-existing backlog as
+      # digest-only. NOTE: step env does NOT inherit — this step needs its own
+      # RESEND_API_KEY/OWNER_EMAIL or sendAlert silently resolves undelivered.
+      - name: T1 coverage digest (ACTION alerts)
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-opening-night-coverage.js --digest --alert
+
       # Auto-clear shadow report (S3-T4): refresh the evidence verdict from the
       # shadow log the sweep just appended to. Auto-clear stays OFF until this
       # verdict is 'clean' (≥3 live candidates over ≥48h, 0 human disagreements).
@@ -212,7 +225,14 @@ jobs:
           # MUST be committed so the global 10/day refetch budget + per-file
           # attempt history survive across hourly runs (otherwise the daily
           # counter resets every tick and the cap can never bind).
-          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json || true
+          # Per-file adds with an existence guard: `git add a b c` is ATOMIC on an
+          # unmatched pathspec (exit 128, stages NOTHING), so one file that a failed
+          # or skipped step never created would silently drop EVERY audit artifact
+          # from this run's commit (2026-07-23 review; the never-born
+          # t1-coverage-ledger.json carried exactly this hazard).
+          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
           if git diff --cached --quiet; then
             echo "No audit changes to commit"
           else
