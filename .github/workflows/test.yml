@@ -270,6 +270,14 @@ on:
       # a solo edit triggers CI.
       - 'scripts/lib/coverage-expectation.js'
       - 'scripts/lib/coverage-expectation.test.mjs'
+      # S4-T1/T2: per-outlet cadence heartbeat wired into the weekly critic-
+      # coverage audit. Colocated *.test.mjs run in the lib-test glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/outlet-cadence.js'
+      - 'scripts/lib/outlet-cadence.test.mjs'
+      - 'scripts/lib/outlet-heartbeat-state.js'
+      - 'scripts/lib/outlet-heartbeat-state.test.mjs'
+      - 'scripts/audit-critic-coverage.js'
       - 'scripts/lib/feedback-dedup.js'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.
