@@ -4764,10 +4764,15 @@ console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe
 if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
   stats.crossShowDupeDetails.forEach(d => console.log(`    - ${d}`));
 }
-{
+if ((stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) ||
+    (stats.withinShowDupeDetails && stats.withinShowDupeDetails.length > 0)) {
   // Persist every dropped cross-show/within-show fingerprint collision to a durable
   // audit file so future collisions surface automatically instead of requiring a
   // manual full-catalog scan (card #344, 2026-07-23 — 51 collisions found this way).
+  // Written ONLY when there's something to report (mirrors rebuild-regression.json's
+  // own pattern below) — a dropped review always shrinks reviews.json for that show,
+  // so this file changing already correlates with a reviews.json diff and needs no
+  // separate has_changes gating in rebuild-reviews.yml's "Check for changes" step.
   const collisionAuditDir = path.join(__dirname, '../data/audit');
   if (!fs.existsSync(collisionAuditDir)) fs.mkdirSync(collisionAuditDir, { recursive: true });
   fs.writeFileSync(
