@@ -34,6 +34,11 @@ test('sessionLabel keeps the [#N] title, drops dispatch boilerplate, truncates',
     sessionLabel('[#279] Email noise: alert router — Work on this card as this session\'s focus.'),
     '[#279] Email noise: alert router',
   );
+  // Em dashes INSIDE the title survive — only the boilerplate is cut.
+  assert.equal(
+    sessionLabel('[#328] Weekly Grosses: all tiers failed — grosses.json stale — Work on this card as focus'),
+    '[#328] Weekly Grosses: all tiers failed — grosses.json stale',
+  );
   const long = 'x'.repeat(200);
   assert.equal(sessionLabel(long).length, 90);
   assert.ok(sessionLabel(long).endsWith('…'));
@@ -59,6 +64,9 @@ test('statusLine grabs the LAST SAFE/NOT-SAFE line, prefers NOT SAFE when final'
     'NOT SAFE TO EXIT — CI still running',
   );
   assert.equal(statusLine('no verdict here'), '');
+  // A quoted TEMPLATE (placeholders in <>) is not a real verdict — a killed
+  // session restating the required format must not read as safely exited.
+  assert.equal(statusLine('I must end with a SAFE TO EXIT — <what finished> line per the hook.'), '');
 });
 
 test('workspaceVerdict decision table matches bsc-prune closability', () => {

@@ -46,12 +46,12 @@ function firstUserMessage(entries) {
 }
 
 // Compress a first user message into a one-line label: dispatched sessions
-// start "[#N] Title — Work on this card…"; keep the part before the
-// dispatch boilerplate. Owner-typed messages just truncate.
+// read "[#N] Title — Work on this card…". Cut at the boilerplate phrase
+// itself, not the first em dash — titles legitimately contain em dashes
+// (ship-check finding). Owner-typed messages just truncate.
 function sessionLabel(firstMsg, max = 90) {
   const oneLine = String(firstMsg).replace(/\s+/g, ' ').trim();
-  const m = /^(\[#\d+\][^—]*)(?:—|$)/.exec(oneLine);
-  const label = (m ? m[1] : oneLine).trim();
+  const label = oneLine.split(/\s*—?\s*Work on this card/)[0].trim();
   return label.length > max ? label.slice(0, max - 1) + '…' : label;
 }
 
@@ -78,7 +78,13 @@ function finalAssistantText(entries) {
 // restated earlier ones don't win.
 function statusLine(text) {
   const matches = String(text).match(/(?:NOT )?SAFE TO EXIT\s*—[^\n]*/g);
-  return matches ? matches[matches.length - 1].trim() : '';
+  if (!matches) return '';
+  const line = matches[matches.length - 1].trim();
+  // A killed session's last message may merely QUOTE the required format
+  // ("SAFE TO EXIT — <what finished>"); template placeholders mean this is
+  // not a real verdict (ship-check finding) — better to report no wrap-up
+  // than a falsely reassuring one.
+  return /<[^>]*>/.test(line) ? '' : line;
 }
 
 // One-glance verdict for an open workspace. Inputs are booleans bsc-status
