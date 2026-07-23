@@ -265,6 +265,11 @@ on:
       - 'scripts/backfill-first-seen.js'
       - 'scripts/backfill-first-seen.test.mjs'
       - 'scripts/audit-opening-night-coverage.js'
+      # S4-T3: NO_REVIEW_EXPECTED 14d decay + reactivation detection. Colocated
+      # coverage-expectation.test.mjs runs in the lib-test glob; path-listed so
+      # a solo edit triggers CI.
+      - 'scripts/lib/coverage-expectation.js'
+      - 'scripts/lib/coverage-expectation.test.mjs'
       - 'scripts/lib/feedback-dedup.js'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.
