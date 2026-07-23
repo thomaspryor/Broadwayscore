@@ -649,6 +649,28 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   ]);
   const isManualEntry = input.source === 'manual-entry';
 
+  // Manual-entry protection-field force-override (ST-1, 2026-07): the generic
+  // merge loop below only writes a field when the EXISTING value is falsy —
+  // correct for scraper writes (never clobber a value someone already set), but
+  // wrong for an intentional human correction. A manual ingest onto an existing
+  // wrongProduction:true file left the stale flag in place because
+  // `!existing.wrongProduction` is false, so the merge skipped it — the review
+  // kept blocking rebuild despite the operator's override (live-broken on Grace
+  // Pervades). buildManualReviewFields() lists every field it guarantees in
+  // fields.protectedFields; for manual-entry merges those fields always win,
+  // regardless of the existing value.
+  if (isManualEntry && Array.isArray(fields.protectedFields)) {
+    for (const key of fields.protectedFields) {
+      if (!(key in fields)) continue;
+      const val = fields[key];
+      if (val === undefined) continue;
+      if (JSON.stringify(existing[key]) !== JSON.stringify(val)) {
+        existing[key] = val;
+        changed = true;
+      }
+    }
+  }
+
   // Default field merge: set scraper-specific fields if existing value is falsy.
   // Exception: skip isRoundupArticle if it was manually cleared — !false would otherwise
   // re-flag the file even though a human explicitly cleared it.
