@@ -40,7 +40,7 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const REPO_DIR = path.join(__dirname, '..');
 const LOG_DIR = path.join(require('os').homedir(), 'Library', 'Logs');
 const MEMORY_DIR = path.join(__dirname, 'agent-memory');
-const DATABASE_ID = 'fa7b3ff2-c073-4097-b54c-0a78e56e06b6';
+const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 
 // Reply-loop state: per-card session IDs + comment watermarks so owner comments
 // resume the SAME Claude session (conversation continuity from the Notion app).

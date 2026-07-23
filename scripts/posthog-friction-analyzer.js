@@ -41,7 +41,7 @@ const {
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const CARDS_PER_RUN_CAP = 5;
-const NOTION_DATABASE_ID = 'fa7b3ff2-c073-4097-b54c-0a78e56e06b6';
+const { BRAIN_DATABASE_ID: NOTION_DATABASE_ID } = require('./lib/notion-constants');
 const TOKEN_BUDGET_CHARS = 4500;
 
 // ── Notion helpers ───────────────────────────────────────────────────────
