@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-23T01:29:31.543Z",
+  "generatedAt": "2026-07-23T03:54:39.459Z",
   "windowDays": 45,
   "showsScanned": 56,
   "gaps": [
@@ -14,7 +14,12 @@
       "url": "https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original",
       "recovery": null,
       "recoveryCount": 3,
-      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original --outlet=artsdesk --critic=\"Rachel Halliburton\"   # run LOCALLY (cookie jar lives on the Mac)"
+      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original --outlet=artsdesk --critic=\"Rachel Halliburton\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-07-23T03:54:39.459Z",
+      "nonTerminalAgeHours": 0
     }
-  ]
+  ],
+  "contradictions": []
 }
