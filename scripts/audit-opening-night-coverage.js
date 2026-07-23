@@ -18,9 +18,11 @@ const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
 const { classifyCell, mergeLedger, serializeLedger } = require('./lib/t1-ledger');
+const { buildDigest } = require('./lib/t1-digest');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const LEDGER_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-ledger.json');
+const DIGEST_STATE_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-digest-state.json');
 
 // Expected-outlet authority: the multi-source aggregator CENSUS (review-census.js),
 // not a hardcoded list. Every market — Broadway, Off-Broadway, West End — now flows
@@ -64,7 +66,12 @@ function parseArgs() {
     if (arg === '--write-ledger') opts.writeLedger = true;
     if (arg.startsWith('--ledger-path=')) opts.ledgerPath = arg.split('=')[1];
     if (arg.startsWith('--ledger-days=')) opts.ledgerDays = parseInt(arg.split('=')[1], 10);
+    // Digest mode (S2-T7): read the ledger, list GAP cells, ACTION-email only NEW
+    // >24h gaps. Without --alert it is a pure dry-run (prints, emails nothing).
+    if (arg === '--digest') opts.digest = true;
+    if (arg.startsWith('--digest-state=')) opts.digestStatePath = arg.split('=')[1];
   }
+  opts.digestStatePath = opts.digestStatePath || DIGEST_STATE_PATH;
   return opts;
 }
 
@@ -170,8 +177,59 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   return { changed, shows: freshShows.length, cells: cellCount, gaps: gapCount };
 }
 
+// Run the daily digest over the ledger. Prints the full GAP burn-down; with --alert,
+// fires ACTION emails ONLY for NEW (post-rollout) gaps that crossed 24h, deduped via
+// the digest-state file. Pre-rollout backlog is digest-only forever (storm guard).
+async function runDigest(opts) {
+  let ledger = { shows: {} };
+  try { ledger = JSON.parse(fs.readFileSync(opts.ledgerPath, 'utf8')); }
+  catch (_) { console.log('No ledger yet — run --write-ledger first.'); return; }
+  let state = {};
+  try { state = JSON.parse(fs.readFileSync(opts.digestStatePath, 'utf8')); } catch (_) { state = {}; }
+
+  const now = new Date();
+  const { rolloutAt, digest, actions, preRolloutCount } = buildDigest(ledger, state, now.getTime());
+
+  console.log(`\n=== T1 Coverage Digest (rollout ${rolloutAt}) ===`);
+  console.log(`GAP cells: ${digest.length} (${preRolloutCount} pre-rollout burn-down, ${digest.length - preRolloutCount} post-rollout)`);
+  console.log(`NEW gaps crossing 24h → ACTION: ${actions.length}${opts.alert ? '' : ' (dry-run — no email)'}`);
+  for (const r of digest.slice(0, 60)) {
+    console.log(`  ${r.preRollout ? '·' : (r.ageHours >= 24 ? '‼' : '⧗')} ${r.showId} / ${r.outletId}  (${r.ageHours}h)  ${r.preRollout ? '[pre-rollout]' : ''}`);
+  }
+  if (digest.length > 60) console.log(`  … ${digest.length - 60} more`);
+
+  if (opts.alert && actions.length) {
+    try {
+      const { sendAlert } = require('./lib/discord-notify');
+      await sendAlert({
+        title: 'T1 Coverage — new gaps past 24h',
+        description: `${actions.length} T1 outlet(s) still missing >24h after they became measurable.`,
+        severity: 'warning',
+        fields: actions.slice(0, 10).map(r => ({ name: `${r.title} — ${r.outletId} (${r.ageHours}h)`, value: r.fix })),
+      });
+      console.log(`\nSent ACTION alert for ${actions.length} new gap(s).`);
+    } catch (e) { console.error('Digest alert failed:', e.message); }
+  }
+
+  // Persist state ONLY on a real (non-dry-run) alert pass: stamp rolloutAt once and
+  // record the alerted cells so they dedupe next run. Dry-runs never mutate state.
+  if (opts.alert) {
+    const alertedCells = new Set(state.alertedCells || []);
+    for (const r of actions) alertedCells.add(`${r.showId}::${r.outletId}`);
+    const next = { rolloutAt, alertedCells: [...alertedCells].sort() };
+    fs.mkdirSync(path.dirname(opts.digestStatePath), { recursive: true });
+    fs.writeFileSync(opts.digestStatePath, JSON.stringify(next, null, 2) + '\n');
+  } else if (!state.rolloutAt) {
+    // First-ever contact is usually a dry-run; seed rolloutAt so the current backlog
+    // is correctly classified pre-rollout on the first REAL alert pass too.
+    console.log(`(note: rolloutAt not yet persisted — the first --alert run stamps it to now, freezing the current backlog as pre-rollout)`);
+  }
+}
+
 async function main() {
   const opts = parseArgs();
+
+  if (opts.digest) { await runDigest(opts); return; }
 
   if (opts.writeLedger) {
     const showsData = loadJSON('shows.json');

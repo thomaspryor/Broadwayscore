@@ -257,6 +257,10 @@ on:
       # consumer audit-opening-night-coverage.js is covered by its own path below.
       - 'scripts/lib/t1-ledger.js'
       - 'scripts/lib/t1-ledger.test.mjs'
+      - 'scripts/lib/t1-digest.js'
+      - 'scripts/lib/t1-digest.test.mjs'
+      - 'scripts/lib/t1-sla.js'
+      - 'scripts/lib/t1-sla.test.mjs'
       - 'scripts/audit-opening-night-coverage.js'
       - 'scripts/lib/feedback-dedup.js'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
