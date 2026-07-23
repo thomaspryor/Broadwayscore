@@ -212,7 +212,7 @@ jobs:
           # MUST be committed so the global 10/day refetch budget + per-file
           # attempt history survive across hourly runs (otherwise the daily
           # counter resets every tick and the cap can never bind).
-          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json || true
+          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/t1-coverage-signals.json || true
           if git diff --cached --quiet; then
             echo "No audit changes to commit"
           else
