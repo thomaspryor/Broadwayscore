@@ -39,7 +39,7 @@ if (fs.existsSync(envPath)) {
   }
 }
 
-const DATABASE_ID = 'fa7b3ff2-c073-4097-b54c-0a78e56e06b6';
+const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 
 if (!process.env.NOTION_API_KEY) {
   console.error('Error: NOTION_API_KEY not set. Add it to .env or environment.');
