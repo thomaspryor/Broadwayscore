@@ -20,21 +20,18 @@ const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = requi
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
-// Core T1 outlets that review virtually every major Broadway opening
-const BROADWAY_CORE_T1 = ['nytimes', 'vulture', 'variety', 'hollywood-reporter', 'timeout'];
-// Frequent T1 that often (but not always) review Broadway
-const BROADWAY_FREQUENT_T1 = ['guardian', 'washpost', 'newyorker', 'wsj'];
-// All Broadway T1
-const BROADWAY_ALL_T1 = [...BROADWAY_CORE_T1, ...BROADWAY_FREQUENT_T1, 'ap', 'broadwaynews', 'latimes', 'financialtimes'];
+// Expected-outlet authority: the multi-source aggregator CENSUS (review-census.js),
+// not a hardcoded list. Every market — Broadway, Off-Broadway, West End — now flows
+// through buildCensusFromArchives + censusVerdict. The old per-market hardcoded
+// expected-outlet arrays (and the census-vs-legacy precedence ladder) were retired
+// in S2-T2: they went stale, under-counted the long tail the roundups actually
+// list, and disagreed with the WE census. The roundups ARE the expected list.
 
-// Off-Broadway expected outlets (subset — many T1s don't review OB)
-const OB_EXPECTED = ['nytimes', 'vulture', 'timeout', 'nypost', 'theatermania', 'variety'];
-
-// West End expected outlets
-const WE_EXPECTED = ['times-uk', 'telegraph', 'standard', 'thestage', 'timeout-london', 'guardian', 'financialtimes'];
-
-// Key T2 outlets for Broadway
-const BROADWAY_KEY_T2 = ['nypost', 'theatermania', 'deadline', 'thewrap', 'ew', 'nydailynews', 'observer'];
+// Census sources that scrape review-link URLs rather than a critic-listing roundup.
+// They frequently point at a DIFFERENT production's article (a pre-Broadway tryout's
+// local critics), so an outlet named ONLY by these is treated as soft-missing:
+// visible + blocks `complete`, but alert-only, never dispatchable (no gather storm).
+const SUPPLEMENTARY_CENSUS_SOURCES = new Set(['playbill-verdict', 'show-score']);
 
 // Opening-night floor: silent-failure detection for Broadway shows.
 // FA (2026-04-19) landed 14/17 reviews because the BWW extractor silently
@@ -73,11 +70,11 @@ function loadJSON(filename) {
   return JSON.parse(fs.readFileSync(filepath, 'utf8'));
 }
 
-function getExpectedOutlets(category) {
-  if (isLondonMarket(category)) return { core: WE_EXPECTED, frequent: [], keyT2: [] };
-  if (category === 'off-broadway') return { core: OB_EXPECTED, frequent: [], keyT2: [] };
-  // Broadway (default)
-  return { core: BROADWAY_CORE_T1, frequent: BROADWAY_FREQUENT_T1, keyT2: BROADWAY_KEY_T2 };
+// Map a show category to the census market key (which roundup set to read).
+function censusMarket(category) {
+  if (isLondonMarket(category)) return 'west-end';
+  if (category === 'off-broadway') return 'off-broadway';
+  return 'broadway';
 }
 
 async function main() {
@@ -136,19 +133,8 @@ async function main() {
     // MJ / All My Sons class). See cloud-memory postmortem 2026-06.
     const coveredScoredOutlets = new Set(scoredReviews.map(r => r.outletId).filter(Boolean));
 
-    // Get expected outlets for this market
-    const expected = getExpectedOutlets(category);
-
-    const missingCore = expected.core.filter(o => !coveredOutlets.has(o));
-    const missingFrequent = expected.frequent.filter(o => !coveredOutlets.has(o));
-    const missingKeyT2 = expected.keyT2.filter(o => !coveredOutlets.has(o));
-
     // Get outlet display names
     const getName = (id) => outlets[id]?.displayName || id;
-
-    // Determine severity
-    const hasMajorGaps = missingCore.length >= 3;
-    const hasSomeGaps = missingCore.length >= 1;
 
     // Floor check — silent-failure detection (catches broken extractors when
     // no specific outlet gap stands out). Only runs in 36-72h post-open window.
@@ -176,37 +162,40 @@ async function main() {
     console.log(`  Reviews: ${showReviews.length} total, ${scoredReviews.length} scored`);
     console.log(`  Covered outlets: ${[...coveredOutlets].sort().join(', ')}`);
 
-    if (missingCore.length > 0) {
-      console.log(`  MISSING core T1 (${missingCore.length}): ${missingCore.map(getName).join(', ')}`);
-    }
-    if (missingFrequent.length > 0) {
-      console.log(`  Missing frequent T1 (${missingFrequent.length}): ${missingFrequent.map(getName).join(', ')}`);
-    }
-    if (missingKeyT2.length > 0) {
-      console.log(`  Missing key T2 (${missingKeyT2.length}): ${missingKeyT2.map(getName).join(', ')}`);
-    }
-
     if (floorBreached) {
       console.log(`  🚨 FLOOR BREACH: ${showReviews.length}/${floorReviews} reviews, ${scoredReviews.length}/${floorScored} scored at ${Math.round(hoursSinceOpen)}h post-open`);
     }
 
-    // === Census-anchored completeness (multi-source roundup union) ===
-    // The roundups list EVERY critic; the census is the honest target. Three
-    // states: complete / incomplete(list missing) / no-census-yet (no roundup
-    // published — never falsely green). Census-missing outlets become real gaps.
+    // === Census-anchored completeness (multi-source roundup union) — SOLE authority ===
+    // The roundups list EVERY critic; the census is the honest target. Every market
+    // (Broadway / Off-Broadway / West End) flows through it. Three states:
+    // complete / incomplete(list missing) / no-census-yet (no roundup published —
+    // never falsely green). Census-missing outlets become real gaps.
     let census = null, cVerdict = null;
-    const censusMissing = [];
+    const censusMissing = [];       // HARD: named by an authoritative roundup — dispatchable
+    const censusMissingSoft = [];   // SOFT: only supplementary URL-sources — alert-only
     const censusSuppressed = [];
     let censusExtractorBroken = false;
-    if (isLondonMarket(category)) {
-      try { census = buildCensusFromArchives(showId, { show }); } catch (e) { console.warn(`  ⚠ census build failed for ${showId}: ${e.message}`); }
+    {
+      try { census = buildCensusFromArchives(showId, { show, market: censusMarket(category) }); } catch (e) { console.warn(`  ⚠ census build failed for ${showId}: ${e.message}`); }
       if (census) {
         // Pass the CI-unfetchable block list so paywalled-from-CI outlets (WSJ /
         // New Yorker) stay visible + block `complete` but don't drive endless
         // re-dispatch of a gather that can never satisfy them.
         cVerdict = censusVerdict(census, coveredScoredOutlets, { suppressed: CI_UNFETCHABLE_OUTLETS });
         for (const m of cVerdict.missing) {
-          if (!censusMissing.includes(m.outletId)) censusMissing.push(m.outletId);
+          // Soft-missing: the outlet is named ONLY by supplementary URL-scraped
+          // sources (Playbill Verdict / Show Score), never by an authoritative
+          // critic-listing roundup (BWW / DTLI / theatre.reviews / WET / The Stage).
+          // These URL-sources routinely cite a DIFFERENT production's roundup — a
+          // pre-Broadway tryout's local critics (Beaches → Chicago Tribune / Sun-Times).
+          // Keeping them dispatchable would re-fire a FULL gather every run for a
+          // gap a NYC gather can never close (dispatch storm). So: visible + blocks
+          // `complete`, but alert-only, not dispatchable, not major-severity.
+          const srcs = m.sources || [];
+          const isSoft = srcs.length > 0 && srcs.every((s) => SUPPLEMENTARY_CENSUS_SOURCES.has(s));
+          const bucket = isSoft ? censusMissingSoft : censusMissing;
+          if (!bucket.includes(m.outletId)) bucket.push(m.outletId);
         }
         for (const m of cVerdict.suppressedMissing) {
           if (!censusSuppressed.includes(m.outletId)) censusSuppressed.push(m.outletId);
@@ -227,8 +216,12 @@ async function main() {
         }
         if (census.hadAnySource) {
           console.log(`  Census (${census.sourcesPresent.join('+')}): ${census.count} outlets; verdict=${cVerdict.verdict}`);
-          if (cVerdict.missing.length) {
-            console.log(`  CENSUS-MISSING (${cVerdict.missing.length}): ${cVerdict.missing.map(m => `${m.outletId}${m.url ? ' '+m.url : ''}`).join(' | ')}`);
+          if (censusMissing.length) {
+            const hard = cVerdict.missing.filter(m => censusMissing.includes(m.outletId));
+            console.log(`  CENSUS-MISSING (${censusMissing.length}): ${hard.map(m => `${m.outletId}${m.url ? ' '+m.url : ''}`).join(' | ')}`);
+          }
+          if (censusMissingSoft.length) {
+            console.log(`  CENSUS-MISSING (soft, supplementary-source only, alert-only): ${censusMissingSoft.join(', ')}`);
           }
           if (cVerdict.suppressedMissing.length) {
             console.log(`  CENSUS-BLOCKED (unfetchable from CI, alert-only): ${censusSuppressed.join(', ')}`);
@@ -239,19 +232,14 @@ async function main() {
       }
     }
 
-    // Status — census verdict wins when a census exists; else the legacy T1 view.
+    // Status — census verdict is the sole authority. No census published yet means
+    // the floor is met but the long tail is unverified (never falsely "complete").
     if (floorBreached) {
       console.log(`  Status: FLOOR BREACH (silent extractor failure likely)`);
     } else if (cVerdict && census.hadAnySource) {
       console.log(`  Status: ${cVerdict.verdict.toUpperCase().replace(/-/g, ' ')}`);
-    } else if (missingCore.length === 0 && missingKeyT2.length <= 2) {
-      // No census published — never claim "complete"; the floor is met but the
-      // long tail is unverified until a roundup exists (no-census-yet semantics).
-      console.log(`  Status: FLOOR OK (no census yet — long tail unverified)`);
-    } else if (hasMajorGaps) {
-      console.log(`  Status: MAJOR GAPS`);
     } else {
-      console.log(`  Status: MINOR GAPS`);
+      console.log(`  Status: NO CENSUS YET (no roundup published — long tail unverified)`);
     }
     console.log('');
 
@@ -271,15 +259,19 @@ async function main() {
       });
     }
 
-    // A census-incomplete show is a gap even if the T1 floor is met (the whole
-    // point: the floor missed the long tail). Census-missing escalates severity.
+    // A census-incomplete show is a gap even if the review-count floor is met (the
+    // whole point: the floor missed the long tail the census enumerates).
     const censusIncomplete = !!(cVerdict && census && census.hadAnySource && cVerdict.verdict === 'incomplete');
-    // Dispatchable = there is something we can actually go fetch (legacy T1 gaps
-    // or NON-suppressed census-missing). A show that's incomplete ONLY because of
-    // suppressed/unfetchable outlets, or that has a broken extractor, is still
-    // alert-worthy but must NOT re-fire a gather that can't change the outcome.
-    const dispatchable = hasSomeGaps || censusMissing.length > 0;
-    if (hasSomeGaps || censusIncomplete || censusExtractorBroken) {
+    // Dispatchable = there is something we can actually go fetch (NON-suppressed
+    // census-missing). A show that's incomplete ONLY because of suppressed/
+    // unfetchable outlets, or whose extractor broke, is still alert-worthy but must
+    // NOT re-fire a gather that can't change the outcome.
+    const dispatchable = censusMissing.length > 0;
+    // Only surface a gap when there's a HARD (dispatchable) census-missing outlet or
+    // a broken extractor. A show whose only census-missing outlets are soft
+    // (supplementary-source tryout noise) is honestly "incomplete" but not a gap to
+    // act on — recording it as a gap would storm-dispatch a gather that can't help.
+    if (censusMissing.length > 0 || censusExtractorBroken) {
       gaps.push({
         showId,
         title: show.title,
@@ -287,15 +279,13 @@ async function main() {
         openingDate: show.openingDate,
         reviewCount: showReviews.length,
         scoredCount: scoredReviews.length,
-        missingCore,
-        missingFrequent,
-        missingKeyT2,
         censusMissing,
+        censusMissingSoft,
         censusSuppressed,
         censusExtractorBroken,
         censusVerdict: cVerdict ? cVerdict.verdict : null,
         dispatchable,
-        severity: (hasMajorGaps || censusMissing.length >= 3 || censusExtractorBroken) ? 'major' : 'minor',
+        severity: (censusMissing.length >= 3 || censusExtractorBroken) ? 'major' : 'minor',
       });
     }
   }
@@ -306,7 +296,7 @@ async function main() {
   console.log(`Shows with gaps: ${gaps.length}`);
   const majorGaps = gaps.filter(g => g.severity === 'major');
   if (majorGaps.length > 0) {
-    console.log(`Major gaps (3+ core T1 missing): ${majorGaps.length}`);
+    console.log(`Major gaps (3+ census-missing outlets or broken extractor): ${majorGaps.length}`);
   }
   if (floorBreaches.length > 0) {
     console.log(`🚨 Floor breaches (silent extractor failure): ${floorBreaches.length}`);
@@ -370,7 +360,6 @@ async function sendDiscordAlert(gaps, floorBreaches = []) {
     if (gaps.length > 0) {
       const fields = gaps.map(g => {
         const lines = [`${g.reviewCount} reviews, ${g.scoredCount} scored`];
-        if (g.missingCore && g.missingCore.length) lines.push(`Missing core T1: ${g.missingCore.join(', ')}`);
         if (g.censusMissing && g.censusMissing.length) lines.push(`Census-missing (roundup lists, we lack/unscored): ${g.censusMissing.join(', ')}`);
         else if (g.censusVerdict === 'no-census-yet') lines.push(`Census: no roundup published yet`);
         if (g.censusSuppressed && g.censusSuppressed.length) lines.push(`⛔ Blocked (unfetchable from CI — needs manual grab): ${g.censusSuppressed.join(', ')}`);
