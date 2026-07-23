@@ -587,6 +587,13 @@ on:
       - 'scripts/bsc-prune.test.mjs'
       - 'scripts/bsc-conductor.js'
       - 'scripts/bsc-conductor.test.mjs'
+      # bsc-status (owner request 2026-07-22: one-glance tab verdicts +
+      # wrap-ups of vanished tabs). Pure logic lives in scripts/lib/ so the
+      # colocated test runs in the lib-test glob; path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/bsc-status.js'
+      - 'scripts/lib/session-wrapups.js'
+      - 'scripts/lib/session-wrapups.test.mjs'
       - 'scripts/lib/cli-help.js'
       - 'scripts/lib/cli-help.test.mjs'
       - 'scripts/lib/exec-error-detail.js'

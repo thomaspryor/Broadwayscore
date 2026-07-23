@@ -23,6 +23,22 @@
 const GRACE_HOURS = 24;
 
 /**
+ * Tier gate for dispatch/severity/ledger decisions: only registered T1/T2
+ * outlets count. Registry tiers are always numeric (1–4); an unregistered or
+ * phantom outletId (undefined tier) is excluded, so census junk (e.g.
+ * "buy-tickets-directly-from-the-theatre") can't drive dispatch or SLA cells.
+ * Full censusMissing stays informational in the audit output — this predicate
+ * scopes only what ACTS (dispatch triggers, major severity, ledger cells).
+ * @param {object} outlets  outlet-registry map
+ * @param {string} outletId
+ * @returns {boolean}
+ */
+function isDispatchTierOutlet(outlets, outletId) {
+  const t = outlets && outlets[outletId] && outlets[outletId].tier;
+  return typeof t === 'number' && t <= 2;
+}
+
+/**
  * Classify a single missing (show, outlet) cell. Pure.
  * @param {object} c
  *   { noReviewExpected:boolean, suppressed:boolean, clockAgeHours:number|null }
@@ -92,4 +108,4 @@ function serializeLedger(ledger) {
   return JSON.stringify(sortDeep(ledger), null, 2) + '\n';
 }
 
-module.exports = { classifyCell, mergeLedger, serializeLedger, GRACE_HOURS };
+module.exports = { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, GRACE_HOURS };

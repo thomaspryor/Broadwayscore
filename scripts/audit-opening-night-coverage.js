@@ -17,7 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
-const { classifyCell, mergeLedger, serializeLedger } = require('./lib/t1-ledger');
+const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet } = require('./lib/t1-ledger');
 const { buildDigest } = require('./lib/t1-digest');
 const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
 const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
@@ -144,6 +144,9 @@ function computeShowCells(show, reviews, outlets, nowMs) {
   for (const m of cVerdict.missing) {
     const srcs = m.sources || [];
     if (srcs.length > 0 && srcs.every((s) => SUPPLEMENTARY_CENSUS_SOURCES.has(s))) continue; // soft — skip
+    // T1 ledger means T1/T2: a roundup-named T3 blog (or unregistered junk id)
+    // is not a retrieval SLA cell — same scoping as the audit's dispatch triggers.
+    if (!isDispatchTierOutlet(outlets, m.outletId)) continue;
     const state = classifyCell({
       noReviewExpected: outletNoReviewExpected(outlets, m.outletId, nowMs),
       suppressed: false,
@@ -261,24 +264,43 @@ async function runDigest(opts) {
   }
   if (digest.length > 60) console.log(`  … ${digest.length - 60} more`);
 
+  // At most 10 gaps per email; the rest stay un-alerted (NOT deduped) so they
+  // surface on the next run instead of being silently marked-seen (S2 fixup).
+  const emailed = actions.slice(0, 10);
+  let delivered = false;
   if (opts.alert && actions.length) {
     try {
       const { sendAlert } = require('./lib/discord-notify');
-      await sendAlert({
+      // severity 'error' + email:true — a NEW post-rollout T1/T2 gap >24h with its
+      // exact fix command is the actionable-only bar (EMAILABLE_SEVERITIES gate;
+      // 'warning' is policy-suppressed and left this alert log-only for weeks).
+      delivered = await sendAlert({
         title: 'T1 Coverage — new gaps past 24h',
-        description: `${actions.length} T1 outlet(s) still missing >24h after they became measurable.`,
-        severity: 'warning',
-        fields: actions.slice(0, 10).map(r => ({ name: `${r.title} — ${r.outletId} (${r.ageHours}h)`, value: r.fix })),
+        description: `${actions.length} T1/T2 outlet(s) still missing >24h after they became measurable${actions.length > emailed.length ? ` (first ${emailed.length} below; the rest escalate next run)` : ''}.`,
+        severity: 'error',
+        email: true,
+        fields: emailed.map(r => ({ name: `${r.title} — ${r.outletId} (${r.ageHours}h)`, value: r.fix })),
       });
-      console.log(`\nSent ACTION alert for ${actions.length} new gap(s).`);
+      console.log(delivered
+        ? `\nSent ACTION alert for ${emailed.length}/${actions.length} new gap(s).`
+        : `\nACTION alert NOT delivered — gaps stay un-deduped and retry next run.`);
     } catch (e) { console.error('Digest alert failed:', e.message); }
   }
 
   // Persist state ONLY on a real (non-dry-run) alert pass: stamp rolloutAt once and
-  // record the alerted cells so they dedupe next run. Dry-runs never mutate state.
+  // record alerted cells so they dedupe next run. Two guards (review 2026-07-23):
+  // only cells actually IN the delivered email are marked (delivery failure or the
+  // 10-cap must not dedupe an alert nobody saw), and keys are pruned to cells still
+  // present in the ledger so the state file can't grow unboundedly.
   if (opts.alert) {
-    const alertedCells = new Set(state.alertedCells || []);
-    for (const r of actions) alertedCells.add(`${r.showId}::${r.outletId}`);
+    const liveKeys = new Set();
+    for (const showId of Object.keys(ledger.shows || {})) {
+      for (const outletId of Object.keys((ledger.shows[showId] || {}).cells || {})) {
+        liveKeys.add(`${showId}::${outletId}`);
+      }
+    }
+    const alertedCells = new Set((state.alertedCells || []).filter(k => liveKeys.has(k)));
+    if (delivered) for (const r of emailed) alertedCells.add(`${r.showId}::${r.outletId}`);
     const next = { rolloutAt, alertedCells: [...alertedCells].sort() };
     fs.mkdirSync(path.dirname(opts.digestStatePath), { recursive: true });
     fs.writeFileSync(opts.digestStatePath, JSON.stringify(next, null, 2) + '\n');
@@ -460,7 +482,14 @@ async function main() {
           console.log(`  Census (${census.sourcesPresent.join('+')}): ${census.count} outlets; verdict=${cVerdict.verdict}`);
           if (censusMissing.length) {
             const hard = cVerdict.missing.filter(m => censusMissing.includes(m.outletId));
-            console.log(`  CENSUS-MISSING (${censusMissing.length}): ${hard.map(m => `${m.outletId}${m.url ? ' '+m.url : ''}`).join(' | ')}`);
+            const hardT12 = hard.filter(m => isDispatchTierOutlet(outlets, m.outletId));
+            const hardT3 = hard.filter(m => !isDispatchTierOutlet(outlets, m.outletId));
+            if (hardT12.length) {
+              console.log(`  CENSUS-MISSING T1/T2 (${hardT12.length}, dispatch-driving): ${hardT12.map(m => `${m.outletId}${m.url ? ' '+m.url : ''}`).join(' | ')}`);
+            }
+            if (hardT3.length) {
+              console.log(`  CENSUS-MISSING T3+/unregistered (${hardT3.length}, informational only): ${hardT3.map(m => m.outletId).join(', ')}`);
+            }
           }
           if (censusMissingSoft.length) {
             console.log(`  CENSUS-MISSING (soft, supplementary-source only, alert-only): ${censusMissingSoft.join(', ')}`);
@@ -504,13 +533,19 @@ async function main() {
     // A census-incomplete show is a gap even if the review-count floor is met (the
     // whole point: the floor missed the long tail the census enumerates).
     const censusIncomplete = !!(cVerdict && census && census.hadAnySource && cVerdict.verdict === 'incomplete');
-    // Dispatchable = there is something we can actually go fetch (NON-suppressed
-    // census-missing). A show that's incomplete ONLY because of suppressed/
-    // unfetchable outlets, or whose extractor broke, is still alert-worthy but must
-    // NOT re-fire a gather that can't change the outcome.
-    const dispatchable = censusMissing.length > 0;
-    // Only surface a gap when there's a HARD (dispatchable) census-missing outlet or
-    // a broken extractor. A show whose only census-missing outlets are soft
+    // Tier scoping (mirrors the ledger's census∩T1/T2): only registered T1/T2
+    // outlets drive dispatch and major severity. A roundup naming 3+ unscored
+    // T3 blogs (or unregistered junk ids) is honest census data but a FULL
+    // gather re-fired for it every run is the dispatch storm — the T3 long
+    // tail stays visible in censusMissing, it just doesn't ACT.
+    const censusMissingT12 = censusMissing.filter(id => isDispatchTierOutlet(outlets, id));
+    // Dispatchable = there is something we can actually go fetch (NON-suppressed,
+    // dispatch-tier census-missing). A show that's incomplete ONLY because of
+    // suppressed/unfetchable outlets, T3+ blogs, or whose extractor broke, is
+    // still alert-worthy but must NOT re-fire a gather that can't change the outcome.
+    const dispatchable = censusMissingT12.length > 0;
+    // Only surface a gap when there's a HARD (roundup-named) census-missing outlet
+    // or a broken extractor. A show whose only census-missing outlets are soft
     // (supplementary-source tryout noise) is honestly "incomplete" but not a gap to
     // act on — recording it as a gap would storm-dispatch a gather that can't help.
     if (censusMissing.length > 0 || censusExtractorBroken) {
@@ -522,12 +557,13 @@ async function main() {
         reviewCount: showReviews.length,
         scoredCount: scoredReviews.length,
         censusMissing,
+        censusMissingT12,
         censusMissingSoft,
         censusSuppressed,
         censusExtractorBroken,
         censusVerdict: cVerdict ? cVerdict.verdict : null,
         dispatchable,
-        severity: (censusMissing.length >= 3 || censusExtractorBroken) ? 'major' : 'minor',
+        severity: (censusMissingT12.length >= 3 || censusExtractorBroken) ? 'major' : 'minor',
       });
     }
   }
@@ -538,7 +574,7 @@ async function main() {
   console.log(`Shows with gaps: ${gaps.length}`);
   const majorGaps = gaps.filter(g => g.severity === 'major');
   if (majorGaps.length > 0) {
-    console.log(`Major gaps (3+ census-missing outlets or broken extractor): ${majorGaps.length}`);
+    console.log(`Major gaps (3+ T1/T2 census-missing outlets or broken extractor): ${majorGaps.length}`);
   }
   if (floorBreaches.length > 0) {
     console.log(`🚨 Floor breaches (silent extractor failure): ${floorBreaches.length}`);
@@ -602,15 +638,19 @@ async function sendDiscordAlert(gaps, floorBreaches = []) {
     if (gaps.length > 0) {
       const fields = gaps.map(g => {
         const lines = [`${g.reviewCount} reviews, ${g.scoredCount} scored`];
-        if (g.censusMissing && g.censusMissing.length) lines.push(`Census-missing (roundup lists, we lack/unscored): ${g.censusMissing.join(', ')}`);
-        else if (g.censusVerdict === 'no-census-yet') lines.push(`Census: no roundup published yet`);
+        const t12 = g.censusMissingT12 || [];
+        const t3 = (g.censusMissing || []).filter(id => !t12.includes(id));
+        if (t12.length) lines.push(`Census-missing T1/T2 (roundup lists, we lack/unscored): ${t12.join(', ')}`);
+        if (t3.length) lines.push(`Census-missing T3+/unregistered (informational, not dispatched): ${t3.join(', ')}`);
+        if (!t12.length && !t3.length && g.censusVerdict === 'no-census-yet') lines.push(`Census: no roundup published yet`);
         if (g.censusSuppressed && g.censusSuppressed.length) lines.push(`⛔ Blocked (unfetchable from CI — needs manual grab): ${g.censusSuppressed.join(', ')}`);
         if (g.censusExtractorBroken) lines.push(`🚨 Census extractor broke (archive present, 0 extracted) — check roundup parser`);
         return { name: `${g.title} (${g.openingDate})`, value: lines.join('\n') };
       });
+      const t12Gaps = gaps.filter(g => (g.censusMissingT12 || []).length > 0).length;
       await sendAlert({
         title: 'Opening-Night Coverage Gaps',
-        description: `${gaps.length} show(s) have missing T1/T2 reviews`,
+        description: `${gaps.length} show(s) with census gaps (${t12Gaps} missing T1/T2 reviews)`,
         severity: gaps.some(g => g.severity === 'major') ? 'error' : 'warning',
         fields: fields.slice(0, 10),
       });

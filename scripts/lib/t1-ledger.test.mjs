@@ -2,7 +2,26 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { classifyCell, mergeLedger, serializeLedger } = require('./t1-ledger.js');
+const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet } = require('./t1-ledger.js');
+
+test('isDispatchTierOutlet: T1/T2 only, unregistered/junk excluded', () => {
+  const outlets = {
+    nytimes: { tier: 1 },
+    theatermania: { tier: 2 },
+    'broadway-blog': { tier: 3 },
+    'some-t4-blog': { tier: 4 },
+    'bad-tier': { tier: '1' },       // non-numeric tier — reject
+    'no-tier': { displayName: 'X' }, // registered but tierless — reject
+  };
+  assert.equal(isDispatchTierOutlet(outlets, 'nytimes'), true, 'T1');
+  assert.equal(isDispatchTierOutlet(outlets, 'theatermania'), true, 'T2');
+  assert.equal(isDispatchTierOutlet(outlets, 'broadway-blog'), false, 'T3');
+  assert.equal(isDispatchTierOutlet(outlets, 'some-t4-blog'), false, 'T4');
+  assert.equal(isDispatchTierOutlet(outlets, 'bad-tier'), false, 'string tier');
+  assert.equal(isDispatchTierOutlet(outlets, 'no-tier'), false, 'missing tier');
+  assert.equal(isDispatchTierOutlet(outlets, 'buy-tickets-directly-from-the-theatre'), false, 'unregistered phantom');
+  assert.equal(isDispatchTierOutlet(null, 'nytimes'), false, 'null registry');
+});
 
 test('classifyCell: state machine', () => {
   assert.equal(classifyCell({ noReviewExpected: true, suppressed: false, clockAgeHours: 100 }), 'NO_REVIEW_EXPECTED');
