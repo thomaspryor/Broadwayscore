@@ -42,6 +42,34 @@ const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing')
 const { sanitizeCriticName } = require('./byline-normalization');
 const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
+const { emitStage } = require('./stage-latency');
+
+// ── firstSeenAt: the immutable retrieval clock (S2-T4) ───────────────────────
+// firstSeenAt is stamped ONCE, at the moment a review file is first created, and
+// is NEVER changed on a later merge — it is the SLA clock-start for T1 retrieval
+// (how fast did a review's real content reach us?). This logic is centralized
+// here so EVERY writer path — this shared writer AND gather-reviews' direct
+// saveReview — stamps the field and emits the `review-first-seen` latency stage
+// exactly once, at creation. Backfill of pre-existing files uses git-history
+// first-add dates (backfill-first-seen.js), NOT merge time, so merges must never
+// stamp it (a merge-time stamp would be late + wrong).
+function stampFirstSeen(review, nowIso) {
+  if (review && !review.firstSeenAt) review.firstSeenAt = nowIso || new Date().toISOString();
+  return review;
+}
+
+// Emit the review-first-seen stage-latency event for a freshly-created file.
+// Accepts the identifying fields directly so both writer paths compute the SAME
+// reviewKey (outletId:critic:url). Never throws — telemetry must not break a write.
+function emitReviewFirstSeen(showId, { outletId, criticName, url }) {
+  try {
+    emitStage({
+      showId,
+      reviewKey: `${outletId}:${normalizeCritic(criticName)}:${url || ''}`,
+      stage: 'review-first-seen',
+    });
+  } catch (e) { process.stderr.write(`[stage-latency] first-seen emit failed: ${e.message}\n`); }
+}
 
 // Save-time mirror of validate-data's [html-entity] (CHECK 5) and
 // [jsonld-artifact] (CHECK 4) detectors. Mutates the review object in place:
@@ -568,6 +596,9 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     newReview.contentTier = tierResult.contentTier;
   }
 
+  // Immutable creation clock — stamped here so it lands in the written JSON.
+  stampFirstSeen(newReview);
+
   if (!dryRun) {
     if (!fs.existsSync(showDir)) {
       fs.mkdirSync(showDir, { recursive: true });
@@ -580,6 +611,8 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     // Guard A stamped above — a flagged create must not poison the cache as a
     // live owner and block the legitimate destination show mid-run.
     if (newReview.url) recordUrlOwner(newReview.url, showId, filename, reviewTextsDir, newReview);
+    // review-first-seen fires exactly once, on creation (never on merge).
+    emitReviewFirstSeen(showId, { outletId, criticName, url: newReview.url });
   }
 
   return { action: 'new', filepath };
@@ -687,4 +720,4 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   return { action: 'updated', filepath };
 }
 
-module.exports = { createOrMergeReviewFile };
+module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen };
