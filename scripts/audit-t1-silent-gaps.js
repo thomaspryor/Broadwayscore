@@ -41,6 +41,7 @@ const { execFileSync } = require('child_process');
 const { classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap, MAJOR_TIER_MAX } = require('./lib/t1-silent-gap');
 const { detectFlagContradiction, contradictionFixCommand, shouldAlertContradiction } = require('./lib/flag-contradiction');
 const { wouldAutoClear, shadowObservation } = require('./lib/autoclear-shadow');
+const { isAgedNonTerminalGap, shouldBackstopAlert, gapFirstSeen, nonTerminalAgeHours, BACKSTOP_MIN_AGE_HOURS } = require('./lib/t1-backstop');
 const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards');
 const { getTier } = require('./lib/outlet-tiers');
 const { AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
@@ -317,6 +318,9 @@ async function main() {
         recovery,
         recoveryCount: d.aggUrlRecoveryCount || 0,
         fix: fixCommand(show.id, f, d, gap.type),
+        // S3-T6 backstop inputs: immutable first-seen stamp + non-terminal age.
+        firstSeen: gapFirstSeen(d),
+        nonTerminalAgeHours: nonTerminalAgeHours(d, new Date()),
       });
       console.log(`  🕳  ${show.id} — ${outletId} (T${tier}) ${gap.type}${recovery && recovery.attempted ? ` [recovery failed: ${recovery.reason || 'still empty'}]` : ''}`);
     }
@@ -503,6 +507,36 @@ async function main() {
       }
     } else {
       console.log('No stale-flag contradictions due to alert (already alerted within the window).');
+    }
+  }
+
+  // >24h non-terminal BACKSTOP alert (S3-T6), ESCALATE-ONLY, deduped per
+  // show+file on a 7-day window (`backstop:` namespace in the alert state).
+  // Fires for ANY in-window T1/T2 gap file that has sat non-terminal >24h —
+  // regardless of near-opening urgency — because the self-heal refetch + scoring
+  // self-dispatch should have resolved it within hours; >24h means they didn't.
+  if (DO_ALERT && !DRY_RUN) {
+    const aged = gaps.filter((g) => isAgedNonTerminalGap({ file: { firstSeenAt: g.firstSeen }, now }));
+    const dueB = aged.filter((g) => shouldBackstopAlert(state[`backstop:${g.showId}/${g.file}`], now));
+    if (dueB.length > 0) {
+      const fields = dueB.slice(0, 15).map((g) => ({
+        name: `${g.title || g.showId} — ${g.outletId} (T${g.tier}, ${g.type}, ${Math.round(g.nonTerminalAgeHours || 0)}h)`,
+        value: `Non-terminal for ${Math.round(g.nonTerminalAgeHours || 0)}h (>${BACKSTOP_MIN_AGE_HOURS}h).\nFix: ${g.fix}`,
+      }));
+      const delivered = await sendAlert({
+        title: `T1/T2 review stuck >24h: ${dueB.length} non-terminal review(s)`,
+        description: `Backstop: these T1/T2 review files have been in a non-terminal, non-scoreable state for over ${BACKSTOP_MIN_AGE_HOURS}h — self-heal refetch and scoring self-dispatch did not resolve them. Each needs the listed recovery command.`,
+        severity: 'error',
+        email: true,
+        fields,
+      });
+      if (delivered) {
+        for (const g of dueB.slice(0, 15)) state[`backstop:${g.showId}/${g.file}`] = now.toISOString();
+        fs.mkdirSync(AUDIT_DIR, { recursive: true });
+        fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
+      }
+    } else if (aged.length > 0) {
+      console.log(`${aged.length} aged (>24h) gap(s) already backstop-alerted within the window.`);
     }
   }
 

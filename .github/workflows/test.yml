@@ -683,6 +683,11 @@ on:
       - 'scripts/lib/autoclear-batch-gate.js'
       - 'scripts/lib/autoclear-batch-gate.test.mjs'
       - 'scripts/autoclear-stale-flags.js'
+      # S3-T6: >24h non-terminal backstop (aged-gap detection + dedupe).
+      # Colocated *.test.mjs runs via the lib-test glob; path-listed so a solo
+      # edit triggers CI.
+      - 'scripts/lib/t1-backstop.js'
+      - 'scripts/lib/t1-backstop.test.mjs'
       # Stuck-work detector (2026-07-22): paused/orphaned Notion-brain cards
       # surfaced in the daily digest. Colocated test runs in the lib-test glob;
       # path-listed so a solo edit triggers CI.
