@@ -23,7 +23,9 @@ const LOG = [
 test('summarizeCommits rolls churn into plain-English lines', () => {
   const r = summarizeCommits(LOG);
   assert.ok(r.lines.some(l => l.includes('10 new shows added')));
-  assert.ok(r.lines.some(l => l.includes('midnight-at-the-never')));
+  // Both the bare and the "for <show>" scoring forms count as runs (real
+  // ratio is ~479 bare : 40 suffixed — bare-only was a silent 87% blind spot)
+  assert.ok(r.lines.some(l => l.includes('2 review-scoring runs completed (incl. midnight-at-the-never')));
   assert.ok(r.lines.some(l => l.includes('14 data issues auto-fixed')));
   assert.equal(r.reviewDelta, -150); // -152 + 2
   assert.ok(r.lines.some(l => l.includes('net -150 reviews')));

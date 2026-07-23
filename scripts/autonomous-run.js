@@ -932,7 +932,11 @@ async function live(args, cfg) {
       dataPlan = dataPlan.filter(p => p.id === args.card || p.id.replace(/-/g, '') === String(args.card).replace(/-/g, ''));
     }
 
-    ledger.appendEntry({ event: 'run-start', runId, note: `budget $${nightUSD} · max ${maxItems} · sizes ${sizes.join(',')} · ${plan.length} plan item(s) + ${dataPlan.length} data-plan item(s)${mockScript ? ' · MOCK implementer' : ''}` });
+    // A partially-clamped night must be self-explanatory in the ledger (the
+    // email reads it) — a $30 budget on a $60 config with no reason recorded
+    // reads as a malfunction (QA review 2026-07-22).
+    const clampNote = weekly.clamped ? ` · weekly-clamped from $${configNightUSD} ($${spent7d.toFixed(2)} spent in trailing 7d of $${cfg.weeklyUSD})` : '';
+    ledger.appendEntry({ event: 'run-start', runId, note: `budget $${nightUSD}${clampNote} · max ${maxItems} · sizes ${sizes.join(',')} · ${plan.length} plan item(s) + ${dataPlan.length} data-plan item(s)${mockScript ? ' · MOCK implementer' : ''}` });
 
     // Weekly cap fully spent → skip the night gracefully (the `finally`
     // below still sends the email; the ledger explains why nothing ran).
@@ -946,7 +950,11 @@ async function live(args, cfg) {
     // Config-vs-envelope deadlock: an enabled size whose worst-case reservation
     // exceeds even a fresh night's budget can NEVER be admitted — a night whose
     // plan is all that size burns triage spend and attempts nothing.
-    const dead = inadmissibleSizes({ nightUSD, sizes });
+    // Checked against the CONFIG budget, not tonight's clamped one: a size
+    // that's merely squeezed by the weekly clamp is fine config, and warning
+    // "raise nightUSD or drop M" on it would tell the owner to break correct
+    // settings (QA review 2026-07-22).
+    const dead = inadmissibleSizes({ nightUSD: configNightUSD, sizes });
     for (const d of dead) {
       const note = `config-warning: size ${d.size} is enabled but can never be admitted — worst-case $${d.worstCaseUSD.toFixed(2)} > $${d.availableUSD.toFixed(2)} available on a fresh night. Raise nightUSD or drop ${d.size} from sizes.`;
       ledger.appendEntry({ event: 'config-warning', runId, note });

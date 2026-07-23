@@ -40,8 +40,8 @@ function esc(s) {
 // 300 churn commits become 6 readable sentences.
 function summarizeCommits(logLines) {
   const c = {
-    newShows: 0, textCollections: 0, scoredShows: new Set(), reviewDelta: 0,
-    rebuilds: 0, autoFixed: 0, imageRuns: 0, recoupScans: 0,
+    newShows: 0, textCollections: 0, scoringRuns: 0, scoredShows: new Set(), reviewDelta: 0,
+    rebuilds: 0, autoFixed: 0,
   };
   const mergedWork = [];
   const ROUTINE = /^(chore: (Update deploy watermark|Checkpoint|opening-night completeness|Record indexing|update drift-state|Update feedback|Update Show Score|Auto-fetch)|checkpoint: |Merge |audit: |health: |data: (Opening night poller|Reconcile Resend|Update health))/;
@@ -54,24 +54,28 @@ function summarizeCommits(logLines) {
     let m;
     if ((m = s.match(/^chore: Update shows - added (\d+) new show/))) { c.newShows += Number(m[1]); continue; }
     if (/^feat: Collect review texts/.test(s)) { c.textCollections++; continue; }
-    if ((m = s.match(/^feat: Ensemble LLM score reviews(?: for (.+))?$/))) { if (m[1]) c.scoredShows.add(m[1]); continue; }
+    // Most scoring commits are the bare form with NO show suffix (real ratio
+    // ~479 bare : 40 suffixed — QA review 2026-07-22); count every run, name
+    // the shows only when the subject names them.
+    if ((m = s.match(/^feat: Ensemble LLM score reviews(?: for (.+))?$/))) { c.scoringRuns++; if (m[1]) c.scoredShows.add(m[1]); continue; }
     if ((m = s.match(/^data: (?:Rebuild reviews\.json|Fast rebuild|Auto-rebuild reviews\.json)(?:.*?\(([+-]\d+) reviews?\))?/))) {
       c.rebuilds++;
       if (m[1]) c.reviewDelta += Number(m[1]);
       continue;
     }
     if ((m = s.match(/^chore: Auto-maintain show data - fixed (\d+) issues/))) { c.autoFixed += Number(m[1]); continue; }
-    if (/^chore: Auto-fetch and archive show images/.test(s)) { c.imageRuns++; continue; }
-    if (/^data: RSS poller — recoupment scan/.test(s)) { c.recoupScans++; continue; }
+    if (/^chore: Auto-fetch and archive show images/.test(s)) continue;
+    if (/^data: RSS poller — recoupment scan/.test(s)) continue;
     if (ROUTINE.test(s)) continue;
     // Anything left is real merged work (a fix/feature a session or human
-    // landed) — surface the subject itself, bot bookkeeping already filtered.
-    if (!/\[skip ci\]/.test(s)) mergedWork.push(s);
+    // landed) — surface the subject itself. Checkpoint-style bot bookkeeping
+    // ("feat: Wayback recovery checkpoint …") is progress noise, not work.
+    if (!/\[skip ci\]/.test(s) && !/checkpoint/i.test(s)) mergedWork.push(s);
   }
 
   const lines = [];
   if (c.newShows) lines.push(`${c.newShows} new show${c.newShows > 1 ? 's' : ''} added to the site`);
-  if (c.scoredShows.size) lines.push(`Reviews scored for: ${[...c.scoredShows].slice(0, 4).join(', ')}${c.scoredShows.size > 4 ? ` +${c.scoredShows.size - 4} more` : ''}`);
+  if (c.scoringRuns) lines.push(`${c.scoringRuns} review-scoring run${c.scoringRuns > 1 ? 's' : ''} completed${c.scoredShows.size ? ` (incl. ${[...c.scoredShows].slice(0, 3).join(', ')}${c.scoredShows.size > 3 ? ` +${c.scoredShows.size - 3} more` : ''})` : ''}`);
   if (c.textCollections) lines.push(`${c.textCollections} review-collection run${c.textCollections > 1 ? 's' : ''} completed`);
   if (c.rebuilds) lines.push(`Site review data rebuilt ${c.rebuilds}× (net ${c.reviewDelta >= 0 ? '+' : ''}${c.reviewDelta} review${Math.abs(c.reviewDelta) === 1 ? '' : 's'})`);
   if (c.autoFixed) lines.push(`${c.autoFixed} data issue${c.autoFixed > 1 ? 's' : ''} auto-fixed by maintenance`);
@@ -203,7 +207,11 @@ function renderDigestBlock(digest) {
   if (digest.stuck?.workspaces?.duplicates?.length) {
     stuck.push(`Same task dispatched more than once: ${digest.stuck.workspaces.duplicates.map(esc).join('; ')}`);
   }
-  if (digest.commits && digest.commits.reviewDelta <= -25) {
+  // Threshold −100, not −25: normal flag/unflag churn sums to ±25 over
+  // hundreds of daily rebuilds (QA review 2026-07-22); the real incident
+  // class (−152) clears −100 easily, and per-show detail comes from
+  // rebuild-regression.json below anyway.
+  if (digest.commits && digest.commits.reviewDelta <= -100) {
     stuck.push(`Net review count dropped ${digest.commits.reviewDelta} in 24h — check the flaggers`);
   }
   if (digest.stuck?.reviewRegressions?.length) {
