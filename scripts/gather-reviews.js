@@ -75,7 +75,9 @@ const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
-const { emitStage } = require('./lib/stage-latency');
+// firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
+// (S2-T4) so this direct-write path and the shared writer behave identically.
+const { stampFirstSeen, emitReviewFirstSeen } = require('./lib/review-file-writer');
 const {
   llmFallbackExtract,
   hasStructuralMarkers,
@@ -3631,6 +3633,8 @@ function createReviewFile(showId, reviewData, options = {}) {
     return true;
   }
 
+  // Immutable creation clock, stamped before the write (shared with the writer lib).
+  stampFirstSeen(review);
   fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
 
   // Register in global URL index so subsequent calls see it
@@ -3638,13 +3642,9 @@ function createReviewFile(showId, reviewData, options = {}) {
     _globalUrlIndex.set(normalizeUrl(review.url), { showId, file: path.basename(filepath) });
   }
 
-  try {
-    emitStage({
-      showId,
-      reviewKey: `${normalizedOutletId}:${normalizeCritic(reviewData.criticName)}:${reviewData.url || ''}`,
-      stage: 'review-first-seen',
-    });
-  } catch (e) { process.stderr.write(`[stage-latency] gather emit failed: ${e.message}\n`); }
+  // review-first-seen fires exactly once, on creation — via the shared helper so
+  // the reviewKey matches the writer lib's (no duplicate/mismatched emit).
+  emitReviewFirstSeen(showId, { outletId: normalizedOutletId, criticName: reviewData.criticName, url: reviewData.url });
 
   console.log(`    ✓ Created ${filename}`);
   return true;
