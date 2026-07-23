@@ -596,6 +596,10 @@ on:
       - 'scripts/lib/autonomous-run-core.test.mjs'
       - 'scripts/lib/autonomous-email-render.js'
       - 'scripts/lib/autonomous-email-render.test.mjs'
+      # Morning-email overnight digest (owner request 2026-07-22) — colocated
+      # test runs in the lib-test glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/overnight-digest.js'
+      - 'scripts/lib/overnight-digest.test.mjs'
       - 'scripts/lib/autonomous-links.js'
       - 'scripts/lib/autonomous-links.test.mjs'
       - 'scripts/autonomous-email.js'

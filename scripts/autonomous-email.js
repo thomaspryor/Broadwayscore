@@ -28,6 +28,7 @@ const https = require('https');
 const { execFileSync } = require('child_process');
 
 const ledger = require('./lib/autonomous-ledger.js');
+const { gatherDigest } = require('./lib/overnight-digest.js');
 const { buildActionUrl } = require('./lib/autonomous-links.js');
 const { renderEmail, extractWhy, summarizeQueue, buildPlainLanguageItemPrompt, sanitizePlainLanguageText } = require('./lib/autonomous-email-render.js');
 
@@ -272,8 +273,15 @@ async function main() {
   const attentionCount = attention.configWarnings.length + attention.failedCards.length + attention.parkedItems.length;
 
   const admin = await fetchAdminUsage();
+  // "What changed while you slept" — owner request 2026-07-22. Fails soft:
+  // a broken source becomes a "couldn't check" line inside the block.
+  let digest = null;
+  try { digest = gatherDigest({ repo: REPO }); }
+  catch (err) { console.error(`[email] WARN digest gathering failed: ${String(err.message).slice(0, 120)}`); }
+
   const html = renderEmail({
     items,
+    digest,
     moreAwaiting: Math.max(0, awaiting.length - items.length),
     failedCount,
     runSkipped,

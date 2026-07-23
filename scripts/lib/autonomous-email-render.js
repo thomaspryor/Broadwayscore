@@ -272,6 +272,10 @@ function renderEmail(data) {
     parts.push(`<p style="font-size:13px;color:#666;margin:6px 0;">${failedCount} card${failedCount > 1 ? 's' : ''} failed overnight (details on the cards; nothing was pushed for them).</p>`);
   }
 
+  // Owner's daily "what changed / did anything get stuck" digest — data is
+  // gathered fail-soft by scripts/lib/overnight-digest.js; null renders nothing.
+  if (data.digest) parts.push(require('./overnight-digest.js').renderDigestBlock(data.digest));
+
   parts.push(renderUsageBlock(stats, admin, config));
 
   const footerBits = [];
