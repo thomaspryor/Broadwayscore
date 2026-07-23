@@ -1,13 +1,33 @@
 {
-  "timestamp": "2026-07-22T18:27:45.050Z",
+  "timestamp": "2026-07-23T10:21:13.001Z",
   "regressions": [
     {
-      "showId": "good-people-2011",
-      "oldCount": 15,
-      "newCount": 12,
+      "showId": "take-me-out-2022",
+      "oldCount": 24,
+      "newCount": 17,
+      "dropped": 7,
+      "scoredOnDisk": 23,
+      "flaggedScored": 7,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "pal-joey-2008",
+      "oldCount": 5,
+      "newCount": 1,
+      "dropped": 4,
+      "scoredOnDisk": 4,
+      "flaggedScored": 3,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "the-philanthropist-2009",
+      "oldCount": 8,
+      "newCount": 5,
       "dropped": 3,
-      "scoredOnDisk": 17,
-      "flaggedScored": 4,
+      "scoredOnDisk": 8,
+      "flaggedScored": 10,
       "inlineGuardExcluded": 0,
       "reason": "scored files exist but being dropped"
     }
