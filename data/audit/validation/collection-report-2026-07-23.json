@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-23T11:38:30.988Z",
+  "runDate": "2026-07-23T12:50:20.133Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,64 +11,65 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 49,
-    "failed": 251,
+    "processed": 52,
+    "failed": 248,
     "skipped": 0,
-    "successRate": "16.3%"
+    "successRate": "17.3%"
   },
   "tierBreakdown": {
-    "playwright": 35,
+    "playwright": 39,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 2,
     "scrapingbee": 0,
-    "brightdata": 2,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 10
+    "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 38,
-    "tier1Success": 35,
+    "tier1Attempts": 41,
+    "tier1Success": 39,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
+    "tier3Attempts": 3,
+    "tier3Success": 3,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 24,
-    "tier4Success": 3,
-    "totalFailed": 250,
+    "tier4Attempts": 27,
+    "tier4Success": 4,
+    "totalFailed": 248,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 1.3,
-    "urlDiscoveryAttempts": 256,
-    "urlDiscoverySuccess": 7,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 249,
+    "urlDiscoverySuccess": 3,
     "urlDiscoveryCapped": 0
   },
   "processed": [
     "trainspotting-the-musical-west-end-2026/guardian-uk--unknown.json",
     "trainspotting-the-musical-west-end-2026/broadwayworld--team-bww.json",
     "trainspotting-the-musical-west-end-2026/broadwayworld--unknown.json",
+    "trainspotting-the-musical-west-end-2026/independent--alice-saville.json",
     "trainspotting-the-musical-west-end-2026/times-uk--clive-davis.json",
-    "trainspotting-the-musical-west-end-2026/whatsonstage--alex-wood.json",
     "midnight-at-the-never-get-west-end-2026/guardian-uk--unknown.json",
-    "are-you-mad-at-me-off-broadway-2026/one-minute-critic--unknown.json",
     "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
     "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
+    "midnight-at-the-never-get-west-end-2026/plays-international--unknown.json",
     "shifters-off-broadway-2026/nytg--gillian-russo.json",
+    "shifters-off-broadway-2026/off-off-online--unknown.json",
     "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
     "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
     "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
     "dukes-off-broadway-2026/nytimes--helen-shaw.json",
+    "jesus-christ-superstar-west-end-2026/artsdesk--rachel-halliburton.json",
     "the-potluck-off-broadway-2026/one-minute-critic--unknown.json",
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
     "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
     "pride-west-end-2026/londontheatre1--terry-eastham.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
@@ -86,6 +87,7 @@
     "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
     "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
     "small-off-broadway-2026/culturesauce--thom-geier.json",
+    "small-off-broadway-2026/operawire--unknown.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
     "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
@@ -97,6 +99,7 @@
     "the-rocky-horror-show-2026/playbill--unknown.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
     "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json"
@@ -105,8 +108,6 @@
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
-    "trainspotting-the-musical-west-end-2026/telegraph--unknown.json",
-    "trainspotting-the-musical-west-end-2026/times-uk--unknown.json",
     "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
     "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
     "loves-labours-lost-globe-west-end-2026/london-theatre--unknown.json",
@@ -182,6 +183,7 @@
     "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
     "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
     "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
     "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
     "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
@@ -327,7 +329,6 @@
     "avenue-q-west-end-2026/backstage--david-sheward.json",
     "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
     "avenue-q-west-end-2026/talkinbroadway--unknown.json",
-    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
     "avenue-q-west-end-2026/theupcoming--sunny-morgan.json",
     "avenue-q-west-end-2026/valentine-dsides--unknown.json",
     "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json",
@@ -344,27 +345,29 @@
     "death-of-a-salesman-2026/dailybeast--tim-teeman.json",
     "death-of-a-salesman-2026/exeunt-magazine--juliet-hindell.json",
     "death-of-a-salesman-2026/front-row-center--sarah-downs.json",
+    "death-of-a-salesman-2026/google--unknown.json",
     "death-of-a-salesman-2026/huffpost--mark-kennedy.json",
     "death-of-a-salesman-2026/philadelphia-inquirer--howard-shapiro.json",
     "death-of-a-salesman-2026/queerty--matthew-wexler.json",
     "death-of-a-salesman-2026/stagebuddy--elyse-trevers.json",
     "death-of-a-salesman-2026/theater-pizzazz--carol-rocamora.json",
     "death-of-a-salesman-2026/usatoday--elysa-gardner.json",
-    "cats-the-jellicle-ball-2026/hollywood-reporter--caitlin-huston.json",
-    "cats-the-jellicle-ball-2026/newyorker--emily-nussbaum.json",
-    "cats-the-jellicle-ball-2026/newyorker--helen-shaw.json"
+    "cats-the-jellicle-ball-2026/hollywood-reporter--caitlin-huston.json"
   ],
   "tierDetails": {
     "playwright": [
       "trainspotting-the-musical-west-end-2026/guardian-uk--unknown.json",
-      "trainspotting-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+      "trainspotting-the-musical-west-end-2026/broadwayworld--unknown.json",
+      "trainspotting-the-musical-west-end-2026/independent--alice-saville.json",
       "midnight-at-the-never-get-west-end-2026/guardian-uk--unknown.json",
-      "are-you-mad-at-me-off-broadway-2026/one-minute-critic--unknown.json",
       "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
       "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
+      "midnight-at-the-never-get-west-end-2026/plays-international--unknown.json",
       "shifters-off-broadway-2026/nytg--gillian-russo.json",
+      "shifters-off-broadway-2026/off-off-online--unknown.json",
       "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+      "jesus-christ-superstar-west-end-2026/artsdesk--rachel-halliburton.json",
       "the-potluck-off-broadway-2026/one-minute-critic--unknown.json",
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
       "pride-west-end-2026/londontheatre1--terry-eastham.json",
@@ -381,22 +384,20 @@
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
       "ride-the-cyclone-off-west-end-2026/whatsonstage--alex-wood.json",
       "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+      "small-off-broadway-2026/operawire--unknown.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
       "mercury-off-broadway-2026/washpost--doug-feinberg.json",
       "the-lost-boys-2026/playbill--unknown.json",
       "joe-turners-come-and-gone-2026/ny1--spectrum-news-staff.json",
       "the-rocky-horror-show-2026/ew--dalton-ross.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "the-rocky-horror-show-2026/playbill--unknown.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/trainspotting-the-musical-west-end-2026/times-uk--unknown.json",
-      "trainspotting-the-musical-west-end-2026/times-uk--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [
       "trainspotting-the-musical-west-end-2026/times-uk--clive-davis.json",
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -404,26 +405,32 @@
     "scrapingbee": [],
     "brightdata": [
       "dukes-off-broadway-2026/nytimes--helen-shaw.json",
-      "schmigadoon-2026/thewrap--robert-hofler.json"
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json"
     ],
     "archiveToday": [],
     "archive": [
       "trainspotting-the-musical-west-end-2026/broadwayworld--team-bww.json",
-      "trainspotting-the-musical-west-end-2026/broadwayworld--unknown.json",
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
-      "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
       "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
       "small-off-broadway-2026/culturesauce--thom-geier.json",
-      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
     ]
   },
   "failuresByOutlet": {
-    "The Telegraph": {
+    "The Times (UK)": {
       "count": 1,
-      "domain": "telegraph.co.uk",
+      "domain": "thetimes.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "google": {
+      "count": 1,
+      "domain": "mail.google.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -431,39 +438,19 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "trainspotting-the-musical-west-end-2026/whatsonstage--alex-wood.json",
-      "oldUrl": "https://www.whatsonstage.com/news/trainspotting-the-musical-announces-west-end-cast-change-following-injury_1727145/",
-      "newUrl": "https://www.whatsonstage.com/news/trainspotting-the-musical-review-signal-failure_1727899/"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-richard-shelton-sinatra-raw",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/5-reasons-to-watch-sinatra-the-musical"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/sinatra-review",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/5-reasons-to-watch-sinatra-the-musical"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/sinatra-the-musical-photos",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/5-reasons-to-watch-sinatra-the-musical"
-    },
-    {
       "reviewId": "the-lost-boys-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-lost-boys-on-broadway",
-      "newUrl": "https://playbill.com/article/a-three-story-set-a-65-foot-fly-rig-the-lost-boys-promises-a-true-broadway-spectacle"
+      "oldUrl": "https://playbill.com/article/a-three-story-set-a-65-foot-fly-rig-the-lost-boys-promises-a-true-broadway-spectacle",
+      "newUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-lost-boys-on-broadway"
     },
     {
       "reviewId": "the-rocky-horror-show-2026/ew--dalton-ross.json",
-      "oldUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOoqT34Vm0O_zMeVSfbMElnWQWrtB9DbKinNJ4d0fXVB5beJLXrkO",
-      "newUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOopSDX3Zfxm5AfzOF91FqzuTGeYz8mrJMZ529XunVO4fJ0CRiIjs"
+      "oldUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOopSDX3Zfxm5AfzOF91FqzuTGeYz8mrJMZ529XunVO4fJ0CRiIjs",
+      "newUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOooALWC7ZCt3cwFBmKSW7QDah4jvalFXxv9Fan9YiUKYQ088BLuZ"
     },
     {
       "reviewId": "the-rocky-horror-show-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/reviews-did-critics-find-the-rocky-horror-show-revival-worth-the-antici-pation",
-      "newUrl": "https://playbill.com/article/the-rocky-horror-show-extends-on-broadway"
+      "oldUrl": "https://playbill.com/article/the-rocky-horror-show-extends-on-broadway",
+      "newUrl": "https://playbill.com/article/reviews-did-critics-find-the-rocky-horror-show-revival-worth-the-antici-pation"
     }
   ]
 }
