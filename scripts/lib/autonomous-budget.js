@@ -10,11 +10,24 @@
  * whole attempt-2 slice when attempt 1 lands — Sprint-2 carry-forward #3),
  * so later queue items regain headroom.
  *
- * Model policy: attempt 1 is always Sonnet. Attempt 2 escalates to Opus
+ * Model policy: attempt 1 is Sonnet by default. Attempt 2 escalates to Opus
  * ONLY on a content failure (checks failed, wrong diff); infra failures
  * (rebase, network, timeout) retry on Sonnet — a flaky rebase must never
  * buy a 5x-cost model. Fable/Mythos-tier models are HARD-EXCLUDED: the
  * loop runs unattended and must never pick the priciest tier by accident.
+ *
+ * Owner override (2026-07-22, supervised live run: "I don't trust Sonnet
+ * much" on an L-sized task): incremental (L) slices and Tier-2
+ * data-destructive card classes (cluster-cleanup's dedup, which DELETES
+ * review files it judges duplicates) run attempt 1 on Opus too, regardless
+ * of failureKind — see pickModel's `hint` param. Both share the same trait:
+ * there is no same-night retry to catch a bad attempt 1 (L checkpoints to
+ * next night; data cards are single-attempt), and a wrong data-destructive
+ * call destroys data rather than just wasting a diff — so first-pass
+ * quality matters more than it does for a retryable S/M card. This is about
+ * quality, not merge safety: every data-card pass still lands on
+ * needs-approval for a human tap (attemptDataCard), so this never changes
+ * who can merge.
  *
  * The night cap is also sanity-checked against the shared Anthropic daily
  * cap from opening-night-budget.js — the loop shares that spend pool with
@@ -30,17 +43,22 @@ const { DEFAULT_CAPS } = require('./opening-night-budget.js');
 //
 // L (Sprint 3, S3-T4): "incremental — never admitted whole" means never
 // admitted as ONE worst-case-2-attempts reservation like S/M. estAttempt2USD
-// is 0 on purpose: an L card gets exactly one S-sized slice per night; if it
+// is 0 on purpose: an L card gets exactly one slice per night; if it
 // doesn't finish, tomorrow night's slice IS the retry (a checkpoint branch,
 // not a second same-night attempt) — see scripts/lib/autonomous-checkpoint.js.
 // Owner raise 2026-07-22: previous caps starved the loop — a real S card
 // (High Society, Sonnet, 4.4M tokens in) cost $2.35 against a $1.50 cap and
 // was killed AFTER doing the work. Caps now sized so a normal attempt fits
 // with headroom; sustained spend is bounded by weeklyUSD, not per-card caps.
+// Same-day follow-up: L's single slice now runs on Opus (pickModel's
+// incremental hint, below) — an S-sized $2 estimate would get killed by
+// shouldAbort mid-flight on Opus's ~5x token cost, so the slice is resized
+// to an M-shaped envelope ($10 max / $5 est) while keeping the 45min wall
+// clock (Opus is pricier per token, not slower to respond).
 const ENVELOPES = Object.freeze({
   S: Object.freeze({ maxUSD: 4, maxWallMin: 45, estUSD: 2, estAttempt2USD: 4 }),
   M: Object.freeze({ maxUSD: 10, maxWallMin: 120, estUSD: 4, estAttempt2USD: 8 }),
-  L: Object.freeze({ maxUSD: 4, maxWallMin: 45, estUSD: 2, estAttempt2USD: 0, incremental: true }),
+  L: Object.freeze({ maxUSD: 10, maxWallMin: 45, estUSD: 5, estAttempt2USD: 0, incremental: true }),
 });
 
 const DEFAULTS = Object.freeze({
@@ -57,6 +75,15 @@ const MODELS = Object.freeze({
   attempt1: 'claude-sonnet-5',
   attempt2Content: 'claude-opus-4-8',
 });
+
+// Tier-2 data-card classes whose diff can DELETE existing review data, not
+// just add or repair it (autonomous-eligibility.js classifyDataCard/
+// DATA_CLASS_REPO owns the enum — this is a subset of it). A wrong call here
+// destroys data rather than wasting a diff, and attemptDataCard gives these
+// exactly one attempt, so pickModel forces attempt 1 onto Opus for them (see
+// the `hint` param below) rather than trusting the Sonnet-then-escalate path
+// that only applies to retryable S/M cards.
+const DATA_DESTRUCTIVE_CLASSES = new Set(['cluster-cleanup']);
 
 // Unattended sessions must never select the Fable/Mythos tier (or an unknown
 // future alias of it). Checked on OUTPUT so a bad table edit can't leak one.
@@ -84,12 +111,23 @@ function estimateUSD(model, tokensIn, tokensOut) {
 /**
  * @param {number} attempt - 1 or 2
  * @param {'content'|'infra'|null} [failureKind] - why attempt 1 failed
+ * @param {object} [hint] - forces attempt 1 onto Opus when set (owner
+ *   2026-07-22: no same-night retry exists for these, so attempt 1 has to be
+ *   the best shot, not the default floor)
+ * @param {boolean} [hint.incremental] - an L-sized checkpoint slice
+ * @param {string|null} [hint.dataClass] - a Tier-2 data card's classifyDataCard() class
  */
-function pickModel(attempt, failureKind = null) {
+function pickModel(attempt, failureKind = null, hint = {}) {
+  const { incremental = false, dataClass = null } = hint;
   let model;
-  if (attempt === 1) model = MODELS.attempt1;
-  else if (attempt === 2) model = failureKind === 'content' ? MODELS.attempt2Content : MODELS.attempt1;
-  else throw new Error(`attempt cap is 2/night, got attempt=${attempt}`);
+  if (attempt === 1) {
+    const forceOpus = incremental || (dataClass != null && DATA_DESTRUCTIVE_CLASSES.has(dataClass));
+    model = forceOpus ? MODELS.attempt2Content : MODELS.attempt1;
+  } else if (attempt === 2) {
+    model = failureKind === 'content' ? MODELS.attempt2Content : MODELS.attempt1;
+  } else {
+    throw new Error(`attempt cap is 2/night, got attempt=${attempt}`);
+  }
   if (FORBIDDEN_MODEL_RE.test(model)) {
     throw new Error(`pickModel produced a forbidden model tier: ${model}`);
   }
@@ -221,6 +259,7 @@ module.exports = {
   ENVELOPES,
   DEFAULTS,
   MODELS,
+  DATA_DESTRUCTIVE_CLASSES,
   FORBIDDEN_MODEL_RE,
   MODEL_PRICES,
   estimateUSD,

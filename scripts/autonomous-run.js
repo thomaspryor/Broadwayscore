@@ -588,7 +588,7 @@ function attemptCard(item, budget, cfg, runId, opts) {
         git(workdir, ['reset', '--hard', 'origin/main']);
         git(workdir, ['clean', '-fd']);
       }
-      const model = pickModel(attempt, failureKind);
+      const model = pickModel(attempt, failureKind, { incremental });
       console.error(`[run] ${item.name}: attempt ${attempt} (${opts.mockScript ? 'mock' : model}${resuming ? ', resuming checkpoint' : ''})`);
       const promptPrefix = incremental ? (resuming ? buildResumeNote(card, card.outcome) : buildFirstNightNote()) : null;
       const imp = runImplementer(item, card, workdir, model, env.maxWallMin, opts.mockScript, promptPrefix);
@@ -793,7 +793,7 @@ function attemptDataCard(item, budget, cfg, runId) {
   }
 
   try {
-    const model = pickModel(1, null);
+    const model = pickModel(1, null, { dataClass: cls });
     const prompt = buildDataImplementerPrompt(card, item, { repoKey, dataClass: cls });
     console.error(`[run] ${item.name}: attempt 1 (${model}, data-class ${cls} → ${repoKey})`);
     const imp = runImplementer(item, card, wd.dataDir, model, env.maxWallMin, null, null, prompt);

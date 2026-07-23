@@ -6,7 +6,9 @@ const require = createRequire(import.meta.url);
 const budget = require('./autonomous-budget.js');
 const {
   ENVELOPES, pickModel, createNightBudget, checkSharedDailyCap, FORBIDDEN_MODEL_RE, estimateUSD,
+  DATA_DESTRUCTIVE_CLASSES,
 } = budget;
+const { DATA_CLASS_REPO } = require('./autonomous-eligibility.js');
 
 // ── pickModel policy ────────────────────────────────────────────────────────
 
@@ -23,14 +25,56 @@ test('attempt cap 2: attempt 3 throws', () => {
   assert.throws(() => pickModel(0), /attempt cap/);
 });
 
+// Owner override (2026-07-22, supervised live run: "I don't trust Sonnet
+// much"): L slices and Tier-2 data-destructive classes run attempt 1 on
+// Opus regardless of failureKind — there's no same-night retry for either,
+// so attempt 1 has to be the best shot.
+test('incremental (L) hint forces attempt 1 onto Opus', () => {
+  assert.equal(pickModel(1, null, { incremental: true }), 'claude-opus-4-8');
+  // failureKind is irrelevant on attempt 1 either way — only attempt matters.
+  assert.equal(pickModel(1, 'content', { incremental: true }), 'claude-opus-4-8');
+});
+
+test('data-destructive class hint forces attempt 1 onto Opus', () => {
+  assert.ok(DATA_DESTRUCTIVE_CLASSES.has('cluster-cleanup'));
+  assert.equal(pickModel(1, null, { dataClass: 'cluster-cleanup' }), 'claude-opus-4-8');
+});
+
+test('a non-destructive data class does NOT force Opus (missing-show, re-gather, byline-recovery stay Sonnet)', () => {
+  for (const cls of ['missing-show', 're-gather', 'byline-recovery']) {
+    assert.equal(pickModel(1, null, { dataClass: cls }), 'claude-sonnet-5');
+  }
+});
+
+// Ship-check finding (Codex adversarial review, 2026-07-22): DATA_DESTRUCTIVE_
+// CLASSES lives in this file as a second enum beside autonomous-eligibility.js's
+// classifyDataCard()/DATA_CLASS_REPO — a class rename or a new destructive class
+// added only to one table would silently mis-route the model (fall back to
+// Sonnet on a destructive class, or vice versa) with no crash to surface it.
+// This pins every currently-destructive class to a REAL, routable data class,
+// so that drift fails a test instead of failing silently in production.
+test('every DATA_DESTRUCTIVE_CLASSES entry is a real, repo-routable data class (catches enum drift between the two tables)', () => {
+  for (const cls of DATA_DESTRUCTIVE_CLASSES) {
+    assert.ok(DATA_CLASS_REPO[cls], `"${cls}" is marked data-destructive but has no DATA_CLASS_REPO routing (autonomous-eligibility.js) — dead or mistyped class`);
+  }
+});
+
+test('no hint (default) leaves attempt 1 on Sonnet — backward compatible', () => {
+  assert.equal(pickModel(1, null, {}), 'claude-sonnet-5');
+  assert.equal(pickModel(1), 'claude-sonnet-5');
+});
+
 // Hard exclusion (user directive, mock-v2 2026-07-12): fable is NEVER
 // selectable, for any input. Enumerate every reachable output.
 test('fable/mythos tier is never selectable by pickModel', () => {
   const kinds = ['content', 'infra', null, undefined, 'anything', 'FABLE'];
+  const hints = [undefined, {}, { incremental: true }, { dataClass: 'cluster-cleanup' }, { dataClass: 'missing-show' }];
   for (const attempt of [1, 2]) {
     for (const kind of kinds) {
-      assert.ok(!FORBIDDEN_MODEL_RE.test(pickModel(attempt, kind)),
-        `pickModel(${attempt}, ${kind}) must not be fable-tier`);
+      for (const hint of hints) {
+        assert.ok(!FORBIDDEN_MODEL_RE.test(pickModel(attempt, kind, hint)),
+          `pickModel(${attempt}, ${kind}, ${JSON.stringify(hint)}) must not be fable-tier`);
+      }
     }
   }
 });
@@ -62,12 +106,17 @@ test('a genuinely unknown size has no envelope and is refused', () => {
   assert.match(r.reason, /no budget envelope/);
 });
 
-// L (Sprint 3, S3-T4): has a real envelope now — one S-sized slice per night,
-// no attempt-2 reservation (the checkpoint IS the retry, next night).
+// L (Sprint 3, S3-T4): has a real envelope now — one slice per night, no
+// attempt-2 reservation (the checkpoint IS the retry, next night). Raised
+// 2026-07-22 to an Opus-sized slice ($10 max / $5 est) since pickModel now
+// forces L's single attempt onto Opus — nightUSD here must clear the new
+// $5 est (was $5 night fitting the old $2 est; the real config is $60/night).
 test('L has a one-slice-per-night envelope: incremental, no attempt-2 reservation', () => {
   assert.equal(ENVELOPES.L.incremental, true);
   assert.equal(ENVELOPES.L.estAttempt2USD, 0);
-  const b = createNightBudget({ nightUSD: 5, reserveUSD: 0.5, sizes: ['L'], maxItems: 5 });
+  assert.equal(ENVELOPES.L.estUSD, 5);
+  assert.equal(ENVELOPES.L.maxUSD, 10);
+  const b = createNightBudget({ nightUSD: 10, reserveUSD: 0.5, sizes: ['L'], maxItems: 5 });
   const r = b.admit('l1', 'L');
   assert.equal(r.admitted, true);
   assert.equal(r.reservedUSD, ENVELOPES.L.estUSD); // no attempt-2 slice reserved
