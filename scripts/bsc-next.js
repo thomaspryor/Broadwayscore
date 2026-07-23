@@ -102,6 +102,14 @@ const { projectOf, buildAutoTitle, stripAutoPrefix, modelGlyph } = require('./li
 // worktree-local copy (the file is gitignored, so worktrees never have it).
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
 
+// Dispatch-attempt ledger (task #334): task #297 accumulated 3 dead cmux
+// workspaces because nothing recorded that repeated dispatches all landed on
+// the same task, and a session killed at the #289 >30min timeout never runs
+// the Stop hook's ✅ self-mark. Every verified launch is journaled here;
+// bsc-prune.js journals the matching 'dead' breadcrumb once a launch's
+// workspace turns up idle-and-unmarked. See scripts/lib/dispatch-ledger.js.
+const dispatchLedger = require('./lib/dispatch-ledger.js');
+
 // Actionable list, best-first: by Notion priority, then pending before
 // in_progress (fresh work first), then task id. Completed dropped;
 // Marketing/Partnerships dropped unless includeExcluded (used by --list to show
@@ -151,6 +159,22 @@ function findLiveWorkspaceForTask(task, workspaces, isDone) {
     const n = Math.min(t.length, launchTitle.length);
     return n >= 20 && t.slice(0, n) === launchTitle.slice(0, n);
   }) || null;
+}
+
+// Refuse a blind re-dispatch once a task has died DEAD_ATTEMPT_LIMIT times
+// without ever being verified alive again (task #334: task #297 got a 3rd
+// dead cmux workspace opened onto it with zero visibility into the 2 that
+// already died). --force / --dry-run / --print-prompt bypass it, matching
+// completedLaunchGuard's carve-outs.
+function deadDispatchGuard(task, ledgerEntries, opts) {
+  if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
+  const dead = dispatchLedger.deadAttemptsForTask(task.id, ledgerEntries);
+  if (dead.length < dispatchLedger.DEAD_ATTEMPT_LIMIT) return null;
+  const refs = dead.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
+  return `task #${task.id} has died ${dead.length}x already without finishing (dead workspaces: ${refs}). ` +
+    `Blind re-dispatch won't fix a task that keeps dying — investigate first: shrink the scope, escalate with ` +
+    `--model opus, or route it through the Notion Action "Fix" pipeline (has its own capped-retry timeout ` +
+    `handling — see task #289). Re-run with --force to dispatch anyway.`;
 }
 
 function notionIdOf(task) {
@@ -336,6 +360,8 @@ function main(argv = process.argv.slice(2), deps = {}) {
     cmuxAvailable: cmuxAvailableFn = cmuxws.cmuxAvailable,
     listWorkspaces: listWorkspacesFn = cmuxws.listWorkspaces,
     isDoneTitle: isDoneTitleFn = cmuxws.isDoneTitle,
+    readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
+    appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -381,6 +407,9 @@ function main(argv = process.argv.slice(2), deps = {}) {
   if (!task) { console.error('[bsc-next] no matching actionable task.'); process.exit(1); }
   const guardErr = completedLaunchGuard(task, args);
   if (guardErr) { console.error(`[bsc-next] ${guardErr}`); process.exit(1); }
+
+  const deadErr = deadDispatchGuard(task, readLedgerEntriesFn(), args);
+  if (deadErr) { console.error(`[bsc-next] ${deadErr}`); process.exit(1); }
 
   const pid = notionIdOf(task);
   const card = pid ? fetchCardFn(pid) : null;
@@ -439,6 +468,11 @@ function main(argv = process.argv.slice(2), deps = {}) {
   const res = launchCmuxFn(task, seed, undefined, model, project);
   if (res.ok) {
     console.log(`[bsc-next] opened Cmux workspace ${res.ref} on #${task.id}: ${task.subject} (claude verified running)`);
+    // Journal the launch (task #334) so a later bsc-prune sweep can attribute
+    // a dead shell back to this task, and a future dispatch can see how many
+    // times this task has already died before blindly opening another one.
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model }); }
+    catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else {
     console.error(`[bsc-next] LAUNCH NOT VERIFIED (${res.reason}).`);
     if (res.workspaceRef) console.error(`  dead workspace: ${res.workspaceRef} (left open for inspection)`);
@@ -451,4 +485,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE };
+module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE };

@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { actionable, pickTask, completedLaunchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE } = require('./bsc-next.js');
+const { actionable, pickTask, completedLaunchGuard, deadDispatchGuard, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE } = require('./bsc-next.js');
 const { isDoneTitle } = require('./lib/cmux-workspaces.js');
 
 // 2026-07-14 incident class + scope add (2026-07-20): `--help` used to fall
@@ -24,6 +24,8 @@ test('--help / -h return before loadTasks/fetchCard/launchCmux/cmux ever run', (
     cmuxAvailable: () => { throw new Error('cmuxAvailable must not be called for --help'); },
     listWorkspaces: () => { throw new Error('listWorkspaces must not be called for --help'); },
     isDoneTitle: () => { throw new Error('isDoneTitle must not be called for --help'); },
+    readLedgerEntries: () => { throw new Error('readLedgerEntries must not be called for --help'); },
+    appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for --help'); },
   };
   const logged = [];
   const origLog = console.log;
@@ -129,6 +131,37 @@ test('completedLaunchGuard blocks launching a completed task without --force', (
   assert.equal(completedLaunchGuard(done, { 'dry-run': true }), null);     // inspection stays open
   assert.equal(completedLaunchGuard(done, { 'print-prompt': true }), null);
   assert.equal(completedLaunchGuard(TASKS[1], {}), null);                  // non-completed unaffected
+});
+
+// Task #334: task #297 got a 3rd cmux workspace dispatched onto it with zero
+// visibility into the 2 that had already died silently (killed at the #289
+// >30min timeout, never ran the Stop hook's ✅ self-mark). deadDispatchGuard
+// refuses once DEAD_ATTEMPT_LIMIT (2) 'dead' breadcrumbs exist for the task.
+test('deadDispatchGuard refuses a 3rd dispatch after 2 recorded deaths, --force/--dry-run/--print-prompt bypass it', () => {
+  const task = TASKS[0]; // id '1'
+  const twoDeaths = [
+    { event: 'dead', taskId: '1', workspaceRef: 'workspace:227' },
+    { event: 'dead', taskId: '1', workspaceRef: 'workspace:229' },
+  ];
+  const msg = deadDispatchGuard(task, twoDeaths, {});
+  assert.match(msg, /died 2x already/);
+  assert.match(msg, /workspace:227, workspace:229/);
+  assert.match(msg, /--force/);
+  assert.equal(deadDispatchGuard(task, twoDeaths, { force: true }), null);
+  assert.equal(deadDispatchGuard(task, twoDeaths, { 'dry-run': true }), null);
+  assert.equal(deadDispatchGuard(task, twoDeaths, { 'print-prompt': true }), null);
+});
+
+test('deadDispatchGuard allows dispatch under the limit, and ignores deaths for other tasks', () => {
+  const task = TASKS[0]; // id '1'
+  const oneDeath = [{ event: 'dead', taskId: '1', workspaceRef: 'workspace:227' }];
+  assert.equal(deadDispatchGuard(task, oneDeath, {}), null);
+  const otherTaskDeaths = [
+    { event: 'dead', taskId: '999', workspaceRef: 'workspace:1' },
+    { event: 'dead', taskId: '999', workspaceRef: 'workspace:2' },
+  ];
+  assert.equal(deadDispatchGuard(task, otherTaskDeaths, {}), null);
+  assert.equal(deadDispatchGuard(task, [], {}), null);
 });
 
 test('notionIdOf extracts the embedded page id, null when absent', () => {

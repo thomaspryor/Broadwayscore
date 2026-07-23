@@ -7,6 +7,17 @@
  * before doing either). Un-marked workspaces are NEVER closed — idle ones
  * (no running claude_code process) are listed for at-a-glance review.
  *
+ * Task #334 (2026-07-22): idle-unmarked workspaces are also cross-referenced
+ * against the dispatch ledger (scripts/lib/dispatch-ledger.js) — a workspace
+ * bsc-next.js launched that later shows up here with no live claude and no
+ * ✅ died silently (the #289 >30min timeout kills a session before its Stop
+ * hook can self-mark). That's the missing failure breadcrumb: this sweep
+ * records it, and bsc-next.js's deadDispatchGuard refuses a further blind
+ * dispatch once a task has 2 recorded deaths. The breadcrumb write is a
+ * local jsonl append only — it happens even under --dry-run, since it never
+ * touches cmux state (the same reason bsc-conductor's habitual
+ * `bsc-prune --dry-run` orientation sweep still captures it).
+ *
  *   bsc-prune            close every ✅-marked workspace, list idle un-marked
  *   bsc-prune --dry-run  show what would close, close nothing
  *   bsc-prune --help, -h show this message, do nothing else
@@ -16,6 +27,7 @@ const {
   cmuxAvailable, listWorkspaces, isDoneTitle, claudeAliveIn, pruneDone,
 } = require('./lib/cmux-workspaces.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const dispatchLedger = require('./lib/dispatch-ledger.js');
 
 const USAGE = `bsc-prune — close finished Cmux workspaces.
 
@@ -38,6 +50,8 @@ function main(argv = process.argv.slice(2), deps = {}) {
     pruneDone: pruneDoneFn = pruneDone,
     isDoneTitle: isDoneTitleFn = isDoneTitle,
     claudeAliveIn: claudeAliveInFn = claudeAliveIn,
+    readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
+    appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -67,7 +81,24 @@ function main(argv = process.argv.slice(2), deps = {}) {
     .filter(w => !claudeAliveInFn(w.ref));
   if (idle.length) {
     console.log(`\nDead but un-marked (no claude process at all — NOT closed, review yourself):`);
-    idle.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
+    let ledgerEntries;
+    try { ledgerEntries = readLedgerEntriesFn(); } catch { ledgerEntries = []; }
+    idle.forEach(w => {
+      const launch = dispatchLedger.launchByRef(w.ref, ledgerEntries);
+      const label = launch ? ` — died mid task #${launch.taskId} "${launch.subject}"` : '';
+      console.log(`  ${w.ref}  ${w.title}${label}`);
+    });
+
+    // Journal the failure breadcrumb (task #334): the ONLY thing this writes
+    // is a local jsonl line — it never closes or touches the workspace, so
+    // it's safe to record even under --dry-run (bsc-conductor's orientation
+    // sweep only ever runs --dry-run, and it should still see this).
+    const breadcrumbs = dispatchLedger.deadBreadcrumbs(idle, ledgerEntries);
+    if (breadcrumbs.length) {
+      breadcrumbs.forEach(b => { try { appendLedgerEntryFn(b); } catch (e) { console.error(`[bsc-prune] WARN dispatch-ledger write failed for ${b.workspaceRef}: ${e.message}`); } });
+      console.log(`\nRecorded ${breadcrumbs.length} new dead-dispatch breadcrumb(s) in dispatch-ledger.jsonl:`);
+      breadcrumbs.forEach(b => console.log(`  ${b.workspaceRef}  task #${b.taskId} "${b.subject}"`));
+    }
   }
 }
 
