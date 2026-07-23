@@ -2267,7 +2267,16 @@ jobs:
       # on a main push regardless of pass/fail so the ledger write always has a
       # repo to commit into.
       - name: Checkout (for alert lib)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        # !cancelled() (not a bare boolean) is REQUIRED here: GitHub Actions
+        # implicitly ANDs any custom if: with success() unless the condition
+        # itself calls a status function (success/failure/always/cancelled).
+        # A bare `github.event_name == 'push' && ...` gets silently SKIPPED
+        # the moment an earlier step in this job fails — exactly the main-is-
+        # red scenario this whole block exists to alert on. Without this fix,
+        # "Route alert" below crashes with MODULE_NOT_FOUND (no checkout ran)
+        # and "Commit alert-router ledger changes" fails too (no .git dir).
+        # Discovered 2026-07-23 when this exact path went red on merge.
+        if: "!cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main'"
         uses: actions/checkout@v5
 
       - name: Route alert — main test.yml red on consecutive pushes
