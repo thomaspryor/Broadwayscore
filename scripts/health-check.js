@@ -32,6 +32,7 @@ const crypto = require('crypto');
 const { execSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
+const { routeAlert } = require('./lib/owner-alert-router.js');
 // Discord daily reports removed — email digest is the single notification channel.
 
 // Generate a signed one-tap approve URL for a fix workflow.
@@ -1875,12 +1876,63 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
         }
       }
 
+      // Owner-alert-router migration (Notion 3a4637c5-416f-81eb, #279): every
+      // playbook entry with a `humanAction` (no `workflow` — those already
+      // auto-fix via GH workflow dispatch above) used to render a raw
+      // "open Claude Code and say: ..." paste-prompt in the email. Instead,
+      // file an Action Queue card once per open incident so
+      // notion-action-poll.js works it hands-free; the email links the card
+      // instead of asking the owner to paste anything. Runs BEFORE the
+      // synchronous items.map() below so the (async) dispatch result is
+      // available to it.
+      //
+      // Capped at MAX_CARD_DISPATCHES_PER_RUN: each dispatch shells out to
+      // notion-brain.js (up to a few seconds, more if Notion is degraded) —
+      // sequential dispatch of a large first-run/post-outage backlog could
+      // otherwise eat into this job's 10-min timeout. Anything past the cap
+      // still gets its playbook instruction text in the email (uncapped),
+      // just without a filed card this run; it'll dispatch next run.
+      const MAX_CARD_DISPATCHES_PER_RUN = 8;
+      const dispatchedCards = {};
+      let dispatchBudget = MAX_CARD_DISPATCHES_PER_RUN;
+      let dispatchCapped = false;
+      for (const r of actionable) {
+        const entry = getPlaybookEntry(r.name);
+        if (!entry || entry.workflow || !entry.humanAction) continue;
+        if (dispatchBudget <= 0) { dispatchCapped = true; continue; }
+        dispatchBudget--;
+        try {
+          const result = await routeAlert({
+            conditionKey: `health-check:${r.name}`,
+            title: `BSC Daily: ${r.name}`,
+            description: `${r.message}${r.hint ? `\n\n${r.hint}` : ''}`,
+            hint: entry.humanAction,
+            severity: r.status === 'error' ? 'error' : 'warning',
+            disposition: 'auto',
+            fields: [{ name: 'Check', value: r.name }],
+          });
+          dispatchedCards[r.name] = result;
+        } catch (err) {
+          console.error(`[Alert Router] dispatch failed for "${r.name}": ${err.message}`);
+        }
+      }
+      if (dispatchCapped) {
+        console.log(`[Alert Router] hit MAX_CARD_DISPATCHES_PER_RUN=${MAX_CARD_DISPATCHES_PER_RUN} — remaining humanAction items will dispatch next run`);
+      }
+
       const items = actionable.map(r => {
         const entry = getPlaybookEntry(r.name);
         const urgency = URGENCY_LABELS[r._escalatedUrgency || (entry ? entry.urgency : 'low')] || URGENCY_LABELS['low'];
-        const instruction = entry
-          ? (entry.humanAction || entry.humanFallback || r.message)
-          : r.message;
+        const dispatch = dispatchedCards[r.name];
+        const instruction = dispatch
+          ? (dispatch.action === 'silent'
+              ? `${entry.humanAction} — already dispatched to the Action Queue (still open).`
+              : dispatch.dispatchOk === false
+                ? `${entry.humanAction} — Action Queue dispatch failed, will retry next run. Check logs / NOTION_API_KEY.`
+                : `${entry.humanAction} — dispatched to the Action Queue; it'll work this hands-free.`)
+          : entry
+            ? (entry.humanAction || entry.humanFallback || r.message)
+            : r.message;
         const fix = autoFixMap[r.name];
         const failNote = fix && fix.message
           ? `<br><span style="color:#e74c3c;font-size:11px;">Couldn't auto-fix. ${entry?.workflow ? `<a href="https://github.com/thomaspryor/Broadwayscore/actions/workflows/${entry.workflow}" style="color:#e74c3c;text-decoration:underline;">Tap to retry manually</a>` : ''}</span>`

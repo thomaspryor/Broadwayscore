@@ -45,7 +45,7 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const SKIP_VALIDATION = process.argv.includes('--skip-validation');
 const CARD_ID_ARG = process.argv.find(a => a.startsWith('--card-id='))?.slice('--card-id='.length) || null;
 const CARDS_PER_RUN_CAP = 3;
-const NOTION_DATABASE_ID = 'fa7b3ff2-c073-4097-b54c-0a78e56e06b6';
+const { BRAIN_DATABASE_ID: NOTION_DATABASE_ID } = require('./lib/notion-constants');
 const ROOT = path.join(__dirname, '..');
 
 // --- Safety rails (code-level, not LLM) ---
