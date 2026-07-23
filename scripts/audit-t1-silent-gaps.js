@@ -38,11 +38,18 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const { classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap } = require('./lib/t1-silent-gap');
+const { classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap, MAJOR_TIER_MAX } = require('./lib/t1-silent-gap');
+const { detectFlagContradiction, contradictionFixCommand, shouldAlertContradiction } = require('./lib/flag-contradiction');
+const { wouldAutoClear, shadowObservation } = require('./lib/autoclear-shadow');
+const { isAgedNonTerminalGap, shouldBackstopAlert, gapFirstSeen, nonTerminalAgeHours, BACKSTOP_MIN_AGE_HOURS } = require('./lib/t1-backstop');
 const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards');
 const { getTier } = require('./lib/outlet-tiers');
 const { AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
 const { decideEmptyBodyRecovery, nextRecoveryCount, FLAGGED_RECOVERY_CAP } = require('./lib/flagged-recovery');
+const {
+  loadRecoveryState, saveRecoveryState, decideRefetch, recordRefetch,
+  DEFAULT_REFETCH_CONFIG,
+} = require('./lib/refetch-circuit-breaker');
 const { dispatchRescore } = require('./lib/dispatch-rescore');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { sendAlert } = require('./lib/discord-notify');
@@ -55,6 +62,14 @@ const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const AUDIT_DIR = path.join(ROOT, 'data', 'audit');
 const REPORT_PATH = path.join(AUDIT_DIR, 't1-silent-gaps.json');
 const ALERT_STATE_PATH = path.join(AUDIT_DIR, 't1-silent-gap-alerts.json');
+// Auto-clear shadow log (S3-T4): append-only record of live would-auto-clear
+// candidates so a real 48h window can be measured before auto-clear is ever
+// enabled (S3-T5). This job is the single writer.
+const SHADOW_LOG_PATH = path.join(AUDIT_DIR, 'autoclear-shadow.jsonl');
+// Circuit-breaker state for the self-heal refetch (S3-T1/T2). Global 10/day
+// budget + audit-side per-file attempt history — NEVER stored in per-review
+// JSON. Single writer = this hourly job.
+const RECOVERY_STATE_PATH = path.join(AUDIT_DIR, 't1-recovery-state.json');
 
 const args = process.argv.slice(2);
 const opt = (name, dflt) => {
@@ -171,6 +186,37 @@ async function main() {
   // whatsonstage stubs would starve the cap).
   const attemptedUrls = new Set();
 
+  // Circuit-breaker state (S3-T2): the GLOBAL daily refetch budget lives here,
+  // spanning all hourly runs — the per-run --fetch-cap alone can't bound a day.
+  // Loaded once; mutated + persisted after EVERY attempt so a crash preserves
+  // the budget already spent (single-writer, commit-on-change discipline).
+  let recoveryState = loadRecoveryState(RECOVERY_STATE_PATH, new Date());
+  const persistRecoveryState = () => {
+    if (DRY_RUN) return;
+    fs.mkdirSync(AUDIT_DIR, { recursive: true });
+    saveRecoveryState(RECOVERY_STATE_PATH, recoveryState);
+  };
+  // Dry-run visibility: candidates that WOULD refetch and where the breaker
+  // stands. Printed at the end so a --dry-run shows the budget math (S3-T2 VERIFY).
+  let dryRunCandidates = 0;
+  const breakerDenied = [];
+
+  // Stale-flag contradictions (S3-T3), ESCALATE-ONLY. A file-level flag that a
+  // NEWER contentVerification verdict contradicts — collected independently of
+  // the gap classification (a wrongProduction file is a "correct absence" for
+  // the gap classifier, so it never appears as a gap, yet its flag may be
+  // stale). Emitted as a deduped ACTION alert with the exact clear command.
+  const contradictions = [];
+
+  // S3-T4 shadow observations (would-auto-clear candidates) appended to the
+  // shadow log this run. Auto-clear itself stays OFF (escalate-only).
+  const shadowObservations = [];
+
+  // Files emailed via the normal gap-alert path this run — the >24h backstop
+  // excludes these so one file can't page twice in a single run (once as a
+  // near-opening gap, once as backstop; ship-check/Codex cross-path finding).
+  const pagedGapOutletKeys = new Set();
+
   for (const show of shows) {
     const dir = path.join(REVIEW_TEXTS_DIR, show.id);
     let files;
@@ -189,15 +235,65 @@ async function main() {
       const outletId = f.split('--')[0];
       if (AGGREGATOR_OUTLET_IDS.has(outletId)) continue;
       const tier = getTier(outletId, { showCategory: show.category });
+
+      // Stale-flag contradiction (S3-T3, escalate-only): runs on EVERY T1/T2
+      // file BEFORE the `if (!gap) continue` below — a wrongProduction file is
+      // a "correct absence" for the gap classifier (returns null), so this is
+      // the only place its stale flag would ever surface.
+      if (tier != null && tier <= MAJOR_TIER_MAX) {
+        const contra = detectFlagContradiction(d);
+        if (contra) {
+          contradictions.push({
+            showId: show.id, title: show.title, openingDate: show.openingDate,
+            file: f, outletId, tier, ...contra,
+            fix: contradictionFixCommand(show.id, f, contra.flag),
+          });
+          console.log(`  ⚠️  ${show.id} — ${outletId} (T${tier}) stale ${contra.flag} flag contradicted by newer CV (${contra.verifiedAt})`);
+
+          // S3-T4 shadow: record what an auto-clearer WOULD do (append-only).
+          // Escalate-only stays the behavior; this only observes.
+          const decision = wouldAutoClear(d);
+          if (decision.clear) {
+            shadowObservations.push(shadowObservation({
+              showId: show.id, file: f, outletId, tier,
+              decision, observedAt: new Date().toISOString(),
+            }));
+          }
+        }
+      }
+
       let gap = classifySilentGap({ file: d, show, tier, outletScored: scoredOutlets.has(outletId), now: new Date() });
       if (!gap) continue;
 
       let recovery = null;
-      if (gap.type === 'empty-body' && gap.recoverable && DO_RECOVER && !DRY_RUN
-          && fetches < FETCH_CAP && d.url && !attemptedUrls.has(d.url)) {
+      // A file is a refetch candidate when it's a recoverable empty-body gap
+      // with a usable URL we haven't already spent a slot on this run.
+      const isRefetchCandidate = gap.type === 'empty-body' && gap.recoverable
+        && d.url && !attemptedUrls.has(d.url);
+
+      if (isRefetchCandidate && DO_RECOVER && DRY_RUN) {
+        // Dry-run: count what WOULD refetch (consult the breaker read-only so
+        // the count reflects the real budget, but never mutate/persist state).
+        const dec = decideRefetch(recoveryState, { showId: show.id, fileName: f, now: new Date() });
         attemptedUrls.add(d.url);
-        recovery = recoverFromOwnUrl(show.id, f, d, show);
-        if (recovery.attempted) fetches++;
+        if (dec.allowed) dryRunCandidates++;
+        else breakerDenied.push({ showId: show.id, file: f, reason: dec.reason });
+      } else if (isRefetchCandidate && DO_RECOVER && !DRY_RUN && fetches < FETCH_CAP) {
+        attemptedUrls.add(d.url);
+        // GLOBAL daily budget + per-file cap (audit-side state), checked BEFORE
+        // the per-run --fetch-cap fires. A denied refetch is logged (never a
+        // silent no-op) and the file still reports as a gap below.
+        const dec = decideRefetch(recoveryState, { showId: show.id, fileName: f, now: new Date() });
+        if (!dec.allowed) {
+          recovery = { attempted: false, reason: `circuit-breaker:${dec.reason}` };
+          breakerDenied.push({ showId: show.id, file: f, reason: dec.reason });
+        } else {
+          // Record the attempt (bump global + per-file) and PERSIST before the
+          // fetch — a crash mid-fetch must still count the spend.
+          recoveryState = recordRefetch(dec.state, { showId: show.id, fileName: f, now: new Date() });
+          persistRecoveryState();
+          recovery = recoverFromOwnUrl(show.id, f, d, show);
+          if (recovery.attempted) fetches++;
         // Healed only if a re-classification agrees — a re-ingest that lands
         // another bot stub must NOT suppress the gap (Codex review finding).
         const fresh = loadJson(path.join(dir, f), null);
@@ -208,9 +304,10 @@ async function main() {
           outletScored: scoredOutlets.has(outletId),
           now: new Date(),
         });
-        if (fresh && freshGap == null) {
-          console.log(`  ♻️  recovered ${show.id}/${f} from its own URL`);
-          continue;
+          if (fresh && freshGap == null) {
+            console.log(`  ♻️  recovered ${show.id}/${f} from its own URL`);
+            continue;
+          }
         }
       }
 
@@ -226,8 +323,40 @@ async function main() {
         recovery,
         recoveryCount: d.aggUrlRecoveryCount || 0,
         fix: fixCommand(show.id, f, d, gap.type),
+        // Immutable file-creation stamp (informational — the report shows how
+        // long we have HAD the file). The S3-T6 backstop age is tracked
+        // separately below from when the file first became a GAP, not from file
+        // creation (a long-lived file that regressed today is not "stuck >24h").
+        firstSeen: gapFirstSeen(d),
+        fileAgeHours: nonTerminalAgeHours(d, new Date()),
       });
       console.log(`  🕳  ${show.id} — ${outletId} (T${tier}) ${gap.type}${recovery && recovery.attempted ? ` [recovery failed: ${recovery.reason || 'still empty'}]` : ''}`);
+    }
+  }
+
+  const state = loadJson(ALERT_STATE_PATH, {});
+  const now = new Date();
+
+  // Gap-age tracking (S3-T6 backstop): record when each file FIRST became a
+  // non-terminal gap (gapSeen:showId/file) so the >24h backstop measures how
+  // long the file has been STUCK, not how long we have had the file. A file
+  // created weeks ago that regressed into a gap today must start its clock now,
+  // not page instantly (ship-check/Codex finding). Self-cleaning on full scans:
+  // a healed file's gapSeen is pruned so a future regression restarts the clock.
+  // Runs BEFORE the report write so the report carries gapSeenAt + gap age.
+  let gapStateDirty = false;
+  const currentGapKeys = new Set(gaps.map((g) => `${g.showId}/${g.file}`));
+  for (const g of gaps) {
+    const k = `gapSeen:${g.showId}/${g.file}`;
+    if (!state[k]) { state[k] = now.toISOString(); gapStateDirty = true; }
+    g.gapSeenAt = state[k];
+    g.nonTerminalAgeHours = nonTerminalAgeHours({ firstSeenAt: g.gapSeenAt }, now);
+  }
+  if (!ONLY_SHOW) {
+    for (const k of Object.keys(state)) {
+      if (k.startsWith('gapSeen:') && !currentGapKeys.has(k.slice('gapSeen:'.length))) {
+        delete state[k]; gapStateDirty = true;
+      }
     }
   }
 
@@ -238,12 +367,42 @@ async function main() {
       windowDays: WINDOW_DAYS,
       showsScanned: shows.length,
       gaps,
+      contradictions,
     }, null, 2) + '\n');
+  }
+  if (contradictions.length > 0) {
+    console.log(`⚠️  ${contradictions.length} stale-flag contradiction(s) (escalate-only).`);
+  }
+  // Append this run's would-auto-clear observations to the shadow log (S3-T4).
+  // Append-only so a real 48h window accumulates; the report CLI reads it.
+  if (!DRY_RUN && shadowObservations.length > 0) {
+    fs.mkdirSync(AUDIT_DIR, { recursive: true });
+    fs.appendFileSync(SHADOW_LOG_PATH,
+      shadowObservations.map((o) => JSON.stringify(o)).join('\n') + '\n');
+    console.log(`🕶️  logged ${shadowObservations.length} auto-clear shadow observation(s).`);
   }
   console.log(`\n${gaps.length} silent gap(s) across ${shows.length} in-window show(s).`);
 
-  const state = loadJson(ALERT_STATE_PATH, {});
-  const now = new Date();
+  // Refetch circuit-breaker budget math (S3-T2). Printed every run; on a
+  // --dry-run this is the primary output (candidates that WOULD refetch +
+  // remaining budget), on a live --recover run it's a post-hoc summary.
+  {
+    const rolled = require('./lib/refetch-circuit-breaker').rolloverDay(recoveryState, new Date());
+    const spentToday = rolled.globalCount || 0;
+    const remaining = Math.max(0, DEFAULT_REFETCH_CONFIG.dailyGlobalCap - spentToday);
+    if (DRY_RUN && DO_RECOVER) {
+      console.log(`\n💧 refetch budget (dry-run): ${dryRunCandidates} candidate(s) would refetch; ` +
+        `${spentToday}/${DEFAULT_REFETCH_CONFIG.dailyGlobalCap} used today, ${remaining} remaining. ` +
+        `${breakerDenied.length} candidate(s) would be denied by the breaker.`);
+      for (const b of breakerDenied.slice(0, 10)) {
+        console.log(`   ⛔ ${b.showId}/${b.file} — ${b.reason}`);
+      }
+    } else if (DO_RECOVER) {
+      console.log(`💧 refetch budget: ${fetches} fetch(es) this run; ` +
+        `${spentToday}/${DEFAULT_REFETCH_CONFIG.dailyGlobalCap} used today (global), ${remaining} remaining. ` +
+        `${breakerDenied.length} skipped by the breaker.`);
+    }
+  }
 
   // Self-heal 'unscored' gaps: dispatch the scoring workflow ourselves instead
   // of emailing the operator the dispatch command (2026-07-21 Midnight at the
@@ -314,6 +473,8 @@ async function main() {
       };
       const urgent = dueDeduped.filter(isUrgent);
       const emailBatch = urgent.slice(0, 15);
+      // Record what actually paged so the >24h backstop won't re-page it.
+      for (const g of emailBatch) pagedGapOutletKeys.add(`${g.showId}/${g.outletId}`);
       const fields = emailBatch.map((g) => ({
         name: `${g.title} — ${g.outletId} (T${g.tier}, ${g.type})`,
         value: `${g.url || 'no url'}\nFix: ${g.fix}`,
@@ -348,6 +509,80 @@ async function main() {
     } else {
       console.log('No gaps due to email (already alerted, self-heal dispatch pending, or auto-recovery retries remaining).');
     }
+  }
+
+  // Stale-flag contradiction ACTION alert (S3-T3), ESCALATE-ONLY. Deduped per
+  // show+file on a 7-day window using the same alert-state file (namespaced
+  // `contradiction:`). A contradiction is a live suppressed review — it always
+  // pages (no near-opening gate): a newer CV already ruled the flag stale, so
+  // the fix is a one-command clear the operator can run immediately.
+  if (DO_ALERT && contradictions.length > 0 && !DRY_RUN) {
+    const dueC = contradictions.filter((c) =>
+      shouldAlertContradiction(state[`contradiction:${c.showId}/${c.file}`], now));
+    if (dueC.length > 0) {
+      const fields = dueC.slice(0, 15).map((c) => ({
+        name: `${c.title || c.showId} — ${c.outletId} (T${c.tier}, stale ${c.flag})`,
+        value: `Newer CV (${c.verifiedAt}) contradicts the flag set ${c.flaggedAt}.\nFix: ${c.fix}`,
+      }));
+      const delivered = await sendAlert({
+        title: `Stale exclusion flag contradicted by newer CV: ${dueC.length} suppressed review(s)`,
+        description: 'A file-level wrongProduction/wrongShow flag is contradicted by a NEWER contentVerification verdict — the review is being suppressed from the score by a stale flag. Each needs the listed clear command (run locally). Escalate-only: nothing is auto-cleared.',
+        severity: 'error',
+        email: true,
+        fields,
+      });
+      if (delivered) {
+        for (const c of dueC.slice(0, 15)) {
+          state[`contradiction:${c.showId}/${c.file}`] = now.toISOString();
+        }
+        fs.mkdirSync(AUDIT_DIR, { recursive: true });
+        fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
+      }
+    } else {
+      console.log('No stale-flag contradictions due to alert (already alerted within the window).');
+    }
+  }
+
+  // >24h non-terminal BACKSTOP alert (S3-T6), ESCALATE-ONLY, deduped per
+  // show+file on a 7-day window (`backstop:` namespace in the alert state).
+  // Fires for ANY in-window T1/T2 gap file that has sat non-terminal >24h —
+  // regardless of near-opening urgency — because the self-heal refetch + scoring
+  // self-dispatch should have resolved it within hours; >24h means they didn't.
+  if (DO_ALERT && !DRY_RUN) {
+    // Age measured from when the file first became a GAP (gapSeenAt), not file
+    // creation. Exclude files that already paged via the normal gap path this
+    // run (cross-path dedupe).
+    const aged = gaps.filter((g) =>
+      isAgedNonTerminalGap({ file: { firstSeenAt: g.gapSeenAt }, now })
+      && !pagedGapOutletKeys.has(`${g.showId}/${g.outletId}`));
+    const dueB = aged.filter((g) => shouldBackstopAlert(state[`backstop:${g.showId}/${g.file}`], now));
+    if (dueB.length > 0) {
+      const fields = dueB.slice(0, 15).map((g) => ({
+        name: `${g.title || g.showId} — ${g.outletId} (T${g.tier}, ${g.type}, ${Math.round(g.nonTerminalAgeHours || 0)}h)`,
+        value: `Non-terminal for ${Math.round(g.nonTerminalAgeHours || 0)}h (>${BACKSTOP_MIN_AGE_HOURS}h).\nFix: ${g.fix}`,
+      }));
+      const delivered = await sendAlert({
+        title: `T1/T2 review stuck >24h: ${dueB.length} non-terminal review(s)`,
+        description: `Backstop: these T1/T2 review files have been in a non-terminal, non-scoreable state for over ${BACKSTOP_MIN_AGE_HOURS}h — self-heal refetch and scoring self-dispatch did not resolve them. Each needs the listed recovery command.`,
+        severity: 'error',
+        email: true,
+        fields,
+      });
+      if (delivered) {
+        for (const g of dueB.slice(0, 15)) state[`backstop:${g.showId}/${g.file}`] = now.toISOString();
+        fs.mkdirSync(AUDIT_DIR, { recursive: true });
+        fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
+      }
+    } else if (aged.length > 0) {
+      console.log(`${aged.length} aged (>24h) gap(s) already backstop-alerted within the window.`);
+    }
+  }
+
+  // Persist gap-age tracking (gapSeen: keys) even when no alert fired this run —
+  // without this, a gap's clock never starts and the >24h backstop can't fire.
+  if (!DRY_RUN && gapStateDirty) {
+    fs.mkdirSync(AUDIT_DIR, { recursive: true });
+    fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
   }
 
   if (has('fail-on-gap') && gaps.length > 0) process.exit(1);
