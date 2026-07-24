@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-24T14:46:38.813Z",
+  "timestamp": "2026-07-24T17:37:32.090Z",
   "stats": {
-    "totalReviews": 40433,
-    "alreadyFlagged": 17801,
+    "totalReviews": 40438,
+    "alreadyFlagged": 17802,
     "dateGuardCatches": 59,
-    "directorMismatch": 905,
-    "tvFilmSignals": 1107,
+    "directorMismatch": 907,
+    "tvFilmSignals": 1108,
     "londonSignals": 754,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3264
+    "noPublishDate": 3267
   },
   "findings": [
     {
@@ -14525,6 +14525,39 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming show\""
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 84,
+      "publishDate": "2024-06-24",
+      "url": "https://www.chicagotribune.com/2024/06/24/review-in-compelling-little-bear-ridge-road-at-steppenwolf-theatre-laurie-metcalf-meets-her-match/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
+      "file": "suntimes--steven-oxman.json",
+      "score": 82,
+      "publishDate": "2024-06-24",
+      "url": "https://chicago.suntimes.com/theater/2024/06/24/little-bear-ridge-road-review-steppenwolf-theatre-laurie-metcalf-joe-mantello-micah-stock-in-world-premiere-chicago",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
