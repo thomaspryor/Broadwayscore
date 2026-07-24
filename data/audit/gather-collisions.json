@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-07-21T20:37:16.719Z",
-    "showId": "heathers-the-musical-off-west-end-2026",
-    "newFile": "whatsonstage--unknown.json",
-    "ok": false,
-    "file": "whatsonstage--sarah-crompton.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.whatsonstage.com/news/review-heathers-the-musical-haymarket-theatre_47588/",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2018-09-13",
-      "incomingUrl": "https://www.whatsonstage.com/news/heathers-the-musical-brings-big-fun-to-new-york-review_1686519/",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-07-21T20:37:16.753Z",
     "showId": "heathers-the-musical-off-west-end-2026",
     "newFile": "whatsonstage--unknown.json",
@@ -9450,6 +9431,21 @@
   },
   {
     "recordedAt": "2026-07-24T02:13:40.458Z",
+    "showId": "hadestown-2019",
+    "newFile": "nytimes--unknown.json",
+    "ok": false,
+    "file": "nytimes--ben-brantley.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2019-04-17T20:11:26-04:00",
+      "incomingPublishDate": "2026-07-23",
+      "diffDays": 2653,
+      "existingUrl": "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html?smtyp=cur&smid=tw-nytimesarts",
+      "incomingUrl": "https://www.nytimes.com/2026/07/23/movies/hadestown-the-musical-review.html"
+    }
+  },
+  {
+    "recordedAt": "2026-07-24T03:05:15.698Z",
     "showId": "hadestown-2019",
     "newFile": "nytimes--unknown.json",
     "ok": false,
