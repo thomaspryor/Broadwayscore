@@ -298,6 +298,33 @@ async function main() {
     }
   }
 
+  // ── Flag health (contamination gate for the significance section) ──
+  // Same registry-driven check as analyze-gate-cold-start.js: significance
+  // read from data collected under a drifted flag (split/rollout/sticky/
+  // inactive) is contaminated, so computeAbSignificance suppresses the p.
+  let flagHealthProblem = null;
+  try {
+    const { REGISTERED_FLAGS, evaluateFlagHealth } = require('./lib/flag-registry');
+    const entry = REGISTERED_FLAGS.find(e => e.key === FLAG);
+    if (entry) {
+      const fh = await fetchPostHog(`https://us.posthog.com/api/projects/${projectId}/feature_flags/?search=${encodeURIComponent(FLAG)}`);
+      const f = (fh.results || []).find(r => r.key === FLAG);
+      const live = f ? {
+        active: f.active,
+        variants: (f.filters?.multivariate?.variants || []).map(v => ({ key: v.key, pct: v.rollout_percentage })),
+        rollout: f.filters?.groups?.[0]?.rollout_percentage,
+        ensure_experience_continuity: !!f.ensure_experience_continuity,
+      } : null;
+      const health = evaluateFlagHealth(live, entry.expected);
+      if (!health.ok) flagHealthProblem = health.problem;
+      console.log(`\nFLAG HEALTH: ${health.ok ? '✅ matches registry-expected state' : `🛑 ${health.problem}`}`);
+    } else {
+      console.log(`\nFLAG HEALTH: ⚠ no REGISTERED_FLAGS entry for '${FLAG}' — health unchecked (add one in scripts/lib/flag-registry.js)`);
+    }
+  } catch (e) {
+    console.log(`\nFLAG HEALTH: ⚠ check failed (${e.message}) — proceeding without contamination gate`);
+  }
+
   // ── Statistical significance (all decision logic in lib/significance.js) ──
   if (variantNames.length === 2) {
     const sigInput = variantNames.map(v => {
@@ -313,7 +340,12 @@ async function main() {
         joinCoverage: direct.conversions > 0 ? direct.joinWithSub1 / direct.conversions : null,
       };
     });
-    const rep = computeAbSignificance(sigInput);
+    // Independence check: a subId1 converting in BOTH variants breaks the
+    // two-sample test (sticky bucketing should make this impossible — any
+    // overlap signals assignment leakage and suppresses the p).
+    const [setA, setB] = variantNames.map(v => (directByVariant[v] || emptyDirect()).convUsers);
+    const crossVariantConvUsers = [...setA].filter(u => setB.has(u)).length;
+    const rep = computeAbSignificance(sigInput, { crossVariantConvUsers, flagHealthProblem });
 
     console.log(`\n${'─'.repeat(70)}`);
     console.log('STATISTICAL SIGNIFICANCE');
@@ -357,7 +389,7 @@ async function main() {
       if (rep.primary.suppressed || rep.primary.degenerate) {
         console.log(`  → Primary metric unavailable (see above). Fix the data issue before judging.`);
       } else if (rep.underpowered) {
-        console.log(`  → Continue running. Sample below pre-registered thresholds.`);
+        console.log(`  → Continue running. Sample below advisory floors (see underpowered note).`);
       } else if (rep.primary.significant) {
         console.log(`  → Significant. Discuss with the owner before ANY flag change (guardrails memory rule 2).`);
       } else {

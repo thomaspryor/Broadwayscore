@@ -164,3 +164,54 @@ test('wrong variant count → top-level degenerate', () => {
   assert.ok(computeAbSignificance([mkVariant('only')]).degenerate);
   assert.ok(computeAbSignificance('nope').degenerate);
 });
+
+// ── Codex ship-check fixes (2026-07-24) ──
+
+test('cross-variant converting user suppresses primary (independence violation)', () => {
+  const rep = computeAbSignificance(
+    [mkVariant('a'), mkVariant('b')],
+    { crossVariantConvUsers: 2 },
+  );
+  assert.ok(rep.primary.suppressed, 'must be suppressed');
+  assert.match(rep.primary.suppressed, /2 user\(s\) converted in BOTH variants/);
+  assert.strictEqual(rep.primary.p, null);
+});
+
+test('flag-health problem suppresses primary (contaminated data)', () => {
+  const rep = computeAbSignificance(
+    [mkVariant('a'), mkVariant('b')],
+    { flagHealthProblem: 'variant split drifted from registered [a:50,b:50] to [a:80,b:20]' },
+  );
+  assert.ok(rep.primary.suppressed);
+  assert.match(rep.primary.suppressed, /does not match registry expectations/);
+  assert.match(rep.primary.suppressed, /variant split drifted/);
+});
+
+test('conversion-floor underpowered fires even when click floor passes, p still reported', () => {
+  const rep = computeAbSignificance([
+    mkVariant('a', { clicks: 500, users: 200, convUsers: 2, convCount: 2 }),
+    mkVariant('b', { clicks: 480, users: 190, convUsers: 8, convCount: 9 }),
+  ]);
+  assert.strictEqual(rep.underpowered, true);
+  assert.match(rep.underpoweredNote, /converting users\/variant/);
+  assert.ok(!/clicks\/variant/.test(rep.underpoweredNote), 'click floor passed, should not appear');
+  assert.ok(rep.primary.p !== null, 'p still reported');
+});
+
+test('asymmetric-zero conversions at comparable clicks adds a pipeline warning note (not suppression)', () => {
+  const rep = computeAbSignificance([
+    mkVariant('a', { clicks: 150, users: 60, convUsers: 0, convCount: 0, joinCoverage: null }),
+    mkVariant('b', { clicks: 160, users: 55, convUsers: 7, convCount: 8 }),
+  ]);
+  assert.strictEqual(rep.primary.suppressed, null, 'warn, not suppress');
+  assert.ok(rep.primary.p !== null || rep.primary.degenerate, 'p computed (or degenerate)');
+  assert.match(rep.primary.note || '', /verify the SubId postback pipeline/);
+});
+
+test('no asymmetric-zero warning when click volumes are NOT comparable (3x+)', () => {
+  const rep = computeAbSignificance([
+    mkVariant('a', { clicks: 30, users: 15, convUsers: 0, convCount: 0, joinCoverage: null }),
+    mkVariant('b', { clicks: 150, users: 55, convUsers: 7, convCount: 8 }),
+  ]);
+  assert.ok(!/(SubId postback)/.test(rep.primary.note || ''), 'low-traffic arm zero is expected, no warning');
+});

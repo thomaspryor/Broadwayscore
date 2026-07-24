@@ -82,9 +82,14 @@ function twoProportionZTest(a, b) {
   return result;
 }
 
-// Sample-size advisory thresholds (clicks per variant) — carried over from the
-// analyzer's original guidance: 100+ detects ~50% lift, 200+ ~30%, 400+ ~20%.
+// Sample-size advisory thresholds. Clicks floor carried over from the
+// analyzer's original guidance (100+ detects ~50% lift, 200+ ~30%, 400+
+// ~20%); the converting-users floor exists because the primary metric is
+// CONVERSION rate — 100 clicks/arm with 1-2 conversions is nowhere near a
+// stable conversion estimate even though the click floor passes (Codex
+// ship-check finding, 2026-07-24).
 const UNDERPOWERED_MIN_CLICKS = 100;
+const UNDERPOWERED_MIN_CONV_USERS = 5;
 // Join-quality gates for the conversion primary (pre-mortem guard): a
 // clean-looking p computed on a partial subId1 join is worse than no p.
 const JOIN_COVERAGE_FLOOR = 0.9;      // per-variant minimum
@@ -101,9 +106,16 @@ const JOIN_COVERAGE_MAX_DELTA = 0.1;  // max between-variant gap
  *   joinCoverage: fraction of this variant's subId2-attributed conversions
  *   that also carry a usable subId1 (null when the variant has 0 conversions —
  *   nothing to join, treated as fully covered).
+ * @param {{crossVariantConvUsers?: number, flagHealthProblem?: string|null}} [opts]
+ *   crossVariantConvUsers: count of subId1s that converted in BOTH variants —
+ *   any overlap violates the two-sample test's independence assumption and
+ *   suppresses the primary p (Codex ship-check finding, 2026-07-24).
+ *   flagHealthProblem: non-null when the live flag doesn't match its
+ *   registry-expected state — data collected under a drifted flag is
+ *   contaminated, so the primary p is suppressed with the reason.
  * @returns {object} structured report — see shape below.
  */
-function computeAbSignificance(variants) {
+function computeAbSignificance(variants, opts = {}) {
   if (!Array.isArray(variants) || variants.length !== 2) {
     return { degenerate: `need exactly 2 variants, got ${Array.isArray(variants) ? variants.length : typeof variants}` };
   }
@@ -139,11 +151,38 @@ function computeAbSignificance(variants) {
   };
 
   // Underpowered advisory (never blocks reporting the p — labeling only).
+  // Two floors: clicks (secondary metric heritage) AND converting users (the
+  // primary is a conversion rate — few conversions means an unstable estimate
+  // regardless of click volume).
   const minClicks = Math.min(a.clicks, b.clicks);
+  const minConvUsers = Math.min(a.convUsers, b.convUsers);
+  const underpoweredReasons = [];
   if (minClicks < UNDERPOWERED_MIN_CLICKS) {
+    underpoweredReasons.push(`min ${minClicks} clicks/variant (advisory floor ${UNDERPOWERED_MIN_CLICKS}: ~50% lift; 200+ ~30%, 400+ ~20%)`);
+  }
+  if (minConvUsers < UNDERPOWERED_MIN_CONV_USERS) {
+    underpoweredReasons.push(`min ${minConvUsers} converting users/variant (floor ${UNDERPOWERED_MIN_CONV_USERS} — conversion estimate unstable below this)`);
+  }
+  if (underpoweredReasons.length > 0) {
     report.underpowered = true;
-    report.underpoweredNote =
-      `min ${minClicks} clicks/variant — need 100+ for ~50% lift, 200+ for ~30%, 400+ for ~20%`;
+    report.underpoweredNote = underpoweredReasons.join('; ');
+  }
+
+  // Flag-health gate: data collected while the live flag drifted from its
+  // registry-expected state (split, rollout, sticky, inactive) is
+  // contaminated — no p should be read from it.
+  if (opts.flagHealthProblem) {
+    report.primary.suppressed = `flag state does not match registry expectations (${opts.flagHealthProblem}) — data collected under a drifted flag is contaminated`;
+    return report;
+  }
+
+  // Independence gate: a subId1 that converted in BOTH variants breaks the
+  // two-sample test's independence assumption (sticky bucketing should make
+  // this impossible — its presence itself signals assignment leakage).
+  if ((opts.crossVariantConvUsers || 0) > 0) {
+    report.primary.suppressed =
+      `${opts.crossVariantConvUsers} user(s) converted in BOTH variants — independence assumption violated (assignment leakage: cookie reset mid-window, sticky failure, or restart-boundary contamination); p not computed`;
+    return report;
   }
 
   // Join-quality gate: suppress the primary p rather than print a plausible
@@ -172,7 +211,17 @@ function computeAbSignificance(variants) {
   }
   report.primary.p = t.p;
   report.primary.z = t.z;
-  report.primary.note = t.note || null;
+  const notes = t.note ? [t.note] : [];
+  // Asymmetric-zero caution: one arm at exactly 0 attributed conversions
+  // while the other has several, at comparable click volume, looks more like
+  // a per-arm postback/join break (e.g. one variant's URL encoding the SubId
+  // differently) than a real behavioral zero. Warn — don't suppress — since
+  // early-test zeros are also legitimate.
+  const [lo, hi] = a.convCount <= b.convCount ? [a, b] : [b, a];
+  if (lo.convCount === 0 && hi.convCount >= 5 && lo.clicks > 0 && hi.clicks / lo.clicks < 3) {
+    notes.push(`arm '${lo.name}' has 0 attributed conversions while '${hi.name}' has ${hi.convCount} at comparable click volume — verify the SubId postback pipeline for '${lo.name}' before trusting this p`);
+  }
+  report.primary.note = notes.length ? notes.join(' | ') : null;
   report.primary.significant = t.p < 0.05;
   return report;
 }
@@ -182,6 +231,7 @@ module.exports = {
   computeAbSignificance,
   phi,
   UNDERPOWERED_MIN_CLICKS,
+  UNDERPOWERED_MIN_CONV_USERS,
   JOIN_COVERAGE_FLOOR,
   JOIN_COVERAGE_MAX_DELTA,
 };
