@@ -174,19 +174,22 @@ fi
 # above only ever walked .claude/commands/*.md, never hooks/). Cloud sessions
 # (no ~/.claude) run ONLY the repo copy, so drift there is a silent capability
 # gap, not just a stale-skill nuisance.
-# session-start.sh itself is EXPECTED to differ: the repo copy carries a
-# self-skip guard at the very top (so local sessions — which load BOTH this
-# global hook AND the repo's settings.json hook — don't double-fire) that must
-# never exist in this global master copy. Skip it here; everything else in
-# hooks/ should be identical.
+# Several repo hooks (session-start.sh, notion-create-block.sh,
+# whitespace-nowrap-lint.sh, pre-push-visual-gate.sh, verify-edits.sh — #430)
+# intentionally carry a repo-only "# Self-skip ... fi" guard block at the top
+# (so local sessions, which load BOTH this global hook AND the repo's
+# settings.json-wired copy, don't double-fire) that must never exist in the
+# global master copy. Strip that block before comparing so this permanent,
+# by-design difference doesn't re-flag every session — a hardcoded per-file
+# exception list would need updating by hand every time a new hook adopts the
+# convention; stripping the block generically self-heals for future hooks too.
 if [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/.claude/hooks" ] && [ -d "$HOME/.claude/hooks" ]; then
   HOOK_DRIFTED=""
   for hf in "$REPO_ROOT"/.claude/hooks/*.sh; do
     [ -f "$hf" ] || continue
     hb=$(basename "$hf")
-    [ "$hb" = "session-start.sh" ] && continue
     gh="$HOME/.claude/hooks/$hb"
-    if [ -f "$gh" ] && ! cmp -s "$hf" "$gh"; then
+    if [ -f "$gh" ] && ! diff -q <(sed '/# Self-skip/,/^fi$/d' "$hf") <(sed '/# Self-skip/,/^fi$/d' "$gh") >/dev/null 2>&1; then
       if [ "$hf" -nt "$gh" ]; then
         HOOK_DRIFTED="$HOOK_DRIFTED
      $hb (repo copy has newer mtime)"
@@ -204,8 +207,9 @@ if [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/.claude/hooks" ] && [ -d "$HOME/.clau
     echo "🔶 HOOK-FILE DRIFT: repo .claude/hooks/ differs from ~/.claude/hooks/ —"
     echo "   cloud sessions run ONLY the repo copy, so drift there is a silent"
     echo "   capability gap, not just a stale-skill nuisance:$HOOK_DRIFTED"
-    echo "   Merge best-of-both, make both sides identical (session-start.sh"
-    echo "   excepted — see comment above), commit repo + claude-sync push."
+    echo "   Merge best-of-both, make both sides identical (repo-only"
+    echo "   self-skip guard blocks excepted — see comment above), commit"
+    echo "   repo + claude-sync push."
     echo ""
   fi
 fi
