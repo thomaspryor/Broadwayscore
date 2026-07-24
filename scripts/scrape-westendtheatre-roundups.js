@@ -66,6 +66,7 @@ const stats = {
   skippedCachedNoRatings: 0,
   pageFetches: 0,
   unprocessedPosts: 0,
+  paginationBudgetExit: false,
   errors: [],
 };
 
@@ -404,6 +405,15 @@ async function main() {
   console.log('📡 Fetching review roundup posts from WordPress API...\n');
 
   while (page <= MAX_PAGES) {
+    // Pagination itself can go entirely through Bright Data (10-60s/page) when
+    // ScrapingBee/Scrapingdog are down — without this check it can burn the
+    // whole run budget before the post-processing loop's own check ever runs,
+    // pushing the script past the job's timeout-minutes (task #369).
+    if (timeBudget.exceeded()) {
+      stats.paginationBudgetExit = true;
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached during pagination — ${allPosts.length} posts fetched across ${stats.apiPages} pages so far. Next run restarts pagination from page 1.`);
+      break;
+    }
     const url = `${WP_API_BASE}/posts?categories=${REVIEWS_CATEGORY}&per_page=${PER_PAGE}&page=${page}`;
     try {
       const posts = await fetchWpApiPage(url);
@@ -431,7 +441,9 @@ async function main() {
 
   // Zero-data guard: if API returned 0 posts, something is wrong (WAF, API change, etc.)
   // Don't silently succeed — alert so the issue is caught quickly, not after weeks.
-  if (allPosts.length === 0 && !showFilter) {
+  // Skip when the budget exit fired before page 1 completed — that's a clean
+  // deferral, not a WAF block/API-change signal.
+  if (allPosts.length === 0 && !showFilter && !stats.paginationBudgetExit) {
     console.error('❌ ZERO POSTS fetched from WET API — likely WAF block or API change. Failing.');
     process.exit(1);
   }
@@ -632,6 +644,9 @@ async function main() {
   console.log(`  Rendered-page fetches:   ${stats.pageFetches}`);
   if (stats.unprocessedPosts > 0) {
     console.log(`  ⏱ Unprocessed (time budget): ${stats.unprocessedPosts}`);
+  }
+  if (stats.paginationBudgetExit) {
+    console.log(`  ⏱ Pagination stopped early (time budget) — will restart from page 1 next run`);
   }
   if (!dryRun) {
     console.log(`  New reviews:    ${stats.newReviews}`);

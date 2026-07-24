@@ -24,7 +24,7 @@ on:
         description: 'Wall-clock budget in minutes (0 = unlimited)'
         required: false
         type: string
-        default: '25'
+        default: '22'
 
 concurrency:
   group: westendtheatre-scrape
@@ -37,7 +37,7 @@ permissions:
 jobs:
   scrape-westendtheatre:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -96,12 +96,17 @@ jobs:
             ARGS="$ARGS --force"
           fi
 
-          # Exit cleanly before the 30-min job timeout; deferred posts are
+          # Exit cleanly before the 35-min job timeout; deferred posts are
           # picked up next run (archives + no-ratings cache persist progress).
+          # 22 (not 25) leaves headroom for a worst-case in-flight BD/Playwright
+          # fetch chain (~90s) plus the checkpoint-commit steps once the script
+          # stops STARTING new fetches (task #369 — pagination-phase fetches
+          # were consuming most of the old 25-min budget with no check of
+          # their own before the post-loop's check ever ran).
           # Default in bash, not a GHA || expression — the expression coerces
           # a literal 0 (= unlimited) to falsy.
           TB="${{ inputs.time_budget_min }}"
-          [ -z "$TB" ] && TB=25
+          [ -z "$TB" ] && TB=22
           ARGS="$ARGS --time-budget-min=$TB"
 
           # shellcheck disable=SC2086
