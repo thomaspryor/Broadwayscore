@@ -238,7 +238,16 @@ function cmdPull(args) {
   if (!dry) fs.mkdirSync(dir, { recursive: true });
   const statuses = (args.statuses || 'In progress,Not started').split(',').map(s => s.trim()).filter(Boolean);
   const priorities = (args.priorities || 'P0 Now,P1 Next').split(',').map(s => s.trim()).filter(Boolean);
-  const limit = parseInt(args.limit, 10) || 25;
+  // Default raised 25 -> 300 (2026-07-24): notion-brain search sorts P0/P1
+  // Priority-ascending, not by recency, so a newly created card has no
+  // guarantee of landing in the first 25 results once a priority tier's
+  // backlog exceeds the page limit — it's silently dropped from the mirror
+  // until someone happens to pass a bigger --limit. 300 comfortably covers
+  // the current combined P0/P1 Not-started+In-progress backlog (~110) with
+  // headroom for growth; fetchCards already paginates via next_cursor to
+  // satisfy whatever limit is requested, so this only costs a few extra
+  // Notion API calls, not a correctness tradeoff.
+  const limit = parseInt(args.limit, 10) || 300;
 
   const release = dry ? (() => {}) : acquireLock(dir);
   if (!release) { console.error('[sync] another pull holds the lock; skipping'); return { skipped: true }; }
