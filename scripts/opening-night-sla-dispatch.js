@@ -55,9 +55,22 @@ async function main() {
   const entries = readJSONL(logFile);
 
   // --- Evaluate SLA ---
+  // Scope to the shows in tonight's checklist — the shows we're actively
+  // shepherding. This is the guard against the 2026-07-24 false-page storm:
+  // without a scope, the SLA counted CI test fixtures + historical backfills
+  // (which never emit a per-review deploy stamp) as "stuck", growing 15→29.
+  // checklist present (even empty) → precise scope; checklist unreadable →
+  // null → the lib falls back to excluding obvious test fixtures.
+  let activeShowIds = null;
+  if (checklistData && Array.isArray(checklistData.shows)) {
+    activeShowIds = checklistData.shows
+      .map(s => (s.show && (s.show.id || s.show.showId)) || s.showId || s.id)
+      .filter(Boolean);
+  }
+
   let slaResult = { warnings: [], pages: [] };
   try {
-    slaResult = evaluateSlaForReviews(entries);
+    slaResult = evaluateSlaForReviews(entries, { activeShowIds });
   } catch (e) {
     process.stderr.write(`[sla-dispatch] SLA evaluation error: ${e.message}\n`);
   }

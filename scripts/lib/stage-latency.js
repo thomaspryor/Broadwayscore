@@ -67,6 +67,15 @@ function rotateIfNeeded(logFile, maxBytes = MAX_LOG_BYTES, retainBytes = RETAIN_
  * @param {object}  [opts.metadata]    free-form extras (runId, sha, reviewCount, …)
  */
 function emitStage({ showId, reviewKey, stage, at, metadata }) {
+  // Prevention (2026-07-24): CI unit tests exercise review-file-writer, whose
+  // saveReview emits review-first-seen unconditionally. Without STAGE_LATENCY_LOG
+  // pointed at a temp file those fixture rows (guard-*, test-show-2026, fake URLs)
+  // landed in the committed prod log and the opening-night SLA counted them as
+  // "stuck ≥60 min". BSC_STAGE_LATENCY_MUTE=1 (set in test.yml's unit step) makes
+  // the emit a no-op UNLESS a test explicitly points STAGE_LATENCY_LOG at its own
+  // file — so stage-latency's own tests still work.
+  if (process.env.BSC_STAGE_LATENCY_MUTE === '1' && !process.env.STAGE_LATENCY_LOG) return;
+
   const logFile = process.env.STAGE_LATENCY_LOG || DEFAULT_LOG;
 
   const line = JSON.stringify({
