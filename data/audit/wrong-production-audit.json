@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-24T18:38:08.540Z",
+  "timestamp": "2026-07-24T19:41:48.773Z",
   "stats": {
-    "totalReviews": 40437,
+    "totalReviews": 40438,
     "alreadyFlagged": 17802,
     "dateGuardCatches": 59,
-    "directorMismatch": 907,
+    "directorMismatch": 908,
     "tvFilmSignals": 1108,
-    "londonSignals": 755,
+    "londonSignals": 758,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3263
+    "noPublishDate": 3260
   },
   "findings": [
     {
@@ -13133,6 +13133,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "publishDate": "2026-03-27",
+      "url": "https://theatreandtonic.co.uk/blog/john-proctor-is-the-villain-royal-court-theatre-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -31891,6 +31909,7 @@
     {
       "showId": "end-of-the-rainbow-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
+      "score": 99,
       "publishDate": "2026-05-22",
       "url": "https://www.allthatdazzles.co.uk/post/review-end-of-the-rainbow-soho-theatre-walthamstow",
       "findings": [
@@ -35317,6 +35336,20 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-04",
+      "url": "https://www.allthatdazzles.co.uk/post/review-les-liaisons-dangereuses-lyttelton-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 82,
       "publishDate": "2026-04-02",
@@ -35475,6 +35508,20 @@
       "score": 90,
       "publishDate": null,
       "url": "https://www.thereviewshub.com/les-liaisons-dangereuses-national-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "theupcoming--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-02",
+      "url": "https://www.theupcoming.co.uk/2026/04/02/les-liaisons-dangereuses-at-the-national-theatre-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
