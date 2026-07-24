@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-24T21:27:07.754Z",
+  "timestamp": "2026-07-24T22:32:34.552Z",
   "stats": {
-    "totalReviews": 40438,
+    "totalReviews": 40440,
     "alreadyFlagged": 17804,
     "dateGuardCatches": 59,
-    "directorMismatch": 908,
+    "directorMismatch": 910,
     "tvFilmSignals": 1108,
-    "londonSignals": 758,
+    "londonSignals": 760,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3258
+    "noPublishDate": 3257
   },
   "findings": [
     {
@@ -1935,6 +1935,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "british-theatre--susan-novak.json",
+      "publishDate": "2026-07-23",
+      "url": "https://www.britishtheatre.com/posts/beetlejuice-the-musical-welcomes-summer-strallen-as-delia-deetz-in-limited-west",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -8270,6 +8288,24 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: giant-2026"
+        }
+      ]
+    },
+    {
+      "showId": "giant-west-end-2025",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "publishDate": "2025-05-02",
+      "url": "https://www.broadwayworld.com/westend/article/Review-GIANT-Harold-Pinter-Theatre-Starring-John-Lithgow-20250502",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
