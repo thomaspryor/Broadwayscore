@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-24T00:41:52.755Z",
+  "timestamp": "2026-07-24T01:49:17.189Z",
   "stats": {
-    "totalReviews": 40389,
-    "alreadyFlagged": 17782,
+    "totalReviews": 40422,
+    "alreadyFlagged": 17798,
     "dateGuardCatches": 59,
     "directorMismatch": 905,
-    "tvFilmSignals": 1107,
-    "londonSignals": 753,
+    "tvFilmSignals": 1108,
+    "londonSignals": 754,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3265
+    "noPublishDate": 3271
   },
   "findings": [
     {
@@ -19586,6 +19586,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "sherlock-holmes-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://theartsdesk.com/theatre/sherlock-holmes-regents-park-open-air-theatre-review-gleefully-madcap-and-unashamedly-cerebral",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -43694,6 +43708,19 @@
       "score": 77,
       "publishDate": "2026-06-11",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-under-the-shadow-almeida",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "under-the-shadow-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2026-06-10",
+      "url": "https://www.londontheatre.co.uk/reviews/under-the-shadow-review-almeida-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
