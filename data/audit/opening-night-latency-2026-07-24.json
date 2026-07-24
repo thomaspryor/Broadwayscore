@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-24T03:27:37.424Z",
+  "generatedAt": "2026-07-24T05:27:49.706Z",
   "date": "2026-07-24",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 149796,
+  "entryCount": 150993,
   "shows": [
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
@@ -67,17 +67,23 @@
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
       "reviewCount": 19,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "median_e2e_ms": 2667898,
+      "p90_e2e_ms": 2667898,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 38085098,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
-      "reviews_over_15min": 0,
+      "reviews_over_15min": 1,
       "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "slowest_reviews": [
+        {
+          "reviewKey": "broadwayworld:charles-isherwood:https://www.broadwayworld.com/reviews/the-whoopi-monologues",
+          "e2e_ms": 2667898,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
     },
     {
       "showId": "shit-meet-fan-off-broadway-2024",
@@ -382,17 +388,23 @@
     {
       "showId": "joe-turners-come-and-gone-2026",
       "reviewCount": 29,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "median_e2e_ms": 2667906,
+      "p90_e2e_ms": 2667906,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
-      "reviews_over_15min": 0,
+      "reviews_over_15min": 1,
       "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "slowest_reviews": [
+        {
+          "reviewKey": "broadwayworld:aa-cristi:https://www.broadwayworld.com/article/Review-Roundup-JOE-TURNERS-COME-AND-GONE-Opens-On-Broadway-20260425",
+          "e2e_ms": 2667906,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
     },
     {
       "showId": "the-rocky-horror-show-2026",
@@ -1012,17 +1024,23 @@
     {
       "showId": "hamilton-2015",
       "reviewCount": 40,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "median_e2e_ms": 2667900,
+      "p90_e2e_ms": 2667900,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
-      "reviews_over_15min": 0,
+      "reviews_over_15min": 1,
       "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "slowest_reviews": [
+        {
+          "reviewKey": "broadwayworld:test-critic:https://www.broadwayworld.com/article/BWW-Review-Hamilton-Broadway-Production-20150101",
+          "e2e_ms": 2667900,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
     },
     {
       "showId": "aladdin-2014",
@@ -11632,17 +11650,23 @@
     {
       "showId": "tender-off-west-end-2026",
       "reviewCount": 12,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "median_e2e_ms": 2665086,
+      "p90_e2e_ms": 2665086,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
-      "reviews_over_15min": 0,
+      "reviews_over_15min": 1,
       "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "slowest_reviews": [
+        {
+          "reviewKey": "guardian:david-jays:https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
+          "e2e_ms": 2665086,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
     },
     {
       "showId": "a-midsummer-nights-dream-globe-west-end-2026",
@@ -15711,7 +15735,7 @@
     },
     {
       "showId": "sherlock-holmes-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15756,7 +15780,7 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15768,6 +15792,221 @@
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
       "slowest_reviews": []
+    },
+    {
+      "showId": "guard-g-flag",
+      "reviewCount": 1,
+      "median_e2e_ms": 2671238,
+      "p90_e2e_ms": 2671238,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 0,
+      "slowest_reviews": [
+        {
+          "reviewKey": "variety:peter-marks:https://variety.com/fake-review-1",
+          "e2e_ms": 2671238,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
+    },
+    {
+      "showId": "guard-g-freelancer",
+      "reviewCount": 1,
+      "median_e2e_ms": 2671236,
+      "p90_e2e_ms": 2671236,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 0,
+      "slowest_reviews": [
+        {
+          "reviewKey": "nypost:adam-feldman:https://nypost.com/fake-review",
+          "e2e_ms": 2671236,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
+    },
+    {
+      "showId": "guard-g-correct",
+      "reviewCount": 1,
+      "median_e2e_ms": 2671234,
+      "p90_e2e_ms": 2671234,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 0,
+      "slowest_reviews": [
+        {
+          "reviewKey": "washpost:peter-marks:https://washingtonpost.com/fake-review",
+          "e2e_ms": 2671234,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
+    },
+    {
+      "showId": "guard-g-unknown",
+      "reviewCount": 1,
+      "median_e2e_ms": 2671233,
+      "p90_e2e_ms": 2671233,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 0,
+      "slowest_reviews": [
+        {
+          "reviewKey": "variety:unknown:https://variety.com/fake-review-2",
+          "e2e_ms": 2671233,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
+    },
+    {
+      "showId": "guard-g-newcritic",
+      "reviewCount": 1,
+      "median_e2e_ms": 2671232,
+      "p90_e2e_ms": 2671232,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 0,
+      "slowest_reviews": [
+        {
+          "reviewKey": "variety:completely-new-critic-nobody-has-heard-of:https://variety.com/fake-review-3",
+          "e2e_ms": 2671232,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
+    },
+    {
+      "showId": "test-show-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": 2669472,
+      "p90_e2e_ms": 2671049,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 2,
+      "reviews_over_60min": 0,
+      "slowest_reviews": [
+        {
+          "reviewKey": "variety:daniel-daddario:https://variety.com/2026/legit/reviews/some-review-1234567890/",
+          "e2e_ms": 2671049,
+          "stuck_at_stage": "review-first-seen"
+        },
+        {
+          "reviewKey": "broadwayworld:test:https://www.broadwayworld.com/article/review-roundup-LOWER-CASE-TEST",
+          "e2e_ms": 2667894,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
+    },
+    {
+      "showId": "merge-show-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": 2671047,
+      "p90_e2e_ms": 2671047,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 0,
+      "slowest_reviews": [
+        {
+          "reviewKey": "variety:jane-critic:https://variety.com/2026/legit/reviews/x-1234509876/",
+          "e2e_ms": 2671047,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
+    },
+    {
+      "showId": "fs-show",
+      "reviewCount": 1,
+      "median_e2e_ms": 2667901,
+      "p90_e2e_ms": 2667901,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 0,
+      "slowest_reviews": [
+        {
+          "reviewKey": "variety:naveen-kumar:https://variety.com/2026/legit/reviews/fs-review-1",
+          "e2e_ms": 2667901,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
+    },
+    {
+      "showId": "fsm-show",
+      "reviewCount": 1,
+      "median_e2e_ms": 2667894,
+      "p90_e2e_ms": 2667894,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 0,
+      "slowest_reviews": [
+        {
+          "reviewKey": "variety:naveen-kumar:https://variety.com/2026/legit/reviews/fs-review-2",
+          "e2e_ms": 2667894,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
+    },
+    {
+      "showId": "tender-by-dave-harris-off-west-end-2026",
+      "reviewCount": 8,
+      "median_e2e_ms": 2665102,
+      "p90_e2e_ms": 2665102,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 0,
+      "slowest_reviews": [
+        {
+          "reviewKey": "guardian:david-jays:https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
+          "e2e_ms": 2665102,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
     }
   ]
 }
