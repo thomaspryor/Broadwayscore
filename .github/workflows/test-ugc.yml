@@ -28,6 +28,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          # fetch-depth: 0 required — this job commits snapshots via push-with-retry.sh
+          # under the same main-branch commit churn as the Visual Regression job in
+          # test.yml (task #353). See that job's checkout step for the full rationale.
+          fetch-depth: 0
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data

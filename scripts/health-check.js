@@ -1186,6 +1186,17 @@ async function checkStuckWorkInner() {
 
 // --- Category J: API Credits ---
 
+// Expiring acknowledgment for the known, already-tracked ScrapingBee exhaustion
+// (card #224) — mirrors check-secrets-health.js's SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION
+// and the npm audit allowlist pattern. Without this, a known outage with its
+// own card errors the digest daily until the monthly credit reset, even though
+// there is nothing left to action. The expiry forces re-triage instead of
+// silently masking forever.
+const SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION = {
+  reason: 'Monthly API limit exhausted (1M credits) — tracked in card #224, resets on billing cycle.',
+  expires: '2026-08-05',
+};
+
 function checkAPICredits() {
   const apiKey = process.env.SCRAPINGBEE_API_KEY;
   const results = [];
@@ -1235,6 +1246,13 @@ function checkAPICredits() {
       }
 
       if (pctRemaining <= 5) {
+        if (remaining <= 0) {
+          const ack = SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION;
+          const today = new Date().toISOString().slice(0, 10);
+          if (ack.expires > today) {
+            return { name: 'Credits: ScrapingBee', status: 'warn', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg} — acknowledged: ${ack.reason} [expires ${ack.expires}]` };
+          }
+        }
         return { name: 'Credits: ScrapingBee', status: 'error', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg}`, hint: 'Upgrade plan or reduce scraping.' };
       }
       if (pctRemaining <= 15) {
