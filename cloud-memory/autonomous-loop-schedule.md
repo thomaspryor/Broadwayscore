@@ -72,8 +72,8 @@ Because :00 / :17 / :37 fire every hour, the largest possible distance from a su
 | 06:00 | 1st of Jan/Apr/Jul/Oct | generate-theater-tips.yml | quarterly theater tips |
 | 06:20 | daily | check-corpus-drift.yml | corpus drift check |
 | 07:00 | daily | recover-wsj-subscriber.yml | WSJ subscriber-access recovery |
-| 07:00 | daily | data-health-check.yml | data health check |
 | 07:00 | daily | poll-loureviews.yml | LouReviews UK poll |
+| **16:00** | **daily** | **data-health-check.yml (BSC digest carrier)** | **moved 07:00→16:00 UTC 2026-07-24 (card #409) — ≥3h from the overnight approval email; see check-cron-health.yml 26h note** |
 | 07:00 | Mon | enrich-west-end-dates.yml | West End date enrichment |
 | 07:00 | Mon | scrape-theatre-reviews.yml | theatre.reviews scrape |
 | 07:00 | Mon | enrich-runtimes.yml | runtime enrichment |
