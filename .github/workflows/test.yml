@@ -510,6 +510,12 @@ on:
       - 'scripts/lib/significance.js'
       - 'scripts/lib/significance.test.mjs'
       - 'scripts/analyze-ab-test.js'
+      # Weekly ticket-single-button A/B monitor (card #392) — pure rules +
+      # runner + analyzer; colocated test runs in the scripts/lib/*.test.mjs
+      # glob step.
+      - 'scripts/lib/ticket-ab-monitor-rules.js'
+      - 'scripts/lib/ticket-ab-monitor-rules.test.mjs'
+      - 'scripts/monitor-ticket-ab.js'
       # Overall email-gate funnel monitor (card #240) — pure rules + runner +
       # analyzer; colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/email-gate-funnel-rules.js'
