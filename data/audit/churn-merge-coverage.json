@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-24T01:01:36.959Z",
+    "generatedAt": "2026-07-24T01:17:04.787Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,7 +16,7 @@
   "flagged": [
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 86
+      "churn": 87
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
@@ -44,7 +44,7 @@
     },
     {
       "path": "data/audit/we-gate-proving.json",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "data/audit/validation/collection-report-2026-07-22.json",
@@ -58,7 +58,7 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 128
+      "churn": 129
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
@@ -122,17 +122,17 @@
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 672,
+      "churn": 673,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 636,
+      "churn": 638,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 423,
+      "churn": 424,
       "mergeAttr": "ours"
     },
     {
@@ -152,12 +152,12 @@
     },
     {
       "path": "data/audit/poller-backoff/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 106,
+      "churn": 104,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/shifters-off-broadway-2026.json",
-      "churn": 106,
+      "churn": 104,
       "mergeAttr": "ours"
     },
     {
@@ -168,11 +168,6 @@
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
       "churn": 78,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
-      "churn": 56,
       "mergeAttr": "ours"
     },
     {
@@ -193,6 +188,11 @@
     {
       "path": "data/collection-state/browserbase-usage.json",
       "churn": 55,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
+      "churn": 54,
       "mergeAttr": "ours"
     },
     {
@@ -232,12 +232,12 @@
     },
     {
       "path": "data/audit/show-review-gap.json",
-      "churn": 46,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 46,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
@@ -277,12 +277,12 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 36,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 36,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
