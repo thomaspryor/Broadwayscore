@@ -55,6 +55,7 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl } = {}) {
   // fs calls for exactly those two paths to the temp dir equivalents.
   const ledgerPath = path.join(tmpDir, 'alert-ledger.json');
   const digestPath = path.join(tmpDir, 'alert-digest-queue.json');
+  const attemptsPath = path.join(tmpDir, 'alert-router-attempts.jsonl');
 
   const realReadFileSync = fs.readFileSync;
   const realWriteFileSync = fs.writeFileSync;
@@ -67,6 +68,10 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl } = {}) {
       return p.replace(router._LEDGER_PATH, ledgerPath);
     }
     if (p === router._DIGEST_QUEUE_PATH) return digestPath;
+    // dispatchCard() logs every disposition='auto' attempt here — must be
+    // redirected too, or every test run touching disposition='auto' writes
+    // real attempt rows into the repo's data/audit/ directory.
+    if (p === router._ATTEMPTS_LOG_PATH) return attemptsPath;
     return p;
   }
 
@@ -123,6 +128,10 @@ test('routeAlert: a failed card dispatch is NOT recorded as notified — retries
       disposition: 'auto',
     });
     assert.equal(first.dispatchOk, false);
+    // The real underlying error must be propagated, not just a boolean —
+    // callers (health-check.js's digest instruction text, the E2E canary)
+    // need it to avoid re-guessing a cause (2026-07-24 npm-ci postmortem).
+    assert.match(first.dispatchError, /Notion API down/);
     // Ledger must NOT show this as an open/notified incident — otherwise the
     // silent-refire guard would suppress the real alert for a full cooldown
     // window even though nobody was ever actually told.
@@ -300,6 +309,63 @@ test('routeAlert: rejects a missing conditionKey', async () => {
       () => router.routeAlert({ title: 'x', disposition: 'auto' }),
       /conditionKey/
     );
+  } finally {
+    restore();
+  }
+});
+
+test('deleteCondition: hard-removes an open condition; no-op on an unknown key', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({
+      conditionKey: 'test:to-delete',
+      title: 'x',
+      description: 'desc',
+      disposition: 'auto',
+    });
+    assert.ok(router.loadLedger().conditions['test:to-delete']);
+
+    assert.equal(router.deleteCondition('test:to-delete'), true);
+    assert.equal(router.loadLedger().conditions['test:to-delete'], undefined);
+    assert.equal(router.deleteCondition('test:never-existed'), false);
+  } finally {
+    restore();
+  }
+});
+
+// Card #374 (E2E canary + swallowed-error audit postmortem): the attempts
+// log is what lets health-check.js's deadman check distinguish "auto-dispatch
+// never fired" from "auto-dispatch fired repeatedly and always failed" — the
+// ledger alone can't, because a failed dispatch is deliberately never written
+// there (see the test above).
+test('readDispatchAttempts: records both successes and failures, independent of the ledger', async () => {
+  const { router, restore } = loadRouterWithFakes({
+    execFileSyncImpl: () => { throw new Error("Cannot find module '@notionhq/client'"); },
+  });
+  try {
+    await router.routeAlert({ conditionKey: 'test:attempt-a', title: 'a', description: 'd', disposition: 'auto' });
+    await router.routeAlert({ conditionKey: 'test:attempt-b', title: 'b', description: 'd', disposition: 'auto' });
+
+    const attempts = router.readDispatchAttempts({ days: 7 });
+    assert.equal(attempts.length, 2);
+    assert.ok(attempts.every(a => a.ok === false));
+    assert.match(attempts[attempts.length - 1].error, /@notionhq\/client/);
+
+    // Every attempt failed, so the ledger stays empty — this is the exact gap
+    // a ledger-only deadman check would miss.
+    assert.deepEqual(router.loadLedger().conditions, {});
+  } finally {
+    restore();
+  }
+});
+
+test('readDispatchAttempts: a successful dispatch is also logged (ok=true)', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({ conditionKey: 'test:attempt-ok', title: 'ok', description: 'd', disposition: 'auto' });
+    const attempts = router.readDispatchAttempts({ days: 7 });
+    assert.equal(attempts.length, 1);
+    assert.equal(attempts[0].ok, true);
   } finally {
     restore();
   }
