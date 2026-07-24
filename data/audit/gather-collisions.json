@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-07-21T21:25:24.448Z",
-    "showId": "loves-labours-lost-globe-west-end-2026",
-    "newFile": "whatsonstage--unknown.json",
-    "ok": false,
-    "file": "whatsonstage--matt-trueman.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.whatsonstage.com/news/review-loves-labours-lost-sam-wanamaker-playhouse_47484/",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2018-08-30",
-      "incomingUrl": "https://www.whatsonstage.com/news/loves-labours-lost-and-much-ado-about-nothing-at-braboeuf-manor-review_1727216/",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-07-21T21:26:05.908Z",
     "showId": "to-kill-a-mockingbird-west-end-2026",
     "newFile": "whatsonstage--unknown.json",
@@ -9438,6 +9419,21 @@
   },
   {
     "recordedAt": "2026-07-24T04:29:43.368Z",
+    "showId": "hadestown-2019",
+    "newFile": "nytimes--unknown.json",
+    "ok": false,
+    "file": "nytimes--ben-brantley.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2019-04-17T20:11:26-04:00",
+      "incomingPublishDate": "2026-07-23",
+      "diffDays": 2653,
+      "existingUrl": "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html?smtyp=cur&smid=tw-nytimesarts",
+      "incomingUrl": "https://www.nytimes.com/2026/07/23/movies/hadestown-the-musical-review.html"
+    }
+  },
+  {
+    "recordedAt": "2026-07-24T05:08:45.633Z",
     "showId": "hadestown-2019",
     "newFile": "nytimes--unknown.json",
     "ok": false,
