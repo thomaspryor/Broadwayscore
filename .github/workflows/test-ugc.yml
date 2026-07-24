@@ -114,12 +114,12 @@ jobs:
             exit 0
           fi
           git commit -m "chore: Update UGC visual baselines [skip ci]"
-          bash scripts/lib/push-with-retry.sh 20
-        env:
-          # Same main-branch commit-churn race as the Visual Regression job in
-          # test.yml (task #353) — a wider retry budget, not fetch-depth, is
-          # the fix. See that job's push step for the full rationale.
-          PUSH_DEADLINE_SEC: 900
+          # Non-blocking: same main-branch commit-churn race as the Visual
+          # Regression job in test.yml (task #353) — a wider retry budget
+          # doesn't help (proven: 20 retries/900s lost every attempt in a
+          # live test, run 30057838225). The snapshot commit isn't
+          # time-sensitive, so a lost race must not redden this job.
+          bash scripts/lib/push-with-retry.sh || echo "::warning::Snapshot push failed — next run will recommit"
 
       - name: Notify on failure
         if: failure()
