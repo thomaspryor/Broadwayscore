@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-07-21T20:37:16.611Z",
-    "showId": "heathers-the-musical-off-west-end-2026",
-    "newFile": "all-that-dazzles-uk--daz-gale.json",
-    "ok": false,
-    "file": "all-that-dazzles-uk--unknown.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.allthatdazzles.co.uk/post/review-heathers-the-arts-at-marble-arch",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": null,
-      "incomingUrl": "https://www.allthatdazzles.co.uk/post/review-heathers-sohoplace",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-07-21T20:37:16.648Z",
     "showId": "heathers-the-musical-off-west-end-2026",
     "newFile": "west-end-best-friend--cara-brazier.json",
@@ -9473,6 +9454,21 @@
       "existingPublishDate": "2018-09-13",
       "incomingUrl": "https://www.whatsonstage.com/news/heathers-the-musical-at-theatre-royal-haymarket-review_54381/",
       "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-07-24T00:40:28.641Z",
+    "showId": "hadestown-2019",
+    "newFile": "nytimes--unknown.json",
+    "ok": false,
+    "file": "nytimes--ben-brantley.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2019-04-17T20:11:26-04:00",
+      "incomingPublishDate": "2026-07-23",
+      "diffDays": 2653,
+      "existingUrl": "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html?smtyp=cur&smid=tw-nytimesarts",
+      "incomingUrl": "https://www.nytimes.com/2026/07/23/movies/hadestown-the-musical-review.html"
     }
   }
 ]
