@@ -107,10 +107,10 @@ Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mar
 
 ### Content Quality
 5 tiers: complete→truncated→excerpt→stub→invalid. Flags `wrongProduction`, `wrongShow`, `isRoundupArticle` → excluded.
-**After ANY manual review recovery** (clearing flags, stubs, ingesting URLs): run `node scripts/verify-review-recovery.js --show=ID --production` — the pipeline has 5 steps that fail silently and independently; it checks all and prints the fix command for each.
+**After ANY manual review recovery** (clearing flags, stubs, ingesting URLs): run `node scripts/verify-review-recovery.js --show=ID --production` — 5 pipeline steps fail silently and independently; it checks all and prints each fix command.
 
 ### Web Scraping
-Fallback chain: Bright Data → ScrapingBee → Playwright. **Rule:** all new scraping MUST use `fetchPage()` from `scripts/lib/scraper.js` — never call BD/SB APIs directly; scraping workflows pass both `BRIGHTDATA_TOKEN` AND `SCRAPINGBEE_API_KEY` (CI enforces in `lint-workflows`; legit exemptions go in test.yml's exempt list with a comment).
+Fallback chain: Bright Data → ScrapingBee → Playwright. **Rule:** all new scraping MUST use `fetchPage()` from `scripts/lib/scraper.js` — never call BD/SB APIs directly; scraping workflows pass both `BRIGHTDATA_TOKEN` AND `SCRAPINGBEE_API_KEY` (CI enforces in `lint-workflows`; exemptions: test.yml exempt list with comment).
 **Aggregators** — BW: Show Score, DTLI, BWW Roundups + Reviews Pages, Playbill Verdict, NYC Theatre. WE: WestEndTheatre (WET), theatre.reviews (TR), Stagedoor (SD), The Stage (TS), London Box Office (LBO) — in `gather-reviews.js` + `opening-night-poller.js`.
 
 For full details on any subsystem: `memory/CLAUDE-reference.md`
@@ -119,7 +119,7 @@ For full details on any subsystem: `memory/CLAUDE-reference.md`
 **Never copy logic into test files — always `require()` the real function.** Extract pure decision functions to `scripts/lib/` (e.g. `review-guards.js`); `module.exports` and `require()` in the test. Production code changes → test fails — that's the point. When fixing inline pipeline logic: extract → export → wire back → test.
 
 ### 16. Memory Entries: Encode First, Write Rarely
-**Never offer to "commit a memory file"** — the session-stop hook (`sync-memory-to-repo.sh --commit`) mirrors + commits + pushes local memory automatically. Write a local memory entry ONLY if all three hold: (1) **encode-first** — the lesson can't be a code/test/hook/CI change (exception: a triage recipe when a symptom has 2+ independent silent causes); (2) **counterfactual** — names the specific future action that changes; (3) **recall** — a future session would surface it from its description. **No new memory is the normal outcome**; it never satisfies "Prevention added" when code-level prevention was possible. "Remember this" from the user → write it, no ceremony.
+**Never offer to "commit a memory file"** — the session-stop hook syncs local memory automatically. Write a memory ONLY if all three hold: (1) **encode-first** — can't be a code/test/hook/CI change (rare exception: multi-cause triage recipes); (2) **counterfactual** — names the future action that changes; (3) **recall** — discoverable from its description. **No new memory is the normal outcome**; it never satisfies "Prevention added" when code-level prevention was possible. "Remember this" from the user → write it.
 
 ### 17. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
 See `memory/email-broadcast-rules.md` for full history.
@@ -134,4 +134,4 @@ CLAUDE.md (**limit: 150 lines**) and MEMORY.md (**limit: 180 lines**) load every
 New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memory/completed-migrations.md`.
 
 ## Cloud sessions
-If you're a cloud Claude Code session (iOS, Mac app, claude.ai/code) you don't have `~/.claude/`. Read `.claude/CLOUD.md` first, then `cloud-memory/MEMORY.md`. Run `node scripts/check-cloud-secrets.js` to verify required secrets are present.
+Cloud sessions (iOS, Mac app, claude.ai/code) have no `~/.claude/`: read `.claude/CLOUD.md`, then `cloud-memory/MEMORY.md`; `node scripts/check-cloud-secrets.js` verifies secrets.
