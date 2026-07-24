@@ -13,6 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -71,7 +72,7 @@ async function main() {
   console.log(`SeatPlan Link Enrichment ${DRY_RUN ? '(DRY RUN)' : ''}`);
   console.log('='.repeat(60));
 
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows;
 
   let candidates;
@@ -120,7 +121,7 @@ async function main() {
   }
 
   if (!DRY_RUN && added > 0) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
   }
 
   console.log(`\n${'='.repeat(60)}`);

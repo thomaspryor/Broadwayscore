@@ -35,7 +35,11 @@
  *   See memory/feedback_closing_date_audit_gaps.md.
  *
  * Usage:
- *   node scripts/audit-closing-dates.js [--dry-run] [--shows=id1,id2]
+ *   node scripts/audit-closing-dates.js [--dry-run] [--shows=id1,id2] [--time-budget-min=N]
+ *
+ * --time-budget-min=N: wall-clock budget in minutes (0 or omitted = unlimited).
+ * Exits cleanly once exceeded instead of running into the job timeout;
+ * deferred shows are picked up on the next run.
  *
  * Env:
  *   BRIGHTDATA_TOKEN, BRIGHTDATA_ZONE, SCRAPINGBEE_API_KEY
@@ -48,6 +52,8 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { discoverAnnouncedClosingDate } = require('./lib/closing-date-discovery');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { classifyMissingSchedule, possiblyClosedPressAgreement } = require('./lib/closing-audit-classify');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const AUDIT_FILE = path.join(__dirname, '..', 'data', 'audit', 'closing-date-discrepancies.json');
@@ -58,6 +64,7 @@ const TODAY_YEAR = new Date().getFullYear();
 const argv = process.argv.slice(2);
 const DRY_RUN = argv.includes('--dry-run');
 const SHOWS_FILTER = (argv.find(a => a.startsWith('--shows=')) || '').replace('--shows=', '').split(',').filter(Boolean);
+const timeBudget = createRunBudget(parseTimeBudgetMin(argv));
 const AMBIGUOUS_DELTA_THRESHOLD_DAYS = 30;
 // "Possibly closed early" signal: broadway.com gives us no future performances
 // for a show whose stored closingDate claims it still runs for at least this
@@ -331,7 +338,7 @@ async function main() {
   console.log(`Date: ${TODAY}`);
   console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
 
-  const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const data = loadShows();
   // Broadway only. broadway.com reliably lists the full performance calendar
   // for Broadway shows, but NOT for Off-Broadway: empirically (2026-06-21
   // probe) 4/5 running OB shows returned zero future dates and the OB slug
@@ -357,8 +364,23 @@ async function main() {
   const ambiguous = [];    // logged, NOT applied
   const errors = [];
   const matches = [];
+  let budgetExit = false;
+  let budgetExitIndex = candidates.length;
 
-  for (const show of candidates) {
+  for (let ci = 0; ci < candidates.length; ci++) {
+    // Each show's fetchLatestSchedule() goes through the full fetchPage()
+    // fallback chain (SD→BD→SB→Playwright, each with its own retries/45s
+    // timeouts) — with 30 open Broadway shows and growing, this can run
+    // past the job's timeout-minutes with nothing committed (same class
+    // as #369/#415).
+    if (timeBudget.exceeded()) {
+      budgetExit = true;
+      budgetExitIndex = ci;
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — ${candidates.length - ci} shows deferred to next run.`);
+      break;
+    }
+
+    const show = candidates[ci];
     const slug = slugFor(show);
     try {
       const r = await fetchLatestSchedule(show, slug);
@@ -585,13 +607,15 @@ async function main() {
     generatedAt: new Date().toISOString(),
     mode: DRY_RUN ? 'dry-run' : 'live',
     summary: {
-      audited: candidates.length,
+      audited: budgetExitIndex,
       extensions: extensions.length,
       autoFixedTripleSignal: autoFixedTripleSignal.length,
       newClosings: newClosings.length,
       ambiguous: ambiguous.length,
       matches: matches.length,
       errors: errors.length,
+      budgetExit,
+      deferred: budgetExit ? candidates.length - budgetExitIndex : 0,
     },
     extensions,
     autoFixedTripleSignal,
@@ -620,7 +644,7 @@ async function main() {
 
   const changed = extensions.length + autoFixedTripleSignal.length;
   if (changed > 0 && !DRY_RUN) {
-    fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+    saveShows(data);
     console.log(`\n✅ Wrote ${changed} closingDate updates to shows.json`);
   }
 

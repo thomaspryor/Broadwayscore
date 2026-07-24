@@ -16,7 +16,14 @@
  * - Update if SERP returns a different URL
  * - Remove for closed shows
  *
- * Usage: node scripts/fix-platform-ticket-links.js [--dry-run]
+ * Usage: node scripts/fix-platform-ticket-links.js [--dry-run] [--time-budget-min=N]
+ *
+ * --time-budget-min=N: wall-clock budget in minutes for the Ticketmaster
+ * SERP-verification phase (0 or omitted = unlimited). Exits cleanly once
+ * exceeded instead of running into the job timeout; deferred shows keep
+ * their existing (unverified) link and are picked up next run. Telecharge
+ * validation is pure local URL construction — no network calls, no budget
+ * needed.
  */
 
 const fs = require('fs');
@@ -24,9 +31,12 @@ const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { buildTelechargeUrl, normalizeShowName } = require('./lib/url-utils');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
+const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
 
 // ============================================================================
 // Ticketmaster SERP re-verification
@@ -135,7 +145,7 @@ async function main() {
   console.log(`Platform Ticket Link Validator ${DRY_RUN ? '(DRY RUN)' : ''}`);
   console.log('='.repeat(60));
 
-  const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const data = loadShows();
   const shows = data.shows;
 
   const stats = {
@@ -178,10 +188,22 @@ async function main() {
   // ── Phase 2: Ticketmaster validation ────────────────────────────
   console.log('\n── Ticketmaster Validation ──');
 
+  let ticketmasterBudgetExit = false;
   for (const show of shows) {
     const links = show.ticketLinks || [];
     const tmIndex = links.findIndex(l => l.platform === 'Ticketmaster');
     if (tmIndex < 0) continue;
+
+    // Each show's serpVerifyTicketmaster() runs a multi-provider SERP chain
+    // with its own retries — this loop runs first in a 25-min job shared
+    // with enrich-official-urls.js, so an unbounded catalog-wide list here
+    // could starve that later step (same class as #369/#415).
+    if (timeBudget.exceeded()) {
+      ticketmasterBudgetExit = true;
+      console.log(`⏱ Time budget (${timeBudget.minutes} min) reached — remaining Ticketmaster links deferred to next run.`);
+      break;
+    }
+
     stats.ticketmasterChecked++;
 
     const tmLink = links[tmIndex];
@@ -215,7 +237,7 @@ async function main() {
     await new Promise(r => setTimeout(r, 500));
   }
 
-  console.log(`Ticketmaster: ${stats.ticketmasterChecked} checked, ${stats.ticketmasterFixed} fixed, ${stats.ticketmasterRemoved} removed, ${stats.ticketmasterSkipped} skipped`);
+  console.log(`Ticketmaster: ${stats.ticketmasterChecked} checked, ${stats.ticketmasterFixed} fixed, ${stats.ticketmasterRemoved} removed, ${stats.ticketmasterSkipped} skipped${ticketmasterBudgetExit ? ' (time budget exit)' : ''}`);
 
   // ── Save ─────────────────────────────────────────────────────────
   const totalChanges = stats.telechargeFixed + stats.telechargeRemoved +
@@ -225,7 +247,7 @@ async function main() {
   console.log(`Total changes: ${totalChanges}`);
 
   if (!DRY_RUN && totalChanges > 0) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(data, null, 2) + '\n');
+    saveShows(data);
     console.log('shows.json updated.');
   } else if (DRY_RUN) {
     console.log('(dry run — no files written)');

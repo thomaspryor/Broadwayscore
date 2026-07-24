@@ -19,6 +19,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { GEMINI_FLASH } = require('./lib/models');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 // ============================================================
 // CONFIG
@@ -640,7 +641,7 @@ function applyChanges(results, shows) {
   }
 
   // Write updated shows.json
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const showsArr = showsData.shows || showsData;
   const isObject = !Array.isArray(showsArr);
 
@@ -659,7 +660,7 @@ function applyChanges(results, shows) {
     }
   }
 
-  fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+  saveShows(showsData);
 
   console.log(`\nDeleted: ${deleted} image files (archived in ${DELETED_DIR})`);
   console.log(`Updated: ${updated} entries in shows.json (set thumbnail to null)`);
@@ -744,7 +745,7 @@ async function main() {
   const geminiKey = process.env.GEMINI_API_KEY;
 
   // Load shows
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows || showsData;
   const showsArr = Array.isArray(shows) ? shows : Object.values(shows);
 

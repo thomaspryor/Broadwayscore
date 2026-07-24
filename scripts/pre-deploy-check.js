@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
@@ -45,7 +46,7 @@ try {
 // ─────────────────────────────────────────────
 let showCount = 0;
 try {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   let shows = showsData.shows || showsData;
   if (!Array.isArray(shows)) throw new Error('shows.json is not an array');
   showCount = shows.length;
@@ -212,7 +213,7 @@ try {
 
   // Write shows.json if any fixes were applied
   if (orphansFixed > 0 || jpgUpgraded > 0 || categoryFixed > 0 || toRemove.size > 0 || refusalStripped > 0) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2));
+    saveShows(showsData);
   }
 
 } catch (e) {

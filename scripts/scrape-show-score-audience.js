@@ -25,6 +25,7 @@ const { JSDOM } = require('jsdom');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 // Lazy-load Playwright — only imported if needed as fallback
 let playwrightBrowser = null;
@@ -80,7 +81,7 @@ const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showScorePath = path.join(__dirname, '../data/show-score.json');
 
 // Load data
-const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+const showsData = loadShows();
 const showMapById = {};
 for (const s of showsData.shows) showMapById[s.id] = s;
 
@@ -1166,7 +1167,7 @@ async function main() {
 
   // ── Save shows.json if metadata was enriched ──
   if (metadataEnriched > 0 && !dryRun) {
-    fs.writeFileSync(showsPath, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log(`\nshows.json updated with ${metadataEnriched} metadata enrichments.`);
   }
 

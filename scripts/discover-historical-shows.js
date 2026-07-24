@@ -10,7 +10,13 @@
  *   - Provides: title, type (Musical/Play/Special), Original/Revival, opening date, theater
  *   - IBDB production URLs used for direct date enrichment (no Google SERP needed)
  *
- * Usage: node scripts/discover-historical-shows.js --seasons=2024-2025,2023-2024 [--dry-run]
+ * Usage: node scripts/discover-historical-shows.js --seasons=2024-2025,2023-2024 [--dry-run] [--time-budget-min=N]
+ *
+ * --time-budget-min=N: wall-clock budget in minutes for the IBDB enrichment
+ * loop (0 or omitted = unlimited). Exits cleanly once exceeded instead of
+ * running into the job timeout; unenriched shows are still added, just
+ * without IBDB-sourced dates/creative team (a later manual run or the
+ * weekly enrich-ibdb-dates.yml cron picks them up).
  */
 
 const fs = require('fs');
@@ -25,6 +31,8 @@ const { isTourProduction } = require('./lib/tour-detection');
 const { getSeasonForDate, validateSeason } = require('./lib/broadway-seasons');
 const { extractDatesFromIBDBPage } = require('./lib/ibdb-dates');
 const { scrapeCurrentRuntimes, scrapeShowRuntime, matchRuntimesToShows } = require('./lib/broadway-com-runtimes');
+const showsWriteGuard = require('./lib/shows-write-guard');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'historical-shows-pending.json');
@@ -95,6 +103,7 @@ const IBDB_SEASON_IDS = {
 
 const dryRun = process.argv.includes('--dry-run');
 const skipRuntimes = process.argv.includes('--skip-runtimes');
+const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv));
 
 // Parse season argument
 const seasonsArg = process.argv.find(arg => arg.startsWith('--seasons='));
@@ -107,7 +116,7 @@ if (seasons.length === 0) {
 }
 
 function loadShows() {
-  return JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  return showsWriteGuard.loadShows();
 }
 
 function saveShows(data) {
@@ -125,7 +134,7 @@ function saveShows(data) {
   if (removed > 0) {
     console.log(`⚠️  Dedup guard: removed ${removed} duplicate show(s) before saving`);
   }
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  showsWriteGuard.saveShows(data);
 }
 
 function sleep(ms) {
@@ -331,8 +340,23 @@ async function fetchShowsFromIBDB(season) {
  */
 async function enrichFromIBDB(shows) {
   console.log(`Enriching ${shows.length} shows from IBDB production pages...`);
+  let budgetExitCount = 0;
 
   for (let i = 0; i < shows.length; i++) {
+    // Each show's extractDatesFromIBDBPage() goes through the full
+    // fetchPage() fallback chain (SD→BD→SB→Playwright, each with its own
+    // retries/timeouts) — an unbounded season list can burn past the job's
+    // timeout-minutes with nothing committed (same class as #369/#415).
+    // Shows are already pushed to newShows before this runs, so a budget
+    // exit just leaves the remainder without IBDB dates, not unadded.
+    // Returned so the caller can flag it in the discovery issue instead of
+    // it only being visible in job logs (ship-check finding, #421 follow-up).
+    if (timeBudget.exceeded()) {
+      budgetExitCount = shows.length - i;
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached during IBDB enrichment — ${budgetExitCount} show(s) added without IBDB dates/creative team.`);
+      break;
+    }
+
     const show = shows[i];
     if (!show.ibdbUrl) continue;
 
@@ -371,6 +395,8 @@ async function enrichFromIBDB(shows) {
       await sleep(1500);
     }
   }
+
+  return { budgetExitCount };
 }
 
 async function discoverHistoricalShows() {
@@ -483,10 +509,12 @@ async function discoverHistoricalShows() {
   }
 
   // IBDB date enrichment: get preview dates, closing dates, creative team
+  let ibdbBudgetExitCount = 0;
   if (newShows.length > 0 && !dryRun) {
     console.log('');
     try {
-      await enrichFromIBDB(newShows);
+      const enrichResult = await enrichFromIBDB(newShows);
+      ibdbBudgetExitCount = enrichResult.budgetExitCount;
     } catch (e) {
       console.log(`Warning: IBDB enrichment failed (continuing without): ${e.message}`);
     }
@@ -637,6 +665,7 @@ async function discoverHistoricalShows() {
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
       discoveredAt: new Date().toISOString(),
       seasons,
+      ibdbBudgetExitCount,
       shows: newShows.map(s => ({
         id: s.id, title: s.title, slug: s.slug, venue: s.venue,
         openingDate: s.openingDate, closingDate: s.closingDate,
@@ -653,6 +682,7 @@ async function discoverHistoricalShows() {
     fs.appendFileSync(outputFile, `historical_shows_count=${newShows.length}\n`);
     fs.appendFileSync(outputFile, `historical_shows=${newShows.map(s => s.title).join(', ')}\n`);
     fs.appendFileSync(outputFile, `historical_slugs=${newShows.map(s => s.slug).join(',')}\n`);
+    fs.appendFileSync(outputFile, `ibdb_incomplete_count=${ibdbBudgetExitCount}\n`);
   }
 
   return { newShows, count: newShows.length };

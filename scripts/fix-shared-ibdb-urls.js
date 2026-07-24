@@ -11,14 +11,15 @@
  *   node scripts/fix-shared-ibdb-urls.js [--dry-run]
  */
 
-const path = require('path');
 const { planSharedIbdbUrlFixes } = require('./lib/fix-shared-ibdb-urls');
-const { atomicWriteShowsJson } = require('./lib/atomic-shows-write');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const DRY_RUN = process.argv.includes('--dry-run');
-const SHOWS_PATH = process.env.SHOWS_JSON_PATH || path.join(__dirname, '../data/shows.json');
 
-const data = require(SHOWS_PATH);
+// loadShows() (not require(SHOWS_PATH)) — require()'s module cache returns an
+// object the guard never snapshotted, so saveShows() below would silently
+// skip the concurrent-writer merge.
+const data = loadShows();
 const fixes = planSharedIbdbUrlFixes(data.shows);
 
 if (fixes.length === 0) {
@@ -35,7 +36,7 @@ for (const fix of fixes) {
 }
 
 if (!DRY_RUN) {
-  atomicWriteShowsJson(SHOWS_PATH, data);
+  saveShows(data);
   console.log(`\nCleared ${fixes.length} stale ibdbUrl(s). shows.json written.`);
 } else {
   console.log(`\n[dry-run] ${fixes.length} stale ibdbUrl(s) would be cleared.`);

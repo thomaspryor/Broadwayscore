@@ -20,6 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const { detectTransferPairs } = require('./lib/transfer-detection');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const args = process.argv.slice(2);
@@ -27,7 +28,7 @@ const dryRun = args.includes('--dry-run');
 const emailAlerts = args.includes('--email');
 
 async function main() {
-  const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const data = loadShows();
   const shows = data.shows || data;
   const results = detectTransferPairs(shows);
   const applied = [];
@@ -56,7 +57,7 @@ async function main() {
 
   if (applied.length > 0) {
     if (data._meta) data._meta.lastUpdated = new Date().toISOString();
-    fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+    saveShows(data);
     console.log(`Wrote shows.json with ${applied.length} new transfer pair(s).`);
   }
 

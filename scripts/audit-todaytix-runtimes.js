@@ -22,7 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
-const { atomicWriteShowsJson } = require('./lib/atomic-shows-write');
+const showsWriteGuard = require('./lib/shows-write-guard');
 const {
   extractRunTimeDisplay,
   parseRunTimeDisplay,
@@ -45,7 +45,7 @@ const DRIFT_RATE_LIMIT = 0.3;
 const DRIFT_MIN_CHECKED = 30;
 
 function saveShows(showsData) {
-  atomicWriteShowsJson(SHOWS_PATH, showsData);
+  showsWriteGuard.saveShows(showsData);
 }
 
 function driftTripped(mismatchCount, checked) {
@@ -54,7 +54,7 @@ function driftTripped(mismatchCount, checked) {
 }
 
 async function main() {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = showsWriteGuard.loadShows();
   const shows = showsData.shows;
 
   let targets = shows.filter(s => s.todaytixUrl || s.todaytixId);

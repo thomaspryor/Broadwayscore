@@ -23,6 +23,7 @@ const {
   recordQuotaUsage, getQuotaRemaining,
   SCOPE_INDEXING, SCOPE_WEBMASTERS, SITE_HOST, SITE_URL_GSC,
 } = require('./submit-google-indexing');
+const { findCWVFieldAcknowledgment } = require('./lib/seo-cwv-ack');
 
 const HEALTH_PATH = path.join(__dirname, '../data/audit/seo-health.json');
 const HISTORY_PATH = path.join(__dirname, '../data/audit/seo-performance-history.json');
@@ -942,7 +943,12 @@ function detectCWVAnomalies(currentCWV, history) {
   for (const current of currentCWV) {
     const shortUrl = current.url.replace(SITE_HOST, '');
     if (current.lcp && current.lcp > CWV_ABSOLUTE.lcp) {
-      issues.push({ type: 'cwv_lcp_absolute', severity: 'warning', message: `LCP exceeds Good threshold on ${shortUrl}: ${current.lcp}ms (limit: ${CWV_ABSOLUTE.lcp}ms)` });
+      const ack = findCWVFieldAcknowledgment(current.url, 'lcp');
+      issues.push({
+        type: 'cwv_lcp_absolute',
+        severity: 'warning',
+        message: `LCP exceeds Good threshold on ${shortUrl}: ${current.lcp}ms (limit: ${CWV_ABSOLUTE.lcp}ms)${ack ? ` — acknowledged: ${ack.reason} [expires ${ack.expires}]` : ''}`,
+      });
     }
     if (current.cls != null && current.cls > CWV_ABSOLUTE.cls) {
       issues.push({ type: 'cwv_cls_absolute', severity: 'warning', message: `CLS exceeds Good threshold on ${shortUrl}: ${current.cls} (limit: ${CWV_ABSOLUTE.cls})` });
@@ -957,10 +963,14 @@ function detectCWVAnomalies(currentCWV, history) {
       // (digest). Prevents weekly CRITICAL pages for borderline lab scores (e.g. homepage
       // lab 69 with field LCP 797ms) while still emailing when real users are hurt.
       const fieldUnhealthy = current.lcp != null && current.lcp > CWV_ABSOLUTE.lcp;
+      // A field-LCP acknowledgment (fix shipped, CrUX 28-day window still trailing)
+      // downgrades this back to warning — the digest still shows it as tracked-warn
+      // (not silently dropped) instead of paging daily for already-fixed work (#368).
+      const ack = fieldUnhealthy ? findCWVFieldAcknowledgment(current.url, 'lcp') : null;
       issues.push({
         type: 'cwv_lighthouse_low',
-        severity: fieldUnhealthy ? 'error' : 'warning',
-        message: `Lighthouse score below ${CWV_ABSOLUTE.lighthouseMin} on ${shortUrl}: ${current.performanceScore}/100${fieldUnhealthy ? ` + field LCP ${current.lcp}ms over ${CWV_ABSOLUTE.lcp}ms` : ' (lab only — field CWV healthy)'}`,
+        severity: fieldUnhealthy && !ack ? 'error' : 'warning',
+        message: `Lighthouse score below ${CWV_ABSOLUTE.lighthouseMin} on ${shortUrl}: ${current.performanceScore}/100${fieldUnhealthy ? ` + field LCP ${current.lcp}ms over ${CWV_ABSOLUTE.lcp}ms` : ' (lab only — field CWV healthy)'}${ack ? ` — acknowledged: ${ack.reason} [expires ${ack.expires}]` : ''}`,
       });
     }
   }

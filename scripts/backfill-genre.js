@@ -19,11 +19,12 @@
 const fs = require('fs');
 const path = require('path');
 const { classifyGenre, isNonTheatricalGenre } = require('./lib/genre-classification');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const dryRun = process.argv.includes('--dry-run');
 
-const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+const data = loadShows();
 const shows = data.shows;
 
 let genreSet = 0;
@@ -53,7 +54,7 @@ console.log(changes.join('\n') || '  (no changes)');
 console.log(`\nGenre set: ${genreSet}, Category fixed: ${categoryFixed}`);
 
 if (!dryRun && (genreSet > 0 || categoryFixed > 0)) {
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  saveShows(data);
   console.log('Wrote shows.json');
 } else if (dryRun) {
   console.log('(dry run — no changes written)');
