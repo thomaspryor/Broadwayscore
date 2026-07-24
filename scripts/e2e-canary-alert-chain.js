@@ -20,6 +20,13 @@
  * throws, exit nonzero so the workflow's own `notify-failure` step — which
  * depends on neither owner-alert-router.js nor notion-brain.js — still
  * fires as the last-resort backstop.
+ *
+ * DEV/CI GUARD (added after a local test-fire paged the owner at midnight,
+ * 2026-07-24): disposition='human' actually emails the owner in real time —
+ * it must never fire from a session/worktree just exercising this script.
+ * Only page when IS_LIVE is true (real CI, or an explicit --live opt-in);
+ * everything else prints the would-be alert to console and still exits 1,
+ * so a local run still fails loudly without paging anyone.
  */
 const { execFileSync } = require('child_process');
 const path = require('path');
@@ -27,6 +34,7 @@ const { routeAlert, resolveCondition, deleteCondition } = require('./lib/owner-a
 
 const REPO_ROOT = path.join(__dirname, '..');
 const NOTION_BRAIN = path.join(__dirname, 'notion-brain.js');
+const IS_LIVE = process.env.GITHUB_ACTIONS === 'true' || process.env.CI === 'true' || process.argv.includes('--live');
 
 // Fixed (not date-suffixed) conditionKeys — deleteCondition() clears them at
 // the top and bottom of every run, so the ledger never accumulates canary
@@ -164,21 +172,37 @@ async function main() {
     console.error(`[e2e-canary] FAILED: ${err.stack || err.message}`);
     await cleanup(cardIds);
 
-    try {
-      await routeAlert({
-        conditionKey: FAILURE_KEY,
-        title: 'E2E Canary: alert→card→dispatch chain is broken',
-        description:
-          'The alert-router E2E canary failed against the REAL chain (no mocks). ' +
-          'This is the same failure class as the 2026-07-24 npm-ci incident — ' +
-          "disposition='auto' alerts may be silently failing again.\n\n" +
-          `Underlying error:\n${err.stack || err.message}`,
-        severity: 'critical',
-        disposition: 'human',
-        cooldownHours: 24,
-      });
-    } catch (alertErr) {
-      console.error(`[e2e-canary] human-disposition fallback alert ALSO failed: ${alertErr.stack || alertErr.message}`);
+    if (IS_LIVE) {
+      try {
+        await routeAlert({
+          conditionKey: FAILURE_KEY,
+          title: 'E2E Canary: alert→card→dispatch chain is broken',
+          description:
+            'The alert-router E2E canary failed against the REAL chain (no mocks). ' +
+            'This is the same failure class as the 2026-07-24 npm-ci incident — ' +
+            "disposition='auto' alerts may be silently failing again.\n\n" +
+            `Underlying error:\n${err.stack || err.message}`,
+          severity: 'critical',
+          disposition: 'human',
+          cooldownHours: 24,
+        });
+      } catch (alertErr) {
+        console.error(`[e2e-canary] human-disposition fallback alert ALSO failed: ${alertErr.stack || alertErr.message}`);
+      }
+    } else {
+      const looksLikeLocalDepsGap = /Cannot find module/.test(String(err.stack || err.message));
+      console.error(
+        '[e2e-canary] DEV RUN — suppressing the owner-facing disposition=human alert ' +
+        '(no GITHUB_ACTIONS/CI env, no --live flag). In real CI this failure would page ' +
+        'the owner immediately. Re-run with --live to test the paging path for real.' +
+        (looksLikeLocalDepsGap
+          ? ' NOTE: this looks like a missing-dependency error, which is the exact class ' +
+            'this canary hunts in CI — but CI always runs `npm ci` before this step, so a ' +
+            'local "Cannot find module" is far more likely your own dev environment (or a ' +
+            "worktree) missing `npm install`, not a real regression. Run `npm ci` here before " +
+            're-testing.'
+          : '')
+      );
     }
 
     process.exitCode = 1;

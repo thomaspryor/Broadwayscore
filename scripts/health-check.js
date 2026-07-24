@@ -1089,7 +1089,14 @@ function checkSecretsHealth() {
 // This does not depend on the ledger, and does not depend on the E2E canary
 // (scripts/e2e-canary-alert-chain.js) ever having run — it fires even if the
 // canary itself is broken or was skipped that day.
-async function checkAlertRouterDeadman() {
+//
+// isCI gates the self-page (added after a local run of the sibling canary
+// script paged the owner at midnight, 2026-07-24 — this check has the exact
+// same live-side-effect shape and runs unconditionally as part of building
+// `allResults`, BEFORE main()'s own `if (!isCI) return` early-exit, so
+// without this guard a local `node scripts/health-check.js` with a failed
+// attempts-log history would ALSO email the owner for real).
+async function checkAlertRouterDeadman(isCI) {
   // readDispatchAttempts returns oldest→newest by ts, so the last element is
   // always the most recent attempt regardless of file/write order.
   const attempts = readDispatchAttempts({ days: 7 });
@@ -1120,17 +1127,22 @@ async function checkAlertRouterDeadman() {
   // survives even though the exact thing we just detected as broken is that
   // shell-out. Don't rely on the generic humanAction dispatch loop below,
   // which routes through disposition='auto' (the same broken path).
-  try {
-    await routeAlert({
-      conditionKey: 'alert-router:deadman',
-      title: 'Alert Router: auto-dispatch has been silently failing for 7 days',
-      description: message,
-      severity: 'critical',
-      disposition: 'human',
-      cooldownHours: 24,
-    });
-  } catch (err) {
-    console.error(`[Deadman] failed to send direct human alert: ${err.message}`);
+  // isCI-gated: never page from a local/dev run (see function header comment).
+  if (isCI) {
+    try {
+      await routeAlert({
+        conditionKey: 'alert-router:deadman',
+        title: 'Alert Router: auto-dispatch has been silently failing for 7 days',
+        description: message,
+        severity: 'critical',
+        disposition: 'human',
+        cooldownHours: 24,
+      });
+    } catch (err) {
+      console.error(`[Deadman] failed to send direct human alert: ${err.message}`);
+    }
+  } else {
+    console.error('[Deadman] DEV RUN — suppressing the owner-facing disposition=human alert (no GITHUB_ACTIONS/CI env). In real CI this would page the owner.');
   }
 
   return [{
@@ -2398,7 +2410,7 @@ async function main() {
     ...checkAPICredits(),
     ...checkDeployFreshness(),
     ...(await checkStuckWork()),
-    ...(await checkAlertRouterDeadman()),
+    ...(await checkAlertRouterDeadman(isCI)),
   ];
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
