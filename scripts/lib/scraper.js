@@ -876,22 +876,31 @@ async function fetchJSON(url, options = {}) {
 
   // Try direct fetch first — free, and most JSON API endpoints (WP-JSON, etc.)
   // aren't bot-protected. May be TLS-blocked for some hosts in CI; falls
-  // through to Scrapingdog/ScrapingBee below when that happens.
+  // through to Scrapingdog/ScrapingBee below when that happens. Now the FIRST
+  // thing every call attempts (was previously a last-resort fallback), so an
+  // explicit timeout matters here in a way it didn't before — an unbounded
+  // hang would delay every single call, not just the rare one that fell
+  // through past ScrapingBee.
   try {
     const proto = url.startsWith('https') ? https : require('http');
+    const DIRECT_TIMEOUT_MS = 15000;
     const response = await new Promise((resolve, reject) => {
-      proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers } }, (res) => {
-        if (res.statusCode === 301 || res.statusCode === 302) {
-          proto.get(res.headers.location, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers } }, (res2) => {
+      const req = proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res) => {
+        if ([301, 302, 307, 308].includes(res.statusCode)) {
+          const req2 = proto.get(res.headers.location, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res2) => {
             let d = ''; res2.on('data', c => d += c); res2.on('end', () => {
               if (res2.statusCode === 200) resolve(d); else reject(new Error(`HTTP ${res2.statusCode}`));
             });
-          }).on('error', reject);
+          });
+          req2.on('error', reject);
+          req2.on('timeout', () => { req2.destroy(); reject(new Error('direct fetch redirect timeout')); });
           return;
         }
         if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); return; }
         let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-      }).on('error', reject);
+      });
+      req.on('error', reject);
+      req.on('timeout', () => { req.destroy(); reject(new Error('direct fetch timeout')); });
     });
     return JSON.parse(response);
   } catch (err) {
