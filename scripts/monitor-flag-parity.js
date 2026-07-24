@@ -91,7 +91,7 @@ function logData({ flagHealth, unregistered }) {
 }
 
 // Deliberately never fails the job on alert conditions — the email alert IS
-// the signal, same as monitor-gate-cold-start.js / monitor-gate-ab.js. A
+// the signal, same as monitor-gate-cold-start.js / monitor-email-gate-funnel.js. A
 // nonzero exit here would turn the workflow red every week an alert is
 // cooling down (not just the week it fires), risking a "Workflow
 // repeat-failure" digest promotion on top of the already-targeted email.

@@ -12,7 +12,7 @@
  * actionable-only alerts, persists state.
  *
  * This monitor NEVER judges the primary metric and NEVER touches flag
- * rollout — those stay owner decisions, same as monitor-gate-ab.js and
+ * rollout — those stay owner decisions, same as
  * monitor-email-gate-funnel.js.
  *
  * State: data/audit/gate-cold-start-monitor-state.json (committed by workflow).
@@ -32,7 +32,7 @@ const STATE_PATH = process.env.GATE_COLD_START_STATE_FILE
   || path.join(__dirname, '..', 'data', 'audit', 'gate-cold-start-monitor-state.json');
 const ANALYZER = path.join(__dirname, 'analyze-gate-cold-start.js');
 
-// Two windows, same pattern as monitor-gate-ab.js: RECENT (7d) for the
+// Two windows, same pattern as monitor-email-gate-funnel.js: RECENT (7d) for the
 // captures/week + impression-split guardrails; CUMULATIVE (180d — plenty
 // above the 28-day primary-readiness floor, clipped to EXPERIMENT_START by
 // the analyzer's own greatest(now()-DAYS, start) window) for the ITT

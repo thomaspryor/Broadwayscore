@@ -44,7 +44,7 @@ const JSON_OUT = process.argv.includes('--json');
 const API_KEY = process.env.POSTHOG_PERSONAL_API_KEY;
 if (!API_KEY) { console.error('POSTHOG_PERSONAL_API_KEY not set'); process.exit(1); }
 
-// Shared real-users predicate (owner + bot-heavy geos excluded) — mirrors analyze-gate-ab.js
+// Shared real-users predicate (owner + bot-heavy geos excluded) — same lens as analyze-email-gate-funnel.js
 const REAL_USERS = `
   (JSONExtractString(properties,'$geoip_country_code') NOT IN ('SG','CN','VN')
    OR JSONExtractString(properties,'$geoip_country_code') = '')
