@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-24T23:25:28.317Z",
+  "timestamp": "2026-07-24T23:52:55.914Z",
   "stats": {
     "totalReviews": 40440,
     "alreadyFlagged": 17804,
     "dateGuardCatches": 59,
-    "directorMismatch": 910,
+    "directorMismatch": 911,
     "tvFilmSignals": 1108,
     "londonSignals": 760,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3258
+    "noPublishDate": 3257
   },
   "findings": [
     {
@@ -275,6 +275,20 @@
       "score": 79,
       "publishDate": "2023-03-13",
       "url": "https://www.theguardian.com/stage/2023/mar/09/a-dolls-house-review-jessica-chastain-broadway",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from a-dolls-house-2023"
+        }
+      ]
+    },
+    {
+      "showId": "a-dolls-house-off-west-end-2026",
+      "file": "thestage--nicole-serratore.json",
+      "score": 31,
+      "publishDate": "2023-03-13",
+      "url": "https://www.thestage.co.uk/reviews/a-dolls-house-review-at-the-hudson-theatre-new-york-starring-jessica-chastain",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
