@@ -85,9 +85,16 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # alert-ledger + sla-state + digest-queue MUST be committed here or the
+          # SLA alert router incident state never persists across the hourly runs
+          # — routeAlert would re-open + re-email every run, reintroducing the
+          # storm this migration fixes (#406).
           git add data/audit/opening-night-history.json \
                   data/audit/opening-night-latency-*.json \
-                  data/audit/stage-latency.jsonl 2>/dev/null || true
+                  data/audit/stage-latency.jsonl \
+                  data/audit/alert-ledger.json \
+                  data/audit/alert-digest-queue.json \
+                  data/audit/opening-night-sla-state.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No audit data changes to commit"
           else
