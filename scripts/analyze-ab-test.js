@@ -74,9 +74,17 @@ const restartDate = FLAG_RESTART_DATES[FLAG];
 const startDate = restartDate && restartDate > requestedStart ? restartDate : requestedStart;
 const fmtISO = d => d.toISOString().replace(/\.\d{3}Z$/, 'Z');
 
+// Significance math + report decision logic live in scripts/lib/significance.js
+// (pure, unit-tested — CLAUDE.md §15). This file only fetches, joins, and
+// prints. History: the previous inline zTest() here produced "p-value: NaN"
+// on every run (clicks passed into conversion-count slots) — see the header
+// comment in significance.js for the full post-mortem.
+const { computeAbSignificance } = require('./lib/significance');
+
 async function fetchPostHog(url) {
   const key = process.env.POSTHOG_PERSONAL_API_KEY;
   const res = await fetch(url, { headers: { Authorization: `Bearer ${key}`, Accept: 'application/json' } });
+  if (!res.ok) throw new Error(`PostHog API ${res.status}: ${(await res.text()).slice(0, 200)}`);
   return res.json();
 }
 
@@ -85,24 +93,8 @@ async function fetchImpact(url) {
   const token = process.env.IMPACT_AUTH_TOKEN;
   const auth = Buffer.from(`${sid}:${token}`).toString('base64');
   const res = await fetch(url, { headers: { Authorization: `Basic ${auth}`, Accept: 'application/json' } });
+  if (!res.ok) throw new Error(`Impact API ${res.status}: ${(await res.text()).slice(0, 200)}`);
   return res.json();
-}
-
-/**
- * Two-proportion z-test for conversion rates.
- * Returns p-value (one-tailed, testing if variant > control).
- */
-function zTest(controlConv, controlN, variantConv, variantN) {
-  if (controlN === 0 || variantN === 0) return 1;
-  const p1 = controlConv / controlN;
-  const p2 = variantConv / variantN;
-  const pooled = (controlConv + variantConv) / (controlN + variantN);
-  const se = Math.sqrt(pooled * (1 - pooled) * (1 / controlN + 1 / variantN));
-  if (se === 0) return 1;
-  const z = (p2 - p1) / se;
-  // Approximation of normal CDF for one-tailed test
-  const cdf = 0.5 * (1 + Math.sign(z) * Math.sqrt(1 - Math.exp(-2 * z * z / Math.PI)));
-  return 1 - cdf;
 }
 
 async function main() {
@@ -206,6 +198,7 @@ async function main() {
   // click sources (DiscountTicketsTable, lottery, rush, showtimes), or
   // belong to a different test cohort, and feed the estimated split below.
   const subIdField = (a) => a.SubId2 || a.subId2 || '';
+  const subId1Field = (a) => a.SubId1 || a.subId1 || '';
   const num = (v) => { const n = parseFloat(v); return Number.isFinite(n) ? n : 0; };
   const attributedConversions = impactConversions.filter(a => VARIANT_RE.test(subIdField(a)));
   const unattributedConversions = impactConversions.filter(a => !VARIANT_RE.test(subIdField(a)));
@@ -216,16 +209,28 @@ async function main() {
 
   // Group attributed conversions by the variant segment we're analyzing
   // (same regex as the click grouping above so the keys match).
+  // convUsers: UNIQUE converting users via the SubId1 (distinct_id) echo —
+  // one user converting 4x is one converting user, not four. joinWithSub1 /
+  // conversions is the join-coverage that gates the primary significance
+  // metric (computeAbSignificance suppresses the p when coverage is low or
+  // asymmetric — a clean-looking p on a partial join is worse than none).
   const directByVariant = {};
   for (const a of attributedConversions) {
     const subId = subIdField(a);
     const m = subId.match(new RegExp(`${variantKey}:([^,]+)`));
     if (!m) continue;
     const v = m[1];
-    if (!directByVariant[v]) directByVariant[v] = { conversions: 0, revenue: 0, commission: 0 };
+    if (!directByVariant[v]) {
+      directByVariant[v] = { conversions: 0, revenue: 0, commission: 0, convUsers: new Set(), joinWithSub1: 0 };
+    }
     directByVariant[v].conversions++;
     directByVariant[v].revenue += num(a.Amount);
     directByVariant[v].commission += num(a.Payout);
+    const s1 = subId1Field(a);
+    if (s1 && s1.length > 3) {
+      directByVariant[v].joinWithSub1++;
+      directByVariant[v].convUsers.add(s1);
+    }
   }
 
   // ── Print per-variant metrics ──
@@ -240,18 +245,25 @@ async function main() {
     totals.users += byVariant[v].users.size;
   }
 
+  // Postback coverage — also decides whether the estimated-split line prints:
+  // at ≥80% coverage the direct numbers are the measurement and the estimate
+  // only invites cross-population arithmetic (per this script's own caveat).
+  const postbackCoverage = totalConversions > 0 ? attributedConversions.length / totalConversions : 0;
+  const showEstimatedSplit = unattributedConversions.length > 0 && postbackCoverage < 0.8;
+
+  const emptyDirect = () => ({ conversions: 0, revenue: 0, commission: 0, convUsers: new Set(), joinWithSub1: 0 });
   for (const v of variantNames) {
     const data = byVariant[v];
     const userCount = data.users.size;
     const clicksPerUser = userCount > 0 ? (data.clicks / userCount).toFixed(2) : 'N/A';
     // Direct attribution from Impact SubId2 (postback path).
-    const direct = directByVariant[v] || { conversions: 0, revenue: 0, commission: 0 };
+    const direct = directByVariant[v] || emptyDirect();
     // Estimated split for unattributed conversions: we apply this variant's
     // share of *show-page* AB clicks to ALL unattributed Impact conversions —
     // including ones from non-AB surfaces (lottery, rush, discount-tickets,
     // showtimes) and pre-postback historical rows. The populations don't
-    // match, so this is an estimate, not a measurement. Direct + estimate
-    // are NOT additive — they sum across populations the test never observed.
+    // match, so this is an estimate, not a measurement. Suppressed once
+    // postback coverage ≥80% (direct numbers are the measurement then).
     const variantShare = totals.clicks > 0 ? data.clicks / totals.clicks : 0;
     const estConversions = unattributedConversions.length * variantShare;
     const estCommission = unattributedCommission * variantShare;
@@ -261,8 +273,9 @@ async function main() {
     console.log(`  Unique users: ${userCount}`);
     console.log(`  Clicks per user: ${clicksPerUser}`);
     console.log(`  Direct conversions (subId2): ${direct.conversions}`);
+    console.log(`  Unique converting users (subId1): ${direct.convUsers.size}`);
     console.log(`  Direct commission (subId2): $${direct.commission.toFixed(2)}`);
-    if (unattributedConversions.length > 0) {
+    if (showEstimatedSplit) {
       console.log(`  Estimated split (unattributed pool, assumes equal exposure): ${estConversions.toFixed(1)} conv / $${estCommission.toFixed(2)}`);
     }
     console.log(`  By platform:`);
@@ -273,8 +286,11 @@ async function main() {
 
   // Postback coverage line — tells you whether attribution is "live" yet.
   if (totalConversions > 0) {
-    const pct = ((attributedConversions.length / totalConversions) * 100).toFixed(0);
+    const pct = (postbackCoverage * 100).toFixed(0);
     console.log(`\nPostback coverage: ${attributedConversions.length}/${totalConversions} conversions carry SubId2 (${pct}%).`);
+    if (postbackCoverage >= 0.8 && unattributedConversions.length > 0) {
+      console.log(`  (coverage ≥80% — estimated-split lines suppressed; direct conversions are the measurement)`);
+    }
     if (attributedConversions.length === 0) {
       console.log(`  ⚠ No conversions have SubId2 yet. Either the postback wiring just shipped`);
       console.log(`    and no conversion has landed since, or Impact isn't echoing the field.`);
@@ -282,45 +298,71 @@ async function main() {
     }
   }
 
-  // ── Statistical significance ──
+  // ── Statistical significance (all decision logic in lib/significance.js) ──
   if (variantNames.length === 2) {
-    const [a, b] = variantNames;
-    const aClicks = byVariant[a].clicks;
-    const bClicks = byVariant[b].clicks;
-    const aUsers = byVariant[a].users.size;
-    const bUsers = byVariant[b].users.size;
+    const sigInput = variantNames.map(v => {
+      const direct = directByVariant[v] || emptyDirect();
+      return {
+        name: v,
+        clicks: byVariant[v].clicks,
+        users: byVariant[v].users.size,
+        convUsers: direct.convUsers.size,
+        convCount: direct.conversions,
+        // Fraction of this variant's subId2-attributed conversions that also
+        // carry a usable subId1; null (= fully covered) when no conversions.
+        joinCoverage: direct.conversions > 0 ? direct.joinWithSub1 / direct.conversions : null,
+      };
+    });
+    const rep = computeAbSignificance(sigInput);
 
     console.log(`\n${'─'.repeat(70)}`);
     console.log('STATISTICAL SIGNIFICANCE');
     console.log('─'.repeat(70));
 
-    const ctr_a = aUsers > 0 ? (aClicks / aUsers).toFixed(3) : 0;
-    const ctr_b = bUsers > 0 ? (bClicks / bUsers).toFixed(3) : 0;
-    console.log(`${a}: ${aClicks} clicks / ${aUsers} users = ${ctr_a} clicks/user`);
-    console.log(`${b}: ${bClicks} clicks / ${bUsers} users = ${ctr_b} clicks/user`);
-
-    const liftPct = ctr_a > 0 ? (((ctr_b - ctr_a) / ctr_a) * 100).toFixed(1) : 'N/A';
-    console.log(`Relative lift (${b} vs ${a}): ${liftPct}%`);
-
-    // Sample size adequacy
-    const minN = Math.min(aClicks, bClicks);
-    if (minN < 100) {
-      console.log(`\n⚠️  Sample too small (min ${minN} clicks per variant). Need 100+ for 50% lift, 200+ for 30%, 400+ for 20%.`);
+    if (rep.degenerate) {
+      console.log(`n/a — ${rep.degenerate}`);
     } else {
-      const p = zTest(aClicks, aUsers, bClicks, bUsers);
-      console.log(`p-value (one-tailed): ${p.toFixed(4)}`);
-      if (p < 0.05) console.log(`✅ Statistically significant at p<0.05`);
-      else console.log(`❌ Not yet significant at p<0.05`);
-    }
+      console.log(`PRIMARY DECISION METRIC: ${rep.primary.metric}`);
+      for (const pv of rep.primary.perVariant) {
+        const rate = pv.rate === null ? 'n/a' : `${(pv.rate * 100).toFixed(1)}%`;
+        console.log(`  ${pv.name}: ${pv.convUsers} converting / ${pv.users} clicking users = ${rate}`);
+      }
+      for (const jc of rep.joinCoverage) {
+        const covStr = jc.coverage === null ? 'n/a (0 conversions)' : `${(jc.coverage * 100).toFixed(0)}%`;
+        console.log(`  subId1 join coverage — ${jc.name}: ${covStr}`);
+      }
+      if (rep.primary.suppressed) {
+        console.log(`  ⚠ primary p SUPPRESSED: ${rep.primary.suppressed}`);
+      } else if (rep.primary.degenerate) {
+        console.log(`  p: n/a (${rep.primary.degenerate})`);
+      } else {
+        console.log(`  ${rep.primary.test}: p = ${rep.primary.p.toFixed(4)} (z = ${rep.primary.z.toFixed(3)})`);
+        if (rep.primary.note) console.log(`  note: ${rep.primary.note}`);
+        if (rep.primary.significant) console.log(`  ✅ Statistically significant at p<0.05`);
+        else console.log(`  ❌ Not significant at p<0.05`);
+      }
+      if (rep.underpowered) {
+        console.log(`  ⚠️  Underpowered: ${rep.underpoweredNote}`);
+      }
 
-    // Decision guidance
-    console.log(`\nDecision guidance:`);
-    if (minN < 100) {
-      console.log(`  → Continue running. Need at least 100 clicks per variant.`);
-    } else if (Math.abs(parseFloat(liftPct)) > 30) {
-      console.log(`  → Strong directional signal. Consider declaring winner.`);
-    } else {
-      console.log(`  → Continue running for clearer signal.`);
+      console.log(`\nSECONDARY (${rep.secondary.metric}):`);
+      for (const pv of rep.secondary.perVariant) {
+        const cpu = pv.clicksPerUser === null ? 'n/a' : pv.clicksPerUser.toFixed(2);
+        console.log(`  ${pv.name}: ${cpu} clicks/user`);
+      }
+
+      // Decision guidance — driven by the primary p, never by click direction
+      // (guardrails memory: "direction looks clear" is not a winner).
+      console.log(`\nDecision guidance:`);
+      if (rep.primary.suppressed || rep.primary.degenerate) {
+        console.log(`  → Primary metric unavailable (see above). Fix the data issue before judging.`);
+      } else if (rep.underpowered) {
+        console.log(`  → Continue running. Sample below pre-registered thresholds.`);
+      } else if (rep.primary.significant) {
+        console.log(`  → Significant. Discuss with the owner before ANY flag change (guardrails memory rule 2).`);
+      } else {
+        console.log(`  → Continue running for clearer signal.`);
+      }
     }
   }
 
@@ -337,8 +379,11 @@ async function main() {
   console.log('  the unattributed pool.');
   console.log('• Estimated split is NOT a measurement — it imports show-page A/B click ratios');
   console.log('  into a population (lottery/rush/discount/historical) the test never observed.');
-  console.log('  Treat as a sanity check, not a winner. Once postback coverage exceeds ~80%,');
-  console.log('  consider dropping the estimated line and reporting only direct conversions.');
+  console.log('  It auto-suppresses once postback coverage reaches 80% (direct conversions');
+  console.log('  are the measurement then).');
+  console.log('• Primary metric denominator is CLICKING users, not exposed users — it measures');
+  console.log('  conversion among clickers, not intent-to-treat. If a variant changes click');
+  console.log('  propensity, interpret alongside the secondary clicks/user line.');
   console.log('• Click tracking only works when PostHog loads (ad blockers excluded via fallback filter).');
   console.log('• Methodology: see memory/feedback_ab_test_analysis.md');
   console.log('');

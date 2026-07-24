@@ -488,11 +488,12 @@ on:
       # Shared weekly-monitor runner boilerplate (card #249) — used by all 3
       # gate monitors below; without this entry edits get ZERO CI.
       - 'scripts/lib/weekly-monitor-runner.js'
-      # Gate A/B weekly monitor (pure rules + runner; colocated test runs in the lib glob).
-      - 'scripts/lib/gate-ab-monitor-rules.js'
-      - 'scripts/lib/gate-ab-monitor-rules.test.mjs'
-      - 'scripts/monitor-gate-ab.js'
-      - 'scripts/analyze-gate-ab.js'
+      # Ticket A/B significance math + report decision fn (pure, colocated test
+      # runs in the scripts/lib/*.test.mjs glob step) and its analyzer caller —
+      # without these entries edits get ZERO CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/significance.js'
+      - 'scripts/lib/significance.test.mjs'
+      - 'scripts/analyze-ab-test.js'
       # Overall email-gate funnel monitor (card #240) — pure rules + runner +
       # analyzer; colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/email-gate-funnel-rules.js'
