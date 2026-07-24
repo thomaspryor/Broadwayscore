@@ -155,3 +155,33 @@ test('acceptSerpCensusResult returns null for a missing/empty url', () => {
   assert.equal(acceptSerpCensusResult({ title: 'no url here' }, { show: TRAINSPOTTING_SHOW, showInfo: TRAINSPOTTING_SHOW_INFO }), null);
   assert.equal(acceptSerpCensusResult(null, { show: TRAINSPOTTING_SHOW, showInfo: TRAINSPOTTING_SHOW_INFO }), null);
 });
+
+// Ship-check 2026-07-24 (Codex adversarial review): isGenericShowTitle's raw
+// word-count test misses titles that read as 2+ words but reduce to a SINGLE
+// significant token via titleTokens (the token set urlMatchesShow actually
+// matches on) — "Oh, Mary!" -> ['mary'], "Life of Pi" -> ['life']. Both are
+// real, currently-live Broadway shows. Without the tokens.length<=1 gate,
+// acceptSerpCensusResult would accept a wrong-show hit that merely mentions
+// "mary"/"life" in a review URL, with no venue/cast disambiguation required.
+test('acceptSerpCensusResult applies the disambiguation gate to single-token titles missed by isGenericShowTitle', () => {
+  const ohMary = {
+    id: 'oh-mary-2024',
+    title: 'Oh, Mary!',
+    category: 'broadway',
+    cast: [{ name: 'Cole Escola' }],
+    creativeTeam: [],
+  };
+  const ohMaryInfo = { title: 'Oh, Mary!', cast: [{ name: 'Cole Escola' }], creativeNames: [] };
+  const wrongShowHit = {
+    url: 'https://example.com/reviews/some-other-mary-play-review/',
+    title: 'Some Other Mary Play review',
+    snippet: 'A completely unrelated regional production about a different character.',
+  };
+  const realHit = {
+    url: 'https://example.com/reviews/oh-mary-review/',
+    title: 'Oh, Mary! starring Cole Escola review',
+    snippet: 'Cole Escola is riotous in this new comedy.',
+  };
+  assert.equal(acceptSerpCensusResult(wrongShowHit, { show: ohMary, showInfo: ohMaryInfo }), null);
+  assert.equal(acceptSerpCensusResult(realHit, { show: ohMary, showInfo: ohMaryInfo }), 'https://example.com/reviews/oh-mary-review/');
+});

@@ -479,7 +479,18 @@ function acceptSerpCensusResult(sr, { show, showInfo }) {
   if (!u || !isReviewUrl(u)) return null;
   const tokens = titleTokens(show.title);
   if (!urlMatchesShow(u, tokens)) return null;
-  if (isGenericShowTitle(show.title) && canDisambiguateGenericTitle(showInfo)) {
+  // Weak-specificity gate (ship-check 2026-07-24): isGenericShowTitle's raw
+  // word-count test misses titles that are 2+ words on paper but reduce to a
+  // SINGLE significant token once titleTokens() strips stopwords/short words
+  // — e.g. "Oh, Mary!" -> ['mary'], "Life of Pi" -> ['life'], even
+  // "Trainspotting the Musical" -> ['trainspotting']. urlMatchesShow (just
+  // above) actually matches on THAT token set, so the real acceptance bar for
+  // those titles is a single generic word — an un-scoped SERP query (no
+  // site: restriction, unlike the aggregator-article queries above) is more
+  // exposed to wrong-show contamination on exactly these titles. Gate on
+  // tokens.length, not just isGenericShowTitle's word count, so the
+  // disambiguation check actually fires when it needs to.
+  if ((isGenericShowTitle(show.title) || tokens.length <= 1) && canDisambiguateGenericTitle(showInfo)) {
     const hay = `${(sr.title || '')} ${u} ${(sr.snippet || '')}`.toLowerCase();
     if (!hasDisambiguator(hay, showInfo)) return null;
   }
@@ -1423,6 +1434,10 @@ async function main(argv = process.argv.slice(2)) {
       // ingest ONLY when WE_GAP_INGEST=1 is explicitly set (a dropped env line
       // fails closed to report-only), and prior-run roundup URLs NEVER ingest.
       const weGateOn = process.env.WE_GAP_INGEST === '1';
+      // SERP census gate (#371, default OFF): an un-scoped SERP hit is weaker-
+      // specificity than a site:-restricted aggregator query — start report-
+      // only until proven, same posture as the WE gate before WE_GAP_INGEST.
+      const serpCensusGateOn = process.env.SERP_CENSUS_INGEST === '1';
       // On WE shows, the gate covers ALL missing URLs — not just weRef rows. The
       // Broadway-path SERP/Show Score discovery finds same-title US/prior-production
       // roundups for WE shows and ingested their reviews (2026-07-10 first-run
@@ -1431,8 +1446,9 @@ async function main(argv = process.argv.slice(2)) {
       const showIsWe = isWeShow(s);
       // Canonical ingest-eligibility predicate (lib/gap-ingest-policy.js):
       // prior-run URLs block on EVERY market/path; WE gate blocks the rest on
-      // WE shows + weRef rows until WE_GAP_INGEST=1.
-      const blockedPred = (m) => ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust }) !== null;
+      // WE shows + weRef rows until WE_GAP_INGEST=1; serpCensus rows wait for
+      // SERP_CENSUS_INGEST=1 on every market.
+      const blockedPred = (m) => ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }) !== null;
       const weBlocked = r.missing.filter(blockedPred);
       const eligibleMissing = r.missing.filter(m => !blockedPred(m));
       if (weBlocked.length > 0) {
@@ -1486,9 +1502,10 @@ async function main(argv = process.argv.slice(2)) {
       // citing a Guardian URL would otherwise re-ingest PRIOR-PRODUCTION text
       // into the current show's file every hour (the WET mass-ingestion class).
       const weRecGateOn = process.env.WE_GAP_INGEST === '1';
+      const serpCensusRecGateOn = process.env.SERP_CENSUS_INGEST === '1';
       // Same canonical predicate as the missing-URL ingest above — prior-run
       // (production-identity) blocks recovery on every market, not just weRef rows.
-      const recBlockedPred = (m) => ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn, lowTrustSources: lowTrust }) !== null;
+      const recBlockedPred = (m) => ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn, lowTrustSources: lowTrust, serpCensusGateOn: serpCensusRecGateOn }) !== null;
       const weRecBlocked = r.flaggedMisses.filter(m => m.recoverable && recBlockedPred(m));
       if (weRecBlocked.length > 0) {
         const nPrior = weRecBlocked.filter(m => m.priorRun).length;
