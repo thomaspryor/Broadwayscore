@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-24T08:55:54.420Z",
+  "timestamp": "2026-07-24T10:00:51.426Z",
   "stats": {
     "totalReviews": 40422,
-    "alreadyFlagged": 17803,
+    "alreadyFlagged": 17805,
     "dateGuardCatches": 59,
     "directorMismatch": 905,
-    "tvFilmSignals": 1108,
+    "tvFilmSignals": 1107,
     "londonSignals": 754,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
@@ -1711,20 +1711,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
-      "file": "independent--louis-chilton.json",
-      "score": 40,
-      "publishDate": "2026-04-17",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
