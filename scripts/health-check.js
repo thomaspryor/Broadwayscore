@@ -1153,6 +1153,65 @@ async function checkAlertRouterDeadman(isCI) {
   }];
 }
 
+// --- Push-retry deadman (task #394) ---
+//
+// scripts/lib/push-with-retry.sh appends a JSONL record to
+// data/audit/push-retry-failures.jsonl whenever it abandons a push — either a
+// no-op-rebase abort or full retry exhaustion. This surfaces that telemetry so a
+// silent-forever push failure (the exact class that stranded the alert-ledger and
+// killed cooldown/dedup across CI) becomes a visible digest row instead of a
+// swallowed `|| echo ::warning`. Non-paging: it's a digest signal, not a critical
+// self-page — the root-cause fix (explicit-destination fetch) is what actually
+// prevents the failure, and a persisted failure record already means SOME run
+// landed a later commit carrying the log, so the state is recoverable.
+//
+// PERSISTENCE CAVEAT: when a failed push is the ONLY write in a CI job, the log
+// dies with the runner and never reaches origin — so this row is a best-effort
+// backstop (it reliably catches local runs and jobs that land a later push), not a
+// guarantee. The definitive protection remains the fix + the ::error:: annotation.
+function checkPushRetryDeadman() {
+  const logPath = path.join(__dirname, '..', 'data', 'audit', 'push-retry-failures.jsonl');
+  let raw;
+  try {
+    raw = fs.readFileSync(logPath, 'utf8');
+  } catch {
+    return [{ name: 'Push-retry deadman', status: 'pass', message: 'No push-retry failures recorded (log absent)' }];
+  }
+
+  const cutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const recent = [];
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t) continue;
+    let rec;
+    try { rec = JSON.parse(t); } catch { continue; }
+    const ts = Date.parse(rec.ts);
+    if (Number.isNaN(ts) || ts < cutoff) continue;
+    recent.push(rec);
+  }
+
+  if (recent.length === 0) {
+    return [{ name: 'Push-retry deadman', status: 'pass', message: 'No push-retry failures in the trailing 7d' }];
+  }
+
+  const noops = recent.filter((r) => String(r.reason || '').startsWith('noop-rebase'));
+  const branches = [...new Set(recent.map((r) => `${r.remote || '?'}:${r.branch || '?'}`))];
+  // A no-op-rebase record is the #394 signature and the more serious signal (a
+  // stale-ref regression); 3+ exhaustions in a week is also worth an error row.
+  const status = noops.length > 0 || recent.length >= 3 ? 'error' : 'warn';
+  const message =
+    `${recent.length} push-retry failure(s) in the last 7d` +
+    (noops.length > 0 ? ` including ${noops.length} NO-OP-rebase abort(s) (task-#394 stale-ref signature)` : '') +
+    ` across ${branches.join(', ')}. Most recent reason: ${recent[recent.length - 1].reason || '?'}.`;
+
+  return [{
+    name: 'Push-retry deadman',
+    status,
+    message,
+    hint: 'A no-op-rebase abort means refs/remotes/origin/<branch> is stale after fetch (SHA-pinned checkout refspec) — verify scripts/lib/push-with-retry.sh still fetches with an explicit +refs/heads/X:refs/remotes/origin/X destination. Exhaustion means the remote genuinely could not be integrated.',
+  }];
+}
+
 // --- Category I2: Deploy freshness (content-aware gate watchdog) ---
 //
 // The should-deploy gate (scripts/lib/should-deploy-gate.js) skips scheduled
@@ -2411,6 +2470,7 @@ async function main() {
     ...checkDeployFreshness(),
     ...(await checkStuckWork()),
     ...(await checkAlertRouterDeadman(isCI)),
+    ...checkPushRetryDeadman(),
   ];
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
