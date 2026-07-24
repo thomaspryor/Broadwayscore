@@ -17,6 +17,13 @@ src/config/feature-flags.ts merge=ours
 # Human-editable/served data (admin locks, tony odds, public/data/shows) must NOT
 # go here; they need real 3-way merges.
 data/audit/stage-latency.jsonl merge=union
+# Bot-only append log, written by scripts/lib/owner-alert-router.js. 5+
+# workflows call routeAlert(disposition='auto') from separate jobs, not just
+# data-health-check.yml's concurrency-guarded run (card #374 /what-else
+# finding) — merge=union concatenates both sides on conflict instead of
+# picking one, so a race between two callers loses zero rows at the git
+# level (each JSON line is independent; duplicates are harmless to read).
+data/audit/alert-router-attempts.jsonl merge=union
 data/audit/deploy-watermark.json merge=ours
 data/audit/needs-human-review.json merge=ours
 data/audit/opening-night-completeness-state.json merge=ours
