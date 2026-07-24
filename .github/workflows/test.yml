@@ -616,6 +616,12 @@ on:
       # the same reason (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/owner-alert-router.js'
       - 'scripts/lib/owner-alert-router.test.mjs'
+      # E2E canary for the alert→card→dispatch chain (card #374) — path-listed
+      # for the same reason (feedback_test_yml_push_path_allowlist); it has no
+      # colocated unit test (it deliberately exercises the REAL Notion API,
+      # not mocks), so a solo edit needs an explicit trigger to get CI syntax
+      # coverage at all.
+      - 'scripts/e2e-canary-alert-chain.js'
       - 'scripts/lint-resend-calls.js'
       - 'scripts/lib/autonomous-eligibility.js'
       - 'scripts/lib/autonomous-eligibility.test.mjs'

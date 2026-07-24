@@ -952,6 +952,22 @@ async function getCard(args) {
   return card;
 }
 
+// Archives (soft-deletes) a card — for cleaning up synthetic/test cards, e.g.
+// the E2E canary (scripts/e2e-canary-alert-chain.js). Uses the Notion API's
+// `archived: true`, same as trashing a page from the Notion UI.
+async function archiveCard(args) {
+  const pageId = args._positional[1];
+  if (!pageId) {
+    console.error('Usage: notion-brain archive <page-id>');
+    process.exit(1);
+  }
+
+  const page = await notion.pages.update({ page_id: pageId, archived: true });
+  const result = { id: page.id, archived: true };
+  console.log(JSON.stringify(result, null, 2));
+  return result;
+}
+
 // ── Main ────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -967,6 +983,7 @@ Commands:
   search               Search cards by status/priority/text
   list                 List cards (compact table)
   get <id>             Get full card details
+  archive <id>         Archive (soft-delete) a card — for test/synthetic cards
 
 Options (create/update):
   --status "In progress"    Status: Not started, In progress, Paused, Done
@@ -1016,6 +1033,7 @@ Options (search/list):
       case 'search': await searchCards(args); break;
       case 'list':   await listCards(args); break;
       case 'get':    await getCard(args); break;
+      case 'archive': await archiveCard(args); break;
       default:
         console.error(`Unknown command: ${command}. Run without args for help.`);
         process.exit(1);

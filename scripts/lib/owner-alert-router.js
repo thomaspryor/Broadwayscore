@@ -47,6 +47,17 @@ const { sendAlert } = require('./discord-notify');
 const REPO_ROOT = path.join(__dirname, '..', '..');
 const LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-ledger.json');
 const DIGEST_QUEUE_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-queue.json');
+// Append-only attempt log for disposition='auto' dispatches — logs EVERY
+// attempt (success or failure), unlike the ledger above which only ever
+// records successes (a failed dispatch is deliberately not written there, so
+// the next call retries). health-check.js's deadman check (#374) reads this
+// to compare "attempts" vs "successes" over a trailing window — the ledger
+// alone can't answer that question, because during the 2026-07-24 npm-ci
+// incident every single dispatch failed, so the ledger would have shown ZERO
+// activity all week even though the router was attempting (and silently
+// failing) auto-dispatch on every run.
+const ATTEMPTS_LOG_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-router-attempts.jsonl');
+const ATTEMPTS_LOG_RETENTION_DAYS = 30;
 
 const DISPOSITIONS = ['auto', 'digest', 'human'];
 const DEFAULT_COOLDOWN_HOURS = 168; // 7 days
@@ -96,6 +107,35 @@ function buildCardNotes({ description, hint, fields, conditionKey }) {
   return notes;
 }
 
+// Appends one attempt record (success or failure) to ATTEMPTS_LOG_PATH and
+// prunes entries older than ATTEMPTS_LOG_RETENTION_DAYS. Never throws —
+// logging the attempt must not itself become a new silent-failure vector.
+function logDispatchAttempt({ conditionKey, title, ok, error }) {
+  try {
+    const cutoff = Date.now() - ATTEMPTS_LOG_RETENTION_DAYS * 24 * 60 * 60 * 1000;
+    let lines = [];
+    try {
+      lines = fs.readFileSync(ATTEMPTS_LOG_PATH, 'utf8').split('\n').filter(Boolean);
+    } catch { /* missing — first attempt */ }
+    const kept = lines.filter(line => {
+      try {
+        return new Date(JSON.parse(line).ts).getTime() >= cutoff;
+      } catch { return false; }
+    });
+    kept.push(JSON.stringify({
+      ts: new Date().toISOString(),
+      conditionKey,
+      title,
+      ok,
+      error: error ? String(error).slice(0, 500) : null,
+    }));
+    fs.mkdirSync(path.dirname(ATTEMPTS_LOG_PATH), { recursive: true });
+    fs.writeFileSync(ATTEMPTS_LOG_PATH, kept.join('\n') + '\n');
+  } catch (err) {
+    console.error(`[alert-router] failed to write attempt log (non-fatal): ${err.message}`);
+  }
+}
+
 // Files a Notion Action Queue card via the CLI (never MCP — see CLAUDE.md).
 // Returns { ok, cardId } — never throws; a dispatch failure degrades to a
 // logged warning rather than crashing the caller's own check/pipeline.
@@ -119,9 +159,15 @@ function dispatchCard({ title, description, hint, fields, severity, cardAction, 
     // run separately — this timeout only bounds one call's worst case.
     const out = execFileSync('node', args, { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
     const parsed = JSON.parse(out);
+    logDispatchAttempt({ conditionKey, title, ok: true });
     return { ok: true, cardId: parsed.id || null };
   } catch (err) {
+    // Log the REAL error verbatim — this is the exact spot the npm-ci incident
+    // (2026-07-24) got misdiagnosed as a NOTION_API_KEY problem. err.message
+    // from execFileSync includes stderr, so it carries whatever notion-brain.js
+    // actually printed (e.g. "Cannot find module '@notionhq/client'").
     console.error(`[alert-router] card dispatch failed for "${title}": ${err.message.slice(0, 300)}`);
+    logDispatchAttempt({ conditionKey, title, ok: false, error: err.message });
     return { ok: false, error: err.message };
   }
 }
@@ -210,6 +256,10 @@ async function routeAlert(opts) {
     const dispatch = dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey });
     result.cardId = dispatch.cardId || null;
     result.dispatchOk = dispatch.ok;
+    // Propagate the real dispatch error (not just the ok/fail boolean) so
+    // callers — the E2E canary, health-check.js's dispatchedCards mapping —
+    // can surface the true underlying failure instead of re-guessing one.
+    if (!dispatch.ok) result.dispatchError = dispatch.error;
     notifyOk = dispatch.ok;
   } else if (disposition === 'digest') {
     queueDigestLine({ title, description, severity, conditionKey, url });
@@ -256,14 +306,45 @@ function resolveCondition(conditionKey) {
   return true;
 }
 
+// Hard-removes a condition from the ledger — for synthetic/test conditions
+// only (e.g. the E2E canary's fixed conditionKeys). Real conditions should
+// use resolveCondition() so history (firstSeen/notifyCount) is preserved;
+// this exists so a canary run leaves zero residue and always re-dispatches
+// fresh on its next run instead of going silent under the normal cooldown.
+function deleteCondition(conditionKey) {
+  const ledger = loadLedger();
+  if (!(conditionKey in ledger.conditions)) return false;
+  delete ledger.conditions[conditionKey];
+  saveLedger(ledger);
+  return true;
+}
+
+// Reads the trailing-N-day dispatch attempt log for disposition='auto'
+// dispatches — used by health-check.js's deadman check to compare attempts
+// vs successes independent of the ledger (see ATTEMPTS_LOG_PATH comment).
+function readDispatchAttempts({ days = 7 } = {}) {
+  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+  let lines = [];
+  try {
+    lines = fs.readFileSync(ATTEMPTS_LOG_PATH, 'utf8').split('\n').filter(Boolean);
+  } catch { /* missing — no attempts logged yet */ }
+  return lines
+    .map(line => { try { return JSON.parse(line); } catch { return null; } })
+    .filter(Boolean)
+    .filter(entry => new Date(entry.ts).getTime() >= cutoff);
+}
+
 module.exports = {
   routeAlert,
   resolveCondition,
+  deleteCondition,
   loadLedger,
   drainDigestQueue,
+  readDispatchAttempts,
   DEFAULT_COOLDOWN_HOURS,
   DISPOSITIONS,
   // exported for tests only
   _LEDGER_PATH: LEDGER_PATH,
   _DIGEST_QUEUE_PATH: DIGEST_QUEUE_PATH,
+  _ATTEMPTS_LOG_PATH: ATTEMPTS_LOG_PATH,
 };
