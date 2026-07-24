@@ -1995,7 +1995,17 @@
     "sinatra-the-musical-west-end-2026/express-uk--west-end-theatre.json",
     "sinatra-the-musical-west-end-2026/front-row-center--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/huffpost--ed-mazza.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-best-friend--news-desk.json",
+    "the-misanthrope-west-end-2026/nytheatre--david-gordon.json",
+    "the-misanthrope-west-end-2026/theatermania--david-finkle.json",
+    "the-misanthrope-west-end-2026/about-entertainment--jason-zinoman.json",
+    "the-misanthrope-west-end-2026/backstage--david-sheward.json",
+    "the-misanthrope-west-end-2026/curtainup--simon-saltzman.json",
+    "the-misanthrope-west-end-2026/west-end-best-friend--news-desk.json",
+    "ride-the-cyclone-off-west-end-2026/hollywood-reporter--david-rooney.json",
+    "ride-the-cyclone-off-west-end-2026/nytimes--charles-isherwood.json",
+    "ride-the-cyclone-off-west-end-2026/newsday--linda-winer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2121,7 +2131,8 @@
       "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
       "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "data/review-texts/and-juliet-2022/thestage--tim-bano.json",
-      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/birthright-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
@@ -2144,7 +2155,7 @@
     ]
   },
   "startTime": "2026-07-23T18:01:51.136Z",
-  "lastProcessed": "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json",
+  "lastProcessed": "ride-the-cyclone-off-west-end-2026/newsday--linda-winer.json",
   "log": [
     {
       "t": "2026-07-23T18:02:09.222Z",
@@ -2367,6 +2378,28 @@
       "t": "2026-07-24T12:34:52.486Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-24T15:46:12.687Z",
+      "event": "bb-session",
+      "session": "1d431cec",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650316"
+    },
+    {
+      "t": "2026-07-24T15:46:13.778Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-24T15:46:29.792Z",
+      "event": "bb-session",
+      "session": "57207a69",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650316"
+    },
+    {
+      "t": "2026-07-24T15:46:30.855Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
