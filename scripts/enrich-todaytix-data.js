@@ -184,6 +184,19 @@ async function main() {
     }
   }
 
+  // Pass 0: direct todaytixId matches — an ID already stored in shows.json
+  // (e.g. saved by update-show-status.js title matching) is authoritative, so
+  // enrich regardless of TodayTix subcategory tags. Some legit WE shows carry
+  // only tags like "Contemporary"/"Must-See" and would be dropped by the
+  // subcategory filters below (Trainspotting the Musical, 2026-07-23).
+  console.log('\n=== Pass 0: direct todaytixId matches ===');
+  for (const { list, location } of [{ list: nycShows, location: 1 }, { list: londonShows, location: 2 }]) {
+    for (const tt of list) {
+      const show = shows.find(s => s.todaytixId === tt.id && s.status !== 'closed');
+      if (show) enrichShow(show, tt, location);
+    }
+  }
+
   // Process NYC shows (Broadway + OB)
   console.log('\n=== Processing NYC shows ===');
   for (const tt of nycShows) {
