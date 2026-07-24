@@ -14,6 +14,7 @@ import RatingEditor, { type RatingEditorSaveData } from '@/components/user/Ratin
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { stubRowFromCandidate, type MezzanineCandidate } from '@/lib/mezzanine-search';
 import SharedDatePicker from '@/components/user/DatePickerButton';
+import { localToday } from '@/lib/date-utils';
 
 import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
@@ -423,7 +424,7 @@ export default function MyShowsClient() {
 
   // Watchlist entries with future planned_date (for diary "Upcoming" section)
   const upcomingWatchlistEntries = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = localToday();
     const reviewedShowIds = new Set(reviews.map(r => r.show_id));
     return watchlist
       .filter(w => w.planned_date && w.planned_date > today && !reviewedShowIds.has(w.show_id))
@@ -432,7 +433,7 @@ export default function MyShowsClient() {
 
   // Watchlist entries where planned_date <= today AND no review exists ("To be rated")
   const toBeRatedEntries = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = localToday();
     const reviewedShowIds = new Set(reviews.map(r => r.show_id));
     return watchlist
       .filter(w => w.planned_date && w.planned_date <= today && !reviewedShowIds.has(w.show_id))
@@ -482,8 +483,7 @@ export default function MyShowsClient() {
   // Local timezone, NOT UTC: with UTC, from ~8pm ET a show planned for
   // TONIGHT flipped from Upcoming to To Be Rated before curtain
   // (code-review catch, 2026-07-20). Mirrors RatingEditor.localToday().
-  const wlNow = new Date();
-  const wlToday = new Date(wlNow.getTime() - wlNow.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  const wlToday = localToday();
   const upcomingBookedWatchlist = useMemo(
     () => sortedWatchlist.filter(e => !!e.planned_date && e.planned_date >= wlToday),
     [sortedWatchlist, wlToday],
@@ -1646,7 +1646,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const href = getShowHref(slug, show?.diaryOnly);
-  const isFutureDated = !!entry.planned_date && entry.planned_date >= new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  const isFutureDated = !!entry.planned_date && entry.planned_date >= localToday();
   const rateHref = href ? `${href}?rate=1` : null;
   const handleRateStars = (stars: number) => {
     if (rateHref) window.location.href = `${rateHref}&stars=${stars}`;
@@ -1841,7 +1841,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const href = getShowHref(slug, show?.diaryOnly);
-  const isFutureDated = !!entry.planned_date && entry.planned_date >= new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  const isFutureDated = !!entry.planned_date && entry.planned_date >= localToday();
 
   const isClosingSoon = show?.closingDate && (() => {
     const closing = new Date(show.closingDate!);

@@ -5,6 +5,7 @@ import Modal from '@/components/show-cards/Modal';
 import StarRating from './StarRating';
 import { sanitizeRating } from '@/lib/rating';
 import DatePickerButton from './DatePickerButton';
+import { localToday } from '@/lib/date-utils';
 
 export interface RatingEditorSaveData {
   rating: number;
@@ -43,14 +44,6 @@ interface RatingEditorProps {
 }
 
 const MAX_CHARS = 2000;
-
-/** Today in the viewer's local timezone as YYYY-MM-DD (not UTC — avoids off-by-one). */
-function localToday(): string {
-  const d = new Date();
-  const offsetMs = d.getTimezoneOffset() * 60 * 1000;
-  return new Date(d.getTime() - offsetMs).toISOString().split('T')[0];
-}
-
 
 const HEADER_COPY: Record<NonNullable<RatingEditorProps['mode']>, string> = {
   new: 'Your rating for',

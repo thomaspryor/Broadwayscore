@@ -1,4 +1,16 @@
 /**
+ * Today (YYYY-MM-DD) in the viewer's own device timezone — for personal data
+ * (watchlist planned dates, diary date_seen) where "today" means the user's
+ * local midnight, not a show's market timezone. UTC causes off-by-one: from
+ * ~8pm ET a show planned for tonight would read as already past.
+ */
+export function localToday(): string {
+  const d = new Date();
+  const offsetMs = d.getTimezoneOffset() * 60 * 1000;
+  return new Date(d.getTime() - offsetMs).toISOString().split('T')[0];
+}
+
+/**
  * Get today's date (YYYY-MM-DD) in the market's local timezone.
  * Opening dates are calendar dates in ET (Broadway/OB) or London (WE/OWE).
  * Using UTC causes off-by-one when builds run after midnight UTC but before
