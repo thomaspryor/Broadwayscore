@@ -196,6 +196,9 @@ const mobileShows = visibleShows.map(show => {
   if (show.category && show.category !== 'broadway') entry.cat = show.category;
   if (show.openingDate) entry.od = show.openingDate;
   if (show.closingDate) entry.cd = show.closingDate;
+  // Bookability: tickets on sale for a not-yet-open show (same derivation as
+  // generate-show-lookup.js — powers the app's "Tix on sale" watchlist badge)
+  if ((status === 'upcoming' || status === 'announced') && show.ticketLinks?.length) entry.tx = 1;
 
   // Images
   const img = {};
