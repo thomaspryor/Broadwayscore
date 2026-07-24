@@ -26,6 +26,7 @@ const { calculateCombinedScore, getDesignation } = require('./lib/audience-weigh
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
 const { batchDiscoverSlugs } = require('./lib/serp-slug-discovery');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
@@ -59,6 +60,7 @@ function fetchWithBrightData(url) {
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const dryRun = args.includes('--dry-run');
+const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
 const RATE_LIMIT_MS = 2000;
 const CHECKPOINT_EVERY = 10;
@@ -232,6 +234,13 @@ async function fetchAllFeefoReviews() {
   console.log('📡 Fetching Feefo reviews...');
 
   while (page <= totalPages) {
+    // Feefo pagination can run to 16+ pages; without this check it can burn
+    // the whole run budget before the per-show loop's own check ever runs,
+    // pushing the script past the job's timeout-minutes (same class as #369).
+    if (timeBudget.exceeded()) {
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached during Feefo pagination — ${page - 1} of ${totalPages} pages fetched. Next run restarts pagination from page 1.`);
+      break;
+    }
     try {
       const res = await httpsGet(`${FEEFO_BASE}&page=${page}`);
       const data = JSON.parse(res.body);
@@ -323,11 +332,23 @@ async function main() {
   // Fetch all Feefo reviews once (16 API calls, free)
   const feefoByProduct = dryRun ? {} : await fetchAllFeefoReviews();
 
-  const stats = { processed: 0, found: 0, notFound: 0, errors: 0, skipped: 0 };
+  const stats = { processed: 0, found: 0, notFound: 0, errors: 0, skipped: 0, unprocessedShows: 0, budgetExit: false };
   const missedShows = [];
   const anchorResults = {};
 
   for (let i = 0; i < toProcess.length; i++) {
+    // Per-show fetches can each burn up to MAX_RETRIES BrightData calls (30s
+    // timeout) across every URL variant when plain HTTP is blocked — without
+    // this check that can blow the job's timeout-minutes before the loop
+    // ever finishes (same class as #369; LBO's per-show loop had no budget
+    // check at all, unlike WET's which already existed pre-#369).
+    if (timeBudget.exceeded()) {
+      stats.unprocessedShows = toProcess.length - i;
+      stats.budgetExit = true;
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — ${stats.unprocessedShows} shows deferred to next run.`);
+      break;
+    }
+
     const show = toProcess[i];
     const title = show.title;
     stats.processed++;
@@ -515,8 +536,13 @@ async function main() {
   console.log(`  Not found: ${stats.notFound}`);
   console.log(`  Skipped:   ${stats.skipped} (title mismatch)`);
   console.log(`  Errors:    ${stats.errors}`);
+  if (stats.budgetExit) {
+    console.log(`  ⏱ Unprocessed (time budget): ${stats.unprocessedShows}`);
+  }
 
-  if (stats.found === 0 && toProcess.length > 3) {
+  // Skip when the budget exit fired early — that's a clean deferral, not a
+  // URL-pattern-change signal (same exemption as #369's pagination fix).
+  if (stats.found === 0 && toProcess.length > 3 && !stats.budgetExit) {
     console.error('\n❌ ZERO shows matched — possible URL pattern change. Aborting.');
     process.exit(1);
   }
