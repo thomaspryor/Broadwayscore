@@ -7,7 +7,6 @@
 if [ -f "$HOME/.claude/hooks/$(basename "$0")" ]; then
   exit 0
 fi
-
 # Session-start hook: injects critical rules as additionalContext
 # Modeled after Superpowers' using-superpowers meta-skill
 
@@ -27,55 +26,86 @@ if [ -x "$HOME/.claude/bin/claude-sync" ]; then
   "$HOME/.claude/bin/claude-sync" pull >/dev/null 2>&1 || true
 fi
 
-# Integrity check: verify critical CLAUDE.md sections haven't been reverted
+# Reap any zombie `gh` polling loops from prior/parallel sessions BEFORE they
+# burn the GitHub rate limit. PreToolUse blocks new ones; this catches the
+# ones that slipped through (older sessions, crashed sessions). 2026-05-23.
+if [ -x "$HOME/.claude/hooks/gh-zombie-reap.sh" ]; then
+  "$HOME/.claude/hooks/gh-zombie-reap.sh" 2>&1 || true
+fi
+
+# Integrity check: verify critical CLAUDE.md anchor phrases haven't been reverted.
+# Source of truth: <repo>/scripts/lib/claude-md-anchors.json (also a blocking CI
+# gate in test.yml lint-workflows). Fail-soft: if the JSON or node is unavailable,
+# fall back to the built-in phrase list; this block never aborts session start.
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
 if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/CLAUDE.md" ]; then
+  ANCHORS_JSON="$REPO_ROOT/scripts/lib/claude-md-anchors.json"
+  PHRASES=""
+  if [ -f "$ANCHORS_JSON" ] && command -v node >/dev/null 2>&1; then
+    PHRASES=$(node -e 'try{const a=require(process.argv[1]).anchors||[];process.stdout.write(a.join("\n"))}catch(e){}' "$ANCHORS_JSON" 2>/dev/null || true)
+  fi
+  # Fallback to the built-in list if the JSON yielded nothing (older checkout,
+  # parse error, node missing) — keeps the check working everywhere.
+  [ -z "$PHRASES" ] && PHRASES=$'Notion Brain\nOpening Night Readiness\nTest Extraction Pattern\nEmail Broadcast Safety'
   MISSING=""
-  grep -q "Notion Brain" "$REPO_ROOT/CLAUDE.md" || MISSING="$MISSING [§6 Notion Brain]"
-  grep -q "Opening Night Readiness" "$REPO_ROOT/CLAUDE.md" || MISSING="$MISSING [§14 Opening Night]"
-  grep -q "Test Extraction Pattern" "$REPO_ROOT/CLAUDE.md" || MISSING="$MISSING [§15 Test Extraction]"
-  grep -q "Email Broadcast Safety" "$REPO_ROOT/CLAUDE.md" || MISSING="$MISSING [§16 Email Broadcast]"
+  while IFS= read -r phrase; do
+    [ -z "$phrase" ] && continue
+    grep -qF "$phrase" "$REPO_ROOT/CLAUDE.md" || MISSING="$MISSING [$phrase]"
+  done <<< "$PHRASES"
   if [ -n "$MISSING" ]; then
     echo ""
-    echo "!!! CLAUDE.md INTEGRITY FAILURE — sections silently reverted:$MISSING"
+    echo "!!! CLAUDE.md INTEGRITY FAILURE — required anchor(s) missing:$MISSING"
     echo "!!! Fix IMMEDIATELY: re-apply from git history before doing ANY other work."
     echo ""
   fi
 fi
 
 # Load-time size check. Both files load into every session as system context.
-# MEMORY.md is truncated by the harness at ~200 lines — entries past that are
-# paid-for but never seen. CLAUDE.md has a documented 150-line cap. Caps grew
-# silently to 345 / 155 before being noticed (2026-05-08). Warn at load so the
-# next /wrap-up prunes before re-bloat. SessionStart is the right gate: the
-# cost is paid at load time, and per-edit hooks would create warning fatigue
-# during the very prune sessions meant to fix this.
+# Line limits alone are gamed by long lines — check BOTH line count AND byte size.
+# MEMORY.md: 180 lines / 20KB. CLAUDE.md: 150 lines / 12KB. Caps grew silently
+# to 345 lines / 23KB before being noticed (2026-05-08), then again to 206/23KB by
+# 2026-06-05 because this warning is advisory and got ignored (warning fatigue).
+# MEMORY.md is now hard-enforced at WRITE time by memory-index-cap-guard.sh
+# (PreToolUse) — this warning is the secondary/visibility layer for CLAUDE.md and
+# for catching drift from non-Edit/Write writers (e.g. rebuild-memory-index.js).
 if [ -n "$REPO_ROOT" ]; then
   CLAUDE_FILE="$REPO_ROOT/CLAUDE.md"
-  CLAUDE_LIMIT=150
+  CLAUDE_LINE_LIMIT=150
+  CLAUDE_BYTES_LIMIT=14336  # 14KB (~3.5K tokens) — don't grow; trim at next /wrap-up
   if [ -f "$CLAUDE_FILE" ]; then
     CLAUDE_LINES=$(wc -l < "$CLAUDE_FILE" | tr -d ' ')
-    if [ "${CLAUDE_LINES:-0}" -gt "$CLAUDE_LIMIT" ]; then
+    CLAUDE_BYTES=$(wc -c < "$CLAUDE_FILE" | tr -d ' ')
+    if [ "${CLAUDE_LINES:-0}" -gt "$CLAUDE_LINE_LIMIT" ]; then
       echo ""
-      echo "🔶 CLAUDE.md is $CLAUDE_LINES lines (documented cap: $CLAUDE_LIMIT)."
-      echo "   It loads every session — trim before next /wrap-up. Move detail to memory/."
+      echo "🔶 CLAUDE.md is $CLAUDE_LINES lines (cap: $CLAUDE_LINE_LIMIT). Trim before next /wrap-up."
+      echo ""
+    fi
+    if [ "${CLAUDE_BYTES:-0}" -gt "$CLAUDE_BYTES_LIMIT" ]; then
+      echo ""
+      echo "🔶 CLAUDE.md is ${CLAUDE_BYTES}B (~$((CLAUDE_BYTES/4)) tokens, limit: 12KB)."
+      echo "   Line count doesn't capture density — trim descriptions, move detail to memory/."
       echo ""
     fi
   fi
 
   # MEMORY.md is per-project at ~/.claude/projects/<encoded-cwd>/memory/MEMORY.md
-  # The encoding replaces every '/' in cwd with '-'.
   ENCODED=$(echo "$REPO_ROOT" | sed 's|/|-|g')
   MEMORY_FILE="$HOME/.claude/projects/$ENCODED/memory/MEMORY.md"
-  MEMORY_LIMIT=180
+  MEMORY_LINE_LIMIT=180
+  MEMORY_BYTES_LIMIT=20000  # ~5K tokens; matches memory-index-cap-guard.sh write-time cap
   if [ -f "$MEMORY_FILE" ]; then
     MEMORY_LINES=$(wc -l < "$MEMORY_FILE" | tr -d ' ')
-    if [ "${MEMORY_LINES:-0}" -gt "$MEMORY_LIMIT" ]; then
+    MEMORY_BYTES=$(wc -c < "$MEMORY_FILE" | tr -d ' ')
+    if [ "${MEMORY_LINES:-0}" -gt "$MEMORY_LINE_LIMIT" ]; then
       echo ""
-      echo "🔶 MEMORY.md is $MEMORY_LINES lines (documented cap: $MEMORY_LIMIT)."
-      echo "   Harness truncates after ~200 — entries past that load but are unseen."
-      echo "   Trim before next /wrap-up or add 'archived: true' frontmatter to older entries,"
-      echo "   then: node scripts/rebuild-memory-index.js --enforce-limit=$MEMORY_LIMIT"
+      echo "🔶 MEMORY.md is $MEMORY_LINES lines (cap: $MEMORY_LINE_LIMIT). Harness truncates at ~200."
+      echo ""
+    fi
+    if [ "${MEMORY_BYTES:-0}" -gt "$MEMORY_BYTES_LIMIT" ]; then
+      echo ""
+      echo "🔶 MEMORY.md is ${MEMORY_BYTES}B (~$((MEMORY_BYTES/4)) tokens, cap: 20KB)."
+      echo "   Write-time guard should hold this; if you see it, a non-Edit writer grew it."
+      echo "   Trim: each entry = [Title](file.md) — one short hook"
       echo ""
     fi
   fi
@@ -94,6 +124,88 @@ if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/CLAUDE.md" ]; then
     echo "   Local git hooks and parallel CI commits silently revert uncommitted edits."
     echo "   A parallel session lost page.tsx/index.ts this way on 2026-04-11."
     echo "   Rule: memory/feedback_worktree_code_changes.md"
+    echo ""
+  fi
+fi
+
+# Command-file drift check. The repo mirrors ~/.claude/commands/*.md into
+# .claude/commands/ so cloud sessions (no ~/.claude) get the same skills.
+# Project copies SHADOW the global ones locally, so drift means local sessions
+# silently run a stale skill (2026-07-13: repo wrap-up.md predated #48's
+# dispatch-first + self-close phases — sessions never saw them). Canonical rule:
+# the two copies must be IDENTICAL; merge best-of-both and copy to both sides.
+if [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/.claude/commands" ] && [ -d "$HOME/.claude/commands" ]; then
+  DRIFTED=""
+  for cf in "$REPO_ROOT"/.claude/commands/*.md; do
+    [ -f "$cf" ] || continue
+    cb=$(basename "$cf")
+    gf="$HOME/.claude/commands/$cb"
+    if [ -f "$gf" ] && ! cmp -s "$cf" "$gf"; then
+      # Direction hint only — claude-sync pull (above) rewrites global mtimes,
+      # and -nt is false on ties, so treat this as a starting point, not truth.
+      if [ "$cf" -nt "$gf" ]; then
+        DRIFTED="$DRIFTED
+     $cb (repo copy has newer mtime)"
+      elif [ "$gf" -nt "$cf" ]; then
+        DRIFTED="$DRIFTED
+     $cb (global ~/.claude copy has newer mtime)"
+      else
+        DRIFTED="$DRIFTED
+     $cb (same mtime — inspect the diff)"
+      fi
+    fi
+  done
+  if [ -n "$DRIFTED" ]; then
+    echo ""
+    echo "🔶 COMMAND-FILE DRIFT: repo .claude/commands/ differs from ~/.claude/commands/ —"
+    echo "   local sessions load the repo copy, so one side is running a stale skill:$DRIFTED"
+    echo "   First check: if the repo copy is just behind origin/main"
+    echo "   (git diff origin/main -- .claude/commands/ is non-empty in a stale worktree),"
+    echo "   pull/rebase instead of merging. Otherwise fix NOW (worktree for the repo"
+    echo "   side): diff each pair, merge best-of-both, make both sides byte-identical,"
+    echo "   commit repo + claude-sync push."
+    echo ""
+  fi
+fi
+
+# Hook-file drift check. Same rationale as COMMAND-FILE DRIFT above, applied to
+# .claude/hooks/*.sh — added 2026-07-24 (#428) after session-start.sh itself sat
+# 141 lines out of sync for months with nothing catching it (the commands/ loop
+# above only ever walked .claude/commands/*.md, never hooks/). Cloud sessions
+# (no ~/.claude) run ONLY the repo copy, so drift there is a silent capability
+# gap, not just a stale-skill nuisance.
+# session-start.sh itself is EXPECTED to differ: the repo copy carries a
+# self-skip guard at the very top (so local sessions — which load BOTH this
+# global hook AND the repo's settings.json hook — don't double-fire) that must
+# never exist in this global master copy. Skip it here; everything else in
+# hooks/ should be identical.
+if [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/.claude/hooks" ] && [ -d "$HOME/.claude/hooks" ]; then
+  HOOK_DRIFTED=""
+  for hf in "$REPO_ROOT"/.claude/hooks/*.sh; do
+    [ -f "$hf" ] || continue
+    hb=$(basename "$hf")
+    [ "$hb" = "session-start.sh" ] && continue
+    gh="$HOME/.claude/hooks/$hb"
+    if [ -f "$gh" ] && ! cmp -s "$hf" "$gh"; then
+      if [ "$hf" -nt "$gh" ]; then
+        HOOK_DRIFTED="$HOOK_DRIFTED
+     $hb (repo copy has newer mtime)"
+      elif [ "$gh" -nt "$hf" ]; then
+        HOOK_DRIFTED="$HOOK_DRIFTED
+     $hb (global ~/.claude copy has newer mtime)"
+      else
+        HOOK_DRIFTED="$HOOK_DRIFTED
+     $hb (same mtime — inspect the diff)"
+      fi
+    fi
+  done
+  if [ -n "$HOOK_DRIFTED" ]; then
+    echo ""
+    echo "🔶 HOOK-FILE DRIFT: repo .claude/hooks/ differs from ~/.claude/hooks/ —"
+    echo "   cloud sessions run ONLY the repo copy, so drift there is a silent"
+    echo "   capability gap, not just a stale-skill nuisance:$HOOK_DRIFTED"
+    echo "   Merge best-of-both, make both sides identical (session-start.sh"
+    echo "   excepted — see comment above), commit repo + claude-sync push."
     echo ""
   fi
 fi
@@ -161,14 +273,78 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [
   fi
 fi
 
+# Scoring-delta session baseline (added 2026-06-04). data/review-texts is a single
+# clone SHARED by all concurrent CMUX sessions, so `scoring-delta.js`'s `git diff
+# HEAD` saw the UNION of every session's uncommitted churn and reported dozens of
+# "flips" belonging to OTHER sessions (2026-06-01 incident). Snapshot the files
+# already dirty at THIS session's start, keyed by CMUX surface id, so scoring-delta
+# can exclude pre-existing churn and report only this session's own changes.
+# Best-effort, capped, never blocks startup. Read by scripts/scoring-delta.js
+# loadSessionBaseline().
+RT_DIR="${REPO_ROOT:-}/data/review-texts"
+RT_SID="${CMUX_SURFACE_ID:-${CMUX_WORKSPACE_ID:-}}"
+if [ -n "$RT_SID" ] && [ -d "$RT_DIR/.git" ]; then
+  RT_BASELINE="/tmp/scoring-delta-baseline-${RT_SID}.tsv"
+  (
+    cd "$RT_DIR" 2>/dev/null || exit 0
+    # First 500 already-dirty .json files + their content sha1. 500 covers the
+    # realistic churn (≈90 observed); beyond that the un-listed files just fall
+    # back to being reported (no worse than before this fix).
+    git diff HEAD --name-only 2>/dev/null \
+      | grep '\.json$' | head -500 \
+      | while IFS= read -r f; do
+          [ -f "$f" ] && printf '%s\t%s\n' "$(shasum -a1 "$f" 2>/dev/null | cut -d' ' -f1)" "$f"
+        done > "$RT_BASELINE" 2>/dev/null
+  ) || true
+fi
+
+# Stalled-merge detection (main repo). Added 2026-05-24 after a prior session
+# aborted mid-merge and left cloud-memory/MEMORY.md in UU state with no MERGE_HEAD.
+# Subsequent sessions inherited the conflict indefinitely; nothing surfaced it.
+# `git ls-files -u` lists index entries with stage >0 (unmerged). Combined with
+# absence of MERGE_HEAD/REBASE_HEAD/CHERRY_PICK_HEAD = stalled state from a
+# crashed/aborted merge. Active merges (MERGE_HEAD present) are intentional and
+# skipped — those are the assistant's responsibility to finish.
+if [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/.git" ]; then
+  UNMERGED_COUNT=$(cd "$REPO_ROOT" && git ls-files -u 2>/dev/null | wc -l | tr -d ' ')
+  if [ "${UNMERGED_COUNT:-0}" -gt 0 ]; then
+    HAS_ACTIVE_OP=no
+    for f in MERGE_HEAD REBASE_HEAD CHERRY_PICK_HEAD REVERT_HEAD; do
+      [ -e "$REPO_ROOT/.git/$f" ] && HAS_ACTIVE_OP=yes && break
+    done
+    [ -d "$REPO_ROOT/.git/rebase-merge" ] || [ -d "$REPO_ROOT/.git/rebase-apply" ] && HAS_ACTIVE_OP=yes
+    if [ "$HAS_ACTIVE_OP" = "no" ]; then
+      UNMERGED_FILES=$(cd "$REPO_ROOT" && git ls-files -u 2>/dev/null | awk '{print $4}' | sort -u | head -5 | sed 's/^/     /')
+      echo ""
+      echo "🛑 STALLED MERGE STATE: index has $UNMERGED_COUNT conflict entry/entries but no"
+      echo "   MERGE_HEAD / REBASE_HEAD / CHERRY_PICK_HEAD. A prior session aborted mid-merge."
+      echo "   This persists across sessions until resolved. Fix before any other work:"
+      echo "   Unmerged paths:"
+      echo "$UNMERGED_FILES"
+      echo "   Resolution options:"
+      echo "     # accept incoming (theirs) for one file:"
+      echo "     git checkout --theirs <path> && git add <path>"
+      echo "     # accept local (ours) for one file:"
+      echo "     git checkout --ours <path> && git add <path>"
+      echo "     # nuclear: drop the conflict and reset that path to HEAD"
+      echo "     git reset HEAD <path> && git checkout -- <path>"
+      echo ""
+    fi
+  fi
+fi
+
 # Conflict-marker check for local data/review-texts. Added 2026-04-26 after a
 # session found 287 broken-JSON files (<<<<<<< Updated upstream / >>>>>>> Stashed
 # changes) in the local working copy with ZERO in the private repo — local-only
 # corruption from past stash/rebase ops that silently drops review-texts from
 # every local rebuild. See memory/feedback_local_review_texts_conflict_markers.md.
-# Fast (~1-2s on a warm FS); only fires on startup/resume.
-if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/data/review-texts" ]; then
-  CONFLICT_COUNT=$(grep -rl '<<<<<<<' "$REPO_ROOT/data/review-texts" 2>/dev/null | wc -l | tr -d ' ')
+# PERF NOTE: do NOT use `grep -rl '<<<<<<<' data/review-texts/` — it scans 38k+
+# files and takes 22s cold. Use `git status` instead: git tracks merge conflicts
+# (UU) and unmerged files already; no full-tree scan needed. 2026-05-17.
+if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/data/review-texts/.git" ]; then
+  # git status --short lists UU (both-modified/conflict) and AA (both-added) entries
+  # which are the only states where conflict markers appear. Instant vs 22s grep.
+  CONFLICT_COUNT=$(cd "$REPO_ROOT/data/review-texts" && git status --short 2>/dev/null | grep -cE '^(UU|AA|DD|AU|UA|DU|UD) ' || echo 0)
   if [ "${CONFLICT_COUNT:-0}" -gt 0 ]; then
     echo ""
     echo "🚨 LOCAL JSON CORRUPTION: $CONFLICT_COUNT review-text file(s) in data/review-texts"
@@ -186,17 +362,19 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [
 fi
 
 # Stash accumulation guard. Added 2026-07-24 (task #427) after 44 stashes piled
-# up on main over months — sessions run defensive `git stash -u -m "..."` to
-# park pre-existing data-file drift before a merge/rebase, but nothing ever
-# drains them. One stale autostash left unresolved conflict markers directly
-# in data/audit/validation-baseline.json on main's working tree and silently
-# blocked merge/checkout for every session until found by chance (see commit
-# 91be6c72fdd). Fires on startup/resume only; cheap (`git stash list` is local).
-if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [ -n "$REPO_ROOT" ]; then
+# up on the Broadwayscore main repo over months — sessions run defensive
+# `git stash -u -m "..."` to park pre-existing data-file drift before a
+# merge/rebase, but nothing ever drains them. One stale autostash left
+# unresolved conflict markers directly in data/audit/validation-baseline.json
+# on main's working tree and silently blocked merge/checkout for every session
+# until found by chance (see Broadwayscore commit 91be6c72fdd). Same bug family
+# as the conflict-marker check above. Fires on startup/resume only; cheap
+# (`git stash list` is local, no network).
+if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/.git" ]; then
   STASH_COUNT=$(git -C "$REPO_ROOT" stash list 2>/dev/null | wc -l | tr -d ' ')
   if [ "${STASH_COUNT:-0}" -gt 10 ]; then
     echo ""
-    echo "🔶 STASH BACKLOG: $STASH_COUNT stashes on main (threshold: 10)."
+    echo "🔶 STASH BACKLOG: $STASH_COUNT stashes on $(basename "$REPO_ROOT") (threshold: 10)."
     echo "   Unclaimed stashes can silently reintroduce old conflict markers or drift"
     echo "   into the working tree and block merges (blocked a live merge 2026-07-24)."
     echo "   Inspect before dropping: git stash show -p stash@{N}"
@@ -216,3 +394,16 @@ CRITICAL SESSION RULES (CLAUDE.md has full text — these 6 are the most-violate
 6. TERSE OUTPUT: short answers, no trailing recap, drop pleasantries. Output tokens cost ~5x input — verbose explanation is the single biggest token leak Claude controls. Verification evidence still required (rule 2); cut narration, keep proof.
 Flow: implement → /did-it-work → /ship-check → /wrap-up. Don't stop between skills unless user said stop or you hit a real blocker.
 EOF
+
+# ── Self-heal: data-repo pre-commit guards (conflict markers / invalid JSON) ──
+# Source of truth: <web repo>/scripts/data-repo-hooks/pre-commit. Installed into
+# each local review-texts clone; a re-clone loses .git/hooks, this restores it.
+# Origin: 2026-07-11 stash-pop markers committed into 35 files redded main CI.
+HOOK_SRC="$HOME/Broadwayscore/scripts/data-repo-hooks/pre-commit"
+if [ -f "$HOOK_SRC" ]; then
+  for clone in "$HOME/Broadwayscore/data/review-texts" "$HOME/broadway-review-texts"; do
+    if [ -d "$clone/.git" ] && ! cmp -s "$HOOK_SRC" "$clone/.git/hooks/pre-commit" 2>/dev/null; then
+      cp "$HOOK_SRC" "$clone/.git/hooks/pre-commit" && chmod +x "$clone/.git/hooks/pre-commit"
+    fi
+  done
+fi
