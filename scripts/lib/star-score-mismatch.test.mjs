@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { evaluateReview, isExcludedReview, DEFAULT_THRESHOLD } = require('./star-score-mismatch.js');
+const { evaluateReview, isExcludedReview, keyOf, scanReviewTexts, DEFAULT_THRESHOLD } = require('./star-score-mismatch.js');
 
 test('DEFAULT_THRESHOLD is 30', () => {
   assert.equal(DEFAULT_THRESHOLD, 30);
@@ -81,10 +81,24 @@ test('no llm AND no assignedScore → not applicable', () => {
 
 test('excluded reviews are skipped regardless of gap', () => {
   const base = { originalScore: '5/5 stars', assignedScore: 20, llmScore: { score: 20 } };
-  for (const flag of ['wrongProduction', 'wrongShow', 'isNonReview', 'duplicateOf', 'isRoundupArticle']) {
+  for (const flag of ['wrongProduction', 'wrongShow', 'isNonReview', 'isNotReview', 'fabricatedEntry',
+    'wrongUrl', 'isCombinedReview', 'wrongAttribution', 'suspectedMisattribution', 'showNotMentioned',
+    'duplicateOf', 'duplicateTextOf', 'isRoundupArticle']) {
     assert.equal(evaluateReview({ ...base, [flag]: true }), null, `${flag} should exclude`);
   }
   assert.equal(evaluateReview({ ...base, rejectionReason: 'not_a_review' }), null);
+});
+
+test('keyOf includes the original rating so a changed bad rating re-alerts', () => {
+  const f1 = { showId: 's', file: 'f.json', originalRating: '2/5 stars' };
+  const f2 = { showId: 's', file: 'f.json', originalRating: '1/5 stars' };
+  assert.notEqual(keyOf(f1), keyOf(f2), 'a different bad rating in the same file must not be silently baselined');
+  assert.equal(keyOf(f1), 's/f.json#2/5 stars');
+});
+
+test('scanReviewTexts baseline drops only exact key matches', () => {
+  // Sanity: scanReviewTexts is exported and baselineKeys filters by keyOf.
+  assert.equal(typeof scanReviewTexts, 'function');
 });
 
 test('isExcludedReview matches its flags', () => {

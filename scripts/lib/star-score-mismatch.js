@@ -35,12 +35,23 @@ const { listShowDirs } = require('./list-show-dirs');
 // column, wrong DOM element) or the review is misattributed. 30 points ≈ 1.5 stars.
 const DEFAULT_THRESHOLD = 30;
 
-// Exclusion flags: reviews already suppressed from scoring shouldn't alert.
+// Exclusion flags: reviews already suppressed from scoring/coverage shouldn't
+// alert. Mirrors the repo's editorial-exclusion set (t1-silent-gap.js,
+// merge-review-fields.js, validate-data.js) so junk / misattributed files —
+// exactly where a low-confidence llmScore diverges wildly from an extracted
+// star — don't generate recurring false-positive daily warns.
 function isExcludedReview(r) {
   return !!(
     r.wrongProduction ||
     r.wrongShow ||
     r.isNonReview ||
+    r.isNotReview ||
+    r.fabricatedEntry ||
+    r.wrongUrl ||
+    r.isCombinedReview ||
+    r.wrongAttribution ||
+    r.suspectedMisattribution ||
+    r.showNotMentioned ||
     r.duplicateOf ||
     r.duplicateTextOf ||
     r.isRoundupArticle ||
@@ -105,9 +116,14 @@ function evaluateReview(review, opts = {}) {
  * Stable key for a finding — used to baseline/acknowledge known mismatches so
  * the daily health check alerts only on genuinely NEW ones (not the historical
  * backlog every day). Same posture as scrapingbee-ack / SEO post-fix grace.
+ *
+ * Keyed on the ORIGINAL RATING too, not just showId/file: if a baselined file
+ * later re-extracts a DIFFERENT bad rating (or is fixed and regresses to a new
+ * value), the key changes and it re-alerts instead of being silently swallowed
+ * under the old ack.
  */
 function keyOf(finding) {
-  return `${finding.showId}/${finding.file}`;
+  return `${finding.showId}/${finding.file}#${finding.originalRating}`;
 }
 
 /**
