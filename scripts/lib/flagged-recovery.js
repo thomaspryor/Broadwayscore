@@ -166,8 +166,24 @@ function nextRecoveryCount(file) {
   return ((file && file.aggUrlRecoveryCount) || 0) + 1;
 }
 
+// Post-fill production-window check (Tender/Sessions incident 2026-07-24): a
+// DATELESS stub fails the pre-fetch prior-run guard open, gets refilled, and
+// only THEN carries a publishDate. If that date is outside
+// [opening - 30d, opening + 365d], the URL was a different production/show
+// SERP-mismatched onto this entry — the fill must be flagged, not published
+// (validate-data.js goes red on main otherwise; window start mirrors
+// gap-ingest-policy's articleRunIdentity).
+function filledDateOutsideWindow(publishDate, openingDate) {
+  if (!publishDate || !openingDate) return false;
+  const pd = new Date(publishDate).getTime();
+  const op = new Date(openingDate).getTime();
+  if (Number.isNaN(pd) || Number.isNaN(op)) return false;
+  return pd < op - 30 * 86400000 || pd > op + 365 * 86400000;
+}
+
 module.exports = {
   FLAGGED_RECOVERY_CAP,
+  filledDateOutsideWindow,
   isEmptyBodyFile,
   isRecoverableFlaggedFile,
   isRecoverableUncitedStub,

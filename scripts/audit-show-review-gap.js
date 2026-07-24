@@ -1038,7 +1038,7 @@ function bumpRecoveryCount(showId, file, value) {
 // file (a fill, not a sibling). The retry counter is bumped regardless of fetch
 // outcome (see bumpRecoveryCount) so the cap actually halts retries. Returns the
 // per-flaggedMiss outcome for logging + the audit JSON.
-function recoverEmptyBodyFlaggedMiss(showId, m) {
+function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null) {
   // Re-run the cap/url decision against the CURRENT on-disk file, not the
   // reconstructed flaggedMiss view. The audit JSON can be minutes stale, and a
   // parallel session/workflow may have FILLED the file since detection —
@@ -1100,6 +1100,20 @@ function recoverEmptyBodyFlaggedMiss(showId, m) {
     const fp = path.join(REVIEW_TEXTS_DIR, showId, m.recoverableFile);
     const after = JSON.parse(fs.readFileSync(fp, 'utf8'));
     recovered = !isEmptyBodyFile(after);
+    // Post-fill production-window check (Tender/Sessions 2026-07-24): a
+    // DATELESS stub passes the pre-fetch prior-run guard open; only the filled
+    // text carries the real publishDate. If it lands outside the production
+    // window, the URL was a different production/show SERP-mismatched onto
+    // this entry — flag it here instead of shipping it to validate-data.js
+    // (which went red on main when the sweep filled a 2021 'Sessions' review
+    // into Tender's Times slot).
+    if (recovered && filledDateOutsideWindow(after.publishDate, openingDate)) {
+      after.wrongProduction = true;
+      after.wrongProductionNote = `auto-flag: filled text dated ${after.publishDate}, outside the production window around opening ${openingDate} (post-fill recovery guard)`;
+      safeWriteReview(fp, after, { force: true });
+      recovered = false;
+      reason = `filled text dated ${after.publishDate} — outside production window, flagged wrongProduction`;
+    }
   } catch { /* file unreadable/missing → treat as not recovered */ }
   if (ingestExit && !recovered && !reason) reason = 'ingest no-op (text landed elsewhere or unchanged)';
   // Star fallback (The Stage class, 2026-07-23): the text fetch failed — usually
@@ -1414,7 +1428,7 @@ async function main(argv = process.argv.slice(2)) {
         const recCapped = recoverables.slice(recBudget);
         r.recoveryResults = [];
         for (const m of budget) {
-          const res = recoverEmptyBodyFlaggedMiss(r.showId, m);
+          const res = recoverEmptyBodyFlaggedMiss(r.showId, m, s.openingDate);
           if (!res.skipped) perShowFetches++;
           r.recoveryResults.push(res);
           if (res.skipped) {
@@ -1471,7 +1485,7 @@ async function main(argv = process.argv.slice(2)) {
             recoverableCritic: d.criticName || null,
             recoverableCount: d.aggUrlRecoveryCount || 0,
           };
-          const res = recoverEmptyBodyFlaggedMiss(r.showId, m);
+          const res = recoverEmptyBodyFlaggedMiss(r.showId, m, s.openingDate);
           if (!res.skipped) perShowFetches++;
           r.recoveryResults = r.recoveryResults || [];
           r.recoveryResults.push({ ...res, uncited: true });

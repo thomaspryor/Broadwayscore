@@ -234,3 +234,20 @@ describe('isRecoverableUncitedStub: SERP-abandoned files stay out of the pool', 
     assert.equal(isRecoverableUncitedStub({ fullText: '', url: 'https://example.com/show-review/', serpDiscoveryAbandoned: true }), false);
   });
 });
+
+describe('filledDateOutsideWindow (post-fill guard, Tender/Sessions 2026-07-24)', () => {
+  const req2 = createRequire(import.meta.url);
+  const { filledDateOutsideWindow } = req2('../../scripts/lib/flagged-recovery.js');
+  test('2021 review vs 2026 opening → outside', () => {
+    assert.equal(filledDateOutsideWindow('2021-11-15', '2026-07-09'), true);
+  });
+  test('press-week review → inside', () => {
+    assert.equal(filledDateOutsideWindow('2026-07-14', '2026-07-09'), false);
+    assert.equal(filledDateOutsideWindow('2026-06-15', '2026-07-09'), false, '30d pre-opening previews window');
+  });
+  test('dateless or malformed fails open', () => {
+    assert.equal(filledDateOutsideWindow(null, '2026-07-09'), false);
+    assert.equal(filledDateOutsideWindow('2021-11-15', null), false);
+    assert.equal(filledDateOutsideWindow('not-a-date', '2026-07-09'), false);
+  });
+});
