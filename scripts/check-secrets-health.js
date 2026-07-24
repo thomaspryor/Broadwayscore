@@ -144,6 +144,16 @@ async function checkOpenRouter() {
   }
 }
 
+// Expiring acknowledgment for known, already-tracked exhaustion — mirrors the
+// npm audit allowlist pattern (scripts/audit-dependencies.js). Without this,
+// a known outage with its own card (#224) errors the digest daily until the
+// monthly credit reset, even though there is nothing left to action. The
+// expiry forces re-triage instead of silently masking forever.
+const SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION = {
+  reason: 'Monthly API limit exhausted (1M credits) — tracked in card #224, resets on billing cycle.',
+  expires: '2026-08-05',
+};
+
 async function checkScrapingBee() {
   const key = process.env.SCRAPINGBEE_API_KEY;
   if (!key) return { name: 'ScrapingBee', status: 'skip', message: 'Key not set' };
@@ -159,7 +169,14 @@ async function checkScrapingBee() {
       const remaining = max - used;
       const pctUsed = max > 0 ? Math.round((used / max) * 100) : 0;
 
-      if (remaining <= 0) return { name: 'ScrapingBee', status: 'fail', message: `Credits exhausted (${used}/${max} used)` };
+      if (remaining <= 0) {
+        const ack = SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION;
+        const today = new Date().toISOString().slice(0, 10);
+        if (ack.expires > today) {
+          return { name: 'ScrapingBee', status: 'warn', message: `Credits exhausted (${used}/${max} used) — acknowledged: ${ack.reason} [expires ${ack.expires}]` };
+        }
+        return { name: 'ScrapingBee', status: 'fail', message: `Credits exhausted (${used}/${max} used) — acknowledgment expired ${ack.expires}, re-triage` };
+      }
       if (pctUsed >= 75) return { name: 'ScrapingBee', status: 'warn', message: `${pctUsed}% credits used (${remaining} remaining) — opening nights at risk` };
       if (pctUsed >= 50) return { name: 'ScrapingBee', status: 'warn', message: `${pctUsed}% credits used (${remaining} remaining) — monitor before opening nights` };
       return { name: 'ScrapingBee', status: 'pass', message: `${remaining} credits remaining (${pctUsed}% used)` };

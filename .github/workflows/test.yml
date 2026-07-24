@@ -2179,6 +2179,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          # fetch-depth: 0 (full history) is REQUIRED, not an optimization — same
+          # fix as opening-night-poller.yml. This job commits snapshot updates via
+          # push-with-retry.sh (below); on a shallow (default depth-1) checkout,
+          # a graft-boundary HEAD makes merge-base/rebase against a fast-moving
+          # main (data-commit churn, card #80) unreliable — the retry loop's
+          # rebase/merge report false "already up to date" against a stale
+          # shallow ref while the true remote tip keeps advancing, so every
+          # push attempt gets rejected as non-fast-forward until the retry
+          # deadline gives up (task #353, run 29986598586, 2026-07-23).
+          fetch-depth: 0
 
 
 
