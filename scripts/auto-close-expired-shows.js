@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const dryRun = process.argv.includes('--dry-run');
@@ -24,7 +25,7 @@ function getMarketDate(category) {
   return new Intl.DateTimeFormat('en-CA', { timeZone: tz }).format(new Date());
 }
 
-const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+const data = loadShows();
 const shows = data.shows;
 
 let closed = 0;
@@ -49,7 +50,7 @@ if (closed === 0) {
 if (dryRun) {
   console.log(`[DRY RUN] Would close ${closed} show(s):`);
 } else {
-  fs.writeFileSync(SHOWS_PATH, JSON.stringify(data, null, 2) + '\n');
+  saveShows(data);
   console.log(`Closed ${closed} expired show(s):`);
 }
 

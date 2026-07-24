@@ -27,6 +27,7 @@
 
 const fs = require('fs');
 const { execSync } = require('child_process');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const APPLY = process.argv.includes('--apply');
 const SHOWS_PATH = 'data/shows.json';
@@ -112,7 +113,7 @@ function probeUrl(url) {
 }
 
 async function main() {
-  const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const shows = loadShows();
   const results = [];
   let total = 0;
 
@@ -237,7 +238,7 @@ async function main() {
         replaced++;
       }
     }
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(shows, null, 2) + '\n');
+    saveShows(shows);
     console.log(`\n--apply: replaced ${replaced} broken StubHub URL(s) with search-URL fallbacks in ${SHOWS_PATH}`);
   } else if (broken.length > 0) {
     console.log(`\nDry run. Re-run with --apply to replace broken URLs with search-URL fallbacks.`);

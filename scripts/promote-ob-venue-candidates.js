@@ -30,10 +30,11 @@ const fs = require('fs');
 const path = require('path');
 const { loadStaging, writeStagingCandidates } = require('./lib/venue-listing-discover');
 const { isCandidateConfirmed } = require('./lib/ob-cross-validation');
-const { atomicWriteShowsJson, AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
+const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const PROMOTION_LOG = path.join(__dirname, '..', 'data', 'audit', 'ob-promotion-log.jsonl');
@@ -184,7 +185,7 @@ async function main() {
   // Load existing shows.json for dedupe + atomic write base
   let showsData;
   try {
-    showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+    showsData = loadShows();
   } catch (e) {
     console.error(`Failed to load ${SHOWS_FILE}: ${e.message}`);
     process.exit(1);
@@ -370,7 +371,7 @@ async function main() {
   // Append to shows.json and atomic-write
   for (const p of promoted) showsData.shows.push(p.entry);
   try {
-    const r = atomicWriteShowsJson(SHOWS_FILE, showsData);
+    const r = saveShows(showsData);
     console.log(`Wrote shows.json: ${r.lineCountBefore} → ${r.lineCountAfter} lines.`);
   } catch (e) {
     if (e instanceof AtomicWriteShrinkError) {

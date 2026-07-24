@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { isLondonMarket } = require('./lib/venue-classification');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -95,7 +96,7 @@ function matchShow(ttShow, weShows) {
 
 async function main() {
   // Load shows
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows || showsData;
   const weShows = shows.filter(s => isLondonMarket(s.category));
   console.log(`Found ${weShows.length} West End shows in shows.json`);
@@ -207,7 +208,7 @@ async function main() {
   console.log(`Images downloaded: ${imagesDownloaded}`);
 
   if (!DRY_RUN && (venuesUpdated > 0 || imagesDownloaded > 0)) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log(`\nshows.json updated.`);
   } else if (DRY_RUN) {
     console.log(`\n(dry run — no files written)`);

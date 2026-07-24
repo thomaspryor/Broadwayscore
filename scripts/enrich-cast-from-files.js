@@ -21,6 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
@@ -159,7 +160,7 @@ function main() {
   console.log('');
 
   // Load shows.json
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const showsData = loadShows();
   let shows = showsData.shows;
   console.log(`Total shows in database: ${shows.length}`);
 
@@ -247,7 +248,7 @@ function main() {
 
   // Write
   if (!dryRun && enriched > 0) {
-    fs.writeFileSync(SHOWS_FILE, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log(`\nWrote shows.json with ${enriched} enriched cast arrays`);
   }
 

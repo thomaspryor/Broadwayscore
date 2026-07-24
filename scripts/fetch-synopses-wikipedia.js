@@ -13,6 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
@@ -182,7 +183,7 @@ async function fetchWikipediaSynopsis(show) {
 }
 
 async function main() {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const showsData = loadShows();
   const showList = showsData.shows || showsData;
 
   let missing = showList.filter(s => !s.synopsis || s.synopsis.trim().length < 50);
@@ -230,7 +231,7 @@ async function main() {
     if (showsData.shows) {
       showsData.shows = showList;
     }
-    fs.writeFileSync(SHOWS_FILE, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log(`\nWrote ${fetched} synopses to shows.json`);
   }
 }

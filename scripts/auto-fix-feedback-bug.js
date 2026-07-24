@@ -22,6 +22,7 @@ import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 const _require = createRequire(import.meta.url);
 const { CLAUDE_SONNET } = _require('./lib/models');
+const showsWriteGuard = _require('./lib/shows-write-guard.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -75,10 +76,15 @@ function parseDiagnosis(issueBody) {
 }
 
 function loadJsonFile(relPath) {
+  if (relPath === 'data/shows.json') return showsWriteGuard.loadShows();
   return JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'));
 }
 
 function saveJsonFile(relPath, data) {
+  if (relPath === 'data/shows.json') {
+    showsWriteGuard.saveShows(data);
+    return;
+  }
   fs.writeFileSync(path.join(ROOT, relPath), JSON.stringify(data, null, 2) + '\n');
 }
 
@@ -412,7 +418,11 @@ If you cannot fix it, respond: { "canFix": false, "reason": "why" }`;
 
   // Save shows.json if we modified it
   if (applied.some(a => a.startsWith('shows.json'))) {
-    saveJsonFile('data/shows.json', Array.isArray(showsData) ? shows : { ...showsData, shows });
+    // `shows` was mutated in place and (for the object-root shape) IS
+    // `showsData.shows` — pass `showsData` itself, not a rebuilt copy, so
+    // shows-write-guard's object-identity snapshot lookup still matches and
+    // the concurrent-writer merge fires.
+    saveJsonFile('data/shows.json', Array.isArray(showsData) ? shows : showsData);
   }
 
   // 8. Validate

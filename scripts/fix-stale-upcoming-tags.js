@@ -14,7 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasStaleUpcomingTag } = require('./lib/opening-night-completeness.js');
-const { atomicWriteShowsJson } = require('./lib/atomic-shows-write.js');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
@@ -23,7 +23,7 @@ const apply = args.includes('--apply');
 const showIdArg = (args.find(a => a.startsWith('--show=')) || '').replace('--show=', '') || null;
 
 function main() {
-  const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const data = loadShows();
   const shows = data.shows || [];
 
   const targets = shows.filter(s => (!showIdArg || s.id === showIdArg) && hasStaleUpcomingTag(s));
@@ -47,7 +47,7 @@ function main() {
     s.tags = s.tags.filter(t => t !== 'upcoming');
   }
 
-  const result = atomicWriteShowsJson(SHOWS_FILE, data);
+  const result = saveShows(data);
   console.log(`\nWrote shows.json (${result.lineCountBefore} -> ${result.lineCountAfter} lines). Fixed ${targets.length} show(s).`);
 }
 

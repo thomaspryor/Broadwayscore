@@ -26,6 +26,7 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const { buildFeedbackThankYouEmail } = require('./lib/email-templates.js');
+const showsWriteGuard = require('./lib/shows-write-guard.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,10 +59,14 @@ const ALLOWED_SCRIPTS = [
 // --- Helpers ---
 
 function loadJsonFile(relPath) {
+  // shows.json needs the lock+merge layer (concurrent writers) — everything
+  // else (commercial.json, audience-buzz.json) keeps the plain read/write.
+  if (relPath === 'data/shows.json') return showsWriteGuard.loadShows();
   return JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'));
 }
 
 function saveJsonFile(relPath, data) {
+  if (relPath === 'data/shows.json') { showsWriteGuard.saveShows(data); return; }
   fs.writeFileSync(path.join(ROOT, relPath), JSON.stringify(data, null, 2) + '\n');
 }
 
@@ -170,7 +175,11 @@ function executeDataEdit(action) {
     }
 
     shows[idx][field] = newValue;
-    saveJsonFile(relPath, Array.isArray(data) ? shows : { ...data, shows });
+    // `shows` was mutated in place and (for the object-root shape) IS
+    // `data.shows` — pass `data` itself, not a rebuilt `{...data, shows}`
+    // copy, so shows-write-guard's object-identity snapshot lookup still
+    // matches and the concurrent-writer merge fires.
+    saveJsonFile(relPath, Array.isArray(data) ? shows : data);
     return { ok: true, msg: `shows.json: ${field} updated for ${showId}` };
 
   } else if (file === 'commercial.json') {

@@ -33,7 +33,7 @@ const REPO = '/Users/tompryor/Broadwayscore';
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { selectOpeningNightShows } = require('./lib/opening-night-selection.js');
 const { activeWindows, nightKey, launchDecision, computeWindow } = require('./lib/opening-night-windows.js');
-const { launchCmuxSession } = require('./lib/cmux-launch.js');
+const { launchCmuxSession, pollUntil } = require('./lib/cmux-launch.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 
@@ -107,6 +107,33 @@ function heartbeatAgeMin() {
 
 function lockMeta() {
   try { return JSON.parse(fs.readFileSync(LOCK_META, 'utf8')); } catch { return null; }
+}
+
+// launchCmuxSession reports failure when claude hasn't registered a live
+// process within its verify window — but Fable cold start + the heavy
+// session-start hooks routinely exceed that window under nightly-loop load
+// (the 04:36 2026-07-24 false CRITICAL for trainspotting: workspace:272
+// spawned, came alive after the window, got reported dead). The final-path
+// workspace is NOT closed, so if claude comes alive during a late-start grace
+// we ADOPT it instead of paging + re-launching a duplicate. Pure so the
+// decision is unit-tested without a cmux socket.
+const LATE_START_GRACE_SEC = 60;
+function shouldAdoptLateStart(result, isAlive) {
+  return !!(result && !result.ok && result.workspaceRef && isAlive);
+}
+
+// Fail-CLOSED liveness for the adopt path. cmuxws.claudeAliveIn is fail-OPEN
+// (returns true on ANY cmux socket error) — correct for the close path (never
+// kill a maybe-alive tab) but UNSAFE for adoption: a transient socket error
+// would adopt a DEAD workspace, write LOCK_META, and suppress relaunch for the
+// rest of the night (codex ship-check). Require a SUCCESSFUL workspace listing
+// that still contains the ref before trusting the process check, so a socket
+// failure yields "not alive" (relaunch) instead of "adopt the corpse".
+function strictlyAliveWorkspace(ref) {
+  try {
+    if (!cmuxws.listWorkspaces().some(w => w.ref === ref)) return false;
+    return cmuxws.claudeAliveIn(ref);
+  } catch { return false; }
 }
 
 // Alert routing is lazy-required so a broken router dependency can never
@@ -257,7 +284,7 @@ async function main(argv = process.argv.slice(2)) {
   const rehearsal = !!opts.rehearsal;
   const seed = buildSeed(windows, { attempt: nightState.attempts + 1, rehearsal, key });
   const title = `🎭🧠 ON monitor·${rehearsal ? 'REHEARSAL ' : ''}${windows.map(w => w.showId.replace(/-\d{4}$/, '')).join(' + ').slice(0, 60)}`;
-  const result = launchCmuxSession({
+  let result = launchCmuxSession({
     title, seed, seedKey: `${key}-a${nightState.attempts + 1}`,
     cwd: REPO, model: MODEL,
     // focus:false — a 23:00 auto-launch must never steal the owner's screen
@@ -269,7 +296,23 @@ async function main(argv = process.argv.slice(2)) {
     verifyTimeoutSec: 90,
   });
 
+  // Late-start adoption: a Fable session that registered a live process AFTER
+  // launchCmuxSession's verify window is healthy, not failed — adopt it rather
+  // than page + relaunch a duplicate next tick (2026-07-24 false CRITICAL).
+  let adoptedLate = false;
+  if (!result.ok && result.workspaceRef) {
+    const live = pollUntil(() => strictlyAliveWorkspace(result.workspaceRef), LATE_START_GRACE_SEC);
+    if (shouldAdoptLateStart(result, live)) {
+      adoptedLate = true;
+      result = { ...result, ok: true, ref: result.workspaceRef };
+      log(`adopted late-start session ${result.ref} for ${windows.map(w => w.showId).join(', ')} (alive after verify window)`);
+    }
+  }
+
   if (!result.ok) {
+    // Genuinely dead — close the lingering workspace so it can't become an
+    // untracked orphan, drop the lock, and page.
+    if (result.workspaceRef) { try { cmuxws.closeWorkspace(result.workspaceRef); } catch { /* already gone */ } }
     fs.rmSync(LOCK_DIR, { recursive: true, force: true });
     await alert({
       conditionKey: `on-monitor-launch-failed-${key}`,
@@ -283,6 +326,7 @@ async function main(argv = process.argv.slice(2)) {
   fs.writeFileSync(LOCK_META, JSON.stringify({
     nightKey: key, workspaceRef: result.ref, launchedAt: now.toISOString(),
     attempt: nightState.attempts + 1, shows: windows.map(w => w.showId), rehearsal, model: MODEL,
+    ...(adoptedLate ? { adoptedAfterLateStart: true } : {}),
   }, null, 2));
   // Seed the heartbeat at launch so the next tick (before the session's first
   // loop pass finishes) reads a fresh heartbeat, not the stale-dead path.
@@ -298,14 +342,14 @@ async function main(argv = process.argv.slice(2)) {
   await alert({
     conditionKey: `on-monitor-launched-${key}`,
     title: `Opening-night monitor launched: ${windows.map(w => w.showId).join(', ')}`,
-    description: `Workspace ${result.ref}, attempt ${nightState.attempts + 1}, model ${MODEL}${rehearsal ? ', REHEARSAL mode' : ''}.`,
+    description: `Workspace ${result.ref}, attempt ${nightState.attempts + 1}, model ${MODEL}${rehearsal ? ', REHEARSAL mode' : ''}${adoptedLate ? ' (adopted after late start)' : ''}.`,
     severity: 'info', disposition: 'digest',
   });
   log(`launched ${result.ref} for ${windows.map(w => w.showId).join(', ')} (attempt ${nightState.attempts + 1})`);
   return 0;
 }
 
-module.exports = { parseArgs, monitorCandidates, buildSeed, main };
+module.exports = { parseArgs, monitorCandidates, buildSeed, main, shouldAdoptLateStart };
 
 if (require.main === module) {
   main().then(code => process.exit(code)).catch(e => {

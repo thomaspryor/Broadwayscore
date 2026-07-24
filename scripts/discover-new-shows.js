@@ -34,6 +34,7 @@ const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendatio
 const { classifyGenre } = require('./lib/genre-classification');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
+const showsWriteGuard = require('./lib/shows-write-guard');
 
 // Strict exact-match set of the 41 official Broadway houses (canonical + aliases),
 // normalized. We deliberately do NOT use broadway-theaters' isOfficialBroadwayTheater
@@ -1409,7 +1410,7 @@ async function consumeShowScoreCandidatesFile() {
 }
 
 function loadShows() {
-  const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const data = showsWriteGuard.loadShows();
   return data;
 }
 
@@ -1433,7 +1434,7 @@ function saveShows(data) {
     console.log(`⚠️  Dedup guard: removed ${removed} duplicate show(s) before saving`);
   }
 
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  showsWriteGuard.saveShows(data);
 }
 
 async function fetchShowsFromBroadwayOrg() {

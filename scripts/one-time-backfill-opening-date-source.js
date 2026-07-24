@@ -15,11 +15,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const dryRun = process.argv.includes('--dry-run');
 
-const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+const data = loadShows();
 const shows = data.shows;
 
 let tagged = { ibdb: 0, todaytix: 0, theatremonkey: 0, unknown: 0, none: 0 };
@@ -66,7 +67,7 @@ console.log(`  no openingDate (skipped): ${tagged.none}`);
 console.log(`  total tagged: ${tagged.ibdb + tagged.todaytix + tagged.theatremonkey + tagged.unknown}`);
 
 if (!dryRun) {
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  saveShows(data);
   console.log('\nWrote shows.json');
 } else {
   console.log('\n(dry run — no changes written)');

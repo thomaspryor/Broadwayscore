@@ -37,6 +37,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync, execFileSync } = require('child_process');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 let sharp;
 try {
@@ -231,9 +232,8 @@ async function main() {
     // dangling-path bug this replaces (steve-burns-alive class). Null the
     // matching images.{role} field for each removed NEW file and restage.
     if (removedNewFiles.length > 0) {
-      const showsFile = path.join(ROOT, 'data', 'shows.json');
       try {
-        const data = JSON.parse(fs.readFileSync(showsFile, 'utf8'));
+        const data = loadShows();
         let changed = 0;
         for (const rel of removedNewFiles) {
           const m = rel.match(/^public\/images\/shows\/([^/]+)\/(poster|thumbnail|hero)\./i);
@@ -252,7 +252,7 @@ async function main() {
           }
         }
         if (changed > 0) {
-          fs.writeFileSync(showsFile, JSON.stringify(data, null, 2) + '\n');
+          saveShows(data);
         }
       } catch (err) {
         console.error(`::error::shows.json cleanup failed after quarantine: ${err.message}`);

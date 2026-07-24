@@ -36,18 +36,26 @@ jobs:
             "collect-review-texts.yml|36|Collect Review Texts"
             "llm-ensemble-score.yml|48|LLM Ensemble Score"
             "test.yml|48|Test Suite"
-            # Daily 7 UTC. The BSC Daily digest carrier — the ONLY surface for all
-            # non-critical alerting (cron staleness, cookie health, repeat-failures,
-            # OB candidates). A *cancelled* run sends no digest and pages nothing, so
-            # alerting goes dark with nobody to flag it (2/14 runs cancelled ~14% incl.
-            # 2026-06-14). notify-failure ignores conclusion=cancelled. 26h (NOT the
-            # generic daily 36h) is deliberate: this check runs at 12 UTC, 5h after the
-            # 7 UTC digest, so on a cancel day the last SUCCESS is ~29h old at noon →
-            # caught SAME day. 36h would let the next day's success reset the clock
-            # before the next noon check, making a single cancel invisible — the exact
-            # gap this entry closes. See Notion 381637c5-416f-81af; audit exemption in
+            # Daily 16 UTC (moved off 07 UTC on 2026-07-24, card #409, to space it
+            # ≥3h from the autonomous loop's overnight approval email). The BSC Daily
+            # digest carrier — the ONLY surface for all non-critical alerting (cron
+            # staleness, cookie health, repeat-failures, OB candidates). A *cancelled*
+            # run sends no digest and pages nothing, so alerting goes dark with nobody
+            # to flag it (2/14 runs cancelled ~14% incl. 2026-06-14). notify-failure
+            # ignores conclusion=cancelled. Staleness = hours since the last SUCCESSFUL
+            # run. This check runs at 12 UTC, now BEFORE the 16 UTC digest, so on a
+            # healthy day it sees yesterday's 16 UTC success ~20h old, and after a
+            # single cancel the next 12 UTC check (before that day's 16 UTC run) sees
+            # ~44h — still caught, one day later than the old 07 UTC same-day catch.
+            # Band = 30h (was 26h when the digest ran at 07 UTC pre-#409): tight to the
+            # 24h cadence to trip a dead cron fast, but with ~7h of healthy-state slack
+            # so a lagged check + lagged digest can't false-trip — a false trip would
+            # self-heal by redispatching data-health-check.yml, which RE-SENDS the
+            # digest email, the exact noise this card fights. 30h still catches the 44h
+            # single-cancel case. Keep it well under the generic daily 36h.
+            # See Notion 381637c5-416f-81af; audit exemption in
             # scripts/audit-cron-health-coverage.js (TIGHT_BY_DESIGN).
-            "data-health-check.yml|26|Daily Data Health Check (digest carrier)"
+            "data-health-check.yml|30|Daily Data Health Check (digest carrier)"
             "commercial-weekly.yml|192|Commercial Weekly Orchestrator"
             # Friday 22:00 UTC weekly. Feeds fresh recoupment data to the Sunday
             # newsletter and carries the S1-T5 strict data gate. 192h = weekly

@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { switchToListView } from './helpers/mock-helpers';
+import { filterNonCriticalErrors } from './helpers/console-errors';
 
 
 /**
@@ -72,10 +73,10 @@ test.describe('My Shows — Page Structure', () => {
       }
     });
     await goToMock(page);
-    const critical = errors.filter(e =>
-      !e.includes('favicon') && !e.includes('analytics') && !e.includes('DevTools') &&
-      !e.includes('Failed to load resource') // covered by notFoundUrls check below
-    );
+    // Single source of truth for benign console noise (favicon, analytics,
+    // DevTools, Failed-to-load-resource [covered by notFoundUrls below], Next.js
+    // RSC-prefetch degradation, etc.). See helpers/console-errors.ts (#401).
+    const critical = filterNonCriticalErrors(errors);
     expect([...critical, ...notFoundUrls], 'Unexpected errors or 404s on page load').toEqual([]);
   });
 });

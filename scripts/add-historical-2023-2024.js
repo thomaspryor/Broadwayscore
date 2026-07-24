@@ -6,13 +6,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { checkForDuplicate } = require('./lib/deduplication');
 const { validateVenue } = require('./lib/broadway-theaters');
 const { classifyShow } = require('./lib/classify-show');
 
 const showsPath = path.join(__dirname, '../data/shows.json');
-const data = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+const data = loadShows();
 
 // New shows to add from 2023-2024 season
 const newShows = [
@@ -740,6 +741,6 @@ newShows.forEach(show => {
 data._meta.lastUpdated = new Date().toISOString();
 
 // Write back
-fs.writeFileSync(showsPath, JSON.stringify(data, null, 2));
+saveShows(data);
 console.log(`\n✅ Added ${addedCount} historical shows from 2023-2024 season`);
 console.log(`Total shows in database: ${data.shows.length}`);

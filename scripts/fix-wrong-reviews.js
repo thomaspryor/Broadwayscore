@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const BASE = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -190,11 +191,11 @@ for (const entry of manifest) {
     // Fix ibdbUrl on the show — but that's in shows.json, not review-texts
     // Handle this separately
     const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
-    const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    const showsData = loadShows();
     const show = showsData.shows.find(s => s.id === entry.showId);
     if (show) {
       show.ibdbUrl = entry.ibdbUrl;
-      fs.writeFileSync(showsPath, JSON.stringify(showsData, null, 2) + '\n');
+      saveShows(showsData);
       console.log(`✓ fixIbdb ${entry.showId}: cleared ibdbUrl | ${entry.reason}`);
     }
     continue;

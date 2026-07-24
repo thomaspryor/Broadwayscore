@@ -13,6 +13,7 @@
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const MAX_RETRIES = 3;
@@ -605,7 +606,7 @@ function hasCleanImages(images) {
 }
 
 function updateShowsJson(imageResults) {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
+  const showsData = loadShows();
   let updatedCount = 0;
   let skippedCount = 0;
 
@@ -625,7 +626,7 @@ function updateShowsJson(imageResults) {
   }
 
   showsData._meta.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
+  saveShows(showsData);
 
   if (skippedCount > 0) {
     console.log(`\n⏭️  Preserved ${skippedCount} shows with manually-set images`);

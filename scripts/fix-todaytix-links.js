@@ -20,6 +20,7 @@ const https = require('https');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildTodayTixUrl, normalizeShowName } = require('./lib/url-utils');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -158,7 +159,7 @@ async function main() {
   console.log(`TodayTix Link Checker ${DRY_RUN ? '(DRY RUN)' : ''}`);
   console.log('='.repeat(60));
 
-  const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const data = loadShows();
   const shows = data.shows;
 
   // Collect all shows with TodayTix links
@@ -276,7 +277,7 @@ async function main() {
   console.log(`Results: ${fixed} fixed, ${removed} removed, ${errors} unresolved`);
 
   if (!DRY_RUN && (fixed > 0 || removed > 0)) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(data, null, 2) + '\n');
+    saveShows(data);
     console.log('Saved shows.json');
   }
 

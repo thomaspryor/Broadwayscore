@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
@@ -20,7 +21,7 @@ const { extractTitleFromIBDBUrl, normalizeForTitleMatch, titleMatchScore } = req
 const dryRun = process.argv.includes('--dry-run');
 
 // Load shows for title lookup
-const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+const showsData = loadShows();
 const showTitles = {};
 for (const show of showsData.shows) {
   showTitles[show.id] = show.title;
@@ -94,7 +95,7 @@ for (const show of showsData.shows) {
 }
 
 if (cleared > 0) {
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(showsData, null, 2) + '\n');
+  saveShows(showsData);
   console.log(`Cleared ${cleared} bad ibdbUrl(s) from shows.json`);
 }
 

@@ -1063,13 +1063,24 @@ function checkCronHealth() {
         if (age > maxHours) {
           return { name: `Cron: ${name}`, status: 'error', message: `Last run ${formatAge(age)} ago (max ${maxHours}h). Conclusion: ${run.conclusion}`, hint: 'Check Actions tab — workflow may be disabled' };
         }
-        if (run.conclusion === 'failure') {
-          // Emit under a distinct name so the playbook can route failed-last-run
-          // crons to fix-now urgency (prominent in digest), separate from the
-          // baseline `Cron: X` staleness checks which stay at low urgency.
-          return { name: `Cron failed: ${name}`, status: 'warn', message: `Last run failed (${formatAge(age)} ago)` };
+        if (run.conclusion === 'success') {
+          return { name: `Cron: ${name}`, status: 'pass', message: `${formatAge(age)} ago, success` };
         }
-        return { name: `Cron: ${name}`, status: 'pass', message: `${formatAge(age)} ago, ${run.conclusion}` };
+        if (!run.conclusion) {
+          // Still running/queued — limit=1 with no status filter can return an
+          // in-flight run. Not evidence of a problem, so stays at baseline
+          // urgency rather than routing to the fix-now `Cron failed:` name.
+          return { name: `Cron: ${name}`, status: 'warn', message: `Last run still running (started ${formatAge(age)} ago)` };
+        }
+        // failure / cancelled / skipped / timed_out / action_required / neutral / stale —
+        // none of these confirm the cron actually did its job. Emit under a
+        // distinct name so the playbook can route to fix-now urgency (prominent
+        // in digest), separate from the baseline `Cron: X` staleness checks
+        // which stay at low urgency. Previously only 'failure' routed here —
+        // cancelled/timed_out runs silently read as 'pass' (ship-check
+        // adversarial finding on #367 surfaced the same bug in
+        // checkSecretsHealth(); same fix applied here).
+        return { name: `Cron failed: ${name}`, status: 'warn', message: `Last run inconclusive: ${run.conclusion} (${formatAge(age)} ago)` };
       } catch (err) {
         return { name: `Cron: ${name}`, status: 'warn', message: `gh CLI failed: ${err.message.substring(0, 80)}` };
       }
@@ -1099,10 +1110,21 @@ function checkSecretsHealth() {
         if (age > 336) { // 14 days — weekly check
           return { name: 'Secrets: health', status: 'warn', message: `Last check ${formatAge(age)} ago (>14d)`, hint: 'Trigger check-secrets-health workflow manually' };
         }
+        if (run.conclusion === 'success') {
+          return { name: 'Secrets: health', status: 'pass', message: `Last check passed (${formatAge(age)} ago)` };
+        }
         if (run.conclusion === 'failure') {
           return { name: 'Secrets: health', status: 'error', message: `Last check FAILED (${formatAge(age)} ago)`, hint: 'Check check-secrets-health workflow logs' };
         }
-        return { name: 'Secrets: health', status: 'pass', message: `Last check passed (${formatAge(age)} ago)` };
+        if (!run.conclusion) {
+          // Still running/queued — limit=1 with no status filter can return an
+          // in-flight run (conclusion is null until it completes). Not a pass:
+          // a stuck run would otherwise silently mask its eventual result.
+          return { name: 'Secrets: health', status: 'warn', message: `Last check still running (started ${formatAge(age)} ago)`, hint: 'Check check-secrets-health workflow run status' };
+        }
+        // cancelled / skipped / timed_out / action_required / neutral / stale —
+        // inconclusive, not a verified pass (ship-check adversarial finding, #367).
+        return { name: 'Secrets: health', status: 'warn', message: `Last check inconclusive: ${run.conclusion} (${formatAge(age)} ago)`, hint: 'Check check-secrets-health workflow logs' };
       } catch (err) {
         return { name: 'Secrets: health', status: 'warn', message: `gh CLI failed: ${err.message.substring(0, 80)}` };
       }

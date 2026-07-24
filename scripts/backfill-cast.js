@@ -24,6 +24,7 @@ const path = require('path');
 const { lookupIBDBCast, RATE_LIMIT_MS } = require('./lib/ibdb-cast');
 const { shouldTombstone } = require('./lib/cast-tombstone');
 const { cleanup } = require('./lib/scraper');
+const showsWriteGuard = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
@@ -44,7 +45,7 @@ const showFilterArg = args.find(a => a.startsWith('--show-filter'));
 const showFilter = showFilterArg ? (args[args.indexOf(showFilterArg) + 1] || showFilterArg.split('=')[1]) : null;
 
 function loadShows() {
-  const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const data = showsWriteGuard.loadShows();
   return data.shows;
 }
 
@@ -223,7 +224,7 @@ async function main() {
   // Sync ibdbUrl from cast files back to shows.json (non-sharded runs only)
   if (shardIdx === null && success > 0) {
     try {
-      const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+      const showsData = showsWriteGuard.loadShows();
       let synced = 0;
       for (const show of showsData.shows) {
         const castPath = path.join(CAST_DIR, `${show.id}.json`);
@@ -235,7 +236,7 @@ async function main() {
         }
       }
       if (synced > 0) {
-        fs.writeFileSync(SHOWS_FILE, JSON.stringify(showsData, null, 2) + '\n');
+        showsWriteGuard.saveShows(showsData);
         console.log(`\n📎 Synced ibdbUrl for ${synced} show(s) into shows.json`);
       }
     } catch (e) {

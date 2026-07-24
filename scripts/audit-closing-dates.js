@@ -48,6 +48,7 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { discoverAnnouncedClosingDate } = require('./lib/closing-date-discovery');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { classifyMissingSchedule, possiblyClosedPressAgreement } = require('./lib/closing-audit-classify');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const AUDIT_FILE = path.join(__dirname, '..', 'data', 'audit', 'closing-date-discrepancies.json');
@@ -331,7 +332,7 @@ async function main() {
   console.log(`Date: ${TODAY}`);
   console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
 
-  const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const data = loadShows();
   // Broadway only. broadway.com reliably lists the full performance calendar
   // for Broadway shows, but NOT for Off-Broadway: empirically (2026-06-21
   // probe) 4/5 running OB shows returned zero future dates and the OB slug
@@ -620,7 +621,7 @@ async function main() {
 
   const changed = extensions.length + autoFixedTripleSignal.length;
   if (changed > 0 && !DRY_RUN) {
-    fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+    saveShows(data);
     console.log(`\n✅ Wrote ${changed} closingDate updates to shows.json`);
   }
 

@@ -7,9 +7,10 @@
 const fs = require('fs');
 const path = require('path');
 const { writeClosingDate } = require('./lib/closing-date-guard');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
-const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+const data = loadShows();
 
 let changes = 0;
 
@@ -66,5 +67,5 @@ for (const fix of statusFixes) {
   changes++;
 }
 
-fs.writeFileSync(SHOWS_PATH, JSON.stringify(data, null, 2) + '\n');
+saveShows(data);
 console.log(`\nDone. ${changes} shows updated in shows.json`);

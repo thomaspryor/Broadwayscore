@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const BACKUP_FILE = path.join(__dirname, '..', 'data', 'shows.backup.json');
@@ -184,7 +185,7 @@ async function testDiscoveryFlow() {
     // Write updated shows.json
     showsData._meta.lastUpdated = new Date().toISOString();
     showsData._meta.showCount = showsData.shows.length;
-    fs.writeFileSync(SHOWS_FILE, JSON.stringify(showsData, null, 2));
+    saveShows(showsData);
     console.log(`\n   ✓ shows.json updated (${showsData.shows.length} total shows)\n`);
 
     // Simulate GitHub Actions output
@@ -201,9 +202,10 @@ async function testDiscoveryFlow() {
   console.log(`   Shows flagged for review data: ${addedShows.length}`);
   addedShows.forEach(s => console.log(`     - ${s.title} (${s.slug})`));
 
-  // Restore original shows.json
+  // Restore original shows.json — through the guard's lock, not a raw
+  // writeFileSync, so this rollback can't race a concurrent legitimate save.
   console.log('\n8. Restoring original shows.json...');
-  fs.writeFileSync(SHOWS_FILE, originalData);
+  saveShows(JSON.parse(originalData));
   fs.unlinkSync(BACKUP_FILE);
   console.log('   ✓ Original data restored\n');
 
