@@ -46,9 +46,15 @@ Per arm: `EXPOSED` (distinct persons whose first flag response = arm),
 
 ## Pre-registered rules
 
-- **Flag health**: exists, active, 50/50 split, 100% rollout. Anything else
-  means the experiment isn't running as designed and any numbers read during
-  the broken window are contaminated. Read via `node
+- **Flag health**: exists, active, 50/50 split, 100% rollout,
+  `ensure_experience_continuity: false`. Sticky-OFF is pre-registered-correct,
+  not a bug: this experiment is anonymous-only (the experiment lock forbids
+  `posthog.identify()`), continuity only affects identified persons, and
+  anonymous assignment is already deterministic per distinct_id at fixed
+  rollout. The per-flag expectation lives in `scripts/lib/flag-registry.js`
+  and the weekly parity monitor alarms on drift in either direction. Anything
+  else means the experiment isn't running as designed and any numbers read
+  during the broken window are contaminated. Read via `node
   scripts/analyze-gate-cold-start.js` (per-experiment) or the generic weekly
   `scripts/monitor-flag-parity.js` (card #250).
 - **Guardrail — capture collapse**: combined modal captures/week < 1 for 2

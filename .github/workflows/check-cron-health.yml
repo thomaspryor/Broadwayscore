@@ -28,7 +28,7 @@ jobs:
           # LO-HI only, no wrap-around ranges (e.g. "11-2" would never match).
           CRITICAL_CRONS=(
             "opening-night-broadcast.yml|36|Opening Night Broadcast"
-            "monitor-gate-ab.yml|184|Monitor Gate A/B"
+            "monitor-gate-ab.yml|184|Weekly A/B Monitors"
             "check-flag-parity.yml|184|Check Flag Parity"
             "opening-night-orchestrator.yml|25|Opening Night Orchestrator"
             "update-show-status.yml|36|Update Show Status"

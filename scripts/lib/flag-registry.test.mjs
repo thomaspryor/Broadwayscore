@@ -111,3 +111,57 @@ test('evaluateFlagHealth: expected-absent flag that now exists is flagged (regis
   assert.equal(ok, false);
   assert.match(problem, /registry expects it absent/);
 });
+
+// ── ensure_experience_continuity (sticky bucketing) — 2026-07-24 ──
+// Per-flag expected value lives in the registry so sessions stop
+// flip-flopping on whether sticky-off is "a bug" (it is NOT for
+// anonymous-only experiments — see the REGISTERED_FLAGS comment).
+
+test('schema: every exists:true entry declares boolean ensure_experience_continuity', () => {
+  for (const entry of REGISTERED_FLAGS) {
+    if (!entry.expected.exists) continue;
+    assert.equal(
+      typeof entry.expected.ensure_experience_continuity,
+      'boolean',
+      `REGISTERED_FLAGS['${entry.key}'].expected.ensure_experience_continuity must be a boolean — ` +
+      `decide sticky bucketing at experiment design time (anonymous-only → false; identified users → true). ` +
+      `See the comment above REGISTERED_FLAGS.`
+    );
+  }
+});
+
+test('evaluateFlagHealth: sticky drift is flagged (live-shape fixture)', () => {
+  // Live shape mirrors monitor-flag-parity.js fetchLiveFlag / the
+  // analyze-gate-cold-start.js mapping — NOT a hand-built expected object.
+  const live = {
+    active: true,
+    variants: [{ key: 'control', pct: 50 }, { key: 'cold-start', pct: 50 }],
+    rollout: 100,
+    ensure_experience_continuity: true, // ← someone flipped it ON
+  };
+  const entry = REGISTERED_FLAGS.find((e) => e.key === 'gate-cold-start');
+  const { ok, problem } = evaluateFlagHealth(live, entry.expected);
+  assert.equal(ok, false);
+  assert.match(problem, /ensure_experience_continuity is true/);
+});
+
+test('evaluateFlagHealth: unmapped sticky field from the fetcher fails loudly (three-way-sync guard)', () => {
+  const live = { active: true, variants: [{ key: 'control', pct: 50 }, { key: 'cold-start', pct: 50 }], rollout: 100 };
+  const entry = REGISTERED_FLAGS.find((e) => e.key === 'gate-cold-start');
+  const { ok, problem } = evaluateFlagHealth(live, entry.expected);
+  assert.equal(ok, false);
+  assert.match(problem, /fetcher did not supply the field/);
+});
+
+test('evaluateFlagHealth: matching sticky value passes', () => {
+  const live = {
+    active: true,
+    variants: [{ key: 'control', pct: 50 }, { key: 'cold-start', pct: 50 }],
+    rollout: 100,
+    ensure_experience_continuity: false,
+  };
+  const entry = REGISTERED_FLAGS.find((e) => e.key === 'gate-cold-start');
+  const { ok, problem } = evaluateFlagHealth(live, entry.expected);
+  assert.equal(ok, true);
+  assert.equal(problem, null);
+});

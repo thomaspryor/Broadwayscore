@@ -2,7 +2,7 @@
 /**
  * analyze-email-gate-funnel.js — readout for the OVERALL email-gate funnel (card #240).
  *
- * Unlike analyze-gate-ab.js (the mobile-gate-timing A/B — never launched, statistically
+ * Unlike the retired analyze-gate-ab.js (the mobile-gate-timing A/B — never launched, statistically
  * dead under the cold-start gate), this tracks the funnel end-to-end regardless of any
  * experiment: modal-only captures, impressions, dismissal.
  *
