@@ -23,8 +23,9 @@ childProcess.execFileSync = () => {
 };
 let main;
 let USAGE;
+let acceptSerpCensusResult;
 try {
-  ({ main, USAGE } = require('./audit-show-review-gap.js'));
+  ({ main, USAGE, acceptSerpCensusResult } = require('./audit-show-review-gap.js'));
 } finally {
   childProcess.execFileSync = originalExecFileSync;
 }
@@ -102,4 +103,85 @@ test('node scripts/audit-show-review-gap.js --window=21 --dispatch-gather --help
     assert.match(out, /Usage:/);
     assert.equal(fs.existsSync(marker), false, 'gh stub must never be invoked for --window=21 --dispatch-gather --help');
   });
+});
+
+// SERP review census (#371 — Soundsphere/JonathanBaz class): a manual
+// "Trainspotting the Musical review" Google sweep surfaced 2 reviews neither
+// aggregator cited. These fixtures mirror the real SERP hits that turned up —
+// proving acceptSerpCensusResult would have surfaced both without depending on
+// live BD/SB availability (which is a provider-outage concern, not a logic one).
+const TRAINSPOTTING_SHOW = {
+  id: 'trainspotting-the-musical-west-end-2026',
+  title: 'Trainspotting the Musical',
+  category: 'west-end',
+  cast: [],
+  creativeTeam: [],
+};
+const TRAINSPOTTING_SHOW_INFO = { title: 'Trainspotting the Musical', cast: [], creativeNames: [] };
+
+test('acceptSerpCensusResult surfaces the Soundsphere + JonathanBaz reviews an aggregator sweep missed', () => {
+  const soundsphere = {
+    url: 'https://www.soundspheremag.com/reviews/live-reviews/trainspotting-the-musical-review/',
+    title: 'Trainspotting the Musical review — Soundsphere Magazine',
+    snippet: 'Ros Tibbs reviews Trainspotting the Musical at the Playground Theatre.',
+  };
+  const jonathanBaz = {
+    url: 'https://jonathanbaz.com/2026/07/trainspotting-the-musical-review/',
+    title: 'Trainspotting the Musical ★★★★ review',
+    snippet: 'Jonathan Baz reviews the new stage adaptation of Trainspotting.',
+  };
+  const accepted1 = acceptSerpCensusResult(soundsphere, { show: TRAINSPOTTING_SHOW, showInfo: TRAINSPOTTING_SHOW_INFO });
+  const accepted2 = acceptSerpCensusResult(jonathanBaz, { show: TRAINSPOTTING_SHOW, showInfo: TRAINSPOTTING_SHOW_INFO });
+  assert.equal(accepted1, 'https://www.soundspheremag.com/reviews/live-reviews/trainspotting-the-musical-review/');
+  assert.equal(accepted2, 'https://jonathanbaz.com/2026/07/trainspotting-the-musical-review/');
+});
+
+test('acceptSerpCensusResult rejects non-review and wrong-show noise from the same SERP page', () => {
+  const ticketLink = {
+    url: 'https://www.todaytix.com/london/shows/trainspotting-the-musical',
+    title: 'Buy Trainspotting the Musical Tickets',
+    snippet: 'Get tickets now.',
+  };
+  const wrongShow = {
+    url: 'https://example.com/reviews/some-other-play-review/',
+    title: 'Some Other Play review',
+    snippet: 'A completely unrelated production.',
+  };
+  assert.equal(acceptSerpCensusResult(ticketLink, { show: TRAINSPOTTING_SHOW, showInfo: TRAINSPOTTING_SHOW_INFO }), null);
+  assert.equal(acceptSerpCensusResult(wrongShow, { show: TRAINSPOTTING_SHOW, showInfo: TRAINSPOTTING_SHOW_INFO }), null);
+});
+
+test('acceptSerpCensusResult returns null for a missing/empty url', () => {
+  assert.equal(acceptSerpCensusResult({ title: 'no url here' }, { show: TRAINSPOTTING_SHOW, showInfo: TRAINSPOTTING_SHOW_INFO }), null);
+  assert.equal(acceptSerpCensusResult(null, { show: TRAINSPOTTING_SHOW, showInfo: TRAINSPOTTING_SHOW_INFO }), null);
+});
+
+// Ship-check 2026-07-24 (Codex adversarial review): isGenericShowTitle's raw
+// word-count test misses titles that read as 2+ words but reduce to a SINGLE
+// significant token via titleTokens (the token set urlMatchesShow actually
+// matches on) — "Oh, Mary!" -> ['mary'], "Life of Pi" -> ['life']. Both are
+// real, currently-live Broadway shows. Without the tokens.length<=1 gate,
+// acceptSerpCensusResult would accept a wrong-show hit that merely mentions
+// "mary"/"life" in a review URL, with no venue/cast disambiguation required.
+test('acceptSerpCensusResult applies the disambiguation gate to single-token titles missed by isGenericShowTitle', () => {
+  const ohMary = {
+    id: 'oh-mary-2024',
+    title: 'Oh, Mary!',
+    category: 'broadway',
+    cast: [{ name: 'Cole Escola' }],
+    creativeTeam: [],
+  };
+  const ohMaryInfo = { title: 'Oh, Mary!', cast: [{ name: 'Cole Escola' }], creativeNames: [] };
+  const wrongShowHit = {
+    url: 'https://example.com/reviews/some-other-mary-play-review/',
+    title: 'Some Other Mary Play review',
+    snippet: 'A completely unrelated regional production about a different character.',
+  };
+  const realHit = {
+    url: 'https://example.com/reviews/oh-mary-review/',
+    title: 'Oh, Mary! starring Cole Escola review',
+    snippet: 'Cole Escola is riotous in this new comedy.',
+  };
+  assert.equal(acceptSerpCensusResult(wrongShowHit, { show: ohMary, showInfo: ohMaryInfo }), null);
+  assert.equal(acceptSerpCensusResult(realHit, { show: ohMary, showInfo: ohMaryInfo }), 'https://example.com/reviews/oh-mary-review/');
 });

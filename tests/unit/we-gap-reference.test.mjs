@@ -214,8 +214,16 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
   test('P0 (ship-check): flaggedMisses RECOVERY path also respects the WE gate + prior-run block', () => {
     assert.ok(auditSrc.includes('m.recoverable && recBlockedPred(m)') && auditSrc.includes('m.recoverable && !recBlockedPred(m)'),
       'recovery filter must exclude gate-blocked rows — an empty-body file + a 2022 roundup URL must never re-ingest prior-production text');
-    assert.ok(auditSrc.includes('ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn, lowTrustSources: lowTrust })'),
+    assert.ok(auditSrc.includes('ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn, lowTrustSources: lowTrust, serpCensusGateOn: serpCensusRecGateOn })'),
       'recovery must consult the SAME canonical policy predicate as missing-URL ingest');
+  });
+
+  test('P0 (#371 ship-check): SERP census rows are gated on EVERY ingest path (missing-URL + recovery), not just WE', () => {
+    assert.ok(auditSrc.includes("process.env.SERP_CENSUS_INGEST === '1'"), 'explicit-opt-in comparison present');
+    assert.ok(auditSrc.includes('blockedPred = (m) => ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn })'),
+      'missing-URL ingest must thread serpCensusGateOn — a Broadway-market serpCensus row must not bypass the WE-only gates');
+    assert.ok(auditSrc.includes('recBlockedPred = (m) => ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn, lowTrustSources: lowTrust, serpCensusGateOn: serpCensusRecGateOn })'),
+      'recovery must thread serpCensusGateOn too');
   });
 
   test('INCIDENT 2026-07-10: Broadway-path same-title contamination blocked by production identity', () => {

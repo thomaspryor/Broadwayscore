@@ -48,17 +48,28 @@ function articleRunIdentity(html, show, url) {
 
 /**
  * Why an aggregator-listed URL must NOT be auto-ingested (null = ingestable).
- * @param {object} m    missing/flaggedMiss entry ({priorRun, weRef, weRefSources})
- * @param {object} ctx  {showIsWe: boolean, weGateOn: boolean, lowTrustSources?: Set<string>}
- * @returns {'prior-run'|'we-gate-off'|'low-trust-source'|null}
+ * @param {object} m    missing/flaggedMiss entry ({priorRun, weRef, weRefSources, serpCensus})
+ * @param {object} ctx  {showIsWe: boolean, weGateOn: boolean, lowTrustSources?: Set<string>, serpCensusGateOn?: boolean}
+ * @returns {'prior-run'|'we-gate-off'|'serp-census-gate-off'|'low-trust-source'|null}
  */
-function ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources }) {
+function ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources, serpCensusGateOn }) {
   // Production identity: a URL cited only by a prior production's article/roundup
   // is NEVER auto-ingested, on any market, regardless of gate state.
   if (m.priorRun) return 'prior-run';
   // WE completeness gate (default OFF, fails closed): on WE shows ALL missing
   // URLs wait for WE_GAP_INGEST=1; weRef-derived URLs wait for it everywhere.
   if ((showIsWe || m.weRef) && !weGateOn) return 'we-gate-off';
+  // SERP census gate (#371, ship-check 2026-07-24): a plain "<title> review"
+  // Google query carries no site: restriction — weaker specificity than the
+  // aggregator-article queries (Playbill/BWW) that vouch for every OTHER
+  // Broadway-path ingest. Without this, a serpCensus-only miss on a Broadway
+  // show would auto-ingest via --ingest-missing with zero extra scrutiny, at
+  // exactly the moment the generic-title disambiguation guard is weakest
+  // (single-token titles like "Oh, Mary!"/"Life of Pi"). Start conservative —
+  // same "prove corroboration before auto-enabling" posture the WE gate used
+  // (WE_GAP_INGEST) — default OFF via SERP_CENSUS_INGEST. Only reached for
+  // non-WE rows; a WE show's serpCensus row is already blocked above.
+  if (m.serpCensus && !serpCensusGateOn) return 'serp-census-gate-off';
   // Per-aggregator trust (lib/we-gate-proving.js aggregatorAccuracy): a URL
   // vouched for ONLY by sources whose citations have measurably failed
   // corroboration stays report-only. One trusted citing source is enough to
