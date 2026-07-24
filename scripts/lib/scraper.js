@@ -149,14 +149,19 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
-// Scrapingdog — flag-gated cheap tier inserted AHEAD of Bright Data. BD Web
-// Unlocker is ~$1.50/1k req; Scrapingdog plain HTML is ~$0.09/1k (1 credit),
-// dynamic ~$0.45/1k (5cr). Bake-off (2026-06-21) confirmed content-identical
-// results on the dominant BD hosts (DTLI/Playbill/BWW) + working Google SERP.
-// Default OFF — set SCRAPER_USE_SCRAPINGDOG=1 to enable. Bright Data stays in
-// the chain as the fallback for the hard sites Scrapingdog can't unblock.
+// Scrapingdog — cheap tier inserted AHEAD of Bright Data. BD Web Unlocker is
+// ~$1.50/1k req; Scrapingdog plain HTML is ~$0.09/1k (1 credit), dynamic
+// ~$0.45/1k (5cr). Bake-off (2026-06-21) confirmed content-identical results
+// on the dominant BD hosts (DTLI/Playbill/BWW) + working Google SERP; task
+// #213 (2026-07) hardened SD's own failure handling so BD no longer silently
+// absorbs its overflow at 3x cost. 71+ workflows already opt in explicitly —
+// default ON now that it's proven; set SCRAPER_USE_SCRAPINGDOG=0 to opt out
+// (e.g. a workflow that intentionally wants BD/SB only). No effect without
+// SCRAPINGDOG_API_KEY set (only in GH secrets, not local .env). Bright Data
+// stays in the chain as the fallback for the hard sites Scrapingdog can't
+// unblock.
 const SCRAPINGDOG_API_KEY = process.env.SCRAPINGDOG_API_KEY;
-const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG === '1';
+const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG !== '0';
 
 // --- SB credit pre-check ---
 let _sbCreditCheckDone = false;
@@ -323,6 +328,11 @@ async function fetchWithBrightData(url) {
     const response = await new Promise((resolve, reject) => {
       const options = {
         method: 'POST',
+        // Explicit timeout — matches SD's 45s. Previously unbounded; harmless
+        // while BD was only ever the last tier fetchPage() tried, but fetchJSON
+        // (task #203 reopen) now reaches it on the hot path too, where a hung
+        // request would otherwise block indefinitely with no way out.
+        timeout: 45000,
         headers: {
           'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
           'Content-Type': 'application/json',
@@ -345,6 +355,7 @@ async function fetchWithBrightData(url) {
       });
 
       req.on('error', reject);
+      req.on('timeout', () => { req.destroy(); reject(new Error('Bright Data request timeout')); });
       req.end(body);
     });
 
@@ -365,8 +376,16 @@ async function fetchWithBrightData(url) {
 /**
  * Fetch page using Scrapingdog API (HTML output).
  * Credit model mirrors ScrapingBee: plain=1, dynamic(JS)=5, premium proxy=10.
+ * stealth_mode (options.stealthMode) is a heavier anti-bot bypass tier
+ * (billed like premium, 10cr) — Scrapingdog's own 400 response body on a
+ * WAF-protected host literally recommends "try enabling stealth_mode=true"
+ * (task #203 reopen: westendtheatre.com wp-json 400s from the plain tier).
  * render/dynamic default is domain-aware (same JS_REQUIRED_DOMAINS as SB) unless
  * options.renderJs is explicitly set. premium proxy only when options.premium.
+ * options.throwOn400: throw (instead of swallowing to null) when SD returns
+ * HTTP 400, with `err.sdStatus = 400` set — lets a caller (fetchJSON) detect
+ * "this specific request was refused, try the next tier" vs. other failure
+ * modes (budget/quota/network) where escalating tiers wouldn't help.
  */
 async function fetchWithScrapingdog(url, options = {}) {
   if (!SCRAPINGDOG_API_KEY) {
@@ -386,8 +405,9 @@ async function fetchWithScrapingdog(url, options = {}) {
                    options.renderJs === false ? false :
                    _isJsRequiredDomain(url);
   const premium = options.premium === true;
-  // premium implies a residential proxy (10cr); dynamic/JS is 5cr; plain is 1cr.
-  const creditCost = premium ? 10 : (renderJs ? 5 : 1);
+  const stealthMode = options.stealthMode === true;
+  // premium and stealth_mode both imply a heavier anti-bot bypass (10cr); dynamic/JS is 5cr; plain is 1cr.
+  const creditCost = (premium || stealthMode) ? 10 : (renderJs ? 5 : 1);
 
   // Per-run budget guard (0 = unlimited).
   if (SD_CREDIT_BUDGET > 0 && _scraperStats.sdCredits + creditCost > SD_CREDIT_BUDGET) {
@@ -404,6 +424,7 @@ async function fetchWithScrapingdog(url, options = {}) {
     dynamic: renderJs ? 'true' : 'false',
   });
   if (premium) params.set('premium', 'true');
+  if (stealthMode) params.set('stealth_mode', 'true');
   // Attach subscriber cookies so the proxied request carries them (same as SB/BD).
   const cookieHeader = buildCookieHeaderForUrl(url);
   if (cookieHeader) params.set('cookies', cookieHeader);
@@ -450,7 +471,7 @@ async function fetchWithScrapingdog(url, options = {}) {
         req.on('timeout', () => { req.destroy(); reject(new Error('Scrapingdog request timeout')); });
       });
 
-      recordSdCall({ url, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: true, status: 200, credits: creditCost * attemptsMade });
+      recordSdCall({ url, fn: stealthMode ? 'stealth' : (premium ? 'premium' : (renderJs ? 'render' : 'page')), success: true, status: 200, credits: creditCost * attemptsMade });
       return {
         content: response,
         format: 'html',
@@ -465,8 +486,16 @@ async function fetchWithScrapingdog(url, options = {}) {
   }
 
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-  recordSdCall({ host: hostname, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade });
-  console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}, domain=${hostname}): ${lastError.message}`);
+  recordSdCall({ host: hostname, fn: stealthMode ? 'stealth' : (premium ? 'premium' : (renderJs ? 'render' : 'page')), success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade });
+  console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}${stealthMode ? ', stealth_mode' : ''}, domain=${hostname}): ${lastError.message}`);
+  if (options.throwOn400) {
+    const statusMatch = /Scrapingdog HTTP (\d+)/.exec(lastError.message || '');
+    if (statusMatch && statusMatch[1] === '400') {
+      const err = new Error(lastError.message);
+      err.sdStatus = 400;
+      throw err;
+    }
+  }
   return null;
 }
 
@@ -509,7 +538,10 @@ async function fetchWithScrapingBee(url, options = {}) {
     }
 
     const response = await new Promise((resolve, reject) => {
-      https.get(apiUrl, (res) => {
+      // Explicit timeout — same class of gap as fetchWithBrightData's (task
+      // #203 what-else finding): previously unbounded, so a hung SB connection
+      // would stall the whole fetchPage()/fetchJSON() chain indefinitely.
+      const req = https.get(apiUrl, { timeout: 45000 }, (res) => {
         let data = '';
         res.on('data', chunk => data += chunk);
         res.on('end', () => {
@@ -521,7 +553,9 @@ async function fetchWithScrapingBee(url, options = {}) {
             reject(err);
           }
         });
-      }).on('error', reject);
+      });
+      req.on('error', reject);
+      req.on('timeout', () => { req.destroy(); reject(new Error('ScrapingBee request timeout')); });
     });
 
     recordSbCall({ url, fn: renderJs ? 'render' : 'page', success: true, status: 200, credits: creditCost });
@@ -857,7 +891,11 @@ async function cleanup() {
 
 /**
  * Fetch a JSON API endpoint through the proxy chain.
- * Uses ScrapingBee with render_js=false (1 credit) → Bright Data → direct fetch.
+ * Order: direct fetch (free) → Scrapingdog (cheap tier, 1 credit plain, escalating
+ * to stealth_mode=true on a 400) → ScrapingBee (render_js=false, 1 credit) →
+ * Bright Data (final tier, format=raw — task #203 reopen: SB exhaustion + SD's
+ * daily-pace guard were stranding JSON endpoints with no unblocker left to try,
+ * e.g. westendtheatre.com's wp-json API behind a WAF).
  * Unlike fetchPage(), returns parsed JSON instead of HTML.
  *
  * @param {string} url - The JSON API URL to fetch
@@ -867,13 +905,97 @@ async function cleanup() {
  */
 async function fetchJSON(url, options = {}) {
   const headers = { Accept: 'application/json', ...options.headers };
+  // fetchPage() consults this same domain-tier-skip registry for SD/SB/BD —
+  // fetchJSON must too, or an empirically-dead tier for a given host keeps
+  // getting tried on every call (ship-check finding, task #203 reopen).
+  const skips = _getDomainSkips(url);
 
-  // Try ScrapingBee first (cheapest: 1 credit with render_js=false)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted) {
+  // Try direct fetch first — free, and most JSON API endpoints (WP-JSON, etc.)
+  // aren't bot-protected. May be TLS-blocked for some hosts in CI; falls
+  // through to Scrapingdog/ScrapingBee below when that happens. Now the FIRST
+  // thing every call attempts (was previously a last-resort fallback), so an
+  // explicit timeout matters here in a way it didn't before — an unbounded
+  // hang would delay every single call, not just the rare one that fell
+  // through past ScrapingBee.
+  try {
+    const proto = url.startsWith('https') ? https : require('http');
+    const DIRECT_TIMEOUT_MS = 15000;
+    const response = await new Promise((resolve, reject) => {
+      const req = proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res) => {
+        if ([301, 302, 307, 308].includes(res.statusCode)) {
+          // Resolve against the original URL (handles relative Location headers)
+          // and pick the protocol client from the RESOLVED target, not the
+          // original request — a cross-scheme redirect (http->https or
+          // https->http) must not be followed with the wrong client.
+          let redirectUrlObj;
+          try {
+            redirectUrlObj = new URL(res.headers.location, url);
+          } catch (err) {
+            reject(new Error(`invalid redirect Location: ${err.message}`));
+            return;
+          }
+          const redirectUrl = redirectUrlObj.toString();
+          const redirectProto = redirectUrlObj.protocol === 'https:' ? https : require('http');
+          const req2 = redirectProto.get(redirectUrl, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res2) => {
+            let d = ''; res2.on('data', c => d += c); res2.on('end', () => {
+              if (res2.statusCode === 200) resolve(d); else reject(new Error(`HTTP ${res2.statusCode}`));
+            });
+          });
+          req2.on('error', reject);
+          req2.on('timeout', () => { req2.destroy(); reject(new Error('direct fetch redirect timeout')); });
+          return;
+        }
+        if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); return; }
+        let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
+      });
+      req.on('error', reject);
+      req.on('timeout', () => { req.destroy(); reject(new Error('direct fetch timeout')); });
+    });
+    return JSON.parse(response);
+  } catch (err) {
+    console.log(`  fetchJSON direct failed: ${err.message}`);
+  }
+
+  // Scrapingdog next — cheap tier (1 credit, plain fetch), handles the
+  // TLS-blocked-in-CI case direct fetch can't. Escalates to stealth_mode=true
+  // (10cr) when the plain tier 400s — Scrapingdog's own error body on a
+  // WAF-protected host explicitly recommends that (task #203 reopen:
+  // westendtheatre.com wp-json). Respects the same budget/quota guards as
+  // every other SD caller so a daily-pace or per-run exhaustion still routes
+  // past SD to ScrapingBee/Bright Data below instead of retrying here.
+  if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded && !skips.has('scrapingdog')) {
+    let sdStealthEligible = false;
+    try {
+      const raw = await fetchWithScrapingdog(url, { ...options, renderJs: false, throwOn400: true });
+      if (raw && raw.content) {
+        return JSON.parse(raw.content);
+      }
+    } catch (err) {
+      if (err.sdStatus === 400) {
+        sdStealthEligible = true;
+        console.log('  fetchJSON Scrapingdog plain tier 400\'d — escalating to stealth_mode=true');
+      } else {
+        console.log(`  fetchJSON Scrapingdog failed: ${err.message}`);
+      }
+    }
+    if (sdStealthEligible && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded) {
+      try {
+        const raw = await fetchWithScrapingdog(url, { ...options, renderJs: false, stealthMode: true });
+        if (raw && raw.content) {
+          return JSON.parse(raw.content);
+        }
+      } catch (err) {
+        console.log(`  fetchJSON Scrapingdog stealth_mode failed: ${err.message}`);
+      }
+    }
+  }
+
+  // Last resort: ScrapingBee (render_js=false = 1 credit)
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted && !skips.has('scrapingbee')) {
     try {
       const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
       const response = await new Promise((resolve, reject) => {
-        https.get(apiUrl, (res) => {
+        const req = https.get(apiUrl, { timeout: 45000 }, (res) => {
           let data = '';
           res.on('data', chunk => data += chunk);
           res.on('end', () => {
@@ -884,7 +1006,9 @@ async function fetchJSON(url, options = {}) {
               reject(err);
             }
           });
-        }).on('error', reject);
+        });
+        req.on('error', reject);
+        req.on('timeout', () => { req.destroy(); reject(new Error('ScrapingBee request timeout')); });
       });
       _scraperStats.sbRequests++;
       _scraperStats.sbCredits += 1; // render_js=false = 1 credit
@@ -900,26 +1024,21 @@ async function fetchJSON(url, options = {}) {
     }
   }
 
-  // Fallback: direct fetch (works locally, may be TLS-blocked in CI)
-  try {
-    const proto = url.startsWith('https') ? https : require('http');
-    const response = await new Promise((resolve, reject) => {
-      proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers } }, (res) => {
-        if (res.statusCode === 301 || res.statusCode === 302) {
-          proto.get(res.headers.location, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers } }, (res2) => {
-            let d = ''; res2.on('data', c => d += c); res2.on('end', () => {
-              if (res2.statusCode === 200) resolve(d); else reject(new Error(`HTTP ${res2.statusCode}`));
-            });
-          }).on('error', reject);
-          return;
-        }
-        if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); return; }
-        let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-      }).on('error', reject);
-    });
-    return JSON.parse(response);
-  } catch (err) {
-    console.log(`  fetchJSON direct failed: ${err.message}`);
+  // Final tier: Bright Data (format=raw returns the endpoint's raw JSON body
+  // directly, no HTML wrapper to strip). Strongest unblocker, tried last
+  // because it's the most expensive (~$1.50/1k vs SD's $0.09-0.45/1k) — but
+  // without it, SB exhaustion + SD's daily-pace guard left JSON endpoints with
+  // nothing left to try (task #203 reopen, scrape-westendtheatre.yml run
+  // 30056408665: direct 403, SD 400, SB 401-exhausted-until-2026-08-05 → 0 posts).
+  if (BRIGHTDATA_TOKEN && !skips.has('brightdata')) {
+    const raw = await fetchWithBrightData(url);
+    if (raw && raw.content) {
+      try {
+        return JSON.parse(raw.content);
+      } catch (err) {
+        console.log(`  fetchJSON Bright Data returned non-JSON: ${err.message}`);
+      }
+    }
   }
 
   throw new Error(`fetchJSON: all methods failed for ${url}`);

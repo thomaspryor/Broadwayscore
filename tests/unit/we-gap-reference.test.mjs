@@ -232,7 +232,14 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
 
   test('P1 (ship-check): prior-run-only alert sets do not daily re-ping; failed delivery does not record dedup hash', () => {
     assert.ok(auditSrc.includes('rePingDue && !allPriorRun'), 'unfixable prior-run-only sets alert once, not daily');
-    assert.ok(auditSrc.includes('if (delivered) {'), 'hash recorded only on real delivery so failures retry');
+    // 2026-07-11: the condition grew a second clause (actionable-only email
+    // policy — warning-severity alerts no longer email, so `delivered` would
+    // stay false forever without this) but this assertion's literal string
+    // wasn't updated, leaving it silently broken since. Match the invariant
+    // itself (dedup hash writes only when the alert was handled) rather than
+    // one exact substring of the condition.
+    assert.ok(auditSrc.includes("if (delivered || !shouldEmailAlert('warning')) {"),
+      'hash recorded only on real delivery (or actionable-only-policy suppression) so failures retry');
   });
 
   test('P1 (ship-check): outlet display variants match covered files (canonical key)', () => {

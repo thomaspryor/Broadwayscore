@@ -371,7 +371,27 @@ function checkpoint(stats) {
     // Push with retry
     for (let i = 0; i < 5; i++) {
       try {
-        execSync('git pull --rebase -X theirs origin main && git push origin main', {
+        execSync('git pull --rebase -X theirs origin main', {
+          stdio: 'pipe',
+          cwd: path.join(__dirname, '..'),
+          timeout: 30000,
+        });
+        // -X theirs lets a stale checkout's version beat origin's richer one
+        // (Trainspotting The Stage clobber, 2026-07-23). Reconcile protected
+        // fields both directions before pushing — same call every other
+        // rebase site makes.
+        try {
+          execSync(`node "${path.join(__dirname, 'lib', 'restore-protected-fields.js')}" origin/main`, {
+            stdio: 'pipe',
+            cwd: path.join(__dirname, '..'),
+          });
+          execSync('git add -A && git diff --staged --quiet || git commit --amend --no-edit', {
+            stdio: 'pipe',
+            cwd: path.join(__dirname, '..'),
+            env: { ...process.env, GIT_EDITOR: 'true' },
+          });
+        } catch { /* non-fatal — push what we have */ }
+        execSync('git push origin main', {
           stdio: 'pipe',
           cwd: path.join(__dirname, '..'),
           timeout: 30000,

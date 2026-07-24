@@ -315,6 +315,7 @@ jobs:
           fi
 
       - name: Checklist gate — block send if QA errors (unless FORCE_BROADCAST=true)
+        id: checklist_gate
         if: steps.check.outputs.pending_shows != ''
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
@@ -323,6 +324,7 @@ jobs:
         run: |
           FORCE="${{ inputs.force_broadcast }}"
           BLOCKED=false
+          BREACHED_SHOWS=()
           IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
           for SHOW in "${SHOWS[@]}"; do
             node scripts/opening-night-checklist.js --show="$SHOW" --json > /tmp/checklist-"$SHOW".json 2>&1 || true
@@ -336,27 +338,54 @@ jobs:
             echo "Show $SHOW: $ERRORS checklist error(s)"
             if [ "$ERRORS" -gt 0 ]; then
               BLOCKED=true
+              BREACHED_SHOWS+=("$SHOW")
             fi
           done
 
           if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
+            # Sorted (not iteration-order) so the same breached set always
+            # produces the same conditionKey — codex adversarial review
+            # 2026-07-23 flagged unsorted joins as a silent dedup-bypass if
+            # array order ever shifted between retries.
+            BREACHED_LIST=$(printf '%s\n' "${BREACHED_SHOWS[@]}" | sort | paste -sd, -)
             echo "::error::Checklist gate blocked broadcast — QA errors found. Set force_broadcast=true to override."
-            node -e "
-              const { sendAlert } = require('./scripts/lib/discord-notify');
-              sendAlert({
+            # Routed through the alert router (email-noise Sprint 2, 2026-07-23):
+            # a stuck orphan-unscored/checklist condition used to re-email this
+            # SAME "Blocked" alert on every retry (9 emails for one root cause on
+            # 2026-07-22) — the per-show conditionKey now collapses repeats
+            # within 24h to a single email.
+            #
+            # blocked=true is written from INSIDE the node call, only once we
+            # know the owner was actually informed (delivered or already-silent
+            # per the ledger) — codex adversarial review 2026-07-23 flagged the
+            # previous write-before-call ordering as a fail-CLOSED regression:
+            # if routeAlert() threw or Resend delivery failed, blocked=true
+            # would already be set, suppressing the generic notify-failure
+            # fallback below and leaving the owner with ZERO email for a real
+            # blocked broadcast (worse than the pre-migration behavior).
+            BREACHED_LIST="$BREACHED_LIST" node -e "
+              const { routeAlert } = require('./scripts/lib/owner-alert-router');
+              routeAlert({
+                conditionKey: 'broadcast-gate:checklist:' + (process.env.BREACHED_LIST || 'unknown'),
                 title: 'Opening Night Broadcast Blocked — Checklist Errors',
                 description: 'Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.',
-                // 'error' (renders [CRITICAL]): a blocked flagship broadcast is
-                // actionable — warnings no longer email (actionable-only policy).
                 severity: 'error',
-                email: true,
-              }).then(() => process.exit(1)).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
+                disposition: 'human',
+                cooldownHours: 24,
+                fields: [{ name: 'Shows', value: process.env.BREACHED_LIST || '(unknown)' }],
+              }).then((result) => {
+                const informed = result.action === 'silent' || (result.action === 'human' && result.delivered);
+                if (informed) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'blocked=true\n');
+                else console.error('::warning::Alert delivery unconfirmed — leaving generic fallback notifier enabled');
+                process.exit(1);
+              }).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
             "
           else
             echo "Checklist gate passed (blocked=$BLOCKED, force=$FORCE)"
           fi
 
       - name: Drift gate — block send if reviews.json out of sync with review-texts (per-show)
+        id: drift_gate
         if: steps.check.outputs.pending_shows != ''
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
@@ -399,19 +428,27 @@ jobs:
           done
 
           if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
-            BREACHED_LIST=$(IFS=,; echo "${BREACHED_SHOWS[*]}")
+            BREACHED_LIST=$(printf '%s\n' "${BREACHED_SHOWS[@]}" | sort | paste -sd, -)
             echo "::error::Drift gate blocked broadcast — review-count drift exceeds ±2 for: $BREACHED_LIST. Set force_broadcast=true to override."
+            # blocked=true only written after confirmed delivery/silence — see
+            # the checklist gate above for the fail-closed-to-silence bug this
+            # avoids (codex adversarial review 2026-07-23).
             BREACHED_LIST="$BREACHED_LIST" node -e "
-              const { sendAlert } = require('./scripts/lib/discord-notify');
-              sendAlert({
+              const { routeAlert } = require('./scripts/lib/owner-alert-router');
+              routeAlert({
+                conditionKey: 'broadcast-gate:drift:' + (process.env.BREACHED_LIST || 'unknown'),
                 title: 'Opening Night Broadcast Blocked — Review-Count Drift',
                 description: 'Automated broadcast halted: scored in-window reviews are missing from data/reviews.json for one or more pending shows (or reviews.json is stale).\nCheck data/audit/review-count-drift-{show}.json or re-run with force_broadcast=true to override.',
-                // 'error' (renders [CRITICAL]): a blocked flagship broadcast is
-                // actionable — warnings no longer email (actionable-only policy).
                 severity: 'error',
-                email: true,
+                disposition: 'human',
+                cooldownHours: 24,
                 fields: [{ name: 'Shows', value: process.env.BREACHED_LIST || '(unknown)' }],
-              }).then(() => process.exit(1)).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
+              }).then((result) => {
+                const informed = result.action === 'silent' || (result.action === 'human' && result.delivered);
+                if (informed) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'blocked=true\n');
+                else console.error('::warning::Alert delivery unconfirmed — leaving generic fallback notifier enabled');
+                process.exit(1);
+              }).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
             "
           else
             echo "Drift gate passed (blocked=$BLOCKED, force=$FORCE)"
@@ -948,9 +985,17 @@ jobs:
           git commit -m "chore: Record indexing API quota usage [skip ci]"
           bash scripts/lib/push-with-retry.sh || echo "::warning::Quota ledger push failed"
 
+      # Skipped when a broadcast gate (checklist/drift/orphan-unscored) already
+      # blocked and alerted above — that alert is specific (which gate, which
+      # show, the fix command) and already routed through owner-alert-router's
+      # dedup ledger. Without this guard, ONE gate-blocked failure produced a
+      # triplet of emails ([CRITICAL] Blocked + [CRITICAL] Failed + [Investigation]
+      # Failed) — 9 emails for one stuck condition across 3 retries on
+      # 2026-07-22 (email-noise Sprint 2, 2026-07-23). A genuine crash with no
+      # gate flag set still pages normally.
       - name: Notify on failure
         id: notify
-        if: failure()
+        if: failure() && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening Night Broadcast Failed'
@@ -962,8 +1007,9 @@ jobs:
 
       - name: Trigger investigation
         # Only when the failure actually paged (2h cooldown) — a repeat failure
-        # inside the cooldown shouldn't send a second investigation email.
-        if: failure() && steps.notify.outputs.suppressed != 'true'
+        # inside the cooldown shouldn't send a second investigation email. Same
+        # known-gate skip as "Notify on failure" above.
+        if: failure() && steps.notify.outputs.suppressed != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
