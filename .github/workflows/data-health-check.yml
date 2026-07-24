@@ -4,6 +4,18 @@ on:
     - cron: '0 7 * * *'  # 7 AM UTC daily (after morning pipelines)
   workflow_dispatch: {}
 
+# Ship-check finding (card #374): a manual workflow_dispatch overlapping the
+# 7am cron would let two runs read-modify-write data/audit/alert-router-attempts.jsonl
+# and data/audit/alert-ledger.json concurrently — logDispatchAttempt() does a
+# full read-filter-rewrite, not an atomic append, and push-with-retry.sh
+# resolves data/audit/* conflicts by keeping one side wholesale, so the loser's
+# rows silently vanish. Queuing (not cancelling) means both runs still
+# complete, just serialized — cancelling would drop whichever run's alerts
+# were in flight.
+concurrency:
+  group: data-health-check
+  cancel-in-progress: false
+
 jobs:
   health-check:
     runs-on: ubuntu-latest

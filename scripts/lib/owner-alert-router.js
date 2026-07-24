@@ -322,6 +322,10 @@ function deleteCondition(conditionKey) {
 // Reads the trailing-N-day dispatch attempt log for disposition='auto'
 // dispatches — used by health-check.js's deadman check to compare attempts
 // vs successes independent of the ledger (see ATTEMPTS_LOG_PATH comment).
+// Sorted oldest→newest by `ts` (ship-check finding): logDispatchAttempt()
+// rewrites the file after filtering, and a rebase conflict resolution or
+// manual edit could disturb append order, so callers that need "the most
+// recent attempt" must not assume array order == chronological order.
 function readDispatchAttempts({ days = 7 } = {}) {
   const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
   let lines = [];
@@ -331,7 +335,8 @@ function readDispatchAttempts({ days = 7 } = {}) {
   return lines
     .map(line => { try { return JSON.parse(line); } catch { return null; } })
     .filter(Boolean)
-    .filter(entry => new Date(entry.ts).getTime() >= cutoff);
+    .filter(entry => new Date(entry.ts).getTime() >= cutoff)
+    .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
 }
 
 module.exports = {

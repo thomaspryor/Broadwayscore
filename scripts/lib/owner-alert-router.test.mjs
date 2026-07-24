@@ -91,7 +91,7 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl } = {}) {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 
-  return { router, calls, restore };
+  return { router, calls, restore, attemptsPath };
 }
 
 test('routeAlert: new incident with disposition=auto dispatches exactly one card', async () => {
@@ -366,6 +366,32 @@ test('readDispatchAttempts: a successful dispatch is also logged (ok=true)', asy
     const attempts = router.readDispatchAttempts({ days: 7 });
     assert.equal(attempts.length, 1);
     assert.equal(attempts[0].ok, true);
+  } finally {
+    restore();
+  }
+});
+
+// Ship-check finding (card #374): health-check.js's deadman check takes
+// attempts[attempts.length - 1] as "the most recent attempt" — that's only
+// correct if readDispatchAttempts() sorts by ts. The append-then-rewrite
+// writer normally preserves chronological order, but a rebase conflict
+// resolution or manual edit could disturb it, so the reader must not trust
+// raw file order.
+test('readDispatchAttempts: sorts by ts even when the file is out of chronological order', async () => {
+  const { router, restore, attemptsPath } = loadRouterWithFakes();
+  try {
+    const lines = [
+      { ts: '2026-07-20T00:00:00.000Z', conditionKey: 'test:c', title: 'c', ok: true, error: null },
+      { ts: '2026-07-22T00:00:00.000Z', conditionKey: 'test:a', title: 'a', ok: false, error: 'newest' },
+      { ts: '2026-07-21T00:00:00.000Z', conditionKey: 'test:b', title: 'b', ok: true, error: null },
+    ];
+    fs.mkdirSync(path.dirname(attemptsPath), { recursive: true });
+    fs.writeFileSync(attemptsPath, lines.map(l => JSON.stringify(l)).join('\n') + '\n');
+
+    const sorted = router.readDispatchAttempts({ days: 30 });
+    assert.deepEqual(sorted.map(a => a.conditionKey), ['test:c', 'test:b', 'test:a']);
+    // The most recent attempt (last element) must be the one with the latest ts.
+    assert.equal(sorted[sorted.length - 1].error, 'newest');
   } finally {
     restore();
   }
