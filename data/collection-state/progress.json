@@ -98,7 +98,8 @@
     "jesus-christ-superstar-west-end-2026/independent--alice-saville.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/telegraph--dominic-cavendish.json",
     "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--marian-pashley.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json"
   ],
   "failed": [
     "trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
@@ -1494,7 +1495,16 @@
     "cats-the-jellicle-ball-2026/hollywood-reporter--caitlin-huston.json",
     "cats-the-jellicle-ball-2026/newyorker--emily-nussbaum.json",
     "cats-the-jellicle-ball-2026/newyorker--helen-shaw.json",
-    "cats-the-jellicle-ball-2026/newsday--linda-winer.json"
+    "cats-the-jellicle-ball-2026/newsday--linda-winer.json",
+    "cats-the-jellicle-ball-2026/huffpost--david-finkle.json",
+    "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
+    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
+    "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1577,7 +1587,9 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--unknown.json",
       "oh-mary-west-end-2025/deadline--unknown.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
-      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
@@ -1636,7 +1648,7 @@
     ]
   },
   "startTime": "2026-07-23T18:01:51.136Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/newsday--linda-winer.json",
+  "lastProcessed": "music-city-off-broadway-2026/observer--unknown.json",
   "log": [
     {
       "t": "2026-07-23T18:02:09.222Z",
@@ -1831,6 +1843,12 @@
       "t": "2026-07-24T06:05:24.192Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-24T11:17:37.914Z",
+      "event": "bb-session",
+      "session": "1905cb0a",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }
