@@ -149,14 +149,19 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
-// Scrapingdog — flag-gated cheap tier inserted AHEAD of Bright Data. BD Web
-// Unlocker is ~$1.50/1k req; Scrapingdog plain HTML is ~$0.09/1k (1 credit),
-// dynamic ~$0.45/1k (5cr). Bake-off (2026-06-21) confirmed content-identical
-// results on the dominant BD hosts (DTLI/Playbill/BWW) + working Google SERP.
-// Default OFF — set SCRAPER_USE_SCRAPINGDOG=1 to enable. Bright Data stays in
-// the chain as the fallback for the hard sites Scrapingdog can't unblock.
+// Scrapingdog — cheap tier inserted AHEAD of Bright Data. BD Web Unlocker is
+// ~$1.50/1k req; Scrapingdog plain HTML is ~$0.09/1k (1 credit), dynamic
+// ~$0.45/1k (5cr). Bake-off (2026-06-21) confirmed content-identical results
+// on the dominant BD hosts (DTLI/Playbill/BWW) + working Google SERP; task
+// #213 (2026-07) hardened SD's own failure handling so BD no longer silently
+// absorbs its overflow at 3x cost. 71+ workflows already opt in explicitly —
+// default ON now that it's proven; set SCRAPER_USE_SCRAPINGDOG=0 to opt out
+// (e.g. a workflow that intentionally wants BD/SB only). No effect without
+// SCRAPINGDOG_API_KEY set (only in GH secrets, not local .env). Bright Data
+// stays in the chain as the fallback for the hard sites Scrapingdog can't
+// unblock.
 const SCRAPINGDOG_API_KEY = process.env.SCRAPINGDOG_API_KEY;
-const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG === '1';
+const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG !== '0';
 
 // --- SB credit pre-check ---
 let _sbCreditCheckDone = false;
@@ -857,7 +862,8 @@ async function cleanup() {
 
 /**
  * Fetch a JSON API endpoint through the proxy chain.
- * Uses ScrapingBee with render_js=false (1 credit) → Bright Data → direct fetch.
+ * Order: direct fetch (free) → Scrapingdog (cheap tier, 1 credit plain) →
+ * ScrapingBee (render_js=false, 1 credit — last resort).
  * Unlike fetchPage(), returns parsed JSON instead of HTML.
  *
  * @param {string} url - The JSON API URL to fetch
@@ -868,7 +874,44 @@ async function cleanup() {
 async function fetchJSON(url, options = {}) {
   const headers = { Accept: 'application/json', ...options.headers };
 
-  // Try ScrapingBee first (cheapest: 1 credit with render_js=false)
+  // Try direct fetch first — free, and most JSON API endpoints (WP-JSON, etc.)
+  // aren't bot-protected. May be TLS-blocked for some hosts in CI; falls
+  // through to Scrapingdog/ScrapingBee below when that happens.
+  try {
+    const proto = url.startsWith('https') ? https : require('http');
+    const response = await new Promise((resolve, reject) => {
+      proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers } }, (res) => {
+        if (res.statusCode === 301 || res.statusCode === 302) {
+          proto.get(res.headers.location, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers } }, (res2) => {
+            let d = ''; res2.on('data', c => d += c); res2.on('end', () => {
+              if (res2.statusCode === 200) resolve(d); else reject(new Error(`HTTP ${res2.statusCode}`));
+            });
+          }).on('error', reject);
+          return;
+        }
+        if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); return; }
+        let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
+      }).on('error', reject);
+    });
+    return JSON.parse(response);
+  } catch (err) {
+    console.log(`  fetchJSON direct failed: ${err.message}`);
+  }
+
+  // Scrapingdog next — cheap tier (1 credit, plain fetch), handles the
+  // TLS-blocked-in-CI case direct fetch can't.
+  if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded) {
+    try {
+      const raw = await fetchWithScrapingdog(url, { ...options, renderJs: false });
+      if (raw && raw.content) {
+        return JSON.parse(raw.content);
+      }
+    } catch (err) {
+      console.log(`  fetchJSON Scrapingdog failed: ${err.message}`);
+    }
+  }
+
+  // Last resort: ScrapingBee (render_js=false = 1 credit)
   if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted) {
     try {
       const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
@@ -898,28 +941,6 @@ async function fetchJSON(url, options = {}) {
         console.warn(`  ⚠️  ScrapingBee disabled for the rest of this process (HTTP ${err.statusCode})`);
       }
     }
-  }
-
-  // Fallback: direct fetch (works locally, may be TLS-blocked in CI)
-  try {
-    const proto = url.startsWith('https') ? https : require('http');
-    const response = await new Promise((resolve, reject) => {
-      proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers } }, (res) => {
-        if (res.statusCode === 301 || res.statusCode === 302) {
-          proto.get(res.headers.location, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers } }, (res2) => {
-            let d = ''; res2.on('data', c => d += c); res2.on('end', () => {
-              if (res2.statusCode === 200) resolve(d); else reject(new Error(`HTTP ${res2.statusCode}`));
-            });
-          }).on('error', reject);
-          return;
-        }
-        if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); return; }
-        let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-      }).on('error', reject);
-    });
-    return JSON.parse(response);
-  } catch (err) {
-    console.log(`  fetchJSON direct failed: ${err.message}`);
   }
 
   throw new Error(`fetchJSON: all methods failed for ${url}`);
