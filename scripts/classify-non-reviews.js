@@ -45,6 +45,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { shouldSkipNonReviewStamp } = require('./lib/flagged-recovery');
 const { CLAUDE_SONNET, CLAUDE_OPUS, GEMINI_FLASH, GPT4O } = require('./lib/models');
 
 // --- Load .env ---
@@ -1135,6 +1136,16 @@ async function main() {
           if (data.nonReviewManualClear === true) {
             console.log(`  [LOCKED] ${nr.file} — nonReviewManualClear, skipping`);
             lockedSkipCount++;
+            continue;
+          }
+          // RC2 guard (Radio Times 2026-07-23): a "not a review" verdict on a
+          // SHORT body from a review-marker URL is judging failed-extraction
+          // boilerplate (subscription ads, cookie banners), not the article.
+          // Stamping isNonReview here is terminal — the file is excluded from
+          // rebuild and never retried. Skip the stamp; the uncited-stub
+          // recovery sweep (audit-show-review-gap.js) refetches it instead.
+          if (shouldSkipNonReviewStamp(data)) {
+            console.log(`  [EXTRACTION-SUSPECT] ${nr.file} — short body (${(data.fullText || '').trim().length} chars) from review-marker URL; skipping terminal stamp, leaving retriable`);
             continue;
           }
           data.isNonReview = true;

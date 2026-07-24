@@ -57,6 +57,80 @@ function isRecoverableFlaggedFile(d, cap = FLAGGED_RECOVERY_CAP) {
   return isEmptyBodyFile(d);
 }
 
+// Generic "this URL is an individual review page" marker — path segment or slug
+// containing review/reviews. Used to (a) keep garbage URLs (Facebook posts,
+// news announcements) OUT of the uncited-stub retry pool and (b) detect when a
+// non-review classification was made on a page whose URL says review (the
+// classifier judged failed-extraction boilerplate, not the article).
+const REVIEW_URL_MARKER = /(^|[/.-])reviews?([/.-]|$)/i;
+// Social/UGC hosts whose post slugs often quote "reviews are in" — a Facebook
+// post is never the outlet's review page, whatever its slug says (real-corpus
+// scan 2026-07-23: facebook.com/.../heavenly-reviews-jesus-christ-superstar…).
+const SOCIAL_HOSTS = /(^|\.)(facebook|twitter|x|instagram|reddit|tiktok|youtube|threads)\.(com|net)$/i;
+function looksLikeReviewUrl(url) {
+  if (!url) return false;
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return false; // relative or malformed URL — not refetchable, not a review page
+  }
+  if (!/^https?:$/.test(parsed.protocol)) return false;
+  if (SOCIAL_HOSTS.test(parsed.hostname)) return false;
+  return REVIEW_URL_MARKER.test(parsed.pathname);
+}
+
+// RC2 guard (Radio Times, 2026-07-23): the enrich-reviews classifier stamped a
+// terminal isNonReview=true on 517 chars of subscription-ad boilerplate scraped
+// from a real review URL (/going-out-reviews/...-review/). A classification made
+// on a short body from a review-marker URL is judging the extraction failure,
+// not the article — skip the stamp and leave the file retriable.
+function shouldSkipNonReviewStamp(d) {
+  if (!d) return false;
+  const text = (d.fullText || '').trim();
+  return text.length < 800 && looksLikeReviewUrl(d.url);
+}
+
+// RC3 (The Upcoming, 2026-07-23): empty-body files whose outlets no aggregator
+// cites never entered flaggedMisses, so the hourly self-heal never retried them
+// — a 0-byte stub of a real published review sat inert until a human refetched
+// it (the first retry succeeded immediately). This predicate admits a dir file
+// into the UNCITED retry pool: same human/wrong-flag protections as
+// isRecoverableFlaggedFile, plus the file must carry its own review-marker URL
+// (keeps Facebook-post and announcement junk out of the pool). An isNonReview
+// stamp only blocks retry when it was made on substantive text — a stamp on a
+// short body is the RC2 failure mode and must not strand the file.
+function isRecoverableUncitedStub(d, cap = FLAGGED_RECOVERY_CAP) {
+  if (!d || !d.url) return false;
+  if (d.humanReviewScore != null) return false;
+  if (d.wrongProduction === true || d.wrongShow === true) return false;
+  if (d.wrongProductionManualClear === true || d.wrongShowManualClear === true) return false;
+  if (d.humanReviewedWrongProduction === false) return false;
+  if (d.duplicateOf || d.duplicateTextOf) return false;
+  if (d.isRoundupArticle === true) return false;
+  if (d.isNonReview === true && !shouldSkipNonReviewStamp(d)) return false;
+  // SERP retry state: a file the backfill deliberately abandoned must not
+  // re-enter the retry pool via the wider uncited net (ship-check 2026-07-23).
+  if (d.serpDiscoveryAbandoned === true) return false;
+  if ((d.aggUrlRecoveryCount || 0) >= cap) return false;
+  if (!isEmptyBodyFile(d)) return false;
+  return looksLikeReviewUrl(d.url);
+}
+
+// Star-fallback source mapping (The Stage class, 2026-07-23): when a paywalled
+// outlet's text can't be fetched but a WE reference roundup cites the outlet
+// WITH a star rating, writing aggregatorStars makes the review scoreable via
+// the rebuild's aggregator-star path — instead of retrying a paywall to the cap
+// and going silent. scoreSource values are members of AGGREGATOR_SCORE_SOURCES
+// (review-normalization.js) so score routing treats them as
+// aggregator-interpreted, never outlet-published.
+const STAR_SOURCE_BY_REFERENCE = {
+  'theatre-reviews': 'theatre-reviews-star-rating',
+  'westendtheatre': 'westendtheatre-star-rating',
+  'lbo-roundup': 'lbo-star-rating',
+  'thestage-archive': 'thestage-roundup-star-rating',
+};
+
 /**
  * Decide what the hourly recovery loop should do with the recoverable dir file
  * behind one flaggedMiss. Returns a tagged action so the caller logs a precise
@@ -96,6 +170,10 @@ module.exports = {
   FLAGGED_RECOVERY_CAP,
   isEmptyBodyFile,
   isRecoverableFlaggedFile,
+  isRecoverableUncitedStub,
+  looksLikeReviewUrl,
+  shouldSkipNonReviewStamp,
+  STAR_SOURCE_BY_REFERENCE,
   decideEmptyBodyRecovery,
   nextRecoveryCount,
 };
