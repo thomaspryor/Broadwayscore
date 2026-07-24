@@ -14,12 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     # Backstop: the script wraps every external call in a 30-60s timeout, but cap the
     # whole job too so a pathological stall can never burn the 360-min default ceiling.
-    # 45 (not 25): the health check itself runs ~13min (GSC/PageSpeed calls across 50
-    # sample URLs), and the "Push audit data" step now carries a 900s push-with-retry.sh
-    # budget (task #353) to survive main's commit churn — 25min left only ~12min for
-    # that budget and the OUTER job timeout cancelled the push mid-retry before it could
-    # exhaust its own deadline (run 30056319394, 2026-07-24, confirmed live).
-    timeout-minutes: 45
+    # 30 (not 25): the health check itself runs ~13min (GSC/PageSpeed calls across 50
+    # sample URLs) with some run-to-run variance — a little slack beyond the original
+    # 25 covers that without over-provisioning for the push step (which is non-blocking
+    # and uses the default retry budget; see "Push audit data" below, task #353).
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -59,15 +58,14 @@ jobs:
       - name: Push audit data
         if: always()
         run: |
-          # Non-blocking + wider budget: this push races main's commit churn
-          # (task #353 — live-reproduced on run 30055222564, 2026-07-24: 3
-          # attempts, each rejected as the remote tip kept advancing during
-          # the retry cycle, deadline exceeded). The audit snapshot isn't
-          # time-sensitive — next week's cron re-derives it — so a lost race
-          # must not redden this run.
-          bash scripts/lib/push-with-retry.sh 20 || echo "::warning::SEO audit data push failed — next scheduled run will recommit"
-        env:
-          PUSH_DEADLINE_SEC: 900
+          # Non-blocking: this push races main's commit churn (task #353 —
+          # live-reproduced on runs 30055222564 and 30057838225, 2026-07-24;
+          # the second test widened the retry budget to 20 attempts/900s and
+          # STILL lost every attempt over 16min, proving a bigger budget just
+          # burns CI time on an unwinnable race rather than fixing it). The
+          # audit snapshot isn't time-sensitive — next week's cron re-derives
+          # it — so a lost race must not redden this run.
+          bash scripts/lib/push-with-retry.sh || echo "::warning::SEO audit data push failed — next scheduled run will recommit"
 
       - name: Notify on failure
         if: failure()
