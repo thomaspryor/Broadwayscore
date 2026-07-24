@@ -185,6 +185,27 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [
   fi
 fi
 
+# Stash accumulation guard. Added 2026-07-24 (task #427) after 44 stashes piled
+# up on main over months — sessions run defensive `git stash -u -m "..."` to
+# park pre-existing data-file drift before a merge/rebase, but nothing ever
+# drains them. One stale autostash left unresolved conflict markers directly
+# in data/audit/validation-baseline.json on main's working tree and silently
+# blocked merge/checkout for every session until found by chance (see commit
+# 91be6c72fdd). Fires on startup/resume only; cheap (`git stash list` is local).
+if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [ -n "$REPO_ROOT" ]; then
+  STASH_COUNT=$(git -C "$REPO_ROOT" stash list 2>/dev/null | wc -l | tr -d ' ')
+  if [ "${STASH_COUNT:-0}" -gt 10 ]; then
+    echo ""
+    echo "🔶 STASH BACKLOG: $STASH_COUNT stashes on main (threshold: 10)."
+    echo "   Unclaimed stashes can silently reintroduce old conflict markers or drift"
+    echo "   into the working tree and block merges (blocked a live merge 2026-07-24)."
+    echo "   Inspect before dropping: git stash show -p stash@{N}"
+    echo "   Data-file/audit/log churn is almost always safe to drop; anything touching"
+    echo "   src/ or scripts/ — diff it against current main first (likely already merged)."
+    echo ""
+  fi
+fi
+
 cat << 'EOF'
 CRITICAL SESSION RULES (CLAUDE.md has full text — these 6 are the most-violated):
 1. NOTION: create card immediately via `node scripts/notion-brain.js create` (CLI, not MCP — MCP is blocked).
