@@ -50,6 +50,10 @@ async function fetchLiveFlag(apiKey, key) {
     active: f.active,
     variants: (f.filters?.multivariate?.variants || []).map((v) => ({ key: v.key, pct: v.rollout_percentage })),
     rollout: f.filters?.groups?.[0]?.rollout_percentage,
+    // Sticky bucketing — evaluateFlagHealth compares this against the
+    // registry's per-flag expectation and treats an UNMAPPED field as a
+    // plumbing failure, so this line is load-bearing (three-way-sync class).
+    ensure_experience_continuity: !!f.ensure_experience_continuity,
   };
 }
 

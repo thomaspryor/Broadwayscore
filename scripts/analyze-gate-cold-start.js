@@ -66,22 +66,26 @@ async function hogql(query) {
 function pct(n, d) { return d > 0 ? `${((n / d) * 100).toFixed(2)}%` : 'n/a'; }
 
 async function flagHealth() {
+  // Decision logic lives in the registry (evaluateFlagHealth — the general
+  // form of what used to be an inline reimplementation here); this fn only
+  // fetches and maps the live PostHog shape. Expected state (incl.
+  // ensure_experience_continuity=false — pre-registered correct for this
+  // anonymous-only experiment) comes from REGISTERED_FLAGS.
+  const { REGISTERED_FLAGS, evaluateFlagHealth } = require('./lib/flag-registry');
+  const entry = REGISTERED_FLAGS.find(e => e.key === FLAG_KEY);
+  if (!entry) return { ok: false, problem: `no REGISTERED_FLAGS entry for ${FLAG_KEY} — add one (flag-registry.js)` };
   const res = await fetch(`https://us.posthog.com/api/projects/${PROJECT_ID}/feature_flags/?search=${FLAG_KEY}`, {
     headers: { 'Authorization': `Bearer ${API_KEY}` },
   });
   if (!res.ok) return { ok: false, problem: `flag API ${res.status}` };
-  const flags = ((await res.json()).results || []).filter(f => f.key === FLAG_KEY);
-  if (flags.length === 0) return { ok: false, problem: 'FLAG DOES NOT EXIST — experiment is not running (this exact failure killed mobile-gate-timing)' };
-  const f = flags[0];
-  if (!f.active) return { ok: false, problem: 'flag exists but is INACTIVE — all traffic falling back' };
-  const variants = f.filters?.multivariate?.variants || [];
-  const split = variants.map(v => `${v.key}:${v.rollout_percentage}`).sort().join(',');
-  if (split !== 'cold-start:50,control:50') {
-    return { ok: false, problem: `variant split drifted from pre-registered 50/50: [${split}]` };
-  }
-  const rollout = f.filters?.groups?.[0]?.rollout_percentage;
-  if (rollout !== 100) return { ok: false, problem: `release rollout is ${rollout}% (expected 100%)` };
-  return { ok: true, problem: null };
+  const f = ((await res.json()).results || []).find(r => r.key === FLAG_KEY);
+  const live = f ? {
+    active: f.active,
+    variants: (f.filters?.multivariate?.variants || []).map(v => ({ key: v.key, pct: v.rollout_percentage })),
+    rollout: f.filters?.groups?.[0]?.rollout_percentage,
+    ensure_experience_continuity: !!f.ensure_experience_continuity,
+  } : null;
+  return evaluateFlagHealth(live, entry.expected);
 }
 
 async function main() {

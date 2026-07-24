@@ -41,6 +41,21 @@ const SRC_DIR = path.join(__dirname, '..', '..', 'src');
 // entry with exists:false to duck a real missing-flag incident — that's
 // exactly the failure mode this registry exists to catch. Only use it for a
 // flag that has been explicitly investigated and confirmed non-live.
+// ensure_experience_continuity ("sticky bucketing") is part of every
+// exists:true entry's expected state, and it is PER-FLAG — do not "fix" a
+// flag to match another one (2026-07-24: a session nearly flipped
+// gate-cold-start's sticky ON because the guardrails memory said running
+// tests keep sticky on; that rule was written for identified-user tests):
+//   - Anonymous-only experiments (identify() forbidden by an experiment
+//     lock) → sticky FALSE is correct. ensure_experience_continuity only
+//     affects identified persons; anonymous assignment is already
+//     deterministic per distinct_id at a fixed rollout, so ON would be a
+//     no-op with added evaluation cost.
+//   - Identified-user experiments → sticky TRUE, so assignments survive
+//     rollout changes.
+// The schema test (flag-registry.test.mjs) fails CI if a new exists:true
+// entry omits the field — decide it at experiment design time, per
+// docs/experiments/README.md.
 const REGISTERED_FLAGS = [
   {
     key: 'gate-cold-start',
@@ -49,6 +64,9 @@ const REGISTERED_FLAGS = [
       active: true,
       variants: [{ key: 'control', pct: 50 }, { key: 'cold-start', pct: 50 }],
       rollout: 100,
+      // FALSE is correct: anonymous-only (the experiment lock forbids
+      // posthog.identify(); see launch commit c0884898794). Do not flip.
+      ensure_experience_continuity: false,
     },
     ownerDoc: 'docs/experiments/gate-cold-start.md',
     note: 'Live A/B — email-gate 2-page minimum vs no minimum.',
@@ -60,6 +78,9 @@ const REGISTERED_FLAGS = [
       active: true,
       variants: [{ key: 'multi', pct: 50 }, { key: 'single', pct: 50 }],
       rollout: 100,
+      // TRUE: set at the 2026-04-11 restart so mid-flight rollout changes
+      // can never re-bucket users again (guardrails memory rule 3).
+      ensure_experience_continuity: true,
     },
     ownerDoc: null,
     note: 'Live A/B — TicketButtonsAB.tsx multi-button vs single-button CTA.',
@@ -71,6 +92,9 @@ const REGISTERED_FLAGS = [
       active: true,
       variants: [{ key: 'todaytix', pct: 100 }, { key: 'stubhub', pct: 0 }],
       rollout: 100,
+      // TRUE: pinned winner; sticky keeps any cached client state resolving
+      // to todaytix deterministically.
+      ensure_experience_continuity: true,
     },
     ownerDoc: null,
     note: 'Concluded — pinned todaytix:100/stubhub:0. Not a live split; flag stays active so cached client state keeps resolving deterministically.',
@@ -222,6 +246,23 @@ function evaluateFlagHealth(liveFlag, expected) {
   }
   if (expected.rollout != null && liveFlag.rollout !== expected.rollout) {
     return { ok: false, problem: `release rollout is ${liveFlag.rollout}% (expected ${expected.rollout}%)` };
+  }
+  if (expected.ensure_experience_continuity != null) {
+    // Three-way-sync guard (memory/feedback_protected_fields_three_way_sync.md
+    // class): if the live fetcher didn't map this field, comparing would
+    // silently pass forever — report the plumbing gap loudly instead.
+    if (liveFlag.ensure_experience_continuity === undefined) {
+      return {
+        ok: false,
+        problem: `registry expects ensure_experience_continuity=${expected.ensure_experience_continuity} but the live-flag fetcher did not supply the field — update the fetcher's mapping (this check cannot pass silently)`,
+      };
+    }
+    if (liveFlag.ensure_experience_continuity !== expected.ensure_experience_continuity) {
+      return {
+        ok: false,
+        problem: `ensure_experience_continuity is ${liveFlag.ensure_experience_continuity} (registry expects ${expected.ensure_experience_continuity} — see the per-flag comment in REGISTERED_FLAGS before "fixing" either side)`,
+      };
+    }
   }
   return { ok: true, problem: null };
 }
