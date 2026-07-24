@@ -102,6 +102,27 @@ start providing ongoing coverage — it checks the registry against live
 PostHog state every Monday and alerts if a registered flag goes missing,
 inactive, or drifts from its expected variant split.
 
+### (f) Ship a weekly result monitor, not just the flag-parity guardrail
+
+Flag parity (step e onward) only proves the experiment is *running*, not
+that its *results* are readable. Card #392: the ticket-single-button A/B ran
+for weeks with a working flag while `analyze-ab-test.js` silently printed
+`p-value: NaN` on every run — nothing was watching the analyzer's own
+output. Every experiment with a significance test MUST also ship:
+1. An `--json` mode on its analyzer emitting a single summary line (per-variant
+   counts, the primary decision metric, `suppressed`/`degenerate` reasons,
+   flag health) — see `analyze-ab-test.js`, `analyze-gate-cold-start.js`.
+2. A pure decision-rules module in `scripts/lib/` (colocated `.test.mjs`)
+   that turns that summary into alerts: a data-problem alert when the
+   primary is suppressed/degenerate, and (if applicable) a one-time
+   "ready to judge" nudge. Never a winner judgment, never a flag write —
+   see `memory/feedback_ab_test_guardrails.md` rule 1.
+3. A `scripts/monitor-<name>.js` CLI built on `scripts/lib/weekly-monitor-runner.js`,
+   wired into `.github/workflows/monitor-gate-ab.yml` (or an equivalent
+   weekly cron) with its own `data/audit/<name>-monitor-state.json`.
+4. Both new files added to `test.yml`'s push-path allow-list
+   (`feedback_test_yml_push_path_allowlist`) so a solo edit still runs CI.
+
 ## Why this exists
 
 `scripts/lib/flag-registry.js` is enforced two ways:

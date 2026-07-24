@@ -25,6 +25,14 @@ name: Weekly A/B Monitors
 # nudge. Never judges the primary itself. Pre-registration:
 # docs/experiments/gate-cold-start.md.
 #
+# Step 3 (ticket-single-button A/B, card #392): the analyzer's own zTest()
+# printed "p-value: NaN" on every run for a week before a manual audit caught
+# it (2026-07-24, fixed in scripts/lib/significance.js) — nothing was
+# watching the output. Alerts (actionable-only) on a suppressed/degenerate
+# primary p (data problem) and a once-only "significance reached at adequate
+# power" nudge. Never judges the winner or touches the flag
+# (memory/feedback_ab_test_guardrails.md).
+#
 # Weekly summaries are log-only (no Discord). No step judges a primary metric
 # or touches gate/flag config — those stay owner decisions.
 
@@ -72,6 +80,16 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/monitor-gate-cold-start.js ${{ inputs.dry_run && '--dry-run' || '' }}
+
+      - name: Run ticket-single-button A/B monitor (card #392)
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
+          IMPACT_ACCOUNT_SID: ${{ secrets.IMPACT_ACCOUNT_SID }}
+          IMPACT_AUTH_TOKEN: ${{ secrets.IMPACT_AUTH_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/monitor-ticket-ab.js ${{ inputs.dry_run && '--dry-run' || '' }}
 
       - name: Commit monitor state
         # always() so a failure in ANY monitor step still commits whatever

@@ -49,6 +49,11 @@ const DAYS = (() => {
   return idx >= 0 ? parseInt(process.argv[idx + 1], 10) : 14;
 })();
 
+// --json: emit one machine-readable summary line instead of the prose report
+// (consumed by scripts/monitor-ticket-ab.js via loadWindows/runAnalyzerJson —
+// same pattern as analyze-gate-cold-start.js / analyze-email-gate-funnel.js).
+const JSON_OUT = process.argv.includes('--json');
+
 /**
  * Restart markers: timestamp after which each flag's current test run began.
  * Events before this date are excluded from analysis because they belong to
@@ -104,12 +109,21 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`\n📊 A/B Test Analysis: ${FLAG}`);
-  console.log(`Date range: ${startDate.toISOString().split('T')[0]} to ${endDate.toISOString().split('T')[0]}`);
+  const say = (...a) => { if (!JSON_OUT) console.log(...a); };
+  const summary = {
+    flag: FLAG,
+    days: DAYS,
+    startDate: startDate.toISOString().split('T')[0],
+    endDate: endDate.toISOString().split('T')[0],
+    restartClamped: !!(restartDate && restartDate > requestedStart),
+  };
+
+  say(`\n📊 A/B Test Analysis: ${FLAG}`);
+  say(`Date range: ${startDate.toISOString().split('T')[0]} to ${endDate.toISOString().split('T')[0]}`);
   if (restartDate && restartDate > requestedStart) {
-    console.log(`  (clamped to restart date ${restartDate.toISOString().split('T')[0]}; pre-restart data excluded)`);
+    say(`  (clamped to restart date ${restartDate.toISOString().split('T')[0]}; pre-restart data excluded)`);
   }
-  console.log('='.repeat(70));
+  say('='.repeat(70));
 
   // ── Fetch all ticket_click events ──
   // PostHog API doesn't filter on properties easily, so fetch and filter client-side
@@ -126,7 +140,7 @@ async function main() {
     pageCount++;
   }
 
-  console.log(`\nRaw ticket_click events fetched: ${events.length}`);
+  say(`\nRaw ticket_click events fetched: ${events.length}`);
 
   // ── Apply correct filters (see memory/feedback_ab_test_analysis.md) ──
   // 1. Only show pages (excludes showtimes/compare/guide)
@@ -151,8 +165,8 @@ async function main() {
     return true;
   });
 
-  console.log(`After filters (page_type=show, valid ab_variant, no fallback): ${filtered.length}`);
-  console.log(`Excluded: ${events.length - filtered.length} events (other page types, fallback, pre-test format)`);
+  say(`After filters (page_type=show, valid ab_variant, no fallback): ${filtered.length}`);
+  say(`Excluded: ${events.length - filtered.length} events (other page types, fallback, pre-test format)`);
 
   // ── Group by the relevant variant segment ──
   // Extract the variant for the FLAG we're analyzing
@@ -234,9 +248,9 @@ async function main() {
   }
 
   // ── Print per-variant metrics ──
-  console.log(`\n${'─'.repeat(70)}`);
-  console.log('VARIANT BREAKDOWN');
-  console.log('─'.repeat(70));
+  say(`\n${'─'.repeat(70)}`);
+  say('VARIANT BREAKDOWN');
+  say('─'.repeat(70));
 
   const variantNames = Object.keys(byVariant).sort();
   const totals = { clicks: 0, users: 0 };
@@ -250,6 +264,8 @@ async function main() {
   // only invites cross-population arithmetic (per this script's own caveat).
   const postbackCoverage = totalConversions > 0 ? attributedConversions.length / totalConversions : 0;
   const showEstimatedSplit = unattributedConversions.length > 0 && postbackCoverage < 0.8;
+  summary.postbackCoverage = +postbackCoverage.toFixed(3);
+  summary.totalConversions = totalConversions;
 
   const emptyDirect = () => ({ conversions: 0, revenue: 0, commission: 0, convUsers: new Set(), joinWithSub1: 0 });
   for (const v of variantNames) {
@@ -268,33 +284,33 @@ async function main() {
     const estConversions = unattributedConversions.length * variantShare;
     const estCommission = unattributedCommission * variantShare;
 
-    console.log(`\nVariant: ${v}`);
-    console.log(`  Clicks: ${data.clicks}`);
-    console.log(`  Unique users: ${userCount}`);
-    console.log(`  Clicks per user: ${clicksPerUser}`);
-    console.log(`  Direct conversions (subId2): ${direct.conversions}`);
-    console.log(`  Unique converting users (subId1): ${direct.convUsers.size}`);
-    console.log(`  Direct commission (subId2): $${direct.commission.toFixed(2)}`);
+    say(`\nVariant: ${v}`);
+    say(`  Clicks: ${data.clicks}`);
+    say(`  Unique users: ${userCount}`);
+    say(`  Clicks per user: ${clicksPerUser}`);
+    say(`  Direct conversions (subId2): ${direct.conversions}`);
+    say(`  Unique converting users (subId1): ${direct.convUsers.size}`);
+    say(`  Direct commission (subId2): $${direct.commission.toFixed(2)}`);
     if (showEstimatedSplit) {
-      console.log(`  Estimated split (unattributed pool, assumes equal exposure): ${estConversions.toFixed(1)} conv / $${estCommission.toFixed(2)}`);
+      say(`  Estimated split (unattributed pool, assumes equal exposure): ${estConversions.toFixed(1)} conv / $${estCommission.toFixed(2)}`);
     }
-    console.log(`  By platform:`);
+    say(`  By platform:`);
     Object.entries(data.platforms).sort((a, b) => b[1] - a[1]).forEach(([p, c]) => {
-      console.log(`    ${p}: ${c}`);
+      say(`    ${p}: ${c}`);
     });
   }
 
   // Postback coverage line — tells you whether attribution is "live" yet.
   if (totalConversions > 0) {
     const pct = (postbackCoverage * 100).toFixed(0);
-    console.log(`\nPostback coverage: ${attributedConversions.length}/${totalConversions} conversions carry SubId2 (${pct}%).`);
+    say(`\nPostback coverage: ${attributedConversions.length}/${totalConversions} conversions carry SubId2 (${pct}%).`);
     if (postbackCoverage >= 0.8 && unattributedConversions.length > 0) {
-      console.log(`  (coverage ≥80% — estimated-split lines suppressed; direct conversions are the measurement)`);
+      say(`  (coverage ≥80% — estimated-split lines suppressed; direct conversions are the measurement)`);
     }
     if (attributedConversions.length === 0) {
-      console.log(`  ⚠ No conversions have SubId2 yet. Either the postback wiring just shipped`);
-      console.log(`    and no conversion has landed since, or Impact isn't echoing the field.`);
-      console.log(`    Verify with: curl an Action and inspect the SubId2 property.`);
+      say(`  ⚠ No conversions have SubId2 yet. Either the postback wiring just shipped`);
+      say(`    and no conversion has landed since, or Impact isn't echoing the field.`);
+      say(`    Verify with: curl an Action and inspect the SubId2 property.`);
     }
   }
 
@@ -302,6 +318,7 @@ async function main() {
   // Same registry-driven check as analyze-gate-cold-start.js: significance
   // read from data collected under a drifted flag (split/rollout/sticky/
   // inactive) is contaminated, so computeAbSignificance suppresses the p.
+  let flagHealthy = null;
   let flagHealthProblem = null;
   try {
     const { REGISTERED_FLAGS, evaluateFlagHealth } = require('./lib/flag-registry');
@@ -316,17 +333,23 @@ async function main() {
         ensure_experience_continuity: !!f.ensure_experience_continuity,
       } : null;
       const health = evaluateFlagHealth(live, entry.expected);
+      flagHealthy = health.ok;
       if (!health.ok) flagHealthProblem = health.problem;
-      console.log(`\nFLAG HEALTH: ${health.ok ? '✅ matches registry-expected state' : `🛑 ${health.problem}`}`);
+      say(`\nFLAG HEALTH: ${health.ok ? '✅ matches registry-expected state' : `🛑 ${health.problem}`}`);
     } else {
-      console.log(`\nFLAG HEALTH: ⚠ no REGISTERED_FLAGS entry for '${FLAG}' — health unchecked (add one in scripts/lib/flag-registry.js)`);
+      say(`\nFLAG HEALTH: ⚠ no REGISTERED_FLAGS entry for '${FLAG}' — health unchecked (add one in scripts/lib/flag-registry.js)`);
     }
   } catch (e) {
-    console.log(`\nFLAG HEALTH: ⚠ check failed (${e.message}) — proceeding without contamination gate`);
+    say(`\nFLAG HEALTH: ⚠ check failed (${e.message}) — proceeding without contamination gate`);
   }
+  summary.flagHealthy = flagHealthy;
+  summary.flagHealthProblem = flagHealthProblem;
 
   // ── Statistical significance (all decision logic in lib/significance.js) ──
-  if (variantNames.length === 2) {
+  // Always computed (not just when variantNames.length === 2) so --json has a
+  // primary block to report even in a degenerate shape — computeAbSignificance
+  // itself returns { degenerate: '...' } for anything other than 2 variants.
+  {
     const sigInput = variantNames.map(v => {
       const direct = directByVariant[v] || emptyDirect();
       return {
@@ -340,85 +363,101 @@ async function main() {
         joinCoverage: direct.conversions > 0 ? direct.joinWithSub1 / direct.conversions : null,
       };
     });
+    summary.variants = sigInput.map(v => ({
+      name: v.name, clicks: v.clicks, users: v.users, convUsers: v.convUsers,
+      convCount: v.convCount, joinCoverage: v.joinCoverage,
+    }));
     // Independence check: a subId1 converting in BOTH variants breaks the
     // two-sample test (sticky bucketing should make this impossible — any
     // overlap signals assignment leakage and suppresses the p).
-    const [setA, setB] = variantNames.map(v => (directByVariant[v] || emptyDirect()).convUsers);
-    const crossVariantConvUsers = [...setA].filter(u => setB.has(u)).length;
+    let crossVariantConvUsers = 0;
+    if (variantNames.length === 2) {
+      const [setA, setB] = variantNames.map(v => (directByVariant[v] || emptyDirect()).convUsers);
+      crossVariantConvUsers = [...setA].filter(u => setB.has(u)).length;
+    }
     const rep = computeAbSignificance(sigInput, { crossVariantConvUsers, flagHealthProblem });
+    summary.primary = rep.degenerate
+      ? { degenerate: rep.degenerate, suppressed: null, significant: null, p: null, underpowered: false }
+      : {
+        p: rep.primary.p, significant: rep.primary.significant,
+        suppressed: rep.primary.suppressed, degenerate: rep.primary.degenerate,
+        underpowered: rep.underpowered, underpoweredNote: rep.underpoweredNote,
+      };
 
-    console.log(`\n${'─'.repeat(70)}`);
-    console.log('STATISTICAL SIGNIFICANCE');
-    console.log('─'.repeat(70));
+    say(`\n${'─'.repeat(70)}`);
+    say('STATISTICAL SIGNIFICANCE');
+    say('─'.repeat(70));
 
     if (rep.degenerate) {
-      console.log(`n/a — ${rep.degenerate}`);
+      say(`n/a — ${rep.degenerate}`);
     } else {
-      console.log(`PRIMARY DECISION METRIC: ${rep.primary.metric}`);
+      say(`PRIMARY DECISION METRIC: ${rep.primary.metric}`);
       for (const pv of rep.primary.perVariant) {
         const rate = pv.rate === null ? 'n/a' : `${(pv.rate * 100).toFixed(1)}%`;
-        console.log(`  ${pv.name}: ${pv.convUsers} converting / ${pv.users} clicking users = ${rate}`);
+        say(`  ${pv.name}: ${pv.convUsers} converting / ${pv.users} clicking users = ${rate}`);
       }
       for (const jc of rep.joinCoverage) {
         const covStr = jc.coverage === null ? 'n/a (0 conversions)' : `${(jc.coverage * 100).toFixed(0)}%`;
-        console.log(`  subId1 join coverage — ${jc.name}: ${covStr}`);
+        say(`  subId1 join coverage — ${jc.name}: ${covStr}`);
       }
       if (rep.primary.suppressed) {
-        console.log(`  ⚠ primary p SUPPRESSED: ${rep.primary.suppressed}`);
+        say(`  ⚠ primary p SUPPRESSED: ${rep.primary.suppressed}`);
       } else if (rep.primary.degenerate) {
-        console.log(`  p: n/a (${rep.primary.degenerate})`);
+        say(`  p: n/a (${rep.primary.degenerate})`);
       } else {
-        console.log(`  ${rep.primary.test}: p = ${rep.primary.p.toFixed(4)} (z = ${rep.primary.z.toFixed(3)})`);
-        if (rep.primary.note) console.log(`  note: ${rep.primary.note}`);
-        if (rep.primary.significant) console.log(`  ✅ Statistically significant at p<0.05`);
-        else console.log(`  ❌ Not significant at p<0.05`);
+        say(`  ${rep.primary.test}: p = ${rep.primary.p.toFixed(4)} (z = ${rep.primary.z.toFixed(3)})`);
+        if (rep.primary.note) say(`  note: ${rep.primary.note}`);
+        if (rep.primary.significant) say(`  ✅ Statistically significant at p<0.05`);
+        else say(`  ❌ Not significant at p<0.05`);
       }
       if (rep.underpowered) {
-        console.log(`  ⚠️  Underpowered: ${rep.underpoweredNote}`);
+        say(`  ⚠️  Underpowered: ${rep.underpoweredNote}`);
       }
 
-      console.log(`\nSECONDARY (${rep.secondary.metric}):`);
+      say(`\nSECONDARY (${rep.secondary.metric}):`);
       for (const pv of rep.secondary.perVariant) {
         const cpu = pv.clicksPerUser === null ? 'n/a' : pv.clicksPerUser.toFixed(2);
-        console.log(`  ${pv.name}: ${cpu} clicks/user`);
+        say(`  ${pv.name}: ${cpu} clicks/user`);
       }
 
       // Decision guidance — driven by the primary p, never by click direction
       // (guardrails memory: "direction looks clear" is not a winner).
-      console.log(`\nDecision guidance:`);
+      say(`\nDecision guidance:`);
       if (rep.primary.suppressed || rep.primary.degenerate) {
-        console.log(`  → Primary metric unavailable (see above). Fix the data issue before judging.`);
+        say(`  → Primary metric unavailable (see above). Fix the data issue before judging.`);
       } else if (rep.underpowered) {
-        console.log(`  → Continue running. Sample below advisory floors (see underpowered note).`);
+        say(`  → Continue running. Sample below advisory floors (see underpowered note).`);
       } else if (rep.primary.significant) {
-        console.log(`  → Significant. Discuss with the owner before ANY flag change (guardrails memory rule 2).`);
+        say(`  → Significant. Discuss with the owner before ANY flag change (guardrails memory rule 2).`);
       } else {
-        console.log(`  → Continue running for clearer signal.`);
+        say(`  → Continue running for clearer signal.`);
       }
     }
   }
 
   // ── Caveats ──
-  console.log(`\n${'─'.repeat(70)}`);
-  console.log('CAVEATS');
-  console.log('─'.repeat(70));
-  console.log('• Direct conversions use the SubId2 postback wired into affiliate-utils.ts');
-  console.log('  on 2026-04-26 — distinct_id (subId1) + ab_variant (subId2) ride the click URL,');
-  console.log('  Impact echoes them on each Action, this script joins on subId2.');
-  console.log(`• A SubId2 must carry the \`flag:${FLAG}\` cohort prefix (added 2026-04-27)`);
-  console.log('  to count toward THIS test. Bare `platform:X,buttons:Y` strings from before');
-  console.log('  the prefix shipped, and any future test reusing the same keys, fall into');
-  console.log('  the unattributed pool.');
-  console.log('• Estimated split is NOT a measurement — it imports show-page A/B click ratios');
-  console.log('  into a population (lottery/rush/discount/historical) the test never observed.');
-  console.log('  It auto-suppresses once postback coverage reaches 80% (direct conversions');
-  console.log('  are the measurement then).');
-  console.log('• Primary metric denominator is CLICKING users, not exposed users — it measures');
-  console.log('  conversion among clickers, not intent-to-treat. If a variant changes click');
-  console.log('  propensity, interpret alongside the secondary clicks/user line.');
-  console.log('• Click tracking only works when PostHog loads (ad blockers excluded via fallback filter).');
-  console.log('• Methodology: see memory/feedback_ab_test_analysis.md');
-  console.log('');
+  say(`\n${'─'.repeat(70)}`);
+  say('CAVEATS');
+  say('─'.repeat(70));
+  say('• Direct conversions use the SubId2 postback wired into affiliate-utils.ts');
+  say('  on 2026-04-26 — distinct_id (subId1) + ab_variant (subId2) ride the click URL,');
+  say('  Impact echoes them on each Action, this script joins on subId2.');
+  say(`• A SubId2 must carry the \`flag:${FLAG}\` cohort prefix (added 2026-04-27)`);
+  say('  to count toward THIS test. Bare `platform:X,buttons:Y` strings from before');
+  say('  the prefix shipped, and any future test reusing the same keys, fall into');
+  say('  the unattributed pool.');
+  say('• Estimated split is NOT a measurement — it imports show-page A/B click ratios');
+  say('  into a population (lottery/rush/discount/historical) the test never observed.');
+  say('  It auto-suppresses once postback coverage reaches 80% (direct conversions');
+  say('  are the measurement then).');
+  say('• Primary metric denominator is CLICKING users, not exposed users — it measures');
+  say('  conversion among clickers, not intent-to-treat. If a variant changes click');
+  say('  propensity, interpret alongside the secondary clicks/user line.');
+  say('• Click tracking only works when PostHog loads (ad blockers excluded via fallback filter).');
+  say('• Methodology: see memory/feedback_ab_test_analysis.md');
+  say('');
+
+  if (JSON_OUT) console.log(JSON.stringify(summary));
 }
 
 main().catch(err => {
