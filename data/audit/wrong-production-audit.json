@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-24T17:51:31.553Z",
+  "timestamp": "2026-07-24T18:38:08.540Z",
   "stats": {
     "totalReviews": 40437,
-    "alreadyFlagged": 17801,
+    "alreadyFlagged": 17802,
     "dateGuardCatches": 59,
     "directorMismatch": 907,
     "tvFilmSignals": 1108,
-    "londonSignals": 754,
+    "londonSignals": 755,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3267
+    "noPublishDate": 3263
   },
   "findings": [
     {
@@ -31880,6 +31880,19 @@
       "score": 42,
       "publishDate": "November 21, 2010",
       "url": "http://www.hollywoodreporter.com/review/elling-theater-review-47935",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "end-of-the-rainbow-west-end-2026",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "publishDate": "2026-05-22",
+      "url": "https://www.allthatdazzles.co.uk/post/review-end-of-the-rainbow-soho-theatre-walthamstow",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
