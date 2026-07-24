@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-24T09:31:12.907Z",
+  "updatedAt": "2026-07-24T09:35:11.333Z",
   "processed": 70,
-  "failed": 893,
-  "successRate": "7.3%",
+  "failed": 903,
+  "successRate": "7.2%",
   "tierBreakdown": {
     "playwright": 49,
     "amp": 0,
@@ -10,33 +10,11 @@
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 10,
-    "archiveToday": 13,
+    "archiveToday": 14,
     "archive": 9
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-07-23T19:18:03.870Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-23T20:31:31.930Z",
-      "event": "bb-session",
-      "session": "32031b15",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
-    {
-      "t": "2026-07-23T20:31:32.693Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-23T20:31:48.509Z",
-      "event": "bb-session",
-      "session": "6c15198a",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
     {
       "t": "2026-07-23T20:31:49.140Z",
       "event": "bb-cookie-inject",
@@ -125,6 +103,28 @@
       "t": "2026-07-24T08:32:35.705Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-24T09:31:56.166Z",
+      "event": "bb-session",
+      "session": "3453df72",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-24T09:31:57.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-24T09:32:13.442Z",
+      "event": "bb-session",
+      "session": "8928f268",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-24T09:32:14.612Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
