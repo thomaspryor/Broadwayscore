@@ -79,6 +79,20 @@ function monitorCandidates(shows, now) {
 }
 
 function nightStatePath(key) { return path.join(MON_DIR, `night-state-${key}.json`); }
+
+// GC night/session state files >14 days old — one+ accumulates per opening
+// night in a git-tracked dir and nothing else cleans them (ship-check P2).
+function gcStateFiles(now = Date.now()) {
+  let files;
+  try { files = fs.readdirSync(MON_DIR); } catch { return; }
+  for (const f of files) {
+    if (!/^(night-state-|session-state-)/.test(f)) continue;
+    try {
+      const p = path.join(MON_DIR, f);
+      if (now - fs.statSync(p).mtimeMs > 14 * 24 * 3600e3) fs.rmSync(p);
+    } catch { /* best-effort */ }
+  }
+}
 function readNightState(key) {
   try { return JSON.parse(fs.readFileSync(nightStatePath(key), 'utf8')); } catch { return { attempts: 0 }; }
 }
@@ -145,6 +159,7 @@ async function main(argv = process.argv.slice(2)) {
     return 0;
   }
 
+  gcStateFiles();
   const shows = loadShows();
 
   if (opts['active-shows']) {
