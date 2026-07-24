@@ -744,6 +744,14 @@ on:
       - 'scripts/lib/dispatch-rescore.js'
       - 'scripts/analyze-rebuild-drops.js'
       - 'scripts/verify-all-scored.js'
+      # #356: orphan-unscored broadcast-gate self-heal. Pure decision fn gets
+      # a colocated scripts/lib/*.test.mjs (auto-run by the lib-test glob,
+      # no explicit registration needed there); path-listed here so a solo
+      # edit to either file, or the CLI wrapper that does the I/O/dispatch/
+      # alert-routing, still triggers CI.
+      - 'scripts/lib/orphan-rescore-requeue.js'
+      - 'scripts/lib/orphan-rescore-requeue.test.mjs'
+      - 'scripts/dispatch-orphan-rescore-requeue.js'
       # Sprint 4, S4-T4: autonomous-merge.yml/.js 'data' action (Tier-2 CI
       # merge/revert against the private repos). scripts/autonomous-merge.js
       # is already path-listed above (and .github/workflows/** is globbed at
