@@ -504,6 +504,9 @@ on:
       # Workflow hygiene guard — enforce notify-failure, setup-playwright, push-with-retry
       # on all 186 workflows. Without this path entry, edits to the guard get ZERO CI.
       - 'scripts/audit-workflow-hygiene.js'
+      # Run-budget coverage guard (#425) — advisory scan for BD/SB cron scripts
+      # missing scripts/lib/run-budget.js. Without this path entry, edits get ZERO CI.
+      - 'scripts/audit-run-budget-coverage.js'
       # Sitemap shard URL resolver (robots.txt parser) — colocated test runs in the
       # scripts/lib step, but the job only fires when a push-path matches; without
       # these entries edits get ZERO CI (feedback_test_yml_push_path_allowlist).
@@ -956,6 +959,15 @@ jobs:
         # Root cause for each rule: (a) baseline rot via SKIP-VISUAL-CHECK in red CI,
         # (b) browser cache miss wastes 15s/run, (c) bare || echo swallows push failures.
         run: node scripts/audit-workflow-hygiene.js
+
+      - name: Audit — run-budget coverage on BD/SB cron scripts (advisory)
+        # Prevents the #369/#415/#421 bug class recurring: a scheduled job with
+        # timeout-minutes <= 35 and BD/SB secrets invoking a script whose per-item
+        # loop calls a network helper with no scripts/lib/run-budget.js check gets
+        # SIGKILLed mid-run instead of exiting cleanly. Heuristic, non-blocking —
+        # always exits 0 (see script header for why). Exempt a workflow with
+        # # hygiene-run-budget-ok: <reason>.
+        run: node scripts/audit-run-budget-coverage.js
 
       - name: Audit — no direct Resend calls outside alert-router allowlist
         # Email-consolidation Sprint 1 (Notion 3a4637c5-416f-81eb, #279): every

@@ -30,6 +30,10 @@ on:
         description: 'Comma-separated show IDs to target (empty = all shows)'
         required: false
         type: string
+      time_budget_min:
+        description: 'BWW landing-discover wall-clock budget in minutes (0 = unlimited)'
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -396,7 +400,10 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-        run: node scripts/scrape-bww-reviews.js --landing-discover
+        run: |
+          TB="${{ inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=22
+          node scripts/scrape-bww-reviews.js --landing-discover --time-budget-min=$TB
 
       - name: Push review-texts to private repo (BWW landing)
         if: always()
