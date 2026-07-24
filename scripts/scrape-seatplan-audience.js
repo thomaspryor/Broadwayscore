@@ -27,6 +27,7 @@ const { calculateCombinedScore, getDesignation } = require('./lib/audience-weigh
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
 const { batchDiscoverSlugs } = require('./lib/serp-slug-discovery');
+const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
@@ -81,7 +82,6 @@ const SEATPLAN_OVERRIDES = {
   'Cabaret at the Kit Kat Club': 'cabaret',
 };
 
-const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showsPath = path.join(__dirname, '../data/shows.json');
 
 // --- HTTP helpers ---
@@ -303,8 +303,8 @@ async function main() {
     }
 
     if (!dryRun) {
-      // Re-read audience-buzz.json fresh before each write (prevents stale data overwrites)
-      const buzzData = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+      // Fresh load before each write — the guard re-reads + merges on save too.
+      const buzzData = loadAudienceBuzz();
       if (!buzzData.shows) buzzData.shows = {};
 
       const showEntry = buzzData.shows[show.id] || { title: show.title, sources: {} };
@@ -331,12 +331,10 @@ async function main() {
       showEntry.title = show.title;
       buzzData.shows[show.id] = showEntry;
 
-      // Write back immediately (re-read + merge pattern)
-      buzzData._meta.lastUpdated = new Date().toISOString();
       if (!buzzData._meta.sources.includes('SeatPlan')) {
         buzzData._meta.sources.push('SeatPlan');
       }
-      fs.writeFileSync(audienceBuzzPath, JSON.stringify(buzzData, null, 2) + '\n');
+      saveAudienceBuzz(buzzData);
 
       if ((i + 1) % CHECKPOINT_EVERY === 0) {
         console.log(`  💾 Checkpoint saved (${i + 1} processed)`);

@@ -29,9 +29,9 @@ const fs = require('fs');
 const path = require('path');
 const { isRedditVolumeInflated, otherSourceReviewCounts, REDDIT_INFLATION_MIN_RC } = require('./lib/reddit-post-filters');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
+const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 const ROOT = path.join(__dirname, '..');
-const BUZZ_FILE = path.join(ROOT, 'data', 'audience-buzz.json');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 
 const MIN_RC = REDDIT_INFLATION_MIN_RC;
@@ -41,7 +41,7 @@ const excludeArg = process.argv.find((a) => a.startsWith('--exclude='));
 const exclude = new Set(excludeArg ? excludeArg.split('=')[1].split(',').map((s) => s.trim()).filter(Boolean) : []);
 
 function main() {
-  const buzz = JSON.parse(fs.readFileSync(BUZZ_FILE, 'utf-8'));
+  const buzz = loadAudienceBuzz();
   const shows = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf-8')).shows || [];
   const showById = new Map(shows.map((s) => [s.id, s]));
   const shows_ = buzz.shows || {};
@@ -98,9 +98,8 @@ function main() {
 
   if (apply && acted.length) {
     buzz._meta = buzz._meta || {};
-    buzz._meta.lastUpdated = new Date().toISOString();
-    fs.writeFileSync(BUZZ_FILE, JSON.stringify(buzz, null, 2));
-    console.log(`\nWrote ${BUZZ_FILE}`);
+    saveAudienceBuzz(buzz);
+    console.log(`\nWrote data/audience-buzz.json`);
   }
 }
 

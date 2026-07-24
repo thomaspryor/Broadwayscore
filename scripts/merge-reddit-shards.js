@@ -13,12 +13,12 @@
 const fs = require('fs');
 const path = require('path');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
+const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const cleanup = args.includes('--cleanup');
 
-const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
 const showMapById = {};
 for (const s of showsData.shows) showMapById[s.id] = s;
@@ -82,7 +82,7 @@ function main() {
   console.log(`\nTotal shows to merge: ${totalShows}`);
 
   // Load audience-buzz.json
-  const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+  const audienceBuzz = loadAudienceBuzz();
   if (!audienceBuzz.shows) audienceBuzz.shows = {};
 
   // Merge Reddit data
@@ -138,7 +138,7 @@ function main() {
   audienceBuzz._meta.notes = 'Proportional weighting by reviewCount volume (max 80% single source)';
 
   if (!dryRun) {
-    fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
+    saveAudienceBuzz(audienceBuzz);
     console.log(`\nWrote audience-buzz.json`);
 
     // Clean up shard files

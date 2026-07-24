@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
+const { createAudienceBuzzWriteGuard } = require('./lib/audience-buzz-write-guard');
 
 // Resolve data dir: --data-dir flag > DATA_DIR env > default
 const cliDataDir = process.argv.find(a => a.startsWith('--data-dir='));
@@ -37,7 +38,11 @@ if (!fs.existsSync(showsPath)) {
 }
 
 console.log(`Reading from: ${dataDir}`);
-const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+// Guard is bound to the resolved dataDir (not necessarily the repo's default
+// data/audience-buzz.json) — CI points this at /tmp/core-data-checkout/ via
+// --data-dir/DATA_DIR, so the default singleton guard would write the wrong file.
+const { loadAudienceBuzz, saveAudienceBuzz } = createAudienceBuzzWriteGuard(audienceBuzzPath);
+const audienceBuzz = loadAudienceBuzz();
 const showsFile = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const showMap = {};
 for (const s of showsFile.shows) showMap[s.id] = s;
@@ -64,7 +69,6 @@ for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
   }
 }
 
-audienceBuzz._meta.lastUpdated = new Date().toISOString();
 audienceBuzz._meta.designationThresholds = {
   'Loving': '88-100',   // A+, A
   'Liking': '78-87',    // A-, B+
@@ -74,5 +78,5 @@ audienceBuzz._meta.designationThresholds = {
 };
 audienceBuzz._meta.notes = 'Proportional weighting by reviewCount volume (max 80% single source)';
 
-fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
+saveAudienceBuzz(audienceBuzz);
 console.log(`\nUpdated ${updated} shows. Saved to audience-buzz.json`);

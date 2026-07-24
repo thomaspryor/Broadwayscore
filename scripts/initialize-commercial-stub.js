@@ -24,6 +24,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const DEFAULT_COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
@@ -77,9 +78,15 @@ function main(argv) {
     }
   }
 
+  // Bound to commercialPath (default data/commercial.json, or the --data-file
+  // override tests use) rather than the module's default-path singleton —
+  // this script's --data-file flag must keep pointing the guard's lock +
+  // atomic write at the same overridden path.
+  const { loadCommercial, saveCommercial } = createCommercialWriteGuard(commercialPath);
+
   let commercial;
   try {
-    commercial = JSON.parse(fs.readFileSync(commercialPath, 'utf8'));
+    commercial = loadCommercial();
   } catch (e) {
     console.error(`Failed to read/parse ${commercialPath}: ${e.message}`);
     return 1;
@@ -102,7 +109,7 @@ function main(argv) {
   }
 
   if (wrote) {
-    fs.writeFileSync(commercialPath, JSON.stringify(commercial, null, 2) + '\n');
+    saveCommercial(commercial);
   }
 
   return 0;

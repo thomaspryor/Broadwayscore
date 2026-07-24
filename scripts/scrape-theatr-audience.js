@@ -23,6 +23,7 @@ const https = require('https');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { normalizeTitle, titleTokens, jaccard } = require('./lib/title-match');
+const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -38,7 +39,6 @@ const MIN_VOTES = 1; // No floor — consistent with ShowScore/Mezzanine (weight
 const STATS_DELAY_MS = 2000; // 2s between show-stats requests
 const USER_AGENT = 'Theatr/184 CFNetwork/3860.400.51 Darwin/25.3.0';
 
-const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showsPath = path.join(__dirname, '../data/shows.json');
 // Image cache shared with fetch-show-images-auto.js so that script NEVER
 // needs to call Theatr API itself. Only this script touches Theatr auth.
@@ -393,7 +393,7 @@ async function main() {
   console.log('============================\n');
 
   // Load data
-  audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+  audienceBuzz = loadAudienceBuzz();
   showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
   showMapById = {};
   for (const s of showsData.shows) showMapById[s.id] = s;
@@ -508,11 +508,10 @@ async function main() {
 
   // 5. Save
   if (!dryRun && updated > 0) {
-    audienceBuzz._meta.lastUpdated = new Date().toISOString();
     if (!audienceBuzz._meta.sources.includes('Theatr')) {
       audienceBuzz._meta.sources.push('Theatr');
     }
-    fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
+    saveAudienceBuzz(audienceBuzz);
     console.log(`Saved audience-buzz.json`);
   }
 

@@ -31,6 +31,7 @@ const path = require('path');
 const { normalizeSources } = require('./lib/commercial-sources');
 const { createRunBudget } = require('./lib/run-budget');
 const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-scope');
+const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -146,7 +147,7 @@ function checkPlausibility(data, grossesData) {
 function initializeMetadata() {
   let commercial;
   try {
-    commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+    commercial = loadCommercial();
   } catch (e) {
     return; // No commercial.json yet
   }
@@ -167,7 +168,7 @@ function initializeMetadata() {
     }
   }
   if (changed && !DRY_RUN) {
-    fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(commercial, null, 2) + '\n');
+    saveCommercial(commercial);
     console.log('Initialized research metadata for existing commercial entries');
   }
 }
@@ -489,7 +490,7 @@ async function main() {
   // Load commercial data for attempt tracking
   let commercial;
   try {
-    commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+    commercial = loadCommercial();
   } catch (e) {
     commercial = { shows: {} };
   }
@@ -792,9 +793,13 @@ async function main() {
         if (analysis.confidence === 'high') analysis.confidence = 'medium';
       }
 
-      // Guardian check — respect protected data
+      // Guardian check — respect protected data. Re-read via loadCommercial()
+      // (not a bare fs.readFileSync) so the file-lock/merge guard is the one
+      // canonical source of "what's on disk right now" — a stray raw read
+      // here would silently diverge from the `commercial` object this loop
+      // is about to save back.
       if (guardian) {
-        const freshCommercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+        const freshCommercial = loadCommercial();
         const existingShow = (freshCommercial.shows || {})[slug];
         if (existingShow) {
           const fieldsToCheck = ['capitalization', 'weeklyRunningCost', 'recouped', 'designation'];
@@ -833,12 +838,14 @@ async function main() {
       if (!DRY_RUN) {
         fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
 
-        // Now increment attempt counter in commercial.json
-        const freshComm = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
-        if (!freshComm.shows[slug]) {
-          freshComm.shows[slug] = { designation: 'TBD' };
+        // Now increment attempt counter in commercial.json — mutate the SAME
+        // `commercial` object loaded via loadCommercial() above (not a fresh
+        // re-read into a new object) so saveCommercial()'s per-call snapshot
+        // diff keeps working across repeated saves in this loop.
+        if (!commercial.shows[slug]) {
+          commercial.shows[slug] = { designation: 'TBD' };
         }
-        const entry = freshComm.shows[slug];
+        const entry = commercial.shows[slug];
         if (FORCE) {
           entry.researchAttempts = 1; // Reset on force
         } else {
@@ -846,7 +853,7 @@ async function main() {
         }
         entry.lastResearchedAt = new Date().toISOString();
         entry.researchTrigger = trigger;
-        fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(freshComm, null, 2) + '\n');
+        saveCommercial(commercial);
       }
 
       // Checkpoint progress

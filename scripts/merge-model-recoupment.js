@@ -17,6 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { calculateRecoupment, calculateLifetimeRecoupment, classifyShow } = require('./lib/recoupment-model');
+const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -30,6 +31,9 @@ const GROSSES_HISTORY_PATH = path.join(DATA_DIR, 'grosses-history.json');
 const COMMERCIAL_PATH = fs.existsSync(path.join(DATA_DIR, 'commercial.json'))
   ? path.join(DATA_DIR, 'commercial.json')
   : path.join(os.homedir(), 'broadway-scorecard-data', 'commercial.json');
+// Bound to the resolved CI-vs-local path above rather than the module's
+// default-path singleton (which always points at data/commercial.json).
+const { loadCommercial, saveCommercial } = createCommercialWriteGuard(COMMERCIAL_PATH);
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
@@ -42,7 +46,7 @@ const SINGLE = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
 const allShows = Object.values(showsData.shows);
 const grosses = JSON.parse(fs.readFileSync(GROSSES_PATH, 'utf8'));
-const commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+const commercial = loadCommercial();
 
 let grossesHistory = { weeks: {} };
 try {
@@ -246,7 +250,7 @@ function main() {
     commercial.modelLastRun = today;
     if (!commercial._meta) commercial._meta = {};
     commercial._meta.lastUpdated = new Date().toISOString();
-    fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(commercial, null, 2) + '\n');
+    saveCommercial(commercial);
     console.log(`Written to ${COMMERCIAL_PATH}`);
   }
 

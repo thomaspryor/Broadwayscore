@@ -13,6 +13,14 @@
 #      each other and silently clobber concurrent edits (card: shows.json
 #      concurrency lock) — unless the script is on
 #      .shows-json-write-exempt.txt.
+#   4. commercial-json: data/commercial.json must go through the lock+merge
+#      guard in scripts/lib/commercial-write-guard.js — same class of bug as
+#      shows.json, 31 unlocked writers (card: generalize shows-write-guard.js)
+#      — unless the script is on .commercial-json-write-exempt.txt.
+#   5. audience-buzz-json: data/audience-buzz.json must go through the
+#      lock+merge guard in scripts/lib/audience-buzz-write-guard.js — same
+#      class of bug, 33 unlocked writers — unless the script is on
+#      .audience-buzz-json-write-exempt.txt.
 #
 # Called from BOTH:
 #   - CI: .github/workflows/test.yml (Lint Workflows job)
@@ -20,7 +28,7 @@
 # so a violation blocks at push time instead of reddening main for hours
 # (2026-07-12: 24 consecutive Test Suite failures from one unlinted script).
 #
-# Usage: lint-write-routing.sh [review-texts|reviews-json|shows-json|all]   (default: all)
+# Usage: lint-write-routing.sh [review-texts|reviews-json|shows-json|commercial-json|audience-buzz-json|all]   (default: all)
 
 set -uo pipefail
 cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
@@ -151,12 +159,82 @@ check_shows_json() {
   fi
 }
 
+check_commercial_json() {
+  local ALLOWLIST=".commercial-json-write-exempt.txt"
+  if [ ! -f "$ALLOWLIST" ]; then
+    echo "::error::missing allowlist file: $ALLOWLIST"
+    FAILED=1
+    return
+  fi
+  local EXEMPT VIOLATIONS="" f name
+  EXEMPT=$(read_allowlist "$ALLOWLIST")
+  for f in scripts/*.js scripts/*.mjs scripts/*.ts; do
+    [ -e "$f" ] || continue
+    name=$(basename "$f")
+    echo "$EXEMPT" | grep -Fxq "$name" && continue
+    # Same shape of check as shows-json: (1) references data/commercial.json
+    # AND (2) writeFileSync to a var whose name IS "commercial" + path/file/
+    # json, word-bounded, case-insensitive, or a literal commercial.json path,
+    # AND (3) does NOT route through commercial-write-guard.
+    if grep -qE "['\"][^'\"]*data/commercial\.json['\"]|path\.join\([^)]*['\"]commercial\.json['\"]" "$f" \
+      && grep -qEi "fs\.writeFileSync\([^)]*\bcommercial[_a-z]*(path|file|json)\b|fs\.writeFileSync\([^)]*['\"][^'\"]*data/commercial\.json['\"]" "$f" \
+      && ! grep -q "commercial-write-guard" "$f"; then
+      VIOLATIONS="$VIOLATIONS $name"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Scripts write data/commercial.json without the commercial-write-guard lock+merge:"
+    for v in $VIOLATIONS; do echo "  $v"; done
+    echo "Fix: const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard'); use those in place of"
+    echo "your own fs.readFileSync/writeFileSync(COMMERCIAL_PATH, ...) pair."
+    echo "If this script genuinely can't (e.g. it targets a different commercial.json-shaped file), add it to"
+    echo "$ALLOWLIST with a one-line reason."
+    FAILED=1
+  else
+    echo "All detected commercial.json writes route through commercial-write-guard"
+  fi
+}
+
+check_audience_buzz_json() {
+  local ALLOWLIST=".audience-buzz-json-write-exempt.txt"
+  if [ ! -f "$ALLOWLIST" ]; then
+    echo "::error::missing allowlist file: $ALLOWLIST"
+    FAILED=1
+    return
+  fi
+  local EXEMPT VIOLATIONS="" f name
+  EXEMPT=$(read_allowlist "$ALLOWLIST")
+  for f in scripts/*.js scripts/*.mjs scripts/*.ts; do
+    [ -e "$f" ] || continue
+    name=$(basename "$f")
+    echo "$EXEMPT" | grep -Fxq "$name" && continue
+    if grep -qE "['\"][^'\"]*data/audience-buzz\.json['\"]|path\.join\([^)]*['\"]audience-buzz\.json['\"]" "$f" \
+      && grep -qEi "fs\.writeFileSync\([^)]*\baudience[-_a-z]*buzz[_a-z]*(path|file|json)\b|fs\.writeFileSync\([^)]*['\"][^'\"]*data/audience-buzz\.json['\"]" "$f" \
+      && ! grep -q "audience-buzz-write-guard" "$f"; then
+      VIOLATIONS="$VIOLATIONS $name"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Scripts write data/audience-buzz.json without the audience-buzz-write-guard lock+merge:"
+    for v in $VIOLATIONS; do echo "  $v"; done
+    echo "Fix: const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard'); use those in place of"
+    echo "your own fs.readFileSync/writeFileSync(AUDIENCE_BUZZ_PATH, ...) pair."
+    echo "If this script genuinely can't (e.g. it targets a different audience-buzz.json-shaped file), add it to"
+    echo "$ALLOWLIST with a one-line reason."
+    FAILED=1
+  else
+    echo "All detected audience-buzz.json writes route through audience-buzz-write-guard"
+  fi
+}
+
 case "$MODE" in
   review-texts) check_review_texts ;;
   reviews-json) check_reviews_json ;;
   shows-json) check_shows_json ;;
-  all) check_review_texts; check_reviews_json; check_shows_json ;;
-  *) echo "usage: $0 [review-texts|reviews-json|shows-json|all]" >&2; exit 2 ;;
+  commercial-json) check_commercial_json ;;
+  audience-buzz-json) check_audience_buzz_json ;;
+  all) check_review_texts; check_reviews_json; check_shows_json; check_commercial_json; check_audience_buzz_json ;;
+  *) echo "usage: $0 [review-texts|reviews-json|shows-json|commercial-json|audience-buzz-json|all]" >&2; exit 2 ;;
 esac
 
 exit "$FAILED"

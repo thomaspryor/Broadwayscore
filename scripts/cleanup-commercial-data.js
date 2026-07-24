@@ -14,13 +14,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 
 const commercialPath = path.join(__dirname, '..', 'data', 'commercial.json');
 const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
 
-const commercial = JSON.parse(fs.readFileSync(commercialPath, 'utf8'));
+const commercial = loadCommercial();
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const allShows = showsData.shows || [];
 
@@ -143,7 +144,9 @@ if (!DRY_RUN && totalChanges > 0) {
   // Update meta
   if (!commercial._meta) commercial._meta = {};
   commercial._meta.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(commercialPath, JSON.stringify(commercial, null, 2) + '\n');
+  // This script deliberately deletes orphaned entries (step 2) — allowShrink
+  // avoids the guard's shrink-guard tripping on a legitimate prune.
+  saveCommercial(commercial, { allowShrink: true });
   console.log(`\nWrote ${commercialPath}`);
 } else if (DRY_RUN) {
   console.log('\nDry run — no files written.');

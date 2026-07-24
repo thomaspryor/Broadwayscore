@@ -6,11 +6,11 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
-const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showsPath = path.join(__dirname, '../data/shows.json');
 
-const buzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+const buzz = loadAudienceBuzz();
 const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows;
 const showMap = {};
 for (const s of shows) showMap[s.id] = s;
@@ -107,8 +107,7 @@ async function main() {
     }
   }
 
-  buzz._meta.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(audienceBuzzPath, JSON.stringify(buzz, null, 2) + '\n');
+  saveAudienceBuzz(buzz);
   console.log(`\nDone: ${found} URLs found, ${alreadyHave} already had URLs, ${tested} requests made`);
 }
 

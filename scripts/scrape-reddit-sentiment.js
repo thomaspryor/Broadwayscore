@@ -42,6 +42,10 @@ const MAX_COMMENTS_PER_POST = 40;
 const { classifyAllComments } = require('./lib/buzz-classifier');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
+const {
+  loadAudienceBuzz,
+  saveAudienceBuzz: saveAudienceBuzzGuarded,
+} = require('./lib/audience-buzz-write-guard');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -94,7 +98,7 @@ const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const showMapById = {};
 for (const s of showsData.shows) showMapById[s.id] = s;
-let audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+let audienceBuzz = loadAudienceBuzz();
 
 // Multi-production guard: Reddit searches by title, so results conflate all productions.
 // Only assign data to the most recent production of each title.
@@ -528,11 +532,10 @@ function saveAudienceBuzz() {
     return false;
   }
 
-  audienceBuzz._meta.lastUpdated = new Date().toISOString();
   audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
   audienceBuzz._meta.notes = 'Proportional weighting by reviewCount volume (max 80% single source)';
 
-  fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
+  saveAudienceBuzzGuarded(audienceBuzz);
   return true;
 }
 

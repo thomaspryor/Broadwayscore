@@ -20,6 +20,7 @@ const path = require('path');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { fetchPage } = require('./lib/scraper');
+const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -33,7 +34,6 @@ const includeClosed = args.includes('--include-closed');
 const REQUEST_DELAY_MS = 2000; // 2s between requests — be polite
 const USER_AGENT = 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)';
 
-const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showsPath = path.join(__dirname, '../data/shows.json');
 
 let audienceBuzz, showsData, showMapById;
@@ -463,7 +463,7 @@ async function main() {
   console.log('==================================\n');
 
   // Load data
-  audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+  audienceBuzz = loadAudienceBuzz();
   showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
   showMapById = {};
   for (const s of showsData.shows) showMapById[s.id] = s;
@@ -652,7 +652,6 @@ async function main() {
 
   // 4. Save
   if (!dryRun && updated > 0) {
-    audienceBuzz._meta.lastUpdated = new Date().toISOString();
     if (!audienceBuzz._meta.sources.includes('Broadway.com')) {
       audienceBuzz._meta.sources.push('Broadway.com');
     }
@@ -663,7 +662,7 @@ async function main() {
       process.exit(1);
     }
 
-    fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
+    saveAudienceBuzz(audienceBuzz);
     console.log(`Saved audience-buzz.json (${newEntryCount} entries)`);
   }
 

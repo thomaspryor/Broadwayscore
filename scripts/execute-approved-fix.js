@@ -27,6 +27,8 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { buildFeedbackThankYouEmail } = require('./lib/email-templates.js');
 const showsWriteGuard = require('./lib/shows-write-guard.js');
+const commercialWriteGuard = require('./lib/commercial-write-guard.js');
+const audienceBuzzWriteGuard = require('./lib/audience-buzz-write-guard.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -59,14 +61,18 @@ const ALLOWED_SCRIPTS = [
 // --- Helpers ---
 
 function loadJsonFile(relPath) {
-  // shows.json needs the lock+merge layer (concurrent writers) — everything
-  // else (commercial.json, audience-buzz.json) keeps the plain read/write.
+  // All three core-data files need the lock+merge layer (concurrent
+  // writers) — see scripts/lib/{shows,commercial,audience-buzz}-write-guard.js.
   if (relPath === 'data/shows.json') return showsWriteGuard.loadShows();
+  if (relPath === 'data/commercial.json') return commercialWriteGuard.loadCommercial();
+  if (relPath === 'data/audience-buzz.json') return audienceBuzzWriteGuard.loadAudienceBuzz();
   return JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'));
 }
 
 function saveJsonFile(relPath, data) {
   if (relPath === 'data/shows.json') { showsWriteGuard.saveShows(data); return; }
+  if (relPath === 'data/commercial.json') { commercialWriteGuard.saveCommercial(data); return; }
+  if (relPath === 'data/audience-buzz.json') { audienceBuzzWriteGuard.saveAudienceBuzz(data); return; }
   fs.writeFileSync(path.join(ROOT, relPath), JSON.stringify(data, null, 2) + '\n');
 }
 

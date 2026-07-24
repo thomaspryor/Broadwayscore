@@ -13,12 +13,12 @@
 const fs = require('fs');
 const path = require('path');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
+const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const cleanup = args.includes('--cleanup');
 
-const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
 const showMapById = {};
 for (const s of showsData.shows) showMapById[s.id] = s;
@@ -130,7 +130,7 @@ function main() {
   console.log(`\nURL cache: ${newUrls} new URLs added (total: ${Object.keys(urlData.shows).length})`);
 
   // ── Merge scores into audience-buzz.json ──
-  const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+  const audienceBuzz = loadAudienceBuzz();
   if (!audienceBuzz.shows) audienceBuzz.shows = {};
 
   let merged = 0;
@@ -183,7 +183,7 @@ function main() {
     fs.writeFileSync(urlsPath, JSON.stringify(urlData, null, 2));
     console.log('Wrote show-score-urls.json');
 
-    fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
+    saveAudienceBuzz(audienceBuzz);
     console.log('Wrote audience-buzz.json');
 
     if (cleanup) {

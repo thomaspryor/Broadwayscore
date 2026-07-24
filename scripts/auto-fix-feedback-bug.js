@@ -23,6 +23,8 @@ import { createRequire } from 'module';
 const _require = createRequire(import.meta.url);
 const { CLAUDE_SONNET } = _require('./lib/models');
 const showsWriteGuard = _require('./lib/shows-write-guard.js');
+const commercialWriteGuard = _require('./lib/commercial-write-guard.js');
+const audienceBuzzWriteGuard = _require('./lib/audience-buzz-write-guard.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -77,12 +79,22 @@ function parseDiagnosis(issueBody) {
 
 function loadJsonFile(relPath) {
   if (relPath === 'data/shows.json') return showsWriteGuard.loadShows();
+  if (relPath === 'data/commercial.json') return commercialWriteGuard.loadCommercial();
+  if (relPath === 'data/audience-buzz.json') return audienceBuzzWriteGuard.loadAudienceBuzz();
   return JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'));
 }
 
 function saveJsonFile(relPath, data) {
   if (relPath === 'data/shows.json') {
     showsWriteGuard.saveShows(data);
+    return;
+  }
+  if (relPath === 'data/commercial.json') {
+    commercialWriteGuard.saveCommercial(data);
+    return;
+  }
+  if (relPath === 'data/audience-buzz.json') {
+    audienceBuzzWriteGuard.saveAudienceBuzz(data);
     return;
   }
   fs.writeFileSync(path.join(ROOT, relPath), JSON.stringify(data, null, 2) + '\n');

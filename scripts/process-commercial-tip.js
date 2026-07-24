@@ -17,6 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { CLAUDE_SONNET } = require('./lib/models');
+const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -216,7 +217,7 @@ async function main() {
   console.log(`Details: ${tip.details}`);
 
   // Load data
-  const commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+  const commercial = loadCommercial();
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
 
   // Match show
@@ -292,7 +293,7 @@ Rules:
       }
 
       commercial._meta.lastUpdated = new Date().toISOString();
-      fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(commercial, null, 2) + '\n');
+      saveCommercial(commercial);
 
       // Update changelog
       let changelog;

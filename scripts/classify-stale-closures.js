@@ -25,6 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const { classifyStaleClosure } = require('./lib/classify-stale-closure');
 const { isCommercialScope } = require('./lib/commercial-scope');
+const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -64,7 +65,7 @@ function loadJSON(p, fallback) {
 function main() {
   const allShows = loadJSON(SHOWS_PATH, { shows: [] });
   const shows = allShows.shows || allShows;
-  const commercial = loadJSON(COMMERCIAL_PATH, { shows: {}, _meta: {} });
+  const commercial = fs.existsSync(COMMERCIAL_PATH) ? loadCommercial() : { shows: {}, _meta: {} };
   const pending = loadJSON(PENDING_PATH, { shows: {} });
   const archive = loadJSON(ARCHIVE_PATH, { shows: {} });
 
@@ -152,7 +153,7 @@ function main() {
   if (applied > 0) {
     commercial._meta = commercial._meta || {};
     commercial._meta.lastUpdated = now.slice(0, 10);
-    fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(commercial, null, 2) + '\n');
+    saveCommercial(commercial);
     console.log(`\n✓ Wrote ${applied} Fizzle classifications to commercial.json`);
   } else {
     console.log('\nNo Fizzle classifications to apply.');

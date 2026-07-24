@@ -36,6 +36,7 @@ const { buildGrossesPostResult } = require('./lib/grosses-post-resolver');
 
 const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
 const { CLAUDE_SONNET } = require('./lib/models');
+const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 
 // Universal scraper with Bright Data → ScrapingBee → Playwright fallback
 let universalScraper;
@@ -1710,7 +1711,7 @@ function applyChanges(applied, newEntries, commercial) {
   if (DRY_RUN) {
     console.log(`\n  [DRY RUN] Would apply ${changeCount} changes (not writing)`);
   } else if (changeCount > 0) {
-    fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(commercial, null, 2));
+    saveCommercial(commercial);
     console.log(`\n  Wrote ${changeCount} changes to commercial.json`);
   } else {
     console.log('\n  No changes to apply');
@@ -2345,7 +2346,7 @@ async function main() {
   // Load data files
   let commercial, shows, grosses;
   try {
-    commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+    commercial = loadCommercial();
     shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
     grosses = JSON.parse(fs.readFileSync(GROSSES_PATH, 'utf8'));
   } catch (e) {

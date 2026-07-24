@@ -51,7 +51,12 @@ function atomicWriteShowsJson(targetPath, newData, options = {}) {
   const allowShrink = !!options.allowShrink;
   const shrinkThresholdPct = options.shrinkThresholdPct ?? 5;
 
-  const newJson = JSON.stringify(newData, null, 2);
+  // Trailing newline: every writer this replaces used
+  // `JSON.stringify(data, null, 2) + '\n'` — match that convention so
+  // migrating a script to this guard doesn't silently strip the file's
+  // final newline (git would then show a spurious "No newline at end of
+  // file" diff marker on every future commit to the file).
+  const newJson = JSON.stringify(newData, null, 2) + '\n';
   const newLines = newJson.split('\n').length;
 
   let currentLines = 0;
@@ -89,5 +94,10 @@ function atomicWriteShowsJson(targetPath, newData, options = {}) {
 
 module.exports = {
   atomicWriteShowsJson,
+  // Generic alias — the function itself is already file-shape-agnostic (it
+  // just line-count-diffs and renames a JSON blob); other json-write-guard
+  // consumers (commercial.json, audience-buzz.json) use this name so the
+  // import doesn't imply a shows.json dependency.
+  atomicWriteJson: atomicWriteShowsJson,
   AtomicWriteShrinkError,
 };

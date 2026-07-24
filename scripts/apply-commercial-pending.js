@@ -20,6 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { normalizeSources } = require('./lib/commercial-sources');
+const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
@@ -69,7 +70,7 @@ function main() {
     process.exit(1);
   }
   try {
-    commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+    commercial = loadCommercial();
   } catch (e) {
     console.error(`FATAL: Malformed commercial.json: ${e.message}`);
     process.exit(1);
@@ -247,7 +248,7 @@ function main() {
     // full-catchup date even though shows were merging cleanly each run.
     commercial._meta = commercial._meta || {};
     commercial._meta.lastUpdated = new Date().toISOString().slice(0, 10);
-    fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(commercial, null, 2) + '\n');
+    saveCommercial(commercial);
     console.log(`\n✅ Applied ${applied} shows, ${skipped} skipped`);
 
     // Run validation

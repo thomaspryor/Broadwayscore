@@ -20,6 +20,7 @@ const https = require('https');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { normalizeTitle, titleTokens, jaccard } = require('./lib/title-match');
+const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -99,7 +100,6 @@ const MEZZANINE_OVERRIDES = {
 
 // Paths
 const showsPath = path.join(__dirname, '../data/shows.json');
-const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 
 // Load data (skipped when required as a module — tests provide their own data)
 let showsData, showMapById, audienceBuzz;
@@ -107,7 +107,7 @@ if (require.main === module) {
   showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
   showMapById = {};
   for (const s of showsData.shows) showMapById[s.id] = s;
-  audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+  audienceBuzz = loadAudienceBuzz();
 
   // Validate override show IDs exist (catches drift when shows.json renames an
   // ID and silently leaves the override pointing at nothing — Claude review #4).
@@ -783,13 +783,12 @@ async function main() {
   if (!dryRun) {
     // Save
     audienceBuzz._meta = audienceBuzz._meta || {};
-    audienceBuzz._meta.lastUpdated = new Date().toISOString();
     if (!audienceBuzz._meta.sources) audienceBuzz._meta.sources = [];
     if (!audienceBuzz._meta.sources.includes('Mezzanine')) {
       audienceBuzz._meta.sources.push('Mezzanine');
     }
 
-    fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
+    saveAudienceBuzz(audienceBuzz);
 
     console.log(`\nResults:`);
     console.log(`  Added: ${added} new shows`);

@@ -21,6 +21,7 @@ const { isRelevantPost } = require('./lib/reddit-grosses');
 
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { KNOWN_ALIASES: SHARED_ALIASES } = require('./lib/show-matching');
+const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 
 // Commercial-specific aliases (same as update-commercial-data.js)
 const COMMERCIAL_ALIASES = {
@@ -267,7 +268,10 @@ async function main() {
   // Load data
   const commercialPath = getCommercialPath();
   console.log(`Commercial data: ${commercialPath}`);
-  const commercial = JSON.parse(fs.readFileSync(commercialPath, 'utf8'));
+  // Bound to the resolved CI-vs-local path (getCommercialPath()) rather than
+  // the module's default-path singleton.
+  const { loadCommercial, saveCommercial } = createCommercialWriteGuard(commercialPath);
+  const commercial = loadCommercial();
 
   const shows = loadShows();
   const lookup = buildShowLookup(shows);
@@ -403,7 +407,7 @@ async function main() {
   // Write
   if (!DRY_RUN && changes.length > 0) {
     commercial._meta.lastUpdated = new Date().toISOString().slice(0, 10);
-    fs.writeFileSync(commercialPath, JSON.stringify(commercial, null, 2) + '\n');
+    saveCommercial(commercial);
     console.log(`\nWrote ${changes.length} changes to ${commercialPath}`);
   } else if (DRY_RUN && changes.length > 0) {
     console.log('\n[DRY RUN] No files written.');

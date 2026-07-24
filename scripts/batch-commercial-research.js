@@ -34,6 +34,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { normalizeSources } = require('./lib/commercial-sources');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { isCommercialScope, DESIGNATION_CRITERIA, resolveScopeShow } = require('./lib/commercial-scope');
+const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -457,7 +458,7 @@ function applyPending() {
   }
 
   const pending = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8'));
-  const commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+  const commercial = loadCommercial();
 
   // Scope lookup — Off-Broadway / West End entries must never be applied.
   let showsBySlug = {};
@@ -525,7 +526,7 @@ function applyPending() {
     // full-catchup run even though daily increments were merging cleanly.
     commercial._meta = commercial._meta || {};
     commercial._meta.lastUpdated = new Date().toISOString().slice(0, 10);
-    fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(commercial, null, 2) + '\n');
+    saveCommercial(commercial);
     console.log(`\n✅ Applied ${applied} shows to commercial.json (${skipped} skipped)`);
   } else {
     console.log('\nNo new shows to apply.');
@@ -595,7 +596,7 @@ async function main() {
   // Load data
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const shows = showsData.shows || showsData;
-  const commercial = JSON.parse(fs.readFileSync(COMMERCIAL_PATH, 'utf8'));
+  const commercial = loadCommercial();
   const grosses = fs.existsSync(GROSSES_PATH)
     ? JSON.parse(fs.readFileSync(GROSSES_PATH, 'utf8'))
     : { shows: {} };

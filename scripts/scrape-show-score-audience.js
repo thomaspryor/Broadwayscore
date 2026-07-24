@@ -26,6 +26,7 @@ const { calculateCombinedScore, getDesignation } = require('./lib/audience-weigh
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 // Lazy-load Playwright — only imported if needed as fallback
 let playwrightBrowser = null;
@@ -77,7 +78,6 @@ const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 // Paths
 const showsPath = path.join(__dirname, '../data/shows.json');
 const urlsPath = path.join(__dirname, '../data/show-score-urls.json');
-const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showScorePath = path.join(__dirname, '../data/show-score.json');
 
 // Load data
@@ -122,7 +122,7 @@ function getNewestProductionUrl(show) {
   return newestShow ? getCachedUrl(newestShow.id) : null;
 }
 const urlData = JSON.parse(fs.readFileSync(urlsPath, 'utf8'));
-const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+const audienceBuzz = loadAudienceBuzz();
 const showScoreData = JSON.parse(fs.readFileSync(showScorePath, 'utf8'));
 
 // Max new URL discoveries per run to avoid rate-limit avalanche
@@ -1106,10 +1106,9 @@ async function main() {
           }
 
           // Save incrementally after each successful show
-          audienceBuzz._meta.lastUpdated = new Date().toISOString();
           audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
           audienceBuzz._meta.notes = 'Proportional weighting by reviewCount volume (max 80% single source)';
-          fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
+          saveAudienceBuzz(audienceBuzz);
           // Update shard incrementally (survives timeout)
           if (shardOutput) {
             const entry = audienceBuzz.shows && audienceBuzz.shows[show.id];

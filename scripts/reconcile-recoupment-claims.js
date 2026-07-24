@@ -62,6 +62,7 @@ const {
   isConfirmingVerdict,
   buildVerifiedOverlay,
 } = require('./lib/recoupment-reconcile-gate');
+const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 
 // Worktrees don't ship the gitignored core-data files (commercial.json,
 // shows.json live in the private repo). Fall back to the main repo's data
@@ -81,6 +82,11 @@ const SHOWS_PATH = dataPath('shows.json');
 const COMMERCIAL_PATH = dataPath('commercial.json', { writable: true });
 const PENDING_PATH = dataPath('commercial-pending-review.json', { writable: true });
 const CALIBRATION_PATH = dataPath('recoupment-calibration-anchors.json', { writable: true });
+// dataPath('commercial.json', {writable:true}) always resolves to the local
+// (worktree/CI-checked-out) path, never the main-repo fallback — bind the
+// guard there so load/save target the exact same file the old
+// loadJSON/writeJSON pair did.
+const { loadCommercial, saveCommercial } = createCommercialWriteGuard(COMMERCIAL_PATH);
 
 const args = process.argv.slice(2);
 const flags = {};
@@ -195,7 +201,10 @@ async function verifyClaim(title, disambiguatedTitle, existingUrls) {
 
 async function main() {
   const pending = loadJSON(PENDING_PATH, { shows: {} });
-  const commercial = loadJSON(COMMERCIAL_PATH, { shows: {} });
+  // loadCommercial() throws on a missing file (unlike loadJSON's silent
+  // fallback) — guard with existsSync so a worktree without the gitignored
+  // core-data file still degrades to an empty {shows:{}} like before.
+  const commercial = fs.existsSync(COMMERCIAL_PATH) ? loadCommercial() : { shows: {} };
   const allShows = loadJSON(SHOWS_PATH, { shows: [] });
   const showsArr = allShows.shows || allShows;
   const showsBySlug = {};
@@ -347,7 +356,7 @@ async function main() {
   // stale duplicate on the next run, since commercial.json already reflects
   // the applied claim) rather than the reverse order, where a kill drops the
   // claim from the queue without ever having applied it (ship-check finding).
-  if (verifiedApplied > 0) writeJSON(COMMERCIAL_PATH, commercial);
+  if (verifiedApplied > 0) saveCommercial(commercial);
   if (closedStale > 0 || verifiedApplied > 0 || stillUnverifiable > 0) {
     pending.lastUpdated = new Date().toISOString();
     writeJSON(PENDING_PATH, pending);
