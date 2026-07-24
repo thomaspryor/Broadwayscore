@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-07-24T19:03:44.352Z",
+  "updatedAt": "2026-07-24T19:09:21.405Z",
   "processed": 3,
-  "failed": 7,
-  "successRate": "30.0%",
+  "failed": 17,
+  "successRate": "15.0%",
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 4,
+    "archiveToday": 5,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-07-24T19:04:46.548Z",
+      "event": "bb-session",
+      "session": "aaebe4b0",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-24T19:04:47.356Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-24T19:06:05.238Z",
+      "event": "bb-session",
+      "session": "223018e6",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-24T19:06:05.949Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
