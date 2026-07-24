@@ -454,95 +454,80 @@ jobs:
             echo "Drift gate passed (blocked=$BLOCKED, force=$FORCE)"
           fi
 
-      - name: Orphan-unscored gate — block send if marker file exists for any pending show
+      - name: Orphan-unscored gate — self-heal requeue, alert only after exhausted attempts
         id: orphan_gate
         if: steps.check.outputs.pending_shows != ''
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Lost Boys 2026-04-26 #8 defense (Gap 1). scripts/verify-all-scored.js
           # writes data/audit/orphan-unscored-{showId}.json when reviews with
-          # includable text+excerpt land on disk without an assignedScore. The
-          # marker means: the LLM ensemble dispatch is in flight; sending the
-          # broadcast now would email a composite that's missing those critics.
-          # Wait for the next rebuild cycle (it'll re-run verify-all-scored and
-          # delete the marker if all scores landed).
+          # includable text+excerpt land on disk without an assignedScore, and
+          # dispatches a rescore unless its own 60-min per-show cooldown
+          # suppresses it (lastDispatch = 'suppressed-cooldown').
+          #
+          # #356 self-heal: this used to email the operator on EVERY blocked
+          # run — broadcast retries every ~2.8h via workflow_run, so a
+          # cooldown-suppressed dispatch meant repeated emails until an
+          # operator manually ran the rescore command (2026-07-23,
+          # trainspotting-the-musical-west-end-2026, run 30054954304 —
+          # nothing had auto-retried). scripts/dispatch-orphan-rescore-requeue.js
+          # now self-dispatches once the cooldown clears, capped at 2
+          # auto-attempts per show per rolling 24h, and only escalates through
+          # owner-alert-router (never a raw email) past that cap — so this
+          # step no longer fails the job / pages the operator on every retry;
+          # it just blocks the send via the `blocked` output below.
           FORCE="${{ inputs.force_broadcast }}"
           BLOCKED=false
-          BREACHED_SHOWS=()
-          BREACHED_SHOW_IDS=()
-          # Track whether at least one breach has a successful dispatch in
-          # flight, so the alert message is honest about expected resolution
-          # path (wait for ensemble vs. operator must dispatch manually).
-          ANY_DISPATCH_OK=false
           IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
           for SHOW in "${SHOWS[@]}"; do
-            MARKER="data/audit/orphan-unscored-${SHOW}.json"
-            if [ -f "$MARKER" ]; then
-              # Pass marker path via env to avoid quoting issues in node -e.
-              MARKER_INFO=$(MARKER="$MARKER" node -e "
-                try {
-                  const d = JSON.parse(require('fs').readFileSync(process.env.MARKER, 'utf8'));
-                  console.log(JSON.stringify({
-                    orphanCount: d.orphanCount || 0,
-                    lastDispatch: d.lastDispatch || 'unknown',
-                  }));
-                } catch (e) { console.log('{\"orphanCount\":0,\"lastDispatch\":\"parse-failed\"}'); }
-              " 2>/dev/null || echo '{"orphanCount":0,"lastDispatch":"missing"}')
-              ORPHAN_COUNT=$(echo "$MARKER_INFO" | node -e "console.log(JSON.parse(require('fs').readFileSync(0,'utf8')).orphanCount)")
-              LAST_DISPATCH=$(echo "$MARKER_INFO" | node -e "console.log(JSON.parse(require('fs').readFileSync(0,'utf8')).lastDispatch)")
-              echo "Show $SHOW: orphan-unscored marker present ($ORPHAN_COUNT orphan(s), dispatch=$LAST_DISPATCH)"
-              if [ "$ORPHAN_COUNT" -gt 0 ]; then
-                BLOCKED=true
-                BREACHED_SHOWS+=("$SHOW:$ORPHAN_COUNT/$LAST_DISPATCH")
-                BREACHED_SHOW_IDS+=("$SHOW")
-                if [ "$LAST_DISPATCH" = "ok" ]; then
-                  ANY_DISPATCH_OK=true
-                fi
-              fi
-            else
-              echo "Show $SHOW: no orphan-unscored marker (clear)"
-            fi
+            RESULT=$(node scripts/dispatch-orphan-rescore-requeue.js --show="$SHOW")
+            echo "Show $SHOW: $RESULT"
+            ACTION=$(echo "$RESULT" | node -e "try{process.stdout.write(JSON.parse(require('fs').readFileSync(0,'utf8')).action||'error')}catch{process.stdout.write('error')}")
+            case "$ACTION" in
+              clear) ;;
+              in-flight|wait|dispatch) BLOCKED=true ;;
+              alert) BLOCKED=true; echo "::error::Show $SHOW: orphan-unscored self-heal exhausted its 2-attempt/24h budget — owner-alert-router notified once." ;;
+              error) BLOCKED=true; echo "::warning::Show $SHOW: dispatch-orphan-rescore-requeue.js hit an internal error (see log above) — failing closed, broadcast stays blocked." ;;
+              *) BLOCKED=true; echo "::warning::Show $SHOW: dispatch-orphan-rescore-requeue.js returned unexpected action '$ACTION'" ;;
+            esac
           done
 
           if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
-            BREACHED_LIST=$(printf '%s\n' "${BREACHED_SHOWS[@]}" | sort | paste -sd, -)
-            # Condition key uses just SORTED show IDs (not the orphan
-            # count/dispatch status, which can shift retry-to-retry, and not
-            # iteration order) so the SAME stuck show dedupes across retries
-            # instead of minting a fresh key each time.
-            BREACHED_SHOW_IDS_LIST=$(printf '%s\n' "${BREACHED_SHOW_IDS[@]}" | sort | paste -sd, -)
-            if [ "$ANY_DISPATCH_OK" = "true" ]; then
-              RESOLUTION_HINT="Wait for next rebuild cycle (rescore in flight)"
-            else
-              RESOLUTION_HINT="No rescore is queued (cooldown or dispatch failed) — operator must run: gh workflow run llm-ensemble-score.yml -f show_id=<id> -f fast_rebuild=true"
-            fi
-            echo "::error::Orphan-unscored gate blocked broadcast — reviews with includable text are unscored for: $BREACHED_LIST. ${RESOLUTION_HINT}. Or re-run with force_broadcast=true to override."
-            # blocked=true only written after confirmed delivery/silence — see
-            # the checklist gate above for the fail-closed-to-silence bug this
-            # avoids (codex adversarial review 2026-07-23).
-            BREACHED_LIST="$BREACHED_LIST" BREACHED_SHOW_IDS_LIST="$BREACHED_SHOW_IDS_LIST" RESOLUTION_HINT="$RESOLUTION_HINT" node -e "
-              const { routeAlert } = require('./scripts/lib/owner-alert-router');
-              routeAlert({
-                conditionKey: 'broadcast-gate:orphan-unscored:' + (process.env.BREACHED_SHOW_IDS_LIST || 'unknown'),
-                title: 'Opening Night Broadcast Blocked — Orphan-Unscored Reviews',
-                description: 'Automated broadcast halted: scripts/verify-all-scored.js detected reviews with substantive text but no source-of-truth score on one or more pending shows. The composite would be missing critics. ' + (process.env.RESOLUTION_HINT || '') + '. Or re-run with force_broadcast=true to override.',
-                severity: 'error',
-                disposition: 'human',
-                cooldownHours: 24,
-                fields: [{ name: 'Shows (showId:orphanCount/dispatch)', value: process.env.BREACHED_LIST || '(unknown)' }],
-              }).then((result) => {
-                const informed = result.action === 'silent' || (result.action === 'human' && result.delivered);
-                if (informed) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'blocked=true\n');
-                else console.error('::warning::Alert delivery unconfirmed — leaving generic fallback notifier enabled');
-                process.exit(1);
-              }).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
-            "
+            echo "::notice::Orphan-unscored gate blocking broadcast — self-heal requeue in progress (see per-show output above). No operator email unless the auto-dispatch budget is exhausted."
+            echo "blocked=true" >> $GITHUB_OUTPUT
           else
             echo "Orphan-unscored gate passed (blocked=$BLOCKED, force=$FORCE)"
+            echo "blocked=false" >> $GITHUB_OUTPUT
           fi
+
+      - name: Commit orphan-rescore-requeue state (early — before the job's 15-min budget can time out)
+        # Writes Before Pushes (.github/workflows/CLAUDE.md): the "Commit data"
+        # step near the end of this job only runs on success/always(), which
+        # does NOT fire on cancellation — and this job runs consensus
+        # generation (Claude calls) + broadcast send after this point, well
+        # within reach of the 15-min job timeout on a multi-show day. A
+        # cancellation between here and the late commit would silently lose
+        # the attempt/alert-ledger state this self-heal depends on, resetting
+        # the 2-attempt/24h budget and re-arming an alert that already fired
+        # — the exact "repeated forever" failure mode this fix closes.
+        # Committing right after the state is written removes that window;
+        # the late "Commit data" step re-stages the same paths as a no-op
+        # defense-in-depth if nothing changed since.
+        if: steps.check.outputs.pending_shows != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/git-add-existing.sh data/audit/orphan-rescore-requeue-state.json data/audit/alert-ledger.json
+          if git diff --cached --quiet; then
+            echo "No orphan-rescore-requeue state changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: Update orphan-rescore-requeue state [skip ci]"
+          bash scripts/lib/push-with-retry.sh
 
       - uses: actions/setup-node@v5
         if: steps.check.outputs.pending_shows != ''
@@ -582,7 +567,7 @@ jobs:
         run: bash scripts/generate-mobile-artifacts.sh
 
       - name: Create broadcast draft (owner sends manually from Resend)
-        if: steps.check.outputs.pending_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true'
+        if: steps.check.outputs.pending_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.orphan_gate.outputs.blocked != 'true'
         id: broadcast
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -893,6 +878,18 @@ jobs:
           if [ -f data/audit/opening-night-express-completed.json ]; then
             git add data/audit/opening-night-express-completed.json
             echo "Staged opening-night-express-completed.json (broadcast handoff)"
+          fi
+          # #356: orphan-unscored self-heal attempt tracking + the
+          # owner-alert-router ledger it writes through on escalation. Must
+          # be committed here (this workflow is the caller) or the next run's
+          # checkout starts fresh and re-notifies/re-attempts from zero.
+          if [ -f data/audit/orphan-rescore-requeue-state.json ]; then
+            git add data/audit/orphan-rescore-requeue-state.json
+            echo "Staged orphan-rescore-requeue-state.json"
+          fi
+          if [ -f data/audit/alert-ledger.json ]; then
+            git add data/audit/alert-ledger.json
+            echo "Staged alert-ledger.json"
           fi
           # Skip push if nothing to commit (avoids push race failures)
           if git diff --cached --quiet; then
