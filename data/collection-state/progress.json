@@ -84,7 +84,8 @@
     "just-in-time-2025/newyorker--conde-nast.json",
     "maybe-happy-ending-2024/newyorker--conde-nast.json",
     "oh-mary-2024/broadwaynews--brittani-samuel.json",
-    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+    "hadestown-west-end-2024/nytimes--unknown.json"
   ],
   "failed": [
     "trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
@@ -1044,7 +1045,16 @@
     "hadestown-west-end-2024/hollywood-reporter--david-rooney.json",
     "hadestown-west-end-2024/nyt-theater--unknown.json",
     "hadestown-west-end-2024/nytg--gillian-russo.json",
-    "hadestown-west-end-2024/nytg--unknown.json"
+    "hadestown-west-end-2024/nytg--unknown.json",
+    "hadestown-west-end-2024/nytimes--jesse-green.json",
+    "hadestown-west-end-2024/variety--marilyn-stasio.json",
+    "hadestown-west-end-2024/vulture--sara-holdren.json",
+    "hadestown-west-end-2024/broadwaynews--charles-isherwood.json",
+    "hadestown-west-end-2024/deadline--greg-evans.json",
+    "hadestown-west-end-2024/ew--jessica-derschowitz.json",
+    "hadestown-west-end-2024/newnownextcom--michael-musto.json",
+    "hadestown-west-end-2024/newsday--barbara-schuler.json",
+    "hadestown-west-end-2024/nydailynews--chris-jones.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1139,7 +1149,8 @@
       "oh-mary-west-end-2025/variety--ellise-shafer.json",
       "jesus-christ-superstar-west-end-2026/daily-mail--patrick-marmion.json",
       "just-in-time-2025/newyorker--conde-nast.json",
-      "maybe-happy-ending-2024/newyorker--conde-nast.json"
+      "maybe-happy-ending-2024/newyorker--conde-nast.json",
+      "hadestown-west-end-2024/nytimes--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
@@ -1168,7 +1179,7 @@
     ]
   },
   "startTime": "2026-07-23T18:01:51.136Z",
-  "lastProcessed": "hadestown-west-end-2024/nytg--unknown.json",
+  "lastProcessed": "hadestown-west-end-2024/nydailynews--chris-jones.json",
   "log": [
     {
       "t": "2026-07-23T18:02:09.222Z",
@@ -1339,6 +1350,28 @@
     },
     {
       "t": "2026-07-23T23:58:24.322Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-24T06:05:06.166Z",
+      "event": "bb-session",
+      "session": "b6d56d26",
+      "url": "https://www.nytimes.com/2026/07/23/movies/hadestown-the-musical-review.html"
+    },
+    {
+      "t": "2026-07-24T06:05:07.137Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-24T06:05:23.185Z",
+      "event": "bb-session",
+      "session": "cd4b8f6e",
+      "url": "https://www.nytimes.com/2026/07/23/movies/hadestown-the-musical-review.html"
+    },
+    {
+      "t": "2026-07-24T06:05:24.192Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
