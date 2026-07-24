@@ -82,6 +82,13 @@ on:
       # corruption that broke validate-review-texts). Pure detector + colocated test.
       - 'scripts/lib/conflict-markers.js'
       - 'scripts/lib/conflict-markers.test.mjs'
+      # Star-vs-score mismatch detector (card #396, Birthright). Pure
+      # evaluateReview() + colocated test run by the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI (allow-list gate). CLI scanner +
+      # health-check wiring live in scripts/audit-star-score-mismatch.js and
+      # scripts/health-check.js (checkQuality "Quality: star-vs-score mismatch").
+      - 'scripts/lib/star-score-mismatch.js'
+      - 'scripts/lib/star-score-mismatch.test.mjs'
       # Content-aware should-deploy gate (vercel-deploy.yml preflight). Pure
       # decide() + colocated test run by the scripts/lib/*.test.mjs glob;
       # path-listed so a solo edit triggers CI (allow-list gate).
