@@ -23,6 +23,16 @@ jobs:
         with:
           node-version: 20
 
+      # Required since owner-alert-router.js (#279) started shelling out to
+      # notion-brain.js for disposition='auto' cards — that script requires
+      # @notionhq/client, which isn't in node_modules without this. Every
+      # single auto-dispatch on this cron failed with "Cannot find module
+      # '@notionhq/client'" until this step was added (2026-07-23 email-noise
+      # Sprint 2) — health-check.js's own error text misleadingly pointed at
+      # NOTION_API_KEY, which was never the actual problem.
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
       - name: Run health check
         env:
           GH_TOKEN: ${{ github.token }}
@@ -37,8 +47,7 @@ jobs:
           ALERT_TOKEN_SECRET: ${{ secrets.ALERT_TOKEN_SECRET }}
           # Deploy: production freshness check (should-deploy gate watchdog)
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          # Stuck work: paused/orphaned Notion-brain card detection (raw REST,
-          # no npm ci needed — scripts/lib/stuck-work.js uses global fetch).
+          # Stuck work: paused/orphaned Notion-brain card detection (raw REST).
           # Also used by owner-alert-router.js (#279): humanAction items file
           # Action Queue cards instead of a raw paste-prompt in the email.
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
