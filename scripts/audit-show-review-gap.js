@@ -96,9 +96,14 @@ const {
   FLAGGED_RECOVERY_CAP,
   isEmptyBodyFile,
   isRecoverableFlaggedFile,
+  isRecoverableUncitedStub,
+  STAR_SOURCE_BY_REFERENCE,
   decideEmptyBodyRecovery,
   nextRecoveryCount,
 } = require('./lib/flagged-recovery');
+// Same set the rebuild's aggregatorStars-fallback scores from (P5.7) — the
+// star fallback below must not write stars the rebuild would then ignore.
+const { KNOWN_STAR_OUTLETS } = require('./lib/score-extractors');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -666,6 +671,11 @@ async function auditShow(show) {
   const weRefUrls = new Set();
   const weRefPriorRunUrls = new Set();
   const weRefUrlSources = new Map();  // normalized URL → Set of citing sources
+  // normalized URL → {stars, source} from the first current-run citing row that
+  // carries a star rating. Feeds the paywall star-fallback in recovery (The
+  // Stage class): when the text can't be fetched, the citing roundup's stars
+  // still make the review scoreable.
+  const weRefUrlStars = new Map();
   const weRefNoUrlRows = [];
   let weRefData = null;
   // Per-source corroboration counts ({src: {cited, corroborated}}) — feeds the
@@ -706,6 +716,9 @@ async function auditShow(show) {
           if (!row.priorRun) {
             if (!weRefUrlSources.has(u)) weRefUrlSources.set(u, new Set());
             weRefUrlSources.get(u).add(row.source);
+            if (typeof row.stars === 'number' && row.stars > 0 && !weRefUrlStars.has(u)) {
+              weRefUrlStars.set(u, { stars: row.stars, source: row.source });
+            }
           }
           if (row.priorRun) weRefPriorRunUrls.add(u);
         } else {
@@ -797,6 +810,11 @@ async function auditShow(show) {
       if (weRefUrls.has(m.url)) {
         m.weRef = true;
         m.weRefSources = [...(weRefUrlSources.get(m.url) || [])];
+        const starRow = weRefUrlStars.get(m.url);
+        if (starRow) {
+          m.weRefStars = starRow.stars;
+          m.weRefStarsSource = starRow.source;
+        }
       }
       if (weRefPriorRunUrls.has(m.url)) m.priorRun = true;
       // Broadway-path production identity: cited only by a prior production's
@@ -1084,6 +1102,36 @@ function recoverEmptyBodyFlaggedMiss(showId, m) {
     recovered = !isEmptyBodyFile(after);
   } catch { /* file unreadable/missing → treat as not recovered */ }
   if (ingestExit && !recovered && !reason) reason = 'ingest no-op (text landed elsewhere or unchanged)';
+  // Star fallback (The Stage class, 2026-07-23): the text fetch failed — usually
+  // a paywall — but the citing WE roundup carries the outlet's star rating.
+  // Writing aggregatorStars makes the review scoreable via the rebuild's
+  // aggregator-star path, instead of retrying the paywall to the cap and going
+  // silent. Only fires when the file (re-read post-ingest) is still empty-body.
+  let starFallback = false;
+  if (!recovered && typeof m.weRefStars === 'number' && m.weRefStars > 0
+      && STAR_SOURCE_BY_REFERENCE[m.weRefStarsSource]) {
+    try {
+      const fp = path.join(REVIEW_TEXTS_DIR, showId, m.recoverableFile);
+      const cur = JSON.parse(fs.readFileSync(fp, 'utf8'));
+      // Rebuild's aggregatorStars fallback only scores KNOWN_STAR_OUTLETS
+      // (rebuild-helpers.js P5.7) — an aggregator may have invented a rating
+      // for an outlet that doesn't publish stars. Writing stars for an unknown
+      // outlet would flip this audit green while the rebuild still excludes the
+      // review (ship-check 2026-07-23, Codex finding). Gate on the same set.
+      const outletForStars = cur.outletId || m.recoverableOutletId || m.knownOutletId;
+      if (KNOWN_STAR_OUTLETS.has(outletForStars) && isEmptyBodyFile(cur) && !cur.aggregatorStars) {
+        cur.aggregatorStars = `${m.weRefStars}/5`;
+        cur.scoreSource = STAR_SOURCE_BY_REFERENCE[m.weRefStarsSource];
+        safeWriteReview(fp, cur);
+        const after = JSON.parse(fs.readFileSync(fp, 'utf8'));
+        recovered = !isEmptyBodyFile(after);
+        starFallback = recovered;
+        if (recovered) reason = null;
+      }
+    } catch (e) {
+      console.log(`::warning::star fallback failed for ${showId}/${m.recoverableFile}: ${e.message.split('\n')[0].slice(0, 100)}`);
+    }
+  }
   // Bump the counter EVERY time the heal didn't land here (failure OR no-op) so a
   // dead/misrouted URL halts at the cap. A genuinely-healed file is no longer
   // empty-body, so it won't be re-selected and doesn't need the bump.
@@ -1092,7 +1140,7 @@ function recoverEmptyBodyFlaggedMiss(showId, m) {
     nextCount = nextRecoveryCount(file);
     bumpRecoveryCount(showId, m.recoverableFile, nextCount);
   }
-  return { url: m.url, host: m.host, file: m.recoverableFile, recovered, skipped: false, provisional, reason, recoveryCount: nextCount };
+  return { url: m.url, host: m.host, file: m.recoverableFile, recovered, skipped: false, provisional, starFallback, reason, recoveryCount: nextCount };
 }
 
 // CLI entry — guarded so the module can be require()'d by unit tests without
@@ -1382,6 +1430,62 @@ async function main(argv = process.argv.slice(2)) {
           console.log(`  ⏸  ${recCapped.length} recoverable flaggedMiss(es) over shared per-show fetch budget (--ingest-cap=${INGEST_PER_SHOW_CAP}) — next run`);
         }
       }
+
+      // UNCITED stub retry (The Upcoming class, 2026-07-23): empty-body files
+      // whose outlets NO aggregator cites never enter flaggedMisses, so the
+      // recovery above never touches them — a 0-byte stub of a real published
+      // review sat inert until a human refetched it (the first retry succeeded
+      // immediately). Retry each suspect file against its OWN url — that URL
+      // was already accepted at collection time, so this is a refetch, not a
+      // new aggregator-driven ingest (no weRef/prior-run gate applies). Same
+      // per-show fetch budget and per-file retry cap as the cited path.
+      try {
+        const citedFiles = new Set(r.flaggedMisses.map(m => m.recoverableFile).filter(Boolean));
+        const dirAll = loadDirFiles(r.showId);
+        // Prior-run date guard (ship-check 2026-07-23, Codex finding): "accepted
+        // at collection time" is not "safe forever" — unflagged prior-production
+        // files exist in the corpus (task #275). A stub whose publishDate falls
+        // before [opening - 30d] is a prior-run artifact; refetching it would
+        // pull the earlier production's text. Dateless stubs fail open (same
+        // posture as gap-ingest-policy's dateless-article warning).
+        const openingMs = s.openingDate ? new Date(s.openingDate).getTime() : null;
+        const notPriorRun = (d) => {
+          if (!openingMs || !d.publishDate) return true;
+          const pd = new Date(d.publishDate).getTime();
+          if (Number.isNaN(pd)) return true;
+          return pd >= openingMs - 30 * 86400000;
+        };
+        const uncited = dirAll.filter(d => d._file && !citedFiles.has(d._file) && isRecoverableUncitedStub(d) && notPriorRun(d));
+        const uncitedBudget = Math.max(0, INGEST_PER_SHOW_CAP - perShowFetches);
+        if (uncited.length > uncitedBudget) {
+          console.log(`  ⏸  ${uncited.length - uncitedBudget} uncited stub(s) over shared per-show fetch budget — next run`);
+        }
+        for (const d of uncited.slice(0, uncitedBudget)) {
+          const m = {
+            url: d.url,
+            host: hostOf(d.url),
+            knownOutletId: d.outletId || null,
+            recoverable: true,
+            recoverableFile: d._file,
+            recoverableOutletId: d.outletId || null,
+            recoverableCritic: d.criticName || null,
+            recoverableCount: d.aggUrlRecoveryCount || 0,
+          };
+          const res = recoverEmptyBodyFlaggedMiss(r.showId, m);
+          if (!res.skipped) perShowFetches++;
+          r.recoveryResults = r.recoveryResults || [];
+          r.recoveryResults.push({ ...res, uncited: true });
+          if (res.skipped) {
+            console.log(`  ⏭  uncited-stub skip (${res.reason}): ${d._file} ${d.url}`);
+          } else if (res.recovered) {
+            console.log(`  ♻️  recovered uncited stub → ${d._file} from ${d.url}`);
+          } else {
+            console.log(`  ✗ uncited-stub retry did not land (try ${res.recoveryCount}/${FLAGGED_RECOVERY_CAP}; ${res.reason || 'still empty body'}): ${d._file} ${d.url}`);
+          }
+        }
+      } catch (e) {
+        console.log(`::warning::uncited-stub sweep failed for ${r.showId}: ${(e.message || '').slice(0, 120)}`);
+      }
     }
   }
 
@@ -1591,8 +1695,11 @@ async function main(argv = process.argv.slice(2)) {
     const uningested = ingestMissing ? 0 : r.missing.length;
     // flaggedMisses that the recovery loop just HEALED this run are no longer a
     // residual gap — count only the ones that stayed flagged out (recovery skipped,
-    // fetch failed, or not recoverable in the first place).
-    const recovered = (r.recoveryResults || []).filter(x => x.recovered).length;
+    // fetch failed, or not recoverable in the first place). Uncited-stub
+    // recoveries were never IN flaggedMisses, so they must not be subtracted —
+    // one uncited heal would otherwise hide one still-flagged cited gap
+    // (ship-check 2026-07-23, Codex finding).
+    const recovered = (r.recoveryResults || []).filter(x => x.recovered && !x.uncited).length;
     const flaggedOut = Math.max(0, r.flaggedMisses.length - recovered);
     const residual = failedIngest + capped + uningested + flaggedOut;
     if (residual > 0) {

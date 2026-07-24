@@ -14,7 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     # Backstop: the script wraps every external call in a 30-60s timeout, but cap the
     # whole job too so a pathological stall can never burn the 360-min default ceiling.
-    timeout-minutes: 25
+    # 45 (not 25): the health check itself runs ~13min (GSC/PageSpeed calls across 50
+    # sample URLs), and the "Push audit data" step now carries a 900s push-with-retry.sh
+    # budget (task #353) to survive main's commit churn — 25min left only ~12min for
+    # that budget and the OUTER job timeout cancelled the push mid-retry before it could
+    # exhaust its own deadline (run 30056319394, 2026-07-24, confirmed live).
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v5
