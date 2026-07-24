@@ -107,6 +107,30 @@ describe('load/save round trip — map shape', () => {
     assert.equal(onDisk.modelLastRun, '2026-01-01');
   });
 
+  test('a caller-set _meta.lastUpdated is respected, not clobbered by the auto-stamp', () => {
+    // Some commercial.json writers intentionally use a date-only format
+    // (e.g. `new Date().toISOString().slice(0, 10)`) instead of a full ISO
+    // timestamp — the guard must not silently overwrite that.
+    seed({ _meta: { lastUpdated: '2026-01-01T00:00:00.000Z' }, shows: { hamilton: {} } });
+    const guard = createJsonWriteGuard(filePath, { recordsKey: 'shows', shape: 'map' });
+    const data = guard.load();
+    data._meta.lastUpdated = '2026-07-24'; // date-only, set explicitly by the caller
+    guard.save(data);
+    const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(onDisk._meta.lastUpdated, '2026-07-24');
+  });
+
+  test('_meta.lastUpdated IS auto-stamped when the caller does not set it', () => {
+    seed({ _meta: { lastUpdated: '2026-01-01T00:00:00.000Z' }, shows: { hamilton: {} } });
+    const guard = createJsonWriteGuard(filePath, { recordsKey: 'shows', shape: 'map' });
+    const data = guard.load();
+    data.shows.hamilton.recouped = true; // caller touches something else, not _meta
+    guard.save(data);
+    const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.notEqual(onDisk._meta.lastUpdated, '2026-01-01T00:00:00.000Z');
+    assert.ok(!Number.isNaN(new Date(onDisk._meta.lastUpdated).getTime()));
+  });
+
   test('no-snapshot write (fresh object, not from load()) still writes safely', () => {
     seed({ shows: { hamilton: { recouped: false } } });
     const guard = createJsonWriteGuard(filePath, { recordsKey: 'shows', shape: 'map' });
@@ -130,6 +154,31 @@ describe('load/save round trip — map shape', () => {
     const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     assert.equal(onDisk.shows.hamilton.runtime, '2h45m', "A's write must not be lost");
     assert.deepEqual(onDisk.shows.wicked.images, ['poster.jpg'], "B's write must not be lost");
+  });
+
+  test('a concurrent scalar-only change (no record change) survives a later record-only save', () => {
+    // Regression: the per-key top-level merge used to be gated behind
+    // "did the records change on disk" — so a writer that changed ONLY
+    // modelLastRun (no record change) was invisible to a second writer
+    // whose own save only touched a record, and that second writer's
+    // stale snapshot of modelLastRun silently clobbered the first one back.
+    seed({ _meta: {}, modelLastRun: '2026-01-01', shows: { hamilton: { field: 0 } } });
+    const guard = createJsonWriteGuard(filePath, { recordsKey: 'shows', shape: 'map' });
+
+    const dataA = guard.load();
+    const dataB = guard.load();
+
+    // B changes ONLY a non-record top-level field and saves first.
+    dataB.modelLastRun = '2026-02-01';
+    guard.save(dataB);
+
+    // A's snapshot predates B's change; A changes only a record field.
+    dataA.shows.hamilton.field = 999;
+    guard.save(dataA);
+
+    const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(onDisk.modelLastRun, '2026-02-01', "B's modelLastRun change must survive A's later record-only save");
+    assert.equal(onDisk.shows.hamilton.field, 999, "A's record change must still land");
   });
 
   test('a scalar top-level field this caller changed overrides fresh', () => {

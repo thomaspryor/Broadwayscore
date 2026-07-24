@@ -184,23 +184,6 @@ function recordCount(shape, records) {
   return shape === 'array' ? records.length : Object.keys(records).length;
 }
 
-function recordsEqual(shape, idKey, a, b) {
-  if (shape === 'array') {
-    return (
-      a.length === b.length &&
-      JSON.stringify(a.map((r) => r[idKey])) === JSON.stringify(b.map((r) => r[idKey])) &&
-      a.every((r, i) => sameRecord(r, b[i]))
-    );
-  }
-  const aKeys = Object.keys(a);
-  const bKeys = Object.keys(b);
-  return (
-    aKeys.length === bKeys.length &&
-    aKeys.every((k) => k in b) &&
-    aKeys.every((k) => sameRecord(a[k], b[k]))
-  );
-}
-
 /**
  * Build a load/save pair bound to a specific JSON file.
  *
@@ -253,29 +236,46 @@ function createJsonWriteGuard(filePath, opts = {}) {
 
       if (snapshot) {
         const fresh = readJsonRaw(filePath);
-        const freshChanged = !recordsEqual(shape, idKey, fresh[recordsKey], snapshot[recordsKey]);
-
-        if (freshChanged) {
-          const mergedRecords = mergeRecords(shape, idKey, snapshot[recordsKey], data[recordsKey], fresh[recordsKey]);
-          finalData = { ...fresh, [recordsKey]: mergedRecords };
-          // Any other top-level key this caller changed (vs its own
-          // snapshot) is applied on top of fresh's current value — shallow
-          // merged if both sides are plain objects (e.g. _meta), otherwise
-          // overwritten outright (e.g. a scalar lastUpdated string).
-          for (const key of Object.keys(data)) {
-            if (key === recordsKey) continue;
-            const changed = !(key in snapshot) || JSON.stringify(data[key]) !== JSON.stringify(snapshot[key]);
-            if (!changed) continue;
-            finalData[key] = isPlainObject(data[key]) && isPlainObject(fresh[key])
-              ? { ...fresh[key], ...data[key] }
-              : data[key];
-          }
+        // Always merge when a snapshot exists — NOT gated on "did the
+        // records change", which would miss a concurrent writer that only
+        // touched a non-record top-level field (e.g. `modelLastRun`, a
+        // top-level `lastUpdated`) while this caller's own snapshot predates
+        // that change. Gating the per-key merge loop below behind a
+        // records-only diff meant exactly that case silently reverted the
+        // other writer's field back to the stale snapshot value. Running
+        // the merge unconditionally is a no-op (byte-for-byte equivalent to
+        // `data`) when nothing concurrent actually changed, so this costs
+        // nothing in the common case.
+        const mergedRecords = mergeRecords(shape, idKey, snapshot[recordsKey], data[recordsKey], fresh[recordsKey]);
+        finalData = { ...fresh, [recordsKey]: mergedRecords };
+        // Any other top-level key this caller changed (vs its own
+        // snapshot) is applied on top of fresh's current value — shallow
+        // merged if both sides are plain objects (e.g. _meta), otherwise
+        // overwritten outright (e.g. a scalar lastUpdated string). A key
+        // this caller did NOT change keeps fresh's current value (already
+        // the case via the `{ ...fresh }` spread above), which is what
+        // preserves a concurrent writer's change to that key.
+        for (const key of Object.keys(data)) {
+          if (key === recordsKey) continue;
+          const changed = !(key in snapshot) || JSON.stringify(data[key]) !== JSON.stringify(snapshot[key]);
+          if (!changed) continue;
+          finalData[key] = isPlainObject(data[key]) && isPlainObject(fresh[key])
+            ? { ...fresh[key], ...data[key] }
+            : data[key];
         }
       }
 
       if (metaKey) {
         finalData[metaKey] = finalData[metaKey] || {};
-        finalData[metaKey].lastUpdated = new Date().toISOString();
+        // Auto-stamp with the current ISO timestamp UNLESS the caller just
+        // set this field itself in this exact save() call (e.g. some
+        // commercial.json writers intentionally use a date-only
+        // `YYYY-MM-DD` format) — a blind overwrite here would silently
+        // discard that caller's explicit value every time.
+        const callerLastUpdated = data[metaKey] && data[metaKey].lastUpdated;
+        const snapshotLastUpdated = snapshot && snapshot[metaKey] && snapshot[metaKey].lastUpdated;
+        const callerSetLastUpdatedThisCall = callerLastUpdated !== undefined && callerLastUpdated !== snapshotLastUpdated;
+        finalData[metaKey].lastUpdated = callerSetLastUpdatedThisCall ? callerLastUpdated : new Date().toISOString();
       }
 
       if (beforeWrite) beforeWrite(finalData);
