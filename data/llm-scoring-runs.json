@@ -329957,24 +329957,18 @@
     ]
   },
   {
-    "startedAt": "2026-07-24T00:21:23.978Z",
-    "completedAt": "2026-07-24T00:21:24.170Z",
-    "totalReviews": 28,
-    "processed": 0,
-    "skipped": 27,
-    "errors": 1,
+    "startedAt": "2026-07-24T00:41:55.406Z",
+    "completedAt": "2026-07-24T00:42:01.030Z",
+    "totalReviews": 29,
+    "processed": 1,
+    "skipped": 28,
+    "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
+      "input": 8627,
+      "output": 330,
+      "total": 13309
     },
-    "errorDetails": [
-      {
-        "showId": "trainspotting-the-musical-west-end-2026",
-        "outletId": "guardian-uk",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ],
+    "errorDetails": [],
     "validation": [
       {
         "showId": "11-to-midnight-off-broadway-2026",
@@ -349882,10 +349876,10 @@
       {
         "showId": "trainspotting-the-musical-west-end-2026",
         "ourDistribution": {
-          "up": 1,
+          "up": 2,
           "flat": 1,
-          "down": 12,
-          "total": 14
+          "down": 13,
+          "total": 16
         },
         "hasDisagreement": false
       },
