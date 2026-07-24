@@ -1,40 +1,5 @@
 [
   {
-    "startedAt": "2026-07-21T11:20:43.706Z",
-    "completedAt": "2026-07-21T11:21:32.263Z",
-    "totalReviews": 40943,
-    "processed": 4,
-    "skipped": 40927,
-    "errors": 4,
-    "tokensUsed": {
-      "input": 113430,
-      "output": 1573,
-      "total": 171837
-    },
-    "errorDetails": [
-      {
-        "showId": "fish-in-the-dark-2015",
-        "outletId": "ew",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "a-christmas-story-the-musical-2012",
-        "outletId": "usatoday",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "chaplin-2012",
-        "outletId": "ew",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "baby-its-you-2011",
-        "outletId": "ew",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-07-21T11:40:51.492Z",
     "completedAt": "2026-07-21T11:41:44.882Z",
     "totalReviews": 40947,
@@ -356833,5 +356798,19 @@
         "error": "input_validation_failed:body_too_short"
       }
     ]
+  },
+  {
+    "startedAt": "2026-07-24T15:04:43.130Z",
+    "completedAt": "2026-07-24T15:04:48.359Z",
+    "totalReviews": 34,
+    "processed": 1,
+    "skipped": 33,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 11360,
+      "output": 333,
+      "total": 17365
+    },
+    "errorDetails": []
   }
 ]
