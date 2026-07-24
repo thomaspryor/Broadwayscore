@@ -421,8 +421,13 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // always sufficient.
     const hiddenHighPri = list.slice(10).filter(t => t.status === 'pending' && priorityRank(t) <= 1);
     if (hiddenHighPri.length) {
-      console.log(`\n  …plus ${hiddenHighPri.length} pending P0/P1 below the top-10 cutoff (dispatch with --id):`);
-      hiddenHighPri.forEach(t => console.log(`     #${t.id} [P${priorityRank(t)}] ${t.subject}`));
+      // Newest-first, capped: a freshly-created card always has the highest
+      // task id, so it is always visible here — without printing the whole
+      // 70+ card P1 backlog on every --list (calibration fix, same day).
+      const TAIL_CAP = 10;
+      const newest = [...hiddenHighPri].sort((a, b) => parseInt(b.id, 10) - parseInt(a.id, 10));
+      console.log(`\n  …plus ${hiddenHighPri.length} pending P0/P1 below the top-10 cutoff (dispatch with --id); ${Math.min(TAIL_CAP, newest.length)} newest:`);
+      newest.slice(0, TAIL_CAP).forEach(t => console.log(`     #${t.id} [P${priorityRank(t)}] ${t.subject}`));
     }
     const excluded = actionable(tasks, true).filter(isExcludedCategory);
     if (excluded.length) {
