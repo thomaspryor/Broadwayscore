@@ -1,18 +1,25 @@
 {
-  "updatedAt": "2026-07-24T21:21:26.062Z",
-  "processed": 52,
-  "failed": 510,
-  "successRate": "9.3%",
+  "updatedAt": "2026-07-24T21:23:22.193Z",
+  "processed": 54,
+  "failed": 518,
+  "successRate": "9.4%",
   "tierBreakdown": {
-    "playwright": 42,
+    "playwright": 43,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 3,
     "archiveToday": 1,
     "archive": 6
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-24T21:22:09.939Z",
+      "event": "bb-session",
+      "session": "4a8dcf3d",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    }
+  ]
 }

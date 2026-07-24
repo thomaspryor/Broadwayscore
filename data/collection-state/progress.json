@@ -51,7 +51,9 @@
     "the-rocky-horror-show-2026/ew--dalton-ross.json",
     "avenue-q-west-end-2026/telegraph--marianka-swain.json",
     "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
-    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -563,7 +565,15 @@
     "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
     "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
     "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
-    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json"
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -609,10 +619,14 @@
       "jesus-christ-superstar-west-end-2026/lw-theatres--unknown.json",
       "the-rocky-horror-show-2026/ew--dalton-ross.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
+    ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
     ],
@@ -635,6 +649,13 @@
     ]
   },
   "startTime": "2026-07-24T19:19:16.686Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
-  "log": []
+  "lastProcessed": "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json",
+  "log": [
+    {
+      "t": "2026-07-24T21:22:09.939Z",
+      "event": "bb-session",
+      "session": "4a8dcf3d",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    }
+  ]
 }
