@@ -28,11 +28,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-        with:
-          # fetch-depth: 0 required — this job commits snapshots via push-with-retry.sh
-          # under the same main-branch commit churn as the Visual Regression job in
-          # test.yml (task #353). See that job's checkout step for the full rationale.
-          fetch-depth: 0
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -119,7 +114,12 @@ jobs:
             exit 0
           fi
           git commit -m "chore: Update UGC visual baselines [skip ci]"
-          bash scripts/lib/push-with-retry.sh
+          bash scripts/lib/push-with-retry.sh 20
+        env:
+          # Same main-branch commit-churn race as the Visual Regression job in
+          # test.yml (task #353) — a wider retry budget, not fetch-depth, is
+          # the fix. See that job's push step for the full rationale.
+          PUSH_DEADLINE_SEC: 900
 
       - name: Notify on failure
         if: failure()

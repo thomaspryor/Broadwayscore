@@ -2179,19 +2179,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-        with:
-          # fetch-depth: 0 (full history) is REQUIRED, not an optimization — same
-          # fix as opening-night-poller.yml. This job commits snapshot updates via
-          # push-with-retry.sh (below); on a shallow (default depth-1) checkout,
-          # a graft-boundary HEAD makes merge-base/rebase against a fast-moving
-          # main (data-commit churn, card #80) unreliable — the retry loop's
-          # rebase/merge report false "already up to date" against a stale
-          # shallow ref while the true remote tip keeps advancing, so every
-          # push attempt gets rejected as non-fast-forward until the retry
-          # deadline gives up (task #353, run 29986598586, 2026-07-23).
-          fetch-depth: 0
-
-
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -2241,7 +2228,19 @@ jobs:
             exit 0
           fi
           git commit -m "chore: Update visual regression baselines [skip ci]"
-          bash scripts/lib/push-with-retry.sh
+          bash scripts/lib/push-with-retry.sh 20
+        env:
+          # This push races main's commit churn (card #80): consecutive retry
+          # attempts logged the remote tip changing EVERY time (task #353, run
+          # 29986598586, 2026-07-23 — a fresh non-fast-forward rejection on
+          # attempts 1, 2, and 3, each against a different remote SHA ~90s
+          # apart). That's a moving-target race, not a shallow-checkout
+          # correctness bug — fetch-depth: 0 doesn't fix it and was reverted
+          # here (costs ~16min on this repo's 1.8GB history for no benefit).
+          # The snapshot commit isn't time-sensitive, so trade wall-clock for
+          # more chances to land in a gap: default budget (7 retries / 240s)
+          # only fits ~2-3 attempts at this repo's churn rate.
+          PUSH_DEADLINE_SEC: 900
 
       - name: Upload test results
         uses: actions/upload-artifact@v5
@@ -2429,7 +2428,11 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git commit -m "data: alert-router ledger update [skip ci]"
-            bash scripts/lib/push-with-retry.sh
+            # Non-blocking: a lost race against main's commit churn must not fail
+            # this job — the next push re-derives the same streak/cooldown state,
+            # and a failure here would ironically trip the very "main red" alert
+            # this step exists to send (task #353 ship-check finding).
+            bash scripts/lib/push-with-retry.sh || echo "::warning::Alert-router ledger push failed — next run will recompute state"
           else
             echo "No ledger changes to commit."
           fi

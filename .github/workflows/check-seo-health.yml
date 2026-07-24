@@ -54,7 +54,15 @@ jobs:
       - name: Push audit data
         if: always()
         run: |
-          bash scripts/lib/push-with-retry.sh
+          # Non-blocking + wider budget: this push races main's commit churn
+          # (task #353 — live-reproduced on run 30055222564, 2026-07-24: 3
+          # attempts, each rejected as the remote tip kept advancing during
+          # the retry cycle, deadline exceeded). The audit snapshot isn't
+          # time-sensitive — next week's cron re-derives it — so a lost race
+          # must not redden this run.
+          bash scripts/lib/push-with-retry.sh 20 || echo "::warning::SEO audit data push failed — next scheduled run will recommit"
+        env:
+          PUSH_DEADLINE_SEC: 900
 
       - name: Notify on failure
         if: failure()
