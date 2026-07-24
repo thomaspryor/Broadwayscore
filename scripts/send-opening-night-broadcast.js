@@ -22,7 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { sendAlert } = require('./lib/discord-notify');
+const { routeAlert } = require('./lib/owner-alert-router');
 const {
   postJSON, buildBroadcastOpeningNightHtml: buildBroadcastOpeningNightHtmlRaw, buildBroadcastSubjectLine, buildUnsubscribeUrl, siteNameForMarket,
 } = require('./lib/email-templates');
@@ -820,10 +820,17 @@ async function main() {
       // Best-effort release before bailing.
       const rel = releaseSendLock(lock);
       if (!rel.released) console.error(`  (lock release note: ${rel.reason})`);
-      await sendAlert({
+      // Routed through the alert router (email-noise Sprint 2, 2026-07-23) so a
+      // retry-loop hitting the SAME draft-creation failure within 24h sends one
+      // email, not one per retry — this was one leg of a 9-email storm for a
+      // single stuck condition (trainspotting-the-musical-west-end-2026).
+      await routeAlert({
+        conditionKey: `broadcast:draft-creation-failed:${MARKET}`,
         title: 'Opening Night Draft Creation Failed',
         description: `Resend draft error: ${err.message}`,
         severity: 'error',
+        disposition: 'human',
+        cooldownHours: 24,
       });
       process.exit(1);
     }

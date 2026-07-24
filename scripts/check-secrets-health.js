@@ -144,15 +144,7 @@ async function checkOpenRouter() {
   }
 }
 
-// Expiring acknowledgment for known, already-tracked exhaustion — mirrors the
-// npm audit allowlist pattern (scripts/audit-dependencies.js). Without this,
-// a known outage with its own card (#224) errors the digest daily until the
-// monthly credit reset, even though there is nothing left to action. The
-// expiry forces re-triage instead of silently masking forever.
-const SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION = {
-  reason: 'Monthly API limit exhausted (1M credits) — tracked in card #224, resets on billing cycle.',
-  expires: '2026-08-05',
-};
+const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 
 async function checkScrapingBee() {
   const key = process.env.SCRAPINGBEE_API_KEY;
@@ -171,8 +163,7 @@ async function checkScrapingBee() {
 
       if (remaining <= 0) {
         const ack = SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION;
-        const today = new Date().toISOString().slice(0, 10);
-        if (ack.expires > today) {
+        if (isScrapingBeeExhaustionAcknowledged()) {
           return { name: 'ScrapingBee', status: 'warn', message: `Credits exhausted (${used}/${max} used) — acknowledged: ${ack.reason} [expires ${ack.expires}]` };
         }
         return { name: 'ScrapingBee', status: 'fail', message: `Credits exhausted (${used}/${max} used) — acknowledgment expired ${ack.expires}, re-triage` };
