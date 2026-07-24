@@ -188,6 +188,36 @@ function gatherDigest({ repo, hours = 24 } = {}) {
 
 // ── Render (HTML block for the morning email) ───────────────────────────────
 
+// The "possibly stuck / needs a look" signals, as owner-readable strings.
+// SINGLE SOURCE OF TRUTH (card #409): the approval email's top-line health
+// word (autonomous-email-render.js → digestStuckCount) delegates to
+// countStuckSignals() below, so "nothing broken" can never contradict the
+// ⚠️ block renderDigestBlock draws from this exact list. Threshold −100 (not
+// −25): normal flag/unflag churn sums to ±25 over hundreds of daily rebuilds
+// (QA review 2026-07-22); the real incident class (−152) clears −100 easily,
+// and per-show detail comes from rebuild-regression.json anyway.
+function stuckSignals(digest) {
+  if (!digest) return [];
+  const stuck = [];
+  if (digest.stuck?.workspaces?.duplicates?.length) {
+    stuck.push(`Same task dispatched more than once: ${digest.stuck.workspaces.duplicates.map(esc).join('; ')}`);
+  }
+  if (digest.commits && digest.commits.reviewDelta <= -100) {
+    stuck.push(`Net review count dropped ${digest.commits.reviewDelta} in 24h, check the flaggers`);
+  }
+  if (digest.stuck?.reviewRegressions?.length) {
+    stuck.push(`Shows losing scored reviews: ${digest.stuck.reviewRegressions.map(esc).join('; ')}`);
+  }
+  if (digest.stuck?.worktrees?.length) {
+    stuck.push(`Finished-but-unmerged work sitting in ${digest.stuck.worktrees.length} worktree${digest.stuck.worktrees.length > 1 ? 's' : ''}: ${digest.stuck.worktrees.slice(0, 4).map(esc).join('; ')}`);
+  }
+  return stuck;
+}
+
+function countStuckSignals(digest) {
+  return stuckSignals(digest).length;
+}
+
 function renderDigestBlock(digest) {
   if (!digest) return '';
   const parts = [];
@@ -197,29 +227,13 @@ function renderDigestBlock(digest) {
   if (lines.length) {
     parts.push(`<ul style="font-size:13px;margin:0 0 10px;padding-left:18px;color:#333;">${lines.map(l => `<li>${esc(l)}</li>`).join('')}</ul>`);
   } else {
-    parts.push(`<p style="font-size:13px;color:#666;margin:0 0 10px;">No pipeline activity recorded${digest.errors.length ? '' : ' — unusually quiet, worth a look'}.</p>`);
+    parts.push(`<p style="font-size:13px;color:#666;margin:0 0 10px;">No pipeline activity recorded${digest.errors.length ? '' : ', unusually quiet, worth a look'}.</p>`);
   }
   if (digest.commits?.mergedWork?.length) {
     parts.push(`<p style="font-size:12px;color:#555;margin:0 0 10px;"><strong>Fixes & features merged:</strong> ${digest.commits.mergedWork.map(esc).join(' · ')}</p>`);
   }
 
-  const stuck = [];
-  if (digest.stuck?.workspaces?.duplicates?.length) {
-    stuck.push(`Same task dispatched more than once: ${digest.stuck.workspaces.duplicates.map(esc).join('; ')}`);
-  }
-  // Threshold −100, not −25: normal flag/unflag churn sums to ±25 over
-  // hundreds of daily rebuilds (QA review 2026-07-22); the real incident
-  // class (−152) clears −100 easily, and per-show detail comes from
-  // rebuild-regression.json below anyway.
-  if (digest.commits && digest.commits.reviewDelta <= -100) {
-    stuck.push(`Net review count dropped ${digest.commits.reviewDelta} in 24h — check the flaggers`);
-  }
-  if (digest.stuck?.reviewRegressions?.length) {
-    stuck.push(`Shows losing scored reviews: ${digest.stuck.reviewRegressions.map(esc).join('; ')}`);
-  }
-  if (digest.stuck?.worktrees?.length) {
-    stuck.push(`Finished-but-unmerged work sitting in ${digest.stuck.worktrees.length} worktree${digest.stuck.worktrees.length > 1 ? 's' : ''}: ${digest.stuck.worktrees.slice(0, 4).map(esc).join('; ')}`);
-  }
+  const stuck = stuckSignals(digest);
   if (stuck.length) {
     parts.push(`<p style="font-size:13px;margin:0 0 4px;font-weight:700;color:#b45309;">⚠️ Possibly stuck / needs a look</p>`);
     parts.push(`<ul style="font-size:12px;margin:0 0 10px;padding-left:18px;color:#7c4a03;">${stuck.map(l => `<li>${l}</li>`).join('')}</ul>`);
@@ -229,7 +243,7 @@ function renderDigestBlock(digest) {
 
   const openAuto = digest.stuck?.workspaces?.autoOpen?.length ?? null;
   if (openAuto != null) {
-    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 6px;">${openAuto} automated session${openAuto === 1 ? '' : 's'} currently open in cmux (🤖 tabs — none need you).</p>`);
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 6px;">${openAuto} automated session${openAuto === 1 ? '' : 's'} currently open in cmux (🤖 tabs, none need you).</p>`);
   }
   if (digest.errors.length) {
     parts.push(`<p style="font-size:11px;color:#999;margin:0;">Couldn't check: ${digest.errors.map(esc).join(' · ')}</p>`);
@@ -237,4 +251,4 @@ function renderDigestBlock(digest) {
   return parts.join('\n');
 }
 
-module.exports = { summarizeCommits, parseWorkspaces, summarizeWorktrees, gatherDigest, renderDigestBlock };
+module.exports = { summarizeCommits, parseWorkspaces, summarizeWorktrees, gatherDigest, renderDigestBlock, stuckSignals, countStuckSignals };

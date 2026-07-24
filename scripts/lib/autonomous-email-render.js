@@ -240,22 +240,22 @@ function attentionCountOf(attention) {
   return (a.configWarnings?.length || 0) + (a.failedCards?.length || 0) + (a.parkedItems?.length || 0);
 }
 
-// Count the digest signals renderDigestBlock would flag as "possibly stuck",
-// so the top-line "nothing broken" is never contradicted by a warning lower
-// down. Mirrors the thresholds in overnight-digest.js renderDigestBlock.
+// Count the digest signals renderDigestBlock flags as "possibly stuck", so the
+// top-line "nothing broken" is never contradicted by a ⚠️ shown below.
+// Delegates to overnight-digest.js's countStuckSignals — the ONE definition of
+// those thresholds — instead of re-implementing them here (card #409 review: a
+// second copy silently drifts the next time renderDigestBlock is edited).
 function digestStuckCount(digest) {
-  if (!digest) return 0;
-  let n = 0;
-  if (digest.stuck?.workspaces?.duplicates?.length) n++;
-  if (digest.commits && digest.commits.reviewDelta <= -100) n++;
-  if (digest.stuck?.reviewRegressions?.length) n++;
-  if (digest.stuck?.worktrees?.length) n++;
-  return n;
+  return require('./overnight-digest.js').countStuckSignals(digest);
 }
 
 function renderSummaryLine(data) {
   const { items = [], failedCount = 0, throttled = null, runSkipped = null, attention = null, stats = null, digest = null } = data;
-  const issues = failedCount + attentionCountOf(attention) + digestStuckCount(digest) + (throttled ? 1 : 0);
+  // A partially-failed digest (a source it couldn't check) means health is
+  // UNKNOWN, not clean — count it so the top line never says "nothing broken"
+  // while the digest below shows a "Couldn't check: …" line.
+  const digestUnknown = digest && Array.isArray(digest.errors) && digest.errors.length ? 1 : 0;
+  const issues = failedCount + attentionCountOf(attention) + digestStuckCount(digest) + digestUnknown + (throttled ? 1 : 0);
 
   let headline;
   if (runSkipped) headline = 'The overnight run did not finish';

@@ -6,7 +6,7 @@ on:
     # landed in the 07:00-10:30 UTC early-AM window and read as one noisy blast.
     # The approval email (Mac Studio launchd, 03:30 ET → tail ~07:30-10:30 UTC)
     # stays in the morning; this routine digest moves to midday, ≥3h clear of it.
-    # See the 26h staleness note in check-cron-health.yml before re-timing again.
+    # See the staleness-band note in check-cron-health.yml before re-timing again.
     - cron: '0 16 * * *'
   workflow_dispatch: {}
 

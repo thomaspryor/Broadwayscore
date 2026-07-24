@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { summarizeCommits, parseWorkspaces, summarizeWorktrees, renderDigestBlock } = require('./overnight-digest.js');
+const { summarizeCommits, parseWorkspaces, summarizeWorktrees, renderDigestBlock, countStuckSignals } = require('./overnight-digest.js');
 
 // Fixtures are verbatim shapes from origin/main on 2026-07-22.
 const LOG = [
@@ -81,4 +81,23 @@ test('renderDigestBlock: clean night says nothing looks stuck', () => {
   });
   assert.match(html, /Nothing looks stuck/);
   assert.doesNotMatch(html, /Possibly stuck/);
+});
+
+// Parity guard (card #409): the approval email's top-line "nothing broken"
+// (autonomous-email-render.js digestStuckCount) delegates to countStuckSignals.
+// If a future edit to renderDigestBlock's stuck bullets stops matching
+// countStuckSignals, the top line can lie. Assert they count identically —
+// countStuckSignals === the number of <li> bullets in the ⚠️ stuck list.
+test('countStuckSignals matches the bullets renderDigestBlock actually flags', () => {
+  const cases = [
+    { errors: [], commits: { lines: ['x'], mergedWork: [], reviewDelta: 4 }, stuck: { workspaces: { autoOpen: [], duplicates: [] }, worktrees: [] } },
+    { errors: [], commits: { lines: ['x'], mergedWork: [], reviewDelta: -150 }, stuck: { workspaces: { autoOpen: [], duplicates: ['2× "A"'] }, reviewRegressions: ['show-b: 3→1'], worktrees: ['wt1', 'wt2'] } },
+    { errors: [], commits: { lines: [], mergedWork: [], reviewDelta: -99 }, stuck: { workspaces: { autoOpen: [], duplicates: [] }, worktrees: ['only-one'] } },
+  ];
+  for (const d of cases) {
+    const html = renderDigestBlock(d);
+    const m = html.match(/⚠️ Possibly stuck[\s\S]*?<ul[^>]*>([\s\S]*?)<\/ul>/);
+    const bullets = m ? (m[1].match(/<li>/g) || []).length : 0;
+    assert.equal(countStuckSignals(d), bullets, `mismatch for ${JSON.stringify(d.stuck)}`);
+  }
 });
