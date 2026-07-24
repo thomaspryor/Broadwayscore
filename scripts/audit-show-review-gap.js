@@ -51,7 +51,8 @@ const cheerio = require('cheerio');
 const { execSync, execFileSync } = require('child_process');
 
 const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
-const { serpQuery } = require('./lib/url-discovery');
+const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle } = require('./lib/url-discovery');
+const { buildCensusQuery, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
 const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -460,6 +461,31 @@ function urlMatchesShow(href, tokens) {
   } catch { return false; }
 }
 
+// Pure per-result acceptance decision for the SERP review census (#371 —
+// Soundsphere/JonathanBaz class). Given one raw SERP hit, decides whether it
+// counts as a discovered review URL for this show, applying the SAME
+// review/show-match filters as the aggregator-article path above plus the
+// generic-title disambiguation guard url-discovery.js uses for outlet-scoped
+// discovery (a bare "<title> review" query has no site: restriction, so it's
+// more exposed to wrong-show contamination on ambiguous titles). Extracted as
+// a standalone function (CLAUDE.md §15) so the acceptance logic is unit-
+// testable with fabricated SERP results, independent of live BD/SB/SERP
+// availability (which, unlike this decision, is not something a test controls).
+// @param {{url?: string, link?: string, title?: string, snippet?: string}} sr raw SERP result
+// @param {{show: object, showInfo: object}} ctx show ({id,title}) + url-discovery's getShowInfo(show.id) shape
+// @returns {string|null} normalized review URL if accepted, else null
+function acceptSerpCensusResult(sr, { show, showInfo }) {
+  const u = sr && (sr.url || sr.link);
+  if (!u || !isReviewUrl(u)) return null;
+  const tokens = titleTokens(show.title);
+  if (!urlMatchesShow(u, tokens)) return null;
+  if (isGenericShowTitle(show.title) && canDisambiguateGenericTitle(showInfo)) {
+    const hay = `${(sr.title || '')} ${u} ${(sr.snippet || '')}`.toLowerCase();
+    if (!hasDisambiguator(hay, showInfo)) return null;
+  }
+  return normalizeReviewUrl(u);
+}
+
 // Within-run cache of fetched aggregator articles. Playbill Verdict often
 // covers multiple shows in one article (e.g. a "Best of Off-Broadway" recap
 // linked from 3-5 different shows' Verdict permalinks). Without this cache,
@@ -587,7 +613,7 @@ function isShowEligible(show) {
   return diffDays >= -3 && diffDays <= windowDays;
 }
 
-async function auditShow(show) {
+async function auditShow(show, opts = {}) {
   const result = {
     showId: show.id,
     title: show.title,
@@ -604,6 +630,7 @@ async function auditShow(show) {
     flaggedMisses: [],   // urls listed by aggregator that ARE in dir but flagged out
     citedNoUrl: [],      // WE reference rows with no URL (WET tables) whose outlet has no covered file — alert-only, never auto-ingestable
     weReference: null,   // WE reference source health ({sources, rowCount, allSourcesFailed})
+    serpCensus: null,    // SERP review census health ({ran, query, resultCount, urlsFound} or {ran:false, reason})
   };
 
   const articles = await findAggregatorArticles(show);
@@ -660,6 +687,46 @@ async function auditShow(show) {
   } catch (e) {
     if (verbose) console.error(`  Show Score discovery error for ${show.id}: ${e.message}`);
   }
+
+  // ---- SERP review census (completeness reference, 2026-07-23) ----
+  // Playbill/BWW/WET/TR/LBO/Show Score above are all EDITOR-CURATED references —
+  // they only see outlets those editors chose to cite. Trainspotting WE
+  // (2026-07-23): a manual "<title> review" Google sweep surfaced 2 published
+  // reviews (soundspheremag.com, jonathanbaz.com) NO aggregator cited —
+  // invisible to every reference above by construction. This runs the SAME
+  // search a human does, through the existing BD/SB/Scrapingdog chain, scoped
+  // to the opening window and cooldown-gated (checkpoint) to bound SERP spend
+  // (SB has hit its monthly cap before — #224). Kill switch: SERP_GAP_CENSUS_DISABLED=1.
+  const serpCensusUrls = new Set();
+  if (process.env.SERP_GAP_CENSUS_DISABLED !== '1') {
+    const inWindowNow = inOpeningWindow(show);
+    const cooldownRaw = parseInt(process.env.SERP_CENSUS_COOLDOWN_HOURS || '', 10);
+    const cooldownHours = Number.isFinite(cooldownRaw) ? cooldownRaw : SERP_CENSUS_DEFAULT_COOLDOWN_HOURS;
+    if (shouldRunSerpCensus({ inWindow: inWindowNow, lastRunAt: opts.lastCensusAt || null, cooldownHours })) {
+      const query = buildCensusQuery(show);
+      if (query) {
+        try {
+          const dateRange = calculateDateWindow(show);
+          // preferSpeed:false (BD-first) — this is a background completeness
+          // sweep, not a user-waiting flow, and BD is the cheaper provider
+          // (matches brand-mention-serp.js's SB-conservation posture).
+          const serpResults = await serpQuery(query, { dateRange, preferSpeed: false });
+          result.serpCensus = { ran: true, query, resultCount: (serpResults || []).length, error: null };
+          const showInfo = getShowInfo(show.id);
+          for (const sr of (serpResults || [])) {
+            const accepted = acceptSerpCensusResult(sr, { show, showInfo });
+            if (accepted) serpCensusUrls.add(accepted);
+          }
+        } catch (e) {
+          result.serpCensus = { ran: true, query, resultCount: 0, error: (e.message || '').slice(0, 120) };
+          console.error(`::error::SERP census failed for ${show.id}: ${(e.message || '').slice(0, 120)}`);
+        }
+      }
+    } else {
+      result.serpCensus = { ran: false, reason: inWindowNow ? 'cooldown' : 'out-of-window' };
+    }
+  }
+  for (const u of serpCensusUrls) aggUrls.add(u);
 
   // ---- West End reference (completeness gate, 2026-07-10) ----
   // Playbill/BWW above are Broadway aggregators; for WE shows they find ~nothing,
@@ -805,7 +872,7 @@ async function auditShow(show) {
   // WE_GAP_INGEST=1 (absent = report-only — the SAFE default; a dropped env line
   // must fail closed), and prior-run roundup URLs are PERMANENTLY report-only
   // (auto-ingesting a prior production's URLs is the WET mass-ingestion class).
-  if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0) {
+  if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0 || serpCensusUrls.size > 0) {
     for (const m of [...result.missing, ...result.flaggedMisses]) {
       if (weRefUrls.has(m.url)) {
         m.weRef = true;
@@ -820,6 +887,10 @@ async function auditShow(show) {
       // Broadway-path production identity: cited only by a prior production's
       // dated aggregator article → permanently report-only (TKAM 2018 class).
       if (bwPriorRunUrls.has(m.url)) { m.priorRun = true; m.priorRunSource = 'aggregator-article-date'; }
+      // SERP census provenance (report/debug only — ingest eligibility for
+      // these follows the same rules as any other missing URL: blocked on WE
+      // shows until WE_GAP_INGEST=1, per gap-ingest-policy.js).
+      if (serpCensusUrls.has(m.url)) m.serpCensus = true;
     }
   }
 
@@ -1231,13 +1302,18 @@ async function main(argv = process.argv.slice(2)) {
       break;
     }
     if (verbose) console.log(`\n${s.id} "${s.title}" (${s.openingDate} ${s.status})`);
-    const r = await auditShow(s);
+    const r = await auditShow(s, { lastCensusAt: checkpoint[s.id] && checkpoint[s.id].serpCensusAt });
     if (useCheckpoint) {
+      // serpCensusAt: only stamped when the census actually ran this pass
+      // (cooldown gate consults it); otherwise carry forward whatever was
+      // already recorded so the cooldown isn't reset by an unrelated skip.
+      const prevCensusAt = checkpoint[s.id] && checkpoint[s.id].serpCensusAt;
       checkpoint[s.id] = {
         at: new Date().toISOString(),
         gaps: r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length,
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
+        ...((r.serpCensus && r.serpCensus.ran) ? { serpCensusAt: new Date().toISOString() } : (prevCensusAt ? { serpCensusAt: prevCensusAt } : {})),
       };
       saveCheckpoint(checkpoint);
     }
@@ -1752,4 +1828,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, main, USAGE };
+module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, main, USAGE };
