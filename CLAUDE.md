@@ -42,7 +42,7 @@ Use shared components from `src/components/show-cards/` — never create custom 
 **Notion is the single source of truth for project state.** See `memory/notion-brain-workflow.md` for IDs, schema, and full lifecycle.
 - **Session start:** Create a Notion card → "In progress," output URL, check for stale cards. **Session end:** Append Outcome (what/why/approach/gotchas) + Key Files + Tags → "Done"/"Paused."
 - **New discoveries:** Create Notion card (Not started). Don't context-switch.
-- **P0/P1 cards auto-dispatch at creation (owner rule 2026-07-24):** a technical, self-contained P0/P1 card gets a workspace the moment it's carded — `notion-tasks-sync.js pull` → find task # (grep the FULL task list; bsc-next --list shows only top-10) → `bsc-next.js --id N` → report `DISPATCHED:`. "I carded it" alone is a process failure; only owner-judgment cards stay undispated.
+- **P0/P1 cards auto-dispatch at creation (owner rule 2026-07-24):** a technical, self-contained P0/P1 card gets a workspace the moment it's carded — `notion-tasks-sync.js pull` → `bsc-next.js --list` (pending P0/P1s below the top-10 cutoff print in an explicit tail) → `bsc-next.js --id N` → report `DISPATCHED:`. "I carded it" alone is a process failure; only owner-judgment cards stay parked. Soft cap: >~3 auto-dispatches/session → confirm with owner.
 - **If Notion unreachable:** Warn user, continue without tracking. On wrap-up failure, output Outcome text so nothing is lost.
 
 ### 7. Infrastructure Change Planning (MANDATORY)

@@ -413,6 +413,17 @@ function main(argv = process.argv.slice(2), deps = {}) {
       const model = resolveModel({ explicitFlag: explicitModel, task: t, card: null, notionId: notionIdOf(t), queuePath: QUEUE_PATH });
       console.log(`  ${i + 1}. #${t.id} [${t.status}] [${model}]${unknownCat(t) ? ' [uncategorized]' : ''} ${t.subject}`);
     });
+    // A P0/P1 must never be invisible just because 10 other tasks outrank it
+    // in mirror order (2026-07-24: a freshly-synced P1 sat below the cutoff,
+    // the session's grep of this output found nothing, and the card went
+    // undispatched until the owner asked why). Pending high-priority tasks
+    // below the cutoff get an explicit tail so "grep the --list output" is
+    // always sufficient.
+    const hiddenHighPri = list.slice(10).filter(t => t.status === 'pending' && priorityRank(t) <= 1);
+    if (hiddenHighPri.length) {
+      console.log(`\n  …plus ${hiddenHighPri.length} pending P0/P1 below the top-10 cutoff (dispatch with --id):`);
+      hiddenHighPri.forEach(t => console.log(`     #${t.id} [P${priorityRank(t)}] ${t.subject}`));
+    }
     const excluded = actionable(tasks, true).filter(isExcludedCategory);
     if (excluded.length) {
       console.log(`\nHuman-territory (${excluded.length} — never auto-picked; use --id N deliberately):`);
