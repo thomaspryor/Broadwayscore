@@ -14,6 +14,10 @@ on:
         description: 'Dry run (no changes)'
         required: false
         default: 'false'
+      time_budget_min:
+        description: 'Wall-clock budget in minutes (0 = unlimited)'
+        required: false
+        default: '14'
 
 # Share the `shows-json-writer` concurrency group with update-show-status.yml
 # and enrich-off-broadway-dates.yml. Without this, overlapping runs race on
@@ -75,10 +79,17 @@ jobs:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
+          # Exit cleanly before the 20-min job timeout; deferred shows are
+          # picked up next run. Default in bash, not a GHA || expression —
+          # the expression coerces a literal 0 (= unlimited) to falsy.
+          TB="${{ github.event.inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=14
+          TB_FLAG="--time-budget-min=$TB"
+
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-            node scripts/audit-closing-dates.js --dry-run
+            node scripts/audit-closing-dates.js --dry-run $TB_FLAG
           else
-            node scripts/audit-closing-dates.js
+            node scripts/audit-closing-dates.js $TB_FLAG
           fi
 
       - name: Validate shows.json before push (rollback on failure)
@@ -130,6 +141,7 @@ jobs:
                 '**New-closing candidates:** ' + s.newClosings,
                 '**Errors:** ' + s.errors,
               ];
+              if (s.budgetExit) lines.push('**⏱ Time budget hit — deferred:** ' + s.deferred);
               console.log(lines.join('\\n'));
               if (r.extensions.length) {
                 console.log('\\n### Extensions applied');

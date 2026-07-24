@@ -19,6 +19,11 @@ on:
         required: false
         type: boolean
         default: false
+      time_budget_min:
+        description: 'Wall-clock budget in minutes (0 = unlimited)'
+        required: false
+        type: string
+        default: '22'
 
 concurrency:
   group: ltd
@@ -55,11 +60,18 @@ jobs:
             DRY_RUN_FLAG="--dry-run"
           fi
 
+          # Exit cleanly before the 30-min job timeout; deferred shows are
+          # picked up next run. Default in bash, not a GHA || expression — the
+          # expression coerces a literal 0 (= unlimited) to falsy.
+          TB="${{ inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=22
+          TB_FLAG="--time-budget-min=$TB"
+
           if [ -n "${{ inputs.shows }}" ]; then
             IFS=',' read -ra SHOW_IDS <<< "${{ inputs.shows }}"
             for sid in "${SHOW_IDS[@]}"; do
               echo "Running LTD for: $sid"
-              node scripts/scrape-ltd-audience.js --show="$sid" $DRY_RUN_FLAG || true
+              node scripts/scrape-ltd-audience.js --show="$sid" $DRY_RUN_FLAG $TB_FLAG || true
             done
             exit 0
           fi
@@ -68,9 +80,10 @@ jobs:
           if [ -n "${{ inputs.show }}" ]; then
             ARGS="$ARGS --show=${{ inputs.show }}"
           fi
+          ARGS="$ARGS $DRY_RUN_FLAG $TB_FLAG"
 
           # shellcheck disable=SC2086
-          node scripts/scrape-ltd-audience.js $ARGS $DRY_RUN_FLAG
+          node scripts/scrape-ltd-audience.js $ARGS
 
       # NOTE: snapshot-overwrite step removed 2026-07-19. /tmp/core-data-snapshot/ is
       # the checkout-time baseline push-core-data diffs against (2beb6617c58);
