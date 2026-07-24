@@ -1,10 +1,92 @@
 {
-  "generatedAt": "2026-07-23T22:06:16.078Z",
+  "generatedAt": "2026-07-24T11:24:14.342Z",
   "summary": {
-    "total": 0,
-    "high": 0,
+    "total": 3,
+    "high": 3,
     "medium": 0,
     "low": 0
   },
-  "collisions": []
+  "collisions": [
+    {
+      "url": "https://www.theguardian.com/stage/2023/mar/09/a-dolls-house-review-jessica-chastain-broadway",
+      "normalizedUrl": "https://theguardian.com/stage/2023/mar/09/a-dolls-house-review-jessica-chastain-broadway",
+      "candidates": [
+        {
+          "showId": "a-dolls-house-2023",
+          "file": "guardian--gloria-oladipo.json",
+          "publishDate": "2023-03-09",
+          "openingDate": "2023-03-09",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "guardian"
+        },
+        {
+          "showId": "a-dolls-house-off-west-end-2026",
+          "file": "guardian--gloria-oladipo.json",
+          "publishDate": "2023-03-13",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "guardian"
+        }
+      ],
+      "suggestedWinner": "a-dolls-house-2023",
+      "reason": "publishDate 2023-03-09 is 0 days from a-dolls-house-2023 opening (2023-03-09)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/dolls-house-hudson-theatre-new-york-review-jessica-chastain/",
+      "normalizedUrl": "https://telegraph.co.uk/theatre/what-to-see/dolls-house-hudson-theatre-new-york-review-jessica-chastain",
+      "candidates": [
+        {
+          "showId": "a-dolls-house-2023",
+          "file": "telegraph--diane-snyder.json",
+          "publishDate": "2023-03-10",
+          "openingDate": "2023-03-09",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "telegraph"
+        },
+        {
+          "showId": "a-dolls-house-off-west-end-2026",
+          "file": "telegraph--diane-snyder.json",
+          "publishDate": "2023-03-13",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "telegraph"
+        }
+      ],
+      "suggestedWinner": "a-dolls-house-2023",
+      "reason": "publishDate 2023-03-10 is 1 days from a-dolls-house-2023 opening (2023-03-09)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/a-dolls-house-review-at-the-hudson-theatre-new-york-starring-jessica-chastain",
+      "normalizedUrl": "https://thestage.co.uk/reviews/a-dolls-house-review-at-the-hudson-theatre-new-york-starring-jessica-chastain",
+      "candidates": [
+        {
+          "showId": "a-dolls-house-2023",
+          "file": "thestage--nicole-serratore.json",
+          "publishDate": "2023-03-13",
+          "openingDate": "2023-03-09",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "thestage"
+        },
+        {
+          "showId": "a-dolls-house-off-west-end-2026",
+          "file": "thestage--nicole-serratore.json",
+          "publishDate": "2023-03-13",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "thestage"
+        }
+      ],
+      "suggestedWinner": "a-dolls-house-2023",
+      "reason": "publishDate 2023-03-13 is 4 days from a-dolls-house-2023 opening (2023-03-09)",
+      "confidence": "high"
+    }
+  ]
 }
