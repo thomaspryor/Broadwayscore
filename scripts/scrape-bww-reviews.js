@@ -22,6 +22,7 @@
  *   node scripts/scrape-bww-reviews.js --limit=200 --force  # Batch with cache override
  *   node scripts/scrape-bww-reviews.js --verify             # Process 5 shows, print diff
  *   node scripts/scrape-bww-reviews.js --dry-run            # Parse only, no file writes
+ *   node scripts/scrape-bww-reviews.js --landing-discover --time-budget-min=N  # cap wall-clock
  */
 
 const fs = require('fs');
@@ -29,6 +30,7 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { pruneUnmatchedAudit, collisionSlugSet } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
@@ -1241,6 +1243,10 @@ async function landingDiscoverMode(shows, options = {}) {
   const results = [];
   let count = 0;
   for (const m of matched) {
+    if (options.timeBudget && options.timeBudget.exceeded()) {
+      console.log(`\n⏱ Time budget (${options.timeBudget.minutes} min) reached — ${matched.length - count} matched roundup(s) deferred to next run.`);
+      break;
+    }
     const show = shows.find(s => s.id === m.showId);
     if (!show) continue;
     count++;
@@ -1308,6 +1314,7 @@ async function main() {
   // Doesn't iterate the shows.json corpus — covers recency, not breadth.
   if (landingDiscover) {
     options.tokenOverlapSet = buildTokenOverlapSiblingSet(shows);
+    options.timeBudget = createRunBudget(parseTimeBudgetMin(args));
     await landingDiscoverMode(shows, options);
     await cleanupScraper();
     return;
