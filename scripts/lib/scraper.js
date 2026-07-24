@@ -538,7 +538,10 @@ async function fetchWithScrapingBee(url, options = {}) {
     }
 
     const response = await new Promise((resolve, reject) => {
-      https.get(apiUrl, (res) => {
+      // Explicit timeout — same class of gap as fetchWithBrightData's (task
+      // #203 what-else finding): previously unbounded, so a hung SB connection
+      // would stall the whole fetchPage()/fetchJSON() chain indefinitely.
+      const req = https.get(apiUrl, { timeout: 45000 }, (res) => {
         let data = '';
         res.on('data', chunk => data += chunk);
         res.on('end', () => {
@@ -550,7 +553,9 @@ async function fetchWithScrapingBee(url, options = {}) {
             reject(err);
           }
         });
-      }).on('error', reject);
+      });
+      req.on('error', reject);
+      req.on('timeout', () => { req.destroy(); reject(new Error('ScrapingBee request timeout')); });
     });
 
     recordSbCall({ url, fn: renderJs ? 'render' : 'page', success: true, status: 200, credits: creditCost });
@@ -977,7 +982,7 @@ async function fetchJSON(url, options = {}) {
     try {
       const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
       const response = await new Promise((resolve, reject) => {
-        https.get(apiUrl, (res) => {
+        const req = https.get(apiUrl, { timeout: 45000 }, (res) => {
           let data = '';
           res.on('data', chunk => data += chunk);
           res.on('end', () => {
@@ -988,7 +993,9 @@ async function fetchJSON(url, options = {}) {
               reject(err);
             }
           });
-        }).on('error', reject);
+        });
+        req.on('error', reject);
+        req.on('timeout', () => { req.destroy(); reject(new Error('ScrapingBee request timeout')); });
       });
       _scraperStats.sbRequests++;
       _scraperStats.sbCredits += 1; // render_js=false = 1 credit
