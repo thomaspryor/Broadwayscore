@@ -12,7 +12,11 @@
  * Fetch strategy: plain https.get first (free), BrightData fallback (cheap).
  *
  * Usage:
- *   node scripts/scrape-lbo-audience.js [--show=hamilton-west-end-2021] [--dry-run]
+ *   node scripts/scrape-lbo-audience.js [--show=hamilton-west-end-2021] [--dry-run] [--time-budget-min=N]
+ *
+ * --time-budget-min=N: wall-clock budget in minutes (0 or omitted = unlimited).
+ * Exits cleanly once exceeded instead of running into the job timeout; deferred
+ * Feefo pages / shows are picked up on the next run.
  *
  * Environment variables:
  *   BRIGHTDATA_TOKEN - BrightData API token (fallback, optional)
