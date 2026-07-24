@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-24T05:27:49.706Z",
+  "generatedAt": "2026-07-24T10:02:03.541Z",
   "date": "2026-07-24",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 150993,
+  "entryCount": 156872,
   "shows": [
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
@@ -67,8 +67,8 @@
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
       "reviewCount": 19,
-      "median_e2e_ms": 2667898,
-      "p90_e2e_ms": 2667898,
+      "median_e2e_ms": 18835898,
+      "p90_e2e_ms": 18835898,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 38085098,
@@ -76,11 +76,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "broadwayworld:charles-isherwood:https://www.broadwayworld.com/reviews/the-whoopi-monologues",
-          "e2e_ms": 2667898,
+          "e2e_ms": 18835898,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -162,7 +162,7 @@
     },
     {
       "showId": "a-walk-on-the-moon-off-broadway-2026",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -388,8 +388,8 @@
     {
       "showId": "joe-turners-come-and-gone-2026",
       "reviewCount": 29,
-      "median_e2e_ms": 2667906,
-      "p90_e2e_ms": 2667906,
+      "median_e2e_ms": 18835906,
+      "p90_e2e_ms": 18835906,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -397,11 +397,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "broadwayworld:aa-cristi:https://www.broadwayworld.com/article/Review-Roundup-JOE-TURNERS-COME-AND-GONE-Opens-On-Broadway-20260425",
-          "e2e_ms": 2667906,
+          "e2e_ms": 18835906,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -513,7 +513,7 @@
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -558,7 +558,7 @@
     },
     {
       "showId": "oh-mary-west-end-2025",
-      "reviewCount": 28,
+      "reviewCount": 29,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1024,8 +1024,8 @@
     {
       "showId": "hamilton-2015",
       "reviewCount": 40,
-      "median_e2e_ms": 2667900,
-      "p90_e2e_ms": 2667900,
+      "median_e2e_ms": 18835900,
+      "p90_e2e_ms": 18835900,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -1033,11 +1033,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "broadwayworld:test-critic:https://www.broadwayworld.com/article/BWW-Review-Hamilton-Broadway-Production-20150101",
-          "e2e_ms": 2667900,
+          "e2e_ms": 18835900,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -11650,8 +11650,8 @@
     {
       "showId": "tender-off-west-end-2026",
       "reviewCount": 12,
-      "median_e2e_ms": 2665086,
-      "p90_e2e_ms": 2665086,
+      "median_e2e_ms": 18833086,
+      "p90_e2e_ms": 18833086,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -11659,11 +11659,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "guardian:david-jays:https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
-          "e2e_ms": 2665086,
+          "e2e_ms": 18833086,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15720,7 +15720,7 @@
     },
     {
       "showId": "beetlejuice-west-end-2026",
-      "reviewCount": 29,
+      "reviewCount": 30,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15780,7 +15780,7 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "reviewCount": 21,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15796,8 +15796,8 @@
     {
       "showId": "guard-g-flag",
       "reviewCount": 1,
-      "median_e2e_ms": 2671238,
-      "p90_e2e_ms": 2671238,
+      "median_e2e_ms": 18839238,
+      "p90_e2e_ms": 18839238,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15805,11 +15805,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "variety:peter-marks:https://variety.com/fake-review-1",
-          "e2e_ms": 2671238,
+          "e2e_ms": 18839238,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15817,8 +15817,8 @@
     {
       "showId": "guard-g-freelancer",
       "reviewCount": 1,
-      "median_e2e_ms": 2671236,
-      "p90_e2e_ms": 2671236,
+      "median_e2e_ms": 18839236,
+      "p90_e2e_ms": 18839236,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15826,11 +15826,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "nypost:adam-feldman:https://nypost.com/fake-review",
-          "e2e_ms": 2671236,
+          "e2e_ms": 18839236,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15838,8 +15838,8 @@
     {
       "showId": "guard-g-correct",
       "reviewCount": 1,
-      "median_e2e_ms": 2671234,
-      "p90_e2e_ms": 2671234,
+      "median_e2e_ms": 18839234,
+      "p90_e2e_ms": 18839234,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15847,11 +15847,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "washpost:peter-marks:https://washingtonpost.com/fake-review",
-          "e2e_ms": 2671234,
+          "e2e_ms": 18839234,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15859,8 +15859,8 @@
     {
       "showId": "guard-g-unknown",
       "reviewCount": 1,
-      "median_e2e_ms": 2671233,
-      "p90_e2e_ms": 2671233,
+      "median_e2e_ms": 18839233,
+      "p90_e2e_ms": 18839233,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15868,11 +15868,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "variety:unknown:https://variety.com/fake-review-2",
-          "e2e_ms": 2671233,
+          "e2e_ms": 18839233,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15880,8 +15880,8 @@
     {
       "showId": "guard-g-newcritic",
       "reviewCount": 1,
-      "median_e2e_ms": 2671232,
-      "p90_e2e_ms": 2671232,
+      "median_e2e_ms": 18839232,
+      "p90_e2e_ms": 18839232,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15889,11 +15889,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "variety:completely-new-critic-nobody-has-heard-of:https://variety.com/fake-review-3",
-          "e2e_ms": 2671232,
+          "e2e_ms": 18839232,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15901,8 +15901,8 @@
     {
       "showId": "test-show-2026",
       "reviewCount": 2,
-      "median_e2e_ms": 2669472,
-      "p90_e2e_ms": 2671049,
+      "median_e2e_ms": 18837472,
+      "p90_e2e_ms": 18839049,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15910,16 +15910,16 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 2,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 2,
       "slowest_reviews": [
         {
           "reviewKey": "variety:daniel-daddario:https://variety.com/2026/legit/reviews/some-review-1234567890/",
-          "e2e_ms": 2671049,
+          "e2e_ms": 18839049,
           "stuck_at_stage": "review-first-seen"
         },
         {
           "reviewKey": "broadwayworld:test:https://www.broadwayworld.com/article/review-roundup-LOWER-CASE-TEST",
-          "e2e_ms": 2667894,
+          "e2e_ms": 18835894,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15927,8 +15927,8 @@
     {
       "showId": "merge-show-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 2671047,
-      "p90_e2e_ms": 2671047,
+      "median_e2e_ms": 18839047,
+      "p90_e2e_ms": 18839047,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15936,11 +15936,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "variety:jane-critic:https://variety.com/2026/legit/reviews/x-1234509876/",
-          "e2e_ms": 2671047,
+          "e2e_ms": 18839047,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15948,8 +15948,8 @@
     {
       "showId": "fs-show",
       "reviewCount": 1,
-      "median_e2e_ms": 2667901,
-      "p90_e2e_ms": 2667901,
+      "median_e2e_ms": 18835901,
+      "p90_e2e_ms": 18835901,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15957,11 +15957,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "variety:naveen-kumar:https://variety.com/2026/legit/reviews/fs-review-1",
-          "e2e_ms": 2667901,
+          "e2e_ms": 18835901,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15969,8 +15969,8 @@
     {
       "showId": "fsm-show",
       "reviewCount": 1,
-      "median_e2e_ms": 2667894,
-      "p90_e2e_ms": 2667894,
+      "median_e2e_ms": 18835894,
+      "p90_e2e_ms": 18835894,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15978,11 +15978,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "variety:naveen-kumar:https://variety.com/2026/legit/reviews/fs-review-2",
-          "e2e_ms": 2667894,
+          "e2e_ms": 18835894,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15990,8 +15990,8 @@
     {
       "showId": "tender-by-dave-harris-off-west-end-2026",
       "reviewCount": 8,
-      "median_e2e_ms": 2665102,
-      "p90_e2e_ms": 2665102,
+      "median_e2e_ms": 18833102,
+      "p90_e2e_ms": 18833102,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15999,11 +15999,11 @@
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 1,
-      "reviews_over_60min": 0,
+      "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "guardian:david-jays:https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
-          "e2e_ms": 2665102,
+          "e2e_ms": 18833102,
           "stuck_at_stage": "review-first-seen"
         }
       ]

@@ -1,15 +1,30 @@
 {
   "system": "workflow repeat-failure",
-  "status": "warn",
-  "lastChecked": "2026-07-23T07:49:51.501Z",
+  "status": "error",
+  "lastChecked": "2026-07-24T07:50:31.206Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Rebuild Reviews Data",
+      "name": "Workflow repeat-failure: Test Suite",
+      "status": "error",
+      "message": "Test Suite failed 12 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Commercial RSS Poll",
+      "status": "error",
+      "message": "Commercial RSS Poll failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
       "status": "warn",
-      "message": "Rebuild Reviews Data failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Process Feedback Submissions",
+      "status": "warn",
+      "message": "Process Feedback Submissions failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }
