@@ -72,9 +72,23 @@ jobs:
 
           if [ -n "${{ inputs.shows }}" ]; then
             IFS=',' read -ra SHOW_IDS <<< "${{ inputs.shows }}"
+            # Each show runs in its own subprocess, so a flat TB_FLAG would be
+            # applied N times (createRunBudget starts fresh per subprocess) —
+            # re-derate the total budget across the show count so the loop
+            # can't overrun the job timeout. TB=0 (unlimited) stays 0.
+            # Truncate to an integer first: bash arithmetic (unlike Node's
+            # parseFloat below) errors out on a decimal like "22.5".
+            TB_INT="${TB%%.*}"
+            [ -z "$TB_INT" ] && TB_INT=0
+            PER_SHOW_TB=$(( TB_INT / ${#SHOW_IDS[@]} ))
+            if [ "$TB_INT" -gt 0 ] && [ "$PER_SHOW_TB" -lt 1 ]; then
+              PER_SHOW_TB=1
+            fi
+            PER_SHOW_TB_FLAG="--time-budget-min=$PER_SHOW_TB"
+            echo "Total budget ${TB_INT}min across ${#SHOW_IDS[@]} shows: ${PER_SHOW_TB}min/show"
             for sid in "${SHOW_IDS[@]}"; do
               echo "Running LBO for: $sid"
-              node scripts/scrape-lbo-audience.js --show="$sid" $DRY_RUN_FLAG $TB_FLAG || true
+              node scripts/scrape-lbo-audience.js --show="$sid" $DRY_RUN_FLAG $PER_SHOW_TB_FLAG || true
             done
             exit 0
           fi
