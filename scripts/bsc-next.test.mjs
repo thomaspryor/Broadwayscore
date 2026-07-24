@@ -339,8 +339,14 @@ test('bridge tasks with a category keep the ≤5-word product-card carve-out (un
 });
 
 test('dispatch command always passes a resolved --model (never bare, never inherits interactive default)', () => {
+  // The command template lives in the shared launch lib (extracted 2026-07-24
+  // for the opening-night monitor launcher); bsc-next must delegate to it and
+  // still resolve the model itself.
+  const launchSrc = fs.readFileSync(new URL('./lib/cmux-launch.js', import.meta.url), 'utf8');
+  assert.match(launchSrc, /claude --model \$\{model\}\$\{settingsArg\} --dangerously-skip-permissions/);
   const src = fs.readFileSync(new URL('./bsc-next.js', import.meta.url), 'utf8');
-  assert.match(src, /claude --model \$\{model\} --dangerously-skip-permissions/);
+  assert.match(src, /require\('\.\/lib\/cmux-launch\.js'\)/);
+  assert.match(src, /launchCmuxSession\(\{/);
   // model is resolved via resolveModel() (task #151), not a blanket 'sonnet'
   // literal — the sonnet floor now lives in scripts/lib/bsc-next-model.js.
   assert.match(src, /require\('\.\/lib\/bsc-next-model\.js'\)/);
