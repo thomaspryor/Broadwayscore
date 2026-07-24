@@ -234,4 +234,34 @@ describe('lock cleanup', () => {
     guard.saveShows(data); // must not hang/throw — stale lock gets broken
     assert.equal(fs.existsSync(guard.lockDir), false);
   });
+
+  test('a save whose lock was stolen as stale (holder was slow, not crashed) aborts instead of writing', () => {
+    seed([{ id: 'a', field: 'original' }]);
+    const guard = createShowsWriteGuard(showsPath);
+    const data = guard.loadShows();
+    data.shows.find((s) => s.id === 'a').field = 'attempted-write';
+
+    // Simulate: acquireLock() succeeded (real token written), but by the
+    // time saveShows() re-checks ownership right before the write, a
+    // waiter has broken our "stale" lock and installed its own token —
+    // i.e. we were just slow, not crashed, and got preempted anyway.
+    const ownerPath = path.join(guard.lockDir, 'owner.json');
+    const originalReadFileSync = fs.readFileSync;
+    fs.readFileSync = (p, ...rest) => {
+      if (p === ownerPath) {
+        return JSON.stringify({ pid: 999999, token: 'someone-elses-token', acquiredAt: 'now' });
+      }
+      return originalReadFileSync(p, ...rest);
+    };
+
+    try {
+      assert.throws(() => guard.saveShows(data), /lock .* was broken as stale/);
+    } finally {
+      fs.readFileSync = originalReadFileSync;
+    }
+
+    // The write must not have happened — disk still has the original value.
+    const onDisk = JSON.parse(originalReadFileSync(showsPath, 'utf8'));
+    assert.equal(onDisk.shows.find((s) => s.id === 'a').field, 'original');
+  });
 });

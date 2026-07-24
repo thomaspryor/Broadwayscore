@@ -110,7 +110,12 @@ check_shows_json() {
   fi
   local EXEMPT VIOLATIONS="" f name
   EXEMPT=$(read_allowlist "$ALLOWLIST")
-  for f in scripts/*.js; do
+  # .js is the dominant top-level script extension in this repo, but .mjs
+  # and .ts top-level scripts exist too (scripts/lib/*.ts, scripts/*.mjs are
+  # test/library files excluded by staying at depth 1) and were found
+  # capable of the same bypass class in review — cover them too.
+  for f in scripts/*.js scripts/*.mjs scripts/*.ts; do
+    [ -e "$f" ] || continue
     name=$(basename "$f")
     echo "$EXEMPT" | grep -Fxq "$name" && continue
     # (1) references data/shows.json AND (2) writeFileSync to a var whose

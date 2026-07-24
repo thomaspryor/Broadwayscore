@@ -114,6 +114,24 @@ function acquireLock(lockDir) {
   }
 }
 
+/**
+ * True if `token` is still the recorded owner of lockDir. A stale-lock break
+ * (acquireLock, above) lets a waiter steal the lock out from under a holder
+ * that's just slow rather than crashed — the token check in releaseLock()
+ * stops that holder from deleting the new owner's lock on exit, but doesn't
+ * stop it from writing in the meantime. Calling this right before the actual
+ * file write closes that gap: a holder whose lock was stolen aborts instead
+ * of writing concurrently with the new owner.
+ */
+function isLockOwner(lockDir, token) {
+  try {
+    const owner = JSON.parse(fs.readFileSync(lockOwnerPath(lockDir), 'utf8'));
+    return owner.token === token;
+  } catch {
+    return false;
+  }
+}
+
 function releaseLock(lockDir, token) {
   try {
     const owner = JSON.parse(fs.readFileSync(lockOwnerPath(lockDir), 'utf8'));
@@ -221,6 +239,16 @@ function createShowsWriteGuard(showsPath) {
       finalData._meta = finalData._meta || {};
       finalData._meta.lastUpdated = new Date().toISOString();
       finalData._meta.totalShows = finalData.shows.length;
+
+      // Re-verify ownership right before writing. If this save ran past
+      // LOCK_STALE_MS and a waiter broke the lock as "stale" while we were
+      // still legitimately working, our token is no longer the recorded
+      // owner — write anyway and we'd race the new holder. Abort instead.
+      if (!isLockOwner(lockDir, lockToken)) {
+        throw new Error(
+          `shows-write-guard: lock for ${showsPath} was broken as stale (held past ${LOCK_STALE_MS}ms) — aborting save to avoid racing the new holder`
+        );
+      }
 
       const result = atomicWriteShowsJson(showsPath, finalData, options);
 

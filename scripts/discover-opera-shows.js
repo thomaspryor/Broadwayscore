@@ -27,16 +27,6 @@ const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
-// shows.json is a symlink to the private data repo — resolve to real path
-// so it works both from the main repo and from a git worktree.
-const SHOWS_FILE_CANDIDATES = [
-  path.join(__dirname, '..', 'data', 'shows.json'),
-  path.join('/Users/tompryor/broadway-scorecard-data', 'shows.json'),
-];
-const SHOWS_FILE = SHOWS_FILE_CANDIDATES.find(p => {
-  try { fs.accessSync(p); return true; } catch { return false; }
-}) || SHOWS_FILE_CANDIDATES[0];
-
 // opera-show-ids.ts lives in the source tree — find it relative to __dirname
 // regardless of whether we're in the main repo or a worktree.
 const OPERA_IDS_FILE = (() => {

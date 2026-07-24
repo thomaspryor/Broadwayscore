@@ -202,9 +202,10 @@ async function testDiscoveryFlow() {
   console.log(`   Shows flagged for review data: ${addedShows.length}`);
   addedShows.forEach(s => console.log(`     - ${s.title} (${s.slug})`));
 
-  // Restore original shows.json
+  // Restore original shows.json — through the guard's lock, not a raw
+  // writeFileSync, so this rollback can't race a concurrent legitimate save.
   console.log('\n8. Restoring original shows.json...');
-  fs.writeFileSync(SHOWS_FILE, originalData);
+  saveShows(JSON.parse(originalData));
   fs.unlinkSync(BACKUP_FILE);
   console.log('   ✓ Original data restored\n');
 

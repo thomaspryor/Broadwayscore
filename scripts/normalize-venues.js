@@ -2,13 +2,14 @@
 /**
  * Normalize venue names in shows.json to canonical forms
  */
-const fs = require('fs');
 const path = require('path');
 const { getCanonicalVenueName, validateVenue } = require('./lib/broadway-theaters.js');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
-const data = JSON.parse(fs.readFileSync(SHOWS_FILE));
+// loadShows() (not a raw parse) — snapshots the object so saveShows() below
+// can merge against concurrent writers instead of overwriting them.
+const data = loadShows();
 
 console.log('=== VENUE NORMALIZATION ===\n');
 
