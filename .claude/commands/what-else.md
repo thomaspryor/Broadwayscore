@@ -117,11 +117,22 @@ For EVERY spark in **Roadmap** and **Start now in parallel session** tiers, crea
 
 Do not ask permission. Do not suggest. Create the cards, then report what you created.
 
+### Phase 5.5: Auto-dispatch every P0/P1 card you just created (MANDATORY — owner rule 2026-07-24)
+
+"I carded it" is NOT an endpoint for a P0/P1. Immediately after creating the cards, for EVERY card with Priority P0 Now or P1 Next that is technical + self-contained (no owner judgment call, no missing credentials):
+```bash
+node scripts/notion-tasks-sync.js pull            # mirror the new card into the task list
+node scripts/bsc-next.js --list                   # pending P0/P1s below the top-10 cutoff print in an explicit tail (fixed 2026-07-24)
+node scripts/bsc-next.js --id <task#>             # launch the workspace NOW
+```
+Soft fan-out cap: more than ~3 auto-dispatches in one session → pause and confirm with the owner (each workspace is a paid session).
+Verify the launch output shows a workspace running, then report `DISPATCHED: workspace <name> — <card title>` as plain prose. Cards needing an owner decision stay undispated — say which decision blocks them. P2s stay backlog unless trivially dispatchable and clearly worth it.
+
 ### Phase 6: Act — do not ask
 
 **DO the "Do now" items immediately** — never ask "Want me to do the now items?" (that's the banned defer-question; the finish-line gate blocks it). Then, in your final message, triage EVERY card you created so the user knows exactly what's required of them:
 - **Do now** → already done by you (report the result)
-- **Start now in parallel session** → include the full ready-to-paste prompt inline (a card link alone is NOT a handoff)
-- **Roadmap** → one line: why it can wait and what would promote it
+- **P0/P1 cards** → DISPATCHED per Phase 5.5 (workspace name + task); a card link alone is a process failure
+- **Roadmap (P2)** → one line: why it can wait and what would promote it
 
 Never present new cards as a bare list of links — the user shouldn't have to ask "what are the priorities of these, and who does them?"

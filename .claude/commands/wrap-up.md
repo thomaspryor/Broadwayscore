@@ -263,7 +263,7 @@ Present a summary to the user:
 
 **Every deferred loose end must be dispatched or carry its own handoff** (the finish-line gate enforces this).
 
-**Dispatch-first (the default).** If the item is technical + self-contained + carded (a Notion card / task-list entry exists — Phase 4 step 8 should have created one), do NOT hand the user a paste-prompt. Dispatch it yourself:
+**Dispatch-first (the default) — and dispatch at CREATION, not at report time (owner rule 2026-07-24: every P0/P1 that doesn't need an owner judgment call gets a workspace the moment it's carded; the nightly loop is the backstop, never the plan).** (`bsc-next --list` now prints pending P0/P1s below the top-10 cutoff in an explicit tail — fixed 2026-07-24.) If the item is technical + self-contained + carded (a Notion card / task-list entry exists — Phase 4 step 8 should have created one), do NOT hand the user a paste-prompt. Dispatch it yourself:
 ```bash
 node scripts/bsc-next.js --list        # find the task # for the card
 node scripts/bsc-next.js --id <task#>  # launch a seeded Cmux workspace on it
