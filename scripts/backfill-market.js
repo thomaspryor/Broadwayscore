@@ -45,9 +45,11 @@ function main() {
     console.error(`shows.json not found at ${SHOWS_PATH}`);
     process.exit(1);
   }
-  const raw = fs.readFileSync(SHOWS_PATH, 'utf8');
-  const parsed = JSON.parse(raw);
-  const isArrayRoot = Array.isArray(parsed);
+  // loadShows() is bound to the canonical data/shows.json (not SHOWS_JSON_PATH) —
+  // this script has no test fixture that overrides it, so that's a no-op for
+  // real usage. Going through loadShows() (rather than a raw parse) preserves
+  // object identity for the guard's concurrent-writer merge in saveShows().
+  const parsed = loadShows();
   const shows = parsed.shows || parsed;
 
   const changes = [];
@@ -90,8 +92,12 @@ function main() {
     console.log(`\nNo changes needed.`);
     return;
   }
-  const out = isArrayRoot ? shows : { ...parsed, shows };
-  saveShows(out);
+  // `shows` entries were mutated in place above, and (isArrayRoot is always
+  // false via loadShows()) `shows === parsed.shows`, so `parsed` already
+  // reflects every change — save that exact object (not a rebuilt copy) so
+  // the guard's snapshot lookup still matches it and the concurrent-writer
+  // merge fires.
+  saveShows(parsed);
   console.log(`\nWrote ${changes.length} change(s) to ${SHOWS_PATH}`);
 }
 

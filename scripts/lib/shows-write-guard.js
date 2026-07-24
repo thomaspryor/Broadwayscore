@@ -45,6 +45,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { atomicWriteShowsJson } = require('./atomic-shows-write');
 
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
@@ -65,16 +66,29 @@ function lockOwnerPath(lockDir) {
   return path.join(lockDir, 'owner.json');
 }
 
+/**
+ * Acquires the lock and returns a unique token identifying THIS acquisition.
+ * releaseLock() must be called with that exact token, and only removes the
+ * lock if it still owns it — otherwise a legitimate holder that ran past
+ * LOCK_STALE_MS, got its lock broken by an impatient waiter, and then hits
+ * its own `finally releaseLock()` would delete the NEW holder's lock out
+ * from under it (split-brain: two processes both believe they hold the
+ * lock and both write). The check-then-remove has its own tiny race window,
+ * but it shrinks the blast radius from "any stale-break can silently steal
+ * a live lock" to "a release racing a steal within the same tick" — the
+ * mkdir itself is still what's atomic.
+ */
 function acquireLock(lockDir) {
   const deadline = Date.now() + LOCK_MAX_WAIT_MS;
   for (;;) {
+    const token = crypto.randomUUID();
     try {
       fs.mkdirSync(lockDir);
       fs.writeFileSync(
         lockOwnerPath(lockDir),
-        JSON.stringify({ pid: process.pid, acquiredAt: new Date().toISOString() })
+        JSON.stringify({ pid: process.pid, token, acquiredAt: new Date().toISOString() })
       );
-      return;
+      return token;
     } catch (err) {
       if (err.code !== 'EEXIST') throw err;
 
@@ -100,7 +114,13 @@ function acquireLock(lockDir) {
   }
 }
 
-function releaseLock(lockDir) {
+function releaseLock(lockDir, token) {
+  try {
+    const owner = JSON.parse(fs.readFileSync(lockOwnerPath(lockDir), 'utf8'));
+    if (owner.token !== token) return; // not ours anymore — a waiter broke it as stale; leave it alone
+  } catch {
+    return; // already gone
+  }
   fs.rmSync(lockDir, { recursive: true, force: true });
 }
 
@@ -177,7 +197,7 @@ function createShowsWriteGuard(showsPath) {
    *   pass when the caller is deliberately deleting shows.
    */
   function saveShows(data, options = {}) {
-    acquireLock(lockDir);
+    const lockToken = acquireLock(lockDir);
     try {
       const snapshot = snapshots.get(data);
       let finalData = data;
@@ -218,7 +238,7 @@ function createShowsWriteGuard(showsPath) {
       snapshots.set(data, JSON.parse(JSON.stringify(finalData)));
       return result;
     } finally {
-      releaseLock(lockDir);
+      releaseLock(lockDir, lockToken);
     }
   }
 
