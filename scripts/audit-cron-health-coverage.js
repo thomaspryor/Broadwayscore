@@ -20,10 +20,13 @@ const EXEMPT_FILE = path.join(__dirname, '..', '.cron-health-exempt.txt');
 // they exist for. Map: workflow filename → { maxHours, why }.
 const TIGHT_BY_DESIGN = {
   // Digest carrier: a single cancelled run blacks out all non-critical alerting.
-  // 26h (vs the generic 36h for a daily cron) is required so the noon-UTC check
-  // catches a cancel SAME day before the next day's success resets the clock.
+  // 26h (vs the generic 36h for a daily cron) keeps the band tight to the 24h
+  // cadence so a dead cron trips fast. The digest moved 07→16 UTC on 2026-07-24
+  // (card #409), so the noon-UTC check now runs before it; a single cancel is
+  // caught the NEXT noon rather than the same day. Do NOT widen 26h — a wider
+  // band would let a next-day success reset the clock and hide a single cancel.
   // See Notion 381637c5-416f-81af and the comment on this entry in check-cron-health.yml.
-  'data-health-check.yml': { maxHours: 26, why: 'same-day digest-carrier cancel detection' },
+  'data-health-check.yml': { maxHours: 26, why: 'digest-carrier cancel detection (tight to 24h cadence)' },
 };
 
 function parseField(field, min, max) {

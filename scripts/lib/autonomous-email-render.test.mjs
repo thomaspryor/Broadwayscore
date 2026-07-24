@@ -196,7 +196,7 @@ test('summarizeQueue is null when work WAS planned or the queue is unusable', ()
 test('0-planned email renders the breakdown; planned email omits it', () => {
   const qs = summarizeQueue(ZERO_PLAN_QUEUE);
   const html = renderEmail({ items: [], stats: STATS, queueSummary: qs, awaitingTotal: 0 });
-  assert.match(html, /Why nothing was planned — 6 triaged \(of 24 fetched\), 0 workable/);
+  assert.match(html, /Why nothing was planned: 6 triaged \(of 24 fetched\), 0 workable/);
   assert.match(html, /human territory \(marketing\/partnerships\)/);
   assert.match(html, /What would unlock work/);
   const withItems = renderEmail({ items: [ITEM], stats: STATS, queueSummary: qs, awaitingTotal: 1 });
@@ -245,4 +245,56 @@ test('renderEmail: attention block appears above approval items', () => {
   const attnIdx = html.indexOf('stalling the loop');
   const itemIdx = html.indexOf('Some pass card');
   assert.ok(attnIdx > -1 && itemIdx > -1 && attnIdx < itemIdx, `attention(${attnIdx}) must precede items(${itemIdx})`);
+});
+
+// ── One-line summary + demoted context divider (card #409 reformat) ─────────
+
+test('renderSummaryLine: items → "N fixes waiting for your tap", cost, "nothing broken" when clean', () => {
+  const { renderSummaryLine } = require('./autonomous-email-render.js');
+  const html = renderSummaryLine({ items: [ITEM, ITEM], stats: STATS });
+  assert.match(html, /2 fixes waiting for your tap/);
+  assert.match(html, /\$2\.13 overnight/);
+  assert.match(html, /nothing broken/);
+});
+
+test('renderSummaryLine: singular fix, and 0-item morning reads calm', () => {
+  const { renderSummaryLine } = require('./autonomous-email-render.js');
+  assert.match(renderSummaryLine({ items: [ITEM], stats: STATS }), /1 fix waiting for your tap/);
+  assert.match(renderSummaryLine({ items: [], stats: STATS }), /Nothing needs you this morning/);
+});
+
+test('renderSummaryLine: failures/attention/stuck-digest flip health to "N things to look at"', () => {
+  const { renderSummaryLine } = require('./autonomous-email-render.js');
+  assert.match(renderSummaryLine({ items: [], stats: STATS, failedCount: 2 }), /2 things to look at below/);
+  assert.match(renderSummaryLine({ items: [], stats: STATS, attention: { failedCards: [{ name: 'x' }], configWarnings: [], parkedItems: [] } }), /1 thing to look at below/);
+  assert.doesNotMatch(renderSummaryLine({ items: [], stats: STATS, failedCount: 2 }), /nothing broken/);
+});
+
+test('renderSummaryLine: run-skipped headline suppresses the health word', () => {
+  const { renderSummaryLine } = require('./autonomous-email-render.js');
+  const html = renderSummaryLine({ items: [], stats: STATS, runSkipped: 'auth: login expired' });
+  assert.match(html, /The overnight run did not finish/);
+  assert.doesNotMatch(html, /nothing broken/);
+});
+
+test('digestStuckCount: counts each stuck signal, 0 when clean or absent', () => {
+  const { digestStuckCount } = require('./autonomous-email-render.js');
+  assert.equal(digestStuckCount(null), 0);
+  assert.equal(digestStuckCount({ commits: { reviewDelta: -5 }, stuck: {} }), 0);
+  assert.equal(digestStuckCount({ commits: { reviewDelta: -152 }, stuck: { worktrees: ['a'] } }), 2);
+});
+
+test('renderEmail: summary line leads, and ALL informational context sits below the divider', () => {
+  const qs = summarizeQueue(ZERO_PLAN_QUEUE);
+  const html = renderEmail({ items: [ITEM], stats: STATS, queueSummary: qs, awaitingTotal: 1, lastRunNote: 'last run activity 2026-07-24 08:00 UTC' });
+  const summaryIdx = html.indexOf('1 fix waiting for your tap');
+  const itemIdx = html.indexOf(ITEM.name);
+  const dividerIdx = html.indexOf('For your records');
+  const usageIdx = html.indexOf('Tonight');
+  const footerIdx = html.indexOf('last run activity');
+  // summary → item → divider → usage → footer, strictly in that order
+  assert.ok(summaryIdx > -1 && summaryIdx < itemIdx, 'summary leads the item');
+  assert.ok(itemIdx < dividerIdx, 'approval item sits above the divider');
+  assert.ok(dividerIdx < usageIdx, 'usage/cost sits below the divider');
+  assert.ok(usageIdx < footerIdx, 'footer is last');
 });

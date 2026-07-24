@@ -36,16 +36,21 @@ jobs:
             "collect-review-texts.yml|36|Collect Review Texts"
             "llm-ensemble-score.yml|48|LLM Ensemble Score"
             "test.yml|48|Test Suite"
-            # Daily 7 UTC. The BSC Daily digest carrier — the ONLY surface for all
-            # non-critical alerting (cron staleness, cookie health, repeat-failures,
-            # OB candidates). A *cancelled* run sends no digest and pages nothing, so
-            # alerting goes dark with nobody to flag it (2/14 runs cancelled ~14% incl.
-            # 2026-06-14). notify-failure ignores conclusion=cancelled. 26h (NOT the
-            # generic daily 36h) is deliberate: this check runs at 12 UTC, 5h after the
-            # 7 UTC digest, so on a cancel day the last SUCCESS is ~29h old at noon →
-            # caught SAME day. 36h would let the next day's success reset the clock
-            # before the next noon check, making a single cancel invisible — the exact
-            # gap this entry closes. See Notion 381637c5-416f-81af; audit exemption in
+            # Daily 16 UTC (moved off 07 UTC on 2026-07-24, card #409, to space it
+            # ≥3h from the autonomous loop's overnight approval email). The BSC Daily
+            # digest carrier — the ONLY surface for all non-critical alerting (cron
+            # staleness, cookie health, repeat-failures, OB candidates). A *cancelled*
+            # run sends no digest and pages nothing, so alerting goes dark with nobody
+            # to flag it (2/14 runs cancelled ~14% incl. 2026-06-14). notify-failure
+            # ignores conclusion=cancelled. 26h (NOT the generic daily 36h) still holds:
+            # the run-to-run cadence is 24h, so at any noon check the last SUCCESS is
+            # ~20h old and a fully dead cron trips the 26h band. Since this check runs
+            # at 12 UTC (now BEFORE the 16 UTC digest), a single cancel is caught the
+            # NEXT noon (~44h after the cancel), not the same day as when it ran at 07
+            # UTC — an acceptable tradeoff the owner approved for a routine midday
+            # digest; the digest-CRASH path still pages in real time via notify-failure.
+            # Do NOT widen 26h (it would let a next-day success hide a single cancel).
+            # See Notion 381637c5-416f-81af; audit exemption in
             # scripts/audit-cron-health-coverage.js (TIGHT_BY_DESIGN).
             "data-health-check.yml|26|Daily Data Health Check (digest carrier)"
             "commercial-weekly.yml|192|Commercial Weekly Orchestrator"
