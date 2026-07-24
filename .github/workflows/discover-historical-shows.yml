@@ -18,6 +18,11 @@ on:
         required: false
         default: true
         type: boolean
+      time_budget_min:
+        description: 'Wall-clock budget in minutes for IBDB enrichment (0 = unlimited)'
+        required: false
+        default: '22'
+        type: string
 
 permissions:
   contents: write
@@ -36,6 +41,7 @@ jobs:
       historical_shows_count: ${{ steps.discover.outputs.historical_shows_count }}
       historical_shows: ${{ steps.discover.outputs.historical_shows }}
       historical_slugs: ${{ steps.discover.outputs.historical_slugs }}
+      ibdb_incomplete_count: ${{ steps.discover.outputs.ibdb_incomplete_count }}
       # True only once the discovered shows have actually been pushed (both
       # repos). Downstream jobs gate on this + always() instead of job success,
       # so a 30-min-timeout cancellation AFTER the pushes no longer strands the
@@ -75,7 +81,14 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
-          ARGS="--seasons=${{ inputs.seasons }}"
+          # Exit the IBDB enrichment loop cleanly before the 30-min job
+          # timeout; unenriched shows are still added, just without
+          # IBDB-sourced dates. Default in bash, not a GHA || expression —
+          # the expression coerces a literal 0 (= unlimited) to falsy.
+          TB="${{ inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=22
+
+          ARGS="--seasons=${{ inputs.seasons }} --time-budget-min=$TB"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
@@ -165,6 +178,7 @@ jobs:
           script: |
             const fs = require('fs');
             const count = '${{ needs.discover-historical.outputs.historical_shows_count }}';
+            const ibdbIncompleteCount = parseInt('${{ needs.discover-historical.outputs.ibdb_incomplete_count }}' || '0', 10);
 
             // Read pending shows from file
             const pendingData = JSON.parse(fs.readFileSync('data/historical-shows-pending.json', 'utf8'));
@@ -173,10 +187,18 @@ jobs:
             const showsList = shows.map(s => `- ${s.title} (${s.season}, ${s.venue})`).join('\n');
             const slugs = shows.map(s => s.slug);
 
+            // Budget-exit visibility (#421 follow-up): when the IBDB
+            // enrichment loop hits its time budget, the tail of shows is
+            // still added but without IBDB-sourced dates/creative team.
+            // Without this, that partial state was only visible in job logs.
+            const ibdbNote = ibdbIncompleteCount > 0
+              ? `\n> ⏱ **${ibdbIncompleteCount} of the above show(s) were added without IBDB-sourced dates/creative team** — the enrichment step hit its time budget. Re-run \`enrich-ibdb-dates.yml\` for the affected shows, or wait for its weekly cron.\n`
+              : '';
+
             const issueBody = `## Historical Broadway Shows Discovered
 
             The historical discovery script found **${count} show(s)** from seasons: **${seasons.join(', ')}**
-
+            ${ibdbNote}
             ${showsList}
 
             ### Action Required

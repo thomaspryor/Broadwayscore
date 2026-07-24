@@ -7,7 +7,13 @@
  * high-confidence match is found.
  *
  * Usage:
- *   node scripts/enrich-official-urls.js [--dry-run] [--category=broadway|off-broadway|west-end]
+ *   node scripts/enrich-official-urls.js [--dry-run] [--category=broadway|off-broadway|west-end] [--time-budget-min=N]
+ *
+ * --time-budget-min=N: wall-clock budget in minutes (0 or omitted = unlimited).
+ * Exits cleanly once exceeded instead of running into the job timeout;
+ * deferred shows are picked up on the next run. Runs last in a 25-min job
+ * shared with fix-platform-ticket-links.js, so this also protects against
+ * that earlier step eating most of the shared budget.
  *
  * Requires: SCRAPINGBEE_API_KEY env var for SERP access.
  */
@@ -18,11 +24,13 @@ const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 const CATEGORY_ARG = process.argv.find(a => a.startsWith('--category='));
 const CATEGORY_FILTER = CATEGORY_ARG ? CATEGORY_ARG.split('=')[1] : null;
+const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
 
 // ============================================================================
 // Domain blocklist — never treat these as official show sites
@@ -284,8 +292,20 @@ async function main() {
 
   let found = 0;
   let notFound = 0;
+  let budgetExit = false;
 
   for (const show of targets) {
+    // Each show's discoverOfficialUrl() runs a SERP chain — this loop runs
+    // last in a 25-min job shared with fix-platform-ticket-links.js, so an
+    // unbounded catalog-wide list (currently dormant for broadway-only
+    // dispatch, but not bounded by design) could run past the job's
+    // timeout-minutes with nothing committed (same class as #369/#415).
+    if (timeBudget.exceeded()) {
+      budgetExit = true;
+      console.log(`⏱ Time budget (${timeBudget.minutes} min) reached — remaining shows deferred to next run.`);
+      break;
+    }
+
     process.stdout.write(`${show.id}: `);
     const url = await discoverOfficialUrl(show);
 
@@ -303,7 +323,7 @@ async function main() {
   }
 
   console.log(`\n${'='.repeat(60)}`);
-  console.log(`Results: ${found} found, ${notFound} not found`);
+  console.log(`Results: ${found} found, ${notFound} not found${budgetExit ? ' (time budget exit)' : ''}`);
 
   if (!DRY_RUN && found > 0) {
     saveShows(showsData);

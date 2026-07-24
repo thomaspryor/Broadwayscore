@@ -7,7 +7,11 @@
  * on success.
  *
  * Usage:
- *   node scripts/retry-wrong-urls.js [--dry-run] [--max-tier 3] [--limit 50]
+ *   node scripts/retry-wrong-urls.js [--dry-run] [--max-tier 3] [--limit 50] [--time-budget-min=N]
+ *
+ * --time-budget-min=N: wall-clock budget in minutes (0 or omitted = unlimited).
+ * Exits cleanly once exceeded instead of running into the job timeout;
+ * deferred candidates are picked up on the next run.
  *
  * Env: SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN (at least one required)
  */
@@ -18,6 +22,7 @@ const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { normalizeOutlet } = require('./lib/review-normalization');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
@@ -37,6 +42,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 async function main() {
   const opts = parseArgs();
+  const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
   const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY || '';
   const brightDataKey = process.env.BRIGHTDATA_TOKEN || '';
 
@@ -87,8 +93,20 @@ async function main() {
   if (opts.dryRun) console.log('DRY RUN — no files will be modified\n');
 
   let retried = 0, fixed = 0, failed = 0;
+  let budgetExit = false;
+  const capped = candidates.slice(0, opts.limit);
 
-  for (const c of candidates.slice(0, opts.limit)) {
+  for (const c of capped) {
+    // Each candidate can burn a full multi-provider SERP chain (SB/BD with
+    // their own retries) — the default --limit=200 makes this loop capable
+    // of running well past the job's timeout-minutes with nothing committed
+    // (same class as #369/#415).
+    if (timeBudget.exceeded()) {
+      budgetExit = true;
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — ${capped.length - retried} candidates deferred to next run.`);
+      break;
+    }
+
     retried++;
     process.stdout.write(`[${retried}/${Math.min(candidates.length, opts.limit)}] T${c.tier} ${c.outletName} @ ${c.showId}... `);
 
@@ -165,6 +183,7 @@ async function main() {
   console.log(`Retried: ${retried}`);
   console.log(`Fixed: ${fixed}`);
   console.log(`Not found: ${failed}`);
+  if (budgetExit) console.log(`Deferred (time budget): ${capped.length - retried}`);
   if (opts.dryRun) console.log('(dry run — no files changed)');
 }
 

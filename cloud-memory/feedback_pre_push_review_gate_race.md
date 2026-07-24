@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 3c151755-27a8-4c9e-b741-7bbf9a607b1b
-  modified: 2026-07-21T02:18:38.149Z
+  modified: 2026-07-24T16:12:44.695Z
 ---
 
 `git checkout main && git merge <worktree-branch>` in the main repo dir followed by a
@@ -36,3 +36,14 @@ push fails with "stale verdict... N gated lines changed since," re-run the whole
 than just re-recording — the diff base has moved. If a push is blocked and you step away (e.g.
 to run an adversarial review), re-verify your commit is still an ancestor of local `main` HEAD
 before trusting a bare retry.
+
+**Related trap (2026-07-24, task #421 systemic run-budget audit):** `EnterWorktree` with a bare
+`name:` (no `path:`) always branches from `origin/<default-branch>`, never from local `main` —
+it does not know or care that local `main` has commits origin doesn't yet have. If a push was
+just blocked by this gate and you call `EnterWorktree` again before resolving the block, the new
+worktree silently lacks your unpushed merge — `grep` for your just-added code in the fresh
+worktree comes back empty, looking like the edit never landed. Fix: resolve the blocked push
+(ship-check → record → push) BEFORE spinning up another worktree for follow-up work; if you
+already created a stale one, `git log --oneline -3` in it first — if it doesn't show your commit,
+abandon it (`ExitWorktree action:"remove" discard_changes:true`, nothing lost, it was empty) and
+re-`EnterWorktree` after the push succeeds.

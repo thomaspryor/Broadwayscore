@@ -16,7 +16,11 @@
  * No ScrapingBee needed — static HTML with JSON-LD.
  *
  * Usage:
- *   node scripts/scrape-ltd-audience.js [--show=hamilton-west-end-2021] [--dry-run]
+ *   node scripts/scrape-ltd-audience.js [--show=hamilton-west-end-2021] [--dry-run] [--time-budget-min=N]
+ *
+ * --time-budget-min=N: wall-clock budget in minutes (0 or omitted = unlimited).
+ * Exits cleanly once exceeded instead of running into the job timeout; deferred
+ * shows are picked up on the next run.
  *
  * Environment variables:
  *   BRIGHTDATA_TOKEN - BrightData API token (fallback, optional)
@@ -31,6 +35,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
 const { batchDiscoverSlugs } = require('./lib/serp-slug-discovery');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
@@ -64,6 +69,7 @@ function fetchWithBrightData(url) {
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const dryRun = args.includes('--dry-run');
+const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
 const RATE_LIMIT_MS = 2000;
 const CHECKPOINT_EVERY = 10;
@@ -264,11 +270,23 @@ async function main() {
 
   console.log(`   Processing: ${toProcess.length} shows\n`);
 
-  const stats = { processed: 0, found: 0, notFound: 0, errors: 0, skipped: 0 };
+  const stats = { processed: 0, found: 0, notFound: 0, errors: 0, skipped: 0, unprocessedShows: 0, budgetExit: false };
   const missedShows = [];
   const anchorResults = {};
 
   for (let i = 0; i < toProcess.length; i++) {
+    // Per-show fetches can each burn up to MAX_RETRIES BrightData calls (30s
+    // timeout) across every category x slug variant (up to 3x the URLs LBO
+    // tries) when plain HTTP is blocked — without this check that can blow
+    // the job's timeout-minutes before the loop ever finishes (same class as
+    // #369/#415).
+    if (timeBudget.exceeded()) {
+      stats.unprocessedShows = toProcess.length - i;
+      stats.budgetExit = true;
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — ${stats.unprocessedShows} shows deferred to next run.`);
+      break;
+    }
+
     const show = toProcess[i];
     const title = show.title;
     stats.processed++;
@@ -413,8 +431,13 @@ async function main() {
   console.log(`  Not found: ${stats.notFound}`);
   console.log(`  Skipped:   ${stats.skipped} (title mismatch)`);
   console.log(`  Errors:    ${stats.errors}`);
+  if (stats.budgetExit) {
+    console.log(`  ⏱ Unprocessed (time budget): ${stats.unprocessedShows}`);
+  }
 
-  if (stats.found === 0 && toProcess.length > 3) {
+  // Skip when the budget exit fired early — that's a clean deferral, not a
+  // URL-pattern-change signal (same exemption as #369/#415's fix).
+  if (stats.found === 0 && toProcess.length > 3 && !stats.budgetExit) {
     console.error('\n❌ ZERO shows matched — possible URL pattern change. Aborting.');
     process.exit(1);
   }
