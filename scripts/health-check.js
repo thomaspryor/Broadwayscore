@@ -1090,22 +1090,30 @@ function checkSecretsHealth() {
 // (scripts/e2e-canary-alert-chain.js) ever having run — it fires even if the
 // canary itself is broken or was skipped that day.
 async function checkAlertRouterDeadman() {
+  // readDispatchAttempts returns oldest→newest by ts, so the last element is
+  // always the most recent attempt regardless of file/write order.
   const attempts = readDispatchAttempts({ days: 7 });
   if (attempts.length === 0) {
     return [{ name: 'Alert Router: dispatch deadman', status: 'pass', message: 'No auto-dispatch attempts in the trailing 7d (nothing to check)' }];
   }
 
   const succeeded = attempts.filter(a => a.ok).length;
-  if (succeeded > 0) {
-    return [{ name: 'Alert Router: dispatch deadman', status: 'pass', message: `${succeeded}/${attempts.length} auto-dispatch attempts succeeded in the last 7d` }];
+  const mostRecent = attempts[attempts.length - 1];
+  // Ship-check finding: gating on "any success in the 7d window" lets one
+  // stale success mask an outage that started right after it — the exact
+  // failure class this check exists to catch. Gate on the MOST RECENT
+  // attempt instead: if it succeeded, the chain is healthy right now
+  // regardless of history; if it failed, that's live broken state even if
+  // older attempts this week succeeded.
+  if (mostRecent.ok) {
+    return [{ name: 'Alert Router: dispatch deadman', status: 'pass', message: `${succeeded}/${attempts.length} auto-dispatch attempts succeeded in the last 7d; most recent attempt succeeded` }];
   }
 
-  // Every attempt in the window failed. Surface the most recent REAL error
+  // Most recent attempt failed. Surface the most recent REAL error
   // verbatim — this exact spot is where the npm-ci incident got
   // misdiagnosed as a NOTION_API_KEY problem by a hand-written guess instead
   // of the logged error.
-  const mostRecent = attempts[attempts.length - 1];
-  const message = `${attempts.length} auto-dispatch attempt(s) in the last 7d, 0 succeeded — same failure class as the 2026-07-24 npm-ci incident. Last error: ${mostRecent.error || '(none captured)'}`;
+  const message = `Most recent auto-dispatch attempt failed (${succeeded}/${attempts.length} succeeded in the last 7d) — same failure class as the 2026-07-24 npm-ci incident. Last error: ${mostRecent.error || '(none captured)'}`;
 
   // Self-page via disposition='human' directly from here — that path calls
   // sendAlert() (Resend) and never shells out to notion-brain.js, so it
