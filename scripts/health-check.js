@@ -1099,10 +1099,21 @@ function checkSecretsHealth() {
         if (age > 336) { // 14 days — weekly check
           return { name: 'Secrets: health', status: 'warn', message: `Last check ${formatAge(age)} ago (>14d)`, hint: 'Trigger check-secrets-health workflow manually' };
         }
+        if (run.conclusion === 'success') {
+          return { name: 'Secrets: health', status: 'pass', message: `Last check passed (${formatAge(age)} ago)` };
+        }
         if (run.conclusion === 'failure') {
           return { name: 'Secrets: health', status: 'error', message: `Last check FAILED (${formatAge(age)} ago)`, hint: 'Check check-secrets-health workflow logs' };
         }
-        return { name: 'Secrets: health', status: 'pass', message: `Last check passed (${formatAge(age)} ago)` };
+        if (!run.conclusion) {
+          // Still running/queued — limit=1 with no status filter can return an
+          // in-flight run (conclusion is null until it completes). Not a pass:
+          // a stuck run would otherwise silently mask its eventual result.
+          return { name: 'Secrets: health', status: 'warn', message: `Last check still running (started ${formatAge(age)} ago)`, hint: 'Check check-secrets-health workflow run status' };
+        }
+        // cancelled / skipped / timed_out / action_required / neutral / stale —
+        // inconclusive, not a verified pass (ship-check adversarial finding, #367).
+        return { name: 'Secrets: health', status: 'warn', message: `Last check inconclusive: ${run.conclusion} (${formatAge(age)} ago)`, hint: 'Check check-secrets-health workflow logs' };
       } catch (err) {
         return { name: 'Secrets: health', status: 'warn', message: `gh CLI failed: ${err.message.substring(0, 80)}` };
       }
