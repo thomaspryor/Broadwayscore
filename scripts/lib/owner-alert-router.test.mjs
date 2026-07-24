@@ -244,6 +244,43 @@ test('routeAlert: disposition=digest queues a line, no card, no email', async ()
   }
 });
 
+test('routeAlert: disposition=human re-fire within an explicit cooldownHours is silent (no second email)', async () => {
+  // Exercises the exact call pattern used by the email-noise Sprint 2 migration
+  // (send-opening-night-broadcast.js gates, audit-show-review-gap.js WE-gate):
+  // disposition='human' with an explicit cooldownHours=24 instead of the
+  // 168h default. A retry hitting the SAME stuck condition must not re-email.
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    const first = await router.routeAlert({
+      conditionKey: 'test:broadcast-gate-repeat',
+      title: 'Opening Night Broadcast Blocked — Orphan-Unscored Reviews',
+      description: 'desc',
+      severity: 'error',
+      disposition: 'human',
+      cooldownHours: 24,
+    });
+    assert.equal(first.action, 'human');
+    assert.equal(first.delivered, true);
+
+    // Simulated retry (same run repeating, or a later CI retry) — must go silent.
+    const second = await router.routeAlert({
+      conditionKey: 'test:broadcast-gate-repeat',
+      title: 'Opening Night Broadcast Blocked — Orphan-Unscored Reviews',
+      description: 'desc',
+      severity: 'error',
+      disposition: 'human',
+      cooldownHours: 24,
+    });
+    assert.equal(second.action, 'silent');
+    assert.equal(calls.sendAlert.length, 1);
+
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['test:broadcast-gate-repeat'].silentRefires, 1);
+  } finally {
+    restore();
+  }
+});
+
 test('routeAlert: rejects an invalid disposition', async () => {
   const { router, restore } = loadRouterWithFakes();
   try {

@@ -1421,19 +1421,29 @@ async function main(argv = process.argv.slice(2)) {
   if (useCheckpoint && process.env.GITHUB_ACTIONS === 'true'
       && process.env.WE_GAP_INGEST !== '1' && process.env.WE_GAP_REFERENCE_DISABLED !== '1') {
     const proving = loadWeProving();
-    const { sendAlert } = require('./lib/discord-notify');
+    const { routeAlert } = require('./lib/owner-alert-router');
+    // Routed through the owner-alert-router ledger (not just this file's own
+    // lastEnableAttemptAt throttle) so repeat CI runs of the SAME unresolved
+    // condition (e.g. workflow token still can't write the variable) collapse
+    // to one email instead of one per run — email-noise Sprint 2 (2026-07-23):
+    // two "PROVEN" emails landed ~1h apart because the local proving.json
+    // state wasn't shared between overlapping hourly cron runs. The ledger is
+    // a separately-committed file with its own conditionKey, so it survives
+    // that race even when proving.json's own throttle doesn't.
     const DAY = 24 * 60 * 60 * 1000;
     const attemptDue = !proving.lastEnableAttemptAt || (Date.now() - new Date(proving.lastEnableAttemptAt).getTime()) > DAY;
     if (proving.enabledAt && proving.notifyPending) {
       // Flip already happened but the owner was never notified — retry until it lands.
-      const delivered = await sendAlert({
+      const result = await routeAlert({
+        conditionKey: 'we-gate:enabled-delayed-notice',
         title: 'WE auto-ingest is ENABLED (delayed notice — earlier notification failed)',
         description: `Auto-ingest was enabled at ${proving.enabledAt} after the gate proved itself. Prior-run roundup URLs remain blocked; per-show caps apply. Kill switch: repo variable WE_GAP_REFERENCE_DISABLED=1.`,
         severity: 'error',
-        email: true,
+        disposition: 'human',
+        cooldownHours: 24,
       });
-      if (delivered) { proving.notifyPending = false; saveWeProving(proving); }
-      else console.error('::error::WE auto-ingest is ON but the owner still could not be notified (email failing). Fix RESEND_API_KEY/OWNER_EMAIL.');
+      if (result.action === 'human' && result.delivered) { proving.notifyPending = false; saveWeProving(proving); }
+      else if (result.action === 'human') console.error('::error::WE auto-ingest is ON but the owner still could not be notified (email failing). Fix RESEND_API_KEY/OWNER_EMAIL.');
     } else if (!proving.enabledAt && attemptDue) {
       const verdict = evaluateProving(proving);
       if (verdict.enable) {
@@ -1446,13 +1456,15 @@ async function main(argv = process.argv.slice(2)) {
         catch { varExists = false; }
         if (varExists) {
           console.log('WE gate proven, but WE_GAP_INGEST variable already exists (operator-set state) — not touching it.');
-          const delivered = await sendAlert({
+          const result = await routeAlert({
+            conditionKey: 'we-gate:proven-variable-already-set',
             title: 'WE completeness gate PROVEN — variable already set, respecting your state',
             description: `Proving criteria met (${verdict.reason}) on: ${verdict.qualifying.join(', ')}. The WE_GAP_INGEST repo variable already exists, so nothing was changed. To enable: gh variable set WE_GAP_INGEST --body 1`,
             severity: 'error',
-            email: true,
+            disposition: 'human',
+            cooldownHours: 24,
           });
-          proving.notifyPending = !delivered;
+          proving.notifyPending = result.action === 'human' && !result.delivered;
           proving.enabledAt = new Date().toISOString(); // terminal state: decision handed to operator, never re-fire
           saveWeProving(proving);
         } else {
@@ -1464,7 +1476,8 @@ async function main(argv = process.argv.slice(2)) {
             console.error(`::warning::WE gate PROVEN but variable write failed (${(e.message || '').slice(0, 80)}) — will email manual instructions.`);
           }
           if (flipped) { proving.enabledAt = new Date().toISOString(); saveWeProving(proving); }
-          const delivered = await sendAlert({
+          const result = await routeAlert({
+            conditionKey: flipped ? 'we-gate:enabled' : 'we-gate:proven-flip-failed',
             title: flipped
               ? 'WE auto-ingest ENABLED — completeness gate proved itself'
               : 'WE completeness gate PROVEN — one command to enable auto-ingest',
@@ -1472,9 +1485,10 @@ async function main(argv = process.argv.slice(2)) {
               ? `Proving criteria met (${verdict.reason}) on: ${verdict.qualifying.join(', ')}. Auto-ingest of WE-reference review URLs is now ON (prior-run roundup URLs remain permanently blocked; per-show ingest caps apply). Kill switch: repo variable WE_GAP_REFERENCE_DISABLED=1 (WE-only), or empty WE_GAP_INGEST.`
               : `Proving criteria met (${verdict.reason}) on: ${verdict.qualifying.join(', ')}, but the workflow token could not set the repo variable. Run: gh variable set WE_GAP_INGEST --body 1`,
             severity: 'error',
-            email: true,
+            disposition: 'human',
+            cooldownHours: 24,
           });
-          if (flipped && !delivered) {
+          if (flipped && result.action === 'human' && !result.delivered) {
             proving.notifyPending = true;
             saveWeProving(proving);
             console.error('::error::WE auto-ingest was ENABLED but the notification email failed — will retry notifying hourly. Fix RESEND_API_KEY/OWNER_EMAIL.');

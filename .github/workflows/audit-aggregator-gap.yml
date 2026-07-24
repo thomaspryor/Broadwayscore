@@ -105,7 +105,16 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # REVIEW_TEXTS_TOKEN (not GITHUB_TOKEN): the self-proving auto-enable
+          # block below calls `gh variable get/set WE_GAP_INGEST` — GitHub's
+          # Actions Variables API rejects the default workflow token outright,
+          # so with GITHUB_TOKEN both the read AND the write always failed.
+          # That made the code permanently believe the variable didn't exist,
+          # so it kept re-attempting (and re-failing) the flip and re-emailing
+          # "one command to enable" every ~24h forever, even after the owner
+          # set WE_GAP_INGEST manually (2026-07-23 email-noise Sprint 2 —
+          # traced from 2 same-day "PROVEN" emails to this token gap).
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           # WE completeness gate (2026-07-10). Email delivery for the named-missing-
           # outlet alerts (discord-notify email path — log-only alerts reached nobody):
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
