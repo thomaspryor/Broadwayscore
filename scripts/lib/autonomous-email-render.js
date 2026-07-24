@@ -77,7 +77,7 @@ function sanitizePlainLanguageText(text) {
 // matters: prefilter reasons are authoritative when present.
 function skipBucket(entry) {
   if (entry.decision === 'failed') return 'triage failed (retried tomorrow)';
-  if (entry.decision === 'split') return 'too large — split proposed';
+  if (entry.decision === 'split') return 'too large, split proposed';
   const r = (entry.preFilter && entry.preFilter.reason) || '';
   if (/human territory/i.test(r)) return 'human territory (marketing/partnerships)';
   if (/human action/i.test(r)) return 'human-action title (emailing, posting, meeting)';
@@ -128,7 +128,7 @@ function renderQueueSummary(qs) {
   // manually re-run triage can never silently pose as last night's.
   const when = qs.generatedAt ? ` <span style="font-weight:400;color:#999;">(triage ${esc(String(qs.generatedAt).slice(0, 16).replace('T', ' '))} UTC)</span>` : '';
   return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:6px;">Why nothing was planned — ${esc(scanned)}, 0 workable${when}</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:6px;">Why nothing was planned: ${esc(scanned)}, 0 workable${when}</div>
     <table style="border-collapse:collapse;">${rows}</table>
     ${qs.unlock ? `<div style="font-size:12px;color:#666;margin-top:8px;">${esc(qs.unlock)}</div>` : ''}
   </div>`;
@@ -154,7 +154,7 @@ function renderAttentionBlock(attention) {
   for (const p of parkedItems) {
     lines.push({
       label: 'parked', text: `${p.name} (sized ${p.size})`,
-      action: 'too big for the loop — needs an interactive session, or split the card',
+      action: 'too big for the loop, needs an interactive session, or split the card',
     });
   }
   if (!lines.length) return '';
@@ -165,7 +165,7 @@ function renderAttentionBlock(attention) {
       <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">→ ${esc(l.action)}</div>
     </div>`).join('');
   return `<div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:#b45309;">Needs your attention — ${lines.length} item${lines.length > 1 ? 's' : ''} stalling the loop</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:#b45309;">Needs your attention: ${lines.length} item${lines.length > 1 ? 's' : ''} stalling the loop</div>
     ${rows}
   </div>`;
 }
@@ -182,8 +182,8 @@ function renderItem(item) {
   // old bold Why/Done layout when plainText is absent (LLM call failed, or a
   // caller — including older tests — never populated it).
   const body = item.plainText
-    ? `<div style="font-size:14px;color:#111;margin-bottom:8px;">${esc(item.plainText)}</div>
-    <div style="font-size:11px;color:#999;margin-bottom:10px;">${item.why ? `Why: ${esc(item.why)}<br>` : ''}Done: ${esc(item.summary || 'change implemented and verified')}<br>Branch: ${esc(item.branch)}</div>`
+    ? `<div style="font-size:15px;color:#111;line-height:1.45;margin-bottom:8px;">${esc(item.plainText)}</div>
+    <div style="font-size:11px;color:#aaa;margin-bottom:10px;">${item.why ? `Why: ${esc(item.why)} · ` : ''}Done: ${esc(item.summary || 'change implemented and verified')} · ${esc(item.branch)}</div>`
     : `${item.why ? `<div style="font-size:13px;color:#666;margin-bottom:4px;"><b>Why:</b> ${esc(item.why)}</div>` : ''}
     <div style="font-size:13px;color:#333;margin-bottom:6px;"><b>Done:</b> ${esc(item.summary || 'change implemented and verified')} <span style="color:#999;">(${esc(item.branch)})</span></div>`;
   return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:16px;margin:0 0 14px;">
@@ -229,6 +229,48 @@ function renderUsageBlock(stats, admin, config = {}) {
   </div>`;
 }
 
+// ── One-line "read me first" summary (owner reformat, card #409) ────────────
+// The owner reads text-heavy and can't tell at a glance whether anything
+// needs them. This is the single line at the very top: what to do, what it
+// cost, and one plain health word. Owner-facing copy — plain language, no
+// em dashes, no jargon (anti-slop rules).
+
+function attentionCountOf(attention) {
+  const a = attention || {};
+  return (a.configWarnings?.length || 0) + (a.failedCards?.length || 0) + (a.parkedItems?.length || 0);
+}
+
+// Count the digest signals renderDigestBlock flags as "possibly stuck", so the
+// top-line "nothing broken" is never contradicted by a ⚠️ shown below.
+// Delegates to overnight-digest.js's countStuckSignals — the ONE definition of
+// those thresholds — instead of re-implementing them here (card #409 review: a
+// second copy silently drifts the next time renderDigestBlock is edited).
+function digestStuckCount(digest) {
+  return require('./overnight-digest.js').countStuckSignals(digest);
+}
+
+function renderSummaryLine(data) {
+  const { items = [], failedCount = 0, throttled = null, runSkipped = null, attention = null, stats = null, digest = null } = data;
+  // A partially-failed digest (a source it couldn't check) means health is
+  // UNKNOWN, not clean — count it so the top line never says "nothing broken"
+  // while the digest below shows a "Couldn't check: …" line.
+  const digestUnknown = digest && Array.isArray(digest.errors) && digest.errors.length ? 1 : 0;
+  const issues = failedCount + attentionCountOf(attention) + digestStuckCount(digest) + digestUnknown + (throttled ? 1 : 0);
+
+  let headline;
+  if (runSkipped) headline = 'The overnight run did not finish';
+  else if (items.length) headline = `${items.length} fix${items.length > 1 ? 'es' : ''} waiting for your tap`;
+  else headline = 'Nothing needs you this morning';
+
+  const bits = [];
+  const spend = stats && stats.tonight ? stats.tonight.usd : null;
+  if (spend != null) bits.push(`${money(spend)} overnight`);
+  if (!runSkipped) bits.push(issues > 0 ? `${issues} thing${issues > 1 ? 's' : ''} to look at below` : 'nothing broken');
+
+  return `<div style="font-size:20px;font-weight:800;line-height:1.3;margin:0 0 4px;color:#111;">${esc(headline)}</div>
+    ${bits.length ? `<div style="font-size:13px;color:#666;margin:0 0 4px;">${esc(bits.join(' · '))}</div>` : ''}`;
+}
+
 /**
  * @param {object} data
  *   items: [{ name, why, summary, branch, usd, checks[], approveUrl, rejectUrl }]
@@ -238,18 +280,26 @@ function renderUsageBlock(stats, admin, config = {}) {
  *   queueSummary: summarizeQueue() result|null (0-planned skip breakdown)
  *   stats: usageStats() result · admin: fetchAdminUsage() result|null
  *   config: { weeklyUSD } · lastRunNote: string|null · awaitingTotal: number
+ *
+ * Layout (card #409 reformat): one-line summary → any urgent banner → items
+ * that need a tap (the ONE action, visually dominant) → a divider → all the
+ * informational context (what changed, cost, why nothing was planned) demoted
+ * below in quieter type. The owner should be able to act, or close the email,
+ * from everything ABOVE the divider alone.
  */
 function renderEmail(data) {
   const { items = [], moreAwaiting = 0, failedCount = 0, throttled = null, runSkipped = null, queueSummary = null, attention = null, stats, admin = null, config = {}, lastRunNote = null, awaitingTotal = 0 } = data;
 
   const parts = [];
   parts.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
-  parts.push(`<h2 style="font-size:18px;margin:0 0 14px;">Overnight work — ${items.length ? `${items.length} item${items.length > 1 ? 's' : ''} awaiting your tap` : 'nothing to approve'}</h2>`);
 
+  // 1. The read-me-first line: action + cost + health, in one glance.
+  parts.push(renderSummaryLine(data));
+
+  // 2. Urgent banners. A skipped run or a queue-read failure is the first
+  //    real content after the summary — never a silent no-op night.
   if (runSkipped) {
-    // Never a silent no-op night: an auth-expired or broken preflight is the
-    // first thing the owner reads, in red, with what to do about it.
-    parts.push(`<p style="font-size:14px;font-weight:700;color:#dc2626;margin:0 0 12px;">⛔ ${esc(runSkipped)}</p>`);
+    parts.push(`<p style="font-size:14px;font-weight:700;color:#dc2626;margin:12px 0 12px;">⛔ ${esc(runSkipped)}</p>`);
   }
   if (throttled) {
     // `throttled` is a generic banner string — it may carry an actual
@@ -257,14 +307,17 @@ function renderEmail(data) {
     // self-describing, so use a neutral marker not a hardcoded "Throttled:".
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(throttled)}</p>`);
   }
-  // Attention block sits ABOVE approvals: a stalled loop outranks routine
-  // taps — three silent-zero nights (07-17..19) is the incident this fixes.
+
+  // 3. Anything stalling the loop outranks routine taps — three silent-zero
+  //    nights (07-17..19) is the incident this block fixes.
   const attentionHtml = renderAttentionBlock(attention);
   if (attentionHtml) parts.push(attentionHtml);
-  for (const item of items) parts.push(renderItem(item));
-  // 0-planned night: say WHY (night-1 fix — the bare "nothing to approve"
-  // read as a malfunction and the owner immediately distrusted it).
-  if (!items.length && queueSummary) parts.push(renderQueueSummary(queueSummary));
+
+  // 4. THE action: approval cards, visually dominant, right up top.
+  if (items.length) {
+    parts.push(`<div style="height:6px;"></div>`);
+    for (const item of items) parts.push(renderItem(item));
+  }
   if (moreAwaiting > 0) {
     parts.push(`<p style="font-size:13px;color:#666;">+${moreAwaiting} more item${moreAwaiting > 1 ? 's' : ''} awaiting approval (shown over the next mornings).</p>`);
   }
@@ -272,21 +325,33 @@ function renderEmail(data) {
     parts.push(`<p style="font-size:13px;color:#666;margin:6px 0;">${failedCount} card${failedCount > 1 ? 's' : ''} failed overnight (details on the cards; nothing was pushed for them).</p>`);
   }
 
+  // 5. The divider. Everything below is context, not action: what changed
+  //    overnight, cost, and (on a 0-planned night) why nothing was planned.
+  const tail = [];
+  // 0-planned night: say WHY (night-1 fix — a bare "nothing to approve" read
+  // as a malfunction and the owner immediately distrusted it).
+  if (!items.length && queueSummary) tail.push(renderQueueSummary(queueSummary));
   // Owner's daily "what changed / did anything get stuck" digest — data is
   // gathered fail-soft by scripts/lib/overnight-digest.js; null renders nothing.
-  if (data.digest) parts.push(require('./overnight-digest.js').renderDigestBlock(data.digest));
-
-  parts.push(renderUsageBlock(stats, admin, config));
+  if (data.digest) tail.push(require('./overnight-digest.js').renderDigestBlock(data.digest));
+  tail.push(renderUsageBlock(stats, admin, config));
 
   const footerBits = [];
   if (lastRunNote) footerBits.push(esc(lastRunNote));
   footerBits.push(`${awaitingTotal} awaiting approval`);
-  parts.push(`<p style="color:#999;font-size:11px;margin-top:18px;text-align:center;">${footerBits.join(' · ')} · Broadway Scorecard autonomous loop</p>`);
+  tail.push(`<p style="color:#999;font-size:11px;margin-top:12px;text-align:center;">${footerBits.join(' · ')} · Broadway Scorecard autonomous loop</p>`);
+
+  parts.push(`<div style="border-top:2px solid #e5e5e5;margin:24px 0 0;padding-top:8px;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#bbb;margin:0 0 10px;">For your records</div>
+    ${tail.join('\n')}
+  </div>`);
+
   parts.push(`</div>`);
   return parts.join('\n');
 }
 
 module.exports = {
-  renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, summarizeQueue, skipBucket, extractWhy, esc,
+  renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
+  attentionCountOf, digestStuckCount,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
 };

@@ -14,16 +14,21 @@ const CHECK_FILE = path.join(WORKFLOWS_DIR, 'check-cron-health.yml');
 const EXEMPT_FILE = path.join(__dirname, '..', '.cron-health-exempt.txt');
 
 // Entries whose max_hours is intentionally tighter than worst-gap + CUSHION_HOURS.
-// These trade the standard cron-lag cushion for SAME-DAY detection and are exempt
-// from the cushion warning (the false-positive risk is accepted by design).
-// DO NOT "fix" these by raising max_hours — doing so silently defeats the detection
-// they exist for. Map: workflow filename → { maxHours, why }.
+// These trade part of the standard cron-lag cushion for faster cancel detection
+// and are exempt from the cushion warning (the false-positive risk is accepted by
+// design). DO NOT "fix" these toward the generic 36h daily cushion — doing so
+// silently defeats the detection they exist for. Map: workflow filename → { maxHours, why }.
 const TIGHT_BY_DESIGN = {
-  // Digest carrier: a single cancelled run blacks out all non-critical alerting.
-  // 26h (vs the generic 36h for a daily cron) is required so the noon-UTC check
-  // catches a cancel SAME day before the next day's success resets the clock.
+  // Digest carrier: a cancelled run blacks out all non-critical alerting.
+  // 30h (vs the generic 36h daily cushion) keeps the band tight to the 24h
+  // cadence so a dead cron trips fast, while leaving ~7h healthy-state slack.
+  // The digest moved 07→16 UTC on 2026-07-24 (card #409); the noon-UTC check now
+  // runs before it, so healthy age at check time rose from ~5h to ~20h and a
+  // single cancel is caught at ~44h the next noon (not same-day). 30h (raised
+  // from 26h in #409) restores slack so a lagged check can't false-trip and
+  // self-heal into a duplicate digest email; it still catches the 44h case.
   // See Notion 381637c5-416f-81af and the comment on this entry in check-cron-health.yml.
-  'data-health-check.yml': { maxHours: 26, why: 'same-day digest-carrier cancel detection' },
+  'data-health-check.yml': { maxHours: 30, why: 'digest-carrier cancel detection (tight to 24h cadence)' },
 };
 
 function parseField(field, min, max) {
