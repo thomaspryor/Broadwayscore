@@ -887,7 +887,13 @@ async function fetchJSON(url, options = {}) {
     const response = await new Promise((resolve, reject) => {
       const req = proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res) => {
         if ([301, 302, 307, 308].includes(res.statusCode)) {
-          const req2 = proto.get(res.headers.location, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res2) => {
+          // Resolve against the original URL (handles relative Location headers)
+          // and pick the protocol client from the RESOLVED target, not the
+          // original request — a cross-scheme redirect (http->https or
+          // https->http) must not be followed with the wrong client.
+          const redirectUrl = new URL(res.headers.location, url).toString();
+          const redirectProto = redirectUrl.startsWith('https') ? https : require('http');
+          const req2 = redirectProto.get(redirectUrl, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res2) => {
             let d = ''; res2.on('data', c => d += c); res2.on('end', () => {
               if (res2.statusCode === 200) resolve(d); else reject(new Error(`HTTP ${res2.statusCode}`));
             });
