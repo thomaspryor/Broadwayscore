@@ -23,6 +23,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import showsWriteGuardPkg from './lib/shows-write-guard.js';
+const { loadShows, saveShows } = showsWriteGuardPkg;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,7 +59,7 @@ function main() {
   // Load mutable data files
   const todaytixIds = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/todaytix-ids.json'), 'utf8'));
   const imageSources = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/image-sources.json'), 'utf8'));
-  const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
+  const showsRaw = loadShows();
   const shows = showsRaw.shows || showsRaw;
 
   let mappingsRemoved = 0;
@@ -191,7 +193,7 @@ function main() {
     todaytixIds.lastUpdated = new Date().toISOString();
     fs.writeFileSync(path.join(ROOT, 'data/todaytix-ids.json'), JSON.stringify(todaytixIds, null, 2) + '\n');
     fs.writeFileSync(path.join(ROOT, 'data/image-sources.json'), JSON.stringify(imageSources, null, 2) + '\n');
-    fs.writeFileSync(path.join(ROOT, 'data/shows.json'), JSON.stringify(showsRaw, null, 2) + '\n');
+    saveShows(showsRaw);
   }
 
   // Summary

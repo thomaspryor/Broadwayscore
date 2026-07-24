@@ -10,13 +10,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 const LOTTERY_PATH = path.join(__dirname, '../data/lottery-rush.json');
 
 function main() {
   // Load data
-  const showsFile = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsFile = loadShows();
   const lotteryData = JSON.parse(fs.readFileSync(LOTTERY_PATH, 'utf8'));
 
   const shows = showsFile.shows;
@@ -87,7 +88,7 @@ function main() {
   }
 
   // Write updated shows.json
-  fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsFile, null, 2) + '\n');
+  saveShows(showsFile);
 
   // Report changes
   console.log('Lottery/Rush Tag Sync Complete');

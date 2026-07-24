@@ -12,6 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const AWARDS_PATH = path.join(__dirname, '..', 'data', 'awards.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -215,7 +216,7 @@ function matchShowToId(showTitle, year, shows) {
 
 async function main() {
   const awardsData = JSON.parse(fs.readFileSync(AWARDS_PATH, 'utf8'));
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows;
 
   console.log(`Shows: ${shows.length} | Existing awards entries: ${Object.keys(awardsData.shows).length}`);
@@ -360,7 +361,7 @@ async function main() {
       console.log(`\n(dry run) Would tag ${tagged} shows with olivier-winner:`);
       newlyTagged.forEach(line => console.log(`  + ${line}`));
     } else {
-      fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+      saveShows(showsData);
       console.log(`\nTagged ${tagged} shows with olivier-winner:`);
       newlyTagged.forEach(line => console.log(`  + ${line}`));
     }

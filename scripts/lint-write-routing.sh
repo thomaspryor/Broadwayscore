@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Shared write-routing lint — single source of truth for the two data-write
+# Shared write-routing lint — single source of truth for the data-write
 # gates that used to live inline in .github/workflows/test.yml:
 #
 #   1. review-texts: every write to data/review-texts/ MUST go through
@@ -8,6 +8,11 @@
 #   2. reviews-json: data/reviews.json is derived — scripts must not write it
 #      directly (bypasses the rebuild audit trail) unless on
 #      .reviews-json-write-exempt.txt.
+#   3. shows-json: data/shows.json must go through the lock+merge guard in
+#      scripts/lib/shows-write-guard.js — 50+ unlocked writers used to race
+#      each other and silently clobber concurrent edits (card: shows.json
+#      concurrency lock) — unless the script is on
+#      .shows-json-write-exempt.txt.
 #
 # Called from BOTH:
 #   - CI: .github/workflows/test.yml (Lint Workflows job)
@@ -15,7 +20,7 @@
 # so a violation blocks at push time instead of reddening main for hours
 # (2026-07-12: 24 consecutive Test Suite failures from one unlinted script).
 #
-# Usage: lint-write-routing.sh [review-texts|reviews-json|all]   (default: all)
+# Usage: lint-write-routing.sh [review-texts|reviews-json|shows-json|all]   (default: all)
 
 set -uo pipefail
 cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
@@ -96,11 +101,52 @@ check_reviews_json() {
   fi
 }
 
+check_shows_json() {
+  local ALLOWLIST=".shows-json-write-exempt.txt"
+  if [ ! -f "$ALLOWLIST" ]; then
+    echo "::error::missing allowlist file: $ALLOWLIST"
+    FAILED=1
+    return
+  fi
+  local EXEMPT VIOLATIONS="" f name
+  EXEMPT=$(read_allowlist "$ALLOWLIST")
+  for f in scripts/*.js; do
+    name=$(basename "$f")
+    echo "$EXEMPT" | grep -Fxq "$name" && continue
+    # (1) references data/shows.json AND (2) writeFileSync to a var whose
+    # name contains "shows" + path/file/json (case-insensitive — catches
+    # SHOWS_PATH, showsFile, SHOWS_JSON_PATH, etc. without needing every
+    # variant enumerated; a literal 'showsFile' miss slipped through the
+    # old fixed-name list once already) or a literal shows.json path, AND
+    # (3) does NOT route through shows-write-guard (loadShows/saveShows) or
+    # atomic-shows-write.js directly (atomic-shows-write callers still need
+    # the lock+merge layer, so they're violators too unless they also
+    # require shows-write-guard).
+    if grep -qE "['\"][^'\"]*data/shows\.json['\"]|path\.join\([^)]*['\"]data['\"][^)]*['\"]shows\.json['\"]" "$f" \
+      && grep -qEi "fs\.writeFileSync\([^)]*(shows[_a-z]*(path|file|json)|['\"][^'\"]*data/shows\.json['\"])|atomicWriteShowsJson\(" "$f" \
+      && ! grep -q "shows-write-guard" "$f"; then
+      VIOLATIONS="$VIOLATIONS $name"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Scripts write data/shows.json without the shows-write-guard lock+merge:"
+    for v in $VIOLATIONS; do echo "  $v"; done
+    echo "Fix: const { loadShows, saveShows } = require('./lib/shows-write-guard'); use those in place of"
+    echo "your own fs.readFileSync/writeFileSync(SHOWS_PATH, ...) pair (or atomicWriteShowsJson call)."
+    echo "If this script genuinely can't (e.g. it targets a different shows.json-shaped file), add it to"
+    echo "$ALLOWLIST with a one-line reason."
+    FAILED=1
+  else
+    echo "All detected shows.json writes route through shows-write-guard"
+  fi
+}
+
 case "$MODE" in
   review-texts) check_review_texts ;;
   reviews-json) check_reviews_json ;;
-  all) check_review_texts; check_reviews_json ;;
-  *) echo "usage: $0 [review-texts|reviews-json|all]" >&2; exit 2 ;;
+  shows-json) check_shows_json ;;
+  all) check_review_texts; check_reviews_json; check_shows_json ;;
+  *) echo "usage: $0 [review-texts|reviews-json|shows-json|all]" >&2; exit 2 ;;
 esac
 
 exit "$FAILED"

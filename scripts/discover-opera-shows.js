@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
+const showsWriteGuard = require('./lib/shows-write-guard');
 
 // shows.json is a symlink to the private data repo — resolve to real path
 // so it works both from the main repo and from a git worktree.
@@ -223,12 +224,12 @@ function parseSeasonProductions(html, seasonSlug) {
 
 // ─── shows.json helpers ──────────────────────────────────────────────────────
 function loadShows() {
-  const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const data = showsWriteGuard.loadShows();
   return { meta: data._meta, shows: data.shows };
 }
 
 function saveShows(meta, shows) {
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify({ _meta: meta, shows }, null, 2) + '\n');
+  showsWriteGuard.saveShows({ _meta: meta, shows });
 }
 
 function operaIdPrefixes() {

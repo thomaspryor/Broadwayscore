@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const IMAGE_SOURCES_PATH = path.join(__dirname, '..', 'data', 'image-sources.json');
@@ -248,7 +249,7 @@ function main() {
   }
 
   // Write updated files
-  fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+  saveShows(showsData);
   fs.writeFileSync(IMAGE_SOURCES_PATH, JSON.stringify(imageSources, null, 2) + '\n');
 
   console.log(`\nCleaned ${cleanedShows} shows, deleted ${deletedFiles} files.`);

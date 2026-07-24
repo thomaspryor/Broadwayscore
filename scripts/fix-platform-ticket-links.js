@@ -24,6 +24,7 @@ const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { buildTelechargeUrl, normalizeShowName } = require('./lib/url-utils');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -135,7 +136,7 @@ async function main() {
   console.log(`Platform Ticket Link Validator ${DRY_RUN ? '(DRY RUN)' : ''}`);
   console.log('='.repeat(60));
 
-  const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const data = loadShows();
   const shows = data.shows;
 
   const stats = {
@@ -225,7 +226,7 @@ async function main() {
   console.log(`Total changes: ${totalChanges}`);
 
   if (!DRY_RUN && totalChanges > 0) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(data, null, 2) + '\n');
+    saveShows(data);
     console.log('shows.json updated.');
   } else if (DRY_RUN) {
     console.log('(dry run — no files written)');

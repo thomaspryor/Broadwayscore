@@ -15,6 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const https = require('https');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -162,7 +163,7 @@ function buildCreativeTeam(fields, type) {
 }
 
 async function main() {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows;
 
   let targets = shows.filter(s => !s.creativeTeam || s.creativeTeam.length === 0);
@@ -215,7 +216,7 @@ async function main() {
   console.log(`Found but no creative data: ${noData}`);
 
   if (!DRY_RUN && enriched > 0) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log(`\nshows.json updated.`);
   } else if (DRY_RUN) {
     console.log(`\n(dry run — no files written)`);

@@ -18,6 +18,7 @@ const https = require('https');
 const http = require('http');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { compressImage } = require('./lib/compress-image');
+const showsWriteGuard = require('./lib/shows-write-guard');
 
 let sharp;
 try { sharp = require('sharp'); } catch { sharp = null; }
@@ -148,11 +149,11 @@ function matchImageToShow(imageUrl, operaShows, years) {
 // ─── Shows I/O ────────────────────────────────────────────────────────────────
 
 function loadShows() {
-  return JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  return showsWriteGuard.loadShows();
 }
 
 function saveShows(data) {
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  showsWriteGuard.saveShows(data);
 }
 
 // ─── Crop helpers ─────────────────────────────────────────────────────────────

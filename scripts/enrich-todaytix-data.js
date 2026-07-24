@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildTodayTixUrl } = require('./lib/url-utils');
@@ -132,7 +133,7 @@ function matchShow(ttShow, shows, category) {
 }
 
 async function main() {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows;
 
   console.log(`Total shows in shows.json: ${shows.length}`);
@@ -239,7 +240,7 @@ async function main() {
   console.log(`Unmatched TodayTix shows: ${stats.skipped}`);
 
   if (!DRY_RUN && (stats.todaytixIdSet > 0 || stats.todaytixUrlSet > 0 || stats.synopsisSet > 0 || (stats.ticketLinksSet || 0) > 0)) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log(`\nshows.json updated.`);
   } else if (DRY_RUN) {
     console.log(`\n(dry run — no files written)`);

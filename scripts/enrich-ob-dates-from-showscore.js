@@ -15,6 +15,7 @@ const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
@@ -22,7 +23,7 @@ const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'sh
 const dryRun = process.argv.includes('--dry-run');
 
 async function main() {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const urlsData = JSON.parse(fs.readFileSync(URLS_PATH, 'utf8'));
   const urls = urlsData.shows || {};
 
@@ -125,7 +126,7 @@ async function main() {
   }
 
   if (!dryRun && (statusChanges > 0 || dateCorrections > 0 || venueUpdates > 0)) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
   }
 
   console.log(`\n=== SUMMARY ===`);

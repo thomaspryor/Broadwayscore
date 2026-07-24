@@ -9,6 +9,7 @@
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY || 'YOUR_API_KEY';
@@ -127,7 +128,7 @@ async function fetchShowImages(showSlug, showInfo) {
 }
 
 function updateShowsJson(imageResults) {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
+  const showsData = loadShows();
 
   // Load curated images to preserve them
   const CURATED_JSON_PATH = path.join(__dirname, '..', 'data', 'curated-images.json');
@@ -156,7 +157,7 @@ function updateShowsJson(imageResults) {
   }
 
   showsData._meta.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
+  saveShows(showsData);
 
   console.log(`\n✓ Updated ${updatedCount} shows`);
   if (skippedCount > 0) {

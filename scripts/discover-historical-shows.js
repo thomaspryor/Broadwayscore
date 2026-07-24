@@ -25,6 +25,7 @@ const { isTourProduction } = require('./lib/tour-detection');
 const { getSeasonForDate, validateSeason } = require('./lib/broadway-seasons');
 const { extractDatesFromIBDBPage } = require('./lib/ibdb-dates');
 const { scrapeCurrentRuntimes, scrapeShowRuntime, matchRuntimesToShows } = require('./lib/broadway-com-runtimes');
+const showsWriteGuard = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'historical-shows-pending.json');
@@ -107,7 +108,7 @@ if (seasons.length === 0) {
 }
 
 function loadShows() {
-  return JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  return showsWriteGuard.loadShows();
 }
 
 function saveShows(data) {
@@ -125,7 +126,7 @@ function saveShows(data) {
   if (removed > 0) {
     console.log(`⚠️  Dedup guard: removed ${removed} duplicate show(s) before saving`);
   }
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  showsWriteGuard.saveShows(data);
 }
 
 function sleep(ms) {

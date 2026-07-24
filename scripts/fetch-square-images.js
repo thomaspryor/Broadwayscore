@@ -20,6 +20,7 @@ const path = require('path');
 const https = require('https');
 const http = require('http');
 const { execSync } = require('child_process');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
@@ -342,7 +343,7 @@ async function main() {
 
   // Save updated shows.json
   if (!dryRun && success > 0) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
   }
 
   console.log(`\n============================================================`);

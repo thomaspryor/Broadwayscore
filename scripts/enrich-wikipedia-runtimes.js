@@ -15,6 +15,7 @@ const path = require('path');
 const https = require('https');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -224,7 +225,7 @@ function isDatePlausible(wikiDate, show) {
 }
 
 async function main() {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows;
 
   let targets;
@@ -346,7 +347,7 @@ async function main() {
   console.log(`Errors: ${errors}`);
 
   if (!DRY_RUN && (enriched > 0 || datesEnriched > 0)) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log(`\nshows.json updated.`);
   } else if (DRY_RUN) {
     console.log(`\n(dry run — no files written)`);

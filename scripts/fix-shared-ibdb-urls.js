@@ -13,7 +13,7 @@
 
 const path = require('path');
 const { planSharedIbdbUrlFixes } = require('./lib/fix-shared-ibdb-urls');
-const { atomicWriteShowsJson } = require('./lib/atomic-shows-write');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOWS_PATH = process.env.SHOWS_JSON_PATH || path.join(__dirname, '../data/shows.json');
@@ -35,7 +35,7 @@ for (const fix of fixes) {
 }
 
 if (!DRY_RUN) {
-  atomicWriteShowsJson(SHOWS_PATH, data);
+  saveShows(data);
   console.log(`\nCleared ${fixes.length} stale ibdbUrl(s). shows.json written.`);
 } else {
   console.log(`\n[dry-run] ${fixes.length} stale ibdbUrl(s) would be cleared.`);

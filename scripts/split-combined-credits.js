@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { splitCombinedCredits, splitNames, SPLITTABLE_ROLES } = require('./lib/credit-splitting');
+const showsWriteGuard = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
@@ -25,11 +26,11 @@ const showArg = args.find(a => a.startsWith('--show='));
 const showSlug = showArg ? showArg.split('=')[1] : null;
 
 function loadShows() {
-  return JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  return showsWriteGuard.loadShows();
 }
 
 function saveShows(data) {
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  showsWriteGuard.saveShows(data);
 }
 
 function main() {

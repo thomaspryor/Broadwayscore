@@ -175,7 +175,7 @@ fi
 # itself — the exact class that reddened main for hours on 2026-07-12 (24
 # consecutive Test Suite failures from one script that bypassed safeWriteReview).
 # Pure grep over scripts/*.js, ~1s.
-if echo "$ALL_CHANGED_FILES" | grep -qE "^scripts/[^/]+\.js$|^scripts/lint-write-routing\.sh$|^\.review-write-guard-exempt\.txt$|^\.reviews-json-write-exempt\.txt$"; then
+if echo "$ALL_CHANGED_FILES" | grep -qE "^scripts/[^/]+\.js$|^scripts/lint-write-routing\.sh$|^\.review-write-guard-exempt\.txt$|^\.reviews-json-write-exempt\.txt$|^\.shows-json-write-exempt\.txt$"; then
   # -f not -x: invoked via bash, so the exec bit is irrelevant — a checkout
   # that drops it must not silently skip the gate while CI still enforces it.
   if [ -f scripts/lint-write-routing.sh ]; then

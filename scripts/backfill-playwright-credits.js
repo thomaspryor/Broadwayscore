@@ -20,6 +20,7 @@ const path = require('path');
 const { lookupIBDBDates } = require('./lib/ibdb-dates');
 const { cleanup } = require('./lib/scraper');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
+const showsWriteGuard = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
@@ -37,11 +38,11 @@ const limit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 const CHECKPOINT_INTERVAL = 25;
 
 function loadShows() {
-  return JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  return showsWriteGuard.loadShows();
 }
 
 function saveShows(data) {
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  showsWriteGuard.saveShows(data);
 }
 
 // ---------------------------------------------------------------------------

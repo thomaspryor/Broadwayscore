@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const PLACEHOLDER_FILE_HASHES = new Set([
   'b4d7d1bdb443e0a94e69ac8a5abd6f40',
@@ -44,7 +45,7 @@ for (const dir of showDirs) {
 console.log(`\nRemoved ${removed} placeholder files from ${affectedShows.size} shows.`);
 
 // Clear image refs in shows.json
-const data = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
+const data = loadShows();
 let updated = 0;
 for (const show of data.shows) {
   if (!affectedShows.has(show.id)) continue;
@@ -64,6 +65,6 @@ for (const show of data.shows) {
 }
 
 if (updated > 0) {
-  fs.writeFileSync(SHOWS_JSON, JSON.stringify(data, null, 2) + '\n');
+  saveShows(data);
   console.log(`Cleared ${updated} image references in shows.json.`);
 }

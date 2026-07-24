@@ -44,6 +44,7 @@ const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { roleVerbVariants, serpTextConfirms } = require('./lib/creative-team-verify');
 const { CLAUDE_OPUS } = require('./lib/models');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const AUDIT_FILE = path.join(__dirname, '..', 'data', 'audit', 'creative-team-serp-audit.json');
@@ -191,7 +192,7 @@ Is ${member.name} credibly credited as ${member.role} on THIS specific productio
 }
 
 async function main() {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const showsData = loadShows();
   const checkpoint = loadCheckpoint();
 
   let targets = showsData.shows.filter(s =>
@@ -268,7 +269,7 @@ async function main() {
       console.error(`\n🛑 CIRCUIT BREAKER: ${removable}/${audited} audited credits flagged removable (>50%). Refusing to modify shows.json — investigate SERP/adjudication health first.`);
       process.exit(1);
     }
-    fs.writeFileSync(SHOWS_FILE, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log(`\n💾 shows.json updated (hallucinated members removed)`);
   }
 

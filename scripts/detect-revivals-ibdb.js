@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
+const showsWriteGuard = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const RATE_LIMIT_MS = 1500;
@@ -38,11 +39,11 @@ const categoryFilter = catArg ? catArg.split('=')[1] : 'off-broadway';
 // Broadway shows have no category field — use --category=broadway to target them
 
 function loadShows() {
-  return JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  return showsWriteGuard.loadShows();
 }
 
 function saveShows(data) {
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  showsWriteGuard.saveShows(data);
 }
 
 function sleep(ms) {

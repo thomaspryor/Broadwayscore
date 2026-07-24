@@ -25,6 +25,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const args = process.argv.slice(2);
 const WRITE = args.includes('--write');
@@ -90,7 +91,7 @@ function main() {
     return;
   }
   const out = isArrayRoot ? shows : { ...parsed, shows };
-  fs.writeFileSync(SHOWS_PATH, JSON.stringify(out, null, 2));
+  saveShows(out);
   console.log(`\nWrote ${changes.length} change(s) to ${SHOWS_PATH}`);
 }
 

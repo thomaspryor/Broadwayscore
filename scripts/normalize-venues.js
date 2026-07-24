@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const { getCanonicalVenueName, validateVenue } = require('./lib/broadway-theaters.js');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const data = JSON.parse(fs.readFileSync(SHOWS_FILE));
@@ -48,7 +49,7 @@ if (changes > 0) {
   // Update lastUpdated
   data._meta.lastUpdated = new Date().toISOString();
 
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  saveShows(data);
   console.log(`\n✅ Updated ${SHOWS_FILE}`);
 } else {
   console.log('No venues need normalization.');

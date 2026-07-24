@@ -21,6 +21,7 @@ const { isValidCreativeTeamName, lookupIBDBDates } = require('./lib/ibdb-dates')
 const { serpQuery } = require('./lib/url-discovery');
 const { ROLE_CANON, roleVerb, serpTextConfirms } = require('./lib/creative-team-verify');
 const { CLAUDE_HAIKU, CLAUDE_OPUS } = require('./lib/models');
+const showsWriteGuard = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
@@ -37,11 +38,11 @@ const results = {
 };
 
 function loadShows() {
-  return JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  return showsWriteGuard.loadShows();
 }
 
 function saveShows(data) {
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  showsWriteGuard.saveShows(data);
 }
 
 function loadTodayTixIds() {

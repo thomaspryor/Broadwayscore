@@ -28,8 +28,9 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
-const { atomicWriteShowsJson, AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
+const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
 
 const ROOT = path.join(__dirname, '..');
@@ -88,7 +89,7 @@ function main() {
   const matches = (audit.results || []).filter(r => r.result === 'match' && r.playbillUrl);
   console.log(`Audit has ${audit.results?.length || 0} results; ${matches.length} promotable matches.`);
 
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const existingKeys = new Set(showsData.shows.map(s => `${normalizeTitle(s.title)}|${canonicalVenue(s.venue)}`));
   const existingIds = new Set(showsData.shows.map(s => s.id));
 
@@ -131,7 +132,7 @@ function main() {
     logEntry({ kind: 'promote-historical', id: entry.id, title: entry.title, venue: entry.venue });
   }
   try {
-    const r = atomicWriteShowsJson(SHOWS_PATH, showsData);
+    const r = saveShows(showsData);
     console.log(`Wrote shows.json: ${r.lineCountBefore} → ${r.lineCountAfter} lines.`);
   } catch (e) {
     if (e instanceof AtomicWriteShrinkError) {
