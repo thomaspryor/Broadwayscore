@@ -23,10 +23,12 @@ const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
 
-// Scrapingdog SERP — flag-gated cheap primary ahead of BD/SB SERP. Google Light
-// Search = 5 credits (~$0.45/1k) vs BD SERP (~$1.50/1k). Default OFF.
+// Scrapingdog SERP — cheap primary ahead of BD/SB SERP. Google Light Search =
+// 5 credits (~$0.45/1k) vs BD SERP (~$1.50/1k). Default ON (see scraper.js for
+// the rollout rationale — same env var, same decision); set
+// SCRAPER_USE_SCRAPINGDOG=0 to opt out.
 const SCRAPINGDOG_API_KEY = process.env.SCRAPINGDOG_API_KEY;
-const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG === '1';
+const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG !== '0';
 
 // Derive outlet-to-domain mapping from outlet-registry.json (single source of truth)
 // Maps outlet IDs + aliases → primary domain for SERP URL discovery
