@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-24T01:17:04.787Z",
+    "generatedAt": "2026-07-24T01:40:53.818Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,19 +16,19 @@
   "flagged": [
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 87
+      "churn": 86
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
       "churn": 79
     },
     {
-      "path": "data/audit/url-collision-report.json",
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
       "churn": 78
     },
     {
-      "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 77
+      "path": "data/audit/url-collision-report.json",
+      "churn": 78
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -66,19 +66,19 @@
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 79
+      "churn": 80
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 79
+      "churn": 80
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 79
+      "churn": 80
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 58
+      "churn": 57
     },
     {
       "path": "public/opening-night-status.json",
@@ -93,11 +93,11 @@
       "churn": 39
     },
     {
-      "path": "public/data/shows/art-2025.json",
-      "churn": 36
+      "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
+      "churn": 37
     },
     {
-      "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
+      "path": "public/data/shows/art-2025.json",
       "churn": 36
     },
     {
@@ -122,12 +122,12 @@
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 673,
+      "churn": 669,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 638,
+      "churn": 636,
       "mergeAttr": "union"
     },
     {
@@ -137,12 +137,12 @@
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 245,
+      "churn": 244,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 245,
+      "churn": 244,
       "mergeAttr": "ours"
     },
     {
@@ -162,7 +162,7 @@
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 79,
+      "churn": 80,
       "mergeAttr": "ours"
     },
     {
@@ -192,17 +192,17 @@
     },
     {
       "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
-      "churn": 54,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/drift-state.json",
-      "churn": 49,
+      "churn": 53,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/are-you-mad-at-me-off-broadway-2026.json",
-      "churn": 49,
+      "churn": 50,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/drift-state.json",
+      "churn": 48,
       "mergeAttr": "ours"
     },
     {
@@ -247,7 +247,7 @@
     },
     {
       "path": "data/audit/poller-backoff/dukes-off-broadway-2026.json",
-      "churn": 43,
+      "churn": 44,
       "mergeAttr": "ours"
     },
     {
@@ -257,7 +257,7 @@
     },
     {
       "path": "data/audit/poller-backoff/hugo-marchand-artists-at-the-center-off-broadway-2026.json",
-      "churn": 42,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
@@ -277,12 +277,12 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
