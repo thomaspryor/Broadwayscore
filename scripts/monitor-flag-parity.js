@@ -50,6 +50,10 @@ async function fetchLiveFlag(apiKey, key) {
     active: f.active,
     variants: (f.filters?.multivariate?.variants || []).map((v) => ({ key: v.key, pct: v.rollout_percentage })),
     rollout: f.filters?.groups?.[0]?.rollout_percentage,
+    // Sticky bucketing — evaluateFlagHealth compares this against the
+    // registry's per-flag expectation and treats an UNMAPPED field as a
+    // plumbing failure, so this line is load-bearing (three-way-sync class).
+    ensure_experience_continuity: !!f.ensure_experience_continuity,
   };
 }
 
@@ -91,7 +95,7 @@ function logData({ flagHealth, unregistered }) {
 }
 
 // Deliberately never fails the job on alert conditions — the email alert IS
-// the signal, same as monitor-gate-cold-start.js / monitor-gate-ab.js. A
+// the signal, same as monitor-gate-cold-start.js / monitor-email-gate-funnel.js. A
 // nonzero exit here would turn the workflow red every week an alert is
 // cooling down (not just the week it fires), risking a "Workflow
 // repeat-failure" digest promotion on top of the already-targeted email.

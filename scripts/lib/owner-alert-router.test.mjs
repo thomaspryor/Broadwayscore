@@ -55,6 +55,7 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl } = {}) {
   // fs calls for exactly those two paths to the temp dir equivalents.
   const ledgerPath = path.join(tmpDir, 'alert-ledger.json');
   const digestPath = path.join(tmpDir, 'alert-digest-queue.json');
+  const attemptsPath = path.join(tmpDir, 'alert-router-attempts.jsonl');
 
   const realReadFileSync = fs.readFileSync;
   const realWriteFileSync = fs.writeFileSync;
@@ -67,6 +68,10 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl } = {}) {
       return p.replace(router._LEDGER_PATH, ledgerPath);
     }
     if (p === router._DIGEST_QUEUE_PATH) return digestPath;
+    // dispatchCard() logs every disposition='auto' attempt here — must be
+    // redirected too, or every test run touching disposition='auto' writes
+    // real attempt rows into the repo's data/audit/ directory.
+    if (p === router._ATTEMPTS_LOG_PATH) return attemptsPath;
     return p;
   }
 
@@ -86,7 +91,7 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl } = {}) {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 
-  return { router, calls, restore };
+  return { router, calls, restore, attemptsPath };
 }
 
 test('routeAlert: new incident with disposition=auto dispatches exactly one card', async () => {
@@ -123,6 +128,10 @@ test('routeAlert: a failed card dispatch is NOT recorded as notified — retries
       disposition: 'auto',
     });
     assert.equal(first.dispatchOk, false);
+    // The real underlying error must be propagated, not just a boolean —
+    // callers (health-check.js's digest instruction text, the E2E canary)
+    // need it to avoid re-guessing a cause (2026-07-24 npm-ci postmortem).
+    assert.match(first.dispatchError, /Notion API down/);
     // Ledger must NOT show this as an open/notified incident — otherwise the
     // silent-refire guard would suppress the real alert for a full cooldown
     // window even though nobody was ever actually told.
@@ -300,6 +309,89 @@ test('routeAlert: rejects a missing conditionKey', async () => {
       () => router.routeAlert({ title: 'x', disposition: 'auto' }),
       /conditionKey/
     );
+  } finally {
+    restore();
+  }
+});
+
+test('deleteCondition: hard-removes an open condition; no-op on an unknown key', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({
+      conditionKey: 'test:to-delete',
+      title: 'x',
+      description: 'desc',
+      disposition: 'auto',
+    });
+    assert.ok(router.loadLedger().conditions['test:to-delete']);
+
+    assert.equal(router.deleteCondition('test:to-delete'), true);
+    assert.equal(router.loadLedger().conditions['test:to-delete'], undefined);
+    assert.equal(router.deleteCondition('test:never-existed'), false);
+  } finally {
+    restore();
+  }
+});
+
+// Card #374 (E2E canary + swallowed-error audit postmortem): the attempts
+// log is what lets health-check.js's deadman check distinguish "auto-dispatch
+// never fired" from "auto-dispatch fired repeatedly and always failed" — the
+// ledger alone can't, because a failed dispatch is deliberately never written
+// there (see the test above).
+test('readDispatchAttempts: records both successes and failures, independent of the ledger', async () => {
+  const { router, restore } = loadRouterWithFakes({
+    execFileSyncImpl: () => { throw new Error("Cannot find module '@notionhq/client'"); },
+  });
+  try {
+    await router.routeAlert({ conditionKey: 'test:attempt-a', title: 'a', description: 'd', disposition: 'auto' });
+    await router.routeAlert({ conditionKey: 'test:attempt-b', title: 'b', description: 'd', disposition: 'auto' });
+
+    const attempts = router.readDispatchAttempts({ days: 7 });
+    assert.equal(attempts.length, 2);
+    assert.ok(attempts.every(a => a.ok === false));
+    assert.match(attempts[attempts.length - 1].error, /@notionhq\/client/);
+
+    // Every attempt failed, so the ledger stays empty — this is the exact gap
+    // a ledger-only deadman check would miss.
+    assert.deepEqual(router.loadLedger().conditions, {});
+  } finally {
+    restore();
+  }
+});
+
+test('readDispatchAttempts: a successful dispatch is also logged (ok=true)', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({ conditionKey: 'test:attempt-ok', title: 'ok', description: 'd', disposition: 'auto' });
+    const attempts = router.readDispatchAttempts({ days: 7 });
+    assert.equal(attempts.length, 1);
+    assert.equal(attempts[0].ok, true);
+  } finally {
+    restore();
+  }
+});
+
+// Ship-check finding (card #374): health-check.js's deadman check takes
+// attempts[attempts.length - 1] as "the most recent attempt" — that's only
+// correct if readDispatchAttempts() sorts by ts. The append-then-rewrite
+// writer normally preserves chronological order, but a rebase conflict
+// resolution or manual edit could disturb it, so the reader must not trust
+// raw file order.
+test('readDispatchAttempts: sorts by ts even when the file is out of chronological order', async () => {
+  const { router, restore, attemptsPath } = loadRouterWithFakes();
+  try {
+    const lines = [
+      { ts: '2026-07-20T00:00:00.000Z', conditionKey: 'test:c', title: 'c', ok: true, error: null },
+      { ts: '2026-07-22T00:00:00.000Z', conditionKey: 'test:a', title: 'a', ok: false, error: 'newest' },
+      { ts: '2026-07-21T00:00:00.000Z', conditionKey: 'test:b', title: 'b', ok: true, error: null },
+    ];
+    fs.mkdirSync(path.dirname(attemptsPath), { recursive: true });
+    fs.writeFileSync(attemptsPath, lines.map(l => JSON.stringify(l)).join('\n') + '\n');
+
+    const sorted = router.readDispatchAttempts({ days: 30 });
+    assert.deepEqual(sorted.map(a => a.conditionKey), ['test:c', 'test:b', 'test:a']);
+    // The most recent attempt (last element) must be the one with the latest ts.
+    assert.equal(sorted[sorted.length - 1].error, 'newest');
   } finally {
     restore();
   }

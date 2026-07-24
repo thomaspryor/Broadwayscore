@@ -143,3 +143,37 @@ describe('ingestBlockReason — per-aggregator trust (2026-07-11)', () => {
     assert.equal(ingestBlockReason({ weRef: true, weRefSources: ['theatre-reviews'] }, ctx), 'we-gate-off');
   });
 });
+
+describe('ingestBlockReason — SERP census gate (#371, ship-check 2026-07-24)', () => {
+  test('Broadway-market serpCensus row is blocked by default (gate off)', () => {
+    assert.equal(
+      ingestBlockReason({ serpCensus: true }, { showIsWe: false, weGateOn: false, serpCensusGateOn: false }),
+      'serp-census-gate-off'
+    );
+  });
+
+  test('serpCensus row ingests once SERP_CENSUS_INGEST is on', () => {
+    assert.equal(
+      ingestBlockReason({ serpCensus: true }, { showIsWe: false, weGateOn: false, serpCensusGateOn: true }),
+      null
+    );
+  });
+
+  test('WE show serpCensus row is blocked by the WE gate first, independent of the SERP census gate', () => {
+    assert.equal(
+      ingestBlockReason({ serpCensus: true }, { showIsWe: true, weGateOn: false, serpCensusGateOn: true }),
+      'we-gate-off'
+    );
+  });
+
+  test('prior-run outranks the SERP census gate', () => {
+    assert.equal(
+      ingestBlockReason({ serpCensus: true, priorRun: true }, { showIsWe: false, weGateOn: false, serpCensusGateOn: true }),
+      'prior-run'
+    );
+  });
+
+  test('non-serpCensus Broadway rows are unaffected by the new gate', () => {
+    assert.equal(ingestBlockReason({}, { showIsWe: false, weGateOn: false, serpCensusGateOn: false }), null);
+  });
+});

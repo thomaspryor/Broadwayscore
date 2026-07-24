@@ -32,7 +32,7 @@ const crypto = require('crypto');
 const { execSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
-const { routeAlert } = require('./lib/owner-alert-router.js');
+const { routeAlert, readDispatchAttempts } = require('./lib/owner-alert-router.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 // Discord daily reports removed — email digest is the single notification channel.
 
@@ -1075,6 +1075,84 @@ function checkSecretsHealth() {
   ];
 }
 
+// --- Category I3: Alert Router Deadman ---
+//
+// Independent detector for the router-silently-broken failure class
+// (2026-07-24 npm-ci postmortem, Notion card #374: notion-brain.js crashed on
+// a missing @notionhq/client, and every disposition='auto' dispatch failed
+// silently for days because the ledger never records failed attempts — only
+// successes — so nothing looked wrong to anything reading the ledger alone).
+//
+// Reads the trailing-7-day dispatch ATTEMPT log (readDispatchAttempts —
+// scripts/lib/owner-alert-router.js records every disposition='auto' call,
+// success AND failure) and flags when attempts happened but NONE succeeded.
+// This does not depend on the ledger, and does not depend on the E2E canary
+// (scripts/e2e-canary-alert-chain.js) ever having run — it fires even if the
+// canary itself is broken or was skipped that day.
+//
+// isCI gates the self-page (added after a local run of the sibling canary
+// script paged the owner at midnight, 2026-07-24 — this check has the exact
+// same live-side-effect shape and runs unconditionally as part of building
+// `allResults`, BEFORE main()'s own `if (!isCI) return` early-exit, so
+// without this guard a local `node scripts/health-check.js` with a failed
+// attempts-log history would ALSO email the owner for real).
+async function checkAlertRouterDeadman(isCI) {
+  // readDispatchAttempts returns oldest→newest by ts, so the last element is
+  // always the most recent attempt regardless of file/write order.
+  const attempts = readDispatchAttempts({ days: 7 });
+  if (attempts.length === 0) {
+    return [{ name: 'Alert Router: dispatch deadman', status: 'pass', message: 'No auto-dispatch attempts in the trailing 7d (nothing to check)' }];
+  }
+
+  const succeeded = attempts.filter(a => a.ok).length;
+  const mostRecent = attempts[attempts.length - 1];
+  // Ship-check finding: gating on "any success in the 7d window" lets one
+  // stale success mask an outage that started right after it — the exact
+  // failure class this check exists to catch. Gate on the MOST RECENT
+  // attempt instead: if it succeeded, the chain is healthy right now
+  // regardless of history; if it failed, that's live broken state even if
+  // older attempts this week succeeded.
+  if (mostRecent.ok) {
+    return [{ name: 'Alert Router: dispatch deadman', status: 'pass', message: `${succeeded}/${attempts.length} auto-dispatch attempts succeeded in the last 7d; most recent attempt succeeded` }];
+  }
+
+  // Most recent attempt failed. Surface the most recent REAL error
+  // verbatim — this exact spot is where the npm-ci incident got
+  // misdiagnosed as a NOTION_API_KEY problem by a hand-written guess instead
+  // of the logged error.
+  const message = `Most recent auto-dispatch attempt failed (${succeeded}/${attempts.length} succeeded in the last 7d) — same failure class as the 2026-07-24 npm-ci incident. Last error: ${mostRecent.error || '(none captured)'}`;
+
+  // Self-page via disposition='human' directly from here — that path calls
+  // sendAlert() (Resend) and never shells out to notion-brain.js, so it
+  // survives even though the exact thing we just detected as broken is that
+  // shell-out. Don't rely on the generic humanAction dispatch loop below,
+  // which routes through disposition='auto' (the same broken path).
+  // isCI-gated: never page from a local/dev run (see function header comment).
+  if (isCI) {
+    try {
+      await routeAlert({
+        conditionKey: 'alert-router:deadman',
+        title: 'Alert Router: auto-dispatch has been silently failing for 7 days',
+        description: message,
+        severity: 'critical',
+        disposition: 'human',
+        cooldownHours: 24,
+      });
+    } catch (err) {
+      console.error(`[Deadman] failed to send direct human alert: ${err.message}`);
+    }
+  } else {
+    console.error('[Deadman] DEV RUN — suppressing the owner-facing disposition=human alert (no GITHUB_ACTIONS/CI env). In real CI this would page the owner.');
+  }
+
+  return [{
+    name: 'Alert Router: dispatch deadman',
+    status: 'error',
+    message,
+    hint: 'Check the notion-brain.js shell-out first (workflow env/dependency gap, e.g. missing npm ci) before assuming NOTION_API_KEY — read the actual last error above, not a guess.',
+  }];
+}
+
 // --- Category I2: Deploy freshness (content-aware gate watchdog) ---
 //
 // The should-deploy gate (scripts/lib/should-deploy-gate.js) skips scheduled
@@ -1935,7 +2013,12 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
           ? (dispatch.action === 'silent'
               ? `${entry.humanAction} — already dispatched to the Action Queue (still open).`
               : dispatch.dispatchOk === false
-                ? `${entry.humanAction} — Action Queue dispatch failed, will retry next run. Check logs / NOTION_API_KEY.`
+                // Surface the REAL captured error, not a guess — this exact
+                // line used to hardcode "Check logs / NOTION_API_KEY", which
+                // is what sent every session chasing the wrong cause during
+                // the 2026-07-24 npm-ci incident (the real error was
+                // "Cannot find module '@notionhq/client'").
+                ? `${entry.humanAction} — Action Queue dispatch failed, will retry next run. Error: ${(dispatch.dispatchError || '(no error captured)').slice(0, 200)}`
                 : `${entry.humanAction} — dispatched to the Action Queue; it'll work this hands-free.`)
           : entry
             ? (entry.humanAction || entry.humanFallback || r.message)
@@ -2327,6 +2410,7 @@ async function main() {
     ...checkAPICredits(),
     ...checkDeployFreshness(),
     ...(await checkStuckWork()),
+    ...(await checkAlertRouterDeadman(isCI)),
   ];
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,

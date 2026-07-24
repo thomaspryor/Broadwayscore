@@ -1,6 +1,6 @@
 /**
  * weekly-monitor-runner.js — shared boilerplate for the weekly gate-monitor
- * CLIs (monitor-gate-ab.js, monitor-email-gate-funnel.js,
+ * CLIs (monitor-email-gate-funnel.js,
  * monitor-gate-cold-start.js): state I/O, analyzer subprocess invocation,
  * the alert-send loop (dry-run / log-only / delivery-retry revert), and the
  * final state write. Each monitor supplies its own data-loading (fixture

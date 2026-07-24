@@ -25,6 +25,16 @@ exec >> "$LOG_DIR/autonomous-nightly.log" 2>&1
 echo "=== autonomous night $(date -u +%FT%TZ) ==="
 cd "$REPO" || exit 1
 
+# Opening-night yield (2026-07-24, plan review of the opening-night monitor):
+# the 03:30 ET slot lands INSIDE a Broadway opening-night monitor window, and
+# both would do git operations in this same tree (index.lock contention +
+# the stale-checkout clobber class). Skip the night's implementer run when a
+# monitor session holds its lock — the loop resumes tomorrow; the queue keeps.
+if [ -d "$REPO/data/opening-night-monitor/monitor.lock" ]; then
+  echo "[nightly] opening-night monitor session active (monitor.lock present) — skipping tonight's loop to avoid shared-tree contention"
+  exit 0
+fi
+
 # Fresh main — the executor branches worktrees off origin/main, and triage
 # reads the freshest card mirror. Never fatal: a fetch hiccup shouldn't
 # skip the night, worktrees fetch again themselves.

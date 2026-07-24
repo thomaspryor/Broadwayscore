@@ -1,30 +1,29 @@
-name: Monitor Gate A/B
+name: Weekly A/B Monitors
 
-# Weekly guardrail monitor for the mobile-gate-timing email-capture A/B, the
-# overall email-gate funnel (card #240), PLUS (card #247) the gate-cold-start
-# A/B — analyze-gate-cold-start.js landed 2026-07-21 with full ITT analysis +
-# flag-health checks but no cron/alert wiring, the same gap #240 closed for
-# the overall funnel.
+# Weekly guardrail monitors for the email-gate funnel (card #240) and the
+# gate-cold-start A/B (card #247 — analyze-gate-cold-start.js has the full
+# ITT analysis + flag-health checks; this workflow is its cron/alert wiring).
 #
-# Step 1 (mobile-gate-timing A/B): emails the owner proactively when the
-# experiment goes live, when it reaches the pre-registered power floor (950
-# impressions/arm — time to judge), at the 8-week checkpoint, and on guardrail
-# breaches (bounce / dismissal skew). Silent while pre-flag (fallback-only
-# traffic) — the flag was never created, so this stays silent indefinitely.
+# Filename + concurrency group keep the historical `monitor-gate-ab` name
+# deliberately (Actions history continuity + check-cron-health.yml keys on
+# the filename). The mobile-gate-timing monitor that originally gave this
+# workflow its name was retired 2026-07-24: that PostHog flag was NEVER
+# created (2026-07-21 audit; scripts/lib/flag-registry.js marks it
+# exists:false), so its weekly step reported "0 impressions" forever.
 #
-# Step 2 (overall funnel): tracks modal-only impressions/dismissal/captures
+# Step 1 (overall funnel): tracks modal-only impressions/dismissal/captures
 # (trigger != '' — excludes inline header/footer email_captured events) and
 # alerts (actionable-only) if absolute captures/week collapses below ~1,
 # regardless of conversion rate. Full context:
 # ~/Documents/claude-outputs/email-gate-analysis-2026-07-20.md
 #
-# Step 3 (gate-cold-start A/B): flag health (exists/active/50-50/100%
+# Step 2 (gate-cold-start A/B): flag health (exists/active/50-50/100%
 # rollout), combined captures/week collapse (2 consecutive meaningful weeks
 # below ~1/wk vs a ~4/wk baseline), impression-split sanity (control:cold-start
 # should stay roughly 10:1 — parity means the 2-page-minimum filter stopped
 # applying), and a once-only "4 weeks elapsed — time to judge the ITT primary"
-# nudge. Never judges the primary itself. Pre-registered rules live as
-# comments in analyze-gate-cold-start.js (no separate doc exists yet).
+# nudge. Never judges the primary itself. Pre-registration:
+# docs/experiments/gate-cold-start.md.
 #
 # Weekly summaries are log-only (no Discord). No step judges a primary metric
 # or touches gate/flag config — those stay owner decisions.
@@ -60,14 +59,6 @@ jobs:
         with:
           node-version: 20
 
-      - name: Run mobile-gate-timing A/B monitor
-        env:
-          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: node scripts/monitor-gate-ab.js ${{ inputs.dry_run && '--dry-run' || '' }}
-
       - name: Run overall email-gate funnel monitor (card #240)
         env:
           POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
@@ -84,10 +75,9 @@ jobs:
 
       - name: Commit monitor state
         # always() so a failure in ANY monitor step still commits whatever
-        # state the OTHER steps already earned this run (e.g. step 1's
-        # liveAlertedAt stamp) — without it, a later-step failure would skip
-        # this entirely and an earlier step's already-sent alert would resend
-        # next week.
+        # state the OTHER steps already earned this run (e.g. an alerted-at
+        # stamp) — without it, a later-step failure would skip this entirely
+        # and an earlier step's already-sent alert would resend next week.
         if: ${{ always() && !inputs.dry_run }}
         run: |
           git config user.name "github-actions[bot]"
@@ -97,19 +87,19 @@ jobs:
           # that would crash the whole step and lose the OTHER monitors'
           # earned state too. Matters on a monitor's first-ever run, before
           # its state file exists in the repo tree.
-          for f in data/audit/gate-ab-monitor-state.json data/audit/email-gate-funnel-monitor-state.json data/audit/gate-cold-start-monitor-state.json; do
+          for f in data/audit/email-gate-funnel-monitor-state.json data/audit/gate-cold-start-monitor-state.json; do
             [ -f "$f" ] && git add "$f"
           done
           if git diff --cached --quiet; then
             echo "No state change to commit"
             exit 0
           fi
-          git commit -m "data: gate A/B + email-gate funnel + gate-cold-start monitor state [skip ci]"
+          git commit -m "data: email-gate funnel + gate-cold-start monitor state [skip ci]"
           bash scripts/lib/push-with-retry.sh
 
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Monitor Gate A/B Failed'
+          title: 'Weekly A/B Monitors Failed'
           severity: 'warning'

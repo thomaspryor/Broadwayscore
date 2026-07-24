@@ -3,7 +3,7 @@ name: A/B test guardrails — never kill, never unilaterally change rollout
 description: "Never kill running tests or PATCH rollouts without approval."
 type: feedback
 originSessionId: ba2676a0-1232-4de7-b090-d7af31195aa2
-modified: 2026-07-21T01:44:28.546Z
+modified: 2026-07-24T04:15:53.019Z
 ---
 **Hard rules for A/B tests. Violate these and you're wasting real traffic and invalidating weeks of data.**
 
@@ -36,7 +36,7 @@ Sticky bucketing (`ensure_experience_continuity: true`) means PostHog remembers 
 
 When **ending** a test and forcing everyone to the winner: disable sticky bucketing **at the same time** as changing the rollout. Otherwise half your users are stuck in the losing variant silently.
 
-When **starting or running** a test: sticky bucketing should stay on. Users must not flip variants mid-session — that confuses UX and contaminates per-user conversion measurement.
+When **starting or running** a test: the correct sticky value is PER-FLAG — read it from `scripts/lib/flag-registry.js` (`expected.ensure_experience_continuity`, added 2026-07-24), never reason it from first principles or from another flag. For **anonymous-only** experiments (an experiment lock forbids `posthog.identify()`, e.g. gate-cold-start) sticky **false is correct**: continuity only affects identified persons, and anonymous assignment is already deterministic per distinct_id at fixed rollout — a session nearly "fixed" gate-cold-start's sticky OFF→ON on 2026-07-24 because this file used to state the rule universally. For identified-user tests sticky stays on so users can't flip variants when rollouts change. The weekly parity monitor (`monitor-flag-parity.js`) alarms on drift in either direction.
 
 ## 4. Never delete A/B test code paths because "one variant is at 0%"
 

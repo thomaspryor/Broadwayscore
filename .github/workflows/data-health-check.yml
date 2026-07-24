@@ -4,6 +4,18 @@ on:
     - cron: '0 7 * * *'  # 7 AM UTC daily (after morning pipelines)
   workflow_dispatch: {}
 
+# Ship-check finding (card #374): a manual workflow_dispatch overlapping the
+# 7am cron would let two runs read-modify-write data/audit/alert-router-attempts.jsonl
+# and data/audit/alert-ledger.json concurrently — logDispatchAttempt() does a
+# full read-filter-rewrite, not an atomic append, and push-with-retry.sh
+# resolves data/audit/* conflicts by keeping one side wholesale, so the loser's
+# rows silently vanish. Queuing (not cancelling) means both runs still
+# complete, just serialized — cancelling would drop whichever run's alerts
+# were in flight.
+concurrency:
+  group: data-health-check
+  cancel-in-progress: false
+
 jobs:
   health-check:
     runs-on: ubuntu-latest
@@ -57,6 +69,23 @@ jobs:
       # in the email digest sent by health-check.js. Discord alerts are reserved
       # for critical real-time workflow failures via notify-failure action.
 
+      # E2E canary for the alert→card→dispatch chain (Notion card #374,
+      # 2026-07-24 postmortem). Runs in the SAME job/env as the health check
+      # above (same checkout, same `npm ci`) so a future regression to this
+      # job's environment breaks both identically — that's exactly how the
+      # npm-ci bug slipped past everything for days. `if: always()` so a
+      # canary failure never masks (or is masked by) the health check's own
+      # result; the job-level "Notify on failure" step below still fires on
+      # ANY step failure, independent of both notion-brain.js and
+      # owner-alert-router.js, as the last-resort backstop.
+      - name: E2E canary — alert→card→dispatch chain
+        if: always()
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/e2e-canary-alert-chain.js
+
       - name: Commit health check + triage data
         if: always()
         run: |
@@ -67,6 +96,7 @@ jobs:
           git add data/audit/triage/ 2>/dev/null || true
           git add data/audit/alert-ledger.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check data changes"
           else
