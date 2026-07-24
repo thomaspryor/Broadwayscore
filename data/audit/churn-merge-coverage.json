@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-24T00:51:58.777Z",
+    "generatedAt": "2026-07-24T01:01:36.959Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,7 +16,7 @@
   "flagged": [
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 87
+      "churn": 86
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
@@ -28,7 +28,7 @@
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 75
+      "churn": 77
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -40,7 +40,7 @@
     },
     {
       "path": ".github/workflows/test.yml",
-      "churn": 42
+      "churn": 43
     },
     {
       "path": "data/audit/we-gate-proving.json",
@@ -58,7 +58,7 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 127
+      "churn": 128
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
@@ -132,32 +132,32 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 422,
+      "churn": 423,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 244,
+      "churn": 245,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 244,
+      "churn": 245,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 138,
+      "churn": 137,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 105,
+      "churn": 106,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/shifters-off-broadway-2026.json",
-      "churn": 105,
+      "churn": 106,
       "mergeAttr": "ours"
     },
     {
@@ -172,7 +172,7 @@
     },
     {
       "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
-      "churn": 57,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
@@ -197,6 +197,11 @@
     },
     {
       "path": "data/audit/drift-state.json",
+      "churn": 49,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/are-you-mad-at-me-off-broadway-2026.json",
       "churn": 49,
       "mergeAttr": "ours"
     },
@@ -226,11 +231,6 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/are-you-mad-at-me-off-broadway-2026.json",
-      "churn": 47,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/show-review-gap.json",
       "churn": 46,
       "mergeAttr": "ours"
@@ -246,23 +246,23 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/dukes-off-broadway-2026.json",
+      "churn": 43,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/poller-backoff/heathers-the-musical-off-west-end-2026.json",
       "churn": 43,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/dukes-off-broadway-2026.json",
-      "churn": 41,
+      "path": "data/audit/poller-backoff/hugo-marchand-artists-at-the-center-off-broadway-2026.json",
+      "churn": 42,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/sukkot-off-broadway-2026.json",
       "churn": 41,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/hugo-marchand-artists-at-the-center-off-broadway-2026.json",
-      "churn": 40,
       "mergeAttr": "ours"
     },
     {
@@ -272,17 +272,17 @@
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 38,
+      "churn": 39,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 35,
+      "churn": 36,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 35,
+      "churn": 36,
       "mergeAttr": "ours"
     },
     {
