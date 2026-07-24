@@ -31,6 +31,16 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      # review-texts is a SEPARATE private repo (broadway-review-texts) — NOT
+      # pulled by checkout-core-data. health-check.js's "Quality: star-vs-score
+      # mismatch" check (card #396) scans data/review-texts; without this step it
+      # would hit the exists() guard and silently return pass/"Skipped", so the
+      # daily star-vs-score alert would never fire. Same pattern as
+      # check-corpus-drift.yml.
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - uses: actions/setup-node@v5
         with:
           node-version: 20

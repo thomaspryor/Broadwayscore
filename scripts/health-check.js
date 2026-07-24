@@ -724,6 +724,41 @@ function checkPipelines() {
 
 function checkQuality() {
   return [
+    // Star-vs-score contradiction detector (card #396, Birthright 2026-07-24).
+    // A review's EXPLICIT critic rating (5-star rave) that ends up scored as a
+    // pan means the rating was mis-extracted — classically, the wrong show's
+    // star grabbed off a combined multi-show review column (Theater Life), then
+    // winning score-routing. Alerts only on findings NOT in the committed
+    // baseline (data/audit/star-score-mismatch-baseline.json) so the known
+    // backlog stays quiet and a genuinely NEW mismatch surfaces the day it
+    // appears — a time window would miss slow-burn cases (Birthright's bad
+    // extraction predated the user report by 19 days). `/^Quality:/` playbook
+    // route = this-week warn, not a page.
+    runCheck('Quality: star-vs-score mismatch', () => {
+      const { scanReviewTexts } = require('./lib/star-score-mismatch');
+      const rtDir = path.join(DATA_DIR, 'review-texts');
+      if (!fs.existsSync(rtDir)) {
+        return { name: 'Quality: star-vs-score mismatch', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      }
+      let baselineKeys = new Set();
+      try {
+        const b = readJSON(path.join(AUDIT_DIR, 'star-score-mismatch-baseline.json'));
+        if (b && Array.isArray(b.keys)) baselineKeys = new Set(b.keys);
+      } catch { /* no baseline yet — everything is "new" */ }
+      const { findings, baselinedCount } = scanReviewTexts(rtDir, { baselineKeys });
+      if (findings.length === 0) {
+        return { name: 'Quality: star-vs-score mismatch', status: 'pass', message: `No new star/score contradictions (${baselinedCount} known/baselined)` };
+      }
+      const worst = findings[0];
+      const hidden = findings.filter(f => f.starWonHidingContradiction).length;
+      return {
+        name: 'Quality: star-vs-score mismatch',
+        status: 'warn',
+        message: `${findings.length} NEW review(s) whose explicit rating contradicts the score (worst: ${worst.showId} ${worst.outlet} ${worst.originalRating}→${worst.expected} vs LLM ${worst.llm}, gap ${worst.worstGap})${hidden ? `; ${hidden} star-won-hiding` : ''}`,
+        hint: 'Run `node scripts/audit-star-score-mismatch.js` — likely a mis-extracted star (wrong show in a combined review column). Fix originalScore in review-texts + rescore, then `--write-baseline` to ack.',
+      };
+    }),
+
     runCheck('Quality: scored review ratio', () => {
       const reviews = readJSON(path.join(DATA_DIR, 'reviews.json'));
       const stats = reviews._meta?.stats || {};
