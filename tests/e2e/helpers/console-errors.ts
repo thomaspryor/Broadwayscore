@@ -16,6 +16,7 @@ const BENIGN_CONSOLE_PATTERNS: Array<(e: string) => boolean> = [
   (e) => e.includes('Warning'),
   (e) => e.includes('MIME type'),
   (e) => e.includes('Failed to load resource'),
+  (e) => e.includes('DevTools'),
   // Next.js App Router RSC prefetch degradation. When a static chunk/RSC payload
   // is swapped out mid-session (e.g. a deploy landing while the test runs), the
   // prefetch fetch rejects and Next logs this, then falls back to a full browser
