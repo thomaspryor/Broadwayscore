@@ -18,6 +18,11 @@ on:
         required: false
         default: true
         type: boolean
+      time_budget_min:
+        description: 'Wall-clock budget in minutes for IBDB enrichment (0 = unlimited)'
+        required: false
+        default: '22'
+        type: string
 
 permissions:
   contents: write
@@ -75,7 +80,14 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
-          ARGS="--seasons=${{ inputs.seasons }}"
+          # Exit the IBDB enrichment loop cleanly before the 30-min job
+          # timeout; unenriched shows are still added, just without
+          # IBDB-sourced dates. Default in bash, not a GHA || expression —
+          # the expression coerces a literal 0 (= unlimited) to falsy.
+          TB="${{ inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=22
+
+          ARGS="--seasons=${{ inputs.seasons }} --time-budget-min=$TB"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi

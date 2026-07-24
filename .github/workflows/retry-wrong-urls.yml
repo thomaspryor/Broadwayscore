@@ -11,6 +11,10 @@ on:
         description: 'Dry run (no file changes)'
         required: false
         default: 'false'
+      time_budget_min:
+        description: 'Wall-clock budget in minutes (0 = unlimited)'
+        required: false
+        default: '22'
 
 permissions:
   contents: write
@@ -52,8 +56,16 @@ jobs:
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             DRY_RUN_FLAG="--dry-run"
           fi
+
+          # Exit cleanly before the 30-min job timeout; deferred candidates
+          # are picked up next run. Default in bash, not a GHA || expression —
+          # the expression coerces a literal 0 (= unlimited) to falsy.
+          TB="${{ inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=22
+
           node scripts/retry-wrong-urls.js \
             --max-tier ${{ inputs.max_tier }} \
+            --time-budget-min="$TB" \
             $DRY_RUN_FLAG
 
       - name: Push review texts

@@ -4,7 +4,12 @@ on:
   schedule:
     # Monthly on 1st Monday at 4 PM UTC (11 AM EST)
     - cron: '0 16 1-7 * 1'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      time_budget_min:
+        description: 'Per-step wall-clock budget in minutes for each BD/SB step (0 = unlimited)'
+        required: false
+        default: '9'
 
 concurrency:
   group: fix-platform-ticket-links
@@ -42,7 +47,14 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-        run: node scripts/fix-platform-ticket-links.js
+        run: |
+          # Exit each BD/SB step's loop cleanly well before the shared 25-min
+          # job timeout; deferred shows are picked up next run. Default in
+          # bash, not a GHA || expression — the expression coerces a literal
+          # 0 (= unlimited) to falsy.
+          TB="${{ github.event.inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=9
+          node scripts/fix-platform-ticket-links.js --time-budget-min="$TB"
 
       - name: Enrich SeatPlan links (West End)
         run: node scripts/enrich-seatplan-links.js
@@ -54,7 +66,10 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-        run: node scripts/enrich-official-urls.js --category=broadway
+        run: |
+          TB="${{ github.event.inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=9
+          node scripts/enrich-official-urls.js --category=broadway --time-budget-min="$TB"
         continue-on-error: true
 
       - name: Push core data to private repo

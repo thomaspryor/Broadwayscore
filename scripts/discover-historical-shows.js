@@ -10,7 +10,13 @@
  *   - Provides: title, type (Musical/Play/Special), Original/Revival, opening date, theater
  *   - IBDB production URLs used for direct date enrichment (no Google SERP needed)
  *
- * Usage: node scripts/discover-historical-shows.js --seasons=2024-2025,2023-2024 [--dry-run]
+ * Usage: node scripts/discover-historical-shows.js --seasons=2024-2025,2023-2024 [--dry-run] [--time-budget-min=N]
+ *
+ * --time-budget-min=N: wall-clock budget in minutes for the IBDB enrichment
+ * loop (0 or omitted = unlimited). Exits cleanly once exceeded instead of
+ * running into the job timeout; unenriched shows are still added, just
+ * without IBDB-sourced dates/creative team (a later manual run or the
+ * weekly enrich-ibdb-dates.yml cron picks them up).
  */
 
 const fs = require('fs');
@@ -26,6 +32,7 @@ const { getSeasonForDate, validateSeason } = require('./lib/broadway-seasons');
 const { extractDatesFromIBDBPage } = require('./lib/ibdb-dates');
 const { scrapeCurrentRuntimes, scrapeShowRuntime, matchRuntimesToShows } = require('./lib/broadway-com-runtimes');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'historical-shows-pending.json');
@@ -96,6 +103,7 @@ const IBDB_SEASON_IDS = {
 
 const dryRun = process.argv.includes('--dry-run');
 const skipRuntimes = process.argv.includes('--skip-runtimes');
+const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv));
 
 // Parse season argument
 const seasonsArg = process.argv.find(arg => arg.startsWith('--seasons='));
@@ -334,6 +342,17 @@ async function enrichFromIBDB(shows) {
   console.log(`Enriching ${shows.length} shows from IBDB production pages...`);
 
   for (let i = 0; i < shows.length; i++) {
+    // Each show's extractDatesFromIBDBPage() goes through the full
+    // fetchPage() fallback chain (SD→BD→SB→Playwright, each with its own
+    // retries/timeouts) — an unbounded season list can burn past the job's
+    // timeout-minutes with nothing committed (same class as #369/#415).
+    // Shows are already pushed to newShows before this runs, so a budget
+    // exit just leaves the remainder without IBDB dates, not unadded.
+    if (timeBudget.exceeded()) {
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached during IBDB enrichment — ${shows.length - i} show(s) added without IBDB dates/creative team.`);
+      break;
+    }
+
     const show = shows[i];
     if (!show.ibdbUrl) continue;
 
