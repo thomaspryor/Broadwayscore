@@ -87,5 +87,24 @@ else
   echo "FAIL[2]: predicate CLI contract broken: noop='$verdict_noop'($c1) ok='$verdict_ok'($c2) fail='$verdict_fail'($c3)"; fail=1
 fi
 
+# ── Case 3: the EXACT bash wrapper the helper uses must match "NOOP" ──────────
+# Regression guard for the ship-check #394 finding: the CLI exits non-zero (3) on a
+# no-op, so a `|| echo OK` fallback would APPEND "OK" (→ "NOOP\nOK") and the guard
+# would silently never fire. This asserts the `|| true` idiom in push-with-retry.sh
+# captures exactly "NOOP" (fires) on a no-op and "" (fail-open) on a node crash.
+wrapped_noop=$(node "$PROGRESS_CLI" --remote-in-history=false --history-changed=true 2>/dev/null || true)
+if [ "$wrapped_noop" = "NOOP" ]; then
+  echo "PASS[3]: helper's '|| true' wrapper captures exactly 'NOOP' (guard fires) — not 'NOOP\\nOK'"
+else
+  echo "FAIL[3]: wrapper captured '$wrapped_noop' (≠ 'NOOP') — the guard would ship INERT. Use '|| true', not '|| echo OK'."; fail=1
+fi
+
+# And assert the shipped helper actually uses '|| true', never '|| echo OK'.
+if grep -q 'push-rebase-progress.js.*|| echo OK' "$SCRIPT_DIR/push-with-retry.sh"; then
+  echo "FAIL[4]: push-with-retry.sh uses '|| echo OK' after the progress CLI — appends OK to NOOP, guard never fires."; fail=1
+else
+  echo "PASS[4]: push-with-retry.sh does not use the inert '|| echo OK' wrapper"
+fi
+
 if [ "$fail" -ne 0 ]; then echo "=== push-with-retry.noop-rebase.test.sh FAILED ==="; exit 1; fi
 echo "=== push-with-retry.noop-rebase.test.sh PASSED ==="

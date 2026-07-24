@@ -386,13 +386,23 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # from CI. An explicit ":refs/remotes/origin/X" destination ALWAYS updates the
   # tracking ref regardless of the configured refspec. Falls back to the bare form
   # if the explicit refspec is rejected (fail-open).
-  git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null \
-    || git_fetch origin "$PULL_BRANCH" 2>/dev/null || true
+  fetch_ok=false
+  if git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null \
+      || git_fetch origin "$PULL_BRANCH" 2>/dev/null; then
+    fetch_ok=true
+  fi
   # Authoritative remote tip for the post-resolution progress assertion below.
-  # Prefer FETCH_HEAD (always written by the fetch) so the check holds even if the
-  # tracking ref somehow stayed stale.
-  FETCHED_REMOTE_SHA=$(git rev-parse --verify --quiet FETCH_HEAD 2>/dev/null \
-    || git rev-parse --verify --quiet "origin/$PULL_BRANCH" 2>/dev/null || echo "")
+  # ONLY capture it when THIS iteration's fetch succeeded — otherwise FETCH_HEAD may
+  # be a leftover from a prior iteration (ship-check #394 Codex finding), which could
+  # make the guard reason about the wrong commit (false abort, or missed no-op) on a
+  # transient network failure. Leaving it empty skips the guard so the loop simply
+  # backs off and retries — the correct behaviour for a failed fetch. Prefer
+  # FETCH_HEAD (always written by a successful fetch) over the tracking ref.
+  FETCHED_REMOTE_SHA=""
+  if [ "$fetch_ok" = "true" ]; then
+    FETCHED_REMOTE_SHA=$(git rev-parse --verify --quiet FETCH_HEAD 2>/dev/null \
+      || git rev-parse --verify --quiet "origin/$PULL_BRANCH" 2>/dev/null || echo "")
+  fi
 
   # Capture pre-rebase HEAD so the post-rebase survival check (Sprint 5)
   # can diff against the commit we expect to preserve. Guards against
@@ -534,7 +544,12 @@ for i in $(seq 1 "$MAX_RETRIES"); do
        && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/push-rebase-progress.js" ]; then
     _remote_in_history=false
     git merge-base --is-ancestor "$FETCHED_REMOTE_SHA" HEAD 2>/dev/null && _remote_in_history=true
-    if [ "$(node "$SCRIPT_DIR/push-rebase-progress.js" --remote-in-history="$_remote_in_history" --history-changed="$history_changed" 2>/dev/null || echo OK)" = "NOOP" ]; then
+    # NOTE: the CLI prints NOOP and exits 3 on a no-op (exit code is the .test.mjs
+    # contract). Use `|| true`, NOT `|| echo OK` — the latter APPENDS "OK" to the
+    # captured "NOOP" (→ "NOOP\nOK") on the non-zero exit, so the guard would never
+    # match and ship inert (ship-check #394 finding). `|| true` fails open: a node
+    # crash yields "" (≠ NOOP), a real no-op yields exactly "NOOP".
+    if [ "$(node "$SCRIPT_DIR/push-rebase-progress.js" --remote-in-history="$_remote_in_history" --history-changed="$history_changed" 2>/dev/null || true)" = "NOOP" ]; then
       record_push_failure "noop-rebase(${RESOLUTION_PATH:-unknown})" "$i"
       echo "::error::push-with-retry: rebase/merge was a NO-OP (resolution path: ${RESOLUTION_PATH:-unknown}) — the fetched remote tip ${FETCHED_REMOTE_SHA} is still NOT in HEAD's history, so every push attempt will be rejected with 'fetch first'. This is the task-#394 silent-forever failure (a stale refs/remotes/origin/$PULL_BRANCH under a SHA-pinned checkout refspec). Aborting instead of burning $MAX_RETRIES retries. Logged to data/audit/push-retry-failures.jsonl."
       exit 1
