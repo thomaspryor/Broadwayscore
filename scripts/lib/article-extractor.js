@@ -264,6 +264,11 @@ const PATTERNS = [
   // the whole page as url_content_mismatch (Joe Turner 2026-04-26 incident).
   ['nysun.com', /<div[^>]+class="[^"]*article-wrapper[^"]*"[^>]*>([\s\S]*?)<\/main>/, 300],
 
+  // jonathanbaz.com — Blogger/Blogspot: body lives in .post-body (single-quoted
+  // class attrs), followed by .post-footer. Blogger templates share this shape,
+  // so match either quote style.
+  ['jonathanbaz.com', /<div[^>]+class=["'][^"']*post-body[^"']*["'][^>]*>([\s\S]*?)<div[^>]+class=["'][^"']*post-footer/, 300],
+
   // Opera outlets — added when SERP discovery for opera shows landed (Innocence
   // Met Opera 2026-04-27). Each is a WordPress install with a distinct theme.
   // newyorkclassicalreview.com — el-clasico theme uses id="post-body" (not class)
