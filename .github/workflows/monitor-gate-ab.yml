@@ -105,14 +105,14 @@ jobs:
           # that would crash the whole step and lose the OTHER monitors'
           # earned state too. Matters on a monitor's first-ever run, before
           # its state file exists in the repo tree.
-          for f in data/audit/email-gate-funnel-monitor-state.json data/audit/gate-cold-start-monitor-state.json; do
+          for f in data/audit/email-gate-funnel-monitor-state.json data/audit/gate-cold-start-monitor-state.json data/audit/ticket-ab-monitor-state.json; do
             [ -f "$f" ] && git add "$f"
           done
           if git diff --cached --quiet; then
             echo "No state change to commit"
             exit 0
           fi
-          git commit -m "data: email-gate funnel + gate-cold-start monitor state [skip ci]"
+          git commit -m "data: email-gate funnel + gate-cold-start + ticket-ab monitor state [skip ci]"
           bash scripts/lib/push-with-retry.sh
 
       - name: Notify on failure

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { decideTicketAbAlerts, COOLDOWN_MS } = require('./ticket-ab-monitor-rules.js');
+const { decideTicketAbAlerts, COOLDOWN_MS, MIN_CLICKS_FOR_DATA_PROBLEM } = require('./ticket-ab-monitor-rules.js');
 
 const DAY = 24 * 60 * 60 * 1000;
 const NOW = 1_800_000_000_000;
@@ -117,6 +117,48 @@ test('weekly-summary is log-only (never email) and always present, even alongsid
   assert.equal(weekly.email, false);
   assert.equal(weekly.logOnly, true);
   assert.ok(weekly.description.includes('data problem'));
+});
+
+test(`degenerate primary during ramp-up (combined clicks < ${MIN_CLICKS_FOR_DATA_PROBLEM}) does NOT alert — it's ramp-up, not breakage`, () => {
+  const r = decideTicketAbAlerts(
+    healthySummary({
+      variants: [
+        { name: 'multi', clicks: 5, users: 3, convUsers: 0, convCount: 0, joinCoverage: null },
+        { name: 'single', clicks: 4, users: 2, convUsers: 0, convCount: 0, joinCoverage: null },
+      ],
+      primary: { p: null, significant: null, suppressed: null, degenerate: 'need exactly 2 variants, got 1', underpowered: false },
+    }),
+    {}, NOW);
+  assert.ok(!kinds(r).includes('primary-data-problem'), 'near-empty window must not read as a pipeline break');
+  const weekly = r.alerts.find(a => a.kind === 'weekly-summary');
+  assert.ok(weekly.description.includes('ramp-up'));
+});
+
+test('suppressed primary (never traffic-dependent) still alerts even during a low-traffic window', () => {
+  const r = decideTicketAbAlerts(
+    healthySummary({
+      variants: [
+        { name: 'multi', clicks: 5, users: 3, convUsers: 0, convCount: 0, joinCoverage: null },
+        { name: 'single', clicks: 4, users: 2, convUsers: 0, convCount: 0, joinCoverage: null },
+      ],
+      primary: { p: null, significant: null, suppressed: 'flag state does not match registry expectations', degenerate: null, underpowered: false },
+    }),
+    {}, NOW);
+  assert.ok(kinds(r).includes('primary-data-problem'), 'suppressed reasons (flag drift, join gap, leakage) alert regardless of volume');
+});
+
+test('significance-reached surfaces primary.note (e.g. asymmetric-zero-conversions caution) as a caveat', () => {
+  const r = decideTicketAbAlerts(
+    healthySummary({
+      primary: {
+        p: 0.01, significant: true, suppressed: null, degenerate: null, underpowered: false,
+        note: "arm 'multi' has 0 attributed conversions while 'single' has 40 at comparable click volume — verify the SubId postback pipeline",
+      },
+    }),
+    {}, NOW);
+  const alert = r.alerts.find(a => a.kind === 'significance-reached');
+  assert.ok(alert);
+  assert.ok(alert.description.includes('verify the SubId postback pipeline'), 'the caution must ride along, not get silently dropped');
 });
 
 test(`primary-data-problem cooldown is ${COOLDOWN_MS / DAY} days`, () => {

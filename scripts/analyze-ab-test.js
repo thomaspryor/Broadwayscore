@@ -45,6 +45,13 @@ const FLAG = (() => {
 })();
 
 const DAYS = (() => {
+  // Accept both `--days 14` (this script's original form) and `--days=14`
+  // (the convention every other analyzer in this repo uses — analyze-gate-cold-start.js,
+  // analyze-email-gate-funnel.js). Silently falling back to the 14-day default
+  // on an unrecognized form would give a caller like `--json --days=30` a
+  // wrong-window analysis with no error (2026-07-24 ship-check finding).
+  const eq = process.argv.find(a => a.startsWith('--days='));
+  if (eq) return parseInt(eq.split('=')[1], 10);
   const idx = process.argv.indexOf('--days');
   return idx >= 0 ? parseInt(process.argv[idx + 1], 10) : 14;
 })();
@@ -377,11 +384,17 @@ async function main() {
     }
     const rep = computeAbSignificance(sigInput, { crossVariantConvUsers, flagHealthProblem });
     summary.primary = rep.degenerate
-      ? { degenerate: rep.degenerate, suppressed: null, significant: null, p: null, underpowered: false }
+      ? { degenerate: rep.degenerate, suppressed: null, significant: null, p: null, underpowered: false, note: null }
       : {
         p: rep.primary.p, significant: rep.primary.significant,
         suppressed: rep.primary.suppressed, degenerate: rep.primary.degenerate,
         underpowered: rep.underpowered, underpoweredNote: rep.underpoweredNote,
+        // Pipeline caution (e.g. asymmetric-zero conversions at comparable
+        // click volume — see significance.js) that prose mode already prints
+        // but --json was silently dropping; a "significant" p with an
+        // un-surfaced note reads as clean when the analyzer is warning about
+        // a broken per-arm postback.
+        note: rep.primary.note || null,
       };
 
     say(`\n${'─'.repeat(70)}`);
