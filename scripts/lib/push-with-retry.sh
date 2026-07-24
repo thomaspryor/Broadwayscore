@@ -72,6 +72,29 @@ git_push() {
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push "$@"
 }
 
+# Best-effort failure telemetry (task #394). Appends a JSONL record when a push is
+# abandoned — either the no-op-rebase abort or full retry exhaustion below — so
+# repeated exhaustion is DETECTABLE instead of silent-forever. health-check.js
+# surfaces data/audit/push-retry-failures.jsonl as the "Push-retry deadman" row.
+# Fail-OPEN: a telemetry write must never break or block the push flow.
+# NOTE on persistence: when the failed push is the ONLY write in a CI job, this
+# local file dies with the runner before it can be committed. In that pure-CI-fail
+# case the durable signal is the ::error:: annotation plus the fact that the
+# explicit-destination fetch below prevents the no-op in the first place. The log
+# reliably captures local runs and any job that lands a LATER successful push.
+PUSH_FAILURE_LOG="${PUSH_FAILURE_LOG:-$SCRIPT_DIR/../../data/audit/push-retry-failures.jsonl}"
+record_push_failure() {
+  local reason="${1:-unknown}" attempt="${2:-0}"
+  local ts remote
+  ts=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo unknown)
+  remote=$(git remote get-url origin 2>/dev/null | sed -E 's#.*[/:]##; s#\.git$##' || echo unknown)
+  mkdir -p "$(dirname "$PUSH_FAILURE_LOG")" 2>/dev/null || true
+  printf '{"ts":"%s","branch":"%s","remote":"%s","reason":"%s","attempt":%s,"maxRetries":%s,"ci":%s}\n' \
+    "$ts" "${PULL_BRANCH:-?}" "$remote" "$reason" "$attempt" "${MAX_RETRIES:-?}" \
+    "$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
+    >> "$PUSH_FAILURE_LOG" 2>/dev/null || true
+}
+
 # Pre-push conflict-marker guard (root-cause fix, 2026-06-29 / Notion 38e637c5).
 # A bad enrich-reviews rebase once committed unresolved git conflict markers into a
 # review-text JSON file (commit 09e78a7a), making it invalid JSON; the file was then
@@ -350,7 +373,26 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   fi
 
   echo "Push failed (attempt $i/$MAX_RETRIES), fetching remote and rebasing..."
-  git_fetch origin "$PULL_BRANCH" 2>/dev/null || true
+  # Task #394 ROOT-CAUSE FIX: fetch with an EXPLICIT destination refspec so
+  # refs/remotes/origin/$PULL_BRANCH is force-advanced to the true remote tip.
+  # A bare `git fetch origin $PULL_BRANCH` only guarantees FETCH_HEAD; under
+  # actions/checkout's SHA-pinned fetch refspec it leaves the tracking ref STALE,
+  # so `git rebase -X theirs origin/$PULL_BRANCH` (and EVERY other consumer of
+  # origin/$PULL_BRANCH below — is_modify_delete, restore_protected_fields, the
+  # survival check, the merge/cherry-pick fallbacks) operates on a stale base: the
+  # rebase reports "Current branch is up to date", integrates nothing, and the push
+  # is rejected ("fetch first") for all 7 attempts while the `|| echo ::warning::`
+  # call site swallows it — so the alert-ledger (or any state file) NEVER persists
+  # from CI. An explicit ":refs/remotes/origin/X" destination ALWAYS updates the
+  # tracking ref regardless of the configured refspec. Falls back to the bare form
+  # if the explicit refspec is rejected (fail-open).
+  git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null \
+    || git_fetch origin "$PULL_BRANCH" 2>/dev/null || true
+  # Authoritative remote tip for the post-resolution progress assertion below.
+  # Prefer FETCH_HEAD (always written by the fetch) so the check holds even if the
+  # tracking ref somehow stayed stale.
+  FETCHED_REMOTE_SHA=$(git rev-parse --verify --quiet FETCH_HEAD 2>/dev/null \
+    || git rev-parse --verify --quiet "origin/$PULL_BRANCH" 2>/dev/null || echo "")
 
   # Capture pre-rebase HEAD so the post-rebase survival check (Sprint 5)
   # can diff against the commit we expect to preserve. Guards against
@@ -473,6 +515,32 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     esac
   fi
 
+  # ── Post-resolution progress assertion (task #394) ───────────────────────────
+  # The push at the top of this iteration was rejected because the remote advanced.
+  # If a resolution path CLAIMED success (history_changed=true) yet our HEAD still
+  # does NOT contain the fetched remote tip, the rebase/merge was a SILENT NO-OP —
+  # it reported "up to date"/"Successfully rebased" but integrated nothing, so the
+  # push below and every remaining retry can only be rejected again ("fetch first").
+  # That is exactly how the alert-ledger commit failed on all 7 attempts and NEVER
+  # persisted from CI (the router's cooldown/dedup state stayed dead). Abort LOUDLY
+  # and record it instead of burning the rest of the retry budget on an impossible
+  # push. When history_changed=false (a genuine unresolved conflict, or nothing to
+  # integrate) we deliberately fall through to the normal backoff/retry — only the
+  # "claimed success but did nothing" case is the abort signal. The decision lives
+  # in scripts/lib/push-rebase-progress.js (unit-tested, §15). Fail-open if node/git
+  # introspection is unavailable — the real fix is the explicit-destination fetch
+  # above; this is defense-in-depth against any future stale-ref regression.
+  if [ "$history_changed" = "true" ] && [ -n "${FETCHED_REMOTE_SHA:-}" ] \
+       && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/push-rebase-progress.js" ]; then
+    _remote_in_history=false
+    git merge-base --is-ancestor "$FETCHED_REMOTE_SHA" HEAD 2>/dev/null && _remote_in_history=true
+    if [ "$(node "$SCRIPT_DIR/push-rebase-progress.js" --remote-in-history="$_remote_in_history" --history-changed="$history_changed" 2>/dev/null || echo OK)" = "NOOP" ]; then
+      record_push_failure "noop-rebase(${RESOLUTION_PATH:-unknown})" "$i"
+      echo "::error::push-with-retry: rebase/merge was a NO-OP (resolution path: ${RESOLUTION_PATH:-unknown}) — the fetched remote tip ${FETCHED_REMOTE_SHA} is still NOT in HEAD's history, so every push attempt will be rejected with 'fetch first'. This is the task-#394 silent-forever failure (a stale refs/remotes/origin/$PULL_BRANCH under a SHA-pinned checkout refspec). Aborting instead of burning $MAX_RETRIES retries. Logged to data/audit/push-retry-failures.jsonl."
+      exit 1
+    fi
+  fi
+
   # If this iteration rewrote history to be pushable, publish it NOW rather than
   # looping back to the top — the deadline guard there could otherwise break after
   # a successful resolution but before the now-pushable commit is ever pushed
@@ -500,6 +568,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
 done
 
 if [ "$pushed" != "true" ]; then
+  record_push_failure "retries-exhausted" "$MAX_RETRIES"
   echo "::error::All push attempts failed after $MAX_RETRIES attempts"
   exit 1
 fi

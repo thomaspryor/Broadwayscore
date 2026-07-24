@@ -227,6 +227,11 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 /data/audit/touring-contamination-report.*.json
 /data/audit/.touring-contamination-checkpoint.json
 /data/audit/.touring-contamination-checkpoint.*.json
+# Runner-local push-retry failure telemetry (task #394). Written by
+# scripts/lib/push-with-retry.sh on abort/exhaustion, read locally by
+# health-check.js's "Push-retry deadman" row. Never committed by the helper —
+# ignore so `git add -A` in the ~130 caller workflows can't stage it as churn.
+/data/audit/push-retry-failures.jsonl
 # Structural #1 — daily exclusion logs (may contain URLs, not committed)
 /data/audit/exclusions-*.jsonl
 /data/audit/exclusion-summary-yesterday.json
