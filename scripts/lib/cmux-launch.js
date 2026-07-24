@@ -59,9 +59,17 @@ function setAutoColor(ref) {
  * @param {boolean} [opts.autoColor] color the tab Blue as auto-dispatched
  * @param {string}  [opts.settingsPath] optional --settings deny-list file
  * @param {string}  [opts.commandOverride] test seam — never set in real use
+ * @param {number}  [opts.verifyTimeoutSec] seconds to wait for a live claude
+ *                                 process before declaring the launch dead.
+ *                                 Default 30 (sonnet cold start). Fable +
+ *                                 heavy session-start hooks need ~60-90s —
+ *                                 the first live monitor launch (2026-07-24)
+ *                                 came alive AFTER the 30s window, got its
+ *                                 workspace close-and-retried, and left an
+ *                                 untracked live session behind.
  * @returns {{ok: boolean, ref?: string, reason?: string, workspaceRef?: string|null, seedFile: string, command: string}}
  */
-function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null }) {
+function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30 }) {
   const seedFile = path.join(os.tmpdir(), `bsc-seed-${seedKey}.txt`);
   fs.writeFileSync(seedFile, seed);
   // The wrapper script expands $(cat …) so the multi-line prompt survives
@@ -102,9 +110,9 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
     // Poll for a LIVE claude_code process (any status — a fast launch can
     // reach waiting-at-prompt inside the window, and the Running-only check
     // would kill that healthy session as a corpse; ship-check 2026-07-21).
-    // 30s window: shell init (direnv) + claude cold start can exceed 15s
+    // Window: shell init (direnv) + claude cold start can exceed 15s
     // post-reboot, and a false timeout kills a healthy launch (2026-07-12).
-    if (ws && pollUntil(() => cmuxws.claudeAliveIn(ws.ref), 30)) {
+    if (ws && pollUntil(() => cmuxws.claudeAliveIn(ws.ref), verifyTimeoutSec)) {
       if (autoColor) setAutoColor(ws.ref);
       return { ok: true, ref: ws.ref, seedFile, command };
     }

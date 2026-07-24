@@ -263,6 +263,10 @@ async function main(argv = process.argv.slice(2)) {
     // focus:false — a 23:00 auto-launch must never steal the owner's screen
     // (plan-review user-impact finding).
     focus: false, autoColor: true, settingsPath: SETTINGS_PATH,
+    // Fable + session-start hooks take well over the default 30s to register
+    // a live process (first live launch 2026-07-24: alive at ~45s, after the
+    // launcher had already close-and-retried it).
+    verifyTimeoutSec: 90,
   });
 
   if (!result.ok) {
@@ -283,10 +287,13 @@ async function main(argv = process.argv.slice(2)) {
   // Seed the heartbeat at launch so the next tick (before the session's first
   // loop pass finishes) reads a fresh heartbeat, not the stale-dead path.
   fs.writeFileSync(HEARTBEAT, JSON.stringify({ at: now.toISOString(), seededByLauncher: true }));
+  // dispatch-ledger requires {event, taskId}; taskId carries the night key
+  // (the ledger is task-shaped — first live launch crashed here on a
+  // {type:...}-shaped entry, after the workspace was already up).
   dispatchLedger.appendEntry({
-    at: now.toISOString(), type: 'on-monitor-launch', nightKey: key,
+    event: 'launch', taskId: key,
     workspaceRef: result.ref, shows: windows.map(w => w.showId),
-    attempt: nightState.attempts + 1, model: MODEL, rehearsal,
+    attempt: nightState.attempts + 1, model: MODEL, rehearsal, kind: 'on-monitor',
   });
   await alert({
     conditionKey: `on-monitor-launched-${key}`,
