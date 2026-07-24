@@ -343,14 +343,26 @@ jobs:
           done
 
           if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
-            BREACHED_LIST=$(IFS=,; echo "${BREACHED_SHOWS[*]}")
+            # Sorted (not iteration-order) so the same breached set always
+            # produces the same conditionKey — codex adversarial review
+            # 2026-07-23 flagged unsorted joins as a silent dedup-bypass if
+            # array order ever shifted between retries.
+            BREACHED_LIST=$(printf '%s\n' "${BREACHED_SHOWS[@]}" | sort | paste -sd, -)
             echo "::error::Checklist gate blocked broadcast — QA errors found. Set force_broadcast=true to override."
-            echo "blocked=true" >> "$GITHUB_OUTPUT"
             # Routed through the alert router (email-noise Sprint 2, 2026-07-23):
             # a stuck orphan-unscored/checklist condition used to re-email this
             # SAME "Blocked" alert on every retry (9 emails for one root cause on
             # 2026-07-22) — the per-show conditionKey now collapses repeats
             # within 24h to a single email.
+            #
+            # blocked=true is written from INSIDE the node call, only once we
+            # know the owner was actually informed (delivered or already-silent
+            # per the ledger) — codex adversarial review 2026-07-23 flagged the
+            # previous write-before-call ordering as a fail-CLOSED regression:
+            # if routeAlert() threw or Resend delivery failed, blocked=true
+            # would already be set, suppressing the generic notify-failure
+            # fallback below and leaving the owner with ZERO email for a real
+            # blocked broadcast (worse than the pre-migration behavior).
             BREACHED_LIST="$BREACHED_LIST" node -e "
               const { routeAlert } = require('./scripts/lib/owner-alert-router');
               routeAlert({
@@ -361,7 +373,12 @@ jobs:
                 disposition: 'human',
                 cooldownHours: 24,
                 fields: [{ name: 'Shows', value: process.env.BREACHED_LIST || '(unknown)' }],
-              }).then(() => process.exit(1)).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
+              }).then((result) => {
+                const informed = result.action === 'silent' || (result.action === 'human' && result.delivered);
+                if (informed) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'blocked=true\n');
+                else console.error('::warning::Alert delivery unconfirmed — leaving generic fallback notifier enabled');
+                process.exit(1);
+              }).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
             "
           else
             echo "Checklist gate passed (blocked=$BLOCKED, force=$FORCE)"
@@ -411,9 +428,11 @@ jobs:
           done
 
           if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
-            BREACHED_LIST=$(IFS=,; echo "${BREACHED_SHOWS[*]}")
+            BREACHED_LIST=$(printf '%s\n' "${BREACHED_SHOWS[@]}" | sort | paste -sd, -)
             echo "::error::Drift gate blocked broadcast — review-count drift exceeds ±2 for: $BREACHED_LIST. Set force_broadcast=true to override."
-            echo "blocked=true" >> "$GITHUB_OUTPUT"
+            # blocked=true only written after confirmed delivery/silence — see
+            # the checklist gate above for the fail-closed-to-silence bug this
+            # avoids (codex adversarial review 2026-07-23).
             BREACHED_LIST="$BREACHED_LIST" node -e "
               const { routeAlert } = require('./scripts/lib/owner-alert-router');
               routeAlert({
@@ -424,7 +443,12 @@ jobs:
                 disposition: 'human',
                 cooldownHours: 24,
                 fields: [{ name: 'Shows', value: process.env.BREACHED_LIST || '(unknown)' }],
-              }).then(() => process.exit(1)).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
+              }).then((result) => {
+                const informed = result.action === 'silent' || (result.action === 'human' && result.delivered);
+                if (informed) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'blocked=true\n');
+                else console.error('::warning::Alert delivery unconfirmed — leaving generic fallback notifier enabled');
+                process.exit(1);
+              }).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
             "
           else
             echo "Drift gate passed (blocked=$BLOCKED, force=$FORCE)"
@@ -484,18 +508,21 @@ jobs:
           done
 
           if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
-            BREACHED_LIST=$(IFS=,; echo "${BREACHED_SHOWS[*]}")
-            # Condition key uses just show IDs (not the orphan count/dispatch
-            # status, which can shift retry-to-retry) so the SAME stuck show
-            # dedupes across retries instead of minting a fresh key each time.
-            BREACHED_SHOW_IDS_LIST=$(IFS=,; echo "${BREACHED_SHOW_IDS[*]}")
+            BREACHED_LIST=$(printf '%s\n' "${BREACHED_SHOWS[@]}" | sort | paste -sd, -)
+            # Condition key uses just SORTED show IDs (not the orphan
+            # count/dispatch status, which can shift retry-to-retry, and not
+            # iteration order) so the SAME stuck show dedupes across retries
+            # instead of minting a fresh key each time.
+            BREACHED_SHOW_IDS_LIST=$(printf '%s\n' "${BREACHED_SHOW_IDS[@]}" | sort | paste -sd, -)
             if [ "$ANY_DISPATCH_OK" = "true" ]; then
               RESOLUTION_HINT="Wait for next rebuild cycle (rescore in flight)"
             else
               RESOLUTION_HINT="No rescore is queued (cooldown or dispatch failed) — operator must run: gh workflow run llm-ensemble-score.yml -f show_id=<id> -f fast_rebuild=true"
             fi
             echo "::error::Orphan-unscored gate blocked broadcast — reviews with includable text are unscored for: $BREACHED_LIST. ${RESOLUTION_HINT}. Or re-run with force_broadcast=true to override."
-            echo "blocked=true" >> "$GITHUB_OUTPUT"
+            # blocked=true only written after confirmed delivery/silence — see
+            # the checklist gate above for the fail-closed-to-silence bug this
+            # avoids (codex adversarial review 2026-07-23).
             BREACHED_LIST="$BREACHED_LIST" BREACHED_SHOW_IDS_LIST="$BREACHED_SHOW_IDS_LIST" RESOLUTION_HINT="$RESOLUTION_HINT" node -e "
               const { routeAlert } = require('./scripts/lib/owner-alert-router');
               routeAlert({
@@ -506,7 +533,12 @@ jobs:
                 disposition: 'human',
                 cooldownHours: 24,
                 fields: [{ name: 'Shows (showId:orphanCount/dispatch)', value: process.env.BREACHED_LIST || '(unknown)' }],
-              }).then(() => process.exit(1)).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
+              }).then((result) => {
+                const informed = result.action === 'silent' || (result.action === 'human' && result.delivered);
+                if (informed) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'blocked=true\n');
+                else console.error('::warning::Alert delivery unconfirmed — leaving generic fallback notifier enabled');
+                process.exit(1);
+              }).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
             "
           else
             echo "Orphan-unscored gate passed (blocked=$BLOCKED, force=$FORCE)"
