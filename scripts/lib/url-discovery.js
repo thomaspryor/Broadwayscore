@@ -90,6 +90,16 @@ function buildSiteClause(domain, aliasOverride) {
 // a leading article, is a SINGLE word — that's where collisions are worst. Two-word
 // titles ("War Horse", "Inter Alia") are specific enough; we deliberately don't
 // flag them, to avoid tightening discovery on shows that don't need it.
+//
+// CALLER GOTCHA (ship-check 2026-07-24, #371): this word count is on the RAW
+// title, not on a stopword/short-word-stripped token set. A caller whose base
+// match specificity comes from a stripped token set (e.g. audit-show-review-
+// gap.js's titleTokens(), which drops stopwords and words <3 chars) will see
+// titles like "Oh, Mary!" -> ['mary'] or "Life of Pi" -> ['life'] — effectively
+// ONE matchable token — even though isGenericShowTitle reports them as 2+ words
+// and skips the disambiguation gate. If you pair this function with a stripped-
+// token matcher, also gate on that matcher's own token count (see
+// acceptSerpCensusResult in audit-show-review-gap.js for the fixed pattern).
 // Pure + exported for unit testing.
 function isGenericShowTitle(title) {
   if (!title || typeof title !== 'string') return false;
