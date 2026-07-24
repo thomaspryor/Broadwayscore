@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { classifyBadSynopsis } = require('./lib/synopsis-validation');
+const showsWriteGuard = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const GROSSES_FILE = path.join(__dirname, '..', 'data', 'grosses.json');
@@ -81,12 +82,12 @@ function checkGrossesFreshness() {
 }
 
 function loadShows() {
-  const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const data = showsWriteGuard.loadShows();
   return data;
 }
 
 function saveShows(data) {
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  showsWriteGuard.saveShows(data);
 }
 
 function isDatePassed(dateStr) {

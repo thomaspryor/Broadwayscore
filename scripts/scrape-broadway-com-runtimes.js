@@ -18,6 +18,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const {
   scrapeCurrentRuntimes,
   scrapeShowRuntime,
@@ -62,7 +63,7 @@ async function main() {
   if (STATUS_FILTER) console.log(`  Status filter: ${STATUS_FILTER}`);
 
   // Load shows
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows || showsData;
 
   // Track changes
@@ -227,10 +228,10 @@ function applyChanges(shows, changes) {
  */
 function writeShows(showsData, shows) {
   if (Array.isArray(showsData)) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(shows, null, 2) + '\n');
+    saveShows(shows);
   } else {
     showsData.shows = shows;
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
   }
 }
 

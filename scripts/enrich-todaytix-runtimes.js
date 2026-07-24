@@ -16,7 +16,7 @@ const path = require('path');
 const https = require('https');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { extractRunTimeDisplay, parseRunTimeDisplay, todaytixPageUrl } = require('./lib/todaytix-runtime');
-const { atomicWriteShowsJson } = require('./lib/atomic-shows-write');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -91,7 +91,7 @@ function extractAgeRecommendation(show) {
 }
 
 async function main() {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows;
 
   // Find shows with todaytixId that need runtime OR age recommendation
@@ -221,7 +221,7 @@ async function main() {
   console.log(`Errors: ${errors}`);
 
   if (!DRY_RUN && (runtimeEnriched > 0 || ageEnriched > 0)) {
-    atomicWriteShowsJson(SHOWS_PATH, showsData);
+    saveShows(showsData);
     console.log(`\nshows.json updated.`);
   } else if (DRY_RUN) {
     console.log(`\n(dry run — no files written)`);

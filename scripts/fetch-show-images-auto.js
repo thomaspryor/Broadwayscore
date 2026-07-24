@@ -27,6 +27,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const path = require('path');
 const { compressImage } = require('./lib/compress-image');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const crypto = require('crypto');
 
@@ -2565,7 +2566,7 @@ async function main() {
   if (badImagesOnly) console.log('MODE: Re-sourcing shows with bad (identical Playbill) images');
   console.log('='.repeat(60));
 
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
+  const showsData = loadShows();
   allShowsData = showsData;
 
   // ============================================================
@@ -2706,7 +2707,7 @@ async function main() {
     }
 
     console.log(`\nFilled ${filled} hero images out of ${shows.length} candidates`);
-    fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log('💾 shows.json saved');
 
     // Archive the new hero images
@@ -2785,7 +2786,7 @@ async function main() {
     }
     showsData._meta = showsData._meta || {};
     showsData._meta.lastUpdated = new Date().toISOString();
-    fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log(`   💾 shows.json saved (${showsData.shows.length} shows)`);
   };
 

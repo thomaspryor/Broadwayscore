@@ -22,6 +22,7 @@ const path = require('path');
 
 const { validateVenue } = require('./lib/broadway-theaters');
 const { classifyShow } = require('./lib/classify-show');
+const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -32,10 +33,10 @@ const overrideFlag = process.argv.find(a => a.startsWith('--shows-path='));
 const defaultPath = path.join(__dirname, '../data/shows.json');
 const targetPath = overrideFlag ? overrideFlag.split('=')[1] : defaultPath;
 const showsPath = fs.realpathSync(targetPath);
+const { loadShows, saveShows } = createShowsWriteGuard(showsPath);
 
 console.log(`Reading: ${showsPath}`);
-const raw = fs.readFileSync(showsPath, 'utf8');
-const data = JSON.parse(raw);
+const data = loadShows();
 const list = data.shows || data;
 
 let stamped = 0;
@@ -94,10 +95,6 @@ if (stamped === 0) {
   process.exit(0);
 }
 
-// Preserve trailing newline if present.
-const hasTrailingNewline = raw.endsWith('\n');
-const output = JSON.stringify(data, null, 2) + (hasTrailingNewline ? '\n' : '');
-
-fs.writeFileSync(showsPath, output);
+saveShows(data);
 console.log('');
 console.log(`Wrote ${showsPath} (${stamped} shows stamped)`);

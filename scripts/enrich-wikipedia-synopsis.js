@@ -15,6 +15,7 @@ const https = require('https');
 const { stripWikiMarkup, hasWikiMarkup, stripLeadingJunk } = require('./lib/wiki-utils');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { classifyBadSynopsis } = require('./lib/synopsis-validation');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -167,7 +168,7 @@ function trimToSynopsis(text) {
 }
 
 async function main() {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows;
 
   // Target any show whose synopsis is missing OR bad (refusal, generic
@@ -282,7 +283,7 @@ async function main() {
   console.log(`Found but no plot section: ${noPlot}`);
 
   if (!DRY_RUN && enriched > 0) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log(`\nshows.json updated.`);
   } else if (DRY_RUN) {
     console.log(`\n(dry run — no files written)`);

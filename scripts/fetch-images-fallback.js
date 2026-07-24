@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 // Try to load scraper module, fall back to fetch if not available
 let scraper;
@@ -222,7 +223,7 @@ async function main() {
   }
 
   // Load shows data
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows;
 
   // Filter shows to process
@@ -292,7 +293,7 @@ async function main() {
 
   // Save updated shows data
   if (!dryRun && results.success.length > 0) {
-    fs.writeFileSync(SHOWS_FILE, JSON.stringify(showsData, null, 2));
+    saveShows(showsData);
     console.log(`\nSaved updates to shows.json`);
   }
 

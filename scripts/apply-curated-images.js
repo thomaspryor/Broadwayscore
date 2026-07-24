@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const CURATED_JSON_PATH = path.join(__dirname, '..', 'data', 'curated-images.json');
@@ -18,7 +19,7 @@ function formatImageUrl(url, params) {
 
 function main() {
   // Load data
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
+  const showsData = loadShows();
   const curatedData = JSON.parse(fs.readFileSync(CURATED_JSON_PATH, 'utf8'));
 
   let updatedCount = 0;
@@ -54,7 +55,7 @@ function main() {
 
   // Save updated shows.json
   showsData._meta.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
+  saveShows(showsData);
 
   console.log(`\n✓ Updated ${updatedCount} shows in shows.json`);
   console.log(`\nTo add more shows, edit: data/curated-images.json`);

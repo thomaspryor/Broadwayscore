@@ -18,6 +18,7 @@ const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { buildTelechargeUrl, normalizeShowName } = require('./lib/url-utils');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -203,7 +204,7 @@ async function main() {
   console.log(`Ticket Platform Link Enrichment ${DRY_RUN ? '(DRY RUN)' : ''}`);
   console.log('='.repeat(60));
 
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows;
 
   const open = shows.filter(s =>
@@ -276,7 +277,7 @@ async function main() {
   console.log(`  Unknown venue (skipped): ${skippedNoVenue}`);
 
   if (!DRY_RUN && (telechargeAdded > 0 || ticketmasterAdded > 0)) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log(`\nshows.json updated.`);
   } else if (DRY_RUN) {
     console.log(`\n(dry run — no files written)`);

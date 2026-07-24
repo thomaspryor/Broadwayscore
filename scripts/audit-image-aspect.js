@@ -27,6 +27,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 let sharp;
 try {
@@ -113,7 +114,7 @@ function archiveAndDelete(filePath, showId) {
 function nullOutShowsJson(violations) {
   // Surgical merge per .github/workflows/CLAUDE.md "Public Show JSON Safety":
   // read the existing object, mutate only the affected images.{role}, write back.
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const showsArr = showsData.shows || showsData;
   const isObject = !Array.isArray(showsArr);
 
@@ -131,7 +132,7 @@ function nullOutShowsJson(violations) {
       updated++;
     }
   }
-  fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+  saveShows(showsData);
   return updated;
 }
 
@@ -145,7 +146,7 @@ async function main() {
     console.error(`shows.json not found at ${SHOWS_PATH}`);
     process.exit(1);
   }
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const showsArr = showsData.shows || showsData;
   const shows = Array.isArray(showsArr) ? showsArr : Object.values(showsArr);
 

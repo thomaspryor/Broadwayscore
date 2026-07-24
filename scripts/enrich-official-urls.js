@@ -17,6 +17,7 @@ const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -268,7 +269,7 @@ async function main() {
     return;
   }
 
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows;
 
   const targets = shows.filter(s => {
@@ -305,7 +306,7 @@ async function main() {
   console.log(`Results: ${found} found, ${notFound} not found`);
 
   if (!DRY_RUN && found > 0) {
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
     console.log('shows.json updated.');
   } else if (DRY_RUN) {
     console.log('(dry run — no files written)');

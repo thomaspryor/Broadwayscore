@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
+const showsWriteGuard = require('./lib/shows-write-guard');
 
 // shows.json is a symlink to the private data repo — resolve to real path
 // so it works both from the main repo and from a git worktree.
@@ -222,13 +223,26 @@ function parseSeasonProductions(html, seasonSlug) {
 }
 
 // ─── shows.json helpers ──────────────────────────────────────────────────────
+// Keep the exact object showsWriteGuard.loadShows() returned so saveShows()
+// below passes back the SAME reference — the guard tracks snapshots by
+// object identity (WeakMap) to merge concurrent writers' changes; handing it
+// a freshly-built { _meta, shows } object would miss that lookup and fall
+// back to an unmerged overwrite.
+let loadedData = null;
+
 function loadShows() {
-  const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
-  return { meta: data._meta, shows: data.shows };
+  loadedData = showsWriteGuard.loadShows();
+  return { meta: loadedData._meta, shows: loadedData.shows };
 }
 
 function saveShows(meta, shows) {
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify({ _meta: meta, shows }, null, 2) + '\n');
+  if (loadedData) {
+    loadedData._meta = meta;
+    loadedData.shows = shows;
+    showsWriteGuard.saveShows(loadedData);
+  } else {
+    showsWriteGuard.saveShows({ _meta: meta, shows });
+  }
 }
 
 function operaIdPrefixes() {

@@ -23,6 +23,7 @@ const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-gu
 const { countByShow, isStuckInPreviews, openSignalFromReviews, chooseOpeningDateBackfill } = require('./lib/opening-signal');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { decideAnnouncedPromotion } = require('./lib/announced-promotion');
+const showsWriteGuard = require('./lib/shows-write-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_FILE = path.join(__dirname, '..', 'data', 'reviews.json');
@@ -39,14 +40,14 @@ const gracePeriodArg = process.argv.find(a => a.startsWith('--grace-period='));
 const CLOSING_GRACE_PERIOD_DAYS = gracePeriodArg ? parseInt(gracePeriodArg.split('=')[1], 10) : 7;
 
 function loadShows() {
-  const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  const data = showsWriteGuard.loadShows();
   return data;
 }
 
 function saveShows(data) {
   if (!data._meta) data._meta = {};
   data._meta.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
+  showsWriteGuard.saveShows(data);
 }
 
 function isDatePassed(dateStr) {

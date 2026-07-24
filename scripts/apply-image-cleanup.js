@@ -18,6 +18,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'image-verification.json');
@@ -180,7 +181,7 @@ function main() {
   // ========================================
   if (!dryRun) {
     // Re-read and modify shows.json to preserve formatting
-    const freshData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    const freshData = loadShows();
     const freshShows = freshData.shows || freshData;
     const freshArr = Array.isArray(freshShows) ? freshShows : Object.values(freshShows);
 
@@ -194,7 +195,7 @@ function main() {
     if (!freshData._meta) freshData._meta = {};
     freshData._meta.lastUpdated = new Date().toISOString();
 
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(freshData, null, 2) + '\n');
+    saveShows(freshData);
   }
 
   // ========================================

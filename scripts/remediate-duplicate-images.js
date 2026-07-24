@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -195,7 +196,7 @@ function localExtFromUrl(url) {
 // ---- Main ----
 
 async function main() {
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
   const allShows = showsData.shows;
   const sources = JSON.parse(fs.readFileSync(SOURCES_PATH, 'utf8'));
   const mezzCache = JSON.parse(fs.readFileSync(MEZZ_CACHE_PATH, 'utf8'));
@@ -306,7 +307,7 @@ async function main() {
 
   if (!DRY_RUN) {
     fs.writeFileSync(SOURCES_PATH, JSON.stringify(sources, null, 2) + '\n');
-    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    saveShows(showsData);
   }
 
   console.log('\n--- Summary ---');

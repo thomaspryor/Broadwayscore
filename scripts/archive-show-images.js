@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 let sharp;
 try {
@@ -167,7 +168,7 @@ async function main() {
   const checkAspectFlag = args.includes('--check-aspect');
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const showsData = loadShows();
 
   // Load or create image sources backup
   let imageSources = {};
@@ -369,7 +370,7 @@ async function main() {
   fs.writeFileSync(SOURCES_PATH, JSON.stringify(imageSources, null, 2) + '\n');
 
   // Save updated shows.json with local paths
-  fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+  saveShows(showsData);
 
   console.log(`\n--- Summary ---`);
   console.log(`Downloaded: ${totalDownloaded} images (${(totalBytes / 1024 / 1024).toFixed(1)} MB)`);

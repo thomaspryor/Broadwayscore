@@ -19,6 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 // Canonical "would rebuild include this review-text file?" predicate, shared
 // with scripts/check-review-count-drift.js so both stay in sync. isIncludable
@@ -589,12 +590,12 @@ function validateDates(shows) {
 
   if (staleStatusFixes > 0) {
     const showsPath = path.join(DATA_DIR, 'shows.json');
-    const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    const showsData = loadShows();
     for (const show of shows) {
       const match = showsData.shows.find(s => s.id === show.id);
       if (match) match.status = show.status;
     }
-    fs.writeFileSync(showsPath, JSON.stringify(showsData, null, 2));
+    saveShows(showsData);
     ok(`Auto-fixed ${staleStatusFixes} stale previews → open`);
   }
 
@@ -631,22 +632,19 @@ function validateSlugs(shows) {
 
   if (autoFixed > 0) {
     warn(`Auto-fixed ${autoFixed} invalid slug(s) — saving corrected shows.json`);
-    const showsFile = path.join(__dirname, '..', 'data', 'shows.json');
-    if (fs.existsSync(showsFile)) {
-      // shows.json is { shows: [...] } — read the wrapper and index into .shows.
-      // (Previously did JSON.parse(...).find(), treating the wrapper object as a
-      // bare array → TypeError if this ever fired; and matched by non-unique
-      // title. Match by the original id captured above.)
-      const showsData = JSON.parse(fs.readFileSync(showsFile, 'utf8'));
-      for (const fix of slugFixes) {
-        const match = showsData.shows.find(s => s.id === fix.originalId);
-        if (match) {
-          match.slug = fix.slug;
-          match.id = fix.id;
-        }
+    // shows.json is { shows: [...] } — read the wrapper and index into .shows.
+    // (Previously did JSON.parse(...).find(), treating the wrapper object as a
+    // bare array → TypeError if this ever fired; and matched by non-unique
+    // title. Match by the original id captured above.)
+    const showsData = loadShows();
+    for (const fix of slugFixes) {
+      const match = showsData.shows.find(s => s.id === fix.originalId);
+      if (match) {
+        match.slug = fix.slug;
+        match.id = fix.id;
       }
-      fs.writeFileSync(showsFile, JSON.stringify(showsData, null, 2) + '\n');
     }
+    saveShows(showsData);
   }
 
   if (autoFixed === 0) {
@@ -780,12 +778,12 @@ function validateVenueCategory(shows) {
   if (autoFixed > 0) {
     // Write back the fixes
     const showsPath = path.join(DATA_DIR, 'shows.json');
-    const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    const showsData = loadShows();
     for (const show of shows) {
       const match = showsData.shows.find(s => s.id === show.id);
       if (match) match.category = show.category;
     }
-    fs.writeFileSync(showsPath, JSON.stringify(showsData, null, 2));
+    saveShows(showsData);
     ok(`Auto-fixed ${autoFixed} venue/category mismatches`);
   } else {
     ok('All London show venues match their category');
@@ -832,14 +830,14 @@ function validateTheaterAddress(shows) {
 
   if (mismatches > 0) {
     const showsPath = path.join(DATA_DIR, 'shows.json');
-    const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    const showsData = loadShows();
     for (const show of shows) {
       const match = showsData.shows.find(s => s.id === show.id);
       if (match && match.theaterAddress !== show.theaterAddress) {
         match.theaterAddress = show.theaterAddress;
       }
     }
-    fs.writeFileSync(showsPath, JSON.stringify(showsData, null, 2));
+    saveShows(showsData);
     mismatchExamples.forEach(m => info('  ' + m));
     ok(`Auto-fixed ${mismatches} theaterAddress/venue mismatches from registry`);
   } else {
@@ -2699,7 +2697,7 @@ function validateCommercialJson() {
   // if shows.json is missing we skip the venue check rather than fail.
   let showsData = null;
   try {
-    showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+    showsData = loadShows();
   } catch {
     // skip venue/org cross-check
   }
@@ -3003,7 +3001,7 @@ function validateBlogReviews() {
   // Load shows.json for showSlug validation
   let showSlugs = new Set();
   try {
-    const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+    const showsData = loadShows();
     const shows = showsData.shows || showsData;
     showSlugs = new Set(shows.map(s => s.slug || s.id));
   } catch (e) {
@@ -4514,7 +4512,7 @@ function runValidation() {
 
   let shows;
   try {
-    const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+    const data = loadShows();
     shows = data.shows || data;
     ok(`Loaded ${shows.length} shows from shows.json`);
   } catch (e) {
