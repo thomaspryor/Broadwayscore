@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-24T21:29:28.339Z",
-  "processed": 59,
-  "failed": 533,
-  "successRate": "10.0%",
+  "updatedAt": "2026-07-24T21:30:56.976Z",
+  "processed": 61,
+  "failed": 541,
+  "successRate": "10.1%",
   "tierBreakdown": {
     "playwright": 45,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 4,
     "archiveToday": 2,
-    "archive": 7
+    "archive": 8
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-07-24T21:22:09.939Z",
@@ -48,6 +48,12 @@
       "t": "2026-07-24T21:28:34.135Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-24T21:29:31.452Z",
+      "event": "bb-session",
+      "session": "b41dbea7",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
     }
   ]
 }
