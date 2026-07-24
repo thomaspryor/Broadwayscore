@@ -23,11 +23,25 @@ const PER_KEY_TERMINAL = ['scored', 'deployed-live'];
 // show, WITHOUT a reviewKey. A rebuild or deploy at/after a review's first-seen
 // means that review was folded into the live site — even when its own per-key
 // 'scored' stamp was never emitted (scoring instrumentation is incomplete on
-// some paths). THIS IS THE FIX for the 2026-07-24 false-page storm: the old
-// code only looked for 'deployed-live' PER reviewKey, but it is never emitted
-// that way, so NO review could ever clear and every review-first-seen counted
-// as "stuck ≥60 min" forever (15→29 growth = test fixtures + historical
-// backfills accumulating in the log, not a real pipeline stall).
+// some paths; e.g. reviews scored at collect-time via LLM never emit 'scored').
+// THIS IS THE FIX for the 2026-07-24 false-page storm: the old code only looked
+// for 'deployed-live' PER reviewKey, but it is never emitted that way, so NO
+// review could ever clear and every review-first-seen counted as "stuck ≥60 min"
+// forever (15→29 growth = test fixtures + historical backfills accumulating in
+// the log, not a real pipeline stall).
+//
+// KNOWN TRADE-OFF (ship-check 2026-07-24, both reviewers): 'rebuilt' fires for
+// the whole show every ~30 min regardless of which reviews it includes, so this
+// terminal cannot tell "this specific review went live" from "the show rebuilt".
+// A review that arrived but is excluded/unscored still clears on the next
+// rebuild. That is DELIBERATE — this SLA's job is opening-night PIPELINE
+// liveness (are reviews arriving AND is the show rebuilding to fold them in?),
+// which caught 6 of 8 recent whole-pipeline stalls. The per-review cases it
+// intentionally defers are already covered elsewhere: includable-but-unscored
+// by verify-all-scored.js → orphan-unscored self-heal (#356); silent per-review
+// drops by opening-night-completeness-check.yml / analyze-rebuild-drops.js;
+// excluded reviews should not page at all. A reliable per-review deploy signal
+// would need instrumentation work — tracked as a follow-up, not this P0.
 const SHOW_LEVEL_TERMINAL = new Set(['rebuilt', 'deployed-live']);
 
 // Synthetic/fixture show IDs that leak into the prod stage-latency log from CI
@@ -175,6 +189,11 @@ async function dispatchSlaAlerts({ warnings, pages }, { dryRun = false, route = 
       severity: 'warning',
       disposition: 'digest',
     }).catch(e => console.error('[SLA] warning route failed:', e.message));
+  } else {
+    // Resolve the warn condition when the warning set clears — otherwise the
+    // router keeps it "open" and a fresh batch of delayed reviews within the
+    // 7-day cooldown produces no new digest line (ship-check finding #2).
+    resolve(SLA_WARN_CONDITION);
   }
 
   // --- Pages → human (email), dedup + growth-aware re-notify + resolve-on-drain ---
@@ -204,11 +223,20 @@ async function dispatchSlaAlerts({ warnings, pages }, { dryRun = false, route = 
     severity: 'error',
     disposition: 'human',
     fields: [{ name: 'Stuck reviews', value: String(pages.length) }],
+    // Incident lifecycle is governed by resolve-on-drain + resolve-on-growth
+    // above; make the router's time-based cooldown a non-factor (an opening
+    // window is ~2 days, so the 168h default would never fire anyway — but be
+    // explicit so a persisting incident can't surprise-re-email). ship-check #2.
+    cooldownHours: 24 * 30,
   }).catch(e => { console.error('[SLA] page route failed:', e.message); return { action: 'error' }; });
 
-  // Advance the notified peak only when an email actually went out ('human').
-  // A 'silent' refire (incident still open, not growing) leaves the peak.
-  if (res && res.action === 'human') {
+  // Advance the notified peak only when an email actually went out: action
+  // 'human' AND delivery didn't fail. On a Resend/policy failure routeAlert
+  // still returns action:'human' with delivered:false and does NOT record its
+  // ledger, so it retries next run — we must not advance the peak past a page
+  // nobody received (ship-check finding #4). A 'silent' refire (incident open,
+  // not growing) also leaves the peak.
+  if (res && res.action === 'human' && res.delivered !== false) {
     saveSlaState({ notifiedPageCount: pages.length, lastNotifiedAt: new Date().toISOString() }, statePath);
   }
 }

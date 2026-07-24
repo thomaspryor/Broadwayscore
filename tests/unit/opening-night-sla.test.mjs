@@ -243,3 +243,27 @@ test('warnings route to digest disposition (never their own email)', async () =>
   assert.equal(warnRoute.disposition, 'digest');
   fs.rmSync(statePath, { force: true });
 });
+
+test('empty warnings resolve the warn condition (so a fresh batch re-digests)', async () => {
+  const h = makeHarness();
+  const statePath = tmpStatePath();
+  await dispatchSlaAlerts({ warnings: [], pages: [] }, { route: h.route, resolve: h.resolve, statePath });
+  assert.ok(h.calls.resolved.includes('opening-night-sla:warnings-delayed'), 'warn condition resolved on empty');
+  fs.rmSync(statePath, { force: true });
+});
+
+test('a failed page delivery does not advance the notified peak (retries next run)', async () => {
+  const calls = { routed: [] };
+  // Router path that returns action:'human' but delivered:false (Resend down) —
+  // it does NOT record its ledger, so the incident stays fresh and retries.
+  const route = async (opts) => { calls.routed.push(opts); return { action: 'human', delivered: false, conditionKey: opts.conditionKey }; };
+  const resolve = () => false;
+  const statePath = tmpStatePath();
+
+  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 's', outletId: 'o', elapsedMin: 70 }] }, { route, resolve, statePath });
+  // Peak must NOT advance to 1 — nobody received the page.
+  const exists = fs.existsSync(statePath);
+  const state = exists ? JSON.parse(fs.readFileSync(statePath, 'utf8')) : {};
+  assert.notEqual(state.notifiedPageCount, 1, 'peak not advanced on failed delivery');
+  if (exists) fs.rmSync(statePath, { force: true });
+});

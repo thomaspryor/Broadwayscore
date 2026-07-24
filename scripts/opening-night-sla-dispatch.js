@@ -63,9 +63,18 @@ async function main() {
   // null → the lib falls back to excluding obvious test fixtures.
   let activeShowIds = null;
   if (checklistData && Array.isArray(checklistData.shows)) {
-    activeShowIds = checklistData.shows
+    const ids = checklistData.shows
       .map(s => (s.show && (s.show.id || s.show.showId)) || s.showId || s.id)
       .filter(Boolean);
+    if (checklistData.shows.length > 0 && ids.length === 0) {
+      // Shows present but ZERO extractable IDs → checklist schema drift, not an
+      // empty night. Scoping to [] would silently blind the SLA; fall back to
+      // the fixture-exclusion path (null) and warn loudly instead (ship-check #6).
+      process.stderr.write(`[sla-dispatch] WARNING: checklist has ${checklistData.shows.length} show(s) but 0 extractable IDs — scope extraction may be broken; falling back to fixture-exclusion\n`);
+      activeShowIds = null;
+    } else {
+      activeShowIds = ids;
+    }
   }
 
   let slaResult = { warnings: [], pages: [] };
