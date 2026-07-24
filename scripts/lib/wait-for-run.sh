@@ -18,6 +18,14 @@
 #   1  run completed with any other conclusion (failure, cancelled, ...)
 #   2  timed out waiting (run still in progress)
 #   3  usage error / run not found / persistent gh failure
+#
+# Gotcha (2026-07-24): when invoked via Bash run_in_background:true, the
+# harness itself killed several 70-100min backgrounded calls to this script
+# around the ~25-30min mark, well before the requested timeout — the run
+# was fine, only the background wrapper died. Windows of ~25min ran to
+# their own exit code every time. If a long CI wait keeps showing status
+# "killed" instead of a real exit code, re-issue with a shorter timeout-min
+# and re-check the run directly (gh run view) rather than assuming failure.
 
 set -u
 
