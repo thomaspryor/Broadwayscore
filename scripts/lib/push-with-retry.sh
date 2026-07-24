@@ -402,6 +402,15 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   if [ "$fetch_ok" = "true" ]; then
     FETCHED_REMOTE_SHA=$(git rev-parse --verify --quiet FETCH_HEAD 2>/dev/null \
       || git rev-parse --verify --quiet "origin/$PULL_BRANCH" 2>/dev/null || echo "")
+    # Belt-and-suspenders (ship-check #394 Codex residual): if the explicit-dest
+    # fetch above was rejected and only the bare fallback ran, refs/remotes/origin/
+    # $PULL_BRANCH may still be stale even though FETCH_HEAD is fresh — and the
+    # resolution paths below all rebase/merge/reset against origin/$PULL_BRANCH.
+    # Force the tracking ref onto the authoritative fetched tip so every path gets a
+    # fresh base (not just a loud no-op abort). Local, fail-open.
+    if [ -n "$FETCHED_REMOTE_SHA" ]; then
+      git update-ref "refs/remotes/origin/$PULL_BRANCH" "$FETCHED_REMOTE_SHA" 2>/dev/null || true
+    fi
   fi
 
   # Capture pre-rebase HEAD so the post-rebase survival check (Sprint 5)
