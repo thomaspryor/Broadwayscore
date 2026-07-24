@@ -147,65 +147,13 @@ jobs:
           LOOKBACK=21
           echo "lookback=$LOOKBACK" >> $GITHUB_OUTPUT
 
-          SHOWS=$(node -e "
-            const shows = require('./data/shows.json').shows;
-            const now = new Date();
-            // Look 6 hours ahead so the 23:00 UTC cron (which may fire before
-            // midnight) still discovers shows opening the next calendar day.
-            const lookAhead = new Date(now.getTime() + 6 * 60 * 60 * 1000);
-            const cutoff = new Date(now);
-            // 21-day lookback for both markets — pollMode in the poller gates
-            // SERP cadence per show (aggressive → daily → every-3d → weekly).
-            // Bumped from 14 → 21 after Heated Rivalry BWW RR missed by 1 day.
-            cutoff.setDate(cutoff.getDate() - 21);
-            cutoff.setHours(0,0,0,0);
-            const market = '$MARKET';
-            // Trusted sources for WE press night dates — only fire orchestrator
-            // pre-open when we're confident the date is a real press night, not
-            // a preview. Canonical whitelist lives in scripts/lib/press-night-trust.js
-            // (NOT date-source-confidence.js — that predicate has the opposite
-            // default and would trust estimated:*/review-open-signal dates).
-            const { isTrustedPressNightSource } = require('./scripts/lib/press-night-trust.js');
-            const opened = shows.filter(s => {
-              const cat = s.category || 'broadway';
-              // OB/OWE shows frequently open "cold" with no formal press night, so
-              // openingDate is often null — which would exclude them from discovery
-              // entirely (Are You Now Or Have You Ever Been: 0 reviews despite 3+
-              // published, 2026-06-15). For those cold-open markets, fall back to
-              // previewsStartDate as the discovery anchor so reviews dropping during/
-              // after previews are still found. Press-night markets (broadway/west-end)
-              // keep requiring a real openingDate. Notion: WE discovery gap.
-              const isColdOpenMarket = cat === 'off-broadway' || cat === 'off-west-end';
-              const effectiveOpening = s.openingDate || (isColdOpenMarket ? s.previewsStartDate : null);
-              if (!effectiveOpening) return false;
-              // Include 'previews' shows whose (effective) opening date has passed or is
-              // within 6 hours — the 23:00 UTC cron fires before midnight, so we need to
-              // catch shows opening "tomorrow" in UTC terms.
-              const validStatus = s.status === 'open' || s.status === 'upcoming' ||
-                (s.status === 'previews' && new Date(effectiveOpening) <= lookAhead);
-              if (!validStatus) return false;
-              // Market filter
-              if (market === 'broadway' && cat !== 'broadway' && cat !== 'off-broadway') return false;
-              if (market === 'west-end' && cat !== 'west-end' && cat !== 'off-west-end') return false;
-              // WE shows with an UNTRUSTED openingDateSource (e.g. todaytix) may carry
-              // a preview date rather than a real press night. So we don't poll them
-              // in the previews-anticipation window — but ONCE the show is genuinely
-              // 'open', discovery MUST run: reviews are real regardless of how we
-              // learned the date. Suppressing discovery here previously starved niche /
-              // short-run WE shows (A Life in Four Seasons: 2 of 7+ reviews, 2026-06-15).
-              // Safe to enable: broadcasts are never auto-sent — they only create an
-              // owner-reviewed Resend draft — so the source-quality risk lives on the
-              // broadcast (manual-approval) side, not discovery. Notion: WE discovery gap.
-              if (cat === 'west-end' && !isTrustedPressNightSource(s.openingDateSource)
-                  && s.status !== 'open') {
-                return false;
-              }
-              const d = new Date(effectiveOpening);
-              d.setHours(0,0,0,0);
-              return d >= cutoff && d <= lookAhead;
-            });
-            if (opened.length > 0) console.log(opened.map(s => s.id).join(','));
-          ")
+          # Selection predicate lives in scripts/lib/opening-night-selection.js
+          # (extracted 2026-07-24 so the local opening-night monitor launcher
+          # shares the SAME predicate instead of forking it — parity-tested in
+          # opening-night-selection.test.mjs). Full gate rationale (cold-open
+          # previewsStartDate fallback, WE untrusted-source suppression, 6h
+          # look-ahead) documented in the lib.
+          SHOWS=$(node scripts/lib/opening-night-selection.js --market="$MARKET")
 
           if [ -z "$SHOWS" ]; then
             echo "No recently opened shows for market=${MARKET:-all}"

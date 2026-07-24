@@ -87,6 +87,15 @@ on:
       # path-listed so a solo edit triggers CI (allow-list gate).
       - 'scripts/lib/should-deploy-gate.js'
       - 'scripts/lib/should-deploy-gate.test.mjs'
+      # Opening-night monitor v2 (2026-07-24): shared show-selection predicate
+      # (also called by opening-night-orchestrator.yml) + launcher decision
+      # logic + shared cmux launch primitive. Colocated tests run in the
+      # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/opening-night-selection.js'
+      - 'scripts/lib/opening-night-selection.test.mjs'
+      - 'scripts/lib/opening-night-windows.js'
+      - 'scripts/lib/opening-night-windows.test.mjs'
+      - 'scripts/lib/cmux-launch.js'
       - 'scripts/lib/push-with-retry.sh'
       - 'scripts/lib/push-with-retry.conflict-marker.test.sh'
       - 'scripts/lib/push-with-retry.deadline.test.sh'
