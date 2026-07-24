@@ -171,8 +171,10 @@ function nextRecoveryCount(file) {
 // only THEN carries a publishDate. If that date is outside
 // [opening - 30d, opening + 365d], the URL was a different production/show
 // SERP-mismatched onto this entry — the fill must be flagged, not published
-// (validate-data.js goes red on main otherwise; window start mirrors
-// gap-ingest-policy's articleRunIdentity).
+// (validate-data.js goes red on main otherwise). The -30d start mirrors
+// gap-ingest-policy's articleRunIdentity; the +365d end is deliberately wider
+// than that policy's +90d (roundup-article identity) because an individual
+// review of a long-running show can legitimately publish months after opening.
 function filledDateOutsideWindow(publishDate, openingDate) {
   if (!publishDate || !openingDate) return false;
   const pd = new Date(publishDate).getTime();
