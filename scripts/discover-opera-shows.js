@@ -223,13 +223,26 @@ function parseSeasonProductions(html, seasonSlug) {
 }
 
 // ─── shows.json helpers ──────────────────────────────────────────────────────
+// Keep the exact object showsWriteGuard.loadShows() returned so saveShows()
+// below passes back the SAME reference — the guard tracks snapshots by
+// object identity (WeakMap) to merge concurrent writers' changes; handing it
+// a freshly-built { _meta, shows } object would miss that lookup and fall
+// back to an unmerged overwrite.
+let loadedData = null;
+
 function loadShows() {
-  const data = showsWriteGuard.loadShows();
-  return { meta: data._meta, shows: data.shows };
+  loadedData = showsWriteGuard.loadShows();
+  return { meta: loadedData._meta, shows: loadedData.shows };
 }
 
 function saveShows(meta, shows) {
-  showsWriteGuard.saveShows({ _meta: meta, shows });
+  if (loadedData) {
+    loadedData._meta = meta;
+    loadedData.shows = shows;
+    showsWriteGuard.saveShows(loadedData);
+  } else {
+    showsWriteGuard.saveShows({ _meta: meta, shows });
+  }
 }
 
 function operaIdPrefixes() {

@@ -203,6 +203,18 @@ function createShowsWriteGuard(showsPath) {
       finalData._meta.totalShows = finalData.shows.length;
 
       const result = atomicWriteShowsJson(showsPath, finalData, options);
+
+      // Sync the caller's object to the written (possibly merged) state, not
+      // just the snapshot map. A caller that saveShows()s the same object
+      // twice in a loop (checkpointing) would otherwise have its first
+      // save's merge silently re-clobbered by the second save writing the
+      // caller's still-stale `data` — the snapshot would match finalData,
+      // freshChanged would read false, and finalData would fall back to the
+      // untouched `data` reference.
+      if (finalData !== data) {
+        data.shows = finalData.shows;
+        data._meta = finalData._meta;
+      }
       snapshots.set(data, JSON.parse(JSON.stringify(finalData)));
       return result;
     } finally {

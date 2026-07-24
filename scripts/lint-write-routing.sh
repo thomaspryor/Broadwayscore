@@ -114,16 +114,21 @@ check_shows_json() {
     name=$(basename "$f")
     echo "$EXEMPT" | grep -Fxq "$name" && continue
     # (1) references data/shows.json AND (2) writeFileSync to a var whose
-    # name contains "shows" + path/file/json (case-insensitive — catches
-    # SHOWS_PATH, showsFile, SHOWS_JSON_PATH, etc. without needing every
-    # variant enumerated; a literal 'showsFile' miss slipped through the
-    # old fixed-name list once already) or a literal shows.json path, AND
-    # (3) does NOT route through shows-write-guard (loadShows/saveShows) or
-    # atomic-shows-write.js directly (atomic-shows-write callers still need
-    # the lock+merge layer, so they're violators too unless they also
-    # require shows-write-guard).
-    if grep -qE "['\"][^'\"]*data/shows\.json['\"]|path\.join\([^)]*['\"]data['\"][^)]*['\"]shows\.json['\"]" "$f" \
-      && grep -qEi "fs\.writeFileSync\([^)]*(shows[_a-z]*(path|file|json)|['\"][^'\"]*data/shows\.json['\"])|atomicWriteShowsJson\(" "$f" \
+    # name IS "shows" + path/file/json, word-bounded (case-insensitive —
+    # catches SHOWS_PATH, showsFile, SHOWS_JSON_PATH, etc. without needing
+    # every variant enumerated; a literal 'showsFile' miss slipped through
+    # the old fixed-name list once already). The \b is required — without
+    # it this also matches unrelated compound identifiers that merely
+    # contain "shows", like diaryShowsPath/analystShowsPath (real vars in
+    # scripts that write a DIFFERENT file and only read shows.json for
+    # dedup lookups — a false-positive that would block legitimate pushes).
+    # Also matches a literal shows.json path, AND (3) does NOT route
+    # through shows-write-guard (loadShows/saveShows) or atomic-shows-
+    # write.js directly (atomic-shows-write callers still need the
+    # lock+merge layer, so they're violators too unless they also require
+    # shows-write-guard).
+    if grep -qE "['\"][^'\"]*data/shows\.json['\"]|path\.join\([^)]*['\"]shows\.json['\"]" "$f" \
+      && grep -qEi "fs\.writeFileSync\([^)]*\bshows[_a-z]*(path|file|json)\b|fs\.writeFileSync\([^)]*['\"][^'\"]*data/shows\.json['\"]|atomicWriteShowsJson\(" "$f" \
       && ! grep -q "shows-write-guard" "$f"; then
       VIOLATIONS="$VIOLATIONS $name"
     fi

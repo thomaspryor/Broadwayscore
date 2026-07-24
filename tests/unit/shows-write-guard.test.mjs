@@ -148,6 +148,34 @@ describe('lock serializes real concurrent processes', () => {
   });
 });
 
+describe('repeated saveShows() on the same object (checkpointing loop)', () => {
+  test('a second save on the same object does not revert the first save\'s merge', () => {
+    seed([{ id: 'a', field: 0 }]);
+    const guard = createShowsWriteGuard(showsPath);
+
+    // Batch script loads once, then checkpoints (saves the same object) in a loop.
+    const data = guard.loadShows();
+
+    // A concurrent writer adds a new show between our load and our first checkpoint.
+    const other = createShowsWriteGuard(showsPath).loadShows();
+    other.shows.push({ id: 'concurrent-add' });
+    createShowsWriteGuard(showsPath).saveShows(other);
+
+    data.shows.find((s) => s.id === 'a').field = 1;
+    guard.saveShows(data); // first checkpoint — must merge in 'concurrent-add'
+
+    let onDisk = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    assert.ok(onDisk.shows.some((s) => s.id === 'concurrent-add'), 'first save must merge the concurrent add');
+
+    data.shows.find((s) => s.id === 'a').field = 2;
+    guard.saveShows(data); // second checkpoint on the SAME object — must not drop it
+
+    onDisk = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    assert.ok(onDisk.shows.some((s) => s.id === 'concurrent-add'), "second save must not silently drop the earlier merge");
+    assert.equal(onDisk.shows.find((s) => s.id === 'a').field, 2);
+  });
+});
+
 describe('saveShows return value', () => {
   test('returns the atomicWriteShowsJson result ({lineCountBefore, lineCountAfter, wrote})', () => {
     seed([{ id: 'a' }]);
