@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Self-skip if the user-level master hook exists (local CLI scenario).
 # Cloud sandboxes do not have ~/.claude/hooks/, so the project copy runs there.
 # Avoids double-firing identical logic on local sessions where the user-level
@@ -7,7 +6,6 @@
 if [ -f "$HOME/.claude/hooks/$(basename "$0")" ]; then
   exit 0
 fi
-
 # PreToolUse hook: if a notion-brain.js create previously failed IN THIS SESSION,
 # block the next tool call and force a retry.
 #

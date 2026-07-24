@@ -16,7 +16,10 @@
 #   - no fresh pass verdict exists in .claude/review-verdicts.jsonl
 #     (written by /ship-check, /code-review, /second-opinion via
 #     scripts/lib/review-gate.mjs --query=record) AND
-#   - no `NO-SHIP-CHECK: <reason ≥15 chars>` in the in-flight assistant turn AND
+#   - no `NO-SHIP-CHECK: <reason ≥15 chars>` in the in-flight assistant turn
+#     (transcript scan) OR as a `# NO-SHIP-CHECK: <reason>` shell comment in
+#     the gated command itself (2026-07-20, card #233: the transcript scan
+#     alone can never see in-flight text — see the in-command check below) AND
 #   - no user "ship immediately for: <reason>" override (review-gate namespace)
 #
 # Compound commands (ship-check round 3 P0-1): `git merge X && git push origin
@@ -228,6 +231,26 @@ log_bypass() {
   printf '%s\t%s\t%s\t%s\n' "$(date +%s)" "$1" "$transcript" "$2" \
     >> "$HOME/.claude/logs/finish-line-bypass.log" 2>/dev/null
 }
+
+# NO-SHIP-CHECK override in the gated command itself, as a shell comment:
+#   git push ...  # NO-SHIP-CHECK: <reason ≥15 chars>
+# Needed because assistant text blocks are flushed to the transcript AFTER
+# PreToolUse fires — and blocked-tool turns' text can be dropped entirely —
+# so the bypass-token transcript scan below can never see an in-flight
+# NO-SHIP-CHECK (same structural gap found + fixed in pre-push-visual-gate.sh
+# 2026-07-20, session e1dca052; Notion 39c637c5 audit card #233). The command
+# string is the one channel guaranteed visible at gate time. Anchored to a
+# `#` preceded by whitespace/line-start (byte-identical to the
+# pre-push-visual-gate.sh precedent) so a bare mid-string mention can't
+# match — note this does NOT make it immune to a `#`-prefixed line inside a
+# commit message or heredoc body in the same command; that's an accepted gap
+# since this guards Claude's own discipline, not a hostile actor, and every
+# use is logged. ≥15-char reason matches the queryBypassToken convention.
+_NSC_MATCH=$(printf '%s' "$command" | grep -oE '(^|[[:space:]])#[[:space:]]*NO-SHIP-CHECK:[[:space:]]+.{15,}' | head -1)
+if [ -n "$_NSC_MATCH" ]; then
+  log_bypass "NO-SHIP-CHECK-CMD" "$_NSC_MATCH"
+  exit 0
+fi
 
 # NO-SHIP-CHECK: <reason ≥15 chars> in the in-flight assistant turn.
 [ -n "$transcript" ] && [ -f "$transcript" ] && {
