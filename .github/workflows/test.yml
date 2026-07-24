@@ -99,6 +99,13 @@ on:
       - 'scripts/lib/push-with-retry.sh'
       - 'scripts/lib/push-with-retry.conflict-marker.test.sh'
       - 'scripts/lib/push-with-retry.deadline.test.sh'
+      # #394: no-op-rebase root-cause fix (explicit-destination fetch + progress
+      # assertion). Pure predicate in push-rebase-progress.js (colocated .test.mjs
+      # runs in the scripts/lib/*.test.mjs glob); bash integration reproduces the
+      # SHA-pinned-refspec no-op. Path-listed so a solo edit triggers CI.
+      - 'scripts/lib/push-rebase-progress.js'
+      - 'scripts/lib/push-rebase-progress.test.mjs'
+      - 'scripts/lib/push-with-retry.noop-rebase.test.sh'
       # diary-shows.json rebase-race reconciliation (card #176). Pure merge fn
       # in scripts/lib/merge-diary-shows.js; test lives in tests/unit/ (in the
       # node --test batch). Path-listed so a solo lib edit triggers CI
@@ -510,6 +517,12 @@ on:
       - 'scripts/lib/significance.js'
       - 'scripts/lib/significance.test.mjs'
       - 'scripts/analyze-ab-test.js'
+      # Weekly ticket-single-button A/B monitor (card #392) — pure rules +
+      # runner + analyzer; colocated test runs in the scripts/lib/*.test.mjs
+      # glob step.
+      - 'scripts/lib/ticket-ab-monitor-rules.js'
+      - 'scripts/lib/ticket-ab-monitor-rules.test.mjs'
+      - 'scripts/monitor-ticket-ab.js'
       # Overall email-gate funnel monitor (card #240) — pure rules + runner +
       # analyzer; colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/email-gate-funnel-rules.js'
@@ -1438,6 +1451,16 @@ jobs:
         # (task #183 / Notion 39d637c5 — the "Record pipeline success" hang).
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.deadline.test.sh
+
+      - name: Run push-with-retry no-op-rebase test (bash integration)
+        # Asserts the #394 root-cause fix: under actions/checkout's SHA-pinned fetch
+        # refspec, a bare `git fetch origin main` leaves refs/remotes/origin/main
+        # stale, so the rebase is a silent no-op and the alert-ledger never persists.
+        # This reproduces the exact condition and asserts the explicit-destination
+        # fetch lands the ledger commit on a busy main. Complements the pure
+        # scripts/lib/push-rebase-progress.test.mjs (loud-abort decision) run above.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.noop-rebase.test.sh
 
       - name: Run scraper-cookie-wiring tests (direct exec, no --test wrapper)
         # This file globally monkey-patches `https.get` and `https.request`
