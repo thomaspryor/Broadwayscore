@@ -2631,4 +2631,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, getDigestSubject, getPlaybookEntry };
+module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, getDigestSubject, getPlaybookEntry, checkSecretsHealth, writeTriageState };
