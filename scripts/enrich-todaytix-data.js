@@ -89,6 +89,14 @@ function buildTodayTixUrlFromShow(ttShow, location) {
   return `https://www.todaytix.com/${city}/shows/${ttShow.id}`;
 }
 
+// Authoritative direct-ID match: a stored todaytixId identifies the listing
+// regardless of title or TodayTix subcategory tags. Closed shows are excluded
+// because TodayTix only lists active shows — a match against a closed entry
+// means the ID was recycled for a different production.
+function directIdMatch(shows, ttId) {
+  return shows.find(s => s.todaytixId === ttId && s.status !== 'closed') || null;
+}
+
 function matchShow(ttShow, shows, category) {
   const ttSlug = slugify(ttShow.displayName);
   const ttName = ttShow.displayName.toLowerCase();
@@ -105,9 +113,8 @@ function matchShow(ttShow, shows, category) {
   });
 
   // 0. Direct todaytixId match (most reliable — handles name mismatches)
-  for (const s of candidates) {
-    if (s.todaytixId === ttShow.id) return s;
-  }
+  const idMatch = directIdMatch(candidates, ttShow.id);
+  if (idMatch) return idMatch;
 
   // 1. Exact slug match
   for (const s of candidates) {
@@ -184,15 +191,16 @@ async function main() {
     }
   }
 
-  // Pass 0: direct todaytixId matches — an ID already stored in shows.json
-  // (e.g. saved by update-show-status.js title matching) is authoritative, so
-  // enrich regardless of TodayTix subcategory tags. Some legit WE shows carry
-  // only tags like "Contemporary"/"Must-See" and would be dropped by the
-  // subcategory filters below (Trainspotting the Musical, 2026-07-23).
+  // Pass 0: direct todaytixId matches. Depends on IDs being seeded upstream —
+  // update-show-status.js title-matches listings and stores todaytixId earlier
+  // in the same workflow. A stored ID is authoritative, so enrich regardless
+  // of TodayTix subcategory tags: some legit WE shows carry only tags like
+  // "Contemporary"/"Must-See" and would be dropped by the subcategory filters
+  // below (Trainspotting the Musical, 2026-07-23).
   console.log('\n=== Pass 0: direct todaytixId matches ===');
   for (const { list, location } of [{ list: nycShows, location: 1 }, { list: londonShows, location: 2 }]) {
     for (const tt of list) {
-      const show = shows.find(s => s.todaytixId === tt.id && s.status !== 'closed');
+      const show = directIdMatch(shows, tt.id);
       if (show) enrichShow(show, tt, location);
     }
   }
