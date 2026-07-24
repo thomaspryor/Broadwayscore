@@ -16,6 +16,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { detectAnomalies, detectCWVAnomalies } = require('../../scripts/check-seo-health.js');
+const { findCWVFieldAcknowledgment } = require('../../scripts/lib/seo-cwv-ack.js');
 const HOST = 'https://broadwayscorecard.com';
 
 // recent4 = last 4 entries before the new snapshot is pushed
@@ -172,5 +173,49 @@ describe('detectCWVAnomalies — lab Lighthouse severity', () => {
     const cwv = [{ url: `${HOST}/off-broadway`, performanceScore: 92, lcp: 1077, inp: 118, cls: 0 }];
     const issues = detectCWVAnomalies(cwv, []);
     assert.strictEqual(issues.find(i => i.type === 'cwv_lighthouse_low'), undefined);
+  });
+});
+
+/**
+ * Field-LCP post-fix grace acknowledgment (card #368).
+ *
+ * Background: #311/#317 shipped the SSR fix for /west-end's LCP poster
+ * (commit 20315509d45, 2026-07-21), but field LCP is CrUX 28-day trailing
+ * data — it stays over the 2500ms Good threshold for weeks regardless of the
+ * fix, so cwv_lighthouse_low kept escalating to 'error' (CRITICAL email) for
+ * already-resolved work. scripts/lib/seo-cwv-ack.js registers an expiring,
+ * per-{url,metric}-scoped acknowledgment that downgrades this back to a
+ * tracked warning instead of silently dropping the anomaly.
+ */
+describe('detectCWVAnomalies — field-LCP acknowledgment (#368)', () => {
+  test('/west-end field-LCP regression is acknowledged → warning, not error', () => {
+    const cwv = [{ url: `${HOST}/west-end`, performanceScore: 69, lcp: 2512, inp: null, cls: 0 }];
+    const issues = detectCWVAnomalies(cwv, []);
+    const lh = issues.find(i => i.type === 'cwv_lighthouse_low');
+    assert.ok(lh, 'should still flag the low Lighthouse score');
+    assert.strictEqual(lh.severity, 'warning', 'acknowledged field regression → warning, not error');
+    assert.match(lh.message, /acknowledged/, 'message should surface the acknowledgment, not hide it');
+
+    const lcpAbs = issues.find(i => i.type === 'cwv_lcp_absolute');
+    assert.ok(lcpAbs);
+    assert.match(lcpAbs.message, /acknowledged/, 'cwv_lcp_absolute should also surface the acknowledgment');
+  });
+
+  test('a different page with the same symptom is NOT acknowledged (scoped per-url)', () => {
+    const cwv = [{ url: `${HOST}/show/hamilton`, performanceScore: 68, lcp: 4200, inp: 118, cls: 0 }];
+    const issues = detectCWVAnomalies(cwv, []);
+    const lh = issues.find(i => i.type === 'cwv_lighthouse_low');
+    assert.strictEqual(lh.severity, 'error', 'unregistered url/metric must still escalate normally');
+    assert.doesNotMatch(lh.message, /acknowledged/);
+  });
+
+  test('findCWVFieldAcknowledgment returns null once expired', () => {
+    const ack = findCWVFieldAcknowledgment(`${HOST}/west-end`, 'lcp', '2026-08-18');
+    assert.strictEqual(ack, null, 'acknowledgment must not apply on/after its expiry date');
+  });
+
+  test('findCWVFieldAcknowledgment returns null for an unregistered metric on the same url', () => {
+    const ack = findCWVFieldAcknowledgment(`${HOST}/west-end`, 'cls', '2026-07-24');
+    assert.strictEqual(ack, null, 'acknowledgment is scoped to the exact metric, not the whole url');
   });
 });
