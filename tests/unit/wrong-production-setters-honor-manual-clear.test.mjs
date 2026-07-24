@@ -136,6 +136,19 @@ describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
       // manual-clear breadcrumb here would defeat its purpose, so it's exempt — same
       // category as the other intentional override/by-id utilities above. (2026-06-21)
       'fix-aggregator-gap-override-contamination.js',
+      // audit-show-review-gap.js's recoverEmptyBodyFlaggedMiss (Tender/Sessions
+      // guard, commit 31b41dbd81a) sets wrongProduction=true ONLY immediately
+      // after ITS OWN fresh recovery fetch lands text dated outside the
+      // production window — it never re-scans pre-existing on-disk files
+      // looking for something to flag. The manual-clear protection this test
+      // enforces is already provided by a DIFFERENT gate: flagged-recovery.js's
+      // isRecoverableFlaggedFile() excludes wrongProduction===true AND
+      // wrongProductionManualClear===true files from ever being selected for
+      // this code path again (lines 53-54), so a human-cleared false positive
+      // can never be re-fetched and re-flagged by this setter. Functionally
+      // equivalent to shouldSkipWrongProductionAudit, via the selection gate
+      // instead of an in-function check. (ship-check 2026-07-24, #371)
+      'audit-show-review-gap.js',
     ]);
 
     const allFiles = fs.readdirSync(SCRIPTS_DIR)

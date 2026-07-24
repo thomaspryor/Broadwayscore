@@ -14,8 +14,8 @@ Global rules apply (worktree-first, branch check, commit frequently). Project ad
 
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
-- **5-min cron + content-aware gate.** Each tick deploys only when site-relevant paths changed vs the live Vercel deploy, or the live deploy is >6h old (`scripts/lib/should-deploy-gate.js`; kill switch: repo var `DEPLOY_GATE_DISABLED=true`). A site-relevant push lands in ~5-10 min — do NOT `gh workflow run "Deploy to Vercel"` (races the cron, re-triggers the cancel-cascade). Manual dispatch is "ship NOW" only (opening night, broken page). Private core-data-only changes ride the next rebuild or the 6h backstop.
-- **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when that commit is live on prod (`--wait` to poll; deploys lag 20-30 min in bursts, last one wins). A cancel-cascade run reports `success` while its Vercel deploy is CANCELED — the READY prod deployment is the only proof (2026-06-26 incident).
+- **5-min cron + content-aware gate.** Deploys only when site-relevant paths changed vs live, or deploy is >6h old (`scripts/lib/should-deploy-gate.js`; kill switch: `DEPLOY_GATE_DISABLED=true`). Lands in ~5-10 min — do NOT `gh workflow run "Deploy to Vercel"` (races the cron, re-triggers cancel-cascade); manual dispatch is emergency-only. Private core-data-only changes ride the next rebuild/6h backstop.
+- **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` to poll; deploys lag 20-30 min in bursts). A cancel-cascade run reports success while its Vercel deploy is CANCELED — READY prod deployment is the only proof (2026-06-26).
 - **CI monitoring:** never `gh run watch` (polls every 3s, zeroed the quota twice). Use `scripts/lib/wait-for-run.sh <run-id> [min]`; prefer outcome checks (prod URL, check-prod-deploy.js, raw.githubusercontent.com, data-repo `git log`) — all rate-limit-immune. On 403: `gh api rate_limit` for the reset, don't loop gh. Detail: `memory/feedback_github_polling_rate_limit.md`.
 
 ### 3. Core Data Rules
@@ -42,14 +42,14 @@ Use shared components from `src/components/show-cards/` — never create custom 
 **Notion is the single source of truth for project state.** See `memory/notion-brain-workflow.md` for IDs, schema, and full lifecycle.
 - **Session start:** Create a Notion card → "In progress," output URL, check for stale cards. **Session end:** Append Outcome (what/why/approach/gotchas) + Key Files + Tags → "Done"/"Paused."
 - **New discoveries:** Create Notion card (Not started). Don't context-switch.
-- **P0/P1 cards auto-dispatch at creation (owner rule 2026-07-24):** a technical, self-contained P0/P1 card gets a workspace the moment it's carded — `notion-tasks-sync.js pull` → `bsc-next.js --list` (pending P0/P1s below the top-10 cutoff print in an explicit tail) → `bsc-next.js --id N` → report `DISPATCHED:`. "I carded it" alone is a process failure; only owner-judgment cards stay parked. Soft cap: >~3 auto-dispatches/session → confirm with owner.
+- **P0/P1 cards auto-dispatch at creation (owner rule 2026-07-24):** a technical, self-contained P0/P1 card gets a workspace the moment it's carded — `notion-tasks-sync.js pull` → `bsc-next.js --list` (pending P0/P1s below top-10 print in a tail) → `bsc-next.js --id N` → report `DISPATCHED:`. "I carded it" alone is a process failure; only owner-judgment cards stay parked. Soft cap: >~3 auto-dispatches/session → confirm with owner.
 - **If Notion unreachable:** Warn user, continue without tracking. On wrap-up failure, output Outcome text so nothing is lost.
 
 ### 7. Infrastructure Change Planning (MANDATORY)
-See global CLAUDE.md. Additionally: test 3 representative cases before merging.
+See global CLAUDE.md. Also: test 3 representative cases before merging.
 
 ### 8. Pipeline Operations
-**E2E test before large dispatch** (5+ runs or 50+ reviews): test 5 first; verify secrets, concurrency slots, 10s+ spacing, shard scoring to 10. **Batch scripts must checkpoint** — save incrementally, `if: always()` on commit/push.
+**E2E test before large dispatch** (5+ runs or 50+ reviews): test 5 first; verify secrets, concurrency slots, 10s+ spacing, shard scoring to 10. **Batch scripts checkpoint** — save incrementally, `if: always()` on commit/push.
 
 ### 9. Expansion Playbook (MANDATORY for new markets)
 Aggregators first, web search second. See `memory/expansion-playbook.md`. Never skip aggregator scraping.
@@ -76,9 +76,9 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 Never rescore >100 reviews without the built-in A/B comparison. Aborts if bucket shift >5% or mean drift >5pts.
 
 ### 14. Opening Night Readiness Check (MANDATORY)
-**TIMING RULE:** Aggregator/outlet review pages (BWW RR, DTLI, Playbill Verdict, Show Score, NYC Theatre, WET, theatre.reviews, Stagedoor, The Stage) **don't exist until reviews drop.** A 404 pre-opening is normal — automation discovers URLs at poll time; don't pre-stage them or treat absence as a gap. Revisit items 6/8/9 only AFTER first reviews land in `reviews.json`. Exception: Talkin' Broadway can publish 24h early (TB direct-URL discovery handles it — don't reject as "too early").
+**TIMING RULE:** Aggregator/outlet review pages (BWW RR, DTLI, Playbill Verdict, Show Score, NYC Theatre, WET, theatre.reviews, Stagedoor, The Stage) **don't exist until reviews drop** — a pre-opening 404 is normal, don't pre-stage or treat as a gap. Revisit items 6/8/9 only after first reviews land in `reviews.json`. Exception: Talkin' Broadway can publish 24h early (handled by TB direct-URL discovery).
 
-Run `/verify-opening-night <show-id>` for the full 9-point checklist. Check the AUTOMATION CHAIN, not just the data: the Opening Night Orchestrator cron actually fired (5 entries: 23:00+00:00 UTC Broadway evening, 08:00 UTC Broadway morning, 05:00 UTC WE morning, 18:00 UTC WE evening — see the workflow file) and is in `check-cron-health.yml` CRITICAL_CRONS (`gh workflow run opening-night-orchestrator.yml -f show_id=ID -f market=broadway` to force if late); `category` is `'broadway'`/`'west-end'` not `null`; `status='open'` actually pushed to private repo; ScrapingBee >25% credits; Bright Data zone `web_unlocker2` active (ignore `mcp_unlocker` trial alarms). Discovery-chain + BWW/TB gotchas: `memory/opening-night-discovery-chains.md`.
+Run `/verify-opening-night <show-id>` for the full 9-point checklist. Check the AUTOMATION CHAIN, not just data: Opening Night Orchestrator cron fired (5 entries: 23:00 UTC BW evening, 08:00 UTC BW morning, 05:00 UTC WE morning, 18:00 UTC WE evening) and is in `check-cron-health.yml` CRITICAL_CRONS (force: `gh workflow run opening-night-orchestrator.yml -f show_id=ID -f market=broadway`); `category` is set, not `null`; `status='open'` pushed to private repo; ScrapingBee >25% credits; BD zone `web_unlocker2` active (ignore `mcp_unlocker` alarms). Gotchas: `memory/opening-night-discovery-chains.md`.
 
 ---
 
@@ -122,10 +122,10 @@ For full details on any subsystem: `memory/CLAUDE-reference.md`
 **Never offer to "commit a memory file"** — the session-stop hook (`sync-memory-to-repo.sh --commit`) mirrors + commits + pushes local memory automatically. Write a local memory entry ONLY if all three hold: (1) **encode-first** — the lesson can't be a code/test/hook/CI change (exception: a triage recipe when a symptom has 2+ independent silent causes); (2) **counterfactual** — names the specific future action that changes; (3) **recall** — a future session would surface it from its description. **No new memory is the normal outcome**; it never satisfies "Prevention added" when code-level prevention was possible. "Remember this" from the user → write it, no ceremony.
 
 ### 17. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
-See `memory/email-broadcast-rules.md` for full incident history.
-- **NEVER call `POST /broadcasts/{id}/send` directly** — all sends via `send-opening-night-broadcast.js` only
-- **NEVER broadcast to test or validate anything** — use `--send-to=your@email.com` (transactional, never broadcast)
-- **NEVER send to any Resend audience with >5 real contacts for any test purpose**
+See `memory/email-broadcast-rules.md` for full history.
+- **NEVER call `POST /broadcasts/{id}/send` directly** — sends via `send-opening-night-broadcast.js` only
+- **NEVER broadcast to test/validate anything** — use `--send-to=your@email.com` (transactional, never broadcast)
+- **NEVER send to any Resend audience with >5 real contacts for testing**
 
 ---
 
