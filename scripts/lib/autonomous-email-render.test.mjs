@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  renderEmail, renderUsageBlock, extractWhy, summarizeQueue,
+  renderEmail, renderItem, renderUsageBlock, extractWhy, summarizeQueue,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
 } = require('./autonomous-email-render.js');
 
@@ -297,4 +297,40 @@ test('renderEmail: summary line leads, and ALL informational context sits below 
   assert.ok(itemIdx < dividerIdx, 'approval item sits above the divider');
   assert.ok(dividerIdx < usageIdx, 'usage/cost sits below the divider');
   assert.ok(usageIdx < footerIdx, 'footer is last');
+});
+
+// ── UI evidence gate (S2-T6) ────────────────────────────────────────────────
+
+const uiItem = (extra = {}) => ({
+  name: 'Fix the score badge wrap',
+  summary: 'adjusted the badge width',
+  branch: 'auto/score-badge-wrap-ab12',
+  usd: 1.2,
+  checks: ['tsc: PASS', 'next lint: PASS', 'next build: PASS'],
+  approveUrl: 'https://broadwayscorecard.com/approve?x=1',
+  rejectUrl: 'https://broadwayscorecard.com/reject?x=1',
+  ui: true,
+  ...extra,
+});
+
+test('a UI item with NO screenshots gets no approve link and says why', () => {
+  const html = renderItem(uiItem());
+  assert.ok(!html.includes('https://broadwayscorecard.com/approve?x=1'), 'approve link must be withheld');
+  assert.ok(!/>Approve</.test(html), 'approve button must be absent');
+  assert.ok(html.includes('Needs a look before you approve'));
+  assert.ok(html.includes('auto/score-badge-wrap-ab12'), 'names the branch to look at');
+  assert.ok(html.includes('https://broadwayscorecard.com/reject?x=1'), 'reject stays available');
+});
+
+test('a UI item WITH screenshots keeps its approve link and lists them', () => {
+  const html = renderItem(uiItem({ screenshots: ['data/audit/autonomous-ui/x/home-390.png', 'data/audit/autonomous-ui/x/home-1280.png'] }));
+  assert.ok(html.includes('https://broadwayscorecard.com/approve?x=1'));
+  assert.ok(html.includes('home-390.png') && html.includes('home-1280.png'));
+  assert.ok(!html.includes('Needs a look before you approve'));
+});
+
+test('a non-UI item is unaffected by the gate', () => {
+  const html = renderItem(uiItem({ ui: false }));
+  assert.ok(html.includes('https://broadwayscorecard.com/approve?x=1'));
+  assert.ok(!html.includes('Needs a look before you approve'));
 });

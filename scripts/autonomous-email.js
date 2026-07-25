@@ -36,6 +36,10 @@ const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
 const MAX_EMAIL_ITEMS = 3;
+// Screenshot attachments for UI items (S2-T6). Small caps on purpose: this is
+// evidence for a decision, not a gallery, and Resend rejects oversized sends.
+const MAX_ATTACHMENTS = 8;
+const MAX_ATTACH_BYTES = 8 * 1024 * 1024;
 const QUEUE_SUMMARY_MAX_AGE_H = 24; // stale queues describe a different night
 // Cheap model for the plain-language item copy (owner scope-add 2026-07-14)
 // — one short call per item, ≤3 items/night.
@@ -217,6 +221,10 @@ async function main() {
       branch,
       usd: ev.totalUSD || 0,
       checks: evd.checks || [],
+      // UI evidence (S2-T6): renderItem withholds the approve link entirely
+      // when a look-at-it change arrived without screenshots.
+      ui: evd.ui === true,
+      screenshots: Array.isArray(evd.screenshots) ? evd.screenshots : [],
       approveUrl: buildActionUrl({ action: 'approve', cardId: row.id, branch, exp, secret, baseUrl }),
       rejectUrl: buildActionUrl({ action: 'reject', cardId: row.id, branch, exp, secret, baseUrl }),
     };
@@ -321,6 +329,26 @@ async function main() {
             ? `Overnight: no items to approve (${queueSummary.total} triaged, 0 workable)`
             : `Overnight: no items to approve (${failedCount} failed)`;
 
+  // Screenshot attachments (S2-T6): the owner reads this on a phone as often
+  // as at the Mac, where a local file path is useless — the pictures have to
+  // travel WITH the email or the "look at it before approving" instruction
+  // can't be followed. Capped so a runaway capture can never blow up a send.
+  const attachments = [];
+  let attachBytes = 0;
+  for (const item of items) {
+    for (const rel of (item.screenshots || [])) {
+      if (attachments.length >= MAX_ATTACHMENTS) break;
+      try {
+        const buf = fs.readFileSync(path.join(REPO, rel));
+        if (attachBytes + buf.length > MAX_ATTACH_BYTES) continue;
+        attachBytes += buf.length;
+        attachments.push({ filename: path.basename(rel), content: buf.toString('base64') });
+      } catch (err) {
+        console.error(`[email] WARN could not attach ${rel}: ${String(err.message).slice(0, 120)}`);
+      }
+    }
+  }
+
   if (dryRun) {
     const out = path.join(REPO, 'data', 'audit', 'autonomous-email-preview.html');
     fs.mkdirSync(path.dirname(out), { recursive: true });
@@ -336,6 +364,7 @@ async function main() {
     to: [sendTo],
     subject,
     html,
+    ...(attachments.length ? { attachments } : {}),
   });
   if (res.status < 200 || res.status >= 300) {
     console.error(`[email] send failed: ${res.status} ${JSON.stringify(res.json || {}).slice(0, 200)}`);
@@ -349,4 +378,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[email] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { fetchAdminUsage, latestEvidenceByCard, MAX_EMAIL_ITEMS };
+module.exports = { fetchAdminUsage, latestEvidenceByCard, MAX_EMAIL_ITEMS, MAX_ATTACHMENTS, MAX_ATTACH_BYTES };

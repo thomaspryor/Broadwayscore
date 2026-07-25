@@ -41,10 +41,12 @@ const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 const { createNightBudget, clampNightToWeekly, checkSharedDailyCap, pickModel, ENVELOPES, inadmissibleSizes } = require('./lib/autonomous-budget.js');
 const ledger = require('./lib/autonomous-ledger.js');
 const {
-  buildImplementerPrompt, buildDataImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks, cardCheckArgv, shouldThrottle, preflightVerdict,
+  buildImplementerPrompt, buildDataImplementerPrompt, parseClaudeJson, classifyFailure, shouldThrottle, preflightVerdict,
   resolveOwnerEmail,
 } = require('./lib/autonomous-run-core.js');
 const { evidenceCommentText } = require('./lib/autonomous-notion-evidence.js');
+const { captureUiScreenshots } = require('./lib/autonomous-ui-capture.js');
+const { runSafeChecks, checksEnv, isUiDiff, tierOf, decideChecks } = require('./lib/autonomous-checks.js');
 const {
   isIncrementalSize, classifyLCardOutcome, nightNumberFor, buildResumeNote, buildFirstNightNote, buildCheckpointNote,
 } = require('./lib/autonomous-checkpoint.js');
@@ -60,7 +62,10 @@ const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 const SETTINGS_PATH = path.join(REPO, '.claude', 'autonomous-settings.json');
 const WORKTREE_ROOT = path.join(REPO, '.claude', 'worktrees');
 const QUEUE_MAX_AGE_H = 12;
-const CHECK_TIMEOUT_MS = 5 * 60 * 1000;
+// Tier-2's deterministic verifiers reuse the shared per-check wall clock —
+// one definition (scripts/lib/autonomous-checks.js), not a second 5-minute
+// literal that can drift from the gauntlet's.
+const CHECK_TIMEOUT_MS = require('./lib/autonomous-checks.js').CHECK_TIMEOUT_MS;
 
 // .env may be absent in a worktree (gitignored) — fall back to the primary
 // checkout so NOTION_API_KEY resolves either way (pattern from triage).
@@ -324,19 +329,12 @@ function implementerEnv() {
   return env;
 }
 
-// Checks execute implementer-AUTHORED code (a planted tests/x.test.mjs runs
-// under node --test). Beyond the secret-free env, point HOME at an empty
-// temp dir so the git osxkeychain credential helper (configured in the real
-// ~/.gitconfig) is unreachable — a malicious check can't push with the
-// owner's credentials — and disable git prompting so it fails fast.
-function checksEnv() {
-  const env = implementerEnv();
-  delete env.ANTHROPIC_API_KEY;
-  const fakeHome = fs.mkdtempSync(path.join(require('os').tmpdir(), 'auto-checks-home-'));
-  env.HOME = fakeHome;
-  env.GIT_TERMINAL_PROMPT = '0';
-  return env;
-}
+// Checks execute implementer-AUTHORED code — the secret-free, fake-HOME env
+// they run under is checksEnv() from scripts/lib/autonomous-checks.js, the
+// ONE definition shared with the CI approve tap (S2-T1/S2-T2). It used to be
+// defined here AND in autonomous-merge.js; two copies of a security-critical
+// env are two things to keep in sync, and the tap's copy is the one a human
+// approval leans on.
 
 function runImplementer(item, card, workdir, model, maxWallMin, mockScript, promptPrefix, fullPromptOverride) {
   const t0 = Date.now();
@@ -423,23 +421,22 @@ function sendMorningEmail(cfg, mockEmailScript) {
   }
 }
 
-function runChecks(workdir, changedFiles, checkableDone) {
-  const results = [];
-  const checks = decideChecks(changedFiles, f => fs.existsSync(path.join(workdir, f)));
-  const cardArgv = cardCheckArgv(checkableDone, isSafeCheckCommand);
-  if (cardArgv) checks.push({ name: `card-check (${checkableDone})`, argv: cardArgv });
-  else if (checkableDone) results.push({ name: 'card-check', pass: false, detail: `checkableDone failed safe-form validation: ${String(checkableDone).slice(0, 120)}` });
-
-  const env = checksEnv();
-  for (const c of checks) {
-    try {
-      execFileSync(c.argv[0], c.argv.slice(1), { cwd: workdir, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8', env });
-      results.push({ name: c.name, pass: true });
-    } catch (err) {
-      results.push({ name: c.name, pass: false, detail: String(err.stderr || err.stdout || err.message).slice(0, 400) });
-    }
-  }
-  return results;
+// The executor half of the shared gauntlet (S2-T2). Identical plan + env +
+// runner as the CI approve tap; the only difference is WHERE it runs (this
+// night's worktree vs the rebased CI checkout) and that the executor also
+// fills the worktree's gitignored gaps (node_modules + core-data symlinks) —
+// a fresh `git worktree add` has neither, so tsc/lint/build would otherwise
+// fail on environment rather than on merit.
+function runChecks(workdir, changedFiles, checkableDone, tier = 1, cfg = {}) {
+  return runSafeChecks({
+    cwd: workdir,
+    changedFiles,
+    checkableDone,
+    isSafeCheckCommand,
+    tier,
+    buildCheck: cfg.tier3BuildCheck !== false,
+    prepareFrom: REPO,
+  });
 }
 
 // The claim step below flips the card's Notion Status to "In progress",
@@ -477,7 +474,9 @@ function releaseStaleTaskClaim(cardId) {
   } catch (e) { console.error(`[run] WARN could not release stale task claim for ${cardId}: ${e.message.slice(0, 120)}`); }
 }
 
-function attemptCard(item, budget, cfg, runId, opts) {
+// async only for the UI screenshot capture (S2-T6) — every other step
+// is synchronous by design (one card at a time, no interleaving).
+async function attemptCard(item, budget, cfg, runId, opts) {
   // Freshness guard BEFORE admission so skipped cards never consume the
   // night's item slots or reservations (ship-check finding): a human or a
   // day-dispatched workspace may have moved the card since triage — the
@@ -621,11 +620,23 @@ function attemptCard(item, budget, cfg, runId, opts) {
             const gate = item.tier === 3 ? isCodeDiffAllowed(files) : isDiffAllowed(files);
             if (!gate.allowed) { stage = 'diff-refused'; detail = `ineligible paths (tier ${item.tier === 3 ? 3 : 1}): ${gate.refused.join(', ')}`; }
             else {
-              const checks = runChecks(workdir, files, item.checkableDone);
+              const checks = runChecks(workdir, files, item.checkableDone, tierOf(item), cfg);
               const failed = checks.filter(c => !c.pass);
               const outcome = incremental ? classifyLCardOutcome(checks, { hasCheckableDone: !!item.checkableDone }) : null;
               if (!failed.length && outcome !== 'checkpoint') {
-                evidence = { branch, files, checks: checks.map(c => `${c.name}: PASS`), summary: (imp.resultText || '').slice(0, 600), checkableDone: item.checkableDone || null };
+                // tier + sha travel WITH the evidence (S2-T3/S2-T5): the CI
+                // merge path is a different machine days later — it needs to
+                // know which gate to apply and which commit the owner's tap
+                // actually approved.
+                evidence = {
+                  branch, files,
+                  checks: checks.map(c => `${c.name}: PASS`),
+                  summary: (imp.resultText || '').slice(0, 600),
+                  checkableDone: item.checkableDone || null,
+                  tier: tierOf(item),
+                  sha: git(workdir, ['rev-parse', 'HEAD']).trim(),
+                  ui: isUiDiff(files),
+                };
               } else if (incremental && outcome === 'checkpoint') {
                 // Safe, incomplete progress — nothing broke, the card just
                 // isn't done yet (or has no way to prove it is). NOT a failure (S3-T4).
@@ -650,6 +661,25 @@ function attemptCard(item, budget, cfg, runId, opts) {
 
       if (evidence) {
         if (attempt === 1) budget.refundAttempt2(item.id, item.size); // carry-forward #3
+        // UI evidence (S2-T6): a diff that changes how the site LOOKS needs
+        // pictures, not just green checks. Failure here is never fatal — the
+        // item ships WITHOUT an approve link instead (autonomous-email-render
+        // renderItem), which is the whole point: never a silent downgrade to
+        // "checks passed" on something a human has to see.
+        if (evidence.ui) {
+          const outDir = path.join(REPO, 'data', 'audit', 'autonomous-ui', branch.replace(/[^a-z0-9]+/gi, '-'));
+          try {
+            const shot = await captureUiScreenshots({ workdir, outDir });
+            if (shot.ok) {
+              evidence.screenshots = shot.files.map(f => path.relative(REPO, f));
+              console.error(`[run] captured ${shot.files.length} UI screenshot(s) for ${item.name}`);
+            } else {
+              console.error(`[run] WARN UI screenshot capture failed for ${item.name} (${shot.error}) — the email will withhold the approve link`);
+            }
+          } catch (err) {
+            console.error(`[run] WARN UI screenshot capture threw for ${item.name}: ${String(err.message).slice(0, 200)}`);
+          }
+        }
         // Durable evidence for the CI merge path (Sprint 3) — the ledger is
         // Mac-local and unreachable from GitHub Actions.
         postEvidenceComment(item.id, evidence);
@@ -1018,7 +1048,7 @@ async function live(args, cfg) {
         }
         tier3Count++;
       }
-      attemptCard(item, budget, cfg, runId, { mockScript });
+      await attemptCard(item, budget, cfg, runId, { mockScript });
     }
     // Tier-2 items never use mockScript today (no fixture harness for the
     // data-repo path yet — carry-forward); a mock run simply attempts none.
@@ -1083,4 +1113,4 @@ function main(argv = process.argv.slice(2), dryRunFn = dryRun, liveFn = live) {
 
 if (require.main === module) main();
 
-module.exports = { planCard, branchNameFor, attemptCard, attemptDataCard, runRecovery, readQueue, preflightAuth, sendMorningEmail, releaseStaleTaskClaim, main, USAGE };
+module.exports = { decideChecks, tierOf, planCard, branchNameFor, attemptCard, attemptDataCard, runRecovery, readQueue, preflightAuth, sendMorningEmail, releaseStaleTaskClaim, main, USAGE };

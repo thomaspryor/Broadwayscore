@@ -186,11 +186,31 @@ function renderItem(item) {
     <div style="font-size:11px;color:#aaa;margin-bottom:10px;">${item.why ? `Why: ${esc(item.why)} · ` : ''}Done: ${esc(item.summary || 'change implemented and verified')} · ${esc(item.branch)}</div>`
     : `${item.why ? `<div style="font-size:13px;color:#666;margin-bottom:4px;"><b>Why:</b> ${esc(item.why)}</div>` : ''}
     <div style="font-size:13px;color:#333;margin-bottom:6px;"><b>Done:</b> ${esc(item.summary || 'change implemented and verified')} <span style="color:#999;">(${esc(item.branch)})</span></div>`;
+  // UI evidence gate (S2-T6). A change to how the site LOOKS is not
+  // approvable from green checks: tsc/lint/build all pass on a page that
+  // renders wrong. With screenshots the owner can judge it from the email;
+  // WITHOUT them there is no approve link at all — the tap is withheld, not
+  // quietly downgraded to "checks passed". Reject stays available either way.
+  const shots = Array.isArray(item.screenshots) ? item.screenshots : [];
+  const uiUnseen = item.ui === true && shots.length === 0;
+  const shotList = shots.length
+    ? `<div style="font-size:11px;color:#999;margin-bottom:10px;">Screenshots attached to this email · ${shots.map(s => esc(String(s).split('/').pop())).join(' · ')}</div>`
+    : '';
+  const uiNotice = uiUnseen
+    ? `<div style="border-left:3px solid #b45309;background:#fffbeb;padding:8px 10px;margin:0 0 10px;font-size:13px;color:#7c2d12;">
+        <b>Needs a look before you approve.</b> This one changes how a page looks and the overnight run could not take screenshots of it, so there is no approve button here. Open the branch <span style="color:#666;">${esc(item.branch)}</span> on your Mac and look at the page, then approve it from the card.
+      </div>`
+    : '';
+  const actions = uiUnseen
+    ? `<div>${btn('Reject', item.rejectUrl, '#6b7280')}</div>`
+    : `<div>${btn('Approve', item.approveUrl, '#16a34a')}${btn('Reject', item.rejectUrl, '#6b7280')}</div>`;
   return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:16px;margin:0 0 14px;">
     <div style="font-size:15px;font-weight:700;margin-bottom:6px;">${esc(item.name)} ${badge}${cost}</div>
     ${body}
     ${checks ? `<div style="font-size:12px;color:#16a34a;margin-bottom:10px;">${checks}</div>` : ''}
-    <div>${btn('Approve', item.approveUrl, '#16a34a')}${btn('Reject', item.rejectUrl, '#6b7280')}</div>
+    ${shotList}
+    ${uiNotice}
+    ${actions}
   </div>`;
 }
 

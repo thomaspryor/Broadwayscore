@@ -58,19 +58,21 @@ const { execFileSync, spawnSync } = require('child_process');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { transition } = require('./lib/autonomous-state.js');
-const { isDiffAllowed, isDataRepoDiffAllowed } = require('./lib/autonomous-eligibility.js');
-const { decideChecks, cardCheckArgv } = require('./lib/autonomous-run-core.js');
+const { isDiffAllowed, isCodeDiffAllowed, isDataRepoDiffAllowed } = require('./lib/autonomous-eligibility.js');
+const { runSafeChecks, checksEnv, tierOf, decideChecks } = require('./lib/autonomous-checks.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 const { latestEvidenceForBranch } = require('./lib/autonomous-notion-evidence.js');
 const { verifierArgvFor } = require('./lib/autonomous-data-verify.js');
 const { showIdsFromReviewTextsDiff } = require('./lib/autonomous-data-workdir.js');
 const {
   BASE_TRAILER_PREFIX, oscillationTrailerFor, stripTrailers, parseBaseTrailer, shouldEscalateOscillation,
-  buildEscalationNote, buildMergeOutcomeNote, buildReverifyFailNote, buildRevertOutcomeNote,
+  buildEscalationNote, buildMergeOutcomeNote, buildReverifyFailNote, buildRevertOutcomeNote, stalenessRefusal,
 } = require('./lib/autonomous-merge-core.js');
 
 const REPO = path.join(__dirname, '..');
-const CHECK_TIMEOUT_MS = 5 * 60 * 1000;
+// Tier-2's deterministic verifiers reuse the shared per-check wall clock —
+// one definition (scripts/lib/autonomous-checks.js), never a second literal.
+const { CHECK_TIMEOUT_MS } = require('./lib/autonomous-checks.js');
 const MAX_MERGE_ATTEMPTS = 2;
 
 const USAGE = `autonomous-merge.js — CI-side merge/revert executor for the autonomous nightly loop.
@@ -234,44 +236,26 @@ async function sendEscalationEmail(subject, text) {
   if (res.status < 200 || res.status >= 300) console.error(`[merge] WARN escalation email send failed: ${res.status}`);
 }
 
-// Checks execute implementer-AUTHORED code (a test file from a card the loop
-// implemented) — deterministic-green diffs merge with NO human ever reading
-// this content. The workflow env carries NOTION_API_KEY / RESEND_API_KEY /
-// a contents:write GH token; none of that may be reachable from the check
-// process. Mirrors scripts/autonomous-run.js checksEnv() (same threat, same
-// fix) — ship-check P0 2026-07-14: this CI-side re-verify had inherited the
-// full secret env while the Mac-side executor was already sandboxed.
-function checksEnv() {
-  const keep = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', 'NODE_ENV'];
-  const env = {};
-  for (const k of keep) if (process.env[k] !== undefined) env[k] = process.env[k];
-  const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-merge-checks-home-'));
-  env.HOME = fakeHome;
-  env.GIT_TERMINAL_PROMPT = '0';
-  return env;
-}
-
-function runChecks(files, checkableDone) {
-  const results = [];
-  const checks = decideChecks(files, f => fs.existsSync(path.join(REPO, f)));
-  if (checkableDone) {
-    const cardArgv = cardCheckArgv(checkableDone, isSafeCheckCommand);
-    if (cardArgv) checks.push({ name: `card-check (${checkableDone})`, argv: cardArgv });
-    // Unsafe/invalid checkableDone must FAIL closed, not silently vanish —
-    // the Mac-side executor already does this (autonomous-run.js runChecks);
-    // this CI-side path had been dropping it instead (ship-check finding).
-    else results.push({ name: 'card-check', pass: false, detail: `checkableDone failed safe-form validation: ${String(checkableDone).slice(0, 120)}` });
-  }
-  const env = checksEnv();
-  for (const c of checks) {
-    try {
-      execFileSync(c.argv[0], c.argv.slice(1), { cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8', env });
-      results.push({ name: c.name, pass: true });
-    } catch (err) {
-      results.push({ name: c.name, pass: false, detail: String(err.stderr || err.stdout || err.message).slice(0, 400) });
-    }
-  }
-  return results;
+// The approve-tap half of the shared gauntlet (S2-T3). SAME module, same
+// plan, same secret-free env as the overnight executor — parity by identity
+// (scripts/lib/autonomous-checks.js), because the owner taps Approve on the
+// strength of the check names in the morning email: a tap that re-verified
+// with a SMALLER set than the run that produced the evidence would mean less
+// than it says. Tier comes from the evidence comment (stamped by the
+// executor), never from the card's own text.
+//
+// No prepareFrom here: the CI checkout gets node_modules from `npm ci` and
+// core data from the checkout-core-data composite action in
+// autonomous-merge.yml, so there are no gitignored gaps to fill.
+function runChecks(files, checkableDone, tier = 1, buildCheck = true) {
+  return runSafeChecks({
+    cwd: REPO,
+    changedFiles: files,
+    checkableDone,
+    isSafeCheckCommand,
+    tier,
+    buildCheck,
+  });
 }
 
 function pushMain() {
@@ -330,6 +314,12 @@ function verifyRebaseData(dir, repoKey, cls, evidence) {
 // just the first) so a rebase from attempt 1 can never be reused to verify
 // a DIFFERENT tree after main has advanced again (ship-check finding).
 function verifyRebase(evidence) {
+  // Tier from the executor-stamped evidence, defaulting CLOSED to Tier 1: a
+  // missing/older evidence comment gets the tight gate, never the wide one.
+  // Without this the Tier-1 predicate refused EVERY tier-3 branch at the tap
+  // (src//scripts/ are outside Tier 1 by construction) — the loop could
+  // implement code cards it could never merge.
+  const tier = tierOf(evidence);
   try { git(['rebase', 'origin/main']); }
   catch (err) {
     gitOrNull(['rebase', '--abort']);
@@ -337,9 +327,9 @@ function verifyRebase(evidence) {
   }
   const files = git(['diff', '--name-only', 'origin/main...HEAD']).trim().split('\n').filter(Boolean);
   if (!files.length) return { ok: false, reason: 'rebased diff is empty — nothing to merge' };
-  const gate = isDiffAllowed(files);
-  if (!gate.allowed) return { ok: false, reason: `rebased diff touches ineligible paths: ${gate.refused.join(', ')}` };
-  const checks = runChecks(files, evidence ? evidence.checkableDone : null);
+  const gate = tier === 3 ? isCodeDiffAllowed(files) : isDiffAllowed(files);
+  if (!gate.allowed) return { ok: false, reason: `rebased diff touches ineligible paths (tier ${tier}): ${gate.refused.join(', ')}` };
+  const checks = runChecks(files, evidence ? evidence.checkableDone : null, tier);
   const failed = checks.filter(c => !c.pass);
   if (failed.length) return { ok: false, reason: failed.map(c => `${c.name}: ${c.detail}`).join(' | ').slice(0, 500) };
   return { ok: true, files };
@@ -383,6 +373,20 @@ async function approve(cardId, branch) {
   };
 
   git(['fetch', 'origin', branch]);
+
+  // Staleness refusal (S2-T5) BEFORE any rebase/check work: the tap approved
+  // one specific commit. If the branch has moved since, re-verifying and
+  // merging the new tree would spend the owner's approval on something they
+  // never saw. Cheap, and it runs before the expensive gauntlet.
+  const stale = stalenessRefusal(evidence && evidence.sha, (gitOrNull(['rev-parse', `origin/${branch}`]) || '').trim());
+  if (stale) {
+    transition('approved', 'merge.reverify-fail');
+    notionUpdate(cardId, ['--auto', 'needs-approval', '--outcome', buildReverifyFailNote(stale)]);
+    console.error(`[merge] STALE APPROVAL: ${stale}`);
+    process.exitCode = 1;
+    return;
+  }
+
   git(['checkout', '-B', 'auto-merge-work', `origin/${branch}`]);
 
   for (let attempt = 1; attempt <= MAX_MERGE_ATTEMPTS; attempt++) {
@@ -668,6 +672,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  decideChecks, tierOf,
   main, USAGE,
   approve, revert, verifyRebase, countPriorMerges, runChecks,
   approveDataCard, revertDataCard, verifyRebaseData, cloneDataRepo, dispatchRebuildFast, DATA_REPO_URLS,

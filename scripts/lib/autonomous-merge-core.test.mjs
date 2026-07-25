@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   BASE_TRAILER_PREFIX, oscillationTrailerFor, stripTrailers, parseBaseTrailer, shouldEscalateOscillation,
-  buildEscalationNote, buildMergeOutcomeNote, buildReverifyFailNote, buildRevertOutcomeNote,
+  buildEscalationNote, buildMergeOutcomeNote, buildReverifyFailNote, buildRevertOutcomeNote, stalenessRefusal,
 } = require('./autonomous-merge-core.js');
 
 test('oscillationTrailerFor embeds the card id verbatim (grep target for git log)', () => {
@@ -84,4 +84,29 @@ test('parseBaseTrailer extracts the sha, or null when absent', () => {
 test('parseBaseTrailer takes the FIRST match — callers must strip before re-stamping to avoid stale reads', () => {
   const doubled = `msg\n${BASE_TRAILER_PREFIX}old\n${BASE_TRAILER_PREFIX}new`;
   assert.equal(parseBaseTrailer(doubled), 'old');
+});
+
+// ── Tap-time staleness refusal (S2-T5) ──────────────────────────────────────
+
+test('stalenessRefusal passes when the branch is still on the approved commit', () => {
+  const sha = 'a'.repeat(40);
+  assert.equal(stalenessRefusal(sha, sha), null);
+});
+
+test('stalenessRefusal refuses, naming both commits, when the branch moved', () => {
+  const approved = 'a'.repeat(40);
+  const actual = 'b'.repeat(40);
+  const reason = stalenessRefusal(approved, actual);
+  assert.ok(reason, 'a moved branch must be refused');
+  assert.match(reason, /aaaaaaaa/);
+  assert.match(reason, /bbbbbbbb/);
+  assert.match(reason, /Nothing was merged/);
+});
+
+// Pre-Sprint-2 evidence comments carry no sha. Blocking those would strand
+// legitimate older approvals; they still get the full rebase + gate + checks.
+test('stalenessRefusal fails OPEN when either sha is unknown', () => {
+  assert.equal(stalenessRefusal(null, 'b'.repeat(40)), null);
+  assert.equal(stalenessRefusal('a'.repeat(40), ''), null);
+  assert.equal(stalenessRefusal(undefined, undefined), null);
 });

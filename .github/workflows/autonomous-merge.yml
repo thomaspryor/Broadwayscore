@@ -56,7 +56,10 @@ jobs:
     # full-history workflows here take ~14min on the checkout step ALONE —
     # audit-touring-contamination.yml run 29187952694). 15min was not enough
     # headroom; a real dispatch got cancelled mid `npm ci` (2026-07-14).
-    timeout-minutes: 30
+    # Raised 30 → 50 for tier-3 (Sprint 2): a src/ diff's re-verify now
+    # includes a production `next build` (20min own timeout) on top of the
+    # full-history checkout + npm ci + core-data checkout.
+    timeout-minutes: 50
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -77,6 +80,22 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      # Tier-3 re-verify (Sprint 2) runs `npx tsc --noEmit`, `npx next lint`
+      # and a production `npx next build` on a src/ diff — all three import
+      # data/*.json via resolveJsonModule and fail TS2307 without the private
+      # core data. Same composite action + manifest generation the
+      # typescript-check job in test.yml already uses; a Tier-1 (tests/docs)
+      # merge does not need them but pays only the checkout cost.
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Generate gitignored manifests
+        run: |
+          node scripts/build-actor-slugs-manifest.js
+          node scripts/build-cast-manifest.js
 
       - name: Run merge/revert
         env:
