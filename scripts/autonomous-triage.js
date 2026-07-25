@@ -27,6 +27,7 @@ const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
 const { triageCard, decide, orderQueue, isSafeCheckCommand, priorityRank } = require('./lib/autonomous-triage-core.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { classifyDataCard } = require('./lib/autonomous-eligibility.js');
 const { estimateUSD } = require('./lib/autonomous-budget.js');
 const ledgerLib = require('./lib/autonomous-ledger.js');
@@ -157,13 +158,44 @@ function callSonnet(prompt) {
   });
 }
 
+const USAGE = `autonomous-triage.js — nightly backlog triage (writes autonomous-queue.json).
+
+Usage:
+  node scripts/autonomous-triage.js [--dry-run] [--limit N] [--cards id1,id2] [--tier 1|3]
+
+  --dry-run     triage + write queue, zero Notion Auto stamps (still spends Sonnet)
+  --limit N     triage window size (default 30 LLM candidates)
+  --cards ...   explicit card ids (test mode — every named card processed)
+  --tier 1|3    scope override (default: tier3Enabled in .claude/autonomous-config.json)
+  --help, -h    show this message, do nothing else
+`;
+
 async function main() {
+  // BEFORE any side effect (cousin --help bug class, tasks #260/#263/#264/#266:
+  // bare --help used to fall through parseArgs and start a real LIVE triage —
+  // Notion fetches + Sonnet spend + Auto stamps).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
   const args = parseArgs(process.argv.slice(2));
   const dryRun = !!args['dry-run'];
   const limit = args.limit ? parseInt(args.limit, 10) : 30;
   if (!Number.isFinite(limit) || limit <= 0) {
     console.error(`--limit must be a positive integer, got ${JSON.stringify(args.limit)}`);
     process.exit(1);
+  }
+
+  // Write-scope tier (owner-approved 2026-07-25): tier 3 opens src/ + scripts/
+  // via its own default-deny predicate (autonomous-eligibility.js). Config
+  // flag is the production switch; --tier is the dry-run/test override.
+  // Fail-soft to tier 1 — a missing/broken config must never widen scope.
+  let tier = 1;
+  if (args.tier) {
+    tier = parseInt(args.tier, 10) === 3 ? 3 : 1;
+  } else {
+    try {
+      const cfg = JSON.parse(fs.readFileSync(path.join(REPO, '.claude', 'autonomous-config.json'), 'utf8'));
+      if (cfg.tier3Enabled === true) tier = 3;
+    } catch { /* tier stays 1 */ }
   }
 
   // 1. Collect cards. Fetch deeper than the triage window (night-1 fix):
@@ -215,7 +247,7 @@ async function main() {
     // pass — a claim made mid-run would be invisible to cards triaged after
     // it. This is a cheap local read, no network.
     const taskState = loadSharedTaskState();
-    const result = await triageCard(card, callSonnet, { taskState });
+    const result = await triageCard(card, callSonnet, { taskState, tier });
     if (result.preFilter.eligible) candidates++; // reached the LLM → consumed a window slot
     const entry = { card: slim(card), ...result };
     entry.decision = decide(entry);
@@ -231,10 +263,11 @@ async function main() {
     console.error(`[triage] ${i + 1}/${ids.length} ${card.name} → ${entry.decision}${entry.triage ? ` (${entry.triage.size})` : ''}${entry.failed ? ` [${entry.error?.slice(0, 80)}]` : ''}`);
   }
 
-  // 3. Order the attempt plan.
+  // 3. Order the attempt plan. Each item carries the tier it was triaged
+  //    under — the executor picks the matching diff gate and model policy.
   const plan = orderQueue(entries).map(e => ({
     id: e.card.id, name: e.card.name, priority: e.card.priority,
-    size: e.triage.size, checkableDone: e.triage.checkableDone,
+    size: e.triage.size, checkableDone: e.triage.checkableDone, tier,
   }));
 
   // Tier-2 (Sprint 4): cards Tier-1 correctly skipped for touching data/, but
@@ -247,6 +280,7 @@ async function main() {
     generatedAt: new Date().toISOString(),
     mode: dryRun ? 'dry-run' : 'live',
     model: MODEL,
+    tier,
     runId,
     counts: {
       total: entries.length,

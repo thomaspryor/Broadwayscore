@@ -188,6 +188,105 @@ function isDiffAllowed(files) {
   return { allowed: refused.length === 0, refused };
 }
 
+// ── Tier 3: code cards (src/ + scripts/) — owner-approved 2026-07-25 ────────
+//
+// A PEER of Tiers 1/2, not a widening of Tier 1 (plan-review design P0: Tier 1
+// stays "enumerate only what you can afford to break"; Tier 3 is the broad
+// code scope with its own predicate, tunable/deletable in isolation). Same
+// shape as Tier 1: prefix allows, exclusions ALWAYS win. Merge safety is
+// UNCHANGED: src//scripts/ paths are never deterministic-green, so any diff
+// touching one keeps the owner's morning approval tap (a tier-3 card whose
+// diff lands ONLY on tests/docs stays auto-mergeable, exactly as before) —
+// this widens what the loop may ATTEMPT, never what may land untapped.
+const TIER3_ALLOW_PREFIXES = ['src/', 'scripts/'];
+
+// Prefix exclusions specific to unattended code work. Everything here is a
+// place where a wrong unattended edit is expensive, externally visible, or
+// self-serving. scripts/bsc- is excluded wholesale (dispatcher/prune/conductor
+// integrity); the bsc-next pair still reaches Tier 3 through the Tier-1
+// enumeration below — that list is the human-reviewed carve-out mechanism.
+const TIER3_EXCLUDED_PREFIXES = [
+  '.github/workflows/',       // CI is never self-served
+  'data/',                    // core data is Tier 2
+  'supabase/',                // auth/DB
+  'scripts/audit-',           // audit scripts gate CI
+  'scripts/autonomous-',      // no self-modification
+  'scripts/lib/autonomous-',  // no self-modification (incl. this file)
+  'scripts/send-',            // email senders — broadcast safety (CLAUDE.md rule 17)
+  'scripts/lib/email-',       // email infra
+  'scripts/notion-',          // brain integrity
+  'scripts/bsc-',             // dispatcher integrity (bsc-next pair via Tier-1 files)
+  'scripts/lib/bsc-',         // dispatcher control-plane (model routing shim)
+  'scripts/lib/cmux-',        // workspace launch/list — 2026-07-14 incident class
+];
+
+// Basename-level email/send deny (ship-check Codex finding): prefix rules
+// missed scripts/lib/affiliate-email.js, brand-mention-email.js,
+// send-lock.js. ANY scripts file whose basename mentions email/broadcast/
+// send- is out — over-blocking is fine, default-deny is the philosophy.
+const TIER3_EXCLUDED_BASENAME_RE = /(email|broadcast|^send-)/i;
+
+// Dispatch bookkeeping the recheck pass (plan v2 Sprint 3) depends on having
+// a stable shape — the loop must not be able to rewrite its own ledger.
+const TIER3_EXCLUDED_EXTRA_FILES = new Set([
+  'scripts/lib/dispatch-ledger.js',
+  'scripts/lib/workspace-naming.js',
+]);
+
+// Dependency/deploy/config manifests: a wrong unattended change breaks every
+// build or deploy at once, and checks describe today's tree, not the manifest
+// a human intended.
+const TIER3_EXCLUDED_FILES = new Set([
+  'package.json',
+  'package-lock.json',
+  'next.config.js',
+  'tsconfig.json',
+  'vercel.json',
+  'middleware.ts',
+  'src/middleware.ts',
+]);
+
+function isCodePathAllowed(file) {
+  const f = normalizePath(file);
+  if (!f) return false;
+  if (f.split('/').includes('..') || f.includes('\\')) return false;
+  // Tier 3 ⊇ Tier 1: anything the tight Tier-1 gate allows is allowed here
+  // too (tests/docs/memory prefixes + the enumerated leaf files — including
+  // the bsc-next pair despite the scripts/bsc- prefix exclusion below).
+  if (isPathAllowed(f)) return true;
+  // Tier-3-specific rules. Exclusions always win over the prefix allows.
+  if (EXCLUDED_FILES.has(f)) return false;        // scoring watchlists, scraper.js, calibration corpus
+  if (TIER3_EXCLUDED_FILES.has(f)) return false;
+  if (TIER3_EXCLUDED_EXTRA_FILES.has(f)) return false;
+  if (TIER3_EXCLUDED_PREFIXES.some(p => f.startsWith(p))) return false;
+  if (/-gate\.js$/.test(f)) return false;         // CI catastrophe-floor gates
+  const base = f.slice(f.lastIndexOf('/') + 1);
+  if (base.endsWith('.js') && TIER3_EXCLUDED_BASENAME_RE.test(base)) return false;
+  // Manifests are refused by BASENAME anywhere, not just repo root — the
+  // exact-match set left `scripts/package.json` allowed (ship-check QA probe).
+  if (/^(package(-lock)?\.json|next\.config\.js|tsconfig\.json|vercel\.json|middleware\.ts)$/.test(base)) return false;
+  return TIER3_ALLOW_PREFIXES.some(p => f.startsWith(p));
+}
+
+function isCodeDiffAllowed(files) {
+  const refused = (files || []).map(normalizePath).filter(f => !isCodePathAllowed(f));
+  return { allowed: refused.length === 0, refused };
+}
+
+// One authoritative prose description per tier, consumed by BOTH the triage
+// prompt (autonomous-triage-core.js) and the implementer prompt
+// (autonomous-run-core.js). Plan-review design P0-3: both files hardcoded
+// "cannot touch src/" prose that a Tier-3 run would contradict in the same
+// sentence as its derived allow-list — scope prose must come from the same
+// module as the predicates so they cannot drift.
+function describeScope(tier) {
+  if (tier === 3) {
+    return `Tier 3 (code): may edit src/** and scripts/**, plus everything Tier 1 allows (tests/**, docs/**, memory/**, and the enumerated leaf files incl. scripts/bsc-next.js + its test, which stay editable despite the scripts/bsc- exclusion below). EXCLUDED no matter what a card says — prefixes: ${TIER3_EXCLUDED_PREFIXES.join(', ')}; dependency/deploy manifests anywhere (package.json, package-lock.json, next.config.js, tsconfig.json, vercel.json, middleware.ts); files: ${[...TIER3_EXCLUDED_EXTRA_FILES].join(', ')}, tests/fixtures/triage-calibration.json; any scripts file whose name mentions email/broadcast/send-; the scoring watchlist files, scripts/lib/scraper.js, and any *-gate.js CI gate. It also cannot: make product or business decisions; send email; talk to humans; run expensive backfills.`;
+  }
+  const allowed = [...TIER1_ALLOW_PREFIXES.map(p => `${p}**`), ...TIER1_ALLOW_FILES];
+  return `Tier 1: may only edit ${allowed.join(', ')}. It cannot: touch src/, data/, workflows, scraping/scoring/audit infra; make product or business decisions; send email; talk to humans; run expensive backfills.`;
+}
+
 // ── Deterministic-green class (Sprint 3, owner spec refinement 2026-07-14) ──
 //
 // NOT a model judgment call ("confident prose ≠ safety" — the owner's exact
@@ -314,6 +413,9 @@ module.exports = {
   DENY_TAGS,
   TIER1_ALLOW_PREFIXES,
   TIER1_ALLOW_FILES,
+  TIER3_ALLOW_PREFIXES,
+  TIER3_EXCLUDED_PREFIXES,
+  TIER3_EXCLUDED_FILES,
   EXCLUDED_FILES,
   EXCLUDED_PREFIXES,
   DETERMINISTIC_GREEN_PREFIXES,
@@ -325,6 +427,9 @@ module.exports = {
   isCardEligible,
   isPathAllowed,
   isDiffAllowed,
+  isCodePathAllowed,
+  isCodeDiffAllowed,
+  describeScope,
   isDeterministicGreenPath,
   isDiffDeterministicGreen,
   classifyDataCard,

@@ -84,7 +84,7 @@ function skipBucket(entry) {
   if (/deny-tag/i.test(r)) return 'deny-tagged domain (email/commercial/scoring/ios)';
   if (/already in Auto/i.test(r)) return 'already processed by the loop';
   if (/fetch failed/i.test(r)) return 'card fetch failed (transient)';
-  if (entry.triage && entry.triage.eligible === false) return 'out of Tier-1 scope (needs src/, data/, or CI changes)';
+  if (entry.triage && entry.triage.eligible === false) return 'outside the loop\'s write scope (needs excluded paths or human judgment)';
   return 'other';
 }
 
@@ -105,7 +105,7 @@ function summarizeQueue(queue) {
   const buckets = [...tally.entries()]
     .map(([reason, n]) => ({ reason, n }))
     .sort((a, b) => b.n - a.n || a.reason.localeCompare(b.reason));
-  const workable = buckets.some(b => /Tier-1 scope|human/i.test(b.reason));
+  const workable = buckets.some(b => /write scope|human/i.test(b.reason));
   return {
     generatedAt: queue.generatedAt || null,
     total: queue.counts.total || queue.entries.length,
@@ -113,7 +113,7 @@ function summarizeQueue(queue) {
     candidates: queue.counts.candidates ?? null,
     buckets,
     unlock: workable
-      ? 'What would unlock work: backlog cards whose fix lives in Tier-1 paths (tests/, docs/, memory/, leaf tooling scripts). Tonight every triaged card needed human action or out-of-tier changes.'
+      ? 'What would unlock work: backlog cards whose fix lives inside the loop\'s allowed paths. Tonight every triaged card needed human action or out-of-scope changes.'
       : null,
   };
 }

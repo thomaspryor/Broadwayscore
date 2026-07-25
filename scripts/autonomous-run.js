@@ -36,7 +36,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const https = require('https');
 const { transition } = require('./lib/autonomous-state.js');
-const { isDiffAllowed, isDiffDeterministicGreen, classifyDataCard, DATA_CLASS_REPO, isDataRepoDiffAllowed } = require('./lib/autonomous-eligibility.js');
+const { isDiffAllowed, isCodeDiffAllowed, isDiffDeterministicGreen, classifyDataCard, DATA_CLASS_REPO, isDataRepoDiffAllowed } = require('./lib/autonomous-eligibility.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 const { createNightBudget, clampNightToWeekly, checkSharedDailyCap, pickModel, ENVELOPES, inadmissibleSizes } = require('./lib/autonomous-budget.js');
 const ledger = require('./lib/autonomous-ledger.js');
@@ -210,7 +210,7 @@ function planCard(item, remainingUSD, opts) {
   }
 
   steps.push(`verify: colocated tests + card's checkableDone (${item.checkableDone || 'n/a'})`);
-  steps.push(`diff gate: isDiffAllowed(git diff --name-only) — card text is untrusted, gate runs regardless`);
+  steps.push(`diff gate: ${item.tier === 3 ? 'isCodeDiffAllowed' : 'isDiffAllowed'}(git diff --name-only) — card text is untrusted, gate runs regardless`);
   steps.push(`push branch + Auto → needs-approval → morning email item`);
   state = transition(state, 'run.pass').next;
   return { item, admitted: true, state, steps, spentUSD: env.estUSD, reservedUSD: worstCase };
@@ -354,7 +354,7 @@ function runImplementer(item, card, workdir, model, maxWallMin, mockScript, prom
   // fullPromptOverride (Sprint 4, Tier-2 data cards): a complete, already-built
   // prompt (buildDataImplementerPrompt) — Tier-1's buildImplementerPrompt call
   // below is skipped entirely rather than layered under it.
-  const prompt = fullPromptOverride || ((promptPrefix ? `${promptPrefix}\n\n---\n\n` : '') + buildImplementerPrompt(card, item));
+  const prompt = fullPromptOverride || ((promptPrefix ? `${promptPrefix}\n\n---\n\n` : '') + buildImplementerPrompt(card, item, { tier: item.tier === 3 ? 3 : 1 }));
   const r = spawnSync('claude', [
     '--dangerously-skip-permissions',
     '--settings', SETTINGS_PATH,
@@ -588,7 +588,7 @@ function attemptCard(item, budget, cfg, runId, opts) {
         git(workdir, ['reset', '--hard', 'origin/main']);
         git(workdir, ['clean', '-fd']);
       }
-      const model = pickModel(attempt, failureKind, { incremental });
+      const model = pickModel(attempt, failureKind, { incremental, tier3Size: item.tier === 3 ? item.size : null });
       console.error(`[run] ${item.name}: attempt ${attempt} (${opts.mockScript ? 'mock' : model}${resuming ? ', resuming checkpoint' : ''})`);
       const promptPrefix = incremental ? (resuming ? buildResumeNote(card, card.outcome) : buildFirstNightNote()) : null;
       const imp = runImplementer(item, card, workdir, model, env.maxWallMin, opts.mockScript, promptPrefix);
@@ -616,8 +616,10 @@ function attemptCard(item, budget, cfg, runId, opts) {
           const files = git(workdir, ['diff', '--name-only', 'origin/main...HEAD']).trim().split('\n').filter(Boolean);
           if (!files.length) { stage = 'empty-diff'; detail = 'implementer produced no changes'; }
           else {
-            const gate = isDiffAllowed(files);
-            if (!gate.allowed) { stage = 'diff-refused'; detail = `ineligible paths: ${gate.refused.join(', ')}`; }
+            // Tier-aware gate: code cards (triaged under tier 3) use the
+            // tier-3 predicate; everything else keeps the tight Tier-1 gate.
+            const gate = item.tier === 3 ? isCodeDiffAllowed(files) : isDiffAllowed(files);
+            if (!gate.allowed) { stage = 'diff-refused'; detail = `ineligible paths (tier ${item.tier === 3 ? 3 : 1}): ${gate.refused.join(', ')}`; }
             else {
               const checks = runChecks(workdir, files, item.checkableDone);
               const failed = checks.filter(c => !c.pass);
@@ -924,6 +926,15 @@ async function live(args, cfg) {
       ? queue.runId
       : `run-${new Date().toISOString().replace(/[:.]/g, '-')}`;
     let plan = queue.plan;
+    // Stale-queue tier demotion (ship-check Codex P0): plan items carry the
+    // tier triage stamped, but the CONFIG at execution time is authoritative —
+    // a July-24 queue with tier:3 items must not widen tonight's write scope
+    // after the owner flips tier3Enabled off. Demoted items run under the
+    // tight Tier-1 gate (strictly safer; src-touching diffs simply refuse).
+    if (cfg.tier3Enabled !== true && plan.some(p => p.tier === 3)) {
+      console.error('[run] tier3Enabled is off — demoting stale tier-3 plan items to tier 1');
+      plan = plan.map(p => (p.tier === 3 ? { ...p, tier: 1 } : p));
+    }
     // Tier-2 (Sprint 4): data-pipeline cards autonomous-triage.js classified
     // but Tier-1 correctly skipped for touching data/ — see buildDataPlan().
     let dataPlan = queue.dataPlan || [];
@@ -989,7 +1000,26 @@ async function live(args, cfg) {
     }
 
     const budget = createNightBudget({ nightUSD, maxItems, sizes, weeklyUSD: cfg.weeklyUSD ?? null });
-    for (const item of plan) attemptCard(item, budget, cfg, runId, { mockScript });
+    // Tier-3 night cap (training wheels, plan v2 S2-T7). On a tier-3 night
+    // EVERY plan item carries the widened scope, so this caps the whole
+    // night's attempts below maxItems — deliberate first-nights conservatism
+    // (ship-check QA flagged it; keeping it). The counter increments even on
+    // cards that end up skipped/refused inside attemptCard — also deliberate:
+    // burning a slot only makes the night MORE conservative, never less.
+    // Number() (not isInteger) so a JSON-stringified "0" fails CLOSED to 0.
+    const capRaw = Number(cfg.tier3MaxItems);
+    const tier3Cap = Number.isFinite(capRaw) && capRaw >= 0 ? Math.floor(capRaw) : 3;
+    let tier3Count = 0;
+    for (const item of plan) {
+      if (item.tier === 3) {
+        if (tier3Count >= tier3Cap) {
+          ledger.appendEntry({ event: 'card-skip', runId, cardId: item.id, name: item.name, note: `tier-3 night cap (${tier3Cap}) reached` });
+          continue;
+        }
+        tier3Count++;
+      }
+      attemptCard(item, budget, cfg, runId, { mockScript });
+    }
     // Tier-2 items never use mockScript today (no fixture harness for the
     // data-repo path yet — carry-forward); a mock run simply attempts none.
     if (!mockScript) for (const item of dataPlan) attemptDataCard(item, budget, cfg, runId);

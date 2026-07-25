@@ -327,3 +327,48 @@ test('orderQueue: P0 before P1, S before M, stable by name', () => {
   ]);
   assert.deepEqual(q.map(e => e.card.name), ['s-card', 'm-card', 'a-card', 'b-card']);
 });
+
+// ── Tier 3 (owner-approved 2026-07-25) ─────────────────────────────────────
+
+test('safe-check forms accept src/ test paths and src/scripts test -f targets', () => {
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  for (const ok of [
+    'node --test src/lib/foo.test.mjs',
+    'node --test scripts/lib/foo.test.mjs src/lib/bar.test.mjs',
+    'test -f src/components/Foo.tsx',
+    'test -f scripts/lib/foo.js',
+  ]) assert.equal(isSafeCheckCommand(ok), true, `${ok} should be safe`);
+});
+
+test('mutation deny-list: check commands may never reference data-writing scripts', () => {
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  for (const bad of [
+    'test -f scripts/rebuild-all-reviews.js',
+    'test -f scripts/gather-reviews.js',
+    'test -f scripts/collect-review-texts.js',
+    'test -f scripts/push-core-data.js',
+    'test -f scripts/send-opening-night-broadcast.js',
+    'node --test scripts/rebuild-all-reviews.js',   // also fails the .test.mjs shape
+  ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must be refused`);
+  // a .test.mjs file whose name shares the push- prefix is a harmless test
+  // run, not a mutating script — the deny-list targets executable .js only
+  assert.equal(isSafeCheckCommand('node --test scripts/lib/push-with-retry.test.mjs'), true, 'test files stay runnable');
+});
+
+test('triage prompt derives scope prose from describeScope per tier', () => {
+  const t1 = buildTriagePrompt({ name: 'x', notes: 'y' });
+  assert.match(t1, /Tier 1: may only edit/);
+  assert.doesNotMatch(t1, /Tier 3/);
+  const t3 = buildTriagePrompt({ name: 'x', notes: 'y' }, 3);
+  assert.match(t3, /Tier 3 \(code\): may edit src\/\*\* and scripts\/\*\*/);
+  assert.match(t3, /Tier-3 paths/);   // eligibility question names the active tier
+  assert.doesNotMatch(t3, /cannot: touch src\//);  // old hardcoded prose is gone
+});
+
+test('mutation deny-list covers case variants and .mjs/.cjs (ship-check QA)', () => {
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  for (const bad of ['test -f scripts/PUSH-x.js', 'test -f scripts/push-core-data.mjs', 'test -f scripts/Send-Alert.cjs']) {
+    assert.equal(isSafeCheckCommand(bad), false, bad);
+  }
+  assert.equal(isSafeCheckCommand('node --test scripts/lib/push-with-retry.test.mjs'), true, 'test files stay runnable');
+});

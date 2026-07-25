@@ -14,6 +14,8 @@ const {
   isCardEligible,
   isPathAllowed,
   isDiffAllowed,
+  isCodePathAllowed,
+  isCodeDiffAllowed,
   isDeterministicGreenPath,
   isDiffDeterministicGreen,
   classifyDataCard,
@@ -350,4 +352,84 @@ test('owner-action deny-tag: personal-queue cards never reach the loop (2026-07-
   const r = isCardEligible({ id: 'x', name: 'Follow up with TodayTix on affiliate approval', status: 'Not started', category: 'Product', tags: ['owner-action'] });
   assert.equal(r.eligible, false);
   assert.match(r.reason, /deny-tag "owner-action"/);
+});
+
+// ── Tier 3: code cards (owner-approved 2026-07-25) ─────────────────────────
+
+test('tier3: src/ and scripts/ are allowed; tier 1 stays refused for both', () => {
+  for (const p of ['src/components/Foo.tsx', 'src/app/page.tsx', 'scripts/lib/foo.js', 'scripts/query.js']) {
+    assert.equal(isCodePathAllowed(p), true, p);
+    assert.equal(isPathAllowed(p), false, `tier1 must not allow ${p}`);
+  }
+});
+
+test('tier3: scoring watchlists stay refused (drift-mirrored set)', () => {
+  for (const p of ['src/lib/scoring.ts', 'src/lib/engine.ts', 'src/lib/data-core.ts',
+    'scripts/lib/review-guards.js', 'scripts/rebuild-all-reviews.js', 'scripts/lib/score-extractors.js']) {
+    assert.equal(isCodePathAllowed(p), false, p);
+  }
+});
+
+test('tier3: email senders, brain, dispatcher, audit, self, scraper, gates refused', () => {
+  for (const p of ['scripts/send-opening-night-broadcast.js', 'scripts/lib/email-worker.js',
+    'scripts/notion-brain.js', 'scripts/notion-tasks-sync.js', 'scripts/bsc-prune.js',
+    'scripts/bsc-conductor.js', 'scripts/audit-closing-dates.js', 'scripts/autonomous-run.js',
+    'scripts/autonomous-acceptance-recheck.js', 'scripts/lib/autonomous-eligibility.js',
+    'scripts/lib/scraper.js', 'scripts/lib/should-deploy-gate.js', 'scripts/finish-line-gate.js']) {
+    assert.equal(isCodePathAllowed(p), false, p);
+  }
+});
+
+test('tier3: dependency/deploy/config manifests refused', () => {
+  for (const p of ['package.json', 'package-lock.json', 'next.config.js', 'tsconfig.json',
+    'vercel.json', 'middleware.ts', 'src/middleware.ts', 'supabase/migrations/x.sql']) {
+    assert.equal(isCodePathAllowed(p), false, p);
+  }
+});
+
+test('tier3: workflows and data stay refused; tier-1 territory still allowed', () => {
+  assert.equal(isCodePathAllowed('.github/workflows/test.yml'), false);
+  assert.equal(isCodePathAllowed('data/shows.json'), false);
+  for (const p of ['tests/foo.test.mjs', 'docs/x.md', 'memory/y.md', 'scripts/bsc-next.js', 'scripts/bsc-next.test.mjs']) {
+    assert.equal(isCodePathAllowed(p), true, p);
+  }
+});
+
+test('tier3: traversal and backslash defenses hold', () => {
+  assert.equal(isCodePathAllowed('src/../scripts/send-x.js'), false);
+  assert.equal(isCodePathAllowed('scripts\\send-x.js'), false);
+  assert.equal(isCodePathAllowed(''), false);
+});
+
+test('tier3: isCodeDiffAllowed names every refused file', () => {
+  const { allowed, refused } = isCodeDiffAllowed(['src/components/Foo.tsx', 'package.json', 'scripts/notion-brain.js']);
+  assert.equal(allowed, false);
+  assert.deepEqual(refused.sort(), ['package.json', 'scripts/notion-brain.js']);
+  assert.deepEqual(isCodeDiffAllowed(['src/a.tsx', 'scripts/lib/b.js']), { allowed: true, refused: [] });
+});
+
+test('tier3: NO tier-3 path is deterministic-green (merge tap preserved)', () => {
+  for (const p of ['src/components/Foo.tsx', 'scripts/lib/foo.js', 'scripts/query.js']) {
+    assert.equal(isDeterministicGreenPath(p), false, p);
+  }
+  // colocated .test.mjs files remain green — unchanged behavior
+  assert.equal(isDeterministicGreenPath('scripts/lib/foo.test.mjs'), true);
+});
+
+test('tier3: email-basename, dispatch control-plane, and cmux libs refused (ship-check round)', () => {
+  for (const p of ['scripts/lib/affiliate-email.js', 'scripts/lib/brand-mention-email.js',
+    'scripts/lib/send-lock.js', 'scripts/lib/email-templates.js',
+    'scripts/lib/bsc-next-model.js', 'scripts/lib/cmux-launch.js', 'scripts/lib/cmux-workspaces.js',
+    'scripts/lib/dispatch-ledger.js', 'scripts/lib/workspace-naming.js']) {
+    assert.equal(isCodePathAllowed(p), false, p);
+  }
+  // basename rule is .js-executable-scoped: test files + non-email libs unaffected
+  assert.equal(isCodePathAllowed('scripts/lib/dispatch-ledger.test.mjs'), true);
+  assert.equal(isCodePathAllowed('scripts/lib/title-match.js'), true);
+});
+
+test('tier3: manifests refused by basename anywhere, not just repo root', () => {
+  for (const p of ['scripts/package.json', 'src/package.json', 'scripts/lib/tsconfig.json', 'src/app/middleware.ts']) {
+    assert.equal(isCodePathAllowed(p), false, p);
+  }
 });
