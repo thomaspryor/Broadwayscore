@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-25T05:13:47.798Z",
+    "generatedAt": "2026-07-25T06:48:07.497Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,11 +16,11 @@
   "flagged": [
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 175
+      "churn": 185
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 86
+      "churn": 85
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -48,7 +48,7 @@
     },
     {
       "path": "data/audit/validation/collection-report-2026-07-22.json",
-      "churn": 33
+      "churn": 32
     },
     {
       "path": "data/audit/indexing-api-usage.json",
@@ -58,7 +58,7 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 118
+      "churn": 116
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -74,7 +74,7 @@
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 74
+      "churn": 73
     },
     {
       "path": "public/opening-night-status.json",
@@ -82,47 +82,47 @@
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 60
+      "churn": 58
     },
     {
       "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
-      "churn": 52
+      "churn": 53
     },
     {
       "path": "data/commercial-rss-state.json",
       "churn": 50
     },
     {
-      "path": "public/data/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 36
+      "path": "public/data/shows/a-midsummer-nights-dream-west-end-2026.json",
+      "churn": 37
     },
     {
-      "path": "public/data/shows/a-midsummer-nights-dream-west-end-2026.json",
-      "churn": 35
+      "path": "public/data/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
+      "churn": 37
     },
     {
       "path": "public/data/shows/the-oresteia-west-end-2026.json",
-      "churn": 33
+      "churn": 34
     },
     {
       "path": "public/data/shows/midnight-at-the-never-get-west-end-2026.json",
-      "churn": 32
+      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 677,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/progress.json",
-      "churn": 653,
+      "churn": 671,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 651,
+      "churn": 654,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/progress.json",
+      "churn": 647,
       "mergeAttr": "ours"
     },
     {
@@ -132,42 +132,42 @@
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 244,
+      "churn": 247,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 244,
+      "churn": 247,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 215,
+      "churn": 206,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 146,
+      "churn": 147,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 102,
+      "churn": 103,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/shifters-off-broadway-2026.json",
-      "churn": 102,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/are-you-mad-at-me-off-broadway-2026.json",
-      "churn": 92,
+      "churn": 103,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/hugo-marchand-artists-at-the-center-off-broadway-2026.json",
-      "churn": 89,
+      "churn": 95,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/are-you-mad-at-me-off-broadway-2026.json",
+      "churn": 94,
       "mergeAttr": "ours"
     },
     {
@@ -178,6 +178,11 @@
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
       "churn": 81,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/gather-collisions.json",
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
@@ -196,43 +201,38 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/gather-collisions.json",
-      "churn": 60,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 54,
+      "churn": 58,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/midnight-at-the-never-get-west-end-2026.json",
-      "churn": 53,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/allegra-west-end-2026.json",
-      "churn": 52,
+      "churn": 54,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/jesus-christ-superstar-west-end-2026.json",
-      "churn": 52,
+      "churn": 54,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/loves-labours-lost-globe-west-end-2026.json",
-      "churn": 52,
+      "churn": 54,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/tender-off-west-end-2026.json",
-      "churn": 52,
+      "churn": 54,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-oresteia-west-end-2026.json",
-      "churn": 52,
+      "churn": 54,
       "mergeAttr": "ours"
     },
     {
@@ -292,12 +292,12 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 31,
+      "churn": 32,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 31,
+      "churn": 32,
       "mergeAttr": "ours"
     }
   ]
