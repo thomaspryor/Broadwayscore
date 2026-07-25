@@ -1477,9 +1477,59 @@ const OUTLET_STAR_AUTHORITATIVE = new Set([
   'nypost', 'ny-post', 'new-york-post',
 ]);
 
+// Outlets ADJUDICATED to publish no critic rating of any kind. Every score path
+// must consult this one set — audit and extractor drifted before, and the drift
+// was the bug: check-score-integrity.js knew londontheatre.co.uk publishes no
+// critic rating while llm-score-extractor's JSON-LD fast-path happily ingested
+// that site's Show-Score AUDIENCE aggregate ("89/100", "96/100") into the P0
+// originalScore slot. Result: the weekly P0 score-integrity gate failed 3
+// consecutive weeks (2026-07-05 → 2026-07-19), which is why weekly-integrity
+// showed "last success 27d ago" in the health digest.
+//
+// This is deliberately NOT derived from the noScoreExtractor marker in
+// OUTLET_EXTRACTORS. That marker means "no dedicated HTML extractor", which is a
+// different claim: 43 outlet aliases carry it, and londontheatre1 /
+// front-row-center / slantmagazine among them DO publish real per-critic star
+// ratings (66 corpus files hold genuine "4/5 stars" values sourced from their
+// JSON-LD). Gating on the marker would silently destroy those.
+//
+// Adding an outlet here asserts you checked its site and it publishes no rating.
+const NO_CRITIC_RATING_OUTLETS = new Set([
+  // londontheatre.co.uk — text reviews only; its JSON-LD rating is a relayed
+  // Show-Score audience aggregate (the page labels it "Show-Score Rating").
+  'london-theatre',
+]);
+
+/**
+ * True when this outlet publishes no critic rating.
+ *
+ * Resolves through normalizeOutlet() rather than matching the raw string: callers
+ * do not reliably hand over a canonical id. extract-explicit-ratings.js passes
+ * `data.outletId || data.outlet`, so the DISPLAY NAME "London Theatre" reaches
+ * this gate whenever outletId is absent — an exact-match check would wave it
+ * straight through and re-open the bug. normalizeOutlet maps "London Theatre",
+ * "londontheatre-co-uk" and "london-theatre" all to 'london-theatre', while
+ * keeping londontheatre1 (a different site, which DOES publish stars) distinct.
+ *
+ * Lazily required to avoid a load-order cycle with review-normalization.
+ */
+function publishesNoCriticRating(outletId) {
+  if (!outletId) return false;
+  const raw = String(outletId).toLowerCase().trim();
+  if (NO_CRITIC_RATING_OUTLETS.has(raw)) return true;
+  try {
+    const { normalizeOutlet } = require('./review-normalization');
+    return NO_CRITIC_RATING_OUTLETS.has(normalizeOutlet(outletId));
+  } catch {
+    return false; // resolver unavailable — raw check above already applied
+  }
+}
+
 module.exports = {
   extractScore,
   extractDesignation,
+  NO_CRITIC_RATING_OUTLETS,
+  publishesNoCriticRating,
   extractTimeOutScore,
   extractEWScore,
   extractNYSRScore,

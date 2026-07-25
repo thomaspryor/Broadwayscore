@@ -24,6 +24,7 @@ const path = require('path');
 const fs = require('fs');
 const { normalizeLlmResult: sharedNormalizeLlmResult, LETTER_GRADES } = require('./score-parsers');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
+const { publishesNoCriticRating } = require('./score-extractors');
 
 // Lazy-load outlet-registry for starScale lookups. Tests can avoid this by
 // passing `opts.starScale` directly to extractExplicitScore.
@@ -107,22 +108,69 @@ function buildUserPrompt(text, outlet, starScale) {
 // ============================================================
 // JSON-LD fast-path — machine-readable structured data, no LLM needed
 // ============================================================
-function extractFromJsonLd(html, starScale) {
+
+/**
+ * Pick the ratingValue from a page's structured data that most likely belongs to
+ * a CRITIC rating, and read its scale from the SAME object.
+ *
+ * schema.org has two rating shapes that mean different things:
+ *   Review.reviewRating → the critic's own verdict
+ *   *.aggregateRating   → an average over many raters
+ * A reviewRating-scoped value is therefore preferred when both are present.
+ *
+ * aggregateRating is NOT rejected outright: WordPress review plugins (which
+ * several theatre outlets run) emit the post's own single critic rating as an
+ * aggregateRating, so rejecting it would throw away real critic stars. Outlets
+ * whose aggregateRating is genuinely a crowd score are handled by the
+ * NO_CRITIC_RATING_OUTLETS gate in extractFromJsonLd instead.
+ *
+ * bestRating is read from a window around the chosen match rather than via a
+ * whole-document regex, so a sibling rating block can no longer donate its scale
+ * (that mismatch is how a "/5" rating could be normalised as if out of 100).
+ *
+ * Returns { ratingValue, bestRating } (strings; bestRating may be null) or null.
+ */
+function matchCriticRatingValue(html) {
+  const WINDOW = 400;
+  const re = /"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/gi;
+  let fallback = null;
+  for (const m of html.matchAll(re)) {
+    const before = html.slice(Math.max(0, m.index - WINDOW), m.index).toLowerCase();
+    const aggAt = before.lastIndexOf('"aggregaterating"');
+    const revAt = before.lastIndexOf('"reviewrating"');
+    const scope = html.slice(Math.max(0, m.index - WINDOW), m.index + WINDOW);
+    const best = scope.match(/"bestRating"\s*:\s*"?(\d+)"?/i);
+    const hit = { ratingValue: m[1], bestRating: best ? best[1] : null };
+
+    // reviewRating-scoped → the critic's verdict, take it immediately.
+    if (revAt > -1 && revAt > aggAt) return hit;
+    if (!fallback) fallback = hit;
+  }
+  return fallback;
+}
+
+function extractFromJsonLd(html, starScale, outletId) {
   if (!html) return null;
 
-  const match = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/i);
+  // Outlets adjudicated to publish no critic rating: any ratingValue on their
+  // pages belongs to something else (londontheatre.co.uk relays a Show-Score
+  // AUDIENCE aggregate). extractScore() already refuses these outlets via the
+  // noScoreExtractor stub; this path used to bypass that entirely and wrote the
+  // audience number into the P0 originalScore slot.
+  if (publishesNoCriticRating(outletId)) return null;
+
+  const match = matchCriticRatingValue(html);
   if (!match) return null;
 
-  const rating = parseFloat(match[1]);
+  const rating = parseFloat(match.ratingValue);
 
   // Determine scale: explicit bestRating from JSON-LD > outlet's starScale > heuristic fallback.
   // The heuristic (rating <= 5 ? 5 : 100) was the bug pre-fix: it could not tell "4 out of 4"
   // from "4 out of 5" when bestRating was missing, silently producing a 100% score on a 4/5 review.
   // Positive-finite guard on starScale prevents 0/NaN/"5" propagating to Infinity in division.
-  const scaleMatch = html.match(/"bestRating"\s*:\s*"?(\d+)"?/i);
   const validStarScale = Number.isFinite(starScale) && starScale > 0 ? starScale : null;
-  const scale = scaleMatch
-    ? parseInt(scaleMatch[1])
+  const scale = match.bestRating != null
+    ? parseInt(match.bestRating)
     : (validStarScale != null ? validStarScale : (rating <= 5 ? 5 : 100));
 
   // Reject unreasonable values (including scale=0 if it somehow snuck past)
@@ -501,7 +549,7 @@ async function extractExplicitScore(opts) {
 
   // 1. JSON-LD fast-path (free, instant, no LLM)
   if (html) {
-    const jsonLdResult = extractFromJsonLd(html, starScale);
+    const jsonLdResult = extractFromJsonLd(html, starScale, outletId);
     if (jsonLdResult) {
       if (verbose) console.log(`    -> JSON-LD score: ${jsonLdResult.originalScore}`);
       return jsonLdResult;
@@ -563,6 +611,7 @@ async function extractExplicitScore(opts) {
 module.exports = {
   extractExplicitScore,
   extractFromJsonLd,
+  matchCriticRatingValue,
   // Export internals for testing
   SYSTEM_PROMPT,
   buildUserPrompt,
