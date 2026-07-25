@@ -110,9 +110,10 @@ async function discoverSlug(siteDomain, showTitle, pathPrefix) {
  * @param {Array<{id: string, title: string}>} shows - Shows to discover
  * @param {string} [pathPrefix]
  * @param {number} [delayMs=3000] - Delay between SERP queries
+ * @param {Object|null} [budget] - Optional run-budget (scripts/lib/run-budget.js); stops early if exceeded
  * @returns {Promise<Map<string, string>>} Map of showId → discovered slug
  */
-async function batchDiscoverSlugs(siteDomain, shows, pathPrefix, delayMs = 3000) {
+async function batchDiscoverSlugs(siteDomain, shows, pathPrefix, delayMs = 3000, budget = null) {
   if (!BRIGHTDATA_TOKEN && !SCRAPINGBEE_API_KEY) {
     console.log('  ⚠️  No SERP provider keys set (BRIGHTDATA_TOKEN / SCRAPINGBEE_API_KEY) — skipping SERP slug discovery');
     return new Map();
@@ -122,6 +123,10 @@ async function batchDiscoverSlugs(siteDomain, shows, pathPrefix, delayMs = 3000)
   console.log(`\n🔍 SERP slug discovery for ${shows.length} missed shows on ${siteDomain}...`);
 
   for (let i = 0; i < shows.length; i++) {
+    if (budget && budget.exceeded()) {
+      console.log(`  ⏱ Time budget (${budget.minutes} min) reached — stopping SERP slug discovery early (${shows.length - i} shows unprocessed).`);
+      break;
+    }
     const show = shows[i];
     const slug = await discoverSlug(siteDomain, show.title, pathPrefix);
     if (slug) {

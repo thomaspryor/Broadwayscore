@@ -455,7 +455,7 @@ async function main() {
     // SERP slug discovery for not-found shows
     const notFound = openMissed.filter(s => s.reason === 'not-found');
     if (notFound.length > 0) {
-      const discovered = await batchDiscoverSlugs('londontheatredirect.com', notFound);
+      const discovered = await batchDiscoverSlugs('londontheatredirect.com', notFound, undefined, undefined, timeBudget);
       if (discovered.size === 0) {
         console.log(`\nAdd to LTD_OVERRIDES if slug is known:`);
         for (const m of notFound) {

@@ -36,7 +36,7 @@ require.cache[urlDiscoveryPath] = {
 // Ensure at least one provider key is set so the early-return doesn't fire.
 process.env.BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN || 'test-token';
 
-const { discoverSlug } = require('../../scripts/lib/serp-slug-discovery.js');
+const { discoverSlug, batchDiscoverSlugs } = require('../../scripts/lib/serp-slug-discovery.js');
 
 test('extracts slug from matching SERP result (pathPrefix mode)', async () => {
   _mockResults = [
@@ -119,6 +119,51 @@ test('passes geo:gb to serpQuery (preserves UK geo from pre-refactor)', async ()
   await discoverSlug('seatplan.com', 'Hamilton', 'london');
   assert.ok(_capturedOptions, 'serpQuery should have been called with options');
   assert.equal(_capturedOptions.geo, 'gb', 'geo must be forced to gb for UK sites');
+});
+
+test('batchDiscoverSlugs: no budget passed processes all shows (default behavior unchanged)', async () => {
+  _mockResults = [
+    { url: 'https://seatplan.com/london/hamilton/', title: 'Hamilton tickets' },
+  ];
+  const shows = [
+    { id: 'hamilton', title: 'Hamilton' },
+    { id: 'wicked', title: 'Wicked' },
+    { id: 'six', title: 'Six' },
+  ];
+  const discovered = await batchDiscoverSlugs('seatplan.com', shows, 'london', 0);
+  // All 3 shows queried (mocked SERP always returns the Hamilton result, so
+  // Wicked/Six fail title validation and return null — but the loop still runs).
+  assert.equal(discovered.size, 1);
+});
+
+test('batchDiscoverSlugs: budget.exceeded() true from the start stops before any show is processed', async () => {
+  let calls = 0;
+  const originalQuery = _mockResults;
+  _mockResults = [{ url: 'https://seatplan.com/london/hamilton/', title: 'Hamilton tickets' }];
+  const shows = [
+    { id: 'hamilton', title: 'Hamilton' },
+    { id: 'wicked', title: 'Wicked' },
+  ];
+  const budget = { minutes: 5, exceeded: () => { calls++; return true; } };
+  const discovered = await batchDiscoverSlugs('seatplan.com', shows, 'london', 0, budget);
+  assert.equal(discovered.size, 0);
+  assert.ok(calls >= 1, 'budget.exceeded() should have been checked');
+  _mockResults = originalQuery;
+});
+
+test('batchDiscoverSlugs: budget exceeding mid-batch stops remaining shows', async () => {
+  _mockResults = [{ url: 'https://seatplan.com/london/hamilton/', title: 'Hamilton tickets' }];
+  const shows = [
+    { id: 'hamilton', title: 'Hamilton' },
+    { id: 'wicked', title: 'Hamilton' }, // reuse title so it'd match if queried
+    { id: 'six', title: 'Hamilton' },
+  ];
+  let checkCount = 0;
+  // exceeded() false on the first check (show 0 processes), true from the second check onward.
+  const budget = { minutes: 5, exceeded: () => { checkCount++; return checkCount > 1; } };
+  const discovered = await batchDiscoverSlugs('seatplan.com', shows, 'london', 0, budget);
+  assert.equal(discovered.size, 1, 'only the first show should have been processed before the budget stopped the loop');
+  assert.ok(discovered.has('hamilton'));
 });
 
 test('returns null when no SERP provider keys set', async () => {
