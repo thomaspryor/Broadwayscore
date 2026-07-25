@@ -129,7 +129,10 @@
     "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
     "amaze-off-broadway-2026/timeout--adam-feldman.json",
-    "the-gruffalo-west-end-2026/londontheatre1--unknown.json"
+    "the-gruffalo-west-end-2026/londontheatre1--unknown.json",
+    "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026/london-box-office--stuart-king.json",
+    "miss-saigon-west-end-2026/hollywood-reporter--david-rooney.json",
+    "miss-saigon-west-end-2026/timeout--david-cote.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -2045,7 +2048,14 @@
     "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
     "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
     "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
-    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json"
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "miss-saigon-west-end-2026/newsday--linda-winer.json",
+    "miss-saigon-west-end-2026/nydailynews--joe-dziemianowicz.json",
+    "miss-saigon-west-end-2026/thewrap--robert-hofler.json",
+    "miss-saigon-west-end-2026/wsj--terry-teachout.json",
+    "miss-saigon-west-end-2026/amny--matt-windman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2133,7 +2143,9 @@
       "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
       "amaze-off-broadway-2026/timeout--adam-feldman.json",
-      "the-gruffalo-west-end-2026/londontheatre1--unknown.json"
+      "the-gruffalo-west-end-2026/londontheatre1--unknown.json",
+      "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026/london-box-office--stuart-king.json",
+      "miss-saigon-west-end-2026/timeout--david-cote.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2152,7 +2164,9 @@
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
-      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+      "data/review-texts/miss-saigon-west-end-2026/hollywood-reporter--david-rooney.json",
+      "miss-saigon-west-end-2026/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
@@ -2231,7 +2245,7 @@
     ]
   },
   "startTime": "2026-07-24T19:19:16.686Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+  "lastProcessed": "miss-saigon-west-end-2026/amny--matt-windman.json",
   "log": [
     {
       "t": "2026-07-24T21:22:09.939Z",
@@ -2394,6 +2408,12 @@
       "t": "2026-07-25T10:18:32.659Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-25T11:49:10.069Z",
+      "event": "bb-session",
+      "session": "3329eba2",
+      "url": "https://www.hollywoodreporter.com/news/general-news/miss-saigon-theater-review-9"
     }
   ]
 }
