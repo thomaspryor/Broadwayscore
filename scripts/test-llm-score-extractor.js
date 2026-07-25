@@ -224,6 +224,19 @@ function unitTests() {
 
   const noOutlet = extractFromJsonLd(revLd, 5);
   assert(noOutlet && noOutlet.normalizedScore === 80, 'still works with outletId omitted');
+
+  // The gate must survive a non-canonical outlet identifier. Real caller
+  // extract-explicit-ratings.js:547 passes `data.outletId || data.outlet`, so the
+  // DISPLAY NAME arrives whenever outletId is missing — an exact-match check let
+  // that straight through (ship-check finding, 2026-07-25).
+  assert(extractFromJsonLd(aggLd, 5, 'London Theatre') === null,
+    'gate resolves display names, not just canonical ids');
+  assert(extractFromJsonLd(aggLd, 5, 'londontheatre-co-uk') === null,
+    'gate resolves registry aliases');
+  // ...and must NOT over-resolve onto the lookalike outlet that does publish stars.
+  const lookalike = extractFromJsonLd(aggLd, 5, 'LondonTheatre1');
+  assert(lookalike && lookalike.normalizedScore === 89,
+    'alias resolution keeps londontheatre1 distinct from london-theatre', `got ${JSON.stringify(lookalike)}`);
 }
 
 // ============================================================

@@ -1500,8 +1500,29 @@ const NO_CRITIC_RATING_OUTLETS = new Set([
   'london-theatre',
 ]);
 
+/**
+ * True when this outlet publishes no critic rating.
+ *
+ * Resolves through normalizeOutlet() rather than matching the raw string: callers
+ * do not reliably hand over a canonical id. extract-explicit-ratings.js passes
+ * `data.outletId || data.outlet`, so the DISPLAY NAME "London Theatre" reaches
+ * this gate whenever outletId is absent — an exact-match check would wave it
+ * straight through and re-open the bug. normalizeOutlet maps "London Theatre",
+ * "londontheatre-co-uk" and "london-theatre" all to 'london-theatre', while
+ * keeping londontheatre1 (a different site, which DOES publish stars) distinct.
+ *
+ * Lazily required to avoid a load-order cycle with review-normalization.
+ */
 function publishesNoCriticRating(outletId) {
-  return NO_CRITIC_RATING_OUTLETS.has((outletId || '').toLowerCase());
+  if (!outletId) return false;
+  const raw = String(outletId).toLowerCase().trim();
+  if (NO_CRITIC_RATING_OUTLETS.has(raw)) return true;
+  try {
+    const { normalizeOutlet } = require('./review-normalization');
+    return NO_CRITIC_RATING_OUTLETS.has(normalizeOutlet(outletId));
+  } catch {
+    return false; // resolver unavailable — raw check above already applied
+  }
 }
 
 module.exports = {
