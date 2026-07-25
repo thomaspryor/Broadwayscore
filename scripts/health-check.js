@@ -1051,14 +1051,21 @@ function checkCronHealth() {
   return CRITICAL_CRONS.map(({ workflow, maxHours, name }) =>
     runCheck(`Cron: ${name}`, () => {
       try {
+        // limit=5, not 1: on high-churn workflows the newest run is routinely a
+        // cancel-cascade casualty (a data commit lands, GitHub cancels the
+        // in-flight run in favour of the newer one). Reading only the head run
+        // reported "Cron failed: cancelled" while the cron was in fact doing its
+        // job on the very next run — see task #80, ~75% of Test Suite runs on main
+        // cancel this way. Same single API call, five records.
         const result = execSync(
-          `gh run list --workflow="${workflow}" --limit=1 --json createdAt,conclusion -q '.[0]'`,
+          `gh run list --workflow="${workflow}" --limit=5 --json createdAt,conclusion`,
           { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
         ).trim();
-        if (!result || result === '{}') {
+        const runs = result ? JSON.parse(result) : [];
+        if (!runs.length) {
           return { name: `Cron: ${name}`, status: 'warn', message: 'No runs found' };
         }
-        const run = JSON.parse(result);
+        const run = runs[0];
         const age = hoursAgo(run.createdAt);
         if (age > maxHours) {
           return { name: `Cron: ${name}`, status: 'error', message: `Last run ${formatAge(age)} ago (max ${maxHours}h). Conclusion: ${run.conclusion}`, hint: 'Check Actions tab — workflow may be disabled' };
@@ -1072,15 +1079,29 @@ function checkCronHealth() {
           // urgency rather than routing to the fix-now `Cron failed:` name.
           return { name: `Cron: ${name}`, status: 'warn', message: `Last run still running (started ${formatAge(age)} ago)` };
         }
-        // failure / cancelled / skipped / timed_out / action_required / neutral / stale —
-        // none of these confirm the cron actually did its job. Emit under a
-        // distinct name so the playbook can route to fix-now urgency (prominent
-        // in digest), separate from the baseline `Cron: X` staleness checks
-        // which stay at low urgency. Previously only 'failure' routed here —
-        // cancelled/timed_out runs silently read as 'pass' (ship-check
-        // adversarial finding on #367 surfaced the same bug in
-        // checkSecretsHealth(); same fix applied here).
-        return { name: `Cron failed: ${name}`, status: 'warn', message: `Last run inconclusive: ${run.conclusion} (${formatAge(age)} ago)` };
+        // The head run is inconclusive. Before calling that a failure, check
+        // whether a RECENT run actually succeeded: a cancelled head run with a
+        // green run still inside the freshness window means the cron is working
+        // and the newest attempt was just superseded. That is TRUE STATE, not an
+        // unfixed failure, and reporting it as one produced permanent digest
+        // warnings for Rebuild Reviews and Test Suite that no fix could clear.
+        const recentSuccess = runs.find(r => r.conclusion === 'success' && hoursAgo(r.createdAt) <= maxHours);
+        if (recentSuccess) {
+          return {
+            name: `Cron: ${name}`,
+            status: 'pass',
+            message: `${formatAge(hoursAgo(recentSuccess.createdAt))} ago, success (newest run ${run.conclusion} — superseded, not a failure)`,
+          };
+        }
+        // No successful run inside the window: failure / cancelled / skipped /
+        // timed_out / action_required / neutral / stale all mean the cron has not
+        // demonstrably done its job. Emit under a distinct name so the playbook
+        // routes to fix-now urgency (prominent in digest), separate from the
+        // baseline `Cron: X` staleness checks which stay at low urgency.
+        // Previously only 'failure' routed here — cancelled/timed_out runs
+        // silently read as 'pass' (ship-check adversarial finding on #367
+        // surfaced the same bug in checkSecretsHealth(); same fix applied here).
+        return { name: `Cron failed: ${name}`, status: 'warn', message: `Last run inconclusive: ${run.conclusion} (${formatAge(age)} ago), no success in ${maxHours}h` };
       } catch (err) {
         return { name: `Cron: ${name}`, status: 'warn', message: `gh CLI failed: ${err.message.substring(0, 80)}` };
       }
