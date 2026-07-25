@@ -184,6 +184,46 @@ function unitTests() {
 
   const j4 = extractFromJsonLd('<script>"ratingValue": "1", "bestRating": "5"</script>');
   assert(j4 === null, 'rejects suspiciously low 1/5 rating from JSON-LD');
+
+  // --- Outlet gating + reviewRating/aggregateRating disambiguation ---
+  // Regression: londontheatre.co.uk relays a Show-Score AUDIENCE aggregate in its
+  // JSON-LD. This path ignored outletId entirely, so "4.45/5" became a critic
+  // "89/100" in the P0 originalScore slot on 3 shows and failed the weekly P0
+  // score-integrity gate for 3 straight weeks.
+  const aggLd = '{"@type":"Event","aggregateRating":{"ratingValue":"4.45","bestRating":"5","ratingCount":"312"}}';
+  const revLd = '{"@type":"Review","reviewRating":{"ratingValue":"4","bestRating":"5"}}';
+
+  assert(extractFromJsonLd(aggLd, 5, 'london-theatre') === null,
+    'refuses JSON-LD for an outlet that publishes no critic rating');
+  assert(extractFromJsonLd(revLd, 5, 'london-theatre') === null,
+    'no-critic-rating gate applies even to reviewRating-shaped data');
+
+  // The gate must stay narrow: londontheatre1 / front-row-center carry the same
+  // noScoreExtractor marker but DO publish per-critic stars (66 corpus files), and
+  // WordPress review plugins emit that single critic rating AS an aggregateRating.
+  const wp1 = extractFromJsonLd(aggLd, 5, 'londontheatre1');
+  assert(wp1 && wp1.normalizedScore === 89,
+    'keeps WordPress-plugin aggregateRating for outlets that do publish ratings', `got ${JSON.stringify(wp1)}`);
+  const wp2 = extractFromJsonLd(aggLd, 5, 'front-row-center');
+  assert(wp2 && wp2.normalizedScore === 89, 'same for front-row-center', `got ${JSON.stringify(wp2)}`);
+
+  const both = extractFromJsonLd(aggLd + revLd, 5, 'timeout');
+  assert(both && both.normalizedScore === 80,
+    'prefers reviewRating over aggregateRating when both present', `got ${JSON.stringify(both)}`);
+  const bothRev = extractFromJsonLd(revLd + aggLd, 5, 'timeout');
+  assert(bothRev && bothRev.normalizedScore === 80,
+    'prefers reviewRating regardless of document order', `got ${JSON.stringify(bothRev)}`);
+
+  // bestRating is read from the matched block, not the whole document — a sibling
+  // 0-100 block must not rescale a /5 reviewRating (would have read 4/100 = 4).
+  const scoped = extractFromJsonLd(
+    '{"aggregateRating":{"ratingValue":"90","bestRating":"100"}}' + ' '.repeat(600) + '{"reviewRating":{"ratingValue":"4"}}',
+    5, 'timeout');
+  assert(scoped && scoped.normalizedScore === 80,
+    'does not borrow bestRating from a distant rating block', `got ${JSON.stringify(scoped)}`);
+
+  const noOutlet = extractFromJsonLd(revLd, 5);
+  assert(noOutlet && noOutlet.normalizedScore === 80, 'still works with outletId omitted');
 }
 
 // ============================================================
