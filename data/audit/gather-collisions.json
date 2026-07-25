@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-07-22T11:58:49.181Z",
-    "showId": "jesus-christ-superstar-west-end-2026",
-    "newFile": "whatsonstage--unknown.json",
-    "ok": false,
-    "file": "whatsonstage--sarah-crompton.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-in-london-and-on-tour-review_1726828/",
-      "existingFlags": {
-        "wrongProduction": false,
-        "wrongShow": true,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2026-07-08",
-      "incomingUrl": "https://www.whatsonstage.com/news/review-jesus-christ-superstar-regents-park-open-air-theatre_52246/",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-07-22T11:58:49.233Z",
     "showId": "jesus-christ-superstar-west-end-2026",
     "newFile": "whatsonstage--unknown.json",
@@ -9402,6 +9383,21 @@
   },
   {
     "recordedAt": "2026-07-25T04:29:02.901Z",
+    "showId": "hadestown-2019",
+    "newFile": "nytimes--unknown.json",
+    "ok": false,
+    "file": "nytimes--ben-brantley.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2019-04-17T20:11:26-04:00",
+      "incomingPublishDate": "2026-07-23",
+      "diffDays": 2653,
+      "existingUrl": "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html?smtyp=cur&smid=tw-nytimesarts",
+      "incomingUrl": "https://www.nytimes.com/2026/07/23/movies/hadestown-the-musical-review.html"
+    }
+  },
+  {
+    "recordedAt": "2026-07-25T05:16:57.273Z",
     "showId": "hadestown-2019",
     "newFile": "nytimes--unknown.json",
     "ok": false,
