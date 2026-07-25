@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-07-25T00:36:39.986Z",
-  "processed": 65,
-  "failed": 857,
-  "successRate": "7.0%",
+  "updatedAt": "2026-07-25T06:29:02.016Z",
+  "processed": 89,
+  "failed": 1133,
+  "successRate": "7.3%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 61,
     "amp": 0,
-    "browserbase": 8,
-    "directCookies": 1,
+    "browserbase": 12,
+    "directCookies": 2,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archiveToday": 7,
-    "archive": 8
+    "brightdata": 11,
+    "archiveToday": 8,
+    "archive": 10
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-07-24T21:22:09.939Z",
-      "event": "bb-session",
-      "session": "4a8dcf3d",
-      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
-    },
     {
       "t": "2026-07-24T21:23:47.400Z",
       "event": "bb-session",
@@ -76,6 +70,62 @@
       "t": "2026-07-25T00:33:39.937Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-25T05:49:50.761Z",
+      "event": "bb-session",
+      "session": "6cb07926",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-25T05:49:51.174Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-25T05:50:06.863Z",
+      "event": "bb-session",
+      "session": "cb7d4e01",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-25T05:50:07.252Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-25T06:03:12.855Z",
+      "event": "bb-session",
+      "session": "ffcecc92",
+      "url": "https://www.nytimes.com/2026/07/23/movies/hadestown-the-musical-review.html"
+    },
+    {
+      "t": "2026-07-25T06:03:13.310Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-25T06:03:28.893Z",
+      "event": "bb-session",
+      "session": "5eaea9e7",
+      "url": "https://www.nytimes.com/2026/07/23/movies/hadestown-the-musical-review.html"
+    },
+    {
+      "t": "2026-07-25T06:03:29.232Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-25T06:10:24.488Z",
+      "event": "bb-session",
+      "session": "b5c1254c",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-25T06:10:40.463Z",
+      "event": "bb-session",
+      "session": "9e8880f1",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
     }
   ]
 }
