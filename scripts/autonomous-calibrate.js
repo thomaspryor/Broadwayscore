@@ -32,6 +32,12 @@ function isAbsoluteExclusion(card) {
 }
 
 async function main() {
+  // --help must never spend real Sonnet calls (cousin bug class #260).
+  const { hasHelpFlag } = require('./lib/cli-help.js');
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('autonomous-calibrate.js — re-runs triage over the calibration fixture (SPENDS Sonnet).\n  --help, -h   show this message, do nothing else');
+    return;
+  }
   const fixture = JSON.parse(fs.readFileSync(FIXTURE, 'utf8'));
   for (const [i, card] of fixture.cards.entries()) {
     const r = await triageCard(card, callSonnet);
