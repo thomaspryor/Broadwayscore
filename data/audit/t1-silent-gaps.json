@@ -1,8 +1,45 @@
 {
-  "generatedAt": "2026-07-25T18:21:06.874Z",
+  "generatedAt": "2026-07-25T20:23:44.578Z",
   "windowDays": 45,
-  "showsScanned": 50,
+  "showsScanned": 51,
   "gaps": [
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "title": "Jesus Christ Superstar",
+      "openingDate": "2026-07-07",
+      "file": "artsdesk--rachel-halliburton.json",
+      "outletId": "artsdesk",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original",
+      "recovery": null,
+      "recoveryCount": 3,
+      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original --outlet=artsdesk --critic=\"Rachel Halliburton\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-07-25T20:23:44.577Z",
+      "nonTerminalAgeHours": 0
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "title": "Jesus Christ Superstar",
+      "openingDate": "2026-07-07",
+      "file": "independent--alice-saville.json",
+      "outletId": "independent",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html?loginSuccessful=true",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:per-file-cap"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html?loginSuccessful=true --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-07-25T20:23:44.577Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -16,9 +53,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 53.158438333333336,
+      "fileAgeHours": 55.20224638888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 12.461371666666667
+      "nonTerminalAgeHours": 14.505178055555556
     }
   ],
   "contradictions": []
