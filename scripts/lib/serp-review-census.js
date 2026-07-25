@@ -64,7 +64,11 @@ function buildCensusQuery(show) {
 // Distinctive venue tokens (mirrors hasDisambiguator's filter in
 // url-discovery.js): significant words only, generic venue vocabulary dropped
 // so "…at the theatre" can't scope a query.
-const VENUE_STOPWORDS = new Set(['theatre', 'theater', 'theaters', 'theatres', 'royal', 'open', 'house', 'main', 'park', 'stage', 'studio']);
+const VENUE_STOPWORDS = new Set([
+  'theatre', 'theater', 'theaters', 'theatres', 'royal', 'open', 'house', 'main',
+  'park', 'stage', 'stages', 'studio', 'arts', 'world', 'playhouse', 'center',
+  'centre', 'hall', 'west', 'east', 'north', 'south', 'city', 'street',
+]);
 function venueQueryToken(venue) {
   const tokens = String(venue || '').toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)

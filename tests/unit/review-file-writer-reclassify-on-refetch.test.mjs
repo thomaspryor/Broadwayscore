@@ -38,7 +38,7 @@ function writeStub(dir, showId, filename, extra = {}) {
 }
 
 describe('merge reclassifies contentTier when the body changes', () => {
-  test('refetch onto a scraper_garbage stub clears stale tier + incompleteness', () => {
+  test('refetch onto a scraper_garbage stub reclassifies to a usable tier', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rfw-reclass-'));
     const fp = writeStub(dir, 'reclass-show', 'theater-pizzazz--unknown.json');
     const res = createOrMergeReviewFile('reclass-show', {
@@ -49,10 +49,61 @@ describe('merge reclassifies contentTier when the body changes', () => {
     }, { reviewTextsDir: dir });
     assert.equal(res.action, 'updated');
     const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    // The tier is what gates rebuild inclusion (isIncludableForRebuild) —
+    // this is the assertion that matters. incompleteReason is descriptive
+    // metadata re-derived by rebuild and cleared by clearFailureFlags only
+    // under its canonical conditions (complete tier, or text + score).
     assert.ok(['complete', 'truncated', 'excerpt'].includes(data.contentTier),
       `usable tier after refetch, got ${data.contentTier}`);
-    assert.equal(data.incompleteReason, undefined, 'stale scraper_garbage reason cleared');
-    assert.equal(data.incompleteDetail, undefined, 'stale detail cleared');
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  test('refetch onto a garbage_text rejection clears the rejection (1,299-file class)', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rfw-reclass-rej-'));
+    const fp = writeStub(dir, 'reclass-rej-show', 'theater-pizzazz--unknown.json',
+      { rejectionReason: 'garbage_text', rejectedBy: ['content-quality'] });
+    createOrMergeReviewFile('reclass-rej-show', {
+      outletId: 'theater-pizzazz', outlet: 'Theater Pizzazz', criticName: 'Unknown',
+      url: 'https://theaterpizzazz.com/some-review/',
+      source: 'url-ingest',
+      fields: { fullText: GOOD_BODY },
+    }, { reviewTextsDir: dir });
+    const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.ok(data.rejectionReason == null, 'garbage_text rejection cleared after clean refetch');
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  test('semantic rejection (not_a_review) survives a refetch — text length does not resolve it', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rfw-reclass-sem-'));
+    const fp = writeStub(dir, 'reclass-sem-show', 'theater-pizzazz--unknown.json',
+      { rejectionReason: 'not_a_review' });
+    createOrMergeReviewFile('reclass-sem-show', {
+      outletId: 'theater-pizzazz', outlet: 'Theater Pizzazz', criticName: 'Unknown',
+      url: 'https://theaterpizzazz.com/some-review/',
+      source: 'url-ingest',
+      fields: { fullText: GOOD_BODY },
+    }, { reviewTextsDir: dir });
+    const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.equal(data.rejectionReason, 'not_a_review', 'semantic rejection preserved');
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  test('short paywall refetch keeps its retry context (canonical clear semantics)', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rfw-reclass-paywall-'));
+    const fp = writeStub(dir, 'reclass-paywall-show', 'theater-pizzazz--unknown.json',
+      { incompleteReason: 'paywall', incompleteDetail: 'subscriber wall' });
+    createOrMergeReviewFile('reclass-paywall-show', {
+      outletId: 'theater-pizzazz', outlet: 'Theater Pizzazz', criticName: 'Unknown',
+      url: 'https://theaterpizzazz.com/some-review/',
+      source: 'url-ingest',
+      // Under clearFailureFlags' 500-char floor and not tier-complete: the
+      // paywall retry context must survive this partial refetch.
+      fields: { fullText: 'A teaser paragraph before the subscriber wall cuts the review off mid-sentence and the rest never loads. '.repeat(3) },
+    }, { reviewTextsDir: dir });
+    const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    if ((data.fullText || '').length < 500 && data.contentTier !== 'complete') {
+      assert.equal(data.incompleteReason, 'paywall', 'paywall retry context preserved on short refetch');
+    }
     fs.rmSync(dir, { recursive: true, force: true });
   });
 

@@ -724,35 +724,40 @@ async function auditShow(show, opts = {}) {
       const queries = buildCensusQueries(show, { weakTitle, creativeNames: showInfo.creativeNames || [] });
       if (queries.length) {
         const dateRange = calculateDateWindow(show);
-        let okCount = 0;
-        let lastErr = null;
+        const queryStatus = [];
         for (const query of queries) {
           try {
             // preferSpeed:false (BD-first) — this is a background completeness
             // sweep, not a user-waiting flow, and BD is the cheaper provider
             // (matches brand-mention-serp.js's SB-conservation posture).
             const serpResults = await serpQuery(query, { dateRange, preferSpeed: false });
-            okCount++;
+            queryStatus.push({ query, ok: true, results: (serpResults || []).length, error: null });
             for (const sr of (serpResults || [])) {
               const accepted = acceptSerpCensusResult(sr, { show, showInfo });
               if (accepted) serpCensusUrls.add(accepted);
             }
           } catch (e) {
-            lastErr = (e.message || '').slice(0, 120);
-            console.error(`::error::SERP census query failed for ${show.id} (${query}): ${lastErr}`);
+            const err = (e.message || '').slice(0, 120);
+            queryStatus.push({ query, ok: false, results: 0, error: err });
+            console.error(`::error::SERP census query failed for ${show.id} (${query}): ${err}`);
           }
         }
-        // ran:true ONLY when at least one query actually executed — a total
-        // provider outage must NOT burn the checkpoint cooldown, or the census
-        // silently sleeps through the whole opening window (checkpoint stamps
-        // serpCensusAt off `ran`, see main()).
+        const okCount = queryStatus.filter(q => q.ok).length;
+        // `complete` (ALL queries executed) gates the checkpoint cooldown in
+        // main(): a partial or total provider outage must NOT burn the
+        // cooldown, or a dead/flaky provider silently sleeps the census
+        // through the whole opening window (ship-check 2026-07-25 — the
+        // first cut stamped off "any query ran", which let one surviving
+        // low-value query mask a failed primary for 6h). `ran` stays "did
+        // any census work happen" for reporting.
         result.serpCensus = {
           ran: okCount > 0,
+          complete: okCount === queries.length,
           query: queries[0],
-          queries,
+          queryStatus,
           queriesOk: okCount,
           resultCount: serpCensusUrls.size,
-          error: okCount === queries.length ? null : lastErr,
+          error: okCount === queries.length ? null : (queryStatus.filter(q => !q.ok).map(q => q.error)[0] || null),
         };
       }
     } else {
@@ -1346,7 +1351,11 @@ async function main(argv = process.argv.slice(2)) {
         gaps: r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length,
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
-        ...((r.serpCensus && r.serpCensus.ran) ? { serpCensusAt: new Date().toISOString() } : (prevCensusAt ? { serpCensusAt: prevCensusAt } : {})),
+        // Cooldown stamps ONLY on a fully-successful census (every query
+        // executed). Partial provider outages keep the prior stamp so the
+        // next hourly run retries — bounded: ≤3 BD queries/show/hour ≈
+        // $0.005/hour worst case while a provider is down.
+        ...((r.serpCensus && r.serpCensus.complete) ? { serpCensusAt: new Date().toISOString() } : (prevCensusAt ? { serpCensusAt: prevCensusAt } : {})),
       };
       saveCheckpoint(checkpoint);
     }

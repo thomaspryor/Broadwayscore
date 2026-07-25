@@ -35,6 +35,7 @@ const {
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
+const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview } = require('./review-guards');
 const { detectRoundupDigest } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
@@ -750,12 +751,13 @@ function _mergeIntoExisting(filepath, existing, ctx) {
       existing.contentTier = newTier;
       changed = true;
     }
-    if (['complete', 'truncated', 'excerpt'].includes(existing.contentTier) &&
-        (existing.incompleteReason || existing.incompleteDetail)) {
-      delete existing.incompleteReason;
-      delete existing.incompleteDetail;
-      changed = true;
-    }
+    // Stale failure metadata (incompleteReason 'scraper_garbage', fetch
+    // counters, garbage_text rejections) describes the OLD body. Clear it via
+    // the canonical helper, NOT a hand-rolled delete — clearFailureFlags owns
+    // the per-reason semantics (paywall/wrong_content/no_url each have their
+    // own release condition), so a truncated paywall refetch keeps its retry
+    // context while a genuinely-healed body sheds the garbage verdict.
+    if (clearFailureFlags(existing).length > 0) changed = true;
   }
 
   if (!changed) {
