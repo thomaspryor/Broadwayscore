@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-07-22T12:00:54.599Z",
-    "showId": "heathers-the-musical-off-west-end-2026",
-    "newFile": "west-end-best-friend--cara-brazier.json",
-    "ok": false,
-    "file": "west-end-best-friend--unknown.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.westendbestfriend.co.uk/news/review-heathers-the-musical-the-arts-at-marble-arch",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": null,
-      "incomingUrl": "https://www.westendbestfriend.co.uk/news/review-heathers-the-musical-soho-place",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-07-22T12:00:54.645Z",
     "showId": "heathers-the-musical-off-west-end-2026",
     "newFile": "whatsonstage--unknown.json",
@@ -9413,6 +9394,21 @@
       "existingPublishDate": "2026-05-04",
       "incomingUrl": "https://www.theguardian.com/stage/2024/dec/01/the-week-in-theatre-tender-bush-theatre-eleanor-tindall-expendable-royal-court-emteaz-hussain-review",
       "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-07-25T05:55:48.745Z",
+    "showId": "hadestown-2019",
+    "newFile": "nytimes--unknown.json",
+    "ok": false,
+    "file": "nytimes--ben-brantley.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2019-04-17T20:11:26-04:00",
+      "incomingPublishDate": "2026-07-23",
+      "diffDays": 2653,
+      "existingUrl": "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html?smtyp=cur&smid=tw-nytimesarts",
+      "incomingUrl": "https://www.nytimes.com/2026/07/23/movies/hadestown-the-musical-review.html"
     }
   }
 ]
