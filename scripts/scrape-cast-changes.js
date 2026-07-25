@@ -1885,13 +1885,30 @@ async function main() {
     }
   }
   let auditIssues = 0;
+  let selfHealedDups = 0;
   for (const [showId, show] of Object.entries(existing.shows || {})) {
     const ups = show.upcoming || [];
     const c = detectContradictions(ups, show.currentCast || []);
-    const dedupDelta = ups.length - dedupeByPersonShow(ups).length;
-    if (c.length > 0 || dedupDelta > 0) {
-      auditIssues += c.length + dedupDelta;
-      console.error(`[Audit] ${showId}: ${c.length} contradiction(s), ${dedupDelta} name-variant dup(s)`);
+
+    // Name-variant duplicates are SELF-REPAIRABLE: dedupeByPersonShow() IS the fix
+    // and it is already in this file. Counting them as fatal made this cron abort
+    // and tell a human to "run audit-cast-changes.js --write" — a command the
+    // automation can run itself. Every run then failed until someone did, so
+    // 2026-07-22 → 2026-07-24 went 3-for-3 failures and cast-changes.json went 4d
+    // stale in the health digest, all over ONE ragtime-2025 dup. Repair and log,
+    // matching the [self-heal] pass above; only genuinely ambiguous classes
+    // (contradictions, cross-show overlaps) still block the write.
+    const deduped = dedupeByPersonShow(ups);
+    const dedupDelta = ups.length - deduped.length;
+    if (dedupDelta > 0) {
+      selfHealedDups += dedupDelta;
+      console.warn(`[self-heal] ${showId}: collapsed ${dedupDelta} name-variant dup(s) in upcoming`);
+      show.upcoming = deduped;
+    }
+
+    if (c.length > 0) {
+      auditIssues += c.length;
+      console.error(`[Audit] ${showId}: ${c.length} contradiction(s)`);
       for (const w of c) {
         if (w.kind === 'closure-vs-later-arrival') {
           console.error(`  - closure ${w.closureDate} contradicted by later arrival(s)`);
@@ -1900,6 +1917,9 @@ async function main() {
         }
       }
     }
+  }
+  if (selfHealedDups > 0) {
+    console.log(`[Audit] self-healed ${selfHealedDups} name-variant dup(s) — not fatal`);
   }
   const crossShow = detectCrossShowConflicts(existing.shows || {});
   if (crossShow.length > 0) {
