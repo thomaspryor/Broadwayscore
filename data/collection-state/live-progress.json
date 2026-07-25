@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-07-25T08:37:22.859Z",
+  "updatedAt": "2026-07-25T10:18:42.151Z",
   "processed": 92,
-  "failed": 1652,
-  "successRate": "5.3%",
+  "failed": 1662,
+  "successRate": "5.2%",
   "tierBreakdown": {
     "playwright": 63,
     "amp": 0,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 11,
-    "archiveToday": 15,
+    "archiveToday": 20,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-07-24T21:28:34.135Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-24T21:29:31.452Z",
-      "event": "bb-session",
-      "session": "b41dbea7",
-      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
-    },
-    {
-      "t": "2026-07-25T00:32:18.591Z",
-      "event": "bb-session",
-      "session": "b95587c7",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
-    },
-    {
-      "t": "2026-07-25T00:32:19.065Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
     {
       "t": "2026-07-25T00:33:39.534Z",
       "event": "bb-session",
@@ -123,6 +101,28 @@
     },
     {
       "t": "2026-07-25T07:23:15.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-25T10:17:17.244Z",
+      "event": "bb-session",
+      "session": "f1ff9529",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-25T10:17:18.403Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-25T10:18:31.603Z",
+      "event": "bb-session",
+      "session": "d8aa26ae",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-25T10:18:32.659Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
