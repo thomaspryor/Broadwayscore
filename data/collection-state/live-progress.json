@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-07-25T18:52:55.493Z",
-  "processed": 3,
-  "failed": 15,
-  "successRate": "16.7%",
+  "updatedAt": "2026-07-25T19:48:53.801Z",
+  "processed": 4,
+  "failed": 24,
+  "successRate": "14.3%",
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 9,
-    "archive": 0
+    "archiveToday": 14,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-25T19:48:42.510Z",
+      "event": "bb-session",
+      "session": "167e9eb0",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-25T19:48:42.975Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }

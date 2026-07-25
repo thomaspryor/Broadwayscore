@@ -2,7 +2,8 @@
   "processed": [
     "trainspotting-the-musical-west-end-2026/radio-times--olivia-garrett.json",
     "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
-    "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json"
+    "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
+    "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json"
   ],
   "failed": [
     "trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
@@ -19,7 +20,16 @@
     "trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
     "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
     "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
-    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json"
+    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+    "trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+    "trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
+    "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+    "trainspotting-the-musical-west-end-2026/london-unattached--jeanne-horak.json",
+    "trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+    "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
+    "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -29,7 +39,9 @@
       "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -42,11 +54,30 @@
       "data/review-texts/trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
       "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
-      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json"
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json"
+    ]
   },
   "startTime": "2026-07-25T16:57:11.198Z",
-  "lastProcessed": "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
-  "log": []
+  "lastProcessed": "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+  "log": [
+    {
+      "t": "2026-07-25T19:48:42.510Z",
+      "event": "bb-session",
+      "session": "167e9eb0",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-25T19:48:42.975Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
