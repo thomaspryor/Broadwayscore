@@ -32,10 +32,17 @@ const AGGREGATOR_DATA_SOURCES = new Set([
   'lbo-roundup', 'lbo-individual', 'nyc-theatre',
 ]);
 
-// Outlets confirmed to NOT publish star ratings
-const NO_STAR_OUTLETS = new Set([
-  'london-theatre',
-]);
+// Outlets confirmed to publish no critic rating. Imported, NOT re-declared:
+// this audit and llm-score-extractor's JSON-LD fast-path previously kept separate
+// notions of "publishes no rating", and that drift is exactly what let
+// londontheatre.co.uk's Show-Score audience aggregate into the P0 slot while this
+// audit was flagging it. One list, both consumers.
+//
+// Do NOT widen this to every outlet carrying the noScoreExtractor marker: that
+// marker means "no dedicated HTML extractor" and covers 43 aliases, 117 of whose
+// corpus files hold originalScore values (nydailynews 80, nytimes 2.5/5, nytg D)
+// that each need a per-outlet judgment before being called corruption.
+const { NO_CRITIC_RATING_OUTLETS: NO_STAR_OUTLETS } = require('./lib/score-extractors');
 
 const issues = {
   aggregatorScoreInP0: [],     // scoreSource is aggregator but in originalScore

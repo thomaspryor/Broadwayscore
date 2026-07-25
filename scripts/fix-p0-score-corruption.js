@@ -8,6 +8,7 @@
  * Tier 1a: scoreSource is a known AGGREGATOR_SCORE_SOURCE → move to aggregatorStars
  * Tier 1b: source is an aggregator roundup but scoreSource says 'explicit-rating' → move to aggregatorStars
  * Tier 1c: source='westendtheatre' with no scoreSource → move to aggregatorStars
+ * Tier 1d: outlet publishes no critic rating (NO_CRITIC_RATING_OUTLETS) → discard, do NOT relay
  * Tier 1.5: unicode-stars/text-pattern/word-stars with no evidence in fullText → clear with flag
  *
  * Usage:
@@ -18,7 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
-const { KNOWN_STAR_OUTLETS, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
+const { KNOWN_STAR_OUTLETS, OUTLET_EXTRACTORS, publishesNoCriticRating } = require('./lib/score-extractors');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const WEST_END_ONLY = !process.argv.includes('--all-markets');
@@ -73,6 +74,7 @@ const stats = {
   tier1a: 0, // Known aggregator scoreSource
   tier1b: 0, // Aggregator roundup mislabeled as explicit-rating
   tier1c: 0, // WET with no scoreSource
+  tier1d: 0, // Outlet publishes no critic rating at all
   tier15: 0, // Suspicious extraction with no text evidence
   skipped: 0,
   total: 0,
@@ -95,8 +97,16 @@ for (const show of shows) {
       const scoreSource = data.scoreSource || null;
       const source = data.source || null;
 
+      // Tier 1d: outlet publishes no critic rating at all, so ANY originalScore on
+      // it is something else wearing a critic score's clothes (londontheatre.co.uk
+      // relays a Show-Score audience aggregate in its JSON-LD). Checked first
+      // because the outlet verdict beats every source-shaped heuristic below.
+      if (publishesNoCriticRating(data.outletId)) {
+        tier = '1d';
+        stats.tier1d++;
+      }
       // Tier 1a: Known aggregator scoreSource
-      if (scoreSource && AGGREGATOR_SCORE_SOURCES.has(scoreSource)) {
+      else if (scoreSource && AGGREGATOR_SCORE_SOURCES.has(scoreSource)) {
         tier = '1a';
         stats.tier1a++;
       }
@@ -138,7 +148,22 @@ for (const show of shows) {
 
       affectedShows.add(show);
 
-      if (tier.startsWith('1') && tier !== '1.5') {
+      if (tier === '1d') {
+        // Outlet publishes no critic rating: DISCARD, do not relay.
+        // Deliberately NOT moved to aggregatorStars — unlike tiers 1a-1c (real
+        // critic stars relayed by an aggregator, just filed in the wrong slot),
+        // this value is an audience average. Parking it in aggregatorStars would
+        // feed the aggregatorStars fallback in getBestScore() and re-launder a
+        // crowd number into the critic score by another route.
+        if (!DRY_RUN) {
+          data.previousOriginalScore = data.originalScore;
+          data.originalScore = null;
+          data.originalScoreCleared = true;
+          data.originalScoreClearedReason = 'outlet-publishes-no-critic-rating (tier 1d)';
+          fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+        }
+        console.log(`${DRY_RUN ? '[DRY] ' : ''}[T1d] ${show}/${file}: ${data.outletId} "${data.originalScore || data.previousOriginalScore}" discarded (outlet publishes no critic rating)`);
+      } else if (tier.startsWith('1') && tier !== '1.5') {
         // Aggregator fix: move to aggregatorStars
         if (!DRY_RUN) {
           data.aggregatorStars = data.aggregatorStars || data.originalScore;
@@ -172,8 +197,9 @@ console.log(`Total files with originalScore: ${stats.total}`);
 console.log(`Tier 1a (aggregator scoreSource): ${stats.tier1a}`);
 console.log(`Tier 1b (aggregator roundup mislabeled): ${stats.tier1b}`);
 console.log(`Tier 1c (WET with no scoreSource): ${stats.tier1c}`);
+console.log(`Tier 1d (outlet publishes no critic rating): ${stats.tier1d}`);
 console.log(`Tier 1.5 (extraction no evidence): ${stats.tier15}`);
-console.log(`Total fixed: ${stats.tier1a + stats.tier1b + stats.tier1c + stats.tier15}`);
+console.log(`Total fixed: ${stats.tier1a + stats.tier1b + stats.tier1c + stats.tier1d + stats.tier15}`);
 console.log(`Skipped (not in scope): ${stats.skipped}`);
 console.log(`Affected shows: ${affectedShows.size}`);
 console.log(`\nShows: ${[...affectedShows].sort().join(', ')}`);

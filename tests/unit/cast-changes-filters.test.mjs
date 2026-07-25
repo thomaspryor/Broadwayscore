@@ -571,3 +571,24 @@ test('reconcileClosureDateWithClosingDate no-ops on missing/invalid canonical da
     assert.equal(repaired, 0, `no-op for ${JSON.stringify(bad)}`);
   }
 });
+
+// scrape-cast-changes.js's pre-write audit used to count a name-variant duplicate
+// as FATAL and abort without writing cast-changes.json, telling a human to run
+// audit-cast-changes.js --write — a command the automation can run itself. That
+// killed Update Cast Changes three runs running (2026-07-22 → 07-24) over ONE
+// ragtime-2025 dup and left cast-changes.json 4d stale in the health digest. The
+// audit now applies dedupeByPersonShow() as a [self-heal] instead, so THIS
+// function's precision is what stops that repair from eating real events.
+test('dedupeByPersonShow does not over-collapse: same person, different event type survives', () => {
+  const events = [
+    { type: 'departure', name: 'Brandon Uranowitz', role: 'Tateh', date: '2026-09-06' },
+    { type: 'arrival', name: 'Brandon Uranowitz', role: 'Tateh', date: '2026-10-01' },
+    { type: 'departure', name: 'Joy Woods', role: 'Sarah', date: '2026-09-06' },
+  ];
+  const out = dedupeByPersonShow(events);
+  assert.equal(out.length, 3, 'a departure-then-return pair is real history, not a duplicate');
+  assert.deepEqual(
+    out.map(e => `${e.type}:${e.name}`).sort(),
+    ['arrival:Brandon Uranowitz', 'departure:Brandon Uranowitz', 'departure:Joy Woods'],
+  );
+});
