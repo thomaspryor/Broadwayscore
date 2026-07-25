@@ -52,7 +52,7 @@ const { execSync, execFileSync } = require('child_process');
 
 const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
 const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle } = require('./lib/url-discovery');
-const { buildCensusQuery, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
+const { buildCensusQueries, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
 const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -714,24 +714,51 @@ async function auditShow(show, opts = {}) {
     const cooldownRaw = parseInt(process.env.SERP_CENSUS_COOLDOWN_HOURS || '', 10);
     const cooldownHours = Number.isFinite(cooldownRaw) ? cooldownRaw : SERP_CENSUS_DEFAULT_COOLDOWN_HOURS;
     if (shouldRunSerpCensus({ inWindow: inWindowNow, lastRunAt: opts.lastCensusAt || null, cooldownHours })) {
-      const query = buildCensusQuery(show);
-      if (query) {
-        try {
-          const dateRange = calculateDateWindow(show);
-          // preferSpeed:false (BD-first) — this is a background completeness
-          // sweep, not a user-waiting flow, and BD is the cheaper provider
-          // (matches brand-mention-serp.js's SB-conservation posture).
-          const serpResults = await serpQuery(query, { dateRange, preferSpeed: false });
-          result.serpCensus = { ran: true, query, resultCount: (serpResults || []).length, error: null };
-          const showInfo = getShowInfo(show.id);
-          for (const sr of (serpResults || [])) {
-            const accepted = acceptSerpCensusResult(sr, { show, showInfo });
-            if (accepted) serpCensusUrls.add(accepted);
+      const showInfo = getShowInfo(show.id);
+      // Weak-specificity titles (single significant token — "Sukkot",
+      // "Shifters") get scoped follow-up queries: the un-scoped top-10 is
+      // polluted by the word's other meaning and real reviews rank below it
+      // (Sukkot 2026-07-25 — Blogcritics/Theater Pizzazz invisible to the
+      // single-query census, page-1 on a scoped Google search).
+      const weakTitle = isGenericShowTitle(show.title) || titleTokens(show.title).length <= 1;
+      const queries = buildCensusQueries(show, { weakTitle, creativeNames: showInfo.creativeNames || [] });
+      if (queries.length) {
+        const dateRange = calculateDateWindow(show);
+        const queryStatus = [];
+        for (const query of queries) {
+          try {
+            // preferSpeed:false (BD-first) — this is a background completeness
+            // sweep, not a user-waiting flow, and BD is the cheaper provider
+            // (matches brand-mention-serp.js's SB-conservation posture).
+            const serpResults = await serpQuery(query, { dateRange, preferSpeed: false });
+            queryStatus.push({ query, ok: true, results: (serpResults || []).length, error: null });
+            for (const sr of (serpResults || [])) {
+              const accepted = acceptSerpCensusResult(sr, { show, showInfo });
+              if (accepted) serpCensusUrls.add(accepted);
+            }
+          } catch (e) {
+            const err = (e.message || '').slice(0, 120);
+            queryStatus.push({ query, ok: false, results: 0, error: err });
+            console.error(`::error::SERP census query failed for ${show.id} (${query}): ${err}`);
           }
-        } catch (e) {
-          result.serpCensus = { ran: true, query, resultCount: 0, error: (e.message || '').slice(0, 120) };
-          console.error(`::error::SERP census failed for ${show.id}: ${(e.message || '').slice(0, 120)}`);
         }
+        const okCount = queryStatus.filter(q => q.ok).length;
+        // `complete` (ALL queries executed) gates the checkpoint cooldown in
+        // main(): a partial or total provider outage must NOT burn the
+        // cooldown, or a dead/flaky provider silently sleeps the census
+        // through the whole opening window (ship-check 2026-07-25 — the
+        // first cut stamped off "any query ran", which let one surviving
+        // low-value query mask a failed primary for 6h). `ran` stays "did
+        // any census work happen" for reporting.
+        result.serpCensus = {
+          ran: okCount > 0,
+          complete: okCount === queries.length,
+          query: queries[0],
+          queryStatus,
+          queriesOk: okCount,
+          resultCount: serpCensusUrls.size,
+          error: okCount === queries.length ? null : (queryStatus.filter(q => !q.ok).map(q => q.error)[0] || null),
+        };
       }
     } else {
       result.serpCensus = { ran: false, reason: inWindowNow ? 'cooldown' : 'out-of-window' };
@@ -1324,7 +1351,11 @@ async function main(argv = process.argv.slice(2)) {
         gaps: r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length,
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
-        ...((r.serpCensus && r.serpCensus.ran) ? { serpCensusAt: new Date().toISOString() } : (prevCensusAt ? { serpCensusAt: prevCensusAt } : {})),
+        // Cooldown stamps ONLY on a fully-successful census (every query
+        // executed). Partial provider outages keep the prior stamp so the
+        // next hourly run retries — bounded: ≤3 BD queries/show/hour ≈
+        // $0.005/hour worst case while a provider is down.
+        ...((r.serpCensus && r.serpCensus.complete) ? { serpCensusAt: new Date().toISOString() } : (prevCensusAt ? { serpCensusAt: prevCensusAt } : {})),
       };
       saveCheckpoint(checkpoint);
     }

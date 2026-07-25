@@ -61,6 +61,58 @@ function buildCensusQuery(show) {
   return `"${title}" ${marketTermFor(show)}${yearClause}`;
 }
 
+// Distinctive venue tokens (mirrors hasDisambiguator's filter in
+// url-discovery.js): significant words only, generic venue vocabulary dropped
+// so "…at the theatre" can't scope a query.
+const VENUE_STOPWORDS = new Set([
+  'theatre', 'theater', 'theaters', 'theatres', 'royal', 'open', 'house', 'main',
+  'park', 'stage', 'stages', 'studio', 'arts', 'world', 'playhouse', 'center',
+  'centre', 'hall', 'west', 'east', 'north', 'south', 'city', 'street',
+]);
+function venueQueryToken(venue) {
+  const tokens = String(venue || '').toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
+    .filter(w => w.length > 3 && !VENUE_STOPWORDS.has(w));
+  return tokens.length ? tokens[0] : null;
+}
+
+/**
+ * Build the full census query set for a show. The single "<title> review"
+ * query fails exactly where the owner keeps catching us: weak-specificity
+ * titles whose top-10 is polluted by the word's OTHER meaning ("Sukkot" the
+ * holiday, "Shifters" the gearbox) — real reviews rank below the fold for
+ * that one phrasing while a human's second, scoped query finds them
+ * instantly (Sukkot 2026-07-25: Blogcritics + Theater Pizzazz invisible to
+ * the census, page-1 on venue-scoped Google). So weak titles get up to two
+ * extra scoped variants, the same follow-ups a human types:
+ *   - venue-scoped:   "<title>" review 59e59
+ *   - people-scoped:  "<title>" Leavitt review
+ * Multi-word distinctive titles keep the single query (cost posture above).
+ *
+ * @param {object} show shows.json record ({title, category|market, openingDate, venue, creativeTeam?})
+ * @param {object} [opts]
+ * @param {boolean} [opts.weakTitle]  caller-computed: isGenericShowTitle(title) || titleTokens(title).length <= 1
+ * @param {string[]} [opts.creativeNames] creative-team names (playwright/director first)
+ * @returns {string[]} 1-3 queries, primary first; [] when the show has no title
+ */
+function buildCensusQueries(show, opts = {}) {
+  const primary = buildCensusQuery(show);
+  if (!primary) return [];
+  const queries = [primary];
+  if (!opts.weakTitle) return queries;
+
+  const title = String(show.title).replace(/\s*&\s*/g, ' and ');
+  const vt = venueQueryToken(show.venue || show.theater);
+  if (vt) queries.push(`"${title}" review ${vt}`);
+
+  const names = Array.isArray(opts.creativeNames) ? opts.creativeNames.filter(Boolean) : [];
+  if (names.length) {
+    const surname = String(names[0]).trim().split(/\s+/).pop();
+    if (surname && surname.length > 3) queries.push(`"${title}" ${surname} review`);
+  }
+  return queries;
+}
+
 /**
  * Should the census run for this show right now? Pure gate combining the
  * opening-window scope with a per-show cooldown so the source fires a
@@ -86,5 +138,7 @@ module.exports = {
   DEFAULT_COOLDOWN_HOURS,
   marketTermFor,
   buildCensusQuery,
+  buildCensusQueries,
+  venueQueryToken,
   shouldRunSerpCensus,
 };

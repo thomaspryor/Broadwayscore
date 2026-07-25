@@ -8,8 +8,9 @@
 - [Google Search Console API](feedback_gsc_api_auth.md) — ADC + webmasters scope + X-Goog-User-Project
 
 ## 👤 User profile & session discipline
-- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — prune owner-only, skips live claudes ([[cmux-closed-tab-restore-recipe]])
+- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — ✅-only prune, skips live claudes
 - [Terse output default](feedback_terse_output_default.md) — no recap, keep proof; ADHD shaping in global CLAUDE.md ([[feedback_no_human_day_estimates.md]])
+- [Tabs unread](user_tabs_unread_layman_reporting.md) — headless + layman email only
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff"; laptop+phone, infer from message style ([[feedback_user_device_context.md]])
 - [Deliverable venue rules](feedback_session_handoff_and_deliverable_format.md) — design asks: confirm venue first; 2 rejections = stop & ask; verify before pointing owner
 - [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/approvals myself, report outcomes not process; bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
@@ -17,7 +18,7 @@
 - [Probe before scale backfills](feedback_investigate_premise_before_scaling.md) — 5-20 file probe first; save findings to memory ([[feedback_save_research_findings.md]])
 - [/ship-check catches real P1s](feedback_ship_check_finds_real_bugs.md) — never skip; enforced for scripts/lib/ + workflows
 - [Systematic fix: threat model + parity test](feedback_systematic_fix_threat_model_first.md) — check trigger frequency; parity-test bad URLs
-- [Review rituals](feedback_sprint_plan_needs_review.md) — /plan-review before multi-sprint plans; GPT-4o+Gemini on screenshots ([[feedback_two_model_ui_review.md]], [[feedback_three_model_audit_modality.md]])
+- [Review rituals](feedback_sprint_plan_needs_review.md) — /plan-review before multi-sprint plans; GPT-4o+Gemini on screenshots ([[feedback_two_model_ui_review.md]])
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — also test wrapper against real data
 - [Show status before external comms](feedback_check_show_status_before_external_comms.md) — surface status/closingDate with show drafts; OB closings lag
 - [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — no gh polling loops; NEVER gh run watch, use scripts/lib/wait-for-run.sh
@@ -29,7 +30,7 @@
 ## 🌳 Worktrees & git
 - [Headless resume is cwd-scoped](feedback_headless_resume_cwd_scoped.md) — claude -p --resume fails outside original cwd; deterministic paths fix it
 - [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; launch bg watchers from MAIN repo cwd ([[feedback_background_watchers_worktree_cwd.md]])
-- [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ before writing; "parallel" = subagents; same-name worktree may be another LIVE session, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
+- [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ before writing; same-name worktree may be another LIVE session, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
 - [Dual repo data files](feedback_dual_repo_data_files.md) — private repo authoritative, fix BOTH; review-texts NOT a symlink ([[feedback_review_texts_not_symlink.md]]); NEVER rebuild-all-reviews.js locally ([[feedback_local_rebuild_stale_clone_hazard.md]])
 - [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; use listShowDirs()
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction

@@ -84,8 +84,19 @@ function getStepBlocks(lines, jobHeaderIdx) {
   const stepsEntry = directChildren(lines, jobHeaderIdx).find((c) => /^steps\s*:/.test(c.line.trim()));
   if (!stepsEntry) return [];
   const stepHeaders = directChildren(lines, stepsEntry.idx); // each "- name: ..." / "- uses: ..." / "- run: ..." line
+  // Bound the LAST step by where this job ends (same pattern as jobsEnd in
+  // getJobBlocks) — without this, the last step's bodyText ran to end-of-file,
+  // swallowing every subsequent job's env vars, secrets, and script
+  // invocations. Verified against the live .github/workflows/ corpus: this
+  // produced 9/25 (36%) spurious warnings with wrong job/script attribution.
+  const jobHeaderIndent = indentOf(lines[jobHeaderIdx]);
+  let stepsEnd = lines.length;
+  for (let i = stepsEntry.idx + 1; i < lines.length; i++) {
+    if (lines[i].trim() === '') continue;
+    if (indentOf(lines[i]) <= jobHeaderIndent) { stepsEnd = i; break; }
+  }
   return stepHeaders.map((h, i) => {
-    const endIdx = i + 1 < stepHeaders.length ? stepHeaders[i + 1].idx : lines.length;
+    const endIdx = i + 1 < stepHeaders.length ? stepHeaders[i + 1].idx : stepsEnd;
     const bodyLines = lines.slice(h.idx, endIdx); // include the "- name:" line itself in bodyText
     const timeoutEntry = directChildren(lines, h.idx).find((c) => /^timeout-minutes\s*:/.test(c.line.trim()));
     const timeoutMinutes = timeoutEntry

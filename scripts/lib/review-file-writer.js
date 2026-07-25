@@ -35,6 +35,7 @@ const {
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
+const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview } = require('./review-guards');
 const { detectRoundupDigest } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
@@ -625,6 +626,10 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 function _mergeIntoExisting(filepath, existing, ctx) {
   const { showId, input, fields, dryRun, onMerge } = ctx;
   let changed = false;
+  // Snapshot the body BEFORE the field merge so the reclassify step below can
+  // tell "this merge just filled/replaced the text" apart from an unrelated
+  // metadata merge.
+  const fullTextBefore = existing.fullText || '';
 
   // Clear a stored JSON-LD pullQuote/excerpt BEFORE the field merge. The merge
   // below only copies an incoming field when `!existing[key]`; a JSON-LD blob is
@@ -729,6 +734,31 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     }
   }
   delete existing._prevSourcesLen;
+
+  // Reclassify content tier when THIS merge changed the body. The default
+  // field merge fills fullText into a previously-empty file (self-heal
+  // refetch, url-ingest onto a stub) but left the OLD body's verdict in
+  // place: contentTier 'stub' + incompleteReason 'scraper_garbage' from a
+  // garbage first fetch survived a clean refetch, so the healed review
+  // stayed excluded from rebuild forever (Sukkot / Theater Pizzazz
+  // 2026-07-25 — the missing half of the #362 self-heal chain). Manual tier
+  // locks (manualContentTier) always win; stale incompleteness metadata is
+  // dropped only when the fresh body actually classifies as usable.
+  if (existing.fullText && existing.fullText !== fullTextBefore && !existing.manualContentTier) {
+    const tierResult = classifyContentTier(existing);
+    const newTier = tierResult && tierResult.contentTier;
+    if (newTier && newTier !== existing.contentTier) {
+      existing.contentTier = newTier;
+      changed = true;
+    }
+    // Stale failure metadata (incompleteReason 'scraper_garbage', fetch
+    // counters, garbage_text rejections) describes the OLD body. Clear it via
+    // the canonical helper, NOT a hand-rolled delete — clearFailureFlags owns
+    // the per-reason semantics (paywall/wrong_content/no_url each have their
+    // own release condition), so a truncated paywall refetch keeps its retry
+    // context while a genuinely-healed body sheds the garbage verdict.
+    if (clearFailureFlags(existing).length > 0) changed = true;
+  }
 
   if (!changed) {
     return { action: 'skipped', reason: 'no-changes', filepath };
