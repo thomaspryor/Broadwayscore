@@ -188,6 +188,69 @@ function isDiffAllowed(files) {
   return { allowed: refused.length === 0, refused };
 }
 
+// ── Tier 3: code cards (src/ + scripts/) — owner-approved 2026-07-25 ────────
+//
+// A PEER of Tiers 1/2, not a widening of Tier 1 (plan-review design P0: Tier 1
+// stays "enumerate only what you can afford to break"; Tier 3 is the broad
+// code scope with its own predicate, tunable/deletable in isolation). Same
+// shape as Tier 1: prefix allows, exclusions ALWAYS win. Merge safety is
+// UNCHANGED: Tier-3 paths are never deterministic-green, so every Tier-3 diff
+// keeps the owner's morning approval tap — widening what the loop may ATTEMPT,
+// never what may land untapped.
+const TIER3_ALLOW_PREFIXES = ['src/', 'scripts/'];
+
+// Prefix exclusions specific to unattended code work. Everything here is a
+// place where a wrong unattended edit is expensive, externally visible, or
+// self-serving. scripts/bsc- is excluded wholesale (dispatcher/prune/conductor
+// integrity); the bsc-next pair still reaches Tier 3 through the Tier-1
+// enumeration below — that list is the human-reviewed carve-out mechanism.
+const TIER3_EXCLUDED_PREFIXES = [
+  '.github/workflows/',       // CI is never self-served
+  'data/',                    // core data is Tier 2
+  'supabase/',                // auth/DB
+  'scripts/audit-',           // audit scripts gate CI
+  'scripts/autonomous-',      // no self-modification
+  'scripts/lib/autonomous-',  // no self-modification (incl. this file)
+  'scripts/send-',            // email senders — broadcast safety (CLAUDE.md rule 17)
+  'scripts/lib/email-',       // email infra
+  'scripts/notion-',          // brain integrity
+  'scripts/bsc-',             // dispatcher integrity (bsc-next pair via Tier-1 files)
+];
+
+// Dependency/deploy/config manifests: a wrong unattended change breaks every
+// build or deploy at once, and checks describe today's tree, not the manifest
+// a human intended.
+const TIER3_EXCLUDED_FILES = new Set([
+  'package.json',
+  'package-lock.json',
+  'next.config.js',
+  'tsconfig.json',
+  'vercel.json',
+  'middleware.ts',
+  'src/middleware.ts',
+]);
+
+function isCodePathAllowed(file) {
+  const f = normalizePath(file);
+  if (!f) return false;
+  if (f.split('/').includes('..') || f.includes('\\')) return false;
+  // Tier 3 ⊇ Tier 1: anything the tight Tier-1 gate allows is allowed here
+  // too (tests/docs/memory prefixes + the enumerated leaf files — including
+  // the bsc-next pair despite the scripts/bsc- prefix exclusion below).
+  if (isPathAllowed(f)) return true;
+  // Tier-3-specific rules. Exclusions always win over the prefix allows.
+  if (EXCLUDED_FILES.has(f)) return false;        // scoring watchlists, scraper.js, calibration corpus
+  if (TIER3_EXCLUDED_FILES.has(f)) return false;
+  if (TIER3_EXCLUDED_PREFIXES.some(p => f.startsWith(p))) return false;
+  if (/-gate\.js$/.test(f)) return false;         // CI catastrophe-floor gates
+  return TIER3_ALLOW_PREFIXES.some(p => f.startsWith(p));
+}
+
+function isCodeDiffAllowed(files) {
+  const refused = (files || []).map(normalizePath).filter(f => !isCodePathAllowed(f));
+  return { allowed: refused.length === 0, refused };
+}
+
 // ── Deterministic-green class (Sprint 3, owner spec refinement 2026-07-14) ──
 //
 // NOT a model judgment call ("confident prose ≠ safety" — the owner's exact
@@ -314,6 +377,9 @@ module.exports = {
   DENY_TAGS,
   TIER1_ALLOW_PREFIXES,
   TIER1_ALLOW_FILES,
+  TIER3_ALLOW_PREFIXES,
+  TIER3_EXCLUDED_PREFIXES,
+  TIER3_EXCLUDED_FILES,
   EXCLUDED_FILES,
   EXCLUDED_PREFIXES,
   DETERMINISTIC_GREEN_PREFIXES,
@@ -325,6 +391,8 @@ module.exports = {
   isCardEligible,
   isPathAllowed,
   isDiffAllowed,
+  isCodePathAllowed,
+  isCodeDiffAllowed,
   isDeterministicGreenPath,
   isDiffDeterministicGreen,
   classifyDataCard,
