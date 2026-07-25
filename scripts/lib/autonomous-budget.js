@@ -57,7 +57,12 @@ const { DEFAULT_CAPS } = require('./opening-night-budget.js');
 // clock (Opus is pricier per token, not slower to respond).
 const ENVELOPES = Object.freeze({
   S: Object.freeze({ maxUSD: 4, maxWallMin: 45, estUSD: 2, estAttempt2USD: 4 }),
-  M: Object.freeze({ maxUSD: 10, maxWallMin: 120, estUSD: 4, estAttempt2USD: 8 }),
+  // M raised 10/4/8 → 14/6/10 (2026-07-25, ship-check QA): tier-3 M cards run
+  // attempt 1 on FORCED Opus, and the old Sonnet-sized cap is the documented
+  // cap-kill mode ("$1.50 S cap killed a completed $2.35 card"). Applies to
+  // all M admissions — over-reserving Tier-2 Sonnet M cards is the safe
+  // direction (admits fewer cards, never kills completed work).
+  M: Object.freeze({ maxUSD: 14, maxWallMin: 120, estUSD: 6, estAttempt2USD: 10 }),
   L: Object.freeze({ maxUSD: 10, maxWallMin: 45, estUSD: 5, estAttempt2USD: 0, incremental: true }),
 });
 
@@ -125,14 +130,17 @@ function estimateUSD(model, tokensIn, tokensOut) {
  */
 function pickModel(attempt, failureKind = null, hint = {}) {
   const { incremental = false, dataClass = null, tier3Size = null } = hint;
+  const forceOpus = incremental
+    || (dataClass != null && DATA_DESTRUCTIVE_CLASSES.has(dataClass))
+    || (tier3Size != null && tier3Size !== 'S');
   let model;
   if (attempt === 1) {
-    const forceOpus = incremental
-      || (dataClass != null && DATA_DESTRUCTIVE_CLASSES.has(dataClass))
-      || (tier3Size != null && tier3Size !== 'S');
     model = forceOpus ? MODELS.attempt2Content : MODELS.attempt1;
   } else if (attempt === 2) {
-    model = failureKind === 'content' ? MODELS.attempt2Content : MODELS.attempt1;
+    // An Opus-forced card must never RETRY on a weaker model than its first
+    // attempt (ship-check QA: infra-failure retry used to drop tier-3 M back
+    // to Sonnet). Otherwise: content failures escalate, infra retries same.
+    model = (forceOpus || failureKind === 'content') ? MODELS.attempt2Content : MODELS.attempt1;
   } else {
     throw new Error(`attempt cap is 2/night, got attempt=${attempt}`);
   }

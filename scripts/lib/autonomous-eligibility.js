@@ -194,9 +194,10 @@ function isDiffAllowed(files) {
 // stays "enumerate only what you can afford to break"; Tier 3 is the broad
 // code scope with its own predicate, tunable/deletable in isolation). Same
 // shape as Tier 1: prefix allows, exclusions ALWAYS win. Merge safety is
-// UNCHANGED: Tier-3 paths are never deterministic-green, so every Tier-3 diff
-// keeps the owner's morning approval tap — widening what the loop may ATTEMPT,
-// never what may land untapped.
+// UNCHANGED: src//scripts/ paths are never deterministic-green, so any diff
+// touching one keeps the owner's morning approval tap (a tier-3 card whose
+// diff lands ONLY on tests/docs stays auto-mergeable, exactly as before) —
+// this widens what the loop may ATTEMPT, never what may land untapped.
 const TIER3_ALLOW_PREFIXES = ['src/', 'scripts/'];
 
 // Prefix exclusions specific to unattended code work. Everything here is a
@@ -261,6 +262,9 @@ function isCodePathAllowed(file) {
   if (/-gate\.js$/.test(f)) return false;         // CI catastrophe-floor gates
   const base = f.slice(f.lastIndexOf('/') + 1);
   if (base.endsWith('.js') && TIER3_EXCLUDED_BASENAME_RE.test(base)) return false;
+  // Manifests are refused by BASENAME anywhere, not just repo root — the
+  // exact-match set left `scripts/package.json` allowed (ship-check QA probe).
+  if (/^(package(-lock)?\.json|next\.config\.js|tsconfig\.json|vercel\.json|middleware\.ts)$/.test(base)) return false;
   return TIER3_ALLOW_PREFIXES.some(p => f.startsWith(p));
 }
 
@@ -277,7 +281,7 @@ function isCodeDiffAllowed(files) {
 // module as the predicates so they cannot drift.
 function describeScope(tier) {
   if (tier === 3) {
-    return `Tier 3 (code): may edit src/** and scripts/**, plus everything Tier 1 allows (tests/**, docs/**, memory/**). EXCLUDED no matter what a card says — prefixes: ${TIER3_EXCLUDED_PREFIXES.join(', ')}; exact files: ${[...TIER3_EXCLUDED_FILES, ...TIER3_EXCLUDED_EXTRA_FILES].join(', ')}; any scripts file whose name mentions email/broadcast/send-; the scoring watchlist files, scripts/lib/scraper.js, and any *-gate.js CI gate. It also cannot: make product or business decisions; send email; talk to humans; run expensive backfills.`;
+    return `Tier 3 (code): may edit src/** and scripts/**, plus everything Tier 1 allows (tests/**, docs/**, memory/**, and the enumerated leaf files incl. scripts/bsc-next.js + its test, which stay editable despite the scripts/bsc- exclusion below). EXCLUDED no matter what a card says — prefixes: ${TIER3_EXCLUDED_PREFIXES.join(', ')}; dependency/deploy manifests anywhere (package.json, package-lock.json, next.config.js, tsconfig.json, vercel.json, middleware.ts); files: ${[...TIER3_EXCLUDED_EXTRA_FILES].join(', ')}, tests/fixtures/triage-calibration.json; any scripts file whose name mentions email/broadcast/send-; the scoring watchlist files, scripts/lib/scraper.js, and any *-gate.js CI gate. It also cannot: make product or business decisions; send email; talk to humans; run expensive backfills.`;
   }
   const allowed = [...TIER1_ALLOW_PREFIXES.map(p => `${p}**`), ...TIER1_ALLOW_FILES];
   return `Tier 1: may only edit ${allowed.join(', ')}. It cannot: touch src/, data/, workflows, scraping/scoring/audit infra; make product or business decisions; send email; talk to humans; run expensive backfills.`;

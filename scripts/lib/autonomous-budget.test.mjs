@@ -90,13 +90,14 @@ test('admission reserves worst case (both attempts)', () => {
 });
 
 test('M card refused when 2-attempt estimate exceeds remaining (VERIFY line)', () => {
-  // Night $18 → available $17.5. One S card reserves $6 → remaining $11.5.
-  // M worst case is $12 → refused even though $11.5 remains.
-  const b = createNightBudget({ nightUSD: 18, reserveUSD: 0.5, sizes: ['S', 'M'], maxItems: 5 });
+  // Night $22 → available $21.5. One S card reserves $6 → remaining $15.5.
+  // M worst case (Opus-sized envelope, 2026-07-25) is $16 → refused even
+  // though $15.5 remains.
+  const b = createNightBudget({ nightUSD: 22, reserveUSD: 0.5, sizes: ['S', 'M'], maxItems: 5 });
   assert.equal(b.admit('s1', 'S').admitted, true);
   const m = b.admit('m1', 'M');
   assert.equal(m.admitted, false);
-  assert.match(m.reason, /worst-case \$12\.00.*exceeds remaining \$11\.50/);
+  assert.match(m.reason, /worst-case \$16\.00.*exceeds remaining \$15\.50/);
 });
 
 test('a genuinely unknown size has no envelope and is refused', () => {
@@ -251,4 +252,11 @@ test('pickModel: tier-3 M/L code cards force Opus on attempt 1; S stays on the f
   assert.equal(pickModel(1, null, { tier3Size: 'L' }), MODELS.attempt2Content);
   assert.equal(pickModel(1, null, { tier3Size: 'S' }), MODELS.attempt1);
   assert.equal(pickModel(1, null, {}), MODELS.attempt1); // non-code cards unchanged
+});
+
+test('pickModel: Opus-forced cards never retry on a weaker model (attempt-2 parity)', () => {
+  const { pickModel, MODELS } = require('./autonomous-budget.js');
+  assert.equal(pickModel(2, 'infra', { tier3Size: 'M' }), MODELS.attempt2Content);
+  assert.equal(pickModel(2, 'infra', { incremental: true }), MODELS.attempt2Content);
+  assert.equal(pickModel(2, 'infra', {}), MODELS.attempt1); // non-forced unchanged
 });

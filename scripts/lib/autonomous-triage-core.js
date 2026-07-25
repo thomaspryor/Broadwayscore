@@ -43,7 +43,7 @@ const SAFE_CHECK_FORMS = [
 // that WRITE shared data — a verify re-run against a stale local clone is the
 // repo's documented corruption hazard (feedback_local_rebuild_stale_clone_hazard).
 // Applied to every path token in every form, present and future.
-const MUTATING_SCRIPT_RE = /(^|\/)(rebuild-all-reviews|gather-reviews|collect-review-texts)\.js$|(^|\/)(push|send)-[\w-]*\.js$/;
+const MUTATING_SCRIPT_RE = /(^|\/)(rebuild-all-reviews|gather-reviews|collect-review-texts)\.(m|c)?js$|(^|\/)(push|send)-[^/]*\.(m|c)?js$/i;
 
 function isSafeCheckCommand(cmd) {
   const s = String(cmd || '').trim();
@@ -54,7 +54,10 @@ function isSafeCheckCommand(cmd) {
     const args = m[form.pathsGroup].trim().split(/\s+/);
     const ok = args.every(a =>
       !a.split('/').includes('..') &&
-      !MUTATING_SCRIPT_RE.test(a) &&
+      // .test.* files are harmless test runs even when their name shares a
+      // push-/send- prefix; everything else gets the mutation deny (case-
+      // insensitive — APFS is case-insensitive — and covers .mjs/.cjs).
+      (/\.test\.(m|c)?js$/i.test(a) || !MUTATING_SCRIPT_RE.test(a)) &&
       form.pathPrefix.some(p => a.startsWith(p)));
     if (ok) return true;
   }

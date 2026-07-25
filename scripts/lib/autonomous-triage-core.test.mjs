@@ -364,3 +364,11 @@ test('triage prompt derives scope prose from describeScope per tier', () => {
   assert.match(t3, /Tier-3 paths/);   // eligibility question names the active tier
   assert.doesNotMatch(t3, /cannot: touch src\//);  // old hardcoded prose is gone
 });
+
+test('mutation deny-list covers case variants and .mjs/.cjs (ship-check QA)', () => {
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  for (const bad of ['test -f scripts/PUSH-x.js', 'test -f scripts/push-core-data.mjs', 'test -f scripts/Send-Alert.cjs']) {
+    assert.equal(isSafeCheckCommand(bad), false, bad);
+  }
+  assert.equal(isSafeCheckCommand('node --test scripts/lib/push-with-retry.test.mjs'), true, 'test files stay runnable');
+});

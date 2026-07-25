@@ -27,6 +27,7 @@ const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
 const { triageCard, decide, orderQueue, isSafeCheckCommand, priorityRank } = require('./lib/autonomous-triage-core.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { classifyDataCard } = require('./lib/autonomous-eligibility.js');
 const { estimateUSD } = require('./lib/autonomous-budget.js');
 const ledgerLib = require('./lib/autonomous-ledger.js');
@@ -156,8 +157,6 @@ function callSonnet(prompt) {
     req.end();
   });
 }
-
-const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `autonomous-triage.js — nightly backlog triage (writes autonomous-queue.json).
 

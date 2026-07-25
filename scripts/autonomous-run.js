@@ -1000,9 +1000,15 @@ async function live(args, cfg) {
     }
 
     const budget = createNightBudget({ nightUSD, maxItems, sizes, weeklyUSD: cfg.weeklyUSD ?? null });
-    // Tier-3 night cap (training wheels, plan v2 S2-T7): attempts of code-
-    // scope cards are capped independently of maxItems for the first nights.
-    const tier3Cap = Number.isInteger(cfg.tier3MaxItems) ? cfg.tier3MaxItems : 3;
+    // Tier-3 night cap (training wheels, plan v2 S2-T7). On a tier-3 night
+    // EVERY plan item carries the widened scope, so this caps the whole
+    // night's attempts below maxItems — deliberate first-nights conservatism
+    // (ship-check QA flagged it; keeping it). The counter increments even on
+    // cards that end up skipped/refused inside attemptCard — also deliberate:
+    // burning a slot only makes the night MORE conservative, never less.
+    // Number() (not isInteger) so a JSON-stringified "0" fails CLOSED to 0.
+    const capRaw = Number(cfg.tier3MaxItems);
+    const tier3Cap = Number.isFinite(capRaw) && capRaw >= 0 ? Math.floor(capRaw) : 3;
     let tier3Count = 0;
     for (const item of plan) {
       if (item.tier === 3) {

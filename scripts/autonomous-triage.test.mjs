@@ -98,3 +98,17 @@ test('capExceededCardIds parses the producer-verbatim card-fail note (regex/fiel
   ];
   assert.deepEqual([...capExceededCardIds(rows)], ['card-burned']);
 });
+
+// ── --help must never execute a real triage (cousin bug class #260) ────────
+test('--help prints usage and performs zero side effects (real process)', () => {
+  const { spawnSync } = require('node:child_process');
+  const r = spawnSync('node', ['scripts/autonomous-triage.js', '--help'], {
+    cwd: new URL('..', import.meta.url).pathname, encoding: 'utf8', timeout: 15000,
+    // No API keys: if --help ever falls through again, the run fails loudly
+    // on missing creds instead of spending Sonnet/stamping Notion.
+    env: { ...process.env, ANTHROPIC_API_KEY: '', NOTION_API_KEY: '' },
+  });
+  if (r.status !== 0) throw new Error(`--help exited ${r.status}: ${r.stderr}`);
+  if (!/Usage:/.test(r.stdout)) throw new Error('usage text missing');
+  if (/mode=LIVE|backlog card\(s\) fetched/.test(r.stderr + r.stdout)) throw new Error('--help fell through to a real triage run');
+});

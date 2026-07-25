@@ -427,3 +427,9 @@ test('tier3: email-basename, dispatch control-plane, and cmux libs refused (ship
   assert.equal(isCodePathAllowed('scripts/lib/dispatch-ledger.test.mjs'), true);
   assert.equal(isCodePathAllowed('scripts/lib/title-match.js'), true);
 });
+
+test('tier3: manifests refused by basename anywhere, not just repo root', () => {
+  for (const p of ['scripts/package.json', 'src/package.json', 'scripts/lib/tsconfig.json', 'src/app/middleware.ts']) {
+    assert.equal(isCodePathAllowed(p), false, p);
+  }
+});
