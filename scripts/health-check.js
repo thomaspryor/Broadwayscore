@@ -1119,14 +1119,19 @@ function checkSecretsHealth() {
   return [
     runCheck('Secrets: health', () => {
       try {
+        // limit=5 for the same reason as checkCriticalCrons(): a cancelled head
+        // run with a green run still inside the window is a supersession, not a
+        // failure. #367 noted the two checks share this logic and must move
+        // together — they drifted again, so keep them in step.
         const result = execSync(
-          `gh run list --workflow="check-secrets-health.yml" --limit=1 --json createdAt,conclusion -q '.[0]'`,
+          `gh run list --workflow="check-secrets-health.yml" --limit=5 --json createdAt,conclusion`,
           { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
         ).trim();
-        if (!result || result === '{}') {
+        const runs = result ? JSON.parse(result) : [];
+        if (!runs.length) {
           return { name: 'Secrets: health', status: 'warn', message: 'No secrets check runs found' };
         }
-        const run = JSON.parse(result);
+        const run = runs[0];
         const age = hoursAgo(run.createdAt);
         if (age > 336) { // 14 days — weekly check
           return { name: 'Secrets: health', status: 'warn', message: `Last check ${formatAge(age)} ago (>14d)`, hint: 'Trigger check-secrets-health workflow manually' };
@@ -1143,9 +1148,16 @@ function checkSecretsHealth() {
           // a stuck run would otherwise silently mask its eventual result.
           return { name: 'Secrets: health', status: 'warn', message: `Last check still running (started ${formatAge(age)} ago)`, hint: 'Check check-secrets-health workflow run status' };
         }
-        // cancelled / skipped / timed_out / action_required / neutral / stale —
-        // inconclusive, not a verified pass (ship-check adversarial finding, #367).
-        return { name: 'Secrets: health', status: 'warn', message: `Last check inconclusive: ${run.conclusion} (${formatAge(age)} ago)`, hint: 'Check check-secrets-health workflow logs' };
+        // Head run inconclusive: a green run still inside the 14d window means the
+        // check did verify the secrets and the newest attempt was superseded.
+        const recentPass = runs.find(r => r.conclusion === 'success' && hoursAgo(r.createdAt) <= 336);
+        if (recentPass) {
+          return { name: 'Secrets: health', status: 'pass', message: `Last check passed (${formatAge(hoursAgo(recentPass.createdAt))} ago; newest run ${run.conclusion} — superseded, not a failure)` };
+        }
+        // cancelled / skipped / timed_out / action_required / neutral / stale with no
+        // pass inside the window — inconclusive, not a verified pass (ship-check
+        // adversarial finding, #367).
+        return { name: 'Secrets: health', status: 'warn', message: `Last check inconclusive: ${run.conclusion} (${formatAge(age)} ago), no pass in 14d`, hint: 'Check check-secrets-health workflow logs' };
       } catch (err) {
         return { name: 'Secrets: health', status: 'warn', message: `gh CLI failed: ${err.message.substring(0, 80)}` };
       }
