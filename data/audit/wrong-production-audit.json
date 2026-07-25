@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-24T23:52:55.914Z",
+  "timestamp": "2026-07-25T06:12:58.821Z",
   "stats": {
-    "totalReviews": 40440,
-    "alreadyFlagged": 17804,
+    "totalReviews": 40441,
+    "alreadyFlagged": 17807,
     "dateGuardCatches": 59,
     "directorMismatch": 911,
-    "tvFilmSignals": 1108,
+    "tvFilmSignals": 1107,
     "londonSignals": 760,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3257
+    "noPublishDate": 3251
   },
   "findings": [
     {
@@ -19939,20 +19939,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "six-2021",
-      "file": "wsj--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.wsj.com/arts-culture/television/schmigadoon-review-musical-comedy-as-youve-never-seen-it-11626371130?gaa_at=eafs&gaa_n=AWEtsqezSW9xD5eJyQtgdq8oMQMxemDByeOqoXSvkgIFkQQHyf7I-Naxdct6&gaa_ts=69cfe20d&gaa_sig=PDwXU3m7L1y4COB1_qlm5sIXoiShd-uOAOl7w4-LJ054oonPoN5-U4e48GA4pP-2juTsJzQMuF4IT4dzhXOGGg%3D%3D",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
