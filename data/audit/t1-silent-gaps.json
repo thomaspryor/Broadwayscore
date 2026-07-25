@@ -1,8 +1,25 @@
 {
-  "generatedAt": "2026-07-25T09:37:34.793Z",
+  "generatedAt": "2026-07-25T10:33:50.311Z",
   "windowDays": 45,
   "showsScanned": 50,
   "gaps": [
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "title": "Jesus Christ Superstar",
+      "openingDate": "2026-07-07",
+      "file": "artsdesk--rachel-halliburton.json",
+      "outletId": "artsdesk",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original",
+      "recovery": null,
+      "recoveryCount": 3,
+      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original --outlet=artsdesk --critic=\"Rachel Halliburton\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-07-25T10:33:50.311Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
       "title": "Jesus Christ Superstar",
@@ -11,17 +28,17 @@
       "outletId": "independent",
       "tier": 1,
       "type": "empty-body",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html?loginSuccessful=true",
       "recovery": {
         "attempted": false,
         "reason": "circuit-breaker:per-file-cap"
       },
       "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html?loginSuccessful=true --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-07-25T02:51:29.215Z",
-      "nonTerminalAgeHours": 6.768216111111111
+      "nonTerminalAgeHours": 7.70586
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -36,9 +53,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 44.43286194444445,
+      "fileAgeHours": 45.37050638888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 3.735793611111111
+      "nonTerminalAgeHours": 4.6734375
     }
   ],
   "contradictions": []

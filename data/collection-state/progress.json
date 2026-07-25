@@ -1745,7 +1745,27 @@
     "two-strangers-bway-2025/daily-mail--patrick-marmion.json",
     "two-strangers-bway-2025/financialtimes--sarah-hemming.json",
     "two-strangers-bway-2025/independent--alice-saville.json",
-    "two-strangers-bway-2025/standard--nick-curtis.json"
+    "two-strangers-bway-2025/standard--nick-curtis.json",
+    "trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+    "trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
+    "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+    "trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+    "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
+    "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+    "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
+    "loves-labours-lost-globe-west-end-2026/london-theatre--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/thestage--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--matt-trueman.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1829,6 +1849,8 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
       "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
     ],
     "directCookies": [
@@ -1864,7 +1886,13 @@
       "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
       "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--unknown.json",
-      "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json"
+      "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+      "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -1881,7 +1909,7 @@
     ]
   },
   "startTime": "2026-07-24T19:19:16.686Z",
-  "lastProcessed": "two-strangers-bway-2025/standard--nick-curtis.json",
+  "lastProcessed": "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
   "log": [
     {
       "t": "2026-07-24T21:22:09.939Z",
@@ -2020,6 +2048,28 @@
     },
     {
       "t": "2026-07-25T07:23:15.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-25T10:17:17.244Z",
+      "event": "bb-session",
+      "session": "f1ff9529",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-25T10:17:18.403Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-25T10:18:31.603Z",
+      "event": "bb-session",
+      "session": "d8aa26ae",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-25T10:18:32.659Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
