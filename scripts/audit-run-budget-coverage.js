@@ -73,7 +73,29 @@ function hasScheduleTrigger(raw) {
   return directChildren(lines, onIdx).some((c) => /^schedule\s*:/.test(c.line.trim()));
 }
 
-/** Split the `jobs:` block into per-job {name, bodyText}. */
+/**
+ * Split a job's `steps:` list into per-step {bodyText, timeoutMinutes}.
+ * `timeoutMinutes` is the STEP's own `timeout-minutes:` if set, else null
+ * (caller falls back to the job-level envelope) — a job can give one slow
+ * step a tight cap while the overall job timeout is generous (e.g.
+ * update-show-status.yml: job timeout 75, "Discover new shows" step 45).
+ */
+function getStepBlocks(lines, jobHeaderIdx) {
+  const stepsEntry = directChildren(lines, jobHeaderIdx).find((c) => /^steps\s*:/.test(c.line.trim()));
+  if (!stepsEntry) return [];
+  const stepHeaders = directChildren(lines, stepsEntry.idx); // each "- name: ..." / "- uses: ..." / "- run: ..." line
+  return stepHeaders.map((h, i) => {
+    const endIdx = i + 1 < stepHeaders.length ? stepHeaders[i + 1].idx : lines.length;
+    const bodyLines = lines.slice(h.idx, endIdx); // include the "- name:" line itself in bodyText
+    const timeoutEntry = directChildren(lines, h.idx).find((c) => /^timeout-minutes\s*:/.test(c.line.trim()));
+    const timeoutMinutes = timeoutEntry
+      ? parseInt(timeoutEntry.line.trim().split(':')[1].trim(), 10)
+      : null;
+    return { bodyText: bodyLines.join('\n'), timeoutMinutes };
+  });
+}
+
+/** Split the `jobs:` block into per-job {name, bodyText, timeoutMinutes, steps}. */
 function getJobBlocks(raw) {
   const lines = raw.split('\n');
   const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l) && indentOf(l) === 0);
@@ -92,7 +114,8 @@ function getJobBlocks(raw) {
     const timeoutMinutes = timeoutEntry
       ? parseInt(timeoutEntry.line.trim().split(':')[1].trim(), 10)
       : null;
-    return { name, bodyText: bodyLines.join('\n'), timeoutMinutes };
+    const steps = getStepBlocks(lines, h.idx);
+    return { name, bodyText: bodyLines.join('\n'), timeoutMinutes, steps };
   });
 }
 
@@ -212,29 +235,48 @@ function main() {
     if (raw.includes(`${ANNOTATION}:`)) continue;
 
     for (const job of getJobBlocks(raw)) {
-      if (!Number.isFinite(job.timeoutMinutes) || job.timeoutMinutes > MAX_TIMEOUT_MIN) continue;
-      if (!BD_SB_TOKENS.some((t) => job.bodyText.includes(t))) continue;
+      // Evaluate per-STEP, not per-job: a job can set a generous overall
+      // envelope (e.g. 75 min) while capping one slow step at 45 — that
+      // step-level cap is what actually SIGKILLs the script, so it must gate
+      // this heuristic (#438 found discover-new-shows.js invisible to this
+      // audit for exactly this reason: job.timeout-minutes was 75). A job-
+      // wide minimum across ALL steps was tried and rejected — it wrongly
+      // attributed one step's tiny timeout (e.g. a 5-min side-scrape) to
+      // scripts running in sibling steps with no timeout or a generous one,
+      // producing false positives. Each step's own timeout-minutes (falling
+      // back to the job-level envelope when a step doesn't set one) is the
+      // correct scope. Jobs with no parseable `steps:` list fall back to the
+      // old whole-job-body behavior so we don't lose coverage on some
+      // unanticipated YAML shape.
+      const steps = job.steps.length > 0
+        ? job.steps.map((s) => ({ bodyText: s.bodyText, timeoutMinutes: s.timeoutMinutes ?? job.timeoutMinutes }))
+        : [{ bodyText: job.bodyText, timeoutMinutes: job.timeoutMinutes }];
 
-      const scripts = [...new Set(
-        [...job.bodyText.matchAll(/\bnode\s+scripts\/([A-Za-z0-9_\-/]+\.js)/g)].map((m) => m[1]),
-      )];
+      for (const step of steps) {
+        if (!Number.isFinite(step.timeoutMinutes) || step.timeoutMinutes > MAX_TIMEOUT_MIN) continue;
+        if (!BD_SB_TOKENS.some((t) => step.bodyText.includes(t))) continue;
 
-      for (const script of scripts) {
-        const scriptPath = path.join(SCRIPTS_DIR, script);
-        if (!fs.existsSync(scriptPath)) continue;
+        const scripts = [...new Set(
+          [...step.bodyText.matchAll(/\bnode\s+scripts\/([A-Za-z0-9_\-/]+\.js)/g)].map((m) => m[1]),
+        )];
 
-        if (!scriptCache.has(scriptPath)) {
-          const content = fs.readFileSync(scriptPath, 'utf8');
-          const hasRunBudget = /require\(['"]\.\/lib\/run-budget['"]\)/.test(content);
-          scriptCache.set(scriptPath, {
-            hasRunBudget,
-            risky: !hasRunBudget && hasRiskyLoop(content),
-          });
-        }
+        for (const script of scripts) {
+          const scriptPath = path.join(SCRIPTS_DIR, script);
+          if (!fs.existsSync(scriptPath)) continue;
 
-        const result = scriptCache.get(scriptPath);
-        if (result.risky) {
-          warnings.push({ file, job: job.name, timeoutMinutes: job.timeoutMinutes, script });
+          if (!scriptCache.has(scriptPath)) {
+            const content = fs.readFileSync(scriptPath, 'utf8');
+            const hasRunBudget = /require\(['"]\.\/lib\/run-budget['"]\)/.test(content);
+            scriptCache.set(scriptPath, {
+              hasRunBudget,
+              risky: !hasRunBudget && hasRiskyLoop(content),
+            });
+          }
+
+          const result = scriptCache.get(scriptPath);
+          if (result.risky) {
+            warnings.push({ file, job: job.name, timeoutMinutes: step.timeoutMinutes, script });
+          }
         }
       }
     }

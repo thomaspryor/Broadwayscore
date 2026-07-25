@@ -529,7 +529,8 @@ async function fetchShowsFromTheatremonkey() {
   console.log('Fetching West End shows from Theatremonkey...');
   try {
     const response = await fetch(TM_INDEX_URL, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)', Accept: 'text/html' }
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)', Accept: 'text/html' },
+      signal: AbortSignal.timeout(15000),
     });
     if (!response.ok) {
       console.log(`  Theatremonkey returned HTTP ${response.status}`);
