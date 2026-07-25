@@ -1,30 +1,45 @@
 {
-  "timestamp": "2026-06-28T04:39:33.800Z",
+  "timestamp": "2026-07-25T04:24:44.617Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-07-25",
+    "totalReviews": 40649,
+    "unknownOutlets": 5,
+    "duplicates": 8,
+    "syncDelta": 21572
+  },
+  "previous": {
     "date": "2026-06-28",
     "totalReviews": 40034,
     "unknownOutlets": 2,
     "duplicates": 3,
     "syncDelta": 21441
   },
-  "previous": {
-    "date": "2026-06-21",
-    "totalReviews": 39368,
-    "unknownOutlets": 7,
-    "duplicates": 3,
-    "syncDelta": 20989
-  },
   "issues": [
     {
       "type": "unknown_outlets",
       "severity": "warning",
-      "message": "2 reviews have unknown outlets",
+      "message": "5 reviews have unknown outlets",
       "examples": [
+        {
+          "file": "data/review-texts/death-of-a-salesman-2026/google--unknown.json",
+          "outletId": "google",
+          "outlet": "google"
+        },
+        {
+          "file": "data/review-texts/john-proctor-is-the-villain-2025/teenvogue--p-claire-dodsonbeth-garrabrant.json",
+          "outletId": "teenvogue",
+          "outlet": "teenvogue"
+        },
         {
           "file": "data/review-texts/la-traviata-off-broadway-2026/was-along-for-the-ride--jonathan-loy.json",
           "outletId": "was-along-for-the-ride",
           "outlet": "was-along-for-the-ride"
+        },
+        {
+          "file": "data/review-texts/pride-west-end-2026/buy-tickets-directly-from-the-theatre--unknown.json",
+          "outletId": "buy-tickets-directly-from-the-theatre",
+          "outlet": "Buy tickets directly from the theatre"
         },
         {
           "file": "data/review-texts/titus-andronicus-off-broadway-2026/redbulltheater--unknown.json",
@@ -36,8 +51,12 @@
     {
       "type": "duplicates",
       "severity": "warning",
-      "message": "3 duplicate reviews detected",
+      "message": "8 duplicate reviews detected",
       "examples": [
+        {
+          "file": "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/standard--tim-bano.json",
+          "key": "a-midsummer-nights-dream-globe-west-end-2026|standard|nick curtis"
+        },
         {
           "file": "data/review-texts/american-idiot-2010/variety--steven-suskin.json",
           "key": "american-idiot-2010|variety|steven suskin"
@@ -49,19 +68,45 @@
         {
           "file": "data/review-texts/anything-goes-2011/variety--steven-suskin.json",
           "key": "anything-goes-2011|variety|steven suskin"
+        },
+        {
+          "file": "data/review-texts/dukes-off-broadway-2026/theatermania--unknown.json",
+          "key": "dukes-off-broadway-2026|theatermania|linda buchwald"
+        },
+        {
+          "file": "data/review-texts/hadestown-west-end-2024/broadwayworld--michael-dale.json",
+          "key": "hadestown-west-end-2024|broadwayworld|cindy marcolina"
+        },
+        {
+          "file": "data/review-texts/pride-west-end-2026/whatsonstage--unknown.json",
+          "key": "pride-west-end-2026|whatsonstage|editorial staff"
+        },
+        {
+          "file": "data/review-texts/the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+          "key": "the-whoopi-monologues-off-broadway-2026|one-minute-critic|matthew wexler"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (40034) and reviews.json (18593) are out of sync by 21441 reviews"
+      "message": "review-texts (40649) and reviews.json (19077) are out of sync by 21572 reviews"
+    },
+    {
+      "type": "unknown_outlets_degradation",
+      "severity": "warning",
+      "message": "Unknown outlets increased from 2 to 5"
+    },
+    {
+      "type": "duplicates_degradation",
+      "severity": "warning",
+      "message": "Duplicates increased from 3 to 8"
     }
   ],
   "summary": {
-    "totalReviews": 40034,
-    "unknownOutlets": 2,
-    "duplicates": 3,
-    "syncDelta": 21441
+    "totalReviews": 40649,
+    "unknownOutlets": 5,
+    "duplicates": 8,
+    "syncDelta": 21572
   }
 }
