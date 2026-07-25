@@ -458,13 +458,18 @@ function matchRuntimesToShows(runtimeEntries, shows) {
  * @param {Array} runtimeEntries - From scrapeCurrentRuntimes() (with broadwayComUrl)
  * @param {Object[]} shows - Shows array from shows.json
  * @param {Object} enrichments - Existing enrichment map to augment
+ * @param {Object|null} [budget] - Optional run-budget (scripts/lib/run-budget.js); stops early if exceeded
  * @returns {Promise<Object>} Updated enrichments map with ageRecommendation added
  */
-async function batchScrapeAgeRecommendations(runtimeEntries, shows, enrichments) {
+async function batchScrapeAgeRecommendations(runtimeEntries, shows, enrichments, budget = null) {
   console.log('🎂 Scraping age recommendations from individual show pages...');
   let found = 0;
 
   for (const entry of runtimeEntries) {
+    if (budget && budget.exceeded()) {
+      console.log(`  ⏱ Time budget (${budget.minutes} min) reached — stopping age-recommendation scrape early.`);
+      break;
+    }
     if (!entry.broadwayComUrl) continue;
 
     const match = matchTitleToShow(entry.title, shows, { market: 'broadway' });

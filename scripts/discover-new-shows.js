@@ -2120,7 +2120,7 @@ async function discoverShows() {
       const allShows = [...data.shows, ...newShows];
       runtimeEnrichments = matchRuntimesToShows(runtimeEntries, allShows);
       // Also scrape individual pages for age recommendations
-      await batchScrapeAgeRecommendations(runtimeEntries, allShows, runtimeEnrichments);
+      await batchScrapeAgeRecommendations(runtimeEntries, allShows, runtimeEnrichments, timeBudget);
     } catch (e) {
       console.log(`⚠️  Runtime/age lookup failed (continuing without): ${e.message}`);
     }
