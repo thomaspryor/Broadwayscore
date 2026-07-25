@@ -1,11 +1,17 @@
 {
   "shows": [
     "proof",
-    "the-imaginary-invalid"
+    "the-imaginary-invalid",
+    "joe-turners-come-and-gone-2026",
+    "the-rocky-horror-show-2026",
+    "beaches-2026"
   ],
   "triggers": {
     "proof": "closing",
-    "the-imaginary-invalid": "new-show"
+    "the-imaginary-invalid": "new-show",
+    "joe-turners-come-and-gone-2026": "sweep-requeue-low-conf",
+    "the-rocky-horror-show-2026": "sweep-requeue-low-conf",
+    "beaches-2026": "sweep-requeue-low-conf"
   },
-  "updatedAt": "2026-07-23T09:46:54.706Z"
+  "updatedAt": "2026-07-25T18:46:35.176Z"
 }
