@@ -183,8 +183,8 @@ test('summarizeQueue buckets skip reasons and produces the unlock line', () => {
   assert.equal(byReason['human territory (marketing/partnerships)'], 2);
   assert.equal(byReason['human-action title (emailing, posting, meeting)'], 1);
   assert.equal(byReason['deny-tagged domain (email/commercial/scoring/ios)'], 1);
-  assert.equal(byReason['out of Tier-1 scope (needs src/, data/, or CI changes)'], 2);
-  assert.match(qs.unlock, /Tier-1 paths/);
+  assert.equal(byReason["outside the loop's write scope (needs excluded paths or human judgment)"], 2);
+  assert.match(qs.unlock, /allowed paths/);
 });
 
 test('summarizeQueue is null when work WAS planned or the queue is unusable', () => {

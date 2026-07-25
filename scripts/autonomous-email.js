@@ -162,6 +162,13 @@ function latestEvidenceByCard(entries) {
 }
 
 async function main() {
+  // --help must never fall through to a real send (cousin bug class
+  // #260/#263/#264 — a `--help --send-to x` invocation used to send).
+  const { hasHelpFlag } = require('./lib/cli-help.js');
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('autonomous-email.js — morning approval email.\n\nUsage:\n  node scripts/autonomous-email.js --send-to <owner-address>   send (rule 17: one explicit recipient)\n  node scripts/autonomous-email.js --dry-run                   write HTML preview, no send\n  --help, -h   show this message, do nothing else');
+    return;
+  }
   const args = parseArgs(process.argv.slice(2));
   const dryRun = !!args['dry-run'];
   const sendTo = args['send-to'];

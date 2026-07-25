@@ -926,6 +926,15 @@ async function live(args, cfg) {
       ? queue.runId
       : `run-${new Date().toISOString().replace(/[:.]/g, '-')}`;
     let plan = queue.plan;
+    // Stale-queue tier demotion (ship-check Codex P0): plan items carry the
+    // tier triage stamped, but the CONFIG at execution time is authoritative —
+    // a July-24 queue with tier:3 items must not widen tonight's write scope
+    // after the owner flips tier3Enabled off. Demoted items run under the
+    // tight Tier-1 gate (strictly safer; src-touching diffs simply refuse).
+    if (cfg.tier3Enabled !== true && plan.some(p => p.tier === 3)) {
+      console.error('[run] tier3Enabled is off — demoting stale tier-3 plan items to tier 1');
+      plan = plan.map(p => (p.tier === 3 ? { ...p, tier: 1 } : p));
+    }
     // Tier-2 (Sprint 4): data-pipeline cards autonomous-triage.js classified
     // but Tier-1 correctly skipped for touching data/ — see buildDataPlan().
     let dataPlan = queue.dataPlan || [];

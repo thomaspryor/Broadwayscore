@@ -215,7 +215,22 @@ const TIER3_EXCLUDED_PREFIXES = [
   'scripts/lib/email-',       // email infra
   'scripts/notion-',          // brain integrity
   'scripts/bsc-',             // dispatcher integrity (bsc-next pair via Tier-1 files)
+  'scripts/lib/bsc-',         // dispatcher control-plane (model routing shim)
+  'scripts/lib/cmux-',        // workspace launch/list — 2026-07-14 incident class
 ];
+
+// Basename-level email/send deny (ship-check Codex finding): prefix rules
+// missed scripts/lib/affiliate-email.js, brand-mention-email.js,
+// send-lock.js. ANY scripts file whose basename mentions email/broadcast/
+// send- is out — over-blocking is fine, default-deny is the philosophy.
+const TIER3_EXCLUDED_BASENAME_RE = /(email|broadcast|^send-)/i;
+
+// Dispatch bookkeeping the recheck pass (plan v2 Sprint 3) depends on having
+// a stable shape — the loop must not be able to rewrite its own ledger.
+const TIER3_EXCLUDED_EXTRA_FILES = new Set([
+  'scripts/lib/dispatch-ledger.js',
+  'scripts/lib/workspace-naming.js',
+]);
 
 // Dependency/deploy/config manifests: a wrong unattended change breaks every
 // build or deploy at once, and checks describe today's tree, not the manifest
@@ -241,8 +256,11 @@ function isCodePathAllowed(file) {
   // Tier-3-specific rules. Exclusions always win over the prefix allows.
   if (EXCLUDED_FILES.has(f)) return false;        // scoring watchlists, scraper.js, calibration corpus
   if (TIER3_EXCLUDED_FILES.has(f)) return false;
+  if (TIER3_EXCLUDED_EXTRA_FILES.has(f)) return false;
   if (TIER3_EXCLUDED_PREFIXES.some(p => f.startsWith(p))) return false;
   if (/-gate\.js$/.test(f)) return false;         // CI catastrophe-floor gates
+  const base = f.slice(f.lastIndexOf('/') + 1);
+  if (base.endsWith('.js') && TIER3_EXCLUDED_BASENAME_RE.test(base)) return false;
   return TIER3_ALLOW_PREFIXES.some(p => f.startsWith(p));
 }
 
@@ -259,7 +277,7 @@ function isCodeDiffAllowed(files) {
 // module as the predicates so they cannot drift.
 function describeScope(tier) {
   if (tier === 3) {
-    return `Tier 3 (code): may edit src/** and scripts/**, plus everything Tier 1 allows (tests/**, docs/**, memory/**). EXCLUDED no matter what a card says — prefixes: ${TIER3_EXCLUDED_PREFIXES.join(', ')}; exact files: ${[...TIER3_EXCLUDED_FILES].join(', ')}; the scoring watchlist files, scripts/lib/scraper.js, and any *-gate.js CI gate. It also cannot: make product or business decisions; send email; talk to humans; run expensive backfills.`;
+    return `Tier 3 (code): may edit src/** and scripts/**, plus everything Tier 1 allows (tests/**, docs/**, memory/**). EXCLUDED no matter what a card says — prefixes: ${TIER3_EXCLUDED_PREFIXES.join(', ')}; exact files: ${[...TIER3_EXCLUDED_FILES, ...TIER3_EXCLUDED_EXTRA_FILES].join(', ')}; any scripts file whose name mentions email/broadcast/send-; the scoring watchlist files, scripts/lib/scraper.js, and any *-gate.js CI gate. It also cannot: make product or business decisions; send email; talk to humans; run expensive backfills.`;
   }
   const allowed = [...TIER1_ALLOW_PREFIXES.map(p => `${p}**`), ...TIER1_ALLOW_FILES];
   return `Tier 1: may only edit ${allowed.join(', ')}. It cannot: touch src/, data/, workflows, scraping/scoring/audit infra; make product or business decisions; send email; talk to humans; run expensive backfills.`;

@@ -415,3 +415,15 @@ test('tier3: NO tier-3 path is deterministic-green (merge tap preserved)', () =>
   // colocated .test.mjs files remain green — unchanged behavior
   assert.equal(isDeterministicGreenPath('scripts/lib/foo.test.mjs'), true);
 });
+
+test('tier3: email-basename, dispatch control-plane, and cmux libs refused (ship-check round)', () => {
+  for (const p of ['scripts/lib/affiliate-email.js', 'scripts/lib/brand-mention-email.js',
+    'scripts/lib/send-lock.js', 'scripts/lib/email-templates.js',
+    'scripts/lib/bsc-next-model.js', 'scripts/lib/cmux-launch.js', 'scripts/lib/cmux-workspaces.js',
+    'scripts/lib/dispatch-ledger.js', 'scripts/lib/workspace-naming.js']) {
+    assert.equal(isCodePathAllowed(p), false, p);
+  }
+  // basename rule is .js-executable-scoped: test files + non-email libs unaffected
+  assert.equal(isCodePathAllowed('scripts/lib/dispatch-ledger.test.mjs'), true);
+  assert.equal(isCodePathAllowed('scripts/lib/title-match.js'), true);
+});
