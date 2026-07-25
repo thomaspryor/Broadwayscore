@@ -251,6 +251,20 @@ function isCodeDiffAllowed(files) {
   return { allowed: refused.length === 0, refused };
 }
 
+// One authoritative prose description per tier, consumed by BOTH the triage
+// prompt (autonomous-triage-core.js) and the implementer prompt
+// (autonomous-run-core.js). Plan-review design P0-3: both files hardcoded
+// "cannot touch src/" prose that a Tier-3 run would contradict in the same
+// sentence as its derived allow-list — scope prose must come from the same
+// module as the predicates so they cannot drift.
+function describeScope(tier) {
+  if (tier === 3) {
+    return `Tier 3 (code): may edit src/** and scripts/**, plus everything Tier 1 allows (tests/**, docs/**, memory/**). EXCLUDED no matter what a card says — prefixes: ${TIER3_EXCLUDED_PREFIXES.join(', ')}; exact files: ${[...TIER3_EXCLUDED_FILES].join(', ')}; the scoring watchlist files, scripts/lib/scraper.js, and any *-gate.js CI gate. It also cannot: make product or business decisions; send email; talk to humans; run expensive backfills.`;
+  }
+  const allowed = [...TIER1_ALLOW_PREFIXES.map(p => `${p}**`), ...TIER1_ALLOW_FILES];
+  return `Tier 1: may only edit ${allowed.join(', ')}. It cannot: touch src/, data/, workflows, scraping/scoring/audit infra; make product or business decisions; send email; talk to humans; run expensive backfills.`;
+}
+
 // ── Deterministic-green class (Sprint 3, owner spec refinement 2026-07-14) ──
 //
 // NOT a model judgment call ("confident prose ≠ safety" — the owner's exact
@@ -393,6 +407,7 @@ module.exports = {
   isDiffAllowed,
   isCodePathAllowed,
   isCodeDiffAllowed,
+  describeScope,
   isDeterministicGreenPath,
   isDiffDeterministicGreen,
   classifyDataCard,

@@ -20,22 +20,30 @@
 
 const fs = require('fs');
 const path = require('path');
-const { isCardEligible, TIER1_ALLOW_PREFIXES, TIER1_ALLOW_FILES } = require('./autonomous-eligibility.js');
+const { isCardEligible, describeScope } = require('./autonomous-eligibility.js');
 
 // checkableDone is LLM-authored text that a later sprint EXECUTES as the
 // card's verification command. Card notes are untrusted and flow into the
 // triage prompt, so this is a prompt-injection → command-execution path
 // unless the command shape is locked down at validation time. Only these
 // forms are accepted; every file argument must be a relative, traversal-free
-// path under tests/, scripts/, or docs//memory/ (for test -f).
+// path under tests/, scripts/, src/, or docs//memory/ (for test -f).
 const SAFE_CHECK_FORMS = [
   // .test.mjs/.test.js only — matches the documented contract exactly (.ts
   // test files run via `npx tsx --test`, which is not an allowed form).
-  { re: /^node --test( --test-timeout \d+)?((?: [\w@./-]+\.test\.m?js)+)$/, pathsGroup: 2, pathPrefix: ['tests/', 'scripts/'] },
+  { re: /^node --test( --test-timeout \d+)?((?: [\w@./-]+\.test\.m?js)+)$/, pathsGroup: 2, pathPrefix: ['tests/', 'scripts/', 'src/'] },
   { re: /^npx tsc --noEmit$/ },
   { re: /^npx next lint$/ },
-  { re: /^test -f((?: [\w@./-]+)+)$/, pathsGroup: 1, pathPrefix: ['docs/', 'memory/', 'tests/'] },
+  { re: /^test -f((?: [\w@./-]+)+)$/, pathsGroup: 1, pathPrefix: ['docs/', 'memory/', 'tests/', 'src/', 'scripts/'] },
 ];
+
+// Belt-and-braces mutation gate (plan-review pre-mortem root cause): the
+// strict forms above already exclude arbitrary `node scripts/x.js`, but any
+// future form widening must never let a check command reference the scripts
+// that WRITE shared data — a verify re-run against a stale local clone is the
+// repo's documented corruption hazard (feedback_local_rebuild_stale_clone_hazard).
+// Applied to every path token in every form, present and future.
+const MUTATING_SCRIPT_RE = /(^|\/)(rebuild-all-reviews|gather-reviews|collect-review-texts)\.js$|(^|\/)(push|send)-[\w-]*\.js$/;
 
 function isSafeCheckCommand(cmd) {
   const s = String(cmd || '').trim();
@@ -44,12 +52,16 @@ function isSafeCheckCommand(cmd) {
     if (!m) continue;
     if (!form.pathsGroup) return true;
     const args = m[form.pathsGroup].trim().split(/\s+/);
-    if (args.every(a => !a.split('/').includes('..') && form.pathPrefix.some(p => a.startsWith(p)))) return true;
+    const ok = args.every(a =>
+      !a.split('/').includes('..') &&
+      !MUTATING_SCRIPT_RE.test(a) &&
+      form.pathPrefix.some(p => a.startsWith(p)));
+    if (ok) return true;
   }
   return false;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/ or scripts/>`, `npx tsc --noEmit`, `npx next lint`, or `test -f <docs|memory|tests path>`';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsc --noEmit`, `npx next lint`, or `test -f <docs|memory|tests|src|scripts path>`';
 
 // isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
 // checks the path is real, so an LLM that invents a plausible-but-wrong test
@@ -110,16 +122,15 @@ const MIN_REASON = schema.properties.reason.minLength;
 const MIN_CHECKABLE = schema.properties.checkableDone.minLength;
 const MIN_SPLIT_NOTES = schema.properties.splitProposal.items.properties.notes.minLength;
 
-function buildTriagePrompt(card) {
-  const allowed = [...TIER1_ALLOW_PREFIXES.map(p => `${p}**`), ...TIER1_ALLOW_FILES];
+function buildTriagePrompt(card, tier = 1) {
   return `You are the nightly triage step of an autonomous coding loop for the Broadway Scorecard repo. Assess ONE backlog card. Answer with a single JSON object and nothing else — no prose, no markdown fences.
 
-The loop may only edit these paths (Tier 1): ${allowed.join(', ')}. It cannot: touch src/, data/, workflows, scraping/scoring/audit infra; make product or business decisions; send email; talk to humans; run expensive backfills. Work must be verifiable by a runnable command.
+The loop's write scope: ${describeScope(tier)} Work must be verifiable by a runnable command.
 
 JSON contract:
 {
   "size": "S" | "M" | "L",
-  "eligible": boolean,             // can the loop do this UNATTENDED within Tier-1 paths?
+  "eligible": boolean,             // can the loop do this UNATTENDED within Tier-${tier} paths?
   "reason": "one sentence (≥${MIN_REASON} chars) justifying size + eligibility",
   "checkableDone": "the runnable command that proves completion — MUST be exactly one of these forms: ${SAFE_CHECK_DESCRIPTION}. If no such command can prove the work, set eligible to false.",
   "splitProposal": [               // REQUIRED non-empty iff size "L" AND eligible true, else omit
@@ -127,7 +138,7 @@ JSON contract:
   ]
 }
 
-size measures the WORK ITSELF for a competent engineer with full repo access — it is INDEPENDENT of eligibility. A one-component UI fix is S even though src/ makes it ineligible for this loop. Never inflate size because the work is out of scope.
+size measures the WORK ITSELF for a competent engineer with full repo access — it is INDEPENDENT of eligibility. A one-component UI fix is S regardless of whether its paths are in this tier's scope. Never inflate size because the work is out of scope.
   S = ≤30 min, one or two files, mechanical or well-specified
   M = ≤2 h, a few files, some investigation but a known shape
   L = multi-hour / multi-subsystem / needs design or product decisions / unknown unknowns
@@ -263,7 +274,7 @@ async function triageCard(card, callLLM, opts = {}) {
   const preFilter = isCardEligible(card);
   if (!preFilter.eligible) return { preFilter };
 
-  const prompt = buildTriagePrompt(card);
+  const prompt = buildTriagePrompt(card, opts.tier || 1);
   let lastErrors = null;
   for (let attempt = 1; attempt <= 2; attempt++) {
     let raw;

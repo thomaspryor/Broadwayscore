@@ -20,7 +20,20 @@ test('implementer prompt carries card, ground rules, and the named check', () =>
   assert.match(p, /sort is wrong/);
   assert.match(p, /node --test scripts\/bsc-next\.test\.mjs/);
   assert.match(p, /Do NOT push/);
-  assert.match(p, /Tier-1-allowed paths/);
+  assert.match(p, /Tier 1: may only edit/);   // describeScope(1) prose
+  assert.doesNotMatch(p, /Tier 3/);
+});
+
+test('implementer prompt at tier 3 describes the code scope and its exclusions', () => {
+  const p = buildImplementerPrompt(
+    { name: 'Fix rage clicks on show page', priority: 'P1', notes: 'button dead' },
+    { checkableDone: 'npx tsc --noEmit' },
+    { tier: 3 },
+  );
+  assert.match(p, /Tier 3 \(code\): may edit src\/\*\* and scripts\/\*\*/);
+  assert.match(p, /scripts\/send-/);          // exclusions surfaced to the implementer
+  assert.match(p, /package\.json/);
+  assert.match(p, /Do NOT push/);
 });
 
 // ── buildDataImplementerPrompt (Sprint 4) ───────────────────────────────────
