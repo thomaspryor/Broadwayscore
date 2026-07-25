@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-25T06:00:56.114Z",
-  "processed": 75,
-  "failed": 937,
-  "successRate": "7.4%",
+  "updatedAt": "2026-07-25T06:04:03.316Z",
+  "processed": 77,
+  "failed": 945,
+  "successRate": "7.5%",
   "tierBreakdown": {
-    "playwright": 54,
+    "playwright": 55,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 9,
+    "brightdata": 10,
     "archiveToday": 7,
     "archive": 8
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-07-24T21:22:09.939Z",
@@ -96,6 +96,28 @@
     },
     {
       "t": "2026-07-25T05:50:07.252Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-25T06:03:12.855Z",
+      "event": "bb-session",
+      "session": "ffcecc92",
+      "url": "https://www.nytimes.com/2026/07/23/movies/hadestown-the-musical-review.html"
+    },
+    {
+      "t": "2026-07-25T06:03:13.310Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-25T06:03:28.893Z",
+      "event": "bb-session",
+      "session": "5eaea9e7",
+      "url": "https://www.nytimes.com/2026/07/23/movies/hadestown-the-musical-review.html"
+    },
+    {
+      "t": "2026-07-25T06:03:29.232Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
