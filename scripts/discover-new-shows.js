@@ -54,6 +54,7 @@ const {
   writeStagingCandidates,
 } = require('./lib/venue-listing-discover');
 const { checkVenueAnomaly } = require('./lib/venue-anomaly');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -63,6 +64,13 @@ const includeOffBroadway = process.argv.includes('--include-off-broadway');
 const includeWestEnd = process.argv.includes('--include-west-end');
 const consumeShowScoreCandidates = process.argv.includes('--consume-show-score-candidates');
 const verbose = process.argv.includes('--verbose');
+
+// Wall-clock budget (task #438, same class as #369/#415/#421): under slow/
+// degraded scraping tiers this script has no bound on its own and runs to the
+// workflow's 45-min step timeout, which SIGKILLs the process and loses ALL
+// discovered results instead of committing partial progress. Disabled unless
+// --time-budget-min=N is passed. See scripts/lib/run-budget.js.
+const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
 
 const CANDIDATES_PATH = path.join(__dirname, '..', 'data', 'show-score-candidates.json');
 const URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
@@ -1630,7 +1638,9 @@ async function discoverShows() {
   }
 
   // West End discovery via TodayTix London API + Official London Theatre (SOLT)
-  if (includeWestEnd) {
+  if (includeWestEnd && timeBudget.exceeded()) {
+    console.log(`⏱ Time budget (${timeBudget.minutes} min) reached — skipping West End discovery this run.`);
+  } else if (includeWestEnd) {
     // Fetch all five sources in parallel
     const [todayTixResult, oltResult, tmResult, ltResult, venueResult] = await Promise.allSettled([
       fetchShowsFromTodayTixLondon(),
@@ -1696,7 +1706,9 @@ async function discoverShows() {
   // that aren't in our DB yet. Joins the same dedup pipeline as TodayTix shows.
   const consumedCandidateUrls = []; // ShowScore URLs for newly added shows
   const processedCandidateUrls = new Set(); // ALL processed URLs (for pruning)
-  if (consumeShowScoreCandidates) {
+  if (consumeShowScoreCandidates && timeBudget.exceeded()) {
+    console.log(`⏱ Time budget (${timeBudget.minutes} min) reached — skipping ShowScore candidate processing this run.`);
+  } else if (consumeShowScoreCandidates) {
     console.log('');
     console.log('🔍 Processing ShowScore candidates...');
     try {
@@ -2068,6 +2080,10 @@ async function discoverShows() {
     console.log(`\n🔍 Stage 3: Checking IBDB for prior productions of ${undetected.length} undetected show(s)...`);
     const RATE_LIMIT_MS = 1500;
     for (let i = 0; i < undetected.length; i++) {
+      if (timeBudget.exceeded()) {
+        console.log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — ${undetected.length - i} show(s) left unchecked for IBDB revival status, will retry next run.`);
+        break;
+      }
       const det = undetected[i];
       const showYear = det.show.openingDate ? parseInt(det.show.openingDate.split('-')[0]) :
                        det.show.previewsStartDate ? parseInt(det.show.previewsStartDate.split('-')[0]) : null;
@@ -2095,7 +2111,9 @@ async function discoverShows() {
 
   // --- Runtime + age enrichment from Broadway.com ---
   let runtimeEnrichments = {};
-  if (!dryRun && newShows.length > 0) {
+  if (!dryRun && newShows.length > 0 && timeBudget.exceeded()) {
+    console.log(`⏱ Time budget (${timeBudget.minutes} min) reached — skipping Broadway.com runtime/age enrichment this run.`);
+  } else if (!dryRun && newShows.length > 0) {
     try {
       console.log('⏱️  Looking up runtimes + age recommendations from Broadway.com...');
       const runtimeEntries = await scrapeCurrentRuntimes();

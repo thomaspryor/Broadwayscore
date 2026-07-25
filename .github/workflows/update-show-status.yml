@@ -160,9 +160,17 @@ jobs:
         # 45 min: the 30-min cap was hit on 2026-07-14 (discovery killed mid-run,
         # masked by continue-on-error) — new-show enrichment after a big skip
         # list doesn't fit in 30.
+        # --time-budget-min=35 (task #438, same class as #369/#415/#421): a
+        # SIGKILL at the 45-min timeout loses ALL discovered results (the whole
+        # node process dies mid-write) AND leaves the job running long enough
+        # that, by the time "Commit and push changes" runs, enough commit churn
+        # has landed on main that push-with-retry.sh's 7 retries can exhaust
+        # (run 30080143665, 2026-07-24). A clean 35-min budget-exit commits
+        # whatever was found and finishes the job ~10 min sooner, well inside
+        # the 45-min step timeout (kept as a backstop).
         timeout-minutes: 45
         continue-on-error: true
-        run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end --consume-show-score-candidates
+        run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end --consume-show-score-candidates --time-budget-min=35
 
       # Regional→Broadway transfer auto-linking: if a just-discovered (or any
       # existing) Broadway show title-matches a tracked regional tryout and
