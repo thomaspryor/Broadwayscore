@@ -1,7 +1,28 @@
 {
-  "generatedAt": "2026-07-25T00:20:33.697Z",
+  "generatedAt": "2026-07-25T02:51:29.215Z",
   "windowDays": 45,
   "showsScanned": 50,
-  "gaps": [],
+  "gaps": [
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "title": "Jesus Christ Superstar",
+      "openingDate": "2026-07-07",
+      "file": "independent--alice-saville.json",
+      "outletId": "independent",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html?loginSuccessful=true",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:per-file-cap"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html?loginSuccessful=true --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-07-25T02:51:29.215Z",
+      "nonTerminalAgeHours": 0
+    }
+  ],
   "contradictions": []
 }
