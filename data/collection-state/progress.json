@@ -140,7 +140,8 @@
     "the-sound-of-music-2026/broadwayworld--joni-lorraine.json",
     "tao-of-glass-west-end-2026/the-spectator-uk--unknown.json",
     "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--eve-jawara.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/london-theatre--julia-rank.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/london-theatre--julia-rank.json",
+    "oh-mary-west-end-2025/deadline--unknown.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -2355,7 +2356,16 @@
     "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json",
     "gotta-dance-off-broadway-2026/the-interested-bystander--cary-wong.json",
     "every-brilliant-thing-2026/latimes--unknown.json",
-    "every-brilliant-thing-2026/standard--nick-curtis.json"
+    "every-brilliant-thing-2026/standard--nick-curtis.json",
+    "every-brilliant-thing-2026/telegraph--marianka-swain.json",
+    "every-brilliant-thing-2026/times-uk--alice-jones.json",
+    "every-brilliant-thing-2026/whatsonstage--julia-rank.json",
+    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2468,7 +2478,9 @@
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
       "data/review-texts/miss-saigon-west-end-2026/hollywood-reporter--david-rooney.json",
-      "miss-saigon-west-end-2026/hollywood-reporter--david-rooney.json"
+      "miss-saigon-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--unknown.json",
+      "oh-mary-west-end-2025/deadline--unknown.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
@@ -2553,7 +2565,7 @@
     ]
   },
   "startTime": "2026-07-24T19:19:16.686Z",
-  "lastProcessed": "every-brilliant-thing-2026/standard--nick-curtis.json",
+  "lastProcessed": "oh-mary-west-end-2025/deadline--unknown.json",
   "log": [
     {
       "t": "2026-07-24T21:22:09.939Z",
@@ -2722,6 +2734,12 @@
       "event": "bb-session",
       "session": "3329eba2",
       "url": "https://www.hollywoodreporter.com/news/general-news/miss-saigon-theater-review-9"
+    },
+    {
+      "t": "2026-07-25T12:37:33.402Z",
+      "event": "bb-session",
+      "session": "952565c3",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
     }
   ]
 }
