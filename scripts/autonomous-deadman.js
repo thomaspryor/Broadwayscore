@@ -79,6 +79,12 @@ function sendAlert(to, message) {
 
 async function main() {
   const args = process.argv.slice(2);
+  // --help must never send a real alert (cousin bug class #260).
+  const { hasHelpFlag } = require('./lib/cli-help.js');
+  if (hasHelpFlag(args)) {
+    console.log('autonomous-deadman.js — alerts if the loop ledger is silent >24h.\n  --dry-run    evaluate + print, never send\n  --ledger P   explicit ledger path\n  --armed      treat as armed regardless of plist\n  --help, -h   show this message, do nothing else');
+    return;
+  }
   const dryRun = args.includes('--dry-run');
   const ledgerFlag = args.indexOf('--ledger');
   const ledgerPath = ledgerFlag !== -1 ? path.resolve(args[ledgerFlag + 1]) : undefined;
