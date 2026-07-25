@@ -15,10 +15,11 @@
       "disposition": "auto",
       "title": "BSC Daily: SEO: health",
       "firstSeen": "2026-07-24T07:50:32.738Z",
-      "lastSeen": "2026-07-24T07:50:32.738Z",
+      "lastSeen": "2026-07-25T16:22:15.649Z",
       "lastNotifiedAt": "2026-07-24T07:50:32.738Z",
       "notifyCount": 1,
-      "cardId": "3a7637c5-416f-81fd-b943-e699070a2818"
+      "cardId": "3a7637c5-416f-81fd-b943-e699070a2818",
+      "silentRefires": 1
     },
     "health-check:Secrets: health": {
       "status": "open",
@@ -35,10 +36,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Credits: ScrapingDog",
       "firstSeen": "2026-07-24T07:50:33.764Z",
-      "lastSeen": "2026-07-24T07:50:33.764Z",
+      "lastSeen": "2026-07-25T16:22:15.649Z",
       "lastNotifiedAt": "2026-07-24T07:50:33.764Z",
       "notifyCount": 1,
-      "cardId": "3a7637c5-416f-813f-b4d9-ecbfd564ab6f"
+      "cardId": "3a7637c5-416f-813f-b4d9-ecbfd564ab6f",
+      "silentRefires": 1
     },
     "health-check:Workflow repeat-failure: Test Suite": {
       "status": "open",
@@ -55,40 +57,44 @@
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Commercial RSS Poll",
       "firstSeen": "2026-07-24T07:50:34.747Z",
-      "lastSeen": "2026-07-24T07:50:34.747Z",
+      "lastSeen": "2026-07-25T16:22:17.395Z",
       "lastNotifiedAt": "2026-07-24T07:50:34.747Z",
       "notifyCount": 1,
-      "cardId": "3a7637c5-416f-81f4-b695-e8bd0a8d73b6"
+      "cardId": "3a7637c5-416f-81f4-b695-e8bd0a8d73b6",
+      "silentRefires": 1
     },
     "health-check:Audience coverage: open-show gaps": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Audience coverage: open-show gaps",
       "firstSeen": "2026-07-24T07:50:35.242Z",
-      "lastSeen": "2026-07-24T07:50:35.242Z",
+      "lastSeen": "2026-07-25T16:22:17.812Z",
       "lastNotifiedAt": "2026-07-24T07:50:35.242Z",
       "notifyCount": 1,
-      "cardId": "3a7637c5-416f-8183-90ff-d3b51e7be23d"
+      "cardId": "3a7637c5-416f-8183-90ff-d3b51e7be23d",
+      "silentRefires": 1
     },
     "health-check:Sync: baseline drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-07-24T07:50:35.775Z",
+      "lastSeen": "2026-07-25T16:22:17.812Z",
       "lastNotifiedAt": "2026-07-24T07:50:35.775Z",
       "notifyCount": 1,
-      "cardId": "3a7637c5-416f-8145-a6b5-c8e39ea3e262"
+      "cardId": "3a7637c5-416f-8145-a6b5-c8e39ea3e262",
+      "silentRefires": 1
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-07-24T07:50:36.268Z",
+      "lastSeen": "2026-07-25T16:22:17.813Z",
       "lastNotifiedAt": "2026-07-24T07:50:36.268Z",
       "notifyCount": 1,
-      "cardId": "3a7637c5-416f-81d3-909d-e97d2bd72154"
+      "cardId": "3a7637c5-416f-81d3-909d-e97d2bd72154",
+      "silentRefires": 1
     },
     "opening-night-sla:pages-stuck": {
       "status": "open",
@@ -100,6 +106,26 @@
       "notifyCount": 1,
       "cardId": null,
       "silentRefires": 19
+    },
+    "health-check:Workflow repeat-failure: Audit Aggregator Review Gap": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Workflow repeat-failure: Audit Aggregator Review Gap",
+      "firstSeen": "2026-07-25T16:22:15.649Z",
+      "lastSeen": "2026-07-25T16:22:15.649Z",
+      "lastNotifiedAt": "2026-07-25T16:22:15.649Z",
+      "notifyCount": 1,
+      "cardId": "3a8637c5-416f-8166-8716-f8edbfa04ade"
+    },
+    "health-check:Workflow repeat-failure: Process Feedback Submissions": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Workflow repeat-failure: Process Feedback Submissions",
+      "firstSeen": "2026-07-25T16:22:17.395Z",
+      "lastSeen": "2026-07-25T16:22:17.395Z",
+      "lastNotifiedAt": "2026-07-25T16:22:17.395Z",
+      "notifyCount": 1,
+      "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     }
   }
 }

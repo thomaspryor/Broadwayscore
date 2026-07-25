@@ -1,20 +1,20 @@
 {
   "system": "stuck work",
-  "status": "pass",
-  "lastChecked": "2026-07-24T07:50:31.206Z",
+  "status": "warn",
+  "lastChecked": "2026-07-25T16:22:12.823Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "status": "pass",
-      "message": "No paused P0/P1 cards"
+      "status": "warn",
+      "message": "1 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (0d)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "status": "pass",
-      "message": "No in-progress cards idle >48h"
+      "status": "warn",
+      "message": "4 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Kill ScrapingBee premium_proxy direct calls (cost more than  (3d); Rebuild same-URL dedup: prefer a real criticName over 'Unkno (3d); Trainspotting: only 4 reviews on site + email said 7 (invest (2d)"
     }
   ]
 }

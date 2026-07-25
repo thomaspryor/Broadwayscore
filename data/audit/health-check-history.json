@@ -1,31 +1,31 @@
 {
-  "lastRun": "2026-07-24T07:50:31.203Z",
-  "consecutiveErrorDays": 6,
+  "lastRun": "2026-07-25T16:22:12.752Z",
+  "consecutiveErrorDays": 7,
   "results": [
     {
       "name": "Freshness: reviews.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: shows.json",
       "status": "pass",
-      "message": "23h old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "3d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "8h old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "2d old"
+      "message": "4d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
@@ -34,28 +34,28 @@
     },
     {
       "name": "Freshness: lottery-rush.json",
-      "status": "pass",
-      "message": "21h old"
+      "status": "warn",
+      "message": "2d old (warn threshold: 2d)"
     },
     {
       "name": "Freshness: cast-changes.json",
       "status": "warn",
-      "message": "3d old (warn threshold: 3d)"
+      "message": "5d old (warn threshold: 3d)"
     },
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "5d old"
     },
     {
       "name": "Freshness: social-pulse/_meta.json",
       "status": "pass",
-      "message": "2d old"
+      "message": "4d old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",
@@ -75,12 +75,12 @@
     {
       "name": "Push verify: shows.json",
       "status": "pass",
-      "message": "Data synced (23h old, workflow 23h ago)"
+      "message": "Data synced (2h old, workflow 2d ago)"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "40630 files, 19054 reviews (surplus: 21576)"
+      "message": "40666 files, 19075 reviews (surplus: 21591)"
     },
     {
       "name": "Sync: open show coverage",
@@ -95,7 +95,7 @@
     {
       "name": "Sync: social-pulse per-show freshness",
       "status": "pass",
-      "message": "77 running BW/WE shows — no stale social-pulse files"
+      "message": "78 running BW/WE shows — no stale social-pulse files"
     },
     {
       "name": "Sync: phantom show detection",
@@ -110,12 +110,12 @@
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 19054 vs baseline 19067"
+      "message": "Reviews dropped: 19075 vs baseline 19087"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 7/19/2026 (5d ago)"
+      "message": "weekEnding 7/19/2026 (6d ago)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
@@ -124,38 +124,38 @@
     },
     {
       "name": "Pipeline: update-show-status",
-      "status": "pass",
-      "message": "Last success 22h ago"
+      "status": "warn",
+      "message": "Last success 2d ago (threshold: 2d)"
     },
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 10h ago"
+      "message": "Last success 1h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "pass",
-      "message": "Last success 1d ago"
+      "message": "Last success 3d ago"
     },
     {
       "name": "Pipeline: weekly-integrity",
-      "status": "warn",
-      "message": "Last success 26d ago (threshold: 10d)"
+      "status": "pass",
+      "message": "Last success 12h ago"
     },
     {
       "name": "Pipeline: test",
       "status": "pass",
-      "message": "Last success 2h ago"
+      "message": "Last success 11h ago"
     },
     {
       "name": "Quality: star-vs-score mismatch",
       "status": "pass",
-      "message": "No new star/score contradictions (53 known/baselined)"
+      "message": "No new star/score contradictions (51 known/baselined)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.5% scored (19054/19335)"
+      "message": "98.6% scored (19075/19353)"
     },
     {
       "name": "Quality: corpus drift",
@@ -175,7 +175,7 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (5d ago)"
+      "message": "All metrics within thresholds (6d ago)"
     },
     {
       "name": "SEO: health",
@@ -183,9 +183,9 @@
       "message": "1 critical SEO anomalies: Lighthouse score below 70 on /west-end: 69/100 + field LCP 2512ms over 2500ms"
     },
     {
-      "name": "Cron: Update Show Status",
-      "status": "pass",
-      "message": "23h ago, success"
+      "name": "Cron failed: Update Show Status",
+      "status": "warn",
+      "message": "Last run inconclusive: cancelled (4h ago), no success in 36h"
     },
     {
       "name": "Cron: Rebuild Reviews",
@@ -195,17 +195,17 @@
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "2h ago, "
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "1h ago, success"
     },
     {
-      "name": "Cron: Test Suite",
-      "status": "pass",
-      "message": "1h ago, success"
+      "name": "Cron failed: Test Suite",
+      "status": "warn",
+      "message": "Last run inconclusive: cancelled (10h ago), no success in 48h"
     },
     {
       "name": "Cron: Opening Night Broadcast",
@@ -215,17 +215,17 @@
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "21h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "1d ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "15h ago, success (newest run failure — superseded, not a failure)"
     },
     {
       "name": "Cron: Update Mezzanine",
@@ -235,27 +235,27 @@
     {
       "name": "Cron failed: Update Cast Changes",
       "status": "warn",
-      "message": "Last run failed (2d ago)"
+      "message": "Last run inconclusive: failure (7h ago), no success in 120h"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "1d ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "5d ago, success"
     },
     {
       "name": "Cron: Update Social Pulse",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Secrets: health",
-      "status": "error",
-      "message": "Last check FAILED (4d ago)"
+      "status": "pass",
+      "message": "Last check passed (1d ago)"
     },
     {
       "name": "Credits: ScrapingBee",
@@ -265,37 +265,37 @@
     {
       "name": "Credits: ScrapingDog",
       "status": "error",
-      "message": "923k credits left (92%) · 77k/day burn · renews in 29d · exhausts in ~12d (BEFORE renewal)"
+      "message": "892k credits left (89%) · 54k/day burn · renews in 28d · exhausts in ~17d (BEFORE renewal)"
     },
     {
       "name": "Credits: Bright Data",
       "status": "pass",
-      "message": "balance $17.67 · pending invoice $196.94 · month-to-date $190.29 (serp+unlocker)"
+      "message": "balance $46.81 · pending invoice $217.80 · month-to-date $207.09 (serp+unlocker)"
     },
     {
       "name": "Credits: Browserbase",
       "status": "pass",
-      "message": "5406 browser minutes used (cumulative)"
+      "message": "5721 browser minutes used (cumulative)"
     },
     {
       "name": "Deploy: production freshness",
       "status": "pass",
-      "message": "Latest READY production deploy: e7875bb818, age 0.0h"
+      "message": "Latest READY production deploy: 61910283ad, age 0.2h"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "status": "pass",
-      "message": "No paused P0/P1 cards"
+      "status": "warn",
+      "message": "1 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (0d)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "status": "pass",
-      "message": "No in-progress cards idle >48h"
+      "status": "warn",
+      "message": "4 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Kill ScrapingBee premium_proxy direct calls (cost more than  (3d); Rebuild same-URL dedup: prefer a real criticName over 'Unkno (3d); Trainspotting: only 4 reviews on site + email said 7 (invest (2d)"
     },
     {
       "name": "Alert Router: dispatch deadman",
       "status": "pass",
-      "message": "No auto-dispatch attempts in the trailing 7d (nothing to check)"
+      "message": "10/10 auto-dispatch attempts succeeded in the last 7d; most recent attempt succeeded"
     },
     {
       "name": "Push-retry deadman",
@@ -303,9 +303,9 @@
       "message": "No push-retry failures recorded (log absent)"
     },
     {
-      "name": "Workflow repeat-failure: Test Suite",
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
       "status": "error",
-      "message": "Test Suite failed 12 times in the last 24h — likely broken, not transient."
+      "message": "Audit Aggregator Review Gap failed 5 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Commercial RSS Poll",
@@ -313,14 +313,14 @@
       "message": "Commercial RSS Poll failed 3 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "status": "warn",
-      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Process Feedback Submissions",
+      "status": "error",
+      "message": "Process Feedback Submissions failed 3 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Process Feedback Submissions",
+      "name": "Workflow repeat-failure: Rebuild Reviews Data",
       "status": "warn",
-      "message": "Process Feedback Submissions failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews Data failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: OB closing candidates awaiting review",
@@ -330,7 +330,7 @@
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "1 discovered review(s) not reaching the composite score (0 T1). First: jesus-christ-superstar-west-end-2026 — artsdesk (empty-body)"
+      "message": "3 discovered review(s) not reaching the composite score (1 T1). First: jesus-christ-superstar-west-end-2026 — artsdesk (empty-body)"
     }
   ],
   "lastCleanStreak": 0
