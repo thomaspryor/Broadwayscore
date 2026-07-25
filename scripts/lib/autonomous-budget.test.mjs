@@ -244,3 +244,11 @@ test('estimateUSD prices by model family and never crashes on junk', () => {
   assert.equal(estimateUSD('gpt-4o', 100_000, 100_000), 0);
   assert.equal(estimateUSD(null, undefined, NaN), 0);
 });
+
+test('pickModel: tier-3 M/L code cards force Opus on attempt 1; S stays on the floor', () => {
+  const { pickModel, MODELS } = require('./autonomous-budget.js');
+  assert.equal(pickModel(1, null, { tier3Size: 'M' }), MODELS.attempt2Content);
+  assert.equal(pickModel(1, null, { tier3Size: 'L' }), MODELS.attempt2Content);
+  assert.equal(pickModel(1, null, { tier3Size: 'S' }), MODELS.attempt1);
+  assert.equal(pickModel(1, null, {}), MODELS.attempt1); // non-code cards unchanged
+});

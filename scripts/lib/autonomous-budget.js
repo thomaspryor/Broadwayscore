@@ -116,12 +116,20 @@ function estimateUSD(model, tokensIn, tokensOut) {
  *   the best shot, not the default floor)
  * @param {boolean} [hint.incremental] - an L-sized checkpoint slice
  * @param {string|null} [hint.dataClass] - a Tier-2 data card's classifyDataCard() class
+ * @param {string|null} [hint.tier3Size] - a Tier-3 code card's triage size.
+ *   M+ code cards force Opus on attempt 1 (owner 2026-07-25, same rationale as
+ *   L/data-destructive: "I don't trust Sonnet much" for unattended code that
+ *   can reach src/; src-vs-scripts isn't knowable before the diff exists, so
+ *   size is the pre-implementation proxy). S code cards stay on the floor —
+ *   a content failure still escalates attempt 2 to Opus as usual.
  */
 function pickModel(attempt, failureKind = null, hint = {}) {
-  const { incremental = false, dataClass = null } = hint;
+  const { incremental = false, dataClass = null, tier3Size = null } = hint;
   let model;
   if (attempt === 1) {
-    const forceOpus = incremental || (dataClass != null && DATA_DESTRUCTIVE_CLASSES.has(dataClass));
+    const forceOpus = incremental
+      || (dataClass != null && DATA_DESTRUCTIVE_CLASSES.has(dataClass))
+      || (tier3Size != null && tier3Size !== 'S');
     model = forceOpus ? MODELS.attempt2Content : MODELS.attempt1;
   } else if (attempt === 2) {
     model = failureKind === 'content' ? MODELS.attempt2Content : MODELS.attempt1;
