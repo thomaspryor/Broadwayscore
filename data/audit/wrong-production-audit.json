@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-25T09:43:20.381Z",
+  "timestamp": "2026-07-25T11:40:33.275Z",
   "stats": {
-    "totalReviews": 40442,
-    "alreadyFlagged": 17811,
+    "totalReviews": 40454,
+    "alreadyFlagged": 17816,
     "dateGuardCatches": 59,
-    "directorMismatch": 911,
+    "directorMismatch": 913,
     "tvFilmSignals": 1107,
     "londonSignals": 760,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3249
+    "noPublishDate": 3250
   },
   "findings": [
     {
@@ -4267,6 +4267,24 @@
       "score": 90,
       "publishDate": null,
       "url": "https://www.wsj.com/articles/cats-the-jellicle-ball-review-wondrous-and-whisker-free-7e8237ba?gaa_at=eafs&gaa_n=AWEtsqf3rhX__INBXHgRHsI3IxIHt9SNy6mPj-PFQxxnEmKl0aTpO0dMHH2i&gaa_ts=69bd9c85&gaa_sig=CNgwMSu6ZTQjgdYO1Jas5jqZde5lxGvAMXF487IUMqeQbwSxAWsi-0160s1kyEWidvhQW1_8apI3seh7hkEJBg%3D%3D",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "new-york-city-theatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.newyorkcitytheatre.com/shows/perelman-performing-arts-center/cats",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
