@@ -85,6 +85,16 @@ function getRichTextValue(prop) {
   return prop.rich_text.map(t => t.plain_text).join('');
 }
 
+// Canonical Notion Priority select options. Bare "P0"/"P1"/"P2" silently create
+// a NEW select option that notion-tasks-sync's "P0 Now,P1 Next" filter ignores
+// (2026-07-25: a P1 card never mirrored to the task list, so auto-dispatch
+// missed it). Normalize aliases everywhere priority is written or filtered.
+function normalizePriority(value) {
+  const ALIASES = { p0: 'P0 Now', p1: 'P1 Next', p2: 'P2 Later' };
+  if (!value) return value;
+  return value.split(',').map(v => ALIASES[v.trim().toLowerCase()] || v.trim()).join(',');
+}
+
 function getSelectValue(prop) {
   if (!prop || prop.type !== 'select' || !prop.select) return null;
   return prop.select.name;
@@ -484,7 +494,7 @@ async function createCard(args) {
   }
 
   if (args.priority) {
-    properties.Priority = { select: { name: args.priority } };
+    properties.Priority = { select: { name: normalizePriority(args.priority) } };
   }
 
   if (args.category) {
@@ -567,7 +577,7 @@ async function updateCard(args) {
   }
 
   if (args.priority) {
-    properties.Priority = { select: { name: args.priority } };
+    properties.Priority = { select: { name: normalizePriority(args.priority) } };
   }
 
   if (args.category) {
@@ -712,7 +722,7 @@ async function searchCards(args) {
   if (args.priority) {
     filters.push({
       property: 'Priority',
-      select: { equals: args.priority },
+      select: { equals: normalizePriority(args.priority) },
     });
   }
 
@@ -807,7 +817,7 @@ async function listCards(args) {
   }
 
   if (args.priority) {
-    const priorities = args.priority.split(',').map(p => p.trim());
+    const priorities = normalizePriority(args.priority).split(',').map(p => p.trim());
     if (priorities.length === 1) {
       filters.push({ property: 'Priority', select: { equals: priorities[0] } });
     } else {
