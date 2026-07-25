@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-25T19:34:08.792Z",
+  "timestamp": "2026-07-25T20:08:28.264Z",
   "stats": {
-    "totalReviews": 40458,
-    "alreadyFlagged": 17816,
+    "totalReviews": 40457,
+    "alreadyFlagged": 17814,
     "dateGuardCatches": 59,
-    "directorMismatch": 913,
+    "directorMismatch": 912,
     "tvFilmSignals": 1107,
-    "londonSignals": 760,
+    "londonSignals": 759,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3248
+    "noPublishDate": 3247
   },
   "findings": [
     {
@@ -1949,24 +1949,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
-        }
-      ]
-    },
-    {
-      "showId": "beetlejuice-west-end-2026",
-      "file": "british-theatre--susan-novak.json",
-      "publishDate": "2026-07-23",
-      "url": "https://www.britishtheatre.com/posts/beetlejuice-the-musical-welcomes-summer-strallen-as-delia-deetz-in-limited-west",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
