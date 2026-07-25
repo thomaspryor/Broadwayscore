@@ -63,3 +63,39 @@ test('shouldRunSerpCensus: a custom cooldownHours is respected', () => {
 test('shouldRunSerpCensus: corrupt lastRunAt stamp reads as due, not stuck forever', () => {
   assert.equal(shouldRunSerpCensus({ inWindow: true, lastRunAt: 'not-a-date', now: NOW }), true);
 });
+
+// --- buildCensusQueries (weak-title scoped variants, Sukkot 2026-07-25) ---
+const { buildCensusQueries, venueQueryToken } = require('./serp-review-census.js');
+
+test('buildCensusQueries: distinctive multi-word title → single primary query', () => {
+  const show = { title: 'Trainspotting Live in Concert', category: 'west-end', openingDate: '2026-07-01', venue: 'Arts Theatre' };
+  const qs = buildCensusQueries(show, { weakTitle: false, creativeNames: ['Irvine Welsh'] });
+  assert.deepEqual(qs, ['"Trainspotting Live in Concert" West End review 2026']);
+});
+
+test('buildCensusQueries: weak title adds venue- and people-scoped variants', () => {
+  const show = { title: 'Sukkot', category: 'off-broadway', openingDate: '2026-07-11', venue: '59E59 Theaters Theater B' };
+  const qs = buildCensusQueries(show, { weakTitle: true, creativeNames: ['Matthew Leavitt', 'Joel Zwick'] });
+  assert.deepEqual(qs, [
+    '"Sukkot" Off-Broadway review 2026',
+    '"Sukkot" review 59e59',
+    '"Sukkot" Leavitt review',
+  ]);
+});
+
+test('buildCensusQueries: weak title with no venue/creative still returns the primary', () => {
+  const show = { title: 'Shifters', category: 'off-broadway', openingDate: '2026-07-16' };
+  const qs = buildCensusQueries(show, { weakTitle: true, creativeNames: [] });
+  assert.deepEqual(qs, ['"Shifters" Off-Broadway review 2026']);
+});
+
+test('buildCensusQueries: generic venue words cannot scope a query', () => {
+  assert.equal(venueQueryToken('The Royal Theatre'), null);
+  assert.equal(venueQueryToken('Cherry Lane Theatre'), 'cherry');
+  assert.equal(venueQueryToken('Menier Chocolate Factory'), 'menier');
+  assert.equal(venueQueryToken(null), null);
+});
+
+test('buildCensusQueries: no title → empty array', () => {
+  assert.deepEqual(buildCensusQueries({ category: 'broadway' }, { weakTitle: true }), []);
+});

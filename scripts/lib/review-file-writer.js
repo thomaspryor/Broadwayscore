@@ -625,6 +625,10 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 function _mergeIntoExisting(filepath, existing, ctx) {
   const { showId, input, fields, dryRun, onMerge } = ctx;
   let changed = false;
+  // Snapshot the body BEFORE the field merge so the reclassify step below can
+  // tell "this merge just filled/replaced the text" apart from an unrelated
+  // metadata merge.
+  const fullTextBefore = existing.fullText || '';
 
   // Clear a stored JSON-LD pullQuote/excerpt BEFORE the field merge. The merge
   // below only copies an incoming field when `!existing[key]`; a JSON-LD blob is
@@ -729,6 +733,30 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     }
   }
   delete existing._prevSourcesLen;
+
+  // Reclassify content tier when THIS merge changed the body. The default
+  // field merge fills fullText into a previously-empty file (self-heal
+  // refetch, url-ingest onto a stub) but left the OLD body's verdict in
+  // place: contentTier 'stub' + incompleteReason 'scraper_garbage' from a
+  // garbage first fetch survived a clean refetch, so the healed review
+  // stayed excluded from rebuild forever (Sukkot / Theater Pizzazz
+  // 2026-07-25 — the missing half of the #362 self-heal chain). Manual tier
+  // locks (manualContentTier) always win; stale incompleteness metadata is
+  // dropped only when the fresh body actually classifies as usable.
+  if (existing.fullText && existing.fullText !== fullTextBefore && !existing.manualContentTier) {
+    const tierResult = classifyContentTier(existing);
+    const newTier = tierResult && tierResult.contentTier;
+    if (newTier && newTier !== existing.contentTier) {
+      existing.contentTier = newTier;
+      changed = true;
+    }
+    if (['complete', 'truncated', 'excerpt'].includes(existing.contentTier) &&
+        (existing.incompleteReason || existing.incompleteDetail)) {
+      delete existing.incompleteReason;
+      delete existing.incompleteDetail;
+      changed = true;
+    }
+  }
 
   if (!changed) {
     return { action: 'skipped', reason: 'no-changes', filepath };
