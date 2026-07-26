@@ -54,6 +54,14 @@ const DAILY_DIGEST_PATH = path.join(REPO, 'data', 'audit', 'daily-digest-snapsho
 const OPENING_DIGEST_PATH = path.join(REPO, 'data', 'audit', 'opening-digest-snapshot.json');
 const DAILY_DIGEST_MAX_AGE_H = 36;
 const OPENING_DIGEST_MAX_AGE_H = 36;
+// Card #511 (reddit-engagement-digest.js migration, same snapshot-fold class
+// as #364): the twice-daily r/Broadway digest no longer emails on its own
+// either — same fail-soft freshness pattern as HEALTH_DIGEST_PATH above.
+const REDDIT_DIGEST_PATH = path.join(REPO, 'data', 'audit', 'reddit-digest-snapshot.json');
+// reddit-engagement-digest.yml now runs once/day before the loop starts — a
+// snapshot older than this means the cron itself is stuck, not just
+// "yesterday's threads"; show nothing rather than pass off stale suggestions.
+const REDDIT_DIGEST_MAX_AGE_H = 36;
 // Raised 3 → 5 (S4-T2): approvals were arriving faster than 3/morning could
 // drain, so items aged out of sight behind a "+N more" line for days. The
 // counter below the items still names anything past the cap.
@@ -211,6 +219,19 @@ function readOpeningDigestSnapshot() {
     const snap = JSON.parse(fs.readFileSync(OPENING_DIGEST_PATH, 'utf8'));
     const ageH = (Date.now() - new Date(snap.generatedAt).getTime()) / 3600e3;
     if (!(ageH < OPENING_DIGEST_MAX_AGE_H)) return null;
+    return snap;
+  } catch {
+    return null;
+  }
+}
+
+// Card #511: reddit-engagement-digest.js's snapshot — same fail-soft
+// shape/reasoning as readHealthDigest above.
+function readRedditDigestSnapshot() {
+  try {
+    const snap = JSON.parse(fs.readFileSync(REDDIT_DIGEST_PATH, 'utf8'));
+    const ageH = (Date.now() - new Date(snap.generatedAt).getTime()) / 3600e3;
+    if (!(ageH < REDDIT_DIGEST_MAX_AGE_H)) return null;
     return snap;
   } catch {
     return null;
@@ -435,6 +456,9 @@ async function main() {
   // (score-drift + opening-night radar) — null when no fresh snapshot exists.
   const dailyDigest = readDailyDigestSnapshot();
   const openingDigest = readOpeningDigestSnapshot();
+  // Card #511: reddit-engagement-digest.js's twice-daily "worth replying to"
+  // digest folds in the same way. null when no fresh snapshot exists.
+  const redditDigest = readRedditDigestSnapshot();
 
   // Screenshot attachments (S2-T6): the owner reads this on a phone as often
   // as at the Mac, where a local file path is useless — the pictures have to
@@ -476,6 +500,7 @@ async function main() {
     health,
     dailyDigest,
     openingDigest,
+    redditDigest,
     recheck,
     prunedCount,
     moreAwaiting: Math.max(0, awaiting.length - items.length),
