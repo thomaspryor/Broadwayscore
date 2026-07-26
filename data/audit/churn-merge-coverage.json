@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-26T04:50:33.581Z",
+    "generatedAt": "2026-07-26T05:06:22.014Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -20,11 +20,15 @@
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 90
+      "churn": 89
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 35
+      "churn": 36
+    },
+    {
+      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
+      "churn": 34
     },
     {
       "path": "data/audit/alert-ledger.json",
@@ -32,10 +36,6 @@
     },
     {
       "path": "data/audit/autoclear-shadow-report.json",
-      "churn": 33
-    },
-    {
-      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
       "churn": 33
     },
     {
@@ -48,7 +48,7 @@
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 32
+      "churn": 33
     },
     {
       "path": "data/audit/we-gate-proving.json",
@@ -82,7 +82,7 @@
     },
     {
       "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
-      "churn": 62
+      "churn": 63
     },
     {
       "path": "public/opening-night-status.json",
@@ -108,12 +108,12 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 724,
+      "churn": 731,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 700,
+      "churn": 707,
       "mergeAttr": "ours"
     },
     {
@@ -123,7 +123,7 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 532,
+      "churn": 533,
       "mergeAttr": "union"
     },
     {
@@ -148,27 +148,27 @@
     },
     {
       "path": "data/audit/poller-backoff/hugo-marchand-artists-at-the-center-off-broadway-2026.json",
-      "churn": 106,
+      "churn": 105,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 105,
+      "churn": 104,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/shifters-off-broadway-2026.json",
-      "churn": 105,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/are-you-mad-at-me-off-broadway-2026.json",
-      "churn": 79,
+      "churn": 104,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 77,
+      "churn": 78,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/are-you-mad-at-me-off-broadway-2026.json",
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
@@ -238,7 +238,7 @@
     },
     {
       "path": "data/audit/poller-backoff/dukes-off-broadway-2026.json",
-      "churn": 47,
+      "churn": 46,
       "mergeAttr": "ours"
     },
     {
@@ -257,21 +257,6 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/hershey-felder-the-piano-and-me-off-broadway-2026.json",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026.json",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/show-review-gap.json",
       "churn": 34,
       "mergeAttr": "ours"
@@ -283,6 +268,21 @@
     },
     {
       "path": "data/audit/gap-audit-checkpoint.json",
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/hershey-felder-the-piano-and-me-off-broadway-2026.json",
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/the-whoopi-monologues-off-broadway-2026.json",
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026.json",
       "churn": 33,
       "mergeAttr": "ours"
     }
