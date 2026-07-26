@@ -13,6 +13,14 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-incomplete-reasons.js — Backfill incompleteReason on all non-complete review files.
+
+Usage:
+  node scripts/backfill-incomplete-reasons.js [options]
+  node scripts/backfill-incomplete-reasons.js --help, -h    print this usage and exit
+`;
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const FAILED_FETCHES_PATH = path.join(REVIEW_TEXTS_DIR, 'failed-fetches.json');
 
@@ -35,6 +43,8 @@ function loadFailedFetchMap() {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
   console.log('  Backfill incompleteReason');
   if (DRY_RUN) console.log('  *** DRY RUN — no files will be modified ***');

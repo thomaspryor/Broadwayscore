@@ -14,6 +14,14 @@ const path = require('path');
 const https = require('https');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-ticket-prices.js — Enrich ticketLinks[].priceFrom from TodayTix API.
+
+Usage:
+  node scripts/enrich-ticket-prices.js [options]
+  node scripts/enrich-ticket-prices.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -49,6 +57,8 @@ async function fetchAllTodayTixShows(location) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showsData = loadShows();
   const shows = showsData.shows;
 

@@ -21,6 +21,14 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const fs = require('fs');
 const path = require('path');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `cleanup-we-cross-market.js — Delete cross-market contamination from WE review directories.
+
+Usage:
+  node scripts/cleanup-we-cross-market.js [options]
+  node scripts/cleanup-we-cross-market.js --help, -h    print this usage and exit
+`;
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
@@ -28,6 +36,8 @@ const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json')
 const execute = process.argv.includes('--execute');
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   // Load shows.json to identify WE shows by category (not by glob pattern)
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const weShowIds = new Set(

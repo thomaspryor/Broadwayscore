@@ -20,6 +20,14 @@ const fs = require('fs');
 const path = require('path');
 const { sendAlert } = require('./lib/discord-notify');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `send-follow-notifications.js — Reads show-changes-digest.json + followers.json, sends notification.
+
+Usage:
+  node scripts/send-follow-notifications.js [options]
+  node scripts/send-follow-notifications.js --help, -h    print this usage and exit
+`;
 const {
   postJSON, sleep, escapeHtml, getScoreColor, getChangeAnchor,
   buildUnfollowUrl, buildFooterHtml, buildEmailHtml, buildOpeningNightHtml, siteNameForMarket,
@@ -57,6 +65,8 @@ function shouldNotify(changes) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
   if (!RESEND_API_KEY) {

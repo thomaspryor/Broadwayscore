@@ -26,6 +26,14 @@ const { shouldTombstone } = require('./lib/cast-tombstone');
 const { cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-cast.js — IBDB Cast Backfill Script.
+
+Usage:
+  node scripts/backfill-cast.js [options]
+  node scripts/backfill-cast.js --help, -h    print this usage and exit
+`;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
 
@@ -63,6 +71,8 @@ function sleep(ms) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
   console.log('IBDB CAST BACKFILL');
   console.log('='.repeat(60));

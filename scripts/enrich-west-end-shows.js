@@ -12,6 +12,14 @@ const https = require('https');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { isLondonMarket } = require('./lib/venue-classification');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-west-end-shows.js — Enrich West End shows with images and venue data from TodayTix London API.
+
+Usage:
+  node scripts/enrich-west-end-shows.js [options]
+  node scripts/enrich-west-end-shows.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -95,6 +103,8 @@ function matchShow(ttShow, weShows) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   // Load shows
   const showsData = loadShows();
   const shows = showsData.shows || showsData;
