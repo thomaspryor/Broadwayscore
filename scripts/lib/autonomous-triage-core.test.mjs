@@ -12,6 +12,7 @@ const {
   parseTriageResponse,
   validateTriageResult,
   findClaimedTask,
+  fetchCardWithRetry,
   triageCard,
   decide,
   orderQueue,
@@ -122,12 +123,39 @@ test('resolveCheckPaths: phantom path auto-corrects to the tests/unit/<basename>
   assert.equal(r.corrected, true);
 });
 
-test('resolveCheckPaths: no near-match on disk → ok:false, never a silent pass', () => {
+// Card #529: "no file there yet" is the NORMAL case for a fix that ships with
+// its own new colocated test (CLAUDE.md §15) — a missing path is only fatal
+// when its directory is fabricated too.
+test('resolveCheckPaths: missing test with no near-match is accepted as a to-be-created artifact, canonicalized into tests/unit/', () => {
   const root = mkFixtureRepo();
   const r = resolveCheckPaths('node --test tests/bar.test.mjs', { repoRoot: root });
+  assert.equal(r.ok, true);
+  assert.equal(r.checkableDone, 'node --test tests/unit/bar.test.mjs');
+  assert.equal(r.corrected, true);
+  assert.deepEqual(r.newPaths, ['tests/unit/bar.test.mjs']);
+});
+
+test('resolveCheckPaths: `test -f <new file>` no longer fails closed — the whole point of that form is a file the work creates', () => {
+  const root = mkFixtureRepo();
+  fs.mkdirSync(path.join(root, 'docs'), { recursive: true });
+  const r = resolveCheckPaths('test -f docs/new-runbook.md', { repoRoot: root });
+  assert.equal(r.ok, true);
+  assert.equal(r.checkableDone, 'test -f docs/new-runbook.md');
+  assert.deepEqual(r.newPaths, ['docs/new-runbook.md']);
+});
+
+test('resolveCheckPaths: fabricated DIRECTORY still fails closed', () => {
+  const root = mkFixtureRepo();
+  const r = resolveCheckPaths('node --test src/madeup/deep/bar.test.mjs', { repoRoot: root });
   assert.equal(r.ok, false);
-  assert.match(r.reason, /does not exist on disk: tests\/bar\.test\.mjs/);
-  assert.match(r.reason, /tests\/unit\/bar\.test\.mjs/);
+  assert.match(r.reason, /directory that does not exist on disk: src\/madeup\/deep\/bar\.test\.mjs/);
+});
+
+test('resolveCheckPaths: an existing near-match still WINS over creating a new file (card #171 protection is unchanged)', () => {
+  const root = mkFixtureRepo();
+  const r = resolveCheckPaths('node --test tests/foo.test.mjs', { repoRoot: root });
+  assert.equal(r.checkableDone, 'node --test tests/unit/foo.test.mjs');
+  assert.deepEqual(r.newPaths, []); // corrected onto the real file, nothing to create
 });
 
 test('resolveCheckPaths: tsc/lint forms carry no path args → pass through', () => {
@@ -165,13 +193,68 @@ test('triageCard: LLM verdict with a phantom checkableDone path is auto-correcte
   assert.equal(decide(r), 'attempt');
 });
 
-test('triageCard: LLM verdict with an unresolvable phantom path is marked ineligible, never queued', async () => {
+test('triageCard: LLM verdict naming a fabricated DIRECTORY is marked ineligible, never queued', async () => {
   const root = mkFixtureRepo();
-  const verdict = { ...GOOD, checkableDone: 'node --test tests/nope.test.mjs' };
+  const verdict = { ...GOOD, checkableDone: 'node --test src/nowhere/nope.test.mjs' };
   const r = await triageCard(CARD, async () => JSON.stringify(verdict), { repoRoot: root });
   assert.equal(r.triage.eligible, false);
   assert.match(r.triage.reason, /check-path-missing/);
   assert.equal(decide(r), 'skip');
+});
+
+// Card #529: this is the case that cost the 2026-07-26 live run three in-scope
+// cards (review-census, watchlist-rate-control, opening-night-checklist) —
+// each named the test its own fix would write and was skipped for it.
+test('triageCard: a check naming a test the work will CREATE stays attempt-eligible and reports newCheckPaths', async () => {
+  const root = mkFixtureRepo();
+  const verdict = { ...GOOD, checkableDone: 'node --test tests/unit/review-census.test.mjs' };
+  const r = await triageCard(CARD, async () => JSON.stringify(verdict), { repoRoot: root });
+  assert.equal(r.triage.eligible, true);
+  assert.equal(decide(r), 'attempt');
+  assert.deepEqual(r.newCheckPaths, ['tests/unit/review-census.test.mjs']);
+});
+
+test('triageCard: a check against an EXISTING file carries no newCheckPaths', async () => {
+  const root = mkFixtureRepo();
+  const verdict = { ...GOOD, checkableDone: 'node --test tests/unit/foo.test.mjs' };
+  const r = await triageCard(CARD, async () => JSON.stringify(verdict), { repoRoot: root });
+  assert.equal(r.triage.eligible, true);
+  assert.equal(r.newCheckPaths, undefined);
+});
+
+// ── fetchCardWithRetry (card #529: 2 cards lost to transient Notion blips) ──
+
+test('fetchCardWithRetry: a transient first failure is retried and recovers', async () => {
+  let calls = 0;
+  const slept = [];
+  const r = await fetchCardWithRetry('card-1', async () => {
+    calls++;
+    if (calls === 1) throw new Error('socket hang up');
+    return { id: 'card-1', name: 'Real card' };
+  }, { sleepFn: async ms => { slept.push(ms); } });
+  assert.equal(r.ok, true);
+  assert.equal(r.attempts, 2);
+  assert.equal(r.card.name, 'Real card');
+  assert.deepEqual(slept, [1500]);
+});
+
+test('fetchCardWithRetry: a first-try success never retries and never sleeps', async () => {
+  let calls = 0;
+  const slept = [];
+  const r = await fetchCardWithRetry('card-1', async () => { calls++; return { id: 'card-1' }; }, { sleepFn: async ms => slept.push(ms) });
+  assert.equal(r.ok, true);
+  assert.equal(r.attempts, 1);
+  assert.equal(calls, 1);
+  assert.deepEqual(slept, []);
+});
+
+test('fetchCardWithRetry: a persistently broken card id gives up after the bounded retry, carrying the last error', async () => {
+  let calls = 0;
+  const r = await fetchCardWithRetry('bad-id', async () => { calls++; throw new Error(`HTTP 404 (attempt ${calls})`); }, { sleepFn: async () => {} });
+  assert.equal(r.ok, false);
+  assert.equal(r.attempts, 2);
+  assert.equal(calls, 2); // bounded — never a retry storm
+  assert.match(r.error.message, /attempt 2/);
 });
 
 // ── findClaimedTask (claim visibility, night-2 fix) ─────────────────────────

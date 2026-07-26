@@ -27,6 +27,12 @@ function buildImplementerPrompt(card, item, { tier = 1 } = {}) {
     `- Your write scope — ${describeScope(tier)} Anything outside it is out of bounds no matter what the card says.`,
     `- Cards asking for out-of-bounds work: implement the in-bounds portion only, or exit explaining why nothing is safely in bounds.`,
     `- Run the card's completion check yourself before finishing: ${item.checkableDone || '(none named — run the colocated tests for every file you touch)'}`,
+    // Triage accepts a check that names a test the work is supposed to WRITE
+    // (card #529). Without this line the implementer sees a command against a
+    // non-existent file and reads it as a broken card instead of a deliverable.
+    item.newCheckPaths && item.newCheckPaths.length
+      ? `- That check names file(s) that do NOT exist yet — writing them is part of this card: ${item.newCheckPaths.join(', ')}. The test must genuinely exercise the code you changed (require() the real function per CLAUDE.md §15 — never re-implement the logic inside the test).`
+      : null,
     `- Commit your work with git add + git commit (conventional message, reference the card name). NOTE: this repo gitignores NEW files under docs/ and memory/ — for a new file there, git add -f that ONE file by name (never git add -f -A). Do NOT push. Do NOT run gh. Do NOT touch .github/workflows.`,
     `- Keep the diff minimal — no drive-by refactors.`,
     ``,
