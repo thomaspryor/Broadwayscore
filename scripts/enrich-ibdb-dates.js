@@ -35,6 +35,7 @@ Usage:
   node scripts/enrich-ibdb-dates.js [options]
   node scripts/enrich-ibdb-dates.js --help, -h    print this usage and exit
 `;
+// hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
 // Parse arguments

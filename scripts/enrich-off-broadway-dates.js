@@ -75,6 +75,7 @@ Usage:
   node scripts/enrich-off-broadway-dates.js [options]
   node scripts/enrich-off-broadway-dates.js --help, -h    print this usage and exit
 `;
+// hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
 const {
   PLAYBILL_OB_URL,
   parsePlaybillOBSchedule,

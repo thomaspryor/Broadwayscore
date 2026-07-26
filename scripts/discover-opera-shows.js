@@ -35,6 +35,7 @@ Usage:
   node scripts/discover-opera-shows.js [options]
   node scripts/discover-opera-shows.js --help, -h    print this usage and exit
 `;
+// hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
 // opera-show-ids.ts lives in the source tree — find it relative to __dirname
 // regardless of whether we're in the main repo or a worktree.
 const OPERA_IDS_FILE = (() => {

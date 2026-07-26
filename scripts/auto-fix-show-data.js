@@ -31,6 +31,7 @@ Usage:
   node scripts/auto-fix-show-data.js [options]
   node scripts/auto-fix-show-data.js --help, -h    print this usage and exit
 `;
+// hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
