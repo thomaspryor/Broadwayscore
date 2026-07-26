@@ -28,6 +28,14 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `scrape-show-score-audience.js — Scrape Show Score audience data and update audience-buzz.json.
+
+Usage:
+  node scripts/scrape-show-score-audience.js [options]
+  node scripts/scrape-show-score-audience.js --help, -h    print this usage and exit
+`;
 // Lazy-load Playwright — only imported if needed as fallback
 let playwrightBrowser = null;
 let playwrightUnavailable = false; // Cache permanent failures (missing binaries)
@@ -878,6 +886,8 @@ function updateAudienceBuzz(showId, showTitle, showScoreData) {
  * Main function
  */
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('Show Score Audience Data Scraper');
   console.log('================================\n');
 

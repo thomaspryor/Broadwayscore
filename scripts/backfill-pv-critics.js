@@ -25,6 +25,14 @@ const reviewsDir = 'data/review-texts';
 const normalization = require('./lib/review-normalization');
 const { extractAuthorFromHtml, isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-pv-critics.js — Backfill critic names for Playbill Verdict reviews with "unknown" critic.
+
+Usage:
+  node scripts/backfill-pv-critics.js [options]
+  node scripts/backfill-pv-critics.js --help, -h    print this usage and exit
+`;
 // --- Collect PV unknown-critic reviews ---
 function collectUnknowns() {
   const dirs = fs.readdirSync(reviewsDir).filter(d => {
@@ -140,6 +148,8 @@ function updateReviewFile(filePath, dir, oldFile, outletId, criticName, data) {
 
 // --- Main ---
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const unknowns = collectUnknowns();
   console.log(`Found ${unknowns.length} PV reviews with unknown critic`);
   if (outletFilter) console.log(`Filtering to outlet: ${outletFilter}`);

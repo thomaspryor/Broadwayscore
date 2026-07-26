@@ -30,6 +30,14 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `extract-pull-quotes.js — Extract Pull Quotes via LLM.
+
+Usage:
+  node scripts/extract-pull-quotes.js [options]
+  node scripts/extract-pull-quotes.js --help, -h    print this usage and exit
+`;
 // --- CLI args ---
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
@@ -472,6 +480,8 @@ async function processReview(entry) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log(`\n=== Extract Pull Quotes via LLM ===`);
   console.log(`Provider: ${PROVIDER} | Concurrency: ${CONCURRENCY} | Dry run: ${DRY_RUN} | Overwrite: ${OVERWRITE}`);
   if (SHOW_FILTER) console.log(`Show filter: ${SHOW_FILTER}`);

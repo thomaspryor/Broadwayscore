@@ -35,6 +35,14 @@ const { extractArticleText } = require('./lib/article-extractor');
 const { normalizeCritic, normalizeUrl } = require('./lib/review-normalization');
 const { safeRenameReview, safeUnlinkReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-theaterlife-bylines.js — Backfill: re-attribute the phantom "Barry Gordin" theater-life reviews.
+
+Usage:
+  node scripts/backfill-theaterlife-bylines.js [options]
+  node scripts/backfill-theaterlife-bylines.js --help, -h    print this usage and exit
+`;
 // llm-scores sidecars live at <repoRoot>/data/llm-scores/<showId>/<file>. When we
 // delete a phantom duplicate, remove its orphaned sidecar too (the correctly-named
 // sibling keeps/earns its own on the next scoring pass). Resolve the repo root the
@@ -158,6 +166,8 @@ function richness(d) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const phantoms = findPhantomFiles(ROOT);
   const report = { renamed: [], duplicate: [], conflict: [], unparseable: [], warnings: [], errors: [] };
 

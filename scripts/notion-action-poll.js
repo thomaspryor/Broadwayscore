@@ -42,6 +42,14 @@ const LOG_DIR = path.join(require('os').homedir(), 'Library', 'Logs');
 const MEMORY_DIR = path.join(__dirname, 'agent-memory');
 const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `notion-action-poll.js — Notion Action Queue Poller.
+
+Usage:
+  node scripts/notion-action-poll.js [options]
+  node scripts/notion-action-poll.js --help, -h    print this usage and exit
+`;
 // Reply-loop state: per-card session IDs + comment watermarks so owner comments
 // resume the SAME Claude session (conversation continuity from the Notion app).
 const STATE_DIR = path.join(require('os').homedir(), '.claude-action-dispatcher');
@@ -795,6 +803,8 @@ Respond helpfully. If they're asking a question, answer it from your existing co
 // ── Main ─────────────────────────────────────────────────────────────
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   if (!process.env.NOTION_API_KEY) {
     console.error('NOTION_API_KEY not set in .env');
     process.exit(1);

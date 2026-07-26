@@ -16,6 +16,14 @@ const path = require('path');
 const { hasStaleUpcomingTag } = require('./lib/opening-night-completeness.js');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-stale-upcoming-tags.js — Drops the stale 'upcoming' tag from shows that are already status=open.
+
+Usage:
+  node scripts/fix-stale-upcoming-tags.js [options]
+  node scripts/fix-stale-upcoming-tags.js --help, -h    print this usage and exit
+`;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
 const args = process.argv.slice(2);
@@ -23,6 +31,8 @@ const apply = args.includes('--apply');
 const showIdArg = (args.find(a => a.startsWith('--show=')) || '').replace('--show=', '') || null;
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const data = loadShows();
   const shows = data.shows || [];
 

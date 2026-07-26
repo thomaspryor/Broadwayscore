@@ -63,6 +63,21 @@ const QUOTE_MAX_CHARS = 120;
 const QUOTES_ON_CARD = 2;
 
 /**
+ * Minimum overall relevance rate (see computeRelevanceRates) required before
+ * ANY quote is shown on a card. Per-mention `relevant` flags come from an
+ * LLM classifier and are occasionally wrong (e.g. a bootleg-recording
+ * solicitation or an unrelated city's Pride-parade post marked relevant).
+ * When the corpus-wide relevance rate is this low, the show's text sample is
+ * mostly noise about something else entirely (title collision) — showing
+ * ANY quote risks surfacing exactly that noise, so we show none rather than
+ * pick the "least bad" of a bad sample. Below this threshold (or when
+ * relevance couldn't be measured at all — no classified sample), no quotes
+ * render. See 2026-07-26 credibility audit (pride-west-end-2026:
+ * relevanceRates.overall=0.034 still showed 2 quotes before this fix).
+ */
+const MIN_QUOTE_RELEVANCE = 0.15;
+
+/**
  * Tier assignment thresholds. Tuned empirically against trial data — revisit
  * after first month of real baselines.
  */
@@ -179,7 +194,7 @@ function meaningfulContentLength(text) {
 function filterTopQuotes(mentions, targetSentiment, maxQuotes = QUOTES_ON_CARD) {
   if (!Array.isArray(mentions)) return [];
   const candidates = mentions
-    .filter((m) => m && m.relevant)
+    .filter((m) => m && m.relevant === true)
     .filter((m) => meaningfulContentLength(m.text) >= 15)
     .filter((m) => !containsBlockedContent(m.text))
     .filter((m) => m.sentiment === targetSentiment);
@@ -261,17 +276,32 @@ function computeRelevanceRates(mentions) {
 }
 
 /**
+ * Conservative discount applied to the X counter when there is no text
+ * sample AT ALL (no Reddit/Bluesky classified mentions) to borrow a rate
+ * from. Falling all the way back to 1 (fully trusted) let raw title-
+ * collision noise dominate ranking for shows with sparse Reddit/Bluesky
+ * chatter but a common-word title (Gatsby, Wicked, Chicago) — the X free-
+ * search API has no relevance classifier of its own, so an un-calibrated X
+ * counter should default to "mostly noise," not "mostly signal." See the
+ * 2026-07-26 credibility audit (Gatsby: 3846 raw X count, 0.3% substantiation).
+ */
+const X_UNSAMPLED_FALLBACK_RATE = 0.2;
+
+/**
  * Relevance rate to apply to a counter signal. Sample-backed platforms use
  * their own rate; X (no text sample since the free-tier death) borrows the
  * overall rate — same query shape, similar noise profile; Wikipedia is not
- * a query-hit count so it takes no relevance discount.
+ * a query-hit count so it takes no relevance discount. When there's no
+ * sample-backed rate available AT ALL, X gets a conservative fixed discount
+ * instead of full trust (see X_UNSAMPLED_FALLBACK_RATE); other signals keep
+ * the historical full-trust fallback since they're the sample itself.
  */
 function relevanceRateFor(signal, rates) {
   if (signal === 'wikipedia') return 1;
   const platformRate = rates?.byPlatform?.[signal];
   if (typeof platformRate === 'number') return platformRate;
   if (typeof rates?.overall === 'number') return rates.overall;
-  return 1;
+  return signal === 'x' ? X_UNSAMPLED_FALLBACK_RATE : 1;
 }
 
 /**
@@ -335,10 +365,24 @@ function computeWeeklyMentions(counters) {
 }
 
 /**
+ * Neutral stand-in used for composite/percentile math when a show has NO
+ * opinion-bearing posts at all (positivePct === null — see computePositivePct).
+ * Defaulting an unknown sentiment to 0 (the old behavior) collapsed every
+ * zero-opinion show's composite to 0 regardless of volume, which is what let
+ * loud, real shows with a thin sentiment sample rank below quiet zero-volume
+ * ones. 50 says "no evidence either way" without punishing or rewarding.
+ */
+const NEUTRAL_POSITIVE_PCT = 50;
+
+/**
  * Composite score blending raw volume with positive sentiment %. Used for
  * peer ranking. A loud-but-hated show shouldn't outrank a smaller positive one.
  *
  *   composite = volume × (positivePct / 100)
+ *
+ * positivePct === null (no opinion-bearing posts to judge sentiment from)
+ * is treated as NEUTRAL_POSITIVE_PCT, not 0 — an unknown sentiment isn't the
+ * same claim as "100% negative," and shouldn't be scored as if it were.
  *
  * Examples:
  *   122 mentions × 78% = 95.2  (Cats — buzzy and well-liked)
@@ -347,7 +391,7 @@ function computeWeeklyMentions(counters) {
  */
 function computeCompositeScore(volume, positivePct) {
   const v = Number.isFinite(volume) ? volume : 0;
-  const p = Number.isFinite(positivePct) ? positivePct : 0;
+  const p = Number.isFinite(positivePct) ? positivePct : NEUTRAL_POSITIVE_PCT;
   return v * (p / 100);
 }
 
@@ -370,10 +414,21 @@ function computeCompositeScore(volume, positivePct) {
  * No 8-week baseline required. Self-baseline can be added later as a
  * SECONDARY signal (e.g., to flag risers based on WoW growth) but is no
  * longer the primary tier driver.
+ *
+ * Sentiment-evidence gate: positivePct === null means there were zero
+ * opinion-bearing posts to judge sentiment from (see computePositivePct).
+ * A show with no sentiment evidence can never be tiered Troubled, Buzzing,
+ * or Rising — all three require a sentiment CLAIM, and there isn't one.
+ * It falls through to Steady (or Hidden, from the volume gate above).
  */
 function derivePeerTier({ volume, effectiveVolume, positivePct, peerStats }) {
   if (!Number.isFinite(volume) || volume < MIN_MENTIONS_FOR_CARD) {
     return 'Hidden';
+  }
+
+  const hasSentiment = Number.isFinite(positivePct);
+  if (!hasSentiment) {
+    return 'Steady';
   }
 
   // Ranking strength comes from the Pulse Index effectiveVolume (relevance-
@@ -385,7 +440,7 @@ function derivePeerTier({ volume, effectiveVolume, positivePct, peerStats }) {
     Number.isFinite(effectiveVolume) ? effectiveVolume : volume,
     positivePct,
   );
-  const pct = typeof positivePct === 'number' ? positivePct : 0;
+  const pct = positivePct;
   const stats = peerStats || {};
 
   // Troubled first: high volume + bad sentiment trumps everything else
@@ -442,9 +497,13 @@ function computePeerStats(shows) {
     return { compositeP80: 0, compositeP60: 0, volumeP50: 0, marketCount: 0 };
   }
   const composites = shows.map((s) =>
+    // Pass positivePct through as-is (not `|| 0`) — computeCompositeScore
+    // treats a real 0% and a null (no opinion sample) differently, and
+    // coercing null to 0 here before it gets there would erase that
+    // distinction and re-introduce the null-sentiment tier bug.
     computeCompositeScore(
       Number.isFinite(s.effectiveVolume) ? s.effectiveVolume : (s.volume || 0),
-      s.positivePct || 0,
+      s.positivePct,
     ),
   );
   const volumes = shows.map((s) => s.volume || 0);
@@ -525,10 +584,16 @@ function updateBaseline(oldBaseline, newWeeklyVolume) {
  * "neutral" posts (informational, no opinion signal, official promos) are
  * excluded from the denominator entirely — they're about the show but
  * carry no sentiment signal, so including them drags every show toward 50%.
+ *
+ * Returns null when there are ZERO opinion-bearing posts — this is a
+ * distinct state from "100% negative" or any other real percentage. Cards
+ * previously displayed this as "0% positive," branding shows with no
+ * sentiment data at all (e.g. purely neutral/promotional chatter) as
+ * outright disliked. Callers must treat null as "unknown," not "bad."
  */
 function computePositivePct(mentions) {
   const { pos, total } = computeOpinionSample(mentions);
-  return total === 0 ? 0 : Math.round((pos / total) * 100);
+  return total === 0 ? null : Math.round((pos / total) * 100);
 }
 
 /**
@@ -587,7 +652,7 @@ function computePlatformBreakdown(mentions) {
  *   {
  *     tier: 'Buzzing' | 'Rising' | 'Steady' | 'Troubled' | 'BuildingBaseline' | 'Hidden',
  *     volume: number,                  // count of relevant mentions
- *     positivePct: number,             // 0-100
+ *     positivePct: number | null,      // 0-100, or null with zero opinion-bearing posts
  *     weekOverWeekPct: number | null,
  *     baselineMultiple: number | null, // null if BuildingBaseline
  *     platformBreakdown: { x, tiktok },
@@ -628,11 +693,18 @@ function computeSocialPulse({ mentions, counters, baseline, priorVolume, peerSta
   else if (tier === 'Hidden' || tier === 'BuildingBaseline') targetSentiment = 'positive'; // best-face fallback
   else targetSentiment = 'positive';
 
-  let topQuotes = filterTopQuotes(mentions || [], targetSentiment);
-  // Fallback: if no quotes in target sentiment, try 'mixed'
-  if (topQuotes.length < QUOTES_ON_CARD) {
-    const mixedFill = filterTopQuotes(mentions || [], 'mixed', QUOTES_ON_CARD - topQuotes.length);
-    topQuotes = topQuotes.concat(mixedFill);
+  // Quote relevance gate: below MIN_QUOTE_RELEVANCE (or unmeasured — no
+  // classified sample at all), the text corpus is too noisy to trust ANY
+  // per-mention `relevant` flag enough to surface a quote publicly. Show
+  // none rather than the "least bad" pick from a mostly-irrelevant sample.
+  let topQuotes = [];
+  if (typeof relevanceRates.overall === 'number' && relevanceRates.overall >= MIN_QUOTE_RELEVANCE) {
+    topQuotes = filterTopQuotes(mentions || [], targetSentiment);
+    // Fallback: if no quotes in target sentiment, try 'mixed'
+    if (topQuotes.length < QUOTES_ON_CARD) {
+      const mixedFill = filterTopQuotes(mentions || [], 'mixed', QUOTES_ON_CARD - topQuotes.length);
+      topQuotes = topQuotes.concat(mixedFill);
+    }
   }
 
   const baselineMultiple =
@@ -685,6 +757,9 @@ module.exports = {
   BASELINE_REQUIRED_WEEKS,
   QUOTE_MAX_CHARS,
   QUOTES_ON_CARD,
+  MIN_QUOTE_RELEVANCE,
+  NEUTRAL_POSITIVE_PCT,
+  X_UNSAMPLED_FALLBACK_RATE,
   TIER_RULES,
   QUOTE_BLOCKLIST,
   SIGNAL_WEIGHTS,
