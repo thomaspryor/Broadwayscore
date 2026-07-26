@@ -28,12 +28,18 @@ function loadCutoffsViaTsc(tsSrc) {
   // adding a runtime ts-node dep for this CI-only script.
   const tmpDir = `/tmp/cutoff-freshness-${process.pid}`;
   execSync(`mkdir -p ${tmpDir}`, { stdio: 'inherit' });
+  // --resolveJsonModule: tony-cutoffs.ts imports data/tony-ceremony-dates.json
+  // (single ceremony-date store). That import makes tsc nest output under the
+  // shared root (src/lib/... + data/...), so locate the emitted JS instead of
+  // assuming it lands at the outDir top level.
   execSync(
-    `npx tsc --module commonjs --target es2020 --moduleResolution node --esModuleInterop --skipLibCheck --outDir ${tmpDir} ${tsSrc}`,
+    `npx tsc --module commonjs --target es2020 --moduleResolution node --esModuleInterop --skipLibCheck --resolveJsonModule --outDir ${tmpDir} ${tsSrc}`,
     { stdio: 'inherit' }
   );
   const baseName = path.basename(tsSrc, '.ts');
-  return require(path.join(tmpDir, baseName));
+  const emitted = execSync(`find ${tmpDir} -name ${baseName}.js`).toString().trim().split('\n')[0];
+  if (!emitted) throw new Error(`tsc emitted no ${baseName}.js under ${tmpDir}`);
+  return require(emitted);
 }
 
 function daysBetween(isoA, isoB) {
