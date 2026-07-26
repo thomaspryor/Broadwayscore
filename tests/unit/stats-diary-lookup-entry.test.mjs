@@ -1,4 +1,5 @@
 /**
+// TESTS-VS-DERIVED-DATA-EXEMPT: CJS-mirror parity canary — diffs the mirror against the real TS normalizer across the LIVE venue corpus on purpose; assertions are structural (parity), not hardcoded facts
  * scripts/lib/diary-lookup-entry.js — the build-time CommonJS mirror of the
  * pure helpers in src/lib/stats/.
  *
