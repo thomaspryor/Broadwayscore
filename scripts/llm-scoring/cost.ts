@@ -43,12 +43,14 @@ export const COST_PER_MILLION_TOKENS = {
   // model name routing matches the inline logic at index.ts L1516.
   'claude-sonnet': { input: 3.00, output: 15.00 },
   'claude-haiku':  { input: 0.80, output: 4.00 },
-  // OpenAI — gpt-4o (legacy, retired from OpenAI's pricing page; retained
-  // for callers not yet migrated off it and for A/B cost comparisons).
+  // OpenAI — gpt-4o. This is the ENSEMBLE DEFAULT (see ensemble-scorer.ts) —
+  // removed from OpenAI's current pricing page but still the live/served model.
   openai: { input: 2.50, output: 10.00 },
-  // OpenAI — gpt-5.4-mini (ensemble default as of task #504, 2026-07-26;
-  // ~70% cheaper than gpt-4o; cached input billed separately at $0.075/M,
-  // not modeled here since the ensemble leg doesn't use prompt caching).
+  // OpenAI — gpt-5.4-mini. Evaluated as a cheaper replacement in task #504
+  // (2026-07-26) — ~70% cheaper than gpt-4o — but its real A/B (n=24 reviews)
+  // failed the rule-13 bucket-shift gate, so it is NOT the ensemble default.
+  // Kept priced here so --openai-model= re-tests don't silently mis-cost.
+  // Cached input billed separately at $0.075/M, not modeled here.
   'openai-gpt54-mini': { input: 0.75, output: 4.50 },
   // Gemini — 2.5-flash: $0.30 in / $2.50 out (verified against Google's
   // published pricing 2026-07-26; the previous 1.25/5.00 were 2.5-PRO
