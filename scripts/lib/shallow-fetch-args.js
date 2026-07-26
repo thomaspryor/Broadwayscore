@@ -55,9 +55,18 @@
  */
 
 const DEFAULT_SLACK_SEC = 1800; // 30 min either side of the base commit's date
-// Only reached when the boundary date is unusable. Kept at the measured
-// --depth=200 (46s) rather than something larger: it must still finish inside
-// GIT_NET_TIMEOUT_SEC=90, and 200 commits covers ~80 min of this repo's churn.
+// Only reached when the boundary date is unusable. Emitted as --deepen, NOT
+// --depth, and that distinction is a correctness fix, not style:
+// `git rev-parse --is-shallow-repository` reports true whenever a .git/shallow
+// graft file EXISTS — it says nothing about how much history is actually
+// present. A long-lived developer clone can carry a stale graft while holding
+// ~900 commits; `--depth=200` there would SHORTEN it to 200 and silently
+// discard ~700 commits of local history. `--deepen=200` is relative: it only
+// ever ADDS depth, so it is identical on the depth-1 CI checkout this exists
+// for (1 -> 201) and harmless on a deep clone. Caught by an independent review
+// of this fix, 2026-07-26. Size is the measured 200 (~41s for --deepen, ~46s
+// for --depth): it must still finish inside GIT_NET_TIMEOUT_SEC=90, and 200
+// commits covers ~80 min of this repo's churn.
 const DEFAULT_FALLBACK_DEPTH = 200;
 
 /**
@@ -83,10 +92,11 @@ function shallowFetchArgs(opts = {}) {
 
   const epoch = Number(oldestCommitEpoch);
   if (!Number.isFinite(epoch) || epoch <= 0) {
-    // No usable boundary date (empty/corrupt log). A fixed depth still bounds
-    // the transfer; it may or may not restore ancestry, and the caller's
-    // post-fetch ancestry check escalates if it doesn't.
-    return [`--depth=${fallbackDepth}`];
+    // No usable boundary date (empty/corrupt log). A relative deepen still
+    // bounds the transfer without ever shortening existing history; it may or
+    // may not restore ancestry, and the caller's post-fetch ancestry check
+    // escalates if it doesn't.
+    return [`--deepen=${fallbackDepth}`];
   }
 
   const slack = Number.isFinite(Number(slackSec)) && Number(slackSec) > 0 ? Math.floor(Number(slackSec)) : 0;
