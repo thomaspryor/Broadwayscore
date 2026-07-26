@@ -423,8 +423,18 @@ Respond with ONLY a JSON object in this exact format:
   return await callClaude(prompt);
 }
 
-// CLI entry point
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+// CLI entry point. realpath both sides: the ESM loader realpaths
+// import.meta.url but Node only path.resolve()s argv[1], so a symlinked
+// invocation path (worktree, /tmp→/private/tmp) would silently skip the CLI
+// and exit 0 looking green.
+const _invokedDirectly = (() => {
+  try {
+    return !!process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url);
+  } catch {
+    return false;
+  }
+})();
+if (_invokedDirectly) {
   const args = process.argv.slice(2);
   let message = '';
   let show = '';

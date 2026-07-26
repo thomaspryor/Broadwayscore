@@ -97,12 +97,19 @@ jobs:
             for (const entry of undiagnosed) {
               const { item, submission } = entry;
               try {
+                // Content-addition requests (missing show/reviews) deliberately
+                // skip diagnosis — they're data work, not code bugs.
+                const isContentRequest = item.contentRequest === true;
                 const issue = await github.rest.issues.create({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  title: `Bug report needs manual review (auto-diagnosis failed): ${(item.summary || 'no summary').substring(0, 60)}`,
+                  title: isContentRequest
+                    ? `Content request needs review: ${(item.summary || 'no summary').substring(0, 60)}`
+                    : `Bug report needs manual review (auto-diagnosis failed): ${(item.summary || 'no summary').substring(0, 60)}`,
                   body: [
-                    `Auto-diagnosis failed for this feedback submission — review manually.`,
+                    isContentRequest
+                      ? `Content-addition request from user feedback — needs data work (add show/reviews), not a code fix.`
+                      : `Auto-diagnosis failed for this feedback submission — review manually.`,
                     '',
                     `**From:** ${submission.name || 'Anonymous'} (${submission.email || 'no email'}) | **Show:** ${submission.show || 'N/A'} | **Priority:** ${item.priority || 'unknown'}`,
                     '',

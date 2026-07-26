@@ -18,6 +18,7 @@ const require = createRequire(import.meta.url);
 const { buildFeedbackThankYouEmail, postJSON } = require('./lib/email-templates.js');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { loadPendingDiagnoses, mergePendingDiagnoses } = require('./lib/pending-diagnoses.js');
+const { buildCategorizationPrompt, parseCategorizedResponse } = require('./lib/feedback-categorize.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -162,47 +163,7 @@ function filterSubmissions(submissions, tracking) {
 async function categorizeFeedback(submissions) {
   if (submissions.length === 0) return [];
 
-  const submissionsText = submissions.map((sub, idx) => {
-    return `
-SUBMISSION ${idx + 1}:
-- Category (user-selected): ${sub.category || 'Not specified'}
-- Name: ${sub.name || 'Anonymous'}
-- Email: ${sub.email || 'Not provided'}
-- Show: ${sub.show || 'N/A'}
-- Message: ${sub.message}
-- Submitted: ${new Date(sub._date || sub.createdAt).toLocaleDateString()}
-`;
-  }).join('\n---\n');
-
-  const prompt = `You are analyzing user feedback submissions for Broadway Scorecard, a website that aggregates critic reviews and ratings for Broadway, Off-Broadway, and West End shows — plus Broadway-aimed regional tryouts and select regional productions (the catalog already includes regional entries).
-
-Categorize each submission and provide:
-1. **Category** (Bug, Feature Request, Content Error, Praise, Other)
-2. **Priority** (High, Medium, Low)
-3. **Summary** (1-2 sentences)
-4. **Recommended Action** (brief suggestion)
-
-Categorization rules:
-- A request to add a missing show, or missing reviews/data for a show the user names (ANY market, including regional tryouts), is "Content Error" — never "Feature Request" or "Other". Missing content is actionable data work; only Bug and Content Error submissions reach the maintainer, so misfiling these makes them vanish silently.
-- Never declare a request out of scope because of its market or venue. Scope decisions belong to the maintainer — flag it as Content Error and let the pipeline surface it.
-- "Feature Request" is for new site functionality (filters, pages, features), not for content/data additions.
-
-SUBMISSIONS:
-${submissionsText}
-
-Respond in this JSON format:
-{
-  "categorized": [
-    {
-      "submissionNumber": 1,
-      "category": "Bug|Feature Request|Content Error|Praise|Other",
-      "priority": "High|Medium|Low",
-      "summary": "Brief summary of the feedback",
-      "recommendedAction": "What should be done about this",
-      "userCategory": "What the user selected"
-    }
-  ]
-}`;
+  const prompt = buildCategorizationPrompt(submissions);
 
   console.log('Categorizing feedback with Claude API...\n');
 
@@ -212,14 +173,7 @@ Respond in this JSON format:
     messages: [{ role: 'user', content: prompt }]
   });
 
-  const responseText = message.content[0].text;
-  const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) {
-    throw new Error('Could not parse Claude response as JSON');
-  }
-
-  const result = JSON.parse(jsonMatch[0]);
-  return result.categorized || [];
+  return parseCategorizedResponse(message.content[0].text);
 }
 
 /**
@@ -438,8 +392,10 @@ async function main() {
       const cat = categorized[i];
       const sub = submissions[i];
 
-      // Bug/Content Error emails are sent after resolution, not now
-      if (cat.category === 'Bug' || cat.category === 'Content Error') continue;
+      // Bug/Content Error emails are sent after resolution, not now — except
+      // content-addition requests, which bypass diagnosis/auto-fix entirely
+      // and would otherwise never get any acknowledgement.
+      if ((cat.category === 'Bug' || cat.category === 'Content Error') && !cat.contentRequest) continue;
 
       if (sub.email) {
         const sent = await sendThankYouEmail(sub.email, sub.name, cat.category, sub.show);
@@ -459,6 +415,16 @@ async function main() {
 
       const sub = submissions[item.submissionNumber - 1];
       if (!sub) continue;
+
+      if (item.contentRequest) {
+        // Content-addition requests aren't code bugs — diagnoseBug would
+        // hallucinate file-level diagnoses. A null diagnosis routes them to
+        // the workflow's needs-review issue path so the request still reaches
+        // the maintainer without burning an LLM call or an auto-fix dispatch.
+        console.log(`Content request (no diagnosis): ${item.summary}`);
+        bugDiagnoses.push({ item, submission: sub, diagnosis: null });
+        continue;
+      }
 
       console.log(`Diagnosing: ${item.summary}`);
       try {
@@ -514,10 +480,4 @@ async function main() {
   }
 }
 
-// Export for tests (test-extraction pattern: tests require the real function).
-// main() only runs when invoked directly, not on import.
-export { categorizeFeedback };
-
-if (process.argv[1] === __filename) {
-  main();
-}
+main();
