@@ -72,29 +72,34 @@ Inspiration audit:
   years** (2026, 2025 …), plus All time. Section headers: All time · Seasons ·
   Years. Default after first launch: current season.
 
-**Stats module order (v2):**
+**Stats module order (v2.1 — trimmed after external review, §11):**
 1. Marquee numbers (hero tiles)
 2. **Shows per year** ← priority 4
 3. **Broadway theaters** ← priority 2
-4. Ratings
-5. You vs. the Critics ⭐
-6. Tony & the Canon ⭐
+4. You vs. the Critics ⭐
+5. Tony & the Canon ⭐
+6. Ratings
 7. People ⭐
 8. The Mix
-9. Records & Superlatives
-10. Habits & Streaks
-11. Curtain Call teaser (Nov–Jan) / share hub
+9. Records & Superlatives (absorbs the fun one-offs; includes the
+   total-audience counter, §5.5)
+10. Curtain Call teaser (June + Nov–Jan) / share hub
 
 ⭐ = differentiators Mezzanine cannot build. Modules hide below data
-thresholds (§7).
+thresholds (§7). **Habits & Streaks is cut as a standalone module** (generic
+tracker fluff — both external reviewers); its two good stats (busiest month,
+current streak) already live in the Shows-per-year records strip.
 
 ## 3. Priority modules
 
 ### 3.1 Marquee numbers (hero)
-Four stat tiles: **Shows** (diary count), **Hours in a seat** (Σ runtime `rt`,
-fallback 2h30m musicals / 2h plays; sub-label converts to days), **Theaters**
-(distinct venues), **This year** (count + ▲/▼ pace vs. same date last year).
-Tabular numerals; animated `numericText` transitions.
+Four stat tiles: **Shows** (diary count), **Hours in a seat** (Σ runtime `rt`;
+fallback 2h30m musicals / 2h plays — if >25% of entries rely on the fallback,
+demote the tile below the hero until real-runtime coverage improves),
+**Theaters** (distinct venues), **This period** — the tile label is
+**scope-aware and literal** ("This season so far" / "2026 YTD") and pace is
+computed within the active scope only, never mixing season and calendar
+frames. Tabular numerals; animated `numericText` transitions.
 
 ### 3.2 Shows per year (priority)
 Bar chart, one bar per year (Swift Charts; brand-gold bars, selected bar
@@ -149,9 +154,14 @@ Mezzanine's feed is text ("You added X to your diary"). Ours becomes the
   ★ rating, venue · date, note snippet, **photo strip** (rounded thumbs, tap →
   full-screen pager with pinch zoom).
 - View toggle: **Timeline · Photo wall** (edge-to-edge grid of every photo,
-  each tapping back to its entry) **· Poster grid** (Mezzanine-parity wall).
-- Camera glyph on diary rows with photos; photoless entries get a gentle
-  "Add the Playbill 📸" prompt.
+  each tapping back to its entry). The Mezzanine-parity poster wall already
+  exists as the profile Grid tab — a third in-feed view was redundant (cut on
+  external review).
+- Camera glyph on diary rows with photos. **The text-only feed must look
+  finished, not like a failure state:** photoless entries render as clean
+  poster+note cards; the "Add the Playbill 📸" prompt appears at most once per
+  visible screen and can be dismissed per-entry — a text-only diary is a
+  first-class mode, not nagware.
 
 ### Privacy model (non-negotiable)
 - Feed and photos are **visible to the owner only** — no follower visibility,
@@ -164,6 +174,24 @@ Mezzanine's feed is text ("You added X to your diary"). Ours becomes the
   an explicit per-share selection.
 - Schema: `user_review_photos (id, review_id FK, user_id, storage_path,
   width, height, taken_at, position)`.
+
+### App Store & platform checklist (from external review)
+- Clear `NSPhotoLibraryUsageDescription` purpose string; full **Limited
+  Library** support with an in-app "Manage Photos Access" row; the "From that
+  night" suggestion row only appears behind an explicit affordance, never as
+  an unprompted scan.
+- Location-based suggestions (if enabled) need `NSLocationWhenInUse` with
+  narrow copy + a toggle to disable; date-only matching is the default.
+- Upload queue with retry/background task, Wi-Fi-only preference, visible
+  failure states on the card; per-entry and bulk photo delete.
+- **"Export & delete all photos"** control in settings; privacy policy +
+  App Store privacy labels declare cloud storage and retention.
+- App Review may reflexively demand UGC report/block flows: pre-empt in the
+  review notes — photos are owner-visible only, not discoverable by any other
+  user, so moderation surface doesn't apply.
+- Relentless privacy reassurance in-UI: lock badge on the feed header,
+  one-time onboarding line ("Your feed is a private scrapbook — only you can
+  ever see it").
 
 ## 5. Signature modules (retained from v1, sequenced after priorities)
 
@@ -178,9 +206,15 @@ Joins `user_reviews.rating` (×20 → 0–100) against `cs` from mobile-shows.
   Screenshot-bait and a one-tap share card.
 - **Critical Gold coverage:** of open shows scoring 83+, how many you've seen
   ("7 of 11") — the unseen remainder is a to-see list deep-linking to show
-  pages/tickets. Stats → intent → booking.
+  pages/tickets. Stats → intent → booking. *Ticket-link hygiene (external
+  review): consistent deeplink targets, affiliate disclosure where links are
+  monetized, and regional availability handling — otherwise it reads as adware
+  inside a diary.*
 - Lighter one-row repeat for **audience grade** ("The audience agrees with
-  you 81% of the time").
+  you 81% of the time"), plus a **critics-vs-audience divergence row** scoped
+  to your shows: "On your 195 shows, critics and audiences agreed 80% of the
+  time — they were worlds apart on Bad Cinderella." Reinforces the app's data
+  authority with zero new data.
 
 ### 5.2 Tony & the Canon ⭐
 Milestone checklists with progress rings + poster shelves (unseen posters
@@ -204,12 +238,20 @@ previews / first month / later — "an early adopter: 34% in the first month").
 One-line rows with posters: longest show sat through (`rt`), shortest; most
 popular show you've seen (app-wide rating counts) vs. deepest cut; highest/
 lowest critic score seen ("and you gave it 4★ — no regrets"); first diary
-entry; 100th/200th show with dates; best-rated year.
+entry; 100th/200th show with dates; best-rated year. Plus the **total
+audience counter** (Σ capacity of the house for every log): "You've shared a
+room with ≈ 135,400 other theatergoers." Big, sticky, share-card-worthy.
 
-### 5.6 Habits & Streaks
-Day-of-week split ("a Saturday person, 41%"), month × year heatmap (single-hue
-brand-gold ramp), most shows in a week/month, longest monthly streak.
-(Matinee vs. evening needs showtime capture — §8 backlog.)
+### 5.6 Challenges — private lists with progress ⭐
+The Letterboxd/StoryGraph loop, private-only: system challenges generated
+from data we already have — "Every Shubert-org house," "All Best Musical
+winners of the 2010s," "Critical Gold currently open," "This season's Tony
+nominees (due by ceremony night)" — each a progress ring + poster shelf, with
+unseen entries deep-linking to show pages. User-created private lists join
+the same UI. Canon shelves (§5.2) and the theater checklist (§3.3) are
+Challenges under the hood — one component, many instances. A lightweight
+**"what to see next"** row synthesizes it: unseen high-scoring open shows,
+weighted toward houses you haven't visited.
 
 ### 5.7 Curtain Call — two editions ⭐
 
@@ -297,17 +339,62 @@ Per owner rule (recorded in
   BroadwayScorecard-app worktree → simulator screenshots → 2–3 options per
   screen (one faithful-polish, one bolder layout), per the app CLAUDE.md.
 
-## 10. Phasing
+## 10. Phasing (v2.1 — resequenced after external review)
 
-- **V1 — priorities + core:** hero tiles, shows per year, Broadway theater
-  tracker (ring + checklist + records), ratings histogram, records &
-  superlatives, scope pill, tap-through lists, **photo logging + Feed
-  (timeline / photo wall / grid)**. Pure `StatsEngine` struct over diary +
+Both external reviewers made the same argument: a V1 that is only parity is a
+"prettier Mezzanine," and the differentiators are the reason this feature
+exists. Adopted — the identity modules move into V1; commodity stats move out.
+
+- **V1 — priorities + identity:** hero tiles, shows per year, Broadway
+  theater tracker (ring + checklist + house records), **You vs. the Critics /
+  Audience**, **Tony & Canon checklists** (Best Musical/Play — needs
+  `stats-canon.json` winners at V1), ratings histogram, scope pill (seasons +
+  years; ceremony dates at V1), tap-through lists, **photo logging + Feed
+  (timeline / photo wall)**. Pure `StatsEngine` struct over diary +
   `mobile-shows.json` (unit-tested reducers).
-- **V1.1:** You vs. Critics/Audience, Tony & Canon (`stats-canon.json`),
-  People, MapKit theater map (lat/lng artifact), share cards.
+- **V1.1:** People, Records & Superlatives (incl. total audience counter),
+  Challenges + "what to see next," MapKit theater map (lat/lng artifact),
+  share cards, optional log-sheet fields (price paid → spend stats;
+  companions → private people tags).
 - **V2:** Curtain Call both editions — **Season Finale ships first (June,
   post-Tonys)**, Year in Review follows (December) — plus community ghost
-  overlay, Habits heatmap, The Mix earliness profile, milestone toasts
-  ("that was show #200 🎉"). Season scoping in the pill ships with V1 (it's
-  just a date-window filter once ceremony dates are in `stats-canon.json`).
+  overlay, The Mix earliness profile, milestone toasts ("that was show
+  #200 🎉").
+
+## 11. External review — GPT-5 & Gemini 2.5 Pro (2026-07-26)
+
+Both models reviewed the full spec + mockup summary independently.
+
+**Adopted (converging or clearly right):**
+- **Resequenced phasing** (both): You vs. Critics + Tony checklists into V1;
+  Records/Superlatives out to V1.1. "The V1 launch should scream what makes
+  BroadwayScorecard unique, not just achieve parity" (Gemini).
+- **Cut Habits & Streaks module** (Gemini; GPT implicitly): generic tracker
+  fluff — its two good stats live in the Shows-per-year records strip.
+- **Cut the third Feed view** (GPT): poster grid duplicates the profile Grid
+  tab.
+- **Scope-aware hero labels** (GPT): "This season so far" / "2026 YTD" —
+  never mix season and calendar frames in one tile.
+- **Hours-in-a-seat confidence rule** (GPT): demote the tile while >25% of
+  entries use the runtime fallback.
+- **App Store / photo-library checklist** (both): Limited Library support,
+  purpose strings, export-&-delete-all, UGC review-notes defense, text-only
+  feed as a first-class mode (§4).
+- **Challenges / private lists with progress** (both, independently — GPT's
+  "goals + what to see next," Gemini's people-graph energy): now §5.6, and it
+  unifies canon shelves + theater checklist into one component.
+- **Total audience counter** (Gemini), **critics-vs-audience divergence on
+  your shows** (Gemini), **spend + companions as optional fields** (both) —
+  folded into §5.5/§5.1/backlog→V1.1.
+- **Ticket-link hygiene** (GPT): disclosure + consistent deeplink strategy.
+
+**Considered, not adopted:**
+- **Dropping season scoping from the pill** (Gemini): rejected — the owner
+  explicitly wants the Tony-season frame first-class, and "seasons first,
+  current season default" is one list, not a mode switch. Mitigation: GPT's
+  scope-aware labels remove the ambiguity Gemini worried about.
+- **People knowledge graph** (Gemini): great v3+ idea, heavy data/UX lift;
+  parked.
+- **Moving Feed IA out of the Profile tab** (GPT): the app's existing tab
+  structure keeps Diary/Feed first-class already; revisit only if usage says
+  the segmented control hides it.

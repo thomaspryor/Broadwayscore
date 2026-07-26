@@ -357,7 +357,7 @@
   <div class="phone"><div class="screen-inner">
     <div class="statusbar"><span>9:41</span><span class="r">●●● ᯤ ▮</span></div>
     <div class="appbar"><h3>Feed</h3><span class="lock">🔒 Only you</span></div>
-    <div class="seg"><span class="on">Timeline</span><span>Photo wall</span><span>Grid</span></div>
+    <div class="seg"><span class="on">Timeline</span><span>Photo wall</span></div>
     <div class="content">
       <div class="month">April 2026</div>
       <div class="card entry">
@@ -412,9 +412,11 @@
     <div class="note"><span class="pin">a</span><p><b>Log sheet gains "Add photos"</b> (up to 6).
     iOS-native assist: an on-device photo-library query for shots taken the night of
     <code>date_seen</code> offers a one-tap "From that night" row. Nothing is scanned server-side.</p></div>
-    <div class="note"><span class="pin">b</span><p><b>Three views, one dataset:</b> Timeline (month
-    headers, entry cards with photo strips), Photo wall (edge-to-edge grid of every photo, tapping
-    back to its entry), Grid (Mezzanine-parity poster wall).</p></div>
+    <div class="note"><span class="pin">b</span><p><b>Two views, one dataset:</b> Timeline (month
+    headers, entry cards with photo strips) and Photo wall (edge-to-edge grid of every photo,
+    tapping back to its entry). The poster wall already exists as the profile Grid tab — external
+    review flagged a third in-feed view as redundant, so it's cut. Text-only entries render as
+    clean poster+note cards; the photo nudge is dismissible, never nagware.</p></div>
     <div class="note"><span class="pin">c</span><p><b>Privacy is architectural:</b> owner-only
     storage (private bucket + RLS), EXIF GPS stripped on upload, "🔒 Only you" pinned in the
     header, and photos never auto-appear in any share or export.</p></div>
@@ -642,13 +644,15 @@
 
 <footer>
   <div class="phase">
-    <div class="card"><h5>V1 · the priorities</h5><p>Hero tiles, shows per year, Broadway theater
-    tracker (ring + checklist + records), ratings, records, scope pill, tap-through lists,
-    photo logging + Feed. Offline-computable from diary + mobile-shows.</p></div>
-    <div class="card"><h5>V1.1</h5><p>MapKit house map (theater lat/lng artifact), You vs.
-    Critics/Audience, share cards.</p></div>
-    <div class="card"><h5>V2</h5><p>Tony &amp; Canon, People, habits heatmap, Curtain Call
-    year-in-review + push unlock, milestone toasts.</p></div>
+    <div class="card"><h5>V1 · priorities + identity</h5><p>Hero tiles, shows per year, Broadway
+    theater tracker (ring + checklist + records), <b>You vs. Critics</b>, <b>Tony &amp; Canon
+    checklists</b>, ratings, scope pill (seasons + years), photo logging + Feed. Resequenced on
+    external review: V1 must ship the differentiators, not just parity.</p></div>
+    <div class="card"><h5>V1.1</h5><p>People, Records &amp; Superlatives (+ total audience counter),
+    Challenges + "what to see next," MapKit house map, share cards, optional price/companion
+    fields.</p></div>
+    <div class="card"><h5>V2</h5><p>Curtain Call: Season Finale (June, post-Tonys) then calendar
+    Year in Review (December); community ghost overlay, milestone toasts.</p></div>
   </div>
   <p><b>Design-system compliance:</b> system font only · brand gold is the sole accent · score-tier
   colors only as score chips · surfaces per tokens · bold moves are layout/IA only. Next step per
