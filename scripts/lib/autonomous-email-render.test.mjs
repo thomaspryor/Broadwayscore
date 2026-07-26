@@ -7,7 +7,7 @@ const {
   renderEmail, renderItem, renderUsageBlock, renderRecheckBlock, extractWhy, summarizeQueue,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
   renderHealthDigestBlock, healthIssueCount,
-  renderDailyDigestBlock, renderOpeningDigestBlock,
+  renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
 } = require('./autonomous-email-render.js');
 
 const STATS = {
@@ -522,10 +522,11 @@ test('renderEmail: no health field renders no site-health block (backward compat
 });
 
 // ── Named digest snapshots (card #497 — daily-digest.yml score-drift +
-// opening-digest.yml folded in the same way #364 folded in site health) ────
+// opening-digest.yml — and card #511 — reddit-engagement-digest.js — folded
+// in the same way #364 folded in site health) ──────────────────────────────
 
-test('renderDailyDigestBlock: nothing to render without a snapshot', () => {
-  assert.equal(renderDailyDigestBlock(null), '');
+test('renderNamedDigestBlock: nothing to render without a snapshot', () => {
+  assert.equal(renderNamedDigestBlock('r/Broadway', null), '');
 });
 
 test('renderDailyDigestBlock: renders label, banner text, items, and freshness stamp', () => {
@@ -595,4 +596,55 @@ test('renderEmail: no dailyDigest/openingDigest fields render nothing (backward 
   const html = renderEmail({ items: [], stats: STATS, awaitingTotal: 0 });
   assert.ok(!html.includes('Score drift:'));
   assert.ok(!html.includes('Opening radar:'));
+});
+
+test('renderRedditDigestBlock: renders label, banner text, items, and freshness stamp', () => {
+  const html = renderRedditDigestBlock({
+    subject: 'r/Broadway — 2 threads for you',
+    bannerText: '2 threads',
+    generatedAt: '2026-07-26T06:00:00.000Z',
+    items: [
+      { title: 'Best seats for Hamilton?', detail: 'The mezzanine center front averages...', url: 'https://reddit.com/r/Broadway/abc' },
+      { title: 'Worth seeing Oh Mary?', detail: 'Critics loved it, 91/100 average' },
+    ],
+    moreCount: 1,
+  });
+  assert.match(html, /r\/Broadway: 2 threads/);
+  assert.match(html, /Worth seeing Oh Mary\?/);
+  assert.match(html, /Critics loved it, 91\/100 average/);
+  assert.match(html, /<a href="https:\/\/reddit\.com\/r\/Broadway\/abc"[^>]*>Best seats for Hamilton\?<\/a>/);
+  assert.match(html, /\+1 more/);
+  assert.match(html, /as of 2026-07-26 06:00 UTC/);
+});
+
+test('renderRedditDigestBlock: html-escapes item fields', () => {
+  const html = renderRedditDigestBlock({
+    bannerText: 'x', items: [{ title: '<script>alert(1)</script>', detail: 'a & b' }],
+  });
+  assert.doesNotMatch(html, /<script>alert/);
+  assert.match(html, /&lt;script&gt;/);
+  assert.match(html, /a &amp; b/);
+});
+
+test('renderRedditDigestBlock: a corrupted item (null/malformed) is skipped, never crashes the render', () => {
+  assert.doesNotThrow(() => renderRedditDigestBlock({
+    bannerText: '2 threads', items: [null, { title: 'Real Thread', detail: 'Draft reply text' }, undefined],
+  }));
+  const html = renderRedditDigestBlock({
+    bannerText: '2 threads', items: [null, { title: 'Real Thread', detail: 'Draft reply text' }, undefined],
+  });
+  assert.match(html, /Real Thread/);
+});
+
+test('renderEmail: redditDigest renders below the divider, alongside site health', () => {
+  const health = { bannerText: '0 errors, 0 warnings', errors: [], warns: [] };
+  const redditDigest = { bannerText: '1 thread', items: [{ title: 'Some Thread', detail: 'Draft reply' }] };
+  const html = renderEmail({ items: [], stats: STATS, awaitingTotal: 0, health, redditDigest });
+  assert.match(html, /r\/Broadway: 1 thread/);
+  assert.ok(html.indexOf('r/Broadway:') > html.indexOf('For your records'), 'reddit digest is below the divider');
+});
+
+test('renderEmail: no redditDigest field renders nothing (backward compatible)', () => {
+  const html = renderEmail({ items: [], stats: STATS, awaitingTotal: 0 });
+  assert.ok(!html.includes('r/Broadway:'));
 });

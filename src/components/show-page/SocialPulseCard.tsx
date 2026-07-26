@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { shouldShowSentiment } from '@/lib/social-pulse-display';
 
 /**
  * <SocialPulseCard> — renders the "SOCIALS SCORECARD" card on show pages.
@@ -21,7 +22,7 @@ export interface SocialPulsePayload {
   t: 'Buzzing' | 'Rising' | 'Steady' | 'Troubled' | 'BuildingBaseline' | 'Hidden';
   v: number;              // v3: TRUE weekly mention total (uncapped counters); v2: capped-sample count
   ev?: number;            // effective volume — Pulse Index ranking strength (schema v3, 2026-07)
-  p: number;              // positive %, 0-100
+  p: number | null;       // positive %, 0-100; null = zero opinion-bearing posts (distinct from real 0%)
   os?: number;            // opinion-bearing sample size behind `p` (schema v3)
   wow: number | null;     // week-over-week %
   bm?: number | null;     // baseline multiple (legacy, may be null)
@@ -233,9 +234,6 @@ const PLATFORM_META: Record<string, { Icon: () => JSX.Element; label: string }> 
   bluesky: { Icon: BlueskyIcon, label: 'Bluesky' },
 };
 
-/** Min opinion-bearing posts behind the % for the sentiment bar to render. */
-const MIN_OPINION_SAMPLE = 10;
-
 // ---------- Helpers ----------
 
 function formatVolume(v: number): string {
@@ -298,7 +296,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
 
   // Market-aware trending link: /trending for Broadway, /west-end/trending for London
   const trendingHref = rank?.market === 'West End' ? '/west-end/trending' : '/trending';
-  const posBarWidth = Math.max(0, Math.min(100, sp.p));
+  const posBarWidth = Math.max(0, Math.min(100, sp.p ?? 0));
 
   // Sentiment bar: colorblind-safe blue→brand gradient. The fill WIDTH
   // is the primary signal (wider = more positive). Color reinforces but
@@ -330,10 +328,10 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
         ]
   ).filter((p) => p.count > 0);
 
-  // Sentiment bar renders only with a meaningful opinion sample behind the
-  // percentage (v3 samples are smaller than the old capped X sample; a
-  // 3-post "67% positive" must not ship). v2 files lack `os` — keep showing.
-  const showSentiment = sp.os === undefined || sp.os >= MIN_OPINION_SAMPLE;
+  // Sentiment bar renders only with a real percentage AND a meaningful
+  // opinion sample behind it — shouldShowSentiment is the shared gate (also
+  // used by TrendingShowCard) so the two surfaces never disagree.
+  const showSentiment = shouldShowSentiment(sp.p, sp.os);
 
   return (
     <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="socials-scorecard-heading">

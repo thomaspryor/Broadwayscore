@@ -3,6 +3,7 @@ import ShowImage from '@/components/ShowImage';
 import { getOptimizedImageUrl } from '@/lib/images';
 import type { ComputedShow } from '@/lib/engine';
 import type { RawSocialPulse } from '@/lib/data-social-pulse';
+import { shouldShowSentiment } from '@/lib/social-pulse-display';
 
 /**
  * <TrendingShowCard> — single row on the /trending leaderboard.
@@ -59,8 +60,11 @@ export default function TrendingShowCard({ rank, pulse, show }: TrendingShowCard
     getOptimizedImageUrl(show?.images?.hero, 'thumbnail'),
   ].filter(Boolean) as string[];
 
-  // Sentiment bar — same gradient as SocialPulseCard
-  const posBarWidth = Math.max(0, Math.min(100, pulse.positivePct));
+  // Sentiment bar — same gradient as SocialPulseCard. shouldShowSentiment is
+  // the shared gate (also used by SocialPulseCard) so the two surfaces never
+  // disagree on when a sentiment number is trustworthy enough to show.
+  const showSentiment = shouldShowSentiment(pulse.positivePct, pulse.opinionSample);
+  const posBarWidth = Math.max(0, Math.min(100, pulse.positivePct ?? 0));
   const sentimentBarStyle = {
     width: `${posBarWidth}%`,
     background: 'linear-gradient(90deg, #6366f1 0%, #3b82f6 50%, #10b981 100%)',
@@ -122,13 +126,15 @@ export default function TrendingShowCard({ rank, pulse, show }: TrendingShowCard
                 {tier.label} <span aria-hidden="true">{tier.emoji}</span>
               </span>
             </div>
-            {/* Sentiment bar */}
-            <div className="mt-2">
-              <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                <div className="h-full rounded-full" style={sentimentBarStyle} />
+            {/* Sentiment bar — hidden entirely when there's no trustworthy % */}
+            {showSentiment && (
+              <div className="mt-2">
+                <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-full rounded-full" style={sentimentBarStyle} />
+                </div>
+                <div className="text-[10px] text-gray-500 mt-1">{pulse.positivePct}% positive</div>
               </div>
-              <div className="text-[10px] text-gray-500 mt-1">{pulse.positivePct}% positive</div>
-            </div>
+            )}
           </div>
 
           {/* Right column: volume (like ScoreBadge placement) */}
