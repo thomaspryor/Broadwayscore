@@ -46,9 +46,32 @@ BRANCH=${2:-main}
 #   3. An overall loop deadline (checked between attempts) → never exceed budget.
 # All fail-OPEN: a missing `timeout` binary (stock macOS dev boxes) or a slow-but-
 # progressing transfer is never blocked — the guards only kill genuine stalls.
+#
+# PUSH_DEADLINE_SEC sizing (task #458, 2026-07-26): 240s bounds *stalls* fine,
+# but under this repo's very high main-branch commit churn (many concurrent cron
+# workflows writing to main every few minutes), a GENUINE (non-stalled) fetch→
+# rebase-conflict→abort→merge-fallback cycle measured ~3 min of real computation
+# on update-show-status.yml's push step (run 30186060030) — the per-op network
+# timeouts don't cover this because the cost is local (rebase/merge + node
+# conflict-resolution scripts across however many commits landed since our
+# checkout), not a stalled transfer. At 240s the loop only fit ~1.3 such cycles
+# before self-aborting, so "All push attempts failed after 7 attempts" was
+# misleading — only ~2 real cycles ever ran.
+#
+# DO NOT raise this SHARED default — ~15 of the 100+ callers have 5-10 min job
+# timeouts (e.g. check-cron-health.yml, daily-digest.yml, update-deploy-
+# watermark.yml) and push only small audit files that resolve in well under 240s
+# today; raising the shared ceiling would let a genuine high-churn conflict on
+# THEM run long enough to be hard-killed by GitHub's job timeout instead of this
+# script's own controlled exit — losing the failure telemetry (record_push_
+# failure below) and any `if: always()` follow-up steps (ship-check finding on
+# this task, Codex adversarial review). Callers that measurably need more real
+# cycles (like update-show-status.yml's "Commit and push changes" step) should
+# override via `PUSH_DEADLINE_SEC=600 bash scripts/lib/push-with-retry.sh` at
+# their own call site, after confirming their OWN job-timeout headroom.
 GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}   # hard cap per fetch/push op
 GIT_LOW_SPEED_TIME=${GIT_LOW_SPEED_TIME:-45}     # git aborts if <1KB/s this long
-PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}      # overall wall-clock budget (~4 min)
+PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}      # overall wall-clock budget (~4 min); override per-caller for measured high-churn cost
 
 # coreutils `timeout` on Linux/CI, `gtimeout` on macOS+coreutils, else absent.
 _TIMEOUT_BIN="$(command -v timeout 2>/dev/null || command -v gtimeout 2>/dev/null || true)"

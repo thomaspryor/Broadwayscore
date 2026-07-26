@@ -1821,6 +1821,23 @@ function fetchJSON(url, headers) {
  *   Yellow: 1+ warnings OR 1-2 errors → "BSC Daily: 2 warnings — [first warning name]"
  *   Red: 3+ errors OR any error 2+ consecutive days → "BSC Daily: ACTION NEEDED — [first error name]"
  */
+// Fingerprint of the actionable, un-auto-fixed error set — the unit of "is this
+// the same bad news as yesterday". Sorted names only (not messages) so a count
+// drifting inside one check doesn't read as new news, but a NEW failing check or
+// a recovery always changes the print.
+function errorSetFingerprint(unfixedErrors) {
+  return unfixedErrors.map(r => r.name).sort().join('|');
+}
+
+// Escalation milestones: an UNCHANGED error set screams on day 1 (implicit —
+// it's new), day 3, day 7, then weekly. Every other day it rides the calm
+// daily subject. This is what makes "BSC URGENT (day 6)" AND "(day 7)" on
+// consecutive mornings structurally impossible (owner escalation 2026-07-25:
+// 7 straight URGENT days for the same unresolved set).
+function isEscalationDay(days) {
+  return days === 3 || days === 7 || (days > 7 && (days - 7) % 7 === 0);
+}
+
 function getDigestSubject(results, history, autoFixResults) {
   const errors = results.filter(r => r.status === 'error');
   const warns = results.filter(r => r.status === 'warn');
@@ -1837,10 +1854,21 @@ function getDigestSubject(results, history, autoFixResults) {
   const unfixedWarns = warns.filter(r => !fixMap[r.name]?.fixed && isActionable(r));
   const autoFixedCount = Object.values(fixMap).filter(f => f.fixed).length;
 
-  if (unfixedErrors.length > 0 && (history.consecutiveErrorDays || 0) >= 5) {
-    return `BSC URGENT (day ${history.consecutiveErrorDays}): ${unfixedErrors.length} unresolved error${unfixedErrors.length > 1 ? 's' : ''}`;
+  const days = history.consecutiveErrorDays || 0;
+  const sameSetAsYesterday = unfixedErrors.length > 0
+    && history.lastErrorFingerprint === errorSetFingerprint(unfixedErrors);
+
+  if (unfixedErrors.length > 0 && days >= 5) {
+    if (!sameSetAsYesterday || isEscalationDay(days)) {
+      return `BSC URGENT (day ${days}): ${unfixedErrors.length} unresolved error${unfixedErrors.length > 1 ? 's' : ''}`;
+    }
+    // Same unresolved set, non-milestone day: calm subject, no repeat scream.
+    return `BSC Daily: ${unfixedErrors.length} known issue${unfixedErrors.length > 1 ? 's' : ''} (unchanged, day ${days})`;
   }
-  if (unfixedErrors.length >= 3 || (unfixedErrors.length > 0 && (history.consecutiveErrorDays || 0) >= 2)) {
+  if (unfixedErrors.length >= 3 || (unfixedErrors.length > 0 && days >= 2)) {
+    if (sameSetAsYesterday && days >= 2 && !isEscalationDay(days)) {
+      return `BSC Daily: ${unfixedErrors.length} known issue${unfixedErrors.length > 1 ? 's' : ''} (unchanged, day ${days})`;
+    }
     const first = unfixedErrors[0]?.name || 'unknown';
     return `BSC Daily: ACTION NEEDED — ${first}`;
   }
@@ -1855,6 +1883,20 @@ function getDigestSubject(results, history, autoFixResults) {
     return `BSC Daily: All clear — ${autoFixedCount} issue${autoFixedCount > 1 ? 's' : ''} auto-fixed`;
   }
   return `BSC Daily: All clear (${passed}/${total} passed)`;
+}
+
+// Post-digest: persist today's unfixed-actionable error set so tomorrow's
+// subject can tell "unchanged" from "new/worse/recovered". Mirrors the exact
+// filter getDigestSubject applies (auto-fixed and low-urgency excluded).
+function updateErrorFingerprint(history, results, autoFixResults) {
+  const fixMap = autoFixResults || {};
+  const isActionable = (r) => {
+    const entry = getPlaybookEntry(r.name);
+    return !entry || entry.urgency !== 'low';
+  };
+  const unfixedErrors = results.filter(r => r.status === 'error' && !fixMap[r.name]?.fixed && isActionable(r));
+  history.lastErrorFingerprint = unfixedErrors.length ? errorSetFingerprint(unfixedErrors) : '';
+  return history;
 }
 
 function getStatusColor(status) {
@@ -2662,8 +2704,14 @@ async function main() {
   // workflowSummary was fetched earlier (before the alerting block) so repeat
   // failures could be promoted into allResults; reuse it for the digest body.
 
-  // Send email digest (throws on failure → triggers notify-failure)
+  // Send email digest (throws on failure → triggers notify-failure).
+  // history.lastErrorFingerprint still holds YESTERDAY's error set here —
+  // getDigestSubject compares against it to detect "same bad news as yesterday".
   await sendEmailDigest(allResults, history, workflowSummary, autoFixResults);
+
+  // Only after the digest used yesterday's fingerprint: record today's set.
+  updateErrorFingerprint(history, allResults, autoFixResults);
+  saveHistory(history);
 
   // Create auto-triage issue for persistent errors
   await createTriageIssue(allResults, history);
@@ -2686,4 +2734,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, getDigestSubject, getPlaybookEntry };
+module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint };
