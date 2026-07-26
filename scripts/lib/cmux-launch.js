@@ -8,13 +8,17 @@
  * would notice), and the Blue auto-dispatch tab color.
  *
  * bsc-next.js composes its task-derived title/seedKey and delegates here with
- * seedKey = task.id, so the temp-file paths and typed command are
- * byte-identical to the pre-extraction behavior.
+ * seedKey = task.id, so the seed-file path and typed command are
+ * byte-identical to the pre-extraction behavior. The cmd-wrapper filename
+ * carries an added per-call nonce (card #548, 2026-07-26) so the OS-process
+ * liveness cross-check can't be satisfied by a stale leftover process from an
+ * earlier dispatch attempt on the same task.
  */
 
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const crypto = require('crypto');
 const { spawnSync } = require('child_process');
 const cmuxws = require('./cmux-workspaces.js');
 
@@ -48,10 +52,10 @@ function setAutoColor(ref) {
 // happened. Require a SUCCESSFUL workspace listing that still contains the ref
 // before trusting the process check, so a socket failure yields "not alive"
 // (report the failure) instead of "adopt the corpse".
-function strictlyAliveWorkspace(ref, seedKey) {
+function strictlyAliveWorkspace(ref, marker) {
   try {
     if (!cmuxws.listWorkspaces().some(w => w.ref === ref)) return false;
-    return cmuxws.claudeAliveIn(ref) && osProcessAliveForSeed(seedKey);
+    return cmuxws.claudeAliveIn(ref) && osProcessAliveForSeed(marker);
   } catch { return false; }
 }
 
@@ -66,31 +70,47 @@ function strictlyAliveWorkspace(ref, seedKey) {
 // lifetime, so its presence in the OS process table is ground truth,
 // independent of cmux's internal bookkeeping, that a real process exists for
 // THIS launch specifically (not just some possibly-stale/misattributed tag).
-function hasSeedProcess(psText, seedKey) {
-  const marker = `bsc-cmd-${seedKey}.sh`;
+//
+// `marker` is the exact basename of THIS launch's cmdFile (nonce-suffixed —
+// see launchCmuxSession), not just the caller's seedKey: seedKey is often
+// task.id, which is IDENTICAL across every dispatch attempt of the same task
+// (adversarial review, 2026-07-26 — two concurrently-live bash wrappers for
+// the same #545 seedKey were found on the host, left over from separate
+// dispatch attempts). Matching on the bare seedKey would let a stale leftover
+// process from an OLDER, unrelated attempt confirm a NEW workspace's cmux tag
+// — the exact false-positive class this fix exists to close. The nonce makes
+// the marker unique per launchCmuxSession() call, so a match only proves a
+// process from THIS launch attempt is alive.
+function hasSeedProcess(psText, marker) {
   return String(psText).split('\n').some(line => line.includes(marker));
 }
 
-function osProcessAliveForSeed(seedKey) {
+function osProcessAliveForSeed(marker) {
   try {
     // -ww: unlimited width, so a long command line isn't truncated before the
-    // marker. -e: every process, not just this terminal's.
-    const r = spawnSync('ps', ['-e', '-ww', '-o', 'command='], { encoding: 'utf8' });
-    if (r.status !== 0 && !r.stdout) return false; // ps itself failed — fail CLOSED (verifying a POSITIVE claim, unlike claudeAliveIn's close-path fail-open)
-    return hasSeedProcess(r.stdout || '', seedKey);
+    // marker. -e: every process, not just this terminal's. maxBuffer raised
+    // from spawnSync's 1MB default — measured ~500KB-1MB+ on a host running a
+    // dozen claude sessions (each session's full seed prompt is its own
+    // argv), and a default-sized buffer silently truncates output near the
+    // END of the process list without setting a non-zero exit status,
+    // producing a false "not alive" that would close/refuse a healthy launch
+    // (adversarial review, 2026-07-26). timeout guards a wedged ps hang.
+    const r = spawnSync('ps', ['-e', '-ww', '-o', 'command='], { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024, timeout: 5000 });
+    if (r.error || (r.status !== 0 && !r.stdout)) return false; // ps failed/timed out/truncated — fail CLOSED (verifying a POSITIVE claim, unlike claudeAliveIn's close-path fail-open)
+    return hasSeedProcess(r.stdout || '', marker);
   } catch {
     return false;
   }
 }
 
 // Combined liveness gate for the launch-verification poll: cmux's tag/process
-// registry AND a real OS process for this seedKey both have to agree. Either
-// signal alone has a known false-positive mode (cmux's registry per #548
-// above; a stale bash wrapper alone would only prove SOME earlier launch for
-// this seedKey ran, not that cmux's workspace is the live one) — requiring
-// both is what makes "claude verified running" true.
-function verifiedAlive(ws, seedKey) {
-  return !!(ws && cmuxws.claudeAliveIn(ws.ref) && osProcessAliveForSeed(seedKey));
+// registry AND a real OS process for this launch's marker both have to
+// agree. Either signal alone has a known false-positive mode (cmux's
+// registry per #548 above; a bash wrapper alone only proves SOME process for
+// this marker is alive) — requiring both is what makes "claude verified
+// running" true.
+function verifiedAlive(ws, marker) {
+  return !!(ws && cmuxws.claudeAliveIn(ws.ref) && osProcessAliveForSeed(marker));
 }
 
 // A launch result is adoptable when it FAILED verification but left a real
@@ -150,7 +170,19 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
   // keystrokes get swallowed ('nclaude' → command not found) and the session
   // never starts. Shrink the typed surface to a short constant string by
   // putting the real command in a script file.
-  const cmdFile = path.join(os.tmpdir(), `bsc-cmd-${seedKey}.sh`);
+  // Nonce-suffixed (card #548 adversarial review, 2026-07-26): seedKey alone
+  // (task.id) is IDENTICAL across every dispatch attempt of the same task —
+  // two concurrently-live bash wrappers for the same seedKey were found on
+  // the host, left over from separate dispatch attempts. Without the nonce, a
+  // stale leftover process from an OLDER attempt could satisfy the OS-process
+  // cross-check below for a NEW, actually-dead workspace whose cmux tag is
+  // (independently) falsely alive — reproducing the exact false positive this
+  // cross-check exists to close. The nonce makes the marker unique per
+  // launchCmuxSession() call, so a match only proves a process from THIS call
+  // is alive.
+  const launchNonce = crypto.randomBytes(4).toString('hex');
+  const cmdFile = path.join(os.tmpdir(), `bsc-cmd-${seedKey}-${launchNonce}.sh`);
+  const cmdMarker = path.basename(cmdFile);
   fs.writeFileSync(cmdFile, `#!/bin/bash\n${command}\n`);
   const typed = ` bash ${cmdFile}`; // leading space additionally survives a swallowed first key
   if (!fs.existsSync(CMUX)) return { ok: false, reason: 'cmux CLI not found', seedFile, command };
@@ -193,7 +225,7 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
     // would kill that healthy session as a corpse; ship-check 2026-07-21).
     // Window: shell init (direnv) + claude cold start can exceed 15s
     // post-reboot, and a false timeout kills a healthy launch (2026-07-12).
-    if (ws && pollUntil(() => verifiedAlive(ws, seedKey), verifyTimeoutSec)) {
+    if (ws && pollUntil(() => verifiedAlive(ws, cmdMarker), verifyTimeoutSec)) {
       if (autoColor) setAutoColor(ws.ref);
       return { ok: true, ref: ws.ref, seedFile, command };
     }
@@ -201,7 +233,7 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
       // Verify-before-close: one last check after a beat, so a claude that
       // registered at the buzzer isn't killed as a corpse.
       sleepSec(2);
-      if (verifiedAlive(ws, seedKey)) {
+      if (verifiedAlive(ws, cmdMarker)) {
         if (autoColor) setAutoColor(ws.ref);
         return { ok: true, ref: ws.ref, seedFile, command };
       }
@@ -225,7 +257,7 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
   // task (10 of them on 2026-07-26). Watch the survivor here instead.
   if (lateAdoptSec > 0 && failed.workspaceRef) {
     console.error(`[cmux-launch] verify window expired — watching ${failed.workspaceRef} for a further ${lateAdoptSec}s before calling it dead`);
-    const live = pollUntil(() => strictlyAliveWorkspace(failed.workspaceRef, seedKey), lateAdoptSec);
+    const live = pollUntil(() => strictlyAliveWorkspace(failed.workspaceRef, cmdMarker), lateAdoptSec);
     if (shouldAdoptLateStart(failed, live)) {
       if (autoColor) setAutoColor(failed.workspaceRef);
       return { ok: true, ref: failed.workspaceRef, adoptedLate: true, seedFile, command };
