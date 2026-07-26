@@ -34,6 +34,7 @@ const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { routeAlert, readDispatchAttempts } = require('./lib/owner-alert-router.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
+const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 // Discord daily reports removed — email digest is the single notification channel.
 
 // Generate a signed one-tap approve URL for a fix workflow.
@@ -1505,21 +1506,9 @@ function checkAPICredits() {
       if (!acct.requestLimit) {
         return { name: 'Credits: ScrapingDog', status: 'warn', message: `Unexpected account response: ${JSON.stringify(acct).slice(0, 80)}` };
       }
-      const remaining = acct.requestLimit - acct.requestUsed;
-      const pctRemaining = Math.round((remaining / acct.requestLimit) * 100);
-      const daysToRenewal = typeof acct.validity === 'number' ? acct.validity : null;
-      let msg = `${Math.round(remaining / 1000)}k credits left (${pctRemaining}%)`;
-      let status = 'pass';
-      if (daysToRenewal !== null) {
-        const daysIntoCycle = Math.max(1, 30 - daysToRenewal);
-        const dailyBurn = acct.requestUsed / daysIntoCycle;
-        const daysUntilExhaustion = dailyBurn > 0 ? remaining / dailyBurn : Infinity;
-        msg += ` · ${Math.round(dailyBurn / 1000)}k/day burn · renews in ${daysToRenewal}d`;
-        if (remaining <= 0) { status = 'error'; msg += ' · EXHAUSTED'; }
-        else if (daysUntilExhaustion < daysToRenewal) { status = 'error'; msg += ` · exhausts in ~${Math.round(daysUntilExhaustion)}d (BEFORE renewal)`; }
-        else if (pctRemaining <= 15) { status = 'warn'; }
-      } else if (pctRemaining <= 5) { status = 'error'; }
-      else if (pctRemaining <= 15) { status = 'warn'; }
+      // Pure decision lives in scripts/lib/scrapingdog-ack.js (§15 extraction)
+      // so the ack downgrade is unit-testable; this call site only fetches.
+      const { status, message: msg } = evaluateScrapingdogCredits(acct);
       return { name: 'Credits: ScrapingDog', status, message: msg, hint: status !== 'pass' ? 'If SD runs dry, all traffic silently falls back to BD/SB. Upgrade plan or reduce scraping.' : undefined };
     }));
   } else {
