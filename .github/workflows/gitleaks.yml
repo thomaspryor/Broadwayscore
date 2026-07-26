@@ -30,9 +30,11 @@ concurrency:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    # Full-history scan over a ~2.1GB .git with 50k+ commits. Measured locally at
-    # >7 min on a Mac Studio, so 15 min was too tight for a CI runner.
-    timeout-minutes: 45
+    # Both scans below are path-scoped and measured at ~1-3s locally. 10 min is
+    # pure headroom. Do NOT widen either scan to the whole repo: an unscoped scan
+    # walks the data corpus in every commit diff and does not finish (measured:
+    # killed at 15 min unscoped, vs 1.4s scoped over the same 45-day window).
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -47,11 +49,36 @@ jobs:
           sudo mv /tmp/gitleaks /usr/local/bin/gitleaks
           gitleaks version
 
-      - name: Scan repository
+      # Scan 1 — what is in the code RIGHT NOW, regardless of when it landed.
+      # Catches a secret sitting in a tracked file (the Buffer failure mode).
+      # Scoped per-directory because an unscoped --no-git scan walks the data
+      # corpus and does not finish.
+      - name: Scan working tree (code paths)
+        run: |
+          set -euo pipefail
+          rc=0
+          for d in scripts src .github; do
+            [ -d "$d" ] || continue
+            echo "::group::working tree — $d"
+            gitleaks detect --no-git --source "$d" \
+              --config .gitleaks.toml --no-banner --redact \
+              --report-format sarif --report-path "gitleaks-tree-$(basename "$d").sarif" \
+              --exit-code 1 || rc=1
+            echo "::endgroup::"
+          done
+          exit $rc
+
+      # Scan 2 — what was INTRODUCED recently, including in files since deleted.
+      # 45-day window against a weekly cron gives ~6x overlap, so nothing slips
+      # between runs even if several fire late. Full history is not re-walked:
+      # that baseline was established 2026-07-26 (only finding was the Buffer
+      # token, now revoked and allowlisted by value).
+      - name: Scan recent history (code paths)
         run: |
           gitleaks detect \
             --source . \
             --config .gitleaks.toml \
+            --log-opts="--since=45.days -- scripts src .github package.json next.config.js tsconfig.json" \
             --no-banner \
             --redact \
             --report-format sarif \
@@ -63,7 +90,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: gitleaks-sarif
-          path: gitleaks-report.sarif
+          path: gitleaks-*.sarif
           if-no-files-found: ignore
 
       - name: Checkout for notify action
