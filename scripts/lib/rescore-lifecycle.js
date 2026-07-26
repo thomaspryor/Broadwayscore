@@ -49,27 +49,12 @@ function markRescoreComplete(fileData, completedAt) {
 }
 
 /**
- * Detect the stuck state this module exists to prevent: a file still queued for
- * rescore that already carries a score newer than the queue entry. True means
- * a success path persisted a score without calling markRescoreComplete() — the
- * file will be re-scored on every drain until someone clears it.
- *
- * Used by scripts/audit-stale-rescore-queue.js (CI gate) so a future
- * regression surfaces as a failing check instead of a silent API-spend leak.
- *
- * @param {Object} fileData
- * @returns {boolean}
+ * The corpus-side DETECTOR for this bug lives with its sibling in
+ * scripts/lib/stuck-rescore-flag.js as isScoredButStillQueued() — that file is
+ * already the canonical home for "why is this needsRescore flag stuck?" and is
+ * wired into audit-stuck-rescore-flags.js. This module owns the WRITE side only
+ * (retiring the flag); keeping the predicate here too would be a second source
+ * of truth for the same question.
  */
-function isStuckInRescoreQueue(fileData) {
-  if (!fileData || typeof fileData !== 'object') return false;
-  if (!(fileData.needsRescore || fileData.needs_rescore)) return false;
-  const scoredAt = fileData.llmMetadata?.scoredAt || fileData.scoredAt;
-  if (!scoredAt) return false;
-  const flaggedAt = fileData.rescoreFlaggedAt || fileData.needsRescoreAt;
-  // No flag timestamp recorded: fall back to "has a score at all while queued",
-  // which is the observable symptom the incident presented with.
-  if (!flaggedAt) return true;
-  return String(scoredAt) > String(flaggedAt);
-}
 
-module.exports = { markRescoreComplete, isStuckInRescoreQueue };
+module.exports = { markRescoreComplete };

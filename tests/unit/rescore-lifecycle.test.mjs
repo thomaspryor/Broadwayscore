@@ -22,9 +22,9 @@ const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(__dirname, '../..');
 
-const { markRescoreComplete, isStuckInRescoreQueue } = require(
-  path.join(REPO, 'scripts/lib/rescore-lifecycle.js')
-);
+const { markRescoreComplete } = require(path.join(REPO, 'scripts/lib/rescore-lifecycle.js'));
+// Detector lives with its sibling in the canonical stuck-flag lib, not here.
+const { isScoredButStillQueued } = require(path.join(REPO, 'scripts/lib/stuck-rescore-flag.js'));
 
 test('markRescoreComplete clears the flag and stamps completion', () => {
   const f = { needsRescore: true, rescoreReason: 'bw-v6-decompression', assignedScore: 91 };
@@ -51,10 +51,10 @@ test('markRescoreComplete is a no-op on a file that was never queued', () => {
   assert.equal(f.rescoreCompletedAt, undefined, 'no stamp when nothing was retired');
 });
 
-test('isStuckInRescoreQueue detects a scored-but-still-queued file', () => {
+test('isScoredButStillQueued detects a scored-but-still-queued file', () => {
   // The exact shape of the 10 files found stuck on 2026-07-26.
   assert.equal(
-    isStuckInRescoreQueue({
+    isScoredButStillQueued({
       needsRescore: true,
       rescoreReason: 'bw-v6-decompression',
       llmMetadata: { scoredAt: '2026-07-26T20:13:59.984Z' },
@@ -63,12 +63,12 @@ test('isStuckInRescoreQueue detects a scored-but-still-queued file', () => {
   );
   // Queued and genuinely never scored — not stuck, just pending.
   assert.equal(
-    isStuckInRescoreQueue({ needsRescore: true, rescoreReason: 'bw-v6-decompression' }),
+    isScoredButStillQueued({ needsRescore: true, rescoreReason: 'bw-v6-decompression' }),
     false
   );
   // Retired correctly.
   assert.equal(
-    isStuckInRescoreQueue({ rescoreCompletedAt: '2026-07-26T21:00:00.000Z' }),
+    isScoredButStillQueued({ rescoreCompletedAt: '2026-07-26T21:00:00.000Z' }),
     false
   );
 });

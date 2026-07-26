@@ -48,4 +48,36 @@ function isStuckRescoreFlag(data, show, filePath) {
   return !isScoreable(data, show, filePath);
 }
 
-module.exports = { isStuckRescoreFlag };
+/**
+ * The OTHER half of the same seam (2026-07-26). isStuckRescoreFlag covers
+ * "queued but the consumer would reject it". This covers "queued but the
+ * consumer already scored it successfully and failed to retire the flag" —
+ * the Haiku-fallback success path in llm-scoring/index.ts saved a score and
+ * returned before the needsRescore clear, so those files were re-scored by
+ * every drain forever (bw-v6-decompression queue frozen at 141 for ~6 days,
+ * 10 of them already scored).
+ *
+ * The producing bug is fixed at source (scripts/lib/rescore-lifecycle.js
+ * markRescoreComplete, called by every success path, enforced by
+ * tests/unit/rescore-lifecycle.test.mjs). This predicate is the corpus-side
+ * backstop so a future regression shows up in the same audit as its sibling
+ * instead of silently burning API spend.
+ *
+ * Pure (no I/O), same as its sibling.
+ *
+ * @param {object} data - review-text record
+ * @returns {boolean} true iff flagged for rescore but a score is already present
+ */
+function isScoredButStillQueued(data) {
+  if (!data || typeof data !== 'object') return false;
+  if (data.needsRescore !== true && data.needs_rescore !== true) return false;
+  const scoredAt = (data.llmMetadata && data.llmMetadata.scoredAt) || data.scoredAt;
+  if (!scoredAt) return false;
+  const flaggedAt = data.rescoreFlaggedAt || data.needsRescoreAt;
+  // No flag timestamp recorded (the common case — producers don't stamp one):
+  // a score existing at all while queued is the observable symptom.
+  if (!flaggedAt) return true;
+  return String(scoredAt) > String(flaggedAt);
+}
+
+module.exports = { isStuckRescoreFlag, isScoredButStillQueued };
