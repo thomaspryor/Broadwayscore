@@ -165,6 +165,19 @@ if [ -z "$(echo "$ALL_CHANGED_FILES" | tr -d '[:space:]')" ]; then
   exit 0
 fi
 
+# Unbounded git fetch on a shallow-checkout path (task #420). This gate lives
+# here as well as in test.yml's lint-workflows job because of a real coverage
+# hole: test.yml's `push:` trigger carries an explicit `paths:` ALLOW-LIST with
+# no `scripts/**` glob, so adding a BRAND-NEW scripts/foo.js containing an
+# unbounded fetch does not trigger the Test Suite at all — the blocking CI gate
+# never runs (feedback_test_yml_push_path_allowlist). `pull_request:` has no
+# paths filter, so PR merges ARE gated; direct pushes to main (which is how
+# nearly every bot commit lands here) were not. Found by the Codex adversarial
+# pass on the card that added the guard.
+if echo "$ALL_CHANGED_FILES" | grep -qE "^scripts/.*\.(js|mjs|cjs|ts|sh)$|^\.github/(workflows|actions)/.*\.ya?ml$"; then
+  run_audit "unbounded-fetch" "scripts/audit-unbounded-fetch.js"
+fi
+
 # Range-scoped: only run the audit when its target paths changed.
 if echo "$ALL_CHANGED_FILES" | grep -qE "^tests/unit/.*\.test\.(mjs|ts|js)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests)\.js$"; then
   run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js"

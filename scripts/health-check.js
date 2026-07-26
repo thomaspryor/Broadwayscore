@@ -733,6 +733,56 @@ function checkPipelines() {
   );
 }
 
+// Task #547: index.ts's --batch mode (task #516) writes batchInFlight state to
+// data/collection-state/scoring-batch-state.json but nothing read it — a batch
+// that never finishes inside the poll budget scores zero new reviews and the
+// only visible signal was `processed: 0`, indistinguishable from "nothing
+// needed scoring". Vendors expire batches at 24h; BATCH_STATE_MAX_AGE_HOURS in
+// index.ts discards at 48h, so an error at 24h gives a full day of lead time
+// before the state is silently dropped.
+const SCORING_BATCH_STATE_PATH = path.join(DATA_DIR, 'collection-state', 'scoring-batch-state.json');
+
+/** Pure so the age thresholds are testable without touching the filesystem. */
+function batchStateResult(state) {
+  const name = 'Scoring: batch state';
+  if (!state) {
+    return { name, status: 'pass', message: 'No batch in flight' };
+  }
+  const age = hoursAgo(state.submittedAt);
+  if (age === Infinity) {
+    return { name, status: 'warn', message: `scoring-batch-state.json has an unparseable submittedAt: ${state.submittedAt}` };
+  }
+  const itemCount = state.itemCount || 0;
+  const ageLabel = formatAge(age);
+  if (age > 24) {
+    return {
+      name,
+      status: 'error',
+      message: `Batch in flight ${ageLabel} (${itemCount} reviews) — vendors expire batches at 24h, this should have resumed or been discarded by now`,
+      hint: 'Check the scoring workflow run history — the batch poller may be stuck or crashed before draining or discarding scoring-batch-state.json.',
+    };
+  }
+  if (age > 12) {
+    return { name, status: 'warn', message: `Batch in flight ${ageLabel} (${itemCount} reviews) — next run resumes polling` };
+  }
+  return { name, status: 'pass', message: `Batch in flight ${ageLabel} (${itemCount} reviews) — next run resumes polling` };
+}
+
+function checkBatchState() {
+  return [runCheck('Scoring: batch state', () => {
+    if (!fs.existsSync(SCORING_BATCH_STATE_PATH)) {
+      return batchStateResult(null);
+    }
+    let state;
+    try {
+      state = readJSON(SCORING_BATCH_STATE_PATH);
+    } catch (err) {
+      return { name: 'Scoring: batch state', status: 'warn', message: `Unparseable scoring-batch-state.json: ${err.message}` };
+    }
+    return batchStateResult(state);
+  })];
+}
+
 // --- Category D: Content Quality ---
 
 function checkQuality() {
@@ -2644,6 +2694,7 @@ async function main() {
     ...checkPushVerification(),
     ...checkSync(),
     ...checkPipelines(),
+    ...checkBatchState(),
     ...checkQuality(),
     ...checkCommercialModelDrift(),
     ...checkCookieExpiration(),
@@ -2788,4 +2839,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE };
+module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult };
