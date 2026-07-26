@@ -6,7 +6,9 @@
     "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
     "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
     "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json",
-    "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
+    "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--matt-trueman.json",
+    "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json"
   ],
   "failed": [
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
@@ -387,7 +389,15 @@
     "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
     "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
     "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
-    "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json"
+    "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+    "the-gruffalo-west-end-2026/daily-mail--jennifer-ruby.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
+    "loves-labours-lost-globe-west-end-2026/london-theatre--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/thestage--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -397,13 +407,16 @@
       "trainspotting-the-musical-west-end-2026/west-end-best-friend--unknown.json",
       "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
       "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
-      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
+      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
+      "loves-labours-lost-globe-west-end-2026/whatsonstage--matt-trueman.json",
+      "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
-      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json"
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -425,7 +438,7 @@
     ]
   },
   "startTime": "2026-07-26T17:14:57.666Z",
-  "lastProcessed": "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+  "lastProcessed": "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json",
   "log": [
     {
       "t": "2026-07-26T21:38:21.459Z",
@@ -457,6 +470,17 @@
     },
     {
       "t": "2026-07-26T22:28:42.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-26T22:30:27.881Z",
+      "event": "bb-session",
+      "session": "d633e53c",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-26T22:30:28.264Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
