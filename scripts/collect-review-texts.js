@@ -5244,9 +5244,10 @@ function _pushToRemote(processed) {
   // checkout, where a bare `git fetch origin main` makes upload-pack send the
   // whole ~2.1 GB / 165k-commit repo instead of the ~500-object delta
   // (measured on a real runner, run 30218025467: 1365 MB before a 180s kill).
-  // Its conflict policy is identical to the one deleted here: keep the local
-  // run's data for data/collection-state/ and data/audit/, accept remote for
-  // everything else.
+  // Its conflict policy matches the one deleted here for THIS call site: keep
+  // the local run's data for data/collection-state/ and data/audit/, accept
+  // remote for everything else. (That equivalence is specific to this block —
+  // rediscover/verify had different hand-rolled policies; see their comments.)
   const { ok, stderr } = pushWithRetry({ branch: 'HEAD:main', retries: 5 });
   if (ok) {
     console.log(`  ✓ Pushed checkpoint to remote (${processed} reviews)`);
@@ -5387,6 +5388,14 @@ function pushReviewTextsCheckpoint(processed) {
     // The helper's restore_protected_fields() runs the same
     // lib/restore-protected-fields.js this used to invoke by hand, and it
     // additionally runs validate-added-review-ownership.js for this remote.
+    //
+    // DELIBERATE POLICY CHANGE (Codex ship-check, 2026-07-26): on a
+    // modify/delete conflict the old hand-rolled loop kept whatever file was
+    // still on disk, which RESURRECTS a tombstone the remote deleted on
+    // purpose — the --unknown.json -> --named-critic.json rename case
+    // push-with-retry.sh documents. The helper accepts the remote deletion
+    // instead. That is the repo's intended behaviour (memory/feedback_outlet_
+    // merge_no_flag_and_keep.md), so this is a fix, not a regression.
     const rtPush = pushWithRetry({ cwd: rtDir, branch: 'main', retries: 3 });
     if (rtPush.ok) {
       console.log(`  ✓ Pushed review-texts checkpoint to private repo`);

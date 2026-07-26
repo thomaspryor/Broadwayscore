@@ -425,6 +425,36 @@ restore_protected_fields() {
   fi
 }
 
+# Post-rebase reconciliation of the union-merged JSON files (task #420,
+# ship-check/Codex finding). resolve_conflicts() knows to per-slug UNION
+# commercial-pending-review.json et al., but it ONLY runs when the rebase
+# actually conflicts — and `git rebase -X theirs` resolves conflicting hunks in
+# favour of our replayed commits WITHOUT reporting a conflict. Measured on a
+# fixture editing two different slugs three lines apart: "Successfully rebased",
+# no conflict, remote slug's edit silently gone, merger never invoked.
+#
+# This pass re-merges those files against the remote tip after history moved,
+# using the same union functions. OPT-IN (PUSH_RECONCILE_MERGED_JSON=1): ~114
+# workflows push through this helper and flipping their conflict semantics
+# wholesale is not a safe side effect of one card, so the default is unchanged.
+# Fail-OPEN like restore_protected_fields — a reconciliation error must never
+# block an otherwise-good push.
+reconcile_merged_json() {
+  [ "${PUSH_RECONCILE_MERGED_JSON:-}" = "1" ] || return 0
+  command -v node >/dev/null 2>&1 || return 0
+  [ -f "$SCRIPT_DIR/reconcile-merged-json.js" ] || return 0
+  # ONE invocation: stdout is the changed-file count, stderr streams to the job
+  # log. Running it twice (once for the log, once for the count) would report 0
+  # the second time — the first pass has already written the merged files.
+  local count
+  count=$(node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH") || return 0
+  if [ "$count" -gt 0 ] 2>/dev/null; then
+    echo "  Reconciled $count union-merged JSON file(s) against origin/$PULL_BRANCH (task #420)"
+    git add -A
+    git commit --amend --no-edit 2>/dev/null || true
+  fi
+}
+
 pushed=false
 for i in $(seq 1 "$MAX_RETRIES"); do
   # Overall wall-clock deadline (hang guard, task #183). $SECONDS counts from this
@@ -724,6 +754,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     history_changed=true
     RESOLUTION_PATH="rebase-clean(-X theirs)"
     restore_protected_fields
+    reconcile_merged_json
   else
     echo "  Rebase had conflicts, attempting auto-resolution..."
     # Try up to 4 rounds of conflict resolution (one per conflicting commit)
@@ -735,6 +766,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
           RESOLUTION_PATH="rebase-resolved(${_round} round(s))"
           echo "  Rebase completed after $_round round(s) of conflict resolution"
           restore_protected_fields
+          reconcile_merged_json
           break
         fi
       else
@@ -757,11 +789,13 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       history_changed=true
       RESOLUTION_PATH="merge(-X ours)"
       restore_protected_fields
+      reconcile_merged_json
     elif resolve_conflicts merge && git commit --no-edit 2>/dev/null; then
       echo "  Merge succeeded after auto-resolving conflicts"
       history_changed=true
       RESOLUTION_PATH="merge-resolved"
       restore_protected_fields
+      reconcile_merged_json
     else
       echo "  Merge also failed, aborting..."
       git merge --abort 2>/dev/null || true
@@ -786,6 +820,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
           history_changed=true
           RESOLUTION_PATH="reset+cherry-pick(-X theirs)"
           restore_protected_fields
+          reconcile_merged_json
         else
           git cherry-pick --abort 2>/dev/null || true
           # Restore must be LOUD (task #543): the old `|| true` here silently

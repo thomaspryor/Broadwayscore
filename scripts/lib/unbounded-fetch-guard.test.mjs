@@ -19,6 +19,7 @@ const {
   normalizePath,
   reachableFrom,
   referencedScripts,
+  spawnedScripts,
   stripBlockComments,
 } = require('./unbounded-fetch-guard.js');
 
@@ -319,4 +320,51 @@ test('audit is clean when every reachable fetch is bounded or waived', () => {
     ['.github/workflows/w.yml', WF('      - uses: actions/checkout@v5\n      - run: node scripts/a.js\n      - run: node scripts/b.js\n')],
   ]);
   assert.deepEqual(auditUnboundedFetches({ scripts, workflows }).violations, []);
+});
+
+// ── spawn edges (Codex ship-check: false negatives are the dangerous direction) ──
+
+test('spawnedScripts finds shell-out invocations', () => {
+  const files = new Set(['scripts/worker.js', 'scripts/helper.sh']);
+  const resolve = (p) => (files.has(p) ? p : null);
+  const src = [
+    "execSync('node scripts/worker.js --limit=5');",
+    "spawnSync('bash', ['scripts/helper.sh']);",
+    "console.log('scripts/not-a-real-file.js');",
+  ].join('\n');
+  assert.deepEqual(spawnedScripts(src, resolve).sort(), ['scripts/helper.sh', 'scripts/worker.js']);
+});
+
+test('REGRESSION: audit reaches a worker that is only SPAWNED, never required', () => {
+  // The narrow require()-only model reported this repo clean; adding spawn
+  // edges immediately surfaced a real unbounded fetch in
+  // scripts/autonomous-acceptance-recheck.js, reachable from 122 shallow
+  // workflows. A missed edge here is a silent multi-GB CI stall.
+  const scripts = new Map([
+    ['scripts/dispatcher.js', "execSync('node scripts/worker.js');"],
+    ['scripts/worker.js', "execSync('git fetch origin main');"],
+  ]);
+  const workflows = new Map([
+    ['.github/workflows/w.yml', WF('      - uses: actions/checkout@v5\n      - run: node scripts/dispatcher.js\n')],
+  ]);
+  const { violations } = auditUnboundedFetches({ scripts, workflows });
+  assert.deepEqual(violations.map((v) => v.file), ['scripts/worker.js']);
+});
+
+test('composite action yml is analysed like a workflow (its checkout defaults to depth 1)', () => {
+  // .github/actions/checkout-review-texts/action.yml sets fetch-depth: 1 by
+  // default; treating only .github/workflows/ as entry points hid every script
+  // a composite action invokes.
+  const action = [
+    'name: Checkout review-texts',
+    'runs:',
+    '  using: composite',
+    '  steps:',
+    '    - uses: actions/checkout@v5',
+    '      with:',
+    '        fetch-depth: 1',
+    '    - run: node scripts/inside-action.js',
+  ].join('\n');
+  assert.equal(analyzeWorkflowCheckout(action).shallow, true);
+  assert.deepEqual(referencedScripts(action), ['scripts/inside-action.js']);
 });

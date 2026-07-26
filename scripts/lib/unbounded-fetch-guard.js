@@ -299,6 +299,26 @@ function localDependencies(source, filePath, resolve) {
   return [...out];
 }
 
+/**
+ * Scripts this one SHELLS OUT to — `execSync('node scripts/foo.js')`,
+ * `spawn('bash', ['scripts/bar.sh'])`, and friends. Without these edges the
+ * reachability graph stops at the process boundary, so a workflow that invokes
+ * a dispatcher which invokes the real worker would leave the worker looking
+ * unreachable — a FALSE NEGATIVE, which for this guard means a silent
+ * multi-GB CI stall rather than a noisy lint failure (Codex ship-check
+ * finding, 2026-07-26).
+ */
+function spawnedScripts(source, resolve) {
+  const out = new Set();
+  const re = /['"`][^'"`]*?(scripts\/[A-Za-z0-9_./-]+\.(?:js|mjs|cjs|ts|sh))/g;
+  let m;
+  while ((m = re.exec(source)) !== null) {
+    const hit = resolve(m[1]);
+    if (hit) out.add(hit);
+  }
+  return [...out];
+}
+
 /** posix path normalize without touching the filesystem (`a/b/../c` → `a/c`). */
 function normalizePath(p) {
   const parts = [];
@@ -340,8 +360,16 @@ function reachableFrom(entries, graph) {
 function auditUnboundedFetches({ scripts, workflows }) {
   const resolve = (p) => (scripts.has(p) ? p : null);
 
+  // Graph edges = static requires + shell-out invocations. Both are needed:
+  // overnight-digest.js is reached only by require(), while several workers are
+  // reached only because a dispatcher execSync's `node scripts/<worker>.js`.
   const graph = new Map();
-  for (const [file, src] of scripts) graph.set(file, localDependencies(src, file, resolve));
+  for (const [file, src] of scripts) {
+    graph.set(file, [...new Set([
+      ...localDependencies(src, file, resolve),
+      ...spawnedScripts(src, resolve),
+    ])]);
+  }
 
   // Seed the reachability search with every script named by a SHALLOW workflow.
   const shallowWorkflows = [];
@@ -395,5 +423,6 @@ module.exports = {
   normalizePath,
   reachableFrom,
   referencedScripts,
+  spawnedScripts,
   stripBlockComments,
 };

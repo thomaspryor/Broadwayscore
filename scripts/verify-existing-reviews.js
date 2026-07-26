@@ -388,6 +388,14 @@ function pushReviewTextsCheckpoint(message) {
     // checkout-review-texts, fetch-depth: 1), so the unbounded pull had the
     // same whole-repo-transfer exposure (#466). The helper runs the same
     // lib/restore-protected-fields.js this used to invoke by hand.
+    //
+    // DELIBERATE POLICY CHANGE (Codex ship-check, 2026-07-26): on a
+    // modify/delete conflict the old hand-rolled loop kept whatever file was
+    // still on disk, which RESURRECTS a tombstone the remote deleted on
+    // purpose — the --unknown.json -> --named-critic.json rename case
+    // push-with-retry.sh documents. The helper accepts the remote deletion
+    // instead. That is the repo's intended behaviour (memory/feedback_outlet_
+    // merge_no_flag_and_keep.md), so this is a fix, not a regression.
     const rtPush = pushWithRetry({ cwd: rtDir, branch: 'main', retries: 3 });
     if (rtPush.ok) {
       console.log('  [checkpoint] ✓ Pushed review-texts to private repo');

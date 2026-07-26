@@ -66,6 +66,7 @@ if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const REPO_ROOT = path.resolve(__dirname, '..');
 const SCRIPTS_DIR = path.join(REPO_ROOT, 'scripts');
 const WORKFLOWS_DIR = path.join(REPO_ROOT, '.github', 'workflows');
+const ACTIONS_DIR = path.join(REPO_ROOT, '.github', 'actions');
 
 const SCRIPT_EXT = /\.(?:js|mjs|cjs|ts|sh)$/;
 // Tests describe the bug in fixture strings; they never run a fetch in CI.
@@ -95,11 +96,26 @@ function main() {
   const verbose = process.argv.includes('--verbose');
 
   const scripts = readAll(walk(SCRIPTS_DIR));
-  const workflowFiles = fs.existsSync(WORKFLOWS_DIR)
-    ? fs.readdirSync(WORKFLOWS_DIR)
-        .filter((f) => /\.ya?ml$/.test(f))
-        .map((f) => path.relative(REPO_ROOT, path.join(WORKFLOWS_DIR, f)))
-    : [];
+  // Workflows AND composite actions. .github/actions/*/action.yml carry their
+  // own `uses: actions/checkout` steps (checkout-review-texts defaults to
+  // fetch-depth: 1) and their own `run:` blocks invoking scripts — skipping
+  // them left a whole class of shallow-checkout entry points invisible to the
+  // guard (Codex ship-check finding, 2026-07-26).
+  const workflowFiles = [];
+  if (fs.existsSync(WORKFLOWS_DIR)) {
+    for (const f of fs.readdirSync(WORKFLOWS_DIR)) {
+      if (/\.ya?ml$/.test(f)) workflowFiles.push(path.relative(REPO_ROOT, path.join(WORKFLOWS_DIR, f)));
+    }
+  }
+  if (fs.existsSync(ACTIONS_DIR)) {
+    for (const d of fs.readdirSync(ACTIONS_DIR, { withFileTypes: true })) {
+      if (!d.isDirectory()) continue;
+      for (const name of ['action.yml', 'action.yaml']) {
+        const abs = path.join(ACTIONS_DIR, d.name, name);
+        if (fs.existsSync(abs)) workflowFiles.push(path.relative(REPO_ROOT, abs));
+      }
+    }
+  }
   const workflows = readAll(workflowFiles);
 
   const { violations, shallowWorkflows, exposedScripts } = auditUnboundedFetches({ scripts, workflows });

@@ -934,7 +934,16 @@ async function main() {
       // upload-pack send the whole ~2.1 GB repo (#466). The helper also
       // per-slug-merges data/commercial-pending-review.json on conflict
       // instead of letting one side win wholesale.
-      const { ok, stderr } = pushWithRetry({ cwd, branch: 'HEAD:main', retries: 5 });
+      // PUSH_RECONCILE_MERGED_JSON=1: this script writes commercial-pending-
+      // review.json, which has a dedicated per-slug UNION merger. The helper's
+      // `rebase -X theirs` resolves conflicting hunks in favour of our commits
+      // WITHOUT raising a conflict, so resolve_conflicts() — the only place
+      // that merger normally runs — never fires and a concurrent writer's
+      // nearby slug is silently dropped (measured on a fixture, 2026-07-26).
+      // The flag turns on the post-rebase reconciliation pass that re-unions
+      // it against the remote tip. Opt-in so the ~114 other callers keep
+      // today's exact semantics.
+      const { ok, stderr } = pushWithRetry({ cwd, branch: 'HEAD:main', retries: 5, reconcileMergedJson: true });
       if (ok) {
         console.log('    Committed and pushed.');
       } else {

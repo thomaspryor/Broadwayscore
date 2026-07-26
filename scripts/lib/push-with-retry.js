@@ -51,6 +51,16 @@ const SCRIPT_PATH = path.join(__dirname, 'push-with-retry.sh');
  *                                  raise it only after confirming the calling
  *                                  job's own timeout has headroom (see the
  *                                  PUSH_DEADLINE_SEC note in the .sh).
+ * @param {boolean} [opts.reconcileMergedJson] set PUSH_RECONCILE_MERGED_JSON=1
+ *                                  for this call. Turn it ON when the commit
+ *                                  touches a union-merged file (commercial*.json,
+ *                                  diary-shows.json, social-post-history.json):
+ *                                  `rebase -X theirs` resolves those in favour of
+ *                                  the local side WITHOUT conflicting, so the
+ *                                  per-slug merger never runs and a concurrent
+ *                                  writer's entry is silently lost. Default off —
+ *                                  the ~114 existing callers keep today's exact
+ *                                  behaviour.
  * @param {'pipe'|'inherit'} [opts.stdio] default 'pipe' (quiet checkpoints).
  * @returns {{ok: boolean, code: number|null, stderr: string}}
  */
@@ -60,11 +70,13 @@ function pushWithRetry(opts = {}) {
     branch = 'HEAD:main',
     retries = 5,
     deadlineSec,
+    reconcileMergedJson = false,
     stdio = 'pipe',
   } = opts;
 
   const env = { ...process.env };
   if (deadlineSec) env.PUSH_DEADLINE_SEC = String(deadlineSec);
+  if (reconcileMergedJson) env.PUSH_RECONCILE_MERGED_JSON = '1';
 
   try {
     const out = execFileSync('bash', [SCRIPT_PATH, String(retries), branch], {
