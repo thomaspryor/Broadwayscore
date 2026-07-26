@@ -753,6 +753,10 @@ on:
       - 'scripts/autonomous-email.js'
       - 'scripts/autonomous-deadman.js'
       - 'scripts/autonomous-nightly.sh'
+      # Monitor-lock staleness decision (#476) — colocated test runs in the
+      # lib-test glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/monitor-lock-staleness.js'
+      - 'scripts/lib/monitor-lock-staleness.test.mjs'
       - 'scripts/launchd/**'
       - '.claude/autonomous-config.json'
       # Autonomous nightly loop (Sprint 3: CI merge path + deterministic-green

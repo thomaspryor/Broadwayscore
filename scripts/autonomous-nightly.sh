@@ -33,18 +33,36 @@ cd "$REPO" || exit 1
 # email, and the workspace sweep are API/ledger-only and still run, so the
 # owner still gets an email and the deadman doesn't false-alarm (2026-07-25:
 # the old whole-night `exit 0` left the ledger silent and tripped deadman).
-# A lock older than 20h is STALE — its monitor window is long over (the
-# 2026-07-25 incident: a lock whose workspace had died skipped a full night;
-# locks are per-night by design, so >20h can only be an orphan) — log loudly
-# and run the full night.
+# A lock whose meta.json launchedAt is older than 20h is STALE — its monitor
+# window is long over (locks are per-night by design, so >20h can only be an
+# orphan) — log loudly and run the full night.
+#
+# #476 (2026-07-26): this used to check the LOCK DIR's mtime, but any process
+# that merely touches the directory (an unrelated smoketest/crashtest doing a
+# `find`/`ls` sweep) resets mtime without the monitor session doing anything
+# — the 07-26 incident: a lock launched 2026-07-24 (46h old) got its dir
+# mtime refreshed hours before this tick ran, read as "fresh", and silently
+# skipped 5 planned tier-3 attempts with no explanation in the morning email.
+# meta.json's launchedAt is written once, by the launcher, and never touched
+# again — it is the only trustworthy clock here.
 SKIP_EXECUTOR=0
 LOCK="$REPO/data/opening-night-monitor/monitor.lock"
 if [ -d "$LOCK" ]; then
-  if [ -n "$(find "$LOCK" -maxdepth 0 -mmin +1200 2>/dev/null)" ]; then
-    echo "[nightly] monitor.lock is STALE (>20h old — owning monitor window is over) — ignoring it and running the full night"
-  else
-    echo "[nightly] opening-night monitor active (fresh monitor.lock) — skipping the executor only; triage/email/sweep still run"
+  # Decision logic lives in scripts/lib/monitor-lock-staleness.js
+  # (isLockFresh), unit-tested there — not duplicated here.
+  # ship-check (codex): the ONLY case that may skip the executor is a
+  # confirmed "FRESH" read — anything else (node missing/crashing,
+  # unexpected stdout noise, an empty string) must fall through to "run
+  # the full night". An earlier draft tested `= "STALE"` and defaulted the
+  # `else` branch to skip-executor, which is backwards: any non-"STALE"
+  # output (not just a real FRESH read) would have silently reintroduced
+  # the exact skip bug this fix exists to close.
+  LOCK_FRESH=$(node "$REPO/scripts/lib/monitor-lock-staleness.js" "$LOCK" 2>/dev/null)
+  if [ "$LOCK_FRESH" = "FRESH" ]; then
+    echo "[nightly] opening-night monitor active (fresh monitor.lock per meta.json launchedAt) — skipping the executor only; triage/email/sweep still run"
     SKIP_EXECUTOR=1
+  else
+    echo "[nightly] monitor.lock is STALE (meta.json launchedAt >20h old, missing/corrupt, or the staleness check itself failed — owning monitor window is over or unverifiable) — ignoring it and running the full night"
   fi
 fi
 
@@ -83,7 +101,9 @@ if [ "$SKIP_EXECUTOR" = "1" ]; then
   # resolve the owner address the same way the executor does (.env fallback).
   OWNER_EMAIL_RESOLVED="${OWNER_EMAIL:-$(grep -m1 '^OWNER_EMAIL=' "$REPO/.env" 2>/dev/null | cut -d= -f2-)}"
   if [ -n "$OWNER_EMAIL_RESOLVED" ]; then
-    node scripts/autonomous-email.js --send-to "$OWNER_EMAIL_RESOLVED" || echo "[nightly] WARN morning email failed on monitor night"
+    # #476: say so in the email — otherwise a monitor night that deferred
+    # real planned work reads identically to a genuine do-nothing night.
+    node scripts/autonomous-email.js --send-to "$OWNER_EMAIL_RESOLVED" --executor-skipped "monitor night" || echo "[nightly] WARN morning email failed on monitor night"
   else
     echo "[nightly] WARN no OWNER_EMAIL resolvable — monitor-night email skipped"
   fi
