@@ -518,7 +518,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
 /**
  * Build a feedback thank-you email — plain text style, personal, from Tom.
  *
- * @param {'fixed'|'acknowledged'|'praise'|'feature'} type
+ * @param {'fixed'|'acknowledged'|'praise'|'feature'|'content'} type
  * @param {string} name - Submitter's first name (or falsy if unknown)
  * @param {string} [showTitle] - Show name if applicable
  * @returns {{ subject: string, html: string }}
@@ -542,6 +542,13 @@ function buildFeedbackThankYouEmail(type, name, showTitle) {
       body = greeting
         ? `Hi ${escapeHtml(greeting)},\n\nJust wanted to say thank you \u2014 your kind words really made my day. I\u2019m so glad the site is useful to you.\n\nTom\nBroadway Scorecard™`
         : `Hi there,\n\nJust wanted to say thank you \u2014 your kind words really made my day. I\u2019m so glad the site is useful to you.\n\nTom\nBroadway Scorecard™`;
+      break;
+
+    case 'content':
+      subject = showRef ? `Re: ${showTitle}` : 'Re: your request';
+      body = greeting
+        ? `Hi ${escapeHtml(greeting)},\n\nThanks for writing in${showRef ? ` about ${showRef}` : ''}. Requests like this are exactly how we find gaps in our coverage — I’ll take a look at adding it.\n\nTom\nBroadway Scorecard™`
+        : `Hi there,\n\nThanks for writing in${showRef ? ` about ${showRef}` : ''}. Requests like this are exactly how we find gaps in our coverage — I’ll take a look at adding it.\n\nTom\nBroadway Scorecard™`;
       break;
 
     case 'feature':
