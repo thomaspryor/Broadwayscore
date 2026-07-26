@@ -76,7 +76,8 @@ Inspiration audit:
 1. Marquee numbers (hero tiles)
 2. **Shows per year** ← priority 4
 3. **Broadway theaters** ← priority 2
-4. You vs. the Critics ⭐
+4. You vs. the Critics ⭐ (incl. **Aisle Mates** — critics you most align
+   with — and **Your Paper of Record** for outlets)
 5. Tony & the Canon ⭐
 6. Ratings
 7. People ⭐
@@ -216,6 +217,39 @@ Joins `user_reviews.rating` (×20 → 0–100) against `cs` from mobile-shows.
   time — they were worlds apart on Bad Cinderella." Reinforces the app's data
   authority with zero new data.
 
+#### Aisle Mates — the critics you most align with ⭐
+
+Individual-critic alignment, not just the aggregate. Press seats are aisle
+seats — your best-matched critics are your **Aisle Mates**. (Name candidates
+considered: Critic BFFs, Kindred Critics, Taste Twins; "Aisle Mates" wins for
+being theater-native. Trivial to rename.)
+
+- **Top matches:** for every critic sharing ≥5 rated shows with your diary,
+  alignment = % of shared shows where |your ★×20 − their score| ≤ 12
+  (≈ half a star), tie-broken by overlap count. Show top 3:
+  "**Ben Brantley — 91% aligned · 31 shows together**," with a signed-bias
+  footnote ("runs 6 pts colder than you"). Corpus check (2026-07-26): 140
+  critics have 25+ scored shows, 50 have 100+ — real diaries will match.
+- **Critic Nemesis:** lowest alignment at ≥8 shared shows, framed with love:
+  "You and Jesse Green disagree 68% of the time. Keep him around for
+  balance." The share-bait row.
+- **Critic detail sheet:** the full agreement history (show · your ★ · their
+  score), biggest agreement and biggest fight, and — the payoff — **"Their
+  picks you haven't seen"**: your best-matched critic becomes your personal
+  recommender, deep-linking to show pages/tickets. Same booking loop as
+  Critical Gold.
+- **Your Paper of Record:** the same math at outlet level (outlet's score per
+  show, mean where multiple critics): "The outlet that reads you best:
+  Vulture — 84% aligned across 52 shows," with tier context (T1/T2/T3) and a
+  nemesis-outlet counterpart. Name puns on the NYT's moniker; works even
+  when the answer *isn't* the Times ("Your paper of record is… the New York
+  Post. No judgment.").
+- **Share card:** "My Aisle Mate: Ben Brantley · 91% across 31 shows" /
+  nemesis equivalent — same card engine as everything else.
+- Hides below 5 shared rated shows with any single critic; cold-start copy
+  points at rating more of the diary.
+- Data: needs `stats-reviews.json` (§8) — per-show scored reviews, compact.
+
 ### 5.2 Tony & the Canon ⭐
 Milestone checklists with progress rings + poster shelves (unseen posters
 dimmed): **Best Musical winners**, **Best Play winners**, **this season's
@@ -313,7 +347,12 @@ rows (venue/city/country). New artifacts:
    title, poster), ceremony dates, NYT picks, Pulitzers. Ceremony dates are
    needed at **V1** (they define season boundaries for the scope pill); the
    winner/nominee lists can land v1.1/v2.
-3. **Community rating distributions** — per-show aggregate histograms (k≥5)
+3. **`stats-reviews.json`** — compact per-show scored reviews for Aisle
+   Mates / Paper of Record: interned critic + outlet name tables, then
+   `{showId: [[criticIdx, outletIdx, score], …]}`. ~19k scored reviews ≈
+   ~500KB raw / ~100KB gzipped; alignment is computed on-device against the
+   private diary (ratings never leave the phone for this) — v1.1.
+4. **Community rating distributions** — per-show aggregate histograms (k≥5)
    for the ratings ghost — v2, volume-dependent.
 Supabase: `user_review_photos` table + private storage bucket (§4).
 Capture backlog (app-side, optional log-sheet fields): seat + price paid
@@ -352,7 +391,8 @@ exists. Adopted — the identity modules move into V1; commodity stats move out.
   years; ceremony dates at V1), tap-through lists, **photo logging + Feed
   (timeline / photo wall)**. Pure `StatsEngine` struct over diary +
   `mobile-shows.json` (unit-tested reducers).
-- **V1.1:** People, Records & Superlatives (incl. total audience counter),
+- **V1.1:** **Aisle Mates + Your Paper of Record** (`stats-reviews.json`
+  artifact), People, Records & Superlatives (incl. total audience counter),
   Challenges + "what to see next," MapKit theater map (lat/lng artifact),
   share cards, optional log-sheet fields (price paid → spend stats;
   companions → private people tags).

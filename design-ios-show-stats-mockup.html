@@ -477,6 +477,27 @@
           <span class="hch off">Buena Vista</span><span class="hch off">+2 more ›</span></div></div>
         </div>
       </div>
+      <div class="card">
+        <h4>Aisle Mates <span class="mini">critics who match you ›</span></h4>
+        <div class="row"><span class="poster" style="background:linear-gradient(160deg,#2c4a6e,#132234);border-radius:50%;height:34px">BB</span>
+          <div class="t"><b>Ben Brantley</b><span>NY Times · 31 shows together</span></div>
+          <span class="delta num" style="color:var(--brand)">91%</span></div>
+        <div class="row"><span class="poster" style="background:linear-gradient(160deg,#4d431c,#221d0b);border-radius:50%;height:34px">AF</span>
+          <div class="t"><b>Adam Feldman</b><span>Time Out · 24 shows together</span></div>
+          <span class="delta num" style="color:var(--brand)">88%</span></div>
+        <div class="row"><span class="poster" style="background:linear-gradient(160deg,#1c4d38,#0b2218);border-radius:50%;height:34px">SH</span>
+          <div class="t"><b>Sara Holdren</b><span>Vulture · 19 shows together</span></div>
+          <span class="delta num" style="color:var(--brand)">85%</span></div>
+        <div class="row"><span class="poster" style="background:linear-gradient(160deg,#5a2323,#2a0f0f);border-radius:50%;height:34px">JG</span>
+          <div class="t"><b>Critic Nemesis: Jesse Green</b><span>You disagree 68% of the time. Keep him around for balance.</span></div>
+          <span class="delta num" style="color:var(--ink-3)">32%</span></div>
+      </div>
+      <div class="card">
+        <h4>Your paper of record</h4>
+        <p style="font-size:12.5px;color:var(--ink-2)">The outlet that reads you best:
+        <b style="color:var(--ink)">Vulture</b> — <b style="color:var(--brand)">84% aligned</b> across 52 shows.
+        Least aligned: NY Post (41%).</p>
+      </div>
       <div class="card"><h4>The audience &amp; you</h4>
         <p style="font-size:12.5px;color:var(--ink-2)">You agree with the audience grade <b style="color:var(--ink)">81%</b> of the time — you're one of the crowd.</p>
       </div>
@@ -499,8 +520,18 @@
     directions. The screenshot-bait rows, and a one-tap share card (v1.1).</p></div>
     <div class="note"><span class="pin">c</span><p><b>Critical Gold coverage closes a booking loop no
     tracker has:</b> the unseen remainder deep-links to show pages and tickets.</p></div>
-    <div class="note"><span class="pin">d</span><p><b>Thresholds:</b> hides under 5 rated shows with
-    critic scores; diary-only entries simply don't join, with a footnote count.</p></div>
+    <div class="note"><span class="pin">d</span><p><b>Aisle Mates</b> — press seats are aisle seats:
+    per-critic alignment (% of ≥5 shared shows within ≈half a star), top 3 + a lovingly-framed
+    <b>Critic Nemesis</b>. Tap a critic → full agreement history + <b>"their picks you haven't
+    seen"</b>: your best-matched critic becomes your personal recommender. Corpus supports it —
+    140 critics have 25+ scored shows. Computed on-device from a compact
+    <code>stats-reviews.json</code>; your ratings never leave the phone.</p></div>
+    <div class="note"><span class="pin">e</span><p><b>Your Paper of Record</b> — same math per
+    outlet ("the outlet that reads you best"), with a least-aligned counterpart. Works even when
+    the answer isn't the Times.</p></div>
+    <div class="note"><span class="pin">f</span><p><b>Thresholds:</b> the module hides under 5 rated
+    shows with critic scores; Aisle Mates needs ≥5 shows shared with a single critic (nemesis ≥8);
+    diary-only entries simply don't join, with a footnote count.</p></div>
   </div>
 </section>
 
