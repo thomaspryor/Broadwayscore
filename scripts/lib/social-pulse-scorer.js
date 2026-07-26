@@ -824,6 +824,7 @@ module.exports = {
   computeSocialPulse,
   // Peer-relative tier (the new primary path)
   derivePeerTier,
+  shouldShowSentiment,
   computeCompositeScore,
   computePeerStats,
   percentile,

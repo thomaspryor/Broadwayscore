@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+// hygiene-help-flag-ok: audit-help-flag-safety.js flags the execSync(cmd, ...) call inside
+// executeRunScript()'s try block — a function DECLARATION, not a call. It's only invoked from
+// main() → applyTransform-adjacent action dispatch, well after the --help guard at the top of
+// main(). Verified: node execute-approved-fix.js --help exits 0 with no subprocess/fs side effects.
+
 /**
  * Executes a human-approved remediation plan from data/pending-fixes/{issue}.json.
  *
