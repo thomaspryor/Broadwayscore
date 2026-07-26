@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-26T09:32:39.635Z",
+  "timestamp": "2026-07-26T10:42:15.953Z",
   "stats": {
-    "totalReviews": 40491,
-    "alreadyFlagged": 17822,
-    "dateGuardCatches": 59,
-    "directorMismatch": 911,
+    "totalReviews": 40500,
+    "alreadyFlagged": 17835,
+    "dateGuardCatches": 60,
+    "directorMismatch": 914,
     "tvFilmSignals": 1109,
-    "londonSignals": 757,
+    "londonSignals": 759,
     "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3266
+    "noPublishDate": 3252
   },
   "findings": [
     {
@@ -12187,6 +12187,20 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "british-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2025-12-12",
+      "url": "https://www.britishtheatreguide.info/reviews/into-the-woods-bridge-theatre-25189",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 96,
       "publishDate": "2025-12-12",
@@ -12487,6 +12501,20 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "theatre-south-east--unknown.json",
+      "score": 81,
+      "publishDate": "2026-01-10",
+      "url": "https://theatresoutheast.com/into-the-woods-the-bridge-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "thestage--sam-marlowe.json",
       "score": 60,
       "publishDate": "December 12th, 2025",
@@ -12720,6 +12748,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"des mcanuff\" from jesus-christ-superstar-2012"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "score": 78,
+      "publishDate": "2023-10-05",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 989d before show (2023-10-05 vs 2026-06-20)"
         }
       ]
     },
@@ -13165,6 +13207,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "plays-international--maryam-philpott.json",
+      "score": 80,
+      "publishDate": "2026-03-29",
+      "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -29133,6 +29194,20 @@
       "score": 88,
       "publishDate": "November 24, 2025",
       "url": "https://www.nytimes.com/2025/11/24/theater/all-my-sons-ivo-van-hove-london.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "observer--unknown.json",
+      "score": null,
+      "publishDate": "2025-11-28",
+      "url": "https://observer.co.uk/culture/theatre/article/ivo-van-hoves-all-my-sons-is-a-revelation",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
