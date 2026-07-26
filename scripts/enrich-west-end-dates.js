@@ -27,6 +27,15 @@ const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
 const { inferPressNightFromReviews } = require('./lib/infer-press-night-from-reviews');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-west-end-dates.js — West End Date Enrichment Script.
+
+Usage:
+  node scripts/enrich-west-end-dates.js [options]
+  node scripts/enrich-west-end-dates.js --help, -h    print this usage and exit
+`;
+// hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const PLAYBILL_URL = 'https://playbill.com/article/schedule-of-upcoming-london-shows';
 const TM_INDEX_URL = 'https://www.theatremonkey.com/shows/';
@@ -428,6 +437,8 @@ function mergeSources(tmEntries, pbEntries) {
 // ============================================================
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
   console.log('WEST END DATE ENRICHMENT');
   console.log('='.repeat(60));

@@ -3,60 +3,62 @@
   "showId": "hercules-west-end-2025",
   "showTitle": "Hercules",
   "market": "West End",
-  "fetchedAt": "2026-07-22T01:18:02.819Z",
-  "tier": "Hidden",
-  "volume": 12,
-  "effectiveVolume": 2.5,
+  "fetchedAt": "2026-07-26T20:33:12.276Z",
+  "tier": "Rising",
+  "volume": 21,
+  "effectiveVolume": 0.8,
   "relevanceRates": {
     "byPlatform": {
-      "bluesky": 0.4
+      "reddit": 0.08333333333333333,
+      "bluesky": 0.375
     },
-    "overall": 0.4
+    "overall": 0.2
   },
-  "positivePct": 0,
-  "opinionSample": 1,
-  "weekOverWeekPct": null,
-  "baselineMultiple": null,
+  "positivePct": 67,
+  "opinionSample": 3,
+  "weekOverWeekPct": 75,
+  "baselineMultiple": 1.75,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
-    "bluesky": 2
+    "reddit": 1,
+    "bluesky": 3
   },
   "topQuotes": [
     {
-      "text": "Disney’s Hercules in London is colourful, energetic and carried by the Muses but I wanted more magic. “Zero to Hero”…",
+      "text": "Hercules on DVD/Blu-ray? Hello! I'm aware that this might be a stupid question, but my fiancée just watched Hercules…",
+      "platform": "reddit",
+      "author": "u/TheflyingTeen",
+      "url": "https://www.reddit.com/r/TheWestEnd/comments/1v7efdt/hercules_on_dvdbluray/"
+    },
+    {
+      "text": "Dragged the BF to see Hercules on the West End and it was so good!",
       "platform": "bluesky",
-      "author": "@kekelmb.bsky.social",
-      "url": "https://bsky.app/profile/kekelmb.bsky.social/post/3mr74qkavey2g"
+      "author": "@maranamara.bsky.social",
+      "url": "https://bsky.app/profile/maranamara.bsky.social/post/3mrisepn7jk2f"
     }
   ],
   "counters": {
-    "reddit": null,
-    "bluesky": 5,
-    "x": 7,
-    "wikipedia": 917
+    "reddit": 12,
+    "bluesky": 8,
+    "x": 1,
+    "wikipedia": 1009
   },
   "wikipediaTitle": "Hercules (musical)",
   "baseline": {
-    "mean": 12,
-    "weeksOfHistory": 1
+    "mean": 16.5,
+    "weeksOfHistory": 2
   },
   "rawCounts": {
-    "reddit": 0,
-    "bluesky": 5
+    "reddit": 12,
+    "bluesky": 8
   },
-  "errors": [
-    {
-      "platform": "reddit",
-      "error": "all providers down (see log)"
-    }
-  ],
+  "errors": [],
   "rank": {
-    "position": 19,
-    "total": 46,
-    "text": "19/46 West End"
+    "position": 11,
+    "total": 48,
+    "text": "11/48 West End"
   },
-  "compositeScore": 0
+  "compositeScore": 0.54
 }

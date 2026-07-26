@@ -23,6 +23,15 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-todaytix-runtimes.js — Audit (and optionally fix) show runtimes against the TodayTix show PAGE.
+
+Usage:
+  node scripts/audit-todaytix-runtimes.js [options]
+  node scripts/audit-todaytix-runtimes.js --help, -h    print this usage and exit
+`;
+// hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
 const {
   extractRunTimeDisplay,
   parseRunTimeDisplay,
@@ -54,6 +63,8 @@ function driftTripped(mismatchCount, checked) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showsData = showsWriteGuard.loadShows();
   const shows = showsData.shows;
 

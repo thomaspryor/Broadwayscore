@@ -67,6 +67,15 @@ const { matchTitleToShow, titleWordsMatch } = require('./lib/show-matching');
 const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
 const { validateChangeStability } = require('./lib/change-stability-guard');
 const { serpQuery } = require('./lib/url-discovery');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-off-broadway-dates.js — Off-Broadway Date Enrichment Script.
+
+Usage:
+  node scripts/enrich-off-broadway-dates.js [options]
+  node scripts/enrich-off-broadway-dates.js --help, -h    print this usage and exit
+`;
+// hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
 const {
   PLAYBILL_OB_URL,
   parsePlaybillOBSchedule,
@@ -705,6 +714,8 @@ function appendAudit(entries) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('=== Off-Broadway Date Enrichment ===');
   console.log(`Mode: ${verify ? 'verify' : dryRun ? 'dry-run' : 'apply'}${fixUnconfirmed ? ' +fix-unconfirmed' : ''}${force ? ' +force' : ''}${initialBackfill ? ' +initial-backfill' : ''}${showFilter ? ` (show=${showFilter})` : ''}`);
   console.log('');

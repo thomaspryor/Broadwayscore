@@ -21,6 +21,15 @@ const path = require('path');
 const { checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `detect-revivals-ibdb.js — IBDB Revival Detection Backfill.
+
+Usage:
+  node scripts/detect-revivals-ibdb.js [options]
+  node scripts/detect-revivals-ibdb.js --help, -h    print this usage and exit
+`;
+// hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const RATE_LIMIT_MS = 1500;
 const CHECKPOINT_INTERVAL = 10;
@@ -51,6 +60,8 @@ function sleep(ms) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
   console.log('IBDB REVIVAL DETECTION');
   console.log('='.repeat(60));
