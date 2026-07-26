@@ -389,29 +389,41 @@ async function main() {
   // Rewrite staging file with only the unpromoted candidates.
   rewriteStaging();
 
-  // Best-effort "went live" notification for regional promotions. The show is
-  // already written — email delivery failure only logs (the site does not
-  // depend on it, and the promotion-log JSONL is the durable record).
+  // "Went live" notification for regional promotions. The show is already
+  // written — notification failure only logs (the site does not depend on it,
+  // and the promotion-log JSONL is the durable record).
+  //
+  // Routed to the morning digest, NOT a standalone email (owner decision
+  // 2026-07-26). This used to call sendEmailAlert({severity:'info'}), which the
+  // actionable-only policy in discord-notify.js silently suppresses — so the
+  // owner was never told a regional show went live and polled the URL by hand.
+  // A regional go-live is real news but never same-hour urgent, so it belongs
+  // in the digest rather than carving an exception into the email policy.
+  //
+  // conditionKey is PER SHOW: routeAlert dedups on conditionKey with a 7-day
+  // default cooldown, so a shared key would swallow the second go-live in any
+  // week that promotes two shows.
   const regionalPromoted = promoted.filter(p => p.entry.category === 'regional');
   if (emailAlerts && regionalPromoted.length > 0) {
-    try {
-      const { sendEmailAlert } = require('./lib/discord-notify');
-      const sent = await sendEmailAlert({
-        title: `${regionalPromoted.length} regional show(s) auto-added and going live`,
-        severity: 'info',
-        description:
-          'Auto-promoted from an aggregator roundup page (PV Verdict / BWW Review Roundup). ' +
-          'Reviews ingest automatically via the daily aggregator scrape. Cosmetic enrichment still manual: ' +
-          'images (poster/hero), cast + creative team, exact previews/opening/closing dates, audience scrapers ' +
-          '(scrape-reddit-sentiment.js / scrape-mezzanine-audience.js). See memory/feedback_regional_show_add_runbook.md steps 5-6.',
-        fields: regionalPromoted.map(p => ({
-          name: `${p.entry.title} @ ${p.entry.venue}`,
-          value: `https://broadwayscorecard.com/show/${p.entry.id} — roundup: ${p.candidate.sourceUrl || 'n/a'}`,
-        })),
-      });
-      console.log(sent ? 'Sent regional go-live email.' : 'Regional go-live email not sent (info severity — actionable-only policy; promotion unaffected, durable record is the promotion log).');
-    } catch (e) {
-      console.warn(`::warning::regional go-live email threw: ${e.message} (promotion unaffected)`);
+    const { routeAlert } = require('./lib/owner-alert-router');
+    for (const p of regionalPromoted) {
+      try {
+        await routeAlert({
+          conditionKey: `regional-go-live:${p.entry.id}`,
+          title: `${p.entry.title} @ ${p.entry.venue} — regional tryout live and scoring`,
+          severity: 'info',
+          disposition: 'digest',
+          url: `https://broadwayscorecard.com/show/${p.entry.id}`,
+          description:
+            `Auto-promoted from an aggregator roundup (${p.candidate.sourceUrl || 'source n/a'}). ` +
+            'Reviews ingest automatically via the daily aggregator scrape. Cosmetic enrichment still manual: ' +
+            'images (poster/hero), cast + creative team, exact previews/opening/closing dates, audience scrapers ' +
+            '(scrape-reddit-sentiment.js / scrape-mezzanine-audience.js). See memory/feedback_regional_show_add_runbook.md steps 5-6.',
+        });
+        console.log(`Queued regional go-live digest line for ${p.entry.id}.`);
+      } catch (e) {
+        console.warn(`::warning::regional go-live digest queue failed for ${p.entry.id}: ${e.message} (promotion unaffected)`);
+      }
     }
   }
 }

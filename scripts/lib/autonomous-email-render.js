@@ -224,9 +224,19 @@ function renderHealthDigestBlock(health) {
   // (drainDigestQueue does no per-item validation on read) must not crash the
   // whole email render — that would be strictly worse than the silent-drop
   // bug this block exists to fix (ship-check follow-up finding).
+  // q.url renders as a trailing link when present. routeAlert() has always
+  // accepted a url and queueDigestLine() has always persisted it, but this
+  // renderer dropped it — so digest-routed conditions whose whole point is
+  // "go look at this page" (e.g. a regional show going live) arrived with no
+  // way to click through. http(s) only: a queued javascript:/data: url would
+  // otherwise become a live link in the owner's inbox.
+  const safeUrl = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u) ? u : null);
   const validQueued = queued.filter(Boolean);
   const queuedHtml = validQueued.length
-    ? `<div style="margin-top:8px;">${validQueued.map(q => `<div style="font-size:12px;color:#555;margin:0 0 3px;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` — ${esc(q.description)}` : ''}</div>`).join('')}</div>`
+    ? `<div style="margin-top:8px;">${validQueued.map(q => {
+        const href = safeUrl(q.url);
+        return `<div style="font-size:12px;color:#555;margin:0 0 3px;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` — ${esc(q.description)}` : ''}${href ? ` <a href="${esc(href)}" style="color:#2563eb;">view</a>` : ''}</div>`;
+      }).join('')}</div>`
     : '';
 
   if (!errors.length && !warns.length) {
