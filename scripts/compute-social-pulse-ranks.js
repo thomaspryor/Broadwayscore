@@ -188,6 +188,9 @@ function assignRanksAndTiers(groups) {
         volume: entry.data.volume || 0,
         effectiveVolume: strength(entry.data),
         positivePct: entry.data.positivePct,
+        // Re-tiering must apply the SAME relevance gate the scorer did, or a
+        // title-collision show hidden at write time comes back as Steady here.
+        relevanceOverall: entry.data.relevanceRates?.overall,
         peerStats,
       });
 

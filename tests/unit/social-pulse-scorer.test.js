@@ -795,6 +795,50 @@ describe('derivePeerTier — sentiment-evidence gate', () => {
   });
 });
 
+describe('derivePeerTier — relevance gate (title collision)', () => {
+  const peerStats = { compositeP80: 40, compositeP60: 20, volumeP50: 50, marketCount: 10 };
+
+  test('measured relevance below the threshold hides the card however loud it is', () => {
+    // the-truth-a-comedy-by-florian-zeller-west-end-2026 as of 2026-07-26:
+    // 189 mentions, relevance 0.0 — none of that volume is about the show.
+    const result = derivePeerTier({
+      volume: 189, effectiveVolume: 0, positivePct: null, relevanceOverall: 0, peerStats,
+    });
+    assert.strictEqual(result, 'Hidden');
+  });
+
+  test('a barely-sub-threshold rate still hides (pride-west-end-2026: 123 mentions at 1.6%)', () => {
+    const result = derivePeerTier({
+      volume: 123, effectiveVolume: 0.7, positivePct: 100, relevanceOverall: 0.016, peerStats,
+    });
+    assert.strictEqual(result, 'Hidden');
+  });
+
+  test('exactly at the threshold is NOT hidden — the gate is < not <=', () => {
+    const result = derivePeerTier({
+      volume: 200, effectiveVolume: 200, positivePct: 80,
+      relevanceOverall: MIN_QUOTE_RELEVANCE, peerStats,
+    });
+    assert.strictEqual(result, 'Buzzing');
+  });
+
+  test('an UNMEASURED rate (undefined) is unknown, not noisy — card still renders', () => {
+    // Legacy v2 files carry no relevanceRates. Hiding them would blank cards
+    // that have rendered correctly for months.
+    const result = derivePeerTier({
+      volume: 200, effectiveVolume: 200, positivePct: 80, relevanceOverall: undefined, peerStats,
+    });
+    assert.strictEqual(result, 'Buzzing');
+  });
+
+  test('a healthy relevance rate is unaffected by the gate', () => {
+    const result = derivePeerTier({
+      volume: 200, effectiveVolume: 200, positivePct: 80, relevanceOverall: 0.9, peerStats,
+    });
+    assert.strictEqual(result, 'Buzzing');
+  });
+});
+
 describe('computePeerStats — null positivePct passthrough', () => {
   test('a null-sentiment show contributes a neutral (50) composite, not 0', () => {
     const shows = [
