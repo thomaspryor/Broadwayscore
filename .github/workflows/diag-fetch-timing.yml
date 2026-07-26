@@ -1,0 +1,171 @@
+name: Diag — push-with-retry fetch timing
+
+# ONE-OFF DIAGNOSTIC (task #466 / Notion 3a9637c5-416f-8183). Not scheduled.
+#
+# Question: push-with-retry.sh's `git fetch origin '+refs/heads/main:refs/remotes/
+# origin/main'` timed out at the full GIT_NET_TIMEOUT_SEC=90 cap on 7/7 attempts in
+# run 30191044729 (update-show-status.yml) with ~zero variance. The card hypothesised
+# the EXPLICIT destination-refspec form is structurally slower than the bare
+# `git fetch origin main` form.
+#
+# Why the card's suggested test would have lied: timing form A then form B
+# back-to-back IN THE SAME CLONE is confounded — whichever fetch runs first
+# downloads the objects, so the second one is near-free BY CONSTRUCTION and looks
+# like a smoking gun. This workflow controls for that:
+#   * every arm gets its OWN fresh runner + fresh checkout (no warm object cache)
+#   * two extra arms run the pair in BOTH orders, to measure the ordering artifact
+#     explicitly rather than pretend it isn't there
+#
+# Second variable the card didn't consider, which the run log points at harder:
+# update-show-status.yml checks out with actions/checkout@v5 DEFAULT fetch-depth,
+# i.e. `git fetch --depth=1` (run 30191044729 job log line 93) — so the repo is a
+# SHALLOW depth-1 clone of a 165k-commit / 1.16M-object / 1.65 GiB repo, and
+# push-with-retry.sh then fetches WITHOUT any --depth. Arms below isolate that:
+# same explicit refspec with --depth=1, and the same fetch from a full (depth-0)
+# clone.
+#
+# Each arm checks out an OLD main tip (~25 min back) so the fetch has a realistic
+# delta to close — matching the ~19 min / ~17 commit gap between checkout and the
+# push step in the failing run. Fetching at the current tip would transfer nothing
+# and every arm would read "fast".
+
+on:
+  workflow_dispatch:
+    inputs:
+      minutes_back:
+        description: 'How far back to pin the starting checkout (simulates the checkout→push gap)'
+        required: false
+        default: '25'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  pick-sha:
+    runs-on: ubuntu-latest
+    outputs:
+      old_sha: ${{ steps.pick.outputs.old_sha }}
+      tip_sha: ${{ steps.pick.outputs.tip_sha }}
+    steps:
+      - name: Pick an old main tip
+        id: pick
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MINUTES_BACK: ${{ inputs.minutes_back }}
+        run: |
+          set -euo pipefail
+          UNTIL=$(date -u -d "-${MINUTES_BACK} minutes" +%Y-%m-%dT%H:%M:%SZ)
+          OLD_SHA=$(gh api "repos/${GITHUB_REPOSITORY}/commits?sha=main&until=${UNTIL}&per_page=1" --jq '.[0].sha')
+          TIP_SHA=$(gh api "repos/${GITHUB_REPOSITORY}/commits?sha=main&per_page=1" --jq '.[0].sha')
+          echo "old_sha=$OLD_SHA" >> "$GITHUB_OUTPUT"
+          echo "tip_sha=$TIP_SHA" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Baseline"
+            echo ""
+            echo "- until: \`$UNTIL\` (${MINUTES_BACK} min back)"
+            echo "- old (checkout) sha: \`$OLD_SHA\`"
+            echo "- current main tip:   \`$TIP_SHA\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  measure:
+    needs: pick-sha
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Card's hypothesis, isolated (fresh clone, single fetch, no warm cache).
+          - arm: explicit
+            depth: 1
+            seq: explicit
+          - arm: bare
+            depth: 1
+            seq: bare
+          # Same explicit refspec, but depth-limited like actions/checkout's own fetch.
+          - arm: explicit-depth1
+            depth: 1
+            seq: explicit_d1
+          # Ordering-artifact controls: same pair, both orders, same clone.
+          - arm: explicit-then-bare
+            depth: 1
+            seq: explicit bare
+          - arm: bare-then-explicit
+            depth: 1
+            seq: bare explicit
+          # Is shallowness the variable? Same explicit refspec from a FULL clone.
+          - arm: deep-explicit
+            depth: 0
+            seq: explicit
+    name: ${{ matrix.arm }} (fetch-depth ${{ matrix.depth }})
+    timeout-minutes: 45
+    steps:
+      - name: Checkout at the old tip
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.pick-sha.outputs.old_sha }}
+          fetch-depth: ${{ matrix.depth }}
+
+      - name: Repo state before fetch
+        run: |
+          set -euo pipefail
+          echo "shallow-file: $([ -f .git/shallow ] && echo YES || echo NO)"
+          echo "commits-reachable-from-HEAD: $(git rev-list --count HEAD)"
+          git count-objects -vH
+          du -sm .git | awk '{print "git-dir-MiB: "$1}'
+
+      - name: Time fetch form(s)
+        env:
+          SEQ: ${{ matrix.seq }}
+          ARM: ${{ matrix.arm }}
+          # Deliberately far above push-with-retry.sh's 90s cap: we need the TRUE
+          # duration of a slow form, not a value truncated at the cap.
+          FETCH_CAP: '600'
+        run: |
+          # NOTE: deliberately no `set -e` here — a fetch that fails or times out is
+          # a RESULT to record, not a reason to abort the arm before the later forms
+          # in $SEQ run.
+          set -uo pipefail
+
+          run_fetch() {
+            local label="$1"; shift
+            local start end dur rc
+            start=$(date +%s)
+            timeout -k 10 "$FETCH_CAP" \
+              git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=45 \
+              fetch --progress "$@" > "/tmp/fetch-$label.log" 2>&1
+            rc=$?
+            end=$(date +%s); dur=$(( end - start ))
+            echo "::group::fetch output — $label (${dur}s, rc=$rc)"
+            cat "/tmp/fetch-$label.log" || true
+            echo "::endgroup::"
+            # Machine-readable line the analysis greps for.
+            echo "RESULT|$ARM|$label|${dur}|${rc}"
+            echo "| \`$ARM\` | \`$label\` | ${dur}s | $rc |" >> "$GITHUB_STEP_SUMMARY"
+          }
+
+          echo "| arm | form | seconds | rc |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| --- | --- | --- | --- |" >> "$GITHUB_STEP_SUMMARY"
+
+          for form in $SEQ; do
+            case "$form" in
+              explicit)
+                run_fetch explicit origin "+refs/heads/main:refs/remotes/origin/main" ;;
+              bare)
+                run_fetch bare origin main ;;
+              explicit_d1)
+                run_fetch explicit_d1 --depth=1 origin "+refs/heads/main:refs/remotes/origin/main" ;;
+              *)
+                echo "unknown form: $form"; exit 1 ;;
+            esac
+          done
+
+      - name: Repo state after fetch
+        if: always()
+        run: |
+          set -euo pipefail
+          echo "shallow-file: $([ -f .git/shallow ] && echo YES || echo NO)"
+          echo "commits-reachable-from-HEAD: $(git rev-list --count HEAD)"
+          echo "commits-behind (HEAD..FETCH_HEAD): $(git rev-list --count HEAD..FETCH_HEAD 2>/dev/null || echo n/a)"
+          git count-objects -vH
+          du -sm .git | awk '{print "git-dir-MiB: "$1}'
