@@ -17,6 +17,8 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { isOwnerUrl, filterOwnerAccounts } = require('./owner-accounts.js');
+const { _internal } = require('./brand-mention-serp.js');
+const { isUnattributableSocialUrl, isNativelyCoveredUrl, parseXUrl } = _internal;
 
 test('real leaked SERP URLs are classified as owner URLs', () => {
   const leaked = [
@@ -32,15 +34,35 @@ test('real leaked SERP URLs are classified as owner URLs', () => {
 test('subdomain variants of owner profiles match across platforms', () => {
   const owned = [
     'https://instagram.com/broadwayscorecard',
+    'https://www.instagram.com/thomaspryor/', // owner handle listed in OWNER_ACCOUNTS.instagram
+    'https://www.instagram.com/bwayscorecard#bio', // fragment suffix
     'https://m.facebook.com/broadwayscorecard/',
+    'https://fb.me/bwayscorecard',
     'https://mobile.twitter.com/bwayscorecard/status/123',
     'https://links.broadwayscorecard.com/CL0/anything',
-    'https://www.instagram.com/explore/tags/broadwayscorecard/',
     'https://www.instagram.com/popular/bwayscorecard/',
+    'https://www.instagram.com/stories/bwayscorecard/123456/',
+    'https://www.instagram.com/_u/broadwayscorecard',
+    'https://bsky.app/profile/broadwayscorecard.bsky.social/post/abc',
+    'https://www.github.com/thomaspryor/Broadwayscore/issues/1',
   ];
   for (const url of owned) {
     assert.ok(isOwnerUrl(url), `expected owner URL: ${url}`);
   }
+});
+
+test('serp helpers handle subdomain variants and host-anchor correctly', () => {
+  // Unattributable post URLs under variant subdomains are still skipped
+  assert.ok(isUnattributableSocialUrl('https://secure.instagram.com/p/DAbC123/'));
+  assert.ok(isUnattributableSocialUrl('https://www-fallback.instagram.com/reel/xyz/'));
+  // Natively-covered platforms match on any subdomain…
+  assert.ok(isNativelyCoveredUrl('https://mobile.twitter.com/someone/status/1'));
+  assert.ok(isNativelyCoveredUrl('https://old.reddit.com/r/Broadway/'));
+  // …but hosts merely ENDING in a platform domain must NOT be skipped
+  assert.ok(!isNativelyCoveredUrl('https://www.netflix.com/title/123'));
+  assert.ok(!isNativelyCoveredUrl('https://example.com/?share=https://x.com/foo'));
+  // parseXUrl accepts mobile hosts
+  assert.deepEqual(parseXUrl('https://mobile.twitter.com/somefan/status/42'), { handle: 'somefan', tweetId: '42' });
 });
 
 test('genuine third-party URLs still pass through', () => {
@@ -48,6 +70,9 @@ test('genuine third-party URLs still pass through', () => {
     'https://www.instagram.com/p/DAbCdEfGhIj/', // opaque post URL — resolved by drafter, not URL filter
     'https://www.instagram.com/broadwayworld/',
     'https://www.instagram.com/popular/broadway-shows/',
+    'https://www.instagram.com/explore/tags/broadwayscorecard/', // hashtag page = third-party UGC signal
+    'https://bsky.app/profile/broadwayscorecardfan.bsky.social', // near-miss handle must NOT be swallowed
+    'https://bsky.app/profile/thomaspryorlaw.bsky.social',
     'https://www.reddit.com/r/Broadway/comments/abc123/broadwayscorecard_is_great/',
     'https://www.nytimes.com/2026/07/01/theater/review-aggregators.html',
     'https://x.com/someoneelse/status/456',
