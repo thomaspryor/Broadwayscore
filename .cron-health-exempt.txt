@@ -125,3 +125,8 @@ we-newsletter-draft.yml
 # 2026-07-13: weekly Show Score parser canary — drift surfaces in daily digest
 # via notify-failure; deploy job is push-triggered, not cron. Not user-facing latency.
 supabase-functions.yml
+# 2026-07-26: weekly newsletter DRAFT score-drift refresh (task #481) — same
+# class as we-newsletter-draft.yml above: it refreshes an UNSENT draft that the
+# owner reviews before sending, so a missed run is caught at send time and is
+# never user-facing. Digest-only; paging here would add noise, not safety.
+newsletter-draft-refresh.yml
