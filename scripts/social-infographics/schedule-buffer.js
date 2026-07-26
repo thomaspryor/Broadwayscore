@@ -9,7 +9,11 @@
 const https = require('https');
 const captions = require('./captions.json');
 
-const BUFFER_TOKEN = 'SMLYpPtBh8gl6K4-EQw-CM_UjAg1U8Up9ULTnhzbg2i';
+const BUFFER_TOKEN = process.env.BUFFER_TOKEN;
+if (!BUFFER_TOKEN) {
+  console.error('BUFFER_TOKEN env var is required. Generate one in Buffer → Settings → API & Apps.');
+  process.exit(1);
+}
 const BASE_URL = 'https://broadwayscorecard.com/og/social';
 
 const CHANNELS = {

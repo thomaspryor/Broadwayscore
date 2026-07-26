@@ -6,7 +6,11 @@ import https from 'node:https';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY || 'TM5B2FK5G0BNFS2IL2T1OUGYJR7KP49UEYZ33KUUYWJ3NZC8ZJG6BMAXI83IQRD3017UTTNX5JISNDMW';
+const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
+if (!SCRAPINGBEE_API_KEY) {
+  console.error('SCRAPINGBEE_API_KEY env var is required.');
+  process.exit(1);
+}
 
 interface ShowToCheck {
   id: string;
