@@ -1,0 +1,579 @@
+<title>My Scorecard — iOS Show Stats Design</title>
+<style>
+  :root{
+    --ground:#0f0f14; --card:#1a1a24; --overlay:#2a2a38; --elevated:#32323f;
+    --ink:#f2ece1; --ink-2:#b8b0a4; --ink-3:#7d7668;
+    --gold:#d4a574; --chart-gold:#c48119; --purple:#a855f7;
+    --good:#22c55e; --warn:#d97706; --bad:#ef4444; --open:#10b981;
+    --hair:rgba(212,165,116,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+    line-height:1.5; padding:0 24px 96px;
+  }
+  a{color:var(--gold)} a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .wrap{max-width:1180px;margin:0 auto}
+
+  /* ---------- spec-sheet chrome ---------- */
+  header.masthead{padding:64px 0 40px;border-bottom:1px solid var(--hair)}
+  .eyebrow{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--gold)}
+  h1{font-family:Didot,"Bodoni MT","Playfair Display",Georgia,serif;font-weight:500;
+    font-size:clamp(34px,5vw,56px);line-height:1.08;text-wrap:balance;margin:14px 0 18px}
+  h1 em{font-style:italic;color:var(--gold)}
+  .thesis{max-width:62ch;color:var(--ink-2);font-size:17px}
+  .thesis b{color:var(--ink);font-weight:600}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .chip{display:flex;align-items:center;gap:8px;font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px;color:var(--ink-2);background:var(--card);border:1px solid var(--hair);
+    border-radius:999px;padding:6px 12px}
+  .sw{width:12px;height:12px;border-radius:4px;flex:none}
+  nav.jump{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:28px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px}
+  nav.jump a{text-decoration:none;color:var(--ink-2)}
+  nav.jump a:hover{color:var(--gold)}
+  nav.jump a::before{content:"§ ";color:var(--gold)}
+
+  section.screen{display:grid;grid-template-columns:minmax(320px,420px) 1fr;gap:56px;
+    padding:72px 0;border-bottom:1px solid var(--hair);align-items:start}
+  @media(max-width:860px){section.screen{grid-template-columns:1fr;gap:36px}}
+  .notes h2{font-family:Didot,"Bodoni MT","Playfair Display",Georgia,serif;font-weight:500;
+    font-size:30px;margin:6px 0 6px;text-wrap:balance}
+  .notes .kicker{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+  .notes>p{color:var(--ink-2);max-width:58ch;margin-bottom:18px}
+  .note{display:flex;gap:14px;padding:13px 0;border-top:1px dashed var(--hair);max-width:58ch}
+  .note .pin{flex:none;width:22px;height:22px;border-radius:50%;background:var(--card);
+    border:1px solid var(--gold);color:var(--gold);font-family:ui-monospace,monospace;
+    font-size:11px;display:grid;place-items:center;margin-top:2px}
+  .note p{color:var(--ink-2);font-size:14.5px}
+  .note p b{color:var(--ink);font-weight:600}
+  .tagwhy{display:inline-block;margin-top:4px;font-family:ui-monospace,monospace;font-size:10.5px;
+    letter-spacing:.08em;color:var(--ink-3);text-transform:uppercase}
+
+  /* ---------- phone ---------- */
+  .phone{width:100%;max-width:393px;background:#000;border-radius:54px;padding:10px;
+    border:1px solid #2c2c36;box-shadow:0 40px 80px -40px rgba(0,0,0,.8);position:sticky;top:24px}
+  @media(max-width:860px){.phone{position:static;margin:0 auto}}
+  .screen-inner{background:var(--ground);border-radius:44px;overflow:hidden;
+    border:1px solid #23232e}
+  .statusbar{display:flex;justify-content:space-between;align-items:center;
+    padding:14px 28px 6px;font-size:13px;font-weight:600}
+  .statusbar .r{display:flex;gap:5px;align-items:center;font-size:11px;color:var(--ink-2)}
+  .appbar{display:flex;justify-content:space-between;align-items:center;padding:8px 18px 4px}
+  .appbar h3{font-size:22px;font-weight:700;letter-spacing:-.02em}
+  .scope{font-size:12.5px;font-weight:600;color:var(--gold);background:rgba(212,165,116,.12);
+    border:1px solid rgba(212,165,116,.35);border-radius:999px;padding:5px 11px}
+  .scope::after{content:" ▾";font-size:10px}
+  .content{padding:10px 14px 14px;display:flex;flex-direction:column;gap:10px}
+
+  .card{background:var(--card);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:14px}
+  .card h4{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-3);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+  .card h4 .share{color:var(--ink-3);font-size:13px;letter-spacing:0}
+  .num{font-variant-numeric:tabular-nums}
+
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .tile{background:var(--card);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:12px 14px}
+  .tile .v{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .tile .v small{font-size:13px;font-weight:600;color:var(--gold)}
+  .tile .l{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+  .tile .d{font-size:10.5px;color:var(--open);margin-top:2px}
+
+  .bars{display:flex;align-items:flex-end;gap:3px;height:84px;padding-top:14px}
+  .bars i{flex:1;background:var(--chart-gold);border-radius:3px 3px 0 0;min-height:2px;position:relative}
+  .bars i.hot{background:var(--gold)}
+  .bars i.hot::after{content:attr(data-v);position:absolute;top:-16px;left:50%;transform:translateX(-50%);
+    font-size:10px;font-weight:700;color:var(--gold);font-style:normal}
+  .axis{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-3);margin-top:6px;
+    font-variant-numeric:tabular-nums}
+  .callouts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .pill{font-size:10.5px;color:var(--ink-2);background:var(--overlay);border-radius:999px;padding:4px 9px}
+  .pill b{color:var(--ink)}
+
+  .hist{position:relative;display:flex;align-items:flex-end;gap:3px;height:74px;margin-top:12px}
+  .hist i{flex:1;background:var(--chart-gold);border-radius:3px 3px 0 0;position:relative;min-height:2px}
+  .hist i u{position:absolute;left:-1px;right:-1px;bottom:0;border:1.5px dashed rgba(242,236,225,.45);
+    border-bottom:none;border-radius:3px 3px 0 0;display:block}
+  .avg{position:absolute;top:-6px;bottom:-4px;left:66%;width:0;border-left:2px solid var(--purple)}
+  .avg s{position:absolute;top:-14px;left:-24px;font-size:10px;font-weight:700;color:var(--purple);
+    text-decoration:none;white-space:nowrap}
+  .legend{display:flex;gap:14px;font-size:10.5px;color:var(--ink-3);margin-top:8px}
+  .legend .k{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+  .gauge{display:flex;align-items:center;gap:14px}
+  .gauge svg{flex:none}
+  .gauge .big{font-size:24px;font-weight:800}
+  .gauge p{font-size:12px;color:var(--ink-2)}
+
+  .row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.05)}
+  .row:first-of-type{border-top:none}
+  .poster{flex:none;width:34px;height:48px;border-radius:6px;display:grid;place-items:center;
+    font-size:9px;font-weight:800;letter-spacing:.04em;color:rgba(255,255,255,.92)}
+  .row .t{flex:1;min-width:0}
+  .row .t b{display:block;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .row .t span{font-size:11px;color:var(--ink-3)}
+  .score-chip{flex:none;font-size:11px;font-weight:800;border-radius:8px;padding:3px 7px;color:#0c0c10}
+  .delta{flex:none;font-size:10.5px;font-weight:700;font-variant-numeric:tabular-nums}
+  .stars{color:var(--gold);letter-spacing:1px;font-size:11px}
+
+  .ringrow{display:flex;gap:16px;justify-content:space-around;text-align:center}
+  .ring{width:92px}
+  .ring svg{display:block;margin:0 auto}
+  .ring .rl{font-size:11px;color:var(--ink-2);margin-top:6px}
+  .shelf{display:flex;gap:6px;margin-top:10px;overflow:hidden}
+  .shelf .poster{width:30px;height:44px}
+  .shelf .dim{opacity:.22;filter:grayscale(1)}
+  .grid-ch{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .hch{font-size:10.5px;padding:4px 8px;border-radius:8px;background:rgba(212,165,116,.14);
+    border:1px solid rgba(212,165,116,.4);color:var(--gold);font-weight:600}
+  .hch.off{background:transparent;border-color:rgba(255,255,255,.12);color:var(--ink-3);font-weight:500}
+
+  .heat{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin-top:10px}
+  .heat i{aspect-ratio:1;border-radius:3px;background:var(--chart-gold)}
+  .tabbar{display:flex;justify-content:space-around;align-items:center;padding:10px 8px 26px;
+    border-top:1px solid rgba(255,255,255,.06);background:rgba(15,15,20,.9)}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9.5px;color:var(--ink-3)}
+  .tab.on{color:var(--gold)}
+  .tab .ic{font-size:17px;line-height:1}
+
+  /* story card */
+  .story{background:linear-gradient(165deg,#16121e 0%,#0f0f14 55%,#1a1206 100%);padding:22px 18px;
+    display:flex;flex-direction:column;gap:16px;min-height:640px}
+  .story .brand{font-family:ui-monospace,monospace;font-size:10px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--gold)}
+  .story h3{font-family:Didot,"Bodoni MT","Playfair Display",Georgia,serif;font-weight:500;
+    font-size:34px;line-height:1.1}
+  .story .bignums{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .story .bn .v{font-size:30px;font-weight:800;color:var(--gold)}
+  .story .bn .l{font-size:11px;color:var(--ink-2)}
+  .podium{display:flex;gap:8px;align-items:flex-end}
+  .podium .poster{width:52px;height:76px;border-radius:8px}
+  .podium .p1{width:64px;height:94px;outline:2px solid var(--gold);outline-offset:2px}
+  .story .qr{margin-top:auto;display:flex;align-items:center;gap:10px;font-size:10.5px;color:var(--ink-3)}
+  .qr .q{width:34px;height:34px;border-radius:6px;background:
+    repeating-conic-gradient(var(--ink-2) 0 25%,transparent 0 50%) 0 0/10px 10px;opacity:.8}
+
+  footer{padding:56px 0 0;color:var(--ink-3);font-size:13.5px;max-width:70ch}
+  footer b{color:var(--ink-2)}
+  .phase{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:26px 0 34px}
+  .phase .card{padding:16px}
+  .phase h5{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .phase p{font-size:13px;color:var(--ink-2)}
+</style>
+
+<div class="wrap">
+<header class="masthead">
+  <div class="eyebrow">BroadwayScorecard iOS · Design proposal · July 2026</div>
+  <h1>My Scorecard — <em>show stats</em> with a point of view</h1>
+  <p class="thesis">Mezzanine counts what you saw. We can say what it <b>means</b> — because every
+  diary entry lands inside a scored universe of critic scores, audience grades, Tony history,
+  casts, runtimes and theaters. Five screens below; every number taps through to the shows behind it.
+  Full spec: <a href="./design-ios-show-stats.md">design-ios-show-stats.md</a>.</p>
+  <div class="chips">
+    <span class="chip"><i class="sw" style="background:#0f0f14;border:1px solid #333"></i>ground #0f0f14</span>
+    <span class="chip"><i class="sw" style="background:#1a1a24"></i>card #1a1a24</span>
+    <span class="chip"><i class="sw" style="background:#d4a574"></i>ui gold #d4a574</span>
+    <span class="chip"><i class="sw" style="background:#c48119"></i>chart gold #c48119</span>
+    <span class="chip"><i class="sw" style="background:#a855f7"></i>purple #a855f7</span>
+    <span class="chip">SF system type · tabular numerals · dark only (the lights are down)</span>
+  </div>
+  <nav class="jump">
+    <a href="#s1">Overview</a><a href="#s2">You vs. the Critics</a><a href="#s3">Tony &amp; People</a>
+    <a href="#s4">Theaters</a><a href="#s5">Curtain Call</a>
+  </nav>
+</header>
+
+<!-- ============ SCREEN 1 — OVERVIEW ============ -->
+<section class="screen" id="s1">
+  <div class="phone"><div class="screen-inner">
+    <div class="statusbar"><span>9:41</span><span class="r">●●● ᯤ ▮</span></div>
+    <div class="appbar"><h3>My Scorecard</h3><span class="scope">All time</span></div>
+    <div class="content">
+      <div class="tiles">
+        <div class="tile"><div class="v num">195</div><div class="l">Shows seen</div></div>
+        <div class="tile"><div class="v num">487<small>h</small></div><div class="l">In a seat · ≈ 20 days</div></div>
+        <div class="tile"><div class="v num">93</div><div class="l">Theaters</div></div>
+        <div class="tile"><div class="v num">41</div><div class="l">This year</div><div class="d">▲ 12 vs. last July</div></div>
+      </div>
+      <div class="card">
+        <h4>Shows over time <span class="share">⇪</span></h4>
+        <div class="bars">
+          <i style="height:4%"></i><i style="height:4%"></i><i style="height:3%"></i><i style="height:5%"></i>
+          <i style="height:4%"></i><i style="height:6%"></i><i style="height:5%"></i><i style="height:4%"></i>
+          <i style="height:10%"></i><i style="height:13%"></i><i style="height:8%"></i><i style="height:3%"></i>
+          <i style="height:5%"></i><i style="height:9%"></i><i style="height:24%"></i><i style="height:42%"></i>
+          <i style="height:72%"></i><i class="hot" data-v="60" style="height:88%"></i><i style="height:60%"></i>
+        </div>
+        <div class="axis"><span>2008</span><span>2017</span><span>2026</span></div>
+        <div class="callouts">
+          <span class="pill">Busiest month <b>Dec 2025 · 9</b></span>
+          <span class="pill">Streak <b>14 months</b></span>
+          <span class="pill">Longest drought <b>2020, 14 mo</b></span>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Your ratings <span class="share">⇪</span></h4>
+        <div class="hist">
+          <div class="avg"><s>you avg 3.8★</s></div>
+          <!-- u height is % of its bar: chart-relative ghost ÷ bar height -->
+          <i style="height:4%"><u style="height:200%"></u></i><i style="height:4%"><u style="height:250%"></u></i>
+          <i style="height:8%"><u style="height:175%"></u></i><i style="height:16%"><u style="height:162%"></u></i>
+          <i style="height:28%"><u style="height:150%"></u></i><i style="height:40%"><u style="height:145%"></u></i>
+          <i style="height:88%"><u style="height:84%"></u></i><i style="height:100%"><u style="height:78%"></u></i>
+          <i style="height:66%"><u style="height:73%"></u></i><i style="height:46%"><u style="height:65%"></u></i>
+        </div>
+        <div class="axis"><span>0.5★</span><span>5★</span></div>
+        <div class="legend">
+          <span><i class="k" style="background:var(--chart-gold)"></i>You (186 rated)</span>
+          <span><i class="k" style="border:1.5px dashed rgba(242,236,225,.45)"></i>Everyone, same shows</span>
+        </div>
+        <div class="callouts"><span class="pill">You rate <b>+0.3★ above the crowd</b> — a generous rater</span></div>
+      </div>
+    </div>
+    <div class="tabbar">
+      <span class="tab"><span class="ic">⌂</span>Home</span><span class="tab"><span class="ic">✦</span>Discover</span>
+      <span class="tab"><span class="ic">✎</span>Diary</span><span class="tab on"><span class="ic">▥</span>Stats</span>
+      <span class="tab"><span class="ic">◉</span>Profile</span>
+    </div>
+  </div></div>
+  <div class="notes">
+    <div class="kicker">Screen 1 · Overview</div>
+    <h2>The marquee: parity with Mezzanine in one screen</h2>
+    <p>Everything Mezzanine's stats tab does, compressed into the first scroll — then the
+    signature modules get the room below.</p>
+    <div class="note"><span class="pin">a</span><p><b>Hero tiles.</b> Shows · hours in a seat (Σ runtime,
+    "≈ 20 days" sub-copy) · theaters · this-year with pace vs. last year.
+    <span class="tagwhy">Trakt hours · Strava pace</span></p></div>
+    <div class="note"><span class="pin">b</span><p><b>Scope pill</b> re-filters every module
+    (All time / 2026 / 2025…). Tapping a year bar does the same. Numbers animate with
+    <code>numericText</code> transitions. <span class="tagwhy">Letterboxd year pages, one screen</span></p></div>
+    <div class="note"><span class="pin">c</span><p><b>Ratings histogram with a community ghost</b> —
+    dashed outline is everyone's ratings <i>of the same shows</i>, so "you rate +0.3★ above the crowd"
+    is honest. Mezzanine's histogram has no reference line. <span class="tagwhy">Letterboxd vs-average · StoryGraph</span></p></div>
+    <div class="note"><span class="pin">d</span><p><b>Records strip</b> under the bars: busiest month,
+    current monthly streak, longest drought. Every pill taps to the list behind it.
+    <span class="tagwhy">Strava personal records</span></p></div>
+  </div>
+</section>
+
+<!-- ============ SCREEN 2 — YOU VS CRITICS ============ -->
+<section class="screen" id="s2">
+  <div class="phone"><div class="screen-inner">
+    <div class="statusbar"><span>9:41</span><span class="r">●●● ᯤ ▮</span></div>
+    <div class="appbar"><h3>My Scorecard</h3><span class="scope">All time</span></div>
+    <div class="content">
+      <div class="card">
+        <h4>You vs. the critics <span class="share">⇪</span></h4>
+        <div class="gauge">
+          <svg width="86" height="86" viewBox="0 0 86 86" role="img" aria-label="Taste alignment 72 percent">
+            <circle cx="43" cy="43" r="36" fill="none" stroke="#2a2a38" stroke-width="9"/>
+            <circle cx="43" cy="43" r="36" fill="none" stroke="#c48119" stroke-width="9"
+              stroke-linecap="round" stroke-dasharray="163 63" transform="rotate(-90 43 43)"/>
+            <text x="43" y="48" text-anchor="middle" fill="#f2ece1" font-size="19" font-weight="800">72%</text>
+          </svg>
+          <div><div class="big">In step with the critics</div>
+          <p>72% of your ratings land within ±10 pts of the critic score · 186 shows compared</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <h4>You loved it, critics didn't</h4>
+        <div class="row"><span class="poster" style="background:linear-gradient(160deg,#4a2f68,#241536)">GG</span>
+          <div class="t"><b>The Great Gatsby</b><span class="stars">★★★★½</span></div>
+          <span class="score-chip" style="background:var(--bad)">58</span><span class="delta" style="color:var(--good)">+32</span></div>
+        <div class="row"><span class="poster" style="background:linear-gradient(160deg,#7a2230,#38101a)">DBH</span>
+          <div class="t"><b>Death Becomes Her</b><span class="stars">★★★★★</span></div>
+          <span class="score-chip" style="background:var(--warn)">71</span><span class="delta" style="color:var(--good)">+29</span></div>
+      </div>
+      <div class="card">
+        <h4>Critics raved, you shrugged</h4>
+        <div class="row"><span class="poster" style="background:linear-gradient(160deg,#1d4f46,#0d2622)">SB</span>
+          <div class="t"><b>Sunset Boulevard</b><span class="stars">★★½</span></div>
+          <span class="score-chip" style="background:var(--good)">89</span><span class="delta" style="color:var(--bad)">−39</span></div>
+        <div class="row"><span class="poster" style="background:linear-gradient(160deg,#5d5424,#2b2710)">OM</span>
+          <div class="t"><b>Oh, Mary!</b><span class="stars">★★★</span></div>
+          <span class="score-chip" style="background:var(--good)">92</span><span class="delta" style="color:var(--bad)">−32</span></div>
+      </div>
+      <div class="card">
+        <h4>Critical Gold coverage</h4>
+        <div class="gauge">
+          <svg width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="7 of 11 seen">
+            <circle cx="32" cy="32" r="26" fill="none" stroke="#2a2a38" stroke-width="7"/>
+            <circle cx="32" cy="32" r="26" fill="none" stroke="#d4a574" stroke-width="7"
+              stroke-linecap="round" stroke-dasharray="104 60" transform="rotate(-90 32 32)"/>
+            <text x="32" y="37" text-anchor="middle" fill="#f2ece1" font-size="13" font-weight="800">7/11</text>
+          </svg>
+          <div><p style="font-size:12.5px;color:var(--ink)">You've seen 7 of the 11 <b style="color:var(--gold)">Critical Gold</b> shows running now.</p>
+          <div class="grid-ch" style="margin-top:6px"><span class="hch off">Maybe Happy Ending</span>
+          <span class="hch off">Buena Vista</span><span class="hch off">+2 more →</span></div></div>
+        </div>
+      </div>
+      <div class="card"><h4>The audience &amp; you</h4>
+        <p style="font-size:12.5px;color:var(--ink-2)">You agree with the audience grade <b style="color:var(--ink)">81%</b> of the time — you're one of the crowd.</p>
+      </div>
+    </div>
+    <div class="tabbar">
+      <span class="tab"><span class="ic">⌂</span>Home</span><span class="tab"><span class="ic">✦</span>Discover</span>
+      <span class="tab"><span class="ic">✎</span>Diary</span><span class="tab on"><span class="ic">▥</span>Stats</span>
+      <span class="tab"><span class="ic">◉</span>Profile</span>
+    </div>
+  </div></div>
+  <div class="notes">
+    <div class="kicker">Screen 2 · Signature</div>
+    <h2>You vs. the Critics — the module Mezzanine can't build</h2>
+    <p>Joins your ★ (×20) against the same critic scores the site publishes. This is the
+    reason to log in Scorecard instead of anywhere else.</p>
+    <div class="note"><span class="pin">a</span><p><b>Taste alignment gauge</b> with a friendly label
+    ("Certified contrarian" under 45%). Spearman ρ in fine print for the nerds.</p></div>
+    <div class="note"><span class="pin">b</span><p><b>Contrarian picks</b> — largest deltas in both
+    directions, score chips in the site's score-bucket colors, delta badges. The screenshot-bait row,
+    and a one-tap share card.</p></div>
+    <div class="note"><span class="pin">c</span><p><b>Critical Gold coverage closes a booking loop no
+    tracker has:</b> the unseen remainder is a to-see list deep-linking to show pages and tickets.
+    Stats → intent → ticket.</p></div>
+    <div class="note"><span class="pin">d</span><p><b>Thresholds:</b> module hides under 5 rated shows
+    with critic scores; diary-only entries (regional/tour catalog) simply don't join, mirroring
+    Mezzanine's "177 of 195 have a location" footnote pattern.</p></div>
+  </div>
+</section>
+
+<!-- ============ SCREEN 3 — TONY & PEOPLE ============ -->
+<section class="screen" id="s3">
+  <div class="phone"><div class="screen-inner">
+    <div class="statusbar"><span>9:41</span><span class="r">●●● ᯤ ▮</span></div>
+    <div class="appbar"><h3>My Scorecard</h3><span class="scope">All time</span></div>
+    <div class="content">
+      <div class="card">
+        <h4>Tony Best Musical winners <span class="share">⇪</span></h4>
+        <div class="gauge">
+          <svg width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="23 of 78 seen">
+            <circle cx="32" cy="32" r="26" fill="none" stroke="#2a2a38" stroke-width="7"/>
+            <circle cx="32" cy="32" r="26" fill="none" stroke="#c48119" stroke-width="7"
+              stroke-linecap="round" stroke-dasharray="48 116" transform="rotate(-90 32 32)"/>
+            <text x="32" y="37" text-anchor="middle" fill="#f2ece1" font-size="12" font-weight="800">23/78</text>
+          </svg>
+          <p style="font-size:12.5px;color:var(--ink-2)">Every Best Musical since 1949.<br>
+          <b style="color:var(--ink)">Next unseen:</b> Kiss of the Spider Woman (’93)</p>
+        </div>
+        <div class="shelf">
+          <span class="poster" style="background:linear-gradient(160deg,#8a6d1f,#3d3010)">HAM</span>
+          <span class="poster" style="background:linear-gradient(160deg,#20515f,#0e2429)">MHE</span>
+          <span class="poster" style="background:linear-gradient(160deg,#5f2020,#290e0e)">KB</span>
+          <span class="poster dim" style="background:linear-gradient(160deg,#555,#222)">SW</span>
+          <span class="poster" style="background:linear-gradient(160deg,#28522a,#102310)">SLIH</span>
+          <span class="poster dim" style="background:linear-gradient(160deg,#555,#222)">TIT</span>
+          <span class="poster dim" style="background:linear-gradient(160deg,#555,#222)">CON</span>
+          <span class="poster" style="background:linear-gradient(160deg,#4a2f68,#241536)">ASL</span>
+        </div>
+        <div class="callouts"><span class="pill">🏆 Saw it <b>before</b> it won · <b>6 shows</b></span></div>
+      </div>
+      <div class="card">
+        <h4>Most-seen performers</h4>
+        <div class="row"><span class="poster" style="background:linear-gradient(160deg,#2c4a6e,#132234);border-radius:50%;height:34px">JG</span>
+          <div class="t"><b>Jonathan Groff</b><span>Merrily · Hamilton · Just in Time…</span></div><span class="delta num" style="color:var(--gold)">×4</span></div>
+        <div class="row"><span class="poster" style="background:linear-gradient(160deg,#6e2c5c,#34132b);border-radius:50%;height:34px">AR</span>
+          <div class="t"><b>Audra McDonald</b><span>Gypsy · Ohio State Murders…</span></div><span class="delta num" style="color:var(--gold)">×3</span></div>
+      </div>
+      <div class="card">
+        <h4>Most-seen writers &amp; composers</h4>
+        <div class="row"><span class="poster" style="background:linear-gradient(160deg,#4d431c,#221d0b);border-radius:50%;height:34px">SS</span>
+          <div class="t"><b>Stephen Sondheim</b><span>Merrily · Sweeney · Into the Woods…</span></div><span class="delta num" style="color:var(--gold)">×6</span></div>
+        <div class="row"><span class="poster" style="background:linear-gradient(160deg,#1c4d38,#0b2218);border-radius:50%;height:34px">LMM</span>
+          <div class="t"><b>Lin-Manuel Miranda</b><span>Hamilton · Warriors…</span></div><span class="delta num" style="color:var(--gold)">×3</span></div>
+      </div>
+      <div class="card">
+        <h4>The mix</h4>
+        <div style="display:flex;gap:14px;align-items:center">
+          <div style="flex:none;width:74px;height:74px;border-radius:50%;
+            background:conic-gradient(var(--chart-gold) 0 68%, #0f0f14 68% 69%, var(--purple) 69% 99%, #0f0f14 99% 100%);
+            -webkit-mask:radial-gradient(circle 22px, transparent 96%, #000 100%);
+            mask:radial-gradient(circle at 50% 50%, transparent 45%, #000 47%)"></div>
+          <div style="font-size:12px;color:var(--ink-2)">
+            <div><i class="k legend" style="display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--chart-gold);margin-right:6px"></i><b style="color:var(--ink)">Musicals 68%</b></div>
+            <div style="margin-top:4px"><i style="display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--purple);margin-right:6px"></i><b style="color:var(--ink)">Plays 32%</b></div>
+            <div style="margin-top:6px">Revivals 41% · You saw <b style="color:var(--ink)">34%</b> in their first month — an early adopter.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tabbar">
+      <span class="tab"><span class="ic">⌂</span>Home</span><span class="tab"><span class="ic">✦</span>Discover</span>
+      <span class="tab"><span class="ic">✎</span>Diary</span><span class="tab on"><span class="ic">▥</span>Stats</span>
+      <span class="tab"><span class="ic">◉</span>Profile</span>
+    </div>
+  </div></div>
+  <div class="notes">
+    <div class="kicker">Screen 3 · Signature</div>
+    <h2>The Canon &amp; the People</h2>
+    <p>Letterboxd's two stickiest stats — milestone lists and most-watched people — translated
+    to theater, from data already shipping in <code>mobile-shows.json</code> (<code>tg</code> tags,
+    <code>ct</code> casts/creatives) plus a small pre-computed <code>stats-canon.json</code>.</p>
+    <div class="note"><span class="pin">a</span><p><b>Poster shelves with dimmed unseen entries</b>
+    create the completionist itch. Collections: Best Musical, Best Play, this season's nominees,
+    NYT Critic's Picks, Pulitzers. <span class="tagwhy">Letterboxd milestone lists</span></p></div>
+    <div class="note"><span class="pin">b</span><p><b>"Saw it before it won"</b> — diary date vs.
+    ceremony date. The purest flex stat in theater; nobody else can compute it.</p></div>
+    <div class="note"><span class="pin">c</span><p><b>People</b> ranked by appearances across your diary;
+    crossing ×3 auto-creates a micro-collection ("Your Sondheim count: 6").
+    <span class="tagwhy">Letterboxd most-watched directors</span></p></div>
+    <div class="note"><span class="pin">d</span><p><b>The mix</b> — musicals/plays donut (chart gold vs.
+    purple, the validated pair), revivals share, and an <b>earliness profile</b> from opening dates:
+    previews / first month / later. <span class="tagwhy">StoryGraph donuts</span></p></div>
+  </div>
+</section>
+
+<!-- ============ SCREEN 4 — THEATERS ============ -->
+<section class="screen" id="s4">
+  <div class="phone"><div class="screen-inner">
+    <div class="statusbar"><span>9:41</span><span class="r">●●● ᯤ ▮</span></div>
+    <div class="appbar"><h3>My Scorecard</h3><span class="scope">All time</span></div>
+    <div class="content">
+      <div class="card" style="padding:0;overflow:hidden">
+        <svg viewBox="0 0 340 150" width="100%" role="img" aria-label="Theater district map, visited houses in gold">
+          <rect width="340" height="150" fill="#141420"/>
+          <g stroke="#23232e" stroke-width="5"><path d="M30 150 L95 -10"/><path d="M90 150 L155 -10"/><path d="M150 150 L215 -10"/><path d="M210 150 L275 -10"/></g>
+          <g stroke="#1d1d29" stroke-width="7"><path d="M0 30 H340"/><path d="M0 65 H340"/><path d="M0 100 H340"/><path d="M0 135 H340"/></g>
+          <g><circle cx="70" cy="30" r="5" fill="#c48119"/><circle cx="122" cy="30" r="5" fill="#c48119"/>
+          <circle cx="96" cy="65" r="5" fill="#c48119"/><circle cx="148" cy="65" r="5" fill="#c48119"/>
+          <circle cx="200" cy="65" r="5" fill="none" stroke="#7d7668" stroke-width="1.5"/>
+          <circle cx="122" cy="100" r="5" fill="#c48119"/><circle cx="174" cy="100" r="5" fill="#c48119"/>
+          <circle cx="226" cy="100" r="5" fill="#c48119"/><circle cx="252" cy="65" r="5" fill="none" stroke="#7d7668" stroke-width="1.5"/>
+          <circle cx="148" cy="135" r="5" fill="#c48119"/><circle cx="200" cy="135" r="5" fill="#c48119"/>
+          <circle cx="278" cy="100" r="5" fill="none" stroke="#7d7668" stroke-width="1.5"/></g>
+          <text x="12" y="20" fill="#7d7668" font-size="9" letter-spacing="2">THEATER DISTRICT</text>
+          <text x="252" y="140" fill="#d4a574" font-size="9">● visited</text>
+        </svg>
+        <div style="padding:10px 14px"><p style="font-size:11.5px;color:var(--ink-3)">World view clusters
+        by city — pinch into NYC or the West End for house-by-house pins.</p></div>
+      </div>
+      <div class="card">
+        <h4>Completion <span class="share">⇪</span></h4>
+        <div class="ringrow">
+          <div class="ring">
+            <svg width="84" height="84" viewBox="0 0 84 84" role="img" aria-label="Broadway 37 of 41">
+              <circle cx="42" cy="42" r="34" fill="none" stroke="#2a2a38" stroke-width="8"/>
+              <circle cx="42" cy="42" r="34" fill="none" stroke="#c48119" stroke-width="8"
+                stroke-linecap="round" stroke-dasharray="193 21" transform="rotate(-90 42 42)"/>
+              <text x="42" y="40" text-anchor="middle" fill="#f2ece1" font-size="15" font-weight="800">90%</text>
+              <text x="42" y="54" text-anchor="middle" fill="#7d7668" font-size="9">37 of 41</text>
+            </svg>
+            <div class="rl">Broadway houses</div>
+          </div>
+          <div class="ring">
+            <svg width="84" height="84" viewBox="0 0 84 84" role="img" aria-label="West End 5 of 39">
+              <circle cx="42" cy="42" r="34" fill="none" stroke="#2a2a38" stroke-width="8"/>
+              <circle cx="42" cy="42" r="34" fill="none" stroke="#a855f7" stroke-width="8"
+                stroke-linecap="round" stroke-dasharray="27 187" transform="rotate(-90 42 42)"/>
+              <text x="42" y="40" text-anchor="middle" fill="#f2ece1" font-size="15" font-weight="800">13%</text>
+              <text x="42" y="54" text-anchor="middle" fill="#7d7668" font-size="9">5 of 39</text>
+            </svg>
+            <div class="rl">West End houses</div>
+          </div>
+        </div>
+        <div class="grid-ch">
+          <span class="hch">Shubert ×9</span><span class="hch">Music Box ×7</span><span class="hch">Wyndham’s ×2</span>
+          <span class="hch">Broadhurst ×6</span><span class="hch off">Vivian Beaumont</span><span class="hch off">Circle in the Sq.</span>
+          <span class="hch off">Palace</span><span class="hch off">Winter Garden</span>
+        </div>
+      </div>
+      <div class="card">
+        <h4>House records</h4>
+        <div class="row"><div class="t"><b>Your home theater</b><span>Most visits</span></div>
+          <span class="delta" style="color:var(--gold)">Shubert · 9 shows</span></div>
+        <div class="row"><div class="t"><b>Biggest house</b><span>By capacity</span></div>
+          <span class="delta num" style="color:var(--ink-2)">Gershwin · 1,933</span></div>
+        <div class="row"><div class="t"><b>Smallest house</b><span>By capacity</span></div>
+          <span class="delta num" style="color:var(--ink-2)">Hayes · 597</span></div>
+        <div class="row"><div class="t"><b>Oldest house you’ve sat in</b><span>Opened 1903</span></div>
+          <span class="delta" style="color:var(--ink-2)">Lyceum</span></div>
+      </div>
+    </div>
+    <div class="tabbar">
+      <span class="tab"><span class="ic">⌂</span>Home</span><span class="tab"><span class="ic">✦</span>Discover</span>
+      <span class="tab"><span class="ic">✎</span>Diary</span><span class="tab on"><span class="ic">▥</span>Stats</span>
+      <span class="tab"><span class="ic">◉</span>Profile</span>
+    </div>
+  </div></div>
+  <div class="notes">
+    <div class="kicker">Screen 4 · Parity, then depth</div>
+    <h2>Theaters: keep their map, win at street level</h2>
+    <p>Mezzanine's map and rings are its best feature — we keep both, then use
+    <code>theater-metadata.json</code> (capacity, opened, 43 houses) to go deeper.</p>
+    <div class="note"><span class="pin">a</span><p><b>Theater-district mode:</b> world map clusters by
+    city (parity), but zooming into NYC/London flips to one pin per house — gold visited, outline not.
+    MapKit; needs lat/lng added to theater metadata (small data task in this repo).</p></div>
+    <div class="note"><span class="pin">b</span><p><b>The house grid is the bingo card people
+    screenshot</b> — every chip tappable to your shows in that house; unvisited chips are the to-do
+    list. Rings tap into it.</p></div>
+    <div class="note"><span class="pin">c</span><p><b>House records</b> from capacity/opened metadata:
+    home theater, biggest, smallest, oldest. Trivia that makes theater nerds feel seen.</p></div>
+  </div>
+</section>
+
+<!-- ============ SCREEN 5 — CURTAIN CALL ============ -->
+<section class="screen" id="s5">
+  <div class="phone"><div class="screen-inner">
+    <div class="statusbar"><span>9:41</span><span class="r">●●● ᯤ ▮</span></div>
+    <div class="story">
+      <div class="brand">BroadwayScorecard · Curtain Call</div>
+      <h3>Your 2026<br>at the theater</h3>
+      <div class="bignums">
+        <div class="bn"><div class="v num">41</div><div class="l">shows</div></div>
+        <div class="bn"><div class="v num">103h</div><div class="l">in a seat</div></div>
+        <div class="bn"><div class="v num">18</div><div class="l">theaters</div></div>
+        <div class="bn"><div class="v num">3</div><div class="l">cities</div></div>
+      </div>
+      <div>
+        <div style="font-family:ui-monospace,monospace;font-size:10px;letter-spacing:.18em;color:#7d7668;margin-bottom:8px">YOUR TOP FIVE</div>
+        <div class="podium">
+          <span class="poster" style="background:linear-gradient(160deg,#20515f,#0e2429)">MHE</span>
+          <span class="poster p1" style="background:linear-gradient(160deg,#8a6d1f,#3d3010)">GYP</span>
+          <span class="poster" style="background:linear-gradient(160deg,#5f2020,#290e0e)">JIT</span>
+          <span class="poster" style="background:linear-gradient(160deg,#28522a,#102310)">FA</span>
+          <span class="poster" style="background:linear-gradient(160deg,#4a2f68,#241536)">CJB</span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--ink-2);max-width:32ch">Most contrarian take:
+      <b style="color:var(--ink)">Sunset Boulevard</b> — critics 89, you ★★½. Never change.</p>
+      <div class="qr"><span class="q"></span><span>broadwayscorecard.com<br>Get your own Scorecard</span></div>
+    </div>
+  </div></div>
+  <div class="notes">
+    <div class="kicker">Screen 5 · The December moment</div>
+    <h2>Curtain Call — a year in review worth posting</h2>
+    <p>Eight swipeable full-screen cards, unlocked Nov 15 by push notification, every card
+    exportable as a 9:16 story or 1:1 square via SwiftUI <code>ImageRenderer</code> — no server.</p>
+    <div class="note"><span class="pin">a</span><p><b>Card run:</b> cover collage → the numbers →
+    your year in bars → top five podium → taste card (alignment + most contrarian take) →
+    people card → canon card (Tonys seen, houses unlocked) → sign-off.
+    <span class="tagwhy">Spotify Wrapped · Letterboxd YIR</span></p></div>
+    <div class="note"><span class="pin">b</span><p><b>Every export carries the wordmark + QR.</b>
+    Wrapped taught everyone: the recap is the acquisition channel. Sharing is always explicit —
+    the diary itself stays private.</p></div>
+    <div class="note"><span class="pin">c</span><p><b>Share glyphs (⇪) on every stats module</b> reuse
+    the same card renderer year-round: marquee numbers, contrarian picks, the theater bingo grid,
+    any canon shelf.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="phase">
+    <div class="card"><h5>V1 · offline-computable</h5><p>Hero tiles, shows over time, ratings histogram,
+    the mix, records, completion rings + house grid, scope pill, tap-through lists. Pure
+    <code>StatsEngine</code> over diary + mobile-shows; Swift Charts.</p></div>
+    <div class="card"><h5>V1.1 · needs small data artifacts</h5><p>You vs. Critics/Audience, Tony &amp;
+    Canon (<code>stats-canon.json</code>), People, MapKit district map (theater lat/lng), share cards.</p></div>
+    <div class="card"><h5>V2 · December</h5><p>Curtain Call story + push unlock, community ghost
+    overlay, habits heatmap, milestone toasts ("that was show #200").</p></div>
+  </div>
+  <p><b>Ground rules baked in:</b> every number taps to the shows behind it · modules hide below data
+  thresholds instead of rendering thin charts · Mezzanine CSV import is the empty state's call to
+  action · chart marks use the validated gold/purple pair; score-bucket green/amber/red appear only
+  as semantic score chips · single dark theme, on purpose.</p>
+</footer>
+</div>
