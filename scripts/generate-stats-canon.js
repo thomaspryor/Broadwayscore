@@ -90,6 +90,23 @@ function main() {
     throw new Error(`suspiciously few winners: BM=${winners.bestMusical.length} BP=${winners.bestPlay.length}`);
   }
 
+  // Freshness guard: the newest ceremony that has already happened (date <= today)
+  // must have a winner in both categories. Catches the case where tony-nominations.json
+  // has rows for the latest season but nobody has backfilled won:true yet (#561).
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const heldCeremonies = ceremonies.filter((c) => c.date <= todayStr);
+  const newestHeld = heldCeremonies[heldCeremonies.length - 1];
+  if (newestHeld) {
+    const hasMusical = winners.bestMusical.some((w) => w.ceremony === newestHeld.ceremony);
+    const hasPlay = winners.bestPlay.some((w) => w.ceremony === newestHeld.ceremony);
+    if (!hasMusical || !hasPlay) {
+      const missing = [!hasMusical && 'Best Musical', !hasPlay && 'Best Play'].filter(Boolean).join(' and ');
+      throw new Error(
+        `freshness guard: newest ceremony ${newestHeld.ceremony} (${newestHeld.date}) has already happened but is missing its ${missing} winner — backfill won:true for that season in data/tony-nominations.json`
+      );
+    }
+  }
+
   const out = {
     _v: SCHEMA_VERSION,
     ceremonies,

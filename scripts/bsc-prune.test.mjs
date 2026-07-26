@@ -23,6 +23,7 @@ test('--help / -h return before any cmux call', () => {
     pruneDone: () => { throw new Error('pruneDone must not be called for --help'); },
     isDoneTitle: () => { throw new Error('isDoneTitle must not be called for --help'); },
     claudeAliveIn: () => { throw new Error('claudeAliveIn must not be called for --help'); },
+    terminalSurfaceAliveIn: () => { throw new Error('terminalSurfaceAliveIn must not be called for --help'); },
     readLedgerEntries: () => { throw new Error('readLedgerEntries must not be called for --help'); },
     appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for --help'); },
   };
@@ -56,6 +57,7 @@ test('idle workspace matching a ledger launch: labeled in output + dead breadcru
     pruneDone: () => ({ closed: [], skipped: [] }),
     isDoneTitle: () => false,
     claudeAliveIn: () => false, // both idle
+    terminalSurfaceAliveIn: () => false, // surface registry agrees: truly dead
     readLedgerEntries: () => [
       { event: 'launch', taskId: '297', subject: 'T1-retrieval Sprint 2', workspaceRef: 'workspace:227' },
     ],
@@ -77,6 +79,45 @@ test('idle workspace matching a ledger launch: labeled in output + dead breadcru
   assert.match(out, /Recorded 1 new dead-dispatch breadcrumb/);
 });
 
+// Card #564 adversarial ship-check catch: this idle-unmarked listing feeds
+// dispatchLedger.deadBreadcrumbs() the same way checkDeadDispatch does — a
+// fourth call site trusting claudeAliveIn alone would reopen the exact
+// #559/#564 registry-desync false-negative right next to the three already
+// fixed. A workspace where the primary registry says dead but the surface
+// registry says alive must NOT get a dead breadcrumb, and must be flagged as
+// a registry disagreement.
+test('idle-unmarked workspace: no dead breadcrumb when terminalSurfaceAliveIn says alive, even if claudeAliveIn alone said not-alive', () => {
+  const desyncedWs = { ref: 'workspace:227', title: 'T1-retrieval Sprint 2' };
+  const trulyDeadWs = { ref: 'workspace:229', title: 'Some other task' };
+  const appended = [];
+  const deps = {
+    cmuxAvailable: () => true,
+    listWorkspaces: () => [desyncedWs, trulyDeadWs],
+    pruneDone: () => ({ closed: [], skipped: [] }),
+    isDoneTitle: () => false,
+    claudeAliveIn: () => false, // primary registry: both look dead
+    terminalSurfaceAliveIn: ref => ref === 'workspace:227', // surface registry disagrees on workspace:227
+    readLedgerEntries: () => [
+      { event: 'launch', taskId: '297', subject: 'T1-retrieval Sprint 2', workspaceRef: 'workspace:227' },
+      { event: 'launch', taskId: '298', subject: 'Some other task', workspaceRef: 'workspace:229' },
+    ],
+    appendLedgerEntry: (e) => appended.push(e),
+  };
+  const logged = [];
+  const origLog = console.log;
+  console.log = (...a) => logged.push(a.join(' '));
+  try {
+    main(['--dry-run'], deps);
+  } finally {
+    console.log = origLog;
+  }
+  const out = logged.join('\n');
+  const deadBreadcrumbs = appended.filter(e => e.event === 'dead');
+  assert.deepEqual(deadBreadcrumbs.map(e => e.workspaceRef), ['workspace:229']);
+  assert.match(out, /Registry desync detected: 1 idle-unmarked workspace/);
+  assert.match(out, /workspace:227/);
+});
+
 test('idle workspace already recorded dead in the ledger: no duplicate breadcrumb', () => {
   const idleWs = { ref: 'workspace:227', title: 'T1-retrieval Sprint 2' };
   const appended = [];
@@ -86,6 +127,7 @@ test('idle workspace already recorded dead in the ledger: no duplicate breadcrum
     pruneDone: () => ({ closed: [], skipped: [] }),
     isDoneTitle: () => false,
     claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => false,
     readLedgerEntries: () => [
       { event: 'launch', taskId: '297', workspaceRef: 'workspace:227' },
       { event: 'dead', taskId: '297', workspaceRef: 'workspace:227' },

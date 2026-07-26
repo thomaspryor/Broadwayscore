@@ -25,6 +25,7 @@ test('--help / -h return before loadTasks/fetchCard/launchCmux/cmux ever run', (
     listWorkspaces: () => { throw new Error('listWorkspaces must not be called for --help'); },
     isDoneTitle: () => { throw new Error('isDoneTitle must not be called for --help'); },
     claudeAliveIn: () => { throw new Error('claudeAliveIn must not be called for --help'); },
+    terminalSurfaceAliveIn: () => { throw new Error('terminalSurfaceAliveIn must not be called for --help'); },
     readLedgerEntries: () => { throw new Error('readLedgerEntries must not be called for --help'); },
     appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for --help'); },
   };
@@ -186,8 +187,9 @@ test('checkDeadDispatch catches a same-session burst with ZERO prior dead breadc
   ];
   const isDoneTitle = () => false; // neither ✅-marked
   const claudeAliveIn = () => false; // neither has a live claude — both idle/dead
+  const surfaceAliveIn = () => false; // and the second signal agrees — both really dead
 
-  const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitle, claudeAliveIn, {});
+  const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitle, claudeAliveIn, surfaceAliveIn, {});
   assert.equal(freshDead.length, 2); // both self-healed from idle workspaces, no sweep needed
   assert.match(refusal, /died 2x already/);
   assert.match(refusal, /workspace:227, workspace:229/);
@@ -197,7 +199,7 @@ test('checkDeadDispatch: a task with only 1 dead/idle workspace is NOT refused (
   const task = { id: '297', subject: 'T1-retrieval Sprint 2' };
   const ledgerEntries = [{ event: 'launch', taskId: '297', workspaceRef: 'workspace:227' }];
   const workspaces = [{ ref: 'workspace:227', title: 'T1-retrieval Sprint 2' }];
-  const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, () => false, () => false, {});
+  const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, () => false, () => false, () => false, {});
   assert.equal(freshDead.length, 1);
   assert.equal(refusal, null);
 });
@@ -214,9 +216,35 @@ test('checkDeadDispatch: a live or ✅-marked workspace from a past launch is NO
   ];
   const isDoneTitle = (t) => t.startsWith('✅');
   const claudeAliveIn = (ref) => ref === 'workspace:227';
-  const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitle, claudeAliveIn, {});
+  const surfaceAliveIn = () => false;
+  const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitle, claudeAliveIn, surfaceAliveIn, {});
   assert.equal(freshDead.length, 0);
   assert.equal(refusal, null);
+});
+
+// Card #564: claudeAliveIn alone is the same single-signal trust that #559
+// proved has a real false-negative mode (verified live, 2026-07-26 — a
+// workspace had claudeAliveIn() === false while still visibly running an
+// active Claude Code session). checkDeadDispatch must not count a workspace
+// as a fresh-dead breadcrumb when the independent terminal-surface signal
+// says it's still alive, even if claudeAliveIn alone said not-alive — same
+// shape as #559's pruneDone test in scripts/lib/cmux-workspaces.test.mjs.
+test('checkDeadDispatch: does NOT count a workspace as dead when terminalSurfaceAliveIn says alive, even if claudeAliveIn alone said not-alive', () => {
+  const task = { id: '297', subject: 'T1-retrieval Sprint 2' };
+  const ledgerEntries = [
+    { event: 'launch', taskId: '297', workspaceRef: 'workspace:227' },
+    { event: 'launch', taskId: '297', workspaceRef: 'workspace:229' },
+  ];
+  const workspaces = [
+    { ref: 'workspace:227', title: 'T1-retrieval Sprint 2' }, // registry desync: claudeAliveIn says dead, surface says alive
+    { ref: 'workspace:229', title: 'T1-retrieval Sprint 2' }, // both signals agree: truly dead
+  ];
+  const isDoneTitle = () => false;
+  const claudeAliveIn = () => false; // primary registry: both look dead
+  const surfaceAliveIn = (ref) => ref === 'workspace:227'; // surface registry disagrees on workspace:227
+  const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitle, claudeAliveIn, surfaceAliveIn, {});
+  assert.deepEqual(freshDead.map(d => d.workspaceRef), ['workspace:229']);
+  assert.equal(refusal, null); // only 1 dead, under DEAD_ATTEMPT_LIMIT
 });
 
 test('notionIdOf extracts the embedded page id, null when absent', () => {
