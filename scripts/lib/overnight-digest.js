@@ -167,6 +167,27 @@ function gatherDigest({ repo, hours = 24 } = {}) {
     digest.errors.push(`couldn't reach cmux (${String(err.message).slice(0, 80)})`);
   }
 
+  // 3b. Headless-job reconcile events (Autopilot v5, #459): orphans and
+  //     retries the 5-min bsc-reconcile tick recorded in the window. This is
+  //     the ONLY surface for that file — without it, orphaned jobs are
+  //     detected but never shown to the owner (Opus ship-check P1).
+  try {
+    const recPath = path.join(repo, 'data', 'audit', 'reconcile-report.jsonl');
+    if (fs.existsSync(recPath)) {
+      const cutoff = Date.now() - hours * 3600 * 1000;
+      const lines = fs.readFileSync(recPath, 'utf8').split('\n').filter(Boolean);
+      const recent = [];
+      for (const l of lines) {
+        try { const e = JSON.parse(l); if (Date.parse(e.ts) > cutoff) recent.push(e); } catch { /* skip corrupt line */ }
+      }
+      if (recent.length) {
+        digest.stuck.headlessJobs = recent.map(e => `[${e.kind}] ${e.detail}`.slice(0, 200));
+      }
+    }
+  } catch (err) {
+    digest.errors.push(`couldn't read reconcile report (${String(err.message).slice(0, 80)})`);
+  }
+
   // 4. Review-count regressions the rebuild guard recorded in the window —
   //    the -152-drop class. File is rewritten each rebuild; only report a
   //    fresh one.
@@ -207,6 +228,9 @@ function stuckSignals(digest) {
   }
   if (digest.stuck?.reviewRegressions?.length) {
     stuck.push(`Shows losing scored reviews: ${digest.stuck.reviewRegressions.map(esc).join('; ')}`);
+  }
+  if (digest.stuck?.headlessJobs?.length) {
+    stuck.push(`Headless jobs needing a look (orphaned/retried in the window): ${digest.stuck.headlessJobs.slice(0, 4).map(esc).join('; ')}`);
   }
   if (digest.stuck?.worktrees?.length) {
     stuck.push(`Finished-but-unmerged work sitting in ${digest.stuck.worktrees.length} worktree${digest.stuck.worktrees.length > 1 ? 's' : ''}: ${digest.stuck.worktrees.slice(0, 4).map(esc).join('; ')}`);
