@@ -2416,9 +2416,17 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     console.log(`[Owner Email Volume] Skipped — ${e.message}`);
   }
 
-  // Overall status banner
-  const unfixedErrors = errors.filter(r => !autoFixResults?.[r.name]?.fixed);
-  const unfixedWarns = warns.filter(r => !autoFixResults?.[r.name]?.fixed);
+  // Overall status banner. Same isActionable filter getDigestSubject() uses
+  // (ship-check finding, card #364): without it, the merged email's subject
+  // line ("BSC Daily: All clear") could contradict its own site-health block
+  // ("2 errors, 1 warning") whenever the only unfixed items are low-urgency
+  // playbook entries — exactly the noise the owner asked this merge to kill.
+  const isActionableForSnapshot = (r) => {
+    const entry = getPlaybookEntry(r.name);
+    return !entry || entry.urgency !== 'low';
+  };
+  const unfixedErrors = errors.filter(r => !autoFixResults?.[r.name]?.fixed && isActionableForSnapshot(r));
+  const unfixedWarns = warns.filter(r => !autoFixResults?.[r.name]?.fixed && isActionableForSnapshot(r));
   const overallStatus = unfixedErrors.length > 0 ? 'error' : unfixedWarns.length > 0 ? 'warn' : 'pass';
   const bannerColor = getStatusColor(overallStatus);
   const bannerText = errors.length > 0
@@ -2485,13 +2493,19 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     consecutiveErrorDays: history.consecutiveErrorDays || 0,
     errors: unfixedErrors.map(r => ({ name: r.name, message: r.message })),
     warns: unfixedWarns.map(r => ({ name: r.name, message: r.message })),
+    // owner-alert-router's disposition='digest' queue (ship-check finding,
+    // card #364): drainDigestQueue() above already CLEARED this queue —
+    // whatever it held only ever reaches the owner if it's carried here.
+    // Losing it would silently reintroduce the exact bug card #475 fixed
+    // (routed conditions vanishing into a queue nothing reads back out of).
+    queued: queuedDigestItems.map(q => ({ title: q.title, description: q.description, severity: q.severity })),
     autoFixedCount,
     passedCount: passed.length,
     totalCount: results.length,
   };
   fs.mkdirSync(path.dirname(HEALTH_DIGEST_SNAPSHOT_FILE), { recursive: true });
   fs.writeFileSync(HEALTH_DIGEST_SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
-  console.log(`[Health Digest] Snapshot written (${snapshot.errors.length} error(s), ${snapshot.warns.length} warning(s)) — folds into the morning email, not sent separately`);
+  console.log(`[Health Digest] Snapshot written (${snapshot.errors.length} error(s), ${snapshot.warns.length} warning(s), ${snapshot.queued.length} queued) — folds into the morning email, not sent separately`);
   return true;
 }
 

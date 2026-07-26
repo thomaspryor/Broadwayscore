@@ -448,6 +448,17 @@ test('renderHealthDigestBlock: escalated URGENT snapshot lists errors and the da
   assert.match(html, /1 auto-fixed overnight/);
 });
 
+test('renderHealthDigestBlock: queued digest-router items render (never silently dropped after drainDigestQueue)', () => {
+  const html = renderHealthDigestBlock({
+    subject: 'BSC Daily: All clear (27/27 passed)', errors: [], warns: [], passedCount: 27,
+    queued: [{ title: 'Credits: ScrapingDog', description: 'balance below 10%', severity: 'warning' }],
+    generatedAt: '2026-07-26T06:50:00.000Z',
+  });
+  assert.match(html, /Credits: ScrapingDog/);
+  assert.match(html, /balance below 10%/);
+  assert.match(html, /as of 2026-07-26 06:50 UTC/);
+});
+
 test('healthIssueCount: sums errors + warns, 0 when absent', () => {
   assert.equal(healthIssueCount(null), 0);
   assert.equal(healthIssueCount({ errors: [{ name: 'a' }], warns: [{ name: 'b' }, { name: 'c' }] }), 3);

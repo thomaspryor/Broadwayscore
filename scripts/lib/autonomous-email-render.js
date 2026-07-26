@@ -208,14 +208,26 @@ function renderHealthDigestBlock(health) {
   if (!health) return '';
   const errors = Array.isArray(health.errors) ? health.errors : [];
   const warns = Array.isArray(health.warns) ? health.warns : [];
+  const queued = Array.isArray(health.queued) ? health.queued : [];
   const urgent = /URGENT/.test(health.subject || '');
   const autoFixedNote = health.autoFixedCount > 0
     ? `<div style="font-size:11px;color:#16a34a;margin-top:6px;">${health.autoFixedCount} auto-fixed overnight</div>` : '';
+  // Ship-check finding (card #364): a cancelled/late health-check.js run can
+  // leave a snapshot up to ~36h old (see HEALTH_DIGEST_MAX_AGE_H) — stamp it
+  // so a stale read never masquerades as this morning's status.
+  const asOf = health.generatedAt && !Number.isNaN(new Date(health.generatedAt).getTime())
+    ? `<div style="font-size:11px;color:#999;margin-top:6px;">as of ${esc(String(health.generatedAt).slice(0, 16).replace('T', ' '))} UTC</div>` : '';
+  // owner-alert-router's disposition='digest' queue — routed conditions that
+  // would otherwise vanish silently the moment health-check.js drains the
+  // queue (card #475's original bug, reintroduced then fixed in #364).
+  const queuedHtml = queued.length
+    ? `<div style="margin-top:8px;">${queued.map(q => `<div style="font-size:12px;color:#555;margin:0 0 3px;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` — ${esc(q.description)}` : ''}</div>`).join('')}</div>`
+    : '';
 
   if (!errors.length && !warns.length) {
     return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
       <div style="font-size:13px;font-weight:700;">Site health: all ${health.passedCount ?? ''} checks passed</div>
-      ${autoFixedNote}
+      ${queuedHtml}${autoFixedNote}${asOf}
     </div>`;
   }
 
@@ -233,7 +245,7 @@ function renderHealthDigestBlock(health) {
 
   return `<div style="border:1px solid ${urgent ? '#fca5a5' : '#e5e5e5'};background:${urgent ? '#fef2f2' : '#fff'};border-radius:10px;padding:14px 16px;margin:0 0 14px;">
     <div style="font-size:13px;font-weight:700;margin-bottom:8px;${urgent ? 'color:#dc2626;' : ''}">Site health: ${esc(health.bannerText || `${errors.length} error${errors.length === 1 ? '' : 's'}, ${warns.length} warning${warns.length === 1 ? '' : 's'}`)}${escalation}</div>
-    ${rows}${more}${autoFixedNote}
+    ${rows}${more}${queuedHtml}${autoFixedNote}${asOf}
   </div>`;
 }
 
