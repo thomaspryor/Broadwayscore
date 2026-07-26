@@ -1341,7 +1341,7 @@ function commercialSection() {
     const open = new Date(show.openingDate + 'T12:00:00');
     const weeks = Math.round((recoupMid - open) / (7 * 86400000));
     if (!isFinite(weeks) || weeks <= 0) return '';
-    return ` in ${weeks} weeks`;
+    return ` in ${weeks} ${weeks === 1 ? 'week' : 'weeks'}`;
   }
   const rows = fresh.map((f, i, arr) => {
     const isLast = i === arr.length - 1;

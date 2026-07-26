@@ -196,8 +196,11 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
     assert.ok(auditSrc.includes("process.env.WE_GAP_INGEST === '1'"), 'explicit-opt-in comparison present');
     // The predicate itself is canonical in lib/gap-ingest-policy.js (behaviorally
     // tested in gap-ingest-policy.test.mjs — priorRun blocks even when gate is on).
-    assert.ok(auditSrc.includes('ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust })'),
-      'missing-URL ingest must consult the canonical policy predicate (incl. per-source trust)');
+    // Needle updated 2026-07-26 (task #468): b38a8a8151c wired the SERP-census
+    // gate into the same canonical predicate call; the guard must track the
+    // full current shape so a dropped gate param fails THIS test.
+    assert.ok(auditSrc.includes('ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn })'),
+      'missing-URL ingest must consult the canonical policy predicate (incl. per-source trust + SERP-census gate)');
   });
 
   test('audit invalidates stale WE checkpoints via WE_REF_VERSION', () => {
