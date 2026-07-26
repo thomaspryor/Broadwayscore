@@ -17,6 +17,17 @@ const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `one-time-backfill-opening-date-source.js — One-time backfill: Add openingDateSource to all shows in shows.json.
+
+Usage:
+  node scripts/one-time-backfill-opening-date-source.js [options]
+  node scripts/one-time-backfill-opening-date-source.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const dryRun = process.argv.includes('--dry-run');
 

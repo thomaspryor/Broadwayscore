@@ -15,6 +15,17 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `cleanup-failed-fetches.js — One-time cleanup of failed-fetches.json.
+
+Usage:
+  node scripts/cleanup-failed-fetches.js [options]
+  node scripts/cleanup-failed-fetches.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const DRY_RUN = process.argv.includes('--dry-run');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const FAILED_FETCHES_PATH = path.join(REVIEW_TEXTS_DIR, 'failed-fetches.json');

@@ -85,6 +85,7 @@ import { isScoreable } from './is-scoreable';
 const { emitStage } = require('../lib/stage-latency');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
 const { isInFallbackCooldown } = require('../lib/manual-clear-fallback-cooldown');
+const { markRescoreComplete } = require('../lib/rescore-lifecycle');
 // venue-classification import removed — market context now passed via input-builder
 
 // ========================================
@@ -1398,6 +1399,10 @@ async function main(): Promise<void> {
               scoredAny.scoreSourceReason =
                 `ensemble rejected as ${rejection} but file is human-cleared via wrongProductionManualClear/wrongShowManualClear; Haiku single-model scored the text directly`;
               scoredAny.scoredAt = new Date().toISOString();
+              // Retire the rescore queue entry here too. Without this the file
+              // scores successfully but stays needsRescore:true and is re-scored
+              // by EVERY subsequent drain (2026-07-26). See scripts/lib/rescore-lifecycle.js.
+              markRescoreComplete(scoredAny);
               if (!options.dryRun) saveReviewFile(filePath, scoredAny);
               console.log(`  ✓ FALLBACK SCORED (Haiku): ${scoredAny.assignedScore} (${scoredAny.llmScore?.bucket})`);
               processed++;
@@ -1459,12 +1464,11 @@ async function main(): Promise<void> {
     }
 
     if (result.success && result.scoredFile) {
-      // Always clear needsRescore flag after successful scoring
+      // Always clear needsRescore after successful scoring — shared with the
+      // Haiku-fallback path via rescore-lifecycle.js so a third success path
+      // can't silently skip it (2026-07-26 incident).
       const scoredAny = result.scoredFile as any;
-      if (scoredAny.needsRescore) {
-        delete scoredAny.needsRescore;
-        scoredAny.rescoreCompletedAt = new Date().toISOString();
-      }
+      markRescoreComplete(scoredAny);
 
       // singleModelEmergency retry lifecycle: if scoring rebuilt ensembleData with the
       // emergency flag still set (Gemini/etc still down), record the retry attempt so

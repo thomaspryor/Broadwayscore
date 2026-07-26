@@ -31,6 +31,17 @@ const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 const { extractPublishDate } = require('./lib/article-extractor');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `replay-pending-bylines.js — Files in data/review-texts/_pending/{showId}/{outlet}--{hash}.json end up there.
+
+Usage:
+  node scripts/replay-pending-bylines.js [options]
+  node scripts/replay-pending-bylines.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 // Non-theatre news sections. Same-title film articles (the Beetlejuice *film*) carry
 // the show title in their <title>, so show-match passes them — but they are wrong
 // PRODUCTION, not theatre reviews. NARROW to clearly-non-theatre sections only:

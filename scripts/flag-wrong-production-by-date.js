@@ -59,6 +59,17 @@ function loadShows() {
 const { parseDate } = require('./lib/date-utils');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `flag-wrong-production-by-date.js — Flag reviews as wrongProduction when publishDate falls outside.
+
+Usage:
+  node scripts/flag-wrong-production-by-date.js [options]
+  node scripts/flag-wrong-production-by-date.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 function run() {
   const showMap = loadShows();
 

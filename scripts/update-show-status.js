@@ -25,6 +25,17 @@ const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { decideAnnouncedPromotion } = require('./lib/announced-promotion');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `update-show-status.js — Show Status Updater (Broadway, Off-Broadway, West End).
+
+Usage:
+  node scripts/update-show-status.js [options]
+  node scripts/update-show-status.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_FILE = path.join(__dirname, '..', 'data', 'reviews.json');
 const OUTLET_REGISTRY_FILE = path.join(__dirname, '..', 'data', 'outlet-registry.json');

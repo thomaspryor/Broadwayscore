@@ -23,6 +23,14 @@ const { ROLE_CANON, roleVerb, serpTextConfirms } = require('./lib/creative-team-
 const { CLAUDE_HAIKU, CLAUDE_OPUS } = require('./lib/models');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `auto-fix-show-data.js — Automatically fixes show data issues - FULL automation:.
+
+Usage:
+  node scripts/auto-fix-show-data.js [options]
+  node scripts/auto-fix-show-data.js --help, -h    print this usage and exit
+`;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
@@ -561,6 +569,8 @@ function checkMissingImages(show) {
 
 async function main() {
   const args = process.argv.slice(2);
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const backfillHistorical = args.includes('--backfill-historical');
   const limitArg = args.find(a => a.startsWith('--limit='));
   const limit = limitArg ? parseInt(limitArg.split('=')[1], 10) : 0;

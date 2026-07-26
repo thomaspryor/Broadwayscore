@@ -27,6 +27,14 @@ const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `discover-opera-shows.js — Discovers Met Opera productions from metopera.org season pages and adds.
+
+Usage:
+  node scripts/discover-opera-shows.js [options]
+  node scripts/discover-opera-shows.js --help, -h    print this usage and exit
+`;
 // opera-show-ids.ts lives in the source tree — find it relative to __dirname
 // regardless of whether we're in the main repo or a worktree.
 const OPERA_IDS_FILE = (() => {
@@ -254,6 +262,8 @@ function addOperaIdPrefix(prefix) {
 
 // ─── Main ────────────────────────────────────────────────────────────────────
 (async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const { meta, shows } = loadShows();
   const existingIds = new Set(shows.map(s => s.id));
   const existingPrefixes = operaIdPrefixes();

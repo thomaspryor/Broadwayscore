@@ -19,6 +19,17 @@
 const fs = require("fs");
 const path = require("path");
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `cleanup-duplicate-text.js — Fixes 14 same-outlet duplicate-text pairs where two files at the same outlet.
+
+Usage:
+  node scripts/cleanup-duplicate-text.js [options]
+  node scripts/cleanup-duplicate-text.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const dryRun = process.argv.includes("--dry-run");
 const apply = process.argv.includes("--apply");
 

@@ -94,6 +94,17 @@ const { classifyPendingGapsByAge, DEFAULT_STUCK_PENDING_DAYS } = require('./lib/
 // Import deduplication module for duplicate detection
 const { isLondonMarket, isWestEndVenue, isOffWestEndVenue } = require('./lib/venue-classification');
 const { VENUE_ADDRESSES } = require('./lib/venue-addresses');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `validate-data.js — Comprehensive data validation for Broadway Scorecard.
+
+Usage:
+  node scripts/validate-data.js [options]
+  node scripts/validate-data.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 let checkForDuplicate;
 try {
   const dedup = require('./lib/deduplication');

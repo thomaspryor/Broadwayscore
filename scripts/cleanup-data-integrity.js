@@ -23,6 +23,17 @@ const fs = require('fs');
 const path = require('path');
 const { verifyFullTextContent } = require('./lib/content-quality');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `cleanup-data-integrity.js — Comprehensive data cleanup based on audit-data-integrity.js findings.
+
+Usage:
+  node scripts/cleanup-data-integrity.js [options]
+  node scripts/cleanup-data-integrity.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 

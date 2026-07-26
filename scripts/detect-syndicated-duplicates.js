@@ -82,6 +82,17 @@ function detectAPContent(fullText) {
 // Outlet tier lookup — reads from outlet-registry.json (source of truth)
 const { getTier } = require('./lib/outlet-tiers');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `detect-syndicated-duplicates.js — Detect Syndicated Duplicate Reviews.
+
+Usage:
+  node scripts/detect-syndicated-duplicates.js [options]
+  node scripts/detect-syndicated-duplicates.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 // --- Text similarity (word trigram Jaccard) ---
 function trigramSimilarity(text1, text2) {
   if (!text1 || !text2) return 0;
