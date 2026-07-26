@@ -30,6 +30,13 @@ jobs:
             "opening-night-broadcast.yml|36|Opening Night Broadcast"
             "monitor-gate-ab.yml|184|Weekly A/B Monitors"
             "check-flag-parity.yml|184|Check Flag Parity"
+            # Monday 07:00 UTC weekly full-history secret scan. Deliberately CRITICAL
+            # rather than digest-only: this workflow exists BECAUSE a live Buffer token
+            # sat in the public repo ~4 months with nothing scanning for it. A secret
+            # scanner that silently stops running reproduces that exact failure, and it
+            # is invisible by construction — a scanner that never runs looks identical
+            # to a scanner finding nothing. 184h = weekly cadence + 16h cron-lag cushion.
+            "gitleaks.yml|184|Secret Scan (gitleaks)"
             "opening-night-orchestrator.yml|25|Opening Night Orchestrator"
             "update-show-status.yml|36|Update Show Status"
             "rebuild-reviews.yml|36|Rebuild Reviews"
