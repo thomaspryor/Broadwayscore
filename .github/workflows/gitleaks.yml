@@ -1,0 +1,108 @@
+name: Secret Scan (gitleaks)
+
+on:
+  pull_request:
+    branches: [main]
+  # main takes ~860 bot commits/day (rebuild + data churn). A full-history scan on
+  # every one of those would burn the Actions budget and never finish. Restrict the
+  # push trigger to the paths where a hardcoded secret can actually land; the weekly
+  # cron below is what covers everything else.
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'src/**'
+      - '.github/**'
+      - 'package.json'
+      - 'next.config.js'
+      - 'tsconfig.json'
+      - '.gitleaks.toml'
+  schedule:
+    - cron: '0 7 * * 1'  # Mondays at 7 AM UTC (after weekly grosses runs)
+  workflow_dispatch:
+
+concurrency:
+  group: gitleaks-${{ github.ref }}
+  # Cancel superseded PR runs, but never cancel on main — a secret scan that gets
+  # cancelled by the next commit reports nothing and looks identical to a clean run.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    # Both scans below are path-scoped and measured at ~1-3s locally. 10 min is
+    # pure headroom. Do NOT widen either scan to the whole repo: an unscoped scan
+    # walks the data corpus in every commit diff and does not finish (measured:
+    # killed at 15 min unscoped, vs 1.4s scoped over the same 45-day window).
+    timeout-minutes: 10
+    steps:
+      # Shallow ON PURPOSE. fetch-depth: 0 clones the full ~2.1GB history and does
+      # NOT finish on a GitHub runner — measured 2026-07-26, run 30219369031: the
+      # Checkout step alone burned the entire 10-min budget and was cancelled, so
+      # every scan step below was skipped. A secret scan whose checkout times out
+      # reports nothing and is indistinguishable from a clean run.
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Install gitleaks
+        run: |
+          VERSION=8.21.2
+          curl -sL "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz" \
+            | tar -xz -C /tmp gitleaks
+          sudo mv /tmp/gitleaks /usr/local/bin/gitleaks
+          gitleaks version
+
+      # Scan 1 — what is in the code RIGHT NOW, regardless of when it landed.
+      # Catches a secret sitting in a tracked file (the Buffer failure mode).
+      # Scoped per-directory because an unscoped --no-git scan walks the data
+      # corpus and does not finish.
+      - name: Scan working tree (code paths)
+        run: |
+          set -euo pipefail
+          rc=0
+          for d in scripts src .github; do
+            [ -d "$d" ] || continue
+            echo "::group::working tree — $d"
+            gitleaks detect --no-git --source "$d" \
+              --config .gitleaks.toml --no-banner --redact \
+              --report-format sarif --report-path "gitleaks-tree-$(basename "$d").sarif" \
+              --exit-code 1 || rc=1
+            echo "::endgroup::"
+          done
+          exit $rc
+
+      # NOTE: there is deliberately NO git-history scan step here.
+      # Any history scan needs git history, and fetching this repo's history in CI
+      # does not complete (see the Checkout comment above). Introduction-time
+      # coverage is handled instead by the pre-commit hook in scripts/hooks/pre-commit,
+      # which runs `gitleaks protect --staged` locally before a secret can ever be
+      # committed — verified 2026-07-26 by staging a fake ghp_ token and observing
+      # the hook exit 1. Full history was swept once on 2026-07-26; the only real
+      # finding was the BUFFER_TOKEN, now revoked and allowlisted by value.
+
+      - name: Upload SARIF report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitleaks-sarif
+          path: gitleaks-*.sarif
+          if-no-files-found: ignore
+
+      - name: Checkout for notify action
+        if: failure()
+        uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            .github/actions/notify-failure
+            scripts/lib/discord-notify.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Secret Scan Failed (gitleaks found a leak)'
+          severity: 'warning'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
