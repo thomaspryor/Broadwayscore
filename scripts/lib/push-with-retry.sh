@@ -760,21 +760,42 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     else
       echo "  Merge also failed, aborting..."
       git merge --abort 2>/dev/null || true
-      # Last resort: reset to remote, then cherry-pick our commit on top.
+      # Last resort: reset to remote, then cherry-pick our commit(s) on top.
       # This guarantees we end up ahead of remote with our changes applied.
       echo "  Trying reset + cherry-pick approach..."
       OUR_HEAD=$(git rev-parse HEAD 2>/dev/null || true)
       if [ -n "$OUR_HEAD" ]; then
+        # Range-replay EVERY outgoing commit, not just the tip (task #543
+        # root cause, 2026-07-26). `git cherry-pick "$OUR_HEAD"` replays only
+        # that ONE commit's diff; `git reset --hard origin/$PULL_BRANCH` just
+        # above throws away the ENTIRE local branch first. With 2+ outgoing
+        # commits this silently dropped every commit except the last —
+        # "success" was reported, the push landed, and the earlier commit(s)
+        # were gone from main with no error anywhere. Computed BEFORE the
+        # reset (which only moves the local branch ref, not origin/$PULL_
+        # BRANCH) so it reflects what OUR_HEAD was actually built on.
+        MERGE_BASE=$(git merge-base "$OUR_HEAD" "origin/$PULL_BRANCH" 2>/dev/null || true)
         git reset --hard "origin/$PULL_BRANCH" 2>/dev/null || true
-        if git cherry-pick "$OUR_HEAD" --strategy-option=theirs 2>/dev/null; then
+        if [ -n "$MERGE_BASE" ] && git cherry-pick "${MERGE_BASE}..${OUR_HEAD}" --strategy-option=theirs 2>/dev/null; then
           echo "  Cherry-pick succeeded (our changes on top of remote)"
           history_changed=true
           RESOLUTION_PATH="reset+cherry-pick(-X theirs)"
           restore_protected_fields
         else
           git cherry-pick --abort 2>/dev/null || true
-          git reset --hard "$OUR_HEAD" 2>/dev/null || true
-          echo "  All conflict resolution strategies failed for this attempt"
+          # Restore must be LOUD (task #543): the old `|| true` here silently
+          # swallowed a failed restore, leaving main stuck at the remote tip
+          # with every outgoing commit missing — and nothing to report it. A
+          # later retry iteration could then trivially "succeed" pushing that
+          # commit-less state, so this must fail the WHOLE run, not just fall
+          # through to another attempt.
+          if git reset --hard "$OUR_HEAD" 2>/dev/null && [ "$(git rev-parse HEAD 2>/dev/null)" = "$OUR_HEAD" ]; then
+            echo "  All conflict resolution strategies failed for this attempt"
+          else
+            echo "::error::push-with-retry: reset+cherry-pick fallback failed AND could not restore HEAD to $OUR_HEAD — local main may be stranded at the remote tip with outgoing commit(s) missing. Recover manually with: git reset --hard $OUR_HEAD"
+            restore_head_if_moved "reset-cherry-pick-restore-failed"
+            exit 1
+          fi
         fi
       fi
     fi
