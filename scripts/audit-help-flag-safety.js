@@ -71,12 +71,20 @@ const HELP_CHECK_RE = /hasHelpFlag\s*\(|(['"])--help\1|(['"])-h\2(?=\s*[),;]|\s*
 // two inflated Rule B from ~145 to 400+ hits, mostly on report-only scripts).
 // rmSync/unlinkSync and axios/https/bare-fetch ARE included — 2 of the 3
 // task #477 incidents were exactly this shape (adversarial review finding).
+// fetchPage IS included — it's the mandated wrapper for BD/SB/Playwright
+// network calls (CLAUDE.md §"Web Scraping": "all new scraping MUST use
+// fetchPage() ... never call BD/SB APIs directly"), so it's the actual call
+// site for every scraper's real work, not just a theoretical risky primitive
+// (independent adversarial review finding, task #498: the original regex list
+// missed it entirely, meaning the two scrapers this card exists to catch —
+// collect-review-texts.js, fetch-show-images-auto.js — could reintroduce the
+// same bug via fetchPage() and this guard would stay silent).
 // NOTE: deliberately does NOT match `require('child_process')` itself — that's
 // just an import statement (often destructured/renamed for later gated use,
 // e.g. bsc-conductor.js's `spawnSync: realSpawnSync`), not a risky CALL, and
 // matching it produced false positives on every already-fixed autonomous-*/
 // bsc-* script (adversarial review follow-up, task #498).
-const RISKY_CALL_RE = /\b(?:execSync|spawnSync|spawn|execFile(?:Sync)?)\s*\(|\bsaveShows\s*\(|\bsafeWriteReview\s*\(|\bfs\.(?:rmSync|unlinkSync|rmdirSync)\s*\(|\baxios\.\w+\s*\(|\bhttps?\.(?:request|get)\s*\(|\bfetch\s*\(/g;
+const RISKY_CALL_RE = /\b(?:execSync|spawnSync|spawn|execFile(?:Sync)?)\s*\(|\bsaveShows\s*\(|\bsafeWriteReview\s*\(|\bfs\.(?:rmSync|unlinkSync|rmdirSync)\s*\(|\baxios\.\w+\s*\(|\bhttps?\.(?:request|get)\s*\(|\bfetchPage\s*\(|\bfetch\s*\(/g;
 const ARGV_RE = /process\.argv/;
 // A literal `--flag`-style comparison is the signal that a script has a real
 // CLI flag surface (vs. one that only reads env vars / a bare positional id)
