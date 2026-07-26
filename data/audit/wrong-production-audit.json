@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-26T10:12:52.323Z",
+  "timestamp": "2026-07-26T10:42:15.953Z",
   "stats": {
-    "totalReviews": 40499,
-    "alreadyFlagged": 17834,
-    "dateGuardCatches": 59,
+    "totalReviews": 40500,
+    "alreadyFlagged": 17835,
+    "dateGuardCatches": 60,
     "directorMismatch": 914,
     "tvFilmSignals": 1109,
     "londonSignals": 759,
     "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3253
+    "noPublishDate": 3252
   },
   "findings": [
     {
@@ -12502,7 +12502,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "theatre-south-east--unknown.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2026-01-10",
       "url": "https://theatresoutheast.com/into-the-woods-the-bridge-theatre-review/",
       "findings": [
@@ -12748,6 +12748,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"des mcanuff\" from jesus-christ-superstar-2012"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "score": 78,
+      "publishDate": "2023-10-05",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 989d before show (2023-10-05 vs 2026-06-20)"
         }
       ]
     },
@@ -13199,7 +13213,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
+      "score": 80,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
