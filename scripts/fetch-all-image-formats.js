@@ -10,9 +10,17 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY || 'YOUR_API_KEY';
+
+const USAGE = `fetch-all-image-formats.js — Fetch ALL image formats (square, portrait, landscape) for all shows via ScrapingBee.
+
+Usage:
+  node scripts/fetch-all-image-formats.js [options]
+  node scripts/fetch-all-image-formats.js --help, -h    print this usage and exit
+`;
 
 const TODAYTIX_SHOWS = {
   'two-strangers': { id: 45002, slug: 'two-strangers-carry-a-cake-across-new-york' },
@@ -168,6 +176,8 @@ function updateShowsJson(imageResults) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   if (SCRAPINGBEE_API_KEY === 'YOUR_API_KEY') {
     console.error('ERROR: Set SCRAPINGBEE_API_KEY environment variable');
     process.exit(1);

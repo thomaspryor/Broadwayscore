@@ -22,13 +22,22 @@
  * runs unconditionally before it. This catches regressions in the 18 scripts
  * that already use the scripts/lib/cli-help.js convention.
  *
- * RULE B (missing entirely): a script that takes CLI args (references
- * process.argv) and does risky work, but has NO --help/-h check anywhere.
- * This is the actual shape of all nine prior incidents. The full corpus has
- * pre-existing debt here (~26 scripts as of 2026-07-26) — retrofitting all of
- * them is out of scope for this card. Pre-existing offenders are frozen in
+ * RULE B (missing entirely): a script that does risky work but has NO
+ * --help/-h check anywhere. Pre-existing debt here is frozen in
  * scripts/.help-flag-safety-baseline.json and reported as tracked debt
  * (non-blocking); anything NOT in the baseline is a new regression and fails.
+ *
+ * Until #551 (2026-07-26), Rule B also required evidence of a literal
+ * `--flag`-style CLI parser (process.argv + a `--`-prefixed comparison)
+ * before it would flag a script — on the theory that a script with no flag
+ * surface at all has nothing for a stray `--help` to collide with. That
+ * theory is backwards: scripts/recover-wayback-reviews.js (env-var-only
+ * config, zero process.argv references) proved the OPPOSITE — a script that
+ * never inspects argv at all is the most exposed shape there is, since
+ * `--help` is silently ignored as a no-op positional and main() always runs.
+ * That gate made 80 risky+unguarded scripts invisible to this whole audit
+ * (confirmed by re-running the check with the gate removed, #551). Rule B
+ * now fires on any risky-work-without-a-help-check script, full stop.
  *
  * Exemption (reviewed false positive, e.g. a "risky" call that's actually
  * read-only, or a script whose default behavior is genuinely harmless to
@@ -85,11 +94,6 @@ const HELP_CHECK_RE = /hasHelpFlag\s*\(|(['"])--help\1|(['"])-h\2(?=\s*[),;]|\s*
 // matching it produced false positives on every already-fixed autonomous-*/
 // bsc-* script (adversarial review follow-up, task #498).
 const RISKY_CALL_RE = /\b(?:execSync|spawnSync|spawn|execFile(?:Sync)?)\s*\(|\bsaveShows\s*\(|\bsafeWriteReview\s*\(|\bfs\.(?:rmSync|unlinkSync|rmdirSync)\s*\(|\baxios\.\w+\s*\(|\bhttps?\.(?:request|get)\s*\(|\bfetchPage\s*\(|\bfetch\s*\(/g;
-const ARGV_RE = /process\.argv/;
-// A literal `--flag`-style comparison is the signal that a script has a real
-// CLI flag surface (vs. one that only reads env vars / a bare positional id)
-// — the shape every one of the nine prior --help incidents had.
-const FLAG_STYLE_RE = /\.startsWith\(\s*['"]--|\.includes\(\s*['"]--|===\s*['"]--/;
 const MAIN_FN_RE = /(?:async\s+)?function\s+main\s*\(/;
 
 function loadBaseline() {
@@ -317,7 +321,22 @@ function checkFile(file, src) {
   // length/offsets and never touches braces.
   const cleanSrc = stripCommentsAndStrings(src);
 
-  const takesCliArgs = ARGV_RE.test(cleanSrc) && FLAG_STYLE_RE.test(cleanSrc);
+  // Deliberately UNSCOPED (whole file, any function, invoked or not) —
+  // unlike checkOrdering()'s stripNonInvokedFunctionBodies pass. Tried
+  // scoping this the same way (#551 adversarial review follow-up: a risky
+  // call inside a truly-dead/never-called helper shouldn't count) and it
+  // collapsed Rule B from 207 candidates to 33, because
+  // stripNonInvokedFunctionBodies only recognizes IIFEs
+  // (`(function(){...})()`) as "invoked" — it blanks every ordinary
+  // `function main() { ... }` body too, since `main()` is called SEPARATELY
+  // at the bottom of the file, not as an immediate IIFE. That's correct for
+  // Rule A (main()'s body genuinely doesn't run before its own --help gate
+  // fires) but wrong for Rule B, where the question is "does this script
+  // EVER do risky work", and main()'s body obviously does. The theoretical
+  // false-positive this scoping would have prevented (a risky call sitting
+  // in a truly dead, never-invoked-by-anyone helper) has no instance in the
+  // current corpus (verified) and is already covered by the
+  // `// hygiene-help-flag-ok: <reason>` exemption if one ever appears.
   const hasRiskyOp = RISKY_CALL_RE.test(cleanSrc);
   RISKY_CALL_RE.lastIndex = 0;
 
@@ -332,8 +351,8 @@ function checkFile(file, src) {
     };
   }
 
-  if (!ordering.hasHelpCheck && takesCliArgs && hasRiskyOp) {
-    return { file, rule: 'B', blocking: true, detail: 'takes flagged CLI args + performs risky work (execSync/child_process/saveShows/safeWriteReview/fs delete/network call) with no --help/-h check anywhere' };
+  if (!ordering.hasHelpCheck && hasRiskyOp) {
+    return { file, rule: 'B', blocking: true, detail: 'performs risky work (execSync/child_process/saveShows/safeWriteReview/fs delete/network call) with no --help/-h check anywhere' };
   }
 
   return null;

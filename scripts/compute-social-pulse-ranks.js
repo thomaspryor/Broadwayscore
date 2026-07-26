@@ -26,6 +26,7 @@ const {
   computeCompositeScore,
   computePeerStats,
   derivePeerTier,
+  shouldShowSentiment,
 } = require('./lib/social-pulse-scorer');
 
 const REPO_ROOT = path.join(__dirname, '..');
@@ -139,6 +140,17 @@ function assignRanksAndTiers(groups) {
   // mid-migration; after the first v3 run every file has effectiveVolume.
   const strength = (d) => (Number.isFinite(d.effectiveVolume) ? d.effectiveVolume : (d.volume || 0));
 
+  // RANKING must not trust a positivePct the display layer itself won't
+  // print (#544). shouldShowSentiment is the same predicate SocialPulseCard/
+  // TrendingShowCard use to gate the "% positive" text — a show below it
+  // gets treated as sentiment-unknown for composite-score purposes (falls
+  // through to NEUTRAL_POSITIVE_PCT inside computeCompositeScore), exactly
+  // like a null positivePct already does. Without this, a 2-post
+  // 100%-positive show got a full sentiment multiplier in the sort while the
+  // card that same row links to refused to show "100%" at all.
+  const rankingPct = (d) =>
+    shouldShowSentiment({ positivePct: d.positivePct, opinionSample: d.opinionSample }) ? d.positivePct : null;
+
   for (const [, entries] of groups) {
     // Sort by composite (blended) score, not raw volume. `positivePct` is
     // passed through as-is (not `|| 0`) — computeCompositeScore treats a
@@ -151,13 +163,21 @@ function assignRanksAndTiers(groups) {
     // order (arbitrary) — which is exactly how a 103-mention show ranked
     // below a 0-mention show in the 2026-07-26 credibility audit.
     entries.sort((a, b) => {
-      const aScore = computeCompositeScore(strength(a.data), a.data.positivePct);
-      const bScore = computeCompositeScore(strength(b.data), b.data.positivePct);
+      const aScore = computeCompositeScore(strength(a.data), rankingPct(a.data));
+      const bScore = computeCompositeScore(strength(b.data), rankingPct(b.data));
       if (bScore !== aScore) return bScore - aScore;
       return (b.data.volume || 0) - (a.data.volume || 0);
     });
 
-    // Compute peer stats once for the whole market
+    // Compute peer stats once for the whole market. Deliberately still uses
+    // raw positivePct, NOT rankingPct — tier assignment (Buzzing/Troubled/
+    // Rising badges shown on every SocialPulseCard site-wide) is out of
+    // scope for #544, which only covers /trending's RANKING (compositeScore/
+    // sort). Gating tier the same way was tested (see #544 PR discussion)
+    // and reduces Troubled 5→1 and Rising 9→1 across the live corpus — a
+    // much bigger, more visible policy change than "don't rank on untrusted
+    // sentiment," and needs its own explicit decision. Tracked as a
+    // follow-up card, not silently folded in here.
     const peerStats = computePeerStats(
       entries.map((e) => ({
         volume: e.data.volume || 0,
@@ -183,18 +203,26 @@ function assignRanksAndTiers(groups) {
         };
       }
 
-      // Re-tier using peer-relative rules
+      // Re-tier using peer-relative rules. Raw positivePct — see peerStats
+      // comment above for why tier stays out of #544's scope.
       entry.newTier = derivePeerTier({
         volume: entry.data.volume || 0,
         effectiveVolume: strength(entry.data),
         positivePct: entry.data.positivePct,
+        // Re-tiering must apply the SAME relevance gate the scorer did, or a
+        // title-collision show hidden at write time comes back as Steady here.
+        relevanceOverall: entry.data.relevanceRates?.overall,
         peerStats,
       });
 
-      // Composite score is useful as a debug field too
+      // Composite score is persisted into the file and is what
+      // getTopTrendingShows reads first (data-social-pulse.ts) — must use
+      // the same gated rankingPct as the sort above, or the written field
+      // reintroduces the untrusted-sentiment ranking bug even though the
+      // in-memory sort was fixed.
       entry.newCompositeScore = computeCompositeScore(
         strength(entry.data),
-        entry.data.positivePct,
+        rankingPct(entry.data),
       );
     });
   }

@@ -29,6 +29,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/lib/push-mutex.sh
+source "$SCRIPT_DIR/push-mutex.sh"
 
 MAX_RETRIES=${1:-7}
 BRANCH=${2:-main}
@@ -205,6 +207,24 @@ fi
 # (The conflict-marker guard is invoked at the top of each retry-loop iteration
 # below, after PULL_BRANCH is known and after any in-loop rebase/merge resolution.)
 
+# ── Local push mutex (task #556) ─────────────────────────────────────────────
+# Serializes the ENTIRE fetch→rebase/merge→push flow below across concurrent
+# Claude Code sessions sharing this machine's .git (main checkout + every
+# worktree) — not just the final `git push` call. The races behind #208 (lost
+# merge commit), #543 (dropped commits) and #546 (false-green verify) all
+# happened DURING this window, not at the push line itself, so the lock is
+# held for the whole retry loop and released via the EXIT trap below. Fails
+# OPEN on timeout: the retry/ancestor-check/survival-check logic already in
+# this script is the defense-in-depth backstop for a session that proceeds
+# without the lock. See scripts/lib/push-mutex.sh. The release trap is
+# registered immediately below (not after SCRIPT_ENTRY_HEAD/restore_head_if_
+# moved) so there is no window, now or after a future edit, where an
+# unguarded failing command between acquire and trap registration could leak
+# the lock — restore_head_if_moved only needs to EXIST by the time the trap
+# fires, not by the time it's registered (ship-check finding, task #556).
+push_mutex_acquire
+trap 'rc=$?; push_mutex_release; [ "$rc" -ne 0 ] && restore_head_if_moved "trap-nonzero-exit-$rc"; exit $rc' EXIT
+
 # ── Preserve-HEAD guard (task #543) ──────────────────────────────────────────
 # Captured ONCE, before this script performs ANY fetch/rebase/merge/reset, so
 # every abort (`exit 1`) below can prove — or forcibly restore — that local
@@ -242,19 +262,19 @@ restore_head_if_moved() {
   fi
 }
 
-# Backstop for the P0 gap the manual call sites above can't cover: an
-# uncontrolled `set -e` exit (e.g. a non-`|| true`-guarded command failing
-# right after a rebase/merge/cherry-pick has already moved HEAD, such as
-# restore_protected_fields()'s `count=$(node ...)`) skips every explicit
-# `restore_head_if_moved` call below — the script just dies mid-function with
-# HEAD already moved and no repair ever runs. An EXIT trap fires on ALL exits,
-# including these, so it closes the gap regardless of which line triggered it.
-# Gated on non-zero exit status only: on a genuine successful push (exit 0),
-# HEAD legitimately differs from SCRIPT_ENTRY_HEAD (the rebase/merge WAS
-# supposed to move it and its result WAS just pushed) — resetting there would
-# silently strand local main behind what was just pushed. Idempotent with the
-# manual calls (restore_head_if_moved no-ops if HEAD already matches).
-trap 'rc=$?; [ "$rc" -ne 0 ] && restore_head_if_moved "trap-nonzero-exit-$rc"; exit $rc' EXIT
+# Why the trap above (registered right after push_mutex_acquire, before this
+# function even existed) needs restore_head_if_moved: an uncontrolled `set -e`
+# exit (e.g. a non-`|| true`-guarded command failing right after a rebase/
+# merge/cherry-pick has already moved HEAD, such as restore_protected_fields()'s
+# `count=$(node ...)`) skips every explicit `restore_head_if_moved` call below
+# — the script just dies mid-function with HEAD already moved and no repair
+# ever runs. The EXIT trap fires on ALL exits, including these, so it closes
+# the gap regardless of which line triggered it. Gated on non-zero exit status
+# only: on a genuine successful push (exit 0), HEAD legitimately differs from
+# SCRIPT_ENTRY_HEAD (the rebase/merge WAS supposed to move it and its result
+# WAS just pushed) — resetting there would silently strand local main behind
+# what was just pushed. Idempotent with the manual calls (restore_head_if_moved
+# no-ops if HEAD already matches).
 
 # Check if a file has a modify/delete conflict.
 # git checkout --ours/--theirs fails on these because one side has no version.

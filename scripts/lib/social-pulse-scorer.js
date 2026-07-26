@@ -375,6 +375,35 @@ function computeWeeklyMentions(counters) {
 const NEUTRAL_POSITIVE_PCT = 50;
 
 /**
+ * Minimum opinion-bearing posts behind `positivePct` before a caller is
+ * allowed to TRUST the percentage for ranking or display. Mirrors
+ * src/lib/social-pulse-display.ts's MIN_OPINION_SAMPLE/shouldShowSentiment —
+ * duplicated (not imported) because this file is plain CommonJS and that one
+ * is TypeScript with a deliberate zero-import contract for the client bundle
+ * (same trade-off already made in scripts/newsletter/generate.mjs). Keep the
+ * two in sync: task #544 found ranking (this file, via computeCompositeScore)
+ * trusting a thin-sample positivePct the display layer had already learned
+ * not to print — a 2-post 100%-positive show got a full sentiment multiplier
+ * in the /trending sort despite the card itself refusing to show "100%".
+ */
+const MIN_OPINION_SAMPLE = 10;
+
+/**
+ * True when a positivePct is trustworthy enough to use for RANKING (not just
+ * display) — same contract as social-pulse-display.ts's shouldShowSentiment.
+ * Object arg (not positional) for the same reason as the TS original: a
+ * transposed (opinionSample, positivePct) call compiles cleanly and silently
+ * returns wrong answers.
+ */
+function shouldShowSentiment({ positivePct, opinionSample }) {
+  if (typeof positivePct !== 'number' || !Number.isFinite(positivePct) || positivePct < 0 || positivePct > 100) {
+    return false;
+  }
+  if (opinionSample === undefined || opinionSample === null) return true;
+  return opinionSample >= MIN_OPINION_SAMPLE;
+}
+
+/**
  * Composite score blending raw volume with positive sentiment %. Used for
  * peer ranking. A loud-but-hated show shouldn't outrank a smaller positive one.
  *
@@ -420,9 +449,26 @@ function computeCompositeScore(volume, positivePct) {
  * A show with no sentiment evidence can never be tiered Troubled, Buzzing,
  * or Rising — all three require a sentiment CLAIM, and there isn't one.
  * It falls through to Steady (or Hidden, from the volume gate above).
+ *
+ * Relevance gate: `relevanceOverall` below MIN_QUOTE_RELEVANCE means the
+ * classified sample says almost nothing collected for this show is actually
+ * ABOUT this show — a title collision. The card would otherwise publish that
+ * raw mention count as fact: on 2026-07-26, "The Truth" showed 189 mentions
+ * at 0.0% relevance and Pride 123 at 1.6%, while both already ranked at
+ * effectiveVolume ~0 because the same rate zeroes the Pulse Index. Hiding is
+ * the honest resolution — we cannot stand behind the number, and ranking
+ * already treats it as noise. Same threshold as the quote gate on purpose:
+ * one relevance bar for "can we show this to a reader," not two.
  */
-function derivePeerTier({ volume, effectiveVolume, positivePct, peerStats }) {
+function derivePeerTier({ volume, effectiveVolume, positivePct, relevanceOverall, peerStats }) {
   if (!Number.isFinite(volume) || volume < MIN_MENTIONS_FOR_CARD) {
+    return 'Hidden';
+  }
+
+  // Only gate when relevance was actually MEASURED. An absent rate (legacy
+  // v2 file, or a run with no classified sample) is "unknown," not "noisy" —
+  // hiding those would blank cards that have been fine for months.
+  if (typeof relevanceOverall === 'number' && relevanceOverall < MIN_QUOTE_RELEVANCE) {
     return 'Hidden';
   }
 
@@ -692,7 +738,13 @@ function computeSocialPulse({ mentions, counters, baseline, priorVolume, peerSta
   // after 2026-04-11). Fall back to legacy self-baseline tier for single-show
   // runs where peer stats aren't computed.
   const tier = peerStats
-    ? derivePeerTier({ volume, effectiveVolume, positivePct, peerStats })
+    ? derivePeerTier({
+        volume,
+        effectiveVolume,
+        positivePct,
+        relevanceOverall: relevanceRates.overall,
+        peerStats,
+      })
     : deriveTier({ currentVolume: volume, baseline, positivePct, weekOverWeekPct });
 
   // Pick quotes matching the tier's dominant sentiment
@@ -767,6 +819,8 @@ module.exports = {
   QUOTES_ON_CARD,
   MIN_QUOTE_RELEVANCE,
   NEUTRAL_POSITIVE_PCT,
+  MIN_OPINION_SAMPLE,
+  shouldShowSentiment,
   X_UNSAMPLED_FALLBACK_RATE,
   TIER_RULES,
   QUOTE_BLOCKLIST,

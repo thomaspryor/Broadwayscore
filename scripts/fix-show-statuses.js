@@ -8,6 +8,16 @@ const fs = require('fs');
 const path = require('path');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-show-statuses.js — One-time script to fix WE & OB show statuses and dates.
+
+Usage:
+  node scripts/fix-show-statuses.js [options]
+  node scripts/fix-show-statuses.js --help, -h    print this usage and exit
+`;
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const data = loadShows();

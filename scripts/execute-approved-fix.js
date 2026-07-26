@@ -29,10 +29,18 @@ const { buildFeedbackThankYouEmail } = require('./lib/email-templates.js');
 const showsWriteGuard = require('./lib/shows-write-guard.js');
 const commercialWriteGuard = require('./lib/commercial-write-guard.js');
 const audienceBuzzWriteGuard = require('./lib/audience-buzz-write-guard.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.join(__dirname, '..');
+
+const USAGE = `execute-approved-fix.js — Executes a human-approved remediation plan from data/pending-fixes/{issue}.json.
+
+Usage:
+  node scripts/execute-approved-fix.js [options]
+  node scripts/execute-approved-fix.js --help, -h    print this usage and exit
+`;
 
 // --- Safety rails ---
 
@@ -325,6 +333,8 @@ function executeBatchTransform(action) {
 // --- Main ---
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const issueNumber = process.env.ISSUE_NUMBER;
   if (!issueNumber) {
     console.error('ISSUE_NUMBER not set');

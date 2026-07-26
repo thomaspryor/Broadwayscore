@@ -13,6 +13,16 @@ const path = require('path');
 const { normalizeOutlet, normalizeCritic, areCriticsSimilar } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `merge-aggregator-excerpts.js — Extract excerpts from BWW and Show Score archives and merge into review files.
+
+Usage:
+  node scripts/merge-aggregator-excerpts.js [options]
+  node scripts/merge-aggregator-excerpts.js --help, -h    print this usage and exit
+`;
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const BWW_DIR = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 const SS_DIR = path.join(__dirname, '../data/aggregator-archive/show-score');

@@ -12,6 +12,16 @@
 const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `pre-deploy-check.js — Pre-deploy data integrity check that runs before every Vercel build.
+
+Usage:
+  node scripts/pre-deploy-check.js [options]
+  node scripts/pre-deploy-check.js --help, -h    print this usage and exit
+`;
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
