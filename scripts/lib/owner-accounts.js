@@ -45,14 +45,24 @@ const OWNER_ACCOUNTS = {
 // becomes a significant signal source, we'll need a scraper that resolves
 // the post's owner handle. For now, non-profile Instagram URLs fall through
 // to the content-based keyword check and are evaluated by the drafter.
+//
+// Subdomain matching is deliberately loose ((?:[a-z0-9-]+\.)*): Google SERPs
+// surface owner properties under variant subdomains — secure.instagram.com
+// (2026-04-17) and www-fallback.instagram.com (2026-06-27) both dodged
+// (?:www\.)? and alerted as "new mentions". Path suffix allows /, ?, or end
+// so query-string variants (…/bwayscorecard/?hl=bg) also match.
 const OWNER_URL_PATTERNS = [
-  /^https?:\/\/(?:www\.)?instagram\.com\/(?:bwayscorecard|broadwayscorecard)(?:\/|$)/i,
-  /^https?:\/\/(?:www\.)?threads\.(?:com|net)\/@?(?:bwayscorecard|broadwayscorecard)(?:\/|$)/i,
-  /^https?:\/\/(?:www\.)?broadwayscorecard\.com(?:\/|$)/i,
+  /^https?:\/\/(?:[a-z0-9-]+\.)*instagram\.com\/(?:bwayscorecard|broadwayscorecard)(?:\/|\?|$)/i,
+  // Instagram's auto-generated topic/explore landing pages about the brand
+  // (instagram.com/popular/broadway-scorecard/) — machine-built SEO pages
+  // aggregating the owner's own posts, not third-party mentions (2026-07-26).
+  /^https?:\/\/(?:[a-z0-9-]+\.)*instagram\.com\/(?:popular|explore(?:\/(?:tags|topics|locations|search))?)\/(?:broadway-?scorecard|bway-?scorecard)(?:\/|\?|$)/i,
+  /^https?:\/\/(?:[a-z0-9-]+\.)*threads\.(?:com|net)\/@?(?:bwayscorecard|broadwayscorecard)(?:\/|\?|$)/i,
+  /^https?:\/\/(?:[a-z0-9-]+\.)*broadwayscorecard\.com(?:\/|\?|$)/i,
   /^https?:\/\/github\.com\/thomaspryor\/Broadwayscore(?:\/|$)/i,
   /^https?:\/\/bsky\.app\/profile\/(?:broadwayscorecard|bwayscorecard|thomaspryor)/i,
-  /^https?:\/\/x\.com\/(?:broadwayscorecard|bwayscorecard|thepinkmusical|thomaspryor)(?:\/|$)/i,
-  /^https?:\/\/twitter\.com\/(?:broadwayscorecard|bwayscorecard|thepinkmusical|thomaspryor)(?:\/|$)/i,
+  /^https?:\/\/(?:[a-z0-9-]+\.)*x\.com\/(?:broadwayscorecard|bwayscorecard|thepinkmusical|thomaspryor)(?:\/|\?|$)/i,
+  /^https?:\/\/(?:[a-z0-9-]+\.)*twitter\.com\/(?:broadwayscorecard|bwayscorecard|thepinkmusical|thomaspryor)(?:\/|\?|$)/i,
   // Owner Substack newsletter
   /^https?:\/\/(?:www\.)?broadwayscorecard\.substack\.com(?:\/|$)/i,
   // Owner podcast (Broadway Breakdown, Apple Podcasts ID 1260430031)
@@ -60,9 +70,9 @@ const OWNER_URL_PATTERNS = [
   /^https?:\/\/podcasts\.apple\.com\/.*?(?:broadway-breakdown|id1260430031)/i,
   /^https?:\/\/open\.spotify\.com\/show\/.*broadway.?breakdown/i,
   // Owner social profiles on additional platforms
-  /^https?:\/\/(?:www\.)?facebook\.com\/(?:broadwayscorecard|bwayscorecard)(?:\/|$)/i,
-  /^https?:\/\/(?:www\.)?tiktok\.com\/@(?:bwayscorecard|broadwayscorecard)(?:\/|$)/i,
-  /^https?:\/\/(?:www\.)?youtube\.com\/@(?:bwayscorecard|broadwayscorecard)(?:\/|$)/i,
+  /^https?:\/\/(?:[a-z0-9-]+\.)*facebook\.com\/(?:broadwayscorecard|bwayscorecard)(?:\/|\?|$)/i,
+  /^https?:\/\/(?:[a-z0-9-]+\.)*tiktok\.com\/@(?:bwayscorecard|broadwayscorecard)(?:\/|\?|$)/i,
+  /^https?:\/\/(?:[a-z0-9-]+\.)*youtube\.com\/@(?:bwayscorecard|broadwayscorecard)(?:\/|\?|$)/i,
 ];
 
 /**
