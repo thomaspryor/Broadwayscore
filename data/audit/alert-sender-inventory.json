@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-07-26T15:51:01.198Z",
+  "generatedAt": "2026-07-26T19:49:27.199Z",
   "counts": {
-    "router": 22,
+    "router": 31,
     "digest": 1,
-    "direct": 9
+    "direct": 5
   },
   "senders": [
     {
@@ -36,38 +36,52 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 2560,
+      "line": 2664,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 2576,
+      "line": 2680,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": ".github/workflows/update-mezzanine.yml",
-      "line": 256,
-      "kind": "sendAlert-direct",
-      "classification": "direct",
-      "severity": "error"
+      "line": 142,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "human"
     },
     {
       "file": ".github/workflows/update-mezzanine.yml",
-      "line": 366,
-      "kind": "sendAlert-direct",
-      "classification": "direct",
-      "severity": "error"
+      "line": 159,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "digest"
+    },
+    {
+      "file": ".github/workflows/update-mezzanine.yml",
+      "line": 301,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "human"
+    },
+    {
+      "file": ".github/workflows/update-mezzanine.yml",
+      "line": 437,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "human"
     },
     {
       "file": ".github/workflows/update-show-status.yml",
-      "line": 1386,
-      "kind": "sendAlert-direct",
-      "classification": "direct",
-      "severity": null
+      "line": 1401,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
     },
     {
       "file": ".github/workflows/ux-walkthrough.yml",
@@ -84,8 +98,15 @@
       "disposition": "auto"
     },
     {
+      "file": "scripts/audit-geo-bots.js",
+      "line": 125,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
       "file": "scripts/audit-opening-night-coverage.js",
-      "line": 277,
+      "line": 282,
       "kind": "sendAlert-direct",
       "classification": "direct",
       "severity": "error"
@@ -113,31 +134,31 @@
     },
     {
       "file": "scripts/audit-t1-silent-gaps.js",
-      "line": 484,
+      "line": 489,
       "kind": "sendAlert-direct",
       "classification": "direct",
       "severity": "error"
     },
     {
       "file": "scripts/audit-t1-silent-gaps.js",
-      "line": 528,
+      "line": 539,
       "kind": "sendAlert-direct",
       "classification": "direct",
       "severity": "error"
     },
     {
       "file": "scripts/audit-t1-silent-gaps.js",
-      "line": 572,
+      "line": 583,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/check-secrets-health.js",
-      "line": 518,
-      "kind": "sendAlert-direct",
-      "classification": "direct",
-      "severity": "error"
+      "line": 523,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "human"
     },
     {
       "file": "scripts/dispatch-orphan-rescore-requeue.js",
@@ -145,6 +166,13 @@
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
+    },
+    {
+      "file": "scripts/disposition-misroute.js",
+      "line": 92,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "digest"
     },
     {
       "file": "scripts/e2e-canary-alert-chain.js",
@@ -183,28 +211,28 @@
     },
     {
       "file": "scripts/health-check.js",
-      "line": 1229,
+      "line": 1236,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 2189,
+      "line": 2203,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/lib/owner-alert-router.js",
-      "line": 217,
+      "line": 232,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/lib/owner-alert-router.js",
-      "line": 267,
+      "line": 282,
       "kind": "sendAlert-direct",
       "classification": "digest",
       "severity": null
@@ -218,10 +246,17 @@
     },
     {
       "file": "scripts/opening-night-poller.js",
-      "line": 1729,
+      "line": 1733,
       "kind": "sendAlert-direct",
       "classification": "direct",
       "severity": "error"
+    },
+    {
+      "file": "scripts/promote-ob-venue-candidates.js",
+      "line": 411,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "digest"
     },
     {
       "file": "scripts/send-opening-night-broadcast.js",
