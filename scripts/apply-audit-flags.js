@@ -16,6 +16,17 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `apply-audit-flags.js — Reads audit reports and applies flags to review-text source files.
+
+Usage:
+  node scripts/apply-audit-flags.js [options]
+  node scripts/apply-audit-flags.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'syndicated-duplicates.json');
 const REVIEW_TEXTS_BASE = path.join(__dirname, '..', 'data', 'review-texts');
 

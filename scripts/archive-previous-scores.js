@@ -17,6 +17,17 @@ const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `archive-previous-scores.js — Archive and clean up previousLlmScore from review files.
+
+Usage:
+  node scripts/archive-previous-scores.js [options]
+  node scripts/archive-previous-scores.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const dryRun = process.argv.includes('--dry-run');
 const reviewDir = 'data/review-texts';
 

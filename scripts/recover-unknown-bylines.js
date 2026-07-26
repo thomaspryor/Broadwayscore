@@ -28,6 +28,17 @@ const path = require('path');
 const { recoverBylinesForShow } = require('./lib/byline-recovery');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `recover-unknown-bylines.js — Data backfill + repeatable guard for card #27. Finds review-text files whose.
+
+Usage:
+  node scripts/recover-unknown-bylines.js [options]
+  node scripts/recover-unknown-bylines.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const APPLY = process.argv.includes('--apply');
 
 // SAFETY BLOCK (2026-07-14 incident): applying this recovery is DISABLED.

@@ -3,6 +3,17 @@ const fs = require('fs');
 const path = require('path');
 
 const data = require('../data/shows.json');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `find-orphan-image-dirs.js — see file header for details.
+
+Usage:
+  node scripts/find-orphan-image-dirs.js [options]
+  node scripts/find-orphan-image-dirs.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const shows = data.shows || data;
 const ids = new Set((Array.isArray(shows) ? shows : Object.values(shows)).map(s => s.id));
 const imgDir = path.join(__dirname, '../public/images/shows');

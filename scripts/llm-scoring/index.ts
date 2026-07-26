@@ -85,6 +85,7 @@ import { isScoreable } from './is-scoreable';
 const { emitStage } = require('../lib/stage-latency');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
 const { isInFallbackCooldown } = require('../lib/manual-clear-fallback-cooldown');
+const { markRescoreComplete } = require('../lib/rescore-lifecycle');
 // venue-classification import removed — market context now passed via input-builder
 
 // ========================================
@@ -885,6 +886,12 @@ async function main(): Promise<void> {
     console.error('Usage: ANTHROPIC_API_KEY=sk-... npx ts-node scripts/llm-scoring/index.ts [options]');
     process.exit(1);
   }
+  // Post-guard non-optional alias. The `process.exit` narrowing above does not
+  // reach into the nested handleScoringResult() closure (task #516 moved the
+  // Haiku-fallback ReviewScorer construction there), so strictNullChecks —
+  // which scripts/llm-scoring/tsconfig.json turns ON for the CI gate, unlike
+  // the parent scripts/tsconfig.json — sees `string | undefined` at that call.
+  const claudeApiKeyChecked: string = claudeApiKey;
 
   if (options.ensemble && !openaiApiKey) {
     console.error('Error: OPENAI_API_KEY environment variable required for ensemble mode');
@@ -1370,7 +1377,7 @@ async function main(): Promise<void> {
           // 'manually-cleared but unscored' limbo. (2026-05-01 Eugene Onegin /
           // La Traviata opera incident — required manual rescue with Haiku.)
           if (!manualClearFallbackScorer) {
-            manualClearFallbackScorer = new ReviewScorer(claudeApiKey, {
+            manualClearFallbackScorer = new ReviewScorer(claudeApiKeyChecked, {
               // claude-3-5-haiku-20241022 deprecated 2026-02-19; bumped to
               // current Haiku 4.5 (2026-05-17 root fix per Notion
               // 363637c5-416f-81cc-8240-c48df8b4cfd2). With opera-aware
@@ -1392,6 +1399,10 @@ async function main(): Promise<void> {
               scoredAny.scoreSourceReason =
                 `ensemble rejected as ${rejection} but file is human-cleared via wrongProductionManualClear/wrongShowManualClear; Haiku single-model scored the text directly`;
               scoredAny.scoredAt = new Date().toISOString();
+              // Retire the rescore queue entry here too. Without this the file
+              // scores successfully but stays needsRescore:true and is re-scored
+              // by EVERY subsequent drain (2026-07-26). See scripts/lib/rescore-lifecycle.js.
+              markRescoreComplete(scoredAny);
               if (!options.dryRun) saveReviewFile(filePath, scoredAny);
               console.log(`  ✓ FALLBACK SCORED (Haiku): ${scoredAny.assignedScore} (${scoredAny.llmScore?.bucket})`);
               processed++;
@@ -1453,12 +1464,11 @@ async function main(): Promise<void> {
     }
 
     if (result.success && result.scoredFile) {
-      // Always clear needsRescore flag after successful scoring
+      // Always clear needsRescore after successful scoring — shared with the
+      // Haiku-fallback path via rescore-lifecycle.js so a third success path
+      // can't silently skip it (2026-07-26 incident).
       const scoredAny = result.scoredFile as any;
-      if (scoredAny.needsRescore) {
-        delete scoredAny.needsRescore;
-        scoredAny.rescoreCompletedAt = new Date().toISOString();
-      }
+      markRescoreComplete(scoredAny);
 
       // singleModelEmergency retry lifecycle: if scoring rebuilt ensembleData with the
       // emergency flag still set (Gemini/etc still down), record the retry attempt so

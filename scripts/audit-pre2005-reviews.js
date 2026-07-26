@@ -21,6 +21,17 @@ const path = require('path');
 const { safeWriteReview, safeRenameReview } = require('./lib/review-write-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-pre2005-reviews.js — Pre-2005 Wrong Production Audit.
+
+Usage:
+  node scripts/audit-pre2005-reviews.js [options]
+  node scripts/audit-pre2005-reviews.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 let lockedSkipCount = 0;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');

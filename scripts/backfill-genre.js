@@ -21,6 +21,17 @@ const path = require('path');
 const { classifyGenre, isNonTheatricalGenre } = require('./lib/genre-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-genre.js — one-time + re-runnable backfill of the 'genre' field and.
+
+Usage:
+  node scripts/backfill-genre.js [options]
+  node scripts/backfill-genre.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const dryRun = process.argv.includes('--dry-run');
 

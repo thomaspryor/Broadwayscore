@@ -455,7 +455,12 @@ export class EnsembleReviewScorer {
    */
   async scoreReviewFile(reviewFile: ReviewTextFile): Promise<ScoreReviewFileResult> {
     const prepared = this.prepareScoringInput(reviewFile);
-    if (!prepared.ok || !prepared.prep) return prepared.failure;
+    if (!prepared.ok || !prepared.prep) {
+      // `failure` is optional on PrepareScoringResult (the type is not a
+      // discriminated union — see the note on that interface), so give the
+      // caller a real result rather than `undefined` under strictNullChecks.
+      return prepared.failure || { success: false, error: 'prepare_scoring_input_failed' };
+    }
     const prep = prepared.prep;
 
     // Score with ensemble

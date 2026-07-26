@@ -33,6 +33,17 @@ const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/nyc-theatre');
 
 const { serpQuery } = require('./lib/url-discovery');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `scrape-nyc-theatre-roundups.js — NYC Theatre Review Roundups Scraper.
+
+Usage:
+  node scripts/scrape-nyc-theatre-roundups.js [options]
+  node scripts/scrape-nyc-theatre-roundups.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 // ---------------------------------------------------------------------------
