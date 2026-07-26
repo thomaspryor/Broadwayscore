@@ -26,6 +26,7 @@ const {
   computeCompositeScore,
   computePeerStats,
   derivePeerTier,
+  isTooNoisyForCard,
 } = require('./lib/social-pulse-scorer');
 
 const REPO_ROOT = path.join(__dirname, '..');
@@ -184,15 +185,16 @@ function assignRanksAndTiers(groups) {
       }
 
       // Re-tier using peer-relative rules
-      entry.newTier = derivePeerTier({
+      const peerTier = derivePeerTier({
         volume: entry.data.volume || 0,
         effectiveVolume: strength(entry.data),
         positivePct: entry.data.positivePct,
-        // Re-tiering must apply the SAME relevance gate the scorer did, or a
-        // title-collision show hidden at write time comes back as Steady here.
-        relevanceOverall: entry.data.relevanceRates?.overall,
         peerStats,
       });
+      // Re-tiering must apply the SAME relevance gate the scorer applied at
+      // write time, or a title-collision show hidden by the scorer comes back
+      // as Steady/Buzzing here. Shared predicate — not a re-implementation.
+      entry.newTier = isTooNoisyForCard(entry.data.relevanceRates) ? 'Hidden' : peerTier;
 
       // Composite score is useful as a debug field too
       entry.newCompositeScore = computeCompositeScore(
