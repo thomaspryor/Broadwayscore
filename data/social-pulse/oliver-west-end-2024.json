@@ -3,53 +3,56 @@
   "showId": "oliver-west-end-2024",
   "showTitle": "Oliver!",
   "market": "West End",
-  "fetchedAt": "2026-07-22T01:25:45.598Z",
+  "fetchedAt": "2026-07-26T20:38:50.251Z",
   "tier": "Troubled",
-  "volume": 51,
-  "effectiveVolume": 16.9,
+  "volume": 23,
+  "effectiveVolume": 2.6,
   "relevanceRates": {
     "byPlatform": {
-      "bluesky": 0.6153846153846154
+      "reddit": 0,
+      "bluesky": 0.6666666666666666
     },
-    "overall": 0.6153846153846154
+    "overall": 0.5
   },
   "positivePct": 0,
   "opinionSample": 1,
-  "weekOverWeekPct": null,
-  "baselineMultiple": null,
+  "weekOverWeekPct": -55,
+  "baselineMultiple": 0.45,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
     "reddit": 0,
-    "bluesky": 8
+    "bluesky": 2
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "The 8yo and I saw Tube ads for this while we were in London and had many conversations about the suitability of the…",
+      "platform": "bluesky",
+      "author": "@kyliemmason.com",
+      "url": "https://bsky.app/profile/kyliemmason.com/post/3mreab7h32k2u"
+    }
+  ],
   "counters": {
-    "reddit": null,
-    "bluesky": 13,
-    "x": 38,
-    "wikipedia": 2830
+    "reddit": 1,
+    "bluesky": 3,
+    "x": 19,
+    "wikipedia": 3548
   },
   "wikipediaTitle": "Oliver!",
   "baseline": {
-    "mean": 51,
-    "weeksOfHistory": 1
+    "mean": 37,
+    "weeksOfHistory": 2
   },
   "rawCounts": {
-    "reddit": 0,
-    "bluesky": 13
+    "reddit": 1,
+    "bluesky": 3
   },
-  "errors": [
-    {
-      "platform": "reddit",
-      "error": "all providers down (see log)"
-    }
-  ],
+  "errors": [],
   "rank": {
-    "position": 26,
-    "total": 46,
-    "text": "26/46 West End"
+    "position": 29,
+    "total": 48,
+    "text": "29/48 West End"
   },
   "compositeScore": 0
 }
