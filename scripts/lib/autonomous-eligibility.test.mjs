@@ -24,6 +24,7 @@ const {
   isDataRepoPathAllowed,
   isDataRepoDiffAllowed,
 } = require('./autonomous-eligibility.js');
+const { decideChecks } = require('./autonomous-checks.js');
 
 // ── Card level ──────────────────────────────────────────────────────────────
 
@@ -431,5 +432,57 @@ test('tier3: email-basename, dispatch control-plane, and cmux libs refused (ship
 test('tier3: manifests refused by basename anywhere, not just repo root', () => {
   for (const p of ['scripts/package.json', 'src/package.json', 'scripts/lib/tsconfig.json', 'src/app/middleware.ts']) {
     assert.equal(isCodePathAllowed(p), false, p);
+  }
+});
+
+// ── #454: scripts/ paths the check planner can never verify are refused ────
+
+test('tier3: scripts/ paths with unverifiable extensions are refused before a card is ever planned', () => {
+  for (const p of ['scripts/foo.py', 'scripts/lib/bar.sh', 'scripts/lib/config.json', 'scripts/data.yaml', 'scripts/README']) {
+    assert.equal(isCodePathAllowed(p), false, p);
+  }
+});
+
+test('tier3: scripts/ paths with checkable extensions stay allowed', () => {
+  for (const p of ['scripts/foo.js', 'scripts/lib/bar.mjs', 'scripts/lib/baz.cjs', 'scripts/lib/qux.ts', 'scripts/lib/quux.tsx']) {
+    assert.equal(isCodePathAllowed(p), true, p);
+  }
+});
+
+test('tier3: src/ paths stay allowed regardless of extension (lint/build cover them)', () => {
+  for (const p of ['src/app/globals.css', 'src/data/config.json']) {
+    assert.equal(isCodePathAllowed(p), true, p);
+  }
+});
+
+// The invariant #454 exists to guarantee: every SUBSTANTIVE path (i.e. not
+// docs/**, memory/** prose — those are checkless by design, same as
+// autonomous-checks.js's own INERT_RE) that isCodePathAllowed() allows under
+// Tier 3 must produce at least one runnable check from decideChecks(tier 3)
+// — otherwise the loop plans a card it can never verify and burns a full
+// implementer envelope discovering that after the fact.
+test('tier3: allow-implies-checkable invariant over a representative path set', () => {
+  const REPRESENTATIVE_PATHS = [
+    'scripts/foo.js', 'scripts/lib/bar.mjs', 'scripts/lib/baz.cjs',
+    'scripts/lib/qux.ts', 'scripts/lib/quux.tsx',
+    'src/components/Foo.tsx', 'src/app/page.tsx', 'src/lib/util.ts',
+    'src/app/globals.css',
+    'tests/foo.test.mjs',
+    'scripts/bsc-next.js', 'scripts/bsc-next.test.mjs',
+  ];
+  const existsFn = () => false; // no colocated-test fallback — check the file's OWN extension coverage
+  for (const p of REPRESENTATIVE_PATHS) {
+    assert.equal(isCodePathAllowed(p), true, `expected ${p} to be allowed`);
+    const checks = decideChecks([p], existsFn, { tier: 3 });
+    assert.ok(checks.length > 0, `${p} is allowed but decideChecks(tier 3) produced no checks`);
+  }
+});
+
+test('tier3: refused unverifiable scripts/ paths would ALSO produce no checks (confirms the gate is necessary)', () => {
+  const existsFn = () => false;
+  for (const p of ['scripts/foo.py', 'scripts/lib/bar.sh', 'scripts/lib/config.json']) {
+    assert.equal(isCodePathAllowed(p), false, p);
+    const checks = decideChecks([p], existsFn, { tier: 3 });
+    assert.equal(checks.length, 0, `${p} unexpectedly produced a check — gate may be over-restrictive`);
   }
 });
