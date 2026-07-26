@@ -26,6 +26,7 @@ const {
   computeCompositeScore,
   computePeerStats,
   derivePeerTier,
+  shouldShowSentiment,
   isTooNoisyForCard,
 } = require('./lib/social-pulse-scorer');
 
