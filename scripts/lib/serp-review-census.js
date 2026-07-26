@@ -20,8 +20,9 @@
  * serpQuery). So this source is deliberately narrow:
  *   - scoped to the opening window (inOpeningWindow), never the multi-year
  *     back-catalogue grind
- *   - one query per show, cooldown-gated (checkpoint-tracked) so it fires a
- *     handful of times across the window instead of every hourly cycle
+ *   - 1-3 queries per show (see buildCensusQueries), cooldown-gated
+ *     (checkpoint-tracked) so it fires a handful of times across the window
+ *     instead of every hourly cycle
  *   - kill-switched via SERP_GAP_CENSUS_DISABLED=1
  *
  * Pure decision functions live here per CLAUDE.md §15 (test extraction); the
@@ -78,20 +79,30 @@ function venueQueryToken(venue) {
 
 /**
  * Build the full census query set for a show. The single "<title> review"
- * query fails exactly where the owner keeps catching us: weak-specificity
- * titles whose top-10 is polluted by the word's OTHER meaning ("Sukkot" the
- * holiday, "Shifters" the gearbox) — real reviews rank below the fold for
- * that one phrasing while a human's second, scoped query finds them
- * instantly (Sukkot 2026-07-25: Blogcritics + Theater Pizzazz invisible to
- * the census, page-1 on venue-scoped Google). So weak titles get up to two
- * extra scoped variants, the same follow-ups a human types:
+ * query fails exactly where the owner keeps catching us: titles whose top-10
+ * is polluted by the phrase's OTHER meaning ("Sukkot" the holiday, "Shifters"
+ * the gearbox, two-word everyday phrases like "Loose Ends") — real reviews
+ * rank below the fold for that one phrasing while a human's second, scoped
+ * query finds them instantly (Sukkot 2026-07-25: Blogcritics + Theater
+ * Pizzazz invisible to the census, page-1 on venue-scoped Google). Every show
+ * gets the scoped variants its metadata supports, the same follow-ups a
+ * human types:
  *   - venue-scoped:   "<title>" review 59e59
  *   - people-scoped:  "<title>" Leavitt review
- * Multi-word distinctive titles keep the single query (cost posture above).
+ *
+ * There is deliberately NO title-specificity trigger (the first cut gated on
+ * single-token titles; second-opinion review 2026-07-26 removed it):
+ * acceptSerpCensusResult filters results independently of which query found
+ * them, so extra queries can only ADD accepted URLs, never contaminate —
+ * meaning any "is this title ambiguous?" heuristic buys nothing but a few
+ * cents of SERP spend (measured: ~+$0.10/day corpus-wide at BD rates) while
+ * every title it misjudges is a missed-review class. Result-quality
+ * escalation was rejected too: a query set derived from live results makes
+ * serpCensus.complete non-deterministic and amplifies spend during provider
+ * outages.
  *
  * @param {object} show shows.json record ({title, category|market, openingDate, venue, creativeTeam?})
  * @param {object} [opts]
- * @param {boolean} [opts.weakTitle]  caller-computed: isGenericShowTitle(title) || titleTokens(title).length <= 1
  * @param {string[]} [opts.creativeNames] creative-team names (playwright/director first)
  * @returns {string[]} 1-3 queries, primary first; [] when the show has no title
  */
@@ -99,7 +110,6 @@ function buildCensusQueries(show, opts = {}) {
   const primary = buildCensusQuery(show);
   if (!primary) return [];
   const queries = [primary];
-  if (!opts.weakTitle) return queries;
 
   const title = String(show.title).replace(/\s*&\s*/g, ' and ');
   const vt = venueQueryToken(show.venue || show.theater);
