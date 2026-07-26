@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Sunday 9am ET pre-owner-look newsletter content review (card #507).
+         Reviews the week's Resend newsletter drafts (Broadway + West End)
+         against live data before the owner looks Sunday morning, fixes what
+         it safely can (data via sanctioned lanes, generator bugs via PR),
+         and emails a 3-line summary. NEVER sends a broadcast — see
+         scripts/newsletter/sunday-review-prompt.md.
+
+         StartCalendarInterval Hour/Minute is LOCAL TIME on this Mac (America/
+         New_York, DST-safe automatically — launchd reads the system clock,
+         not UTC). Weekday 0 = Sunday.
+
+         Auth: the launcher sources .env for ANTHROPIC_API_KEY (headless
+         `claude --dangerously-skip-permissions` auths off that, same as
+         scripts/autonomous-run.js's implementer in production) — NOT
+         CLAUDE_CODE_OAUTH_TOKEN (broken/vestigial path, see task #457).
+
+         Install:  cp scripts/launchd/com.broadwayscore.newsletter-sunday-review.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.newsletter-sunday-review.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.newsletter-sunday-review
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.newsletter-sunday-review
+         Pause without uninstalling: touch data/newsletter-drafts/SUNDAY_REVIEW_DISABLED -->
+    <key>Label</key>
+    <string>com.broadwayscore.newsletter-sunday-review</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/tompryor/Broadwayscore/scripts/newsletter/sunday-review-launch.sh</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Weekday</key>
+        <integer>0</integer>
+        <key>Hour</key>
+        <integer>9</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/newsletter-sunday-review-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/newsletter-sunday-review-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>
