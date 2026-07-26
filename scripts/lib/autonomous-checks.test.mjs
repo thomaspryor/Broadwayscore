@@ -168,6 +168,13 @@ test('prepareCheckWorkdir fills gaps only and never overwrites tracked files', (
   assert.ok(!linked.includes(path.join('data', 'tracked.json')), 'existing file untouched');
   assert.equal(JSON.parse(fs.readFileSync(path.join(wt, 'data', 'tracked.json'), 'utf8')).from, 'worktree');
   assert.equal(JSON.parse(fs.readFileSync(path.join(wt, 'data', 'shows.json'), 'utf8')).from, 'repo');
+  // COPIED, not linked: implementer-authored check code must not get a
+  // writable handle on the owner's private data repo (ship-check finding).
+  assert.equal(fs.lstatSync(path.join(wt, 'data', 'shows.json')).isSymbolicLink(), false);
+  fs.writeFileSync(path.join(wt, 'data', 'shows.json'), '{"from":"malicious-test"}');
+  assert.equal(JSON.parse(fs.readFileSync(path.join(repo, 'data', 'shows.json'), 'utf8')).from, 'repo',
+    'writing the worktree copy must not reach the source');
+  assert.equal(fs.lstatSync(path.join(wt, 'node_modules')).isSymbolicLink(), true, 'node_modules stays a link');
   fs.rmSync(root, { recursive: true, force: true });
 });
 
@@ -187,6 +194,39 @@ test('runSafeChecks runs the plan and reports pass/fail per check', () => {
   assert.equal(byName['node --check scripts/good.js'].pass, true);
   assert.equal(byName['node --check scripts/bad.js'].pass, false);
   assert.ok(byName['node --check scripts/bad.js'].detail.length > 0);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// A tier-3 diff nothing can check is UNVERIFIED. It used to reach the owner
+// wearing a green PASS badge with an empty check list (ship-check finding).
+test('a tier-3 diff with no runnable check fails closed', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-empty-'));
+  const results = runSafeChecks({
+    cwd: dir, changedFiles: ['scripts/lib/config.json'], isSafeCheckCommand: () => false, tier: 3, existsFn: never,
+  });
+  assert.equal(results.length, 1);
+  assert.equal(results[0].name, 'no-checks');
+  assert.equal(results[0].pass, false);
+  assert.match(results[0].detail, /scripts\/lib\/config\.json/);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('an inert (docs/tests) diff is still allowed to have nothing to run', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-inert-'));
+  assert.deepEqual(runSafeChecks({ cwd: dir, changedFiles: ['docs/x.md', 'memory/y.md'], isSafeCheckCommand: () => false, tier: 3, existsFn: never }), []);
+  assert.deepEqual(runSafeChecks({ cwd: dir, changedFiles: ['scripts/lib/config.json'], isSafeCheckCommand: () => false, tier: 1, existsFn: never }), [],
+    'tier 1 is unaffected');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('runSafeChecks cleans up the throwaway HOME it created', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-home-'));
+  fs.mkdirSync(path.join(dir, 'scripts'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'scripts', 'good.js'), 'const x = 1;\n');
+  const before = fs.readdirSync(os.tmpdir()).filter(n => n.startsWith('auto-checks-home-')).length;
+  runSafeChecks({ cwd: dir, changedFiles: ['scripts/good.js'], isSafeCheckCommand: () => false, tier: 3 });
+  const after = fs.readdirSync(os.tmpdir()).filter(n => n.startsWith('auto-checks-home-')).length;
+  assert.equal(after, before, 'no fake HOME left behind');
   fs.rmSync(dir, { recursive: true, force: true });
 });
 

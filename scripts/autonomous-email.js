@@ -335,6 +335,40 @@ async function main() {
   try { digest = gatherDigest({ repo: REPO }); }
   catch (err) { console.error(`[email] WARN digest gathering failed: ${String(err.message).slice(0, 120)}`); }
 
+  // Screenshot attachments (S2-T6): the owner reads this on a phone as often
+  // as at the Mac, where a local file path is useless — the pictures have to
+  // travel WITH the email or the "look at it before approving" instruction
+  // can't be followed. Capped so a runaway capture can never blow up a send.
+  //
+  // Done BEFORE rendering, and each item's list is REPLACED with what actually
+  // attached: the caps are per-email, so with 5 items x 4 shots the later items
+  // used to render "Screenshots attached to this email" (and an approve link)
+  // with nothing attached (ship-check finding). An item whose evidence did not
+  // make it into the message is treated exactly like one that was never
+  // captured — no approve link.
+  const attachments = [];
+  let attachBytes = 0;
+  for (const item of items) {
+    const attached = [];
+    for (const rel of (item.screenshots || [])) {
+      if (attachments.length >= MAX_ATTACHMENTS) break;
+      try {
+        const buf = fs.readFileSync(path.join(REPO, rel));
+        if (attachBytes + buf.length > MAX_ATTACH_BYTES) continue;
+        attachBytes += buf.length;
+        attachments.push({ filename: path.basename(rel), content: buf.toString('base64') });
+        attached.push(rel);
+      } catch (err) {
+        console.error(`[email] WARN could not attach ${rel}: ${String(err.message).slice(0, 120)}`);
+      }
+    }
+    if ((item.screenshots || []).length !== attached.length) {
+      console.error(`[email] "${item.name}": ${attached.length}/${(item.screenshots || []).length} screenshots fit in the email` +
+        (attached.length ? '' : ' — rendering it as needing a look, since its evidence did not travel'));
+    }
+    item.screenshots = attached;
+  }
+
   const html = renderEmail({
     items,
     digest,
@@ -371,26 +405,6 @@ async function main() {
           : queueSummary
             ? `Overnight: no items to approve (${queueSummary.total} triaged, 0 workable)`
             : `Overnight: no items to approve (${failedCount} failed)`;
-
-  // Screenshot attachments (S2-T6): the owner reads this on a phone as often
-  // as at the Mac, where a local file path is useless — the pictures have to
-  // travel WITH the email or the "look at it before approving" instruction
-  // can't be followed. Capped so a runaway capture can never blow up a send.
-  const attachments = [];
-  let attachBytes = 0;
-  for (const item of items) {
-    for (const rel of (item.screenshots || [])) {
-      if (attachments.length >= MAX_ATTACHMENTS) break;
-      try {
-        const buf = fs.readFileSync(path.join(REPO, rel));
-        if (attachBytes + buf.length > MAX_ATTACH_BYTES) continue;
-        attachBytes += buf.length;
-        attachments.push({ filename: path.basename(rel), content: buf.toString('base64') });
-      } catch (err) {
-        console.error(`[email] WARN could not attach ${rel}: ${String(err.message).slice(0, 120)}`);
-      }
-    }
-  }
 
   if (dryRun) {
     const out = path.join(REPO, 'data', 'audit', 'autonomous-email-preview.html');

@@ -44,7 +44,10 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
   const out = [];
   for (const card of doneCards || []) {
     if (!card || !card.id) continue;
-    if (!(Number(card.ageDays) <= windowDays)) continue;
+    // Number(null) is 0, which would put an unknown-age card inside EVERY
+    // window (ship-check finding) — require a real number.
+    const age = Number(card.ageDays);
+    if (!Number.isFinite(age) || !(age <= windowDays)) continue;
     const launch = byCard.get(card.id);
     if (!launch) continue; // never dispatched through bsc-next — nothing was captured to re-run
     if (isClaimed(card.id)) {

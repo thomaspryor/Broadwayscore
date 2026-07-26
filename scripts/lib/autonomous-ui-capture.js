@@ -74,7 +74,7 @@ async function waitForServer(url, deadlineMs) {
  */
 async function captureUiScreenshots({ workdir, outDir, routes = DEFAULT_ROUTES }) {
   if (!fs.existsSync(path.join(workdir, '.next'))) {
-    return { ok: false, files: [], error: 'no production build in the worktree — screenshots need the build check to have run first' };
+    return { ok: false, files: [], error: 'no production build in the worktree — screenshots need the build check to have run first (if tier3BuildCheck is off in .claude/autonomous-config.json, every UI card will lose its approve link)' };
   }
   let chromium;
   try { ({ chromium } = require('@playwright/test')); }
@@ -87,8 +87,10 @@ async function captureUiScreenshots({ workdir, outDir, routes = DEFAULT_ROUTES }
   const base = `http://127.0.0.1:${port}`;
   // Same secret-free, NEXT_PUBLIC-only env the build ran under: the server is
   // rendering implementer-authored code and must not see .env either.
+  // detached: SIGTERM to `npx` leaves the real `next start` child running and
+  // holding the port (ship-check finding). Own process group -> kill the group.
   const server = spawn('npx', ['next', 'start', '-p', String(port)], {
-    cwd: workdir, stdio: ['ignore', 'ignore', 'pipe'], env: checksEnv({ build: true }),
+    cwd: workdir, stdio: ['ignore', 'ignore', 'pipe'], env: checksEnv({ build: true }), detached: true,
   });
   let serverErr = '';
   server.stderr.on('data', c => { serverErr = (serverErr + String(c)).slice(-500); });
@@ -126,7 +128,7 @@ async function captureUiScreenshots({ workdir, outDir, routes = DEFAULT_ROUTES }
     return { ok: false, files, error: String(err.message || err).slice(0, 300) };
   } finally {
     if (browser) await browser.close().catch(() => {});
-    try { server.kill('SIGTERM'); } catch { /* already gone */ }
+    try { process.kill(-server.pid, 'SIGTERM'); } catch { try { server.kill('SIGTERM'); } catch { /* already gone */ } }
   }
 }
 

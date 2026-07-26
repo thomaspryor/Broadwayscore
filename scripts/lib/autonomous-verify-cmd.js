@@ -58,8 +58,16 @@ function extractVerifyCmd(notes, isSafeCheckCommand) {
     .filter(Boolean);
   if (!candidates.length) return { cmd: null, reason: 'acceptance criteria names no runnable command (prose only)' };
 
-  for (const c of candidates) {
-    if (isSafeCheckCommand(c)) return { cmd: c, reason: null };
+  // Prefer the SPECIFIC command over the generic one. A card that lists both
+  // `node --test tests/unit/thing.test.mjs` and `npx tsc --noEmit` was having
+  // the tsc line captured purely because it appeared first — and "tsc still
+  // passes" says nothing about whether THAT card's work survived (ship-check
+  // finding). Ranked, not reordered: order within a rank is still card order.
+  const rank = c => (/^node --test/.test(c) ? 0 : /^test -f/.test(c) ? 1 : 2);
+  const safe = candidates.filter(c => isSafeCheckCommand(c));
+  if (safe.length) {
+    const best = safe.slice().sort((a, b) => rank(a) - rank(b))[0];
+    return { cmd: best, reason: null };
   }
   return {
     cmd: null,

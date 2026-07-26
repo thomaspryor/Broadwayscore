@@ -51,6 +51,12 @@ const { selectRecheckTargets, summarize, describeResult, shouldExitShadow, SHADO
 const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 const MAX_CARDS = 10; // bounded work: this runs every night, not a backfill
+// The recheck now runs BEFORE the executor and therefore before the morning
+// email. 10 cards x 2 attempts x the 5-minute per-check cap is ~100 minutes of
+// worst case sitting in front of the only thing the loop actually delivers, so
+// the run gets its own deadline: past it, remaining cards are recorded as
+// deferred rather than started (ship-check finding).
+const RUN_DEADLINE_MS = 20 * 60 * 1000;
 
 const USAGE = `autonomous-acceptance-recheck.js — re-verify recently-Done cards (shadow mode).
 
@@ -221,9 +227,16 @@ function main(argv = process.argv.slice(2)) {
   }
 
   const results = [];
+  const deadline = Date.now() + RUN_DEADLINE_MS;
   try {
     for (const t of targets) {
       let r;
+      if (Date.now() > deadline && !t.skip) {
+        const deferred = targets.slice(targets.indexOf(t)).length;
+        console.error(`[recheck] ${RUN_DEADLINE_MS / 60000}min budget spent — deferring ${deferred} card(s) to tomorrow so the morning email is not held up`);
+        ledger.appendEntry({ event: 'recheck-deferred', runId, note: `${deferred} card(s) not re-checked: the run hit its ${RUN_DEADLINE_MS / 60000}min budget` });
+        break;
+      }
       if (t.skip) r = { ...t, status: null };
       else if (!t.verifyCmd) r = { ...t, status: 'unverifiable', detail: t.reason };
       else r = { ...t, ...runVerify(checkout.wt, t.verifyCmd) };

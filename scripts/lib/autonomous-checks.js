@@ -73,10 +73,13 @@ const BUILD_ENV = Object.freeze({
   SKIP_HEAVY_PREBUILD: 'true',
 });
 
-function checksEnv({ env = process.env, build = false } = {}) {
+// `home` lets a caller create ONE throwaway HOME for a whole run and delete it
+// afterwards. Without it every call minted a new temp dir and never removed
+// it — 64 were sitting on the Mac when ship-check looked (2026-07-25).
+function checksEnv({ env = process.env, build = false, home = null } = {}) {
   const out = {};
   for (const k of KEEP_ENV) if (env[k] !== undefined) out[k] = env[k];
-  out.HOME = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-checks-home-'));
+  out.HOME = home || fs.mkdtempSync(path.join(os.tmpdir(), 'auto-checks-home-'));
   out.GIT_TERMINAL_PROMPT = '0';
   if (build) Object.assign(out, BUILD_ENV);
   return out;
@@ -124,6 +127,10 @@ function hasSrcChange(files) {
  * @param {{tier?:number, buildCheck?:boolean}} [opts]
  * @returns {{name:string, argv:string[], timeoutMs?:number, build?:boolean}[]}
  */
+// Paths whose content cannot change site or data behavior. A diff made only of
+// these legitimately has nothing to run; anything else must produce a check.
+const INERT_RE = /^(tests|docs|memory)\/|\.test\.m?js$/;
+
 function decideChecks(changedFiles, existsFn, opts = {}) {
   const { tier = 1, buildCheck = true } = opts;
   const files = (changedFiles || []).map(String);
@@ -197,14 +204,31 @@ function prepareCheckWorkdir(workdir, repoRoot) {
     } catch { /* best effort — a missing link surfaces as a failed check */ }
   };
 
+  // node_modules stays a symlink: 1.3GB is not copyable per card, and it is
+  // already writable by anything running as this user in the main checkout,
+  // so the symlink adds no blast radius.
   link(path.join(repoRoot, 'node_modules'), path.join(workdir, 'node_modules'));
+
+  // Core data is COPIED, not linked. data/shows.json et al are symlinks into
+  // the owner's PRIVATE data repo; linking them would hand implementer-written
+  // check code (a planted x.test.mjs runs under node --test) a writable handle
+  // on the real corpus (ship-check finding). ~46MB worst case, once per run,
+  // against a run that already spends minutes on a production build.
+  const copy = (from, to) => {
+    if (fs.existsSync(to) || !fs.existsSync(from)) return;
+    try {
+      fs.mkdirSync(path.dirname(to), { recursive: true });
+      fs.copyFileSync(fs.realpathSync(from), to);
+      linked.push(path.relative(workdir, to));
+    } catch { /* best effort — a missing file surfaces as a failed check */ }
+  };
   for (const dir of ['data', path.join('public', 'data'), path.join('data', 'cast')]) {
     const src = path.join(repoRoot, dir);
     let names;
     try { names = fs.readdirSync(src); } catch { continue; }
     for (const name of names) {
       if (!name.endsWith('.json')) continue;
-      link(path.join(src, name), path.join(workdir, dir, name));
+      copy(path.join(src, name), path.join(workdir, dir, name));
     }
   }
   return linked;
@@ -243,26 +267,46 @@ function runSafeChecks(o) {
     // vanish from the gauntlet (the merge path used to drop it).
     else results.push({ name: 'card-check', pass: false, detail: `checkableDone failed safe-form validation: ${String(checkableDone).slice(0, 120)}` });
   }
-  if (!checks.length) return results;
+  if (!checks.length) {
+    // A tier-3 diff that produced NO runnable check is unverified, not
+    // verified: a card touching only e.g. scripts/lib/foo.json has no
+    // colocated test, no type/lint/build trigger, and used to reach the
+    // owner's inbox wearing a green PASS badge with an empty check list
+    // (ship-check finding). Tier 1 is unaffected — a docs-only diff having
+    // nothing to run is the normal, correct case there.
+    const substantive = (changedFiles || []).map(String).filter(f => !INERT_RE.test(f));
+    if (tier === 3 && substantive.length) {
+      results.push({
+        name: 'no-checks', pass: false,
+        detail: `tier-3 diff produced no runnable check (${substantive.slice(0, 5).join(', ')}) — nothing here proves the change works, so it is not marked verified`,
+      });
+    }
+    return results;
+  }
 
   if (prepareFrom) {
     const linked = prepareCheckWorkdir(cwd, prepareFrom);
     if (linked.length) console.error(`[checks] linked ${linked.length} gitignored path(s) into the check workdir (node_modules/core data)`);
   }
 
-  const plainEnv = checksEnv();
-  const buildEnv = checks.some(c => c.build) ? checksEnv({ build: true }) : null;
-  for (const c of checks) {
-    try {
-      execFileSync(c.argv[0], c.argv.slice(1), {
-        cwd, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8',
-        timeout: c.timeoutMs || CHECK_TIMEOUT_MS,
-        env: c.build ? buildEnv : plainEnv,
-      });
-      results.push({ name: c.name, pass: true });
-    } catch (err) {
-      results.push({ name: c.name, pass: false, detail: String(err.stderr || err.stdout || err.message).slice(0, 400) });
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-checks-home-'));
+  try {
+    const plainEnv = checksEnv({ home });
+    const buildEnv = checks.some(c => c.build) ? checksEnv({ home, build: true }) : null;
+    for (const c of checks) {
+      try {
+        execFileSync(c.argv[0], c.argv.slice(1), {
+          cwd, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8',
+          timeout: c.timeoutMs || CHECK_TIMEOUT_MS,
+          env: c.build ? buildEnv : plainEnv,
+        });
+        results.push({ name: c.name, pass: true });
+      } catch (err) {
+        results.push({ name: c.name, pass: false, detail: String(err.stderr || err.stdout || err.message).slice(0, 400) });
+      }
     }
+  } finally {
+    try { fs.rmSync(home, { recursive: true, force: true }); } catch { /* best effort */ }
   }
   return results;
 }
