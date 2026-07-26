@@ -72,19 +72,43 @@ describe('detectLateAdd', () => {
   });
 });
 
-describe('real corpus: dad-dont-read-this-off-broadway-2026 (if data available)', () => {
+describe('detectLateAdd on real corpus data (if available)', () => {
   const reviewsPath = path.join(__dirname, '..', '..', 'data', 'reviews.json');
   const showsPath = path.join(__dirname, '..', '..', 'data', 'shows.json');
   const hasData = fs.existsSync(reviewsPath) && fs.existsSync(showsPath);
 
-  test('is flagged as a late add on live data (S5-T1 acceptance criterion)', { skip: !hasData }, () => {
+  // Structural checks only -- NEVER assert a specific show's current
+  // isLateAdd/gapDays here. The S5-T1 acceptance criterion this used to pin
+  // (dad-dont-read-this-off-broadway-2026 flagged true) is a live-corpus fact
+  // that legitimately changes once a show's priorRuns/openingDate gets
+  // corrected, which would break main the same way #489 did for outlet
+  // cadence. The actual true/false behavior is already locked down above by
+  // a frozen synthetic fixture ("dad-dont-read-this class", line 48).
+  test('produces well-formed results across the live catalog', { skip: !hasData }, () => {
     const reviews = Object.values(JSON.parse(fs.readFileSync(reviewsPath, 'utf8')).reviews);
     const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows;
-    const show = shows.find((s) => s.id === 'dad-dont-read-this-off-broadway-2026');
-    assert.ok(show, 'fixture show still exists in the catalog');
-    const showReviews = reviews.filter((r) => r.showId === show.id);
-    const catalogClock = show.previewsStartDate || show.openingDate;
-    const r = detectLateAdd(showReviews, catalogClock);
-    assert.equal(r.isLateAdd, true, `expected a late-add flag, got: ${JSON.stringify(r)}`);
+    const reviewsByShow = new Map();
+    for (const r of reviews) {
+      if (!reviewsByShow.has(r.showId)) reviewsByShow.set(r.showId, []);
+      reviewsByShow.get(r.showId).push(r);
+    }
+    const validReasons = new Set(['no-catalog-clock', 'no-measurable-reviews', undefined]);
+    let sawLateAdd = false;
+    let sawNotLateAdd = false;
+    for (const show of shows) {
+      const catalogClock = show.previewsStartDate || show.openingDate;
+      const r = detectLateAdd(reviewsByShow.get(show.id) || [], catalogClock);
+      assert.equal(typeof r.isLateAdd, 'boolean', `${show.id}: isLateAdd is a boolean`);
+      if (r.isLateAdd) {
+        sawLateAdd = true;
+        assert.ok(Number.isFinite(r.gapDays) && r.gapDays > GRACE_DAYS, `${show.id}: late add has a gapDays over the floor`);
+      } else {
+        sawNotLateAdd = true;
+        assert.ok(validReasons.has(r.reason), `${show.id}: reason "${r.reason}" is a known enum value`);
+      }
+    }
+    // Sanity: classification is actually discriminating, not degenerate.
+    assert.ok(sawLateAdd, 'at least one show in the catalog is flagged as a late add');
+    assert.ok(sawNotLateAdd, 'at least one show in the catalog is not a late add');
   });
 });
