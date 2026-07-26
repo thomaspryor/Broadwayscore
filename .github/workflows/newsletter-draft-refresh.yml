@@ -16,6 +16,13 @@ name: Newsletter Draft Refresh (Sunday)
 # Never sends. Same generate -> pre-send -> overflow -> PATCH chain
 # refresh-drafts.sh uses locally (card #478), just running against fresh CI
 # data instead of a developer's local checkout.
+#
+# Known limitation (shared with refresh-drafts.sh, not new here): this does a
+# plain regenerate, so it does NOT thread through any workflow_dispatch
+# editorial overrides (subjectOverride, ledeOverride, obLead, dropSections)
+# the owner may have hand-applied via a manual newsletter-draft.yml run after
+# Saturday — a Sunday refresh would silently regenerate over those. Rare in
+# practice (overrides aren't persisted anywhere for a refresh to pick up).
 
 on:
   schedule:
