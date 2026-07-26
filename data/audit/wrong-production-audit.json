@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-26T16:30:43.483Z",
+  "timestamp": "2026-07-26T17:00:21.174Z",
   "stats": {
     "totalReviews": 40708,
-    "alreadyFlagged": 17847,
+    "alreadyFlagged": 17852,
     "dateGuardCatches": 58,
     "directorMismatch": 928,
-    "tvFilmSignals": 1114,
-    "londonSignals": 762,
+    "tvFilmSignals": 1116,
+    "londonSignals": 763,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3304
+    "noPublishDate": 3298
   },
   "findings": [
     {
@@ -11376,6 +11376,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"al pacino\" from hughie-1996"
+        }
+      ]
+    },
+    {
+      "showId": "hungry-women-off-broadway-2026",
+      "file": "talkinbroadway--howard-miller.json",
+      "publishDate": "2026-07-25",
+      "url": "https://www.talkinbroadway.com/page/ob/07_25_26.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -23876,6 +23889,7 @@
     {
       "showId": "the-gin-game-2026",
       "file": "nysr--frank-scheck.json",
+      "score": 82,
       "publishDate": "2026-07-21",
       "url": "https://nystagereview.com/2026/07/20/the-gin-game-debra-winger-and-arliss-howard-deliver-a-winning-hand/",
       "findings": [
@@ -24778,6 +24792,24 @@
       "showId": "the-oresteia-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
       "score": 57,
+      "publishDate": "2026-07-15",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-oresteia-west-end-2026",
+      "file": "broadwayworld--persson-alexander-cohen.json",
       "publishDate": "2026-07-15",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
       "findings": [
