@@ -460,6 +460,31 @@ test('renderHealthDigestBlock: queued digest-router items render (never silently
   assert.match(html, /as of 2026-07-26 06:50 UTC/);
 });
 
+test('renderHealthDigestBlock: a queued item url renders as a clickable link (regional go-live needs click-through)', () => {
+  const html = renderHealthDigestBlock({
+    subject: 'BSC Daily: All clear (27/27 passed)', errors: [], warns: [], passedCount: 27,
+    queued: [{
+      title: 'The Family Album @ La Jolla Playhouse — regional tryout live and scoring',
+      description: 'Auto-promoted from an aggregator roundup.',
+      severity: 'info',
+      url: 'https://broadwayscorecard.com/show/the-family-album-regional-2026',
+    }],
+  });
+  assert.match(html, /href="https:\/\/broadwayscorecard\.com\/show\/the-family-album-regional-2026"/);
+  assert.match(html, /The Family Album @ La Jolla Playhouse/);
+});
+
+test('renderHealthDigestBlock: a non-http queued url is not rendered as a link (no javascript:/data: in the inbox)', () => {
+  for (const bad of ['javascript:alert(1)', 'data:text/html,<script>x</script>', 'ftp://example.com/x', 42]) {
+    const html = renderHealthDigestBlock({
+      subject: 'BSC Daily: All clear (27/27 passed)', errors: [], warns: [], passedCount: 27,
+      queued: [{ title: 'Sketchy', description: 'd', url: bad }],
+    });
+    assert.match(html, /Sketchy/, `title still renders for url=${String(bad)}`);
+    assert.doesNotMatch(html, /<a href=/, `no anchor emitted for url=${String(bad)}`);
+  }
+});
+
 test('renderHealthDigestBlock: a corrupted queued entry (null/malformed) is skipped, never crashes the render', () => {
   assert.doesNotThrow(() => renderHealthDigestBlock({
     subject: 'BSC Daily: All clear (27/27 passed)', errors: [], warns: [], passedCount: 27,
