@@ -150,7 +150,11 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Secrets:/, urgency: 'fix-now',
     humanAction: 'A secret or API key may be expiring. On your Mac, open Claude Code and say: "Check which secrets need rotation and rotate them."' },
 
-  // API Credits — needs attention if low
+  // API Credits — needs attention if low. Provider-specific entries first;
+  // the generic /^Credits:/ line is the fallback for future providers
+  // (ship-check 2026-07-26: the SB copy used to render for ScrapingDog too).
+  { match: /^Credits: ScrapingDog/, urgency: 'this-week',
+    humanAction: 'ScrapingDog credits are running low. Check usage at app.scrapingdog.com and consider upgrading or reducing scraping frequency.' },
   { match: /^Credits:/, urgency: 'this-week',
     humanAction: 'ScrapingBee credits are running low. Check usage at app.scrapingbee.com and consider upgrading or reducing scraping frequency.' },
 ];
@@ -1485,7 +1489,10 @@ function checkAPICredits() {
   // SB-exhaustion incident revealed SD had ZERO balance monitoring: if SD runs
   // dry, every fetch silently falls back to BD/SB (the exact failure that
   // exhausted SB's plan). 'error' (not 'warn') on projected exhaustion so the
-  // actionable-only email policy actually delivers it.
+  // actionable-only email policy actually delivers it — EXCEPT while the
+  // expiring scrapingdog-ack acknowledgment (task #418) covers a known,
+  // non-imminent burn spike: that narrow case reports 'warn' with the ack
+  // reason inline. Exhausted/near-dry/<3d-out balances always stay 'error'.
   const sdKey = process.env.SCRAPINGDOG_API_KEY;
   if (sdKey) {
     results.push(runCheck('Credits: ScrapingDog', () => {
