@@ -184,6 +184,20 @@ jobs:
             # looks, and silence would hide it forever.
             echo "::error::validate-data FAILED after regional promotion — rolling back staging consumption"
             git checkout -- data/audit/ob-venue-candidates.json || true
+            # Retract the go-live digest line the promote script already queued.
+            # Without this the owner is told "<show> live and scoring" for a show
+            # whose push was just sentinel-refused, AND the per-show ledger entry
+            # (7-day cooldown) silences tomorrow's real promotion of the same
+            # show — reintroducing the silent-miss bug this chain exists to fix.
+            PROMOTED_IDS="$IDS" node -e "
+              const {removeDigestLines, deleteCondition} = require('./scripts/lib/owner-alert-router.js');
+              const ids = (process.env.PROMOTED_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+              if (!ids.length) { console.log('No promoted ids to retract.'); process.exit(0); }
+              const keys = ids.map(id => 'regional-go-live:' + id);
+              const removed = removeDigestLines(keys);
+              for (const k of keys) { try { deleteCondition(k); } catch (e) { console.warn('deleteCondition failed for ' + k + ': ' + e.message); } }
+              console.log('Retracted ' + removed + ' queued go-live line(s) + cleared ' + keys.length + ' ledger condition(s) after validate-data failure.');
+            " || echo "::warning::go-live retraction failed — owner may see a false 'went live' line in tomorrow's digest"
             node -e "require('fs').writeFileSync('data/audit/last-promotion-ids.json', JSON.stringify({generatedAt:new Date().toISOString(),promoted:[]},null,2)+'\n')" || true
             PROMOTED_IDS="$IDS" node -e "
               const {sendEmailAlert}=require('./scripts/lib/discord-notify');

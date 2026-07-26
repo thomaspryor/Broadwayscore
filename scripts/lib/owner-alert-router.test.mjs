@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 
@@ -296,6 +297,57 @@ test('routeAlert: two regional go-lives in the same week both queue (per-show co
   } finally {
     restore();
   }
+});
+
+test('removeDigestLines + deleteCondition retract a queued go-live so the NEXT real one still notifies', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const key = 'regional-go-live:the-family-album-regional-2026';
+    const queueOne = () => router.routeAlert({
+      conditionKey: key, title: 'The Family Album live', disposition: 'digest', severity: 'info',
+    });
+
+    await queueOne();
+    assert.equal(router.peekDigestQueue().length, 1);
+
+    // Simulate the validate-data rollback: retract the line AND the ledger entry.
+    assert.equal(router.removeDigestLines([key]), 1, 'the queued line is removed');
+    assert.equal(router.peekDigestQueue().length, 0);
+    router.deleteCondition(key);
+
+    // The critical assertion: tomorrow's REAL promotion must not be swallowed by
+    // the 7-day cooldown. Without deleteCondition this re-queues nothing.
+    await queueOne();
+    assert.equal(router.peekDigestQueue().length, 1, 'the next real go-live still reaches the digest');
+  } finally {
+    restore();
+  }
+});
+
+test('removeDigestLines leaves unrelated queued lines alone and tolerates a corrupt entry', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({ conditionKey: 'regional-go-live:a', title: 'A', disposition: 'digest', severity: 'info' });
+    await router.routeAlert({ conditionKey: 'other:condition', title: 'B', disposition: 'digest', severity: 'info' });
+    assert.equal(router.removeDigestLines(['regional-go-live:a']), 1);
+    const left = router.peekDigestQueue();
+    assert.equal(left.length, 1);
+    assert.equal(left[0].conditionKey, 'other:condition');
+    // A no-op removal must not rewrite or throw.
+    assert.equal(router.removeDigestLines(['regional-go-live:does-not-exist']), 0);
+    assert.equal(router.peekDigestQueue().length, 1);
+  } finally {
+    restore();
+  }
+});
+
+test('promote-ob-venue-candidates.js uses a per-show conditionKey (guards the real producer, not a hand-written key)', async () => {
+  // The sibling per-show test hand-writes the key, so it would still pass if the
+  // producer regressed to a shared key. This asserts against the real source.
+  const src = await readFile(new URL('../promote-ob-venue-candidates.js', import.meta.url), 'utf8');
+  assert.match(src, /conditionKey:\s*`regional-go-live:\$\{p\.entry\.id\}`/,
+    'promote script must build conditionKey from the show id; a shared key silently drops the 2nd go-live in a week');
+  assert.match(src, /disposition:\s*'digest'/, 'go-live must route to the digest, not a suppressed info email');
 });
 
 test('routeAlert: disposition=human re-fire within an explicit cooldownHours is silent (no second email)', async () => {
