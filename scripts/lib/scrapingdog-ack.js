@@ -52,7 +52,11 @@ function evaluateScrapingdogCredits(acct, today) {
   }
   const remaining = acct.requestLimit - acct.requestUsed;
   const pctRemaining = Math.round((remaining / acct.requestLimit) * 100);
-  const daysToRenewal = typeof acct.validity === 'number' ? acct.validity : null;
+  // Sanitize validity too (codex re-review): a negative or non-finite value
+  // (API glitch) must take the no-validity pct-threshold path, not feed the
+  // projection math with a nonsense renewal horizon.
+  const daysToRenewal = (typeof acct.validity === 'number' && Number.isFinite(acct.validity) && acct.validity >= 0)
+    ? acct.validity : null;
   let msg = `${Math.round(remaining / 1000)}k credits left (${pctRemaining}%)`;
   let status = 'pass';
   if (daysToRenewal !== null) {
