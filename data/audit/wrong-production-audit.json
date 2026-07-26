@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-26T09:03:03.319Z",
+  "timestamp": "2026-07-26T09:32:39.635Z",
   "stats": {
-    "totalReviews": 40470,
-    "alreadyFlagged": 17821,
+    "totalReviews": 40491,
+    "alreadyFlagged": 17822,
     "dateGuardCatches": 59,
-    "directorMismatch": 912,
-    "tvFilmSignals": 1110,
-    "londonSignals": 760,
+    "directorMismatch": 911,
+    "tvFilmSignals": 1109,
+    "londonSignals": 757,
     "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3238
+    "noPublishDate": 3266
   },
   "findings": [
     {
@@ -12217,7 +12217,7 @@
       "showId": "into-the-woods-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
       "score": 95,
-      "publishDate": "2025-12-12",
+      "publishDate": null,
       "url": "https://www.ft.com/content/9da2a948-bb09-4c48-9cf3-969d00f35e62",
       "findings": [
         {
@@ -12505,20 +12505,6 @@
       "score": 98,
       "publishDate": "2025-12-11",
       "url": "https://www.timeout.com/london/theatre/into-the-woods-5",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2025",
-      "file": "times-uk--clive-davis.json",
-      "score": 97,
-      "publishDate": "2025-12-12",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b?gaa_at=eafs&gaa_n=AWEtsqewS4asH9dOpBRkGr14r7oO_WtnbyzHzUEcsWYFhhAXS_YX5GrJIDg02txfwB0%3D&gaa_ts=693c087d&gaa_sig=3nLmAA87YjX1jabQUqv9a73Q9XJ2i47cqm-Gj4kj6hGV9VgHN_qv6mjd5C6NrRbDQqD2T46vajJi3ZyxvY-7BQ%3D%3D",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -19197,25 +19183,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "guardian--arifa-akbar.json",
-      "score": 63,
-      "publishDate": "2026-04-01",
-      "url": "https://www.theguardian.com/stage/2023/jun/15/romeo-and-juliet-review-almeida-theatre-london-rebecca-frecknall",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -36535,20 +36502,6 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "standard--nick-curtis.json",
-      "score": 58,
-      "publishDate": "October 20th, 2022",
-      "url": "https://www.standard.co.uk/culture/theatre/my-neighbour-totoro-barbican-studio-ghibli-theatre-review-b1033681.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "standard--unknown.json",
       "score": 61,
       "publishDate": null,
@@ -39781,20 +39734,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 100,
-      "publishDate": "2023-12-15",
-      "url": "https://www.thetimes.co.uk/article/stranger-things-the-first-shadow-review-strange-and-staggeringly-good-klckxpnk5",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
