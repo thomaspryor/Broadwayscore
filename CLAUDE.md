@@ -62,7 +62,7 @@ Review texts, aggregator archive, core data → private repos, all gitignored. C
 
 ### 12. Test Before Committing (MANDATORY)
 Before EVERY commit touching `src/`, `scripts/`, or config:
-1. `npx tsc --noEmit` — zero errors in changed files
+1. `npx tsc --noEmit` — zero errors in changed files. **For `scripts/llm-scoring/`, run `npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json`** — that's the config CI's TypeScript Check gate uses, and it sets `strictNullChecks: true` (the parent `scripts/tsconfig.json` does not). Passing the parent proves nothing there (task #516, 2026-07-26).
 2. `npx next lint` — no new warnings
 3. Auth-aware build with feature flags
 4. **Scripts:** run against real data, minimum 3 diverse cases. `node --check` is syntax only — NOT a test.
