@@ -102,6 +102,39 @@ function deadBreadcrumbs(idleWorkspaces, entries) {
   return out;
 }
 
+// Entries to append when a dispatch launch FAILED verification (task #503).
+// Before this, an unverified launch wrote nothing at all: the shell cmux left
+// behind had no 'launch' record, so deadBreadcrumbs() skipped it ("not a
+// bsc-next auto-dispatch — not ours to journal") and deadAttemptsForTask()
+// counted zero deaths however many times the task was blind-redispatched.
+// That is how #334's guard shipped armed and still let 10 orphan auto-shells
+// and 4 duplicate dispatches accumulate on 2026-07-26.
+//
+// Two entries, on purpose:
+//   'dead'   — makes the attempt COUNT right now, without waiting for a sweep.
+//   'launch' — makes the leftover shell ATTRIBUTABLE to this task, so a later
+//              bsc-prune sweep can name it instead of listing a mystery tab.
+//
+// ORDER MATTERS: 'dead' is written FIRST (Opus ship-check blocker, Codex).
+// These are two separate appends, so a bsc-prune sweep can interleave between
+// them. With 'launch' first, a sweep landing in the gap would see a launch with
+// no recorded death, emit its OWN 'dead' breadcrumb, and deadAttemptsForTask()
+// would then count TWO deaths for a single failed launch — tripping the
+// 2-death guard off one bad dispatch. Writing 'dead' first makes every
+// interleaving safe: a sweep in the gap finds no launch record for the ref and
+// skips it ("not ours to journal"); any later sweep sees the existing 'dead'
+// and skips it as already-recorded. No lock needed.
+//
+// Returns [] when cmux left no workspace behind (nothing to attribute).
+function failedLaunchEntries({ taskId, subject, workspaceRef, model = null, verifyCmd = null, verifyReason = null, notionId = null, failureReason = null }) {
+  if (!workspaceRef) return [];
+  const base = { taskId: String(taskId), subject, workspaceRef, failureReason };
+  return [
+    { event: 'dead', ...base, title: null },
+    { event: 'launch', ...base, model, verifyCmd, verifyReason, notionId, unverified: true },
+  ];
+}
+
 // ── Headless-job events (Autopilot v5, task #459) ──────────────────────────
 // bsc-runner.js appends these; bsc-reconcile.js and bsc-status.js fold them.
 // One ledger for tabs AND jobs on purpose: the dead-attempt guard must see
@@ -140,5 +173,5 @@ function openJobs(entries) {
 module.exports = {
   LEDGER_PATH, DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
-  foldJobs, openJobs,
+  failedLaunchEntries, foldJobs, openJobs,
 };
