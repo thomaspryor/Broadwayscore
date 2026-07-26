@@ -2326,14 +2326,25 @@ async function discoverShows() {
 }
 
 if (require.main === module) {
+  let discoveryFailed = false;
   discoverShows()
     .catch(e => {
       console.error('Discovery failed:', e);
-      process.exit(1);
+      discoveryFailed = true;
     })
-    .finally(() => {
-      // Clean up scraper resources
-      cleanup().catch(console.error);
+    .finally(async () => {
+      // Clean up scraper resources. cleanup() (scripts/lib/scraper.js) now
+      // has its own hard timeout on browser.close(), but as a last-resort
+      // backstop — task #438: the process hung 44 min past its real work
+      // finishing because an unawaited, untimed close() call kept a dangling
+      // Playwright handle open — force-exit here so no future gap in that
+      // chain can leave this specific entrypoint hanging again.
+      try {
+        await cleanup();
+      } catch (e) {
+        console.error(e);
+      }
+      process.exit(discoveryFailed ? 1 : 0);
     });
 }
 
