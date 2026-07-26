@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   extractShowTitleFromWetRoundup,
+  extractShowTitleFromBwwRoundup,
   titleFromDtliSlug,
   buildShowTitleIndex,
   titleMatchesIndex,
@@ -52,6 +53,31 @@ test('DTLI slug FP classes: collision suffixes stripped, long titles kept', () =
   );
   // The originating miss
   assert.equal(titleFromDtliSlug('midnight-at-the-never-get'), 'midnight at the never get');
+});
+
+// Real BWW Google-News sitemap <n:title> values, bwwgnewsbway.cfm, captured
+// 2026-07-26 (task #477, The Gin Game 2026 miss).
+test('BWW roundup title extraction (real titles)', () => {
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: THE GIN GAME, Starring Debra Winger and Arliss Howard'),
+    'THE GIN GAME'
+  );
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: OEDIPUS Opens On Broadway'),
+    'OEDIPUS'
+  );
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: RAGTIME Returns to Broadway'),
+    'RAGTIME'
+  );
+  // Non-roundup shapes must not produce a candidate title
+  assert.equal(extractShowTitleFromBwwRoundup('BWW Review: A Cabaret Retrospective'), null);
+  // Movie/streaming tie-ins are roundup-shaped but name no new stage
+  // production — the live FP class flagged alongside this source.
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: HADESTOWN THE MUSICAL Comes to Movie Theaters'),
+    null
+  );
 });
 
 const SHOWS = [
@@ -115,6 +141,39 @@ test('findUnmatchedCandidates surfaces only unmatched items', () => {
   const out = findUnmatchedCandidates(items, index);
   assert.equal(out.length, 1);
   assert.equal(out[0].title, 'Midnight at the Never Get');
+});
+
+// Fixture: shows.json checkout carrying only the pre-2026 Gin Game entries
+// (task #477's exact miss) — a naive title match suppresses the 2026 BWW
+// roundup because "The Gin Game" IS catalogued, just as three closed shows.
+const GIN_GAME_CATALOGUE = [
+  { id: 'the-gin-game-1977', title: 'The Gin Game', slug: 'the-gin-game-1977', category: 'broadway', status: 'closed', closingDate: '1978-01-29' },
+  { id: 'the-gin-game-1997', title: 'The Gin Game', slug: 'the-gin-game-1997', category: 'broadway', status: 'closed', closingDate: '1997-08-31' },
+  { id: 'the-gin-game-2015', title: 'The Gin Game', slug: 'the-gin-game-2015', category: 'broadway', status: 'closed', closingDate: '2016-01-10' },
+];
+
+test('allowClosedRevival: BWW roundup for an all-closed title surfaces as a missing revival', () => {
+  const nyc = buildShowTitleIndex(GIN_GAME_CATALOGUE, 'nyc');
+  // Default (WET/DTLI) behavior is unchanged: title match still suppresses.
+  assert.equal(titleMatchesIndex('The Gin Game', nyc), true);
+  // bww opts in: every catalogued "The Gin Game" has closed, so this BWW
+  // roundup for a NEW production must surface as a candidate.
+  assert.equal(titleMatchesIndex('The Gin Game', nyc, { allowClosedRevival: true }), false);
+
+  const items = [{
+    title: extractShowTitleFromBwwRoundup('Review Roundup: THE GIN GAME, Starring Debra Winger and Arliss Howard'),
+    source: 'bww-roundup',
+    url: 'https://www.broadwayworld.com/article/Review-Roundup-THE-GIN-GAME-Starring-Debra-Winger-and-Arliss-Howard-20260724',
+  }];
+  const out = findUnmatchedCandidates(items, nyc, { allowClosedRevival: true });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].url, items[0].url);
+});
+
+test('allowClosedRevival: a LIVE show under the same title still suppresses (genuine match)', () => {
+  const catalogue = [...GIN_GAME_CATALOGUE, { id: 'the-gin-game-2026', title: 'The Gin Game', slug: 'the-gin-game-2026', category: 'off-broadway', status: 'open', closingDate: '2026-08-09' }];
+  const nyc = buildShowTitleIndex(catalogue, 'nyc');
+  assert.equal(titleMatchesIndex('The Gin Game', nyc, { allowClosedRevival: true }), true);
 });
 
 test('--help returns before any network/env access', async () => {

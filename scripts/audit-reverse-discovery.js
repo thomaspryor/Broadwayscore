@@ -3,12 +3,27 @@
  * Reverse discovery audit — alert-only detector for shows the aggregators
  * are reviewing that are NOT in shows.json.
  *
- * Sources (v1):
+ * Sources (v2, see task #477):
  *   - WE/OWE: WestEndTheatre.com WP-API, category 10 (review roundups).
  *     WET publishes a roundup for every notable WE/OWE opening — a roundup
  *     whose show title matches nothing in shows.json is a missing show.
  *   - BW/OB:  DTLI shows-sitemap entries (last 2 sitemaps) with a recent
  *     lastmod. DTLI creates/updates a show page around opening night.
+ *   - BW/OB:  BroadwayWorld's Google-News sitemap (bwwgnewsbway.cfm) — a
+ *     same-day rolling window of ~100 recent Broadway-section articles.
+ *     BWW publishes a "Review Roundup: TITLE, ..." article for essentially
+ *     every notable BW/OB opening (fetch-bww-roundups.js's hardcoded URL map
+ *     covers ~25 of these retroactively; this is the live discovery feed
+ *     that map can never provide). Origin: The Gin Game 2026 revival
+ *     (Winger/Howard, Housing Works pop-up) — every forward-discovery source
+ *     (TodayTix, Playbill OB schedule, off-broadway-venues.json, Show Score,
+ *     DTLI) legitimately missed it, and the same-title 1977/1997/2015
+ *     entries meant a naive title match would have suppressed even this
+ *     source. This is the only source with allowClosedRevival: a BWW
+ *     roundup for a title whose only catalogued productions have all closed
+ *     is treated as a missing revival, not a match (see reverse-discovery.js
+ *     titleMatchesIndex). WET/DTLI don't opt in — their lastmod timestamps
+ *     can touch an old page for reasons unrelated to a new production.
  *
  * NEVER writes shows.json. Writes data/audit/reverse-discovery-candidates.json
  * (full current view) + data/audit/reverse-discovery-state.json (per-candidate
@@ -22,7 +37,7 @@
 const USAGE = `audit-reverse-discovery.js — find reviewed-but-missing shows
 
 Usage:
-  node scripts/audit-reverse-discovery.js [--dry-run] [--days=N] [--source=wet|dtli|all]
+  node scripts/audit-reverse-discovery.js [--dry-run] [--days=N] [--source=wet|dtli|bww|all]
 
 Options:
   --dry-run     Print candidates; skip state/audit writes and Discord alert
@@ -31,8 +46,10 @@ Options:
   --help, -h    Show this help
 
 Exit codes: 0 = ran (candidates or not); 1 = every source fetch failed.
-Caveat: a same-title revival of a catalogued show will NOT surface (title
-matches the older entry) — the WE completeness gate covers those once added.`;
+Caveat: for WET/DTLI, a same-title revival of a catalogued show will NOT
+surface (title matches the older entry) — the WE completeness gate covers
+those once added. The bww source is the exception: it treats a title whose
+only catalogued productions have all closed as a missing revival.`;
 
 function hasHelpFlag(argv) {
   return argv.includes('--help') || argv.includes('-h');
@@ -46,7 +63,7 @@ async function main(argv = process.argv.slice(2)) {
   const path = require('path');
   const { fetchPage, fetchJSON } = require('./lib/scraper');
   const {
-    extractShowTitleFromWetRoundup, titleFromDtliSlug,
+    extractShowTitleFromWetRoundup, titleFromDtliSlug, extractShowTitleFromBwwRoundup,
     buildShowTitleIndex, findUnmatchedCandidates, candidateKey,
   } = require('./lib/reverse-discovery');
 
@@ -136,6 +153,43 @@ async function main(argv = process.argv.slice(2)) {
     }
   }
 
+  // ── Source 3: BWW Google-News sitemap (BW/OB) ──
+  // Same-day rolling window (~100 items) of the Broadway-section news feed —
+  // covers a per-show "Review Roundup: TITLE, ..." article the day it posts,
+  // unlike fetch-bww-roundups.js's static per-show URL map (never a
+  // discovery source). allowClosedRevival is scoped to THIS source only:
+  // a roundup for a title whose only catalogued productions have all closed
+  // is a missing revival (The Gin Game 2026: only 1977/1997/2015 catalogued,
+  // all closed) — WET/DTLI stay conservative since their lastmod can touch
+  // an old page for unrelated reasons.
+  if (sourceFilter === 'all' || sourceFilter === 'bww') {
+    sourcesTried++;
+    try {
+      const xml = (await fetchPage('https://www.broadwayworld.com/bwwgnewsbway.cfm')).content;
+      const entries = [...xml.matchAll(
+        /<url>\s*<loc>([^<]+)<\/loc>[\s\S]*?<n:title>([^<]+)<\/n:title>[\s\S]*?<n:publication_date>([^<]+)<\/n:publication_date>[\s\S]*?<\/url>/g
+      )];
+      if (entries.length === 0) throw new Error('BWW gnews sitemap parsed to 0 <url> entries');
+      let parsed = 0, roundups = 0;
+      for (const [, url, rawTitle, pubDate] of entries) {
+        const ts = Date.parse(pubDate);
+        if (!Number.isFinite(ts) || ts < cutoff) continue;
+        if (/^Review\s+Roundup:/i.test(rawTitle)) roundups++;
+        const title = extractShowTitleFromBwwRoundup(rawTitle);
+        if (!title) continue;
+        parsed++;
+        items.push({ title, source: 'bww-roundup', url, date: pubDate, market: 'nyc' });
+      }
+      // Same structure-drift guard as WET/DTLI: recent roundup-shaped titles
+      // that all fail to parse means the title format changed underneath us.
+      if (roundups > 0 && parsed === 0) throw new Error(`BWW title-format drift: ${roundups} roundup posts, 0 parsed`);
+      console.log(`BWW: ${parsed} roundups within ${days}d (of ${entries.length} recent articles)`);
+      sourcesOk++;
+    } catch (e) {
+      console.error(`BWW source failed: ${e.message}`);
+    }
+  }
+
   if (sourcesTried > 0 && sourcesOk === 0) {
     console.error('All sources failed — detector blind, failing the run.');
     return 1;
@@ -143,7 +197,11 @@ async function main(argv = process.argv.slice(2)) {
 
   const candidates = [
     ...findUnmatchedCandidates(items.filter(i => i.market === 'west-end'), weIndex),
-    ...findUnmatchedCandidates(items.filter(i => i.market === 'nyc'), nycIndex),
+    ...findUnmatchedCandidates(items.filter(i => i.market === 'nyc' && i.source !== 'bww-roundup'), nycIndex),
+    ...findUnmatchedCandidates(
+      items.filter(i => i.market === 'nyc' && i.source === 'bww-roundup'), nycIndex,
+      { allowClosedRevival: true }
+    ),
   ];
   console.log(`\n${candidates.length} missing-show candidate(s) of ${items.length} recent items:`);
   for (const c of candidates) console.log(`  [${c.source}] "${c.title}" — ${c.url}`);
