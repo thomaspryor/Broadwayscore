@@ -17,6 +17,9 @@
 // lead the subject line. The first pass had RECOUPMENT_BASE=78 and a $5.6M
 // Giant recoupment was burying the actual opening news; weights below
 // re-anchor on the review-driven content the audience actually subscribes for.
+import { createRequire } from 'node:module';
+const { pluralize } = createRequire(import.meta.url)('../lib/pluralize.js');
+
 export const WEIGHTS = {
   BW_OPENING_BASE: 85,                // openings ARE the news — what subscribers wait for
   BW_OPENING_GOLD_BUMP: 15,           // critical-gold debut is the biggest event of the week
@@ -152,7 +155,7 @@ export function scoreCandidates(input) {
   for (const r of (input.recoupments || [])) {
     const weeks = r.weeksToRecoup;
     const fastBump = (weeks && weeks > 0 && weeks < 12) ? WEIGHTS.RECOUPMENT_FAST_BUMP : 0;
-    const tail = (weeks && weeks > 0) ? ` recoups in ${weeks} ${weeks === 1 ? 'week' : 'weeks'}` : ' recoups';
+    const tail = (weeks && weeks > 0) ? ` recoups in ${pluralize(weeks, 'week')}` : ' recoups';
     out.push({
       kind: 'recoupment',
       weight: WEIGHTS.RECOUPMENT_BASE + fastBump,

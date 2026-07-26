@@ -23,6 +23,7 @@ const repo = path.resolve(__dirname, '..', '..');
 const cjsRequire = createRequire(import.meta.url);
 const { buildUnsubscribeUrl, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
+const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -942,7 +943,7 @@ function biggestMoverSection() {
       <td valign="middle" width="80" style="padding:14px 0 14px 16px;border-bottom:1px solid rgba(255,255,255,0.05);">${thumb(m.show, 56)}</td>
       <td valign="middle" style="padding:14px 8px 14px 14px;border-bottom:1px solid rgba(255,255,255,0.05);">
         <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(m.show, m.show.title)} ${marketPill(m.show.category)}</div>
-        <div style="font-size:13px;color:#9ca3af;margin-top:6px;">${m.reviewDelta > 0 ? '+' : ''}${m.reviewDelta} audience review${Math.abs(m.reviewDelta) === 1 ? '' : 's'}</div>
+        <div style="font-size:13px;color:#9ca3af;margin-top:6px;">${m.reviewDelta > 0 ? '+' : ''}${m.reviewDelta} audience ${pluralNoun(Math.abs(m.reviewDelta), 'review')}</div>
       </td>
       <td valign="middle" width="120" align="center" style="padding:14px 16px 14px 4px;border-bottom:1px solid rgba(255,255,255,0.05);">
         <div style="font-size:10px;letter-spacing:0.08em;color:#9ca3af;font-weight:700;text-transform:uppercase;margin-bottom:5px;">Audience Grade</div>
@@ -951,7 +952,7 @@ function biggestMoverSection() {
           <td valign="middle" style="padding:0 6px;color:#6b7280;font-size:14px;">→</td>
           <td align="center" valign="middle">${audGradeBox(m.afterGrade)}</td>
         </tr></table>
-        <div style="font-size:11px;color:${dirColor};margin-top:6px;font-weight:700;">${dirArrow} ${m.dir} ${m.gradeCount} grade${m.gradeCount === 1 ? '' : 's'}</div>
+        <div style="font-size:11px;color:${dirColor};margin-top:6px;font-weight:700;">${dirArrow} ${m.dir} ${pluralize(m.gradeCount, 'grade')}</div>
       </td>
     </tr>`;
   }).join('');
@@ -975,7 +976,7 @@ function biggestMoverSection() {
           <td valign="middle" style="padding:0 6px;color:#6b7280;font-size:14px;">→</td>
           <td align="center" valign="middle">${smallBadge(m.after, 48, m.show.category)}</td>
         </tr></table>
-        <div style="font-size:11px;color:${dirColor};margin-top:6px;font-weight:700;">${dirArrow} ${dirWord} ${ptsRounded} pt${ptsRounded === 1 ? '' : 's'}</div>
+        <div style="font-size:11px;color:${dirColor};margin-top:6px;font-weight:700;">${dirArrow} ${dirWord} ${pluralize(ptsRounded, 'pt')}</div>
       </td>
     </tr>`;
   }).join('');
@@ -1341,7 +1342,7 @@ function commercialSection() {
     const open = new Date(show.openingDate + 'T12:00:00');
     const weeks = Math.round((recoupMid - open) / (7 * 86400000));
     if (!isFinite(weeks) || weeks <= 0) return '';
-    return ` in ${weeks} ${weeks === 1 ? 'week' : 'weeks'}`;
+    return ` in ${pluralize(weeks, 'week')}`;
   }
   const rows = fresh.map((f, i, arr) => {
     const isLast = i === arr.length - 1;
