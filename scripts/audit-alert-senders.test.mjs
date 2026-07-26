@@ -98,6 +98,23 @@ test('compareToBaseline fails when a baselined file grows', () => {
   assert.deepStrictEqual(r.grown, [{ file: 'scripts/a.js', baseline: 2, current: 3 }]);
 });
 
+test('compareToBaseline drops malformed baseline values so they block instead of silently passing', () => {
+  // A non-integer value would make both > and < comparisons false — the file
+  // must fall back to un-baselined (blocking), not silently accept any count.
+  const r = compareToBaseline(
+    { 'scripts/a.js': 5, 'scripts/b.js': 1 },
+    { 'scripts/a.js': 'unknown', 'scripts/b.js': 1, 'scripts/c.js': null },
+  );
+  assert.strictEqual(r.ok, false);
+  assert.deepStrictEqual(r.newFiles, ['scripts/a.js']);
+});
+
+test('compareToBaseline tolerates a null/undefined baseline (everything blocks)', () => {
+  const r = compareToBaseline({ 'scripts/a.js': 1 }, null);
+  assert.strictEqual(r.ok, false);
+  assert.deepStrictEqual(r.newFiles, ['scripts/a.js']);
+});
+
 test('compareToBaseline treats shrinkage and drained files as warnings, not failures', () => {
   const r = compareToBaseline(
     { 'scripts/a.js': 1 },

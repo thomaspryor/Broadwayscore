@@ -41,6 +41,12 @@
  * drain is card #531; opening-night-broadcast.yml + opening-night-poller.js are
  * the two permanent real-time-critical senders (CLAUDE.md rule 14's critical
  * workflows) and stay in the baseline deliberately.
+ *
+ * Known accepted limitation: within a baselined file, swapping one direct call
+ * for a different one keeps the count flat and passes — per-call-site
+ * fingerprints would churn on every refactor and were deliberately rejected.
+ * The gate's claim is "no NEW files and no per-file growth", same trust model
+ * as audit-help-flag-safety.js's baseline.
  */
 
 'use strict';
@@ -171,7 +177,16 @@ function buildDirectCounts(findings) {
  * `shrunk` and `stale` mean the baseline is behind reality (warn: run
  * --update-baseline so the frozen debt keeps shrinking with the drain cards).
  */
-function compareToBaseline(counts, baseline) {
+function compareToBaseline(counts, rawBaseline) {
+  // Fail-noisy on malformed baseline entries: a non-integer value (e.g. a
+  // hand-edited "unknown", null, or a nested object) would make BOTH the
+  // growth and shrink numeric comparisons false, silently accepting any
+  // count for that file (adversarial review finding, this card). Dropping
+  // the entry instead means the file reads as un-baselined → blocking.
+  const baseline = {};
+  for (const [f, v] of Object.entries(rawBaseline || {})) {
+    if (Number.isInteger(v) && v >= 0) baseline[f] = v;
+  }
   const newFiles = Object.keys(counts).filter((f) => !(f in baseline));
   const grown = Object.keys(counts)
     .filter((f) => f in baseline && counts[f] > baseline[f])
