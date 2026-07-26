@@ -1659,11 +1659,15 @@ function buzziestSection() {
   // here either — the 2026-07-26 credibility audit found "0% positive" branded shows
   // with zero opinion-bearing posts, and the newsletter was an unaudited consumer of
   // the same `p`/`os` fields that had just been fixed on the web cards.
+  // Object arg (not positional) so a transposed call site is a visible diff,
+  // not a silent argument-order bug — same contract as the TS original.
   const MIN_OPINION_SAMPLE = 10;
-  function shouldShowSentiment(p, os) {
-    if (typeof p !== 'number' || Number.isNaN(p)) return false;
-    if (os === undefined || os === null) return true;
-    return os >= MIN_OPINION_SAMPLE;
+  function shouldShowSentiment({ positivePct, opinionSample }) {
+    if (typeof positivePct !== 'number' || !Number.isFinite(positivePct) || positivePct < 0 || positivePct > 100) {
+      return false;
+    }
+    if (opinionSample === undefined || opinionSample === null) return true;
+    return opinionSample >= MIN_OPINION_SAMPLE;
   }
   const TIER_RANK = { Buzzing: 0, Rising: 1, Steady: 2, BuildingBaseline: 2, Troubled: 3, Hidden: 99 };
   const TIER_DISPLAY = {
@@ -1750,7 +1754,7 @@ function buzziestSection() {
     ['instagram', top.sp.pl?.ig || 0],
   ].filter(([, c]) => c > 0);
   const glyphs = activePlatforms.map(([k]) => platformGlyph(k, 1)).join('');
-  const showSentiment = shouldShowSentiment(top.sp.p, top.sp.os);
+  const showSentiment = shouldShowSentiment({ positivePct: top.sp.p, opinionSample: top.sp.os });
   const sentPct = showSentiment ? top.sp.p : 0;
   // Sentiment bar + inline meta (platforms + mentions on one small line).
   // Hidden entirely (no bar, no %) when there's no trustworthy evidence behind it —
@@ -1778,7 +1782,7 @@ function buzziestSection() {
     const d = TIER_DISPLAY[c.sp.t] || TIER_DISPLAY.Steady;
     const rc = c.rank ? rankBadgeColor(c.rank.position, c.rank.total) : null;
     const isLast = i === arr.length - 1;
-    const rowShowSentiment = shouldShowSentiment(c.sp.p, c.sp.os);
+    const rowShowSentiment = shouldShowSentiment({ positivePct: c.sp.p, opinionSample: c.sp.os });
     const ment = c.sp.v || 0;
     const metaLine = rowShowSentiment ? `${c.sp.p}% positive · ${ment} mentions` : `${ment} mentions`;
     // Tighter padding on #2/#3 rows + drop the redundant "of N" subtitle —
