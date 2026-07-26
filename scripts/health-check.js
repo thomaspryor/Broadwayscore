@@ -95,6 +95,12 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'Video reviews data is out of date. Runs Mondays — stale >2 weeks means the workflow is failing.' },
   { match: /^Freshness: social-pulse\/_meta\.json$/, urgency: 'this-week', workflow: 'update-social-pulse.yml',
     humanFallback: 'Social Scorecard data is out of date. Runs Mondays — powers /trending pages. Stale >2 weeks means the workflow is failing.' },
+  // No `workflow` — there's no automated fix, this just needs a human to look
+  // at the scoring workflow's polling. 'this-week' (not fix-now): a batch
+  // between 12-48h in flight is within the vendor's normal turnaround, not an
+  // emergency by itself — only worth paging once it recurs (see task #547).
+  { match: /^Scoring: batch state$/, urgency: 'this-week',
+    humanFallback: 'The nightly review-scoring batch is taking longer than expected to come back from the AI vendor. It usually resolves on its own within a day — this needs attention if it keeps recurring.' },
 
   // Sync — some auto-fixable
   { match: /^Sync: review-texts vs reviews\.json$/, urgency: 'fix-now', workflow: 'rebuild-reviews.yml',
@@ -742,10 +748,15 @@ function checkPipelines() {
 // before the state is silently dropped.
 const SCORING_BATCH_STATE_PATH = path.join(DATA_DIR, 'collection-state', 'scoring-batch-state.json');
 
-/** Pure so the age thresholds are testable without touching the filesystem. */
+/**
+ * Pure so the age thresholds are testable without touching the filesystem.
+ * Requires the same shape readBatchState() in index.ts requires (submittedAt +
+ * an array manifest) — a corrupt-but-parseable file (e.g. `{submittedAt}`
+ * alone) is not real batch state, and index.ts's own reader would ignore it.
+ */
 function batchStateResult(state) {
   const name = 'Scoring: batch state';
-  if (!state) {
+  if (!state || !state.submittedAt || !Array.isArray(state.manifest)) {
     return { name, status: 'pass', message: 'No batch in flight' };
   }
   const age = hoursAgo(state.submittedAt);
@@ -755,11 +766,16 @@ function batchStateResult(state) {
   const itemCount = state.itemCount || 0;
   const ageLabel = formatAge(age);
   if (age > 24) {
+    // index.ts itself only discards state past BATCH_STATE_MAX_AGE_HOURS=48 —
+    // this is deliberately earlier: vendors expire the underlying batch job at
+    // 24h, so results are already unrecoverable even though local bookkeeping
+    // won't self-clear for another day. That gap is exactly the lead time
+    // this check exists to surface, not a claim that 24h is the discard point.
     return {
       name,
       status: 'error',
-      message: `Batch in flight ${ageLabel} (${itemCount} reviews) — vendors expire batches at 24h, this should have resumed or been discarded by now`,
-      hint: 'Check the scoring workflow run history — the batch poller may be stuck or crashed before draining or discarding scoring-batch-state.json.',
+      message: `Batch in flight ${ageLabel} (${itemCount} reviews) — the vendor batch has expired (24h) and its results are no longer retrievable; local state self-clears at 48h unless a run resumes and re-submits first`,
+      hint: 'Check the scoring workflow run history for stalled/crashed polling — these reviews will be scored fresh once scoring-batch-state.json clears.',
     };
   }
   if (age > 12) {
@@ -2839,4 +2855,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult };
+module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState };
