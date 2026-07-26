@@ -39,7 +39,8 @@ export interface RawSocialPulse {
   volume: number;
   /** Pulse Index ranking strength — relevance-adjusted counter blend (schema v3). */
   effectiveVolume?: number;
-  positivePct: number;
+  /** null when there are zero opinion-bearing posts — distinct from a real 0%. */
+  positivePct: number | null;
   /** Opinion-bearing posts behind positivePct (schema v3). */
   opinionSample?: number;
   weekOverWeekPct: number | null;
@@ -69,6 +70,15 @@ export type TrendingPick = RawSocialPulse & { compositeScore: number };
  * thin; lower if markets don't fill.
  */
 export const MIN_TRENDING_VOLUME = 50;
+
+/**
+ * Minimum opinion-bearing posts behind `positivePct` before any sentiment
+ * (percentage or bar) renders on a card. Shared by SocialPulseCard (show
+ * page) and TrendingShowCard (/trending) so both surfaces apply the same
+ * "is this sample big enough to mean anything" bar — a 2-post "100%
+ * positive" is noise, not a signal. See 2026-07-26 credibility audit.
+ */
+export const MIN_OPINION_SAMPLE = 10;
 
 /**
  * Maximum age (days) of a social-pulse fetch before we treat it as stale and
@@ -156,9 +166,10 @@ function isValidRawPulse(raw: unknown): raw is RawSocialPulse {
     typeof r.market === 'string' &&
     typeof r.tier === 'string' &&
     typeof r.volume === 'number' &&
-    typeof r.positivePct === 'number' &&
     !Number.isNaN(r.volume) &&
-    !Number.isNaN(r.positivePct)
+    // positivePct is null when there's no opinion-bearing sample (schema v3) —
+    // a valid state, not a malformed file.
+    (r.positivePct === null || (typeof r.positivePct === 'number' && !Number.isNaN(r.positivePct)))
   );
 }
 
@@ -243,11 +254,14 @@ export function getTopTrendingShows(
       ...p,
       // Fallback mirrors compute-social-pulse-ranks.js: ranking strength is
       // the v3 effectiveVolume (Pulse Index) when present, legacy volume
-      // otherwise.
+      // otherwise. positivePct === null (no opinion sample) is treated as
+      // neutral 50 — same semantic as computeCompositeScore in the scorer
+      // lib — not 0, which would wrongly sink a loud, sentiment-unknown show
+      // below quiet zero-volume ones.
       compositeScore:
         typeof p.compositeScore === 'number'
           ? p.compositeScore
-          : ((p.effectiveVolume ?? p.volume) * p.positivePct) / 100,
+          : ((p.effectiveVolume ?? p.volume) * (typeof p.positivePct === 'number' ? p.positivePct : 50)) / 100,
     }))
     .sort((a, b) => {
       if (b.compositeScore !== a.compositeScore) return b.compositeScore - a.compositeScore;

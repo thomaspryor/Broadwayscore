@@ -21,7 +21,7 @@ export interface SocialPulsePayload {
   t: 'Buzzing' | 'Rising' | 'Steady' | 'Troubled' | 'BuildingBaseline' | 'Hidden';
   v: number;              // v3: TRUE weekly mention total (uncapped counters); v2: capped-sample count
   ev?: number;            // effective volume — Pulse Index ranking strength (schema v3, 2026-07)
-  p: number;              // positive %, 0-100
+  p: number | null;       // positive %, 0-100; null = zero opinion-bearing posts (distinct from real 0%)
   os?: number;            // opinion-bearing sample size behind `p` (schema v3)
   wow: number | null;     // week-over-week %
   bm?: number | null;     // baseline multiple (legacy, may be null)
