@@ -11,9 +11,13 @@
  * the ack reason) but stops erroring/emailing for a condition that is known,
  * tracked, and needs no action until the expiry forces re-triage.
  *
- * Scope guard — this acknowledges ONLY the burn-rate PROJECTION. An actually
- * exhausted SD balance (remaining <= 0) is a live incident and must stay
- * 'error' regardless of this ack; callers must check that case first.
+ * Scope guard — this acknowledges ONLY the burn-rate PROJECTION, and only
+ * while it still looks like the acknowledged fallthrough rather than a live
+ * incident (ship-check 2026-07-26): an actually exhausted balance
+ * (remaining <= 0), a nearly-dry balance (<= 5% left), or an exhaustion
+ * projected within 3 days all stay 'error' regardless of the ack — a runaway
+ * job or compromised key accelerates the projection into that window and
+ * un-hides itself.
  */
 
 'use strict';
@@ -38,6 +42,14 @@ function isScrapingdogBurnAcknowledged(today) {
  * @returns {{status:'pass'|'warn'|'error', message:string}}
  */
 function evaluateScrapingdogCredits(acct, today) {
+  // Contract guard (ship-check 2026-07-26): a malformed account response
+  // (missing/non-numeric fields) previously produced NaN math that fell
+  // through as a quiet 'pass'. Surface it as the same 'warn' the caller uses
+  // for an unexpected response instead.
+  if (!acct || !Number.isFinite(acct.requestLimit) || acct.requestLimit <= 0
+      || !Number.isFinite(acct.requestUsed) || acct.requestUsed < 0) {
+    return { status: 'warn', message: `Unexpected account response: ${JSON.stringify(acct).slice(0, 80)}` };
+  }
   const remaining = acct.requestLimit - acct.requestUsed;
   const pctRemaining = Math.round((remaining / acct.requestLimit) * 100);
   const daysToRenewal = typeof acct.validity === 'number' ? acct.validity : null;
@@ -51,9 +63,11 @@ function evaluateScrapingdogCredits(acct, today) {
     if (remaining <= 0) { status = 'error'; msg += ' · EXHAUSTED'; }
     else if (daysUntilExhaustion < daysToRenewal) {
       // Acknowledged burn spike (SB-exhaustion fallthrough, task #418):
-      // downgrade ONLY the projection to 'warn' — an actually exhausted
-      // balance (branch above) stays 'error' regardless of the ack.
-      if (isScrapingdogBurnAcknowledged(today)) {
+      // downgrade ONLY a non-imminent projection to 'warn'. Near-dry (<=5%)
+      // or exhausting within 3 days stays 'error' even while acknowledged —
+      // that is a live incident shape, not the acknowledged fallthrough
+      // (ship-check 2026-07-26, both reviewers).
+      if (isScrapingdogBurnAcknowledged(today) && pctRemaining > 5 && daysUntilExhaustion >= 3) {
         status = 'warn';
         msg += ` · exhausts in ~${Math.round(daysUntilExhaustion)}d (BEFORE renewal) — acknowledged: ${SCRAPINGDOG_ACKNOWLEDGED_BURN.reason} [expires ${SCRAPINGDOG_ACKNOWLEDGED_BURN.expires}]`;
       } else {

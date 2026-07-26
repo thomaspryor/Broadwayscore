@@ -209,7 +209,7 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
   });
 
   test('workflow env carries the gate flags + email secrets (a dropped line fails THIS test, not silently enables ingest)', () => {
-    for (const needle of ['WE_GAP_INGEST', 'WE_GAP_REFERENCE_DISABLED', 'RESEND_API_KEY', 'OWNER_EMAIL']) {
+    for (const needle of ['WE_GAP_INGEST', 'WE_GAP_REFERENCE_DISABLED', 'SERP_CENSUS_INGEST', 'RESEND_API_KEY', 'OWNER_EMAIL']) {
       assert.ok(wfSrc.includes(needle), `audit-aggregator-gap.yml env must include ${needle}`);
     }
   });

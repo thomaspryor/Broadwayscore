@@ -30,6 +30,30 @@ test('actually exhausted balance stays error even while acknowledged', () => {
   assert.match(r.message, /EXHAUSTED/);
 });
 
+test('near-dry balance (<=5% left) stays error even while acknowledged (ship-check P1)', () => {
+  // 1% left, projects exhaustion — the ack must NOT swallow this: SD is one
+  // day from silently dumping all traffic onto BD.
+  const r = evaluateScrapingdogCredits({ requestLimit: 1000000, requestUsed: 995000, validity: 10 }, '2026-07-26');
+  assert.equal(r.status, 'error');
+  assert.doesNotMatch(r.message, /acknowledged/);
+});
+
+test('exhaustion projected within 3 days stays error even while acknowledged (runaway-spike shape)', () => {
+  // 20% left but burning so fast it dies in ~2 days — that is not the gradual
+  // SB-fallthrough the ack covers.
+  const r = evaluateScrapingdogCredits({ requestLimit: 1000000, requestUsed: 800000, validity: 20 }, '2026-07-26');
+  assert.equal(r.status, 'error');
+  assert.doesNotMatch(r.message, /acknowledged/);
+});
+
+test('malformed account response reports warn, not NaN pass (ship-check contract guard)', () => {
+  for (const bad of [null, {}, { requestLimit: 'a lot', requestUsed: 5 }, { requestLimit: 0, requestUsed: 0 }, { requestLimit: 1000000 }]) {
+    const r = evaluateScrapingdogCredits(bad, '2026-07-26');
+    assert.equal(r.status, 'warn', `expected warn for ${JSON.stringify(bad)}`);
+    assert.match(r.message, /Unexpected account response/);
+  }
+});
+
 test('healthy account → pass', () => {
   const r = evaluateScrapingdogCredits({ requestLimit: 1000000, requestUsed: 100000, validity: 25 }, '2026-07-26');
   assert.equal(r.status, 'pass');
