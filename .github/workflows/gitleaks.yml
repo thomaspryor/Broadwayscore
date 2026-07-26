@@ -23,7 +23,9 @@ on:
 
 concurrency:
   group: gitleaks-${{ github.ref }}
-  cancel-in-progress: true
+  # Cancel superseded PR runs, but never cancel on main — a secret scan that gets
+  # cancelled by the next commit reports nothing and looks identical to a clean run.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   scan:
