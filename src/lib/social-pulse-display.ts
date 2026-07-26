@@ -19,6 +19,18 @@
  */
 export const MIN_OPINION_SAMPLE = 10;
 
+/** Minimal shape the predicate actually reads — object args (not positional)
+ *  so callers can't transpose positivePct/opinionSample. Both fields widen to
+ *  the same `number | null | undefined` type, so a positional
+ *  `(opinionSample, positivePct)` call compiled cleanly and silently returned
+ *  wrong answers (e.g. a 2-post show showing "100% positive") — confirmed by
+ *  an independent review during the 2026-07-26 fix. Named fields close that
+ *  hole: there's no argument order to get wrong. */
+interface SentimentSignals {
+  positivePct: number | null | undefined;
+  opinionSample?: number | null;
+}
+
 /**
  * True when a card may display sentiment for a show.
  *
@@ -35,10 +47,7 @@ export const MIN_OPINION_SAMPLE = 10;
  * entirely; those keep rendering (they've always had a numeric percentage) so
  * the fix doesn't blank out shows whose data simply hasn't been regenerated.
  */
-export function shouldShowSentiment(
-  positivePct: number | null | undefined,
-  opinionSample: number | null | undefined,
-): boolean {
+export function shouldShowSentiment({ positivePct, opinionSample }: SentimentSignals): boolean {
   if (typeof positivePct !== 'number' || Number.isNaN(positivePct)) return false;
   if (opinionSample === undefined || opinionSample === null) return true;
   return opinionSample >= MIN_OPINION_SAMPLE;
