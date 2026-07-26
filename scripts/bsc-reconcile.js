@@ -46,6 +46,7 @@ const REPORT_PATH = path.join(REPO, 'data', 'audit', 'reconcile-report.jsonl');
 const DRY = process.argv.includes('--dry-run');
 const MAX_RETRIES_PER_TICK = 2;
 const MAX_RETRIES_PER_DAY = 6;
+const GRACE_MS = 2 * 60 * 1000; // startup window before pid:null counts as dead
 
 function report(line) {
   const entry = { ts: new Date().toISOString(), ...line };
@@ -70,16 +71,19 @@ async function main() {
 
   for (const job of open) {
     const lease = readLease(job.taskId);
-    // Lease gone AND job open: the runner crashed between spawn-record and
-    // terminal-record, or the lease was swept. Either way nothing can be
-    // running for it that we know how to find — orphan it.
+    // STARTUP GRACE (ship-check Codex blocker): a freshly-acquired lease has
+    // pid:null until claude-cli's onSpawn lands. Treating that window as dead
+    // would orphan a healthy job at t+0 and let a duplicate dispatch in.
+    // Anything younger than the grace window is presumed starting.
+    const leaseAgeMs = lease && lease.acquiredAt ? Date.now() - Date.parse(lease.acquiredAt) : Infinity;
+    const starting = lease && lease.jobId === job.jobId && leaseAgeMs < GRACE_MS;
     const alive = lease && lease.jobId === job.jobId && pidLooksLikeClaude(lease.pid);
-    if (alive) continue;
+    if (alive || starting) continue;
     orphaned++;
     orphans.push({ job, lease });
     if (!DRY) {
       ledger.appendEntry({ event: ledger.JOB_EVENTS.ORPHANED, taskId: job.taskId, jobId: job.jobId, subject: job.subject || '', hadLease: Boolean(lease) });
-      releaseLease(job.taskId);
+      releaseLease(job.taskId, job.jobId); // ownership-checked: never removes a replacement job's lease
     }
     report({ kind: 'orphan', taskId: job.taskId, jobId: job.jobId, detail: `job ${job.jobId} (task #${job.taskId} ${job.subject || ''}) has no live claude process` });
   }
@@ -95,7 +99,10 @@ async function main() {
       }
       const alreadyRetried = entries.some(e => e.event === ledger.JOB_EVENTS.RETRIED && e.jobId === job.jobId);
       const sessionId = (lease && lease.sessionId) || job.sessionId;
-      if (alreadyRetried || !sessionId || !job.cwd) continue; // one retry per job, resume needs session+cwd
+      // Resume is cwd-scoped: no session, no cwd, or a torn-down worktree ⇒
+      // resuming is impossible — leave it orphaned for the digest instead of
+      // logging a doomed "resuming" line (ship-check Codex finding).
+      if (alreadyRetried || !sessionId || !job.cwd || !fs.existsSync(job.cwd)) continue;
       budget--;
       ledger.appendEntry({ event: ledger.JOB_EVENTS.RETRIED, taskId: job.taskId, jobId: job.jobId, sessionId });
       report({ kind: 'retry', taskId: job.taskId, jobId: job.jobId, detail: `resuming session ${sessionId} for task #${job.taskId}` });

@@ -412,6 +412,18 @@ function main(argv = process.argv.slice(2), deps = {}) {
       console.error('[bsc-next] BSC_RUNNER_DISABLED=1 — headless runner is switched off; rerun without --headless for a cmux tab.');
       process.exit(1);
     }
+    // The runner's lease only sees other HEADLESS jobs — a live cmux tab on
+    // the same task is invisible to it. Keep the cross-dispatcher duplicate
+    // guard here (ship-check Codex blocker): refuse if an un-✅ tab matches.
+    if (!args.force && cmuxAvailableFn()) {
+      try {
+        const dupTab = findLiveWorkspaceForTask(task, listWorkspacesFn(), isDoneTitleFn);
+        if (dupTab) {
+          console.error(`[bsc-next] a live cmux workspace already matches task #${task.id}: ${dupTab.ref} "${dupTab.title}". Refusing headless duplicate (--force to override).`);
+          process.exit(1);
+        }
+      } catch (e) { console.error(`[bsc-next] tab duplicate check failed (continuing): ${e.message}`); }
+    }
     const { runJob } = require('./lib/bsc-runner.js');
     console.log(`[bsc-next] headless job starting on #${task.id}: ${task.subject} (model ${model})`);
     const verifyH = extractVerifyCmd((card && card.notes) || task.description || '', isSafeCheckCommand);

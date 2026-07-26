@@ -29,13 +29,18 @@ test('foldJobs: last event wins, non-job events ignored', () => {
   assert.equal(jobs.size, 2);
 });
 
-test('openJobs: terminal states excluded, spawned/retried included', () => {
+test('openJobs: terminal states excluded — done/failed/orphaned AND retried (superseded)', () => {
   const entries = [
     { event: E.SPAWNED, taskId: 1, jobId: 'a' },
     { event: E.FAILED, taskId: 1, jobId: 'a', stage: 'timeout' },
     { event: E.SPAWNED, taskId: 2, jobId: 'b' },
     { event: E.SPAWNED, taskId: 3, jobId: 'c' },
     { event: E.ORPHANED, taskId: 3, jobId: 'c' },
+    // retry closes the OLD job id — the retry runs under a NEW id, so leaving
+    // this open would make it a permanent ghost re-orphaned every tick
+    { event: E.SPAWNED, taskId: 4, jobId: 'd' },
+    { event: E.ORPHANED, taskId: 4, jobId: 'd' },
+    { event: E.RETRIED, taskId: 4, jobId: 'd' },
   ];
   const open = ledger.openJobs(entries);
   assert.deepEqual(open.map(j => j.jobId), ['b']);

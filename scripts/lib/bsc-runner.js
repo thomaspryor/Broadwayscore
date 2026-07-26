@@ -79,8 +79,18 @@ function updateLease(taskId, patch) {
   catch { /* lease updates are best-effort; ledger is the source of truth */ }
 }
 
-function releaseLease(taskId) {
-  try { fs.rmSync(leaseDir(taskId), { recursive: true, force: true }); } catch { /* reconciler sweeps stragglers */ }
+// Ownership-checked release: pass the jobId you own and the lease is only
+// removed if it still belongs to that job — a stale runner/reconciler can
+// never delete a REPLACEMENT job's live lease (ship-check Codex blocker).
+// Omit jobId only for stale-sweep paths that have already verified the pid
+// is dead.
+function releaseLease(taskId, jobId = null) {
+  if (jobId) {
+    const cur = readLease(taskId);
+    if (cur && cur.jobId && cur.jobId !== jobId) return false;
+  }
+  try { fs.rmSync(leaseDir(taskId), { recursive: true, force: true }); return true; }
+  catch { return false; /* reconciler sweeps stragglers */ }
 }
 
 // Per-job worktree: deterministic path, branch from origin/main, kept if dirty.
@@ -162,7 +172,7 @@ async function runJob(opts) {
     // value is delivered — patching the SAME object keeps the field truthful.
     const kept = wtPath ? !teardownJobWorktree(wtPath, jobId) : false;
     if (out) out.keptWorktree = kept;
-    releaseLease(taskId);
+    releaseLease(taskId, jobId);
   }
 }
 

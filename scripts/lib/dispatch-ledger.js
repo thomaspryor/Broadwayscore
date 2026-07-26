@@ -113,7 +113,10 @@ const JOB_EVENTS = Object.freeze({
   RETRIED: 'job-retried',   // reconciler-initiated resume attempt (capped)
 });
 
-const TERMINAL_JOB_EVENTS = new Set([JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED]);
+// RETRIED is terminal for the OLD jobId: a retry supersedes it with a brand-new
+// job (its own spawned→done/failed chain). Leaving it open made the old id a
+// permanent ghost that every tick re-orphaned (ship-check Codex blocker).
+const TERMINAL_JOB_EVENTS = new Set([JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED, JOB_EVENTS.RETRIED]);
 
 // Latest job state per jobId: fold events, last one wins. Returns
 // Map<jobId, {jobId, taskId, event, ...lastEntryFields}>.
