@@ -20,14 +20,14 @@
 // re-run adds nothing.
 const DEFAULT_WINDOW_HOURS = 24;
 
-// Was the card marked Done inside the window? "Done recently" is a property
-// of when the card was COMPLETED, not when it was created — the original
-// ageDays (created_time) filter silently excluded almost every dispatched
-// card, because cards are usually older than the window by the time their
-// work finishes (2026-07-26 incident: 3 dispatched cards completed overnight,
-// recheck matched 0, every night since the recheck shipped). completedDate is
-// date-only (midnight UTC); lastEditedAt carries the real timestamp of the
-// Done flip, so the freshest of the two decides.
+// Was the card marked Done inside the window? Keyed on explicit completion
+// signals: completedDate (date-only, parses as midnight UTC) and lastEditedAt
+// (real timestamp of the Done flip) — freshest of the two decides. The old
+// filter used ageDays, which notion-brain derives from last_edited_time, so
+// it was a fuzzier proxy for the same thing; the 2026-07-26 incident's
+// primary killer was the Priority-sorted Done LISTING never containing
+// recently-completed cards at all (see notion-brain --sort edited). Explicit
+// stamps also survive future changes to how ageDays is derived.
 function doneWithinWindow(card, windowHours, now) {
   const cutoff = now - windowHours * 3600 * 1000;
   const stamps = [card.completedDate, card.lastEditedAt]

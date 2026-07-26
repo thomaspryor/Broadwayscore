@@ -96,11 +96,11 @@ test('describeResult speaks plainly, with no commands or ids', () => {
 });
 
 // ── done-time selection (2026-07-26 incident) ───────────────────────────────
-// The original filter used ageDays (time since card CREATION), so a card
-// created days ago and completed last night was invisible — the recheck
-// matched 0 targets every night since it shipped. Selection now keys on when
-// the card was marked Done (completedDate / lastEditedAt), with ageDays only
-// as a fallback when neither completion stamp exists.
+// The recheck matched 0 targets every night since it shipped — primary cause
+// was the Priority-sorted Done listing (fixed via notion-brain --sort edited);
+// selection now also keys on explicit completion stamps (completedDate /
+// lastEditedAt) instead of the derived ageDays proxy, with ageDays only as a
+// fallback when neither stamp exists.
 const NOW = Date.parse('2026-07-26T12:00:00Z');
 const { doneWithinWindow } = require('./autonomous-recheck-core.js');
 
