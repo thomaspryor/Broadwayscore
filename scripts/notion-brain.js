@@ -453,6 +453,46 @@ function validateCardNotes({ notes, status, force, context }) {
     };
   }
 
+  // Rule 4: the acceptance criteria must ARM the verification chain. bsc-next
+  // captures ONE backticked command at dispatch (scripts/lib/
+  // autonomous-verify-cmd.js) and the nightly acceptance recheck re-runs it
+  // after the card is marked Done — prose criteria dispatch unarmed, "Done"
+  // stays an unverifiable claim, and the recheck reports "not
+  // machine-verifiable" forever (owner escalation 2026-07-26: every launch in
+  // the dispatch ledger had verifyCmd: null). Cards whose outcome genuinely
+  // cannot be machine-checked say so explicitly with "VERIFY: owner-judgment".
+  const ownerJudgment = /VERIFY:\s*owner-judgment/i.test(notesStr);
+  if (!ownerJudgment) {
+    const armed = (() => {
+      try {
+        const { extractVerifyCmd } = require('./lib/autonomous-verify-cmd.js');
+        const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
+        return extractVerifyCmd(notesStr, isSafeCheckCommand);
+      } catch (e) {
+        // Validator modules unavailable (partial checkout): don't block card
+        // creation on our own tooling being missing.
+        return { cmd: 'validator-unavailable', reason: null };
+      }
+    })();
+    if (!armed.cmd) {
+      return {
+        ok: false,
+        reason: 'UNVERIFIABLE_ACCEPTANCE',
+        message:
+          `Acceptance criteria name no runnable command (${armed.reason}).\n\n` +
+          `The nightly recheck can only verify a Done card by RE-RUNNING a command captured at dispatch. ` +
+          `Put at least one backticked command in "## Acceptance criteria" whose exit code proves the work. ` +
+          `Allowed safe forms (scripts/lib/autonomous-triage-core.js SAFE_CHECK_FORMS):\n` +
+          `  - \`node --test scripts/lib/thing.test.mjs\` (a test file the work adds or extends)\n` +
+          `  - \`npx tsc --noEmit\` / \`npx next lint\`\n` +
+          `  - \`test -f scripts/new-file.js\`\n\n` +
+          `If this card's outcome truly cannot be machine-checked (a decision, an email, a design), add the line:\n` +
+          `  VERIFY: owner-judgment\n` +
+          `so the unverifiability is declared instead of accidental.`,
+      };
+    }
+  }
+
   return { ok: true };
 }
 
@@ -887,8 +927,14 @@ async function listCards(args) {
   const targetPageSize = Math.min(100, Math.max(limit, 50));
 
   // When filtering by --due, sort by Due Date asc (then Priority); otherwise
-  // keep the long-standing Priority-asc default.
-  const sorts = args.due !== undefined
+  // keep the long-standing Priority-asc default. --sort edited returns
+  // most-recently-edited first — the acceptance recheck depends on this: a
+  // Priority-sorted Done listing hands back the 50 highest-priority Done cards
+  // EVER, so freshly-completed work never appears and the recheck starves
+  // (2026-07-26 incident: 0 targets every night since it shipped).
+  const sorts = args.sort === 'edited'
+    ? [{ timestamp: 'last_edited_time', direction: 'descending' }]
+    : args.due !== undefined
     ? [
         { property: 'Due Date', direction: 'ascending' },
         { property: 'Priority', direction: 'ascending' },
@@ -919,13 +965,18 @@ async function listCards(args) {
   }
   results = results.slice(0, limit);
 
-  // Compact table output for quick scanning
+  // Compact table output for quick scanning. completedDate/lastEditedAt ride
+  // along because the acceptance recheck keys "Done recently" on completion
+  // time — ageDays measures CREATION age and silently excluded almost every
+  // dispatched card (2026-07-26 incident).
   const table = results.map(c => ({
     name: c.name,
     status: c.status,
     priority: c.priority,
     dueDate: c.dueDate,
     ageDays: c.ageDays,
+    completedDate: c.completedDate ?? null,
+    lastEditedAt: c.lastEditedAt ?? null,
     tags: c.tags.join(', '),
     id: c.id,
   }));
@@ -1029,6 +1080,9 @@ Options (search/list):
                             Paginates through all results so the age filter
                             sees the full DB, not just the first page.
   --fresh-days N            (list only) Only cards edited within last N days.
+  --sort edited             (list only) Most-recently-edited first instead of
+                            the Priority-asc default. Use for "what changed
+                            lately" queries — e.g. recently-completed cards.
   --due WHEN                (list only) Filter by Due Date. WHEN is one of:
                             today, tomorrow, overdue, this-week, upcoming,
                             none, any, or an explicit YYYY-MM-DD.

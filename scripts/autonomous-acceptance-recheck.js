@@ -178,7 +178,10 @@ function main(argv = process.argv.slice(2)) {
 
   const DONE_LIST_LIMIT = 50;
   let doneCards = [];
-  try { doneCards = notionBrain(['list', '--status', 'Done', '--limit', String(DONE_LIST_LIMIT)]); }
+  // --sort edited: most-recently-touched Done cards first. The default
+  // Priority sort returns the highest-priority Done cards EVER, so the cards
+  // completed last night were never in the page (2026-07-26 root cause).
+  try { doneCards = notionBrain(['list', '--status', 'Done', '--limit', String(DONE_LIST_LIMIT), '--sort', 'edited']); }
   catch (err) {
     console.error(`[recheck] could not list Done cards: ${String(err.message).slice(0, 200)}`);
     if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Notion listing failed: ${String(err.message).slice(0, 200)}` });

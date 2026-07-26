@@ -20,18 +20,39 @@
 // re-run adds nothing.
 const DEFAULT_WINDOW_HOURS = 24;
 
+// Was the card marked Done inside the window? "Done recently" is a property
+// of when the card was COMPLETED, not when it was created — the original
+// ageDays (created_time) filter silently excluded almost every dispatched
+// card, because cards are usually older than the window by the time their
+// work finishes (2026-07-26 incident: 3 dispatched cards completed overnight,
+// recheck matched 0, every night since the recheck shipped). completedDate is
+// date-only (midnight UTC); lastEditedAt carries the real timestamp of the
+// Done flip, so the freshest of the two decides.
+function doneWithinWindow(card, windowHours, now) {
+  const cutoff = now - windowHours * 3600 * 1000;
+  const stamps = [card.completedDate, card.lastEditedAt]
+    .map(v => Date.parse(v))
+    .filter(Number.isFinite);
+  if (stamps.length) return Math.max(...stamps) >= cutoff;
+  // No completion signal at all: fall back to creation age, still requiring an
+  // actual number (Number(null) coerces to 0, which is finite and would put an
+  // unknown-age card inside EVERY window — the very hole the old guard's
+  // comment described but didn't close).
+  return typeof card.ageDays === 'number' && Number.isFinite(card.ageDays) && card.ageDays <= windowHours / 24;
+}
+
 /**
  * Which Done cards should be re-checked tonight, and with what.
  *
  * @param {object} o
- * @param {{id:string,name:string,ageDays:number}[]} o.doneCards - notion-brain list --status Done
+ * @param {{id:string,name:string,ageDays:number,completedDate?:string|null,lastEditedAt?:string|null}[]} o.doneCards - notion-brain list --status Done --sort edited
  * @param {{event:string,taskId:string,notionId?:string,verifyCmd?:string|null,verifyReason?:string|null,subject?:string,ts?:string}[]} o.launchEntries - dispatch-ledger
  * @param {number} [o.windowHours]
  * @param {(cardId:string)=>boolean} [o.isClaimed] - a card someone is actively working RIGHT NOW is skipped
+ * @param {number} [o.now] - injectable clock for tests
  * @returns {{cardId:string,name:string,verifyCmd:string|null,reason:string|null,skip:string|null}[]}
  */
-function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_WINDOW_HOURS, isClaimed = () => false }) {
-  const windowDays = windowHours / 24;
+function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_WINDOW_HOURS, isClaimed = () => false, now = Date.now() }) {
   // Latest launch per card wins: a card dispatched twice should be re-checked
   // with the command from its most recent dispatch, not a stale earlier one.
   const byCard = new Map();
@@ -44,10 +65,7 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
   const out = [];
   for (const card of doneCards || []) {
     if (!card || !card.id) continue;
-    // Number(null) is 0, which would put an unknown-age card inside EVERY
-    // window (ship-check finding) — require a real number.
-    const age = Number(card.ageDays);
-    if (!Number.isFinite(age) || !(age <= windowDays)) continue;
+    if (!doneWithinWindow(card, windowHours, now)) continue;
     const launch = byCard.get(card.id);
     if (!launch) continue; // never dispatched through bsc-next — nothing was captured to re-run
     if (isClaimed(card.id)) {
@@ -108,6 +126,7 @@ function describeResult(r) {
 module.exports = {
   DEFAULT_WINDOW_HOURS,
   SHADOW_EXIT,
+  doneWithinWindow,
   selectRecheckTargets,
   summarize,
   shouldExitShadow,

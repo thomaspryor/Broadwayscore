@@ -395,6 +395,27 @@ function main(argv = process.argv.slice(2), deps = {}) {
     return;
   }
 
+  // Verification-chain gate (owner escalation 2026-07-26): every launch in the
+  // dispatch ledger to date carried verifyCmd: null — prose acceptance
+  // criteria dispatch UNARMED, the nightly acceptance recheck has nothing to
+  // re-run, and "Done" stays a self-reported claim forever. Refuse to launch
+  // unarmed. A card whose outcome genuinely cannot be machine-checked declares
+  // it with "VERIFY: owner-judgment" in its notes; --allow-unverifiable is the
+  // explicit, ledger-visible per-dispatch override.
+  const gateNotes = (card && card.notes) || task.description || '';
+  const verifyGate = extractVerifyCmd(gateNotes, isSafeCheckCommand);
+  const ownerJudgmentCard = /VERIFY:\s*owner-judgment/i.test(gateNotes);
+  if (!verifyGate.cmd && !ownerJudgmentCard && !args['allow-unverifiable']) {
+    console.error(`[bsc-next] REFUSING to dispatch #${task.id}: no runnable verify command (${verifyGate.reason}).`);
+    console.error(`  The nightly acceptance recheck can only verify Done work by re-running a command captured at dispatch.`);
+    console.error(`  Fix one of:`);
+    console.error(`    1. Add a backticked safe-form command to the card's "## Acceptance criteria":`);
+    console.error(`       node --test <file>.test.mjs | npx tsc --noEmit | npx next lint | test -f <path>`);
+    console.error(`    2. Add "VERIFY: owner-judgment" to the card if this outcome cannot be machine-checked.`);
+    console.error(`    3. Re-run with --allow-unverifiable to dispatch anyway (verifyCmd stays null in the ledger).`);
+    process.exit(1);
+  }
+
   if (args.exec) {
     // Run an interactive claude on the seed in this terminal (no Cmux).
     const r = spawnSync('claude', ['--model', model, '--dangerously-skip-permissions', seed], { stdio: 'inherit', cwd: REPO });
@@ -426,7 +447,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     }
     const { runJob } = require('./lib/bsc-runner.js');
     console.log(`[bsc-next] headless job starting on #${task.id}: ${task.subject} (model ${model})`);
-    const verifyH = extractVerifyCmd((card && card.notes) || task.description || '', isSafeCheckCommand);
+    const verifyH = verifyGate; // extracted once at the dispatch gate above
     // Same 'launch' journal entry as the cmux path (Opus ship-check P1): the
     // acceptance recheck keys on event==='launch' && notionId, and the
     // verifyCmd must be captured while the card text is in hand — otherwise
@@ -503,8 +524,9 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // fresh main days later to turn "someone marked this Done" into a fact.
     // null is a legitimate, recorded answer — a card whose criteria is prose
     // is listed as "not machine-verifiable", never guessed at.
-    const verify = extractVerifyCmd((card && card.notes) || task.description || '', isSafeCheckCommand);
+    const verify = verifyGate; // extracted once at the dispatch gate above
     if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
+    if (verify.cmd) console.log(`  verify armed: ${verify.cmd}`);
     try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, notionId: pid || null }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else {
