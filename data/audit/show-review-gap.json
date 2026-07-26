@@ -1,34 +1,622 @@
 {
-  "generatedAt": "2026-07-26T20:24:00.354Z",
+  "generatedAt": "2026-07-26T21:19:30.147Z",
   "windowDays": 1095,
-  "targets": 64,
+  "targets": 57,
   "counts": {
-    "withGap": 7,
-    "totalMissing": 18,
+    "withGap": 5,
+    "totalMissing": 17,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 11,
+    "totalFlaggedMisses": 25,
     "totalRecoverable": 0,
     "totalRecovered": 0
   },
   "results": [
     {
-      "showId": "the-saviors-off-broadway-2026",
-      "title": "The Saviors",
-      "openingDate": "2026-07-27",
-      "status": "previews",
+      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
+      "title": "Rosie O'Donnell: Common Knowledge",
+      "openingDate": "2026-07-25",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://deadline.com/2026/07/rosie-odonnell-common-knowledge-off-broadway-1237003334/",
+        "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons"
+      ],
+      "dirFiles": 1,
+      "dirClean": 1,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons",
+          "host": "sparkhamptons.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Rosie O'Donnell: Common Knowledge\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Rosie O'Donnell: Common Knowledge\" Off-Broadway review 2026",
+            "ok": true,
+            "results": 8,
+            "error": null
+          },
+          {
+            "query": "\"Rosie O'Donnell: Common Knowledge\" review daryl",
+            "ok": true,
+            "results": 7,
+            "error": null
+          }
+        ],
+        "queriesOk": 2,
+        "resultCount": 2,
+        "error": null
+      },
+      "ingestResults": [
+        {
+          "url": "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons",
+          "host": "sparkhamptons.com",
+          "outletId": "sparkhamptons",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "hungry-women-off-broadway-2026",
+      "title": "Hungry Women",
+      "openingDate": "2026-07-25",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Hungry Women\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Hungry Women\" Off-Broadway review 2026",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Hungry Women\" review soho",
+            "ok": true,
+            "results": 6,
+            "error": null
+          }
+        ],
+        "queriesOk": 2,
+        "resultCount": 0,
+        "error": null
+      }
+    },
+    {
+      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
+      "title": "Dear England (New Wimbledon Theatre)",
+      "openingDate": "2026-02-24",
+      "status": "announced",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-ladies-football-club-sheffield-crucible-review/",
+        "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour",
+        "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre",
+        "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre",
+        "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
+        "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
+        "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution",
+        "https://www.timeout.com/london/theatre/dear-england-review",
+        "https://www.timeout.com/london/theatre/dear-england-review-2",
+        "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-olivier-review-joseph-fiennes-gareth-southgate/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
+        "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/",
+        "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport",
+        "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre",
+        "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre",
+        "https://theartsdesk.com/theatre/dear-england-national-theatre-review-extra-time-stirring-soccer-classic",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dear-england-review-national-theatre-b2361490.html",
+        "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate"
+      ],
+      "dirFiles": 19,
+      "dirClean": 1,
+      "inReviewsJson": 2,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-ladies-football-club-sheffield-crucible-review/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--dominic-cavendish.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "all-that-dazzles-uk--daz-gale.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre#:~:text=A%20beautiful%20production%20about%20the,would%20be%20very%20well%20deserved."
+            },
+            {
+              "file": "all-that-dazzles-uk--sam-waite.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour"
+            }
+          ]
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--aliya-al-hassan.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre"
+            },
+            {
+              "file": "london-theatre--marianka-swain.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre"
+            }
+          ]
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--aliya-al-hassan.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre"
+            },
+            {
+              "file": "london-theatre--marianka-swain.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre"
+            }
+          ]
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "standard--nick-curtis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "standard--nick-curtis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--arifa-akbar.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution"
+            },
+            {
+              "file": "guardian--mark-lawson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/dear-england-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--andrzej-lukowski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/london/theatre/dear-england-review-2"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/dear-england-review-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--andrzej-lukowski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/london/theatre/dear-england-review-2"
+            }
+          ]
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-olivier-review-joseph-fiennes-gareth-southgate/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--dominic-cavendish.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--dominic-cavendish.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--sarah-crompton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/"
+            }
+          ]
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "artsdesk--demetrios-matheou.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-extra-time-stirring-soccer-classic"
+            },
+            {
+              "file": "artsdesk--matt-wolf.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport"
+            }
+          ]
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "all-that-dazzles-uk--daz-gale.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre#:~:text=A%20beautiful%20production%20about%20the,would%20be%20very%20well%20deserved."
+            },
+            {
+              "file": "all-that-dazzles-uk--sam-waite.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--arifa-akbar.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution"
+            },
+            {
+              "file": "guardian--mark-lawson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre"
+            }
+          ]
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-extra-time-stirring-soccer-classic",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "artsdesk--demetrios-matheou.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-extra-time-stirring-soccer-classic"
+            },
+            {
+              "file": "artsdesk--matt-wolf.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport"
+            }
+          ]
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dear-england-review-national-theatre-b2361490.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "independent--jessie-thompson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dear-england-review-national-theatre-b2361490.html"
+            },
+            {
+              "file": "independent--jessie-thomspon.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dear-england-review-national-theatre-b2361490.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--alistair-smith.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "title": "The Hunger Games On Stage",
+      "openingDate": "2025-11-28",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Di-the-Critics-Think-of-THE-HUNGER-GAMES-ON-STAGE-20251113"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/hunger-games-on-stage-west-end/",
+        "https://www.theguardian.com/stage/2025/nov/13/the-hunger-games-on-stage-review-thundering-fight-to-the-death-in-a-dazzling-dystopia",
+        "https://www.thetimes.com/culture/theatre-dance/article/hunger-games-on-stage-review-zczllb0bj",
+        "https://www.thestage.co.uk/reviews/the-hunger-games-on-stage-review-troubadour-canary-wharf-theatre-london",
+        "https://www.timeout.com/london/news/review-the-hunger-games-on-stage-111225",
+        "https://inews.co.uk/culture/arts/hunger-games-stage-show-everything-wrong-4025669"
+      ],
+      "dirFiles": 29,
+      "dirClean": 17,
+      "inReviewsJson": 24,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "dailymail.co.uk",
+          "count": 1
+        },
+        {
+          "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "standard.co.uk",
+          "count": 1
+        },
+        {
+          "host": "therecs.co.uk",
+          "count": 1
+        },
+        {
+          "host": "spectator.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "dark-of-the-moon-west-end-2026",
+      "title": "Dark of the Moon",
+      "openingDate": "2026-05-26",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "title": "War Horse",
+      "openingDate": "2026-06-02",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-WAR-HORSE-Hits-the-Silver-Screen-20111217"
+      ],
       "aggregatorListedUrls": [
         "https://dalyklerwhmui.cloudfront.net",
         "https://fonts.gstatic.com",
         "https://fonts.googleapis.com/css2",
         "https://maps.google.com/",
+        "https://youtu.be/iY5YMshpCcw",
         "https://www.todaytixgroup.com/careers",
         "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 57,
+      "dirClean": 26,
+      "inReviewsJson": 25,
       "missing": [
         {
           "url": "https://dalyklerwhmui.cloudfront.net",
@@ -51,6 +639,11 @@
           "knownOutletId": null
         },
         {
+          "url": "https://youtu.be/iY5YMshpCcw",
+          "host": "youtu.be",
+          "knownOutletId": null
+        },
+        {
           "url": "https://www.todaytixgroup.com/careers",
           "host": "todaytixgroup.com",
           "knownOutletId": null
@@ -61,7 +654,100 @@
           "knownOutletId": null
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
+          "host": "britishtheatreguide.info",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 3
+        },
+        {
+          "host": "cityam.com",
+          "count": 1
+        },
+        {
+          "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "radiotimes.com",
+          "count": 1
+        },
+        {
+          "host": "southlondon.co.uk",
+          "count": 1
+        },
+        {
+          "host": "standard.co.uk",
+          "count": 1
+        },
+        {
+          "host": "telegraph.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatrevibe.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatrecat.com",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theupcoming.co.uk",
+          "count": 1
+        },
+        {
+          "host": "timeout.com",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
+          "count": 2
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendwilma.com",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -76,7 +762,7 @@
           "outletId": "cloudfront",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog daily pace (~45245/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
+          "reason": "⚠️  Scrapingdog daily pace (~45551/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
         },
         {
           "url": "https://fonts.gstatic.com",
@@ -84,7 +770,7 @@
           "outletId": "gstatic",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog daily pace (~45252/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
+          "reason": "⚠️  Scrapingdog daily pace (~45551/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
         },
         {
           "url": "https://fonts.googleapis.com/css2",
@@ -92,7 +778,7 @@
           "outletId": "googleapis",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog daily pace (~45252/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
+          "reason": "⚠️  Scrapingdog daily pace (~45551/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
         },
         {
           "url": "https://maps.google.com/",
@@ -103,15 +789,20 @@
           "reason": "Fetch returned no usable HTML (got 442 chars)"
         },
         {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "outletId": "todaytixgroup",
+          "url": "https://youtu.be/iY5YMshpCcw",
+          "host": "youtu.be",
+          "outletId": "youtu",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog daily pace (~45255/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
+          "reason": "⚠️  Scrapingdog daily pace (~45551/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
         }
       ],
       "ingestSkippedByCap": [
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup"
+        },
         {
           "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
           "host": "google.com",
@@ -120,270 +811,53 @@
       ]
     },
     {
-      "showId": "trainspotting-the-musical-west-end-2026",
-      "title": "Trainspotting the musical",
-      "openingDate": "2026-07-22",
-      "status": "open",
-      "category": "west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
-        "https://www.telegraph.co.uk/theatre/what-to-see/irvine-welsh-cast-proper-old-school-musical-trainspotting/",
-        "https://www.timeout.com/london/news/review-trainspotting-the-musical-at-theatre-royal-haymarket-072326",
-        "https://www.thestage.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
-        "https://www.telegraph.co.uk/theatre/what-to-see/muddled-trainspotting-musical-review/",
-        "https://www.standard.co.uk/culture/theatre/trainspotting-the-musical-review-b1290870.html",
-        "https://www.theguardian.com/stage/2026/jul/23/trainspotting-the-musical-review-forgettable-songs-make-this-a-bad-trip",
-        "https://www.whatsonstage.com/news/trainspotting-the-musical-review-signal-failure_1727899/"
-      ],
-      "dirFiles": 46,
-      "dirClean": 25,
-      "inReviewsJson": 25,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theartsdesk.com",
-          "count": 2
-        },
-        {
-          "host": "cityam.com",
-          "count": 1
-        },
-        {
-          "host": "ft.com",
-          "count": 1
-        },
-        {
-          "host": "independent.co.uk",
-          "count": 1
-        },
-        {
-          "host": "jonathanbaz.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "musicaltheatrereview.com",
-          "count": 1
-        },
-        {
-          "host": "nytimes.com",
-          "count": 1
-        },
-        {
-          "host": "playsinternational.org.uk",
-          "count": 1
-        },
-        {
-          "host": "radiotimes.com",
-          "count": 1
-        },
-        {
-          "host": "soundspheremag.com",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "theupcoming.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thetimes.com",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 7,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": true,
-            "rows": 7,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 7,
-        "corroborated": 7,
-        "perSource": {
-          "theatre-reviews": {
-            "cited": 7,
-            "corroborated": 7
-          }
-        }
-      },
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Trainspotting the musical\" West End review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Trainspotting the musical\" West End review 2026",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Trainspotting the musical\" Welsh review",
-            "ok": true,
-            "results": 9,
-            "error": null
-          }
-        ],
-        "queriesOk": 2,
-        "resultCount": 3,
-        "error": null
-      }
-    },
-    {
-      "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
-      "title": "Hugo Marchand | Artists at the Center",
-      "openingDate": "2026-07-23",
+      "showId": "gotta-dance-off-broadway-2026",
+      "title": "Gotta Dance!",
+      "openingDate": "2026-03-20",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-the-critics-think-of-gotta-dance-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-GOTTA-DANCE-Opens-Off-Broadway-at-the-York-Theatre-20251204"
+      ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2026/07/22/arts/dance/hugo-marchand-paris-opera-ballet-new-york-city-center.html",
-        "https://www.broadwayworld.com/bwwdance/article/Review-HUGO-MARCHAND-Artists-at-the-Center-at-NY-City-Center-Just-Marvelous-20260724"
+        "https://1minutecritic.com/gotta-dance-york-theatre-review/",
+        "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
+        "https://nystagereview.com/2025/12/03/gotta-dance-gotta-dance-better-than-this/",
+        "https://therecs.co.uk/gotta-dance/",
+        "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
+        "https://www.talkinbroadway.com/page/ob/03_31_26.html",
+        "https://www.theaterscene.net/musicals/offbway/gotta-dance-2/christopher-caz/",
+        "https://theaterlife.com/gotta-dance-1-2/",
+        "https://pagesonstages.com/2026/03/31/gotta-dance/",
+        "https://www.theaterscene.net/dance/gotta-dance/victor-gluck/",
+        "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html"
       ],
-      "dirFiles": 2,
-      "dirClean": 1,
-      "inReviewsJson": 1,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.nytimes.com/2026/07/22/arts/dance/hugo-marchand-paris-opera-ballet-new-york-city-center.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--marina-harss.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nytimes.com/2026/07/22/arts/dance/hugo-marchand-paris-opera-ballet-new-york-city-center.html"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Hugo Marchand | Artists at the Center\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Hugo Marchand | Artists at the Center\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Hugo Marchand | Artists at the Center\" review york",
-            "ok": true,
-            "results": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 2,
-        "resultCount": 2,
-        "error": null
-      }
-    },
-    {
-      "showId": "are-you-mad-at-me-off-broadway-2026",
-      "title": "Are You Mad At Me??",
-      "openingDate": "2026-07-20",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/review-bryan-safi-cares-about-what-you-think-of-him-in-are-you-mad-at-me_1846312/",
-        "https://www.broadwayworld.com/reviews/are-you-mad-at-me",
-        "https://1minutecritic.com/bryan-safi-are-you-mad-at-me-review/",
-        "https://1minutecritic.substack.com/p/bryan-safi-are-you-mad-at-me-review"
-      ],
-      "dirFiles": 3,
-      "dirClean": 1,
-      "inReviewsJson": 1,
+      "dirFiles": 16,
+      "dirClean": 6,
+      "inReviewsJson": 5,
       "missing": [
         {
-          "url": "https://1minutecritic.substack.com/p/bryan-safi-are-you-mad-at-me-review",
-          "host": "1minutecritic.substack.com",
-          "knownOutletId": null,
-          "serpCensus": true
+          "url": "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [
+      "dirOnly": [
         {
-          "url": "https://www.broadwayworld.com/reviews/are-you-mad-at-me",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--unknown.json",
-              "flag": "roundup",
-              "urlInDir": "https://www.broadwayworld.com/reviews/are-you-mad-at-me"
-            }
-          ],
-          "serpCensus": true
+          "host": "frontmezzjunkies.com",
+          "count": 1
         },
         {
-          "url": "https://1minutecritic.com/bryan-safi-are-you-mad-at-me-review/",
+          "host": "theaterpizzazz.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://1minutecritic.com/gotta-dance-york-theatre-review/",
           "host": "1minutecritic.com",
           "knownOutletId": "one-minute-critic",
           "recoverable": false,
@@ -393,581 +867,109 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "one-minute-critic--jerry-portwood.json",
+              "file": "one-minute-critic--matthew-wexler.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://1minutecritic.com/bryan-safi-are-you-mad-at-me-review/?utm_source=rss&"
+              "urlInDir": "https://1minutecritic.com/gotta-dance-york-theatre-review/"
             }
           ],
-          "serpCensus": true
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/12/03/gotta-dance-gotta-dance-better-than-this/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2025/12/03/gotta-dance-gotta-dance-better-than-this/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://therecs.co.uk/gotta-dance/",
+          "host": "therecs.co.uk",
+          "knownOutletId": "the-recs",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-recs--the-recs-rdc-randall-david-cook.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://therecs.co.uk/gotta-dance/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--linda-buchwald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/gotta-dance-celebrating-classic-musicals-to-return-off-broadway_1826450/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-interested-bystander--cary-wong.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Are You Mad At Me??\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Are You Mad At Me??\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 8,
-            "error": null
-          },
-          {
-            "query": "\"Are You Mad At Me??\" review here",
-            "ok": true,
-            "results": 7,
-            "error": null
-          }
-        ],
-        "queriesOk": 2,
-        "resultCount": 4,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://1minutecritic.substack.com/p/bryan-safi-are-you-mad-at-me-review",
-          "host": "1minutecritic.substack.com",
-          "outletId": "1minutecritic",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "midnight-at-the-never-get-west-end-2026",
-      "title": "Midnight at the Never Get",
-      "openingDate": "2026-07-20",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-do-london-reviews-think-of-midnight-at-the-never-get-starring-ben-platt",
-        "https://www.broadwayworld.com/article/Review-Roundup-Ben-Platt-in-MIDNIGHT-AT-THE-NEVER-GET-at-The-Menier-Chocolate-Factory-20260721"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.whatsonstage.com/news/midnight-at-the-never-get-with-ben-platt-at-menier-chocolate-factory-review_1727718/",
-        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/midnight-at-the-never-get-ben-platt-menier-review-b3018771.html",
-        "https://www.theguardian.com/stage/2026/jul/21/midnight-at-the-never-get-review-ben-platt-menier-chocolate-factory-london-",
-        "https://www.standard.co.uk/culture/theatre/midnight-at-the-never-get-review-b1290727.html",
-        "https://www.londontheatre.co.uk/reviews/midnight-at-the-never-get-review-menier-chocolate-factory",
-        "https://www.radiotimes.com/going-out/going-out-reviews/midnight-at-the-never-get-review/",
-        "https://www.thestage.co.uk/reviews/midnight-at-the-never-get-review-menier-chocolate-factory-ben-platt",
-        "https://theatreweekly.com/review-midnight-at-the-never-get-at-menier-chocolate-factory/",
-        "https://www.thetimes.com/culture/theatre-dance/article/midnight-at-the-never-get-review-menier-chocolate-factory-jskrl77l9",
-        "https://www.timeout.com/london/theatre/midnight-at-the-never-get-review",
-        "https://www.telegraph.co.uk/theatre/what-to-see/midnight-at-the-never-get-review/",
-        "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/",
-        "https://musicaltheatrereview.com/midnight-at-the-never-get-menier-chocolate-factory/",
-        "https://www.allthatdazzles.co.uk/post/review-midnight-at-the-never-get-menier-chocolate-factory",
-        "https://everything-theatre.co.uk/2026/07/review-midnight-at-the-never-get-menier-chocolate-factory/",
-        "https://theatreandtonic.co.uk/blog/midnight-at-the-never-get-menier-chocolate-factory-review",
-        "https://theatreboard.com/thread/14829/midnight-never-get-menier-platt",
-        "https://broadwayscorecard.com/show/midnight-at-the-never-get-west-end"
-      ],
-      "dirFiles": 32,
-      "dirClean": 22,
-      "inReviewsJson": 23,
-      "missing": [
-        {
-          "url": "https://broadwayscorecard.com/show/midnight-at-the-never-get-west-end",
-          "host": "broadwayscorecard.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "ft.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "playsinternational.org.uk",
-          "count": 1
-        },
-        {
-          "host": "southlondon.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatrecat.com",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/midnight-at-the-never-get-review-menier-chocolate-factory",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.londontheatre.co.uk/reviews/midnight-at-the-never-get-review-menier-chocolate-factory"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews",
-          "serpCensus": true
-        },
-        {
-          "url": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/",
-          "host": "lovelondonloveculture.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lovelondonloveculture--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 8,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": true,
-            "rows": 8,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 8,
-        "corroborated": 6,
-        "perSource": {
-          "theatre-reviews": {
-            "cited": 7,
-            "corroborated": 6
-          }
-        }
-      },
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Midnight at the Never Get\" West End review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Midnight at the Never Get\" West End review 2026",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"Midnight at the Never Get\" review menier",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"Midnight at the Never Get\" Sonnenblick review",
-            "ok": true,
-            "results": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 11,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://broadwayscorecard.com/show/midnight-at-the-never-get-west-end",
-          "host": "broadwayscorecard.com",
-          "outletId": "broadwayscorecard",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog daily pace (~45347/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
-      "title": "The Wind in the Willows - Theatre On Kew",
-      "openingDate": "2026-07-25",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.thereviewshub.com/the-wind-in-the-willows-theatre-on-kew-london/",
-        "https://www.londontheatre.co.uk/show/23388-the-wind-in-the-willows---theatre-on-kew"
-      ],
-      "dirFiles": 2,
-      "dirClean": 1,
-      "inReviewsJson": 1,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.londontheatre.co.uk/show/23388-the-wind-in-the-willows---theatre-on-kew",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.londontheatre.co.uk/show/23388-the-wind-in-the-willows---theatre-on-kew"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
-      },
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Wind in the Willows - Theatre On Kew\" West End review 2026",
-        "queryStatus": [
-          {
-            "query": "\"The Wind in the Willows - Theatre On Kew\" West End review 2026",
-            "ok": true,
-            "results": 6,
-            "error": null
-          }
-        ],
-        "queriesOk": 1,
-        "resultCount": 2,
-        "error": null
-      }
-    },
-    {
-      "showId": "the-gin-game-2026",
-      "title": "The Gin Game",
-      "openingDate": "2026-07-15",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-GIN-GAME-Starring-Debra-Winger-and-Arliss-Howard-20260724",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-GIN-GAME-Opens-on-Broadway-Updating-LIVE-20151014"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards-bad-hand-59068784",
-        "https://nystagereview.com/2026/07/20/the-gin-game-debra-winger-and-arliss-howard-deliver-a-winning-hand/",
-        "https://www.theatermania.com/news/review-the-gin-game-starring-debra-winger-and-arliss-howard_1846902/",
-        "http://www.nytimes.com/2015/10/15/theater/review-james-earl-jones-and-cicely-tyson-shuffle-emotions-in-the-gin-game.html",
-        "http://www.wral.com/review-james-earl-jones-cicely-tyson-risk-it-in-gin-game-/14969990/",
-        "http://variety.com/2015/legit/reviews/gin-game-review-cicely-tyson-james-earl-jones-1201618442/",
-        "http://www.timeout.com/newyork/theater/the-gin-game",
-        "http://www.newsday.com/entertainment/theater/the-gin-game-review-james-earl-jones-and-cicely-tyson-a-duet-of-pros-1.10957883",
-        "http://www.nydailynews.com/entertainment/theater-arts/gin-game-outstanding-revival-article-1.2397399",
-        "http://www.amny.com/entertainment/james-earl-jones-cicely-tyson-giving-winning-performances-in-the-gin-game-1.10962714",
-        "http://www.thewrap.com/the-gin-game-broadway-review-james-earl-jones-and-cicely-tyson-play-to-win/",
-        "http://nymag.com/daily/intelligencer/2015/10/theater-reviews-the-gin-game.html",
-        "http://www.nj.com/entertainment/index.ssf/2015/10/gin_game_review_broadway_james_earl_jones_cicely_t.html",
-        "https://www.theguardian.com/stage/2015/oct/15/the-gin-game-review-james-earl-jones-cicely-tyson",
-        "https://www.nytimes.com/2026/07/24/theater/debra-winger-arliss-howard-gin-game.html",
-        "https://www.theatermania.com/shows/new-york-city-theater/off-off-broadway/the-gin-game_1846906/"
-      ],
-      "dirFiles": 6,
-      "dirClean": 4,
-      "inReviewsJson": 4,
-      "missing": [
-        {
-          "url": "http://www.wral.com/review-james-earl-jones-cicely-tyson-risk-it-in-gin-game-/14969990/",
-          "host": "wral.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://variety.com/2015/legit/reviews/gin-game-review-cicely-tyson-james-earl-jones-1201618442/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/the-gin-game",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/the-gin-game-review-james-earl-jones-and-cicely-tyson-a-duet-of-pros-1.10957883",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/gin-game-outstanding-revival-article-1.2397399",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/james-earl-jones-cicely-tyson-giving-winning-performances-in-the-gin-game-1.10962714",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.thewrap.com/the-gin-game-broadway-review-james-earl-jones-and-cicely-tyson-play-to-win/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nymag.com/daily/intelligencer/2015/10/theater-reviews-the-gin-game.html",
-          "host": "nymag.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nj.com/entertainment/index.ssf/2015/10/gin_game_review_broadway_james_earl_jones_cicely_t.html",
-          "host": "nj.com",
-          "knownOutletId": "njcom",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2015/oct/15/the-gin-game-review-james-earl-jones-cicely-tyson",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "nysun.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.nytimes.com/2015/10/15/theater/review-james-earl-jones-and-cicely-tyson-shuffle-emotions-in-the-gin-game.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--laura-collins-hughes.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nytimes.com/2026/07/24/theater/debra-winger-arliss-howard-gin-game.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2026/07/24/theater/debra-winger-arliss-howard-gin-game.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--laura-collins-hughes.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nytimes.com/2026/07/24/theater/debra-winger-arliss-howard-gin-game.html"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Gin Game\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"The Gin Game\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"The Gin Game\" review housing",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"The Gin Game\" Coburn review",
-            "ok": true,
-            "results": 9,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 5,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "priorRunArticles": [
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-GIN-GAME-Opens-on-Broadway-Updating-LIVE-20151014",
-          "publishDate": "2015-10-14"
+          "url": "https://playbill.com/article/what-do-the-critics-think-of-gotta-dance-off-broadway",
+          "publishDate": "2025-12-04"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-GOTTA-DANCE-Opens-Off-Broadway-at-the-York-Theatre-20251204",
+          "publishDate": "2025-12-04"
         }
       ],
       "weIngestBlocked": [
         {
-          "url": "http://www.wral.com/review-james-earl-jones-cicely-tyson-risk-it-in-gin-game-/14969990/",
-          "host": "wral.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://variety.com/2015/legit/reviews/gin-game-review-cicely-tyson-james-earl-jones-1201618442/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/the-gin-game",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/the-gin-game-review-james-earl-jones-and-cicely-tyson-a-duet-of-pros-1.10957883",
-          "host": "newsday.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/gin-game-outstanding-revival-article-1.2397399",
-          "host": "nydailynews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/james-earl-jones-cicely-tyson-giving-winning-performances-in-the-gin-game-1.10962714",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.thewrap.com/the-gin-game-broadway-review-james-earl-jones-and-cicely-tyson-play-to-win/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://nymag.com/daily/intelligencer/2015/10/theater-reviews-the-gin-game.html",
-          "host": "nymag.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.nj.com/entertainment/index.ssf/2015/10/gin_game_review_broadway_james_earl_jones_cicely_t.html",
-          "host": "nj.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2015/oct/15/the-gin-game-review-james-earl-jones-cicely-tyson",
-          "host": "theguardian.com",
+          "url": "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
+          "host": "cititour.com",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -976,25 +978,16 @@
       "ingestSkippedByCap": []
     },
     {
-      "showId": "amaze-magic-off-broadway-2025",
-      "title": "AMAZE Magic",
-      "openingDate": "2025-07-20",
+      "showId": "sabrage-off-west-end-2026",
+      "title": "Sabrage",
+      "openingDate": "2026-05-08",
       "status": "open",
-      "category": "off-broadway",
+      "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/amaze-off-broadway-review-jamie-allan",
-        "https://www.theatermania.com/news/review-jamie-allans-amaze-will-wow-kids-and-their-gen-xer-parents-too_1795840/",
-        "https://nystagereview.com/2025/08/13/amaze-magic-magical-storytelling/",
-        "https://www.theaterscene.net/plays/offbway-plays/amaze/victor-gluck/",
-        "https://theaterlife.com/jamie-allans-amaze/",
-        "https://www.hollywoodsoapbox.com/review-come-for-the-magic-stay-for-jamie-allans-story/",
-        "https://stageandcinema.com/2025/08/13/amaze-jamie-allan/",
-        "https://luxuryexperience.com/featured/jamie-allans-amaze-new-world-stages-nyc-ny-usa/"
-      ],
-      "dirFiles": 10,
-      "dirClean": 8,
-      "inReviewsJson": 8,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
@@ -1006,66 +999,172 @@
       }
     },
     {
-      "showId": "burlesque-west-end-2026",
-      "title": "Burlesque",
-      "openingDate": "2025-07-22",
+      "showId": "chat-noir-off-west-end-2026",
+      "title": "CHAT NOIR!",
+      "openingDate": "2026-04-30",
       "status": "open",
       "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-BURLESQUE-THE-MUSICAL-Opens-in-London-20250722"
-      ],
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "white-rabbit-red-rabbit-west-end-2026",
+      "title": "White Rabbit Red Rabbit",
+      "openingDate": "2026-06-09",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "the-black-mirror-experience-off-broadway-2026",
+      "title": "The Black Mirror Experience",
+      "openingDate": "2026-06-22",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-review-explosive-energy-and-powerhouse-vocals-ctrrm7cbk",
-        "https://www.theguardian.com/stage/2025/jul/22/burlesque-the-musical-review-christina-aguilera",
-        "https://www.whatsonstage.com/news/burlesque-review-west-end-musical-is-a-frivolous-and-flimsy-frolic_1687704/",
-        "https://www.dailymail.co.uk/tvshowbiz/article-14930715/PATRICK-MARMION-reviews-Burlesque-Savoy-Theatre-laborious-theatrical-rehash-lamentable-film.html",
-        "https://www.cityam.com/burlesque-musical-review-christina-aquilera-show-is-quality-trash/",
-        "https://www.westendbestfriend.co.uk/news/review-burlesque-the-musical-savoy-theatre",
-        "https://www.londontheatre.co.uk/reviews/burlesque-the-musical-review-savoy-theatre",
-        "https://www.standard.co.uk/culture/theatre/burlesque-savoy-theatre-review-b1239600.html",
-        "https://www.timeout.com/london/news/review-burlesque-the-musical-savoy-theatre-072325",
-        "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christina-aguilera",
-        "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review"
+        "https://culturesauce.com/black-mirror-experience-off-broadway-review/"
       ],
-      "dirFiles": 29,
-      "dirClean": 15,
-      "inReviewsJson": 17,
+      "dirFiles": 5,
+      "dirClean": 5,
+      "inReviewsJson": 5,
       "missing": [],
       "dirOnly": [
         {
-          "host": "theartsdesk.com",
+          "host": "thefrontrowcenter.com",
           "count": 1
         },
         {
-          "host": "attitude.co.uk",
+          "host": "newyorktheatreguide.com",
           "count": 1
         },
         {
-          "host": "broadwayworld.com",
+          "host": "talkinbroadway.com",
           "count": 1
         },
         {
-          "host": "express.co.uk",
+          "host": "therecs.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "mercury-off-broadway-2026",
+      "title": "Mercury",
+      "openingDate": "2026-04-30",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-MERCURY-FUR-Opens-Off-Broadway-20150821"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html",
+        "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
+        "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/",
+        "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667",
+        "https://dalyklerwhmui.cloudfront.net",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://maps.google.com/",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+      ],
+      "dirFiles": 9,
+      "dirClean": 2,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "thestage.co.uk",
           "count": 1
         },
         {
-          "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "telegraph.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
+          "host": "washingtonpost.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/burlesque-the-musical-review-savoy-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
+          "url": "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1073,16 +1172,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "london-theatre--anya-ryan.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.londontheatre.co.uk/reviews/burlesque-the-musical-review-savoy-theatre"
+              "file": "nytimes--ben-brantley.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.standard.co.uk/culture/theatre/burlesque-savoy-theatre-review-b1239600.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
+          "url": "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1090,33 +1191,13 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/burlesque-savoy-theatre-review-b1239600.html"
-            }
-          ]
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatreandtonic--emmie-newitt.json",
+              "file": "nypost--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review"
-            },
-            {
-              "file": "theatreandtonic--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review"
+              "urlInDir": "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
@@ -1124,7 +1205,76 @@
       "serpCensus": {
         "ran": false,
         "reason": "out-of-window"
-      }
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-MERCURY-FUR-Opens-Off-Broadway-20150821",
+          "publishDate": "2015-08-21"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog daily pace (~45553/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "outletId": "gstatic",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog daily pace (~45554/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "outletId": "googleapis",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog daily pace (~45554/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "outletId": "google",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog daily pace (~45554/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog daily pace (~45554/day) projects exhaustion in ~19d, before the 27d-out renewal — ro"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "outletId": "google"
+        }
+      ]
     }
   ]
 }
