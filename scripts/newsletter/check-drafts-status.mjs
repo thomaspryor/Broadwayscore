@@ -6,18 +6,32 @@
 // $ + wall-clock) when both editions are already sent for the current week.
 //
 // Usage: node scripts/newsletter/check-drafts-status.mjs [weekStart YYYY-MM-DD]
-// Prints JSON: { weekStart, broadway: 'draft'|'sent'|'missing', westEnd: ... }
-// Exit 0 if at least one edition has a pending draft to review; exit 3 if
-// every edition that exists is already sent (nothing to do); exit 1 on error.
+// Prints JSON: { weekStart, broadway: 'draft'|'sent'|'missing'|..., westEnd: ... }
+// Exit 0 if there's anything to review (a pending draft, OR an edition that
+// hasn't been drafted at all yet — refresh-drafts.sh can still create it);
+// exit 3 ONLY when every edition that exists is already sent/scheduled (the
+// true "nothing to do" case); exit 1 on error.
+//
+// weekStart defaults to "last Monday in America/New_York" — the SAME
+// timezone-explicit formula refresh-drafts.sh and generate.mjs use (ship-check
+// finding: an earlier version used host-local getDay() + UTC toISOString(),
+// which could pick the wrong week on a non-ET host clock or near midnight).
 
 const KEY = process.env.RESEND_API_KEY;
 if (!KEY) { console.error('No RESEND_API_KEY'); process.exit(1); }
 
-const weekStart = process.argv[2] || (() => {
-  const d = new Date();
-  d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
-  return d.toISOString().slice(0, 10);
-})();
+function lastMondayET(now = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short',
+  }).formatToParts(now);
+  const get = (t) => parts.find((p) => p.type === t).value;
+  const dow = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[get('weekday')];
+  const etMidnightUTC = new Date(`${get('year')}-${get('month')}-${get('day')}T12:00:00Z`); // noon UTC avoids any DST-edge date-rollback
+  etMidnightUTC.setUTCDate(etMidnightUTC.getUTCDate() - ((dow + 6) % 7));
+  return etMidnightUTC.toISOString().slice(0, 10);
+}
+
+const weekStart = process.argv[2] || lastMondayET();
 
 const NAMES = {
   broadway: `Scorecard Weekly — ${weekStart}`,
@@ -27,6 +41,7 @@ const NAMES = {
 async function main() {
   const res = await fetch('https://api.resend.com/broadcasts', {
     headers: { Authorization: `Bearer ${KEY}` },
+    signal: AbortSignal.timeout(20_000),
   });
   if (!res.ok) {
     console.error(`Resend GET /broadcasts failed: ${res.status} ${await res.text()}`);
@@ -44,8 +59,13 @@ async function main() {
   }
 
   console.log(JSON.stringify({ weekStart, ...status }));
-  const anyPending = Object.values(status).includes('draft');
-  process.exit(anyPending ? 0 : 3);
+  // "Nothing to review" means every edition is confirmed SENT — not merely
+  // absent of a draft. A 'missing' edition still needs the review session to
+  // run refresh-drafts.sh and create it (ship-check finding: the old exit-3
+  // condition also fired on 'missing', silently swallowing the case where no
+  // draft exists yet at all and suppressing the alert that should catch that).
+  const allSent = Object.values(status).every((s) => s === 'sent' || s === 'scheduled');
+  process.exit(allSent ? 3 : 0);
 }
 
 main().catch((e) => { console.error(e.stack || e); process.exit(1); });
