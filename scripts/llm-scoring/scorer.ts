@@ -153,6 +153,8 @@ export class ReviewScorer {
   private options: ScoringOptions;
   private totalInputTokens: number = 0;
   private totalOutputTokens: number = 0;
+  private totalCacheWriteTokens: number = 0;
+  private totalCacheReadTokens: number = 0;
 
   constructor(apiKey: string, options: Partial<ScoringOptions> = {}) {
     this.client = new Anthropic({ apiKey });
@@ -362,17 +364,28 @@ export class ReviewScorer {
           // the rule-13 A/B baseline (ship-check P0, Claude reviewer 2026-04-27).
           // Matches OpenAI/Gemini defaults of 0.3 for ensemble consistency.
           temperature: 0.3,
-          system: systemPrompt,
+          // Prompt caching: the system prompt repeats across every review in a
+          // run (V5 is fully static; V6 varies only by (band, starsRaw), a
+          // small set), so mark it as a cache breakpoint. A single text block
+          // is byte-identical to the plain-string form — no prompt change.
+          // Cached reads bill at ~10% of input price; silently no-ops below
+          // the model's cache minimum (e.g. haiku-4.5's 4096 tokens).
+          system: [
+            { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }
+          ],
           messages: [
             { role: 'user', content: prompt }
           ]
         });
 
-        // Track tokens
+        // Track tokens. With caching on, input_tokens EXCLUDES cached tokens —
+        // the cache fields must be tracked separately or cost math undercounts.
         inputTokens = response.usage.input_tokens;
         outputTokens = response.usage.output_tokens;
         this.totalInputTokens += inputTokens;
         this.totalOutputTokens += outputTokens;
+        this.totalCacheWriteTokens += Number(response.usage.cache_creation_input_tokens) || 0;
+        this.totalCacheReadTokens += Number(response.usage.cache_read_input_tokens) || 0;
 
         // Extract text content
         const textContent = response.content.find(c => c.type === 'text');
@@ -582,11 +595,17 @@ export class ReviewScorer {
   /**
    * Get total token usage
    */
-  getTokenUsage(): { input: number; output: number; total: number } {
+  getTokenUsage(): { input: number; output: number; cacheWrite: number; cacheRead: number; total: number } {
     return {
       input: this.totalInputTokens,
       output: this.totalOutputTokens,
-      total: this.totalInputTokens + this.totalOutputTokens
+      // Anthropic prompt-cache tokens. input excludes these once caching is
+      // on, so total = input + output + cacheWrite + cacheRead is the real
+      // volume processed. cacheWrite bills at 1.25x input price, cacheRead
+      // at 0.1x — see cost.ts.
+      cacheWrite: this.totalCacheWriteTokens,
+      cacheRead: this.totalCacheReadTokens,
+      total: this.totalInputTokens + this.totalOutputTokens + this.totalCacheWriteTokens + this.totalCacheReadTokens
     };
   }
 
@@ -596,5 +615,7 @@ export class ReviewScorer {
   resetTokenUsage(): void {
     this.totalInputTokens = 0;
     this.totalOutputTokens = 0;
+    this.totalCacheWriteTokens = 0;
+    this.totalCacheReadTokens = 0;
   }
 }

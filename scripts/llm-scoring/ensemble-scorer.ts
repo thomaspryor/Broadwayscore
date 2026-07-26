@@ -697,7 +697,7 @@ export class EnsembleReviewScorer {
    * Get combined token usage from all models
    */
   getTokenUsage(): {
-    claude: { input: number; output: number };
+    claude: { input: number; output: number; cacheWrite: number; cacheRead: number };
     openai: { input: number; output: number };
     gemini: { input: number; output: number } | null;
     kimi: { input: number; output: number } | null;
@@ -711,7 +711,14 @@ export class EnsembleReviewScorer {
     const total = claudeUsage.total + openaiUsage.total + (geminiUsage?.total || 0) + (kimiUsage?.total || 0);
 
     return {
-      claude: { input: claudeUsage.input, output: claudeUsage.output },
+      claude: {
+        input: claudeUsage.input,
+        output: claudeUsage.output,
+        // Anthropic prompt-cache tokens (excluded from input) — needed by
+        // cost.ts so --max-cost and the end-of-run print stay accurate.
+        cacheWrite: claudeUsage.cacheWrite,
+        cacheRead: claudeUsage.cacheRead
+      },
       openai: { input: openaiUsage.input, output: openaiUsage.output },
       gemini: geminiUsage ? { input: geminiUsage.input, output: geminiUsage.output } : null,
       kimi: kimiUsage ? { input: kimiUsage.input, output: kimiUsage.output } : null,

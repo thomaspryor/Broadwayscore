@@ -146,7 +146,11 @@ function callClaude(systemPrompt, userPrompt) {
     model: CLAUDE_SONNET,
     max_tokens: 200,
     temperature: 0.1,
-    system: systemPrompt,
+    // Prompt caching: systemPrompt is static across every review classified
+    // in a run (~1.5K tokens re-sent per call). Marking it caches tools +
+    // system together (tools render before system in the cache prefix), so
+    // repeat calls within the 5-min TTL bill the prefix at ~10%.
+    system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
     messages: [{ role: 'user', content: userPrompt }],
     tools: [{ type: 'advisor_20260301', name: 'advisor', model: CLAUDE_OPUS, max_uses: 1 }]
   });

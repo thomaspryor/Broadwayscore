@@ -1529,8 +1529,11 @@ async function main(): Promise<void> {
     // Phase B-WE W1-T5: per-call cost delta + budget cap check.
     if (maxCost > 0 && tokensBefore && (scorer as any).getTokenUsage) {
       const tokensAfter = (scorer as any).getTokenUsage();
-      // Compute delta per model. Both shapes are { input, output } per model (or null).
-      const usageDelta: { claude?: { input: number; output: number }; openai?: { input: number; output: number }; gemini?: { input: number; output: number }; kimi?: { input: number; output: number } } = {};
+      // Compute delta per model. Shapes are { input, output } per model (or
+      // null); the claude leg additionally carries prompt-cache counters
+      // (cacheWrite/cacheRead) which must ride along or the budget circuit
+      // undercounts — input_tokens excludes cached tokens.
+      const usageDelta: { claude?: { input: number; output: number; cacheWrite?: number; cacheRead?: number }; openai?: { input: number; output: number }; gemini?: { input: number; output: number }; kimi?: { input: number; output: number } } = {};
       for (const m of ['claude', 'openai', 'gemini', 'kimi'] as const) {
         const after = tokensAfter[m];
         const before = tokensBefore[m];
@@ -1538,9 +1541,11 @@ async function main(): Promise<void> {
           usageDelta[m] = {
             input: Math.max(0, after.input - before.input),
             output: Math.max(0, after.output - before.output),
+            cacheWrite: Math.max(0, (after.cacheWrite || 0) - (before.cacheWrite || 0)),
+            cacheRead: Math.max(0, (after.cacheRead || 0) - (before.cacheRead || 0)),
           };
         } else if (after && !before) {
-          usageDelta[m] = { input: after.input, output: after.output };
+          usageDelta[m] = { input: after.input, output: after.output, cacheWrite: after.cacheWrite || 0, cacheRead: after.cacheRead || 0 };
         }
       }
       const callCost = __estimateCost(usageDelta, { claudeModelName: options.model });
@@ -1603,8 +1608,15 @@ async function main(): Promise<void> {
   // Handle both single and ensemble scorer token usage
   if ('claude' in tokenUsage) {
     // Ensemble scorer
-    const ensembleUsage = tokenUsage as { claude: { input: number; output: number }; openai: { input: number; output: number }; gemini: { input: number; output: number } | null; kimi: { input: number; output: number } | null; total: number };
-    console.log(`Claude tokens: ${(ensembleUsage.claude.input + ensembleUsage.claude.output).toLocaleString()} (in: ${ensembleUsage.claude.input.toLocaleString()}, out: ${ensembleUsage.claude.output.toLocaleString()})`);
+    const ensembleUsage = tokenUsage as { claude: { input: number; output: number; cacheWrite: number; cacheRead: number }; openai: { input: number; output: number }; gemini: { input: number; output: number } | null; kimi: { input: number; output: number } | null; total: number };
+    const cw = ensembleUsage.claude.cacheWrite || 0;
+    const cr = ensembleUsage.claude.cacheRead || 0;
+    console.log(`Claude tokens: ${(ensembleUsage.claude.input + ensembleUsage.claude.output + cw + cr).toLocaleString()} (in: ${ensembleUsage.claude.input.toLocaleString()}, out: ${ensembleUsage.claude.output.toLocaleString()}, cache-write: ${cw.toLocaleString()}, cache-read: ${cr.toLocaleString()})`);
+    if (cw + cr + ensembleUsage.claude.input > 0) {
+      // Hit rate over prompt tokens — the metric Anthropic's billing email measures.
+      const hitRate = (cr / (cr + cw + ensembleUsage.claude.input)) * 100;
+      console.log(`Claude cache hit rate: ${hitRate.toFixed(1)}%`);
+    }
     console.log(`OpenAI tokens: ${(ensembleUsage.openai.input + ensembleUsage.openai.output).toLocaleString()} (in: ${ensembleUsage.openai.input.toLocaleString()}, out: ${ensembleUsage.openai.output.toLocaleString()})`);
     if (ensembleUsage.gemini) {
       console.log(`Gemini tokens: ${(ensembleUsage.gemini.input + ensembleUsage.gemini.output).toLocaleString()} (in: ${ensembleUsage.gemini.input.toLocaleString()}, out: ${ensembleUsage.gemini.output.toLocaleString()})`);
@@ -1613,33 +1625,19 @@ async function main(): Promise<void> {
       console.log(`Kimi tokens: ${(ensembleUsage.kimi.input + ensembleUsage.kimi.output).toLocaleString()} (in: ${ensembleUsage.kimi.input.toLocaleString()}, out: ${ensembleUsage.kimi.output.toLocaleString()})`);
     }
 
-    // Estimate cost
-    const claudeInputCost = options.model.includes('haiku') ? 0.80 : 3.00;
-    const claudeOutputCost = options.model.includes('haiku') ? 4.00 : 15.00;
-    const openaiInputCost = 2.50;  // gpt-4o
-    const openaiOutputCost = 10.00;
-    const geminiInputCost = 1.25;  // gemini-2.5-flash
-    const geminiOutputCost = 5.00;
-    const kimiInputCost = 1.50;  // kimi-k2.5 via openrouter (approximate)
-    const kimiOutputCost = 5.00;
-
-    const claudeCost = (ensembleUsage.claude.input / 1_000_000) * claudeInputCost +
-                       (ensembleUsage.claude.output / 1_000_000) * claudeOutputCost;
-    const openaiCost = (ensembleUsage.openai.input / 1_000_000) * openaiInputCost +
-                       (ensembleUsage.openai.output / 1_000_000) * openaiOutputCost;
-    const geminiCost = ensembleUsage.gemini
-      ? (ensembleUsage.gemini.input / 1_000_000) * geminiInputCost +
-        (ensembleUsage.gemini.output / 1_000_000) * geminiOutputCost
-      : 0;
-    const kimiCost = ensembleUsage.kimi
-      ? (ensembleUsage.kimi.input / 1_000_000) * kimiInputCost +
-        (ensembleUsage.kimi.output / 1_000_000) * kimiOutputCost
-      : 0;
-    const totalCost = claudeCost + openaiCost + geminiCost + kimiCost;
-    const costParts = [`Claude: $${claudeCost.toFixed(4)}`, `OpenAI: $${openaiCost.toFixed(4)}`];
-    if (ensembleUsage.gemini) costParts.push(`Gemini: $${geminiCost.toFixed(4)}`);
-    if (ensembleUsage.kimi) costParts.push(`Kimi: $${kimiCost.toFixed(4)}`);
-    console.log(`Estimated cost: $${totalCost.toFixed(4)} (${costParts.join(', ')})`);
+    // Estimate cost via cost.ts (single source of pricing coefficients —
+    // includes prompt-cache write/read pricing on the claude leg).
+    const { costBreakdown: __costBreakdown } = require('./cost');
+    const breakdown = __costBreakdown({
+      claude: ensembleUsage.claude,
+      openai: ensembleUsage.openai,
+      gemini: ensembleUsage.gemini || undefined,
+      kimi: ensembleUsage.kimi || undefined,
+    }, { claudeModelName: options.model });
+    const costParts = [`Claude: $${breakdown.claude.toFixed(4)}`, `OpenAI: $${breakdown.openai.toFixed(4)}`];
+    if (ensembleUsage.gemini) costParts.push(`Gemini: $${breakdown.gemini.toFixed(4)}`);
+    if (ensembleUsage.kimi) costParts.push(`Kimi: $${breakdown.kimi.toFixed(4)}`);
+    console.log(`Estimated cost: $${breakdown.total.toFixed(4)} (${costParts.join(', ')})`);
   } else {
     // Single scorer
     const singleUsage = tokenUsage as { input: number; output: number; total: number };
