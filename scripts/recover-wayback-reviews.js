@@ -32,6 +32,21 @@ const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { generateReviewFilename } = require('./lib/review-normalization');
 const { setExtractedScore } = require('./lib/score-routing');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `recover-wayback-reviews.js — recover review full text from the Wayback Machine for dead-URL reviews.
+
+Usage:
+  node scripts/recover-wayback-reviews.js
+
+Environment variables:
+  MAX_URLS=100        Limit number of URLs to process (0 = all)
+  DRY_RUN=true        CDX discovery only, no file writes
+  TIER_FILTER=1       Only process Tier 1 outlets (1, 2, 3, or empty)
+  DOMAIN_FILTER=x,y   Only process specific domains (comma-separated)
+  SOURCE_MODE=reviews-json  Process reviews from reviews.json that have URLs but no review-text files
+  SOURCE_MODE=not_attempted Process review files with incompleteReason='not_attempted' (URLs never scraped)
+`;
 
 // ============================================================================
 // Configuration
@@ -1419,6 +1434,15 @@ async function processRecoveredText(candidate, text, html, archiveData) {
 // ============================================================================
 // Entry point
 // ============================================================================
+
+// --help/-h checked BEFORE any candidate loading or network/fs work (cousin
+// of #260/#263/#264/#266 — see scripts/lib/cli-help.js). This script has no
+// other process.argv handling at all (config is env-var only), so a bare
+// `--help` invocation used to fall straight through to main().
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(USAGE);
+  process.exit(0);
+}
 
 main().catch(err => {
   console.error('\nFATAL ERROR:', err.message);

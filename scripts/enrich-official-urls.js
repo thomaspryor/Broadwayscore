@@ -25,6 +25,14 @@ const { serpQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+const USAGE = `enrich-official-urls.js — Enrich shows.json with official website URLs via SERP discovery.
+
+Usage:
+  node scripts/enrich-official-urls.js [--dry-run] [--category=broadway|off-broadway|west-end] [--time-budget-min=N]
+  node scripts/enrich-official-urls.js --help, -h    print this usage and exit
+`;
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -267,6 +275,9 @@ async function discoverOfficialUrl(show) {
 // ============================================================================
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
   console.log(`Official URL Enrichment ${DRY_RUN ? '(DRY RUN)' : ''}`);
   if (CATEGORY_FILTER) console.log(`Category filter: ${CATEGORY_FILTER}`);
   console.log('='.repeat(60));
