@@ -1220,7 +1220,17 @@
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "a-chorus-line-2006/timeout-london--tim-bano.json",
     "faith-healer-2006/timeout-london--andrzej-lukowski.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+    "trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
+    "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+    "trainspotting-the-musical-west-end-2026/london-unattached--jeanne-horak.json",
+    "trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+    "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
+    "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1294,7 +1304,8 @@
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
-      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
@@ -1344,7 +1355,12 @@
       "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--unknown.json",
       "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "data/review-texts/sherlock-holmes-west-end-2026/thestage--dave-fargnoli.json",
-      "data/review-texts/under-the-shadow-off-west-end-2026/thestage--sam-marlowe.json"
+      "data/review-texts/under-the-shadow-off-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json"
     ],
     "archive": [
       "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json",
@@ -1356,7 +1372,7 @@
     ]
   },
   "startTime": "2026-07-25T16:57:11.198Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
   "log": [
     {
       "t": "2026-07-25T19:48:42.510Z",
@@ -1467,6 +1483,17 @@
       "t": "2026-07-25T23:59:24.978Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-26T05:36:01.864Z",
+      "event": "bb-session",
+      "session": "3751b421",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-26T05:36:03.013Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
