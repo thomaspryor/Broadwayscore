@@ -7,27 +7,39 @@
 // Two conditions, both required:
 //
 // 1. The ANNOUNCEMENT is recent: recoupedDate (YYYY-MM monthly granularity)
-//    must be the month of the issue week's start or end. `firstAdded` alone is
-//    NOT recency — it records when OUR pipeline learned the fact, so a bulk
-//    backfill of historical recoupments (2026-07-20: Moulin Rouge 2022-11,
-//    & Juliet 2024-04, Oh Mary 2024-11, EBT 2026-05 all stamped firstAdded
-//    that day) surfaced years-old news as "this week" (owner, 2026-07-26).
+//    must be the month of the issue week — or, when firstAdded proves the
+//    pipeline just learned it, the month immediately before the week. The
+//    one-month grace covers ingest lag across a month boundary (announced
+//    Jul 30, RSS-polled Aug 3): without it, such a recoupment never surfaces
+//    in ANY issue (its month has already passed by the time firstAdded lands).
+//    `firstAdded` alone is NOT recency — it records when OUR pipeline learned
+//    the fact, so a bulk backfill of historical recoupments (2026-07-20:
+//    Moulin Rouge 2022-11, & Juliet 2024-04, Oh Mary 2024-11, EBT 2026-05 all
+//    stamped firstAdded that day) surfaced years-old news as "this week"
+//    (owner, 2026-07-26).
 //
 // 2. Once-only: firstAdded falls inside the issue week window, so a genuinely
 //    fresh recoupment appears in exactly one issue (the Giant 8+-repeats fix).
-//    Legacy entries without firstAdded pass on condition 1 alone — pre-2026
-//    records lack the timestamp, and condition 1 already bounds them to the
-//    announcement month.
+//    Legacy entries without firstAdded pass on the issue-week month alone —
+//    no prior-month grace there, or a timestamp-less entry would repeat weekly
+//    across two months.
 function isFreshRecoupmentNews(entry, weekStartStr, weekEndStr) {
   if (!entry || !entry.recouped || !entry.recoupedDate) return false;
   if (!/^\d{4}-\d{2}$/.test(entry.recoupedDate)) return false;
-  const weekMonths = [String(weekStartStr).slice(0, 7), String(weekEndStr).slice(0, 7)];
-  if (!weekMonths.includes(entry.recoupedDate)) return false;
+  const startMonth = String(weekStartStr).slice(0, 7);
+  const endMonth = String(weekEndStr).slice(0, 7);
+  const inWeekMonth = entry.recoupedDate === startMonth || entry.recoupedDate === endMonth;
   if (entry.firstAdded) {
     const day = String(entry.firstAdded).slice(0, 10);
     if (day < weekStartStr || day > weekEndStr) return false;
+    return inWeekMonth || entry.recoupedDate === monthBefore(startMonth);
   }
-  return true;
+  return inWeekMonth;
+}
+
+function monthBefore(ym) {
+  const [y, m] = ym.split('-').map(Number);
+  return m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, '0')}`;
 }
 
 module.exports = { isFreshRecoupmentNews };

@@ -1298,14 +1298,12 @@ function announcedClosingsSection() {
 }
 
 // SECTION: Commercial — recoupment announcements this week (Broadway).
-// News-freshness gate (revised 2026-05-24): recoupedDate must be a valid
-// YYYY-MM (rejects year-only "2026") AND firstAdded must fall in the week
-// window. Why firstAdded instead of "this/last month on recoupedDate":
-// monthly granularity surfaces Giant (recouped 2026-05) in EVERY weekly
-// newsletter sent in May AND June — 8+ repeats. firstAdded captures "we
-// just learned about this," which is what readers actually want to see
-// once. Falls back to weekStart-month match when firstAdded is missing
-// (older entries pre-2026 don't have this field).
+// News-freshness gate lives in scripts/lib/recoupment-news.js (shared with
+// the subject/lede ranker input): the announcement month (recoupedDate) must
+// be current AND firstAdded must fall in the week window. History: firstAdded
+// alone caused a 2026-07-20 backfill of years-old recoupments to surface as
+// news; recoupedDate alone caused Giant (recouped 2026-05) to repeat 8+
+// weekly issues. See the helper's comments for the full rules.
 function commercialSection() {
   let comm;
   try { comm = JSON.parse(fs.readFileSync(path.join(repo, 'data/commercial.json'), 'utf8')); }

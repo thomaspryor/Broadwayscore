@@ -36,6 +36,26 @@ test('legacy entry without firstAdded passes on announcement month alone', () =>
   assert.equal(isFreshRecoupmentNews({ recouped: true, recoupedDate: '2026-06' }, ...WEEK), false);
 });
 
+test('month-boundary ingest lag: announced late prior month, added days later', () => {
+  // Announced Jul 30 (recoupedDate 2026-07), RSS poller ingests Aug 3. The
+  // week Aug 3-9 does not straddle July — without the one-month grace this
+  // recoupment would NEVER surface in any issue.
+  const entry = { recouped: true, recoupedDate: '2026-07', firstAdded: '2026-08-03T08:00:00Z' };
+  assert.equal(isFreshRecoupmentNews(entry, '2026-08-03', '2026-08-09'), true);
+  // ...but only in that first week; later weeks stay suppressed.
+  assert.equal(isFreshRecoupmentNews(entry, '2026-08-10', '2026-08-16'), false);
+  // And December→January year rollover works.
+  const nye = { recouped: true, recoupedDate: '2026-12', firstAdded: '2027-01-04T08:00:00Z' };
+  assert.equal(isFreshRecoupmentNews(nye, '2027-01-04', '2027-01-10'), true);
+  // The grace never reaches 2+ months back (backfill stays dead).
+  const stale = { recouped: true, recoupedDate: '2026-05', firstAdded: '2026-07-21T08:00:00Z' };
+  assert.equal(isFreshRecoupmentNews(stale, ...WEEK), false);
+});
+
+test('legacy entries get no prior-month grace (would repeat weekly)', () => {
+  assert.equal(isFreshRecoupmentNews({ recouped: true, recoupedDate: '2026-06' }, ...WEEK), false);
+});
+
 test('rejects malformed / non-recouped entries', () => {
   assert.equal(isFreshRecoupmentNews(null, ...WEEK), false);
   assert.equal(isFreshRecoupmentNews({ recouped: false, recoupedDate: '2026-07' }, ...WEEK), false);
