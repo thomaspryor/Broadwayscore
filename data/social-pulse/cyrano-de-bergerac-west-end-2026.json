@@ -3,46 +3,56 @@
   "showId": "cyrano-de-bergerac-west-end-2026",
   "showTitle": "Cyrano de Bergerac",
   "market": "West End",
-  "fetchedAt": "2026-07-22T01:15:05.133Z",
+  "fetchedAt": "2026-07-26T20:30:49.011Z",
   "tier": "Hidden",
-  "volume": 3,
-  "effectiveVolume": 0.9,
+  "volume": 5,
+  "effectiveVolume": 0.7,
   "relevanceRates": {
-    "byPlatform": {},
-    "overall": null
+    "byPlatform": {
+      "reddit": 0,
+      "bluesky": 1
+    },
+    "overall": 0.5
   },
-  "positivePct": 0,
-  "opinionSample": 0,
-  "weekOverWeekPct": null,
-  "baselineMultiple": null,
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": 67,
+  "baselineMultiple": 1.67,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
     "reddit": 0,
-    "bluesky": 0
+    "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "Review: RSC's Cyrano de Bergerac transfers to the Noël Coward Theatre: Adrian Lester and Susannah Fielding star in…",
+      "platform": "bluesky",
+      "author": "@londinium-life.bsky.social",
+      "url": "https://bsky.app/profile/londinium-life.bsky.social/post/3mrkkskh53p2n"
+    }
+  ],
   "counters": {
-    "reddit": 0,
-    "bluesky": 0,
+    "reddit": 1,
+    "bluesky": 1,
     "x": 3,
-    "wikipedia": 30
+    "wikipedia": 28
   },
   "wikipediaTitle": "Cyrano de Bergerac (musical)",
   "baseline": {
-    "mean": 3,
-    "weeksOfHistory": 1
+    "mean": 4,
+    "weeksOfHistory": 2
   },
   "rawCounts": {
-    "reddit": 0,
-    "bluesky": 0
+    "reddit": 1,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 17,
-    "total": 46,
-    "text": "17/46 West End"
+    "position": 10,
+    "total": 48,
+    "text": "10/48 West End"
   },
-  "compositeScore": 0
+  "compositeScore": 0.7
 }

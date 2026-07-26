@@ -3,48 +3,49 @@
   "showId": "the-lion-king-west-end-2021",
   "showTitle": "The Lion King",
   "market": "West End",
-  "fetchedAt": "2026-07-22T01:32:55.793Z",
+  "fetchedAt": "2026-07-26T20:47:10.578Z",
   "tier": "Hidden",
-  "volume": 4,
-  "effectiveVolume": 0,
+  "volume": 5,
+  "effectiveVolume": 0.1,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0
+      "reddit": 0,
+      "bluesky": 0.5
     },
-    "overall": 0
+    "overall": 0.2
   },
-  "positivePct": 0,
+  "positivePct": null,
   "opinionSample": 0,
-  "weekOverWeekPct": null,
-  "baselineMultiple": null,
+  "weekOverWeekPct": 25,
+  "baselineMultiple": 1.25,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
     "reddit": 0,
-    "bluesky": 0
+    "bluesky": 1
   },
   "topQuotes": [],
   "counters": {
-    "reddit": 2,
-    "bluesky": 0,
-    "x": 2,
-    "wikipedia": 2865
+    "reddit": 3,
+    "bluesky": 2,
+    "x": 0,
+    "wikipedia": 3310
   },
   "wikipediaTitle": "The Lion King (musical)",
   "baseline": {
-    "mean": 4,
-    "weeksOfHistory": 1
+    "mean": 4.5,
+    "weeksOfHistory": 2
   },
   "rawCounts": {
-    "reddit": 2,
-    "bluesky": 0
+    "reddit": 3,
+    "bluesky": 2
   },
   "errors": [],
   "rank": {
-    "position": 36,
-    "total": 46,
-    "text": "36/46 West End"
+    "position": 23,
+    "total": 48,
+    "text": "23/48 West End"
   },
-  "compositeScore": 0
+  "compositeScore": 0.05
 }

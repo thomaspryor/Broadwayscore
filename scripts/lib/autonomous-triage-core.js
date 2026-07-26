@@ -341,7 +341,13 @@ function findClaimedTask(cardId, taskState) {
 // permanent set consulted — and that set is anchored on Notion's own error
 // shapes (a `"code": "object_not_found"` body field, or a status code in
 // status position) rather than a bare number appearing anywhere.
-const TRANSIENT_FETCH_ERROR_RE = /\b5\d\d\b|\b429\b|rate.?limit|ETIMEDOUT|ECONNRESET|ECONNREFUSED|ENOTFOUND|EAI_AGAIN|socket hang up|network|timed? ?out/i;
+// 5xx/429 must appear in STATUS position, not as any three digits anywhere: a
+// card id or path containing "502" (e.g. /x/504.js) would otherwise force a
+// pointless retry. Likewise `network` only in its real error shapes, not as a
+// stray word from a card title (ship-check round 3). Over-matching here costs
+// one wasted subprocess + 1.5s; under-matching costs the card its whole night,
+// so the asymmetry still deliberately favours "retry".
+const TRANSIENT_FETCH_ERROR_RE = /(?:HTTP|status(?: code)?)[: ]+(?:5\d\d|429)\b|\b(?:5\d\d|429)\s+(?:Bad Gateway|Service Unavailable|Gateway Time-?out|Internal Server Error|Too Many Requests)|rate.?limit|ETIMEDOUT|ECONNRESET|ECONNREFUSED|ENOTFOUND|EAI_AGAIN|EPIPE|socket hang up|network (?:error|timeout|unreachable)|request to .* failed|timed? ?out/i;
 const PERMANENT_FETCH_ERROR_RE = /"code"\s*:\s*"(object_not_found|unauthorized|restricted_resource|validation_error)"|\b(?:HTTP|status(?: code)?)[: ]+(401|403|404)\b|could not find (?:page|block|database)/i;
 
 function isTransientFetchError(err) {
@@ -360,7 +366,10 @@ async function fetchCardWithRetry(id, fetchFn, opts = {}) {
   for (let attempt = 1; attempt <= retries + 1; attempt++) {
     used = attempt;
     try {
-      return { ok: true, card: await fetchFn(id), attempts: attempt };
+      // `permanent: false` explicitly, not omitted — a consumer testing
+      // `r.permanent === false` must not see undefined on the happy path
+      // (final ship-check round).
+      return { ok: true, card: await fetchFn(id), attempts: attempt, permanent: false };
     } catch (err) {
       lastError = err;
       if (attempt > retries || !isTransient(err)) break;
