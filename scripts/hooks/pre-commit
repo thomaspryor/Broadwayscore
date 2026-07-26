@@ -29,3 +29,29 @@ if [ -f "$REPO_ROOT/scripts/check-image-aspect.js" ]; then
     exit $RC
   fi
 fi
+
+# 3. Block commits that introduce new secrets (gitleaks, staged diff only ~1s).
+#    Lives HERE rather than in a separate hook file because core.hooksPath is set
+#    to scripts/hooks — git then ignores .git/hooks/ entirely, so a hook installed
+#    there would be copied successfully and never run. Silent no-op.
+#    Added 2026-07-26 after a live BUFFER_TOKEN sat in this public repo ~4 months.
+if command -v gitleaks >/dev/null 2>&1; then
+  GITLEAKS_CONFIG_ARG=()
+  if [ -f "$REPO_ROOT/.gitleaks.toml" ]; then
+    GITLEAKS_CONFIG_ARG=(--config "$REPO_ROOT/.gitleaks.toml")
+  fi
+  if ! gitleaks protect --staged --no-banner --redact "${GITLEAKS_CONFIG_ARG[@]}"; then
+    echo "" >&2
+    echo "❌ gitleaks found a potential secret in staged changes." >&2
+    echo "" >&2
+    echo "Options:" >&2
+    echo "  1. Remove the secret. (Preferred.)" >&2
+    echo "  2. If it's a verified false positive, add an entry to .gitleaks.toml" >&2
+    echo "     [allowlist] regexes/paths and re-stage." >&2
+    echo "  3. Emergency bypass: git commit --no-verify" >&2
+    echo "" >&2
+    exit 1
+  fi
+else
+  echo "⚠️  gitleaks not installed — skipping secret scan (brew install gitleaks)." >&2
+fi
