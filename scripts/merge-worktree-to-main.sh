@@ -135,7 +135,25 @@ restore_stash
 
 # --- VERIFY the files actually landed on origin (the step the incident skipped) ---
 if [ "${DRY_RUN:-0}" != "1" ] && [ ${#VERIFY_FILES[@]} -gt 0 ]; then
-  g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null || true
+  FETCHED=0
+  for _fa in 1 2 3; do
+    if g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null; then FETCHED=1; break; fi
+    sleep 2
+  done
+  [ "$FETCHED" = 1 ] || die "could not fetch origin/$DEFAULT_BRANCH for verify — network issue, re-run when connectivity returns"
+
+  # Existence-only (cat-file -e) proves a same-named file is present at the ref —
+  # NOT that it's the content from the commit we just pushed. A concurrent
+  # session's push can reset origin/$DEFAULT_BRANCH's tip to an EARLIER commit
+  # between our push and this verify step, and an older copy of the same path
+  # would still pass the loop below. Re-run the ancestor check (same pattern as
+  # the push-retry loop above) against the freshly-fetched ref first — if our
+  # HEAD isn't an ancestor of origin's current tip, the tip moved backward
+  # under us and the per-file loop cannot be trusted. (card #546, 2026-07-26:
+  # this printed ✓✓ for both files while the actual fix content was absent.)
+  g merge-base --is-ancestor HEAD "origin/$DEFAULT_BRANCH" 2>/dev/null \
+    || die "HEAD is not an ancestor of origin/$DEFAULT_BRANCH — origin's tip moved (concurrent session?) since our push; per-file verify would be unreliable"
+
   MISSING=0
   echo "── verifying on origin/$DEFAULT_BRANCH ──"
   for f in "${VERIFY_FILES[@]}"; do
