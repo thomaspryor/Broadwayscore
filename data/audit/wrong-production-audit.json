@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-26T12:26:06.745Z",
+  "timestamp": "2026-07-26T16:30:43.483Z",
   "stats": {
-    "totalReviews": 40692,
-    "alreadyFlagged": 17885,
-    "dateGuardCatches": 59,
-    "directorMismatch": 926,
+    "totalReviews": 40708,
+    "alreadyFlagged": 17847,
+    "dateGuardCatches": 58,
+    "directorMismatch": 928,
     "tvFilmSignals": 1114,
     "londonSignals": 762,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3258
+    "noPublishDate": 3304
   },
   "findings": [
     {
@@ -5849,6 +5849,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "latimes--charles-mcnulty.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-04-01/arthur-miller-plays-revivals-death-of-a-salesman-the-price-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
         }
       ]
     },
@@ -23860,6 +23874,19 @@
       ]
     },
     {
+      "showId": "the-gin-game-2026",
+      "file": "nysr--frank-scheck.json",
+      "publishDate": "2026-07-21",
+      "url": "https://nystagereview.com/2026/07/20/the-gin-game-debra-winger-and-arliss-howard-deliver-a-winning-hand/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from the-gin-game-1977"
+        }
+      ]
+    },
+    {
       "showId": "the-glass-menagerie-2013",
       "file": "dailybeast--tim-teeman.json",
       "score": 88,
@@ -28920,18 +28947,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "a-midsummer-nights-dream-west-end-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 95,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
         }
       ]
     },

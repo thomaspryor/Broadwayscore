@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-26T12:23:17.546Z",
+    "generatedAt": "2026-07-26T16:27:54.104Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 78,
+    "totalFlagged": 85,
     "highConfidence": 4,
-    "mediumConfidence": 74,
+    "mediumConfidence": 81,
     "lowConfidence": 0,
-    "reassignable": 32
+    "reassignable": 36
   },
   "results": [
     {
@@ -194,6 +194,21 @@
         "modern references: masks"
       ],
       "textSnippet": "When it was announced that Disney had hired Julie Taymor, best known for her off-Broadway puppet tale Juan Darien, to direct its big-budget Broadway production of The Lion King, eyebrows were raised. "
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "showTitle": "The Lion King",
+      "showYear": 1997,
+      "file": "jasonraize--frank-scheck.json",
+      "outlet": "Jasonraize",
+      "criticName": "Frank Scheck",
+      "publishDate": "November 21st, 1997",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: masks"
+      ],
+      "textSnippet": "   \"The Lion King is a spectacular rendition of the animated film, a brilliant theatrical adaptation that stands on its own...Taymor has risen to the challenge, translating the physically complex tale"
     },
     {
       "showId": "the-lion-king-1997",
@@ -785,6 +800,38 @@
       "textSnippet": "https://www.nytimes.com/2003/01/10/movies/theater-review-when-an-apple-loves-a-worm.htmlShare full articleAdvertisement\n\nTHE look of love beams like a laser from Brian Bedford's eyes in the handsome, "
     },
     {
+      "showId": "ma-raineys-black-bottom-2003",
+      "showTitle": "Ma Rainey's Black Bottom",
+      "showYear": 2003,
+      "file": "about-entertainment--ben-brantley.json",
+      "outlet": "About Entertainment",
+      "criticName": "Ben Brantley",
+      "publishDate": "February 7, 2003",
+      "confidence": "medium",
+      "suggestedShowId": "ma-raineys-black-bottom-1984",
+      "signals": [
+        "revival text signals: revival, new revival",
+        "year 1984 in text matches revival ma-raineys-black-bottom-1984"
+      ],
+      "textSnippet": "  IT’S the music, of all things, that’s so conspicuously missing from the hollow new revival of ”Ma Rainey’s Black Bottom,” August Wilson’s landmark play from 1984 about a blues recording session in j"
+    },
+    {
+      "showId": "a-day-in-the-death-of-joe-egg-2003",
+      "showTitle": "A Day in the Death of Joe Egg",
+      "showYear": 2003,
+      "file": "about-entertainment--ben-brantley.json",
+      "outlet": "About Entertainment",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 4, 2003",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new revival",
+        "modern references: hamilton"
+      ],
+      "textSnippet": "  As partners in the vaudeville act known as marriage, Bri and Sheila have performed this routine dozens, maybe hundreds of times before — the one where she pretends she’s the switchboard operator and"
+    },
+    {
       "showId": "nine-2003",
       "showTitle": "Nine",
       "showYear": 2003,
@@ -926,6 +973,36 @@
       "textSnippet": "They’re not dancing in the aisles at “Mamma Mia!” anymore. When this jukebox musical, about a wedding weekend on a Greek island, opened at the Winter Garden Theater back in the fall of 2001 (five week"
     },
     {
+      "showId": "the-elephant-man-2002",
+      "showTitle": "The Elephant Man",
+      "showYear": 2002,
+      "file": "about-entertainment--ben-brantley.json",
+      "outlet": "About Entertainment",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 15, 2002",
+      "confidence": "medium",
+      "suggestedShowId": "the-elephant-man-1979",
+      "signals": [
+        "year 1979 in text matches revival the-elephant-man-1979"
+      ],
+      "textSnippet": "  Medical descriptions of a severely deformed human body are elaborate and explicit in ”The Elephant Man,” Bernard Pomerance’s biographical drama from 1979. But in the coolly staged, warmly acted revi"
+    },
+    {
+      "showId": "mornings-at-seven-2002",
+      "showTitle": "Morning's at Seven",
+      "showYear": 2002,
+      "file": "about-entertainment--ben-brantley.json",
+      "outlet": "About Entertainment",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 22, 2002",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new revival"
+      ],
+      "textSnippet": "  Comic charm, like power and new money, seldom announces itself quietly in New York. This is a city that likes its humor fast, flashy and overstated, and it’s rare that a Broadway comedy seduces by s"
+    },
+    {
       "showId": "into-the-woods-2002",
       "showTitle": "Into the Woods",
       "showYear": 2002,
@@ -1036,6 +1113,21 @@
       "showId": "pacific-overtures-2004",
       "showTitle": "Pacific Overtures",
       "showYear": 2004,
+      "file": "about-entertainment--ben-brantley.json",
+      "outlet": "About Entertainment",
+      "criticName": "Ben Brantley",
+      "publishDate": "December 3, 2004",
+      "confidence": "medium",
+      "suggestedShowId": "pacific-overtures-1976",
+      "signals": [
+        "year 1976 in text matches revival pacific-overtures-1976"
+      ],
+      "textSnippet": "  By rights, this should be the moment to announce that a Japanese director named Amon Miyamoto has conquered America – or at least that small but very glittery swath of America called Broadway. Mr. M"
+    },
+    {
+      "showId": "pacific-overtures-2004",
+      "showTitle": "Pacific Overtures",
+      "showYear": 2004,
       "file": "nytimes--ben-brantley.json",
       "outlet": "The New York Times",
       "criticName": "Ben Brantley",
@@ -1061,6 +1153,21 @@
         "modern references: hamilton"
       ],
       "textSnippet": "alls turn into water in the second act of \"Gem of the Ocean,\" the grandly evangelical new play by August Wilson that opened last night at the Walter Kerr Theater. And though anyone watching this metam"
+    },
+    {
+      "showId": "master-haroldand-the-boys-2003",
+      "showTitle": "\"MASTER HAROLD\"…and the boys",
+      "showYear": 2003,
+      "file": "about-entertainment--ben-brantley.json",
+      "outlet": "About Entertainment",
+      "criticName": "Ben Brantley",
+      "publishDate": "June 2, 2003",
+      "confidence": "medium",
+      "suggestedShowId": "master-haroldand-the-boys-1982",
+      "signals": [
+        "year 1982 in text matches revival master-haroldand-the-boys-1982"
+      ],
+      "textSnippet": "  Those who lament the eroding effects of time and Hollywood on vital young actors might want to check out what Danny Glover is up to. After some 20 highly visible years in film, where he became an ac"
     },
     {
       "showId": "big-river-2003",
