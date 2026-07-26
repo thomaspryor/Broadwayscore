@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   extractShowTitleFromWetRoundup,
   extractShowTitleFromBwwRoundup,
+  isBwwNonStageTieIn,
   titleFromDtliSlug,
   buildShowTitleIndex,
   titleMatchesIndex,
@@ -78,6 +79,38 @@ test('BWW roundup title extraction (real titles)', () => {
     extractShowTitleFromBwwRoundup('Review Roundup: HADESTOWN THE MUSICAL Comes to Movie Theaters'),
     null
   );
+  assert.equal(isBwwNonStageTieIn('Review Roundup: HADESTOWN THE MUSICAL Comes to Movie Theaters'), true);
+  assert.equal(isBwwNonStageTieIn('Review Roundup: THE GIN GAME, Starring Debra Winger and Arliss Howard'), false);
+});
+
+// Live-feed FP class (2026-07-26 review): comma-first splitting truncated
+// real titles that contain an internal comma before hitting a keyword
+// separator. A bare comma is now only a boundary when it's immediately
+// followed by a "who's in it" word.
+test('BWW roundup title extraction: internal-comma titles are not truncated', () => {
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: OH, MARY! Opens on Broadway'),
+    'OH, MARY!'
+  );
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: GOOD NIGHT, AND GOOD LUCK Opens on Broadway'),
+    'GOOD NIGHT, AND GOOD LUCK'
+  );
+  // The "TITLE, Starring ..." shape (the actual Gin Game headline pattern)
+  // still splits on the comma, since it's followed by a recognized word.
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: RAGTIME, Starring Joshua Henry'),
+    'RAGTIME'
+  );
+});
+
+// Live-feed FP class (2026-07-26 review): the "bway" sitemap also carries
+// West End/tour/regional roundups sharing the same headline shape — this
+// source is scoped to NYC only, so those must not produce a candidate.
+test('BWW roundup title extraction: non-NYC roundups are filtered', () => {
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: HAMILTON West End'), null);
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: OH, MARY! in London'), null);
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: MEET ME IN ST. LOUIS at The Muny'), null);
 });
 
 const SHOWS = [

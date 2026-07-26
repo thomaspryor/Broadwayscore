@@ -24,6 +24,10 @@
  *     is treated as a missing revival, not a match (see reverse-discovery.js
  *     titleMatchesIndex). WET/DTLI don't opt in — their lastmod timestamps
  *     can touch an old page for reasons unrelated to a new production.
+ *     The feed is not NYC-exclusive despite its "bway" name — West End/tour/
+ *     regional roundups share the same headline shape, so
+ *     extractShowTitleFromBwwRoundup filters them out before this source
+ *     ever stamps market: 'nyc' on an item.
  *
  * NEVER writes shows.json. Writes data/audit/reverse-discovery-candidates.json
  * (full current view) + data/audit/reverse-discovery-state.json (per-candidate
@@ -64,7 +68,7 @@ async function main(argv = process.argv.slice(2)) {
   const { fetchPage, fetchJSON } = require('./lib/scraper');
   const {
     extractShowTitleFromWetRoundup, titleFromDtliSlug, extractShowTitleFromBwwRoundup,
-    buildShowTitleIndex, findUnmatchedCandidates, candidateKey,
+    isBwwNonStageTieIn, buildShowTitleIndex, findUnmatchedCandidates, candidateKey,
   } = require('./lib/reverse-discovery');
 
   const dryRun = argv.includes('--dry-run');
@@ -166,24 +170,34 @@ async function main(argv = process.argv.slice(2)) {
     sourcesTried++;
     try {
       const xml = (await fetchPage('https://www.broadwayworld.com/bwwgnewsbway.cfm')).content;
+      // Gaps are bounded against </url> so a malformed/missing-tag entry
+      // can't bleed a later entry's title/date onto an earlier URL.
       const entries = [...xml.matchAll(
-        /<url>\s*<loc>([^<]+)<\/loc>[\s\S]*?<n:title>([^<]+)<\/n:title>[\s\S]*?<n:publication_date>([^<]+)<\/n:publication_date>[\s\S]*?<\/url>/g
+        /<url>\s*<loc>([^<]+)<\/loc>(?:(?!<\/url>)[\s\S])*?<n:title>([^<]+)<\/n:title>(?:(?!<\/url>)[\s\S])*?<n:publication_date>([^<]+)<\/n:publication_date>(?:(?!<\/url>)[\s\S])*?<\/url>/g
       )];
       if (entries.length === 0) throw new Error('BWW gnews sitemap parsed to 0 <url> entries');
-      let parsed = 0, roundups = 0;
+      let parsed = 0, roundups = 0, tieIns = 0;
       for (const [, url, rawTitle, pubDate] of entries) {
         const ts = Date.parse(pubDate);
         if (!Number.isFinite(ts) || ts < cutoff) continue;
-        if (/^Review\s+Roundup:/i.test(rawTitle)) roundups++;
+        const isRoundupShaped = /^Review\s+Roundup:/i.test(rawTitle);
+        if (isRoundupShaped) roundups++;
         const title = extractShowTitleFromBwwRoundup(rawTitle);
-        if (!title) continue;
+        if (!title) {
+          if (isRoundupShaped && isBwwNonStageTieIn(rawTitle)) tieIns++;
+          continue;
+        }
         parsed++;
         items.push({ title, source: 'bww-roundup', url, date: pubDate, market: 'nyc' });
       }
       // Same structure-drift guard as WET/DTLI: recent roundup-shaped titles
       // that all fail to parse means the title format changed underneath us.
-      if (roundups > 0 && parsed === 0) throw new Error(`BWW title-format drift: ${roundups} roundup posts, 0 parsed`);
-      console.log(`BWW: ${parsed} roundups within ${days}d (of ${entries.length} recent articles)`);
+      // Deliberately-filtered tie-ins don't count against the guard — a
+      // window whose only roundups are movie tie-ins is not format drift.
+      if (roundups > tieIns && parsed === 0) {
+        throw new Error(`BWW title-format drift: ${roundups} roundup posts (${tieIns} tie-ins), 0 parsed`);
+      }
+      console.log(`BWW: ${parsed} roundups within ${days}d (of ${entries.length} recent articles, ${tieIns} tie-ins filtered)`);
       sourcesOk++;
     } catch (e) {
       console.error(`BWW source failed: ${e.message}`);

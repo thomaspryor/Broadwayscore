@@ -55,17 +55,34 @@ function extractShowTitleFromWetRoundup(postTitle) {
  * tie-in "comes to" theaters, not a new production). Returns the show title,
  * or null when the title isn't a per-show roundup, or names non-stage media.
  */
+// Non-stage-production mentions (film/streaming tie-ins) aren't a missing
+// show even though they're formatted as a roundup headline. Exported so the
+// caller can distinguish "deliberately filtered" from "format drift" when a
+// window's only roundup-shaped titles happen to be tie-ins.
+const BWW_NON_STAGE_TIE_IN_RE = /\b(movie theaters?|film adaptation|now streaming|on netflix|the big screen|in theaters)\b/i;
+function isBwwNonStageTieIn(rawTitle) {
+  return BWW_NON_STAGE_TIE_IN_RE.test(rawTitle);
+}
+
+// This source is scoped to NYC (see audit-reverse-discovery.js's hardcoded
+// market: 'nyc') but the feed itself is not NYC-exclusive — West End/tour/
+// regional roundups share the same "Review Roundup: TITLE, ..." shape.
+const BWW_NON_NYC_RE = /\b(west end|in london|national tour|on tour|touring production|the muny|us tour)\b/i;
+
 function extractShowTitleFromBwwRoundup(rawTitle) {
   const decoded = decodeEntities(rawTitle).trim();
   const m = decoded.match(/^Review\s+Roundup:\s*(.+)$/i);
   if (!m) return null;
   const rest = m[1].trim();
   if (!rest) return null;
-  // Non-stage-production mentions (film/streaming tie-ins) aren't a missing
-  // show even though they're formatted as a roundup headline.
-  if (/\b(movie theaters?|film adaptation|on screen|streaming)\b/i.test(rest)) return null;
+  if (isBwwNonStageTieIn(rest) || BWW_NON_NYC_RE.test(rest)) return null;
+  // Keyword separators are tried before a bare comma — a bare comma is only
+  // treated as a title boundary when it's immediately followed by one of the
+  // "who's in it" words, matching the real "TITLE, Starring ..." shape.
+  // Otherwise titles with internal commas (OH, MARY!, GOOD NIGHT, AND GOOD
+  // LUCK) would get truncated at the first comma.
   const sep = rest.match(
-    /^(.{2,80}?)(?:,|\s+(?:Opens?\s+(?:on|in)|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b)/i
+    /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+(?:Opens?\s+(?:on|in)|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b)/i
   );
   const title = (sep ? sep[1] : rest).trim();
   return title || null;
@@ -220,6 +237,7 @@ module.exports = {
   decodeEntities,
   extractShowTitleFromWetRoundup,
   extractShowTitleFromBwwRoundup,
+  isBwwNonStageTieIn,
   titleFromDtliSlug,
   titleVariants,
   buildShowTitleIndex,
