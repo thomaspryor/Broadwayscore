@@ -475,10 +475,15 @@ function validateCardNotes({ notes, status, force, context }) {
       }
     })();
     if (!armed.cmd) {
+      // WARN, don't reject: automated card creators (owner-alert-router.js
+      // line ~149, ux-walkthrough.mjs, notify-pending-commercial-notion.js)
+      // file "Not started" cards with generated prose — a hard reject here
+      // would silently break the alert→card chain (#374's canary class). The
+      // HARD stop lives at dispatch (bsc-next refuses unarmed cards), where a
+      // session has the card in hand and can fix the criteria.
       return {
-        ok: false,
-        reason: 'UNVERIFIABLE_ACCEPTANCE',
-        message:
+        ok: true,
+        warning:
           `Acceptance criteria name no runnable command (${armed.reason}).\n\n` +
           `The nightly recheck can only verify a Done card by RE-RUNNING a command captured at dispatch. ` +
           `Put at least one backticked command in "## Acceptance criteria" whose exit code proves the work. ` +
@@ -488,7 +493,8 @@ function validateCardNotes({ notes, status, force, context }) {
           `  - \`test -f scripts/new-file.js\`\n\n` +
           `If this card's outcome truly cannot be machine-checked (a decision, an email, a design), add the line:\n` +
           `  VERIFY: owner-judgment\n` +
-          `so the unverifiability is declared instead of accidental.`,
+          `so the unverifiability is declared instead of accidental.\n` +
+          `NOTE: the card was still created — but bsc-next will REFUSE to dispatch it until the criteria are armed.`,
       };
     }
   }
@@ -521,6 +527,11 @@ async function createCard(args) {
   }
   if (validation.bypassed) {
     console.error(`⚠️  Card context validation bypassed: ${validation.bypassed}`);
+  }
+  if (validation.warning) {
+    console.error(`\n⚠️  UNVERIFIABLE_ACCEPTANCE — "${title}"\n`);
+    console.error(validation.warning);
+    console.error('');
   }
 
   const properties = {
