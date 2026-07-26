@@ -24,6 +24,7 @@ const cjsRequire = createRequire(import.meta.url);
 const { buildUnsubscribeUrl, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
+const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -1313,19 +1314,10 @@ function commercialSection() {
   shows.forEach(s => { if (s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });
   const fresh = [];
   Object.entries(comm.shows || {}).forEach(([slug, c]) => {
-    if (!c.recouped || !c.recoupedDate) return;
-    if (!/^\d{4}-\d{2}$/.test(c.recoupedDate)) return;
-    // Primary gate: firstAdded falls in the week window.
-    if (c.firstAdded) {
-      const firstAddedDay = String(c.firstAdded).slice(0, 10);
-      if (firstAddedDay < weekStartStr || firstAddedDay > weekEndStr) return;
-    } else {
-      // Fallback for older entries without firstAdded: recoupedDate matches
-      // the week's month. Preserves backwards compat for legacy commercial
-      // records that lack the timestamp field.
-      const weekMonth = weekEndStr.slice(0, 7);
-      if (c.recoupedDate !== weekMonth) return;
-    }
+    // Shared gate (scripts/lib/recoupment-news.js): announcement month must be
+    // in the issue week AND firstAdded in the window — a backfill of historical
+    // recoupments must never surface as news (owner, 2026-07-26).
+    if (!isFreshRecoupmentNews(c, weekStartStr, weekEndStr)) return;
     const show = slugToShow.get(slug);
     if (!show) return;
     fresh.push({ show, c });
@@ -2186,21 +2178,16 @@ const newsworthyInputs = {
   obOpenings: obEvents,
   weGoldOpenings: weGoldEvents,
   aggregateScore,
-  recoupments: (() => {
-    // Mirror commercialSection: firstAdded must be in this week's window.
-    // (Was: this/last month on recoupedDate — caused 8+ repeats per show.)
+  // Lede ⊆ body: the Recoupment section is Broadway-edition-only (line ~2017),
+  // so the WE edition's ranker must not see recoupment candidates at all — the
+  // WE lede once read "Oh, Mary! recoups" with no recoupment anywhere in the
+  // email (owner, 2026-07-26). Same shared freshness gate as commercialSection.
+  recoupments: IS_WE ? [] : (() => {
     try {
       const comm = JSON.parse(fs.readFileSync(path.join(repo, 'data/commercial.json'), 'utf8'));
       const out = [];
       for (const [slug, c] of Object.entries(comm.shows || {})) {
-        if (!c.recouped || !c.recoupedDate) continue;
-        if (!/^\d{4}-\d{2}$/.test(c.recoupedDate)) continue;
-        if (c.firstAdded) {
-          const firstAddedDay = String(c.firstAdded).slice(0, 10);
-          if (firstAddedDay < weekStartStr || firstAddedDay > weekEndStr) continue;
-        } else {
-          if (c.recoupedDate !== weekEndStr.slice(0, 7)) continue;
-        }
+        if (!isFreshRecoupmentNews(c, weekStartStr, weekEndStr)) continue;
         const show = shows.find(s => s.slug === slug && s.category === 'broadway');
         if (!show || isOperaShow(show)) continue;
         // Same weeks-to-recoup math the section uses.

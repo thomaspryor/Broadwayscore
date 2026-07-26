@@ -50,6 +50,12 @@ on:
       # path-listed so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/pluralize.js'
       - 'scripts/lib/pluralize.test.mjs'
+      # Recoupment newsletter freshness gate: backfilled historical recoupments
+      # must never surface as "new this week" (owner, 2026-07-26). Colocated
+      # *.test.mjs runs in the lib-test glob; path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/recoupment-news.js'
+      - 'scripts/lib/recoupment-news.test.mjs'
       - 'scripts/audit-non-reviews.js'
       - 'scripts/lib/non-review-patterns.js'
       # Flappy whole-corpus audits gated to a --gate catastrophe floor (2026-06-29,
