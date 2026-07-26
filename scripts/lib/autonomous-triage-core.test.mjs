@@ -295,8 +295,25 @@ test('fetchCardWithRetry: a persistently transient failure gives up after the bo
 // ship-check (Codex): a deleted/mistyped card id 404s identically every time.
 // Retrying it buys nothing and, across a 120-card fetch, a systematic auth or
 // id failure would add minutes of pure sleep plus 120 wasted subprocesses.
+// ship-check round 2: a 5xx whose BODY quotes a Notion error code, or a stack
+// trace containing "403", must not be mistaken for a permanent failure — that
+// would cost the card its night for a blip, the exact bug this retry fixes.
+test('fetchCardWithRetry: transient wins — a 5xx or rate-limit still retries even when the body quotes a permanent-looking code', async () => {
+  for (const msg of [
+    'HTTP 502: upstream said {"code":"object_not_found"}',
+    'HTTP 504 gateway timeout — could not find page',
+    'HTTP 429 rate limited (retry after 2s)',
+    'ETIMEDOUT at Object.<anonymous> (/x/403.js:1:1)',
+  ]) {
+    let calls = 0;
+    const r = await fetchCardWithRetry('blip', async () => { calls++; throw new Error(msg); }, { sleepFn: async () => {} });
+    assert.equal(calls, 2, `${msg} must retry`);
+    assert.equal(r.permanent, false, msg);
+  }
+});
+
 test('fetchCardWithRetry: a PERMANENT failure (404 / auth) is never retried', async () => {
-  for (const msg of ['Notion API 404 object_not_found', 'HTTP 401 unauthorized', 'Could not find page with ID abc']) {
+  for (const msg of ['Notion API status: 404 {"code":"object_not_found"}', 'HTTP 401 unauthorized', 'Could not find page with ID abc']) {
     let calls = 0;
     const slept = [];
     const r = await fetchCardWithRetry('gone', async () => { calls++; throw new Error(msg); }, { sleepFn: async ms => slept.push(ms) });
