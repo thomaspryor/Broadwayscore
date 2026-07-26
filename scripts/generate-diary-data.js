@@ -64,7 +64,17 @@ const searchSizeKB = (fs.statSync(searchPath).size / 1024).toFixed(0);
 
 // diary-lookup.json — compact format matching show-lookup.json structure
 // Used by MyShowsClient to display diary-only shows in the user's diary/watchlist,
-// and by the /diary-show/[id] lightweight page (poster, city, opening date).
+// the /diary-show/[id] lightweight page (poster, city, opening date), and the
+// Show Stats view (rt + vk).
+//
+// Fields are ADDITIVE ONLY — MyShowsClient and /diary-show read this by key, so
+// removing or renaming one breaks the signed-in diary. `rt` (runtime minutes)
+// and `vk` (normalized venue match key) were added for Show Stats so the client
+// never has to load the 1.3MB mobile-shows.json to compute hours-in-a-seat or
+// theater completion. Both are omitted when unknown rather than defaulted —
+// consumers apply the type-based runtime fallback themselves.
+const { statsFieldsFor } = require('./lib/diary-lookup-entry');
+
 const lookupEntries = diaryShows.map(show => {
   const entry = { id: show.id, t: show.title, s: show.slug, v: show.venue || '', dy: 1 };
   if (show.category) entry.c = show.category;
@@ -72,6 +82,7 @@ const lookupEntries = diaryShows.map(show => {
   if (show.city) entry.ci = show.city;
   if (show.country) entry.co = show.country;
   if (show.posterUrl) entry.p = show.posterUrl;
+  Object.assign(entry, statsFieldsFor(show));
   return entry;
 });
 
