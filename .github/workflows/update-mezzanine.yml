@@ -116,39 +116,76 @@ jobs:
           fi
           exit $rc
 
-      - name: Send alert on failure (Discord + email)
+      - name: Resolve Mezzanine token-expiry condition on success
+        # Lets the NEXT auth failure page immediately instead of silently
+        # waiting out routeAlert's 7-day cooldown (same pattern as #486).
+        if: steps.scrape.outcome == 'success'
+        run: |
+          node -e '
+            const { resolveCondition } = require("./scripts/lib/owner-alert-router.js");
+            resolveCondition("mezzanine:session-token-expired");
+          '
+
+      - name: Send alert on failure
         if: failure()
         uses: actions/github-script@v7
         env:
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           FAILURE_MODE: ${{ steps.scrape.outputs.failure_mode }}
         with:
           script: |
-            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const isAuth = process.env.FAILURE_MODE === 'auth';
-            const title = isAuth
-              ? 'Mezzanine Scraper Failed — Session Token Expired'
-              : 'Mezzanine Scraper Failed — Transient API Failure';
-            const description = isAuth
-              ? 'The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.'
-              : 'The Mezzanine audience data update failed mid-run (likely ECONNRESET, timeout, or server error from theaterdiary.com). The script already retried transient errors 3× with backoff. **No token action required** — the next scheduled run usually recovers on its own. Investigate only if 2+ consecutive failures.';
-            const actionRequired = isAuth
-              ? 'Re-intercept Mezzanine iOS app via mitmproxy'
-              : 'Wait for next cron run. Investigate only if 2+ consecutive failures.';
-            await sendAlert({
-              title,
-              description,
-              severity: isAuth ? 'error' : 'warning',
-              email: isAuth,
-              fields: [
-                { name: 'Action Required', value: actionRequired },
-                { name: 'Run', value: `[View logs](${runUrl})` }
-              ],
-              url: runUrl
-            }).catch(e => console.error('Alert notification failed:', e.message));
+            if (isAuth) {
+              await routeAlert({
+                conditionKey: 'mezzanine:session-token-expired',
+                title: 'Mezzanine Scraper Failed — Session Token Expired',
+                description: 'The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.',
+                severity: 'error',
+                disposition: 'human',
+                fields: [
+                  { name: 'Action Required', value: 'Re-intercept Mezzanine iOS app via mitmproxy' },
+                  { name: 'Run', value: `[View logs](${runUrl})` }
+                ],
+                url: runUrl
+              }).catch(e => console.error('Alert notification failed:', e.message));
+            } else {
+              // Never actually emailed before either (severity 'warning' is
+              // policy-suppressed by shouldEmailAlert) — 'digest' preserves
+              // that but adds real visibility via the daily digest instead of
+              // a log-only line nobody read.
+              await routeAlert({
+                conditionKey: 'mezzanine:transient-failure',
+                title: 'Mezzanine Scraper Failed — Transient API Failure',
+                description: 'The Mezzanine audience data update failed mid-run (likely ECONNRESET, timeout, or server error from theaterdiary.com). The script already retried transient errors 3× with backoff. No token action required — the next scheduled run usually recovers on its own. Investigate only if 2+ consecutive failures.',
+                severity: 'warning',
+                disposition: 'digest',
+                cooldownHours: 24,
+                fields: [
+                  { name: 'Run', value: `[View logs](${runUrl})` }
+                ],
+                url: runUrl
+              }).catch(e => console.error('Alert notification failed:', e.message));
+            }
+
+      - name: Commit alert ledger
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # MUST commit here or the routeAlert/resolveCondition ledger state
+          # never persists across cron runs — the alert would re-open and
+          # re-email every run, reintroducing the exact storm this migration
+          # fixes (#515, same class as #486/#406).
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "audit: update-mezzanine alert ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
 
       - name: Commit and push changes
         if: always() && inputs.dry_run != true
@@ -243,6 +280,14 @@ jobs:
           fi
           exit $rc
 
+      - name: Resolve Mezzanine token-expiry condition on success
+        if: steps.resolve.outcome == 'success'
+        run: |
+          node -e '
+            const { resolveCondition } = require("./scripts/lib/owner-alert-router.js");
+            resolveCondition("mezzanine:session-token-expired");
+          '
+
       - name: Send alert on auth failure
         if: failure() && steps.resolve.outputs.failure_mode == 'auth'
         uses: actions/github-script@v7
@@ -251,16 +296,34 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         with:
           script: |
-            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            await sendAlert({
+            await routeAlert({
+              conditionKey: 'mezzanine:session-token-expired',
               title: 'Unmatched Imports Resolver Failed — Mezzanine Session Token Expired',
               description: 'The nightly self-heal resolver failed with an authentication error (401/403). **The session token has expired.** Re-intercept the Mezzanine iOS app via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.',
               severity: 'error',
-              email: true,
+              disposition: 'human',
               fields: [{ name: 'Run', value: `[View logs](${runUrl})` }],
               url: runUrl,
             }).catch((e) => console.error('Alert notification failed:', e.message));
+
+      - name: Commit alert ledger
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # MUST commit here or the routeAlert/resolveCondition ledger state
+          # never persists across cron runs — the alert would re-open and
+          # re-email every run, reintroducing the exact storm this migration
+          # fixes (#515, same class as #486/#406).
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "audit: update-mezzanine alert ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
 
       - name: Push core data to private repo
         if: always()
@@ -353,6 +416,14 @@ jobs:
           fi
           exit $rc
 
+      - name: Resolve Mezzanine token-expiry condition on success
+        if: steps.refresh.outcome == 'success'
+        run: |
+          node -e '
+            const { resolveCondition } = require("./scripts/lib/owner-alert-router.js");
+            resolveCondition("mezzanine:session-token-expired");
+          '
+
       - name: Send alert on auth failure
         if: failure() && steps.refresh.outputs.failure_mode == 'auth'
         uses: actions/github-script@v7
@@ -361,16 +432,34 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         with:
           script: |
-            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            await sendAlert({
+            await routeAlert({
+              conditionKey: 'mezzanine:session-token-expired',
               title: 'Mezzanine Catalog Refresh Failed — Session Token Expired',
               description: 'The weekly diary-shows.json delta refresh failed with an authentication error (401/403). **The session token has expired.** Re-intercept the Mezzanine iOS app via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.',
               severity: 'error',
-              email: true,
+              disposition: 'human',
               fields: [{ name: 'Run', value: `[View logs](${runUrl})` }],
               url: runUrl,
             }).catch((e) => console.error('Alert notification failed:', e.message));
+
+      - name: Commit alert ledger
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # MUST commit here or the routeAlert/resolveCondition ledger state
+          # never persists across cron runs — the alert would re-open and
+          # re-email every run, reintroducing the exact storm this migration
+          # fixes (#515, same class as #486/#406).
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "audit: update-mezzanine alert ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
 
       - name: Push core data to private repo
         id: push_core_data
