@@ -48,7 +48,9 @@ interface SentimentSignals {
  * the fix doesn't blank out shows whose data simply hasn't been regenerated.
  */
 export function shouldShowSentiment({ positivePct, opinionSample }: SentimentSignals): boolean {
-  if (typeof positivePct !== 'number' || Number.isNaN(positivePct)) return false;
+  if (typeof positivePct !== 'number' || !Number.isFinite(positivePct) || positivePct < 0 || positivePct > 100) {
+    return false;
+  }
   if (opinionSample === undefined || opinionSample === null) return true;
   return opinionSample >= MIN_OPINION_SAMPLE;
 }
