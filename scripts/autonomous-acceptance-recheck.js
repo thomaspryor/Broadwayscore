@@ -176,7 +176,10 @@ function main(argv = process.argv.slice(2)) {
   const limit = Math.min(Number(args.limit) || MAX_CARDS, MAX_CARDS);
   const runId = `recheck-${new Date().toISOString().replace(/[:.]/g, '-')}`;
 
-  const DONE_LIST_LIMIT = 50;
+  // 100 = Notion's page cap. Under --sort edited the page holds the NEWEST
+  // 100 edits, so a burst day would have to edit >100 Done cards before
+  // anything in the window is cut off (Codex finding: 50 was lossier).
+  const DONE_LIST_LIMIT = 100;
   let doneCards = [];
   // --sort edited: most-recently-touched Done cards first. The default
   // Priority sort returns the highest-priority Done cards EVER, so the cards

@@ -423,7 +423,11 @@ function validateCardNotes({ notes, status, force, context }) {
           `Write 2-3 sentences minimum. If the session is trivial, pass --force "<reason>".`,
       };
     }
-    return { ok: true };
+    // In-progress cards get the arming warning too (Codex P1 2026-07-26:
+    // create defaults to In progress, so the warning previously never fired
+    // on the most common create path — cards then hard-failed at dispatch
+    // with no earlier signal).
+    return { ok: true, warning: armingWarning(notesStr) };
   }
 
   // Rule 3: backlog cards (Not started / Paused) must be self-contained handoffs
@@ -453,53 +457,47 @@ function validateCardNotes({ notes, status, force, context }) {
     };
   }
 
-  // Rule 4: the acceptance criteria must ARM the verification chain. bsc-next
-  // captures ONE backticked command at dispatch (scripts/lib/
-  // autonomous-verify-cmd.js) and the nightly acceptance recheck re-runs it
-  // after the card is marked Done — prose criteria dispatch unarmed, "Done"
-  // stays an unverifiable claim, and the recheck reports "not
-  // machine-verifiable" forever (owner escalation 2026-07-26: every launch in
-  // the dispatch ledger had verifyCmd: null). Cards whose outcome genuinely
-  // cannot be machine-checked say so explicitly with "VERIFY: owner-judgment".
-  const ownerJudgment = /VERIFY:\s*owner-judgment/i.test(notesStr);
-  if (!ownerJudgment) {
-    const armed = (() => {
-      try {
-        const { extractVerifyCmd } = require('./lib/autonomous-verify-cmd.js');
-        const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
-        return extractVerifyCmd(notesStr, isSafeCheckCommand);
-      } catch (e) {
-        // Validator modules unavailable (partial checkout): don't block card
-        // creation on our own tooling being missing.
-        return { cmd: 'validator-unavailable', reason: null };
-      }
-    })();
-    if (!armed.cmd) {
-      // WARN, don't reject: automated card creators (owner-alert-router.js
-      // line ~149, ux-walkthrough.mjs, notify-pending-commercial-notion.js)
-      // file "Not started" cards with generated prose — a hard reject here
-      // would silently break the alert→card chain (#374's canary class). The
-      // HARD stop lives at dispatch (bsc-next refuses unarmed cards), where a
-      // session has the card in hand and can fix the criteria.
-      return {
-        ok: true,
-        warning:
-          `Acceptance criteria name no runnable command (${armed.reason}).\n\n` +
-          `The nightly recheck can only verify a Done card by RE-RUNNING a command captured at dispatch. ` +
-          `Put at least one backticked command in "## Acceptance criteria" whose exit code proves the work. ` +
-          `Allowed safe forms (scripts/lib/autonomous-triage-core.js SAFE_CHECK_FORMS):\n` +
-          `  - \`node --test scripts/lib/thing.test.mjs\` (a test file the work adds or extends)\n` +
-          `  - \`npx tsc --noEmit\` / \`npx next lint\`\n` +
-          `  - \`test -f scripts/new-file.js\`\n\n` +
-          `If this card's outcome truly cannot be machine-checked (a decision, an email, a design), add the line:\n` +
-          `  VERIFY: owner-judgment\n` +
-          `so the unverifiability is declared instead of accidental.\n` +
-          `NOTE: the card was still created — but bsc-next will REFUSE to dispatch it until the criteria are armed.`,
-      };
-    }
-  }
+  return { ok: true, warning: armingWarning(notesStr) };
+}
 
-  return { ok: true };
+// The acceptance criteria must ARM the verification chain. bsc-next captures
+// ONE backticked command at dispatch (scripts/lib/autonomous-verify-cmd.js)
+// and the nightly acceptance recheck re-runs it after the card is marked Done
+// — prose criteria dispatch unarmed, "Done" stays an unverifiable claim
+// (owner escalation 2026-07-26: every launch in the dispatch ledger had
+// verifyCmd: null). WARN, don't reject: automated card creators
+// (owner-alert-router.js, ux-walkthrough.mjs, notify-pending-commercial-
+// notion.js) file cards with generated prose — a hard reject here would
+// silently break the alert→card chain (#374's canary class). The HARD stop
+// lives at dispatch (bsc-next refuses unarmed cards). Returns null when armed
+// or explicitly owner-judgment.
+function armingWarning(notesStr) {
+  if (/VERIFY:\s*owner-judgment/i.test(notesStr)) return null;
+  const armed = (() => {
+    try {
+      const { extractVerifyCmd } = require('./lib/autonomous-verify-cmd.js');
+      const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
+      return extractVerifyCmd(notesStr, isSafeCheckCommand);
+    } catch (e) {
+      // Validator modules unavailable (partial checkout): don't block card
+      // creation on our own tooling being missing.
+      return { cmd: 'validator-unavailable', reason: null };
+    }
+  })();
+  if (armed.cmd) return null;
+  return (
+    `Acceptance criteria name no runnable command (${armed.reason}).\n\n` +
+    `The nightly recheck can only verify a Done card by RE-RUNNING a command captured at dispatch. ` +
+    `Put at least one backticked command in "## Acceptance criteria" whose exit code proves the work. ` +
+    `Allowed safe forms (scripts/lib/autonomous-triage-core.js SAFE_CHECK_FORMS):\n` +
+    `  - \`node --test scripts/lib/thing.test.mjs\` (a test file the work adds or extends)\n` +
+    `  - \`npx tsc --noEmit\` / \`npx next lint\`\n` +
+    `  - \`test -f scripts/new-file.js\`\n\n` +
+    `If this card's outcome truly cannot be machine-checked (a decision, an email, a design), add the line:\n` +
+    `  VERIFY: owner-judgment\n` +
+    `so the unverifiability is declared instead of accidental.\n` +
+    `NOTE: the card was still saved — but bsc-next will REFUSE to dispatch it until the criteria are armed.`
+  );
 }
 
 // ── Commands ────────────────────────────────────────────────────────────
@@ -619,6 +617,14 @@ async function updateCard(args) {
   if (!pageId) {
     console.error('Usage: notion-brain update <page-id> [--status ...] [--outcome ...] ...');
     process.exit(1);
+  }
+
+  // Rewriting notes can silently UN-arm a card (drop its backticked verify
+  // command) — surface the same arming warning create shows (Opus QA P2,
+  // 2026-07-26). Warning only: update paths are used by automation.
+  if (args.notes) {
+    const w = armingWarning(String(args.notes));
+    if (w) console.error(`\n⚠️  UNVERIFIABLE_ACCEPTANCE (update)\n\n${w}\n`);
   }
 
   const properties = {};
@@ -943,6 +949,16 @@ async function listCards(args) {
   // Priority-sorted Done listing hands back the 50 highest-priority Done cards
   // EVER, so freshly-completed work never appears and the recheck starves
   // (2026-07-26 incident: 0 targets every night since it shipped).
+  // A typo'd --sort value silently falling back to Priority-asc would restore
+  // the exact starvation this flag exists to fix — fail loudly instead.
+  if (args.sort !== undefined && args.sort !== 'edited') {
+    console.error(`Error: --sort accepts only "edited", got ${JSON.stringify(args.sort)}`);
+    process.exit(1);
+  }
+  if (args.sort === 'edited' && args.due !== undefined) {
+    console.error('Error: --sort edited and --due are mutually exclusive (each dictates the sort).');
+    process.exit(1);
+  }
   const sorts = args.sort === 'edited'
     ? [{ timestamp: 'last_edited_time', direction: 'descending' }]
     : args.due !== undefined
@@ -977,9 +993,9 @@ async function listCards(args) {
   results = results.slice(0, limit);
 
   // Compact table output for quick scanning. completedDate/lastEditedAt ride
-  // along because the acceptance recheck keys "Done recently" on completion
-  // time — ageDays measures CREATION age and silently excluded almost every
-  // dispatched card (2026-07-26 incident).
+  // along because the acceptance recheck keys "Done recently" on explicit
+  // completion stamps rather than the derived ageDays proxy (which is also
+  // last_edited_time-based, but survives less scrutiny — 2026-07-26).
   const table = results.map(c => ({
     name: c.name,
     status: c.status,

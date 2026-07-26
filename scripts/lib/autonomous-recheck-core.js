@@ -30,9 +30,15 @@ const DEFAULT_WINDOW_HOURS = 24;
 // stamps also survive future changes to how ageDays is derived.
 function doneWithinWindow(card, windowHours, now) {
   const cutoff = now - windowHours * 3600 * 1000;
-  const stamps = [card.completedDate, card.lastEditedAt]
-    .map(v => Date.parse(v))
-    .filter(Number.isFinite);
+  const stamps = [];
+  // completedDate is date-only, so Date.parse gives midnight UTC — the START
+  // of the completion day. Treat it as end-of-day (+24h) so a card completed
+  // late in the day is not aged out early, especially under sub-24h windows
+  // (Codex finding, 2026-07-26).
+  const cd = Date.parse(card.completedDate);
+  if (Number.isFinite(cd)) stamps.push(cd + 24 * 3600 * 1000);
+  const le = Date.parse(card.lastEditedAt);
+  if (Number.isFinite(le)) stamps.push(le);
   if (stamps.length) return Math.max(...stamps) >= cutoff;
   // No completion signal at all: fall back to creation age, still requiring an
   // actual number (Number(null) coerces to 0, which is finite and would put an
