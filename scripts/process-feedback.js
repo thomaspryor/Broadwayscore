@@ -174,13 +174,18 @@ SUBMISSION ${idx + 1}:
 `;
   }).join('\n---\n');
 
-  const prompt = `You are analyzing user feedback submissions for Broadway Scorecard, a website that aggregates Broadway show reviews and ratings.
+  const prompt = `You are analyzing user feedback submissions for Broadway Scorecard, a website that aggregates critic reviews and ratings for Broadway, Off-Broadway, and West End shows — plus Broadway-aimed regional tryouts and select regional productions (the catalog already includes regional entries).
 
 Categorize each submission and provide:
 1. **Category** (Bug, Feature Request, Content Error, Praise, Other)
 2. **Priority** (High, Medium, Low)
 3. **Summary** (1-2 sentences)
 4. **Recommended Action** (brief suggestion)
+
+Categorization rules:
+- A request to add a missing show, or missing reviews/data for a show the user names (ANY market, including regional tryouts), is "Content Error" — never "Feature Request" or "Other". Missing content is actionable data work; only Bug and Content Error submissions reach the maintainer, so misfiling these makes them vanish silently.
+- Never declare a request out of scope because of its market or venue. Scope decisions belong to the maintainer — flag it as Content Error and let the pipeline surface it.
+- "Feature Request" is for new site functionality (filters, pages, features), not for content/data additions.
 
 SUBMISSIONS:
 ${submissionsText}
@@ -509,4 +514,10 @@ async function main() {
   }
 }
 
-main();
+// Export for tests (test-extraction pattern: tests require the real function).
+// main() only runs when invoked directly, not on import.
+export { categorizeFeedback };
+
+if (process.argv[1] === __filename) {
+  main();
+}
