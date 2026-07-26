@@ -33,6 +33,23 @@ name: Diag — push-with-retry fetch timing
 # delta to close — matching the ~19 min / ~17 commit gap between checkout and the
 # push step in the failing run. Fetching at the current tip would transfer nothing
 # and every arm would read "fast".
+#
+# KNOWN RESIDUAL CONFOUNDS — read the results with these in hand; they are
+# documented, not eliminated:
+#  * main is a MOVING target. Arms start within a few minutes of each other but
+#    do not fetch a pinned snapshot, so a later arm can face a larger delta. This
+#    is why every fetch reports `behind` (computed against the ls-remote tip taken
+#    immediately BEFORE that fetch, so it is the delta that fetch actually had to
+#    close) and the "Receiving objects" line. Compare seconds-per-commit, never
+#    raw seconds, across arms — and never conclude from a single pair.
+#  * runner region, GitHub server load, and server-side pack caching are not
+#    controlled. n=3 on the decisive arms is the mitigation, not a fix.
+#  * `--progress` is not what production runs. It changes stderr verbosity only
+#    (the transfer is identical) and it is what makes the byte counts visible; it
+#    is applied uniformly to every arm.
+#  * the `git ls-remote` probe warms DNS/TLS before each timed fetch. This is
+#    applied uniformly AND it moves the arm closer to production, where the fetch
+#    is always preceded by a rejected `git push` over the same connection.
 
 on:
   workflow_dispatch:
@@ -99,13 +116,27 @@ jobs:
           - { arm: explicit-depth1, rep: 1, depth: 1, seq: explicit_d1 }
           - { arm: explicit-depth1, rep: 2, depth: 1, seq: explicit_d1 }
           - { arm: explicit-depth1, rep: 3, depth: 1, seq: explicit_d1 }
+          # Completes the 2x2 (refspec form x depth behaviour). Without this,
+          # "depth-1 is fast" and "bare is fast" stay confounded with each other.
+          - { arm: bare-depth1,     rep: 1, depth: 1, seq: bare_d1 }
+          - { arm: bare-depth1,     rep: 2, depth: 1, seq: bare_d1 }
           # Ordering-artifact controls: same pair, both orders, same clone. These
           # exist to MEASURE the warm-cache artifact, not to compare forms — read
           # them only as "how much does going second buy you".
           - { arm: explicit-then-bare, rep: 1, depth: 1, seq: explicit bare }
           - { arm: bare-then-explicit, rep: 1, depth: 1, seq: bare explicit }
-          # Is shallowness the variable? Same explicit refspec from a FULL clone.
-          - { arm: deep-explicit,   rep: 1, depth: 0, seq: explicit }
+          # Shallowness gradient: does a DEEPER negotiation base make the fetch
+          # cheap? depth-50 still lacks the new commits (so there is real delta to
+          # close) but gives the client actual history to negotiate with.
+          #
+          # NOT fetch-depth: 0. A full checkout pinned at the OLD sha fetches every
+          # ref — including the CURRENT main tip — so the objects the timed fetch
+          # is supposed to transfer are already on disk before it runs. That arm
+          # would report ~1s with "Receiving objects: (none reported)" and would be
+          # read as "shallowness proven", measuring nothing. (Adversarial review
+          # called this exact log signature before the run.)
+          - { arm: explicit-depth50, rep: 1, depth: 50, seq: explicit }
+          - { arm: explicit-depth50, rep: 2, depth: 50, seq: explicit }
     name: ${{ matrix.arm }} r${{ matrix.rep }} (depth ${{ matrix.depth }})
     timeout-minutes: 45
     steps:
@@ -114,6 +145,33 @@ jobs:
         with:
           ref: ${{ needs.pick-sha.outputs.old_sha }}
           fetch-depth: ${{ matrix.depth }}
+
+      # FIDELITY FIX (adversarial review). `ref: <sha>` is the only way to create a
+      # behind-the-tip checkout, but it does NOT leave the same repo state as
+      # production's `ref: main`: actions/checkout writes a SHA-pinned
+      # remote.origin.fetch and may not create refs/remotes/origin/main at all.
+      # That difference is not cosmetic here — it is the EXACT condition
+      # push-with-retry.sh:399-410 blames for the stale-tracking-ref bug, so
+      # leaving it unnormalized could make the two fetch forms *semantically*
+      # different rather than just syntactically different, and invalidate any
+      # speed conclusion. Restore the production-equivalent state, and log both
+      # sides so the normalization is auditable rather than assumed.
+      - name: Normalize to production checkout state
+        run: |
+          set -uo pipefail
+          echo "── as actions/checkout left it ──"
+          echo "remote.origin.fetch: $(git config --get-all remote.origin.fetch | tr '\n' ' ')"
+          echo "origin/main:         $(git rev-parse --verify --quiet refs/remotes/origin/main || echo ABSENT)"
+          echo "packed-refs lines:   $(wc -l < .git/packed-refs 2>/dev/null || echo 0)"
+
+          # What `ref: main` + fetch-depth: N would have produced.
+          git config --unset-all remote.origin.fetch || true
+          git config --add remote.origin.fetch '+refs/heads/main*:refs/remotes/origin/main*'
+          git update-ref refs/remotes/origin/main "$(git rev-parse HEAD)"
+
+          echo "── normalized to production equivalent ──"
+          echo "remote.origin.fetch: $(git config --get-all remote.origin.fetch | tr '\n' ' ')"
+          echo "origin/main:         $(git rev-parse --verify --quiet refs/remotes/origin/main || echo ABSENT)"
 
       - name: Repo state before fetch
         run: |
@@ -166,15 +224,26 @@ jobs:
             recv=$(grep -o 'Receiving objects:.*' "/tmp/fetch-$label.log" 2>/dev/null | tail -1 | tr -d '\r' || true)
             [ -n "$recv" ] || recv='(none reported)'
 
+            # Censoring detection. rc=124 is `timeout`'s TERM-triggered exit, but
+            # `timeout -k` escalates to SIGKILL for a process that ignores TERM,
+            # which surfaces as 137 — that would otherwise be misfiled as an
+            # ordinary failure and its ">= cap" duration read as a real time. The
+            # duration check is the belt: any reading at/over the cap is censored
+            # no matter what rc says.
+            local censored=no
+            if [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ] || [ "$dur" -ge "$FETCH_CAP" ]; then
+              censored=yes
+            fi
+
             echo "::group::fetch output — $label (${dur}s, rc=$rc)"
             cat "/tmp/fetch-$label.log" || true
             echo "::endgroup::"
-            if [ "$rc" -eq 124 ]; then
-              echo "::warning::$ARM r$REP $label hit the ${FETCH_CAP}s diagnostic cap — duration is CENSORED (>= ${FETCH_CAP}s), not ${dur}s"
+            if [ "$censored" = yes ]; then
+              echo "::warning::$ARM r$REP $label hit the ${FETCH_CAP}s diagnostic cap (rc=$rc) — duration is CENSORED (>= ${FETCH_CAP}s). Do NOT read ${dur}s as a measurement."
             fi
             # Machine-readable line the analysis greps for.
-            echo "RESULT|$ARM|$REP|$label|${dur}|${rc}|${behind}|${recv}"
-            echo "| \`$ARM\` | $REP | \`$label\` | ${dur}s$([ "$rc" -eq 124 ] && echo ' (CENSORED)') | $rc | ${behind} |" >> "$GITHUB_STEP_SUMMARY"
+            echo "RESULT|$ARM|$REP|$label|${dur}|${rc}|censored=${censored}|${behind}|${recv}"
+            echo "| \`$ARM\` | $REP | \`$label\` | ${dur}s$([ "$censored" = yes ] && echo ' **(CENSORED)**') | $rc | ${behind} |" >> "$GITHUB_STEP_SUMMARY"
           }
 
           echo "| arm | rep | form | seconds | rc | commits behind |" >> "$GITHUB_STEP_SUMMARY"
@@ -188,6 +257,8 @@ jobs:
                 run_fetch bare origin main ;;
               explicit_d1)
                 run_fetch explicit_d1 --depth=1 origin "+refs/heads/main:refs/remotes/origin/main" ;;
+              bare_d1)
+                run_fetch bare_d1 --depth=1 origin main ;;
               *)
                 echo "unknown form: $form"; exit 1 ;;
             esac
