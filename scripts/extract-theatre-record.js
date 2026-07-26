@@ -539,6 +539,14 @@ function isLondonVenue(venueText) {
 // Title normalization — shared module
 const { normalizeTitle, titlesMatch, cleanSearchTitle } = require('./lib/title-normalization');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `extract-theatre-record.js — Extract reviews from Theatre Record (theatrerecord.com).
+
+Usage:
+  node scripts/extract-theatre-record.js [options]
+  node scripts/extract-theatre-record.js --help, -h    print this usage and exit
+`;
 // Scrape TR /west-end or /london for featured shows with direct archive links
 async function scrapeTRFeaturedShows(page, marketPath) {
   const url = `https://www.theatrerecord.com${marketPath}`;
@@ -628,6 +636,8 @@ function matchListingToShows(listings, targetShows) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('=== Theatre Record Review Extractor ===');
 
   const targets = getTargetShows();

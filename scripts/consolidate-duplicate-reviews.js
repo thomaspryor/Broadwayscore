@@ -71,6 +71,14 @@ const MERGE_SINGLE_FIELDS = [
 
 // Source-specific excerpt fields — always keep from both sides
 const { EXCERPT_FIELDS: _CANONICAL_EXCERPTS } = require('./lib/excerpt-fields');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `consolidate-duplicate-reviews.js — Consolidate intra-show duplicate review-text files.
+
+Usage:
+  node scripts/consolidate-duplicate-reviews.js [options]
+  node scripts/consolidate-duplicate-reviews.js --help, -h    print this usage and exit
+`;
 const EXCERPT_MERGE_FIELDS = [
   ..._CANONICAL_EXCERPTS,
   'playbillExcerpt',  // legacy field
@@ -143,6 +151,8 @@ function mergeInto(winner, donor) {
 // ---------------------------------------------------------------------------
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
     console.error('No review-texts directory found');
     process.exit(1);

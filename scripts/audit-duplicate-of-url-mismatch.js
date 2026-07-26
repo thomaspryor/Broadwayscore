@@ -35,6 +35,14 @@ const { normalizeUrl } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { shouldBlockDuplicateOfGate } = require('./lib/duplicate-of-gate');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-duplicate-of-url-mismatch.js — Flags review files where 'duplicateOf' points at a sibling whose URL no.
+
+Usage:
+  node scripts/audit-duplicate-of-url-mismatch.js [options]
+  node scripts/audit-duplicate-of-url-mismatch.js --help, -h    print this usage and exit
+`;
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 
 const args = process.argv.slice(2);
@@ -214,6 +222,8 @@ function fix(mismatches) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const mismatches = audit();
 
   if (JSON_OUT) {

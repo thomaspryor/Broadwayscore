@@ -17,6 +17,14 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildTodayTixUrl } = require('./lib/url-utils');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-todaytix-data.js — Enrich shows.json with TodayTix data (all categories: Broadway, OB, WE).
+
+Usage:
+  node scripts/enrich-todaytix-data.js [options]
+  node scripts/enrich-todaytix-data.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -133,6 +141,8 @@ function matchShow(ttShow, shows, category) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showsData = loadShows();
   const shows = showsData.shows;
 

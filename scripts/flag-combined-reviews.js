@@ -12,6 +12,14 @@ const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { baseSlug } = require('./lib/combined-review-utils');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `flag-combined-reviews.js — Flag review-text files that share a URL across 2+ different shows as.
+
+Usage:
+  node scripts/flag-combined-reviews.js [options]
+  node scripts/flag-combined-reviews.js --help, -h    print this usage and exit
+`;
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -21,6 +29,8 @@ function normalizeUrl(url) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR, { withFileTypes: true })
     .filter(d => d.isDirectory() && !d.name.startsWith('.'));
   const urlMap = new Map();

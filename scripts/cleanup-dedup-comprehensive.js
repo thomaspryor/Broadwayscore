@@ -18,6 +18,14 @@ const { normalizeUrl } = require('./lib/review-normalization');
 const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag } = require('./lib/review-guards');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `cleanup-dedup-comprehensive.js — Comprehensive Review Dedup Cleanup.
+
+Usage:
+  node scripts/cleanup-dedup-comprehensive.js [options]
+  node scripts/cleanup-dedup-comprehensive.js --help, -h    print this usage and exit
+`;
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 
@@ -352,6 +360,8 @@ function cleanupSameShowUrlDupes() {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('========================================');
   console.log('  Comprehensive Review Dedup Cleanup');
   console.log('========================================\n');

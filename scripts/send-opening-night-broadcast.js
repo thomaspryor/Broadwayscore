@@ -40,6 +40,14 @@ function buildBroadcastOpeningNightHtml(shows, sendTo, market) {
 const { checkPreviewDedup } = require('./lib/preview-dedup');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `send-opening-night-broadcast.js — Creates a Resend DRAFT broadcast when a show opens and has enough reviews.
+
+Usage:
+  node scripts/send-opening-night-broadcast.js [options]
+  node scripts/send-opening-night-broadcast.js --help, -h    print this usage and exit
+`;
 const DRY_RUN = process.argv.includes('--dry-run');
 const LOOKBACK_ARG = process.argv.find(a => a.startsWith('--lookback='));
 const LOOKBACK_DAYS = LOOKBACK_ARG ? parseInt(LOOKBACK_ARG.split('=')[1], 10) : 2;
@@ -317,6 +325,8 @@ function buildBroadcastName(siteName, shows) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
   if (!RESEND_API_KEY && !DRY_RUN) {

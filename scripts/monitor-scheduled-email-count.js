@@ -28,7 +28,16 @@
 'use strict';
 
 const https = require('https');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { buildDailyReport, decideDayViolation, dayKeyET } = require('./lib/scheduled-email-count-rules');
+
+const USAGE = `Usage: node scripts/monitor-scheduled-email-count.js [--dry-run] [--days=N]
+
+  --dry-run   report the last 7 days (or --days=N), no alert, exit 0
+  --days=N    override the lookback window (default: 7 with --dry-run, 2 live)
+
+Live mode (no flags) checks the last complete ET day and calls routeAlert()
+when 2+ distinct scheduled digest senders fired. Env: RESEND_API_KEY, OWNER_EMAIL.`;
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const daysArg = process.argv.find((a) => a.startsWith('--days='));
@@ -104,6 +113,10 @@ async function fetchOwnerEmailsSince(sinceMs) {
 }
 
 async function main() {
+  // --help/-h checked BEFORE any network work (cousin of #260/#263/#264/#266
+  // — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
   if (!RESEND_API_KEY || !OWNER_EMAIL) {
     console.error('ERROR: RESEND_API_KEY and OWNER_EMAIL must both be set');
     process.exit(1);
