@@ -3,48 +3,56 @@
   "showId": "moulin-rouge-2019",
   "showTitle": "Moulin Rouge! The Musical",
   "market": "Broadway",
-  "fetchedAt": "2026-07-22T00:59:36.092Z",
-  "tier": "Hidden",
-  "volume": 7,
-  "effectiveVolume": 1,
+  "fetchedAt": "2026-07-26T20:18:04.404Z",
+  "tier": "Rising",
+  "volume": 25,
+  "effectiveVolume": 7.4,
   "relevanceRates": {
     "byPlatform": {
-      "bluesky": 0.5
+      "reddit": 1,
+      "bluesky": 1
     },
-    "overall": 0.5
+    "overall": 1
   },
-  "positivePct": 0,
-  "opinionSample": 0,
-  "weekOverWeekPct": null,
-  "baselineMultiple": null,
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": 257,
+  "baselineMultiple": 3.57,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
-    "bluesky": 1
+    "reddit": 3,
+    "bluesky": 3
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "Aaron Tveit to return to 'Moulin Rouge! The Musical' during final weeks on Broadway!!! &#32; submitted by &#32;…",
+      "platform": "reddit",
+      "author": "u/NewYorkTheatreGuide",
+      "url": "https://www.reddit.com/r/musicals/comments/1v4e2o7/aaron_tveit_to_return_to_moulin_rouge_the_musical/"
+    }
+  ],
   "counters": {
-    "reddit": 0,
-    "bluesky": 2,
-    "x": 5,
-    "wikipedia": 4241
+    "reddit": 3,
+    "bluesky": 4,
+    "x": 18,
+    "wikipedia": 5331
   },
   "wikipediaTitle": "Moulin Rouge! (musical)",
   "baseline": {
-    "mean": 7,
-    "weeksOfHistory": 1
+    "mean": 16,
+    "weeksOfHistory": 2
   },
   "rawCounts": {
-    "reddit": 0,
-    "bluesky": 2
+    "reddit": 3,
+    "bluesky": 4
   },
   "errors": [],
   "rank": {
-    "position": 26,
+    "position": 10,
     "total": 30,
-    "text": "26/30 Broadway"
+    "text": "10/30 Broadway"
   },
-  "compositeScore": 0
+  "compositeScore": 7.4
 }
