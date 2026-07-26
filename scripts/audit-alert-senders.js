@@ -42,11 +42,19 @@
  * the two permanent real-time-critical senders (CLAUDE.md rule 14's critical
  * workflows) and stay in the baseline deliberately.
  *
- * Known accepted limitation: within a baselined file, swapping one direct call
- * for a different one keeps the count flat and passes — per-call-site
- * fingerprints would churn on every refactor and were deliberately rejected.
- * The gate's claim is "no NEW files and no per-file growth", same trust model
- * as audit-help-flag-safety.js's baseline.
+ * Known accepted limitations:
+ * - Within a baselined file, swapping one direct call for a different one
+ *   keeps the count flat and passes — per-call-site fingerprints would churn
+ *   on every refactor and were deliberately rejected. The gate's claim is
+ *   "no NEW files and no per-file growth", same trust model as
+ *   audit-help-flag-safety.js's baseline.
+ * - Severity-variable resolution is scope-blind: an outer
+ *   `const level = 'warning'` shadowed by a same-named function parameter in
+ *   the ±8/10-line window resolves to the outer literal and can skip a real
+ *   sender. Scope tracking is an AST job, out of reach for this regex gate;
+ *   the ambiguity guard (all assignments must agree on ONE literal) covers
+ *   the realistic reassignment case, and shadowed severity idents around a
+ *   sendAlert call don't exist in this corpus today.
  */
 
 'use strict';
@@ -145,15 +153,22 @@ function scanFile(absPath, relPath) {
         // severity passed as a variable (e.g. `severity: alertSeverity` where
         // `const alertSeverity = 'warning'` sits nearby so shouldEmailAlert()
         // can reuse it — check-opening-night-completeness.js / verify-all-scored.js
-        // pattern, card #532). Resolve it from a single-quoted literal
-        // assignment in the surrounding lines; unresolvable stays null →
-        // treated as emailable (fail-noisy, same trust model as the rest of
-        // this heuristic scanner).
+        // pattern, card #532). Resolve it from single-quoted literal
+        // assignments in the surrounding lines, but ONLY when every assignment
+        // to that name agrees on one literal — a reassignment like
+        // `let sev = 'warning'; if (bad) sev = 'error';` must NOT resolve to
+        // the first match and silently skip a real emailable call. Anything
+        // unresolved or ambiguous stays null → treated as emailable
+        // (fail-noisy). The 8-line backward window is headroom over the real
+        // sites, which declare the const 1 line above the call.
         const identMatch = window.match(/severity:\s*([A-Za-z_$][\w$]*)/);
         if (identMatch) {
           const nearby = lines.slice(Math.max(0, i - 8), i + 10).join('\n');
-          const assignMatch = nearby.match(new RegExp(`\\b${identMatch[1].replace(/\$/g, '\\$')}\\s*=\\s*'(\\w+)'`));
-          if (assignMatch) severity = assignMatch[1];
+          const identPattern = identMatch[1].replace(/\$/g, '\\$');
+          const literals = new Set(
+            [...nearby.matchAll(new RegExp(`\\b${identPattern}\\s*=\\s*'(\\w+)'`, 'g'))].map((m) => m[1])
+          );
+          if (literals.size === 1) severity = [...literals][0];
         }
       }
       const emailable = hasEmailTrue && (severity === 'error' || severity === 'critical' || severity === null);

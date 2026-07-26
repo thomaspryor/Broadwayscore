@@ -366,7 +366,10 @@ async function fetchCardWithRetry(id, fetchFn, opts = {}) {
   for (let attempt = 1; attempt <= retries + 1; attempt++) {
     used = attempt;
     try {
-      return { ok: true, card: await fetchFn(id), attempts: attempt };
+      // `permanent: false` explicitly, not omitted — a consumer testing
+      // `r.permanent === false` must not see undefined on the happy path
+      // (final ship-check round).
+      return { ok: true, card: await fetchFn(id), attempts: attempt, permanent: false };
     } catch (err) {
       lastError = err;
       if (attempt > retries || !isTransient(err)) break;

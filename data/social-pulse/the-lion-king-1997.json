@@ -3,49 +3,62 @@
   "showId": "the-lion-king-1997",
   "showTitle": "The Lion King",
   "market": "Broadway",
-  "fetchedAt": "2026-07-22T01:05:04.861Z",
+  "fetchedAt": "2026-07-26T20:23:01.637Z",
   "tier": "Steady",
-  "volume": 23,
-  "effectiveVolume": 2.2,
+  "volume": 20,
+  "effectiveVolume": 2.9,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0.16666666666666666,
+      "reddit": 0.2222222222222222,
       "bluesky": 1
     },
-    "overall": 0.2857142857142857
+    "overall": 0.5
   },
-  "positivePct": 0,
-  "opinionSample": 0,
-  "weekOverWeekPct": null,
-  "baselineMultiple": null,
+  "positivePct": 100,
+  "opinionSample": 4,
+  "weekOverWeekPct": -13,
+  "baselineMultiple": 0.87,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 1,
-    "bluesky": 1
+    "reddit": 2,
+    "bluesky": 5
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "What was the first musical you ever saw live? Mine was The Lion King on Broadway in 2011 as a kid, I had been begging…",
+      "platform": "reddit",
+      "author": "u/One-Method-1312",
+      "url": "https://www.reddit.com/r/musicals/comments/1v480b6/what_was_the_first_musical_you_ever_saw_live/"
+    },
+    {
+      "text": "I have played “Rafiki” in two different professional musicals - neither of which were The Lion King and one of which…",
+      "platform": "bluesky",
+      "author": "@shauntelleb.bsky.social",
+      "url": "https://bsky.app/profile/shauntelleb.bsky.social/post/3mrbaokomg22l"
+    }
+  ],
   "counters": {
-    "reddit": 6,
-    "bluesky": 1,
-    "x": 16,
-    "wikipedia": 2865
+    "reddit": 9,
+    "bluesky": 5,
+    "x": 6,
+    "wikipedia": 3310
   },
   "wikipediaTitle": "The Lion King (musical)",
   "baseline": {
-    "mean": 23,
-    "weeksOfHistory": 1
+    "mean": 21.5,
+    "weeksOfHistory": 2
   },
   "rawCounts": {
-    "reddit": 6,
-    "bluesky": 1
+    "reddit": 9,
+    "bluesky": 5
   },
   "errors": [],
   "rank": {
-    "position": 29,
+    "position": 22,
     "total": 30,
-    "text": "29/30 Broadway"
+    "text": "22/30 Broadway"
   },
-  "compositeScore": 0
+  "compositeScore": 2.9
 }
