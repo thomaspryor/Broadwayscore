@@ -20,6 +20,14 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { compressImage } = require('./lib/compress-image');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fetch-opera-images.js — Downloads production images for Met Opera shows from metopera.org season pages.
+
+Usage:
+  node scripts/fetch-opera-images.js [options]
+  node scripts/fetch-opera-images.js --help, -h    print this usage and exit
+`;
 let sharp;
 try { sharp = require('sharp'); } catch { sharp = null; }
 
@@ -229,6 +237,8 @@ async function fetchAndSaveImage(showId, imageUrl) {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 (async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const data = loadShows();
   const operaShows = data.shows.filter(s => s.type === 'opera');
   const showsToProcess = targetShowId

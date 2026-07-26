@@ -46,6 +46,14 @@ const { execSync } = require('child_process');
 // loadBaselineGuards/loadWorkingTreeGuards below.
 const { earliestShowDate } = require('./lib/date-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `scoring-delta.js — mandatory local verification for scoring/exclusion logic changes.
+
+Usage:
+  node scripts/scoring-delta.js [options]
+  node scripts/scoring-delta.js --help, -h    print this usage and exit
+`;
 const ARGS = process.argv.slice(2);
 const BASE_REF = (ARGS.find(a => a.startsWith('--base=')) || '--base=HEAD').split('=')[1];
 const OUT_JSON = ARGS.includes('--json');
@@ -531,6 +539,8 @@ function decideInclusion(review, show, guards) {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   log(`[scoring-delta] Comparing working-tree vs ${BASE_REF}`);
 
   // Guard 1: any diff in either watchlist?
