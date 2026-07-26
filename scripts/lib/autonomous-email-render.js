@@ -284,10 +284,17 @@ function renderNamedDigestBlock(label, snapshot) {
   // whole email render — same guard as renderHealthDigestBlock's queued items
   // (ship-check follow-up finding, card #497).
   const items = (Array.isArray(snapshot.items) ? snapshot.items : []).filter(Boolean);
-  const rows = items.map(it => `<div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">${it.url ? `<a href="${esc(it.url)}" style="color:#333;text-decoration:none;">${esc(it.title)}</a>` : esc(it.title)}</span>
+  // http(s) only: same guard as renderHealthDigestBlock's safeUrl() above —
+  // a malformed/malicious url must not become a live javascript:/data: link
+  // in the owner's inbox (ship-check follow-up finding, card #497).
+  const safeUrl = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u) ? u : null);
+  const rows = items.map(it => {
+    const href = safeUrl(it.url);
+    return `<div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">${href ? `<a href="${esc(href)}" style="color:#333;text-decoration:none;">${esc(it.title)}</a>` : esc(it.title)}</span>
       ${it.detail ? `<div style="font-size:11px;color:#999;margin:2px 0 0 2px;">${esc(it.detail)}</div>` : ''}
-    </div>`).join('');
+    </div>`;
+  }).join('');
   const more = snapshot.moreCount > 0
     ? `<div style="font-size:11px;color:#999;margin-top:4px;">+${snapshot.moreCount} more</div>` : '';
   const asOf = snapshot.generatedAt && !Number.isNaN(new Date(snapshot.generatedAt).getTime())
