@@ -2259,7 +2259,12 @@ const newsworthyCandidates = scoreCandidates(newsworthyInputs);
 // for a special issue the auto-scorer can't rank well — e.g. a marquee opening
 // that has no critic score yet (Shakespeare in the Park), or a post-ceremony
 // note. When unset, the newsworthiness scorer drives both.
-const _subjectRaw = process.env.SUBJECT_OVERRIDE || buildSubjectFromCandidates(newsworthyCandidates);
+// SUBJECT_OVERRIDE is hand-written editorial copy the gate can't parse into
+// show references, same reasoning as LEDE_OVERRIDE below.
+const _subjectResult = process.env.SUBJECT_OVERRIDE
+  ? { subject: process.env.SUBJECT_OVERRIDE, showRefs: [] }
+  : buildSubjectFromCandidates(newsworthyCandidates);
+const _subjectRaw = _subjectResult.subject;
 
 // ── Lede composition ─────────────────────────────────────────────────────────
 // NEWSLETTER_LEDE_STYLE controls editorial depth (user decision 2026-07-11):
@@ -2318,6 +2323,21 @@ const _ledeParts = buildLedeSentences(newsworthyCandidates, LEDE_STYLE === 'shor
 const _ctx = [];
 if (LEDE_STYLE !== 'short' && !process.env.LEDE_OVERRIDE) {
   for (const c of [_boxOfficeCtx(), _closingCtx(_ledeParts.kinds), _comingUpCtx()]) if (c) _ctx.push(c);
+}
+// De-dupe {id, slug, title} refs by id (falls back to slug) — subject and
+// lede draw from the same candidate list, so the same show commonly appears
+// in both.
+function dedupeShowRefs(refs) {
+  const seen = new Set();
+  const out = [];
+  for (const r of refs) {
+    if (!r) continue;
+    const key = r.id || r.slug;
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    out.push(r);
+  }
+  return out;
 }
 let ledeText;               // primary paragraph (all styles)
 let ledeSecondaryText = ''; // second paragraph (expanded-two)
@@ -2515,10 +2535,15 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   weekEnd: weekEndStr,
   htmlPath: `${outDir}/${slug}.html`,
   headerCounts,
-  // Shows the lede paragraph names, {id, slug, title} each — pre-send-check.mjs
-  // hard-fails if any of these don't appear in the body (Notion 3a9637c5:
-  // "lede ⊆ body" invariant, mechanically enforced instead of per-input gating).
-  ledeShows: ledeShowRefs.filter(Boolean),
+  // Shows the lede paragraph AND subject line name, {id, slug, title} each —
+  // pre-send-check.mjs hard-fails if any of these don't appear in the body
+  // (Notion 3a9637c5: "lede ⊆ body" invariant, mechanically enforced instead
+  // of per-input gating). Subject folded in here (not a separate field)
+  // because it's the same invariant on the same visible-before-open text:
+  // the subject line takes up to 4 unique-by-kind candidates while the lede
+  // takes only 3, so a subject-only 4th show exists that ledeShowRefs alone
+  // would miss (what-else finding, 2026-07-26).
+  ledeShows: dedupeShowRefs([...ledeShowRefs, ..._subjectResult.showRefs]),
 });
 sections.printSummary();
 console.log(`Wrote ${outDir}/${slug}.html (${sectionOrder.length} sections, headerCounts="${headerCounts}")`);
