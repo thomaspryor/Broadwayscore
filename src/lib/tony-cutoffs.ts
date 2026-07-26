@@ -25,6 +25,8 @@
  * "2021-22" labels for filter UX (project convention; no official source).
  */
 
+import ceremonyDates from '../../data/tony-ceremony-dates.json';
+
 export interface TonySeasonRecord {
   /** Ceremony year — e.g. 2026 for the 79th Tony Awards held June 2026 */
   ceremonyYear: number;
@@ -130,7 +132,6 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     label: '2024-25',
     start: '2024-04-26',
     end: '2025-04-27',
-    ceremonyDate: '2025-06-08',
     source: 'tonyawards.com — 78th announcement; en.wikipedia.org/wiki/78th_Tony_Awards',
   },
   {
@@ -138,7 +139,6 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     label: '2025-26',
     start: '2025-04-28',
     end: '2026-04-26',
-    ceremonyDate: '2026-06-07',
     source: 'tonyawards.com/press/the-tony-awards-announces-calendar-of-events-for-2025-2026-season; broadwaydirect.com/shows-eligible-for-the-2026-tony-awards',
   },
   {
@@ -150,6 +150,30 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     source: 'projected — pending official 80th announcement',
   },
 ];
+
+// Ceremony DATES have one store: data/tony-ceremony-dates.json (also consumed by
+// scripts/generate-stats-canon.js → public/data/stats-canon.json). We derive
+// each season's ceremonyDate from it by calendar year rather than declaring
+// dates inline, so the browse Time Period filter and the Stats scope pill can
+// never disagree on when a ceremony happened. COVID exception: the 74th
+// ceremony (2021-09-26) honored the truncated 2019-20 season, and the project's
+// "2020-21" sub-window had no ceremony of its own — both years are skipped so
+// neither record claims that date.
+const CEREMONY_DATE_BY_YEAR = new Map<number, string>();
+for (const c of ceremonyDates.ceremonies as Array<{ ceremony: number; date: string }>) {
+  const year = Number(c.date.slice(0, 4));
+  if (CEREMONY_DATE_BY_YEAR.has(year)) {
+    // Two ceremonies in one calendar year would make year-keyed derivation
+    // ambiguous — fail loudly (build-time) instead of silently overwriting.
+    throw new Error(`tony-ceremony-dates.json has two ceremonies in ${year}`);
+  }
+  CEREMONY_DATE_BY_YEAR.set(year, c.date);
+}
+for (const rec of TONY_CUTOFFS) {
+  if (rec.ceremonyYear === 2020 || rec.ceremonyYear === 2021) continue;
+  const date = CEREMONY_DATE_BY_YEAR.get(rec.ceremonyYear);
+  if (date) rec.ceremonyDate = date;
+}
 
 /** Map for O(1) lookup by ceremony year. Frozen — mutate via TONY_CUTOFFS only. */
 const BY_CEREMONY_YEAR = new Map<number, TonySeasonRecord>(

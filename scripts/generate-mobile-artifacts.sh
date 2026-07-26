@@ -27,3 +27,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 node "$ROOT/scripts/generate-mobile-show-details.js"
 node "$ROOT/scripts/generate-mobile-data.js"
+# Show Stats artifacts (design-ios-show-stats.md §8). stats-reviews reads the
+# detail files written above, so it must stay after generate-mobile-show-details.
+node "$ROOT/scripts/generate-stats-canon.js"
+node "$ROOT/scripts/generate-stats-reviews.js"

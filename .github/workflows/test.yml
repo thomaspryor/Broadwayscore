@@ -56,6 +56,12 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/recoupment-news.js'
       - 'scripts/lib/recoupment-news.test.mjs'
+      # Show Stats artifacts (2026-07-26): stats-canon + stats-reviews generators
+      # feed the iOS/web My Scorecard feature. Path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/generate-stats-canon.js'
+      - 'scripts/generate-stats-reviews.js'
+      - 'data/tony-ceremony-dates.json'
       - 'scripts/audit-non-reviews.js'
       - 'scripts/lib/non-review-patterns.js'
       # Flappy whole-corpus audits gated to a --gate catastrophe floor (2026-06-29,
