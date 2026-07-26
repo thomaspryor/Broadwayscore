@@ -459,6 +459,18 @@ test('renderHealthDigestBlock: queued digest-router items render (never silently
   assert.match(html, /as of 2026-07-26 06:50 UTC/);
 });
 
+test('renderHealthDigestBlock: a corrupted queued entry (null/malformed) is skipped, never crashes the render', () => {
+  assert.doesNotThrow(() => renderHealthDigestBlock({
+    subject: 'BSC Daily: All clear (27/27 passed)', errors: [], warns: [], passedCount: 27,
+    queued: [null, { title: 'Real Alert', description: 'still shows' }, undefined],
+  }));
+  const html = renderHealthDigestBlock({
+    subject: 'BSC Daily: All clear (27/27 passed)', errors: [], warns: [], passedCount: 27,
+    queued: [null, { title: 'Real Alert', description: 'still shows' }, undefined],
+  });
+  assert.match(html, /Real Alert/);
+});
+
 test('healthIssueCount: sums errors + warns, 0 when absent', () => {
   assert.equal(healthIssueCount(null), 0);
   assert.equal(healthIssueCount({ errors: [{ name: 'a' }], warns: [{ name: 'b' }, { name: 'c' }] }), 3);
