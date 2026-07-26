@@ -29,6 +29,17 @@ const {
 } = require('./lib/review-normalization');
 const { safeWriteReview, safeUnlinkReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `cleanup-phantom-outlets.js — Cleanup Phantom Outlet Duplicates.
+
+Usage:
+  node scripts/cleanup-phantom-outlets.js [options]
+  node scripts/cleanup-phantom-outlets.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 let lockedSkipCount = 0;
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');

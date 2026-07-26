@@ -18,6 +18,17 @@ const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
 
 const { extractTitleFromIBDBUrl, normalizeForTitleMatch, titleMatchScore } = require('./lib/ibdb-dates');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-bad-ibdb-cast.js — One-time cleanup: Audit all cast files for IBDB URL mismatches,.
+
+Usage:
+  node scripts/fix-bad-ibdb-cast.js [options]
+  node scripts/fix-bad-ibdb-cast.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const dryRun = process.argv.includes('--dry-run');
 
 // Load shows for title lookup

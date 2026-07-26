@@ -37,6 +37,17 @@ const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `apply-cross-production-llm-flags.js — Applies wrongProduction=true to review-text files based on the Opus verdicts.
+
+Usage:
+  node scripts/apply-cross-production-llm-flags.js [options]
+  node scripts/apply-cross-production-llm-flags.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const ARGS = process.argv.slice(2);
 const APPLY = ARGS.includes('--apply');
 const OUT_JSON = ARGS.includes('--json');

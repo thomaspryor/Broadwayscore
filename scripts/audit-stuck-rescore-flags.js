@@ -28,7 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { isStuckRescoreFlag } = require('./lib/stuck-rescore-flag');
+const { isStuckRescoreFlag, isScoredButStillQueued } = require('./lib/stuck-rescore-flag');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -87,6 +87,17 @@ function findStuck(reviewTextsDir, titleById) {
           path: fp,
           rel: `${showDir}/${file}`,
           reason: data.rescoreReason || '(none)',
+          kind: 'not-scoreable',
+        });
+      } else if (isScoredButStillQueued(data)) {
+        // Sibling half of the seam: already scored, flag never retired, so the
+        // file is re-scored on every drain (2026-07-26). Same remedy as the
+        // not-scoreable class — clear the flag; the score is already on disk.
+        stuck.push({
+          path: fp,
+          rel: `${showDir}/${file}`,
+          reason: data.rescoreReason || '(none)',
+          kind: 'scored-but-queued',
         });
       }
     }

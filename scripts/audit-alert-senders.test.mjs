@@ -65,6 +65,47 @@ test('scanFile skips warning-severity and comment-line sendAlert mentions', () =
   assert.strictEqual(findings.length, 0);
 });
 
+test('scanFile resolves a severity variable from a nearby literal assignment', () => {
+  // The check-opening-night-completeness.js / verify-all-scored.js pattern
+  // (card #532): severity held in a const so shouldEmailAlert() can reuse it.
+  // A resolved 'warning' is policy-suppressed → not a direct sender.
+  const findings = scanFixture('scripts/cooldown-stamper.js', [
+    "const alertSeverity = 'warning';",
+    'const delivered = await sendAlert({',
+    "  title: 'Drop Alert',",
+    '  severity: alertSeverity,',
+    '  email: true,',
+    '});',
+    'const notifyOk = !shouldEmailAlert(alertSeverity) || delivered;',
+  ].join('\n'));
+  assert.strictEqual(findings.length, 0);
+});
+
+test('scanFile still flags a severity variable that resolves to an emailable literal', () => {
+  const findings = scanFixture('scripts/loud-cron.js', [
+    "const sev = 'error';",
+    'await sendAlert({',
+    '  severity: sev,',
+    '  email: true,',
+    '});',
+  ].join('\n'));
+  assert.strictEqual(findings.length, 1);
+  assert.strictEqual(findings[0].classification, 'direct');
+  assert.strictEqual(findings[0].severity, 'error');
+});
+
+test('scanFile flags an unresolvable severity variable (fail-noisy default)', () => {
+  const findings = scanFixture('scripts/opaque-cron.js', [
+    'await sendAlert({',
+    '  severity: pickSeverity(result),',
+    '  email: true,',
+    '});',
+  ].join('\n'));
+  assert.strictEqual(findings.length, 1);
+  assert.strictEqual(findings[0].classification, 'direct');
+  assert.strictEqual(findings[0].severity, null);
+});
+
 test('scanFile ignores trailing-comment mentions but keeps real calls and https:// intact', () => {
   const findings = scanFixture('scripts/trailing.js', [
     "registerPath('foo.js'); // sendAlert() path, email: true when severity: 'error'",

@@ -24,6 +24,17 @@ const { validateVenue } = require('./lib/broadway-theaters');
 const { classifyShow } = require('./lib/classify-show');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-show-category.js — One-time backfill: stamp category+market on the ~1958 historical Broadway.
+
+Usage:
+  node scripts/backfill-show-category.js [options]
+  node scripts/backfill-show-category.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const DRY_RUN = process.argv.includes('--dry-run');
 
 // Resolve to the actual file behind data/shows.json — this is a symlink in the

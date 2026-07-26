@@ -69,6 +69,17 @@ function getWeSiblings(showId) {
 // ─── Date parsing for cross-market date proximity check ───
 const { parseDate: parseReviewDate } = require('./lib/date-utils');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `migrate-reroute-backlog.js — One-time backlog migration: rescue ~155 wrongProduction-flagged review files.
+
+Usage:
+  node scripts/migrate-reroute-backlog.js [options]
+  node scripts/migrate-reroute-backlog.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 // ─── Build target directory (outlet, critic) index for dedup ───
 function buildTargetOutletCriticIndex(targetShowId) {
   const targetDir = path.join(reviewTextsDir, targetShowId);

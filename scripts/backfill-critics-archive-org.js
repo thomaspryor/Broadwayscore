@@ -19,6 +19,17 @@ const { normalizeCritic, normalizeOutlet, generateReviewFilename } = require('./
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-critics-archive-org.js — Backfill unknown critics using archive.org HTML.
+
+Usage:
+  node scripts/backfill-critics-archive-org.js [options]
+  node scripts/backfill-critics-archive-org.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const limitArg = args.find(a => a.startsWith('--limit='));

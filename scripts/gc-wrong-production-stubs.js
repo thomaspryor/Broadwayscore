@@ -42,6 +42,17 @@ const fs = require('fs');
 const path = require('path');
 const { hasExcerpt } = require('./lib/excerpt-fields');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `gc-wrong-production-stubs.js — Garbage-collect empty wrong-production stub files from review-texts.
+
+Usage:
+  node scripts/gc-wrong-production-stubs.js [options]
+  node scripts/gc-wrong-production-stubs.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
 const INCLUDE_OPEN = args.includes('--include-open');
