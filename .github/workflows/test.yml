@@ -704,6 +704,11 @@ on:
       - 'scripts/lib/session-wrapups.test.mjs'
       - 'scripts/lib/cli-help.js'
       - 'scripts/lib/cli-help.test.mjs'
+      # Help-flag safety lint guard (#498): a solo edit to the audit script or
+      # its baseline must still trigger CI — path-listed per
+      # feedback_test_yml_push_path_allowlist.
+      - 'scripts/audit-help-flag-safety.js'
+      - 'scripts/.help-flag-safety-baseline.json'
       - 'scripts/lib/exec-error-detail.js'
       - 'scripts/lib/exec-error-detail.test.mjs'
       - 'scripts/lib/workspace-naming.js'
