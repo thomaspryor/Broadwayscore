@@ -157,6 +157,7 @@ function clearFailureFlags(data) {
     data.manualClearFallbackFailedAt = null;
     data.manualClearFallbackFailureReason = null;
     data.manualClearFallbackAttempts = null;
+    data.manualClearFallbackAbandoned = null;
     cleared.push('manualClearFallbackFailedAt');
   }
 

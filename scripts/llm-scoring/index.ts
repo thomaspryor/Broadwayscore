@@ -672,10 +672,20 @@ function saveReviewFile(filePath: string, data: any): void {
  * (P1 352637c5-416f-81ab). isInFallbackCooldown() reads these fields to skip
  * re-processing until the backoff window elapses.
  */
+const MANUAL_CLEAR_FALLBACK_MAX_ATTEMPTS = 5;
+
 function recordManualClearFallbackFailure(filePath: string, fileData: any, reason: string): void {
   fileData.manualClearFallbackFailedAt = new Date().toISOString();
   fileData.manualClearFallbackFailureReason = String(reason).substring(0, 300);
   fileData.manualClearFallbackAttempts = (fileData.manualClearFallbackAttempts || 0) + 1;
+  // Codex adversarial review (P1 352637c5-416f-81ab ship-check): the linear
+  // backoff never terminates — a permanently-failing file would retry every
+  // 7 days forever. Cap at MAX_ATTEMPTS and mark abandoned so it stops
+  // auto-retrying and surfaces for manual review instead, mirroring the
+  // serpDiscoveryAbandoned terminal state in review-guards.js.
+  if (fileData.manualClearFallbackAttempts >= MANUAL_CLEAR_FALLBACK_MAX_ATTEMPTS) {
+    fileData.manualClearFallbackAbandoned = true;
+  }
   saveReviewFile(filePath, fileData);
 }
 

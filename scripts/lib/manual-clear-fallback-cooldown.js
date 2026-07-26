@@ -18,6 +18,10 @@ const MAX_BACKOFF_MS = 7 * 24 * 60 * 60 * 1000; // capped at 7 days
 
 function isInFallbackCooldown(reviewData, now = Date.now()) {
   if (!reviewData || !reviewData.manualClearFallbackFailedAt) return false;
+  // Abandoned files never auto-retry — the backoff below would otherwise
+  // recompute a finite window from mutable historical fields and retry
+  // forever (Codex adversarial review, P1 352637c5-416f-81ab ship-check).
+  if (reviewData.manualClearFallbackAbandoned === true) return true;
   const failedAt = new Date(reviewData.manualClearFallbackFailedAt).getTime();
   if (Number.isNaN(failedAt)) return false;
   const attempts = Number(reviewData.manualClearFallbackAttempts) || 1;

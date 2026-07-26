@@ -36,3 +36,14 @@ test('backoff caps at MAX_BACKOFF_MS regardless of attempt count', () => {
 test('malformed timestamp is treated as not in cooldown (fail open)', () => {
   assert.equal(isInFallbackCooldown({ manualClearFallbackFailedAt: 'not-a-date' }, NOW), false);
 });
+
+test('abandoned file stays in cooldown forever, even long past any backoff window', () => {
+  const failedAt = new Date(NOW - MAX_BACKOFF_MS - 365 * 24 * 60 * 60 * 1000).toISOString(); // 1yr+ ago
+  assert.equal(
+    isInFallbackCooldown(
+      { manualClearFallbackFailedAt: failedAt, manualClearFallbackAttempts: 5, manualClearFallbackAbandoned: true },
+      NOW
+    ),
+    true
+  );
+});
