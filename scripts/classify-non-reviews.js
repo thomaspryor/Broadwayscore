@@ -146,6 +146,10 @@ function callClaude(systemPrompt, userPrompt) {
     model: CLAUDE_SONNET,
     max_tokens: 200,
     temperature: 0.1,
+    // Do NOT add cache_control here: the advisor tool makes the cache prefix
+    // non-byte-stable (2026-07-26 live probe: writes fluctuated 1480 vs 1429
+    // tokens, zero reads) — a breakpoint pays the 1.25x write premium on
+    // every call and never hits.
     system: systemPrompt,
     messages: [{ role: 'user', content: userPrompt }],
     tools: [{ type: 'advisor_20260301', name: 'advisor', model: CLAUDE_OPUS, max_uses: 1 }]
