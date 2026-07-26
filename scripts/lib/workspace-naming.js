@@ -71,8 +71,20 @@ function modelGlyph(model) {
 
 // Matches bsc-next.js's existing 50-char subject truncation. model is
 // optional — omitted keeps the pre-glyph title shape byte-for-byte.
-function buildAutoTitle({ subject, project, model }) {
-  return `${AUTO_GLYPH}${modelGlyph(model)} ${project}·${String(subject || '').slice(0, 50)}`;
+//
+// taskId (owner request 2026-07-26): the shared-task-list number, rendered as
+// "#485" right after the project bucket. Sessions and reports refer to work by
+// task number ("close #485", "dispatch #500"), but the number appeared NOWHERE
+// in the cmux sidebar, so the owner had no way to map an instruction onto a
+// tab. It sits AFTER "<Project>·" on purpose: both title matchers strip
+// leading non-letter/non-digit chars first, so a leading "#485" would be
+// mangled into "485 Data·…" and break matching. Placing it after the project
+// prefix keeps it inside the first ~12 visible chars (the sidebar truncates
+// around 35) while both strippers skip it — see stripAutoPrefix below and the
+// mirrored cleanTitle() in ~/.claude/hooks/lib/workspace-mark-done.js.
+function buildAutoTitle({ subject, project, model, taskId }) {
+  const num = taskId == null || taskId === '' ? '' : `#${taskId} `;
+  return `${AUTO_GLYPH}${modelGlyph(model)} ${project}·${num}${String(subject || '').slice(0, 50)}`;
 }
 
 // Strips a "<Project>·" prefix from an ALREADY glyph-cleaned title (i.e.
@@ -84,7 +96,12 @@ function buildAutoTitle({ subject, project, model }) {
 // that first; this only knows about the project-prefix layer.
 function stripAutoPrefix(cleanedTitle) {
   const m = new RegExp(`^(?:${PROJECTS.join('|')})·`).exec(cleanedTitle);
-  return m ? cleanedTitle.slice(m[0].length) : cleanedTitle;
+  const afterProject = m ? cleanedTitle.slice(m[0].length) : cleanedTitle;
+  // Then the optional "#<taskId> " token buildAutoTitle emits after the
+  // project bucket, so a numbered title still reduces to the raw task
+  // subject the matchers compare against. Applied even when no project
+  // prefix matched, so a hand-renamed "#485 Fix the thing" also reduces.
+  return afterProject.replace(/^#\d+\s+/, '');
 }
 
 module.exports = { AUTO_GLYPH, PROJECTS, PROJECT_RULES, CATEGORY_DEFAULT, MODEL_GLYPHS, projectOf, modelGlyph, buildAutoTitle, stripAutoPrefix };

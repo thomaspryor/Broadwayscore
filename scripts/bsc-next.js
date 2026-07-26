@@ -240,7 +240,7 @@ function buildSeed(task, card, project, model) {
     // the same task goes undetected. The instruction below therefore tells
     // the session to APPEND phase text after the unchanged launch title,
     // never to replace it.
-    project ? `This workspace is named "${buildAutoTitle({ subject: task.subject, project, model })}" — the 🤖 marks it as auto-dispatched (safe to ignore; it reports via cards+email), the model glyph shows which model runs it, "${project}" is its project bucket. If this card has multiple phases/sprints, you may APPEND the current phase after this exact title (never replace or shorten it — the ✅ auto-mark hook and duplicate-dispatch guard match on this title as a prefix): \`cmux workspace-action --action rename --title "${buildAutoTitle({ subject: task.subject, project, model })} — <current phase>"\`.` : null,
+    project ? `This workspace is named "${buildAutoTitle({ subject: task.subject, project, model, taskId: task.id })}" — the 🤖 marks it as auto-dispatched (safe to ignore; it reports via cards+email), the model glyph shows which model runs it, "${project}" is its project bucket. If this card has multiple phases/sprints, you may APPEND the current phase after this exact title (never replace or shorten it — the ✅ auto-mark hook and duplicate-dispatch guard match on this title as a prefix): \`cmux workspace-action --action rename --title "${buildAutoTitle({ subject: task.subject, project, model, taskId: task.id })} — <current phase>"\`.` : null,
     ``,
     // Standing anti-stale-seed instruction (chain break #1, 2026-07-12): a
     // launched session's seed is a snapshot — directives added to the card
@@ -279,7 +279,7 @@ function launchCmux(task, seed, commandOverride, model = 'sonnet', project = nul
   // glyph (leading emoji are stripped by both title matchers, so this stays
   // match-compatible with the pre-existing bare-subject convention).
   const title = project
-    ? buildAutoTitle({ subject: task.subject, project, model })
+    ? buildAutoTitle({ subject: task.subject, project, model, taskId: task.id })
     : `${modelGlyph(model) ? modelGlyph(model) + ' ' : ''}${task.subject.slice(0, 50)}`;
   // --model sonnet: dispatched sessions default to Sonnet, not the user's
   // interactive default (Fable) — 9 Fable workspaces in one night, 2026-07-13.

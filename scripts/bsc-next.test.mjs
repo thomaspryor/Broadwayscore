@@ -259,13 +259,13 @@ test('buildSeed always appends the re-read-before-wrap-up instruction', () => {
 
 test('buildSeed: with a project, instructs the session to APPEND (never replace) phase text on rename', () => {
   const seed = buildSeed(TASKS[1], { url: 'https://n/x', notes: 'n', priority: 'P1' }, 'Infra');
-  assert.match(seed, /🤖 Infra·P1 pending/);
+  assert.match(seed, /🤖 Infra·#2 P1 pending/);
   assert.match(seed, /APPEND the current phase after this exact title/);
   assert.match(seed, /never replace or shorten it/);
   // ship-check P1: the rename command must carry the FULL unchanged launch
   // title, not a placeholder — otherwise the ✅ hook / dup-dispatch guard
   // stop matching the moment a session follows this instruction.
-  assert.match(seed, /cmux workspace-action --action rename --title "🤖 Infra·P1 pending — <current phase>"/);
+  assert.match(seed, /cmux workspace-action --action rename --title "🤖 Infra·#2 P1 pending — <current phase>"/);
 });
 
 test('buildSeed: without a project (backward-compat callers), omits the rename instruction entirely', () => {
@@ -367,6 +367,6 @@ test('explicit --model flag is threaded through as opts.explicitFlag unchanged',
 
 test('buildSeed: with a model, the quoted title carries the model glyph (production path)', () => {
   const seed = buildSeed(TASKS[1], { url: 'https://n/x', notes: 'n', priority: 'P1' }, 'Infra', 'sonnet');
-  assert.match(seed, /🤖⚡ Infra·P1 pending/);
-  assert.match(seed, /cmux workspace-action --action rename --title "🤖⚡ Infra·P1 pending — <current phase>"/);
+  assert.match(seed, /🤖⚡ Infra·#2 P1 pending/);
+  assert.match(seed, /cmux workspace-action --action rename --title "🤖⚡ Infra·#2 P1 pending — <current phase>"/);
 });
