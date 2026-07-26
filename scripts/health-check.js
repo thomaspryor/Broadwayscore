@@ -32,7 +32,7 @@ const crypto = require('crypto');
 const { execSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
-const { routeAlert, readDispatchAttempts } = require('./lib/owner-alert-router.js');
+const { routeAlert, readDispatchAttempts, drainDigestQueue } = require('./lib/owner-alert-router.js');
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
@@ -2051,6 +2051,17 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     return;
   }
 
+  // Drain owner-alert-router's digest queue (data/audit/alert-digest-queue.json)
+  // — the ONE consumer, since drainDigestQueue() had no production caller
+  // before this (card #475 ship-check finding): every disposition='digest'
+  // routeAlert() call was queuing a line that nothing ever read back out, so
+  // those conditions were silently dropped rather than reaching the owner in
+  // the digest as the router's own design intends. Drained here, once per
+  // real send (this function is the single production call site), so a
+  // condition queued between digests always appears in the next one.
+  const queuedDigestItems = drainDigestQueue();
+  const escapeHtml = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
   const subject = getDigestSubject(results, history, autoFixResults);
   const errors = results.filter(r => r.status === 'error');
   const warns = results.filter(r => r.status === 'warn');
@@ -2355,6 +2366,19 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     `;
   }
 
+  // Render whatever queued this run (or a prior run, if this is the first
+  // digest since — the queue survives until drained). Escaped: titles/
+  // descriptions originate from repo code, not user input, but several carry
+  // LLM-authored or aggregator-sourced text (e.g. UX walkthrough findings).
+  const digestQueueHtml = queuedDigestItems.length > 0
+    ? `
+      <h3 style="color:#aaa;margin:24px 0 8px;">Automation (queued)</h3>
+      <ul style="padding-left:20px;margin:4px 0;">
+        ${queuedDigestItems.map(q => `<li style="color:#ccc;margin-bottom:4px;"><strong>${escapeHtml(q.title)}</strong>${q.description ? ` — ${escapeHtml(q.description)}` : ''}</li>`).join('')}
+      </ul>
+    `
+    : '';
+
   // Owner email volume (7d) — card #475 regression guard: makes creep in the
   // number of CRITICAL emails visible in the ONE place already read daily,
   // instead of requiring a manual inbox comb the next time volume spikes.
@@ -2428,6 +2452,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     ${mezzanineCoverageHtml}
     ${obCandidatesHtml}
     ${workflowHtml}
+    ${digestQueueHtml}
     ${ownerEmailHtml}
     ${buildExclusionSummaryHtml()}
 

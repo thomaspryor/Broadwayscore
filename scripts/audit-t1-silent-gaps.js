@@ -577,7 +577,19 @@ async function main() {
           severity: 'error',
           disposition: 'auto',
         });
-        if (result.action !== 'silent') state[conditionKey] = now.toISOString();
+        // routeAlert() sets result.action = disposition ('auto') BEFORE it
+        // knows whether the Notion dispatch actually succeeded — checking
+        // only `action !== 'silent'` (ship-check finding) marked a FAILED
+        // dispatch as handled too, permanently suppressing retries for this
+        // gap (shouldBackstopAlert reads this same state) even though the
+        // router's own ledger correctly left it unrecorded so it WOULD have
+        // retried next run. Only mark handled on an actual successful
+        // dispatch (or a legitimately-silenced repeat within cooldown).
+        if (result.action === 'silent' || result.dispatchOk === true) {
+          state[conditionKey] = now.toISOString();
+        } else {
+          console.error(`[backstop] dispatch failed for ${conditionKey}, will retry next run: ${result.dispatchError || 'unknown error'}`);
+        }
       }
       fs.mkdirSync(AUDIT_DIR, { recursive: true });
       fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
