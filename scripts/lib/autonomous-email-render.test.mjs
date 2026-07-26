@@ -566,6 +566,16 @@ test('renderDailyDigestBlock: a corrupted item (null/malformed) is skipped, neve
   assert.match(html, /Real Show/);
 });
 
+test('renderDailyDigestBlock: a non-http item url is not rendered as a link (no javascript:/data: in the inbox)', () => {
+  for (const bad of ['javascript:alert(1)', 'data:text/html,<script>x</script>', 'ftp://example.com/x', 42]) {
+    const html = renderDailyDigestBlock({
+      bannerText: '1 change', items: [{ title: 'Sketchy', detail: 'd', url: bad }],
+    });
+    assert.match(html, /Sketchy/, `title still renders for url=${String(bad)}`);
+    assert.doesNotMatch(html, /<a href=/, `no anchor emitted for url=${String(bad)}`);
+  }
+});
+
 test('renderOpeningDigestBlock: nothing to render without a snapshot; label differs from daily digest', () => {
   assert.equal(renderOpeningDigestBlock(null), '');
   const html = renderOpeningDigestBlock({ bannerText: '2 needs help', items: [] });

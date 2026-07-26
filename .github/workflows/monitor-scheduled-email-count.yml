@@ -1,0 +1,76 @@
+name: Monitor Scheduled Email Count
+
+# Card #510: verifies the owner's "exactly 1 scheduled digest email/day" goal
+# (cards #364/#497) actually holds, by reading real Resend send history
+# instead of trusting code comments. Runs after every known scheduled digest
+# would have fired: Overnight (~07:30 UTC), opening-digest (11:00 UTC),
+# daily-digest (12:00 UTC), reddit-engagement-digest (13:00 & 01:00 UTC).
+# 15:00 UTC gives margin over all of them.
+on:
+  schedule:
+    - cron: '0 15 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no routeAlert dispatch'
+        required: false
+        default: 'false'
+        type: boolean
+
+concurrency:
+  group: monitor-scheduled-email-count
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # routeAlert's disposition='auto' path shells out to notion-brain.js,
+      # which requires @notionhq/client — same gap that broke every
+      # data-health-check.yml auto-dispatch until it was added there.
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Run monitor
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="--dry-run"
+          fi
+          node scripts/monitor-scheduled-email-count.js $ARGS
+
+      - name: Commit alert ledger
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update scheduled-email-count monitor state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No ledger changes to commit"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Monitor Scheduled Email Count Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

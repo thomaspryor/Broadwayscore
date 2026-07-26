@@ -584,6 +584,11 @@ on:
       - 'scripts/lib/ticket-ab-monitor-rules.js'
       - 'scripts/lib/ticket-ab-monitor-rules.test.mjs'
       - 'scripts/monitor-ticket-ab.js'
+      # Scheduled-email-count monitor (card #510) — pure classifier/decision
+      # rules + CLI; colocated test runs in the scripts/lib/*.test.mjs glob step.
+      - 'scripts/lib/scheduled-email-count-rules.js'
+      - 'scripts/lib/scheduled-email-count-rules.test.mjs'
+      - 'scripts/monitor-scheduled-email-count.js'
       # Overall email-gate funnel monitor (card #240) — pure rules + runner +
       # analyzer; colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/email-gate-funnel-rules.js'
