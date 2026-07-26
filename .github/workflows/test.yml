@@ -34,6 +34,11 @@ on:
       # lib-test glob; path-listed so an edit triggers CI per feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/contamination-gate.js'
       - 'scripts/lib/contamination-gate.test.mjs'
+      # Brand-mention owner filter: Google SERP subdomain/topic-page leaks
+      # (2026-07-26). Colocated *.test.mjs runs in the lib-test glob;
+      # path-listed so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/owner-accounts.js'
+      - 'scripts/lib/owner-accounts.test.mjs'
       - 'scripts/audit-non-reviews.js'
       - 'scripts/lib/non-review-patterns.js'
       # Flappy whole-corpus audits gated to a --gate catastrophe floor (2026-06-29,

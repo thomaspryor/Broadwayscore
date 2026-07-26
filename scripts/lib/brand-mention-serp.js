@@ -140,12 +140,15 @@ function urlHash(url) {
  */
 function isUnattributableSocialUrl(url) {
   if (!url) return false;
+  // Subdomains loose ((?:[a-z0-9-]+\.)*): Google SERPs surface these hosts
+  // under secure./www-fallback./m. variants (same class as OWNER_URL_PATTERNS
+  // in owner-accounts.js, 2026-07-26).
   // Bare Instagram post / reel without username path
-  if (/^https?:\/\/(?:www\.)?instagram\.com\/(?:p|reel)\/[^/]+/i.test(url)) return true;
+  if (/^https?:\/\/(?:[a-z0-9-]+\.)*instagram\.com\/(?:p|reel)\/[^/]+/i.test(url)) return true;
   // Bare TikTok video without @username
-  if (/^https?:\/\/(?:www\.)?tiktok\.com\/video\/\d+/i.test(url)) return true;
+  if (/^https?:\/\/(?:[a-z0-9-]+\.)*tiktok\.com\/video\/\d+/i.test(url)) return true;
   // Threads bare post URL
-  if (/^https?:\/\/(?:www\.)?threads\.(?:net|com)\/post\/[^/]+/i.test(url)) return true;
+  if (/^https?:\/\/(?:[a-z0-9-]+\.)*threads\.(?:net|com)\/post\/[^/]+/i.test(url)) return true;
   return false;
 }
 
@@ -174,10 +177,20 @@ function isUnresolvableRedirectUrl(url) {
   return false;
 }
 
+// URLs from platforms we already ingest natively (Reddit, HN, Bluesky, X) —
+// their Google SERP hits are duplicates of the free-source adapters.
+// Host-anchored: an unanchored substring test would drop any URL whose host
+// merely ends in x.com (netflix.com, roblox.com) or that carries a platform
+// URL inside its query string.
+function isNativelyCoveredUrl(url) {
+  return /^https?:\/\/(?:[a-z0-9-]+\.)*(?:reddit\.com|news\.ycombinator\.com|bsky\.app|x\.com|twitter\.com)(?:[/?#:]|$)/i.test(String(url || ''));
+}
+
 // Parse X/Twitter tweet ID + handle from a status URL
-// Accepts: https://x.com/foo/status/123, https://twitter.com/foo/status/123
+// Accepts: https://x.com/foo/status/123, https://twitter.com/foo/status/123,
+// mobile.twitter.com variants
 function parseXUrl(url) {
-  const m = String(url).match(/^https?:\/\/(?:www\.)?(?:x|twitter)\.com\/([^/]+)\/status\/(\d+)/);
+  const m = String(url).match(/^https?:\/\/(?:[a-z0-9-]+\.)*(?:x|twitter)\.com\/([^/]+)\/status\/(\d+)/);
   if (!m) return null;
   const handle = m[1];
   // Filter obvious non-user paths
@@ -273,7 +286,7 @@ async function fetchGoogleWebMentions(keywords = DEFAULT_KEYWORDS, opts = {}) {
       // Skip Google's opaque redirect URLs (break dedup + owner filtering)
       if (isUnresolvableRedirectUrl(r.url)) continue;
       // Skip sources we already cover natively
-      if (/reddit\.com|news\.ycombinator\.com|bsky\.app|x\.com|twitter\.com/i.test(r.url)) continue;
+      if (isNativelyCoveredUrl(r.url)) continue;
       // Skip Instagram/TikTok/Threads bare URLs we can't attribute
       if (isUnattributableSocialUrl(r.url)) continue;
       // Confirm keyword appears in title or snippet
@@ -402,5 +415,5 @@ module.exports = {
   fetchGoogleNewsMentions,
   fetchPaidSources,
   // exported for tests
-  _internal: { parseXUrl, buildQuery, urlHash, canonicalizeUrl, normalizeExcerpt, isUnattributableSocialUrl, isUnresolvableRedirectUrl },
+  _internal: { parseXUrl, buildQuery, urlHash, canonicalizeUrl, normalizeExcerpt, isUnattributableSocialUrl, isUnresolvableRedirectUrl, isNativelyCoveredUrl },
 };
