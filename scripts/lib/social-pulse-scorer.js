@@ -272,7 +272,51 @@ function computeRelevanceRates(mentions) {
   return {
     byPlatform: rates,
     overall: totalClassified > 0 ? totalRelevant / totalClassified : null,
+    // Denominator behind `overall`. Callers MUST check this before acting on a
+    // low rate: 0/1 and 0/75 are both "0%" but only one is evidence.
+    classified: totalClassified,
   };
+}
+
+/**
+ * Minimum relevance rate for a card to be publishable at all. Same VALUE as
+ * MIN_QUOTE_RELEVANCE today, deliberately declared separately: the two gates
+ * have very different blast radii. Failing the quote gate costs a quote;
+ * failing this one deletes the card from the show page, /trending and the
+ * newsletter. Someone tuning the quote threshold after a bad-quote report
+ * must not silently delete live cards as a side effect.
+ */
+const MIN_CARD_RELEVANCE = 0.15;
+
+/**
+ * Minimum CLASSIFIED sample required before a low relevance rate is treated as
+ * evidence of a title collision rather than noise. `overall` is a point
+ * estimate with no denominator — titanique-2026 sat at 0.25 off a 2-of-8
+ * sample on 2026-07-26, one LLM misclassification away from 0.125 and being
+ * hidden, while the genuine collisions were sampled 0/75 and 1/62. 20 keeps
+ * both real collisions gated and every thin-sample show visible.
+ */
+const MIN_CARD_RELEVANCE_SAMPLE = 20;
+
+/**
+ * True when the classified text sample says this show's corpus is mostly not
+ * about this show — a title collision we cannot publish a mention count for.
+ *
+ * Applied at the WRITE boundaries (computeSocialPulse and the re-ranker), not
+ * inside a tier function, because there are two tier paths (derivePeerTier and
+ * the legacy deriveTier) and only gating one of them leaves a live publish hole:
+ * fetch-social-pulse.js calls computeSocialPulse WITHOUT peerStats, so every
+ * per-show write takes the legacy path.
+ *
+ * Requires BOTH a measured rate and a big enough denominator. Unmeasured
+ * (legacy v2 files, no classified sample) is "unknown", never "noisy".
+ */
+function isTooNoisyForCard(relevanceRates) {
+  const overall = relevanceRates?.overall;
+  const classified = relevanceRates?.classified;
+  if (typeof overall !== 'number') return false;
+  if (!Number.isFinite(classified) || classified < MIN_CARD_RELEVANCE_SAMPLE) return false;
+  return overall < MIN_CARD_RELEVANCE;
 }
 
 /**
@@ -450,25 +494,11 @@ function computeCompositeScore(volume, positivePct) {
  * or Rising — all three require a sentiment CLAIM, and there isn't one.
  * It falls through to Steady (or Hidden, from the volume gate above).
  *
- * Relevance gate: `relevanceOverall` below MIN_QUOTE_RELEVANCE means the
- * classified sample says almost nothing collected for this show is actually
- * ABOUT this show — a title collision. The card would otherwise publish that
- * raw mention count as fact: on 2026-07-26, "The Truth" showed 189 mentions
- * at 0.0% relevance and Pride 123 at 1.6%, while both already ranked at
- * effectiveVolume ~0 because the same rate zeroes the Pulse Index. Hiding is
- * the honest resolution — we cannot stand behind the number, and ranking
- * already treats it as noise. Same threshold as the quote gate on purpose:
- * one relevance bar for "can we show this to a reader," not two.
+ * Relevance is NOT gated here — see isTooNoisyForCard, applied at the write
+ * boundaries so both this and the legacy deriveTier path are covered.
  */
-function derivePeerTier({ volume, effectiveVolume, positivePct, relevanceOverall, peerStats }) {
+function derivePeerTier({ volume, effectiveVolume, positivePct, peerStats }) {
   if (!Number.isFinite(volume) || volume < MIN_MENTIONS_FOR_CARD) {
-    return 'Hidden';
-  }
-
-  // Only gate when relevance was actually MEASURED. An absent rate (legacy
-  // v2 file, or a run with no classified sample) is "unknown," not "noisy" —
-  // hiding those would blank cards that have been fine for months.
-  if (typeof relevanceOverall === 'number' && relevanceOverall < MIN_QUOTE_RELEVANCE) {
     return 'Hidden';
   }
 
@@ -737,15 +767,15 @@ function computeSocialPulse({ mentions, counters, baseline, priorVolume, peerSta
   // Use peer-relative tier when peer stats are available (the primary path
   // after 2026-04-11). Fall back to legacy self-baseline tier for single-show
   // runs where peer stats aren't computed.
-  const tier = peerStats
-    ? derivePeerTier({
-        volume,
-        effectiveVolume,
-        positivePct,
-        relevanceOverall: relevanceRates.overall,
-        peerStats,
-      })
+  const derivedTier = peerStats
+    ? derivePeerTier({ volume, effectiveVolume, positivePct, peerStats })
     : deriveTier({ currentVolume: volume, baseline, positivePct, weekOverWeekPct });
+
+  // Relevance gate at the WRITE boundary, so it covers BOTH tier paths. The
+  // per-show writer (fetch-social-pulse.js) passes no peerStats and therefore
+  // always takes the legacy deriveTier branch — gating inside derivePeerTier
+  // alone would leave that path publishing ungated cards.
+  const tier = isTooNoisyForCard(relevanceRates) ? 'Hidden' : derivedTier;
 
   // Pick quotes matching the tier's dominant sentiment
   let targetSentiment;
@@ -818,6 +848,9 @@ module.exports = {
   QUOTE_MAX_CHARS,
   QUOTES_ON_CARD,
   MIN_QUOTE_RELEVANCE,
+  MIN_CARD_RELEVANCE,
+  MIN_CARD_RELEVANCE_SAMPLE,
+  isTooNoisyForCard,
   NEUTRAL_POSITIVE_PCT,
   MIN_OPINION_SAMPLE,
   shouldShowSentiment,
