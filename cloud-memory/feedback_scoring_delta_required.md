@@ -3,6 +3,7 @@ name: Scoring-logic edits require counterfactual check
 description: "Edits to review-guards/rebuild/scoring MUST run scoring-delta.js + temporal fixture."
 type: feedback
 originSessionId: 09f4a3c6-90ce-4517-9094-ed3ec9f0c12e
+modified: 2026-07-26T19:04:08.126Z
 ---
 **Rule:** Any edit to a file controlling review-inclusion logic must be verified with a whole-dataset counterfactual check before merge — not just unit tests.
 
@@ -53,3 +54,5 @@ Phase B loads HEAD via `git archive BASE -- scripts/lib scripts/llm-scoring | ta
 - `feedback_test_extraction_pattern.md` — how guard tests should be structured
 
 **Evaluating an already-committed data sweep (2026-07-12):** scoring-delta always diffs review-texts working tree vs HEAD, so committed+pushed sweeps show "nothing to check". Recreate the diff in the `data/review-texts` clone (scratch copy, CI overwrites it): `git fetch && git reset --hard <post-sweep-sha> && git reset --soft <pre-sweep-sha>` → run scoring-delta → `git reset --hard origin/main` to restore. HEAD=pre, tree=post ⇒ the delta is exactly the sweep.
+
+**Known blind spot — unscored-file eligibility changes (2026-07-26, task #501):** `scoring-delta.js`'s own `decideInclusion()` (its LOCAL reimplementation of the inclusion predicate, not a call to the real `isIncludableForRebuild`) early-returns `{included:false, reason:'no score'}` whenever `review.assignedScore == null` — BEFORE it ever reaches the final text/excerpt fallback logic. So any fix that changes whether an *unscored* file is eligible (e.g. the excerpt-only fallback fix in #501) reports "0 flips" / "delta within tolerance" no matter what, because scoring-delta can only see flips among ALREADY-SCORED reviews. A clean scoring-delta run does NOT prove no impact for this class of change. **Verify instead with `node scripts/audit-llm-scoring-parity.js`** (calls the REAL `isIncludableForRebuild`/`isScoreable`, and diffs before/after via `git stash` on `scripts/lib/review-guards.js` if scoring-delta's git-diff mode doesn't apply) — still run scoring-delta.js too (it's the mandated gate and catches the *other* class: already-scored files flipping), just don't stop there.

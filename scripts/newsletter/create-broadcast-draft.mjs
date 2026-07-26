@@ -19,6 +19,13 @@
 // Options:
 //   --create                Actually create the draft. WITHOUT this flag the
 //                           script is a DRY RUN that only prints what it would do.
+//   --status                Read-only: GET /broadcasts, print one word to stdout —
+//                           "draft" (unsent, safe to refresh), "sent" (already went
+//                           out, do not touch), or "none" (no broadcast with this
+//                           name yet). Makes no POST/PATCH call. Does not need the
+//                           generated HTML/meta files (unlike --create). Used by
+//                           newsletter-draft-refresh.yml to decide whether a
+//                           Sunday re-generate is worthwhile before paying for it.
 //   --audience=<key>        general (default) | west-end | test. MUST agree
 //                           with NEWSLETTER_EDITION (test is exempt): a WE
 //                           draft needs BOTH NEWSLETTER_EDITION=west-end (for
@@ -112,6 +119,61 @@ if (audienceKey !== 'test' && editionIsWE !== (audienceKey === 'west-end')) {
   process.exit(1);
 }
 
+// `name` only depends on EDITION + weekStart (not on the generated HTML/meta), so
+// --status can look up the broadcast before generate.mjs has run at all.
+const name = (flags.name || (EDITION === 'west-end' ? `West End Weekly — ${weekStart}` : `Scorecard Weekly — ${weekStart}`)).toString();
+
+function apiHeaders() {
+  return { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' };
+}
+
+async function apiJSON(method, url, payload) {
+  const opt = { method, headers: apiHeaders() };
+  if (payload !== undefined) opt.body = JSON.stringify(payload);
+  const res = await fetch(url, opt);
+  const text = await res.text();
+  let body; try { body = JSON.parse(text); } catch { body = text; }
+  if (!res.ok) {
+    throw new Error(`Resend ${res.status} on ${method}: ${typeof body === 'string' ? body : JSON.stringify(body)}`);
+  }
+  return body;
+}
+
+// Look up broadcasts with this exact name, split by status. Returns the single
+// existing DRAFT (so a re-run UPDATES it in place rather than duplicating) plus
+// any already-SENT/scheduled broadcasts for the same week (so we can refuse to
+// re-draft an issue that already went out — relevant now that CI auto-creates a
+// draft every week). SENT broadcasts are never modified by this script.
+async function lookupByName() {
+  const list = await apiJSON('GET', RESEND_BROADCASTS_URL);
+  const all = (list && list.data) || [];
+  const named = all.filter((b) => b && b.name === name);
+  const drafts = named.filter((b) => b.status === 'draft');
+  const sent = named.filter((b) => b.status !== 'draft');
+  if (drafts.length > 1) {
+    throw new Error(`${drafts.length} draft broadcasts named "${name}" exist — refusing to guess which to update. Resolve in the Resend UI.`);
+  }
+  return { draft: drafts[0] || null, sent };
+}
+
+if (flags.status) {
+  if (!process.env.RESEND_API_KEY) {
+    console.error('RESEND_API_KEY is required for --status.');
+    process.exit(1);
+  }
+  (async () => {
+    try {
+      const { draft, sent } = await lookupByName();
+      if (sent.length) { console.log('sent'); return; }
+      if (draft) { console.log('draft'); return; }
+      console.log('none');
+    } catch (e) {
+      console.error(`Status check failed: ${e.message}`);
+      process.exitCode = 1;
+    }
+  })();
+} else {
+
 const outDir = (flags['out-dir'] || process.env.NEWSLETTER_OUT_DIR
   || path.join(os.homedir(), 'Documents/claude-outputs/newsletter-mocks')).toString();
 const htmlPath = path.join(outDir, `A-${weekStart}.html`);
@@ -126,7 +188,6 @@ if (!fs.existsSync(htmlPath) || !fs.existsSync(metaPath)) {
 const html = fs.readFileSync(htmlPath, 'utf8');
 const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
 const subject = (flags.subject || meta.subject || '').toString().trim();
-const name = (flags.name || (EDITION === 'west-end' ? `West End Weekly — ${weekStart}` : `Scorecard Weekly — ${weekStart}`)).toString();
 
 // --- Sanity gates (fail loudly before any API call) ----------------------------
 const problems = [];
@@ -156,22 +217,6 @@ function summary() {
   console.error(`  html      : ${htmlPath} (${html.length} bytes)`);
 }
 
-function apiHeaders() {
-  return { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' };
-}
-
-async function apiJSON(method, url, payload) {
-  const opt = { method, headers: apiHeaders() };
-  if (payload !== undefined) opt.body = JSON.stringify(payload);
-  const res = await fetch(url, opt);
-  const text = await res.text();
-  let body; try { body = JSON.parse(text); } catch { body = text; }
-  if (!res.ok) {
-    throw new Error(`Resend ${res.status} on ${method}: ${typeof body === 'string' ? body : JSON.stringify(body)}`);
-  }
-  return body;
-}
-
 // Data-freshness gate. The newsletter reads data/reviews.json + data/shows.json,
 // which are usually symlinks into the local broadway-scorecard-data checkout. If
 // that checkout is behind origin, the draft is built on stale data and recent
@@ -189,23 +234,6 @@ function dataRepoStaleness() {
   } catch (e) {
     return { dir: dir || null, behind: null, error: e.message };
   }
-}
-
-// Look up broadcasts with this exact name, split by status. Returns the single
-// existing DRAFT (so a re-run UPDATES it in place rather than duplicating) plus
-// any already-SENT/scheduled broadcasts for the same week (so we can refuse to
-// re-draft an issue that already went out — relevant now that CI auto-creates a
-// draft every week). SENT broadcasts are never modified by this script.
-async function lookupByName() {
-  const list = await apiJSON('GET', RESEND_BROADCASTS_URL);
-  const all = (list && list.data) || [];
-  const named = all.filter((b) => b && b.name === name);
-  const drafts = named.filter((b) => b.status === 'draft');
-  const sent = named.filter((b) => b.status !== 'draft');
-  if (drafts.length > 1) {
-    throw new Error(`${drafts.length} draft broadcasts named "${name}" exist — refusing to guess which to update. Resolve in the Resend UI.`);
-  }
-  return { draft: drafts[0] || null, sent };
 }
 
 (async () => {
@@ -271,3 +299,5 @@ async function lookupByName() {
     process.exitCode = 1;
   }
 })();
+
+}

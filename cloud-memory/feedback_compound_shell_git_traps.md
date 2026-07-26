@@ -1,11 +1,11 @@
 ---
 name: feedback_compound_shell_git_traps
-description: "zsh unquoted vars don't word-split (use loops/node files); never chain `git stash pop` after a conditional `stash push` — pop hits ANOTHER session's stash when nothing was saved; after a rejected push of a worktree MERGE commit use pull --no-rebase (rebase flattens the merge → add/add conflicts on the next worktree merge); never mix a failed `cd &&` chain with newline-separated git commands in one Bash call — the later lines still run (pushed conflict markers 2026-07-13)"
+description: "zsh unquoted vars don't word-split (use loops/node files); never chain `git stash pop` after a conditional `stash push` — pop hits ANOTHER session's stash when nothing was saved; after a rejected push of a worktree MERGE commit use pull --no-rebase (rebase flattens the merge → add/add conflicts on the next worktree merge); never mix a failed `cd &&` chain with newline-separated git commands in one Bash call — the later lines still run (pushed conflict markers 2026-07-13); a bare `cd` at the top of a multi-line Bash call persists for every later line including unrelated cleanup — ran `rm`/`ln` in the main repo instead of the worktree (2026-07-26)"
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: 7fc18b1f-6174-4c6a-b243-9b51c71e27b1
-  modified: 2026-07-26T19:03:38.680Z
+  modified: 2026-07-26T19:03:46.546Z
 ---
 
 Two compound-command traps that each bit multiple times in one session (2026-07-12/13):
