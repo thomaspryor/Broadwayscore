@@ -31,6 +31,7 @@ Usage:
   node scripts/audit-todaytix-runtimes.js [options]
   node scripts/audit-todaytix-runtimes.js --help, -h    print this usage and exit
 `;
+// hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
 const {
   extractRunTimeDisplay,
   parseRunTimeDisplay,

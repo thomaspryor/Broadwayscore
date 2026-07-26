@@ -54,6 +54,7 @@ Usage:
   node scripts/scoring-delta.js [options]
   node scripts/scoring-delta.js --help, -h    print this usage and exit
 `;
+// hygiene-help-flag-ok: audit-help-flag-safety.js flags the fs.rmSync() inside a process.on('exit', ...) handler registered at module load — the handler only RUNS when the process exits (after --help has already printed and returned), and TMP_DIRS_TO_CLEAN is empty unless main() populated it, so it is a no-op on --help. Verified: node <this file> --help exits immediately with no fs side effects.
 const ARGS = process.argv.slice(2);
 const BASE_REF = (ARGS.find(a => a.startsWith('--base=')) || '--base=HEAD').split('=')[1];
 const OUT_JSON = ARGS.includes('--json');
