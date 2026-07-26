@@ -98,7 +98,13 @@ describe('buildCadenceReport on real corpus data (if available)', () => {
   const showsPath = path.join(__dirname, '..', '..', 'data', 'shows.json');
   const hasData = fs.existsSync(reviewsPath) && fs.existsSync(outletsPath) && fs.existsSync(showsPath);
 
-  test('flags newsday + broadwaynews red, nytimes green (S4-T1 acceptance criterion)', { skip: !hasData }, () => {
+  // Structural checks only -- NEVER assert a specific outlet's current live
+  // status here. Outlet health legitimately changes over time (e.g. #280
+  // repaired newsday collection, flipping it from red to green), so pinning
+  // a live outlet's status turns every future fix into a broken build.
+  // The actual red/green classification behavior is locked down below with
+  // a frozen synthetic fixture instead.
+  test('produces well-formed rows across the live corpus', { skip: !hasData }, () => {
     const reviews = Object.values(JSON.parse(fs.readFileSync(reviewsPath, 'utf8')).reviews);
     const outlets = JSON.parse(fs.readFileSync(outletsPath, 'utf8')).outlets;
     const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows;
@@ -112,14 +118,65 @@ describe('buildCadenceReport on real corpus data (if available)', () => {
       return null;
     };
     const report = buildCadenceReport(reviews, outlets, { marketOf, nowMs: Date.now() });
+    assert.ok(report.length, 'report has rows');
+    const validStatuses = new Set(['red', 'green', 'unknown']);
+    for (const row of report) {
+      assert.ok(validStatuses.has(row.status), `status "${row.status}" is a known enum value`);
+      assert.ok(row.outletId, 'row has outletId');
+      assert.ok(row.market, 'row has market');
+      assert.ok(row.tier <= 2, 'row is within the maxTier ceiling');
+      assert.ok(row.reviewCount >= 1, 'row has at least one scored review');
+    }
+    // Sanity: classification is actually discriminating, not degenerate
+    // (e.g. everything unknown because marketOf silently returned null).
+    assert.ok(report.some((r) => r.status === 'green' || r.status === 'red'),
+      'at least one row reaches a classified (non-unknown) status');
+  });
+});
+
+describe('buildCadenceReport S4-T1 acceptance criterion (frozen fixture)', () => {
+  // Synthetic data, not the live corpus -- this is what pins the actual
+  // red/green classification behavior the S4-T1 story asked for, without
+  // being sensitive to real-world outlet health changing over time.
+  const outlets = {
+    nytimes: { tier: 1 },
+    newsday: { tier: 2 },
+    broadwaynews: { tier: 2 },
+  };
+  const marketOf = () => 'broadway';
+  const nowMs = Date.parse('2026-07-22');
+
+  function reviewsFor(outletId, dates) {
+    return dates.map((publishDate, i) => ({
+      outletId,
+      publishDate,
+      showId: 'fixture-show',
+      assignedScore: 80 + i,
+    }));
+  }
+
+  test('an outlet on a healthy cadence near the market pulse is green', () => {
+    const reviews = [
+      ...reviewsFor('nytimes', ['2026-06-01', '2026-06-08', '2026-06-15', '2026-06-22']),
+    ];
+    const report = buildCadenceReport(reviews, outlets, { marketOf, nowMs });
+    const nyt = report.filter((r) => r.outletId === 'nytimes');
+    assert.ok(nyt.length, 'nytimes has cadence rows');
+    assert.ok(nyt.every((r) => r.status === 'green'), 'nytimes is green');
+  });
+
+  test('outlets trailing far behind the market pulse are red', () => {
+    const reviews = [
+      ...reviewsFor('nytimes', ['2026-06-01', '2026-06-08', '2026-06-15', '2026-06-22']),
+      ...reviewsFor('newsday', ['2025-01-01', '2025-01-08', '2025-01-15', '2025-01-22']),
+      ...reviewsFor('broadwaynews', ['2025-02-01', '2025-02-08', '2025-02-15', '2025-02-22']),
+    ];
+    const report = buildCadenceReport(reviews, outlets, { marketOf, nowMs });
     const newsday = report.filter((r) => r.outletId === 'newsday');
     const broadwaynews = report.filter((r) => r.outletId === 'broadwaynews');
-    const nytimes = report.filter((r) => r.outletId === 'nytimes');
     assert.ok(newsday.length, 'newsday has cadence rows');
     assert.ok(newsday.every((r) => r.status === 'red'), 'newsday is red');
     assert.ok(broadwaynews.length, 'broadwaynews has cadence rows');
     assert.ok(broadwaynews.every((r) => r.status === 'red'), 'broadwaynews is red');
-    assert.ok(nytimes.length, 'nytimes has cadence rows');
-    assert.ok(nytimes.every((r) => r.status === 'green'), 'nytimes is green');
   });
 });
