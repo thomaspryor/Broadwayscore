@@ -278,10 +278,11 @@ function main() {
   for (const [market, entries] of groups) {
     console.log(`\n${market}:`);
     for (const entry of entries.slice(0, 5)) {
+      const posLabel = typeof entry.data.positivePct === 'number' ? `${entry.data.positivePct}%` : 'n/a';
       console.log(
         `  #${entry.newRank.position}/${entry.newRank.total}  ${entry.data.showId.padEnd(40)}  ` +
           `vol=${String(entry.data.volume).padStart(4)}  ` +
-          `pos=${String(entry.data.positivePct || 0).padStart(3)}%  ` +
+          `pos=${posLabel.padStart(4)}  ` +
           `cs=${String(Math.round(entry.newCompositeScore)).padStart(4)}  ` +
           `tier=${entry.newTier}`,
       );

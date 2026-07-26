@@ -72,15 +72,6 @@ export type TrendingPick = RawSocialPulse & { compositeScore: number };
 export const MIN_TRENDING_VOLUME = 50;
 
 /**
- * Minimum opinion-bearing posts behind `positivePct` before any sentiment
- * (percentage or bar) renders on a card. Shared by SocialPulseCard (show
- * page) and TrendingShowCard (/trending) so both surfaces apply the same
- * "is this sample big enough to mean anything" bar — a 2-post "100%
- * positive" is noise, not a signal. See 2026-07-26 credibility audit.
- */
-export const MIN_OPINION_SAMPLE = 10;
-
-/**
  * Maximum age (days) of a social-pulse fetch before we treat it as stale and
  * stop surfacing it. The fetcher (update-social-pulse.yml) runs weekly and only
  * refreshes open/previews shows (scripts/lib/list-running-shows.js), so an
