@@ -7,9 +7,17 @@
 const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const CURATED_JSON_PATH = path.join(__dirname, '..', 'data', 'curated-images.json');
+
+const USAGE = `apply-curated-images.js — Apply curated images from curated-images.json to shows.json.
+
+Usage:
+  node scripts/apply-curated-images.js [options]
+  node scripts/apply-curated-images.js --help, -h    print this usage and exit
+`;
 
 function formatImageUrl(url, params) {
   if (!url) return null;
@@ -18,6 +26,8 @@ function formatImageUrl(url, params) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   // Load data
   const showsData = loadShows();
   const curatedData = JSON.parse(fs.readFileSync(CURATED_JSON_PATH, 'utf8'));

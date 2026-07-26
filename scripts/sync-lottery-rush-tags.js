@@ -11,11 +11,21 @@
 const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 const LOTTERY_PATH = path.join(__dirname, '../data/lottery-rush.json');
 
+const USAGE = `sync-lottery-rush-tags.js — Syncs lottery/rush tags in shows.json based on lottery-rush.json data.
+
+Usage:
+  node scripts/sync-lottery-rush-tags.js [options]
+  node scripts/sync-lottery-rush-tags.js --help, -h    print this usage and exit
+`;
+
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   // Load data
   const showsFile = loadShows();
   const lotteryData = JSON.parse(fs.readFileSync(LOTTERY_PATH, 'utf8'));

@@ -55,6 +55,14 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { sendAlert } = require('./lib/discord-notify');
 const { routeAlert } = require('./lib/owner-alert-router');
 const { execErrorDetail } = require('./lib/exec-error-detail');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-t1-silent-gaps.js — Sweep for major-outlet (T1/T2) reviews discovered but not reaching the composite score.
+
+Usage:
+  node scripts/audit-t1-silent-gaps.js [options]
+  node scripts/audit-t1-silent-gaps.js --help, -h    print this usage and exit
+`;
 
 // BSC_DATA_ROOT: worktree sessions point at the main checkout's data/ (the
 // private review-texts clone only exists there).
@@ -178,6 +186,8 @@ function fixCommand(showId, fileName, d, type) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const shows = windowShows();
   const scoredMap = scoredOutletsByShow();
   const gaps = [];
