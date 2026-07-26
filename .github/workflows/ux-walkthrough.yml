@@ -83,29 +83,33 @@ jobs:
             }
           "
 
-      - name: Email digest — high-priority findings only
+      - name: Digest — high-priority findings only
+        # Was a direct sendAlert(email:true) — an immediate [CRITICAL] email
+        # every night a high-priority finding turned up, even though the
+        # finding is ALREADY a filed Notion card by this point (see the
+        # findings step above) and needs no owner action the automation
+        # itself can't take. Card #475 (2026-07-26): downgraded to
+        # disposition='digest' via owner-alert-router — it queues a line for
+        # the next BSC Daily instead of paging. cooldownHours=20 (just under
+        # the 24h schedule) so each night's fresh findings still queue, rather
+        # than the router's 7-day default silencing days 2-7 of a real week.
         if: steps.findings.outputs.has_high == 'true'
         uses: actions/github-script@v7
         env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-          # Passed via env, NOT spliced into the script string below — the
-          # summary is LLM-authored text and could contain backticks/${...}
-          # that would break or inject into the JS template literal
-          # (ship-check finding, 2026-07-20).
           FINDINGS_SUMMARY: ${{ steps.findings.outputs.summary }}
         with:
           script: |
-            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            await sendAlert({
+            await routeAlert({
+              conditionKey: 'ux-walkthrough:high-priority',
               title: 'UX walkthrough: high-priority finding(s) filed',
               description: process.env.FINDINGS_SUMMARY || '',
-              severity: 'error',
-              email: true,
+              severity: 'info',
+              disposition: 'digest',
               url: runUrl,
-              fields: [{ name: 'Run', value: `[View screenshots + findings](${runUrl})` }],
-            }).catch(e => console.error('Digest email failed:', e.message));
+              cooldownHours: 20,
+            }).catch(e => console.error('Digest queue failed:', e.message));
 
       - name: Fail job if walkthrough errored
         if: steps.walkthrough.outcome == 'failure'

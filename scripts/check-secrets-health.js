@@ -296,6 +296,12 @@ async function checkPrivateRepoPAT() {
 
 async function checkDispatchPAT() {
   const token = process.env.GH_DISPATCH_TOKEN;
+  // Genuinely a 'fail' (not 'skip' like other missing-key checks): unlike an
+  // optional integration, /api/submit-review really does 503 without this
+  // token, in CI or not — the check result should stay red so it's visible
+  // in output/exit code. What was wrong (2026-07-26) was PAGING the owner
+  // over it from a plain local run; that's fixed below via the CI/--alert
+  // gate on the email send, not by hiding the fail here.
   if (!token) return { name: 'Dispatch PAT (submit-review)', status: 'fail', message: 'GH_DISPATCH_TOKEN not set — /api/submit-review will return 503' };
 
   const headers = {
@@ -484,31 +490,41 @@ async function main() {
 
   console.log(`\n--- Summary: ${passed.length} pass, ${warnings.length} warn, ${failures.length} fail ---\n`);
 
+  // Alert email only fires in CI or with an explicit --alert flag — a local/
+  // interactive run (morning briefing, manual debug) still exits nonzero on
+  // failure but must never page the owner (2026-07-26 regression: a local run
+  // with GH_DISPATCH_TOKEN absent fired a real [CRITICAL] email).
+  const shouldAlert = process.env.GITHUB_ACTIONS === 'true' || process.argv.includes('--alert');
+
   // Send alert if any failures
   if (failures.length > 0) {
-    const { sendAlert } = require('./lib/discord-notify');
+    if (shouldAlert) {
+      const { sendAlert } = require('./lib/discord-notify');
 
-    const fields = failures.map(f => ({
-      name: f.name,
-      value: f.message,
-      inline: false,
-    }));
-
-    if (warnings.length > 0) {
-      fields.push({
-        name: `${warnings.length} Warning(s)`,
-        value: warnings.map(w => `${w.name}: ${w.message}`).join('\n'),
+      const fields = failures.map(f => ({
+        name: f.name,
+        value: f.message,
         inline: false,
-      });
-    }
+      }));
 
-    await sendAlert({
-      title: `Secret Health Check — ${failures.length} Failed`,
-      description: `${failures.length} critical service${failures.length > 1 ? 's' : ''} ${failures.length > 1 ? 'are' : 'is'} down or has expired credentials. Immediate action required.`,
-      severity: 'error',
-      email: true,
-      fields: fields.slice(0, 10),
-    }).catch(e => console.error('[Alert] Failed to send:', e.message));
+      if (warnings.length > 0) {
+        fields.push({
+          name: `${warnings.length} Warning(s)`,
+          value: warnings.map(w => `${w.name}: ${w.message}`).join('\n'),
+          inline: false,
+        });
+      }
+
+      await sendAlert({
+        title: `Secret Health Check — ${failures.length} Failed`,
+        description: `${failures.length} critical service${failures.length > 1 ? 's' : ''} ${failures.length > 1 ? 'are' : 'is'} down or has expired credentials. Immediate action required.`,
+        severity: 'error',
+        email: true,
+        fields: fields.slice(0, 10),
+      }).catch(e => console.error('[Alert] Failed to send:', e.message));
+    } else {
+      console.log(`[Alert] email suppressed — not running in CI and --alert not passed (${failures.length} failure(s) still fail the run)`);
+    }
 
     process.exit(1);
   }

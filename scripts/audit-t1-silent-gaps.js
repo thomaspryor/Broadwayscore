@@ -53,6 +53,7 @@ const {
 const { dispatchRescore } = require('./lib/dispatch-rescore');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { sendAlert } = require('./lib/discord-notify');
+const { routeAlert } = require('./lib/owner-alert-router');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 
 // BSC_DATA_ROOT: worktree sessions point at the main checkout's data/ (the
@@ -557,21 +558,31 @@ async function main() {
       && !pagedGapOutletKeys.has(`${g.showId}/${g.outletId}`));
     const dueB = aged.filter((g) => shouldBackstopAlert(state[`backstop:${g.showId}/${g.file}`], now));
     if (dueB.length > 0) {
-      const fields = dueB.slice(0, 15).map((g) => ({
-        name: `${g.title || g.showId} — ${g.outletId} (T${g.tier}, ${g.type}, ${Math.round(g.nonTerminalAgeHours || 0)}h)`,
-        value: `Non-terminal for ${Math.round(g.nonTerminalAgeHours || 0)}h (>${BACKSTOP_MIN_AGE_HOURS}h).\nFix: ${g.fix}`,
-      }));
-      const delivered = await sendAlert({
-        title: `T1/T2 review stuck >24h: ${dueB.length} non-terminal review(s)`,
-        description: `Backstop: these T1/T2 review files have been in a non-terminal, non-scoreable state for over ${BACKSTOP_MIN_AGE_HOURS}h — self-heal refetch and scoring self-dispatch did not resolve them. Each needs the listed recovery command.`,
-        severity: 'error',
-        email: true,
-        fields,
-      });
-      if (delivered) {
-        for (const g of dueB.slice(0, 15)) state[`backstop:${g.showId}/${g.file}`] = now.toISOString();
-        fs.mkdirSync(AUDIT_DIR, { recursive: true });
-        fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
+      // Each gap already names its own exact recovery command (fixCommand())
+      // — that's a machine-investigable condition, not one that needs owner
+      // judgment. Card #475 (2026-07-26): a single-item backstop was firing a
+      // full [CRITICAL] email every time ("has an automated backstop" in its
+      // own body was the tell — the backstop itself shouldn't page). Route
+      // each gap through owner-alert-router's 'auto' disposition instead: it
+      // files a Notion Action Queue card that notion-action-poll.js works
+      // hands-free. Capped at 5/run so a bad run can't flood the queue.
+      const toFile = dueB.slice(0, 5);
+      for (const g of toFile) {
+        const conditionKey = `backstop:${g.showId}/${g.file}`;
+        const result = await routeAlert({
+          conditionKey,
+          title: `T1/T2 review stuck >24h: ${g.title || g.showId} — ${g.outletId}`,
+          description: `Backstop: this T1/T2 review file (${g.file}) has been in a non-terminal, non-scoreable state for over ${BACKSTOP_MIN_AGE_HOURS}h (currently ${Math.round(g.nonTerminalAgeHours || 0)}h, tier T${g.tier}, ${g.type}) — self-heal refetch and scoring self-dispatch did not resolve it.`,
+          hint: g.fix,
+          severity: 'error',
+          disposition: 'auto',
+        });
+        if (result.action !== 'silent') state[conditionKey] = now.toISOString();
+      }
+      fs.mkdirSync(AUDIT_DIR, { recursive: true });
+      fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
+      if (dueB.length > toFile.length) {
+        console.log(`${dueB.length - toFile.length} additional aged gap(s) deferred to next run (5/run cap).`);
       }
     } else if (aged.length > 0) {
       console.log(`${aged.length} aged (>24h) gap(s) already backstop-alerted within the window.`);

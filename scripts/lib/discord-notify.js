@@ -8,6 +8,40 @@
  */
 
 const https = require('https');
+const fs = require('fs');
+const path = require('path');
+
+// Append-only log of every owner email actually delivered through this
+// chokepoint (card #475: the alert-noise regression audit). This is the
+// ONE place nearly every ad-hoc CRITICAL sender ends up (direct sendAlert()
+// calls AND owner-alert-router's disposition='human' path both funnel
+// through sendEmailAlert below) — logging here, rather than at each of the
+// ~25 call sites, gives a single source for "how many owner emails fired
+// this week and from what" without having to instrument every caller.
+// Scheduled digests that hit api.resend.com directly (send-daily-digest.js,
+// autonomous-email.js, etc. — see lint-resend-calls.js's ALLOWLIST) are
+// intentionally NOT captured here: they're the one known-good daily email,
+// not the noise class this log exists to surface.
+const SEND_LOG_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'owner-email-log.jsonl');
+const SEND_LOG_RETENTION_DAYS = 30;
+
+function logOwnerEmailSent({ title, severity }) {
+  try {
+    const cutoff = Date.now() - SEND_LOG_RETENTION_DAYS * 24 * 60 * 60 * 1000;
+    let lines = [];
+    try {
+      lines = fs.readFileSync(SEND_LOG_PATH, 'utf8').split('\n').filter(Boolean);
+    } catch { /* missing — first entry */ }
+    const kept = lines.filter(line => {
+      try { return new Date(JSON.parse(line).ts).getTime() >= cutoff; } catch { return false; }
+    });
+    kept.push(JSON.stringify({ ts: new Date().toISOString(), title, severity }));
+    fs.mkdirSync(path.dirname(SEND_LOG_PATH), { recursive: true });
+    fs.writeFileSync(SEND_LOG_PATH, kept.join('\n') + '\n');
+  } catch (err) {
+    console.error(`[Email] failed to write owner-email-log (non-fatal): ${err.message}`);
+  }
+}
 
 
 /**
@@ -89,6 +123,7 @@ async function sendEmailAlert({ title, description, severity = 'error', fields =
         res.on('end', () => {
           if (res.statusCode >= 200 && res.statusCode < 300) {
             console.log('[Email] Alert email sent successfully');
+            logOwnerEmailSent({ title, severity });
             resolve(true);
           } else {
             console.error(`[Email] Failed to send: ${res.statusCode} ${body}`);
@@ -143,6 +178,21 @@ async function sendNewShowNotification() { return false; }
 async function sendMessage() { return false; }
 function getNotificationStatus() { return { alerts: false, reports: false, newshows: false }; }
 
+// Trailing-N-day read of the owner-email send log for the BSC Daily digest's
+// "how much did I actually get paged this week" section (card #475 acceptance
+// criterion: creep must be visible without combing the inbox).
+function readOwnerEmailLog({ days = 7 } = {}) {
+  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+  let lines = [];
+  try {
+    lines = fs.readFileSync(SEND_LOG_PATH, 'utf8').split('\n').filter(Boolean);
+  } catch { /* missing — no sends logged yet */ }
+  return lines
+    .map(line => { try { return JSON.parse(line); } catch { return null; } })
+    .filter(Boolean)
+    .filter(entry => new Date(entry.ts).getTime() >= cutoff);
+}
+
 module.exports = {
   sendAlert,
   sendEmailAlert, // resolves true/false — for callers that must act on delivery failure
@@ -151,4 +201,6 @@ module.exports = {
   sendNewShowNotification,
   sendMessage,
   getNotificationStatus,
+  readOwnerEmailLog,
+  _SEND_LOG_PATH: SEND_LOG_PATH,
 };

@@ -291,6 +291,23 @@ function attentionCountOf(attention) {
   return (a.configWarnings?.length || 0) + (a.failedCards?.length || 0) + (a.parkedItems?.length || 0);
 }
 
+// Subset of attentionCountOf that names an actual owner decision (clear a
+// failed card's Auto tag, fix a config warning). parkedItems are a routine
+// skip reason — "this card is bigger than the loop's enabled size tiers" —
+// not new information the owner must act on tonight, so they're excluded
+// here even though they still show in the attention block body. Card #475
+// (2026-07-26): the subject line escalated to "needs your triage" purely off
+// attentionCountOf (which counted parked items), while this function's
+// sibling drove the body headline off items.length only — the two disagreed
+// whenever parked items were the ONLY attention signal, producing "10 items
+// stalling the loop — needs your triage" next to a body that opened with
+// "Nothing needs you this morning". Both the subject and the headline must
+// use THIS count for the "needs your triage" framing so they can't diverge.
+function actionableAttentionCountOf(attention) {
+  const a = attention || {};
+  return (a.configWarnings?.length || 0) + (a.failedCards?.length || 0);
+}
+
 // Count the digest signals renderDigestBlock flags as "possibly stuck", so the
 // top-line "nothing broken" is never contradicted by a ⚠️ shown below.
 // Delegates to overnight-digest.js's countStuckSignals — the ONE definition of
@@ -307,10 +324,17 @@ function renderSummaryLine(data) {
   // while the digest below shows a "Couldn't check: …" line.
   const digestUnknown = digest && Array.isArray(digest.errors) && digest.errors.length ? 1 : 0;
   const issues = failedCount + attentionCountOf(attention) + digestStuckCount(digest) + digestUnknown + (throttled ? 1 : 0);
+  const actionableAttention = actionableAttentionCountOf(attention);
 
   let headline;
   if (runSkipped) headline = 'The overnight run did not finish';
   else if (items.length) headline = `${items.length} fix${items.length > 1 ? 'es' : ''} waiting for your tap`;
+  // Must agree with autonomous-email.js's subject line, which escalates to
+  // "needs your triage" off this SAME actionable count — otherwise the
+  // subject can say "needs your triage" while this headline says "Nothing
+  // needs you this morning" (card #475 regression: parked-item-only nights
+  // hit exactly this split).
+  else if (actionableAttention) headline = `${actionableAttention} item${actionableAttention > 1 ? 's' : ''} need${actionableAttention > 1 ? '' : 's'} your triage`;
   else headline = 'Nothing needs you this morning';
 
   const bits = [];
@@ -412,6 +436,6 @@ function renderEmail(data) {
 
 module.exports = {
   renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderRecheckBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
-  attentionCountOf, digestStuckCount,
+  attentionCountOf, actionableAttentionCountOf, digestStuckCount,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
 };
