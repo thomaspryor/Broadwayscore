@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-26T17:00:26.506Z",
+  "generatedAt": "2026-07-26T20:19:50.075Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -127,22 +127,22 @@
       "slug": "hugo-marchand-artists-at-the-center-off-broadway",
       "thumbnail": "/images/shows/hugo-marchand-artists-at-the-center-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 91,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
           "T2:0/3",
           "hi-conf:0/8"
@@ -237,10 +237,6 @@
         {
           "name": "TheaterMania",
           "isDualMarket": false
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
         },
         {
           "name": "amNewYork",
@@ -497,6 +493,20 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-07-26T20:19:50.075Z",
+          "rc": 1,
+          "s": 91,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     }

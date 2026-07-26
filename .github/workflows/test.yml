@@ -977,13 +977,14 @@ on:
       - 'scripts/llm-scoring/scorer.ts'
       - 'scripts/llm-scoring/openai-scorer.ts'
       - 'scripts/llm-scoring/gemini-scorer.ts'
-      # Task #504 (2026-07-26): gpt-4o -> gpt-5.4-mini ensemble swap. Colocated
-      # test (openai-leg-model.test.mjs) runs in the node --test invocation
-      # below (not globbed); path-listed so a solo edit to any of these still
-      # triggers CI (feedback_test_yml_push_path_allowlist).
-      - 'scripts/lib/models.js'
+      # Phase 2 (task #516) wired --batch into the live loop. ensemble-scorer.ts
+      # now owns the three extracted stages (prepareScoringInput /
+      # combineOutcomes / finalizeScoredFile) that batch-mode.test.mjs pins,
+      # and batch-runner.ts is the submit/poll/merge orchestration. Neither was
+      # path-listed, so a solo edit to either would have gotten ZERO CI
+      # (feedback_test_yml_push_path_allowlist).
       - 'scripts/llm-scoring/ensemble-scorer.ts'
-      - 'scripts/llm-scoring/openai-leg-model.test.mjs'
+      - 'scripts/llm-scoring/batch-runner.ts'
   pull_request:
     branches: [main]
   schedule:

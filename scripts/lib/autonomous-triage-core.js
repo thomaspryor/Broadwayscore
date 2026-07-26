@@ -333,10 +333,21 @@ function findClaimedTask(cardId, taskState) {
 // mistyped card id 404s identically every time, so a retry buys nothing and, at
 // 120 fetched cards, a systematic failure would add two minutes of pure sleep
 // plus 120 wasted subprocesses to every nightly run.
-const PERMANENT_FETCH_ERROR_RE = /\b(404|object_not_found|not[ _-]?found|validation_error|unauthorized|401|403)\b|could not find (page|block|database)/i;
+// Substring matching alone is not safe here (ship-check round 2): a genuinely
+// transient `HTTP 502: upstream "object_not_found"` or a stack trace that
+// happens to contain "403" would be misread as permanent and cost the card its
+// night. So TRANSIENT WINS: any 5xx, rate-limit, or socket/DNS signal marks the
+// error retryable no matter what else the text contains, and only then is the
+// permanent set consulted — and that set is anchored on Notion's own error
+// shapes (a `"code": "object_not_found"` body field, or a status code in
+// status position) rather than a bare number appearing anywhere.
+const TRANSIENT_FETCH_ERROR_RE = /\b5\d\d\b|\b429\b|rate.?limit|ETIMEDOUT|ECONNRESET|ECONNREFUSED|ENOTFOUND|EAI_AGAIN|socket hang up|network|timed? ?out/i;
+const PERMANENT_FETCH_ERROR_RE = /"code"\s*:\s*"(object_not_found|unauthorized|restricted_resource|validation_error)"|\b(?:HTTP|status(?: code)?)[: ]+(401|403|404)\b|could not find (?:page|block|database)/i;
 
 function isTransientFetchError(err) {
-  return !PERMANENT_FETCH_ERROR_RE.test(String((err && err.message) || ''));
+  const msg = String((err && err.message) || '');
+  if (TRANSIENT_FETCH_ERROR_RE.test(msg)) return true; // transient wins outright
+  return !PERMANENT_FETCH_ERROR_RE.test(msg);
 }
 
 async function fetchCardWithRetry(id, fetchFn, opts = {}) {
