@@ -1,4 +1,5 @@
 /**
+// TESTS-VS-DERIVED-DATA-EXEMPT: matcher canary against the LIVE theater-metadata house list on purpose; assertions are structural (match/no-match classes), not hardcoded facts
  * venue-match — normalizeVenueKey extraction parity + diary→house matching.
  *
  * The parity block is the important half: normalizeVenueKey was lifted OUT of
