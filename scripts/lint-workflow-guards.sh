@@ -180,6 +180,7 @@ check_scraping_fallback() {
     scrape-dtli-show-score.yml
     scraper-cost-report.yml
     btc-results-preview.yml
+    verify-reviews.yml
   "
   local VIOLATIONS="" f name
   for f in .github/workflows/*.yml; do
