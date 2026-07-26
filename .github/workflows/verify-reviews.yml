@@ -25,6 +25,8 @@ jobs:
       - name: Run review verification
         run: npm run reviews:verify > verification-results.txt 2>&1
         continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
 
       - name: Display results
         run: cat verification-results.txt
