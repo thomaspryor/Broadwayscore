@@ -20,8 +20,9 @@
  * serpQuery). So this source is deliberately narrow:
  *   - scoped to the opening window (inOpeningWindow), never the multi-year
  *     back-catalogue grind
- *   - one query per show, cooldown-gated (checkpoint-tracked) so it fires a
- *     handful of times across the window instead of every hourly cycle
+ *   - 1-3 queries per show (see buildCensusQueries), cooldown-gated
+ *     (checkpoint-tracked) so it fires a handful of times across the window
+ *     instead of every hourly cycle
  *   - kill-switched via SERP_GAP_CENSUS_DISABLED=1
  *
  * Pure decision functions live here per CLAUDE.md §15 (test extraction); the

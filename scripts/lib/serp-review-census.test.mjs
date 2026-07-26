@@ -64,7 +64,7 @@ test('shouldRunSerpCensus: corrupt lastRunAt stamp reads as due, not stuck forev
   assert.equal(shouldRunSerpCensus({ inWindow: true, lastRunAt: 'not-a-date', now: NOW }), true);
 });
 
-// --- buildCensusQueries (weak-title scoped variants, Sukkot 2026-07-25) ---
+// --- buildCensusQueries (scoped variants for all shows — Sukkot 2026-07-25, trigger deleted 2026-07-26) ---
 const { buildCensusQueries, venueQueryToken } = require('./serp-review-census.js');
 
 test('buildCensusQueries: every show gets the scoped variants its metadata supports (no ambiguity trigger)', () => {
