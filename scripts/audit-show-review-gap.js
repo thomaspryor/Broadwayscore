@@ -1481,7 +1481,7 @@ async function main(argv = process.argv.slice(2)) {
       const weBlocked = r.missing.filter(blockedPred);
       const eligibleMissing = r.missing.filter(m => !blockedPred(m));
       if (weBlocked.length > 0) {
-        r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun, reason: ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust }) }));
+        r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun, reason: ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }) }));
         const nPrior = weBlocked.filter(m => m.priorRun).length;
         console.log(`  ⛔ ${weBlocked.length} URL(s) not ingested (${nPrior} prior-production — permanently report-only${nPrior < weBlocked.length ? `; ${weBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
       }

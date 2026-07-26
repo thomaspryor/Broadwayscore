@@ -171,6 +171,35 @@ function main(argv = process.argv.slice(2)) {
     console.log(`          ${s.status || '(no SESSION STATUS line — ended without wrap-up)'}`);
   }
   console.log('\nClose ✅ tabs in bulk with: node scripts/bsc-prune.js  (owner-run only)');
+
+  // ── Headless jobs (Autopilot v5 R5, task #459) ────────────────────────────
+  // Bot work no longer lives in tabs; this is its status surface. The attach
+  // line only appears when the job's process is verifiably DEAD — resuming a
+  // session that still has a live process would put two writers on one
+  // transcript (the exact twin-corruption class the runner exists to kill).
+  try {
+    const { readLease, pidLooksLikeClaude } = require('./lib/bsc-runner.js');
+    const entries = dispatchLedger.readEntries();
+    const jobs = [...dispatchLedger.foldJobs(entries).values()];
+    const open = jobs.filter(j => !dispatchLedger.TERMINAL_JOB_EVENTS.has(j.event));
+    const recentDone = jobs.filter(j => dispatchLedger.TERMINAL_JOB_EVENTS.has(j.event)).slice(-5);
+    if (open.length || recentDone.length) {
+      console.log(`\nHeadless jobs (${open.length} running):\n`);
+      for (const j of open) {
+        const lease = readLease(j.taskId);
+        const alive = lease && lease.jobId === j.jobId && pidLooksLikeClaude(lease.pid);
+        console.log(`  [${alive ? 'RUNNING' : 'UNKNOWN — next bsc-reconcile tick will resolve'}] #${j.taskId} ${j.subject || ''} (${j.jobId})`);
+        console.log(`      log: ${j.logFile || '(none)'}`);
+        if (alive) console.log(`      pid ${lease.pid} — live; do NOT resume while running`);
+        else if ((lease && lease.sessionId) || j.sessionId) console.log(`      attach: (cd ${j.cwd} && claude --resume ${(lease && lease.sessionId) || j.sessionId})`);
+      }
+      for (const j of recentDone) {
+        console.log(`  [${j.event.replace('job-', '').toUpperCase()}] #${j.taskId} ${j.subject || ''}${j.stage ? ` (${j.stage})` : ''}${typeof j.costUSD === 'number' ? ` $${j.costUSD.toFixed(2)}` : ''}`);
+      }
+    }
+  } catch (e) {
+    console.log(`\n(headless jobs section unavailable: ${e.message})`);
+  }
 }
 
 if (require.main === module) main();

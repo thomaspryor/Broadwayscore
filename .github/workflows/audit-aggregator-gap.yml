@@ -124,6 +124,12 @@ jobs:
           # (fails closed — plan-review 2026-07-09 pre-mortem: a dropped env line must
           # not silently enable ingest). Prior-run roundup URLs never ingest regardless.
           WE_GAP_INGEST: ${{ vars.WE_GAP_INGEST || '' }}
+          # SERP-census auto-ingest, same fail-closed posture as WE_GAP_INGEST:
+          # census-discovered URLs ingest only when the repo variable
+          # SERP_CENSUS_INGEST is '1'. Report-only was the deliberate rollout
+          # gate (#371); census proven via the Sukkot validation (2026-07-25),
+          # variable flipped 2026-07-26. Kill switch: delete the variable.
+          SERP_CENSUS_INGEST: ${{ vars.SERP_CENSUS_INGEST || '' }}
           # WE-only kill switch (leaves the Broadway audit untouched):
           WE_GAP_REFERENCE_DISABLED: ${{ vars.WE_GAP_REFERENCE_DISABLED || '' }}
           GITHUB_REPOSITORY: ${{ github.repository }}

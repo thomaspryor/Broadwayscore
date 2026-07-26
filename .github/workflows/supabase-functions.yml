@@ -40,6 +40,7 @@ jobs:
         run: |
           deno check supabase/functions/show-score-proxy/index.ts
           deno check supabase/functions/mezzanine-search/index.ts
+          deno check supabase/functions/delete-account/index.ts
       - name: Verify required schema exists in prod
         # Both functions hard-depend on their rate-limit log tables (fail
         # closed without them). Migrations are applied via the Management
@@ -64,6 +65,8 @@ jobs:
           npx supabase functions deploy show-score-proxy \
             --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
           npx supabase functions deploy mezzanine-search \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
+          npx supabase functions deploy delete-account \
             --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
 
       - name: Notify on failure
