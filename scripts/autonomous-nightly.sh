@@ -56,6 +56,27 @@ git fetch origin main || echo "[nightly] WARN git fetch failed"
 echo "--- triage ---"
 node scripts/autonomous-triage.js --limit 30 || echo "[nightly] WARN triage failed (executor will use yesterday's queue only if <12h old)"
 
+# Acceptance recheck (Sprint 3, S3-T3) and the workspace sweep BOTH run before
+# the executor, because the executor SENDS THE MORNING EMAIL as its last act
+# (autonomous-run.js live()'s finally). Anything that wants to appear in
+# tonight's email has to be in the ledger before that. Running them after —
+# the obvious-looking order — silently shipped yesterday's recheck results and
+# yesterday's closed-tab count every morning (ship-check finding, 2026-07-25).
+#
+# The recheck runs on EVERY night including monitor-lock nights: it works in
+# its own disposable detached worktree and never touches this checkout's
+# branch state, so the index.lock contention that makes us skip the executor
+# does not apply to it. Shadow mode — it reports, it never reopens a card.
+echo "--- acceptance recheck (shadow) ---"
+node scripts/autonomous-acceptance-recheck.js || echo "[nightly] WARN acceptance recheck failed (non-fatal)"
+
+# Mornings start visually clean: close ✅-marked cmux workspaces left over from
+# finished sessions. Closes ONLY ✅-marked workspaces with no live claude
+# (scripts/lib/cmux-workspaces.js pruneDone treats any liveness error as
+# alive), so it cannot close a session that is still working. Never fatal.
+echo "--- workspace sweep ---"
+node scripts/bsc-prune.js || echo "[nightly] WARN bsc-prune failed (non-fatal)"
+
 if [ "$SKIP_EXECUTOR" = "1" ]; then
   echo "--- executor SKIPPED (monitor night) — sending the morning email directly ---"
   # autonomous-email.js refuses without an explicit --send-to (rule 17);
@@ -70,21 +91,5 @@ else
   echo "--- executor (sends the morning email itself) ---"
   node scripts/autonomous-run.js --live || echo "[nightly] WARN executor failed"
 fi
-
-# Acceptance recheck (Sprint 3, S3-T3). Runs on EVERY night including
-# monitor-lock nights: it uses its own disposable detached worktree and never
-# touches this checkout's branch state, so the index.lock contention that
-# makes us skip the executor does not apply to it. Shadow mode — it reports
-# into the ledger and the morning email, it never reopens a card. Placed
-# BEFORE the email so tonight's results are in the ledger when the email
-# (sent by the executor, or directly below on monitor nights) renders.
-echo "--- acceptance recheck (shadow) ---"
-node scripts/autonomous-acceptance-recheck.js || echo "[nightly] WARN acceptance recheck failed (non-fatal)"
-
-# Mornings start visually clean (Sprint 3 setup item): close ✅-marked cmux
-# workspaces left over from finished sessions. Never fatal — a missing cmux
-# CLI or a bad night must not fail the loop.
-echo "--- workspace sweep ---"
-node scripts/bsc-prune.js || echo "[nightly] WARN bsc-prune failed (non-fatal)"
 
 echo "=== night done $(date -u +%FT%TZ) ==="

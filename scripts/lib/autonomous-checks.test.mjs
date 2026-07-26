@@ -118,6 +118,31 @@ test('isUiDiff sees component/style changes, not lib or script changes', () => {
   assert.equal(isUiDiff([]), false);
 });
 
+// An image swap changes the page as surely as a class name does. The first
+// cut of this predicate missed public/ entirely and would have handed out a
+// normal approve link for it (ship-check finding).
+test('isUiDiff sees render-affecting assets outside src/', () => {
+  assert.equal(isUiDiff(['public/images/hero.png']), true);
+  assert.equal(isUiDiff(['public/logo.SVG']), true, 'case-insensitive extension');
+  assert.equal(isUiDiff(['src/app/show/[slug]/opengraph-image.tsx']), true);
+  assert.equal(isUiDiff(['public/data/show-lookup.json']), false, 'data under public/ is not a look change');
+});
+
+// The build env is a hand-maintained mirror of package.json's auth-aware
+// build script. When that script gains or loses a flag, this fails loudly
+// instead of the loop silently verifying a DIFFERENT build than the one that
+// ships (ship-check finding: a second config surface that can drift).
+test('BUILD_ENV feature flags match package.json build:ugc', () => {
+  const pkg = JSON.parse(fs.readFileSync(new URL('../../package.json', import.meta.url), 'utf8'));
+  const script = pkg.scripts['build:ugc'] || '';
+  const m = /NEXT_PUBLIC_FEATURES=([^\s]+)/.exec(script);
+  assert.ok(m, 'build:ugc should still set NEXT_PUBLIC_FEATURES');
+  const fromPkg = m[1].split(',').sort();
+  const fromEnv = BUILD_ENV.NEXT_PUBLIC_FEATURES.split(',').sort();
+  assert.deepEqual(fromEnv, fromPkg,
+    'BUILD_ENV.NEXT_PUBLIC_FEATURES drifted from package.json build:ugc — the loop would verify a different build than ships');
+});
+
 test('hasSrcChange', () => {
   assert.equal(hasSrcChange(['src/lib/format.ts']), true);
   assert.equal(hasSrcChange(['scripts/x.js', 'docs/y.md']), false);

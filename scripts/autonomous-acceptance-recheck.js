@@ -170,8 +170,9 @@ function main(argv = process.argv.slice(2)) {
   const limit = Math.min(Number(args.limit) || MAX_CARDS, MAX_CARDS);
   const runId = `recheck-${new Date().toISOString().replace(/[:.]/g, '-')}`;
 
+  const DONE_LIST_LIMIT = 50;
   let doneCards = [];
-  try { doneCards = notionBrain(['list', '--status', 'Done', '--limit', '50']); }
+  try { doneCards = notionBrain(['list', '--status', 'Done', '--limit', String(DONE_LIST_LIMIT)]); }
   catch (err) {
     console.error(`[recheck] could not list Done cards: ${String(err.message).slice(0, 200)}`);
     if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Notion listing failed: ${String(err.message).slice(0, 200)}` });
@@ -182,6 +183,13 @@ function main(argv = process.argv.slice(2)) {
   const enforcement = enforcementState(cfg, ledger.readEntries().entries || []);
   if (enforcement.requested && !enforcement.enforcing) console.error(`[recheck] ${enforcement.reason}`);
   if (enforcement.enforcing) console.error('[recheck] enforcement is ON — failures will still only be REPORTED until the reopen path ships (carry-forward)');
+
+  // A full page means there may be Done cards we never saw — say so instead of
+  // reporting "nothing to re-check" from a truncated list (ship-check finding).
+  if (doneCards.length >= DONE_LIST_LIMIT) {
+    console.error(`[recheck] WARN the Done listing came back full (${DONE_LIST_LIMIT}) — older Done cards in the window may have been cut off`);
+    ledger.appendEntry({ event: 'recheck-truncated', runId, note: `Done listing hit the ${DONE_LIST_LIMIT}-card limit; coverage may be incomplete` });
+  }
 
   const taskState = loadSharedTaskState();
   const targets = selectRecheckTargets({
@@ -222,9 +230,14 @@ function main(argv = process.argv.slice(2)) {
       results.push(r);
       ledger.appendEntry({
         event: 'recheck', runId, cardId: t.cardId, name: t.name,
-        // SHADOW: recorded, not acted on. The email renders these; nothing
-        // flips a card's status off the back of them.
-        note: `${r.skip ? 'skipped' : r.status}${r.detail ? `: ${String(r.detail).slice(0, 300)}` : ''}`,
+        // STRUCTURED fields, not just prose: the morning email reads status/
+        // skip directly. It used to re-parse the note string, which meant any
+        // future wording change silently corrupted the counts the owner sees
+        // (ship-check finding). note stays for the human reading the ledger.
+        status: r.skip ? null : r.status,
+        skip: r.skip || null,
+        detail: r.detail ? String(r.detail).slice(0, 300) : null,
+        note: `${r.skip ? `skipped: ${r.skip}` : r.status}${r.detail ? `: ${String(r.detail).slice(0, 300)}` : ''}`,
         verifyCmd: t.verifyCmd || null,
         shadow: true,
       });

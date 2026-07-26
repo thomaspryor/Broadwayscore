@@ -193,7 +193,7 @@ function renderRecheckBlock(recheck) {
   return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
     <div style="font-size:13px;font-weight:700;margin-bottom:6px;">Finished work re-checked: ${esc(bits.join(' · ') || 'nothing to check')}</div>
     ${rows}${more}
-    <div style="font-size:11px;color:#999;margin-top:8px;">Watching only for now. Nothing was reopened or changed based on this.</div>
+    <div style="font-size:11px;color:#999;margin-top:8px;">This is a new check that re-runs each finished job's own test a day later. It is still on trial, so nothing here was reopened, undone, or changed, and nothing on the live site is affected. You do not need to do anything. If a line looks wrong, say so and it gets looked at.</div>
   </div>`;
 }
 
@@ -225,7 +225,11 @@ function renderItem(item) {
     : '';
   const uiNotice = uiUnseen
     ? `<div style="border-left:3px solid #b45309;background:#fffbeb;padding:8px 10px;margin:0 0 10px;font-size:13px;color:#7c2d12;">
-        <b>Needs a look before you approve.</b> This one changes how a page looks and the overnight run could not take screenshots of it, so there is no approve button here. Open the branch <span style="color:#666;">${esc(item.branch)}</span> on your Mac and look at the page, then approve it from the card.
+        <b>This one changes how a page looks, and the overnight run could not take pictures of it.</b>
+        There is no approve button because you would be approving something nobody has seen.
+        <div style="margin-top:6px;">Easiest option: tap Reject. It will try again tonight and send pictures next time.</div>
+        <div style="margin-top:6px;">If you want it now, paste this into a terminal on the Mac and it will open the changed page for you:</div>
+        <div style="margin-top:4px;font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#fff;border:1px solid #fde68a;border-radius:6px;padding:6px 8px;word-break:break-all;">npm run preview-branch ${esc(item.branch)}</div>
       </div>`
     : '';
   const actions = uiUnseen

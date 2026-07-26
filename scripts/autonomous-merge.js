@@ -378,6 +378,10 @@ async function approve(cardId, branch) {
   // one specific commit. If the branch has moved since, re-verifying and
   // merging the new tree would spend the owner's approval on something they
   // never saw. Cheap, and it runs before the expensive gauntlet.
+  // Fail-open is legitimate (pre-Sprint-2 evidence has no sha) but must never
+  // be SILENT: without this line a merge that skipped the guard looks
+  // identical in the log to one that passed it (ship-check finding).
+  if (!evidence || !evidence.sha) console.error('[merge] NOTE no approved-commit sha on this evidence — the branch-moved guard does not apply to this merge (older evidence comment)');
   const stale = stalenessRefusal(evidence && evidence.sha, (gitOrNull(['rev-parse', `origin/${branch}`]) || '').trim());
   if (stale) {
     transition('approved', 'merge.reverify-fail');

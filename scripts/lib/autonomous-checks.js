@@ -93,14 +93,22 @@ function tierOf(carrier) {
   return carrier && carrier.tier === 3 ? 3 : 1;
 }
 
-const UI_PATH_RE = /^src\/.*\.(tsx|jsx|css|scss)$/;
-
 // A UI diff is one a human should LOOK at, not just one that compiles — the
 // approve tap for these carries screenshot evidence or no approve link at all
-// (S2-T6). tailwind.config.* is site-wide styling even though it isn't under
-// src/ (it is manifest-adjacent but not on the tier-3 exclusion list).
+// (S2-T6). Deliberately WIDER than "components": an image swapped under
+// public/ changes the page as surely as a class name does, and the first cut
+// of this predicate would have handed out a normal approve link for it
+// (ship-check finding). Over-matching costs a screenshot run; under-matching
+// costs the whole point of the gate.
+const UI_PATH_RES = [
+  /^src\/.*\.(tsx|jsx|css|scss)$/,           // components, pages, styles
+  /^tailwind\.config\.(js|ts|cjs|mjs)$/,     // site-wide styling
+  /^public\/.*\.(png|jpe?g|svg|webp|avif|gif|ico)$/i, // images the pages render
+  /^src\/.*\/(opengraph|twitter)-image\./,   // generated social images
+];
+
 function isUiDiff(files) {
-  return (files || []).some(f => UI_PATH_RE.test(String(f)) || /^tailwind\.config\.(js|ts|cjs|mjs)$/.test(String(f)));
+  return (files || []).some(f => UI_PATH_RES.some(re => re.test(String(f))));
 }
 
 function hasSrcChange(files) {
@@ -264,6 +272,7 @@ module.exports = {
   BUILD_TIMEOUT_MS,
   KEEP_ENV,
   BUILD_ENV,
+  UI_PATH_RES,
   checksEnv,
   tierOf,
   decideChecks,

@@ -300,9 +300,16 @@ async function main() {
     const recent = entries.filter(e => e.event === 'recheck' && new Date(e.ts).getTime() >= since);
     if (recent.length) {
       const results = recent.map(e => {
+        // Structured fields first (written since the ship-check fix); the
+        // note-prefix parse is the fallback for rows written before that.
+        if (e.status || e.skip) return { name: e.name || '(untitled)', status: e.status || null, skip: e.skip || null };
         const note = String(e.note || '');
-        const status = /^skipped/.test(note) ? null : note.split(':')[0].trim();
-        return { name: e.name || '(untitled)', status, skip: /^skipped/.test(note) ? note.replace(/^skipped:?\s*/, '') || 'being worked on' : null };
+        const skipped = /^skipped/.test(note);
+        return {
+          name: e.name || '(untitled)',
+          status: skipped ? null : note.split(':')[0].trim(),
+          skip: skipped ? (note.replace(/^skipped:?\s*/, '') || 'being worked on') : null,
+        };
       });
       recheck = { counts: summarizeRecheck(results), lines: results.map(describeResult) };
     }

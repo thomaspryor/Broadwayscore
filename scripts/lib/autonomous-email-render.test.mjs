@@ -317,8 +317,9 @@ test('a UI item with NO screenshots gets no approve link and says why', () => {
   const html = renderItem(uiItem());
   assert.ok(!html.includes('https://broadwayscorecard.com/approve?x=1'), 'approve link must be withheld');
   assert.ok(!/>Approve</.test(html), 'approve button must be absent');
-  assert.ok(html.includes('Needs a look before you approve'));
-  assert.ok(html.includes('auto/score-badge-wrap-ab12'), 'names the branch to look at');
+  assert.ok(html.includes('could not take pictures of it'));
+  assert.ok(html.includes('tap Reject'), 'gives an action the owner can actually take from the phone');
+  assert.ok(html.includes('npm run preview-branch auto/score-badge-wrap-ab12'), 'gives a copy-pasteable command, not "open the branch"');
   assert.ok(html.includes('https://broadwayscorecard.com/reject?x=1'), 'reject stays available');
 });
 
@@ -326,13 +327,13 @@ test('a UI item WITH screenshots keeps its approve link and lists them', () => {
   const html = renderItem(uiItem({ screenshots: ['data/audit/autonomous-ui/x/home-390.png', 'data/audit/autonomous-ui/x/home-1280.png'] }));
   assert.ok(html.includes('https://broadwayscorecard.com/approve?x=1'));
   assert.ok(html.includes('home-390.png') && html.includes('home-1280.png'));
-  assert.ok(!html.includes('Needs a look before you approve'));
+  assert.ok(!html.includes('could not take pictures of it'));
 });
 
 test('a non-UI item is unaffected by the gate', () => {
   const html = renderItem(uiItem({ ui: false }));
   assert.ok(html.includes('https://broadwayscorecard.com/approve?x=1'));
-  assert.ok(!html.includes('Needs a look before you approve'));
+  assert.ok(!html.includes('could not take pictures of it'));
 });
 
 // ── Acceptance recheck section (S3-T4) + report ordering (S4-T2/T3) ─────────
@@ -352,7 +353,8 @@ test('recheck block states the counts and labels itself as watching only', () =>
   assert.ok(html.includes('2 still work'));
   assert.ok(html.includes('1 no longer pass their own check'));
   assert.ok(html.includes("1 can't be checked automatically"));
-  assert.ok(html.includes('Watching only for now'), 'a shadow signal must say it is a shadow signal');
+  assert.ok(html.includes('still on trial'), 'a shadow signal must say it is a shadow signal');
+  assert.ok(html.includes('You do not need to do anything'), 'and must say what the owner should do about it');
   assert.ok(html.includes('its own check does not pass any more'));
 });
 
