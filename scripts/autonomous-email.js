@@ -31,11 +31,16 @@ const ledger = require('./lib/autonomous-ledger.js');
 const { gatherDigest } = require('./lib/overnight-digest.js');
 const { buildActionUrl } = require('./lib/autonomous-links.js');
 const { renderEmail, extractWhy, summarizeQueue, buildPlainLanguageItemPrompt, sanitizePlainLanguageText } = require('./lib/autonomous-email-render.js');
+const dispatchLedger = require('./lib/dispatch-ledger.js');
+const { summarize: summarizeRecheck, describeResult } = require('./lib/autonomous-recheck-core.js');
 
 const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
-const MAX_EMAIL_ITEMS = 3;
+// Raised 3 → 5 (S4-T2): approvals were arriving faster than 3/morning could
+// drain, so items aged out of sight behind a "+N more" line for days. The
+// counter below the items still names anything past the cap.
+const MAX_EMAIL_ITEMS = 5;
 // Screenshot attachments for UI items (S2-T6). Small caps on purpose: this is
 // evidence for a decision, not a gallery, and Resend rejects oversized sends.
 const MAX_ATTACHMENTS = 8;
@@ -287,6 +292,35 @@ async function main() {
   }
   const attentionCount = attention.configWarnings.length + attention.failedCards.length + attention.parkedItems.length;
 
+  // Acceptance recheck (S3-T4): last night's shadow results, straight off the
+  // ledger. Fail-soft — a missing/short ledger just omits the section.
+  let recheck = null;
+  try {
+    const since = Date.now() - 24 * 3600 * 1000;
+    const recent = entries.filter(e => e.event === 'recheck' && new Date(e.ts).getTime() >= since);
+    if (recent.length) {
+      const results = recent.map(e => {
+        const note = String(e.note || '');
+        const status = /^skipped/.test(note) ? null : note.split(':')[0].trim();
+        return { name: e.name || '(untitled)', status, skip: /^skipped/.test(note) ? note.replace(/^skipped:?\s*/, '') || 'being worked on' : null };
+      });
+      recheck = { counts: summarizeRecheck(results), lines: results.map(describeResult) };
+    }
+  } catch (err) {
+    console.error(`[email] WARN could not read recheck results: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // Prune count (S4-T3): "Closed N finished tabs" — the owner watches the
+  // workspace list shrink overnight and had no record of what closed it.
+  let prunedCount = null;
+  try {
+    const since = Date.now() - 24 * 3600 * 1000;
+    const sweeps = dispatchLedger.readEntries().filter(e => e.event === 'prune' && new Date(e.ts).getTime() >= since);
+    if (sweeps.length) prunedCount = sweeps.reduce((n, e) => n + (Number(e.closed) || 0), 0);
+  } catch (err) {
+    console.error(`[email] WARN could not read prune sweeps: ${String(err.message).slice(0, 120)}`);
+  }
+
   const admin = await fetchAdminUsage();
   // "What changed while you slept" — owner request 2026-07-22. Fails soft:
   // a broken source becomes a "couldn't check" line inside the block.
@@ -297,6 +331,8 @@ async function main() {
   const html = renderEmail({
     items,
     digest,
+    recheck,
+    prunedCount,
     moreAwaiting: Math.max(0, awaiting.length - items.length),
     failedCount,
     runSkipped,

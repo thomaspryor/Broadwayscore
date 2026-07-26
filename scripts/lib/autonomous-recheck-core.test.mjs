@@ -1,0 +1,96 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const {
+  selectRecheckTargets, summarize, shouldExitShadow, describeResult, SHADOW_EXIT,
+} = require('./autonomous-recheck-core.js');
+
+const launch = (over = {}) => ({
+  event: 'launch', taskId: '1', notionId: 'card-1', subject: 'Fix the thing',
+  verifyCmd: 'node --test tests/unit/a.test.mjs', verifyReason: null, ts: '2026-07-24T00:00:00Z', ...over,
+});
+const done = (over = {}) => ({ id: 'card-1', name: 'Fix the thing', status: 'Done', ageDays: 0.5, ...over });
+
+test('selects a recently-Done card that has a captured verify command', () => {
+  const out = selectRecheckTargets({ doneCards: [done()], launchEntries: [launch()] });
+  assert.deepEqual(out, [{ cardId: 'card-1', name: 'Fix the thing', verifyCmd: 'node --test tests/unit/a.test.mjs', reason: null, skip: null }]);
+});
+
+test('a card Done longer ago than the window is left alone', () => {
+  assert.deepEqual(selectRecheckTargets({ doneCards: [done({ ageDays: 3 })], launchEntries: [launch()] }), []);
+  assert.equal(selectRecheckTargets({ doneCards: [done({ ageDays: 3 })], launchEntries: [launch()], windowHours: 96 }).length, 1);
+});
+
+test('a card that never went through the dispatcher is not invented work', () => {
+  assert.deepEqual(selectRecheckTargets({ doneCards: [done({ id: 'other' })], launchEntries: [launch()] }), []);
+});
+
+// The honest branch: prose acceptance criteria means the recheck REPORTS
+// "no way to check this automatically", it never guesses a command.
+test('a launch with no verifyCmd is reported as not machine-verifiable, with the captured reason', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done()],
+    launchEntries: [launch({ verifyCmd: null, verifyReason: 'acceptance criteria names no runnable command (prose only)' })],
+  });
+  assert.equal(out[0].verifyCmd, null);
+  assert.match(out[0].reason, /prose only/);
+});
+
+test('a card someone is actively working right now is skipped, not re-checked', () => {
+  const out = selectRecheckTargets({ doneCards: [done()], launchEntries: [launch()], isClaimed: id => id === 'card-1' });
+  assert.equal(out[0].skip, 'someone is working this card right now');
+  assert.equal(out[0].verifyCmd, null);
+});
+
+test('the LATEST dispatch of a card wins (a re-dispatch may change the command)', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done()],
+    launchEntries: [
+      launch({ ts: '2026-07-20T00:00:00Z', verifyCmd: 'npx tsc --noEmit' }),
+      launch({ ts: '2026-07-24T00:00:00Z', verifyCmd: 'npx next lint' }),
+    ],
+  });
+  assert.equal(out[0].verifyCmd, 'npx next lint');
+});
+
+test('non-launch ledger events are ignored', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done()],
+    launchEntries: [{ event: 'dead', notionId: 'card-1', taskId: '1' }],
+  });
+  assert.deepEqual(out, []);
+});
+
+test('summarize counts each outcome class', () => {
+  assert.deepEqual(
+    summarize([{ status: 'pass' }, { status: 'fail' }, { status: 'unverifiable' }, { skip: 'x' }, { status: 'pass' }]),
+    { pass: 2, fail: 1, unverifiable: 1, skipped: 1 });
+});
+
+// ── Shadow exit (S3-T5): objective, and a single false reopen resets it ─────
+
+test('shadow exit needs all three conditions', () => {
+  assert.equal(shouldExitShadow({ days: 7, rechecks: 10, falsePositives: 0 }), true);
+  assert.equal(shouldExitShadow({ days: 6, rechecks: 10, falsePositives: 0 }), false, 'not enough days');
+  assert.equal(shouldExitShadow({ days: 7, rechecks: 9, falsePositives: 0 }), false, 'not enough rechecks');
+  assert.equal(shouldExitShadow({ days: 30, rechecks: 100, falsePositives: 1 }), false, 'one false positive blocks it');
+});
+
+test('shadow exit refuses to judge on missing numbers', () => {
+  assert.equal(shouldExitShadow({}), false);
+  assert.equal(shouldExitShadow({ days: 7, rechecks: 10 }), false);
+  assert.equal(shouldExitShadow(), false);
+});
+
+test('the bar is the documented one', () => {
+  assert.deepEqual(SHADOW_EXIT, { minDays: 7, minRechecks: 10, maxFalsePositives: 0 });
+});
+
+test('describeResult speaks plainly, with no commands or ids', () => {
+  assert.equal(describeResult({ name: 'Fix X', status: 'pass' }), 'Fix X: still works');
+  assert.equal(describeResult({ name: 'Fix X', status: 'fail' }), 'Fix X: its own check does not pass any more');
+  assert.equal(describeResult({ name: 'Fix X', status: 'unverifiable' }), 'Fix X: no way to check this automatically');
+  assert.match(describeResult({ name: 'Fix X', skip: 'someone is working this card right now' }), /^Fix X: skipped, /);
+});

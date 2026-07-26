@@ -95,7 +95,29 @@ test('idle workspace already recorded dead in the ledger: no duplicate breadcrum
   const origLog = console.log;
   console.log = () => {};
   try { main([], deps); } finally { console.log = origLog; }
-  assert.equal(appended.length, 0);
+  // No DEAD breadcrumb — that is what this test is about. A live (non-dry-run)
+  // sweep also journals one 'prune' entry with the counts (S4-T3, the morning
+  // email's "Closed N finished tabs" line); it is a different event and does
+  // not make the breadcrumb a duplicate.
+  assert.deepEqual(appended.filter(e => e.event === 'dead'), []);
+  assert.deepEqual(appended.filter(e => e.event === 'prune'), [{ event: 'prune', taskId: 'sweep', closed: 0, skipped: 0 }]);
+});
+
+test('a dry-run sweep journals nothing at all', () => {
+  const appended = [];
+  const deps = {
+    cmuxAvailable: () => true,
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ done thing' }],
+    pruneDone: () => ({ closed: [{ ref: 'workspace:1', title: '✅ done thing' }], skipped: [] }),
+    isDoneTitle: t => t.startsWith('✅'),
+    claudeAliveIn: () => false,
+    readLedgerEntries: () => [],
+    appendLedgerEntry: (e) => appended.push(e),
+  };
+  const origLog = console.log;
+  console.log = () => {};
+  try { main(['--dry-run'], deps); } finally { console.log = origLog; }
+  assert.deepEqual(appended, []);
 });
 
 // Belt-and-suspenders: actually run the real CLI. If the --help guard were

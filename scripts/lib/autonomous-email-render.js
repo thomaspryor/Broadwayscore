@@ -170,6 +170,33 @@ function renderAttentionBlock(attention) {
   </div>`;
 }
 
+// ── Acceptance recheck (Sprint 3, S3-T4) ───────────────────────────────────
+//
+// What it answers for the owner: "the things that got marked finished — are
+// they actually still finished?" Deliberately BELOW the divider and never
+// counted in the top line's issue tally: the recheck runs in shadow mode, and
+// a shadow signal that nags before it has earned trust is exactly how a good
+// check gets ignored. It states its own status ("watching only") so the owner
+// knows a red line here is an observation, not an alarm.
+function renderRecheckBlock(recheck) {
+  if (!recheck || !recheck.lines || !recheck.lines.length) return '';
+  const c = recheck.counts || {};
+  const bits = [];
+  if (c.pass) bits.push(`${c.pass} still work`);
+  if (c.fail) bits.push(`${c.fail} no longer pass their own check`);
+  if (c.unverifiable) bits.push(`${c.unverifiable} can't be checked automatically`);
+  if (c.skipped) bits.push(`${c.skipped} skipped (being worked on)`);
+  const rows = recheck.lines.slice(0, 5).map(l =>
+    `<div style="font-size:12px;color:#555;margin:0 0 3px;">${esc(l)}</div>`).join('');
+  const more = recheck.lines.length > 5
+    ? `<div style="font-size:11px;color:#999;margin-top:4px;">+${recheck.lines.length - 5} more</div>` : '';
+  return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:6px;">Finished work re-checked: ${esc(bits.join(' · ') || 'nothing to check')}</div>
+    ${rows}${more}
+    <div style="font-size:11px;color:#999;margin-top:8px;">Watching only for now. Nothing was reopened or changed based on this.</div>
+  </div>`;
+}
+
 function renderItem(item) {
   const badge = `<span style="display:inline-block;background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;vertical-align:middle;">PASS</span>`;
   const cost = `<span style="color:#999;font-size:12px;margin-left:6px;">~${money(item.usd)}</span>`;
@@ -348,6 +375,9 @@ function renderEmail(data) {
   // 5. The divider. Everything below is context, not action: what changed
   //    overnight, cost, and (on a 0-planned night) why nothing was planned.
   const tail = [];
+  // Acceptance recheck (S3-T4): shadow-mode observation about work already
+  // marked finished. Context, never action — see renderRecheckBlock.
+  if (data.recheck) tail.push(renderRecheckBlock(data.recheck));
   // 0-planned night: say WHY (night-1 fix — a bare "nothing to approve" read
   // as a malfunction and the owner immediately distrusted it).
   if (!items.length && queueSummary) tail.push(renderQueueSummary(queueSummary));
@@ -355,6 +385,12 @@ function renderEmail(data) {
   // gathered fail-soft by scripts/lib/overnight-digest.js; null renders nothing.
   if (data.digest) tail.push(require('./overnight-digest.js').renderDigestBlock(data.digest));
   tail.push(renderUsageBlock(stats, admin, config));
+
+  // "Closed N finished tabs" (S4-T3): the owner watches the workspace list
+  // shrink overnight; without this line nothing says who did it.
+  if (Number.isFinite(data.prunedCount) && data.prunedCount > 0) {
+    tail.push(`<p style="font-size:12px;color:#666;margin:0 0 10px;">Closed ${data.prunedCount} finished tab${data.prunedCount > 1 ? 's' : ''} from earlier sessions.</p>`);
+  }
 
   const footerBits = [];
   if (lastRunNote) footerBits.push(esc(lastRunNote));
@@ -371,7 +407,7 @@ function renderEmail(data) {
 }
 
 module.exports = {
-  renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
+  renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderRecheckBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
   attentionCountOf, digestStuckCount,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
 };

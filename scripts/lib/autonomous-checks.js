@@ -60,9 +60,16 @@ const KEEP_ENV = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', 'NODE_ENV'];
 // build test.yml/Vercel use); an explicit constant, not `NEXT_PUBLIC_*`
 // inheritance from the ambient env, so a stray local flag can never change
 // what the loop verifies.
+// The Sanity trio is REQUIRED, not optional: /blog throws "Missing
+// environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID" during page-data
+// collection and fails the whole build without it (confirmed live in a
+// prepared worktree, 2026-07-25). Values are the public ones already
+// hardcoded in .github/workflows/vercel-demo.yml — not secrets.
 const BUILD_ENV = Object.freeze({
   NEXT_PUBLIC_FEATURES: 'criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions,userAccounts',
+  NEXT_PUBLIC_SANITY_PROJECT_ID: 'fp1ft8k8',
   NEXT_PUBLIC_SANITY_DATASET: 'production',
+  NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01',
   SKIP_HEAVY_PREBUILD: 'true',
 });
 

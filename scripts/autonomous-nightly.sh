@@ -71,6 +71,16 @@ else
   node scripts/autonomous-run.js --live || echo "[nightly] WARN executor failed"
 fi
 
+# Acceptance recheck (Sprint 3, S3-T3). Runs on EVERY night including
+# monitor-lock nights: it uses its own disposable detached worktree and never
+# touches this checkout's branch state, so the index.lock contention that
+# makes us skip the executor does not apply to it. Shadow mode — it reports
+# into the ledger and the morning email, it never reopens a card. Placed
+# BEFORE the email so tonight's results are in the ledger when the email
+# (sent by the executor, or directly below on monitor nights) renders.
+echo "--- acceptance recheck (shadow) ---"
+node scripts/autonomous-acceptance-recheck.js || echo "[nightly] WARN acceptance recheck failed (non-fatal)"
+
 # Mornings start visually clean (Sprint 3 setup item): close ✅-marked cmux
 # workspaces left over from finished sessions. Never fatal — a missing cmux
 # CLI or a bad night must not fail the loop.

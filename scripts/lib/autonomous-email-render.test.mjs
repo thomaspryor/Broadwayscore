@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  renderEmail, renderItem, renderUsageBlock, extractWhy, summarizeQueue,
+  renderEmail, renderItem, renderUsageBlock, renderRecheckBlock, extractWhy, summarizeQueue,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
 } = require('./autonomous-email-render.js');
 
@@ -333,4 +333,73 @@ test('a non-UI item is unaffected by the gate', () => {
   const html = renderItem(uiItem({ ui: false }));
   assert.ok(html.includes('https://broadwayscorecard.com/approve?x=1'));
   assert.ok(!html.includes('Needs a look before you approve'));
+});
+
+// ── Acceptance recheck section (S3-T4) + report ordering (S4-T2/T3) ─────────
+
+const RECHECK = {
+  counts: { pass: 2, fail: 1, unverifiable: 1, skipped: 0 },
+  lines: [
+    'Fix the score badge: still works',
+    'Byline recovery: its own check does not pass any more',
+    'Email copy tweak: no way to check this automatically',
+    'Venue sweep: still works',
+  ],
+};
+
+test('recheck block states the counts and labels itself as watching only', () => {
+  const html = renderRecheckBlock(RECHECK);
+  assert.ok(html.includes('2 still work'));
+  assert.ok(html.includes('1 no longer pass their own check'));
+  assert.ok(html.includes("1 can't be checked automatically"));
+  assert.ok(html.includes('Watching only for now'), 'a shadow signal must say it is a shadow signal');
+  assert.ok(html.includes('its own check does not pass any more'));
+});
+
+test('recheck block renders nothing when there is nothing to report', () => {
+  assert.equal(renderRecheckBlock(null), '');
+  assert.equal(renderRecheckBlock({ counts: {}, lines: [] }), '');
+});
+
+test('recheck block caps the visible lines and counts the rest', () => {
+  const html = renderRecheckBlock({ counts: { pass: 8 }, lines: Array.from({ length: 8 }, (_, i) => `Card ${i}: still works`) });
+  assert.ok(html.includes('Card 4: still works'));
+  assert.ok(!html.includes('Card 5: still works'));
+  assert.ok(html.includes('+3 more'));
+});
+
+test('email order: the tap items come BEFORE the divider, recheck and usage after', () => {
+  const html = renderEmail({
+    items: [{ name: 'Fix A', summary: 's', branch: 'auto/a', usd: 1, checks: [], approveUrl: 'https://x/a', rejectUrl: 'https://x/r' }],
+    recheck: RECHECK,
+    prunedCount: 4,
+    stats: STATS,
+    awaitingTotal: 1,
+  });
+  const iAction = html.indexOf('Fix A');
+  const iDivider = html.indexOf('For your records');
+  const iRecheck = html.indexOf('Finished work re-checked');
+  const iUsage = html.indexOf('Monthly pace');
+  assert.ok(iAction > 0 && iDivider > iAction, 'the approve item must be above the divider');
+  assert.ok(iRecheck > iDivider, 'recheck is context, not action');
+  assert.ok(iUsage > iRecheck, 'cost detail sits last');
+});
+
+test('the prune count line appears below the divider when a sweep closed tabs', () => {
+  const html = renderEmail({ items: [], prunedCount: 3, stats: STATS, awaitingTotal: 0 });
+  assert.ok(html.includes('Closed 3 finished tabs'));
+  assert.ok(html.indexOf('Closed 3 finished tabs') > html.indexOf('For your records'));
+});
+
+test('no prune line when nothing was closed', () => {
+  assert.ok(!renderEmail({ items: [], prunedCount: 0, stats: STATS, awaitingTotal: 0 }).includes('finished tab'));
+  assert.ok(!renderEmail({ items: [], stats: STATS, awaitingTotal: 0 }).includes('finished tab'));
+});
+
+test('the more-awaiting counter names everything past the item cap', () => {
+  const html = renderEmail({
+    items: [{ name: 'A', branch: 'auto/a', usd: 0, checks: [], approveUrl: 'https://x/a', rejectUrl: 'https://x/r' }],
+    moreAwaiting: 4, stats: STATS, awaitingTotal: 5,
+  });
+  assert.ok(html.includes('+4 more items awaiting approval'));
 });
