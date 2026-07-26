@@ -5,6 +5,16 @@
 const path = require('path');
 const { getCanonicalVenueName, validateVenue } = require('./lib/broadway-theaters.js');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `normalize-venues.js — Normalize venue names in shows.json to canonical forms.
+
+Usage:
+  node scripts/normalize-venues.js [options]
+  node scripts/normalize-venues.js --help, -h    print this usage and exit
+`;
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 // loadShows() (not a raw parse) — snapshots the object so saveShows() below

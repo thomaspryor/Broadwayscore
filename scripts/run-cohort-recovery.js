@@ -64,6 +64,14 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `run-cohort-recovery.js — S3 Phase B cohort recovery wrapper for review-text refetch.
+
+Usage:
+  node scripts/run-cohort-recovery.js [options]
+  node scripts/run-cohort-recovery.js --help, -h    print this usage and exit
+`;
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const AUDIT_DIR = path.join(REPO_ROOT, 'data', 'audit');
@@ -377,6 +385,8 @@ function loadProgress() {
 // ----------------------------------------------------------------------------
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const args = parseArgs(process.argv);
   const startedAt = new Date().toISOString();
 

@@ -17,6 +17,16 @@
 const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-wrong-reviews.js — Flag wrong-production/wrong-show reviews and fix outlet misattributions.
+
+Usage:
+  node scripts/fix-wrong-reviews.js [options]
+  node scripts/fix-wrong-reviews.js --help, -h    print this usage and exit
+`;
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const BASE = path.join(__dirname, '..', 'data', 'review-texts');
 
