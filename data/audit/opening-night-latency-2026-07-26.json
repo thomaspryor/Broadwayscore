@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-26T14:45:54.657Z",
+  "generatedAt": "2026-07-26T17:39:13.058Z",
   "date": "2026-07-26",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 226734,
+  "entryCount": 236365,
   "shows": [
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
@@ -36,7 +36,7 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -67,8 +67,8 @@
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
       "reviewCount": 20,
-      "median_e2e_ms": 208655898,
-      "p90_e2e_ms": 208655898,
+      "median_e2e_ms": 218543898,
+      "p90_e2e_ms": 218543898,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 38085098,
@@ -80,7 +80,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "broadwayworld:charles-isherwood:https://www.broadwayworld.com/reviews/the-whoopi-monologues",
-          "e2e_ms": 208655898,
+          "e2e_ms": 218543898,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -388,8 +388,8 @@
     {
       "showId": "joe-turners-come-and-gone-2026",
       "reviewCount": 29,
-      "median_e2e_ms": 208655906,
-      "p90_e2e_ms": 208655906,
+      "median_e2e_ms": 218543906,
+      "p90_e2e_ms": 218543906,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -401,7 +401,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "broadwayworld:aa-cristi:https://www.broadwayworld.com/article/Review-Roundup-JOE-TURNERS-COME-AND-GONE-Opens-On-Broadway-20260425",
-          "e2e_ms": 208655906,
+          "e2e_ms": 218543906,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -453,7 +453,7 @@
     },
     {
       "showId": "death-of-a-salesman-2026",
-      "reviewCount": 31,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -468,7 +468,7 @@
     },
     {
       "showId": "cats-the-jellicle-ball-2026",
-      "reviewCount": 33,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -513,7 +513,7 @@
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
-      "reviewCount": 24,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -544,8 +544,8 @@
     {
       "showId": "every-brilliant-thing-2026",
       "reviewCount": 30,
-      "median_e2e_ms": 189702277,
-      "p90_e2e_ms": 189702277,
+      "median_e2e_ms": 199590277,
+      "p90_e2e_ms": 199590277,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 26598358,
@@ -557,7 +557,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout:adam-feldman:https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
-          "e2e_ms": 189702277,
+          "e2e_ms": 199590277,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -759,7 +759,7 @@
     },
     {
       "showId": "heathers-the-musical-off-broadway-2025",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -985,8 +985,8 @@
     {
       "showId": "hadestown-2019",
       "reviewCount": 45,
-      "median_e2e_ms": 189693878,
-      "p90_e2e_ms": 189693878,
+      "median_e2e_ms": 199581878,
+      "p90_e2e_ms": 199581878,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -998,7 +998,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "dc-metro-theater-arts:deb-miller:https://dcmetrotheaterarts.com/2019/04/22/review-hadestown-at-the-walter-kerr-theatre/",
-          "e2e_ms": 189693878,
+          "e2e_ms": 199581878,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -1035,9 +1035,9 @@
     },
     {
       "showId": "hamilton-2015",
-      "reviewCount": 41,
-      "median_e2e_ms": 208655900,
-      "p90_e2e_ms": 208655900,
+      "reviewCount": 42,
+      "median_e2e_ms": 218543900,
+      "p90_e2e_ms": 218543900,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -1049,7 +1049,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "broadwayworld:test-critic:https://www.broadwayworld.com/article/BWW-Review-Hamilton-Broadway-Production-20150101",
-          "e2e_ms": 208655900,
+          "e2e_ms": 218543900,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -1102,8 +1102,8 @@
     {
       "showId": "the-lion-king-1997",
       "reviewCount": 29,
-      "median_e2e_ms": 189676057,
-      "p90_e2e_ms": 189676103,
+      "median_e2e_ms": 199564057,
+      "p90_e2e_ms": 199564103,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -1115,17 +1115,17 @@
       "slowest_reviews": [
         {
           "reviewKey": "jasonraize:frank-scheck:http://www.jasonraize.net/pr_tlk_spt112197.html",
-          "e2e_ms": 189676103,
+          "e2e_ms": 199564103,
           "stuck_at_stage": "review-first-seen"
         },
         {
           "reviewKey": "jasonraize:michael-sommers:http://www.jasonraize.net/pr_tlk_njsl111497.html",
-          "e2e_ms": 189676057,
+          "e2e_ms": 199564057,
           "stuck_at_stage": "review-first-seen"
         },
         {
           "reviewKey": "jasonraize:michael-kuchwara:http://www.jasonraize.net/pr_tlk_ftu112397.html",
-          "e2e_ms": 189676011,
+          "e2e_ms": 199564011,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -6323,8 +6323,8 @@
     {
       "showId": "11-to-midnight-off-broadway-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 189708965,
-      "p90_e2e_ms": 189708965,
+      "median_e2e_ms": 199596965,
+      "p90_e2e_ms": 199596965,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -6336,7 +6336,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "one-minute-critic:ryan-leeds:https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
-          "e2e_ms": 189708965,
+          "e2e_ms": 199596965,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -7408,7 +7408,7 @@
     },
     {
       "showId": "eclipsed-2016",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7709,8 +7709,8 @@
     {
       "showId": "spring-awakening-2015",
       "reviewCount": 42,
-      "median_e2e_ms": 189680435,
-      "p90_e2e_ms": 189680435,
+      "median_e2e_ms": 199568435,
+      "p90_e2e_ms": 199568435,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -7722,7 +7722,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "washington-times:mark-kennedy:http://www.washingtontimes.com/news/2015/sep/27/review-new-spring-awakening-opens-its-arms-to-all/",
-          "e2e_ms": 189680435,
+          "e2e_ms": 199568435,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -10280,8 +10280,8 @@
     {
       "showId": "how-to-succeed-in-business-without-really-trying-2011",
       "reviewCount": 20,
-      "median_e2e_ms": 189692096,
-      "p90_e2e_ms": 189692096,
+      "median_e2e_ms": 199580096,
+      "p90_e2e_ms": 199580096,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -10293,7 +10293,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:alice-saville:https://www.timeout.com/london/theatre/how-to-succeed-in-business-without-really-trying-review",
-          "e2e_ms": 189692096,
+          "e2e_ms": 199580096,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -10600,7 +10600,7 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10645,7 +10645,7 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10660,7 +10660,7 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
-      "reviewCount": 25,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11696,8 +11696,8 @@
     {
       "showId": "tender-off-west-end-2026",
       "reviewCount": 12,
-      "median_e2e_ms": 208653086,
-      "p90_e2e_ms": 208653086,
+      "median_e2e_ms": 218541086,
+      "p90_e2e_ms": 218541086,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -11709,7 +11709,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "guardian:david-jays:https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
-          "e2e_ms": 208653086,
+          "e2e_ms": 218541086,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -13472,8 +13472,8 @@
     {
       "showId": "a-chorus-line-2006",
       "reviewCount": 7,
-      "median_e2e_ms": 189708620,
-      "p90_e2e_ms": 189708620,
+      "median_e2e_ms": 199596620,
+      "p90_e2e_ms": 199596620,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -13485,7 +13485,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:tim-bano:https://www.timeout.com/london/theatre/a-chorus-line-1-review",
-          "e2e_ms": 189708620,
+          "e2e_ms": 199596620,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -13538,8 +13538,8 @@
     {
       "showId": "faith-healer-2006",
       "reviewCount": 4,
-      "median_e2e_ms": 189702243,
-      "p90_e2e_ms": 189702243,
+      "median_e2e_ms": 199590243,
+      "p90_e2e_ms": 199590243,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -13551,7 +13551,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:andrzej-lukowski:https://www.timeout.com/london/theatre/faith-healer-2-review",
-          "e2e_ms": 189702243,
+          "e2e_ms": 199590243,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15854,8 +15854,8 @@
     {
       "showId": "guard-g-flag",
       "reviewCount": 1,
-      "median_e2e_ms": 208659238,
-      "p90_e2e_ms": 208659238,
+      "median_e2e_ms": 218547238,
+      "p90_e2e_ms": 218547238,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15867,7 +15867,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "variety:peter-marks:https://variety.com/fake-review-1",
-          "e2e_ms": 208659238,
+          "e2e_ms": 218547238,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15875,8 +15875,8 @@
     {
       "showId": "guard-g-freelancer",
       "reviewCount": 1,
-      "median_e2e_ms": 208659236,
-      "p90_e2e_ms": 208659236,
+      "median_e2e_ms": 218547236,
+      "p90_e2e_ms": 218547236,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15888,7 +15888,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "nypost:adam-feldman:https://nypost.com/fake-review",
-          "e2e_ms": 208659236,
+          "e2e_ms": 218547236,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15896,8 +15896,8 @@
     {
       "showId": "guard-g-correct",
       "reviewCount": 1,
-      "median_e2e_ms": 208659234,
-      "p90_e2e_ms": 208659234,
+      "median_e2e_ms": 218547234,
+      "p90_e2e_ms": 218547234,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15909,7 +15909,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "washpost:peter-marks:https://washingtonpost.com/fake-review",
-          "e2e_ms": 208659234,
+          "e2e_ms": 218547234,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15917,8 +15917,8 @@
     {
       "showId": "guard-g-unknown",
       "reviewCount": 1,
-      "median_e2e_ms": 208659233,
-      "p90_e2e_ms": 208659233,
+      "median_e2e_ms": 218547233,
+      "p90_e2e_ms": 218547233,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15930,7 +15930,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "variety:unknown:https://variety.com/fake-review-2",
-          "e2e_ms": 208659233,
+          "e2e_ms": 218547233,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15938,8 +15938,8 @@
     {
       "showId": "guard-g-newcritic",
       "reviewCount": 1,
-      "median_e2e_ms": 208659232,
-      "p90_e2e_ms": 208659232,
+      "median_e2e_ms": 218547232,
+      "p90_e2e_ms": 218547232,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15951,7 +15951,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "variety:completely-new-critic-nobody-has-heard-of:https://variety.com/fake-review-3",
-          "e2e_ms": 208659232,
+          "e2e_ms": 218547232,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15959,8 +15959,8 @@
     {
       "showId": "test-show-2026",
       "reviewCount": 2,
-      "median_e2e_ms": 208657472,
-      "p90_e2e_ms": 208659049,
+      "median_e2e_ms": 218545472,
+      "p90_e2e_ms": 218547049,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15972,12 +15972,12 @@
       "slowest_reviews": [
         {
           "reviewKey": "variety:daniel-daddario:https://variety.com/2026/legit/reviews/some-review-1234567890/",
-          "e2e_ms": 208659049,
+          "e2e_ms": 218547049,
           "stuck_at_stage": "review-first-seen"
         },
         {
           "reviewKey": "broadwayworld:test:https://www.broadwayworld.com/article/review-roundup-LOWER-CASE-TEST",
-          "e2e_ms": 208655894,
+          "e2e_ms": 218543894,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -15985,8 +15985,8 @@
     {
       "showId": "merge-show-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 208659047,
-      "p90_e2e_ms": 208659047,
+      "median_e2e_ms": 218547047,
+      "p90_e2e_ms": 218547047,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -15998,7 +15998,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "variety:jane-critic:https://variety.com/2026/legit/reviews/x-1234509876/",
-          "e2e_ms": 208659047,
+          "e2e_ms": 218547047,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -16006,8 +16006,8 @@
     {
       "showId": "fs-show",
       "reviewCount": 1,
-      "median_e2e_ms": 208655901,
-      "p90_e2e_ms": 208655901,
+      "median_e2e_ms": 218543901,
+      "p90_e2e_ms": 218543901,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -16019,7 +16019,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "variety:naveen-kumar:https://variety.com/2026/legit/reviews/fs-review-1",
-          "e2e_ms": 208655901,
+          "e2e_ms": 218543901,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -16027,8 +16027,8 @@
     {
       "showId": "fsm-show",
       "reviewCount": 1,
-      "median_e2e_ms": 208655894,
-      "p90_e2e_ms": 208655894,
+      "median_e2e_ms": 218543894,
+      "p90_e2e_ms": 218543894,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -16040,7 +16040,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "variety:naveen-kumar:https://variety.com/2026/legit/reviews/fs-review-2",
-          "e2e_ms": 208655894,
+          "e2e_ms": 218543894,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -16048,8 +16048,8 @@
     {
       "showId": "tender-by-dave-harris-off-west-end-2026",
       "reviewCount": 8,
-      "median_e2e_ms": 208653102,
-      "p90_e2e_ms": 208653102,
+      "median_e2e_ms": 218541102,
+      "p90_e2e_ms": 218541102,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -16061,14 +16061,14 @@
       "slowest_reviews": [
         {
           "reviewKey": "guardian:david-jays:https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
-          "e2e_ms": 208653102,
+          "e2e_ms": 218541102,
           "stuck_at_stage": "review-first-seen"
         }
       ]
     },
     {
       "showId": "loves-labours-lost-globe-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16099,8 +16099,8 @@
     {
       "showId": "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 189702487,
-      "p90_e2e_ms": 189702487,
+      "median_e2e_ms": 199590487,
+      "p90_e2e_ms": 199590487,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -16112,7 +16112,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "stagebiz:jacquelyn-claire:http://stagebiz.com/entangled-at-jeffrey-and-paula-gural-theatre-a-r-t-new-york-theatres/",
-          "e2e_ms": 189702487,
+          "e2e_ms": 199590487,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -16120,8 +16120,8 @@
     {
       "showId": "showstopper-the-improvised-musical-west-end-2023",
       "reviewCount": 4,
-      "median_e2e_ms": 189681363,
-      "p90_e2e_ms": 189681363,
+      "median_e2e_ms": 199569363,
+      "p90_e2e_ms": 199569363,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -16133,7 +16133,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:andrzej-lukowski:https://www.timeout.com/london/theatre/showstopper-the-improvised-musical",
-          "e2e_ms": 189681363,
+          "e2e_ms": 199569363,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -16141,8 +16141,8 @@
     {
       "showId": "the-enormous-crocodile-west-end-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 189677344,
-      "p90_e2e_ms": 189677344,
+      "median_e2e_ms": 199565344,
+      "p90_e2e_ms": 199565344,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -16154,7 +16154,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:andrzej-lukowski:https://www.timeout.com/london/theatre/the-enormous-crocodile-review",
-          "e2e_ms": 189677344,
+          "e2e_ms": 199565344,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -16162,8 +16162,8 @@
     {
       "showId": "the-peculiar-patriot-off-broadway-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 189674111,
-      "p90_e2e_ms": 189674111,
+      "median_e2e_ms": 199562111,
+      "p90_e2e_ms": 199562111,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -16175,7 +16175,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "theater-life:lauren-yarger:http://theaterlife.com/the-peculiar-patriot-1-2/",
-          "e2e_ms": 189674111,
+          "e2e_ms": 199562111,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -16452,7 +16452,7 @@
     },
     {
       "showId": "the-mousetrap-west-end-2021",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16992,6 +16992,113 @@
     },
     {
       "showId": "we-had-a-world-off-west-end",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "reviewCount": 18,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-betrothed-off-broadway-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": 5590326,
+      "p90_e2e_ms": 5590326,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 1,
+      "slowest_reviews": [
+        {
+          "reviewKey": "theatermania:rachel-graham:https://www.theatermania.com/news/review-the-betrothed-a-pleasing-romp-for-a-hot-summer-night_1846633/",
+          "e2e_ms": 5590326,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
+    },
+    {
+      "showId": "the-gin-game-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": 3445250,
+      "p90_e2e_ms": 4401671,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 1623848,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 7,
+      "reviews_over_60min": 3,
+      "slowest_reviews": [
+        {
+          "reviewKey": "american-theater-web:andy-propst:http://www.americantheaterweb.com/index.php/topnews/2015/10/15/the-gin-game-old-age",
+          "e2e_ms": 4401671,
+          "stuck_at_stage": "review-first-seen"
+        },
+        {
+          "reviewKey": "center-on-the-aisle:steve-schonberg:http://centerontheaisle.com/2841/review-the-gin-game-starring-james-earl-jones-and-cicely-tyson/",
+          "e2e_ms": 4401312,
+          "stuck_at_stage": "review-first-seen"
+        },
+        {
+          "reviewKey": "nysr:unknown:https://nystagereview.com/2026/07/20/the-gin-game-debra-winger-and-arliss-howard-deliver-a-winning-hand/",
+          "e2e_ms": 4401196,
+          "stuck_at_stage": "review-first-seen"
+        },
+        {
+          "reviewKey": "nysr:frank-scheck:https://nystagereview.com/2026/07/20/the-gin-game-debra-winger-and-arliss-howard-deliver-a-winning-hand/",
+          "e2e_ms": 3445250,
+          "stuck_at_stage": "review-first-seen"
+        },
+        {
+          "reviewKey": "theatermania:zachary-stewart:https://www.theatermania.com/news/review-the-gin-game-starring-debra-winger-and-arliss-howard_1846902/",
+          "e2e_ms": 3445246,
+          "stuck_at_stage": "review-first-seen"
+        }
+      ]
+    },
+    {
+      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "hungry-women-off-broadway-2026",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
