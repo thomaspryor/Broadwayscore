@@ -44,7 +44,18 @@ fi
 TMP=$(mktemp -d)
 PORT=$(( 20000 + (RANDOM % 20000) ))
 NC_PID=""
-cleanup() { [ -n "$NC_PID" ] && kill "$NC_PID" 2>/dev/null; rm -rf "$TMP"; }
+# `kill "$NC_PID"` alone only signals the `( while true; do nc -l ...; done )`
+# subshell wrapper, not the `nc` child it forks each iteration — that child is
+# a separate process and is left orphaned, listening forever (confirmed: 6
+# leaked `nc -l <port>` processes accumulated across repeated local runs).
+# pkill -f matches on the exact port-bound command line, so it reaps the
+# current nc child (and the subshell, belt-and-suspenders) without touching
+# unrelated nc processes.
+cleanup() {
+  pkill -f "nc -l $PORT" 2>/dev/null
+  [ -n "$NC_PID" ] && kill "$NC_PID" 2>/dev/null
+  rm -rf "$TMP"
+}
 trap cleanup EXIT
 
 # Silent listener: accepts the TCP connection, sends nothing back, ever. `nc`
