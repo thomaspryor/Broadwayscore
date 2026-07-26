@@ -196,6 +196,12 @@ jobs:
           # of emailing the dispatch command to the operator (workflow-level
           # permissions already grant actions: write).
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # The >24h backstop alert (card #475) now dispatches via
+          # owner-alert-router's disposition='auto', which shells to
+          # notion-brain.js to file an Action Queue card — that hard-exits
+          # without this key (ship-check finding: every backstop dispatch
+          # would silently fail without it).
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
         run: node scripts/audit-t1-silent-gaps.js --recover --alert
 
       # T1 coverage ledger (S2-T3). This job is the SINGLE WRITER of
