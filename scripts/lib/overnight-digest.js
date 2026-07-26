@@ -173,12 +173,17 @@ function gatherDigest({ repo, hours = 24 } = {}) {
   //     detected but never shown to the owner (Opus ship-check P1).
   try {
     const recPath = path.join(repo, 'data', 'audit', 'reconcile-report.jsonl');
-    if (fs.existsSync(recPath)) {
+    if (fs.existsSync(recPath) && fs.statSync(recPath).size < 5 * 1024 * 1024) { // never slurp a runaway file into the email path
       const cutoff = Date.now() - hours * 3600 * 1000;
+      const notFuture = Date.now() + 3600 * 1000; // clock-skew guard: a future-dated entry must not recur forever
       const lines = fs.readFileSync(recPath, 'utf8').split('\n').filter(Boolean);
       const recent = [];
       for (const l of lines) {
-        try { const e = JSON.parse(l); if (Date.parse(e.ts) > cutoff) recent.push(e); } catch { /* skip corrupt line */ }
+        try {
+          const e = JSON.parse(l);
+          const t = Date.parse(e.ts);
+          if (t > cutoff && t < notFuture) recent.push(e);
+        } catch { /* skip corrupt line */ }
       }
       if (recent.length) {
         digest.stuck.headlessJobs = recent.map(e => `[${e.kind}] ${e.detail}`.slice(0, 200));
