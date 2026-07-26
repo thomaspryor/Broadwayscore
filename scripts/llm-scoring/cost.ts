@@ -45,8 +45,10 @@ export const COST_PER_MILLION_TOKENS = {
   'claude-haiku':  { input: 0.80, output: 4.00 },
   // OpenAI — gpt-4o (default for ensemble).
   openai: { input: 2.50, output: 10.00 },
-  // Gemini — 2.5-flash / 2.0-flash. Same price tier.
-  gemini: { input: 1.25, output: 5.00 },
+  // Gemini — 2.5-flash: $0.30 in / $2.50 out (verified against Google's
+  // published pricing 2026-07-26; the previous 1.25/5.00 were 2.5-PRO
+  // prices and overstated the gemini leg ~4x in estimates).
+  gemini: { input: 0.30, output: 2.50 },
   // Kimi K2.5 via OpenRouter — approximate.
   kimi: { input: 1.50, output: 5.00 },
 } as const;
