@@ -36,6 +36,14 @@ const { CLAUDE_SONNET } = require('./lib/models');
 const { isCommercialScope, DESIGNATION_CRITERIA, resolveScopeShow } = require('./lib/commercial-scope');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `batch-commercial-research.js — Batch Commercial Research Script.
+
+Usage:
+  node scripts/batch-commercial-research.js [options]
+  node scripts/batch-commercial-research.js --help, -h    print this usage and exit
+`;
 // ---------------------------------------------------------------------------
 // Paths
 // ---------------------------------------------------------------------------
@@ -584,6 +592,8 @@ function selectTargets(shows, commercial, grosses) {
 // Main
 // ---------------------------------------------------------------------------
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('💰 Broadway Commercial Data Batch Research');
   console.log(`  Mode: ${DRY_RUN ? 'DRY RUN' : APPLY_MODE ? 'APPLY' : 'LIVE'}`);
 

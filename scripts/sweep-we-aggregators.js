@@ -38,6 +38,14 @@ const { discoverCorrectUrl } = require('./lib/url-discovery');
 const { preflightCredits } = require('./lib/credit-preflight');
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `sweep-we-aggregators.js — Sweep all WE aggregators for each open WE/OWE show.
+
+Usage:
+  node scripts/sweep-we-aggregators.js [options]
+  node scripts/sweep-we-aggregators.js --help, -h    print this usage and exit
+`;
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const ARCHIVE_BASE = path.join(__dirname, '..', 'data', 'aggregator-archive');
 
@@ -1188,6 +1196,8 @@ async function sweepTheStage(show) {
 // ─── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('=== WE Aggregator Sweep ===\n');
   console.log(`Aggregators: ${AGGREGATORS.join(', ')}`);
   console.log(`Dry run: ${DRY_RUN}\n`);

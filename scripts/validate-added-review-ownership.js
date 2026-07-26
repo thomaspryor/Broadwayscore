@@ -45,6 +45,14 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `validate-added-review-ownership.js — post-rebase cross-show ownership gate.
+
+Usage:
+  node scripts/validate-added-review-ownership.js [options]
+  node scripts/validate-added-review-ownership.js --help, -h    print this usage and exit
+`;
 const {
   findCrossShowOwners,
   shouldBlockCrossShowCreate,
@@ -150,6 +158,8 @@ function gitOpInProgress(cwd) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const dryRun = process.argv.includes('--dry-run');
   const baseArg = process.argv.find((a) => a.startsWith('--base='));
   const base = baseArg ? baseArg.split('=')[1] : null;

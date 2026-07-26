@@ -28,6 +28,14 @@ const {
 } = require('./lib/broadway-com-runtimes');
 const { cleanup } = require('./lib/scraper');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `scrape-broadway-com-runtimes.js — Broadway.com Runtime Enrichment Script.
+
+Usage:
+  node scripts/scrape-broadway-com-runtimes.js [options]
+  node scripts/scrape-broadway-com-runtimes.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 
 // ---------------------------------------------------------------------------
@@ -55,6 +63,8 @@ const STATUS_FILTER = flags['status'] || null;
 // ---------------------------------------------------------------------------
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('🎭 Broadway.com Runtime Enrichment');
   console.log(`  Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
   if (SINGLE_SHOW) console.log(`  Show: ${SINGLE_SHOW}`);

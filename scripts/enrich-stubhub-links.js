@@ -20,6 +20,14 @@ const path = require('path');
 const { serpQuery } = require('./lib/url-discovery');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-stubhub-links.js — Enrich shows.json with StubHub ticket links for open Broadway shows.
+
+Usage:
+  node scripts/enrich-stubhub-links.js [options]
+  node scripts/enrich-stubhub-links.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 const LIMIT = (() => {
@@ -110,6 +118,8 @@ async function discoverStubhubUrl(showTitle, market = 'broadway') {
 // ============================================================================
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log(`StubHub Link Enrichment ${DRY_RUN ? '(DRY RUN)' : ''}`);
   console.log('='.repeat(60));
 

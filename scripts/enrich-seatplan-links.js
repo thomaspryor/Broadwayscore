@@ -15,6 +15,14 @@ const https = require('https');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-seatplan-links.js — Enrich shows.json with SeatPlan ticket links for open WE shows.
+
+Usage:
+  node scripts/enrich-seatplan-links.js [options]
+  node scripts/enrich-seatplan-links.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 const SINGLE_SHOW = (() => {
@@ -69,6 +77,8 @@ function isLondonMarket(category) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log(`SeatPlan Link Enrichment ${DRY_RUN ? '(DRY RUN)' : ''}`);
   console.log('='.repeat(60));
 

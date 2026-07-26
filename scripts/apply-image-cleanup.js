@@ -20,6 +20,14 @@ const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `apply-image-cleanup.js — Applies curated image cleanup based on the LLM audit results.
+
+Usage:
+  node scripts/apply-image-cleanup.js [options]
+  node scripts/apply-image-cleanup.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'image-verification.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
@@ -49,6 +57,8 @@ const FALSE_POSITIVES = new Set([
 
 function main() {
   const args = process.argv.slice(2);
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const dryRun = !args.includes('--apply');
 
   if (dryRun) {

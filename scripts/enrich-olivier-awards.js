@@ -14,6 +14,14 @@ const https = require('https');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-olivier-awards.js — Enrich awards.json with Olivier Award data from Wikipedia.
+
+Usage:
+  node scripts/enrich-olivier-awards.js [options]
+  node scripts/enrich-olivier-awards.js --help, -h    print this usage and exit
+`;
 const AWARDS_PATH = path.join(__dirname, '..', 'data', 'awards.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -215,6 +223,8 @@ function matchShowToId(showTitle, year, shows) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const awardsData = JSON.parse(fs.readFileSync(AWARDS_PATH, 'utf8'));
   const showsData = loadShows();
   const shows = showsData.shows;

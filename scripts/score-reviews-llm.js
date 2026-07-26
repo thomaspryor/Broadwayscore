@@ -23,6 +23,14 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { isAlreadyLlmScored } = require('./lib/review-guards');
 const { CLAUDE_SONNET } = require('./lib/models');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `score-reviews-llm.js — Score reviews using Claude LLM.
+
+Usage:
+  node scripts/score-reviews-llm.js [options]
+  node scripts/score-reviews-llm.js --help, -h    print this usage and exit
+`;
 const reviewsDir = path.join(__dirname, '../data/review-texts');
 
 // Parse command line args
@@ -90,6 +98,8 @@ async function scoreReview(client, reviewText) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     console.error('Error: ANTHROPIC_API_KEY environment variable not set');

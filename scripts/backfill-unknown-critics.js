@@ -42,6 +42,14 @@ const { extractAuthorFromHtml, isValidAuthorName, cleanAuthorName } = require('.
 const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-normalization');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-unknown-critics.js — Backfill unknown outlets and critics across ALL review sources.
+
+Usage:
+  node scripts/backfill-unknown-critics.js [options]
+  node scripts/backfill-unknown-critics.js --help, -h    print this usage and exit
+`;
 // --- Names that are NOT theater critics (outlet names, wire service labels, etc.) ---
 const REJECT_NAMES = new Set([
   'condé nast', 'conde nast', 'the associated press', 'associated press',
@@ -369,6 +377,8 @@ async function phaseB(unknownCritics) {
 
 // --- Main ---
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('Scanning review files...');
   const { unknownOutlets, unknownCritics } = scanReviewFiles();
   console.log(`Unknown outlets: ${unknownOutlets.length} files`);
