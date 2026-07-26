@@ -135,7 +135,10 @@ export function seasonForDate(
   if (!dateSeen) return null;
   for (const w of windows) {
     if (w.start !== null && dateSeen < w.start) continue;
-    if (dateSeen <= w.end) return w;
+    // A provisional window's June 30 end is a display placeholder, not a real
+    // boundary — if the canon is stale past it (next ceremony unannounced),
+    // later dates still belong to the open season rather than vanishing.
+    if (dateSeen <= w.end || w.provisional) return w;
   }
   return null;
 }

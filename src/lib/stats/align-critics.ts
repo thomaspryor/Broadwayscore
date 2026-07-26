@@ -149,7 +149,7 @@ export function alignCritics(
   }
 
   const criticTallies = new Map<number, Tally>();
-  const outletTallies = new Map<number, Tally>();
+  const outletTallies = new Map<string, Tally>();
   let sharedShowCount = 0;
   let unmatchedShowCount = 0;
 
@@ -167,7 +167,7 @@ export function alignCritics(
     // outlet's score is the mean of ALL its reviews for the show, including
     // byline-less (criticIdx -1) ones.
     const perCritic = new Map<number, number[]>();
-    const perOutlet = new Map<number, number[]>();
+    const perOutlet = new Map<string, number[]>();
     for (const [criticIdx, outletIdx, score] of reviewRows) {
       if (!Number.isFinite(score)) continue;
       if (criticIdx !== NO_CRITIC_INDEX && criticIdx >= 0) {
@@ -176,13 +176,18 @@ export function alignCritics(
         else perCritic.set(criticIdx, [score]);
       }
       if (outletIdx >= 0) {
-        const o = perOutlet.get(outletIdx);
+        // Key by NAME, not index: the artifact interns outlets by name+tier,
+        // so one publication whose reviews span tiers (TheaterMania T1/T2,
+        // NY Post T1/T2) arrives as multiple indices. Per-fragment tallies
+        // would split its shared-show count below the ranking floors.
+        const outletName = outlets[outletIdx]?.[0] ?? `outlet:${outletIdx}`;
+        const o = perOutlet.get(outletName);
         if (o) o.push(score);
-        else perOutlet.set(outletIdx, [score]);
+        else perOutlet.set(outletName, [score]);
       }
     }
 
-    const record = (tallies: Map<number, Tally>, idx: number, theirs: number) => {
+    const record = <K,>(tallies: Map<K, Tally>, idx: K, theirs: number) => {
       let t = tallies.get(idx);
       if (!t) {
         t = emptyTally();
@@ -195,7 +200,7 @@ export function alignCritics(
     };
 
     perCritic.forEach((scoreList, idx) => record(criticTallies, idx, mean(scoreList)));
-    perOutlet.forEach((scoreList, idx) => record(outletTallies, idx, mean(scoreList)));
+    perOutlet.forEach((scoreList, name) => record(outletTallies, name, mean(scoreList)));
   });
 
   const criticList: Alignment[] = [];
@@ -204,12 +209,17 @@ export function alignCritics(
   });
   criticList.sort(byBest);
 
+  // Best (lowest-numbered) tier a name appears under, for display context.
+  const tierByName = new Map<string, number>();
+  outlets.forEach(([name, tier]) => {
+    const prev = tierByName.get(name);
+    if (prev === undefined || tier < prev) tierByName.set(name, tier);
+  });
   const outletList: OutletAlignment[] = [];
-  outletTallies.forEach((t, idx) => {
-    const entry = outlets[idx];
+  outletTallies.forEach((t, name) => {
     outletList.push({
-      ...toAlignment(entry?.[0] ?? `outlet:${idx}`, idx, t),
-      tier: entry?.[1] ?? 0,
+      ...toAlignment(name, -1, t),
+      tier: tierByName.get(name) ?? 0,
     });
   });
   outletList.sort(byBest);

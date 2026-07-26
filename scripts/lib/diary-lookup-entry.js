@@ -67,7 +67,10 @@ function parseRuntimeMinutes(runtime) {
 /**
  * Additive stats fields for one diary-lookup.json entry.
  *
- * `rt` — runtime in minutes, omitted when unknown. Consumers apply the
+ * `rtm` — runtime in MINUTES (parsed integer), omitted when unknown. Named
+ *        rtm, not rt: mobile-shows.json already uses `rt` for the RAW runtime
+ *        value (a display string), and reusing the key with a new type would
+ *        mislead shared compact-artifact consumers. Consumers apply the
  *        2h30m-musical / 2h-play fallback themselves (see resolveRuntimeMinutes)
  *        rather than baking a guess into the artifact.
  * `vk` — normalized venue match key, omitted when the show has no venue. This
@@ -77,7 +80,7 @@ function parseRuntimeMinutes(runtime) {
 function statsFieldsFor(show) {
   const fields = {};
   const rt = parseRuntimeMinutes(show.runtime != null ? show.runtime : show.runtimeMinutes);
-  if (rt !== null) fields.rt = rt;
+  if (rt !== null) fields.rtm = rt;
   const vk = normalizeForMatch(show.venue);
   if (vk) fields.vk = vk;
   return fields;

@@ -74,16 +74,16 @@ test('PARITY: parseRuntimeMinutes matches the TypeScript across every real runti
   assert.deepEqual(diffs.slice(0, 10), [], `${diffs.length} runtimes disagree`);
 });
 
-test('statsFieldsFor emits rt and vk, and omits them when unknown', () => {
-  assert.deepEqual(statsOf({ runtime: '2h 30m', venue: 'Booth Theatre' }), { rt: 150, vk: 'booth' });
+test('statsFieldsFor emits rtm and vk, and omits them when unknown', () => {
+  assert.deepEqual(statsOf({ runtime: '2h 30m', venue: 'Booth Theatre' }), { rtm: 150, vk: 'booth' });
   assert.deepEqual(statsOf({ runtimeMinutes: 95, venue: 'St. James Theatre' }), {
-    rt: 95,
+    rtm: 95,
     vk: 'st james',
   });
-  // No runtime → no rt key at all (the consumer applies the type fallback).
+  // No runtime → no rtm key at all (the consumer applies the type fallback).
   assert.deepEqual(statsOf({ venue: 'Booth Theatre' }), { vk: 'booth' });
   // No venue → no vk key.
-  assert.deepEqual(statsOf({ runtime: '2h' }), { rt: 120 });
+  assert.deepEqual(statsOf({ runtime: '2h' }), { rtm: 120 });
   // Nothing usable → an empty object, never nulls in the artifact.
   assert.deepEqual(statsOf({}), {});
   assert.deepEqual(statsOf({ runtime: 'TBA', venue: '' }), {});
@@ -120,7 +120,7 @@ test('ADDITIVE ONLY: the generator keeps every pre-existing diary-lookup field',
     assert.ok(k in entry, `field ${k} was dropped`);
   }
   assert.equal(entry.v, 'Booth Theatre', 'the raw venue string is still there');
-  assert.equal(entry.rt, 150);
+  assert.equal(entry.rtm, 150);
   assert.equal(entry.vk, 'booth');
 });
 

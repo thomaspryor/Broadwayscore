@@ -143,7 +143,12 @@ test('undated and out-of-range dates resolve to null, never a crash', () => {
   assert.equal(seasonForDate(w, null), null);
   assert.equal(seasonForDate(w, undefined), null);
   assert.equal(seasonForDate(w, ''), null);
-  assert.equal(seasonForDate(w, '2099-01-01'), null);
+  // Stale canon past the provisional June 30: later dates stay in the OPEN
+  // season rather than vanishing from season-scoped stats (ship-check P1).
+  const far = seasonForDate(w, '2099-01-01');
+  assert.ok(far && far.provisional, 'far-future date resolves to the open provisional season');
+  // (Dates before the first tracked ceremony resolve to the open-beginning
+  // first window by design — pre-canon diary entries never vanish.)
   assert.equal(windowForSeason(w, null), null);
   assert.equal(windowForSeason(w, 'not-a-season'), null);
 });
