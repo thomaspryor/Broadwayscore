@@ -36,10 +36,15 @@ jobs:
     # killed at 15 min unscoped, vs 1.4s scoped over the same 45-day window).
     timeout-minutes: 10
     steps:
+      # Shallow ON PURPOSE. fetch-depth: 0 clones the full ~2.1GB history and does
+      # NOT finish on a GitHub runner — measured 2026-07-26, run 30219369031: the
+      # Checkout step alone burned the entire 10-min budget and was cancelled, so
+      # every scan step below was skipped. A secret scan whose checkout times out
+      # reports nothing and is indistinguishable from a clean run.
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          fetch-depth: 0  # full history so allowlist commits resolve
+          fetch-depth: 1
 
       - name: Install gitleaks
         run: |
@@ -68,22 +73,14 @@ jobs:
           done
           exit $rc
 
-      # Scan 2 — what was INTRODUCED recently, including in files since deleted.
-      # 45-day window against a weekly cron gives ~6x overlap, so nothing slips
-      # between runs even if several fire late. Full history is not re-walked:
-      # that baseline was established 2026-07-26 (only finding was the Buffer
-      # token, now revoked and allowlisted by value).
-      - name: Scan recent history (code paths)
-        run: |
-          gitleaks detect \
-            --source . \
-            --config .gitleaks.toml \
-            --log-opts="--since=45.days -- scripts src .github package.json next.config.js tsconfig.json" \
-            --no-banner \
-            --redact \
-            --report-format sarif \
-            --report-path gitleaks-report.sarif \
-            --exit-code 1
+      # NOTE: there is deliberately NO git-history scan step here.
+      # Any history scan needs git history, and fetching this repo's history in CI
+      # does not complete (see the Checkout comment above). Introduction-time
+      # coverage is handled instead by the pre-commit hook in scripts/hooks/pre-commit,
+      # which runs `gitleaks protect --staged` locally before a secret can ever be
+      # committed — verified 2026-07-26 by staging a fake ghp_ token and observing
+      # the hook exit 1. Full history was swept once on 2026-07-26; the only real
+      # finding was the BUFFER_TOKEN, now revoked and allowlisted by value.
 
       - name: Upload SARIF report
         if: always()
