@@ -214,7 +214,6 @@ test('BWW venue/lead-in tails are stripped (audit finding 1)', () => {
     extractShowTitleFromBwwRoundup('Review Roundup: 13 THE MUSICAL Opens at the Bernard B. Jacobs Theatre'),
     '13 THE MUSICAL'
   );
-  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: CABARET at the Kit Kat Club 2024'), 'CABARET');
   assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: SUNSET BOULEVARD - All the Reviews!'), 'SUNSET BOULEVARD');
   assert.equal(
     extractShowTitleFromBwwRoundup('Review Roundup: What Did the Critics Think Of MAYBE HAPPY ENDING?'),
@@ -224,12 +223,35 @@ test('BWW venue/lead-in tails are stripped (audit finding 1)', () => {
   assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: DINNER AT EIGHT'), 'DINNER AT EIGHT');
 });
 
+// Regression guard for a defect introduced by the fix above and caught in
+// review before it could fire: a standalone " at the " separator truncated
+// real catalogued titles. Both inputs are verbatim from data/shows.json.
+test('BWW: " at the " inside a real title is never a separator', () => {
+  // The originating miss of this whole detector (task #281). Truncating to
+  // "MIDNIGHT" exact-matches the UNRELATED show "Midnight" and silently
+  // suppresses a genuine missing show — the worst failure mode here.
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: MIDNIGHT AT THE NEVER GET Opens Off-Broadway'),
+    'MIDNIGHT AT THE NEVER GET'
+  );
+  // Open off-broadway show; truncation produced a false "missing show" alert.
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: HUGO MARCHAND | ARTISTS AT THE CENTER'),
+    'HUGO MARCHAND | ARTISTS AT THE CENTER'
+  );
+  // An opening verb still splits the venue tail correctly.
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: GYPSY Opens at the Majestic'), 'GYPSY');
+});
+
 test('BWW non-NYC filter: NYC venue kept, London tail caught (audit finding 2)', () => {
   // The West End Theatre is a real Off-Broadway house (263 W 86th St) — a
   // genuine NYC miss must NOT be dropped.
+  // The point of this case is that the NYC venue must NOT be filtered to null.
+  // The venue tail is left attached (no bare " at the " split — see the
+  // regression test below); an unsplit tail costs at most a noisy candidate.
   assert.equal(
     extractShowTitleFromBwwRoundup("Review Roundup: BEDLAM'S OTHELLO at The West End Theatre"),
-    "BEDLAM'S OTHELLO"
+    "BEDLAM'S OTHELLO at The West End Theatre"
   );
   assert.equal(isBwwNonNycRoundup('OTHELLO at The West End Theatre'), false);
   // ...but a real West End / London item still filters out.
