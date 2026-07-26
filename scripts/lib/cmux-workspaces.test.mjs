@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude } = require('./cmux-workspaces.js');
+const { parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude, hasPaneRow, isNotFoundError } = require('./cmux-workspaces.js');
 
 // Captured from `cmux list-workspaces` 2026-07-12 (cmux 0.64.6)
 const LIST_SAMPLE = `  workspace:2  ⠂ Box office card improvements
@@ -107,12 +107,72 @@ test('pruneDone: skips waiting-at-prompt tabs; closes only dead ones; throw = al
       if (ref === 'workspace:2') return false;            // truly dead
       throw new Error('socket busy');                     // transient error
     },
+    // Second signal also confirms dead — isolates this test to the primary
+    // (claudeAliveIn) seam; the #559 disagreement case gets its own test below.
+    terminalSurfaceAliveIn: () => false,
     closeWorkspace: ref => calls.push(ref),
   });
   assert.deepEqual(calls, ['workspace:2']);
   assert.deepEqual(closed.map(w => w.ref), ['workspace:2']);
   // the throw path must NOT close: seam throws → pruneDone must treat as alive
   assert.deepEqual(skipped.map(w => w.ref).sort(), ['workspace:1', 'workspace:3']);
+});
+
+// Card #559: claudeAliveIn queries only cmux's tag/process registry. Card
+// #548 proved that registry can desync from cmux's separate terminal-surface
+// registry (list-panes/capture-pane/read-screen). #548 was the desync
+// showing up as a false POSITIVE on the launch-verify path; this is the same
+// desync on the close path, in the opposite (and more dangerous) direction —
+// the tag registry falsely reports "dead" while the surface registry (and
+// possibly a human) says the workspace is still there. pruneDone must not
+// close on the primary signal alone.
+test('pruneDone: does NOT close when the second independent signal says alive, even though claudeAliveIn alone said not-alive', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [
+      { ref: 'workspace:1', title: '✅ desynced tab (primary says dead, surface says alive)' },
+      { ref: 'workspace:2', title: '✅ truly dead tab (both signals agree)' },
+    ],
+    claudeAliveIn: () => false, // primary registry: both look dead
+    terminalSurfaceAliveIn: ref => ref === 'workspace:1', // surface registry disagrees on workspace:1
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, ['workspace:2']);
+  assert.deepEqual(closed.map(w => w.ref), ['workspace:2']);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+// Captured from `cmux list-panes --workspace <ref>` (2026-07-26)
+test('hasPaneRow: detects a pane row; empty/no-pane output is not alive', () => {
+  assert.equal(hasPaneRow('* pane:107  [1 surface]  [focused]'), true);
+  assert.equal(hasPaneRow(''), false);
+  assert.equal(hasPaneRow('no panes here'), false);
+});
+
+// Verified live against a genuinely closed workspace ref, 2026-07-26:
+// `cmux list-panes --workspace workspace:1` -> exit 1,
+// stderr "Error: not_found: Workspace not found"
+test('isNotFoundError: not_found confirms dead; any other message is uncertainty', () => {
+  assert.equal(isNotFoundError('Command failed: ...\nError: not_found: Workspace not found\n'), true);
+  assert.equal(isNotFoundError('Error: not_found: Pane or workspace not found'), true);
+  assert.equal(isNotFoundError('Command failed: socket timeout'), false);
+  assert.equal(isNotFoundError(''), false);
+  assert.equal(isNotFoundError(undefined), false);
+});
+
+test('pruneDone: second-signal throw = alive (never close on uncertainty from either signal)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ surface-check-errors tab' }],
+    claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => { throw new Error('socket busy'); },
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
 });
 
 test('hasRunningClaude: column-exact — no substring false positives', () => {

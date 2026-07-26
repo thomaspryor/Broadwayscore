@@ -110,16 +110,60 @@ function claudeAliveIn(ref) {
   }
 }
 
+// SECOND, INDEPENDENT liveness signal for the close path (card #559).
+// claudeAliveIn only ever queries cmux's tag/process registry (`cmux top
+// --processes`). Card #548 proved that registry can desync from cmux's
+// separate terminal-surface registry (capture-pane/read-screen/list-panes) —
+// there, the tag registry falsely said Running while the surface registry
+// said the surface was gone (a false POSITIVE for the launch-verify path).
+// Nothing rules out the same desync in the opposite direction here: the tag
+// registry falsely saying dead while a real terminal surface — and possibly
+// a human typing in it — is still there. pruneDone would then CLOSE a live
+// tab (#559, the opposite direction of #548, same root cause).
+//
+// list-panes is the surface registry's own existence check for a workspace.
+// `cmux list-panes --workspace <ref>` output for a workspace WITH panes:
+//   "* pane:107  [1 surface]  [focused]"
+// Pure parser (exported for tests, per this file's convention above).
+function hasPaneRow(tsvOrTreeText) {
+  return /pane:/.test(String(tsvOrTreeText));
+}
+
+// A workspace ref that genuinely doesn't exist in the surface registry
+// returns `Error: not_found: Workspace not found` (verified against a
+// long-closed workspace ref, 2026-07-26) — that "not_found" is what
+// confirms real death. Any OTHER error (busy socket, timeout) is
+// uncertainty, not confirmation, so it must NOT contribute to a close
+// verdict — same fail-safe rule as claudeAliveIn. Pure parser (exported).
+function isNotFoundError(message) {
+  return /not_found/i.test(String(message || ''));
+}
+
+function terminalSurfaceAliveIn(ref) {
+  try {
+    return hasPaneRow(run(['list-panes', '--workspace', ref]));
+  } catch (e) {
+    return !isNotFoundError(e.message);
+  }
+}
+
 // Close every ✅-marked workspace WITHOUT a LIVE claude process. Alive-but-
 // waiting counts as live: ✅ auto-marks land when a task completes even while
 // the owner is still reviewing in the tab, and closing kills claude (10 tabs
 // lost mid-review, 2026-07-21). Only tabs whose claude process is GONE — the
 // script's original charter, "sessions that died before self-closing" — are
 // closable. Skipped tabs are reported; the owner closes them by hand.
+//
+// A "not alive" verdict from claudeAliveIn alone is not enough to close
+// (card #559): it only queries one of cmux's two registries, and that
+// registry can desync from the truth (#548). Before closing, the
+// independent terminal-surface registry (terminalSurfaceAliveIn) must ALSO
+// report the workspace gone — closing requires both signals to agree.
 // Returns { closed, skipped }; failures to close one workspace don't abort.
 function pruneDone(opts = {}) {
   // Seams are test-only (prove the skip/throw paths without a cmux socket).
   const aliveFn = opts.claudeAliveIn || claudeAliveIn;
+  const surfaceAliveFn = opts.terminalSurfaceAliveIn || terminalSurfaceAliveIn;
   const listFn = opts.listWorkspaces || listWorkspaces;
   const closeFn = opts.closeWorkspace || closeWorkspace;
   const done = listFn().filter(w => isDoneTitle(w.title));
@@ -130,6 +174,13 @@ function pruneDone(opts = {}) {
     // irreversible outcome here; never close on uncertainty.
     let alive = true;
     try { alive = aliveFn(w.ref); } catch { alive = true; }
+    if (!alive) {
+      // Primary registry says dead — require the independent surface
+      // registry to agree before trusting that verdict (#559).
+      let surfaceAlive = true;
+      try { surfaceAlive = surfaceAliveFn(w.ref); } catch { surfaceAlive = true; }
+      alive = surfaceAlive;
+    }
     if (alive) { skipped.push(w); continue; }
     if (opts.dryRun) { closed.push(w); continue; }
     try { closeFn(w.ref); closed.push(w); }
@@ -141,5 +192,7 @@ function pruneDone(opts = {}) {
 module.exports = {
   CMUX, cmuxAvailable, run,
   parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude,
-  listWorkspaces, closeWorkspace, claudeRunningIn, claudeAliveIn, pruneDone,
+  hasPaneRow, isNotFoundError,
+  listWorkspaces, closeWorkspace, claudeRunningIn, claudeAliveIn,
+  terminalSurfaceAliveIn, pruneDone,
 };
