@@ -74,6 +74,10 @@ async function classifyBatch(transcripts, showList) {
     body: JSON.stringify({
       model: CLAUDE_SONNET,
       max_tokens: 2048,
+      // Do NOT add cache_control to this request: the advisor tool makes the
+      // cache prefix non-byte-stable (2026-07-26 probe on the sibling caller
+      // classify-non-reviews.js) — a breakpoint pays the 1.25x write premium
+      // on every call and never hits.
       tools: [{ type: 'advisor_20260301', name: 'advisor', model: CLAUDE_OPUS, max_uses: 1 }],
       messages: [{
         role: 'user',
