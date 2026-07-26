@@ -14,7 +14,19 @@
 export interface ModelUsage {
   input: number;
   output: number;
+  /**
+   * Anthropic prompt-cache tokens (claude leg only today). With cache_control
+   * on, usage.input_tokens EXCLUDES cached tokens — so these must be priced
+   * separately or --max-cost and the end-of-run print undercount.
+   * Writes bill at 1.25x input price, reads at 0.1x (5-min ephemeral TTL).
+   */
+  cacheWrite?: number;
+  cacheRead?: number;
 }
+
+/** Anthropic prompt-cache pricing multipliers vs base input price. */
+export const CACHE_WRITE_MULTIPLIER = 1.25;
+export const CACHE_READ_MULTIPLIER = 0.1;
 
 export interface AllModelUsage {
   claude?: ModelUsage;
@@ -59,6 +71,8 @@ export function estimateCost(
   if (usage.claude) {
     total += (usage.claude.input / 1_000_000) * claudePricing.input;
     total += (usage.claude.output / 1_000_000) * claudePricing.output;
+    total += ((usage.claude.cacheWrite || 0) / 1_000_000) * claudePricing.input * CACHE_WRITE_MULTIPLIER;
+    total += ((usage.claude.cacheRead || 0) / 1_000_000) * claudePricing.input * CACHE_READ_MULTIPLIER;
   }
   if (usage.openai) {
     total += (usage.openai.input / 1_000_000) * COST_PER_MILLION_TOKENS.openai.input;
@@ -89,7 +103,9 @@ export function costBreakdown(
 
   const claude = usage.claude
     ? (usage.claude.input / 1_000_000) * claudePricing.input +
-      (usage.claude.output / 1_000_000) * claudePricing.output
+      (usage.claude.output / 1_000_000) * claudePricing.output +
+      ((usage.claude.cacheWrite || 0) / 1_000_000) * claudePricing.input * CACHE_WRITE_MULTIPLIER +
+      ((usage.claude.cacheRead || 0) / 1_000_000) * claudePricing.input * CACHE_READ_MULTIPLIER
     : 0;
   const openai = usage.openai
     ? (usage.openai.input / 1_000_000) * COST_PER_MILLION_TOKENS.openai.input +
