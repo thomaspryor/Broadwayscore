@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude, hasPaneRow, isNotFoundError } = require('./cmux-workspaces.js');
+const { parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude, hasClaudeChrome, isNotFoundError } = require('./cmux-workspaces.js');
 
 // Captured from `cmux list-workspaces` 2026-07-12 (cmux 0.64.6)
 const LIST_SAMPLE = `  workspace:2  ⠂ Box office card improvements
@@ -143,11 +143,46 @@ test('pruneDone: does NOT close when the second independent signal says alive, e
   assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
 });
 
-// Captured from `cmux list-panes --workspace <ref>` (2026-07-26)
-test('hasPaneRow: detects a pane row; empty/no-pane output is not alive', () => {
-  assert.equal(hasPaneRow('* pane:107  [1 surface]  [focused]'), true);
-  assert.equal(hasPaneRow(''), false);
-  assert.equal(hasPaneRow('no panes here'), false);
+// Captured from `cmux read-screen --workspace <ref>` on 4 different LIVE
+// workspaces, 2026-07-26 — the persistent status bar Claude Code renders
+// for the whole session (model glyph + ctx% + branch + repo).
+const SCREEN_ALIVE_BYPASS = `
+────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────
+  🔮 OPUS │ ctx 54% │ main │ Broadwayscore
+  ⏵⏵ bypass permissions on (shift+tab to cycle) · ← for agents
+`;
+const SCREEN_ALIVE_UNANSWERED = `
+  🔮 OPUS │ ctx ? │ main │ Broadwayscore
+  ⏵⏵ bypass permissions on (shift+tab to cycle)
+`;
+const SCREEN_DEAD_BARE_SHELL = `
+tompryor@Mac-Studio Broadwayscore %
+`;
+// Captured live, 2026-07-26: cmux inserts a "⚠" high-context warning glyph
+// BEFORE the "│" once ctx crosses ~75% — 3 of 18 real workspaces on this
+// machine had this shape. An earlier regex version required "│" to
+// immediately follow the percentage and false-negatived on all 3 (caught by
+// a second-pass adversarial review). Anchoring on the separator BEFORE "ctx"
+// instead (stable across all samples) fixes it.
+const SCREEN_ALIVE_HIGH_CTX_WARNING = `
+  🔮 OPUS │ ctx 89%⚠ │ r2-cold-backup-setup │ buffer-token-leak-cleanup
+  ⏵⏵ bypass permissions on
+`;
+// "ctx" as the LAST status-bar field (no trailing "│ branch │ repo") — also
+// observed live.
+const SCREEN_ALIVE_CTX_LAST_FIELD = `
+  🔮 OPUS │ ctx 8%
+`;
+
+test('hasClaudeChrome: detects the persistent ctx status bar; a bare shell prompt is not alive', () => {
+  assert.equal(hasClaudeChrome(SCREEN_ALIVE_BYPASS), true);
+  assert.equal(hasClaudeChrome(SCREEN_ALIVE_UNANSWERED), true); // "ctx ?" before first response
+  assert.equal(hasClaudeChrome(SCREEN_ALIVE_HIGH_CTX_WARNING), true); // "⚠" glyph before the "│"
+  assert.equal(hasClaudeChrome(SCREEN_ALIVE_CTX_LAST_FIELD), true); // no trailing "│" at all
+  assert.equal(hasClaudeChrome(SCREEN_DEAD_BARE_SHELL), false);
+  assert.equal(hasClaudeChrome(''), false);
 });
 
 // Verified live against a genuinely closed workspace ref, 2026-07-26:
