@@ -175,12 +175,20 @@ async function main() {
   // #260/#263/#264 — a `--help --send-to x` invocation used to send).
   const { hasHelpFlag } = require('./lib/cli-help.js');
   if (hasHelpFlag(process.argv.slice(2))) {
-    console.log('autonomous-email.js — morning approval email.\n\nUsage:\n  node scripts/autonomous-email.js --send-to <owner-address>   send (rule 17: one explicit recipient)\n  node scripts/autonomous-email.js --dry-run                   write HTML preview, no send\n  --help, -h   show this message, do nothing else');
+    console.log('autonomous-email.js — morning approval email.\n\nUsage:\n  node scripts/autonomous-email.js --send-to <owner-address>   send (rule 17: one explicit recipient)\n  node scripts/autonomous-email.js --dry-run                   write HTML preview, no send\n  --executor-skipped <reason>   say so instead of a silent no-op (e.g. "monitor night")\n  --help, -h   show this message, do nothing else');
     return;
   }
   const args = parseArgs(process.argv.slice(2));
   const dryRun = !!args['dry-run'];
   const sendTo = args['send-to'];
+  // #476: autonomous-nightly.sh calls this script DIRECTLY (bypassing
+  // autonomous-run.js) on a monitor night, so there is no run-skip ledger
+  // entry to explain the gap — the caller has to say so itself, or the
+  // morning email reads as a silent do-nothing night with 5 dropped attempts
+  // and no explanation (the 2026-07-26 incident this card fixes).
+  const executorSkippedReason = args['executor-skipped'] && args['executor-skipped'] !== true
+    ? String(args['executor-skipped'])
+    : (args['executor-skipped'] === true ? 'skipped' : null);
   if (!dryRun && (!sendTo || sendTo === true)) {
     console.error('[email] refusing to run without an explicit --send-to <owner-address> (rule 17: transactional only) — or use --dry-run');
     process.exit(1);
@@ -264,6 +272,26 @@ async function main() {
     const ageH = (Date.now() - new Date(queue.generatedAt).getTime()) / 3600e3;
     if (ageH < QUEUE_SUMMARY_MAX_AGE_H) { queueSummary = summarizeQueue(queue); freshQueue = queue; }
   } catch { /* no queue on this machine — skip the section */ }
+
+  // #476: the executor-skipped banner — a plain-language "here's why nothing
+  // happened", not the technical 0-planned breakdown above (that one only
+  // fires when triage itself planned 0 attempts; this one covers the case
+  // where triage planned real work and the executor never got to run it).
+  let executorSkipped = null;
+  if (executorSkippedReason) {
+    // ship-check (codex): counts.attempt is tier-3 code attempts ONLY —
+    // autonomous-triage.js tracks tier-2 data-repo attempts separately as
+    // counts.dataPlan, and autonomous-run.js's live() runs BOTH plan and
+    // dataPlan when the executor isn't skipped. Reporting attempt alone
+    // undercounts (or shows 0 while dataPlan work was actually deferred).
+    const c = freshQueue && freshQueue.counts;
+    const attempted = c && (Number.isFinite(c.attempt) || Number.isFinite(c.dataPlan))
+      ? (Number(c.attempt) || 0) + (Number(c.dataPlan) || 0)
+      : null;
+    executorSkipped = attempted !== null
+      ? `executor skipped (${executorSkippedReason}): ${attempted} planned attempt${attempted === 1 ? '' : 's'} deferred to tomorrow`
+      : `executor skipped (${executorSkippedReason}): planned attempts deferred to tomorrow`;
+  }
 
   // Needs-your-attention (2026-07-19 wedge postmortem): every state that
   // silently stalls the loop, with the owner action. Fail-soft per source —
@@ -377,6 +405,7 @@ async function main() {
     moreAwaiting: Math.max(0, awaiting.length - items.length),
     failedCount,
     runSkipped,
+    executorSkipped,
     queueSummary,
     attention,
     throttled: listingFailed
@@ -396,15 +425,17 @@ async function main() {
   const skipLabel = runSkipped ? (/^auth:/.test(runSkipped) ? 'login expired on Mac Studio' : 'preflight failed') : null;
   const subject = runSkipped
     ? `Overnight: ⛔ run skipped — ${skipLabel}${items.length ? ` (+${items.length} still awaiting your tap)` : ''}`
-    : listingFailed
-      ? `Overnight: ⚠️ could not read the approval queue`
-      : items.length
-        ? `Overnight: ${items.length} item${items.length > 1 ? 's' : ''} awaiting your tap — ${items.map(i => i.name).join(' · ').slice(0, 80)}`
-        : attentionCount
-          ? `Overnight: ⚠️ ${attentionCount} item${attentionCount > 1 ? 's' : ''} stalling the loop — needs your triage`
-          : queueSummary
-            ? `Overnight: no items to approve (${queueSummary.total} triaged, 0 workable)`
-            : `Overnight: no items to approve (${failedCount} failed)`;
+    : executorSkipped
+      ? `Overnight: ⏸ ${executorSkipped}${items.length ? ` (+${items.length} still awaiting your tap)` : ''}`
+      : listingFailed
+        ? `Overnight: ⚠️ could not read the approval queue`
+        : items.length
+          ? `Overnight: ${items.length} item${items.length > 1 ? 's' : ''} awaiting your tap — ${items.map(i => i.name).join(' · ').slice(0, 80)}`
+          : attentionCount
+            ? `Overnight: ⚠️ ${attentionCount} item${attentionCount > 1 ? 's' : ''} stalling the loop — needs your triage`
+            : queueSummary
+              ? `Overnight: no items to approve (${queueSummary.total} triaged, 0 workable)`
+              : `Overnight: no items to approve (${failedCount} failed)`;
 
   if (dryRun) {
     const out = path.join(REPO, 'data', 'audit', 'autonomous-email-preview.html');

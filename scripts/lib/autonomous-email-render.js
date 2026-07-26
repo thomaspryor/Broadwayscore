@@ -328,6 +328,7 @@ function renderSummaryLine(data) {
  *   moreAwaiting: number (needs-approval beyond the ≤3 shown)
  *   failedCount: number, skippedCount: number, throttled: string|null
  *   runSkipped: string|null (run-skip ledger note — auth expiry etc.)
+ *   executorSkipped: string|null (#476 — "executor skipped (monitor night): N deferred")
  *   queueSummary: summarizeQueue() result|null (0-planned skip breakdown)
  *   stats: usageStats() result · admin: fetchAdminUsage() result|null
  *   config: { weeklyUSD } · lastRunNote: string|null · awaitingTotal: number
@@ -339,7 +340,7 @@ function renderSummaryLine(data) {
  * from everything ABOVE the divider alone.
  */
 function renderEmail(data) {
-  const { items = [], moreAwaiting = 0, failedCount = 0, throttled = null, runSkipped = null, queueSummary = null, attention = null, stats, admin = null, config = {}, lastRunNote = null, awaitingTotal = 0 } = data;
+  const { items = [], moreAwaiting = 0, failedCount = 0, throttled = null, runSkipped = null, executorSkipped = null, queueSummary = null, attention = null, stats, admin = null, config = {}, lastRunNote = null, awaitingTotal = 0 } = data;
 
   const parts = [];
   parts.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
@@ -351,6 +352,14 @@ function renderEmail(data) {
   //    real content after the summary — never a silent no-op night.
   if (runSkipped) {
     parts.push(`<p style="font-size:14px;font-weight:700;color:#dc2626;margin:12px 0 12px;">⛔ ${esc(runSkipped)}</p>`);
+  }
+  // #476: a deliberate, expected deferral (opening-night monitor holding the
+  // git tree) — distinct from runSkipped's auth/preflight failures, so it
+  // gets its own amber (not red) banner, but still ranks above the routine
+  // "for your records" section. Without this, a monitor night looked
+  // identical to a genuine do-nothing night.
+  if (executorSkipped) {
+    parts.push(`<p style="font-size:14px;font-weight:700;color:#b45309;margin:12px 0 12px;">⏸ ${esc(executorSkipped)}</p>`);
   }
   if (throttled) {
     // `throttled` is a generic banner string — it may carry an actual

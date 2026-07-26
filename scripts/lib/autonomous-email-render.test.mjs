@@ -213,6 +213,18 @@ test('run-skipped note renders as the top red banner', () => {
   assert.doesNotMatch(clean, /⛔/);
 });
 
+// #476: a monitor-night executor skip is a deliberate deferral, not a
+// failure — it gets its own amber banner distinct from runSkipped's red one,
+// and the deferred-work count must survive into the rendered HTML.
+test('executor-skipped note renders as an amber banner, distinct from run-skipped', () => {
+  const note = 'executor skipped (monitor night): 5 planned attempts deferred to tomorrow';
+  const html = renderEmail({ items: [], stats: STATS, executorSkipped: note, awaitingTotal: 0 });
+  assert.match(html, /⏸ executor skipped \(monitor night\): 5 planned attempts deferred/);
+  assert.doesNotMatch(html, /⛔/);
+  const clean = renderEmail({ items: [], stats: STATS, awaitingTotal: 0 });
+  assert.doesNotMatch(clean, /⏸/);
+});
+
 test('renderAttentionBlock: empty input renders nothing', () => {
   const { renderAttentionBlock } = require('./autonomous-email-render.js');
   assert.equal(renderAttentionBlock(null), '');
