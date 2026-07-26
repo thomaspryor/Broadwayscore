@@ -40,6 +40,8 @@ Usage:
   bsc-next --list          show the top actionable tasks, launch nothing
   bsc-next --dry-run       print the chosen task + seed prompt, launch nothing
   bsc-next --exec          run \`claude\` in THIS terminal instead of a Cmux workspace
+  bsc-next --headless      run as a supervised background job (bsc-runner) — no tab;
+                           watch with bsc-status, kill switch BSC_RUNNER_DISABLED=1
   bsc-next --model <m>     override the resolved model for this dispatch
   bsc-next --force         bypass the completed-task / duplicate-workspace guards
   bsc-next --help, -h      show this message, do nothing else
@@ -398,6 +400,55 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const r = spawnSync('claude', ['--model', model, '--dangerously-skip-permissions', seed], { stdio: 'inherit', cwd: REPO });
     if (r.error) { console.error(`[bsc-next] failed to launch claude: ${r.error.message}`); process.exit(1); }
     process.exit(r.status == null ? 1 : r.status); // null = killed by signal → non-zero
+  }
+
+  // --headless (Autopilot v5 R4, task #459): run the task as a supervised
+  // background job via bsc-runner instead of a cmux tab. Opt-in for now —
+  // interactive cmux stays the default until the runner has a quiet week
+  // (plan-review sequencing finding). The runner brings its own per-task
+  // lease, so the cmux duplicate/dead-dispatch guards below don't apply.
+  if (argv.includes('--headless')) {
+    if (process.env.BSC_RUNNER_DISABLED === '1') {
+      console.error('[bsc-next] BSC_RUNNER_DISABLED=1 — headless runner is switched off; rerun without --headless for a cmux tab.');
+      process.exit(1);
+    }
+    // The runner's lease only sees other HEADLESS jobs — a live cmux tab on
+    // the same task is invisible to it. Keep the cross-dispatcher duplicate
+    // guard here (ship-check Codex blocker): refuse if an un-✅ tab matches.
+    if (!args.force && cmuxAvailableFn()) {
+      try {
+        const dupTab = findLiveWorkspaceForTask(task, listWorkspacesFn(), isDoneTitleFn);
+        if (dupTab) {
+          console.error(`[bsc-next] a live cmux workspace already matches task #${task.id}: ${dupTab.ref} "${dupTab.title}". Refusing headless duplicate (--force to override).`);
+          process.exit(1);
+        }
+      } catch (e) { console.error(`[bsc-next] tab duplicate check failed (continuing): ${e.message}`); }
+    }
+    const { runJob } = require('./lib/bsc-runner.js');
+    console.log(`[bsc-next] headless job starting on #${task.id}: ${task.subject} (model ${model})`);
+    const verifyH = extractVerifyCmd((card && card.notes) || task.description || '', isSafeCheckCommand);
+    // Same 'launch' journal entry as the cmux path (Opus ship-check P1): the
+    // acceptance recheck keys on event==='launch' && notionId, and the
+    // verifyCmd must be captured while the card text is in hand — otherwise
+    // headless work silently escapes the days-later re-verification.
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, notionId: pid || null }); }
+    catch (e) { console.error(`[bsc-next] WARN dispatch-ledger launch write failed (non-fatal): ${e.message}`); }
+    runJob({ taskId: String(task.id), subject: task.subject, prompt: seed, model, isolate: true })
+      .then(r => {
+        if (r.stage === 'lease-held') {
+          console.error(`[bsc-next] task #${task.id} already has a live headless job (${r.holder?.jobId || 'unknown'}). Use bsc-status to inspect.`);
+          process.exitCode = 1;
+          return;
+        }
+        console.log(`[bsc-next] headless job ${r.jobId} ${r.ok ? 'DONE' : `FAILED (${r.stage})`}`);
+        console.log(`  log: ${r.logFile}`);
+        if (r.sessionId) console.log(`  resume: (cd ${r.cwd} && claude --resume ${r.sessionId})`);
+        if (r.keptWorktree) console.log(`  worktree kept (has work): ${r.cwd}`);
+        if (verifyH.cmd) console.log(`  verify: ${verifyH.cmd}`);
+        if (!r.ok) process.exitCode = 1;
+      })
+      .catch(e => { console.error(`[bsc-next] headless job crashed: ${e.message}`); process.exitCode = 1; });
+    return; // job settles asynchronously; node exits when the promise resolves
   }
 
   // NO auto-prune at dispatch (owner rule 2026-07-15, third closed-tab incident
