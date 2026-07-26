@@ -159,10 +159,16 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
 // ceremony (2021-09-26) honored the truncated 2019-20 season, and the project's
 // "2020-21" sub-window had no ceremony of its own — both years are skipped so
 // neither record claims that date.
-const CEREMONY_DATE_BY_YEAR = new Map<number, string>(
-  (ceremonyDates.ceremonies as Array<{ ceremony: number; date: string }>)
-    .map((c) => [Number(c.date.slice(0, 4)), c.date]),
-);
+const CEREMONY_DATE_BY_YEAR = new Map<number, string>();
+for (const c of ceremonyDates.ceremonies as Array<{ ceremony: number; date: string }>) {
+  const year = Number(c.date.slice(0, 4));
+  if (CEREMONY_DATE_BY_YEAR.has(year)) {
+    // Two ceremonies in one calendar year would make year-keyed derivation
+    // ambiguous — fail loudly (build-time) instead of silently overwriting.
+    throw new Error(`tony-ceremony-dates.json has two ceremonies in ${year}`);
+  }
+  CEREMONY_DATE_BY_YEAR.set(year, c.date);
+}
 for (const rec of TONY_CUTOFFS) {
   if (rec.ceremonyYear === 2020 || rec.ceremonyYear === 2021) continue;
   const date = CEREMONY_DATE_BY_YEAR.get(rec.ceremonyYear);

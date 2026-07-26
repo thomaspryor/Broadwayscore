@@ -41,10 +41,15 @@ function main() {
   const ceremonyByNumber = new Map(ceremonies.map((c) => [c.ceremony, c]));
 
   // Ceremony table invariants (the season-boundary math depends on these)
+  const seenYears = new Set();
   ceremonies.forEach((c, i) => {
     if (c.ceremony !== i + 1) throw new Error(`ceremonies not contiguous at index ${i}`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(c.date)) throw new Error(`bad date for ceremony ${c.ceremony}: ${c.date}`);
     if (i > 0 && c.date <= ceremonies[i - 1].date) throw new Error(`dates not increasing at ceremony ${c.ceremony}`);
+    // One ceremony per calendar year — tony-cutoffs.ts derives ceremonyDate by year
+    const year = c.date.slice(0, 4);
+    if (seenYears.has(year)) throw new Error(`two ceremonies in ${year} — breaks year-keyed derivation in tony-cutoffs.ts`);
+    seenYears.add(year);
   });
 
   const winners = { bestMusical: [], bestPlay: [] };
