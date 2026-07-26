@@ -73,9 +73,28 @@ function isScoredButStillQueued(data) {
   if (data.needsRescore !== true && data.needs_rescore !== true) return false;
   const scoredAt = (data.llmMetadata && data.llmMetadata.scoredAt) || data.scoredAt;
   if (!scoredAt) return false;
+
+  // DO NOT broaden this to "has any score while queued". Most producers requeue
+  // a review precisely BECAUSE it was already scored and something changed —
+  // 'fullText added after excerpt-based scoring', 'fullText recovered from
+  // Wayback Machine', 're-ensemble-v2-decluster'. Those are healthy pending
+  // work, not stuck flags. A 2026-07-26 corpus scan measured the difference:
+  // 192 files were "scored + queued", but only 30 were actually stuck. The
+  // broad version would have handed the other 162 to this auditor's --fix,
+  // which DELETES needsRescore (audit-stuck-rescore-flags.js:124) and would
+  // have silently cancelled 162 genuinely-needed rescores.
+  //
+  // So key on the bug's fingerprint instead, which is provable: the
+  // Haiku-fallback path is the only writer of this scoreSource, and it was the
+  // path that failed to retire the flag. Anything else that is scored-and-queued
+  // is presumed legitimate until a producer stamps an enqueue timestamp we can
+  // compare against (no producer does today — that gap is Notion-carded).
+  if (data.scoreSource !== 'manual-cleared-haiku-fallback') return false;
+
+  // Retired correctly by a post-fix run — not stuck.
+  if (data.rescoreCompletedAt) return false;
+
   const flaggedAt = data.rescoreFlaggedAt || data.needsRescoreAt;
-  // No flag timestamp recorded (the common case — producers don't stamp one):
-  // a score existing at all while queued is the observable symptom.
   if (!flaggedAt) return true;
   return String(scoredAt) > String(flaggedAt);
 }

@@ -51,24 +51,44 @@ test('markRescoreComplete is a no-op on a file that was never queued', () => {
   assert.equal(f.rescoreCompletedAt, undefined, 'no stamp when nothing was retired');
 });
 
-test('isScoredButStillQueued detects a scored-but-still-queued file', () => {
-  // The exact shape of the 10 files found stuck on 2026-07-26.
+test('isScoredButStillQueued fires only on the fallback fingerprint', () => {
+  // The shape of the files genuinely stuck on 2026-07-26: scored by the
+  // Haiku-fallback path (the only writer of this scoreSource) and still queued.
   assert.equal(
     isScoredButStillQueued({
       needsRescore: true,
       rescoreReason: 'bw-v6-decompression',
+      scoreSource: 'manual-cleared-haiku-fallback',
       llmMetadata: { scoredAt: '2026-07-26T20:13:59.984Z' },
     }),
     true
   );
-  // Queued and genuinely never scored — not stuck, just pending.
+  // REGRESSION GUARD (the P1 caught in adversarial review): a legitimate requeue
+  // of an already-scored review must NOT be called stuck. 162 corpus files look
+  // like this, and the auditor's --fix deletes needsRescore — flagging them
+  // would cancel real pending rescores.
+  assert.equal(
+    isScoredButStillQueued({
+      needsRescore: true,
+      rescoreReason: 'fullText added after excerpt-based scoring',
+      scoreSource: 'llm-v6',
+      llmMetadata: { scoredAt: '2026-06-01T00:00:00.000Z' },
+    }),
+    false
+  );
+  // Queued and genuinely never scored — pending, not stuck.
   assert.equal(
     isScoredButStillQueued({ needsRescore: true, rescoreReason: 'bw-v6-decompression' }),
     false
   );
-  // Retired correctly.
+  // Already retired by a post-fix run.
   assert.equal(
-    isScoredButStillQueued({ rescoreCompletedAt: '2026-07-26T21:00:00.000Z' }),
+    isScoredButStillQueued({
+      needsRescore: true,
+      scoreSource: 'manual-cleared-haiku-fallback',
+      llmMetadata: { scoredAt: '2026-07-26T20:13:59.984Z' },
+      rescoreCompletedAt: '2026-07-26T21:00:00.000Z',
+    }),
     false
   );
 });
