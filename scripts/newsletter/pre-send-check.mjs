@@ -5,6 +5,7 @@
 //   HARD (exit 1, workflow stops): would embarrass us if sent to all subscribers
 //     - Missing unsubscribe link
 //     - Zero BSC links have UTMs (total tracking blackout)
+//     - Lede names a show that never appears in the body (lede ⊆ body)
 //   SOFT (warning banner injected into draft HTML): owner sees issues in the
 //     preview email and decides whether to fix before broadcasting
 //     - Non-empty <title> tag
@@ -19,8 +20,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const { findLedeBodyViolations } = createRequire(import.meta.url)('../lib/lede-body-invariant.js');
 
 const weekStart = process.argv[2] || (() => {
   const d = new Date();
@@ -94,6 +97,31 @@ if (!ledeText) {
   softIssues.push('Lede appears empty');
 } else if (ledeText.includes('—') || ledeText.includes('—')) {
   softIssues.push('Lede contains em dash — use comma, period, or parentheses');
+}
+
+// ── HARD: lede ⊆ body invariant ───────────────────────────────────────────────
+// generate.mjs writes meta.ledeShows = [{id, slug, title}] for every show the
+// lede paragraph names. Check each against the REAL body ONLY — everything
+// from the `BODY_SECTIONS_START` marker onward (generate.mjs writes it right
+// before `${sectionOrder.join('')}`). Earlier attempt stripped just the lede's
+// own <div> and checked "the rest of html", but the subject line is echoed
+// into a `<!-- SUBJECT: ... -->` HTML comment near the top AND the hidden
+// preheader div repeats the first two lede sentences — both sit BEFORE the
+// lede's own div and were never stripped, so any show named in the subject or
+// first two lede sentences passed even with zero body mentions (caught in
+// review 2026-07-26, before this ever shipped). Splitting on the marker
+// excludes the subject comment, preheader, header row, AND the lede's own
+// paragraph/secondary-paragraph/bullet-strip divs in one shot — only actual
+// section-card HTML remains. Catches the class of bug behind two incidents:
+// "The Fear of 13 plays final performance" (2026-07-12, closings window bug)
+// and "Oh, Mary! recoups" in the West End edition with no recoupment section
+// at all (2026-07-26).
+const BODY_MARKER = 'BODY_SECTIONS_START';
+if (meta.ledeShows?.length && !html.includes(BODY_MARKER)) {
+  hardFailures.push(`Lede ⊆ body check cannot run — ${BODY_MARKER} marker missing from HTML (generate.mjs template changed?)`);
+} else {
+  const bodyOnly = html.includes(BODY_MARKER) ? html.slice(html.indexOf(BODY_MARKER)) : html;
+  for (const v of findLedeBodyViolations(meta.ledeShows, bodyOnly)) hardFailures.push(v);
 }
 
 // ── SOFT: section sanity ──────────────────────────────────────────────────────

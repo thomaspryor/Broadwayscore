@@ -248,20 +248,24 @@ function dedupeByKind(candidates) {
 }
 
 // Build a subject line from the top candidates. Caps at 130 chars; appends
-// ", and more." when ≥3 items survive.
-export function buildSubjectFromCandidates(candidates, opts = {}) {
-  if (!candidates.length) return 'This week in NYC theatre.';
+// ", and more." when ≥3 items survive. Returns { subject, showRefs } — the
+// subject slices up to 4 unique-by-kind candidates (the lede takes only 3),
+// so a subject-only 4th item exists that the lede's showRefs never covers;
+// callers must fold `showRefs` into the same lede-⊆-body check (card #482)
+// or an inbox subject line could still name a show absent from the body.
+export function buildSubjectFromCandidates(candidates) {
+  if (!candidates.length) return { subject: 'This week in NYC theatre.', showRefs: [] };
   const unique = dedupeByKind(candidates);
-  const items = unique.slice(0, 4).map(c => c.headline);
-  let parts = items.slice();
+  let parts = unique.slice(0, 4);
   let tail = parts.length >= 3 ? ', and more.' : '.';
-  let subject = parts.join(', ') + tail;
+  let subject = parts.map(c => c.headline).join(', ') + tail;
   while (subject.length > 80 && parts.length > 1) {
     parts.pop();
     tail = parts.length >= 3 ? ', and more.' : '.';
-    subject = parts.join(', ') + tail;
+    subject = parts.map(c => c.headline).join(', ') + tail;
   }
-  return subject;
+  const showRefs = parts.map(c => c.show).filter(Boolean).map(s => ({ id: s.id, slug: s.slug, title: s.title }));
+  return { subject, showRefs };
 }
 
 // Editorial lede — 2-3 sentence narrative from the top candidates.
@@ -274,9 +278,12 @@ export function buildLedeFromCandidates(candidates, maxSentences = 3) {
   return r ? r.sentences.join(' ') : null;
 }
 
-// Sentence-level variant: returns { sentences, kinds } so the expanded-lede
-// composer in generate.mjs can add box-office / coming-up context without
-// duplicating a kind that already made the cut.
+// Sentence-level variant: returns { sentences, kinds, showRefs } so the
+// expanded-lede composer in generate.mjs can add box-office / coming-up
+// context without duplicating a kind that already made the cut. `showRefs`
+// (one per surviving candidate, {id, slug, title}) lets the caller record
+// exactly which shows the lede named — the mechanical input to the
+// lede-⊆-body pre-send check (scripts/lib/lede-body-invariant.js).
 export function buildLedeSentences(candidates, maxSentences = 3) {
   if (!candidates.length) return null;
   const unique = dedupeByKind(candidates).slice(0, maxSentences);
@@ -293,7 +300,11 @@ export function buildLedeSentences(candidates, maxSentences = 3) {
     }
     return headlineToSentence({ ...c, headline });
   });
-  return { sentences, kinds: unique.map(c => c.kind) };
+  const showRefs = unique
+    .map(c => c.show)
+    .filter(Boolean)
+    .map(s => ({ id: s.id, slug: s.slug, title: s.title }));
+  return { sentences, kinds: unique.map(c => c.kind), showRefs };
 }
 
 function headlineToSentence(c) {

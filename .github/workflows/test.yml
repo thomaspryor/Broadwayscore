@@ -606,6 +606,11 @@ on:
       # Score-tier label display/data decoupling contract (Skippable wire key vs Mixed display).
       - 'scripts/lib/score-tier-label-contract.test.mjs'
       - 'scripts/newsletter/**'
+      # Lede ⊆ body pre-send invariant (card #482) — pure predicate lives outside
+      # scripts/newsletter/** so it needs its own path entry; colocated test runs
+      # in the scripts/lib/*.test.mjs glob step.
+      - 'scripts/lib/lede-body-invariant.js'
+      - 'scripts/lib/lede-body-invariant.test.mjs'
       - 'scripts/send-opening-night-broadcast.js'
       # Market-aware broadcast readiness gate (Broadway 15+agg, West End 12) + its
       # colocated test (runs in the scripts/lib/*.test.mjs glob step). Path-listed
