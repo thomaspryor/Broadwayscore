@@ -57,6 +57,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
 const cjsRequire = createRequire(import.meta.url);
 const { buildFromAddress, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
+const { shallowFetchArgs } = cjsRequire(path.join(repo, 'scripts/lib/shallow-fetch-args.js'));
 // NOTE: deliberately NO send-lock here. The GitHub-backed send-lock (used by the
 // actual SEND wrappers) commits data/email-send.lock to the public repo's main
 // branch on acquire AND release — 2 commits per run, each tripping CI/deploys.
@@ -228,7 +229,22 @@ function dataRepoStaleness() {
   let dir;
   try {
     dir = path.dirname(fs.realpathSync(path.join(repo, 'data/reviews.json')));
-    execFileSync('git', ['-C', dir, 'fetch', '--quiet'], { stdio: 'ignore', timeout: 30000 });
+    // Depth-bound the fetch when that checkout is SHALLOW (task #420/#466).
+    // .github/actions/checkout-core-data clones the data repo with --depth 1,
+    // and from a shallow clone a fetch with no cut-off makes upload-pack send
+    // the whole repository rather than the delta — a multi-GB transfer inside
+    // a 30s timeout, i.e. this staleness probe silently always fails in CI.
+    // A complete clone (a local session) correctly gets no extra flags.
+    let isShallow = false;
+    try {
+      isShallow = execFileSync('git', ['-C', dir, 'rev-parse', '--is-shallow-repository'], { encoding: 'utf8', timeout: 10000 }).trim() === 'true';
+    } catch { /* fail open — treat as complete */ }
+    const oldestCommitEpoch = isShallow
+      ? Number(execFileSync('git', ['-C', dir, 'log', '-1', '--format=%ct', 'HEAD'], { encoding: 'utf8', timeout: 10000 }).trim())
+      : 0;
+    const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
+    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
+    execFileSync('git', ['-C', dir, 'fetch', ...depthArgs, '--quiet'], { stdio: 'ignore', timeout: 30000 });
     const behind = parseInt(execFileSync('git', ['-C', dir, 'rev-list', '--count', 'HEAD..@{u}'], { encoding: 'utf8' }).trim(), 10);
     return { dir, behind: Number.isFinite(behind) ? behind : null };
   } catch (e) {

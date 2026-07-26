@@ -86,6 +86,7 @@ const { emitStage } = require('../lib/stage-latency');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
 const { isInFallbackCooldown } = require('../lib/manual-clear-fallback-cooldown');
 const { markRescoreComplete } = require('../lib/rescore-lifecycle');
+const { pushWithRetry } = require('../lib/push-with-retry.js');
 // venue-classification import removed — market context now passed via input-builder
 
 // ========================================
@@ -531,31 +532,22 @@ function gitCheckpoint(processedSoFar: number, totalFiles: number): boolean {
       { cwd: PROJECT_ROOT, stdio: 'pipe' }
     );
 
-    // Push with retry (other workflows may be pushing concurrently)
-    for (let attempt = 1; attempt <= 3; attempt++) {
-      try {
-        execSync('git fetch origin main && git rebase origin/main', { cwd: PROJECT_ROOT, stdio: 'pipe' });
-        execSync('git push origin HEAD:main', { cwd: PROJECT_ROOT, stdio: 'pipe' });
-        console.log(`   ✓ Checkpoint pushed (attempt ${attempt})`);
-        return true;
-      } catch (e: any) {
-        if (attempt < 3) {
-          console.log(`   Push attempt ${attempt} failed, retrying...`);
-          // On rebase conflict, abort and try merge
-          try { execSync('git rebase --abort', { cwd: PROJECT_ROOT, stdio: 'pipe' }); } catch {}
-          try {
-            execSync('git fetch origin main && git merge origin/main -X ours --no-edit', { cwd: PROJECT_ROOT, stdio: 'pipe' });
-            execSync('git push origin HEAD:main', { cwd: PROJECT_ROOT, stdio: 'pipe' });
-            console.log(`   ✓ Checkpoint pushed via merge (attempt ${attempt})`);
-            return true;
-          } catch {
-            try { execSync('git merge --abort', { cwd: PROJECT_ROOT, stdio: 'pipe' }); } catch {}
-          }
-        }
-      }
+    // Push through the shared helper (task #420). This replaced a hand-rolled
+    // fetch → rebase → merge-fallback → 3-attempt loop that duplicated
+    // push-with-retry.sh without any of its fixes: the explicit-destination
+    // fetch refspec (#394), the single-timeout fetch (#464), HEAD preservation
+    // (#543), and — the one that actually bit — the shallow depth bound (#466).
+    // Both `git fetch origin main` calls here were unbounded, and this file
+    // runs under opening-night-express.yml, which checks out at the default
+    // fetch-depth: 1; from a shallow clone an unbounded fetch makes upload-pack
+    // send the whole ~2.1 GB / 165k-commit repo instead of the small delta
+    // (measured on a real runner, run 30218025467).
+    const { ok, stderr } = pushWithRetry({ cwd: PROJECT_ROOT, branch: 'HEAD:main', retries: 3 });
+    if (ok) {
+      console.log('   ✓ Checkpoint pushed');
+      return true;
     }
-
-    console.log('   ⚠️ Checkpoint push failed after 3 attempts (will retry at next checkpoint)');
+    console.log(`   ⚠️ Checkpoint push failed (will retry at next checkpoint): ${stderr.split('\n').slice(-3).join(' ')}`);
     return false;
   } catch (e: any) {
     console.log(`   ⚠️ Checkpoint error: ${e.message}`);

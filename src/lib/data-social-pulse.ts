@@ -14,6 +14,7 @@
 import fs from 'fs';
 import path from 'path';
 
+import { shouldShowSentiment } from '@/lib/social-pulse-display';
 import type { SocialPulsePayload } from '@/components/show-page/SocialPulseCard';
 
 const PUBLIC_SHOWS_DIR = path.join(process.cwd(), 'public', 'data', 'shows');
@@ -202,6 +203,36 @@ function readAllRawSocialPulses(): RawSocialPulse[] {
 }
 
 /**
+ * Fallback compositeScore for a raw pulse file that has none persisted yet
+ * (compute-social-pulse-ranks.js normally writes this field; this only fires
+ * for a file the ranker hasn't touched — e.g. mid-migration, or a fixture in
+ * tests).
+ *
+ * Mirrors compute-social-pulse-ranks.js's rankingPct: ranking strength is the
+ * v3 effectiveVolume (Pulse Index) when present, legacy volume otherwise.
+ * `positivePct` only counts toward the score when `shouldShowSentiment`
+ * would let a card print it — the SAME predicate the show-page/trending
+ * cards use to gate the "% positive" text (#544: ranking must not trust a
+ * number the display layer itself refuses to show). Below that trust bar
+ * (including a null zero-opinion sample), the show is scored as
+ * sentiment-neutral (50) — not 0, which would wrongly sink a loud,
+ * sentiment-unknown show below quiet zero-volume ones.
+ *
+ * Exported as a pure function (no fs) so it's directly unit-testable — see
+ * tests/unit/social-pulse-ranking-parity.test.mjs.
+ */
+export function computeFallbackCompositeScore(
+  p: Pick<RawSocialPulse, 'effectiveVolume' | 'volume' | 'positivePct' | 'opinionSample'>,
+): number {
+  const strength = p.effectiveVolume ?? p.volume;
+  const trustedPct =
+    typeof p.positivePct === 'number' && shouldShowSentiment({ positivePct: p.positivePct, opinionSample: p.opinionSample })
+      ? p.positivePct
+      : 50;
+  return (strength * trustedPct) / 100;
+}
+
+/**
  * Returns the top N trending shows for a given market, ranked by
  * `compositeScore` (volume × positivePct / 100 — computed by
  * compute-social-pulse-ranks.js, or recomputed here if that field is
@@ -243,16 +274,7 @@ export function getTopTrendingShows(
     )
     .map<TrendingPick>((p) => ({
       ...p,
-      // Fallback mirrors compute-social-pulse-ranks.js: ranking strength is
-      // the v3 effectiveVolume (Pulse Index) when present, legacy volume
-      // otherwise. positivePct === null (no opinion sample) is treated as
-      // neutral 50 — same semantic as computeCompositeScore in the scorer
-      // lib — not 0, which would wrongly sink a loud, sentiment-unknown show
-      // below quiet zero-volume ones.
-      compositeScore:
-        typeof p.compositeScore === 'number'
-          ? p.compositeScore
-          : ((p.effectiveVolume ?? p.volume) * (typeof p.positivePct === 'number' ? p.positivePct : 50)) / 100,
+      compositeScore: typeof p.compositeScore === 'number' ? p.compositeScore : computeFallbackCompositeScore(p),
     }))
     .sort((a, b) => {
       if (b.compositeScore !== a.compositeScore) return b.compositeScore - a.compositeScore;

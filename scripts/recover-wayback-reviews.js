@@ -28,6 +28,7 @@ const { execSync } = require('child_process');
 
 // Shared libraries
 const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
+const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { generateReviewFilename } = require('./lib/review-normalization');
@@ -898,33 +899,19 @@ function checkpointReviewTexts(stats) {
       return; // no changes
     } catch { /* has staged changes */ }
     execSync(`git commit -m "data: Wayback recovery checkpoint - ${stats.recovered} recovered so far"`, { cwd: reviewTextsDir, stdio: 'pipe' });
-    for (let i = 0; i < 3; i++) {
-      try {
-        execSync('git pull --rebase -X theirs origin main', { cwd: reviewTextsDir, stdio: 'pipe', timeout: 30000 });
-        // -X theirs favors local commits on conflicting hunks per rebase semantics,
-        // but this codebase has documented, incident-backed evidence that
-        // concurrent writes to the same JSON file's fields still get dropped in
-        // practice — restore-protected-fields.js is the established safety net
-        // (same pattern as rediscover-review-urls.js's pushReviewTextsCheckpoint).
-        try {
-          const restoreScriptPath = path.join(__dirname, 'lib', 'restore-protected-fields.js');
-          const restored = execSync(`node "${restoreScriptPath}" origin/main`, { cwd: reviewTextsDir, encoding: 'utf8', stdio: 'pipe' }).trim();
-          if (parseInt(restored, 10) > 0) {
-            console.log(`  [Checkpoint] restored protected fields in ${restored} file(s) after rebase`);
-            execSync('git add -A', { cwd: reviewTextsDir, stdio: 'pipe' });
-            execSync('git commit --amend --no-edit', { cwd: reviewTextsDir, stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
-          }
-        } catch (restoreErr) {
-          console.log(`  [Checkpoint] restore-protected-fields failed: ${restoreErr.message.slice(0, 200)}`);
-        }
-        execSync('git push origin main', { cwd: reviewTextsDir, stdio: 'pipe', timeout: 30000 });
-        console.log(`  [Checkpoint] review-texts pushed (attempt ${i + 1})`);
-        return;
-      } catch (e) {
-        try { execSync('git rebase --abort', { cwd: reviewTextsDir, stdio: 'pipe' }); } catch {}
-        if (i === 2) console.log(`  [Checkpoint] WARNING: review-texts push failed after 3 attempts: ${e.message.slice(0, 200)}`);
-      }
+    // Push through the shared helper (task #420). The hand-rolled
+    // `git pull --rebase -X theirs` + restore-protected-fields + 3-attempt loop
+    // this replaced carried NO depth bound, and the review-texts checkout is
+    // shallow by default (.github/actions/checkout-review-texts, fetch-depth:
+    // 1) — from a shallow clone that pull makes upload-pack send the whole
+    // repo instead of the delta (#466). The helper runs the same
+    // lib/restore-protected-fields.js and adds the #394/#464/#543 fixes.
+    const rtPush = pushWithRetry({ cwd: reviewTextsDir, branch: 'main', retries: 3 });
+    if (rtPush.ok) {
+      console.log('  [Checkpoint] review-texts pushed');
+      return;
     }
+    console.log(`  [Checkpoint] WARNING: review-texts push failed: ${rtPush.stderr.split('\n').slice(-3).join(' ')}`);
   } catch (e) {
     console.log(`  [Checkpoint] review-texts error: ${e.message.slice(0, 200)}`);
   }
@@ -946,23 +933,15 @@ function checkpoint(stats) {
     const msg = `feat: Wayback recovery checkpoint${modeTag} - ${stats.recovered} reviews recovered [T1:${stats.recoveredByTier[1]},T2:${stats.recoveredByTier[2]},T3:${stats.recoveredByTier[3]}]`;
     execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: path.join(__dirname, '..') });
 
-    // Push with retry
-    for (let i = 0; i < 5; i++) {
-      try {
-        execSync('git pull --rebase -X theirs origin main && git push origin main', {
-          stdio: 'pipe',
-          cwd: path.join(__dirname, '..'),
-          timeout: 30000,
-        });
-        console.log(`  [Checkpoint] Committed and pushed (${stats.recovered} recovered)`);
-        return;
-      } catch (e) {
-        console.log(`  [Checkpoint] Push attempt ${i + 1}/5 failed, retrying...`);
-        try { execSync('git rebase --abort', { stdio: 'pipe', cwd: path.join(__dirname, '..') }); } catch {}
-        sleep(3000 + Math.random() * 5000);
-      }
+    // Push through the shared helper (task #420) — same unbounded-fetch
+    // exposure as the review-texts checkpoint above, plus the #394 stale-
+    // tracking-ref fix the hand-rolled loop never had.
+    const { ok, stderr } = pushWithRetry({ cwd: path.join(__dirname, '..'), branch: 'HEAD:main', retries: 5 });
+    if (ok) {
+      console.log(`  [Checkpoint] Committed and pushed (${stats.recovered} recovered)`);
+      return;
     }
-    console.log('  [Checkpoint] WARNING: Could not push after 5 attempts');
+    console.log(`  [Checkpoint] WARNING: push failed: ${stderr.split('\n').slice(-3).join(' ')}`);
   } catch (e) {
     console.log(`  [Checkpoint] Error: ${e.message}`);
   }
