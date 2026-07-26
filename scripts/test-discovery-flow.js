@@ -7,9 +7,17 @@
 const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const BACKUP_FILE = path.join(__dirname, '..', 'data', 'shows.backup.json');
+
+const USAGE = `test-discovery-flow.js — Test script for the discovery flow logic (mocked, no network access).
+
+Usage:
+  node scripts/test-discovery-flow.js [options]
+  node scripts/test-discovery-flow.js --help, -h    print this usage and exit
+`;
 
 // Mock TodayTix API response with a fake new show
 const mockTodayTixResponse = {
@@ -96,6 +104,8 @@ function extractShowData(todaytixShow) {
 }
 
 async function testDiscoveryFlow() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('🧪 Testing Discovery Flow');
   console.log('==========================\n');
 

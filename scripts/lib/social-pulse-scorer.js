@@ -272,7 +272,51 @@ function computeRelevanceRates(mentions) {
   return {
     byPlatform: rates,
     overall: totalClassified > 0 ? totalRelevant / totalClassified : null,
+    // Denominator behind `overall`. Callers MUST check this before acting on a
+    // low rate: 0/1 and 0/75 are both "0%" but only one is evidence.
+    classified: totalClassified,
   };
+}
+
+/**
+ * Minimum relevance rate for a card to be publishable at all. Same VALUE as
+ * MIN_QUOTE_RELEVANCE today, deliberately declared separately: the two gates
+ * have very different blast radii. Failing the quote gate costs a quote;
+ * failing this one deletes the card from the show page, /trending and the
+ * newsletter. Someone tuning the quote threshold after a bad-quote report
+ * must not silently delete live cards as a side effect.
+ */
+const MIN_CARD_RELEVANCE = 0.15;
+
+/**
+ * Minimum CLASSIFIED sample required before a low relevance rate is treated as
+ * evidence of a title collision rather than noise. `overall` is a point
+ * estimate with no denominator — titanique-2026 sat at 0.25 off a 2-of-8
+ * sample on 2026-07-26, one LLM misclassification away from 0.125 and being
+ * hidden, while the genuine collisions were sampled 0/75 and 1/62. 20 keeps
+ * both real collisions gated and every thin-sample show visible.
+ */
+const MIN_CARD_RELEVANCE_SAMPLE = 20;
+
+/**
+ * True when the classified text sample says this show's corpus is mostly not
+ * about this show — a title collision we cannot publish a mention count for.
+ *
+ * Applied at the WRITE boundaries (computeSocialPulse and the re-ranker), not
+ * inside a tier function, because there are two tier paths (derivePeerTier and
+ * the legacy deriveTier) and only gating one of them leaves a live publish hole:
+ * fetch-social-pulse.js calls computeSocialPulse WITHOUT peerStats, so every
+ * per-show write takes the legacy path.
+ *
+ * Requires BOTH a measured rate and a big enough denominator. Unmeasured
+ * (legacy v2 files, no classified sample) is "unknown", never "noisy".
+ */
+function isTooNoisyForCard(relevanceRates) {
+  const overall = relevanceRates?.overall;
+  const classified = relevanceRates?.classified;
+  if (typeof overall !== 'number') return false;
+  if (!Number.isFinite(classified) || classified < MIN_CARD_RELEVANCE_SAMPLE) return false;
+  return overall < MIN_CARD_RELEVANCE;
 }
 
 /**
@@ -375,6 +419,35 @@ function computeWeeklyMentions(counters) {
 const NEUTRAL_POSITIVE_PCT = 50;
 
 /**
+ * Minimum opinion-bearing posts behind `positivePct` before a caller is
+ * allowed to TRUST the percentage for ranking or display. Mirrors
+ * src/lib/social-pulse-display.ts's MIN_OPINION_SAMPLE/shouldShowSentiment —
+ * duplicated (not imported) because this file is plain CommonJS and that one
+ * is TypeScript with a deliberate zero-import contract for the client bundle
+ * (same trade-off already made in scripts/newsletter/generate.mjs). Keep the
+ * two in sync: task #544 found ranking (this file, via computeCompositeScore)
+ * trusting a thin-sample positivePct the display layer had already learned
+ * not to print — a 2-post 100%-positive show got a full sentiment multiplier
+ * in the /trending sort despite the card itself refusing to show "100%".
+ */
+const MIN_OPINION_SAMPLE = 10;
+
+/**
+ * True when a positivePct is trustworthy enough to use for RANKING (not just
+ * display) — same contract as social-pulse-display.ts's shouldShowSentiment.
+ * Object arg (not positional) for the same reason as the TS original: a
+ * transposed (opinionSample, positivePct) call compiles cleanly and silently
+ * returns wrong answers.
+ */
+function shouldShowSentiment({ positivePct, opinionSample }) {
+  if (typeof positivePct !== 'number' || !Number.isFinite(positivePct) || positivePct < 0 || positivePct > 100) {
+    return false;
+  }
+  if (opinionSample === undefined || opinionSample === null) return true;
+  return opinionSample >= MIN_OPINION_SAMPLE;
+}
+
+/**
  * Composite score blending raw volume with positive sentiment %. Used for
  * peer ranking. A loud-but-hated show shouldn't outrank a smaller positive one.
  *
@@ -420,6 +493,9 @@ function computeCompositeScore(volume, positivePct) {
  * A show with no sentiment evidence can never be tiered Troubled, Buzzing,
  * or Rising — all three require a sentiment CLAIM, and there isn't one.
  * It falls through to Steady (or Hidden, from the volume gate above).
+ *
+ * Relevance is NOT gated here — see isTooNoisyForCard, applied at the write
+ * boundaries so both this and the legacy deriveTier path are covered.
  */
 function derivePeerTier({ volume, effectiveVolume, positivePct, peerStats }) {
   if (!Number.isFinite(volume) || volume < MIN_MENTIONS_FOR_CARD) {
@@ -691,9 +767,15 @@ function computeSocialPulse({ mentions, counters, baseline, priorVolume, peerSta
   // Use peer-relative tier when peer stats are available (the primary path
   // after 2026-04-11). Fall back to legacy self-baseline tier for single-show
   // runs where peer stats aren't computed.
-  const tier = peerStats
+  const derivedTier = peerStats
     ? derivePeerTier({ volume, effectiveVolume, positivePct, peerStats })
     : deriveTier({ currentVolume: volume, baseline, positivePct, weekOverWeekPct });
+
+  // Relevance gate at the WRITE boundary, so it covers BOTH tier paths. The
+  // per-show writer (fetch-social-pulse.js) passes no peerStats and therefore
+  // always takes the legacy deriveTier branch — gating inside derivePeerTier
+  // alone would leave that path publishing ungated cards.
+  const tier = isTooNoisyForCard(relevanceRates) ? 'Hidden' : derivedTier;
 
   // Pick quotes matching the tier's dominant sentiment
   let targetSentiment;
@@ -766,7 +848,12 @@ module.exports = {
   QUOTE_MAX_CHARS,
   QUOTES_ON_CARD,
   MIN_QUOTE_RELEVANCE,
+  MIN_CARD_RELEVANCE,
+  MIN_CARD_RELEVANCE_SAMPLE,
+  isTooNoisyForCard,
   NEUTRAL_POSITIVE_PCT,
+  MIN_OPINION_SAMPLE,
+  shouldShowSentiment,
   X_UNSAMPLED_FALLBACK_RATE,
   TIER_RULES,
   QUOTE_BLOCKLIST,

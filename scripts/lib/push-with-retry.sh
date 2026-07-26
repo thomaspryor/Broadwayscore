@@ -29,6 +29,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/lib/push-mutex.sh
+source "$SCRIPT_DIR/push-mutex.sh"
 
 MAX_RETRIES=${1:-7}
 BRANCH=${2:-main}
@@ -87,6 +89,11 @@ _timeout() {  # _timeout <secs> <cmd...> — fail-open (run directly) if no bina
 # config is HTTP-only (no-op on SSH remotes); the timeout wraps ALL transports
 # (intended — a hung SSH push should die too, and 90s is generous for a real one).
 git_fetch() {
+  # unbounded-fetch-ok: this is the transport WRAPPER, not a call site. Every
+  # invocation passes its own depth bound through "$@" (FETCH_DEPTH_ARGS below,
+  # computed by scripts/lib/shallow-fetch-args.js whenever the checkout is
+  # shallow). scripts/audit-unbounded-fetch.js cannot see through "$@", so the
+  # waiver lives here rather than as a fake flag on the git line.
   _timeout "$GIT_NET_TIMEOUT_SEC" \
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" fetch "$@"
 }
@@ -200,6 +207,24 @@ fi
 # (The conflict-marker guard is invoked at the top of each retry-loop iteration
 # below, after PULL_BRANCH is known and after any in-loop rebase/merge resolution.)
 
+# ── Local push mutex (task #556) ─────────────────────────────────────────────
+# Serializes the ENTIRE fetch→rebase/merge→push flow below across concurrent
+# Claude Code sessions sharing this machine's .git (main checkout + every
+# worktree) — not just the final `git push` call. The races behind #208 (lost
+# merge commit), #543 (dropped commits) and #546 (false-green verify) all
+# happened DURING this window, not at the push line itself, so the lock is
+# held for the whole retry loop and released via the EXIT trap below. Fails
+# OPEN on timeout: the retry/ancestor-check/survival-check logic already in
+# this script is the defense-in-depth backstop for a session that proceeds
+# without the lock. See scripts/lib/push-mutex.sh. The release trap is
+# registered immediately below (not after SCRIPT_ENTRY_HEAD/restore_head_if_
+# moved) so there is no window, now or after a future edit, where an
+# unguarded failing command between acquire and trap registration could leak
+# the lock — restore_head_if_moved only needs to EXIST by the time the trap
+# fires, not by the time it's registered (ship-check finding, task #556).
+push_mutex_acquire
+trap 'rc=$?; push_mutex_release; [ "$rc" -ne 0 ] && restore_head_if_moved "trap-nonzero-exit-$rc"; exit $rc' EXIT
+
 # ── Preserve-HEAD guard (task #543) ──────────────────────────────────────────
 # Captured ONCE, before this script performs ANY fetch/rebase/merge/reset, so
 # every abort (`exit 1`) below can prove — or forcibly restore — that local
@@ -237,19 +262,19 @@ restore_head_if_moved() {
   fi
 }
 
-# Backstop for the P0 gap the manual call sites above can't cover: an
-# uncontrolled `set -e` exit (e.g. a non-`|| true`-guarded command failing
-# right after a rebase/merge/cherry-pick has already moved HEAD, such as
-# restore_protected_fields()'s `count=$(node ...)`) skips every explicit
-# `restore_head_if_moved` call below — the script just dies mid-function with
-# HEAD already moved and no repair ever runs. An EXIT trap fires on ALL exits,
-# including these, so it closes the gap regardless of which line triggered it.
-# Gated on non-zero exit status only: on a genuine successful push (exit 0),
-# HEAD legitimately differs from SCRIPT_ENTRY_HEAD (the rebase/merge WAS
-# supposed to move it and its result WAS just pushed) — resetting there would
-# silently strand local main behind what was just pushed. Idempotent with the
-# manual calls (restore_head_if_moved no-ops if HEAD already matches).
-trap 'rc=$?; [ "$rc" -ne 0 ] && restore_head_if_moved "trap-nonzero-exit-$rc"; exit $rc' EXIT
+# Why the trap above (registered right after push_mutex_acquire, before this
+# function even existed) needs restore_head_if_moved: an uncontrolled `set -e`
+# exit (e.g. a non-`|| true`-guarded command failing right after a rebase/
+# merge/cherry-pick has already moved HEAD, such as restore_protected_fields()'s
+# `count=$(node ...)`) skips every explicit `restore_head_if_moved` call below
+# — the script just dies mid-function with HEAD already moved and no repair
+# ever runs. The EXIT trap fires on ALL exits, including these, so it closes
+# the gap regardless of which line triggered it. Gated on non-zero exit status
+# only: on a genuine successful push (exit 0), HEAD legitimately differs from
+# SCRIPT_ENTRY_HEAD (the rebase/merge WAS supposed to move it and its result
+# WAS just pushed) — resetting there would silently strand local main behind
+# what was just pushed. Idempotent with the manual calls (restore_head_if_moved
+# no-ops if HEAD already matches).
 
 # Check if a file has a modify/delete conflict.
 # git checkout --ours/--theirs fails on these because one side has no version.
@@ -415,6 +440,36 @@ restore_protected_fields() {
   count=$(node "$SCRIPT_DIR/restore-protected-fields.js" "$remote_ref")
   if [ "$count" -gt 0 ] 2>/dev/null; then
     echo "  Restored protected fields in $count file(s) after rebase"
+    git add -A
+    git commit --amend --no-edit 2>/dev/null || true
+  fi
+}
+
+# Post-rebase reconciliation of the union-merged JSON files (task #420,
+# ship-check/Codex finding). resolve_conflicts() knows to per-slug UNION
+# commercial-pending-review.json et al., but it ONLY runs when the rebase
+# actually conflicts — and `git rebase -X theirs` resolves conflicting hunks in
+# favour of our replayed commits WITHOUT reporting a conflict. Measured on a
+# fixture editing two different slugs three lines apart: "Successfully rebased",
+# no conflict, remote slug's edit silently gone, merger never invoked.
+#
+# This pass re-merges those files against the remote tip after history moved,
+# using the same union functions. OPT-IN (PUSH_RECONCILE_MERGED_JSON=1): ~114
+# workflows push through this helper and flipping their conflict semantics
+# wholesale is not a safe side effect of one card, so the default is unchanged.
+# Fail-OPEN like restore_protected_fields — a reconciliation error must never
+# block an otherwise-good push.
+reconcile_merged_json() {
+  [ "${PUSH_RECONCILE_MERGED_JSON:-}" = "1" ] || return 0
+  command -v node >/dev/null 2>&1 || return 0
+  [ -f "$SCRIPT_DIR/reconcile-merged-json.js" ] || return 0
+  # ONE invocation: stdout is the changed-file count, stderr streams to the job
+  # log. Running it twice (once for the log, once for the count) would report 0
+  # the second time — the first pass has already written the merged files.
+  local count
+  count=$(node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH") || return 0
+  if [ "$count" -gt 0 ] 2>/dev/null; then
+    echo "  Reconciled $count union-merged JSON file(s) against origin/$PULL_BRANCH (task #420)"
     git add -A
     git commit --amend --no-edit 2>/dev/null || true
   fi
@@ -719,6 +774,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     history_changed=true
     RESOLUTION_PATH="rebase-clean(-X theirs)"
     restore_protected_fields
+    reconcile_merged_json
   else
     echo "  Rebase had conflicts, attempting auto-resolution..."
     # Try up to 4 rounds of conflict resolution (one per conflicting commit)
@@ -730,6 +786,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
           RESOLUTION_PATH="rebase-resolved(${_round} round(s))"
           echo "  Rebase completed after $_round round(s) of conflict resolution"
           restore_protected_fields
+          reconcile_merged_json
           break
         fi
       else
@@ -752,11 +809,13 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       history_changed=true
       RESOLUTION_PATH="merge(-X ours)"
       restore_protected_fields
+      reconcile_merged_json
     elif resolve_conflicts merge && git commit --no-edit 2>/dev/null; then
       echo "  Merge succeeded after auto-resolving conflicts"
       history_changed=true
       RESOLUTION_PATH="merge-resolved"
       restore_protected_fields
+      reconcile_merged_json
     else
       echo "  Merge also failed, aborting..."
       git merge --abort 2>/dev/null || true
@@ -781,6 +840,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
           history_changed=true
           RESOLUTION_PATH="reset+cherry-pick(-X theirs)"
           restore_protected_fields
+          reconcile_merged_json
         else
           git cherry-pick --abort 2>/dev/null || true
           # Restore must be LOUD (task #543): the old `|| true` here silently

@@ -3,6 +3,16 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `remove-placeholder-images.js — Clear placeholder image references in shows.json.
+
+Usage:
+  node scripts/remove-placeholder-images.js [options]
+  node scripts/remove-placeholder-images.js --help, -h    print this usage and exit
+`;
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const PLACEHOLDER_FILE_HASHES = new Set([
   'b4d7d1bdb443e0a94e69ac8a5abd6f40',

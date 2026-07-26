@@ -204,8 +204,17 @@ export function recordVerdict({ repoRoot, ledgerRoot = null, reviewer, result, r
   if (!['pass', 'fail'].includes(result)) return { recorded: false, reason: '--result must be pass|fail' };
   const base = resolveBase(repoRoot);
   if (!base) return { recorded: false, reason: 'no origin/main or main ref to diff against' };
-  const head = git(repoRoot, ['rev-parse', ref]).trim();
-  const branch = git(repoRoot, ['rev-parse', '--abbrev-ref', ref]).trim();
+  // 'WORKTREE' isn't a real git rev (see diffRangeArgs) — it means "diff the
+  // working tree", not "resolve this ref". `git rev-parse WORKTREE` fails,
+  // so head/branch must resolve against HEAD instead; the diff/hash calls
+  // below correctly keep using `ref` as-is (gatedDiffStats/computeDiffHash
+  // already special-case WORKTREE via diffRangeArgs). queryPushAllowed's
+  // drift-matching already expects verdict.head to be a real ancestor commit
+  // in this case (`isAncestor(repoRoot, e.head, ref === 'WORKTREE' ? 'HEAD' : ref)`),
+  // so recording HEAD here is exactly what that consumer wants.
+  const revParseRef = ref === 'WORKTREE' ? 'HEAD' : ref;
+  const head = git(repoRoot, ['rev-parse', revParseRef]).trim();
+  const branch = git(repoRoot, ['rev-parse', '--abbrev-ref', revParseRef]).trim();
   const stats = gatedDiffStats(repoRoot, base, ref);
   const entry = {
     ts: new Date().toISOString(),

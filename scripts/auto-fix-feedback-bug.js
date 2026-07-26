@@ -25,10 +25,18 @@ const { CLAUDE_SONNET } = _require('./lib/models');
 const showsWriteGuard = _require('./lib/shows-write-guard.js');
 const commercialWriteGuard = _require('./lib/commercial-write-guard.js');
 const audienceBuzzWriteGuard = _require('./lib/audience-buzz-write-guard.js');
+const { hasHelpFlag } = _require('./lib/cli-help.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.join(__dirname, '..');
+
+const USAGE = `auto-fix-feedback-bug.js — Reads a bug-diagnosis GitHub issue body and applies high-confidence data fixes.
+
+Usage:
+  node scripts/auto-fix-feedback-bug.js [options]
+  node scripts/auto-fix-feedback-bug.js --help, -h    print this usage and exit
+`;
 
 // --- Safety rails ---
 
@@ -120,6 +128,8 @@ function rollbackDataFiles() {
 // --- Main ---
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const issueBody = process.env.ISSUE_BODY;
   if (!issueBody) {
     console.error('ISSUE_BODY env var not set');

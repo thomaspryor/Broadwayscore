@@ -33,6 +33,9 @@ const {
   BASELINE_REQUIRED_WEEKS,
   QUOTE_MAX_CHARS,
   MIN_QUOTE_RELEVANCE,
+  MIN_CARD_RELEVANCE,
+  MIN_CARD_RELEVANCE_SAMPLE,
+  isTooNoisyForCard,
   NEUTRAL_POSITIVE_PCT,
   X_UNSAMPLED_FALLBACK_RATE,
 } = require('../../scripts/lib/social-pulse-scorer');
@@ -792,6 +795,89 @@ describe('derivePeerTier — sentiment-evidence gate', () => {
   test('real sentiment above thresholds still yields Buzzing normally', () => {
     const result = derivePeerTier({ volume: 200, effectiveVolume: 200, positivePct: 80, peerStats });
     assert.strictEqual(result, 'Buzzing');
+  });
+});
+
+describe('isTooNoisyForCard — relevance gate (title collision)', () => {
+  test('a real collision hides: 0 relevant out of 75 classified', () => {
+    // the-truth-a-comedy-by-florian-zeller-west-end-2026 as of 2026-07-26.
+    assert.strictEqual(isTooNoisyForCard({ overall: 0, classified: 75 }), true);
+  });
+
+  test('a real collision hides: 1 relevant out of 62 (pride-west-end-2026)', () => {
+    assert.strictEqual(isTooNoisyForCard({ overall: 1 / 62, classified: 62 }), true);
+  });
+
+  test('THIN SAMPLE IS NOT EVIDENCE — a low rate off a tiny sample must NOT hide', () => {
+    // The regression this guards: titanique-2026 sat at 0.25 off 2-of-8 on
+    // 2026-07-26. One LLM misclassification takes it to 0.125 — below the
+    // rate threshold — and without the sample floor the card vanishes from
+    // /trending and the newsletter on a classifier coin-flip.
+    assert.strictEqual(isTooNoisyForCard({ overall: 0.125, classified: 8 }), false);
+    // Even the most extreme rate is meaningless at n=1.
+    assert.strictEqual(isTooNoisyForCard({ overall: 0, classified: 1 }), false);
+  });
+
+  test('sample floor boundary: below hides nothing, at the floor the rate decides', () => {
+    assert.strictEqual(
+      isTooNoisyForCard({ overall: 0, classified: MIN_CARD_RELEVANCE_SAMPLE - 1 }), false);
+    assert.strictEqual(
+      isTooNoisyForCard({ overall: 0, classified: MIN_CARD_RELEVANCE_SAMPLE }), true);
+  });
+
+  test('rate boundary is < not <= — exactly at the threshold stays visible', () => {
+    assert.strictEqual(
+      isTooNoisyForCard({ overall: MIN_CARD_RELEVANCE, classified: 100 }), false);
+  });
+
+  test('unmeasured relevance is UNKNOWN, never noisy (legacy v2 files)', () => {
+    assert.strictEqual(isTooNoisyForCard(undefined), false);
+    assert.strictEqual(isTooNoisyForCard({}), false);
+    assert.strictEqual(isTooNoisyForCard({ overall: null, classified: 0 }), false);
+    // A rate with no denominator recorded (pre-`classified` v3 files).
+    assert.strictEqual(isTooNoisyForCard({ overall: 0 }), false);
+  });
+
+  test('a healthy rate is unaffected however large the sample', () => {
+    assert.strictEqual(isTooNoisyForCard({ overall: 0.9, classified: 500 }), false);
+  });
+});
+
+describe('relevance gate is WIRED, not just defined', () => {
+  // These fail if anyone deletes the isTooNoisyForCard call from
+  // computeSocialPulse — the unit tests above would all still pass.
+  const noisyMentions = Array.from({ length: 30 }, (_, i) => ({
+    platform: 'reddit', text: `unrelated post about something else entirely ${i}`,
+    sentiment: 'neutral', relevant: false,
+  }));
+  const counters = { reddit: 150, bluesky: 0, x: 0, wikipedia: 0 };
+
+  test('computeSocialPulse hides a loud all-irrelevant show on the PEER path', () => {
+    const peerStats = { compositeP80: 40, compositeP60: 20, volumeP50: 50, marketCount: 10 };
+    const r = computeSocialPulse({ mentions: noisyMentions, counters, peerStats });
+    assert.strictEqual(r.tier, 'Hidden');
+  });
+
+  test('computeSocialPulse hides it on the LEGACY path too (no peerStats)', () => {
+    // fetch-social-pulse.js calls computeSocialPulse WITHOUT peerStats and
+    // publishes the result straight to public/data/shows/*.social.json, so a
+    // gate that only covers derivePeerTier leaves this path wide open.
+    const r = computeSocialPulse({ mentions: noisyMentions, counters, baseline: null });
+    assert.strictEqual(r.tier, 'Hidden');
+  });
+
+  test('a well-sampled RELEVANT show is not hidden on either path', () => {
+    const good = Array.from({ length: 30 }, (_, i) => ({
+      platform: 'reddit', text: `genuinely about this show, loved act two ${i}`,
+      sentiment: 'positive', relevant: true,
+    }));
+    assert.notStrictEqual(computeSocialPulse({ mentions: good, counters }).tier, 'Hidden');
+  });
+
+  test('computeRelevanceRates reports the denominator the gate depends on', () => {
+    const rates = computeRelevanceRates(noisyMentions);
+    assert.strictEqual(rates.classified, 30);
+    assert.strictEqual(rates.overall, 0);
   });
 });
 
