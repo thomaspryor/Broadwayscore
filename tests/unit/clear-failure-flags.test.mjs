@@ -248,3 +248,31 @@ describe('clearFailureFlags — scoreStatus stale placeholder (Notion 351637c5-4
     assert.ok(cleared.includes('incompleteReason'));
   });
 });
+
+describe('clearFailureFlags — manualClearFallback state (P1 352637c5-416f-81ab)', () => {
+  it('clears manualClearFallback fields (including abandoned) once the file has a score', () => {
+    const data = {
+      manualClearFallbackFailedAt: '2026-07-01T00:00:00.000Z',
+      manualClearFallbackFailureReason: 'no_score_produced',
+      manualClearFallbackAttempts: 5,
+      manualClearFallbackAbandoned: true,
+      llmScore: { score: 70, confidence: 'high' }
+    };
+    const cleared = clearFailureFlags(data);
+    assert.strictEqual(data.manualClearFallbackFailedAt, null);
+    assert.strictEqual(data.manualClearFallbackFailureReason, null);
+    assert.strictEqual(data.manualClearFallbackAttempts, null);
+    assert.strictEqual(data.manualClearFallbackAbandoned, null);
+    assert.ok(cleared.includes('manualClearFallbackFailedAt'));
+  });
+
+  it('does NOT clear manualClearFallback fields while still unscored', () => {
+    const data = {
+      manualClearFallbackFailedAt: '2026-07-01T00:00:00.000Z',
+      manualClearFallbackAttempts: 2
+    };
+    const cleared = clearFailureFlags(data);
+    assert.strictEqual(data.manualClearFallbackFailedAt, '2026-07-01T00:00:00.000Z');
+    assert.ok(!cleared.includes('manualClearFallbackFailedAt'));
+  });
+});

@@ -149,6 +149,18 @@ function clearFailureFlags(data) {
     cleared.push('scoreStatus');
   }
 
+  // manualClearFallback*: recorded when a human-cleared (wrongProduction/wrongShow
+  // manual clear) file's Haiku rescue fails to produce a score, so the next run
+  // can back off instead of re-attempting immediately (P1 352637c5-416f-81ab).
+  // Clear once the file actually has a score — the failure is moot.
+  if (data.manualClearFallbackFailedAt != null && hasLlmScore(data)) {
+    data.manualClearFallbackFailedAt = null;
+    data.manualClearFallbackFailureReason = null;
+    data.manualClearFallbackAttempts = null;
+    data.manualClearFallbackAbandoned = null;
+    cleared.push('manualClearFallbackFailedAt');
+  }
+
   return cleared;
 }
 

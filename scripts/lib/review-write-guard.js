@@ -136,6 +136,14 @@ const PROTECTED_FIELDS = [
   // clears them on success. serpRetryAfter is still protected (controls backoff timing).
   'serpRetryAfter',
   'wrongShowRetryAt', // existing bug fix — was silently droppable on rebase
+  // Manual-clear Haiku-fallback failure state (P1 352637c5-416f-81ab). A rebase
+  // conflict resolver that picks the remote/longer-text side on ties would
+  // silently drop these and resurrect the infinite re-scoring credit loop the
+  // whole fix exists to stop — same class of bug as serpRetryAfter above.
+  'manualClearFallbackFailedAt',
+  'manualClearFallbackFailureReason',
+  'manualClearFallbackAttempts',
+  'manualClearFallbackAbandoned',
   // Bug #10: manually-set pull quotes must survive rebuilds and LLM overrides.
   'pullQuote',
   // Lock audit-trail metadata (Lost Boys 2026-04-27 Gap #6). Set by
