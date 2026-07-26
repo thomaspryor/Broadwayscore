@@ -121,6 +121,19 @@ test('passes geo:gb to serpQuery (preserves UK geo from pre-refactor)', async ()
   assert.equal(_capturedOptions.geo, 'gb', 'geo must be forced to gb for UK sites');
 });
 
+// batchDiscoverSlugs() logs progress via console.log. When node's test runner
+// parses TAP output across the full multi-hundred-file CI batch, raw stdout
+// from application code interleaved with the runner's own reporting stream
+// corrupts the TAP framing ("Unable to deserialize cloned data due to invalid
+// or unsupported version") — reproduces only at CI batch scale, not when
+// running this file solo. Suppress console.log for the duration of these
+// calls, matching the convention used elsewhere in tests/unit/.
+function withSilencedConsole(fn) {
+  const orig = console.log;
+  console.log = () => {};
+  return Promise.resolve(fn()).finally(() => { console.log = orig; });
+}
+
 test('batchDiscoverSlugs: no budget passed processes all shows (default behavior unchanged)', async () => {
   _mockResults = [
     { url: 'https://seatplan.com/london/hamilton/', title: 'Hamilton tickets' },
@@ -130,7 +143,7 @@ test('batchDiscoverSlugs: no budget passed processes all shows (default behavior
     { id: 'wicked', title: 'Wicked' },
     { id: 'six', title: 'Six' },
   ];
-  const discovered = await batchDiscoverSlugs('seatplan.com', shows, 'london', 0);
+  const discovered = await withSilencedConsole(() => batchDiscoverSlugs('seatplan.com', shows, 'london', 0));
   // All 3 shows queried (mocked SERP always returns the Hamilton result, so
   // Wicked/Six fail title validation and return null — but the loop still runs).
   assert.equal(discovered.size, 1);
@@ -145,7 +158,7 @@ test('batchDiscoverSlugs: budget.exceeded() true from the start stops before any
     { id: 'wicked', title: 'Wicked' },
   ];
   const budget = { minutes: 5, exceeded: () => { calls++; return true; } };
-  const discovered = await batchDiscoverSlugs('seatplan.com', shows, 'london', 0, budget);
+  const discovered = await withSilencedConsole(() => batchDiscoverSlugs('seatplan.com', shows, 'london', 0, budget));
   assert.equal(discovered.size, 0);
   assert.ok(calls >= 1, 'budget.exceeded() should have been checked');
   _mockResults = originalQuery;
@@ -161,9 +174,18 @@ test('batchDiscoverSlugs: budget exceeding mid-batch stops remaining shows', asy
   let checkCount = 0;
   // exceeded() false on the first check (show 0 processes), true from the second check onward.
   const budget = { minutes: 5, exceeded: () => { checkCount++; return checkCount > 1; } };
-  const discovered = await batchDiscoverSlugs('seatplan.com', shows, 'london', 0, budget);
+  const discovered = await withSilencedConsole(() => batchDiscoverSlugs('seatplan.com', shows, 'london', 0, budget));
   assert.equal(discovered.size, 1, 'only the first show should have been processed before the budget stopped the loop');
   assert.ok(discovered.has('hamilton'));
+});
+
+test('batchDiscoverSlugs: rejects a non-number delayMs (catches budget passed in the wrong positional slot)', async () => {
+  const budget = { minutes: 5, exceeded: () => false };
+  await assert.rejects(
+    () => batchDiscoverSlugs('seatplan.com', [{ id: 'x', title: 'X' }], 'london', budget),
+    TypeError,
+    'passing an object (e.g. budget) as delayMs must throw, not silently become NaN'
+  );
 });
 
 test('returns null when no SERP provider keys set', async () => {

@@ -31,11 +31,20 @@ const ledger = require('./lib/autonomous-ledger.js');
 const { gatherDigest } = require('./lib/overnight-digest.js');
 const { buildActionUrl } = require('./lib/autonomous-links.js');
 const { renderEmail, extractWhy, summarizeQueue, buildPlainLanguageItemPrompt, sanitizePlainLanguageText } = require('./lib/autonomous-email-render.js');
+const dispatchLedger = require('./lib/dispatch-ledger.js');
+const { summarize: summarizeRecheck, describeResult } = require('./lib/autonomous-recheck-core.js');
 
 const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
-const MAX_EMAIL_ITEMS = 3;
+// Raised 3 → 5 (S4-T2): approvals were arriving faster than 3/morning could
+// drain, so items aged out of sight behind a "+N more" line for days. The
+// counter below the items still names anything past the cap.
+const MAX_EMAIL_ITEMS = 5;
+// Screenshot attachments for UI items (S2-T6). Small caps on purpose: this is
+// evidence for a decision, not a gallery, and Resend rejects oversized sends.
+const MAX_ATTACHMENTS = 8;
+const MAX_ATTACH_BYTES = 8 * 1024 * 1024;
 const QUEUE_SUMMARY_MAX_AGE_H = 24; // stale queues describe a different night
 // Cheap model for the plain-language item copy (owner scope-add 2026-07-14)
 // — one short call per item, ≤3 items/night.
@@ -217,6 +226,10 @@ async function main() {
       branch,
       usd: ev.totalUSD || 0,
       checks: evd.checks || [],
+      // UI evidence (S2-T6): renderItem withholds the approve link entirely
+      // when a look-at-it change arrived without screenshots.
+      ui: evd.ui === true,
+      screenshots: Array.isArray(evd.screenshots) ? evd.screenshots : [],
       approveUrl: buildActionUrl({ action: 'approve', cardId: row.id, branch, exp, secret, baseUrl }),
       rejectUrl: buildActionUrl({ action: 'reject', cardId: row.id, branch, exp, secret, baseUrl }),
     };
@@ -279,6 +292,42 @@ async function main() {
   }
   const attentionCount = attention.configWarnings.length + attention.failedCards.length + attention.parkedItems.length;
 
+  // Acceptance recheck (S3-T4): last night's shadow results, straight off the
+  // ledger. Fail-soft — a missing/short ledger just omits the section.
+  let recheck = null;
+  try {
+    const since = Date.now() - 24 * 3600 * 1000;
+    const recent = entries.filter(e => e.event === 'recheck' && new Date(e.ts).getTime() >= since);
+    if (recent.length) {
+      const results = recent.map(e => {
+        // Structured fields first (written since the ship-check fix); the
+        // note-prefix parse is the fallback for rows written before that.
+        if (e.status || e.skip) return { name: e.name || '(untitled)', status: e.status || null, skip: e.skip || null };
+        const note = String(e.note || '');
+        const skipped = /^skipped/.test(note);
+        return {
+          name: e.name || '(untitled)',
+          status: skipped ? null : note.split(':')[0].trim(),
+          skip: skipped ? (note.replace(/^skipped:?\s*/, '') || 'being worked on') : null,
+        };
+      });
+      recheck = { counts: summarizeRecheck(results), lines: results.map(describeResult) };
+    }
+  } catch (err) {
+    console.error(`[email] WARN could not read recheck results: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // Prune count (S4-T3): "Closed N finished tabs" — the owner watches the
+  // workspace list shrink overnight and had no record of what closed it.
+  let prunedCount = null;
+  try {
+    const since = Date.now() - 24 * 3600 * 1000;
+    const sweeps = dispatchLedger.readEntries().filter(e => e.event === 'prune' && new Date(e.ts).getTime() >= since);
+    if (sweeps.length) prunedCount = sweeps.reduce((n, e) => n + (Number(e.closed) || 0), 0);
+  } catch (err) {
+    console.error(`[email] WARN could not read prune sweeps: ${String(err.message).slice(0, 120)}`);
+  }
+
   const admin = await fetchAdminUsage();
   // "What changed while you slept" — owner request 2026-07-22. Fails soft:
   // a broken source becomes a "couldn't check" line inside the block.
@@ -286,9 +335,45 @@ async function main() {
   try { digest = gatherDigest({ repo: REPO }); }
   catch (err) { console.error(`[email] WARN digest gathering failed: ${String(err.message).slice(0, 120)}`); }
 
+  // Screenshot attachments (S2-T6): the owner reads this on a phone as often
+  // as at the Mac, where a local file path is useless — the pictures have to
+  // travel WITH the email or the "look at it before approving" instruction
+  // can't be followed. Capped so a runaway capture can never blow up a send.
+  //
+  // Done BEFORE rendering, and each item's list is REPLACED with what actually
+  // attached: the caps are per-email, so with 5 items x 4 shots the later items
+  // used to render "Screenshots attached to this email" (and an approve link)
+  // with nothing attached (ship-check finding). An item whose evidence did not
+  // make it into the message is treated exactly like one that was never
+  // captured — no approve link.
+  const attachments = [];
+  let attachBytes = 0;
+  for (const item of items) {
+    const attached = [];
+    for (const rel of (item.screenshots || [])) {
+      if (attachments.length >= MAX_ATTACHMENTS) break;
+      try {
+        const buf = fs.readFileSync(path.join(REPO, rel));
+        if (attachBytes + buf.length > MAX_ATTACH_BYTES) continue;
+        attachBytes += buf.length;
+        attachments.push({ filename: path.basename(rel), content: buf.toString('base64') });
+        attached.push(rel);
+      } catch (err) {
+        console.error(`[email] WARN could not attach ${rel}: ${String(err.message).slice(0, 120)}`);
+      }
+    }
+    if ((item.screenshots || []).length !== attached.length) {
+      console.error(`[email] "${item.name}": ${attached.length}/${(item.screenshots || []).length} screenshots fit in the email` +
+        (attached.length ? '' : ' — rendering it as needing a look, since its evidence did not travel'));
+    }
+    item.screenshots = attached;
+  }
+
   const html = renderEmail({
     items,
     digest,
+    recheck,
+    prunedCount,
     moreAwaiting: Math.max(0, awaiting.length - items.length),
     failedCount,
     runSkipped,
@@ -336,6 +421,7 @@ async function main() {
     to: [sendTo],
     subject,
     html,
+    ...(attachments.length ? { attachments } : {}),
   });
   if (res.status < 200 || res.status >= 300) {
     console.error(`[email] send failed: ${res.status} ${JSON.stringify(res.json || {}).slice(0, 200)}`);
@@ -349,4 +435,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[email] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { fetchAdminUsage, latestEvidenceByCard, MAX_EMAIL_ITEMS };
+module.exports = { fetchAdminUsage, latestEvidenceByCard, MAX_EMAIL_ITEMS, MAX_ATTACHMENTS, MAX_ATTACH_BYTES };

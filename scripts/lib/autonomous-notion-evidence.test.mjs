@@ -14,7 +14,37 @@ test('round-trips branch, files, checkableDone, checks through the comment text'
   };
   const text = evidenceCommentText(evidence);
   assert.ok(text.startsWith(MARKER));
-  assert.deepEqual(parseEvidenceComment(text), { ...evidence, repoKey: null, dataClass: null, showIds: [] });
+  assert.deepEqual(parseEvidenceComment(text), {
+    ...evidence, repoKey: null, dataClass: null, showIds: [],
+    tier: null, sha: null, ui: false, screenshots: [],
+  });
+});
+
+// Sprint 2 (S2-T3/T5/T6): the CI merge path is a different machine days
+// later — tier picks the eligibility gate + check set, sha is the commit the
+// owner's tap actually approved, ui/screenshots decide whether the email may
+// show an approve link at all.
+test('Sprint-2 evidence round-trips tier, sha, ui and screenshots', () => {
+  const parsed = parseEvidenceComment(evidenceCommentText({
+    branch: 'auto/tier3-card-abc',
+    files: ['src/components/ShowCard.tsx'],
+    checks: ['tsc: PASS', 'next lint: PASS', 'next build: PASS'],
+    tier: 3,
+    sha: 'a'.repeat(40),
+    ui: true,
+    screenshots: ['data/audit/autonomous-ui/auto-tier3-card-abc/home-390.png'],
+  }));
+  assert.equal(parsed.tier, 3);
+  assert.equal(parsed.sha, 'a'.repeat(40));
+  assert.equal(parsed.ui, true);
+  assert.deepEqual(parsed.screenshots, ['data/audit/autonomous-ui/auto-tier3-card-abc/home-390.png']);
+});
+
+// Fail CLOSED on tier: a pre-Sprint-2 comment (or a corrupted one) must read
+// as Tier 1 at the tap, never as the wider tier-3 gate.
+test('missing or non-integer tier parses as null, never a tier', () => {
+  assert.equal(parseEvidenceComment(evidenceCommentText({ branch: 'auto/x', files: [] })).tier, null);
+  assert.equal(parseEvidenceComment(`${MARKER} {"branch":"auto/x","tier":"3"}`).tier, null);
 });
 
 test('checkableDone defaults to null when absent', () => {

@@ -884,8 +884,34 @@ async function cleanup() {
   }
 
   if (playwright) {
-    await playwright.close();
-    playwright = null;
+    // browser.close() can hang indefinitely if the Chromium process is in a
+    // bad state (unresponsive CDP connection) — this is what actually caused
+    // task #438's "45-min timeout": discover-new-shows.js finished all real
+    // work in ~30s, then this awaited close() with no timeout kept the
+    // process's event loop alive for 44 more minutes until GitHub's hard
+    // step timeout SIGKILLed it (verified via run 30166720704 logs — last
+    // content line at 17:04:22, kill at 17:49:04, nothing in between).
+    // Shared by 27 scripts; a hang here silently blows any caller's wall-clock
+    // budget checks, since those only guard the WORK, not process exit.
+    const CLOSE_TIMEOUT_MS = 10000;
+    const target = playwright;
+    playwright = null; // clear immediately so a hung close() can't block a fresh launch
+    let closed = false;
+    await Promise.race([
+      target.close().then(() => { closed = true; }).catch(() => { closed = true; }),
+      new Promise((resolve) => setTimeout(resolve, CLOSE_TIMEOUT_MS)),
+    ]);
+    // Promise.race only abandons the JS await — a genuinely hung Chromium
+    // subprocess keeps its own stdio pipes open, and THOSE (not the abandoned
+    // promise) are what actually keep node's event loop alive. If close()
+    // didn't settle in time, kill the underlying process directly so the
+    // caller's `node` invocation can actually exit.
+    if (!closed) {
+      try {
+        const proc = target.process && target.process();
+        if (proc && !proc.killed) proc.kill('SIGKILL');
+      } catch (_) { /* best-effort */ }
+    }
   }
 }
 
