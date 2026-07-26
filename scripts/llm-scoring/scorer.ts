@@ -635,6 +635,18 @@ export class ReviewScorer {
   }
 
   /**
+   * Fold Batch API usage into the same counters the live path accumulates,
+   * so --batch runs report tokens/cost through the identical getTokenUsage()
+   * → cost.ts path as sync runs (task #516).
+   */
+  recordBatchUsage(usage: { input?: number; output?: number; cacheWrite?: number; cacheRead?: number }): void {
+    this.totalInputTokens += usage.input || 0;
+    this.totalOutputTokens += usage.output || 0;
+    this.totalCacheWriteTokens += usage.cacheWrite || 0;
+    this.totalCacheReadTokens += usage.cacheRead || 0;
+  }
+
+  /**
    * Reset token counter
    */
   resetTokenUsage(): void {

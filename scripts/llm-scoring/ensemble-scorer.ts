@@ -11,7 +11,7 @@ import { GeminiScorer } from './gemini-scorer';
 import { KimiScorer } from './kimi-scorer';
 import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, EnsembleResult as EnsembleResultType } from './types';
 import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5, buildSystemPromptV6, clampScoreToBand, ScoreBand } from './config';
-import { buildScoringInput, ReviewInputData } from './input-builder';
+import { buildScoringInput, ReviewInputData, ScoringInput } from './input-builder';
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 const { GPT4O, GPT54_MINI } = require('../lib/models');
 const { detectBandFromReviewFile, shouldUseAnchoredMode } = require('../lib/star-reliability');
@@ -38,6 +38,61 @@ export interface EnsembleScoringOptions {
   // a band is set, Kimi is skipped (3-model ensemble) to prevent it
   // from voting against V6-prompted siblings using V5 rubric. Add Kimi
   // override + remove this skip in a follow-up before Phase 4 rescore.
+}
+
+/**
+ * One model's outcome for one review — the shape scoreReview()'s internal
+ * Promise.all produces, and the shape the --batch path reconstructs from a
+ * vendor Batch API result line via parseBatchResponseV5() (task #516).
+ */
+export interface ModelOutcome {
+  model: 'claude' | 'openai' | 'gemini' | 'kimi';
+  result: SimplifiedLLMResult | null;
+  error?: string;
+  rejected?: boolean;
+  rejection?: string;
+  rejectionReasoning?: string;
+}
+
+/**
+ * Everything scoreReviewFile() derives from a review file BEFORE any model
+ * call — the prompt input, the anchored-band decision, and the V6 system
+ * prompt override. In --batch mode this is computed at submit time (and
+ * recomputed deterministically at merge time on resume) so the batch path
+ * scores the exact same text/context/prompt the sync path would.
+ */
+export interface PreparedScoringInput {
+  scoringInput: ScoringInput;
+  band?: ScoreBand;
+  starsRaw?: string;
+  anchoredBandScoreSource: 'anchored-v6' | 'llm-v6' | null;
+  /** buildSystemPromptV6(band, starsRaw) when band is set, else undefined. */
+  systemPromptOverride?: string;
+}
+
+/**
+ * prepareScoringInput()'s return. Not a discriminated union: scripts/tsconfig
+ * runs with `strict: false`, where narrowing on a boolean literal discriminant
+ * is not applied, so both members are optional and callers branch on `ok`.
+ */
+export interface PrepareScoringResult {
+  ok: boolean;
+  /** Set when ok — the prepared prompt input + anchored-band decision. */
+  prep?: PreparedScoringInput;
+  /** Set when !ok — the exact {success:false,...} scoreReviewFile used to return. */
+  failure?: ScoreReviewFileResult;
+}
+
+/** Result shape shared by scoreReviewFile() and the --batch finalize path. */
+export interface ScoreReviewFileResult {
+  success: boolean;
+  scoredFile?: ScoredReviewFile;
+  ensembleResult?: EnsembleResultType;
+  rejected?: boolean;
+  rejection?: string;
+  rejectionReasoning?: string;
+  error?: string;
+  inputValidationFailed?: boolean;
 }
 
 // ========================================
@@ -116,6 +171,64 @@ export class EnsembleReviewScorer {
   }
 
   /**
+   * Model IDs + which legs are live — needed by --batch mode (task #516) to
+   * build per-vendor batch requests that name the SAME models the sync path
+   * would call. `kimiEnabled` is surfaced so the batch runner can refuse to
+   * run rather than silently score a 3-model ensemble where sync would have
+   * used 4 (no vendor batch tier exists for OpenRouter/Kimi).
+   */
+  getBatchConfig(): {
+    claudeModel: string;
+    openaiModel: string;
+    geminiModel: string;
+    geminiEnabled: boolean;
+    geminiTemperature: number;
+    kimiEnabled: boolean;
+  } {
+    return {
+      claudeModel: this.options.claudeModel,
+      openaiModel: this.options.openaiModel,
+      geminiModel: this.options.geminiModel,
+      geminiEnabled: !!this.geminiScorer,
+      // Threaded explicitly: Gemini's temperature is the one ensemble knob
+      // that is configurable at construction, so batch must not assume 0.3.
+      geminiTemperature: this.geminiScorer ? this.geminiScorer.getTemperature() : 0.3,
+      kimiEnabled: !!this.kimiScorer,
+    };
+  }
+
+  /**
+   * The per-vendor scorer instances, so --batch mode can run each vendor's
+   * raw batch response text through that vendor's own parseBatchResponseV5()
+   * — the same rejection-check + parse + calibration-offset pipeline the
+   * live sync call uses (Gemini's, notably, applies GEMINI_CALIBRATION_OFFSET
+   * inside validateAndNormalize).
+   */
+  getScorers(): {
+    claude: ReviewScorer;
+    openai: OpenAIReviewScorer;
+    gemini: GeminiScorer | null;
+  } {
+    return { claude: this.claudeScorer, openai: this.openaiScorer, gemini: this.geminiScorer };
+  }
+
+  /**
+   * Fold Batch API usage counters into the per-scorer token totals so the
+   * end-of-run cost print and run summary see batch tokens exactly as they
+   * see sync tokens. Batch results carry usage per item; the sync path
+   * accumulates it inside each scoreReviewV5 call.
+   */
+  recordBatchUsage(usage: {
+    claude?: { input: number; output: number; cacheWrite?: number; cacheRead?: number };
+    openai?: { input: number; output: number };
+    gemini?: { input: number; output: number };
+  }): void {
+    if (usage.claude) this.claudeScorer.recordBatchUsage(usage.claude);
+    if (usage.openai) this.openaiScorer.recordBatchUsage(usage.openai);
+    if (usage.gemini && this.geminiScorer) this.geminiScorer.recordBatchUsage(usage.gemini);
+  }
+
+  /**
    * Score a review using all available models and combine results.
    *
    * Optional band (3rd arg) activates V6 anchored-mode scoring:
@@ -143,14 +256,7 @@ export class EnsembleReviewScorer {
       : undefined;
 
     // Build promises for all available models
-    const promises: Promise<{
-      model: 'claude' | 'openai' | 'gemini' | 'kimi';
-      result: SimplifiedLLMResult | null;
-      error?: string;
-      rejected?: boolean;
-      rejection?: string;
-      rejectionReasoning?: string;
-    }>[] = [];
+    const promises: Promise<ModelOutcome>[] = [];
 
     // Claude
     promises.push(
@@ -235,6 +341,20 @@ export class EnsembleReviewScorer {
     // Run all models in parallel
     const results = await Promise.all(promises);
 
+    return this.combineOutcomes(results, band);
+  }
+
+  /**
+   * Combine per-model outcomes into a single EnsembleResult.
+   *
+   * Extracted verbatim from the tail of scoreReview() (task #516) so the
+   * --batch path — whose per-model outcomes arrive from vendor Batch APIs
+   * hours later instead of from live Promise.all — runs the IDENTICAL
+   * rejection-consensus / toModelScore / ensembleScore / band-clamp logic.
+   * scoreReview() itself now calls this, so there is exactly one
+   * implementation and sync/batch parity is structural, not merely tested.
+   */
+  combineOutcomes(results: ModelOutcome[], band?: ScoreBand): EnsembleResultType {
     // Check for rejection consensus (v5.2+)
     const rejections = results.filter(r => r.rejected);
     const totalModels = results.length;
@@ -326,17 +446,37 @@ export class EnsembleReviewScorer {
   }
 
   /**
-   * Score a review file and return updated content
+   * Score a review file and return updated content.
+   *
+   * Composed of three extracted stages (task #516) — prepareScoringInput →
+   * scoreReview → finalizeScoredFile — so --batch mode can run stage 1 at
+   * submit time, get stage 2's model outcomes from a vendor Batch API, and
+   * run stage 3 unchanged. Same functions, one implementation.
    */
-  async scoreReviewFile(reviewFile: ReviewTextFile): Promise<{
-    success: boolean;
-    scoredFile?: ScoredReviewFile;
-    ensembleResult?: EnsembleResultType;
-    rejected?: boolean;
-    rejection?: string;
-    rejectionReasoning?: string;
-    error?: string;
-  }> {
+  async scoreReviewFile(reviewFile: ReviewTextFile): Promise<ScoreReviewFileResult> {
+    const prepared = this.prepareScoringInput(reviewFile);
+    if (!prepared.ok || !prepared.prep) return prepared.failure;
+    const prep = prepared.prep;
+
+    // Score with ensemble
+    const ensembleResult = await this.scoreReview(
+      prep.scoringInput.text,
+      prep.scoringInput.context,
+      prep.band,
+      prep.starsRaw,
+    );
+
+    return this.finalizeScoredFile(reviewFile, ensembleResult, prep);
+  }
+
+  /**
+   * Stage 1 (extracted from the head of scoreReviewFile, task #516): build
+   * the scoring input, run pre-scoring input validation, and decide the
+   * anchored-band mode. Pure with respect to the network — makes no model
+   * call — so --batch can call it at submit time and (on resume) recompute
+   * it deterministically from the same review file at merge time.
+   */
+  prepareScoringInput(reviewFile: ReviewTextFile): PrepareScoringResult {
     // Build rich input context using input-builder
     // Pass all excerpt fields dynamically from canonical EXCERPT_FIELDS list
     // so new aggregator sources don't require manual mapping here
@@ -383,8 +523,11 @@ export class EnsembleReviewScorer {
 
     if (!scoringInput.text || scoringInput.text.length < 50) {
       return {
-        success: false,
-        error: 'Review text too short or missing'
+        ok: false,
+        failure: {
+          success: false,
+          error: 'Review text too short or missing'
+        }
       };
     }
 
@@ -395,10 +538,13 @@ export class EnsembleReviewScorer {
     const inputValidation = validateScoreableText(scoringInput.text, reviewFile.showTitle, { isExcerpt });
     if (!inputValidation.ok) {
       return {
-        success: false,
-        error: `input_validation_failed:${inputValidation.reason}`,
-        inputValidationFailed: true,
-      } as any;
+        ok: false,
+        failure: {
+          success: false,
+          error: `input_validation_failed:${inputValidation.reason}`,
+          inputValidationFailed: true,
+        }
+      };
     }
     if (inputValidation.warnings && inputValidation.warnings.length > 0) {
       console.log(`  ::warning::Input validator warnings: ${inputValidation.warnings.join(', ')}`);
@@ -437,13 +583,34 @@ export class EnsembleReviewScorer {
       }
     }
 
-    // Score with ensemble
-    const ensembleResult = await this.scoreReview(
-      scoringInput.text,
-      scoringInput.context,
-      band,
-      starsRaw,
-    );
+    return {
+      ok: true,
+      prep: {
+        scoringInput,
+        band,
+        starsRaw,
+        anchoredBandScoreSource,
+        // Mirrors scoreReview()'s own derivation so the --batch request
+        // carries the identical system prompt the sync call would send.
+        systemPromptOverride: band ? buildSystemPromptV6(band, starsRaw) : undefined,
+      },
+    };
+  }
+
+  /**
+   * Stage 3 (extracted from the tail of scoreReviewFile, task #516): turn an
+   * EnsembleResult + the stage-1 prep into the ScoredReviewFile the caller
+   * writes to disk. Runs the allModelsFailed guard, the hallucination guard,
+   * the confidence cap, and the anchored-band stamping — all unchanged, so
+   * a batch-derived ensemble result produces byte-identical output to a
+   * synchronously-derived one.
+   */
+  finalizeScoredFile(
+    reviewFile: ReviewTextFile,
+    ensembleResult: EnsembleResultType,
+    prep: PreparedScoringInput
+  ): ScoreReviewFileResult {
+    const { scoringInput, band, anchoredBandScoreSource } = prep;
 
     // Check for rejection (v5.2+)
     if (ensembleResult.rejected) {
