@@ -51,6 +51,17 @@ const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `auto-triage-cross-production.js — Conservative auto-triage of cross-production misattributions surfaced by.
+
+Usage:
+  node scripts/auto-triage-cross-production.js [options]
+  node scripts/auto-triage-cross-production.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const ARGS = process.argv.slice(2);
 const APPLY = ARGS.includes('--apply');
 const INCLUDE_MEDIUM = ARGS.includes('--include-medium');

@@ -25,13 +25,23 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import showsWriteGuardPkg from './lib/shows-write-guard.js';
 const { loadShows, saveShows } = showsWriteGuardPkg;
+import { hasHelpFlag } from './lib/cli-help.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.join(__dirname, '..');
 
+const USAGE = `cleanup-bad-images.js — Cleanup bad TodayTix mappings and wrong images.
+
+Usage:
+  node scripts/cleanup-bad-images.js [options]
+  node scripts/cleanup-bad-images.js --help, -h    print this usage and exit
+`;
+
 function main() {
   const args = process.argv.slice(2);
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const dryRun = args.includes('--dry-run');
   const tierArg = args.find((_, i, arr) => arr[i - 1] === '--tier') || 'auto';
 

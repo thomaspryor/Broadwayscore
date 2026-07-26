@@ -26,6 +26,17 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `strip-stale-single-model-scores.js — Strip stale scores from review files.
+
+Usage:
+  node scripts/strip-stale-single-model-scores.js [options]
+  node scripts/strip-stale-single-model-scores.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const apply = process.argv.includes('--apply');
 const forceStripLocked = process.argv.includes('--force-strip-locked');

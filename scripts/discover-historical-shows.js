@@ -34,6 +34,17 @@ const { scrapeCurrentRuntimes, scrapeShowRuntime, matchRuntimesToShows } = requi
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `discover-historical-shows.js — Historical Broadway Show Discovery.
+
+Usage:
+  node scripts/discover-historical-shows.js [options]
+  node scripts/discover-historical-shows.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'historical-shows-pending.json');
 

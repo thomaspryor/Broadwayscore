@@ -13,6 +13,17 @@ const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `auto-close-expired-shows.js — Auto-close shows whose closingDate has passed.
+
+Usage:
+  node scripts/auto-close-expired-shows.js [options]
+  node scripts/auto-close-expired-shows.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const dryRun = process.argv.includes('--dry-run');
 

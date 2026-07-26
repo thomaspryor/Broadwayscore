@@ -29,6 +29,17 @@ const glob = require('glob');
 const { needsLateStarReanchor } = require('./lib/late-star-anchor');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `flag-late-star-reanchor.js — Flag reviews that should be re-scored in ANCHORED mode: scored UNANCHORED.
+
+Usage:
+  node scripts/flag-late-star-reanchor.js [options]
+  node scripts/flag-late-star-reanchor.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const APPLY = process.argv.includes('--apply');
 const limitArg = process.argv.find(a => a.startsWith('--limit='));
 const LIMIT = limitArg ? parseInt(limitArg.split('=')[1], 10) : 0;
