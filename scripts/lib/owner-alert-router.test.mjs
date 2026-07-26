@@ -253,6 +253,51 @@ test('routeAlert: disposition=digest queues a line, no card, no email', async ()
   }
 });
 
+test('peekDigestQueue does NOT clear — a consumer that throws before persisting keeps the lines', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({
+      conditionKey: 'regional-go-live:the-family-album-regional-2026',
+      title: 'The Family Album @ La Jolla Playhouse — regional tryout live and scoring',
+      url: 'https://broadwayscorecard.com/show/the-family-album-regional-2026',
+      disposition: 'digest',
+      severity: 'info',
+    });
+
+    // Peek twice: the line survives, because nothing has persisted it yet.
+    const first = router.peekDigestQueue();
+    assert.equal(first.length, 1);
+    assert.equal(first[0].url, 'https://broadwayscorecard.com/show/the-family-album-regional-2026');
+    const second = router.peekDigestQueue();
+    assert.equal(second.length, 1, 'peek must be non-destructive — a drain here loses the line permanently');
+
+    // Explicit clear (what the consumer does AFTER writing its snapshot).
+    router.clearDigestQueue();
+    assert.equal(router.peekDigestQueue().length, 0);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: two regional go-lives in the same week both queue (per-show conditionKey, not a shared key)', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    for (const id of ['the-family-album-regional-2026', 'grim-regional-2026']) {
+      await router.routeAlert({
+        conditionKey: `regional-go-live:${id}`,
+        title: `${id} live`,
+        disposition: 'digest',
+        severity: 'info',
+      });
+    }
+    const queued = router.peekDigestQueue();
+    assert.equal(queued.length, 2, 'a shared conditionKey would swallow the second show inside the 7-day cooldown');
+    assert.equal(new Set(queued.map(q => q.conditionKey)).size, 2);
+  } finally {
+    restore();
+  }
+});
+
 test('routeAlert: disposition=human re-fire within an explicit cooldownHours is silent (no second email)', async () => {
   // Exercises the exact call pattern used by the email-noise Sprint 2 migration
   // (send-opening-night-broadcast.js gates, audit-show-review-gap.js WE-gate):

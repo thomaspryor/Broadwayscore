@@ -704,6 +704,11 @@ on:
       - 'scripts/lib/session-wrapups.test.mjs'
       - 'scripts/lib/cli-help.js'
       - 'scripts/lib/cli-help.test.mjs'
+      # Help-flag safety lint guard (#498): a solo edit to the audit script or
+      # its baseline must still trigger CI — path-listed per
+      # feedback_test_yml_push_path_allowlist.
+      - 'scripts/audit-help-flag-safety.js'
+      - 'scripts/.help-flag-safety-baseline.json'
       - 'scripts/lib/exec-error-detail.js'
       - 'scripts/lib/exec-error-detail.test.mjs'
       - 'scripts/lib/workspace-naming.js'
@@ -1102,6 +1107,19 @@ jobs:
         # always exits 0 (see script header for why). Exempt a workflow with
         # # hygiene-run-budget-ok: <reason>.
         run: node scripts/audit-run-budget-coverage.js
+
+      - name: Audit — help-flag safety (cousin --help bug class)
+        # Prevents the #260/#263/#264/#266/#185 bug class recurring: a CLI
+        # script that executes real side effects (network, corpus writes,
+        # child_process) when invoked with --help/-h instead of printing usage.
+        # Task #498 found 3 more live instances (collect-review-texts.js,
+        # rebuild-all-reviews.js, fetch-show-images-auto.js) — none caught by
+        # the prior one-off fixes because each was a per-script patch, not a
+        # systemic guard. Blocking on NEW violations; pre-existing debt is
+        # frozen in scripts/.help-flag-safety-baseline.json (non-blocking,
+        # fix opportunistically). Exempt a reviewed false positive with
+        # // hygiene-help-flag-ok: <reason> in the script.
+        run: node scripts/audit-help-flag-safety.js
 
       - name: Audit — no direct Resend calls outside alert-router allowlist
         # Email-consolidation Sprint 1 (Notion 3a4637c5-416f-81eb, #279): every
