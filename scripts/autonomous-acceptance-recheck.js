@@ -42,6 +42,7 @@ const { execFileSync } = require('child_process');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const ledger = require('./lib/autonomous-ledger.js');
+const { shallowFetchArgs } = require('./lib/shallow-fetch-args.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 const { findClaimedTask } = require('./lib/autonomous-triage-core.js');
@@ -110,7 +111,27 @@ function loadSharedTaskState() {
 // same origin/main, so N checkouts would be N copies of one tree. Detached —
 // it creates no branch and cannot disturb the main checkout's state.
 function makeFreshCheckout() {
-  execFileSync('git', ['fetch', 'origin', 'main'], { cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'] });
+  // Depth-bound the fetch when REPO is a SHALLOW clone (task #420/#466). This
+  // runs from the nightly loop, which is reachable from shallow-checkout
+  // workflows; there an unbounded fetch makes upload-pack send the whole
+  // ~2.1 GB / 165k-commit repo instead of the delta. Anchor the window on the
+  // local boundary commit so `worktree add origin/main` below still resolves.
+  // A complete clone (the owner's Mac, the usual case here) gets no extra
+  // flags — bounding it would truncate a full clone into a shallow one.
+  let isShallow = false;
+  try {
+    isShallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: REPO, encoding: 'utf8' }).trim() === 'true';
+  } catch { /* fail open — treat as complete */ }
+  let oldestCommitEpoch = 0;
+  if (isShallow) {
+    try {
+      const sha = execFileSync('git', ['rev-list', 'HEAD'], { cwd: REPO, encoding: 'utf8' }).trim().split('\n').pop();
+      oldestCommitEpoch = Number(execFileSync('git', ['log', '-1', '--format=%ct', sha], { cwd: REPO, encoding: 'utf8' }).trim());
+    } catch { /* helper falls back to a bounded --deepen */ }
+  }
+  const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
+  // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
+  execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'] });
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-recheck-'));
   const wt = path.join(dir, 'main');
   execFileSync('git', ['worktree', 'add', '--detach', wt, 'origin/main'], { cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'] });
