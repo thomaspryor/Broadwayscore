@@ -28,6 +28,7 @@ Usage:
   node scripts/fetch-opera-images.js [options]
   node scripts/fetch-opera-images.js --help, -h    print this usage and exit
 `;
+// hygiene-help-flag-ok: audit-help-flag-safety.js flags the fetchPage() call inside the getSeasonImageUrls() helper — that helper is declared before main()'s IIFE but only CALLED from within it, well after the --help guard. Verified: node <this file> --help exits immediately with no network side effects.
 let sharp;
 try { sharp = require('sharp'); } catch { sharp = null; }
 
