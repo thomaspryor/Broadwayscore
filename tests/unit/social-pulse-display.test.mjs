@@ -39,13 +39,25 @@ test('legacy v2 files with no opinionSample field still show (backward compat)',
   assert.equal(shouldShowSentiment({ positivePct: 45 }), true);
 });
 
-test('object-arg contract prevents positional transposition', () => {
-  // The exact bug the review caught: a caller passing (opinionSample, positivePct)
-  // by position would silently mean something else. With named fields, swapping
-  // the keys in the call below is what it would take to reintroduce the bug —
-  // and that's a visible, reviewable diff, not a silent argument-order mistake.
-  const thinSample = { positivePct: 100, opinionSample: 2 };
-  const wrongOrderEquivalent = { opinionSample: 2, positivePct: 100 };
-  assert.equal(shouldShowSentiment(thinSample), shouldShowSentiment(wrongOrderEquivalent));
-  assert.equal(shouldShowSentiment(thinSample), false);
+test('a positional-style transposition mistake now reads as a wrong-key diff, not silently', () => {
+  // The bug the review caught: shouldShowSentiment(os, p) with positional args
+  // compiled cleanly and returned wrong answers. With named fields, the same
+  // mistake means writing `{ positivePct: opinionSample, opinionSample: positivePct }`
+  // at the call site — a visible swap of the *keys*, not an invisible swap of
+  // argument order. Confirm the two values genuinely diverge when confused this way.
+  const opinionSample = 2;
+  const positivePct = 100;
+  const correct = shouldShowSentiment({ positivePct, opinionSample });
+  const confused = shouldShowSentiment({ positivePct: opinionSample, opinionSample: positivePct });
+  assert.equal(correct, false); // thin sample (2 posts) — hidden
+  assert.equal(confused, true); // 2% positive but "100 posts" — would wrongly show
+  assert.notEqual(correct, confused);
+});
+
+test('non-finite or out-of-range positivePct never shows (corrupt-data floor)', () => {
+  assert.equal(shouldShowSentiment({ positivePct: Infinity, opinionSample: 50 }), false);
+  assert.equal(shouldShowSentiment({ positivePct: -1, opinionSample: 50 }), false);
+  assert.equal(shouldShowSentiment({ positivePct: 101, opinionSample: 50 }), false);
+  assert.equal(shouldShowSentiment({ positivePct: 100, opinionSample: 50 }), true);
+  assert.equal(shouldShowSentiment({ positivePct: 0, opinionSample: 50 }), true);
 });
