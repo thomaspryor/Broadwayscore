@@ -321,6 +321,22 @@ function checkFile(file, src) {
   // length/offsets and never touches braces.
   const cleanSrc = stripCommentsAndStrings(src);
 
+  // Deliberately UNSCOPED (whole file, any function, invoked or not) —
+  // unlike checkOrdering()'s stripNonInvokedFunctionBodies pass. Tried
+  // scoping this the same way (#551 adversarial review follow-up: a risky
+  // call inside a truly-dead/never-called helper shouldn't count) and it
+  // collapsed Rule B from 207 candidates to 33, because
+  // stripNonInvokedFunctionBodies only recognizes IIFEs
+  // (`(function(){...})()`) as "invoked" — it blanks every ordinary
+  // `function main() { ... }` body too, since `main()` is called SEPARATELY
+  // at the bottom of the file, not as an immediate IIFE. That's correct for
+  // Rule A (main()'s body genuinely doesn't run before its own --help gate
+  // fires) but wrong for Rule B, where the question is "does this script
+  // EVER do risky work", and main()'s body obviously does. The theoretical
+  // false-positive this scoping would have prevented (a risky call sitting
+  // in a truly dead, never-invoked-by-anyone helper) has no instance in the
+  // current corpus (verified) and is already covered by the
+  // `// hygiene-help-flag-ok: <reason>` exemption if one ever appears.
   const hasRiskyOp = RISKY_CALL_RE.test(cleanSrc);
   RISKY_CALL_RE.lastIndex = 0;
 
