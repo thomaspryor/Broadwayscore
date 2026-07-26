@@ -1,0 +1,53 @@
+name: Diagnose Shallow Fetch
+
+# Forensic-only, manual dispatch, no schedule. Task #466: prove FROM A REAL
+# RUNNER (not inferred from log gaps) why push-with-retry.sh's post-conflict
+# `git fetch` burns the full GIT_NET_TIMEOUT_SEC on this repo, and that the
+# shipped fix is the one that is both fast AND ancestry-preserving.
+#
+# Deliberately checked out with the DEFAULT fetch-depth (1) — the shallow
+# checkout is the condition under test, not an accident. Read-only: it clones
+# into RUNNER_TEMP and never writes to the repo.
+#
+# hygiene-notify-ok: manual forensic tool, workflow_dispatch only, writes
+# nothing. A failure here is a failed MEASUREMENT (someone ran it, someone reads
+# the log) — routing it into the daily digest or a real-time alert would page the
+# owner about a diagnostic nobody scheduled. Nothing downstream depends on it.
+on:
+  workflow_dispatch:
+    inputs:
+      base_age_minutes:
+        description: 'How stale the simulated checkout should be (minutes of main churn to span)'
+        required: false
+        default: '20'
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: diagnose-shallow-fetch
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      # fetch-depth intentionally omitted → depth 1, exactly like the ~100
+      # push-with-retry.sh callers that hit this bug.
+      - name: Checkout (shallow, like every affected workflow)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Report the checkout's own shape
+        run: |
+          echo "is-shallow: $(git rev-parse --is-shallow-repository)"
+          echo "local commits: $(git rev-list --count HEAD)"
+          echo "git version: $(git --version)"
+
+      - name: Time each fetch form against live main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/diagnose-shallow-fetch.sh "${{ inputs.base_age_minutes || '20' }}"

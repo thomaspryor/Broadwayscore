@@ -50,6 +50,14 @@ on:
       # path-listed so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/pluralize.js'
       - 'scripts/lib/pluralize.test.mjs'
+      # Depth-bounding decision for push-with-retry.sh's post-conflict fetch
+      # (task #466): an unbounded fetch from the default fetch-depth: 1 shallow
+      # checkout makes the server send the whole 165k-commit / ~2.1 GB history,
+      # so every retry dies at the 90s cap. Colocated *.test.mjs runs in the
+      # lib-test glob; path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/shallow-fetch-args.js'
+      - 'scripts/lib/shallow-fetch-args.test.mjs'
       # Recoupment newsletter freshness gate: backfilled historical recoupments
       # must never surface as "new this week" (owner, 2026-07-26). Colocated
       # *.test.mjs runs in the lib-test glob; path-listed so a solo edit
