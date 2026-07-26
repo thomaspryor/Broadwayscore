@@ -44,6 +44,8 @@ Usage:
                            watch with bsc-status, kill switch BSC_RUNNER_DISABLED=1
   bsc-next --model <m>     override the resolved model for this dispatch
   bsc-next --force         bypass the completed-task / duplicate-workspace guards
+  bsc-next --allow-unverifiable  dispatch a card with no runnable verify command
+                           (recorded in the dispatch ledger; recheck lists it as unverifiable)
   bsc-next --help, -h      show this message, do nothing else
 `;
 
@@ -395,6 +397,39 @@ function main(argv = process.argv.slice(2), deps = {}) {
     return;
   }
 
+  // Verification-chain gate (owner escalation 2026-07-26): every launch in the
+  // dispatch ledger to date carried verifyCmd: null — prose acceptance
+  // criteria dispatch UNARMED, the nightly acceptance recheck has nothing to
+  // re-run, and "Done" stays a self-reported claim forever. Refuse to launch
+  // unarmed. A card whose outcome genuinely cannot be machine-checked declares
+  // it with "VERIFY: owner-judgment" in its notes; --allow-unverifiable is the
+  // explicit, ledger-visible per-dispatch override.
+  const gateNotes = (card && card.notes) || task.description || '';
+  const verifyGate = extractVerifyCmd(gateNotes, isSafeCheckCommand);
+  const ownerJudgmentCard = /VERIFY:\s*owner-judgment/i.test(gateNotes);
+  // Refuse ONLY when the full card is in hand. When the Notion fetch degraded
+  // (fetchCard swallows every error → null) or the task is native (no card),
+  // gateNotes is the task-mirror description, which notion-tasks-sync
+  // truncates to 400 chars — the Acceptance criteria section is almost always
+  // past the cut, so refusing here would fail-closed on armed cards over an
+  // API blip, and would refuse native tasks 100% of the time (Opus QA P1,
+  // 2026-07-26). Those dispatch unarmed with the reason recorded, as before.
+  const fullCardInHand = !!(card && card.notes);
+  if (!verifyGate.cmd && !ownerJudgmentCard && !args['allow-unverifiable']) {
+    if (fullCardInHand) {
+      console.error(`[bsc-next] REFUSING to dispatch #${task.id}: no runnable verify command (${verifyGate.reason}).`);
+      console.error(`  The nightly acceptance recheck can only verify Done work by re-running a command captured at dispatch.`);
+      console.error(`  Fix one of:`);
+      console.error(`    1. Add a backticked safe-form command to the card's "## Acceptance criteria":`);
+      console.error(`       node --test <file>.test.mjs | npx tsc --noEmit | npx next lint | test -f <path>`);
+      console.error(`       (criteria written only in the Notion page body are invisible here — put them in the card Notes via notion-brain update)`);
+      console.error(`    2. Add "VERIFY: owner-judgment" to the card if this outcome cannot be machine-checked.`);
+      console.error(`    3. Re-run with --allow-unverifiable to dispatch anyway (recorded in the ledger).`);
+      process.exit(1);
+    }
+    console.error(`[bsc-next] WARN dispatching #${task.id} unarmed: full card unavailable (${pid ? 'Notion fetch failed' : 'native task, no card'}) — gate not enforceable on the truncated mirror.`);
+  }
+
   if (args.exec) {
     // Run an interactive claude on the seed in this terminal (no Cmux).
     const r = spawnSync('claude', ['--model', model, '--dangerously-skip-permissions', seed], { stdio: 'inherit', cwd: REPO });
@@ -426,12 +461,12 @@ function main(argv = process.argv.slice(2), deps = {}) {
     }
     const { runJob } = require('./lib/bsc-runner.js');
     console.log(`[bsc-next] headless job starting on #${task.id}: ${task.subject} (model ${model})`);
-    const verifyH = extractVerifyCmd((card && card.notes) || task.description || '', isSafeCheckCommand);
+    const verifyH = verifyGate; // extracted once at the dispatch gate above
     // Same 'launch' journal entry as the cmux path (Opus ship-check P1): the
     // acceptance recheck keys on event==='launch' && notionId, and the
     // verifyCmd must be captured while the card text is in hand — otherwise
     // headless work silently escapes the days-later re-verification.
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, notionId: pid || null }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, notionId: pid || null }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger launch write failed (non-fatal): ${e.message}`); }
     runJob({ taskId: String(task.id), subject: task.subject, prompt: seed, model, isolate: true })
       .then(r => {
@@ -503,9 +538,10 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // fresh main days later to turn "someone marked this Done" into a fact.
     // null is a legitimate, recorded answer — a card whose criteria is prose
     // is listed as "not machine-verifiable", never guessed at.
-    const verify = extractVerifyCmd((card && card.notes) || task.description || '', isSafeCheckCommand);
+    const verify = verifyGate; // extracted once at the dispatch gate above
     if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, notionId: pid || null }); }
+    if (verify.cmd) console.log(`  verify armed: ${verify.cmd}`);
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else {
     console.error(`[bsc-next] LAUNCH NOT VERIFIED (${res.reason}).`);

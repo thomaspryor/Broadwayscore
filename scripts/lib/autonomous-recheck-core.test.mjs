@@ -94,3 +94,41 @@ test('describeResult speaks plainly, with no commands or ids', () => {
   assert.equal(describeResult({ name: 'Fix X', status: 'unverifiable' }), 'Fix X: no way to check this automatically');
   assert.match(describeResult({ name: 'Fix X', skip: 'someone is working this card right now' }), /^Fix X: skipped, /);
 });
+
+// ── done-time selection (2026-07-26 incident) ───────────────────────────────
+// The recheck matched 0 targets every night since it shipped — primary cause
+// was the Priority-sorted Done listing (fixed via notion-brain --sort edited);
+// selection now also keys on explicit completion stamps (completedDate /
+// lastEditedAt) instead of the derived ageDays proxy, with ageDays only as a
+// fallback when neither stamp exists.
+const NOW = Date.parse('2026-07-26T12:00:00Z');
+const { doneWithinWindow } = require('./autonomous-recheck-core.js');
+
+test('an OLD card completed last night is selected (the 2026-07-26 miss)', () => {
+  const card = done({ ageDays: 2.5, completedDate: '2026-07-26', lastEditedAt: '2026-07-26T05:51:00.000Z' });
+  const out = selectRecheckTargets({ doneCards: [card], launchEntries: [launch()], now: NOW });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].verifyCmd, 'node --test tests/unit/a.test.mjs');
+});
+
+test('a card completed outside the window is left alone even if edited recently is false', () => {
+  const card = done({ ageDays: 9, completedDate: '2026-07-20', lastEditedAt: '2026-07-20T10:00:00.000Z' });
+  assert.deepEqual(selectRecheckTargets({ doneCards: [card], launchEntries: [launch()], now: NOW }), []);
+  assert.equal(selectRecheckTargets({ doneCards: [card], launchEntries: [launch()], now: NOW, windowHours: 24 * 7 }).length, 1);
+});
+
+test('freshest completion stamp decides: stale completedDate but a fresh Done-flip edit still qualifies', () => {
+  const card = done({ ageDays: 5, completedDate: '2026-07-20', lastEditedAt: '2026-07-26T05:00:00.000Z' });
+  assert.equal(selectRecheckTargets({ doneCards: [card], launchEntries: [launch()], now: NOW }).length, 1);
+});
+
+test('no completion stamps at all: falls back to creation age, still requiring a real number', () => {
+  assert.equal(doneWithinWindow({ ageDays: 0.5 }, 24, NOW), true);
+  assert.equal(doneWithinWindow({ ageDays: 3 }, 24, NOW), false);
+  assert.equal(doneWithinWindow({ ageDays: null }, 24, NOW), false);
+  assert.equal(doneWithinWindow({}, 24, NOW), false);
+});
+
+test('garbage timestamps do not crash and do not qualify', () => {
+  assert.equal(doneWithinWindow({ completedDate: 'not-a-date', lastEditedAt: 'nope' }, 24, NOW), false);
+});
