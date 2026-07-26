@@ -28,6 +28,14 @@ const path = require('path');
 const os = require('os');
 const { execFileSync } = require('child_process');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `notion-tasks-sync.js — bridge the Notion "brain" backlog to Claude Code's.
+
+Usage:
+  node scripts/notion-tasks-sync.js [options]
+  node scripts/notion-tasks-sync.js --help, -h    print this usage and exit
+`;
 // ── arg parsing ────────────────────────────────────────────────────────────
 function parseArgs(argv) {
   const args = { _: [] };
@@ -350,6 +358,8 @@ function cmdStatus(args) {
 
 // ── main ───────────────────────────────────────────────────────────────────
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const args = parseArgs(process.argv.slice(2));
   const cmd = args._[0];
   let result;

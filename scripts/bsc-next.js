@@ -288,6 +288,14 @@ function launchCmux(task, seed, commandOverride, model = 'sonnet', project = nul
   return launchCmuxSession({
     title, seed, seedKey: task.id, cwd: REPO, model,
     focus: true, autoColor: !!project, commandOverride,
+    // Task #503: the 30s default declared 10 healthy launches dead on
+    // 2026-07-26 — claude registers its process well past 30s once the Mac
+    // is carrying a dozen sessions and the session-start hooks run. Every
+    // false failure left an untracked live shell (no ledger entry, so no
+    // dead breadcrumb was possible) AND invited a duplicate dispatch onto
+    // the same task. Same window + late-adopt grace the opening-night
+    // monitor launcher has used since its own 2026-07-24 false CRITICAL.
+    verifyTimeoutSec: 90, lateAdoptSec: 60,
   });
 }
 
@@ -528,7 +536,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
   const res = launchCmuxFn(task, seed, undefined, model, project);
   if (res.ok) {
-    console.log(`[bsc-next] opened Cmux workspace ${res.ref} on #${task.id}: ${task.subject} (claude verified running)`);
+    console.log(`[bsc-next] opened Cmux workspace ${res.ref} on #${task.id}: ${task.subject} (claude verified running${res.adoptedLate ? ', adopted after a late start' : ''})`);
     // Journal the launch (task #334) so a later bsc-prune sweep can attribute
     // a dead shell back to this task, and a future dispatch can see how many
     // times this task has already died before blindly opening another one.
@@ -541,10 +549,24 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const verify = verifyGate; // extracted once at the dispatch gate above
     if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
     if (verify.cmd) console.log(`  verify armed: ${verify.cmd}`);
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, adoptedLate: res.adoptedLate || null }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else {
     console.error(`[bsc-next] LAUNCH NOT VERIFIED (${res.reason}).`);
+    // Journal the failed attempt (task #503) — see failedLaunchEntries' header
+    // for why writing nothing here disarmed BOTH the dead-shell breadcrumb and
+    // the dead-attempt guard.
+    const failedEntries = dispatchLedger.failedLaunchEntries({
+      taskId: task.id, subject: task.subject, workspaceRef: res.workspaceRef, model,
+      verifyCmd: verifyGate.cmd, verifyReason: verifyGate.reason, notionId: pid || null,
+      failureReason: res.reason,
+    });
+    if (failedEntries.length) {
+      try {
+        failedEntries.forEach(e => appendLedgerEntryFn(e));
+        console.error(`  journaled dead dispatch for #${task.id} → ${res.workspaceRef} (dispatch-ledger.jsonl)`);
+      } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger dead write failed (non-fatal): ${e.message}`); }
+    }
     if (res.workspaceRef) console.error(`  dead workspace: ${res.workspaceRef} (left open for inspection)`);
     console.error(`  command that should have run:`);
     console.error(`  ${res.command}`);

@@ -46,6 +46,14 @@ const {
 } = require('./lib/cast-changes-apply');
 const { CLAUDE_SONNET } = require('./lib/models');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `scrape-cast-changes.js — Broadway Cast Change Tracker.
+
+Usage:
+  node scripts/scrape-cast-changes.js [options]
+  node scripts/scrape-cast-changes.js --help, -h    print this usage and exit
+`;
 // ==================== Configuration ====================
 
 const OUTPUT_PATH = path.join(__dirname, '../data/cast-changes.json');
@@ -1665,6 +1673,8 @@ function writeAuditDiff(allChanges) {
 // ==================== Main ====================
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
   console.log('Broadway Cast Changes Scraper');
   console.log('='.repeat(60));

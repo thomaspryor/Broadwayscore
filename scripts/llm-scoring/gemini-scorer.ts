@@ -358,6 +358,25 @@ export class GeminiScorer {
   }
 
   /**
+   * Gemini's sampling temperature is constructor-configurable (Claude's and
+   * OpenAI's are hardcoded literals in their scoreReviewV5 calls). --batch has
+   * to send the same value or it scores at a different temperature than sync,
+   * so it is exposed rather than assumed (task #516).
+   */
+  getTemperature(): number {
+    return this.options.temperature;
+  }
+
+  /**
+   * Fold Batch API usage into the same counters the live path accumulates,
+   * so --batch runs report tokens/cost identically to sync runs (task #516).
+   */
+  recordBatchUsage(usage: { input?: number; output?: number }): void {
+    this.totalInputTokens += usage.input || 0;
+    this.totalOutputTokens += usage.output || 0;
+  }
+
+  /**
    * Reset token counter
    */
   resetTokenUsage(): void {

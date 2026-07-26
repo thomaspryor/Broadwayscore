@@ -23,6 +23,14 @@ const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-cast-from-files.js — Enrich shows.json cast arrays from existing data/cast/*.json files.
+
+Usage:
+  node scripts/enrich-cast-from-files.js [options]
+  node scripts/enrich-cast-from-files.js --help, -h    print this usage and exit
+`;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
 
@@ -147,6 +155,8 @@ function extractCast(castData, showStatus) {
 // --- Main ---
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
   console.log('ENRICH SHOWS.JSON CAST FROM CAST FILES');
   console.log('='.repeat(60));

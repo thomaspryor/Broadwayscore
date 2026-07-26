@@ -39,6 +39,14 @@ const path = require('path');
 const { execSync, execFileSync } = require('child_process');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `check-image-aspect.js — Validates aspect ratios for show poster/thumbnail/hero images.
+
+Usage:
+  node scripts/check-image-aspect.js [options]
+  node scripts/check-image-aspect.js --help, -h    print this usage and exit
+`;
 let sharp;
 try {
   sharp = require('sharp');
@@ -162,6 +170,8 @@ function reportViolations(violations, mode) {
 
 async function main() {
   const args = process.argv.slice(2);
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const mode = args.includes('--staged') ? 'staged'
              : args.includes('--audit') ? 'audit'
              : args.includes('--changed') ? 'changed'

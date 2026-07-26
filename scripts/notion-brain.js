@@ -615,7 +615,7 @@ async function createCard(args) {
 async function updateCard(args) {
   const pageId = args._positional[1];
   if (!pageId) {
-    console.error('Usage: notion-brain update <page-id> [--status ...] [--outcome ...] ...');
+    console.error('Usage: notion-brain update <page-id> [--name ...] [--status ...] [--outcome ...] ...');
     process.exit(1);
   }
 
@@ -628,6 +628,22 @@ async function updateCard(args) {
   }
 
   const properties = {};
+
+  // Rename. Needed when a card's scope is narrowed and the old title now
+  // misdescribes the work — the nightly triage LLM reads the TITLE first, so a
+  // stale "+ add lint guard" suffix on a card whose lint half moved to a
+  // sibling steers triage straight back to the out-of-scope verdict (card #529).
+  // Validate before writing: parseArgs turns a valueless `--name` (e.g.
+  // `--name --status Done`) into boolean true, which would have renamed the
+  // card to the literal string "true" — an unrecoverable title clobber the
+  // ship-check Codex pass caught. Refuse rather than guess.
+  if (args.name !== undefined) {
+    if (typeof args.name !== 'string' || !args.name.trim()) {
+      console.error('--name requires a non-empty title (got no value — did you write `--name --other-flag`?)');
+      process.exit(1);
+    }
+    properties.Name = { title: [{ text: { content: args.name.trim() } }] };
+  }
 
   if (args.status) {
     properties.Status = { status: { name: args.status } };

@@ -29,6 +29,14 @@ const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-image-aspect.js — Sharp-metadata-only audit of poster/thumbnail/hero aspect ratios across.
+
+Usage:
+  node scripts/audit-image-aspect.js [options]
+  node scripts/audit-image-aspect.js --help, -h    print this usage and exit
+`;
 let sharp;
 try {
   sharp = require('sharp');
@@ -138,6 +146,8 @@ function nullOutShowsJson(violations) {
 
 async function main() {
   const args = process.argv.slice(2);
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const apply = args.includes('--apply');
   const jsonOut = args.includes('--json');
   const singleShow = args.find(a => a.startsWith('--show='))?.split('=')[1] || null;

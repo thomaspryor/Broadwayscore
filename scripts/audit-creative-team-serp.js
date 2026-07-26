@@ -46,6 +46,14 @@ const { roleVerbVariants, serpTextConfirms } = require('./lib/creative-team-veri
 const { CLAUDE_OPUS } = require('./lib/models');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-creative-team-serp.js — Retro-audit creativeTeam entries that predate the 2026-05-26 SERP guard.
+
+Usage:
+  node scripts/audit-creative-team-serp.js [options]
+  node scripts/audit-creative-team-serp.js --help, -h    print this usage and exit
+`;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const AUDIT_FILE = path.join(__dirname, '..', 'data', 'audit', 'creative-team-serp-audit.json');
 const CHECKPOINT_INTERVAL = 5;
@@ -192,6 +200,8 @@ Is ${member.name} credibly credited as ${member.role} on THIS specific productio
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showsData = loadShows();
   const checkpoint = loadCheckpoint();
 

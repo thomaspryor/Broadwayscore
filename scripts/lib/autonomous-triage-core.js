@@ -86,6 +86,15 @@ function extractCheckPaths(cmd) {
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
 
+// String.replace() rewrites only the FIRST occurrence, so a command naming the
+// same phantom path twice (`node --test tests/x.test.mjs tests/x.test.mjs`)
+// would come back half-corrected and fail at exec time. Token-boundary split
+// avoids a regex (the paths contain `.` and `/`) and never touches a substring
+// of a longer path.
+function replaceAllTokens(cmd, from, to) {
+  return cmd.split(' ').map(t => (t === from ? to : t)).join(' ');
+}
+
 // Deterministic post-validation guard: runs once, no extra LLM call (a
 // missing path is a fact about the filesystem, not a model mistake worth a
 // retry). Only meaningful for eligible verdicts — an ineligible card's check
@@ -95,26 +104,79 @@ const REPO_ROOT = path.join(__dirname, '..', '..');
 // must NOT be "corrected" against an unrelated tests/unit/ file that merely
 // shares a basename (ship-check finding — SAFE_CHECK_FORMS explicitly allows
 // scripts/ and docs/|memory/ targets too, so cross-directory guessing risks
-// silently validating the wrong file). Anything else fails closed to
-// ineligible rather than guessing further.
+// silently validating the wrong file).
+//
+// NEW-ARTIFACT ALLOWANCE (2026-07-26, card #529): "the path does not exist"
+// is NOT by itself evidence of a hallucination — the repo's own convention
+// (CLAUDE.md §15) is that a fix ships WITH a new colocated test, and the
+// `test -f <path>` safe form is by definition an assertion about a file the
+// work is supposed to CREATE. Vetoing every missing path made `test -f`
+// structurally impossible to pass triage and killed 3 in-scope cards in the
+// 2026-07-26 live run (review-census, watchlist-rate-control,
+// opening-night-checklist) purely because their proof command named the test
+// they would write. So: after the near-match correction fails, a missing path
+// whose PARENT DIRECTORY exists on disk is accepted as a to-be-created
+// artifact and reported in `newPaths` (the executor prompt tells the
+// implementer it must create them; exec-time check re-validation is
+// shape-only, so an uncreated file simply fails the card's own check). A
+// missing path whose parent directory does not exist is still a fabricated
+// location and fails closed.
+//
+// The card #171 protection is UNCHANGED: its phantom
+// (tests/review-write-guard.test.mjs) has a real tests/unit/ near-match, and
+// the near-match correction runs first — the allowance below is only reached
+// when no such file exists anywhere the resolver knows to look. New test
+// files named directly under tests/ are additionally canonicalized into
+// tests/unit/ so the loop can't scatter them outside the repo's convention.
 function resolveCheckPaths(checkableDone, opts = {}) {
   const repoRoot = opts.repoRoot || REPO_ROOT;
   const paths = extractCheckPaths(checkableDone);
   if (paths.length === 0) return { ok: true, checkableDone }; // tsc/lint forms carry no file args
-  const exists = p => { try { return fs.existsSync(path.join(repoRoot, p)); } catch { return false; } };
+  // isFile, not existsSync: `test -f scripts/lib` and `node --test tests/unit`
+  // name real DIRECTORIES, and `test -f <dir>` always exits 1 — treating them
+  // as "exists" queued an unpassable card that burned a whole executor
+  // envelope (ship-check finding). A directory is neither a satisfied check
+  // nor a creatable artifact, so it falls through to the veto below.
+  const exists = p => { try { return fs.statSync(path.join(repoRoot, p)).isFile(); } catch { return false; } };
+  const dirExists = p => { try { return fs.statSync(path.join(repoRoot, path.dirname(p))).isDirectory(); } catch { return false; } };
+  const isDir = p => { try { return fs.statSync(path.join(repoRoot, p)).isDirectory(); } catch { return false; } };
   let corrected = checkableDone;
   let anyCorrection = false;
+  const newPaths = [];
+  const seen = new Set();
   for (const p of paths) {
+    if (seen.has(p)) continue; // `node --test a.test.mjs a.test.mjs` — resolve each token once
+    seen.add(p);
     if (exists(p)) continue;
-    const nearMatch = p.startsWith('tests/') ? `tests/unit/${path.basename(p)}` : null;
+    // An existing DIRECTORY is not a file the check can pass on and not an
+    // artifact the implementer can create — fail closed rather than let the
+    // new-artifact branch below "create" a path that is already occupied.
+    if (isDir(p)) {
+      return { ok: false, reason: `checkableDone names a directory, not a file: ${p}` };
+    }
+    // DIRECT children of tests/ only. `tests/integration/login.test.mjs` names
+    // a deliberate, non-unit location — rewriting it to tests/unit/ (which the
+    // old startsWith('tests/') test did at any depth) would silently redirect
+    // the implementer to the wrong suite, and the ship-check Codex pass called
+    // that out as the highest-risk part of this change. A missing path in a
+    // real subdirectory now falls through to the new-artifact branch below,
+    // which creates it exactly where the card asked.
+    const nearMatch = /^tests\/[^/]+$/.test(p) ? `tests/unit/${path.basename(p)}` : null;
     if (nearMatch && nearMatch !== p && exists(nearMatch)) {
-      corrected = corrected.replace(p, nearMatch);
+      corrected = replaceAllTokens(corrected, p, nearMatch);
       anyCorrection = true;
       continue;
     }
-    return { ok: false, reason: `checkableDone references a path that does not exist on disk: ${p}${nearMatch ? ` (tried near-match ${nearMatch})` : ''}` };
+    // Canonicalize a brand-new test named at tests/<name> into tests/unit/.
+    const target = nearMatch && nearMatch !== p && dirExists(nearMatch) ? nearMatch : p;
+    if (dirExists(target)) {
+      if (target !== p) { corrected = replaceAllTokens(corrected, p, target); anyCorrection = true; }
+      newPaths.push(target);
+      continue;
+    }
+    return { ok: false, reason: `checkableDone references a path in a directory that does not exist on disk: ${p}${nearMatch ? ` (tried near-match ${nearMatch})` : ''}` };
   }
-  return { ok: true, checkableDone: corrected, corrected: anyCorrection };
+  return { ok: true, checkableDone: corrected, corrected: anyCorrection, newPaths };
 }
 
 const SCHEMA_PATH = path.join(__dirname, 'triage-schema.json');
@@ -135,7 +197,7 @@ JSON contract:
   "size": "S" | "M" | "L",
   "eligible": boolean,             // can the loop do this UNATTENDED within Tier-${tier} paths?
   "reason": "one sentence (≥${MIN_REASON} chars) justifying size + eligibility",
-  "checkableDone": "the runnable command that proves completion — MUST be exactly one of these forms: ${SAFE_CHECK_DESCRIPTION}. If no such command can prove the work, set eligible to false.",
+  "checkableDone": "the runnable command that proves completion — MUST be exactly one of these forms: ${SAFE_CHECK_DESCRIPTION}. The named test file MAY be one that does not exist yet and that the work will CREATE (this repo's convention is that a fix ships with its own colocated test) — in that case name the conventional location: tests/unit/<name>.test.mjs for app/site logic, scripts/lib/<name>.test.mjs or scripts/<name>.test.mjs next to the file under test. Do NOT set eligible to false merely because no test exists today; only set it false when no runnable command could prove the work even after writing one.",
   "splitProposal": [               // REQUIRED non-empty iff size "L" AND eligible true, else omit
     { "title": "child card title", "notes": "≥${MIN_SPLIT_NOTES} chars with ## Problem, ## Suggested approach, ## Acceptance criteria sections" }
   ]
@@ -259,6 +321,55 @@ function findClaimedTask(cardId, taskState) {
   return task;
 }
 
+// Transient-Notion-blip retry for the per-card fetch (card #529). The 2026-07-26
+// live run lost 2 cards outright to single `notion-brain get` failures: the
+// entry is stamped transient and skipped, so the card waits a full night for
+// the next triage pass. One cheap retry recovers the blip class (429/socket
+// hangup) without turning a genuinely broken card id into a retry storm.
+// `fetchFn(id)` is injected (execFileSync-backed in the CLI, a stub in tests);
+// `sleepFn(ms)` likewise so the test doesn't actually wait.
+//
+// PERMANENT failures are never retried (ship-check Codex finding): a deleted or
+// mistyped card id 404s identically every time, so a retry buys nothing and, at
+// 120 fetched cards, a systematic failure would add two minutes of pure sleep
+// plus 120 wasted subprocesses to every nightly run.
+// Substring matching alone is not safe here (ship-check round 2): a genuinely
+// transient `HTTP 502: upstream "object_not_found"` or a stack trace that
+// happens to contain "403" would be misread as permanent and cost the card its
+// night. So TRANSIENT WINS: any 5xx, rate-limit, or socket/DNS signal marks the
+// error retryable no matter what else the text contains, and only then is the
+// permanent set consulted — and that set is anchored on Notion's own error
+// shapes (a `"code": "object_not_found"` body field, or a status code in
+// status position) rather than a bare number appearing anywhere.
+const TRANSIENT_FETCH_ERROR_RE = /\b5\d\d\b|\b429\b|rate.?limit|ETIMEDOUT|ECONNRESET|ECONNREFUSED|ENOTFOUND|EAI_AGAIN|socket hang up|network|timed? ?out/i;
+const PERMANENT_FETCH_ERROR_RE = /"code"\s*:\s*"(object_not_found|unauthorized|restricted_resource|validation_error)"|\b(?:HTTP|status(?: code)?)[: ]+(401|403|404)\b|could not find (?:page|block|database)/i;
+
+function isTransientFetchError(err) {
+  const msg = String((err && err.message) || '');
+  if (TRANSIENT_FETCH_ERROR_RE.test(msg)) return true; // transient wins outright
+  return !PERMANENT_FETCH_ERROR_RE.test(msg);
+}
+
+async function fetchCardWithRetry(id, fetchFn, opts = {}) {
+  const retries = Number.isInteger(opts.retries) ? opts.retries : 1;
+  const delayMs = Number.isFinite(opts.delayMs) ? opts.delayMs : 1500;
+  const sleepFn = opts.sleepFn || (ms => new Promise(r => setTimeout(r, ms)));
+  const isTransient = opts.isTransient || isTransientFetchError;
+  let lastError = null;
+  let used = 0;
+  for (let attempt = 1; attempt <= retries + 1; attempt++) {
+    used = attempt;
+    try {
+      return { ok: true, card: await fetchFn(id), attempts: attempt };
+    } catch (err) {
+      lastError = err;
+      if (attempt > retries || !isTransient(err)) break;
+      await sleepFn(delayMs);
+    }
+  }
+  return { ok: false, error: lastError, attempts: used, permanent: !isTransient(lastError) };
+}
+
 /**
  * Triage one card. `callLLM(prompt) → Promise<string>` is injected (real
  * Sonnet in the CLI, a mock in tests). `opts.taskState` (optional, see
@@ -309,6 +420,12 @@ async function triageCard(card, callLLM, opts = {}) {
           };
         }
         if (pathCheck.corrected) parsed = { ...parsed, checkableDone: pathCheck.checkableDone };
+        // Carried on the entry (NOT inside `parsed`, which validateTriageResult
+        // holds to additionalProperties:false) so the queue and the implementer
+        // prompt can tell the model which check targets it has to create.
+        if (pathCheck.newPaths && pathCheck.newPaths.length) {
+          return { preFilter, triage: parsed, newCheckPaths: pathCheck.newPaths };
+        }
       }
       return { preFilter, triage: parsed };
     }
@@ -353,6 +470,7 @@ module.exports = {
   parseTriageResponse,
   validateTriageResult,
   findClaimedTask,
+  fetchCardWithRetry,
   triageCard,
   decide,
   priorityRank,

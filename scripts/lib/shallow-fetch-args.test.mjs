@@ -32,12 +32,12 @@ test('epoch may arrive as a string (git log output is text)', () => {
   );
 });
 
-test('unusable epoch falls back to a fixed depth — still bounded, never unbounded', () => {
+test('unusable epoch falls back to a relative deepen — bounded, and never SHORTENS history', () => {
   for (const bad of ['', undefined, null, 'not-a-number', 0, -5, NaN]) {
     assert.deepEqual(
       shallowFetchArgs({ isShallow: true, oldestCommitEpoch: bad }),
-      [`--depth=${DEFAULT_FALLBACK_DEPTH}`],
-      `epoch ${JSON.stringify(bad)} should fall back to a fixed depth`
+      [`--deepen=${DEFAULT_FALLBACK_DEPTH}`],
+      `epoch ${JSON.stringify(bad)} should fall back to a relative deepen`
     );
   }
 });
