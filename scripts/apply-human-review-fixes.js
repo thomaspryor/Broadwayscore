@@ -9,6 +9,16 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `apply-human-review-fixes.js — Downgrade LLM confidence on reviews where human thumbs conflict with the LLM score.
+
+Usage:
+  node scripts/apply-human-review-fixes.js [options]
+  node scripts/apply-human-review-fixes.js --help, -h    print this usage and exit
+`;
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const fixesPath = path.join(__dirname, '../data/audit/human-review-fixes.json');
 const fixes = JSON.parse(fs.readFileSync(fixesPath, 'utf-8'));

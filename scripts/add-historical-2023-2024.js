@@ -11,6 +11,16 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { checkForDuplicate } = require('./lib/deduplication');
 const { validateVenue } = require('./lib/broadway-theaters');
 const { classifyShow } = require('./lib/classify-show');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `add-historical-2023-2024.js — Add historical shows from the 2023-2024 Broadway season to shows.json.
+
+Usage:
+  node scripts/add-historical-2023-2024.js [options]
+  node scripts/add-historical-2023-2024.js --help, -h    print this usage and exit
+`;
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const showsPath = path.join(__dirname, '../data/shows.json');
 const data = loadShows();
