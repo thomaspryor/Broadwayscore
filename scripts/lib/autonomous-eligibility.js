@@ -246,6 +246,18 @@ const TIER3_EXCLUDED_FILES = new Set([
   'src/middleware.ts',
 ]);
 
+// Extensions autonomous-checks.js's decideChecks() actually knows how to
+// verify under scripts/: node --check for .js/.mjs/.cjs, tsc for .ts/.tsx.
+// A scripts/ path with any other extension (.py, .sh, .json, ...) has no
+// check the planner can ever produce for it — decideChecks would return an
+// empty plan and ship-check's fail-closed no-checks result kills the card,
+// but only AFTER a full implementer envelope (S $4 / M $14) has been spent
+// (#454). Gating the extension here means such a card is never planned at
+// all, so nothing is spent trying. src/ is unrestricted: any src/ change
+// (any extension) trips `next lint` + `next build` in decideChecks, so it's
+// checkable regardless of extension.
+const SCRIPTS_CHECKABLE_EXT_RE = /\.(js|mjs|cjs|ts|tsx)$/;
+
 function isCodePathAllowed(file) {
   const f = normalizePath(file);
   if (!f) return false;
@@ -265,6 +277,7 @@ function isCodePathAllowed(file) {
   // Manifests are refused by BASENAME anywhere, not just repo root — the
   // exact-match set left `scripts/package.json` allowed (ship-check QA probe).
   if (/^(package(-lock)?\.json|next\.config\.js|tsconfig\.json|vercel\.json|middleware\.ts)$/.test(base)) return false;
+  if (f.startsWith('scripts/')) return SCRIPTS_CHECKABLE_EXT_RE.test(f);
   return TIER3_ALLOW_PREFIXES.some(p => f.startsWith(p));
 }
 
@@ -281,7 +294,7 @@ function isCodeDiffAllowed(files) {
 // module as the predicates so they cannot drift.
 function describeScope(tier) {
   if (tier === 3) {
-    return `Tier 3 (code): may edit src/** and scripts/**, plus everything Tier 1 allows (tests/**, docs/**, memory/**, and the enumerated leaf files incl. scripts/bsc-next.js + its test, which stay editable despite the scripts/bsc- exclusion below). EXCLUDED no matter what a card says — prefixes: ${TIER3_EXCLUDED_PREFIXES.join(', ')}; dependency/deploy manifests anywhere (package.json, package-lock.json, next.config.js, tsconfig.json, vercel.json, middleware.ts); files: ${[...TIER3_EXCLUDED_EXTRA_FILES].join(', ')}, tests/fixtures/triage-calibration.json; any scripts file whose name mentions email/broadcast/send-; the scoring watchlist files, scripts/lib/scraper.js, and any *-gate.js CI gate. It also cannot: make product or business decisions; send email; talk to humans; run expensive backfills.`;
+    return `Tier 3 (code): may edit src/** and scripts/**, plus everything Tier 1 allows (tests/**, docs/**, memory/**, and the enumerated leaf files incl. scripts/bsc-next.js + its test, which stay editable despite the scripts/bsc- exclusion below). Under scripts/, only .js/.mjs/.cjs/.ts/.tsx files are in scope — other extensions (.py, .sh, .json, ...) have no check the loop can ever run, so they're refused before anything is spent, not failed after. EXCLUDED no matter what a card says — prefixes: ${TIER3_EXCLUDED_PREFIXES.join(', ')}; dependency/deploy manifests anywhere (package.json, package-lock.json, next.config.js, tsconfig.json, vercel.json, middleware.ts); files: ${[...TIER3_EXCLUDED_EXTRA_FILES].join(', ')}, tests/fixtures/triage-calibration.json; any scripts file whose name mentions email/broadcast/send-; the scoring watchlist files, scripts/lib/scraper.js, and any *-gate.js CI gate. It also cannot: make product or business decisions; send email; talk to humans; run expensive backfills.`;
   }
   const allowed = [...TIER1_ALLOW_PREFIXES.map(p => `${p}**`), ...TIER1_ALLOW_FILES];
   return `Tier 1: may only edit ${allowed.join(', ')}. It cannot: touch src/, data/, workflows, scraping/scoring/audit infra; make product or business decisions; send email; talk to humans; run expensive backfills.`;
@@ -416,6 +429,7 @@ module.exports = {
   TIER3_ALLOW_PREFIXES,
   TIER3_EXCLUDED_PREFIXES,
   TIER3_EXCLUDED_FILES,
+  SCRIPTS_CHECKABLE_EXT_RE,
   EXCLUDED_FILES,
   EXCLUDED_PREFIXES,
   DETERMINISTIC_GREEN_PREFIXES,
