@@ -24,7 +24,7 @@
  */
 
 const {
-  cmuxAvailable, listWorkspaces, isDoneTitle, claudeAliveIn, pruneDone,
+  cmuxAvailable, listWorkspaces, isDoneTitle, claudeAliveIn, terminalSurfaceAliveIn, checkLiveness, pruneDone,
 } = require('./lib/cmux-workspaces.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
@@ -50,6 +50,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     pruneDone: pruneDoneFn = pruneDone,
     isDoneTitle: isDoneTitleFn = isDoneTitle,
     claudeAliveIn: claudeAliveInFn = claudeAliveIn,
+    terminalSurfaceAliveIn: surfaceAliveInFn = terminalSurfaceAliveIn,
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
   } = deps;
@@ -63,7 +64,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
   }
 
   const all = listWorkspacesFn();
-  const { closed, skipped } = pruneDoneFn({ dryRun });
+  const { closed, skipped, disagreements = [] } = pruneDoneFn({ dryRun });
   if (closed.length) {
     console.log(`${dryRun ? '[dry-run] would close' : 'Closed'} ${closed.length} ✅ workspace(s):`);
     closed.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
@@ -73,6 +74,14 @@ function main(argv = process.argv.slice(2), deps = {}) {
   if (skipped.length) {
     console.log(`Skipped ${skipped.length} ✅ workspace(s) with a live claude (running or waiting at the prompt):`);
     skipped.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
+  }
+  // Card #564 follow-up: a non-empty disagreements list is direct evidence of
+  // the cmux tag/process registry desyncing from the terminal-surface
+  // registry in PRODUCTION (#548/#559), not just a hypothetical this fix
+  // guards against — worth flagging loudly, not just silently skipping.
+  if (disagreements.length) {
+    console.log(`\n⚠ Registry desync detected: ${disagreements.length} workspace(s) where claudeAliveIn() said dead but the terminal-surface signal said alive (would have been WRONGLY closed without the #559 fix):`);
+    disagreements.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
   }
 
   // Journal the sweep (S4-T3) so the morning email can say "Closed N finished
@@ -85,9 +94,25 @@ function main(argv = process.argv.slice(2), deps = {}) {
   }
 
   const closedRefs = new Set(closed.map(w => w.ref));
+  // Card #564 follow-up (adversarial ship-check catch): this idle-unmarked
+  // listing feeds dispatchLedger.deadBreadcrumbs() below, which writes 'dead'
+  // ledger entries that bsc-next's deadDispatchGuard reads — the EXACT same
+  // duplicate-dispatch guard checkDeadDispatch feeds. Trusting claudeAliveInFn
+  // alone here would reopen the #559/#564 registry-desync false-negative in a
+  // fourth call site right next to the three already fixed. Both signals must
+  // agree before a workspace counts as dead here too.
+  const idleDisagreements = [];
   const idle = all
     .filter(w => !closedRefs.has(w.ref) && !isDoneTitleFn(w.title))
-    .filter(w => !claudeAliveInFn(w.ref));
+    .filter(w => {
+      const { dead, disagreement } = checkLiveness(w.ref, claudeAliveInFn, surfaceAliveInFn);
+      if (disagreement) idleDisagreements.push(w);
+      return dead;
+    });
+  if (idleDisagreements.length) {
+    console.log(`\n⚠ Registry desync detected: ${idleDisagreements.length} idle-unmarked workspace(s) where claudeAliveIn() said dead but the terminal-surface signal said alive (would have gotten a WRONG dead-dispatch breadcrumb without the #564 fix):`);
+    idleDisagreements.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
+  }
   if (idle.length) {
     console.log(`\nDead but un-marked (no claude process at all — NOT closed, review yourself):`);
     let ledgerEntries;

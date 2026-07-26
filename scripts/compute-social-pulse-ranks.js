@@ -28,7 +28,6 @@ const {
   derivePeerTier,
   shouldShowSentiment,
   isTooNoisyForCard,
-  shouldShowSentiment,
 } = require('./lib/social-pulse-scorer');
 
 const REPO_ROOT = path.join(__dirname, '..');
