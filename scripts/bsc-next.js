@@ -193,8 +193,18 @@ function deadDispatchGuard(task, ledgerEntries, opts) {
 // from the live cmux list, using the SAME predicate bsc-prune.js uses —
 // dispatch #3 then sees dispatch #1 and #2's now-idle workspaces as fresh
 // 'dead' breadcrumbs without needing a sweep in between.
-function checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitleFn, claudeAliveInFn, opts) {
-  const idle = workspaces.filter(w => !isDoneTitleFn(w.title) && !claudeAliveInFn(w.ref));
+//
+// Card #564: claudeAliveInFn alone is the same single-signal trust that #559
+// proved has a real false-negative mode (verified live, 2026-07-26: a
+// workspace had claudeAliveIn() === false while visibly still running with an
+// active Claude Code session). A false "idle" verdict here means a still-live
+// workspace gets treated as a dead breadcrumb, self-healing deadDispatchGuard
+// into green-lighting a SECOND dispatch onto a task someone is already
+// working on. Same fix shape as #559's pruneDone: require the independent
+// terminal-surface signal (surfaceAliveFn) to ALSO say not-alive before a
+// workspace counts as idle-and-dead.
+function checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitleFn, claudeAliveInFn, surfaceAliveFn, opts) {
+  const idle = workspaces.filter(w => !isDoneTitleFn(w.title) && cmuxws.checkLiveness(w.ref, claudeAliveInFn, surfaceAliveFn).dead);
   const freshDead = dispatchLedger.deadBreadcrumbs(idle, ledgerEntries);
   const refusal = deadDispatchGuard(task, ledgerEntries.concat(freshDead), opts);
   return { freshDead, refusal };
@@ -316,6 +326,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     listWorkspaces: listWorkspacesFn = cmuxws.listWorkspaces,
     isDoneTitle: isDoneTitleFn = cmuxws.isDoneTitle,
     claudeAliveIn: claudeAliveInFn = cmuxws.claudeAliveIn,
+    terminalSurfaceAliveIn: surfaceAliveInFn = cmuxws.terminalSurfaceAliveIn,
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
   } = deps;
@@ -514,7 +525,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
       // for bsc-prune.js's own (typically once/day) sweep to write the
       // breadcrumb.
       try {
-        const { freshDead, refusal } = checkDeadDispatch(task, workspaces, readLedgerEntriesFn(), isDoneTitleFn, claudeAliveInFn, args);
+        const { freshDead, refusal } = checkDeadDispatch(task, workspaces, readLedgerEntriesFn(), isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, args);
         freshDead.forEach(b => { try { appendLedgerEntryFn(b); } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger self-heal write failed for ${b.workspaceRef}: ${e.message}`); } });
         if (refusal) { console.error(`[bsc-next] ${refusal}`); process.exit(1); }
       } catch (e) { console.error(`[bsc-next] dead-dispatch check failed (continuing): ${e.message}`); }
