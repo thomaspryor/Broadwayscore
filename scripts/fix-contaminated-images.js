@@ -16,6 +16,14 @@ const crypto = require('crypto');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-contaminated-images.js — Identifies and cleans image cross-contamination where different shows.
+
+Usage:
+  node scripts/fix-contaminated-images.js [options]
+  node scripts/fix-contaminated-images.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const IMAGE_SOURCES_PATH = path.join(__dirname, '..', 'data', 'image-sources.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
@@ -49,6 +57,8 @@ function areSameShow(showA, showB) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log(dryRun ? '=== DRY RUN ===' : '=== CLEANING CONTAMINATED IMAGES ===');
   console.log();
 

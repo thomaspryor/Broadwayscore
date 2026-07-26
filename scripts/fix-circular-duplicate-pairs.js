@@ -82,6 +82,14 @@ const { isIncludableForRebuild } = require('./lib/review-guards');
 const { parseDate } = require('./lib/date-utils');
 const { classifyClassAContamination, buildSiblingOpeningsMap } = require('./lib/cross-market-contamination');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-circular-duplicate-pairs.js — Repairs the circular-duplicateOf class: fileA.duplicateOf=fileB AND.
+
+Usage:
+  node scripts/fix-circular-duplicate-pairs.js [options]
+  node scripts/fix-circular-duplicate-pairs.js --help, -h    print this usage and exit
+`;
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 
 const args = process.argv.slice(2);
@@ -498,6 +506,8 @@ function fix(pairs) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const pairs = audit();
   const skipped = _skippedClassA.length;
   if (JSON_OUT) {

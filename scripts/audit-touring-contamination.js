@@ -67,6 +67,14 @@ const https = require('https');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { CLAUDE_HAIKU, GPT4O_MINI, GEMINI_FLASH } = require('./lib/models');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-touring-contamination.js — Audit & Fix Touring / Out-of-Market Reviews.
+
+Usage:
+  node scripts/audit-touring-contamination.js [options]
+  node scripts/audit-touring-contamination.js --help, -h    print this usage and exit
+`;
 // --- Load .env ---
 try {
   const envPath = path.join(__dirname, '..', '.env');
@@ -876,6 +884,8 @@ function applyFlag(item, parsed) {
 // ============================================================
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log(`=== Touring/Out-of-Market Contamination Audit (${MARKET}) ===`);
   console.log(`Provider: ${PROVIDER}`);
   console.log(`Mode:     ${APPLY ? 'APPLY (writes files)' : 'DRY-RUN (no writes)'}`);

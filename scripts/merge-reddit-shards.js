@@ -15,6 +15,14 @@ const path = require('path');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `merge-reddit-shards.js — Merges Reddit sentiment shard output files into audience-buzz.json.
+
+Usage:
+  node scripts/merge-reddit-shards.js [options]
+  node scripts/merge-reddit-shards.js --help, -h    print this usage and exit
+`;
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const cleanup = args.includes('--cleanup');
@@ -43,6 +51,8 @@ function isMostRecentProduction(showId) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('=== Reddit Shard Merger ===\n');
 
   // Read shard files

@@ -20,6 +20,14 @@ const path = require('path');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fetch-images-fallback.js — Fetch Show Images with Multiple Source Fallbacks.
+
+Usage:
+  node scripts/fetch-images-fallback.js [options]
+  node scripts/fetch-images-fallback.js --help, -h    print this usage and exit
+`;
 // Try to load scraper module, fall back to fetch if not available
 let scraper;
 try {
@@ -209,6 +217,8 @@ async function findImagesForShow(show) {
  */
 async function main() {
   const args = process.argv.slice(2);
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const dryRun = args.includes('--dry-run');
 
   // Parse arguments

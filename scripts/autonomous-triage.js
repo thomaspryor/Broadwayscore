@@ -26,7 +26,7 @@ const os = require('os');
 const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
-const { triageCard, decide, orderQueue, isSafeCheckCommand, priorityRank } = require('./lib/autonomous-triage-core.js');
+const { triageCard, decide, orderQueue, isSafeCheckCommand, priorityRank, fetchCardWithRetry } = require('./lib/autonomous-triage-core.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { classifyDataCard } = require('./lib/autonomous-eligibility.js');
 const { estimateUSD } = require('./lib/autonomous-budget.js');
@@ -226,16 +226,18 @@ async function main() {
       console.error(`[triage] window full (${candidates} candidates) — ${ids.length - i} fetched card(s) left for tomorrow`);
       break;
     }
-    let card;
-    try {
-      card = notionBrain(['get', id]);
-    } catch (err) {
+    // One retry before giving up (card #529): the 2026-07-26 live run lost 2
+    // otherwise-workable cards to single transient `notion-brain get` failures.
+    const fetched = await fetchCardWithRetry(id, cardId => notionBrain(['get', cardId]));
+    if (!fetched.ok) {
       // Transient (Notion hiccup) — skip WITHOUT stamping Auto so the card is
       // re-triaged tomorrow, never permanently stranded by one bad fetch.
-      entries.push({ card: { id }, preFilter: { eligible: false, reason: `card fetch failed: ${err.message.slice(0, 120)}` }, decision: 'skip', transient: true });
-      console.error(`[triage] ${i + 1}/${ids.length} ${id} FETCH FAILED (skip, no stamp)`);
+      entries.push({ card: { id }, preFilter: { eligible: false, reason: `card fetch failed after ${fetched.attempts} attempt(s): ${fetched.error.message.slice(0, 120)}` }, decision: 'skip', transient: true });
+      console.error(`[triage] ${i + 1}/${ids.length} ${id} FETCH FAILED after ${fetched.attempts} attempt(s) (skip, no stamp)`);
       continue;
     }
+    const card = fetched.card;
+    if (fetched.attempts > 1) console.error(`[triage] ${i + 1}/${ids.length} ${id} fetch recovered on attempt ${fetched.attempts}`);
     // Cards the loop already processed (Auto set) are not re-triaged.
     if (card.auto) {
       entries.push({ card: slim(card), preFilter: { eligible: false, reason: `already in Auto state "${card.auto}"` }, decision: 'skip' });
@@ -268,6 +270,10 @@ async function main() {
   const plan = orderQueue(entries).map(e => ({
     id: e.card.id, name: e.card.name, priority: e.card.priority,
     size: e.triage.size, checkableDone: e.triage.checkableDone, tier,
+    // Check targets that don't exist yet — the implementer prompt tells the
+    // model creating them is part of the work (card #529). Omitted entirely
+    // when empty so existing queue consumers see the unchanged shape.
+    ...(e.newCheckPaths && e.newCheckPaths.length ? { newCheckPaths: e.newCheckPaths } : {}),
   }));
 
   // Tier-2 (Sprint 4): cards Tier-1 correctly skipped for touching data/, but

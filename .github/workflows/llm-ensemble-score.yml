@@ -423,6 +423,24 @@ jobs:
             ARGS="$ARGS --shard=${{ github.event.inputs.shard }} --total-shards=${{ github.event.inputs.total_shards }}"
           fi
 
+          # Batch API mode (task #516) — scheduled runs only.
+          # Vendor Batch APIs bill at 50% but are submit-now/poll-later
+          # (minutes to 24h). The nightly cron has no latency requirement, so
+          # it takes the discount. workflow_dispatch and chain=true runs stay
+          # synchronous: those are the opening-night paths where getting a
+          # score onto the site within minutes is the entire point.
+          # Kill switch: repo variable DISABLE_BATCH_SCORING=1.
+          if [ "${{ github.event_name }}" == "schedule" ] \
+             && [ "${{ github.event.inputs.chain }}" != "true" ] \
+             && [ "${{ vars.DISABLE_BATCH_SCORING }}" != "1" ]; then
+            # Poll budget sits well under this job's timeout-minutes: 350,
+            # leaving room for the merge, the checkpoint push, and the
+            # rescore-drain step afterwards. If the batch outlives the budget,
+            # state persists and the next scheduled run resumes polling.
+            ARGS="$ARGS --batch --batch-poll-minutes=120"
+            echo "Scheduled run — using --batch (50% vendor discount)"
+          fi
+
           # Always verbose in CI
           ARGS="$ARGS --verbose"
 

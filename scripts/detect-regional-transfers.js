@@ -22,12 +22,22 @@ const path = require('path');
 const { detectTransferPairs } = require('./lib/transfer-detection');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `detect-regional-transfers.js — Apply regional→Broadway transfer pairs detected by.
+
+Usage:
+  node scripts/detect-regional-transfers.js [options]
+  node scripts/detect-regional-transfers.js --help, -h    print this usage and exit
+`;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const emailAlerts = args.includes('--email');
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const data = loadShows();
   const shows = data.shows || data;
   const results = detectTransferPairs(shows);

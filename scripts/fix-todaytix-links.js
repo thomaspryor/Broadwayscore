@@ -22,6 +22,14 @@ const { buildTodayTixUrl, normalizeShowName } = require('./lib/url-utils');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-todaytix-links.js — Automated TodayTix link fixer.
+
+Usage:
+  node scripts/fix-todaytix-links.js [options]
+  node scripts/fix-todaytix-links.js --help, -h    print this usage and exit
+`;
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 
@@ -156,6 +164,8 @@ function isTitleMatch(pageTitle, expectedShowTitle) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log(`TodayTix Link Checker ${DRY_RUN ? '(DRY RUN)' : ''}`);
   console.log('='.repeat(60));
 

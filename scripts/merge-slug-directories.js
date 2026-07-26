@@ -62,6 +62,14 @@ const MERGE_SINGLE_FIELDS = [
   'contentVerification', 'textQuality', 'textStatus', 'archivePath',
 ];
 const { EXCERPT_FIELDS: _CANONICAL_EXCERPTS } = require('./lib/excerpt-fields');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `merge-slug-directories.js — Merge non-canonical review-text directories into their canonical ID directories.
+
+Usage:
+  node scripts/merge-slug-directories.js [options]
+  node scripts/merge-slug-directories.js --help, -h    print this usage and exit
+`;
 const EXCERPT_AND_AGG_FIELDS = [
   ..._CANONICAL_EXCERPTS,
   'playbillExcerpt',  // legacy field
@@ -130,6 +138,8 @@ function buildDirectoryMap() {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) { console.error('No review-texts directory'); process.exit(1); }
   const mapping = buildDirectoryMap();
   console.log(`Found ${mapping.size} non-canonical directories to merge\n`);
