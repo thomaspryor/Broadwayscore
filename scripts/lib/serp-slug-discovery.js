@@ -114,6 +114,9 @@ async function discoverSlug(siteDomain, showTitle, pathPrefix) {
  * @returns {Promise<Map<string, string>>} Map of showId → discovered slug
  */
 async function batchDiscoverSlugs(siteDomain, shows, pathPrefix, delayMs = 3000, budget = null) {
+  if (delayMs != null && typeof delayMs !== 'number') {
+    throw new TypeError(`batchDiscoverSlugs: delayMs must be a number, got ${typeof delayMs} — did you mean to pass budget as the 5th argument?`);
+  }
   if (!BRIGHTDATA_TOKEN && !SCRAPINGBEE_API_KEY) {
     console.log('  ⚠️  No SERP provider keys set (BRIGHTDATA_TOKEN / SCRAPINGBEE_API_KEY) — skipping SERP slug discovery');
     return new Map();

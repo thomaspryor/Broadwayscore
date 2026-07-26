@@ -456,7 +456,7 @@ async function main() {
     const notFound = openMissed.filter(s => s.reason === 'not-found');
     if (notFound.length > 0) {
       const discovered = await batchDiscoverSlugs('londontheatredirect.com', notFound, undefined, undefined, timeBudget);
-      if (discovered.size === 0) {
+      if (discovered.size === 0 && !timeBudget.exceeded()) {
         console.log(`\nAdd to LTD_OVERRIDES if slug is known:`);
         for (const m of notFound) {
           console.log(`  '${m.title}': 'PLATFORM-SLUG-HERE',`);

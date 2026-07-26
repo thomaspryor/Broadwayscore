@@ -179,6 +179,15 @@ test('batchDiscoverSlugs: budget exceeding mid-batch stops remaining shows', asy
   assert.ok(discovered.has('hamilton'));
 });
 
+test('batchDiscoverSlugs: rejects a non-number delayMs (catches budget passed in the wrong positional slot)', async () => {
+  const budget = { minutes: 5, exceeded: () => false };
+  await assert.rejects(
+    () => batchDiscoverSlugs('seatplan.com', [{ id: 'x', title: 'X' }], 'london', budget),
+    TypeError,
+    'passing an object (e.g. budget) as delayMs must throw, not silently become NaN'
+  );
+});
+
 test('returns null when no SERP provider keys set', async () => {
   const savedBD = process.env.BRIGHTDATA_TOKEN;
   const savedSB = process.env.SCRAPINGBEE_API_KEY;
