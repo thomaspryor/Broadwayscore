@@ -475,8 +475,26 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     # Oldest LOCAL commit = the shallow boundary (cheap: a shallow repo holds
     # only a handful of commits). This is the commit that must remain an
     # ancestor of the fetched tip.
-    _shallow_base_sha=$(git rev-list HEAD 2>/dev/null | tail -1)
-    _shallow_base_epoch=$(git log -1 --format=%ct "${_shallow_base_sha:-HEAD}" 2>/dev/null || echo "")
+    #
+    # Computed ONCE for the whole run, not per iteration. This block sits inside
+    # the retry loop and each successful bounded fetch DEEPENS the repo, so the
+    # boundary moves further back in time every pass. Recomputing would subtract
+    # another SHALLOW_SINCE_SLACK_SEC from an already-older boundary each time —
+    # the window would creep wider (and the fetch slower) with every retry, for
+    # no benefit: the original boundary is the commit our outgoing work is built
+    # on, and any later boundary is older, so the first window already covers
+    # what ancestry needs. Memoising also keeps the decision deterministic
+    # across a run, which is what the ancestry assert below reasons about.
+    #
+    # `|| true` on the rev-list is load-bearing under `set -euo pipefail`: with
+    # pipefail a failing `git rev-list` (unborn HEAD) makes the whole pipeline —
+    # and therefore this assignment — non-zero, and `set -e` would abort the
+    # entire push mid-retry. Falling through with an empty value is correct: the
+    # helper then returns the bounded --depth fallback.
+    if [ -z "${_shallow_base_sha:-}" ]; then
+      _shallow_base_sha=$(git rev-list HEAD 2>/dev/null | tail -1 || true)
+      _shallow_base_epoch=$(git log -1 --format=%ct "${_shallow_base_sha:-HEAD}" 2>/dev/null || echo "")
+    fi
     if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/shallow-fetch-args.js" ]; then
       # None of the emitted args can contain whitespace (asserted in the test),
       # so unquoted word-splitting into the array is safe here.
@@ -493,7 +511,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     if [ ${#FETCH_DEPTH_ARGS[@]} -eq 0 ]; then
       FETCH_DEPTH_ARGS=(--depth=200)
     fi
-    echo "  fetch: SHALLOW checkout (fetch-depth: 1) — bounding with ${FETCH_DEPTH_ARGS[*]} (task #466)"
+    echo "  fetch: SHALLOW checkout ($(git rev-list --count HEAD 2>/dev/null || echo '?') local commit(s)) — bounding with ${FETCH_DEPTH_ARGS[*]} (task #466)"
   fi
   # NOTE on the ${arr[@]+"${arr[@]}"} expansions below: bash 3.2 (stock
   # /usr/bin/bash on macOS) treats "${arr[@]}" on an EMPTY array as an unbound
@@ -510,8 +528,20 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     if [ "$explicit_fetch_rc" -eq 124 ]; then
       echo "  Skipping bare-form fallback fetch: explicit form timed out (rc=124) — retrying the identical fetch under the same slow network condition would likely also burn the full ${GIT_NET_TIMEOUT_SEC}s for nothing (task #464). Backing off to next retry attempt instead."
     else
+      # The explicit form failed FAST (not a timeout). When we passed a shallow
+      # bound, the BOUND may be exactly what the remote rejected — e.g. git
+      # answers `fatal: no commits selected for shallow requests` (rc≠124) if
+      # committer-clock skew puts the since-window past every remote commit.
+      # Re-issuing the identical flag on the bare form would fail identically,
+      # so degrade to the fixed depth instead. Still bounded — never unbounded,
+      # which is the whole point of this block (ship-check finding).
+      _fallback_depth_args=()
+      if [ ${#FETCH_DEPTH_ARGS[@]} -gt 0 ]; then
+        _fallback_depth_args=(--depth=200)
+        echo "  Bare-form fallback degrades the bound ${FETCH_DEPTH_ARGS[*]} → --depth=200 (the bound itself may be what was rejected)"
+      fi
       fetch_start=$SECONDS
-      if git_fetch ${FETCH_DEPTH_ARGS[@]+"${FETCH_DEPTH_ARGS[@]}"} origin "$PULL_BRANCH" 2>/dev/null; then
+      if git_fetch ${_fallback_depth_args[@]+"${_fallback_depth_args[@]}"} origin "$PULL_BRANCH" 2>/dev/null; then
         fetch_ok=true
         echo "  fetch(bare-form fallback) OK in $((SECONDS - fetch_start))s"
       else
@@ -531,17 +561,62 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # intermediate commit outside the window. Widen to a full day — still ~1% of
   # the 165k-commit history, and still bounded by the per-op timeout. One
   # escalation only: if it
-  # still fails we fall through to the normal backoff rather than spiralling.
+  # still fails we treat the whole fetch as FAILED rather than spiralling.
+  #
+  # That last part is load-bearing, not tidiness (ship-check P0): if this block
+  # merely warned and fell through, `fetch_ok` would still be true, so
+  # FETCHED_REMOTE_SHA below would be read from a STALE FETCH_HEAD and the
+  # update-ref would force refs/remotes/origin/$PULL_BRANCH onto a tip our base
+  # is provably NOT an ancestor of — then `rebase -X theirs origin/$PULL_BRANCH`
+  # replays against unrelated history. That is exactly the --depth=1 disaster
+  # this design rejects. Setting fetch_ok=false routes us down the existing,
+  # already-safe "fetch failed" path: no tracking-ref write, no no-op guard,
+  # just backoff and retry with a fresh budget.
   if [ "$fetch_ok" = "true" ] && [ ${#FETCH_DEPTH_ARGS[@]} -gt 0 ] && [ -n "${_shallow_base_sha:-}" ]; then
     if ! git merge-base --is-ancestor "$_shallow_base_sha" FETCH_HEAD 2>/dev/null; then
-      echo "  ::warning::fetch was depth-bounded but base $_shallow_base_sha is NOT an ancestor of the fetched tip — widening to a 24h window and refetching (task #466)"
-      fetch_start=$SECONDS
-      if [ -n "${_shallow_base_epoch:-}" ] \
-         && git_fetch --shallow-since="@$((_shallow_base_epoch - 86400))" \
-              origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null; then
-        echo "  fetch(24h-widened) OK in $((SECONDS - fetch_start))s"
+      # Pick a widening that is actually REACHABLE on both paths. Gating this on
+      # a non-empty epoch (as the first cut did) made it dead code precisely
+      # when it mattered: the --depth fallback is chosen BECAUSE the epoch was
+      # unusable, so the epoch-only escalation could never run for it
+      # (ship-check P0). --deepen is relative, so it works with no date at all.
+      if [ -n "${_shallow_base_epoch:-}" ]; then
+        _widen_args=(--shallow-since="@$((_shallow_base_epoch - 86400))")
       else
-        echo "  fetch(24h-widened) FAILED in $((SECONDS - fetch_start))s — falling through to backoff"
+        _widen_args=(--deepen=2000)
+      fi
+      echo "  ::warning::fetch was depth-bounded but base $_shallow_base_sha is NOT an ancestor of the fetched tip — widening with ${_widen_args[*]} and refetching (task #466)"
+      fetch_start=$SECONDS
+      if git_fetch "${_widen_args[@]}" \
+           origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null; then
+        echo "  fetch(widened ${_widen_args[*]}) OK in $((SECONDS - fetch_start))s"
+      else
+        echo "  fetch(widened ${_widen_args[*]}) FAILED in $((SECONDS - fetch_start))s"
+      fi
+      # Re-assert on the (possibly refreshed) FETCH_HEAD. Note a widened fetch
+      # that FAILS leaves the previous successful FETCH_HEAD in place, so this
+      # re-check — not the fetch's exit status — is what decides.
+      if ! git merge-base --is-ancestor "$_shallow_base_sha" FETCH_HEAD 2>/dev/null; then
+        # ABORT — do not fall through, and do not merely retry.
+        #
+        # First cut set fetch_ok=false here, assuming that was enough to keep
+        # the resolution paths away from unrelated history. Fault injection
+        # (forcing the ancestry-breaking --depth=1 bound) proved it is NOT: the
+        # explicit-destination refspec writes refs/remotes/origin/$PULL_BRANCH
+        # as part of the fetch itself, so the tracking ref is ALREADY poisoned
+        # before this check runs. fetch_ok only gates our own update-ref and the
+        # no-op guard; `git rebase -X theirs origin/$PULL_BRANCH` below reads the
+        # tracking ref directly and happily replayed the shallow-root snapshot
+        # (observed: 2 commits ahead instead of 1). Backing off and retrying is
+        # no better — the next iteration re-poisons the same ref.
+        #
+        # There is no safe local recovery: we cannot know a good tip, and every
+        # onward path either corrupts main or burns the retry budget to reach
+        # the same failure. So take the same exit the no-op guard takes — loud,
+        # logged, non-zero — and leave main untouched. `if: always()` steps and
+        # the failure telemetry still run.
+        record_push_failure "shallow-ancestry-unrecoverable" "$i"
+        echo "::error::push-with-retry: depth-bounded fetch could not restore ancestry — base $_shallow_base_sha is still NOT an ancestor of the fetched tip after widening with ${_widen_args[*]}. refs/remotes/origin/$PULL_BRANCH now points at a tip with unrelated history, so rebase/merge would replay this shallow checkout's whole-tree snapshot over whatever else landed on $PULL_BRANCH. Aborting instead (task #466). Re-run the job; if this repeats, the checkout needs fetch-depth: 0. Logged to data/audit/push-retry-failures.jsonl."
+        exit 1
       fi
     fi
   fi
