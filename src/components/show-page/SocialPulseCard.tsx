@@ -331,7 +331,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
   // Sentiment bar renders only with a real percentage AND a meaningful
   // opinion sample behind it — shouldShowSentiment is the shared gate (also
   // used by TrendingShowCard) so the two surfaces never disagree.
-  const showSentiment = shouldShowSentiment(sp.p, sp.os);
+  const showSentiment = shouldShowSentiment({ positivePct: sp.p, opinionSample: sp.os });
 
   return (
     <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="socials-scorecard-heading">

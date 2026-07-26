@@ -63,7 +63,7 @@ export default function TrendingShowCard({ rank, pulse, show }: TrendingShowCard
   // Sentiment bar — same gradient as SocialPulseCard. shouldShowSentiment is
   // the shared gate (also used by SocialPulseCard) so the two surfaces never
   // disagree on when a sentiment number is trustworthy enough to show.
-  const showSentiment = shouldShowSentiment(pulse.positivePct, pulse.opinionSample);
+  const showSentiment = shouldShowSentiment({ positivePct: pulse.positivePct, opinionSample: pulse.opinionSample });
   const posBarWidth = Math.max(0, Math.min(100, pulse.positivePct ?? 0));
   const sentimentBarStyle = {
     width: `${posBarWidth}%`,
