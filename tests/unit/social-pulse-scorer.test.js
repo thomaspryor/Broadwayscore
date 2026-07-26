@@ -337,6 +337,14 @@ describe('deriveTier', () => {
     );
   });
 
+  test('null positivePct can never yield Troubled even with a huge volume spike', () => {
+    // Would clear the Troubled baseline-multiple threshold if pct were coerced to 0
+    assert.strictEqual(
+      deriveTier({ currentVolume: 250, baseline, positivePct: null, weekOverWeekPct: 100 }),
+      'Steady',
+    );
+  });
+
   test('tiny baselines return BuildingBaseline to avoid divide-by-small', () => {
     assert.strictEqual(
       deriveTier({
