@@ -286,6 +286,14 @@ Return ONLY a JSON object (no markdown, no explanation):
 // opera-aware branching can be unit-tested directly (CLAUDE.md rule 15).
 const { buildWrongProductionUserPrompt } = require('./lib/classifier-prompts');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `classify-wrong-production.js — LLM Wrong-Production Classifier.
+
+Usage:
+  node scripts/classify-wrong-production.js [options]
+  node scripts/classify-wrong-production.js --help, -h    print this usage and exit
+`;
 function buildUserPrompt(result, reviewData, revivals) {
   const show = showById.get(result.showId);
   return buildWrongProductionUserPrompt({ show, result, reviewData, revivals });
@@ -324,6 +332,8 @@ function parseClassifyResponse(raw) {
 // ============================================================
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   // Optionally re-run the audit first
   if (REAUDIT) {
     console.log('Re-running pre-2005 audit...');

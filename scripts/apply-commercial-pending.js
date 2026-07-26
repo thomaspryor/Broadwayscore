@@ -51,11 +51,21 @@ const AUTO_APPLY_CLAIMS_FROM = flags['auto-apply-claims-from']
   : [];
 
 const gate = require('./lib/commercial-apply-gate');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `apply-commercial-pending.js — Apply Commercial Pending Data.
+
+Usage:
+  node scripts/apply-commercial-pending.js [options]
+  node scripts/apply-commercial-pending.js --help, -h    print this usage and exit
+`;
 const meetsConfidenceThreshold = (entry) => gate.meetsConfidenceThreshold(entry, MIN_CONFIDENCE);
 const hasRecoupedClaim = gate.hasRecoupedClaim;
 const isAutoApplyableClaim = (entry) => gate.isAutoApplyableClaim(entry, AUTO_APPLY_CLAIMS_FROM);
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   if (!fs.existsSync(PENDING_PATH)) {
     console.log('No pending file found at', PENDING_PATH);
     process.exit(1);

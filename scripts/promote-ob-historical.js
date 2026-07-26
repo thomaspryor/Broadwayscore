@@ -33,6 +33,14 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `promote-ob-historical.js — Promote Playbill-validated OB historical candidates into shows.json with.
+
+Usage:
+  node scripts/promote-ob-historical.js [options]
+  node scripts/promote-ob-historical.js --help, -h    print this usage and exit
+`;
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
 const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'venue-date-mismatches.json');
@@ -85,6 +93,8 @@ function logEntry(entry) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const audit = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
   const matches = (audit.results || []).filter(r => r.result === 'match' && r.playbillUrl);
   console.log(`Audit has ${audit.results?.length || 0} results; ${matches.length} promotable matches.`);

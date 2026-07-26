@@ -33,7 +33,7 @@ const REPO = '/Users/tompryor/Broadwayscore';
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { selectOpeningNightShows } = require('./lib/opening-night-selection.js');
 const { activeWindows, nightKey, launchDecision, computeWindow } = require('./lib/opening-night-windows.js');
-const { launchCmuxSession, pollUntil } = require('./lib/cmux-launch.js');
+const { launchCmuxSession, shouldAdoptLateStart } = require('./lib/cmux-launch.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 
@@ -115,26 +115,13 @@ function lockMeta() {
 // (the 04:36 2026-07-24 false CRITICAL for trainspotting: workspace:272
 // spawned, came alive after the window, got reported dead). The final-path
 // workspace is NOT closed, so if claude comes alive during a late-start grace
-// we ADOPT it instead of paging + re-launching a duplicate. Pure so the
-// decision is unit-tested without a cmux socket.
+// we ADOPT it instead of paging + re-launching a duplicate.
+//
+// The adoption itself now lives in cmux-launch.js (task #503): bsc-next.js hit
+// the identical false-failure class — 10 untracked live shells + duplicate
+// dispatches in one day — because the fix had only ever been applied here.
+// This file keeps the constant and re-exports the predicate for its own tests.
 const LATE_START_GRACE_SEC = 60;
-function shouldAdoptLateStart(result, isAlive) {
-  return !!(result && !result.ok && result.workspaceRef && isAlive);
-}
-
-// Fail-CLOSED liveness for the adopt path. cmuxws.claudeAliveIn is fail-OPEN
-// (returns true on ANY cmux socket error) — correct for the close path (never
-// kill a maybe-alive tab) but UNSAFE for adoption: a transient socket error
-// would adopt a DEAD workspace, write LOCK_META, and suppress relaunch for the
-// rest of the night (codex ship-check). Require a SUCCESSFUL workspace listing
-// that still contains the ref before trusting the process check, so a socket
-// failure yields "not alive" (relaunch) instead of "adopt the corpse".
-function strictlyAliveWorkspace(ref) {
-  try {
-    if (!cmuxws.listWorkspaces().some(w => w.ref === ref)) return false;
-    return cmuxws.claudeAliveIn(ref);
-  } catch { return false; }
-}
 
 // Alert routing is lazy-required so a broken router dependency can never
 // stop a tick from at least logging (the launcher must fail toward "log +
@@ -284,7 +271,7 @@ async function main(argv = process.argv.slice(2)) {
   const rehearsal = !!opts.rehearsal;
   const seed = buildSeed(windows, { attempt: nightState.attempts + 1, rehearsal, key });
   const title = `🎭🧠 ON monitor·${rehearsal ? 'REHEARSAL ' : ''}${windows.map(w => w.showId.replace(/-\d{4}$/, '')).join(' + ').slice(0, 60)}`;
-  let result = launchCmuxSession({
+  const result = launchCmuxSession({
     title, seed, seedKey: `${key}-a${nightState.attempts + 1}`,
     cwd: REPO, model: MODEL,
     // focus:false — a 23:00 auto-launch must never steal the owner's screen
@@ -294,20 +281,14 @@ async function main(argv = process.argv.slice(2)) {
     // a live process (first live launch 2026-07-24: alive at ~45s, after the
     // launcher had already close-and-retried it).
     verifyTimeoutSec: 90,
+    // Late-start adoption: a Fable session that registered a live process AFTER
+    // the verify window is healthy, not failed — adopt it rather than page +
+    // relaunch a duplicate next tick (2026-07-24 false CRITICAL).
+    lateAdoptSec: LATE_START_GRACE_SEC,
   });
 
-  // Late-start adoption: a Fable session that registered a live process AFTER
-  // launchCmuxSession's verify window is healthy, not failed — adopt it rather
-  // than page + relaunch a duplicate next tick (2026-07-24 false CRITICAL).
-  let adoptedLate = false;
-  if (!result.ok && result.workspaceRef) {
-    const live = pollUntil(() => strictlyAliveWorkspace(result.workspaceRef), LATE_START_GRACE_SEC);
-    if (shouldAdoptLateStart(result, live)) {
-      adoptedLate = true;
-      result = { ...result, ok: true, ref: result.workspaceRef };
-      log(`adopted late-start session ${result.ref} for ${windows.map(w => w.showId).join(', ')} (alive after verify window)`);
-    }
-  }
+  const adoptedLate = !!result.adoptedLate;
+  if (adoptedLate) log(`adopted late-start session ${result.ref} for ${windows.map(w => w.showId).join(', ')} (alive after verify window)`);
 
   if (!result.ok) {
     // Genuinely dead — close the lingering workspace so it can't become an

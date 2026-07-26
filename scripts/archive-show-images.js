@@ -18,6 +18,14 @@ const path = require('path');
 const crypto = require('crypto');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `archive-show-images.js — Archive show images locally.
+
+Usage:
+  node scripts/archive-show-images.js [options]
+  node scripts/archive-show-images.js --help, -h    print this usage and exit
+`;
 let sharp;
 try {
   sharp = require('sharp');
@@ -164,6 +172,8 @@ async function downloadImage(url, filepath) {
 
 async function main() {
   const args = process.argv.slice(2);
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const force = args.includes('--force');
   const checkAspectFlag = args.includes('--check-aspect');
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];

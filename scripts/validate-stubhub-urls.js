@@ -29,6 +29,14 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `validate-stubhub-urls.js — Validate StubHub ticket URLs in data/shows.json.
+
+Usage:
+  node scripts/validate-stubhub-urls.js [options]
+  node scripts/validate-stubhub-urls.js --help, -h    print this usage and exit
+`;
 const APPLY = process.argv.includes('--apply');
 const SHOWS_PATH = 'data/shows.json';
 
@@ -113,6 +121,8 @@ function probeUrl(url) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const shows = loadShows();
   const results = [];
   let total = 0;

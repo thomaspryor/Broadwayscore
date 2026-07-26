@@ -480,6 +480,11 @@ async function main() {
         name: `${g.title} — ${g.outletId} (T${g.tier}, ${g.type})`,
         value: `${g.url || 'no url'}\nFix: ${g.fix}`,
       }));
+      // Direct sendAlert, not routeAlert — this already has its own cooldown:
+      // shouldAlertGap() gates on state[`${showId}/${file}`] (REALERT_DAYS
+      // window), stamped only inside the `if (delivered)` block below, so a
+      // due gap that fails to deliver correctly retries next run instead of
+      // going silently marked-handled.
       const delivered = urgent.length > 0
         ? await sendAlert({
           title: `T1/T2 review silent gap: ${urgent.length} review(s) missing on near-opening show(s)`,
@@ -525,6 +530,12 @@ async function main() {
         name: `${c.title || c.showId} — ${c.outletId} (T${c.tier}, stale ${c.flag})`,
         value: `Newer CV (${c.verifiedAt}) contradicts the flag set ${c.flaggedAt}.\nFix: ${c.fix}`,
       }));
+      // Direct sendAlert, not routeAlert — this already has its own cooldown:
+      // shouldAlertContradiction() gates on state[`contradiction:${showId}/${file}`]
+      // (7-day CONTRADICTION_REALERT_DAYS window), stamped only inside the
+      // `if (delivered)` block below, so a due contradiction that fails to
+      // deliver correctly retries next run instead of going silently
+      // marked-handled.
       const delivered = await sendAlert({
         title: `Stale exclusion flag contradicted by newer CV: ${dueC.length} suppressed review(s)`,
         description: 'A file-level wrongProduction/wrongShow flag is contradicted by a NEWER contentVerification verdict — the review is being suppressed from the score by a stale flag. Each needs the listed clear command (run locally). Escalate-only: nothing is auto-cleared.',

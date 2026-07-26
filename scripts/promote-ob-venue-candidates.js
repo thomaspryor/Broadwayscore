@@ -36,6 +36,14 @@ const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `promote-ob-venue-candidates.js — Promote venue-discovered OB candidates from staging → shows.json.
+
+Usage:
+  node scripts/promote-ob-venue-candidates.js [options]
+  node scripts/promote-ob-venue-candidates.js --help, -h    print this usage and exit
+`;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const PROMOTION_LOG = path.join(__dirname, '..', 'data', 'audit', 'ob-promotion-log.jsonl');
 // Machine-readable output for the CI workflow: which ids were promoted THIS
@@ -171,6 +179,8 @@ function writeLastPromotionFile(promoted) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const staged = loadStaging();
   // Reset the promotion record up front so a crash mid-run can never leave a
   // STALE file claiming yesterday's promotions happened again (the workflow

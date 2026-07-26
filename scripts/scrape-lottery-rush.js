@@ -1380,6 +1380,14 @@ function mergeIntoExisting(existing, scraped, source) {
 
 const { evaluateShowIdStability } = require('./lib/lottery-stability-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `scrape-lottery-rush.js — Robust Lottery/Rush Data System.
+
+Usage:
+  node scripts/scrape-lottery-rush.js [options]
+  node scripts/scrape-lottery-rush.js --help, -h    print this usage and exit
+`;
 /**
  * Guard: abort if the set of show IDs changed too dramatically. Decision logic
  * (including the closed/orphan-removal exclusion) lives in the pure, unit-tested
@@ -1847,6 +1855,8 @@ function printPriceComparisonReport(allChanges) {
 // ==================== Main ====================
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
   console.log('Broadway Lottery/Rush Scraper — Robust System');
   console.log('='.repeat(60));

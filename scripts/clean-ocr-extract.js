@@ -8,6 +8,14 @@ const https = require('https');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { CLAUDE_SONNET } = require('./lib/models');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `clean-ocr-extract.js — see file header for details.
+
+Usage:
+  node scripts/clean-ocr-extract.js [options]
+  node scripts/clean-ocr-extract.js --help, -h    print this usage and exit
+`;
 const envPath = path.join(__dirname, '..', '.env');
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY ||
   (fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf8').match(/ANTHROPIC_API_KEY=([^\n]+)/)?.[1] : null);
@@ -101,6 +109,8 @@ Return ONLY the extracted review text (or NO_REVIEW_FOUND). No preamble, no expl
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const dryRun = process.argv.includes('--dry-run');
   const limit = parseInt(process.argv.find(a => a.startsWith('--limit='))?.split('=')[1] || '500');
   

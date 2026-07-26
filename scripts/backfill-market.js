@@ -27,6 +27,14 @@ const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-market.js — Backfill the shows.json 'market' field from 'category' for any show that has.
+
+Usage:
+  node scripts/backfill-market.js [options]
+  node scripts/backfill-market.js --help, -h    print this usage and exit
+`;
 const args = process.argv.slice(2);
 const WRITE = args.includes('--write');
 const ONLY_OPEN = args.includes('--only-open');
@@ -41,6 +49,8 @@ function deriveMarket(category) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   if (!fs.existsSync(SHOWS_PATH)) {
     console.error(`shows.json not found at ${SHOWS_PATH}`);
     process.exit(1);

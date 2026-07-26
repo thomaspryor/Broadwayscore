@@ -50,7 +50,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
 1. **Codex (GPT-5.x with codebase access) — Production & Architecture focus** — Run via Bash.
    **Codex check:** Run `command -v codex >/dev/null && echo READY || echo MISSING` first.
    - READY (local): run Codex as below.
-   - MISSING (expected in cloud): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **GPT-4o via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"`, `model: "gpt-4o"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent. Record which reviewer actually ran in the coverage banner (Phase 3).
+   - MISSING (expected in cloud): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **gpt-5.4-mini via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"`, `model: "gpt-5.4-mini"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent. Record which reviewer actually ran in the coverage banner (Phase 3).
    ```bash
    set -o pipefail
    [ -s "${PLAN_FILE:-/tmp/critique-plan.txt}" ] || { echo "ERROR: plan file is missing or empty — write the plan file before running this reviewer"; exit 1; }

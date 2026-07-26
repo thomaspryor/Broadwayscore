@@ -34,6 +34,14 @@ const path = require('path');
 const { heuristicClassify } = require('./lib/non-review-patterns');
 const { GPT4O } = require('./lib/models');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `newspapers-com-extract.js — Newspapers.com Review Extraction — Search + OCR Pipeline.
+
+Usage:
+  node scripts/newspapers-com-extract.js [options]
+  node scripts/newspapers-com-extract.js --help, -h    print this usage and exit
+`;
 // ─── Configuration ───────────────────────────────────────────────────────────
 
 const PROFILE_DIR = '/tmp/newspapers-browser-profile';
@@ -812,6 +820,8 @@ async function processShow(page, showId, opts) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const opts = parseArgs();
 
   if (!opts.show && !opts.showsFile && !opts.image) {

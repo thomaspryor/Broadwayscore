@@ -20,6 +20,14 @@ const { serpQuery } = require('./lib/url-discovery');
 const { buildTelechargeUrl, normalizeShowName } = require('./lib/url-utils');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-ticket-platform-links.js — Enrich shows.json with Telecharge/Ticketmaster ticket links based on venue mapping.
+
+Usage:
+  node scripts/enrich-ticket-platform-links.js [options]
+  node scripts/enrich-ticket-platform-links.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -201,6 +209,8 @@ async function discoverTicketmasterUrl(showTitle) {
 // ============================================================================
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log(`Ticket Platform Link Enrichment ${DRY_RUN ? '(DRY RUN)' : ''}`);
   console.log('='.repeat(60));
 

@@ -18,6 +18,10 @@ const assert = require('node:assert');
 const {
   computeSocialPulse,
   deriveTier,
+  derivePeerTier,
+  computeCompositeScore,
+  computePeerStats,
+  relevanceRateFor,
   filterTopQuotes,
   truncateQuote,
   containsBlockedContent,
@@ -28,6 +32,9 @@ const {
   MIN_MENTIONS_FOR_CARD,
   BASELINE_REQUIRED_WEEKS,
   QUOTE_MAX_CHARS,
+  MIN_QUOTE_RELEVANCE,
+  NEUTRAL_POSITIVE_PCT,
+  X_UNSAMPLED_FALLBACK_RATE,
 } = require('../../scripts/lib/social-pulse-scorer');
 
 // ---------- Fixtures ----------
@@ -141,6 +148,17 @@ describe('filterTopQuotes', () => {
     const mentions = [
       mention({ text: 'clearly positive and relevant mention here', engagement: 100 }),
       mention({ text: 'this one is off topic garbage', engagement: 999, relevant: false }),
+    ];
+    const quotes = filterTopQuotes(mentions, 'positive');
+    assert.strictEqual(quotes.length, 1);
+    assert.ok(quotes[0].text.startsWith('clearly positive'));
+  });
+
+  test('requires relevant === true strictly — truthy-but-not-true is excluded', () => {
+    const mentions = [
+      mention({ text: 'clearly positive and relevant mention here', engagement: 100 }),
+      // Simulates a misclassified/loosely-typed field that is truthy but not boolean true
+      mention({ text: 'this quote should never surface publicly', engagement: 999, relevant: 1 }),
     ];
     const quotes = filterTopQuotes(mentions, 'positive');
     assert.strictEqual(quotes.length, 1);
@@ -315,6 +333,14 @@ describe('deriveTier', () => {
     // 1.5× baseline + 60% positive BUT no WoW growth → Steady, not Rising
     assert.strictEqual(
       deriveTier({ currentVolume: 150, baseline, positivePct: 65, weekOverWeekPct: 0 }),
+      'Steady',
+    );
+  });
+
+  test('null positivePct can never yield Troubled even with a huge volume spike', () => {
+    // Would clear the Troubled baseline-multiple threshold if pct were coerced to 0
+    assert.strictEqual(
+      deriveTier({ currentVolume: 250, baseline, positivePct: null, weekOverWeekPct: 100 }),
       'Steady',
     );
   });
@@ -543,8 +569,16 @@ describe('computePositivePct', () => {
     assert.strictEqual(computePositivePct(mentions), 67);
   });
 
-  test('returns 0 for empty input', () => {
-    assert.strictEqual(computePositivePct([]), 0);
+  test('returns null for empty input (no opinion-bearing posts, not 0%)', () => {
+    assert.strictEqual(computePositivePct([]), null);
+  });
+
+  test('returns null when all mentions are irrelevant or neutral (zero opinion sample)', () => {
+    const mentions = [
+      mention({ sentiment: 'neutral', relevant: true }),
+      mention({ sentiment: 'positive', relevant: false }),
+    ];
+    assert.strictEqual(computePositivePct(mentions), null);
   });
 
   test('ignores mentions with missing sentiment', () => {
@@ -693,5 +727,106 @@ describe('computeSocialPulse with counters (schema v3)', () => {
     const result = computeSocialPulse({ mentions, baseline: null, priorVolume: null });
     assert.strictEqual(result.platformBreakdown.bluesky, 1);
     assert.strictEqual(result.platformBreakdown.reddit, 1);
+  });
+
+  test('quote relevance gate: no quotes when overall relevance is below MIN_QUOTE_RELEVANCE', () => {
+    // 1 relevant post (would normally quote), 30 irrelevant — overall relevance ~0.03
+    const mentions = [
+      sampleMention({ text: 'This show is genuinely wonderful, a must-see', engagement: 500 }),
+      ...Array.from({ length: 30 }, (_, i) =>
+        sampleMention({ relevant: false, text: `unrelated noise about something else ${i}`, sentiment: 'neutral' }),
+      ),
+    ];
+    const result = computeSocialPulse({ mentions, baseline: null, priorVolume: null });
+    assert.strictEqual(result.topQuotes.length, 0);
+  });
+
+  test('quote relevance gate: quotes render when overall relevance is at/above MIN_QUOTE_RELEVANCE', () => {
+    const mentions = Array.from({ length: 10 }, () => sampleMention());
+    const result = computeSocialPulse({ mentions, baseline: null, priorVolume: null });
+    assert.ok(result.topQuotes.length > 0);
+  });
+
+  test('positivePct is null (not 0) when every mention is neutral — zero opinion sample', () => {
+    const mentions = Array.from({ length: 25 }, () => sampleMention({ sentiment: 'neutral' }));
+    const result = computeSocialPulse({ mentions, baseline: null, priorVolume: null });
+    assert.strictEqual(result.positivePct, null);
+    assert.strictEqual(result.opinionSample, 0);
+  });
+});
+
+describe('computeCompositeScore — null-sentiment semantics', () => {
+  test('treats null positivePct as neutral (50), not 0', () => {
+    assert.strictEqual(computeCompositeScore(100, null), 50);
+    assert.strictEqual(computeCompositeScore(100, NEUTRAL_POSITIVE_PCT), 50);
+  });
+
+  test('a real 0% still scores 0 — distinct from null', () => {
+    assert.strictEqual(computeCompositeScore(100, 0), 0);
+  });
+
+  test('undefined positivePct also falls back to neutral', () => {
+    assert.strictEqual(computeCompositeScore(100, undefined), 50);
+  });
+});
+
+describe('derivePeerTier — sentiment-evidence gate', () => {
+  const peerStats = { compositeP80: 40, compositeP60: 20, volumeP50: 50, marketCount: 10 };
+
+  test('null positivePct can never yield Troubled, Buzzing, or Rising — falls to Steady', () => {
+    // High volume, would be "loud enough" for Troubled if pct were coerced to 0
+    const result = derivePeerTier({ volume: 200, effectiveVolume: 200, positivePct: null, peerStats });
+    assert.strictEqual(result, 'Steady');
+  });
+
+  test('null positivePct below MIN_MENTIONS_FOR_CARD still returns Hidden (volume gate wins)', () => {
+    const result = derivePeerTier({ volume: 5, effectiveVolume: 5, positivePct: null, peerStats });
+    assert.strictEqual(result, 'Hidden');
+  });
+
+  test('a real 0% (actual negative sentiment, not null) can still be Troubled', () => {
+    const result = derivePeerTier({ volume: 200, effectiveVolume: 200, positivePct: 0, peerStats });
+    assert.strictEqual(result, 'Troubled');
+  });
+
+  test('real sentiment above thresholds still yields Buzzing normally', () => {
+    const result = derivePeerTier({ volume: 200, effectiveVolume: 200, positivePct: 80, peerStats });
+    assert.strictEqual(result, 'Buzzing');
+  });
+});
+
+describe('computePeerStats — null positivePct passthrough', () => {
+  test('a null-sentiment show contributes a neutral (50) composite, not 0', () => {
+    const shows = [
+      { volume: 100, effectiveVolume: 100, positivePct: null },
+      { volume: 100, effectiveVolume: 100, positivePct: 50 },
+    ];
+    const stats = computePeerStats(shows);
+    // Both shows compute the same composite (100 * 50/100 = 50) — percentiles should match
+    assert.strictEqual(stats.compositeP80, 50);
+    assert.strictEqual(stats.compositeP60, 50);
+  });
+});
+
+describe('relevanceRateFor — X unsampled fallback', () => {
+  test('X falls back to the conservative discount, not full trust, when no sample exists at all', () => {
+    const rate = relevanceRateFor('x', { byPlatform: {}, overall: null });
+    assert.strictEqual(rate, X_UNSAMPLED_FALLBACK_RATE);
+    assert.ok(X_UNSAMPLED_FALLBACK_RATE < 1, 'must discount, not fully trust, an unsampled X counter');
+  });
+
+  test('X still uses the overall rate when a Reddit/Bluesky sample exists', () => {
+    const rate = relevanceRateFor('x', { byPlatform: {}, overall: 0.6 });
+    assert.strictEqual(rate, 0.6);
+  });
+
+  test('X uses its own platform rate if one is ever present', () => {
+    const rate = relevanceRateFor('x', { byPlatform: { x: 0.9 }, overall: 0.3 });
+    assert.strictEqual(rate, 0.9);
+  });
+
+  test('reddit/bluesky keep full-trust fallback (they ARE the sample)', () => {
+    assert.strictEqual(relevanceRateFor('reddit', { byPlatform: {}, overall: null }), 1);
+    assert.strictEqual(relevanceRateFor('bluesky', { byPlatform: {}, overall: null }), 1);
   });
 });

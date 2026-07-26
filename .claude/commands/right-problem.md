@@ -43,7 +43,7 @@ Write this analysis to `$PROB_FILE`.
 
 ### Phase 2: Generate three approaches (simplest to most complex)
 
-Generate three approaches yourself. **Acknowledge that these are biased** — you are anchored on the current direction. The GPT-4o reviewer in Phase 3 will generate fresh alternatives independently to counteract this bias.
+Generate three approaches yourself. **Acknowledge that these are biased** — you are anchored on the current direction. The gpt-5.4-mini reviewer in Phase 3 will generate fresh alternatives independently to counteract this bias.
 
 **Approach A (Simplest possible — "Do Nothing" is valid):** First, explicitly ask: "What breaks if we do nothing?" If the answer is "nothing breaks, it's just not ideal" — then "Do Nothing" or "Do Nothing + a label/disclaimer" IS Approach A. Otherwise, what's the dumbest thing that could work? Can we solve this with data/tools we already have? A config change? Adding a field? A manual process? Think: minutes to hours of work.
 
@@ -64,21 +64,21 @@ If the "current direction" doesn't match any of the three approaches, include it
 
 Append these approaches to `/tmp/gut-check-problem.txt`.
 
-**Also write a problem-only version** (WITHOUT the approaches) to `/tmp/gut-check-problem-only.txt` — this is what GPT-4o gets, so it generates alternatives from scratch without being anchored.
+**Also write a problem-only version** (WITHOUT the approaches) to `/tmp/gut-check-problem-only.txt` — this is what gpt-5.4-mini gets, so it generates alternatives from scratch without being anchored.
 
 ### Phase 3: Two reviewers with DIFFERENT jobs (run BOTH in parallel)
 
-The reviewers have sharply different roles. GPT-4o challenges and generates alternatives. Claude evaluates and judges. They do NOT do the same thing.
+The reviewers have sharply different roles. gpt-5.4-mini challenges and generates alternatives. Claude evaluates and judges. They do NOT do the same thing.
 
-1. **GPT-4o — Challenger & Alternative Generator** — Run this curl command via Bash.
-   **OpenAI check:** Run `echo ${OPENAI_API_KEY:+SET}` first. If empty, skip the curl and use a Claude agent (Task tool, subagent_type "general-purpose") with the same prompt below. Note: "GPT-4o unavailable — using Claude as second reviewer."
-   **IMPORTANT: GPT-4o gets `/tmp/gut-check-problem-only.txt` (problem only, NO approaches).** This forces it to generate fresh alternatives without anchoring.
+1. **gpt-5.4-mini — Challenger & Alternative Generator** — Run this curl command via Bash.
+   **OpenAI check:** Run `echo ${OPENAI_API_KEY:+SET}` first. If empty, skip the curl and use a Claude agent (Task tool, subagent_type "general-purpose") with the same prompt below. Note: "gpt-5.4-mini unavailable — using Claude as second reviewer."
+   **IMPORTANT: gpt-5.4-mini gets `/tmp/gut-check-problem-only.txt` (problem only, NO approaches).** This forces it to generate fresh alternatives without anchoring.
    ```
    curl -s https://api.openai.com/v1/chat/completions \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $OPENAI_API_KEY" \
      -d "$(jq -n --arg problem "$(cat "${PROB_ONLY_FILE:-/tmp/gut-check-problem-only.txt}")" '{
-       model: "gpt-4o",
+       model: "gpt-5.4-mini",
        temperature: 0.5,
        messages: [
          {role: "system", content: "You are a contrarian product thinker who has killed more features than you have shipped. Your ONLY job is to generate alternatives that nobody has considered and to argue AGAINST the obvious solution. You are not here to validate — you are here to challenge. If your review agrees with the current direction, you have FAILED at your job.\n\nYou will receive a problem description and current direction. You will NOT receive proposed approaches. This is intentional — you must think from scratch.\n\n**YOUR TASKS:**\n\n1. **Name 3 specific users** who might encounter this feature. Not generic personas — specific people with a specific scenario. E.g., \"a tourist who just saw Hamilton and googles the lead actor\" or \"a theater critic researching a venue for an article.\" For EACH user, answer: would they actually notice or care about this feature? Be brutally honest.\n\n2. **Generate 2-3 alternative approaches from scratch.** At least one must be radically simpler than whatever is being proposed (a UX change, an external link, a label change, doing nothing). At least one must be something nobody would think of on first pass. Do NOT just generate variations of the current direction. Think laterally.\n\n3. **What breaks if we do NOTHING?** Be specific. If the answer is \"nothing breaks, it just isn't ideal\" — say so clearly. This is the most important question.\n\n4. **Name the single biggest risk** of the current direction. Not a list of concerns — the ONE thing most likely to make this a waste of time. Be specific (which component, which data, which user scenario).\n\n5. **Rough cost/benefit for each alternative you propose:** X hours to build → Y users benefit → is it worth it?\n\n**CRITICAL CONSTRAINT: This is a solo developer project. Typical session: 1-2 hours, single developer, under 1000 lines of code. Alternatives that require 10+ hours, a team, or new infrastructure are not useful.** Generate alternatives that fit within the actual project constraints.\n\nIf you find yourself agreeing that the obvious solution is fine, you are not trying hard enough. Push harder. Find the non-obvious path.\n\nUnder 500 words. Bullet points only."},
@@ -118,14 +118,14 @@ The reviewers have sharply different roles. GPT-4o challenges and generates alte
 ### Phase 4: Present results
 
 Show both reviews clearly with headers:
-- **GPT-4o (Challenger — fresh alternatives)**
+- **gpt-5.4-mini (Challenger — fresh alternatives)**
 - **Claude (Judge — approach evaluation)**
 
 ### Phase 5: Synthesize and recommend
 
 After presenting both reviews:
 
-1. **Fresh alternatives check** — Did GPT-4o generate an alternative that's better than any of the original 3 approaches? If yes, this is the highest-value output of the skill. Highlight it prominently. Compare it against Claude's recommendation.
+1. **Fresh alternatives check** — Did gpt-5.4-mini generate an alternative that's better than any of the original 3 approaches? If yes, this is the highest-value output of the skill. Highlight it prominently. Compare it against Claude's recommendation.
 
 2. **User reality check** — Do both reviewers agree on WHO benefits and HOW MUCH? If both say "2% of users, rarely" — the feature probably isn't worth building. If they disagree on user impact, investigate why.
 
@@ -138,7 +138,7 @@ After presenting both reviews:
    - "The literal request was X but the real need is Y"
    - "Existing data already solves this — no new code needed"
    - "This is a UX problem being treated as a data problem"
-   - "GPT-4o's alternative X is better than all 3 original approaches"
+   - "gpt-5.4-mini's alternative X is better than all 3 original approaches"
 
 6. **Direction change alert** — If the current direction should change, call this out prominently:
    - What was about to be built

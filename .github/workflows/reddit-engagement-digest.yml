@@ -2,23 +2,35 @@ name: Reddit Engagement Digest
 
 on:
   schedule:
-    # ~8 AM ET (1 PM UTC = 8 AM EST / 9 AM EDT)
-    - cron: '0 13 * * *'
-    # ~8 PM ET (1 AM UTC = 8 PM EST / 9 PM EDT)
-    - cron: '0 1 * * *'
+    # 06:00 UTC daily. Card #511 (owner merge decision — exactly one scheduled
+    # email/day, not three): this no longer emails on its own. It writes
+    # data/audit/reddit-digest-snapshot.json instead; autonomous-email.js
+    # folds it into the loop's single scheduled morning email. Went from
+    # twice-daily (01:00/13:00 UTC) to once-daily — a second same-day run
+    # would just overwrite this one's snapshot before the morning email ever
+    # read it, silently dropping its threads. Runs BEFORE daily-digest.yml
+    # (06:30 UTC) / opening-digest.yml (06:15 UTC) / the loop start (07:30
+    # UTC) so the snapshot is same-day fresh — same reasoning as those two.
+    - cron: '0 6 * * *'
 
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Generate but do not send email'
+        description: 'Generate but do not write the digest snapshot'
         required: false
         default: 'false'
         type: boolean
+
+concurrency:
+  group: reddit-engagement-digest
+  cancel-in-progress: false
 
 jobs:
   digest:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -41,11 +53,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate and send digest
+      - name: Generate digest snapshot
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
@@ -58,7 +68,7 @@ jobs:
           fi
           node scripts/reddit-engagement-digest.js $ARGS
 
-      - name: Commit history
+      - name: Commit history and digest snapshot
         if: always()
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -66,14 +76,15 @@ jobs:
 
           if [ -f data/reddit-digest-history.json ]; then
             git add --force data/reddit-digest-history.json
-            if ! git diff --cached --quiet; then
-              git commit -m "data: Update Reddit digest history [automated]"
-              bash scripts/lib/push-with-retry.sh
-            else
-              echo "No changes to digest history"
-            fi
+          fi
+          # Card #511: the digest snapshot autonomous-email.js folds into the
+          # morning email — same commit pattern as daily-digest.yml.
+          git add data/audit/reddit-digest-snapshot.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update Reddit digest state [automated]"
+            bash scripts/lib/push-with-retry.sh
           else
-            echo "No digest history file found"
+            echo "No changes to digest state"
           fi
 
       - name: Job summary
@@ -88,8 +99,7 @@ jobs:
               console.log('- Threads evaluated: ' + r.threadsEvaluated);
               console.log('- Threads suggested: ' + r.threadsSuggested);
               console.log('- Promo links: ' + r.promoLinksIncluded);
-              console.log('- Email sent: ' + r.sent);
-              if (r.dryRun) console.log('*(Dry run — not sent)*');
+              if (r.dryRun) console.log('*(Dry run — snapshot not written)*');
             " >> $GITHUB_STEP_SUMMARY
           else
             echo "No result file — script may have exited early (no qualifying threads)" >> $GITHUB_STEP_SUMMARY

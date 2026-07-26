@@ -208,6 +208,14 @@ Return JSON only: {"verdict":"CORRECT|WRONG_SHOW|UNCERTAIN", "confidence":"high|
 // opera-aware branching can be unit-tested directly (CLAUDE.md rule 15).
 const { buildWrongShowUserPrompt } = require('./lib/classifier-prompts');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `classify-wrong-show.js — LLM Wrong-Show Classifier.
+
+Usage:
+  node scripts/classify-wrong-show.js [options]
+  node scripts/classify-wrong-show.js --help, -h    print this usage and exit
+`;
 function buildUserPrompt(showTitle, showId, text) {
   // showTypeMap is populated at module load from shows.json; synthesize a
   // minimal show object for the lib's isOperaShow check.
@@ -279,6 +287,8 @@ function findCandidates() {
 // ============================================================
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('Scanning review-texts for wrong-show candidates...');
   const candidates = findCandidates();
   stats.candidates = candidates.length;
