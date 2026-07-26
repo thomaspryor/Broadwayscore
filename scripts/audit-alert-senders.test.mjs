@@ -94,6 +94,34 @@ test('scanFile still flags a severity variable that resolves to an emailable lit
   assert.strictEqual(findings[0].severity, 'error');
 });
 
+test('scanFile flags a reassigned severity variable instead of resolving to the first literal', () => {
+  // Second-opinion blocker: first-match resolution would pick 'warning' here
+  // and silently SKIP a call that emails when bad=true. Disagreeing
+  // assignments must leave severity unresolved → flagged.
+  const findings = scanFixture('scripts/escalating-cron.js', [
+    "let sev = 'warning';",
+    "if (somethingBad) sev = 'error';",
+    'await sendAlert({',
+    '  severity: sev,',
+    '  email: true,',
+    '});',
+  ].join('\n'));
+  assert.strictEqual(findings.length, 1);
+  assert.strictEqual(findings[0].classification, 'direct');
+  assert.strictEqual(findings[0].severity, null);
+});
+
+test('scanFile flags a ternary severity (leading quote never matches, ident never resolves)', () => {
+  const findings = scanFixture('scripts/ternary-cron.js', [
+    'await sendAlert({',
+    "  severity: ok ? 'warning' : 'error',",
+    '  email: true,',
+    '});',
+  ].join('\n'));
+  assert.strictEqual(findings.length, 1);
+  assert.strictEqual(findings[0].classification, 'direct');
+});
+
 test('scanFile flags an unresolvable severity variable (fail-noisy default)', () => {
   const findings = scanFixture('scripts/opaque-cron.js', [
     'await sendAlert({',
