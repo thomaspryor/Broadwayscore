@@ -41,7 +41,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { sendAlert } = require('./lib/discord-notify');
+const { sendAlert, shouldEmailAlert } = require('./lib/discord-notify');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
@@ -254,8 +254,12 @@ async function main() {
       }
     }
 
-    alerts.push({ show, diff, regression });
-    if (!DRY_RUN) newEntry.lastAlertAt = now.toISOString();
+    // lastAlertAt is stamped AFTER the aggregate sendAlert() call resolves
+    // (below) — not here. Stamping here would mark this show "already
+    // alerted" even if the send fails, silently suppressing the same drop
+    // recurring within the cooldown window. See newEntry captured for the
+    // post-send stamping loop.
+    alerts.push({ show, diff, regression, entry: newEntry });
   }
 
   // Garbage-collect snapshots for shows no longer in window (unless filtered)
@@ -311,14 +315,28 @@ async function main() {
       // (per-show lastAlertAt + COOLDOWN_MS above, see the "Cooldown" block
       // earlier in this loop), so a repeat drop on the same show is deduped
       // before it ever reaches this call.
+      const alertSeverity = 'warning';
       const delivered = await sendAlert({
         title: `Opening-Night Drop Alert — ${alerts.length} show(s)`,
         description,
-        severity: 'warning',
+        severity: alertSeverity,
         fields,
         url: `https://github.com/${process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore'}/actions`,
         email: true,
       });
+      // notifyOk mirrors owner-alert-router's routeAlert() gate: warning
+      // severity is policy-suppressed by design (shouldEmailAlert === false,
+      // sendAlert() never even attempts a send) — that's a successful no-op,
+      // not a failure, so it's still safe to stamp the cooldown. Only a
+      // genuine delivery failure (severity WAS emailable but Resend/the API
+      // key failed) must leave lastAlertAt untouched so the next run retries
+      // instead of silently suppressing the same drop.
+      const notifyOk = !shouldEmailAlert(alertSeverity) || delivered;
+      if (notifyOk) {
+        for (const { entry } of alerts) entry.lastAlertAt = now.toISOString();
+      } else {
+        console.error('[completeness] Alert delivery FAILED — cooldown NOT stamped, will retry next run.');
+      }
       console.log(delivered
         ? '[completeness] Alert dispatched via email.'
         : '[completeness] Alert not emailed (warning severity — actionable-only policy) — logged + step summary; broadcast gates cover the actionable case.');
