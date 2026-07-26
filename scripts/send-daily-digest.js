@@ -1,24 +1,29 @@
 #!/usr/bin/env node
 /**
- * Daily Digest Email
+ * Daily Digest (score-drift)
  *
  * Compares current public/data/mobile-shows.json against yesterday's snapshot
  * to detect: new shows, new reviews, score changes, audience grade changes.
- * Sends a summary email via Resend, then saves the new snapshot.
+ *
+ * Card #497 (owner merge decision — one scheduled morning email, not three):
+ * this no longer emails on its own. It writes a structured snapshot to
+ * data/audit/daily-digest-snapshot.json instead; autonomous-email.js reads it
+ * and folds it into the single scheduled morning email, same pattern as
+ * card #364's health-check.js digest.
  *
  * Usage:
  *   node scripts/send-daily-digest.js [--dry-run]
- *
- * Env vars: RESEND_API_KEY, OWNER_EMAIL
  */
 
 const fs = require('fs');
 const path = require('path');
-const { postJSON, buildDailyDigestHtml } = require('./lib/email-templates');
+const { buildDailyDigestHtml } = require('./lib/email-templates');
 
 const MOBILE_DATA = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
 const SNAPSHOT_FILE = path.join(__dirname, '..', 'data', 'audit', 'daily-snapshot.json');
 const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
+const DIGEST_SNAPSHOT_FILE = path.join(AUDIT_DIR, 'daily-digest-snapshot.json');
+const DIGEST_ITEM_CAP = 8;
 const DRY_RUN = process.argv.includes('--dry-run');
 
 /**
@@ -216,22 +221,51 @@ function hasChanges(changes) {
     (changes.reviewSpikes || []).length > 0;
 }
 
-async function sendEmail(html, subject) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.OWNER_EMAIL;
-  if (!apiKey || !to) {
-    console.error('Missing RESEND_API_KEY or OWNER_EMAIL');
-    process.exit(1);
+// Card #497: same subject/bannerText + item-list shape as health-check.js's
+// snapshot (card #364), so autonomous-email.js can fold all the daily
+// scheduled digests through a shared render block.
+function buildDigestItems(changes) {
+  const items = [];
+  for (const s of changes.newShows) {
+    items.push({ title: s.title, detail: `New show added (${s.market})` });
   }
+  for (const s of changes.scoreChanges) {
+    items.push({
+      title: s.title,
+      detail: s.direction === 'new' ? `New score: ${s.to}` : `Score ${s.from} → ${s.to}`,
+    });
+  }
+  for (const s of changes.audienceChanges) {
+    items.push({ title: s.title, detail: `Audience ${s.from ?? '—'} → ${s.to}` });
+  }
+  for (const s of (changes.suspiciousChanges || [])) {
+    items.push({ title: s.title, detail: `⚠️ +${s.added} reviews in a day (suspicious spike)` });
+  }
+  for (const s of (changes.reviewSpikes || [])) {
+    items.push({ title: s.title, detail: `+${s.added} reviews in a day` });
+  }
+  if (changes.exclusionTrend) {
+    for (const s of changes.exclusionTrend.spikes.slice(0, 3)) {
+      items.push({ title: `Exclusion spike: ${s.reason}`, detail: `${s.todayCount} today vs ~${s.mean} avg` });
+    }
+    for (const s of changes.exclusionTrend.novelReasons.slice(0, 3)) {
+      items.push({ title: `New exclusion reason: ${s.reason}`, detail: `${s.todayCount} today, first seen ${s.firstSeen}` });
+    }
+  }
+  return items;
+}
 
-  await postJSON('https://api.resend.com/emails', {
-    from: 'Broadway Scorecard <updates@broadwayscorecard.com>',
-    to: [to],
+function writeDigestSnapshot({ subject, bannerText, items }) {
+  const snapshot = {
+    generatedAt: new Date().toISOString(),
     subject,
-    html,
-  }, { Authorization: `Bearer ${apiKey}` });
-
-  console.log(`Email sent to ${to}`);
+    bannerText,
+    items: items.slice(0, DIGEST_ITEM_CAP),
+    moreCount: Math.max(0, items.length - DIGEST_ITEM_CAP),
+  };
+  fs.mkdirSync(path.dirname(DIGEST_SNAPSHOT_FILE), { recursive: true });
+  fs.writeFileSync(DIGEST_SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
+  console.log(`[Daily Digest] Snapshot written (${snapshot.items.length} item(s)) — folds into the morning email, not sent separately`);
 }
 
 async function main() {
@@ -244,10 +278,20 @@ async function main() {
   // still need to surface.
   const exclusionTrend = computeExclusionTrend(new Date());
 
-  // First run — save snapshot, skip email
+  // First run — save snapshot, write an empty digest snapshot (no prior data
+  // to diff against yet). DRY_RUN never touches the real digest snapshot —
+  // it must stay a preview, not silently overwrite what the morning email
+  // will actually read (ship-check finding).
   if (!prevSnapshot) {
-    console.log('No previous snapshot found — saving initial snapshot, skipping email.');
+    console.log('No previous snapshot found — saving initial snapshot, no digest to report.');
     fs.writeFileSync(SNAPSHOT_FILE, JSON.stringify(currSnapshot, null, 2));
+    if (!DRY_RUN) {
+      writeDigestSnapshot({
+        subject: `Daily Digest: initial snapshot on ${currSnapshot.date}`,
+        bannerText: 'First run — no comparison data yet',
+        items: [],
+      });
+    }
     return;
   }
 
@@ -257,12 +301,19 @@ async function main() {
 
   const hasExclusionSignal = exclusionTrend.spikes.length > 0 || exclusionTrend.novelReasons.length > 0;
   if (!hasChanges(changes) && !hasExclusionSignal) {
-    console.log('No changes or exclusion signals detected — skipping email.');
+    console.log('No changes or exclusion signals detected.');
     fs.writeFileSync(SNAPSHOT_FILE, JSON.stringify(currSnapshot, null, 2));
+    if (!DRY_RUN) {
+      writeDigestSnapshot({
+        subject: `Daily Digest: no changes on ${today}`,
+        bannerText: 'No changes',
+        items: [],
+      });
+    }
     return;
   }
 
-  // Build and send email
+  // Build the digest snapshot (card #497 — no longer emails on its own).
   const suspiciousCount = (changes.suspiciousChanges || []).length;
   const spikeCount = (changes.reviewSpikes || []).length;
   const totalChanges = changes.newShows.length +
@@ -271,10 +322,16 @@ async function main() {
   const subject = warnings > 0
     ? `⚠️ Daily Digest: ${totalChanges} changes (${warnings} warning${warnings !== 1 ? 's' : ''}) on ${today}`
     : `Daily Digest: ${totalChanges} change${totalChanges !== 1 ? 's' : ''} on ${today}`;
-  const html = buildDailyDigestHtml(changes, today);
+  const bannerText = `${totalChanges} change${totalChanges !== 1 ? 's' : ''}${warnings ? ` (${warnings} warning${warnings !== 1 ? 's' : ''})` : ''}`;
+  const items = buildDigestItems(changes);
 
+  // DRY_RUN previews only — it must never overwrite the real digest snapshot
+  // that autonomous-email.js folds into the actual morning email (ship-check
+  // finding: the original draft wrote it unconditionally, so a local
+  // `--dry-run` test run would silently clobber production digest data).
   if (DRY_RUN) {
-    console.log('DRY RUN — would send email:');
+    const html = buildDailyDigestHtml(changes, today);
+    console.log('DRY RUN — would write digest snapshot:');
     console.log(`  Subject: ${subject}`);
     console.log(`  New shows: ${changes.newShows.length}`);
     console.log(`  New reviews: ${changes.newReviews.length} shows`);
@@ -283,9 +340,10 @@ async function main() {
     console.log(`  Suspicious changes: ${suspiciousCount}`);
     fs.writeFileSync('/tmp/daily-digest-preview.html', html);
     console.log('  HTML preview: /tmp/daily-digest-preview.html');
-  } else {
-    await sendEmail(html, subject);
+    return;
   }
+
+  writeDigestSnapshot({ subject, bannerText, items });
 
   // Save new snapshot
   fs.writeFileSync(SNAPSHOT_FILE, JSON.stringify(currSnapshot, null, 2));
