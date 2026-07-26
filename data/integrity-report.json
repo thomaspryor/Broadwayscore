@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-25T04:24:44.617Z",
+  "timestamp": "2026-07-26T04:19:48.622Z",
   "hasIssues": true,
   "current": {
-    "date": "2026-07-25",
-    "totalReviews": 40649,
+    "date": "2026-07-26",
+    "totalReviews": 40668,
     "unknownOutlets": 5,
     "duplicates": 8,
     "syncDelta": 21572
   },
   "previous": {
-    "date": "2026-06-28",
-    "totalReviews": 40034,
-    "unknownOutlets": 2,
-    "duplicates": 3,
-    "syncDelta": 21441
+    "date": "2026-07-25",
+    "totalReviews": 40649,
+    "unknownOutlets": 5,
+    "duplicates": 8,
+    "syncDelta": 21572
   },
   "issues": [
     {
@@ -90,21 +90,11 @@
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (40649) and reviews.json (19077) are out of sync by 21572 reviews"
-    },
-    {
-      "type": "unknown_outlets_degradation",
-      "severity": "warning",
-      "message": "Unknown outlets increased from 2 to 5"
-    },
-    {
-      "type": "duplicates_degradation",
-      "severity": "warning",
-      "message": "Duplicates increased from 3 to 8"
+      "message": "review-texts (40668) and reviews.json (19096) are out of sync by 21572 reviews"
     }
   ],
   "summary": {
-    "totalReviews": 40649,
+    "totalReviews": 40668,
     "unknownOutlets": 5,
     "duplicates": 8,
     "syncDelta": 21572
