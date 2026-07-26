@@ -67,15 +67,21 @@ test('shouldRunSerpCensus: corrupt lastRunAt stamp reads as due, not stuck forev
 // --- buildCensusQueries (weak-title scoped variants, Sukkot 2026-07-25) ---
 const { buildCensusQueries, venueQueryToken } = require('./serp-review-census.js');
 
-test('buildCensusQueries: distinctive multi-word title → single primary query', () => {
+test('buildCensusQueries: every show gets the scoped variants its metadata supports (no ambiguity trigger)', () => {
+  // Second-opinion review 2026-07-26: the title-specificity trigger was
+  // deleted — acceptance filtering is query-independent, so extra queries can
+  // only add coverage. Multi-word titles fan out exactly like "Sukkot" did.
   const show = { title: 'Trainspotting Live in Concert', category: 'west-end', openingDate: '2026-07-01', venue: 'Arts Theatre' };
-  const qs = buildCensusQueries(show, { weakTitle: false, creativeNames: ['Irvine Welsh'] });
-  assert.deepEqual(qs, ['"Trainspotting Live in Concert" West End review 2026']);
+  const qs = buildCensusQueries(show, { creativeNames: ['Irvine Welsh'] });
+  assert.deepEqual(qs, [
+    '"Trainspotting Live in Concert" West End review 2026',
+    '"Trainspotting Live in Concert" Welsh review',
+  ]);
 });
 
-test('buildCensusQueries: weak title adds venue- and people-scoped variants', () => {
+test('buildCensusQueries: venue + creative both usable → 3 queries', () => {
   const show = { title: 'Sukkot', category: 'off-broadway', openingDate: '2026-07-11', venue: '59E59 Theaters Theater B' };
-  const qs = buildCensusQueries(show, { weakTitle: true, creativeNames: ['Matthew Leavitt', 'Joel Zwick'] });
+  const qs = buildCensusQueries(show, { creativeNames: ['Matthew Leavitt', 'Joel Zwick'] });
   assert.deepEqual(qs, [
     '"Sukkot" Off-Broadway review 2026',
     '"Sukkot" review 59e59',
@@ -83,9 +89,9 @@ test('buildCensusQueries: weak title adds venue- and people-scoped variants', ()
   ]);
 });
 
-test('buildCensusQueries: weak title with no venue/creative still returns the primary', () => {
+test('buildCensusQueries: no venue token and no creative names → primary only', () => {
   const show = { title: 'Shifters', category: 'off-broadway', openingDate: '2026-07-16' };
-  const qs = buildCensusQueries(show, { weakTitle: true, creativeNames: [] });
+  const qs = buildCensusQueries(show, { creativeNames: [] });
   assert.deepEqual(qs, ['"Shifters" Off-Broadway review 2026']);
 });
 
@@ -97,5 +103,5 @@ test('buildCensusQueries: generic venue words cannot scope a query', () => {
 });
 
 test('buildCensusQueries: no title → empty array', () => {
-  assert.deepEqual(buildCensusQueries({ category: 'broadway' }, { weakTitle: true }), []);
+  assert.deepEqual(buildCensusQueries({ category: 'broadway' }, {}), []);
 });

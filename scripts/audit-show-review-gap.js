@@ -715,13 +715,11 @@ async function auditShow(show, opts = {}) {
     const cooldownHours = Number.isFinite(cooldownRaw) ? cooldownRaw : SERP_CENSUS_DEFAULT_COOLDOWN_HOURS;
     if (shouldRunSerpCensus({ inWindow: inWindowNow, lastRunAt: opts.lastCensusAt || null, cooldownHours })) {
       const showInfo = getShowInfo(show.id);
-      // Weak-specificity titles (single significant token — "Sukkot",
-      // "Shifters") get scoped follow-up queries: the un-scoped top-10 is
-      // polluted by the word's other meaning and real reviews rank below it
-      // (Sukkot 2026-07-25 — Blogcritics/Theater Pizzazz invisible to the
-      // single-query census, page-1 on a scoped Google search).
-      const weakTitle = isGenericShowTitle(show.title) || titleTokens(show.title).length <= 1;
-      const queries = buildCensusQueries(show, { weakTitle, creativeNames: showInfo.creativeNames || [] });
+      // Every show gets whatever scoped follow-up queries its metadata
+      // supports (venue token, creative surname) — no title-ambiguity
+      // trigger. Rationale + rejected alternatives documented on
+      // buildCensusQueries (serp-review-census.js).
+      const queries = buildCensusQueries(show, { creativeNames: showInfo.creativeNames || [] });
       if (queries.length) {
         const dateRange = calculateDateWindow(show);
         const queryStatus = [];
