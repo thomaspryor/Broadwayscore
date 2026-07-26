@@ -52,15 +52,29 @@ function main() {
     seenYears.add(year);
   });
 
+  // Ceremony number is DERIVED from the season label + ceremony dates, never
+  // taken from tony-nominations.json: its ceremony field runs one too high for
+  // post-COVID seasons (no 2020 ceremony; e.g. A Strange Loop's 2021-22 win is
+  // tagged 76 there but happened at the 75th, 2022-06-12). Rule: a season
+  // "A-B" is honored at the first ceremony dated on/after Jan 1 of its end
+  // year — which also lands 2019-20 correctly on the 74th (held Sept 2021).
+  const ceremonyForSeason = (season) => {
+    const endYear = Number(season.slice(0, 4)) + 1;
+    const hit = ceremonies.find((c) => c.date >= `${endYear}-01-01`);
+    if (!hit) throw new Error(`no ceremony on/after ${endYear} for season ${season}`);
+    return hit.ceremony;
+  };
+
   const winners = { bestMusical: [], bestPlay: [] };
   for (const nom of nominations) {
     const key = WINNER_CATEGORIES[nom.category];
     if (!key || !nom.won || nom.name !== '(show-level)') continue;
     const show = showsById.get(nom.showId);
     if (!show) throw new Error(`winner ${nom.showId} (${nom.season} ${nom.category}) missing from shows.json`);
-    if (!ceremonyByNumber.has(nom.ceremony)) throw new Error(`winner ${nom.showId} references unknown ceremony ${nom.ceremony}`);
+    const ceremony = ceremonyForSeason(nom.season);
+    if (!ceremonyByNumber.has(ceremony)) throw new Error(`winner ${nom.showId} derived unknown ceremony ${ceremony}`);
     const entry = {
-      ceremony: nom.ceremony,
+      ceremony,
       season: nom.season,
       id: nom.showId,
       t: show.title,
