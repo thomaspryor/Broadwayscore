@@ -34,7 +34,7 @@ const crypto = require('crypto');
 const { execSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
-const { routeAlert, readDispatchAttempts, drainDigestQueue } = require('./lib/owner-alert-router.js');
+const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = require('./lib/owner-alert-router.js');
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
@@ -2068,7 +2068,12 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
   // the digest as the router's own design intends. Drained here, once per
   // real send (this function is the single production call site), so a
   // condition queued between digests always appears in the next one.
-  const queuedDigestItems = drainDigestQueue();
+  // PEEK, don't drain: ~430 lines of rendering run before the snapshot below
+  // is written, and a read-and-clear here loses every queued line permanently
+  // if any of that throws (the ledger already marked those conditions
+  // notified, so they are never re-queued). Cleared only after the snapshot
+  // file is on disk.
+  const queuedDigestItems = peekDigestQueue();
   const escapeHtml = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
   const subject = getDigestSubject(results, history, autoFixResults);
@@ -2494,17 +2499,26 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     errors: unfixedErrors.map(r => ({ name: r.name, message: r.message })),
     warns: unfixedWarns.map(r => ({ name: r.name, message: r.message })),
     // owner-alert-router's disposition='digest' queue (ship-check finding,
-    // card #364): drainDigestQueue() above already CLEARED this queue —
-    // whatever it held only ever reaches the owner if it's carried here.
-    // Losing it would silently reintroduce the exact bug card #475 fixed
-    // (routed conditions vanishing into a queue nothing reads back out of).
-    queued: queuedDigestItems.map(q => ({ title: q.title, description: q.description, severity: q.severity })),
+    // card #364): whatever it held only ever reaches the owner if it's
+    // carried here. Losing it would silently reintroduce the exact bug card
+    // #475 fixed (routed conditions vanishing into a queue nothing reads back
+    // out of). The queue is cleared just after this snapshot is written.
+    // url is carried too: routeAlert() accepts one and queueDigestLine()
+    // persists it, but projecting it away here made renderHealthDigestBlock's
+    // link unreachable in production — a digest line whose whole point is
+    // "go look at this page" (regional show going live) arrived unclickable.
+    queued: queuedDigestItems.map(q => ({ title: q.title, description: q.description, severity: q.severity, url: q.url ?? null })),
     autoFixedCount,
     passedCount: passed.length,
     totalCount: results.length,
   };
   fs.mkdirSync(path.dirname(HEALTH_DIGEST_SNAPSHOT_FILE), { recursive: true });
   fs.writeFileSync(HEALTH_DIGEST_SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
+  // Only now is it safe to clear: the queued lines are durably in the snapshot
+  // the morning email reads from. Clearing any earlier (as the old
+  // drainDigestQueue() call did) meant a throw anywhere above lost them for
+  // good, since the ledger had already marked those conditions notified.
+  if (queuedDigestItems.length > 0) clearDigestQueue();
   console.log(`[Health Digest] Snapshot written (${snapshot.errors.length} error(s), ${snapshot.warns.length} warning(s), ${snapshot.queued.length} queued) — folds into the morning email, not sent separately`);
   return true;
 }
