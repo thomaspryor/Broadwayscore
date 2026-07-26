@@ -3,18 +3,20 @@
   "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
   "showTitle": "The Truth",
   "market": "West End",
-  "fetchedAt": "2026-07-22T01:37:55.816Z",
-  "tier": "Troubled",
-  "volume": 103,
-  "effectiveVolume": 23.9,
+  "fetchedAt": "2026-07-26T20:50:07.684Z",
+  "tier": "Steady",
+  "volume": 189,
+  "effectiveVolume": 0,
   "relevanceRates": {
-    "byPlatform": {},
-    "overall": null
+    "byPlatform": {
+      "reddit": 0
+    },
+    "overall": 0
   },
-  "positivePct": 0,
+  "positivePct": null,
   "opinionSample": 0,
-  "weekOverWeekPct": null,
-  "baselineMultiple": null,
+  "weekOverWeekPct": 83,
+  "baselineMultiple": 1.83,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
@@ -24,30 +26,25 @@
   },
   "topQuotes": [],
   "counters": {
-    "reddit": null,
+    "reddit": 75,
     "bluesky": 0,
-    "x": 103,
-    "wikipedia": 40
+    "x": 114,
+    "wikipedia": 59
   },
   "wikipediaTitle": "The Truth (play)",
   "baseline": {
-    "mean": 103,
-    "weeksOfHistory": 1
+    "mean": 146,
+    "weeksOfHistory": 2
   },
   "rawCounts": {
-    "reddit": 0,
+    "reddit": 75,
     "bluesky": 0
   },
-  "errors": [
-    {
-      "platform": "reddit",
-      "error": "all providers down (see log)"
-    }
-  ],
+  "errors": [],
   "rank": {
-    "position": 42,
-    "total": 46,
-    "text": "42/46 West End"
+    "position": 27,
+    "total": 48,
+    "text": "27/48 West End"
   },
   "compositeScore": 0
 }
