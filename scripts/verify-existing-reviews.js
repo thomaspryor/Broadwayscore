@@ -27,6 +27,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { verifyContent } = require('./lib/content-verifier');
 const { wrongShowCleared } = require('./lib/review-guards');
+const { pushWithRetry } = require('./lib/push-with-retry.js');
 
 const BASE = 'data/review-texts';
 
@@ -338,16 +339,17 @@ function checkpoint(message) {
     const status = execSync('git diff --staged --quiet 2>/dev/null; echo $?', { encoding: 'utf8' }).trim();
     if (status !== '0') {
       execSync(`git commit -m "chore: Retroactive LLM verify — ${message}"`, { stdio: 'pipe' });
-      for (let attempt = 1; attempt <= 5; attempt++) {
-        try {
-          execSync('git pull --rebase origin main && git push', { stdio: 'pipe' });
-          console.log(`  [checkpoint] Committed and pushed: ${message}`);
-          break;
-        } catch {
-          console.log(`  [checkpoint] Push attempt ${attempt} failed, retrying...`);
-          try { execSync('git rebase --abort 2>/dev/null', { stdio: 'pipe' }); } catch {}
-          execSync('sleep ' + (5 + Math.floor(Math.random() * 10)));
-        }
+      // Push through the shared helper (task #420). The hand-rolled
+      // `git pull --rebase origin main && git push` retry loop here carried
+      // no depth bound, and verify-existing-reviews.yml checks out at the
+      // default fetch-depth: 1 — from a shallow clone that pull makes
+      // upload-pack send the entire ~2.1 GB repo (#466). The helper also
+      // brings the #394 stale-tracking-ref fix and #543 HEAD preservation.
+      const { ok, stderr } = pushWithRetry({ branch: 'HEAD:main', retries: 5 });
+      if (ok) {
+        console.log(`  [checkpoint] Committed and pushed: ${message}`);
+      } else {
+        console.log(`  [checkpoint] Push failed: ${stderr.split('\n').slice(-3).join(' ')}`);
       }
     }
   } catch (e) {
@@ -380,48 +382,18 @@ function pushReviewTextsCheckpoint(message) {
     } catch { /* Has changes */ }
     const msg = `chore: Checkpoint review texts — ${message}`;
     execSync(`git commit -m "${msg}"`, { cwd: rtDir, stdio: 'pipe' });
-    for (let i = 1; i <= 3; i++) {
-      try {
-        execSync('git pull --rebase -X theirs origin main', { cwd: rtDir, stdio: 'pipe' });
-        // CRITICAL: -X theirs silently drops local changes to protected fields.
-        // Restore them before pushing. Same fix as collect-review-texts.js (50e0de8b63).
-        try {
-          const restoreScriptPath = path.resolve(__dirname, 'lib', 'restore-protected-fields.js');
-          const restored = execSync(`node "${restoreScriptPath}" origin/main`, { cwd: rtDir, encoding: 'utf8', stdio: 'pipe' }).trim();
-          if (parseInt(restored, 10) > 0) {
-            console.log(`  [checkpoint] ↻ Restored protected fields in ${restored} file(s) after rebase`);
-            execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
-            execSync('git commit --amend --no-edit', { cwd: rtDir, stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
-          }
-        } catch (restoreErr) {
-          console.log(`  [checkpoint] ⚠ restore-protected-fields failed: ${restoreErr.message}`);
-        }
-        execSync('git push origin main', { cwd: rtDir, stdio: 'pipe' });
-        console.log(`  [checkpoint] ✓ Pushed review-texts to private repo (attempt ${i})`);
-        return;
-      } catch (pushErr) {
-        // Handle modify/delete conflicts
-        try {
-          const unmerged = execSync('git diff --name-only --diff-filter=U', { cwd: rtDir, encoding: 'utf8' }).trim();
-          if (unmerged) {
-            for (const f of unmerged.split('\n').filter(Boolean)) {
-              if (fs.existsSync(path.join(rtDir, f))) {
-                execSync(`git add "${f}"`, { cwd: rtDir, stdio: 'pipe' });
-              } else {
-                try { execSync(`git rm "${f}"`, { cwd: rtDir, stdio: 'pipe' }); } catch {}
-              }
-            }
-            execSync('git rebase --continue', { cwd: rtDir, stdio: 'pipe' });
-            execSync('git push origin main', { cwd: rtDir, stdio: 'pipe' });
-            console.log(`  [checkpoint] ✓ Pushed review-texts after conflict resolution (attempt ${i})`);
-            return;
-          }
-        } catch {}
-        try { execSync('git rebase --abort', { cwd: rtDir, stdio: 'pipe' }); } catch {}
-        console.log(`  [checkpoint] Review-texts push attempt ${i} failed, retrying...`);
-      }
+    // Push through the shared helper (task #420). Replaces a hand-rolled
+    // `git pull --rebase -X theirs` + protected-field restore + conflict loop.
+    // The review-texts checkout is shallow by default too (.github/actions/
+    // checkout-review-texts, fetch-depth: 1), so the unbounded pull had the
+    // same whole-repo-transfer exposure (#466). The helper runs the same
+    // lib/restore-protected-fields.js this used to invoke by hand.
+    const rtPush = pushWithRetry({ cwd: rtDir, branch: 'main', retries: 3 });
+    if (rtPush.ok) {
+      console.log('  [checkpoint] ✓ Pushed review-texts to private repo');
+      return;
     }
-    console.log('  [checkpoint] ⚠ Failed to push review-texts after 3 attempts');
+    console.log(`  [checkpoint] ⚠ Failed to push review-texts: ${rtPush.stderr.split('\n').slice(-3).join(' ')}`);
   } catch (e) {
     console.log(`  [checkpoint] ⚠ Review-texts push error: ${e.message}`);
   }

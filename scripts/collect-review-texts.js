@@ -53,6 +53,7 @@ const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { pushWithRetry } = require('./lib/push-with-retry.js');
 const https = require('https');
 
 const USAGE = `collect-review-texts.js — multi-tier fallback review text scraper.
@@ -5234,64 +5235,23 @@ function saveState() {
  * being replayed, so --theirs keeps our data. During merge, "ours" = our branch.
  */
 function _pushToRemote(processed) {
-  const { execSync } = require('child_process');
-  let pushSucceeded = false;
-
-  try {
-    execSync('git fetch origin main', { stdio: 'pipe' });
-
-    // Try rebase with -X theirs (keeps our commits' content on conflict)
-    try {
-      execSync('git rebase -X theirs origin/main', { stdio: 'pipe' });
-      pushSucceeded = true;
-    } catch (rebaseErr) {
-      console.log('    Rebase conflict detected, auto-resolving state files...');
-      // In rebase context: --theirs = our commits being replayed (what we want to keep)
-      // Resolve up to 4 rounds of conflicts (multiple commits may each conflict)
-      for (let round = 0; round < 4 && !pushSucceeded; round++) {
-        try {
-          // Auto-resolve: keep ours for state files, theirs for everything else
-          const conflicted = execSync('git diff --name-only --diff-filter=U', { encoding: 'utf8', stdio: 'pipe' }).trim();
-          if (!conflicted) break;
-          for (const file of conflicted.split('\n').filter(Boolean)) {
-            if (file.startsWith('data/collection-state/') || file.startsWith('data/audit/')) {
-              execSync(`git checkout --theirs "${file}"`, { stdio: 'pipe' });
-            } else {
-              execSync(`git checkout --ours "${file}"`, { stdio: 'pipe' });
-            }
-            execSync(`git add "${file}"`, { stdio: 'pipe' });
-          }
-          execSync('git rebase --continue', { stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
-          pushSucceeded = true;
-        } catch (continueErr) {
-          // More conflicts in next commit — loop will retry
-        }
-      }
-      if (!pushSucceeded) {
-        try { execSync('git rebase --abort', { stdio: 'pipe' }); } catch (e) {}
-      }
-    }
-
-    // Fallback: merge with ours strategy (in merge context, ours = our branch)
-    if (!pushSucceeded) {
-      console.log('    Trying merge approach...');
-      try {
-        execSync('git merge origin/main -X ours --no-edit', { stdio: 'pipe' });
-        pushSucceeded = true;
-      } catch (mergeErr) {
-        console.log('    Merge also failed');
-        try { execSync('git merge --abort', { stdio: 'pipe' }); } catch (e) {}
-      }
-    }
-
-    if (pushSucceeded) {
-      execSync('git push origin HEAD:main', { stdio: 'pipe' });
-      console.log(`  ✓ Pushed checkpoint to remote (${processed} reviews)`);
-    } else {
-      throw new Error('Could not sync with remote');
-    }
-  } catch (syncErr) {
-    console.log(`    ⚠ Checkpoint push failed (will be caught by final workflow commit): ${syncErr.message}`);
+  // Task #420: this used to hand-roll fetch → rebase -X theirs → merge fallback
+  // → push. The shared helper does all of that AND the four fixes this copy
+  // never received: the explicit-destination fetch refspec (#394), the
+  // single-timeout fetch (#464), the shallow depth bound (#466) and HEAD
+  // preservation (#543). The depth bound is the load-bearing one here — this
+  // script runs in 11 workflows, 5 of them on the default `fetch-depth: 1`
+  // checkout, where a bare `git fetch origin main` makes upload-pack send the
+  // whole ~2.1 GB / 165k-commit repo instead of the ~500-object delta
+  // (measured on a real runner, run 30218025467: 1365 MB before a 180s kill).
+  // Its conflict policy is identical to the one deleted here: keep the local
+  // run's data for data/collection-state/ and data/audit/, accept remote for
+  // everything else.
+  const { ok, stderr } = pushWithRetry({ branch: 'HEAD:main', retries: 5 });
+  if (ok) {
+    console.log(`  ✓ Pushed checkpoint to remote (${processed} reviews)`);
+  } else {
+    console.log(`    ⚠ Checkpoint push failed (will be caught by final workflow commit): ${stderr.split('\n').slice(-3).join(' ')}`);
   }
 }
 
@@ -5417,61 +5377,22 @@ function pushReviewTextsCheckpoint(processed) {
     const msg = `chore: Checkpoint review texts (${processed} collected)`;
     execSync(`git commit -m "${msg}"`, { cwd: rtDir, stdio: 'pipe' });
 
-    // Push with retry (same pattern as push-review-texts action)
-    for (let i = 1; i <= 3; i++) {
-      try {
-        execSync('git pull --rebase -X theirs origin main', { cwd: rtDir, stdio: 'pipe' });
-
-        // CRITICAL: -X theirs silently drops local changes to protected fields
-        // (humanReviewScore, humanReviewedWrongProduction, etc.). Restore them
-        // from local commits so the rebase doesn't wipe human-verified data.
-        try {
-          const restoreScriptPath = path.resolve(__dirname, 'lib', 'restore-protected-fields.js');
-          if (fs.existsSync(restoreScriptPath)) {
-            const restored = execSync(`node "${restoreScriptPath}" origin/main`, { cwd: rtDir, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }).trim();
-            const count = parseInt(restored, 10);
-            if (count > 0) {
-              console.log(`  ✓ Restored protected fields in ${count} file(s) after rebase`);
-              execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
-              execSync('git commit --amend --no-edit', { cwd: rtDir, stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
-            }
-          }
-        } catch (restoreErr) {
-          // Non-fatal — log but continue
-          console.log(`  ⚠ restore-protected-fields failed: ${restoreErr.message}`);
-        }
-
-        execSync('git push origin main', { cwd: rtDir, stdio: 'pipe' });
-        console.log(`  ✓ Pushed review-texts checkpoint to private repo (attempt ${i})`);
-        return;
-      } catch (pushErr) {
-        // Handle modify/delete conflicts
-        try {
-          const unmerged = execSync('git diff --name-only --diff-filter=U', { cwd: rtDir, encoding: 'utf8', stdio: 'pipe' }).trim();
-          if (unmerged) {
-            for (const f of unmerged.split('\n').filter(Boolean)) {
-              if (fs.existsSync(path.join(rtDir, f))) {
-                execSync(`git add "${f}"`, { cwd: rtDir, stdio: 'pipe' });
-              } else {
-                execSync(`git rm "${f}"`, { cwd: rtDir, stdio: 'pipe' });
-              }
-            }
-            execSync('git rebase --continue', { cwd: rtDir, stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
-            execSync('git push origin main', { cwd: rtDir, stdio: 'pipe' });
-            console.log(`  ✓ Pushed review-texts checkpoint after conflict resolution (attempt ${i})`);
-            return;
-          }
-        } catch (e2) {
-          // Conflict resolution failed
-        }
-        try { execSync('git rebase --abort', { cwd: rtDir, stdio: 'pipe' }); } catch (e3) {}
-        if (i < 3) {
-          const wait = Math.floor(Math.random() * 10) + 5;
-          execSync(`sleep ${wait}`, { stdio: 'pipe' });
-        }
-      }
+    // Push through the shared helper (task #420). This block used to hand-roll
+    // `git pull --rebase -X theirs` + protected-field restore + modify/delete
+    // conflict resolution + a 3-attempt loop — every one of which push-with-
+    // retry.sh already does, plus the fixes this copy never got. The
+    // review-texts checkout is ALSO shallow by default (.github/actions/
+    // checkout-review-texts sets fetch-depth: 1), so the unbounded pull here
+    // had the same whole-repo-transfer exposure as the main-repo fetch above.
+    // The helper's restore_protected_fields() runs the same
+    // lib/restore-protected-fields.js this used to invoke by hand, and it
+    // additionally runs validate-added-review-ownership.js for this remote.
+    const rtPush = pushWithRetry({ cwd: rtDir, branch: 'main', retries: 3 });
+    if (rtPush.ok) {
+      console.log(`  ✓ Pushed review-texts checkpoint to private repo`);
+      return;
     }
-    console.log('  ⚠ Failed to push review-texts checkpoint (will retry at next checkpoint)');
+    console.log(`  ⚠ Failed to push review-texts checkpoint (will retry at next checkpoint): ${rtPush.stderr.split('\n').slice(-3).join(' ')}`);
   } catch (e) {
     console.log(`  ⚠ Review-texts checkpoint push error: ${e.message}`);
   }

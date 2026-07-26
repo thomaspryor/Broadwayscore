@@ -24,6 +24,7 @@ const { OUTLET_DOMAINS, DOMAIN_REDIRECTS, discoverCorrectUrl } = require('./lib/
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { isCrossOutletUrl } = require('./lib/review-normalization');
+const { pushWithRetry } = require('./lib/push-with-retry.js');
 
 // ---------------------------------------------------------------------------
 // CONFIG
@@ -264,38 +265,21 @@ function gitCheckpoint(message) {
 
     execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
 
-    // Push with retry + rebase
-    let pushed = false;
-    for (let attempt = 1; attempt <= 5 && !pushed; attempt++) {
-      try {
-        execSync('git fetch origin main', { stdio: 'pipe' });
-        try {
-          execSync('git rebase origin/main', { stdio: 'pipe' });
-        } catch (rebaseErr) {
-          execSync('git checkout --ours data/', { stdio: 'pipe' });
-          execSync('git add data/', { stdio: 'pipe' });
-          try {
-            execSync('git rebase --continue', { stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
-          } catch (e) {
-            try { execSync('git rebase --abort', { stdio: 'pipe' }); } catch (e2) {}
-            execSync('git merge origin/main -X ours --no-edit', { stdio: 'pipe' });
-          }
-        }
-        execSync('git push origin HEAD:main', { stdio: 'pipe' });
-        pushed = true;
-      } catch (e) {
-        console.log(`  Push attempt ${attempt}/5 failed: ${e.message}`);
-        if (attempt < 5) {
-          const delay = attempt * 3000;
-          execSync(`sleep ${delay / 1000}`, { stdio: 'pipe' });
-        }
-      }
-    }
-
-    if (pushed) {
+    // Push through the shared helper (task #420). The hand-rolled fetch →
+    // rebase → merge-fallback → 5-attempt loop that used to live here missed
+    // every fix push-with-retry.sh has received: the explicit-destination
+    // fetch refspec (#394 — a bare `git fetch origin main` leaves
+    // refs/remotes/origin/main STALE under a SHA-pinned checkout, so the
+    // rebase silently integrates nothing and all 5 attempts are rejected),
+    // the single-timeout fetch (#464), the shallow depth bound (#466 — this
+    // script's only workflow, rediscover-urls.yml, checks out at the default
+    // fetch-depth: 1, where an unbounded fetch pulls the entire ~2.1 GB repo),
+    // and HEAD preservation (#543).
+    const { ok, stderr } = pushWithRetry({ branch: 'HEAD:main', retries: 5 });
+    if (ok) {
       console.log(`  ✓ ${message}`);
     } else {
-      console.error('  ✗ Git push failed after 5 attempts');
+      console.error(`  ✗ Git push failed: ${stderr.split('\n').slice(-3).join(' ')}`);
     }
   } catch (e) {
     console.error(`  ✗ Git checkpoint failed: ${e.message}`);
@@ -322,44 +306,20 @@ function pushReviewTextsCheckpoint(message) {
     try { execSync('git diff --staged --quiet', { cwd: rtDir, stdio: 'pipe' }); return; }
     catch { /* has changes */ }
     execSync(`git commit -m "${message}"`, { cwd: rtDir, stdio: 'pipe' });
-    for (let i = 1; i <= 3; i++) {
-      try {
-        execSync('git pull --rebase -X theirs origin main', { cwd: rtDir, stdio: 'pipe' });
-        // CRITICAL: -X theirs silently drops local changes to protected fields
-        // (humanReviewScore, humanReviewedWrongProduction, etc.). Restore them
-        // before pushing. Same fix as collect-review-texts.js (commit 50e0de8b63).
-        try {
-          const restoreScriptPath = path.resolve(__dirname, 'lib', 'restore-protected-fields.js');
-          const restored = execSync(`node "${restoreScriptPath}" origin/main`, { cwd: rtDir, encoding: 'utf8', stdio: 'pipe' }).trim();
-          if (parseInt(restored, 10) > 0) {
-            console.log(`  ↻ Restored protected fields in ${restored} file(s) after rebase`);
-            execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
-            execSync('git commit --amend --no-edit', { cwd: rtDir, stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
-          }
-        } catch (restoreErr) {
-          console.log(`  ⚠ restore-protected-fields failed: ${restoreErr.message}`);
-        }
-        execSync('git push origin main', { cwd: rtDir, stdio: 'pipe' });
-        console.log(`  ✓ Pushed review-texts to private repo (attempt ${i})`);
-        return;
-      } catch {
-        try {
-          const unmerged = execSync('git diff --name-only --diff-filter=U', { cwd: rtDir, encoding: 'utf8' }).trim();
-          if (unmerged) {
-            for (const f of unmerged.split('\n').filter(Boolean)) {
-              if (fs.existsSync(path.join(rtDir, f))) execSync(`git add "${f}"`, { cwd: rtDir, stdio: 'pipe' });
-              else try { execSync(`git rm "${f}"`, { cwd: rtDir, stdio: 'pipe' }); } catch {}
-            }
-            execSync('git rebase --continue', { cwd: rtDir, stdio: 'pipe' });
-            execSync('git push origin main', { cwd: rtDir, stdio: 'pipe' });
-            console.log(`  ✓ Pushed review-texts after conflict resolution (attempt ${i})`);
-            return;
-          }
-        } catch {}
-        try { execSync('git rebase --abort', { cwd: rtDir, stdio: 'pipe' }); } catch {}
-      }
+    // Push through the shared helper (task #420). Replaces a hand-rolled
+    // `git pull --rebase -X theirs` + protected-field restore + modify/delete
+    // conflict loop that duplicated push-with-retry.sh minus its fixes. The
+    // review-texts checkout is shallow by default too (.github/actions/
+    // checkout-review-texts, fetch-depth: 1), so the unbounded pull had the
+    // same whole-repo-transfer exposure (#466). The helper runs the same
+    // lib/restore-protected-fields.js and additionally validates added-review
+    // ownership for this remote.
+    const rtPush = pushWithRetry({ cwd: rtDir, branch: 'main', retries: 3 });
+    if (rtPush.ok) {
+      console.log('  ✓ Pushed review-texts to private repo');
+      return;
     }
-    console.log('  ⚠ Failed to push review-texts after 3 attempts');
+    console.log(`  ⚠ Failed to push review-texts: ${rtPush.stderr.split('\n').slice(-3).join(' ')}`);
   } catch (e) {
     console.log(`  ⚠ Review-texts push error: ${e.message}`);
   }

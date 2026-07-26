@@ -21,6 +21,7 @@ const { lookupIBDBDates } = require('./lib/ibdb-dates');
 const { cleanup } = require('./lib/scraper');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { pushWithRetry } = require('./lib/push-with-retry.js');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -67,17 +68,16 @@ function gitCheckpoint(count, total, label) {
     const staged = execSync('git diff --cached --name-only', { stdio: 'pipe' }).toString().trim().split('\n').filter(Boolean).length;
     if (staged > 0) {
       execSync(`git commit -m "data: Playwright backfill checkpoint ${count}/${total} — ${label}"`, { stdio: 'pipe' });
-      // Push with retry
-      for (let i = 1; i <= 5; i++) {
-        try {
-          execSync('git push origin main', { stdio: 'pipe' });
-          console.log(`  [GIT] Checkpoint ${count}/${total}: pushed (${label})`);
-          break;
-        } catch (e) {
-          execSync('git pull --rebase -X theirs origin main', { stdio: 'pipe' });
-          const backoff = Math.floor(Math.random() * 11 + 5) * 1000;
-          require('child_process').execSync(`sleep ${backoff / 1000}`);
-        }
+      // Push through the shared helper (task #420). The hand-rolled push →
+      // `git pull --rebase -X theirs` retry loop that lived here carried no
+      // depth bound; backfill-playwright-credits.yml checks out at the default
+      // fetch-depth: 1, and from a shallow clone that pull makes upload-pack
+      // send the whole ~2.1 GB repo instead of the delta (#466).
+      const { ok, stderr } = pushWithRetry({ branch: 'HEAD:main', retries: 5 });
+      if (ok) {
+        console.log(`  [GIT] Checkpoint ${count}/${total}: pushed (${label})`);
+      } else {
+        console.log(`  [GIT] Checkpoint ${count}/${total} push failed: ${stderr.split('\n').slice(-2).join(' ')}`);
       }
     }
   } catch (e) {

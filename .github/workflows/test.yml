@@ -58,6 +58,18 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/shallow-fetch-args.js'
       - 'scripts/lib/shallow-fetch-args.test.mjs'
+      # Unbounded-fetch lint guard (task #420): #466 fixed push-with-retry.sh's
+      # own fetch, but 7 scripts hand-rolled the same fetch+rebase+push and so
+      # never got that fix. The guard flags any git fetch/pull without a depth
+      # bound in a script reachable from a shallow (fetch-depth != 0) workflow.
+      # Detection is pure + colocated-tested (lib-test glob); path-listed so a
+      # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/unbounded-fetch-guard.js'
+      - 'scripts/lib/unbounded-fetch-guard.test.mjs'
+      - 'scripts/audit-unbounded-fetch.js'
+      # Node wrapper every JS/TS caller now uses to reach push-with-retry.sh,
+      # so the eighth push fix lands everywhere at once (task #420).
+      - 'scripts/lib/push-with-retry.js'
       # Recoupment newsletter freshness gate: backfilled historical recoupments
       # must never surface as "new this week" (owner, 2026-07-26). Colocated
       # *.test.mjs runs in the lib-test glob; path-listed so a solo edit
@@ -1154,6 +1166,21 @@ jobs:
         # fix opportunistically). Exempt a reviewed false positive with
         # // hygiene-help-flag-ok: <reason> in the script.
         run: node scripts/audit-help-flag-safety.js
+
+      - name: Audit — unbounded git fetch on shallow-checkout paths
+        # Prevents the #420/#466 bug class recurring. actions/checkout defaults
+        # to fetch-depth: 1; from a shallow clone a `git fetch`/`git pull` with
+        # no depth bound makes upload-pack send the ENTIRE repository (~2.1 GB /
+        # 165k commits here — measured on runner 30218025467: 1365 MB pulled
+        # before a 180s kill) instead of the ~500-object delta, so the job
+        # stalls to its timeout. #466 fixed scripts/lib/push-with-retry.sh, but
+        # 7 scripts had hand-rolled their own fetch+rebase+push and therefore
+        # never received that fix (nor #394's stale-tracking-ref fix). All are
+        # now routed through the helper; this gate is what stops the eighth
+        # copy from appearing. Blocking — a violation is a live CI stall, not
+        # style debt. Waive a reviewed false positive with an inline
+        # "unbounded-fetch-ok: <reason>".
+        run: node scripts/audit-unbounded-fetch.js
 
       - name: Audit — no direct Resend calls outside alert-router allowlist
         # Email-consolidation Sprint 1 (Notion 3a4637c5-416f-81eb, #279): every

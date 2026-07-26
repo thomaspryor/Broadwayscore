@@ -87,6 +87,11 @@ _timeout() {  # _timeout <secs> <cmd...> — fail-open (run directly) if no bina
 # config is HTTP-only (no-op on SSH remotes); the timeout wraps ALL transports
 # (intended — a hung SSH push should die too, and 90s is generous for a real one).
 git_fetch() {
+  # unbounded-fetch-ok: this is the transport WRAPPER, not a call site. Every
+  # invocation passes its own depth bound through "$@" (FETCH_DEPTH_ARGS below,
+  # computed by scripts/lib/shallow-fetch-args.js whenever the checkout is
+  # shallow). scripts/audit-unbounded-fetch.js cannot see through "$@", so the
+  # waiver lives here rather than as a fake flag on the git line.
   _timeout "$GIT_NET_TIMEOUT_SEC" \
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" fetch "$@"
 }
