@@ -34,6 +34,14 @@ const { fetchPage } = require('./lib/scraper');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-review-dates.js — Fetch pages for undated reviews to extract publishDate.
+
+Usage:
+  node scripts/backfill-review-dates.js [options]
+  node scripts/backfill-review-dates.js --help, -h    print this usage and exit
+`;
 const args = process.argv.slice(2);
 const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] || '50');
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
@@ -262,6 +270,8 @@ async function fetchWithCookies(url) {
 // --- Main ---
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const baseDir = path.join(__dirname, '..', 'data', 'review-texts');
   if (!fs.existsSync(baseDir)) {
     console.error('ERROR: data/review-texts/ not found');

@@ -29,6 +29,14 @@ const { execSync } = require('child_process');
 const { REBUILD_PAUSE_PATH, readRebuildPause } = require('./lib/rebuild-pause');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `pause-rebuild.js — Pause/resume rebuild-all-reviews.js (Schmigadoon 2026 Bug #12).
+
+Usage:
+  node scripts/pause-rebuild.js [options]
+  node scripts/pause-rebuild.js --help, -h    print this usage and exit
+`;
 function parseArgs(argv) {
   const args = { clear: false, status: false, cancel: false, minutes: null, reason: '', pausedBy: '' };
   for (const a of argv.slice(2)) {
@@ -136,6 +144,8 @@ function setPause({ minutes, reason, pausedBy }) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const args = parseArgs(process.argv);
 
   if (args.status) return printStatus();

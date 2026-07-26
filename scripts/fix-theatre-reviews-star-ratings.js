@@ -14,6 +14,14 @@
 const fs = require('fs');
 const path = require('path');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-theatre-reviews-star-ratings.js — Fix theatre-reviews star rating misattribution.
+
+Usage:
+  node scripts/fix-theatre-reviews-star-ratings.js [options]
+  node scripts/fix-theatre-reviews-star-ratings.js --help, -h    print this usage and exit
+`;
 const REVIEW_TEXTS_DIR = process.argv.find(a => a.startsWith('--dir='))
   ? process.argv.find(a => a.startsWith('--dir=')).slice(6)
   : path.join(__dirname, '..', 'data', 'review-texts');
@@ -36,6 +44,8 @@ function isMangledCritic(name) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
     .filter(d => fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
 

@@ -66,6 +66,14 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { isIncludableForRebuild, areSameCriticFuzzy } = require('./lib/review-guards');
 const { normalizeUrl } = require('./lib/review-normalization');
 const { computeContentFingerprint } = require('./lib/content-quality');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `dedupe-same-url-bylines.js — Fixes the same-URL / multi-byline double-count class (Notion 2026-07-12,.
+
+Usage:
+  node scripts/dedupe-same-url-bylines.js [options]
+  node scripts/dedupe-same-url-bylines.js --help, -h    print this usage and exit
+`;
 const {
   chooseCanonicalForRebuild, isScoreable,
 } = require('./fix-circular-duplicate-pairs');
@@ -302,6 +310,8 @@ function writeAuditReport(different) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const { cohesive, different } = audit();
   if (JSON_OUT) {
     console.log(JSON.stringify({ cohesiveCount: cohesive.length, differentCount: different.length, cohesive, different }, null, 2));

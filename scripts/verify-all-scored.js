@@ -58,6 +58,14 @@ const { sendAlert } = require('./lib/discord-notify');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { dispatchRescore: dispatchRescoreShared } = require('./lib/dispatch-rescore');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `verify-all-scored.js — Gap 1: post-rebuild orphan-unscored guard.
+
+Usage:
+  node scripts/verify-all-scored.js [options]
+  node scripts/verify-all-scored.js --help, -h    print this usage and exit
+`;
 const REPO_ROOT = path.resolve(__dirname, '..');
 const DATA_DIR = path.join(REPO_ROOT, 'data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
@@ -339,6 +347,8 @@ function auditShow(showId, show) {
 // ─── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const now = new Date();
 
   const showsDoc = loadJSON(SHOWS_FILE);

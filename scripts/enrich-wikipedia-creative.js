@@ -17,6 +17,14 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const https = require('https');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-wikipedia-creative.js — Enrich shows.json with creative team data from Wikipedia infoboxes.
+
+Usage:
+  node scripts/enrich-wikipedia-creative.js [options]
+  node scripts/enrich-wikipedia-creative.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 const CATEGORY_FILTER = process.argv.find(a => a.startsWith('--category='))?.split('=')[1] || null;
@@ -163,6 +171,8 @@ function buildCreativeTeam(fields, type) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showsData = loadShows();
   const shows = showsData.shows;
 

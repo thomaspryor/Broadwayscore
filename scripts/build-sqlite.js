@@ -14,6 +14,14 @@ const Database = require('better-sqlite3');
 const fs = require('fs');
 const path = require('path');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `build-sqlite.js — Build the SQLite query layer from JSON source files.
+
+Usage:
+  node scripts/build-sqlite.js [options]
+  node scripts/build-sqlite.js --help, -h    print this usage and exit
+`;
 const ROOT = path.join(__dirname, '..');
 const DATA = path.join(ROOT, 'data');
 const DB_PATH = path.join(DATA, 'broadway.db');
@@ -46,6 +54,8 @@ function checkIntegrity(db) {
 // ============================================================
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const startTime = Date.now();
 
   // Remove stale tmp file if exists

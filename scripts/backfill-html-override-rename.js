@@ -34,6 +34,14 @@ const {
 } = require('./lib/review-write-guard');
 const { generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-html-override-rename.js — One-shot backfill: rename review-text files where criticName was overwritten.
+
+Usage:
+  node scripts/backfill-html-override-rename.js [options]
+  node scripts/backfill-html-override-rename.js --help, -h    print this usage and exit
+`;
 const APPLY = process.argv.includes('--apply');
 const DRY_RUN = !APPLY;
 const ROOT = path.join(__dirname, '..');
@@ -289,6 +297,8 @@ function processCandidate(c) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const candidates = findCandidates();
   console.log(`Mode: ${APPLY ? 'APPLY (writes)' : 'DRY-RUN (no writes)'}`);
   console.log(`Candidates: ${candidates.length}`);

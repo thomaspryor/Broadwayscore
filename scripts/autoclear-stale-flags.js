@@ -30,6 +30,14 @@ const { execFileSync } = require('child_process');
 const { wouldAutoClear } = require('./lib/autoclear-shadow');
 const { assessBatchClearGate } = require('./lib/autoclear-batch-gate');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `autoclear-stale-flags.js — S3-T5 batch auto-clearer, hard-gated.
+
+Usage:
+  node scripts/autoclear-stale-flags.js [options]
+  node scripts/autoclear-stale-flags.js --help, -h    print this usage and exit
+`;
 const ROOT = process.env.BSC_DATA_ROOT || path.join(__dirname, '..');
 const AUDIT_DIR = path.join(ROOT, 'data', 'audit');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
@@ -89,6 +97,8 @@ function runScoringDelta() {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const report = loadJson(SHADOW_REPORT_PATH, null);
   const enableAllowed = !!(report && report.autoClearEnableAllowed);
   const batch = collectBatch();
