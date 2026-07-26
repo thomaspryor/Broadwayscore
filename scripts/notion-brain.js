@@ -615,7 +615,7 @@ async function createCard(args) {
 async function updateCard(args) {
   const pageId = args._positional[1];
   if (!pageId) {
-    console.error('Usage: notion-brain update <page-id> [--status ...] [--outcome ...] ...');
+    console.error('Usage: notion-brain update <page-id> [--name ...] [--status ...] [--outcome ...] ...');
     process.exit(1);
   }
 
@@ -628,6 +628,14 @@ async function updateCard(args) {
   }
 
   const properties = {};
+
+  // Rename. Needed when a card's scope is narrowed and the old title now
+  // misdescribes the work — the nightly triage LLM reads the TITLE first, so a
+  // stale "+ add lint guard" suffix on a card whose lint half moved to a
+  // sibling steers triage straight back to the out-of-scope verdict (card #529).
+  if (args.name) {
+    properties.Name = { title: [{ text: { content: String(args.name) } }] };
+  }
 
   if (args.status) {
     properties.Status = { status: { name: args.status } };
