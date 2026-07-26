@@ -282,6 +282,7 @@ test('fetchCardWithRetry: a first-try success never retries and never sleeps', a
   assert.equal(r.attempts, 1);
   assert.equal(calls, 1);
   assert.deepEqual(slept, []);
+  assert.equal(r.permanent, false, 'permanent must be an explicit false on success, never undefined');
 });
 
 test('fetchCardWithRetry: a persistently transient failure gives up after the bounded retry, carrying the last error', async () => {
