@@ -885,6 +885,12 @@ async function main(): Promise<void> {
     console.error('Usage: ANTHROPIC_API_KEY=sk-... npx ts-node scripts/llm-scoring/index.ts [options]');
     process.exit(1);
   }
+  // Post-guard non-optional alias. The `process.exit` narrowing above does not
+  // reach into the nested handleScoringResult() closure (task #516 moved the
+  // Haiku-fallback ReviewScorer construction there), so strictNullChecks —
+  // which scripts/llm-scoring/tsconfig.json turns ON for the CI gate, unlike
+  // the parent scripts/tsconfig.json — sees `string | undefined` at that call.
+  const claudeApiKeyChecked: string = claudeApiKey;
 
   if (options.ensemble && !openaiApiKey) {
     console.error('Error: OPENAI_API_KEY environment variable required for ensemble mode');
@@ -1370,7 +1376,7 @@ async function main(): Promise<void> {
           // 'manually-cleared but unscored' limbo. (2026-05-01 Eugene Onegin /
           // La Traviata opera incident — required manual rescue with Haiku.)
           if (!manualClearFallbackScorer) {
-            manualClearFallbackScorer = new ReviewScorer(claudeApiKey, {
+            manualClearFallbackScorer = new ReviewScorer(claudeApiKeyChecked, {
               // claude-3-5-haiku-20241022 deprecated 2026-02-19; bumped to
               // current Haiku 4.5 (2026-05-17 root fix per Notion
               // 363637c5-416f-81cc-8240-c48df8b4cfd2). With opera-aware
