@@ -1,258 +1,288 @@
-# iOS Show Stats — Design Spec ("My Scorecard")
+# iOS Show Stats — Design Spec ("My Scorecard") · v2
 
-**Status:** Design proposal · 2026-07-26
+**Status:** Design proposal · 2026-07-26 (v2 — owner priorities layered onto the full v1 scope)
 **Target:** BroadwayScorecard iOS app (`thomaspryor/BroadwayScorecard-app`)
-**Companion mockup:** `design-ios-show-stats-mockup.html` (5 annotated screens)
+**Companion sketch:** `design-ios-show-stats-mockup.html` — **layout sketch for
+direction only, NOT the proposed design.** Per
+`memory/feedback_ios_design_conservative_real_tokens.md` and the app repo's
+CLAUDE.md "Design Proposals": anything presented as *the* design must be
+implemented on the app's real `theme.ts` tokens/components and captured from the
+simulator, as 2–3 rendered options per screen.
 
 ---
 
+## 0. Owner priorities (v2 — additive, nothing from v1 is dropped)
+
+1. **Good looking, clean, modern**
+2. **Broadway Theaters visitor tracking**
+3. **Existing design system only** — no new tokens, typefaces, or colors
+4. **Shows per year tracking**
+5. **Feed with photos** attached to show logs — **private only**
+
+v2 changes vs. v1: the Feed is promoted from "activity parity" to a core module
+with photo logging; Theaters and Shows-per-year lead the stats screen; the v1
+signature modules (You vs. Critics, Tony & Canon, People, Curtain Call) are
+**all retained** and sequenced right behind the priority set; the v1 visual
+inventions (chart-specific gold `#c48119`, serif/mono display type) are
+**removed** per priority 3 — see §9.
+
 ## 1. Thesis
 
-Mezzanine's stats tab answers *"how much theater have I seen?"* — shows by year, a
-ratings histogram, a theater map, two completion rings. It's good, but every number
+Mezzanine's stats tab answers *"how much theater have I seen?"* — shows by
+year, a ratings histogram, a theater map, two completion rings. Every number
 comes from the user's own diary and nothing else.
 
-Broadway Scorecard's unfair advantage is that **every diary entry lands inside a
-scored universe**: 1,500+ mobile shows with critic scores, audience grades, Tony
-tags, runtimes, casts/creatives, and theater metadata. So our stats feature answers
-three questions Mezzanine structurally can't:
+Broadway Scorecard's unfair advantage is that **every diary entry lands inside
+a scored universe**: 1,500+ mobile shows with critic scores, audience grades,
+Tony tags, runtimes, casts/creatives, and theater metadata. So our stats
+feature answers questions Mezzanine structurally can't:
 
-1. **"What kind of theatergoer am I?"** — taste vs. the critics and the audience,
-   genre mix, generosity as a rater.
-2. **"Where do I stand against the canon?"** — Tony Best Musical winners seen,
-   Critical Gold coverage, theater completion, most-seen composers and performers.
-3. **"What's my story this year?"** — a shareable, Wrapped-style *Curtain Call*
-   annual recap.
+1. **"What kind of theatergoer am I?"** — taste vs. the critics and the
+   audience, genre mix, generosity as a rater.
+2. **"Where do I stand against the canon?"** — Tony winners seen, Critical
+   Gold coverage, theater completion, most-seen composers and performers.
+3. **"What's my story?"** — a private photo scrapbook of every night at the
+   theater, and a shareable Curtain Call annual recap.
 
-Design principle: **every number is a door, not a plaque.** Every stat taps through
-to the list of shows behind it. No dead-end numbers.
+Design principle: **every number is a door, not a plaque.** Every stat taps
+through to the list of shows behind it. No dead-end numbers.
 
-Inspiration audit (what we're stealing and from whom):
+Inspiration audit:
 
 | Source | What we take |
 |---|---|
 | Letterboxd stats / Year in Review | year drill-down, most-watched people, milestone-list progress, ratings histogram vs. community |
-| The StoryGraph | mood/genre donuts, "your average vs. community" framing, rich year wrap-up |
+| The StoryGraph | genre donuts, "your average vs. community" framing, rich year wrap-up |
 | Goodreads Year in Books | superlatives (longest/shortest, most/least popular) |
 | Trakt VIP | hours watched as hero stat, day-of-week habits, all-time records |
 | Spotify Wrapped / Apple Replay | story-card share format, one bold stat per card |
 | Strava | personal records, streaks, "your biggest month" |
-| Mezzanine itself | shows-by-year bars, theater map, completion rings — we keep all of it, then go further |
+| Mezzanine | shows-by-year bars, theater map, completion rings, activity feed — kept, then extended |
 
----
+## 2. Information architecture
 
-## 2. Placement & information architecture
+- **Stats:** Profile tab → segmented control (Grid · Feed · Stats), matching
+  the Mezzanine mental model users already have. A compact "Your 2026 so far"
+  card on the home screen links here in December.
+- **Feed:** the diary timeline itself (§4) — photos make it a private
+  scrapbook, not a social feed.
+- **Scope pill** (All time / 2026 / 2025 …) pinned under the Stats header;
+  filters every module.
 
-- **Entry point:** Profile tab → segmented control (Grid · Activity · **Stats**), same
-  position Mezzanine uses so switchers feel at home. Also surface a compact
-  "Your 2026 so far" card on the app home screen in December linking here.
-- **Scope selector (global):** `All time ▾` pill pinned under the header —
-  All time / 2026 / 2025 / … Every module below re-filters. (Letterboxd's
-  all-time vs. per-year split, but one screen instead of separate pages.)
-- **Module order** (one scrolling screen, each module a card):
-  1. Marquee numbers (hero)
-  2. Shows over time
-  3. Ratings
-  4. You vs. the Critics ⭐
-  5. Tony & the Canon ⭐
-  6. Theaters (map + completion)
-  7. People ⭐
-  8. The Mix (musicals/plays, revivals, genres)
-  9. Records & Superlatives
-  10. Habits & Streaks
-  11. Curtain Call teaser (Nov–Jan) / share hub
+**Stats module order (v2):**
+1. Marquee numbers (hero tiles)
+2. **Shows per year** ← priority 4
+3. **Broadway theaters** ← priority 2
+4. Ratings
+5. You vs. the Critics ⭐
+6. Tony & the Canon ⭐
+7. People ⭐
+8. The Mix
+9. Records & Superlatives
+10. Habits & Streaks
+11. Curtain Call teaser (Nov–Jan) / share hub
 
-⭐ = differentiators Mezzanine cannot build. Modules hide themselves below data
-thresholds (see §6).
+⭐ = differentiators Mezzanine cannot build. Modules hide below data
+thresholds (§7).
 
----
-
-## 3. Module specs
+## 3. Priority modules
 
 ### 3.1 Marquee numbers (hero)
 Four stat tiles: **Shows** (diary count), **Hours in a seat** (Σ runtime `rt`,
 fallback 2h30m musicals / 2h plays; sub-label converts to days), **Theaters**
-(distinct venues), **This year** (count + ▲/▼ vs. same date last year).
-Sub-copy personalizes: "≈ 20 full days of theater."
+(distinct venues), **This year** (count + ▲/▼ pace vs. same date last year).
+Tabular numerals; animated `numericText` transitions.
 
-### 3.2 Shows over time
-Bar chart, shows per year (per month when a single year is scoped). Tap a bar →
-scope that year. Callouts under the chart: busiest month ever, current streak of
-consecutive months with a show, longest drought. (Bars: chart-gold; selected bar
-gets the brand highlight + count label — selective labeling, not every bar.)
+### 3.2 Shows per year (priority)
+Bar chart, one bar per year (Swift Charts; brand-gold bars, selected bar
+highlighted with a count label — selective labeling only).
+- Tap a bar → scopes the whole screen to that year; bars become months.
+- Records strip beneath: busiest month ever, current streak of consecutive
+  months with a show, longest drought. Each pill taps to its shows.
 
-### 3.3 Ratings
-Half-star histogram 0.5–5.0 of the user's ratings with two overlays:
-- **Your average** marker (e.g. 3.8★).
-- **Community ghost** — outline distribution of all-app ratings for the *same
-  shows*, so the copy can say "You rate 0.3★ above the crowd — a generous rater"
-  or "a tough crowd of one."
-Footer: "186 of 195 shows rated" + tap → unrated list (nudge to complete).
+### 3.3 Broadway theaters visitor tracking (priority)
+Parity with Mezzanine's rings + map, then deeper, using
+`data/theater-metadata.json` (capacity, opened, notes — 43 houses):
+- **Completion ring:** "Broadway houses · 37 of 41" — only currently-operating
+  houses in the denominator; closed/renamed houses listed as "extra credit"
+  so 100% stays reachable. West End ring alongside when WE visits exist.
+- **The house checklist** (the module people screenshot): all 41 houses as a
+  scannable grid — visited chips filled (brand-muted bg, visit count),
+  unvisited outlined. Tap any house → detail sheet: your shows there (posters
+  + dates), capacity, opened year, current tenant (venue join against
+  `mobile-shows.json`). **Unvisited sheets show what's playing there now + a
+  ticket link** — the completion mechanic feeds actual bookings.
+- **House records:** home theater (most visits), biggest/smallest house
+  you've sat in (capacity), oldest house (opened year).
+- **Map (v1.1, MapKit):** world view clusters by city; pinch into NYC/London
+  flips to one pin per house — filled visited, outlined not. Needs lat/lng in
+  theater metadata (+ a West End equivalent) — small data task in this repo.
+- Venue matching: diary entries carry `venue` strings from the Mezzanine
+  catalog import; normalize against `theater-metadata.json` keys.
 
-### 3.4 You vs. the Critics ⭐ (signature module)
-Everything here joins `user_reviews.rating` (×20 → 0–100) against `cs` from
-mobile-shows.
-- **Taste alignment gauge:** % of rated shows within ±10 pts of the critic score,
-  displayed as a friendly label ("In step with the critics 72%" / "Certified
-  contrarian"). Spearman correlation shown as fine print for nerds.
-- **Your contrarian picks:** two lists of the largest deltas —
-  *"You loved it, critics didn't"* and *"Critics raved, you shrugged"* — each row:
-  poster, title, your ★, critic score chip (score-bucket color), delta badge.
-  This is the screenshot-bait row; it's also a share card (§5).
-- **Critical Gold coverage:** of currently-open shows scoring 83+, how many
-  you've seen ("You've seen 7 of 11 Critical Gold shows running now") with the
-  remainder as a tappable to-see list → deep-link to show pages / tickets.
-  Turns stats into a booking loop — no other tracker closes that loop.
-- Repeat as a lighter one-row module for **audience grade** ("The audience agrees
-  with you 81% of the time").
+### 3.4 Ratings
+Half-star histogram 0.5–5.0 with your-average marker (neutral ink — no second
+accent hue). Footer: "186 of 195 shows rated" → taps to the unrated list.
+**Community ghost overlay** (outline distribution of all-app ratings for the
+same shows, "you rate +0.3★ above the crowd") ships once app rating volume
+exists (k≥5 aggregate, §8) — until then the module is yours-only.
 
-### 3.5 Tony & the Canon ⭐
-Letterboxd milestone-lists, theaterized. Checklist collections with progress
-rings + poster shelves:
-- **Tony Best Musical winners seen** (all-time list, pre-computed)
-- **Tony Best Play winners seen**
-- **This season's nominees** (live during Tony season — from `tony-nominations.json`)
-- **Saw it before it won:** count of shows attended *before* their Tony win
-  (diary `date_seen` < ceremony date). Pure flex stat; badge-worthy.
-- **NYT Critic's Picks seen** (tag `nyt-pick`).
-Each collection: ring (n of N), horizontal poster shelf — seen posters full-color,
-unseen dimmed at 20% (completionist itch, StoryGraph-challenge style).
+## 4. The Feed — private photo scrapbook (priority)
 
-### 3.6 Theaters
-Keep Mezzanine's map, then beat it at street level:
-- **Map (MapKit):** world view clusters by city (their feature, parity), but
-  pinch into NYC/London flips to **theater-district mode** — one pin per house,
-  gold = visited, outline = not yet. Requires lat/lng in theater metadata (§7).
-- **Completion rings:** Broadway n/41, West End n/39 (their feature, parity) —
-  but each ring taps into a **house grid**: every theater as a chip, visited
-  chips gold with visit count, unvisited dimmed. The "bingo card" people screenshot.
-- **House records:** most-visited house ("Your home theater: the Shubert, 9
-  shows"), biggest house visited (capacity from theater-metadata), smallest,
-  oldest. Sub-stat: "Seen a show in every currently-operating Shubert house" style
-  operator sub-rings later.
+Mezzanine's feed is text ("You added X to your diary"). Ours becomes the
+**private visual record of your theatergoing.** Nothing here is ever public.
 
-### 3.7 People ⭐
-Letterboxd's most-watched actors/directors, from `ct` (cast + creatives):
-- **Most-seen performers** (appearances across your diary, cast-change aware
-  where data allows), **most-seen composers/writers**, **most-seen directors**.
-- Rows: avatar/initial, name, count, mini poster strip of the shows.
-- Auto-generated micro-collections: "Your Sondheim count: 6" when a creative
-  crosses 3+.
+### Logging
+- The log sheet (rate/date/venue) gains **Add photos** (up to 6 per entry):
+  Playbill, marquee, curtain call, your seat view.
+- **iOS-native assist:** with photo-library permission, an on-device PHAsset
+  query for photos taken on `date_seen` (that evening, optionally near the
+  venue when geo available) surfaces a "From that night" picker row — one tap
+  to attach, including retroactively on historical entries. The query runs
+  entirely on-device; nothing is scanned server-side.
 
-### 3.8 The Mix
-- Donut: **musicals vs. plays** (chart-gold vs. purple, direct-labeled, 2px gaps).
-- Donut/bar: **revivals vs. originals** (`rv`), with "You lean revival, 61%".
-- **Genre bars** from `tg` tags (top 6 + Other).
-- **Earliness profile:** % seen in previews / first month / after year one —
-  "You're an early adopter: 34% of your shows were in their first month."
+### Feed
+- Timeline grouped by month headers; each entry card: poster thumb, title,
+  ★ rating, venue · date, note snippet, **photo strip** (rounded thumbs, tap →
+  full-screen pager with pinch zoom).
+- View toggle: **Timeline · Photo wall** (edge-to-edge grid of every photo,
+  each tapping back to its entry) **· Poster grid** (Mezzanine-parity wall).
+- Camera glyph on diary rows with photos; photoless entries get a gentle
+  "Add the Playbill 📸" prompt.
 
-### 3.9 Records & Superlatives
-Goodreads Year-in-Books energy, one-line rows with posters:
-longest show sat through (`rt`), shortest; most popular show you've seen (by
-app-wide ratings count) vs. **deepest cut** (fewest); highest critic score seen,
-lowest ("and you gave it 4★ — no regrets"); first diary entry ever; 100th/200th
-show with date; best-rated year ("2024 — your golden year, 4.1★ avg").
+### Privacy model (non-negotiable)
+- Feed and photos are **visible to the owner only** — no follower visibility,
+  no public surface, regardless of future social features.
+- Storage: **Supabase Storage private bucket** (`diary-photos/{user_id}/…`),
+  owner-only RLS, consistent with the existing auth stack; client-side
+  downscale to ~2048px + EXIF GPS strip on upload. (CloudKit private DB is
+  the zero-server alternative; decide in the app repo.)
+- Photos never auto-appear on share cards or exports; including one is always
+  an explicit per-share selection.
+- Schema: `user_review_photos (id, review_id FK, user_id, storage_path,
+  width, height, taken_at, position)`.
 
-### 3.10 Habits & Streaks
-- Day-of-week split (Trakt-style) — "You're a Saturday person (41%)."
-- Season heatmap: month × year grid, cells shaded by count (sequential ramp of
-  chart-gold).
-- Records: most shows in one week/month; current & longest monthly streak.
-- (Matinee vs. evening needs showtime capture — see §7 backlog.)
+## 5. Signature modules (retained from v1, sequenced after priorities)
 
-### 3.11 Curtain Call — the year in review ⭐
-Every December (unlock: Nov 15, data through Dec 31, available all January):
-full-screen swipeable story, 8 cards, each also exportable:
-1. Cover: "Your 2026 at the theater" + poster collage
-2. The numbers (shows, hours, theaters, cities)
-3. Your year in bars (months) + busiest week
-4. Your top 5 (by your rating, ties by recency) — poster podium
-5. Taste card: alignment %, most contrarian pick of the year
-6. People card: most-seen performer/composer of the year
-7. Canon card: Tony winners/nominees seen this year, houses unlocked
-8. Sign-off: "See you at the theater in 2027" + share CTA
-Push notification on unlock. This is the acquisition moment — every export
-carries the wordmark + App Store QR (§5).
+### 5.1 You vs. the Critics ⭐
+Joins `user_reviews.rating` (×20 → 0–100) against `cs` from mobile-shows.
+- **Taste alignment gauge:** % of rated shows within ±10 pts of the critic
+  score, with a friendly label ("In step with the critics 72%" / "Certified
+  contrarian"); Spearman ρ as fine print.
+- **Contrarian picks:** largest deltas both directions — *"You loved it,
+  critics didn't"* / *"Critics raved, you shrugged"* — poster, title, your ★,
+  critic score chip (score-tier colors, semantic use only), delta badge.
+  Screenshot-bait and a one-tap share card.
+- **Critical Gold coverage:** of open shows scoring 83+, how many you've seen
+  ("7 of 11") — the unseen remainder is a to-see list deep-linking to show
+  pages/tickets. Stats → intent → booking.
+- Lighter one-row repeat for **audience grade** ("The audience agrees with
+  you 81% of the time").
 
----
+### 5.2 Tony & the Canon ⭐
+Milestone checklists with progress rings + poster shelves (unseen posters
+dimmed): **Best Musical winners**, **Best Play winners**, **this season's
+nominees** (live during Tony season from `tony-nominations.json`), **NYT
+Critic's Picks** (`nyt-pick` tag). Plus **"Saw it before it won"** — diary
+`date_seen` < ceremony date. The purest theater flex; badge-worthy.
 
-## 4. Interaction grammar
+### 5.3 People ⭐
+From `ct` (cast + creatives): most-seen performers, composers/writers,
+directors — rows with count + mini poster strip. Crossing ×3 auto-creates a
+micro-collection ("Your Sondheim count: 6").
 
-- **Scope pill** filters every module; modules animate number transitions
-  (SwiftUI `contentTransition(.numericText())`).
-- **Every stat row/chart element is tappable** → filtered diary list ("the shows
-  behind this number"), from which each show opens normally.
-- Charts are Swift Charts; bars/cells get 44pt hit targets; VoiceOver reads
-  chart summaries ("Sixty shows in 2025, your busiest year").
-- Haptic tick when a ring crosses a milestone on screen entry (subtle, once).
+### 5.4 The Mix
+Musicals vs. plays (donut — brand gold + `surface-overlay` fills, direct
+labels; identity never carried by a second accent hue), revivals vs. originals
+(`rv`), top genres from `tg`, and an **earliness profile** (% seen in
+previews / first month / later — "an early adopter: 34% in the first month").
 
-## 5. Sharing
+### 5.5 Records & Superlatives
+One-line rows with posters: longest show sat through (`rt`), shortest; most
+popular show you've seen (app-wide rating counts) vs. deepest cut; highest/
+lowest critic score seen ("and you gave it 4★ — no regrets"); first diary
+entry; 100th/200th show with dates; best-rated year.
 
-Every module header has a share glyph → renders a branded card via SwiftUI
-`ImageRenderer` (no server round-trip): 9:16 story + 1:1 square, dark
-stage-black ground, gold accents, wordmark + QR footer. Card templates:
-marquee numbers, contrarian picks, theater bingo grid, any canon shelf, each
-Curtain Call card. Posters on share cards use the same `img.po` assets the app
-already ships. Privacy: sharing is always an explicit export; nothing is public
-by default (diary stays private — unchanged).
+### 5.6 Habits & Streaks
+Day-of-week split ("a Saturday person, 41%"), month × year heatmap (single-hue
+brand-gold ramp), most shows in a week/month, longest monthly streak.
+(Matinee vs. evening needs showtime capture — §8 backlog.)
 
-## 6. Empty & sparse states
+### 5.7 Curtain Call — the year in review ⭐
+Unlocks Nov 15 (data through Dec 31, available all January), push
+notification. Eight swipeable full-screen cards, each exportable 9:16 + 1:1
+via SwiftUI `ImageRenderer` (no server): cover collage → the numbers → your
+year in bars → top-five poster podium → taste card (alignment + most
+contrarian take) → people card → canon card (Tonys seen, houses unlocked) →
+sign-off + share CTA. Every export carries the wordmark + App Store QR — the
+acquisition moment. Cards use share-safe data only; feed photos are never
+auto-included (explicit pick only).
 
-- < 3 diary entries: stats tab shows a friendly preview with ghost charts +
-  "Log 3 shows to open your Scorecard" progress dots.
-- Module thresholds: Ratings ≥ 5 rated; You-vs-Critics ≥ 5 rated with `cs`;
-  People ≥ 10 entries; Habits ≥ 10 dated entries; below threshold the module
-  hides (never renders embarrassing single-bar charts).
-- **Mezzanine import is the cold-start solution:** the web app already imports
-  Mezzanine CSV (`MezzanineImport`); surface the same importer here in the empty
-  state ("Bring your Mezzanine diary with you") — instantly full stats. This is
-  the switching story.
-- Diary-only entries (32k-show catalog, no scores) participate in counts,
-  theaters, habits; they simply don't join critic-score modules — footnote
-  "177 of 195 shows have a score" mirrors Mezzanine's own pattern.
+## 6. Interaction grammar & sharing
 
-## 7. Data plan (this repo's side)
+- Scope pill filters every module; numbers animate.
+- **Every stat row/chart element taps** → filtered diary list → show pages.
+- Swift Charts; 44pt hit targets; VoiceOver summaries ("Sixty shows in 2025,
+  your busiest year"); haptic tick when a ring crosses a milestone.
+- Share glyphs on module headers render branded cards (same templates as
+  Curtain Call). Sharing is always explicit; the diary and feed stay private.
 
-Already shipped in `public/data/mobile-shows.json`: `cs`/`cr` (critic), `ag`
-(audience grade), `tg` (tags incl. `tony-winner`, `nyt-pick`), `rv` (revival),
-`rt` (runtime), `ct` (cast/creatives), `v` (venue), `od` (opening date).
-User side (Supabase): `user_reviews.rating/date_seen`, watchlist, lists.
+## 7. Empty & sparse states
 
-New build artifacts needed (add to `generate-mobile-artifacts.sh`):
-1. **`stats-canon.json`** — pre-computed lists: Tony Best Musical/Play winners
-   (year, showId|null, title, poster), NYT picks, Pulitzer winners; ceremony
-   dates for "saw it before it won."
-2. **Theater geo + metadata for mobile** — `theater-metadata.json` already has
-   capacity/opened for 43 Broadway houses; add `lat`/`lng` and a West End
-   equivalent (≈39 houses) → `theaters.json` mobile artifact.
-3. **Community rating distributions** — per-show histogram of app user ratings
-   (privacy: aggregate counts only, k≥5) for the ratings ghost overlay; until
-   volume exists, fall back to audience-score-derived expectation or hide.
-4. Diary catalog rows (Mezzanine import shows) already carry `venue/city/
-   country` — no change.
+- < 3 diary entries: ghost-chart preview + "Log 3 shows to open your
+  Scorecard" progress dots.
+- Thresholds: Ratings ≥ 5 rated; You-vs-Critics ≥ 5 rated with `cs`; People
+  ≥ 10 entries; Habits ≥ 10 dated entries. Below threshold → module hides.
+- **Mezzanine import is the cold-start CTA** (importer already exists on web):
+  "Bring your Mezzanine diary with you" → instantly full stats. The switching
+  story.
+- Diary-only entries (32k catalog) count toward totals, theaters, habits;
+  they don't join critic-score modules — footnote mirrors Mezzanine's own
+  "177 of 195 have a location" pattern.
 
-Capture backlog (app-side, optional fields on the log sheet, all feeding later
-stats): seat + price paid (→ spend stats, avg per show — no tracker does this
-well), showtime (matinee/evening), companions.
+## 8. Data plan (this repo)
 
-## 8. Phasing
+Shipped already: `mobile-shows.json` (`v`, `rt`, `cs`, `ag`, `tg`, `ct`, `od`,
+`rv`), `theater-metadata.json` (capacity/opened, 43 houses), diary catalog
+rows (venue/city/country). New artifacts:
+1. **Theater lat/lng** (+ West End file, ≈39 houses) for the map — v1.1.
+2. **`stats-canon.json`** — Tony Best Musical/Play winners (year, showId|null,
+   title, poster), ceremony dates, NYT picks, Pulitzers — v1.1/v2.
+3. **Community rating distributions** — per-show aggregate histograms (k≥5)
+   for the ratings ghost — v2, volume-dependent.
+Supabase: `user_review_photos` table + private storage bucket (§4).
+Capture backlog (app-side, optional log-sheet fields): seat + price paid
+(→ spend stats), showtime (matinee/evening), companions.
 
-- **V1 (all offline-computable from diary + mobile-shows):** hero numbers,
-  shows over time, ratings histogram (no ghost), the Mix, records &
-  superlatives, theater completion rings + house grid (no map), scope pill,
-  tap-through lists. ~2 wk of SwiftUI + a pure `StatsEngine` struct (unit-test
-  the reducers).
-- **V1.1:** You vs. Critics/Audience, Tony & Canon (needs `stats-canon.json`),
-  People, MapKit theater map (needs geo), share cards.
-- **V2 (Dec):** Curtain Call story + push unlock, community ghost overlay,
-  habits heatmap, milestone toasts/badges ("That was show #200 🎉").
+## 9. Visual language — existing design system ONLY
 
-## 9. Visual language (mockup: `design-ios-show-stats-mockup.html`)
+Per owner rule (recorded in
+`memory/feedback_ios_design_conservative_real_tokens.md`):
 
-Stage-dark ground `#0f0f14`, cards `#1a1a24` (app surface tokens); ink is warm
-cream; brand gold `#d4a574` for UI accents/headers. **Chart marks** use a
-deepened gold `#c48119` paired with purple `#a855f7` — the pair passes the
-dataviz palette validator on the dark surface (lightness band, chroma, CVD ΔE
-32.4, contrast ≥3:1); score-bucket green/amber/red appear only as semantic
-score chips, never as series colors. System type (SF), tabular numerals for all
-stats. Single dark theme is deliberate: this is theater — the lights are down.
+- **Type:** system font (SF) only. No serif, no monospace display, no new
+  typefaces anywhere. Tabular numerals for stats.
+- **Color:** only existing tokens — surfaces
+  (`#0f0f14 / #1a1a24 / #2a2a38 / #32323f`), text scale, brand gold `#d4a574`
+  (+ hover/light/muted variants), score-tier green/amber/red used **only** as
+  semantic score chips, status tokens. **No new chart colors:** charts are
+  single-hue brand-gold marks on surface grounds; two-category charts get
+  identity from direct labels with gold + `surface-overlay` fills.
+- **Components:** existing card, score chips, status badges, list rows. Bold
+  choices are **layout/IA only** — a screenshot must be indistinguishable in
+  font + color from the current app.
+- **Process:** design proposals = implement on real tokens in a
+  BroadwayScorecard-app worktree → simulator screenshots → 2–3 options per
+  screen (one faithful-polish, one bolder layout), per the app CLAUDE.md.
+
+## 10. Phasing
+
+- **V1 — priorities + core:** hero tiles, shows per year, Broadway theater
+  tracker (ring + checklist + records), ratings histogram, records &
+  superlatives, scope pill, tap-through lists, **photo logging + Feed
+  (timeline / photo wall / grid)**. Pure `StatsEngine` struct over diary +
+  `mobile-shows.json` (unit-tested reducers).
+- **V1.1:** You vs. Critics/Audience, Tony & Canon (`stats-canon.json`),
+  People, MapKit theater map (lat/lng artifact), share cards.
+- **V2 (December):** Curtain Call story + push unlock, community ghost
+  overlay, Habits heatmap, The Mix earliness profile, milestone toasts
+  ("that was show #200 🎉").
