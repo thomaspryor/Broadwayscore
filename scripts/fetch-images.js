@@ -15,6 +15,14 @@ const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fetch-images.js — Broadway Scorecard Image Fetcher.
+
+Usage:
+  node scripts/fetch-images.js [options]
+  node scripts/fetch-images.js --help, -h    print this usage and exit
+`;
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 2000;
@@ -636,6 +644,8 @@ function updateShowsJson(imageResults) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const isDryRun = process.argv.includes('--dry-run');
 
   console.log('Broadway Scorecard Image Fetcher');

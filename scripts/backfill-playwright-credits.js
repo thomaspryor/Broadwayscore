@@ -22,6 +22,14 @@ const { cleanup } = require('./lib/scraper');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-playwright-credits.js — Backfill Playwright Credits.
+
+Usage:
+  node scripts/backfill-playwright-credits.js [options]
+  node scripts/backfill-playwright-credits.js --help, -h    print this usage and exit
+`;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
 // Parse arguments
@@ -169,6 +177,8 @@ function mergeCreativeTeam(existing, ibdbTeam, targetRole) {
 // ---------------------------------------------------------------------------
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
   console.log('PLAYWRIGHT CREDIT BACKFILL');
   console.log('='.repeat(60));

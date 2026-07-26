@@ -27,6 +27,14 @@ const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-gu
 const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-ibdb-dates.js — IBDB Date & Creative Team Enrichment Script.
+
+Usage:
+  node scripts/enrich-ibdb-dates.js [options]
+  node scripts/enrich-ibdb-dates.js --help, -h    print this usage and exit
+`;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
 // Parse arguments
@@ -52,6 +60,8 @@ function saveShows(data) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
   console.log('IBDB DATE ENRICHMENT');
   console.log('='.repeat(60));
