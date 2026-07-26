@@ -32,6 +32,7 @@ const { normalizeSources } = require('./lib/commercial-sources');
 const { createRunBudget } = require('./lib/run-budget');
 const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-scope');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
+const { pushWithRetry } = require('./lib/push-with-retry.js');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -926,14 +927,28 @@ async function main() {
       const msg = `data: Deep research batch — ${researchedCount} shows, $${totalCost.toFixed(2)} spent`;
       execSync(`git commit -m "${msg}" --allow-empty`, gitOpts);
 
-      // Push with rebase to handle concurrent pushes
-      try {
-        execSync('git pull --rebase origin main', gitOpts);
-      } catch (e) {
-        console.warn('    Pull-rebase warning:', e.message?.slice(0, 100));
+      // Push through the shared helper (task #420). The bare
+      // `git pull --rebase origin main` + `git push` here carried no depth
+      // bound; both commercial-weekly.yml and deep-research-commercial.yml
+      // check out at the default fetch-depth: 1, where that pull makes
+      // upload-pack send the whole ~2.1 GB repo (#466). The helper also
+      // per-slug-merges data/commercial-pending-review.json on conflict
+      // instead of letting one side win wholesale.
+      // PUSH_RECONCILE_MERGED_JSON=1: this script writes commercial-pending-
+      // review.json, which has a dedicated per-slug UNION merger. The helper's
+      // `rebase -X theirs` resolves conflicting hunks in favour of our commits
+      // WITHOUT raising a conflict, so resolve_conflicts() — the only place
+      // that merger normally runs — never fires and a concurrent writer's
+      // nearby slug is silently dropped (measured on a fixture, 2026-07-26).
+      // The flag turns on the post-rebase reconciliation pass that re-unions
+      // it against the remote tip. Opt-in so the ~114 other callers keep
+      // today's exact semantics.
+      const { ok, stderr } = pushWithRetry({ cwd, branch: 'HEAD:main', retries: 5, reconcileMergedJson: true });
+      if (ok) {
+        console.log('    Committed and pushed.');
+      } else {
+        console.warn(`    Push failed: ${stderr.split('\n').slice(-2).join(' ')}`);
       }
-      execSync('git push origin main', gitOpts);
-      console.log('    Committed and pushed.');
     } catch (e) {
       console.warn(`    Auto-commit failed: ${e.message?.slice(0, 200) || 'unknown error'}`);
       console.warn('    Results are still saved locally in pending-review.json');
