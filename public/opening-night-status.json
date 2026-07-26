@@ -1,7 +1,121 @@
 {
-  "generatedAt": "2026-07-26T03:20:40.509Z",
+  "generatedAt": "2026-07-26T03:43:29.643Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
+      "title": "The Wind in the Willows - Theatre On Kew",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "musical",
+      "openingDate": "2026-07-25",
+      "status": "open",
+      "slug": "the-wind-in-the-willows-theatre-on-kew-off-west-end",
+      "thumbnail": "/images/shows/the-wind-in-the-willows-theatre-on-kew-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 60,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 2,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 1,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 1,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-07-26T03:43:29.643Z",
+          "rc": 1,
+          "s": 60,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
     {
       "id": "hugo-marchand-artists-at-the-center-off-broadway-2026",
       "title": "Hugo Marchand | Artists at the Center",
