@@ -72,6 +72,7 @@ import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from '
 import { isScoreable } from './is-scoreable';
 const { emitStage } = require('../lib/stage-latency');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
+const { isInFallbackCooldown } = require('../lib/manual-clear-fallback-cooldown');
 // venue-classification import removed — market context now passed via input-builder
 
 // ========================================
@@ -245,6 +246,13 @@ const RUNS_LOG_PATH = path.join(__dirname, '../../data/llm-scoring-runs.json');
 const GARBAGE_SKIPS_PATH = path.join(__dirname, '../../data/llm-scoring-garbage-skips.json');
 const PROJECT_ROOT = path.join(__dirname, '../..');
 
+// Every saveReviewFile() call increments this, regardless of whether the
+// file ended up scored or merely rejected/flagged. `processed` alone misses
+// all-rejected batches — the CI gate (scripts/lib/scoring-progress-gate.js)
+// reads this to know real review-text writes happened even when zero files
+// scored (P1 352637c5-416f-81ab).
+let filesModifiedCount = 0;
+
 // ========================================
 // SCORING PRIORITY
 // ========================================
@@ -384,6 +392,7 @@ function writeProgress(
     pct,
     skipped,
     errors,
+    filesModified: filesModifiedCount,
     elapsedSeconds: elapsed,
     rateSecondsPerReview: parseFloat(rate) || 0,
     estimatedRemainingMinutes: typeof remaining === 'number' ? remaining : null,
@@ -652,6 +661,22 @@ function getAllReviewFiles(showId?: string, showIds?: string[]): Array<{ path: s
 function saveReviewFile(filePath: string, data: any): void {
   clearFailureFlags(data);
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+  filesModifiedCount++;
+}
+
+/**
+ * Persist a Haiku-fallback failure on a manually-cleared file. Without this,
+ * a file whose fallback score fails leaves ZERO state on disk — the next run
+ * (and every run after) re-attempts the full ensemble + fallback from
+ * scratch on the same file forever, burning API credits with no progress
+ * (P1 352637c5-416f-81ab). isInFallbackCooldown() reads these fields to skip
+ * re-processing until the backoff window elapses.
+ */
+function recordManualClearFallbackFailure(filePath: string, fileData: any, reason: string): void {
+  fileData.manualClearFallbackFailedAt = new Date().toISOString();
+  fileData.manualClearFallbackFailureReason = String(reason).substring(0, 300);
+  fileData.manualClearFallbackAttempts = (fileData.manualClearFallbackAttempts || 0) + 1;
+  saveReviewFile(filePath, fileData);
 }
 
 /**
@@ -984,9 +1009,17 @@ async function main(): Promise<void> {
   // Per-file rejection logging added after Titanique postmortem ("0 valid files" with no explanation)
   let dataQualitySkipped = 0;
   let starRatingSkipped = 0;
+  let fallbackCooldownSkipped = 0;
   let showNotMentionedWithExcerpts = 0;
   const scorableFiles = filesToProcess.filter(f => {
     const d = f.data as any;
+    // Skip files whose manually-cleared Haiku fallback failed recently — without
+    // this, the same file re-runs the full ensemble + fallback on every scoring
+    // pass forever with no progress (P1 352637c5-416f-81ab).
+    if (isInFallbackCooldown(d)) {
+      fallbackCooldownSkipped++;
+      return false;
+    }
     // Skip reviews where the page itself published an explicit star rating that
     // a human extracted into assignedScore. The star rating is authoritative —
     // running an ensemble can only INTRODUCE singleModelEmergency by overriding
@@ -1031,6 +1064,9 @@ async function main(): Promise<void> {
   }
   if (starRatingSkipped > 0) {
     console.log(`Skipped ${starRatingSkipped} reviews with manual_extracted_star_rating (page-published star rating is authoritative)\n`);
+  }
+  if (fallbackCooldownSkipped > 0) {
+    console.log(`Skipped ${fallbackCooldownSkipped} reviews still in manual-clear-fallback cooldown (retry after backoff window)\n`);
   }
   if (showNotMentionedWithExcerpts > 0) {
     console.log(`Including ${showNotMentionedWithExcerpts} showNotMentioned reviews with valid aggregator excerpts\n`);
@@ -1390,9 +1426,11 @@ async function main(): Promise<void> {
                 processed++;
                 continue;
               }
-              console.log(`  ⚠ Haiku fallback did not produce a score: ${fbResult.error || 'unknown'}; leaving file unscored`);
+              console.log(`  ⚠ Haiku fallback did not produce a score: ${fbResult.error || 'unknown'}`);
+              recordManualClearFallbackFailure(filePath, fileData, fbResult.error || 'no_score_produced');
             } catch (e: any) {
-              console.log(`  ⚠ Haiku fallback exception: ${e.message}; leaving file unscored`);
+              console.log(`  ⚠ Haiku fallback exception: ${e.message}`);
+              recordManualClearFallbackFailure(filePath, fileData, e.message);
             }
             skipped++;
             continue;

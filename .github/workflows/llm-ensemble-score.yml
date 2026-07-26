@@ -470,15 +470,24 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
             git diff --staged --stat
           fi
-          # Check if actual review files were scored via scoring-progress.json
-          # (review-texts is a nested git repo, so git diff --staged can't detect changes there)
-          SCORED=$(node -e "try { const p = JSON.parse(require('fs').readFileSync('data/collection-state/scoring-progress.json','utf8')); console.log(p.processed || 0); } catch { console.log(0); }")
-          if [ "$SCORED" -gt 0 ]; then
+          # Check if actual review files changed via scoring-progress.json
+          # (review-texts is a nested git repo, so git diff --staged can't detect changes there).
+          # Reads filesModified (every saveReviewFile() call this run, scored OR
+          # rejected) instead of processed alone — an all-rejected batch still
+          # writes rejectedAt/rejectionReason to disk and must not read as
+          # "nothing happened" (P1 352637c5-416f-81ab).
+          HAS_SCORED=$(node -e "
+            const { hasScoredReviews } = require('./scripts/lib/scoring-progress-gate.js');
+            let p = {};
+            try { p = JSON.parse(require('fs').readFileSync('data/collection-state/scoring-progress.json','utf8')); } catch {}
+            console.log(hasScoredReviews(p) ? '1' : '0');
+          ")
+          if [ "$HAS_SCORED" = "1" ]; then
             echo "has_scored_reviews=true" >> $GITHUB_OUTPUT
-            echo "Scored $SCORED review files this run"
+            echo "Review files changed this run (scored and/or rejected-with-state-write)"
           else
             echo "has_scored_reviews=false" >> $GITHUB_OUTPUT
-            echo "No review files scored this run"
+            echo "No review files changed this run"
           fi
 
       - name: Check for large files

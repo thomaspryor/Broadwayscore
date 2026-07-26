@@ -905,6 +905,21 @@ on:
       # test); path-listed so a solo edit still triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/audit-playwright-count-assertions.js'
+      # P1 352637c5-416f-81ab: LLM-rejection writes lost when an all-rejected
+      # batch left zero disk changes for the push gate to see, and a
+      # manually-cleared file's failed Haiku fallback wrote nothing at all
+      # (infinite re-scoring, credit waste). scoring-progress-gate.js /
+      # manual-clear-fallback-cooldown.js are new scripts/lib/ pure decision
+      # fns with colocated *.test.mjs (auto-run by the lib-test glob step);
+      # path-listed here so a solo edit still triggers CI
+      # (feedback_test_yml_push_path_allowlist). clear-failure-flags.js was
+      # previously unlisted despite having a test — added too.
+      - 'scripts/lib/scoring-progress-gate.js'
+      - 'scripts/lib/scoring-progress-gate.test.mjs'
+      - 'scripts/lib/manual-clear-fallback-cooldown.js'
+      - 'scripts/lib/manual-clear-fallback-cooldown.test.mjs'
+      - 'scripts/lib/clear-failure-flags.js'
+      - 'scripts/llm-scoring/index.ts'
   pull_request:
     branches: [main]
   schedule:
