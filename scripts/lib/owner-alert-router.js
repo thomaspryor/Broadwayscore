@@ -207,6 +207,23 @@ function clearDigestQueue() {
   fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify([], null, 2) + '\n');
 }
 
+// Removes specific queued lines without touching the rest of the queue.
+// For callers that queue optimistically and then discover the underlying action
+// was rolled back — without this, the owner is told something shipped that
+// didn't. Pair it with resolveCondition()/deleteCondition() so the ledger stops
+// claiming the condition was already notified, otherwise the cooldown silences
+// the NEXT (real) occurrence. Returns the number of lines removed.
+function removeDigestLines(conditionKeys) {
+  const keys = new Set(Array.isArray(conditionKeys) ? conditionKeys : [conditionKeys]);
+  const queue = peekDigestQueue();
+  const kept = queue.filter(q => !q || !keys.has(q.conditionKey));
+  if (kept.length !== queue.length) {
+    fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
+    fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify(kept, null, 2) + '\n');
+  }
+  return queue.length - kept.length;
+}
+
 // Reads and clears in one step — retained for callers whose read and use are
 // adjacent. See peekDigestQueue() for why a wide read-to-persist gap should
 // use the two-step form instead.
@@ -362,6 +379,7 @@ module.exports = {
   drainDigestQueue,
   peekDigestQueue,
   clearDigestQueue,
+  removeDigestLines,
   readDispatchAttempts,
   DEFAULT_COOLDOWN_HOURS,
   DISPOSITIONS,
