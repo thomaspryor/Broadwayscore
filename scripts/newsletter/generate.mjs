@@ -1653,6 +1653,18 @@ function boxOfficeSection() {
 // Reads per-show .social.json files which contain the SocialPulsePayload schema
 // (tier, rank, volume, sentiment %, platform breakdown).
 function buzziestSection() {
+  // Mirrors src/lib/social-pulse-display.ts's shouldShowSentiment/MIN_OPINION_SAMPLE —
+  // duplicated (not imported) because this is a plain .mjs script and that file is
+  // TypeScript. Keep in sync: a null/thin-sample % must never render as a real number
+  // here either — the 2026-07-26 credibility audit found "0% positive" branded shows
+  // with zero opinion-bearing posts, and the newsletter was an unaudited consumer of
+  // the same `p`/`os` fields that had just been fixed on the web cards.
+  const MIN_OPINION_SAMPLE = 10;
+  function shouldShowSentiment(p, os) {
+    if (typeof p !== 'number' || Number.isNaN(p)) return false;
+    if (os === undefined || os === null) return true;
+    return os >= MIN_OPINION_SAMPLE;
+  }
   const TIER_RANK = { Buzzing: 0, Rising: 1, Steady: 2, BuildingBaseline: 2, Troubled: 3, Hidden: 99 };
   const TIER_DISPLAY = {
     Buzzing: { label: 'BUZZING', emoji: '🔥', color: '#f97316', sub: 'Trending hot right now' },
@@ -1738,9 +1750,13 @@ function buzziestSection() {
     ['instagram', top.sp.pl?.ig || 0],
   ].filter(([, c]) => c > 0);
   const glyphs = activePlatforms.map(([k]) => platformGlyph(k, 1)).join('');
-  const sentPct = top.sp.p || 0;
-  // Sentiment bar + inline meta (platforms + mentions on one small line)
-  const sentBar = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:6px;">
+  const showSentiment = shouldShowSentiment(top.sp.p, top.sp.os);
+  const sentPct = showSentiment ? top.sp.p : 0;
+  // Sentiment bar + inline meta (platforms + mentions on one small line).
+  // Hidden entirely (no bar, no %) when there's no trustworthy evidence behind it —
+  // matches SocialPulseCard/TrendingShowCard on the site.
+  const sentBar = showSentiment
+    ? `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:6px;">
     <tr><td style="height:8px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
         <td style="width:${sentPct}%;height:8px;background:linear-gradient(90deg,#6366f1 0%,#3b82f6 50%,#10b981 100%);"></td>
@@ -1751,6 +1767,9 @@ function buzziestSection() {
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:6px;"><tr>
     <td align="left" style="font-size:11px;color:#d1d5db;font-weight:600;">${sentPct}% positive</td>
     <td align="right" style="font-size:11px;color:#6b7280;">${glyphs}${top.sp.v || 0} mentions</td>
+  </tr></table>`
+    : `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:6px;"><tr>
+    <td align="right" style="font-size:11px;color:#6b7280;">${glyphs}${top.sp.v || 0} mentions</td>
   </tr></table>`;
   // Top 3 mini-cards: tier emoji + show + rank
   // Tier label moves ABOVE the rank box (same pattern as critic-score tier labels
@@ -1759,15 +1778,16 @@ function buzziestSection() {
     const d = TIER_DISPLAY[c.sp.t] || TIER_DISPLAY.Steady;
     const rc = c.rank ? rankBadgeColor(c.rank.position, c.rank.total) : null;
     const isLast = i === arr.length - 1;
-    const sentP = c.sp.p || 0;
+    const rowShowSentiment = shouldShowSentiment(c.sp.p, c.sp.os);
     const ment = c.sp.v || 0;
+    const metaLine = rowShowSentiment ? `${c.sp.p}% positive · ${ment} mentions` : `${ment} mentions`;
     // Tighter padding on #2/#3 rows + drop the redundant "of N" subtitle —
     // it's already on the hero. Frees ~14px per row of vertical space.
     return `<tr>
       <td valign="middle" width="68" style="padding:6px 10px 6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumb(c.show, 56)}</td>
       <td valign="middle" style="padding:6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
         <div style="font-size:14px;font-weight:700;color:#fff;line-height:1.25;">${showLink(c.show, c.show.title)} ${marketPill(c.show.category)}</div>
-        <div style="font-size:11px;color:#9ca3af;margin-top:2px;">${sentP}% positive · ${ment} mentions</div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:2px;">${metaLine}</div>
       </td>
       ${rc && c.rank ? `<td valign="middle" width="60" align="center" style="padding:6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
         <div style="font-size:9px;font-weight:700;color:${d.color};letter-spacing:0.06em;text-transform:uppercase;margin-bottom:3px;">${d.label}</div>

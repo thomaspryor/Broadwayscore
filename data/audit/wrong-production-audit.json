@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-26T17:00:21.174Z",
+  "timestamp": "2026-07-26T20:29:02.343Z",
   "stats": {
-    "totalReviews": 40708,
+    "totalReviews": 40717,
     "alreadyFlagged": 17852,
-    "dateGuardCatches": 58,
+    "dateGuardCatches": 67,
     "directorMismatch": 928,
     "tvFilmSignals": 1116,
     "londonSignals": 763,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3298
+    "noPublishDate": 3296
   },
   "findings": [
     {
@@ -11382,6 +11382,7 @@
     {
       "showId": "hungry-women-off-broadway-2026",
       "file": "talkinbroadway--howard-miller.json",
+      "score": 76,
       "publishDate": "2026-07-25",
       "url": "https://www.talkinbroadway.com/page/ob/07_25_26.html",
       "findings": [
@@ -15045,7 +15046,7 @@
     {
       "showId": "m-butterfly-2017",
       "file": "theater-life--david-sheward.json",
-      "score": 42,
+      "score": 38,
       "publishDate": "2017-11-02",
       "url": "https://theaterlife.com/m-butterfly-the-portuguese-kid-the-last-match-12/",
       "findings": [
@@ -22336,6 +22337,105 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "sylvia-off-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
+        }
+      ]
+    },
+    {
+      "showId": "sylvia-off-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
+        }
+      ]
+    },
+    {
+      "showId": "sylvia-off-west-end-2026",
+      "file": "guardian--susannah-clapp.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
+        }
+      ]
+    },
+    {
+      "showId": "sylvia-off-west-end-2026",
+      "file": "i-paper--fiona-mountford.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
+        }
+      ]
+    },
+    {
+      "showId": "sylvia-off-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
+        }
+      ]
+    },
+    {
+      "showId": "sylvia-off-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
+        }
+      ]
+    },
+    {
+      "showId": "sylvia-off-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
+        }
+      ]
+    },
+    {
+      "showId": "sylvia-off-west-end-2026",
+      "file": "timeout-london--alice-saville.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
+        }
+      ]
+    },
+    {
+      "showId": "sylvia-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
         }
       ]
     },
