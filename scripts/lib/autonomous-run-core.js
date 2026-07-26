@@ -113,33 +113,12 @@ function classifyFailure(stage) {
 
 // ── Verification plan for a diff ────────────────────────────────────────────
 
-// changedFiles → ordered check commands (argv arrays, ALWAYS exec'd with
-// shell=false). existsFn injected for testability.
-function decideChecks(changedFiles, existsFn) {
-  const checks = [];
-  const seen = new Set();
-  const add = (name, argv) => { if (!seen.has(name)) { seen.add(name); checks.push({ name, argv }); } };
-
-  const testFiles = new Set();
-  for (const f of changedFiles || []) {
-    if (/\.test\.mjs$/.test(f)) { testFiles.add(f); continue; }
-    // Colocated test convention: scripts/lib/x.js → scripts/lib/x.test.mjs
-    const colocated = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.mjs');
-    if (colocated !== f && existsFn(colocated)) testFiles.add(colocated);
-  }
-  if (testFiles.size) add('colocated-tests', ['node', '--test', ...[...testFiles].sort()]);
-  if ((changedFiles || []).some(f => /\.(ts|tsx)$/.test(f))) add('tsc', ['npx', 'tsc', '--noEmit']);
-  return checks;
-}
-
-// The card's own checkableDone command, revalidated at EXECUTION time (the
-// queue file is not trusted either) and split into argv for shell-free exec.
-function cardCheckArgv(checkableDone, isSafeCheckCommand) {
-  const cmd = String(checkableDone || '').trim();
-  if (!cmd) return null;
-  if (!isSafeCheckCommand(cmd)) return null;
-  return cmd.split(/\s+/);
-}
+// MOVED (Sprint 2, S2-T1): decideChecks/cardCheckArgv now live in
+// scripts/lib/autonomous-checks.js, the ONE gauntlet the executor and the CI
+// approve tap both run. Re-exported here — by IDENTITY, not by a second copy
+// — so existing callers/tests keep working while parity is structural: there
+// is one function, so the tap cannot drift weaker than the overnight run.
+const { decideChecks, cardCheckArgv } = require('./autonomous-checks.js');
 
 // ── Auth pre-flight (night-1 fix #3) ────────────────────────────────────────
 

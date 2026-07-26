@@ -109,6 +109,8 @@ const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
 // bsc-prune.js journals the matching 'dead' breadcrumb once a launch's
 // workspace turns up idle-and-unmarked. See scripts/lib/dispatch-ledger.js.
 const dispatchLedger = require('./lib/dispatch-ledger.js');
+const { extractVerifyCmd } = require('./lib/autonomous-verify-cmd.js');
+const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 
 // Actionable list, best-first: by Notion priority, then pending before
 // in_progress (fresh work first), then task id. Completed dropped;
@@ -444,7 +446,15 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // Journal the launch (task #334) so a later bsc-prune sweep can attribute
     // a dead shell back to this task, and a future dispatch can see how many
     // times this task has already died before blindly opening another one.
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model }); }
+    // verifyCmd (Sprint 3, S3-T1): capture the card's OWN acceptance-criteria
+    // command now, while the card text is in hand. The nightly acceptance
+    // recheck (scripts/autonomous-acceptance-recheck.js) re-runs it against a
+    // fresh main days later to turn "someone marked this Done" into a fact.
+    // null is a legitimate, recorded answer — a card whose criteria is prose
+    // is listed as "not machine-verifiable", never guessed at.
+    const verify = extractVerifyCmd((card && card.notes) || task.description || '', isSafeCheckCommand);
+    if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, notionId: pid || null }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else {
     console.error(`[bsc-next] LAUNCH NOT VERIFIED (${res.reason}).`);

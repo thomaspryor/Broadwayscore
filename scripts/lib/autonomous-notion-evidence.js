@@ -40,6 +40,17 @@ function evidenceCommentText(evidence) {
     repoKey: evidence.repoKey || null,
     dataClass: evidence.dataClass || null,
     showIds: Array.isArray(evidence.showIds) ? evidence.showIds : [],
+    // Sprint 2 (S2-T3/T5/T6). tier: which eligibility gate + check set the
+    // approve tap must re-run — the merge process is a different machine days
+    // later and cannot re-derive it (the queue is Mac-local and ephemeral).
+    // sha: the exact commit the executor verified and the owner is tapping on
+    // — the tap refuses if the branch has moved since. ui: this diff changes
+    // what the site LOOKS like, so the email needs screenshot evidence before
+    // it will offer an approve link at all.
+    tier: Number.isInteger(evidence.tier) ? evidence.tier : null,
+    sha: typeof evidence.sha === 'string' ? evidence.sha : null,
+    ui: evidence.ui === true,
+    screenshots: Array.isArray(evidence.screenshots) ? evidence.screenshots : [],
   };
   return `${MARKER} ${JSON.stringify(payload)}`;
 }
@@ -62,6 +73,13 @@ function parseEvidenceComment(text) {
       repoKey: typeof payload.repoKey === 'string' ? payload.repoKey : null,
       dataClass: typeof payload.dataClass === 'string' ? payload.dataClass : null,
       showIds: Array.isArray(payload.showIds) ? payload.showIds : [],
+      // Older comments (pre-Sprint-2) carry none of these — tier null reads
+      // as Tier 1 downstream (fail closed), sha null skips the staleness
+      // refusal rather than blocking a legitimately older approval.
+      tier: Number.isInteger(payload.tier) ? payload.tier : null,
+      sha: typeof payload.sha === 'string' ? payload.sha : null,
+      ui: payload.ui === true,
+      screenshots: Array.isArray(payload.screenshots) ? payload.screenshots : [],
     };
   } catch {
     return null;

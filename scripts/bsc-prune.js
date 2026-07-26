@@ -75,6 +75,15 @@ function main(argv = process.argv.slice(2), deps = {}) {
     skipped.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
   }
 
+  // Journal the sweep (S4-T3) so the morning email can say "Closed N finished
+  // tabs" — the owner sees the workspace count drop overnight and otherwise
+  // has no record of who closed what. Never fatal: a ledger write failure must
+  // not fail a sweep that already did its real work.
+  if (!dryRun) {
+    try { appendLedgerEntryFn({ event: 'prune', taskId: 'sweep', closed: closed.length, skipped: skipped.length }); }
+    catch (e) { console.error(`[bsc-prune] WARN dispatch-ledger prune write failed (non-fatal): ${e.message}`); }
+  }
+
   const closedRefs = new Set(closed.map(w => w.ref));
   const idle = all
     .filter(w => !closedRefs.has(w.ref) && !isDoneTitleFn(w.title))

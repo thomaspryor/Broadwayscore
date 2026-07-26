@@ -61,6 +61,29 @@ function buildReverifyFailNote(reason) {
   return `## Autonomous merge re-verify FAILED (${new Date().toISOString().slice(0, 10)})\n${String(reason || '').slice(0, 500)}\n\nApproval was stripped — the branch was NOT merged. A fresh tap is required to try again.`;
 }
 
+// ── Tap-time staleness refusal (Sprint 2, S2-T5) ───────────────────────────
+//
+// The owner's Approve tap is a statement about ONE tree: the commit the
+// executor checked and described in the morning email. Nothing stops that
+// branch from moving between the email and the tap — a second night's
+// checkpoint slice force-pushes it, or a human pushes a fix to it — and the
+// merge path would then rebase, re-verify and merge a DIFFERENT tree under
+// an approval that was never given for it. (Re-verification alone does not
+// cover this: it proves the new tree passes checks, not that the owner saw
+// it. A tier-3 diff is not test/docs-only, so "checks pass" was never
+// sufficient to merge — that is exactly why the tap exists.)
+//
+// Fail OPEN on a missing evidence sha (pre-Sprint-2 comments have none):
+// blocking every older approval would strand legitimate work, and those
+// branches keep the full rebase + gate + checks path.
+function stalenessRefusal(evidenceSha, branchSha) {
+  const approved = String(evidenceSha || '').trim();
+  const actual = String(branchSha || '').trim();
+  if (!approved || !actual) return null;
+  if (approved === actual) return null;
+  return `the branch moved after the evidence you approved: you tapped Approve for commit ${approved.slice(0, 8)}, the branch now points at ${actual.slice(0, 8)}. Nothing was merged — a fresh overnight pass will re-post evidence for the new commit.`;
+}
+
 function buildRevertOutcomeNote({ revertSha, mergeSha }) {
   return `## Autonomous merge REVERTED (${new Date().toISOString().slice(0, 10)})\nReverted merge commit ${mergeSha} via ${revertSha}. The card is reopened — this needs a fresh look, the loop will not retry it automatically.`;
 }
@@ -75,4 +98,5 @@ module.exports = {
   buildMergeOutcomeNote,
   buildReverifyFailNote,
   buildRevertOutcomeNote,
+  stalenessRefusal,
 };

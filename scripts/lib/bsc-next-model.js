@@ -85,8 +85,14 @@ function triageSizeFor(notionId, queuePath = QUEUE_PATH) {
 // model an L card deserves. A human-supervised interactive bsc-next dispatch
 // has no such admission gate, so routing L to the smartest available tier is
 // the correct read of "hard enough to escalate" here.
+// Expressed through pickModel's tier3Size hint (2026-07-25) rather than the
+// old pickModel(2, 'content') stand-in. Same outputs — S/unknown → Sonnet,
+// M/L → Opus — but it now says what it MEANS ("this card is big enough to
+// deserve the better model") instead of impersonating a retry-after-content-
+// failure. The old form would have silently drifted the moment the loop's
+// attempt-2 policy changed for a reason that has nothing to do with sizing.
 function modelForSize(size) {
-  const full = (size === 'M' || size === 'L') ? pickModel(2, 'content') : pickModel(1, null);
+  const full = pickModel(1, null, { tier3Size: (size === 'M' || size === 'L') ? size : null });
   return SHORT_ALIAS[full] || full;
 }
 
