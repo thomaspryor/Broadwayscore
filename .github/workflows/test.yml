@@ -611,6 +611,12 @@ on:
       # in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/lede-body-invariant.js'
       - 'scripts/lib/lede-body-invariant.test.mjs'
+      # Sunday pre-owner-look content review launchd job (card #507) —
+      # "already ran today" lock decision lives outside scripts/newsletter/**
+      # so it needs its own path entry; colocated test runs in the
+      # scripts/lib/*.test.mjs glob step.
+      - 'scripts/lib/sunday-review-lock.js'
+      - 'scripts/lib/sunday-review-lock.test.mjs'
       - 'scripts/send-opening-night-broadcast.js'
       # Market-aware broadcast readiness gate (Broadway 15+agg, West End 12) + its
       # colocated test (runs in the scripts/lib/*.test.mjs glob step). Path-listed
