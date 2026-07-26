@@ -152,7 +152,7 @@ export function scoreCandidates(input) {
   for (const r of (input.recoupments || [])) {
     const weeks = r.weeksToRecoup;
     const fastBump = (weeks && weeks > 0 && weeks < 12) ? WEIGHTS.RECOUPMENT_FAST_BUMP : 0;
-    const tail = (weeks && weeks > 0) ? ` recoups in ${weeks} weeks` : ' recoups';
+    const tail = (weeks && weeks > 0) ? ` recoups in ${weeks} ${weeks === 1 ? 'week' : 'weeks'}` : ' recoups';
     out.push({
       kind: 'recoupment',
       weight: WEIGHTS.RECOUPMENT_BASE + fastBump,
