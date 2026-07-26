@@ -9,6 +9,7 @@ const {
   blocksRediscovery,
   hasValidScore,
   hasAggregatorExcerpt,
+  isIncludableForRebuild,
 } = require('./review-guards.js');
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -241,4 +242,28 @@ test('hasValidScore rejects unparseable originalScore and empty data', () => {
   assert.equal(hasValidScore({ originalScore: '4/5', originalScoreCleared: true }), false);
   assert.equal(hasValidScore({}), false);
   assert.equal(hasValidScore(null), false);
+});
+
+// ── isIncludableForRebuild: excerpt-only fallback (task #501) ───────────────
+// fullText:null + bwwExcerpt (paywalled outlet recovered via roundup excerpt fallback,
+// contentTier: 'excerpt') must be includable — getScorableText() in llm-scoring/index.ts
+// builds LLM prompts from these same excerpt fields, so the rebuild gate must agree.
+
+test('excerpt-only review (fullText:null, bwwExcerpt present) is includable for rebuild', () => {
+  const wsjExcerptOnly = {
+    outletId: 'wsj',
+    contentTier: 'excerpt',
+    fullText: null,
+    bwwExcerpt: 'A real critical excerpt recovered from a BroadwayWorld roundup article. '.repeat(10),
+  };
+  assert.equal(isIncludableForRebuild(wsjExcerptOnly), true);
+});
+
+test('excerpt-only review with no recognized excerpt field and no signal is NOT includable', () => {
+  const noExcerptNoSignal = {
+    outletId: 'wsj',
+    contentTier: 'excerpt',
+    fullText: null,
+  };
+  assert.equal(isIncludableForRebuild(noExcerptNoSignal), false);
 });
