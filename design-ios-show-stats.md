@@ -471,10 +471,14 @@ The same stats features are wanted on broadwayscorecard.com. Principles:
   `generate-mobile-artifacts.sh`), so web fetches the exact files the app
   bundles. Diary ratings come from the same Supabase `reviews` table both
   clients already write to.
-- **Logic ports, not rewrites:** the stats reducers land as a pure TS lib
-  (`src/lib/stats/`) mirroring the app's `StatsEngine`, unit-tested against
-  shared JSON fixtures so iOS and web can't drift (same pattern as the
-  compute-critic-score ↔ engine.ts parity).
+- **One engine, written once (plan-review 2026-07-26):** the stats reducers
+  are written ONCE, in the web repo, as named pure functions in
+  `src/lib/stats/` (`computeDiaryStats`, `seasonWindows`, `alignCritics` —
+  no "StatsEngine" class; "engine" already means `src/lib/engine.ts`), with
+  node:test coverage wired into test.yml. The app consumes a vendored build
+  of that lib with a checksum drift test (the mobile-shows.json vendoring
+  pattern) — NOT a second implementation with copied fixtures, because the
+  app repo has no unit-test runner to keep copies honest.
 - **Surface:** a stats view in the signed-in profile/diary area using the
   existing web design system only (web CLAUDE.md §4 components — ScoreBadge,
   cards, surface tokens). Same module order and thresholds as §2; scope pill
