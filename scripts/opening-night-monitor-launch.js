@@ -205,7 +205,7 @@ async function main(argv = process.argv.slice(2)) {
     killSwitch: fs.existsSync(KILL_FILE) || process.env.ON_MONITOR_DISABLED === '1',
     lockExists: fs.existsSync(LOCK_DIR),
     heartbeatAgeMin: heartbeatAgeMin(),
-    claudeAlive: !!(meta && meta.workspaceRef && cmuxws.claudeAliveIn(meta.workspaceRef)),
+    claudeAlive: cmuxws.computeClaudeAlive(meta),
     attemptsTonight: nightState.attempts,
   };
   const decision = launchDecision(state);

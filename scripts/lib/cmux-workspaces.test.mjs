@@ -210,6 +210,43 @@ test('pruneDone: second-signal throw = alive (never close on uncertainty from ei
   assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
 });
 
+// Card #567: opening-night-monitor-launch.js's claudeAlive computation must
+// go through checkLiveness (both signals), not claudeAliveIn alone — same
+// registry-desync false-negative class as #559/#564, here feeding
+// launchDecision's 'reclaim-and-launch' path (duplicate babysitter launch).
+test('computeClaudeAlive: no meta/workspaceRef → not alive', () => {
+  const cw = require('./cmux-workspaces.js');
+  assert.equal(cw.computeClaudeAlive(null), false);
+  assert.equal(cw.computeClaudeAlive({}), false);
+});
+
+test('computeClaudeAlive: both signals agree dead → not alive', () => {
+  const cw = require('./cmux-workspaces.js');
+  const alive = cw.computeClaudeAlive({ workspaceRef: 'workspace:1' }, {
+    claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => false,
+  });
+  assert.equal(alive, false);
+});
+
+test('computeClaudeAlive: primary registry says dead but surface registry says alive → alive (the #559/#564/#567 desync)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const alive = cw.computeClaudeAlive({ workspaceRef: 'workspace:1' }, {
+    claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => true,
+  });
+  assert.equal(alive, true, 'a bare claudeAliveIn()-only check would wrongly report not-alive here');
+});
+
+test('computeClaudeAlive: primary registry says alive → alive without consulting surface signal', () => {
+  const cw = require('./cmux-workspaces.js');
+  const alive = cw.computeClaudeAlive({ workspaceRef: 'workspace:1' }, {
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => { throw new Error('should not be called'); },
+  });
+  assert.equal(alive, true);
+});
+
 test('hasRunningClaude: column-exact — no substring false positives', () => {
   // Status other than exactly "Running" on the tag row
   const notRunning = `5.8\t1\t1\ttag\tworkspace:X:tag:claude_code\tworkspace:9\tNotRunning`;
