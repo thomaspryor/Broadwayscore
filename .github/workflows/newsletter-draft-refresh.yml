@@ -1,0 +1,152 @@
+name: Newsletter Draft Refresh (Sunday)
+
+# The weekly Resend broadcast drafts generate Saturday ~11:00/11:30 UTC
+# (newsletter-draft.yml / we-newsletter-draft.yml) but the owner usually sends
+# Sunday. Reviews landing in the gap drift the scores baked into the draft —
+# 2026-07-26 incident: 7 of ~26 shows in the drafts had moved between the
+# Saturday commit and Sunday send (Sukkot 83->82 flipped the subject line from
+# "rave" to "strong"; Hamilton 92->91; Titanique 75->76; EBT 80->79). The
+# drafts sat stale until a manual refresh-drafts.sh run. Card #481.
+#
+# This refreshes both weekly drafts in place, Sunday late morning, ONLY IF
+# still unsent: a read-only --status check (GET /broadcasts, via the
+# sanctioned wrapper — no raw curl) decides whether to pay for a regenerate.
+# If the owner already sent, or nothing was ever drafted, this no-ops.
+#
+# Never sends. Same generate -> pre-send -> overflow -> PATCH chain
+# refresh-drafts.sh uses locally (card #478), just running against fresh CI
+# data instead of a developer's local checkout.
+
+on:
+  schedule:
+    # Sunday ~12:00 UTC — ahead of the owner's usual Sunday send, well after
+    # the Saturday draft-creation crons (11:00 / 11:30 UTC) have landed.
+    - cron: '4 12 * * 0'
+  workflow_dispatch:
+    inputs:
+      weekStart:
+        description: 'Week start (Monday, YYYY-MM-DD). Empty = last Monday in America/New_York.'
+        required: false
+        default: ''
+
+concurrency:
+  group: newsletter-draft
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        edition: [broadway, west-end]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      # Same pipeline-health gate as newsletter-draft.yml: don't regenerate
+      # against stale data (that would erase the very score updates this
+      # workflow exists to pick up).
+      - name: Verify data freshness
+        run: |
+          marker=data/audit/pipeline-health/rebuild-reviews.last-success
+          if [ ! -f "$marker" ]; then
+            echo "::error::No rebuild-reviews health marker — data freshness unknown"
+            exit 1
+          fi
+          marker_epoch=$(date -d "$(cat $marker)" +%s 2>/dev/null || date -j -f "%a %b %e %H:%M:%S %Z %Y" "$(cat $marker)" +%s 2>/dev/null || echo 0)
+          now=$(date -u +%s)
+          age_hours=$(( (now - marker_epoch) / 3600 ))
+          echo "rebuild-reviews last success: $age_hours hours ago"
+          if [ "$age_hours" -gt 24 ]; then
+            echo "::error::Data is $age_hours hours stale (limit: 24h). Refresh would use outdated reviews."
+            exit 1
+          fi
+
+      - name: Compute week-start (Monday in America/New_York)
+        id: week
+        run: |
+          if [ -n "${{ github.event.inputs.weekStart }}" ]; then
+            ws="${{ github.event.inputs.weekStart }}"
+          else
+            ws=$(TZ=America/New_York date -d 'last monday' +%Y-%m-%d 2>/dev/null \
+              || TZ=America/New_York date -v-mon +%Y-%m-%d)
+          fi
+          echo "weekStart=$ws" >> "$GITHUB_OUTPUT"
+          echo "Checking ${{ matrix.edition }} draft for week starting $ws"
+
+      # Read-only: GET /broadcasts via the sanctioned wrapper (never a raw
+      # curl to the Resend API — CLAUDE.md rule 16/17). Prints one word:
+      # "draft" (unsent, safe to refresh), "sent" (already went out, leave
+      # alone), or "none" (nothing drafted yet — nothing to refresh).
+      - name: Check draft status (read-only)
+        id: status
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NEWSLETTER_EDITION: ${{ matrix.edition }}
+        run: |
+          status=$(node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" --status)
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "Draft status for ${{ matrix.edition }} ${{ steps.week.outputs.weekStart }}: $status"
+
+      - name: Generate newsletter HTML + meta.json
+        if: steps.status.outputs.status == 'draft'
+        env:
+          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+          NEWSLETTER_EDITION: ${{ matrix.edition }}
+        run: |
+          node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
+
+      - name: Pre-send check (HTML invariants, UTMs, subject, lede)
+        if: steps.status.outputs.status == 'draft'
+        env:
+          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+        run: |
+          node scripts/newsletter/pre-send-check.mjs "${{ steps.week.outputs.weekStart }}"
+
+      - name: Mobile overflow gate
+        if: steps.status.outputs.status == 'draft'
+        env:
+          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+        run: |
+          node scripts/newsletter/overflow-check.mjs "${{ steps.week.outputs.weekStart }}"
+
+      # PATCH only — the draft already exists (status == 'draft'), so this
+      # always hits the PATCH branch in create-broadcast-draft.mjs, never POST.
+      - name: PATCH Resend draft (never sends)
+        if: steps.status.outputs.status == 'draft'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+          NEWSLETTER_EDITION: ${{ matrix.edition }}
+        run: |
+          node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" \
+            --create --audience="${{ matrix.edition == 'west-end' && 'west-end' || 'general' }}"
+
+      - name: No-op (already sent or nothing drafted yet)
+        if: steps.status.outputs.status != 'draft'
+        run: |
+          echo "No refresh needed for ${{ matrix.edition }} (status=${{ steps.status.outputs.status }})."
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Newsletter Draft Refresh Failed'
+          severity: 'warning'
