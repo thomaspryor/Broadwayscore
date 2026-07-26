@@ -28,6 +28,17 @@ const path = require('path');
 const { verifyContent } = require('./lib/content-verifier');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `reverify-era-venue-wrongprod.js — One-shot: re-verify wrongProduction flags on pre-rename Broadway shows.
+
+Usage:
+  node scripts/reverify-era-venue-wrongprod.js [options]
+  node scripts/reverify-era-venue-wrongprod.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const MAIN_REPO = '/Users/tompryor/Broadwayscore';
 const REVIEW_TEXTS_DIR = path.join(MAIN_REPO, 'data', 'review-texts');
 

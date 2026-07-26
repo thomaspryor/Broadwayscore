@@ -18,6 +18,17 @@ const glob = require('glob');
 const { detectRoundupDigest } = require('./lib/roundup-digest');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `flag-wet-roundup-misattributions.js — One-time cleanup: flag review-roundup DIGESTS that were mis-stored as individual.
+
+Usage:
+  node scripts/flag-wet-roundup-misattributions.js [options]
+  node scripts/flag-wet-roundup-misattributions.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const APPLY = process.argv.includes('--apply');
 const ALLOW_INCLUDED = process.argv.includes('--allow-included');
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');

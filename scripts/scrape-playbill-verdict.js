@@ -52,6 +52,17 @@ const stats = {
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `scrape-playbill-verdict.js — Playbill Verdict Scraper.
+
+Usage:
+  node scripts/scrape-playbill-verdict.js [options]
+  node scripts/scrape-playbill-verdict.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }

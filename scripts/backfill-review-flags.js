@@ -20,6 +20,17 @@ const { validateShowMentioned, extractByline, matchesCritic, computeContentFinge
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { evaluateShowMentionGuard, pickShowTitleForHeuristic } = require('./lib/review-guards');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-review-flags.js — Backfill Review Quality Flags (1D).
+
+Usage:
+  node scripts/backfill-review-flags.js [options]
+  node scripts/backfill-review-flags.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').replace('--show=', '');

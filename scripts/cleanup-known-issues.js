@@ -19,6 +19,17 @@ const path = require('path');
 const { shouldSkipWrongProductionAudit, shouldSkipRoundupAudit } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `cleanup-known-issues.js — Fixes four known data integrity issues:.
+
+Usage:
+  node scripts/cleanup-known-issues.js [options]
+  node scripts/cleanup-known-issues.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DRY_RUN = process.argv.includes('--dry-run');
 const APPLY = process.argv.includes('--apply');
