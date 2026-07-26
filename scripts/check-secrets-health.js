@@ -499,7 +499,7 @@ async function main() {
   // Send alert if any failures
   if (failures.length > 0) {
     if (shouldAlert) {
-      const { sendAlert } = require('./lib/discord-notify');
+      const { routeAlert } = require('./lib/owner-alert-router');
 
       const fields = failures.map(f => ({
         name: f.name,
@@ -515,11 +515,17 @@ async function main() {
         });
       }
 
-      await sendAlert({
+      // conditionKey scoped to the exact set of failing checks — the SAME
+      // outage stays deduped under the router's cooldown, but a newly-added
+      // or newly-resolved failure changes the key and re-notifies immediately
+      // (secret/credential expiry needs owner judgment — disposition: human).
+      const conditionKey = `secrets-health:${failures.map(f => f.name).sort().join('+')}`;
+      await routeAlert({
+        conditionKey,
         title: `Secret Health Check — ${failures.length} Failed`,
         description: `${failures.length} critical service${failures.length > 1 ? 's' : ''} ${failures.length > 1 ? 'are' : 'is'} down or has expired credentials. Immediate action required.`,
         severity: 'error',
-        email: true,
+        disposition: 'human',
         fields: fields.slice(0, 10),
       }).catch(e => console.error('[Alert] Failed to send:', e.message));
     } else {
@@ -527,6 +533,19 @@ async function main() {
     }
 
     process.exit(1);
+  }
+
+  // Recovery: resolve any still-open secrets-health:* incidents now that
+  // failures.length is back to 0. Without this, an identical failure set
+  // recurring later in the same 7-day cooldown window would be silently
+  // swallowed as a "re-fire of an open incident" — the router only clears
+  // that state via resolveCondition() (ship-check finding, Codex review).
+  if (shouldAlert) {
+    const { loadLedger, resolveCondition } = require('./lib/owner-alert-router');
+    const ledger = loadLedger();
+    for (const key of Object.keys(ledger.conditions)) {
+      if (key.startsWith('secrets-health:')) resolveCondition(key);
+    }
   }
 
   // Send warning-only alert (Discord only, no email)

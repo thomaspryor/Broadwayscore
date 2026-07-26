@@ -31,6 +31,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
 const AUDIT = path.join(ROOT, 'data/audit/slug-misroute-audit.json');
@@ -77,12 +78,22 @@ async function cmdReport() {
   if (fresh.length > 0) console.log(`::warning::${fresh.length} new slug-misroute finding(s) not yet dispositioned`);
 
   if (has('email') && fresh.length > 0) {
-    const { sendAlert } = require('./lib/discord-notify');
+    const { routeAlert } = require('./lib/owner-alert-router');
     const rows = fresh.slice(0, 30).map(f => ({ name: `${f.from} → ${f.to}`, value: `${f.file} (article ${f.articleYear || '?'}, ${(f.warnings || []).join(',') || 'class-' + (f.class || '?')})` }));
-    await sendAlert({
+    // conditionKey hashes the exact fresh set (not a single stable key): this
+    // runs weekly on cron, but workflow_dispatch allows manual mid-week
+    // reruns too — a stable key would let a genuinely new finding arriving
+    // mid-week get silently swallowed by the previous week's still-open
+    // cooldown (Codex ship-check finding). Hashing means an unchanged
+    // backlog stays deduped, but any change to the fresh set — new finding
+    // appears, or one gets dispositioned away — is a new incident and
+    // notifies immediately.
+    const freshHash = crypto.createHash('sha1').update(fresh.map(fileKey).sort().join('|')).digest('hex').slice(0, 12);
+    await routeAlert({
+      conditionKey: `slug-misroute:${freshHash}`,
       title: `${fresh.length} new slug-misroute finding(s)`,
       severity: 'warning',
-      email: true,
+      disposition: 'digest',
       description:
         `${fresh.length} review file(s) appear misrouted and are not yet dispositioned. ` +
         `Nothing was changed automatically. To triage LOCALLY:\n` +

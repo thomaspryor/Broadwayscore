@@ -307,6 +307,10 @@ async function main() {
       // email:true — drops on opening-night shows are exactly the class of failure
       // that sat invisible for months when this was log-only (2026-07-09 finding:
       // sendAlert without email:true never left the CI log).
+      // Direct sendAlert, not routeAlert — this already has its own cooldown
+      // (per-show lastAlertAt + COOLDOWN_MS above, see the "Cooldown" block
+      // earlier in this loop), so a repeat drop on the same show is deduped
+      // before it ever reaches this call.
       const delivered = await sendAlert({
         title: `Opening-Night Drop Alert — ${alerts.length} show(s)`,
         description,
