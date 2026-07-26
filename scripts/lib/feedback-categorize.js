@@ -65,7 +65,15 @@ function parseCategorizedResponse(responseText) {
     throw new Error('Could not parse Claude response as JSON');
   }
   const result = JSON.parse(jsonMatch[0]);
-  return result.categorized || [];
+  const categorized = Array.isArray(result.categorized) ? result.categorized : [];
+  // Normalize contentRequest to a strict boolean: the model sometimes emits
+  // "true"/"false" strings, and the workflow drain branches on `=== true`.
+  for (const item of categorized) {
+    if (item && typeof item === 'object') {
+      item.contentRequest = item.contentRequest === true || item.contentRequest === 'true';
+    }
+  }
+  return categorized;
 }
 
 module.exports = { buildCategorizationPrompt, parseCategorizedResponse };

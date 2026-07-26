@@ -187,6 +187,7 @@ async function sendThankYouEmail(email, name, category, showName) {
   const typeMap = {
     'Praise': 'praise',
     'Feature Request': 'feature',
+    'Content Request': 'content',
     'Other': 'acknowledged',
   };
   const emailType = typeMap[category] || 'acknowledged';
@@ -386,11 +387,13 @@ async function main() {
     const categorized = submissions.length > 0 ? await categorizeFeedback(submissions) : [];
     if (submissions.length > 0) console.log('Categorization complete\n');
 
-    // Send thank-you emails for non-bug categories
+    // Send thank-you emails for non-bug categories. Pair via submissionNumber,
+    // not array position — the model can reorder or omit rows, and a positional
+    // pairing would send user A's acknowledgement to user B.
     let emailsSent = 0;
-    for (let i = 0; i < categorized.length; i++) {
-      const cat = categorized[i];
-      const sub = submissions[i];
+    for (const cat of categorized) {
+      const sub = submissions[cat.submissionNumber - 1];
+      if (!sub) continue;
 
       // Bug/Content Error emails are sent after resolution, not now — except
       // content-addition requests, which bypass diagnosis/auto-fix entirely
@@ -398,7 +401,8 @@ async function main() {
       if ((cat.category === 'Bug' || cat.category === 'Content Error') && !cat.contentRequest) continue;
 
       if (sub.email) {
-        const sent = await sendThankYouEmail(sub.email, sub.name, cat.category, sub.show);
+        const emailCategory = cat.contentRequest ? 'Content Request' : cat.category;
+        const sent = await sendThankYouEmail(sub.email, sub.name, emailCategory, sub.show);
         if (sent) emailsSent++;
       }
     }
@@ -406,11 +410,14 @@ async function main() {
       console.log(`Sent ${emailsSent} thank-you email(s)\n`);
     }
 
-    // Diagnose bugs and content errors (max 5)
+    // Diagnose bugs and content errors. MAX_DIAGNOSES caps LLM diagnosis
+    // attempts only — content requests cost no LLM call and must not consume
+    // the budget (five "add my show" rows would otherwise starve every real
+    // bug in the batch into silent oblivion).
     const bugDiagnoses = [];
+    let diagnosisAttempts = 0;
 
     for (const item of categorized) {
-      if (bugDiagnoses.length >= MAX_DIAGNOSES) break;
       if (item.category !== 'Bug' && item.category !== 'Content Error') continue;
 
       const sub = submissions[item.submissionNumber - 1];
@@ -425,6 +432,9 @@ async function main() {
         bugDiagnoses.push({ item, submission: sub, diagnosis: null });
         continue;
       }
+
+      if (diagnosisAttempts >= MAX_DIAGNOSES) continue;
+      diagnosisAttempts++;
 
       console.log(`Diagnosing: ${item.summary}`);
       try {

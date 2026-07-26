@@ -49,8 +49,22 @@ test('parseCategorizedResponse extracts JSON embedded in prose', () => {
   assert.equal(out[0].contentRequest, true);
 });
 
-test('parseCategorizedResponse returns [] when categorized key is absent', () => {
+test('parseCategorizedResponse normalizes contentRequest to a strict boolean', () => {
+  const out = parseCategorizedResponse(JSON.stringify({
+    categorized: [
+      { submissionNumber: 1, category: 'Content Error', contentRequest: 'true' },
+      { submissionNumber: 2, category: 'Content Error', contentRequest: 'false' },
+      { submissionNumber: 3, category: 'Bug' },
+    ],
+  }));
+  assert.equal(out[0].contentRequest, true, '"true" string coerces to true');
+  assert.equal(out[1].contentRequest, false, '"false" string coerces to false');
+  assert.equal(out[2].contentRequest, false, 'missing field coerces to false');
+});
+
+test('parseCategorizedResponse returns [] when categorized key is absent or not an array', () => {
   assert.deepEqual(parseCategorizedResponse('{"something": 1}'), []);
+  assert.deepEqual(parseCategorizedResponse('{"categorized": "oops"}'), []);
 });
 
 test('parseCategorizedResponse throws on non-JSON output', () => {
