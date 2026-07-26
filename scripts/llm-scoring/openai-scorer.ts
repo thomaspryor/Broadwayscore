@@ -13,7 +13,7 @@ import { SYSTEM_PROMPT, SYSTEM_PROMPT_V5, buildPrompt, buildPromptV5, scoreToBuc
 // ========================================
 
 interface OpenAIScoringOptions {
-  model: 'gpt-4o-mini' | 'gpt-4o';
+  model: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini';
   maxRetries: number;
   verbose: boolean;
 }
@@ -168,7 +168,9 @@ export class OpenAIReviewScorer {
               { role: 'system', content: SYSTEM_PROMPT },
               { role: 'user', content: prompt }
             ],
-            max_tokens: 1000,
+            // gpt-5.4-mini rejects max_tokens (400: unsupported_parameter) —
+            // max_completion_tokens is accepted by both it and gpt-4o/-mini.
+            max_completion_tokens: 1000,
             temperature: 0.3
           })
         });
@@ -323,7 +325,9 @@ export class OpenAIReviewScorer {
               { role: 'system', content: systemPrompt },
               { role: 'user', content: prompt }
             ],
-            max_tokens: 500,
+            // gpt-5.4-mini rejects max_tokens (400: unsupported_parameter) —
+            // max_completion_tokens is accepted by both it and gpt-4o/-mini.
+            max_completion_tokens: 500,
             temperature: 0.3
           })
         });
