@@ -108,12 +108,31 @@ test('failedLaunchEntries journals a launch AND a dead entry for the orphan shel
     model: 'sonnet', verifyCmd: 'node --test x.test.mjs', verifyReason: null,
     notionId: 'abc', failureReason: 'no running claude in workspace:46 after 2 attempts',
   });
-  assert.deepEqual(entries.map(e => e.event), ['launch', 'dead']);
+  // 'dead' FIRST — see the interleaving test below for why the order is load-bearing.
+  assert.deepEqual(entries.map(e => e.event), ['dead', 'launch']);
   // taskId stringified so the ledger stays homogeneous with every other writer.
   assert.equal(entries[0].taskId, '466');
-  assert.equal(entries[0].unverified, true);
-  assert.equal(entries[0].failureReason, 'no running claude in workspace:46 after 2 attempts');
-  assert.equal(entries[1].workspaceRef, 'workspace:46');
+  assert.equal(entries[0].workspaceRef, 'workspace:46');
+  assert.equal(entries[1].unverified, true);
+  assert.equal(entries[1].failureReason, 'no running claude in workspace:46 after 2 attempts');
+});
+
+test('a bsc-prune sweep interleaving between the two writes cannot double-count the failure', () => {
+  // The pair is two separate appendFileSync calls, so a sweep CAN land between
+  // them. With 'launch' written first, that sweep would see a launch with no
+  // recorded death, emit its own 'dead', and one failed dispatch would count as
+  // two — tripping the 2-death guard off a single bad launch.
+  const [first, second] = failedLaunchEntries({
+    taskId: 466, subject: 's', workspaceRef: 'workspace:46', failureReason: 'r',
+  });
+  const idle = [{ ref: 'workspace:46', title: '🤖⚡ Infra·s' }];
+
+  // Sweep lands after write #1 only: no launch record yet, so nothing to journal.
+  assert.deepEqual(deadBreadcrumbs(idle, [first]), []);
+  // Sweep lands after both writes: the death is already recorded, so it skips.
+  assert.deepEqual(deadBreadcrumbs(idle, [first, second]), []);
+  // Either way the task ends up with exactly ONE death, not two.
+  assert.equal(deadAttemptsForTask(466, [first, second]).length, 1);
 });
 
 test('failedLaunchEntries writes nothing when cmux left no workspace to attribute', () => {
@@ -154,6 +173,22 @@ test('a claude that registers after the verify window is adopted, not declared d
   assert.equal(shouldAdoptLateStart(failed, false), false);
   assert.equal(shouldAdoptLateStart({ ok: false, workspaceRef: null }, true), false); // nothing to adopt
   assert.equal(shouldAdoptLateStart({ ok: true, ref: 'workspace:46' }, true), false); // already verified
+});
+
+test('a failed launch never attributes attempt 1\'s closed workspace to attempt 2', () => {
+  const raw = fs.readFileSync(new URL('./cmux-launch.js', import.meta.url), 'utf8');
+  // Strip comments before asserting — the fix's own comment quotes the removed
+  // pattern to explain it, and a naive whole-file scan would match that.
+  const src = raw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  // `lastWs = ws || lastWs` carried attempt 1's ref forward, so if attempt 2
+  // could not resolve its own ref, the late-adopt watch and the caller's
+  // failure journaling both pointed at a workspace this function had already
+  // CLOSED — while attempt 2's real workspace stayed unattributed. Attribution
+  // is the entire point of the fix, so the carry-forward must stay gone.
+  assert.doesNotMatch(src, /lastWs\s*=\s*ws\s*\|\|\s*lastWs/);
+  assert.match(src, /survivingWs\s*=\s*ws\s*\|\|\s*null/);
+  // And the ref must be dropped the moment attempt 1's workspace is closed.
+  assert.match(src, /closeWorkspace\(ws\.ref\)[\s\S]{0,200}survivingWs\s*=\s*null/);
 });
 
 test('bsc-next dispatches with the long verify window + late-adopt grace, and journals failures', () => {

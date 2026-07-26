@@ -117,8 +117,18 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
   const typed = ` bash ${cmdFile}`; // leading space additionally survives a swallowed first key
   if (!fs.existsSync(CMUX)) return { ok: false, reason: 'cmux CLI not found', seedFile, command };
 
-  let lastWs = null;
+  // The SURVIVING workspace — the one attempt 2 left open. Deliberately reset
+  // per attempt (Opus ship-check blocker, Codex): carrying attempt 1's ref
+  // forward with `lastWs = ws || lastWs` meant that if attempt 2 could not
+  // resolve its own ref, both the late-adopt watch and the caller's failure
+  // journaling pointed at attempt 1's workspace — which this function CLOSED
+  // at line ~156 — while attempt 2's real, possibly-alive workspace stayed
+  // completely unattributed. Attribution is the whole point of the fix, so an
+  // unresolvable workspace must report null (honest "we don't know") rather
+  // than a confidently wrong, already-closed ref.
+  let survivingWs = null;
   for (let attempt = 1; attempt <= 2; attempt++) {
+    survivingWs = null;
     const before = new Set(cmuxws.listWorkspaces().map(w => w.ref));
     const r = spawnSync(CMUX, ['new-workspace', '--name', title, '--cwd', cwd, '--command', typed, '--focus', String(focus)],
       { encoding: 'utf8' });
@@ -133,7 +143,11 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
     const m = /workspace:\d+/.exec(String(r.stdout || ''));
     const ws = m ? { ref: m[0] } : pollUntil(
       () => cmuxws.listWorkspaces().find(w => !before.has(w.ref)), 5);
-    lastWs = ws || lastWs;
+    survivingWs = ws || null;
+    // Progress output: a failed dispatch now costs up to ~4 minutes (two 90s
+    // verify windows plus a 60s adoption grace). Silence for that long reads
+    // as a hung CLI, so say what is being waited on.
+    if (ws) console.error(`[cmux-launch] ${ws.ref} created — waiting up to ${verifyTimeoutSec}s for claude to register (attempt ${attempt}/2)`);
     // VERIFY the launch (scope add 3): a workspace whose command was mangled
     // never starts claude and never self-marks ✅, so nothing would notice.
     // Poll for a LIVE claude_code process (any status — a fast launch can
@@ -154,13 +168,14 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
         return { ok: true, ref: ws.ref, seedFile, command };
       }
       if (ws) { try { cmuxws.closeWorkspace(ws.ref); } catch { /* already gone */ } }
+      survivingWs = null; // closed above — must never be adopted or journaled
       sleepSec(2);
     }
   }
   const failed = {
     ok: false,
-    reason: `no running claude in ${lastWs ? lastWs.ref : 'the new workspace'} after 2 attempts`,
-    workspaceRef: lastWs ? lastWs.ref : null,
+    reason: `no running claude in ${survivingWs ? survivingWs.ref : 'the new workspace'} after 2 attempts`,
+    workspaceRef: survivingWs ? survivingWs.ref : null,
     seedFile, command,
   };
 
@@ -171,6 +186,7 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
   // untracked, unjournaled live shell AND a duplicate dispatch onto the same
   // task (10 of them on 2026-07-26). Watch the survivor here instead.
   if (lateAdoptSec > 0 && failed.workspaceRef) {
+    console.error(`[cmux-launch] verify window expired — watching ${failed.workspaceRef} for a further ${lateAdoptSec}s before calling it dead`);
     const live = pollUntil(() => strictlyAliveWorkspace(failed.workspaceRef), lateAdoptSec);
     if (shouldAdoptLateStart(failed, live)) {
       if (autoColor) setAutoColor(failed.workspaceRef);

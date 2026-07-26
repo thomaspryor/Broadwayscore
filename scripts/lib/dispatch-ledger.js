@@ -111,16 +111,27 @@ function deadBreadcrumbs(idleWorkspaces, entries) {
 // and 4 duplicate dispatches accumulate on 2026-07-26.
 //
 // Two entries, on purpose:
+//   'dead'   — makes the attempt COUNT right now, without waiting for a sweep.
 //   'launch' — makes the leftover shell ATTRIBUTABLE to this task, so a later
 //              bsc-prune sweep can name it instead of listing a mystery tab.
-//   'dead'   — makes the attempt COUNT right now, without waiting for a sweep.
+//
+// ORDER MATTERS: 'dead' is written FIRST (Opus ship-check blocker, Codex).
+// These are two separate appends, so a bsc-prune sweep can interleave between
+// them. With 'launch' first, a sweep landing in the gap would see a launch with
+// no recorded death, emit its OWN 'dead' breadcrumb, and deadAttemptsForTask()
+// would then count TWO deaths for a single failed launch — tripping the
+// 2-death guard off one bad dispatch. Writing 'dead' first makes every
+// interleaving safe: a sweep in the gap finds no launch record for the ref and
+// skips it ("not ours to journal"); any later sweep sees the existing 'dead'
+// and skips it as already-recorded. No lock needed.
+//
 // Returns [] when cmux left no workspace behind (nothing to attribute).
 function failedLaunchEntries({ taskId, subject, workspaceRef, model = null, verifyCmd = null, verifyReason = null, notionId = null, failureReason = null }) {
   if (!workspaceRef) return [];
   const base = { taskId: String(taskId), subject, workspaceRef, failureReason };
   return [
-    { event: 'launch', ...base, model, verifyCmd, verifyReason, notionId, unverified: true },
     { event: 'dead', ...base, title: null },
+    { event: 'launch', ...base, model, verifyCmd, verifyReason, notionId, unverified: true },
   ];
 }
 
