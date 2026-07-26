@@ -198,6 +198,9 @@ function acquireLock(dir) {
       try {
         const content = JSON.parse(fs.readFileSync(lock, 'utf8'));
         acquiredAt = Date.parse(content.acquiredAt);
+        if (!Number.isFinite(acquiredAt) && content.acquiredAt !== undefined) {
+          console.warn(`notion-tasks-sync: ${lock} has an unparseable acquiredAt (${JSON.stringify(content.acquiredAt)}) — falling back to mtime staleness`);
+        }
       } catch {
         acquiredAt = NaN;
       }

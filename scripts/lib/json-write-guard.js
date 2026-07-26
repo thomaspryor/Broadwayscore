@@ -78,6 +78,15 @@ function isLockStale(lockDir, now = Date.now()) {
   try {
     const owner = JSON.parse(fs.readFileSync(ownerPath, 'utf8'));
     acquiredAt = Date.parse(owner.acquiredAt);
+    // A present-but-unparseable acquiredAt (e.g. a future refactor drops
+    // .toISOString() and writes a raw number) silently falls back to the
+    // exact mtime anti-pattern this function exists to avoid — warn so a
+    // format regression is observable instead of quietly reintroducing #476.
+    if (!Number.isFinite(acquiredAt) && owner.acquiredAt !== undefined) {
+      console.warn(
+        `json-write-guard: ${ownerPath} has an unparseable acquiredAt (${JSON.stringify(owner.acquiredAt)}) — falling back to mtime staleness`
+      );
+    }
   } catch {
     acquiredAt = NaN;
   }
