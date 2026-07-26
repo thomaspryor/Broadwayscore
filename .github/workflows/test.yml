@@ -112,6 +112,7 @@ on:
       - 'scripts/lib/push-with-retry.sh'
       - 'scripts/lib/push-with-retry.conflict-marker.test.sh'
       - 'scripts/lib/push-with-retry.deadline.test.sh'
+      - 'scripts/lib/push-with-retry.fetch-timeout.test.sh'
       # #394: no-op-rebase root-cause fix (explicit-destination fetch + progress
       # assertion). Pure predicate in push-rebase-progress.js (colocated .test.mjs
       # runs in the scripts/lib/*.test.mjs glob); bash integration reproduces the
@@ -1547,6 +1548,19 @@ jobs:
         # (task #183 / Notion 39d637c5 — the "Record pipeline success" hang).
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.deadline.test.sh
+
+      - name: Run push-with-retry fetch-timeout test (bash integration)
+        # Task #464 root-cause fix: the mid-loop fetch could hit the full
+        # GIT_NET_TIMEOUT_SEC=90 cap TWICE back-to-back (explicit-refspec fetch,
+        # then the bare-form fallback retrying the identical operation under the
+        # identical slow-network condition) — exact 180s gaps observed in 3 real
+        # CI runs under high main-branch churn, 2026-07-25/26. Simulates a
+        # genuinely hung remote (silent TCP listener, not a stalled-then-slow
+        # transfer) and asserts the fallback is SKIPPED when the explicit form
+        # hits the hard timeout (rc=124), so a doomed retry no longer doubles the
+        # per-iteration cost.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.fetch-timeout.test.sh
 
       - name: Run push-with-retry no-op-rebase test (bash integration)
         # Asserts the #394 root-cause fix: under actions/checkout's SHA-pinned fetch
