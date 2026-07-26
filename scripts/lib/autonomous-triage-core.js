@@ -86,6 +86,15 @@ function extractCheckPaths(cmd) {
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
 
+// String.replace() rewrites only the FIRST occurrence, so a command naming the
+// same phantom path twice (`node --test tests/x.test.mjs tests/x.test.mjs`)
+// would come back half-corrected and fail at exec time. Token-boundary split
+// avoids a regex (the paths contain `.` and `/`) and never touches a substring
+// of a longer path.
+function replaceAllTokens(cmd, from, to) {
+  return cmd.split(' ').map(t => (t === from ? to : t)).join(' ');
+}
+
 // Deterministic post-validation guard: runs once, no extra LLM call (a
 // missing path is a fact about the filesystem, not a model mistake worth a
 // retry). Only meaningful for eligible verdicts — an ineligible card's check
@@ -123,23 +132,45 @@ function resolveCheckPaths(checkableDone, opts = {}) {
   const repoRoot = opts.repoRoot || REPO_ROOT;
   const paths = extractCheckPaths(checkableDone);
   if (paths.length === 0) return { ok: true, checkableDone }; // tsc/lint forms carry no file args
-  const exists = p => { try { return fs.existsSync(path.join(repoRoot, p)); } catch { return false; } };
+  // isFile, not existsSync: `test -f scripts/lib` and `node --test tests/unit`
+  // name real DIRECTORIES, and `test -f <dir>` always exits 1 — treating them
+  // as "exists" queued an unpassable card that burned a whole executor
+  // envelope (ship-check finding). A directory is neither a satisfied check
+  // nor a creatable artifact, so it falls through to the veto below.
+  const exists = p => { try { return fs.statSync(path.join(repoRoot, p)).isFile(); } catch { return false; } };
   const dirExists = p => { try { return fs.statSync(path.join(repoRoot, path.dirname(p))).isDirectory(); } catch { return false; } };
+  const isDir = p => { try { return fs.statSync(path.join(repoRoot, p)).isDirectory(); } catch { return false; } };
   let corrected = checkableDone;
   let anyCorrection = false;
   const newPaths = [];
+  const seen = new Set();
   for (const p of paths) {
+    if (seen.has(p)) continue; // `node --test a.test.mjs a.test.mjs` — resolve each token once
+    seen.add(p);
     if (exists(p)) continue;
-    const nearMatch = p.startsWith('tests/') ? `tests/unit/${path.basename(p)}` : null;
+    // An existing DIRECTORY is not a file the check can pass on and not an
+    // artifact the implementer can create — fail closed rather than let the
+    // new-artifact branch below "create" a path that is already occupied.
+    if (isDir(p)) {
+      return { ok: false, reason: `checkableDone names a directory, not a file: ${p}` };
+    }
+    // DIRECT children of tests/ only. `tests/integration/login.test.mjs` names
+    // a deliberate, non-unit location — rewriting it to tests/unit/ (which the
+    // old startsWith('tests/') test did at any depth) would silently redirect
+    // the implementer to the wrong suite, and the ship-check Codex pass called
+    // that out as the highest-risk part of this change. A missing path in a
+    // real subdirectory now falls through to the new-artifact branch below,
+    // which creates it exactly where the card asked.
+    const nearMatch = /^tests\/[^/]+$/.test(p) ? `tests/unit/${path.basename(p)}` : null;
     if (nearMatch && nearMatch !== p && exists(nearMatch)) {
-      corrected = corrected.replace(p, nearMatch);
+      corrected = replaceAllTokens(corrected, p, nearMatch);
       anyCorrection = true;
       continue;
     }
     // Canonicalize a brand-new test named at tests/<name> into tests/unit/.
     const target = nearMatch && nearMatch !== p && dirExists(nearMatch) ? nearMatch : p;
     if (dirExists(target)) {
-      if (target !== p) { corrected = corrected.replace(p, target); anyCorrection = true; }
+      if (target !== p) { corrected = replaceAllTokens(corrected, p, target); anyCorrection = true; }
       newPaths.push(target);
       continue;
     }
@@ -297,20 +328,35 @@ function findClaimedTask(cardId, taskState) {
 // hangup) without turning a genuinely broken card id into a retry storm.
 // `fetchFn(id)` is injected (execFileSync-backed in the CLI, a stub in tests);
 // `sleepFn(ms)` likewise so the test doesn't actually wait.
+//
+// PERMANENT failures are never retried (ship-check Codex finding): a deleted or
+// mistyped card id 404s identically every time, so a retry buys nothing and, at
+// 120 fetched cards, a systematic failure would add two minutes of pure sleep
+// plus 120 wasted subprocesses to every nightly run.
+const PERMANENT_FETCH_ERROR_RE = /\b(404|object_not_found|not[ _-]?found|validation_error|unauthorized|401|403)\b|could not find (page|block|database)/i;
+
+function isTransientFetchError(err) {
+  return !PERMANENT_FETCH_ERROR_RE.test(String((err && err.message) || ''));
+}
+
 async function fetchCardWithRetry(id, fetchFn, opts = {}) {
   const retries = Number.isInteger(opts.retries) ? opts.retries : 1;
   const delayMs = Number.isFinite(opts.delayMs) ? opts.delayMs : 1500;
   const sleepFn = opts.sleepFn || (ms => new Promise(r => setTimeout(r, ms)));
+  const isTransient = opts.isTransient || isTransientFetchError;
   let lastError = null;
+  let used = 0;
   for (let attempt = 1; attempt <= retries + 1; attempt++) {
+    used = attempt;
     try {
       return { ok: true, card: await fetchFn(id), attempts: attempt };
     } catch (err) {
       lastError = err;
-      if (attempt <= retries) await sleepFn(delayMs);
+      if (attempt > retries || !isTransient(err)) break;
+      await sleepFn(delayMs);
     }
   }
-  return { ok: false, error: lastError, attempts: retries + 1 };
+  return { ok: false, error: lastError, attempts: used, permanent: !isTransient(lastError) };
 }
 
 /**

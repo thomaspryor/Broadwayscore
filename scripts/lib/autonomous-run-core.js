@@ -12,7 +12,24 @@
 // enforcement lives in the diff gate + settings deny rules, never here.
 // Scope prose comes from describeScope() so it can never drift from the
 // eligibility predicates (plan-review design P0-3).
-const { describeScope } = require('./autonomous-eligibility.js');
+const { describeScope, isDiffDeterministicGreen } = require('./autonomous-eligibility.js');
+
+// Deterministic-green diffs (tests/docs only) merge WITHOUT the owner's tap:
+// the safety argument is that such files cannot change site or data behavior.
+// The card-#529 new-artifact allowance punches a hole in that argument, and
+// ship-check caught it: a card whose proof command names a test the SAME model
+// is about to write can now be a tests-only diff, so the model both authors
+// the evidence and grades itself — a vacuous `assert.ok(true)` would
+// self-certify and land unreviewed. Before #529 triage vetoed those cards
+// outright. So: a card carrying newCheckPaths keeps the human tap, no matter
+// how inert its file list looks. Pure function over (files, newCheckPaths) so
+// the rule is unit-testable without git/Notion (CLAUDE.md §15).
+function isAutoMergeable(item = {}, files = []) {
+  if (!isDiffDeterministicGreen(files)) return false;
+  const invented = item.newCheckPaths;
+  if (Array.isArray(invented) && invented.length > 0) return false;
+  return true;
+}
 
 function buildImplementerPrompt(card, item, { tier = 1 } = {}) {
   return [
@@ -185,6 +202,7 @@ function shouldThrottle(openApprovalCount, max = MAX_OPEN_APPROVALS) {
 }
 
 module.exports = {
+  isAutoMergeable,
   buildImplementerPrompt,
   buildDataImplementerPrompt,
   DATA_CLASS_ALLOWED_PATH_DESC,

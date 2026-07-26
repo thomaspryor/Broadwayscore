@@ -158,6 +158,41 @@ test('resolveCheckPaths: an existing near-match still WINS over creating a new f
   assert.deepEqual(r.newPaths, []); // corrected onto the real file, nothing to create
 });
 
+// ship-check (Codex + Opus QA, 2026-07-26): the canonicalization must not
+// relocate a deliberate non-unit suite. tests/{e2e,smoke,integration,fixtures}
+// all exist in the real tree.
+test('resolveCheckPaths: a new test in a tests/ SUBDIRECTORY is created there, never relocated into tests/unit/', () => {
+  const root = mkFixtureRepo();
+  fs.mkdirSync(path.join(root, 'tests', 'e2e'), { recursive: true });
+  const r = resolveCheckPaths('node --test tests/e2e/login-flow.test.mjs', { repoRoot: root });
+  assert.equal(r.ok, true);
+  assert.equal(r.checkableDone, 'node --test tests/e2e/login-flow.test.mjs'); // unchanged
+  assert.deepEqual(r.newPaths, ['tests/e2e/login-flow.test.mjs']);
+});
+
+test('resolveCheckPaths: an existing DIRECTORY is refused — `test -f <dir>` can never pass', () => {
+  const root = mkFixtureRepo();
+  fs.mkdirSync(path.join(root, 'scripts', 'lib'), { recursive: true });
+  const r = resolveCheckPaths('test -f scripts/lib', { repoRoot: root });
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /names a directory, not a file: scripts\/lib/);
+});
+
+test('resolveCheckPaths: a repeated path token is rewritten in EVERY position, not just the first', () => {
+  const root = mkFixtureRepo();
+  const r = resolveCheckPaths('node --test tests/dup.test.mjs tests/dup.test.mjs', { repoRoot: root });
+  assert.equal(r.ok, true);
+  assert.equal(r.checkableDone, 'node --test tests/unit/dup.test.mjs tests/unit/dup.test.mjs');
+  assert.deepEqual(r.newPaths, ['tests/unit/dup.test.mjs']); // deduped
+});
+
+test('resolveCheckPaths: a multi-path command mixing an existing and a new test resolves both', () => {
+  const root = mkFixtureRepo();
+  const r = resolveCheckPaths('node --test tests/unit/foo.test.mjs tests/unit/brand-new.test.mjs', { repoRoot: root });
+  assert.equal(r.ok, true);
+  assert.deepEqual(r.newPaths, ['tests/unit/brand-new.test.mjs']);
+});
+
 test('resolveCheckPaths: tsc/lint forms carry no path args → pass through', () => {
   const root = mkFixtureRepo();
   assert.deepEqual(resolveCheckPaths('npx tsc --noEmit', { repoRoot: root }), { ok: true, checkableDone: 'npx tsc --noEmit' });
@@ -248,13 +283,29 @@ test('fetchCardWithRetry: a first-try success never retries and never sleeps', a
   assert.deepEqual(slept, []);
 });
 
-test('fetchCardWithRetry: a persistently broken card id gives up after the bounded retry, carrying the last error', async () => {
+test('fetchCardWithRetry: a persistently transient failure gives up after the bounded retry, carrying the last error', async () => {
   let calls = 0;
-  const r = await fetchCardWithRetry('bad-id', async () => { calls++; throw new Error(`HTTP 404 (attempt ${calls})`); }, { sleepFn: async () => {} });
+  const r = await fetchCardWithRetry('flaky-id', async () => { calls++; throw new Error(`socket hang up (attempt ${calls})`); }, { sleepFn: async () => {} });
   assert.equal(r.ok, false);
   assert.equal(r.attempts, 2);
   assert.equal(calls, 2); // bounded — never a retry storm
   assert.match(r.error.message, /attempt 2/);
+});
+
+// ship-check (Codex): a deleted/mistyped card id 404s identically every time.
+// Retrying it buys nothing and, across a 120-card fetch, a systematic auth or
+// id failure would add minutes of pure sleep plus 120 wasted subprocesses.
+test('fetchCardWithRetry: a PERMANENT failure (404 / auth) is never retried', async () => {
+  for (const msg of ['Notion API 404 object_not_found', 'HTTP 401 unauthorized', 'Could not find page with ID abc']) {
+    let calls = 0;
+    const slept = [];
+    const r = await fetchCardWithRetry('gone', async () => { calls++; throw new Error(msg); }, { sleepFn: async ms => slept.push(ms) });
+    assert.equal(r.ok, false, msg);
+    assert.equal(calls, 1, `${msg} must not retry`);
+    assert.equal(r.attempts, 1, msg);
+    assert.equal(r.permanent, true, msg);
+    assert.deepEqual(slept, [], `${msg} must not sleep`);
+  }
 });
 
 // ── findClaimedTask (claim visibility, night-2 fix) ─────────────────────────
