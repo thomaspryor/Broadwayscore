@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-07-24T00:35:53.259Z",
+    "lastUpdated": "2026-07-26T05:54:39.382Z",
     "version": "2.1.0",
     "lastChange": "Fold 5 registry-duplicate outlet IDs (no-domain dupes) into domain-owning canonical entries (card 39c637c5)"
   },
@@ -10122,6 +10122,22 @@
         "jonathan-baz"
       ],
       "domain": "jonathanbaz.com"
+    },
+    "londongrip": {
+      "displayName": "Londongrip",
+      "tier": 3,
+      "aliases": [
+        "londongrip"
+      ],
+      "domain": "londongrip.co.uk"
+    },
+    "musical-theatre-report": {
+      "displayName": "Musical Theatre Report",
+      "tier": 3,
+      "aliases": [
+        "musical-theatre-report"
+      ],
+      "domain": "themusicaltheatrereport.com"
     }
   },
   "_aliasIndex": {
