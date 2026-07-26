@@ -2665,17 +2665,17 @@ function isIncludableForRebuild(data, show, filePath) {
   // fullTextWrongAuthor: rebuild deletes fullText in memory and falls back to excerpts only.
   // On disk the fullText still exists, so we must check excerpt fields directly.
   if (data.fullTextWrongAuthor === true) {
-    const hasExcerpt = !!(
-      data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt ||
-      data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt
-    );
-    if (!hasExcerpt) return false;
+    if (!require('./excerpt-fields').hasExcerpt(data)) return false;
     // Has excerpt — fall through to final text/agg check (excerpts count as content)
     return true;
   }
 
-  // Must have either review text or an aggregator signal
-  const hasText = !!(data.fullText && data.fullText.trim());
+  // Must have either review text or an aggregator signal. Excerpt-only reviews
+  // (fullText:null, recovered via BWW/DTLI/ShowScore/etc roundup excerpt for paywalled
+  // outlets — contentTier: 'excerpt') count as text: getScorableText() in
+  // llm-scoring/index.ts builds LLM prompts FROM these same excerpt fields, so this gate
+  // must recognize them as scoreable or llm-scoring silently skips them as "unknown".
+  const hasText = !!(data.fullText && data.fullText.trim()) || require('./excerpt-fields').hasExcerpt(data);
   const hasAggregatorSignal = !!(
     data.aggregatorStars ||
     data.originalScore != null ||

@@ -1,14 +1,31 @@
 {
-  "generatedAt": "2026-04-30T02:43:14.288Z",
-  "scanned": 36903,
-  "agree": 36294,
+  "generatedAt": "2026-07-26T18:48:27.378Z",
+  "scanned": 40964,
+  "agree": 40260,
   "llmPermissiveCount": 0,
-  "llmRestrictiveCount": 609,
-  "groundTruthMismatches": 0,
+  "llmRestrictiveCount": 704,
+  "groundTruthMismatches": 16,
   "buckets": {
     "LLM_RESTRICTIVE::scraper_garbage": {
-      "count": 606,
+      "count": 683,
       "samples": [
+        {
+          "showId": "1536-west-end-2026",
+          "file": "london-box-office--shehrazade-zafar-arif.json",
+          "criticName": "Shehrazade Zafar-Arif",
+          "outletId": "london-box-office",
+          "url": "https://www.londonboxoffice.co.uk/news/post/1536-ambassadors-theatre-photos",
+          "publishDate": "2026-05-05",
+          "rebuildReason": "(included)",
+          "llmReason": "scraper_garbage",
+          "flags": {
+            "contentTier": "stub",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": true
+          }
+        },
         {
           "showId": "1984-2017",
           "file": "talkinbroadway--matthew-murray.json",
@@ -28,6 +45,23 @@
           }
         },
         {
+          "showId": "360-allstars-off-west-end-2026",
+          "file": "thestage--unknown.json",
+          "criticName": "Unknown",
+          "outletId": "thestage",
+          "url": "https://www.thestage.co.uk/reviews/360-allstars-review-peacock-theatre-london",
+          "publishDate": "2026-06-03",
+          "rebuildReason": "(included)",
+          "llmReason": "scraper_garbage",
+          "flags": {
+            "contentTier": "stub",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
           "showId": "700-sundays-2013",
           "file": "northjerseycom--robert-feldberg.json",
           "criticName": "Robert Feldberg",
@@ -40,23 +74,6 @@
             "rejectedByLength": 0,
             "incompleteReason": "scraper_garbage",
             "fullTextLen": 0,
-            "hasAggregatorSignal": true
-          }
-        },
-        {
-          "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-          "file": "talkinbroadway--nancy-grossman.json",
-          "criticName": "Nancy Grossman",
-          "outletId": "talkinbroadway",
-          "url": "https://www.talkinbroadway.com/page/regional/boston/bos671.html",
-          "publishDate": "July 11, 2022",
-          "rebuildReason": "(included)",
-          "llmReason": "scraper_garbage",
-          "flags": {
-            "contentTier": "truncated",
-            "rejectedByLength": 0,
-            "incompleteReason": "scraper_garbage",
-            "fullTextLen": 130,
             "hasAggregatorSignal": true
           }
         },
@@ -161,30 +178,245 @@
             "fullTextLen": 229,
             "hasAggregatorSignal": true
           }
-        },
+        }
+      ]
+    },
+    "LLM_RESTRICTIVE::finalContentGate": {
+      "count": 14,
+      "samples": [
         {
-          "showId": "a-christmas-carol-2019",
-          "file": "talkinbroadway--matthew-murray.json",
-          "criticName": "Matthew Murray",
-          "outletId": "talkinbroadway",
-          "url": "https://www.talkinbroadway.com/world/ChristmasCarol.html",
-          "publishDate": "December 6, 2019",
-          "rebuildReason": "(included)",
-          "llmReason": "scraper_garbage",
+          "showId": "beetlejuice-west-end-2026",
+          "file": "timeout--adam-feldman.json",
+          "criticName": "Adam Feldman",
+          "outletId": "timeout",
+          "url": "/people/Adam-Feldman/",
+          "rebuildReason": "finalContentGate",
+          "llmReason": "finalContentGate",
           "flags": {
             "contentTier": "excerpt",
             "rejectedByLength": 0,
-            "textFetchedAt": "2026-02-12T16:56:03.044Z",
             "incompleteReason": "scraper_garbage",
             "fullTextLen": 0,
-            "hasAggregatorSignal": true
+            "hasAggregatorSignal": false
+          }
+        },
+        {
+          "showId": "cyrano-de-bergerac-2012",
+          "file": "newsday--unknown.json",
+          "criticName": null,
+          "outletId": "newsday",
+          "url": "https://www.newsday.com/entertainment/theater/cyrano-review-not-one-for-the-ages-1.4098426",
+          "publishDate": "October 11, 2012",
+          "rebuildReason": "finalContentGate",
+          "llmReason": "finalContentGate",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": false
+          }
+        },
+        {
+          "showId": "encores-la-cage-aux-folles-off-broadway-2026",
+          "file": "standard--nick-curtis.json",
+          "criticName": "Nick Curtis",
+          "outletId": "standard",
+          "url": "/people/Nick-Curtis/",
+          "rebuildReason": "finalContentGate",
+          "llmReason": "finalContentGate",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": false
+          }
+        },
+        {
+          "showId": "glengarry-glen-ross-2012",
+          "file": "washpost--ben-brantley.json",
+          "criticName": "Ben Brantley",
+          "outletId": "washpost",
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-mamets-glengarry-glen-ross-with-al-pacino-shows-playwrights-past-still-crackles/2012/12/09/41a4524c-4273-11e2-8c8f-fbebf7ccab4e_story.html",
+          "publishDate": "December 9, 2012",
+          "rebuildReason": "finalContentGate",
+          "llmReason": "finalContentGate",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": false
+          }
+        },
+        {
+          "showId": "hadestown-2019",
+          "file": "broadwaynews--charles-isherwood.json",
+          "criticName": "Charles Isherwood",
+          "outletId": "broadwaynews",
+          "url": "https://broadway.news/2019/04/17/review-an-exhilarating-hadestown-revitalizes-a-classic-love-story/",
+          "publishDate": "April 17th, 2019",
+          "rebuildReason": "finalContentGate",
+          "llmReason": "finalContentGate",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": false
+          }
+        },
+        {
+          "showId": "hadestown-2019",
+          "file": "newnownextcom--michael-musto.json",
+          "criticName": "Michael Musto",
+          "outletId": "newnownextcom",
+          "url": "https://www.newnownext.com/michael-musto-broadway-reviews/04/2019/",
+          "publishDate": "April 23rd, 2019",
+          "rebuildReason": "finalContentGate",
+          "llmReason": "finalContentGate",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": false
+          }
+        },
+        {
+          "showId": "long-days-journey-into-night-2003",
+          "file": "woman-around-town--alix-cohen.json",
+          "criticName": "Alix Cohen",
+          "outletId": "woman-around-town",
+          "url": "https://www.womanaroundtown.com/sections/playing-around/long-days-journey-into-night-a-glass-mountain-of-a-play",
+          "publishDate": null,
+          "rebuildReason": "finalContentGate",
+          "llmReason": "finalContentGate",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": false
+          }
+        },
+        {
+          "showId": "midnight-at-the-never-get-west-end-2026",
+          "file": "broadwayworld--persson-clementine-scott.json",
+          "criticName": "Persson Clementine Scott",
+          "outletId": "broadwayworld",
+          "url": "/article/Review-MIDNIGHT-AT-THE-NEVER-GET-Menier-Chocolate-Factory-20260720",
+          "publishDate": null,
+          "rebuildReason": "finalContentGate",
+          "llmReason": "finalContentGate",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": false
+          }
+        },
+        {
+          "showId": "patriots-2024",
+          "file": "dtli--frank-scheck.json",
+          "criticName": "Frank Scheck",
+          "outletId": "dtli",
+          "url": "https://didtheylikeit.com/wp-admin/post-new.php?post_type=shows",
+          "publishDate": "April 22, 2024",
+          "rebuildReason": "finalContentGate",
+          "llmReason": "finalContentGate",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": false
+          }
+        },
+        {
+          "showId": "the-magic-show-1974",
+          "file": "hollywood-reporter--david-rooney.json",
+          "criticName": "David Rooney",
+          "outletId": "hollywood-reporter",
+          "url": "/people/David-Rooney/",
+          "rebuildReason": "finalContentGate",
+          "llmReason": "finalContentGate",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": false
           }
         }
       ]
     },
     "LLM_RESTRICTIVE::showNotMentioned_noExcerpt": {
-      "count": 3,
+      "count": 5,
       "samples": [
+        {
+          "showId": "art-2025",
+          "file": "nytimes--jesse-green.json",
+          "criticName": "Jesse Green",
+          "outletId": "nytimes",
+          "url": "https://www.nytimes.com/2025/12/13/arts/movies-tv-art-music-2025.html",
+          "publishDate": "2025-12-13",
+          "rebuildReason": "(included)",
+          "llmReason": "showNotMentioned_noExcerpt",
+          "flags": {
+            "contentTier": "truncated",
+            "rejectedByLength": 0,
+            "textFetchedAt": "2026-06-01T04:24:59.680Z",
+            "incompleteReason": "url_content_mismatch",
+            "showNotMentioned": true,
+            "fullTextLen": 2201,
+            "hasAggregatorSignal": false
+          }
+        },
+        {
+          "showId": "giant-2026",
+          "file": "bloomberg--aubrey.json",
+          "criticName": "Aubrey",
+          "outletId": "bloomberg",
+          "url": "http://www.businessweek.com/news/2012-11-15/musical-giant-overflows-with-plot-songs-theater",
+          "rebuildReason": "(included)",
+          "llmReason": "showNotMentioned_noExcerpt",
+          "flags": {
+            "wrongProduction": true,
+            "humanReviewedWrongProduction": false,
+            "wrongShow": false,
+            "contentTier": "complete",
+            "contentVerificationWrong": false,
+            "rejectionReason": null,
+            "rejectedByLength": 0,
+            "rejectedAt": "2026-06-20T21:43:06.844Z",
+            "textFetchedAt": "2026-06-20T17:20:10.184Z",
+            "showNotMentioned": true,
+            "fullTextLen": 13074,
+            "hasAggregatorSignal": false
+          }
+        },
+        {
+          "showId": "please-please-me-west-end-2026",
+          "file": "guardian--unknown.json",
+          "criticName": "Unknown",
+          "outletId": "guardian",
+          "url": "https://www.theguardian.com/stage/2026/apr/24/please-please-me-review-fascinating-tale-of-brian-epstein-the-beatles-and-that-trip-to-torremolinos",
+          "publishDate": "2026-04-24",
+          "rebuildReason": "(included)",
+          "llmReason": "showNotMentioned_noExcerpt",
+          "flags": {
+            "contentTier": "truncated",
+            "rejectedByLength": 0,
+            "textFetchedAt": "2026-05-13T09:00:34.557Z",
+            "incompleteReason": "url_content_mismatch",
+            "showNotMentioned": true,
+            "fullTextLen": 2371,
+            "hasAggregatorSignal": true
+          }
+        },
         {
           "showId": "the-lehman-trilogy-2021",
           "file": "thestage--nicole-serratore.json",
@@ -205,24 +437,6 @@
           }
         },
         {
-          "showId": "the-little-mermaid-the-musical-off-broadway-2026",
-          "file": "thestage--unknown.json",
-          "criticName": "Unknown",
-          "outletId": "thestage",
-          "url": "https://www.thestage.co.uk/musical-theatre",
-          "publishDate": null,
-          "rebuildReason": "(included)",
-          "llmReason": "showNotMentioned_noExcerpt",
-          "flags": {
-            "contentTier": "complete",
-            "rejectedByLength": 0,
-            "textFetchedAt": "2026-03-05T05:00:36.700Z",
-            "showNotMentioned": true,
-            "fullTextLen": 16592,
-            "hasAggregatorSignal": true
-          }
-        },
-        {
           "showId": "the-present-2017",
           "file": "thestage--unknown.json",
           "criticName": "Unknown",
@@ -238,6 +452,47 @@
             "textFetchedAt": "2026-02-22T21:31:16.591Z",
             "incompleteReason": "partial_text",
             "showNotMentioned": true,
+            "fullTextLen": 0,
+            "hasAggregatorSignal": true
+          }
+        }
+      ]
+    },
+    "LLM_RESTRICTIVE::duplicateOf": {
+      "count": 2,
+      "samples": [
+        {
+          "showId": "manic-street-creature-west-end-2026",
+          "file": "thestage--holly-o.json",
+          "criticName": "Holly O'",
+          "outletId": "thestage",
+          "url": "https://www.thestage.co.uk/reviews/manic-street-creature-review-kiln-theatre-london-maimuna-memon",
+          "publishDate": "2026-03-11",
+          "rebuildReason": "duplicateOf",
+          "llmReason": "duplicateOf",
+          "flags": {
+            "contentTier": "truncated",
+            "rejectedByLength": 0,
+            "textFetchedAt": "2026-06-01T03:49:05.212Z",
+            "incompleteReason": "scraper_garbage",
+            "showNotMentioned": true,
+            "fullTextLen": 2893,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
+          "showId": "the-comedy-about-spies-west-end-2026",
+          "file": "thestage--unknown.json",
+          "criticName": null,
+          "outletId": "thestage",
+          "url": "https://www.thestage.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre-mischief-theatre",
+          "publishDate": null,
+          "rebuildReason": "duplicateOf",
+          "llmReason": "duplicateOf",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
             "fullTextLen": 0,
             "hasAggregatorSignal": true
           }
