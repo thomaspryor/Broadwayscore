@@ -25,6 +25,7 @@ const { execFileSync } = require('child_process');
 // Done-marker detection is a known bug class (cmux prepends activity glyphs
 // before ✅) — reuse the hardened predicate instead of reimplementing it.
 const { isDoneTitle } = require('./cmux-workspaces.js');
+const { shallowFetchArgs } = require('./shallow-fetch-args.js');
 
 const CMUX_BIN = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
@@ -128,7 +129,25 @@ function gatherDigest({ repo, hours = 24 } = {}) {
   // 1. What landed on origin/main (fetch first so we see CI's commits, not
   //    the possibly-stale local main).
   try {
-    try { run('git', ['fetch', 'origin', 'main', '--quiet']); } catch { digest.errors.push('git fetch failed — commit summary may be stale'); }
+    // Depth-bound the fetch when the checkout is SHALLOW (task #420/#466).
+    // data-health-check.yml checks out at the default fetch-depth: 1, and from
+    // a shallow clone a fetch with no cut-off makes upload-pack send the ENTIRE
+    // ~2.1 GB / 165k-commit repo rather than the delta — for a digest that only
+    // reads `git log --since=${hours} hours`. Anchor the window just before the
+    // period we actually summarize (the helper turns that into --shallow-since)
+    // so the transfer covers exactly what the log below needs. A complete
+    // clone (the owner's Mac, where this also runs) gets NO extra flags: a
+    // --shallow-since there would truncate a full clone into a shallow one.
+    try {
+      let isShallow = false;
+      try { isShallow = run('git', ['rev-parse', '--is-shallow-repository'], null, 5000).trim() === 'true'; } catch { /* fail open */ }
+      const windowStartEpoch = Math.floor(Date.now() / 1000) - Math.ceil(hours) * 3600;
+      const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch: windowStartEpoch });
+      // unbounded-fetch-ok: depthArgs IS the bound (--shallow-since anchored at
+      // windowStartEpoch when shallow, empty on a complete clone by design).
+      // The lint can't evaluate a spread, so the waiver is explicit.
+      run('git', ['fetch', ...depthArgs, 'origin', 'main', '--quiet']);
+    } catch { digest.errors.push('git fetch failed — commit summary may be stale'); }
     const log = run('git', ['log', 'origin/main', `--since=${hours} hours ago`, '--pretty=%an\t%s']);
     digest.commits = summarizeCommits(log.split('\n').filter(Boolean));
   } catch (err) {
