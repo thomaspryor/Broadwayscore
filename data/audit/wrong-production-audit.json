@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-26T20:29:02.343Z",
+  "timestamp": "2026-07-26T21:02:23.442Z",
   "stats": {
     "totalReviews": 40717,
-    "alreadyFlagged": 17852,
+    "alreadyFlagged": 17857,
     "dateGuardCatches": 67,
     "directorMismatch": 928,
     "tvFilmSignals": 1116,
     "londonSignals": 763,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3296
+    "noPublishDate": 3292
   },
   "findings": [
     {
@@ -5855,7 +5855,7 @@
     {
       "showId": "death-of-a-salesman-2026",
       "file": "latimes--charles-mcnulty.json",
-      "score": null,
+      "score": 75,
       "publishDate": null,
       "url": "https://www.latimes.com/entertainment-arts/story/2026-04-01/arthur-miller-plays-revivals-death-of-a-salesman-the-price-review",
       "findings": [
@@ -22343,6 +22343,7 @@
     {
       "showId": "sylvia-off-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 59,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -22354,6 +22355,7 @@
     {
       "showId": "sylvia-off-west-end-2026",
       "file": "guardian--arifa-akbar.json",
+      "score": 84,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -22365,6 +22367,7 @@
     {
       "showId": "sylvia-off-west-end-2026",
       "file": "guardian--susannah-clapp.json",
+      "score": 67,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -22376,6 +22379,7 @@
     {
       "showId": "sylvia-off-west-end-2026",
       "file": "i-paper--fiona-mountford.json",
+      "score": 75,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -22387,6 +22391,7 @@
     {
       "showId": "sylvia-off-west-end-2026",
       "file": "standard--nick-curtis.json",
+      "score": 64,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -22398,6 +22403,7 @@
     {
       "showId": "sylvia-off-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 61,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -22409,6 +22415,7 @@
     {
       "showId": "sylvia-off-west-end-2026",
       "file": "thestage--sam-marlowe.json",
+      "score": 67,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -22420,6 +22427,7 @@
     {
       "showId": "sylvia-off-west-end-2026",
       "file": "timeout-london--alice-saville.json",
+      "score": 51,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -22431,6 +22439,7 @@
     {
       "showId": "sylvia-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
+      "score": 60,
       "findings": [
         {
           "type": "DATE_GUARD",
