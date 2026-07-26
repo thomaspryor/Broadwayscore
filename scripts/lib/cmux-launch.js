@@ -48,11 +48,49 @@ function setAutoColor(ref) {
 // happened. Require a SUCCESSFUL workspace listing that still contains the ref
 // before trusting the process check, so a socket failure yields "not alive"
 // (report the failure) instead of "adopt the corpse".
-function strictlyAliveWorkspace(ref) {
+function strictlyAliveWorkspace(ref, seedKey) {
   try {
     if (!cmuxws.listWorkspaces().some(w => w.ref === ref)) return false;
-    return cmuxws.claudeAliveIn(ref);
+    return cmuxws.claudeAliveIn(ref) && osProcessAliveForSeed(seedKey);
   } catch { return false; }
+}
+
+// Cross-check cmux's own "claude_code tag alive" signal against a REAL OS
+// process (card #548, false positive 2026-07-26): `cmux top --processes`
+// reports off cmux's own terminal-surface/tag registry, which can desync from
+// what's actually running — workspace:115 (#545) had claudeAliveIn()===true
+// and a "Running" claude_code tag while capture-pane/read-screen/pipe-pane all
+// failed "Terminal surface not found" and `ps aux` had ZERO matching claude
+// processes. The bash wrapper this module writes to `cmdFile` runs as the
+// foreground parent of the real claude process for the session's whole
+// lifetime, so its presence in the OS process table is ground truth,
+// independent of cmux's internal bookkeeping, that a real process exists for
+// THIS launch specifically (not just some possibly-stale/misattributed tag).
+function hasSeedProcess(psText, seedKey) {
+  const marker = `bsc-cmd-${seedKey}.sh`;
+  return String(psText).split('\n').some(line => line.includes(marker));
+}
+
+function osProcessAliveForSeed(seedKey) {
+  try {
+    // -ww: unlimited width, so a long command line isn't truncated before the
+    // marker. -e: every process, not just this terminal's.
+    const r = spawnSync('ps', ['-e', '-ww', '-o', 'command='], { encoding: 'utf8' });
+    if (r.status !== 0 && !r.stdout) return false; // ps itself failed — fail CLOSED (verifying a POSITIVE claim, unlike claudeAliveIn's close-path fail-open)
+    return hasSeedProcess(r.stdout || '', seedKey);
+  } catch {
+    return false;
+  }
+}
+
+// Combined liveness gate for the launch-verification poll: cmux's tag/process
+// registry AND a real OS process for this seedKey both have to agree. Either
+// signal alone has a known false-positive mode (cmux's registry per #548
+// above; a stale bash wrapper alone would only prove SOME earlier launch for
+// this seedKey ran, not that cmux's workspace is the live one) — requiring
+// both is what makes "claude verified running" true.
+function verifiedAlive(ws, seedKey) {
+  return !!(ws && cmuxws.claudeAliveIn(ws.ref) && osProcessAliveForSeed(seedKey));
 }
 
 // A launch result is adoptable when it FAILED verification but left a real
@@ -155,7 +193,7 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
     // would kill that healthy session as a corpse; ship-check 2026-07-21).
     // Window: shell init (direnv) + claude cold start can exceed 15s
     // post-reboot, and a false timeout kills a healthy launch (2026-07-12).
-    if (ws && pollUntil(() => cmuxws.claudeAliveIn(ws.ref), verifyTimeoutSec)) {
+    if (ws && pollUntil(() => verifiedAlive(ws, seedKey), verifyTimeoutSec)) {
       if (autoColor) setAutoColor(ws.ref);
       return { ok: true, ref: ws.ref, seedFile, command };
     }
@@ -163,7 +201,7 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
       // Verify-before-close: one last check after a beat, so a claude that
       // registered at the buzzer isn't killed as a corpse.
       sleepSec(2);
-      if (ws && cmuxws.claudeAliveIn(ws.ref)) {
+      if (verifiedAlive(ws, seedKey)) {
         if (autoColor) setAutoColor(ws.ref);
         return { ok: true, ref: ws.ref, seedFile, command };
       }
@@ -187,7 +225,7 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
   // task (10 of them on 2026-07-26). Watch the survivor here instead.
   if (lateAdoptSec > 0 && failed.workspaceRef) {
     console.error(`[cmux-launch] verify window expired — watching ${failed.workspaceRef} for a further ${lateAdoptSec}s before calling it dead`);
-    const live = pollUntil(() => strictlyAliveWorkspace(failed.workspaceRef), lateAdoptSec);
+    const live = pollUntil(() => strictlyAliveWorkspace(failed.workspaceRef, seedKey), lateAdoptSec);
     if (shouldAdoptLateStart(failed, live)) {
       if (autoColor) setAutoColor(failed.workspaceRef);
       return { ok: true, ref: failed.workspaceRef, adoptedLate: true, seedFile, command };
@@ -199,4 +237,5 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
 module.exports = {
   launchCmuxSession, CMUX, pollUntil, sleepSec, setAutoColor,
   strictlyAliveWorkspace, shouldAdoptLateStart,
+  hasSeedProcess, osProcessAliveForSeed, verifiedAlive,
 };
