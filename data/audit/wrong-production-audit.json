@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-07-26T04:42:20.162Z",
+  "timestamp": "2026-07-26T07:58:40.485Z",
   "stats": {
-    "totalReviews": 40467,
-    "alreadyFlagged": 17819,
+    "totalReviews": 40469,
+    "alreadyFlagged": 17821,
     "dateGuardCatches": 59,
     "directorMismatch": 912,
     "tvFilmSignals": 1110,
-    "londonSignals": 759,
+    "londonSignals": 760,
     "offBroadwaySignals": 464,
     "yearMismatch": 85,
     "noPublishDate": 3238
@@ -996,7 +996,8 @@
     },
     {
       "showId": "allegra-west-end-2026",
-      "file": "theupcoming--unknown.json",
+      "file": "theupcoming--jim-compton.json",
+      "score": 78,
       "publishDate": "2026-07-10",
       "url": "https://www.theupcoming.co.uk/2026/07/10/allegra-at-harold-pinter-theatre-theatre-review/",
       "findings": [
@@ -9979,6 +9980,7 @@
     {
       "showId": "hamilton-2015",
       "file": "vulture--jesse-green.json",
+      "score": 90,
       "publishDate": "2015-08-07",
       "url": "http://www.vulture.com/2015/08/theater-review-hamilton.html",
       "findings": [
@@ -19721,7 +19723,7 @@
     {
       "showId": "sherlock-holmes-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 40,
+      "score": 31,
       "publishDate": "2026-05-18",
       "url": "https://www.standard.co.uk/culture/theatre/sherlock-holmes-at-regent-s-park-open-air-theatre-review-b1282295.html",
       "findings": [
@@ -36193,6 +36195,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "midnight-at-the-never-get-west-end-2026",
+      "file": "lovelondonloveculture--unknown.json",
+      "publishDate": "2026-07-23",
+      "url": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
