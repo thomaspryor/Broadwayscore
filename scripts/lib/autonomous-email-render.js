@@ -273,8 +273,9 @@ function healthIssueCount(health) {
 }
 
 // ── Named digest snapshots (card #497 — daily-digest.yml score-drift +
-// opening-digest.yml, folded in the same way #364 folded in site health) ───
-// Both scripts write { generatedAt, subject, bannerText, items: [{title,
+// opening-digest.yml — and card #511 — reddit-engagement-digest.js — folded
+// in the same way #364 folded in site health) ──────────────────────────────
+// All three scripts write { generatedAt, subject, bannerText, items: [{title,
 // detail, url?}], moreCount } — routine FYI content, not errors/warnings, so
 // unlike renderHealthDigestBlock this never bumps the "N things to look at"
 // count; it's context, same tier as the overnight digest block below it.
@@ -304,6 +305,10 @@ function renderDailyDigestBlock(snapshot) {
 
 function renderOpeningDigestBlock(snapshot) {
   return renderNamedDigestBlock('Opening radar', snapshot);
+}
+
+function renderRedditDigestBlock(snapshot) {
+  return renderNamedDigestBlock('r/Broadway', snapshot);
 }
 
 function renderItem(item) {
@@ -538,6 +543,10 @@ function renderEmail(data) {
   // opening-night radar) fold in the same way. null when no fresh snapshot.
   if (data.dailyDigest) tail.push(renderDailyDigestBlock(data.dailyDigest));
   if (data.openingDigest) tail.push(renderOpeningDigestBlock(data.openingDigest));
+  // Card #511: reddit-engagement-digest.js's twice-daily "worth replying to"
+  // digest folds in the same way — one scheduled morning email, not three.
+  // null when no fresh snapshot exists.
+  if (data.redditDigest) tail.push(renderRedditDigestBlock(data.redditDigest));
   tail.push(renderUsageBlock(stats, admin, config));
 
   // "Closed N finished tabs" (S4-T3): the owner watches the workspace list
@@ -564,6 +573,6 @@ module.exports = {
   renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderRecheckBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
   attentionCountOf, actionableAttentionCountOf, digestStuckCount,
   renderHealthDigestBlock, healthIssueCount,
-  renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock,
+  renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
 };

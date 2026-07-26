@@ -2,19 +2,28 @@
 /**
  * reddit-engagement-digest.js
  *
- * Scans r/Broadway twice daily for threads worth engaging with.
+ * Scans r/Broadway once daily for threads worth engaging with.
  * Uses Claude to evaluate threads and draft replies in thomaspryor's voice.
- * Sends email digest via Resend.
+ *
+ * Card #511 (owner merge decision — one scheduled morning email, not
+ * several): this no longer emails on its own. It writes a structured
+ * snapshot to data/audit/reddit-digest-snapshot.json instead;
+ * autonomous-email.js reads it and folds it into the single scheduled
+ * morning email, same pattern as card #364's health-check.js digest. Went
+ * from twice-daily (01:00/13:00 UTC) to once-daily, retimed to run before
+ * the loop's 07:30 UTC start — a second same-day run would just overwrite
+ * this one's snapshot before the morning email ever read it, silently
+ * dropping its threads. LOOKBACK_HOURS raised 14 → 26 to cover the full gap
+ * between runs now that there's only one per day.
  *
  * Usage: node scripts/reddit-engagement-digest.js [--dry-run] [--verbose]
- * Env: ANTHROPIC_API_KEY, RESEND_API_KEY, OWNER_EMAIL
+ * Env: ANTHROPIC_API_KEY
  */
 
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { fetchWithFallback, flattenComments } = require('./lib/reddit-api');
-const { postJSON, sleep } = require('./lib/email-templates');
 const { VOICE_CHARACTERISTICS } = require('./lib/voice-characteristics');
 
 // ── Config ──────────────────────────────────────────────────────────────────
@@ -24,13 +33,15 @@ const VERBOSE = process.argv.includes('--verbose');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const HISTORY_PATH = path.join(DATA_DIR, 'reddit-digest-history.json');
+const AUDIT_DIR = path.join(DATA_DIR, 'audit');
+const DIGEST_SNAPSHOT_FILE = path.join(AUDIT_DIR, 'reddit-digest-snapshot.json');
+const DIGEST_ITEM_CAP = 8;
 
 const SUBREDDIT = 'Broadway';
-const LOOKBACK_HOURS = 14;
+const LOOKBACK_HOURS = 26;
 const MAX_LISTING = 50;
 const MAX_COMMENTS_PER_THREAD = 30;
 const MY_USERNAMES = ['thomaspryor', 'thepinkmusical'];
-const FROM_EMAIL = 'updates@broadwayscorecard.com';
 
 // Promo phase thresholds (digest count)
 const PHASE_NO_MENTION = 28;   // Digests 1-28: zero site mentions
@@ -484,124 +495,45 @@ async function evaluateThreads(threads, history) {
   return suggestions;
 }
 
-// ── Email ───────────────────────────────────────────────────────────────────
+// ── Digest snapshot (card #511) ─────────────────────────────────────────────
+// Same subject/bannerText + item-list shape as health-check.js's snapshot
+// (card #364), so autonomous-email.js can fold it through the shared render
+// block (renderNamedDigestBlock).
 
-function escapeHtml(str) {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function buildDigestEmail(suggestions, history) {
-  const digestNum = history.digestCount + 1;
-  const phase = getPromoPhase(history.digestCount);
-  const phaseLabel = phase === 'no-mention'
+function getPhaseLabel(phase) {
+  return phase === 'no-mention'
     ? 'Phase 1: Building reputation (no site mentions)'
     : phase === 'data-only'
       ? 'Phase 2: Sharing data casually (no links yet)'
       : 'Phase 3: Full engagement (occasional links OK)';
-
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('en-US', {
-    weekday: 'short', month: 'short', day: 'numeric',
-    hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York',
-  });
-
-  const categoryEmoji = {
-    recommendation: 'Rec',
-    debate: 'Debate',
-    reaction: 'Reaction',
-    industry: 'Industry',
-    meta: 'Meta',
-  };
-
-  const threadCards = suggestions.map((s, i) => {
-    const notes = [];
-    if (s.assumesSaw) {
-      notes.push(`<div style="margin:6px 0;padding:6px 10px;background:#fff3cd;border-radius:4px;font-size:12px;color:#856404;">Assumes you saw <strong>${escapeHtml(s.assumesSaw)}</strong> — edit if not</div>`);
-    }
-    if (s.promoLink) {
-      notes.push(`<div style="margin:6px 0;padding:6px 10px;background:#d4edda;border-radius:4px;font-size:12px;color:#155724;">Includes broadwayscorecard.com link</div>`);
-    }
-
-    return `
-    <div style="background:#fff;padding:16px 20px;border-bottom:1px solid #eee;">
-      <a href="${escapeHtml(s.threadUrl)}" style="color:#1a73e8;text-decoration:none;font-size:16px;font-weight:600;line-height:1.3;">
-        ${escapeHtml(s.threadTitle)}
-      </a>
-      <div style="margin:4px 0;color:#888;font-size:12px;">
-        ${s.threadScore} upvotes &middot; ${s.threadComments} comments &middot; ${escapeHtml(s.threadAge)} &middot; ${categoryEmoji[s.category] || s.category}
-      </div>
-      <div style="margin:8px 0;color:#555;font-size:13px;font-style:italic;">
-        ${escapeHtml(s.whyReply || '')}
-      </div>
-      <div style="margin:12px 0;padding:12px 14px;background:#f8f9fa;border-left:3px solid #1a73e8;border-radius:0 4px 4px 0;font-size:14px;line-height:1.6;color:#222;white-space:pre-wrap;">${escapeHtml(s.draftReply)}</div>
-      ${notes.join('\n')}
-      <div style="margin-top:12px;">
-        <a href="${escapeHtml(s.threadUrl)}" style="display:inline-block;padding:8px 20px;background:#ff4500;color:#fff;text-decoration:none;border-radius:4px;font-size:14px;font-weight:500;">
-          Open Thread
-        </a>
-      </div>
-    </div>`;
-  }).join('\n');
-
-  const html = `<!DOCTYPE html>
-<html><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-</head>
-<body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f0f0;">
-<div style="max-width:600px;margin:0 auto;padding:16px;">
-  <div style="background:#1a1a2e;color:#fff;padding:16px 20px;border-radius:8px 8px 0 0;">
-    <div style="font-size:20px;font-weight:700;">r/Broadway Digest</div>
-    <div style="margin-top:4px;color:#aaa;font-size:13px;">#${digestNum} &middot; ${escapeHtml(dateStr)} &middot; ${suggestions.length} thread${suggestions.length !== 1 ? 's' : ''}</div>
-  </div>
-  <div style="background:#2d2d44;color:#bbb;padding:6px 20px;font-size:11px;">
-    ${escapeHtml(phaseLabel)}
-  </div>
-  ${threadCards}
-  <div style="background:#e8e8e8;padding:12px 20px;border-radius:0 0 8px 8px;font-size:11px;color:#999;">
-    Disable: GitHub Actions &rarr; reddit-engagement-digest &rarr; Disable workflow
-  </div>
-</div>
-</body></html>`;
-
-  const subject = `r/Broadway — ${suggestions.length} thread${suggestions.length !== 1 ? 's' : ''} for you`;
-
-  return { subject, html };
 }
 
-async function sendDigest(subject, html) {
-  const RESEND_API_KEY = process.env.RESEND_API_KEY;
-  const OWNER_EMAIL = process.env.OWNER_EMAIL;
+function buildDigestItems(suggestions) {
+  return suggestions.map(s => {
+    const flags = [];
+    if (s.promoLink) flags.push('includes broadwayscorecard.com link');
+    if (s.assumesSaw) flags.push(`assumes you saw ${s.assumesSaw} — edit if not`);
+    const meta = `${s.threadScore} upvotes · ${s.threadComments} comments · ${s.threadAge}`;
+    const flagsText = flags.length ? ` (${flags.join('; ')})` : '';
+    return {
+      title: s.threadTitle,
+      detail: `${meta}${flagsText} — ${s.draftReply}`,
+      url: s.threadUrl,
+    };
+  });
+}
 
-  if (!RESEND_API_KEY || !OWNER_EMAIL) {
-    console.log('Missing RESEND_API_KEY or OWNER_EMAIL — skipping send');
-    return false;
-  }
-
-  if (DRY_RUN) {
-    console.log(`[DRY RUN] Would send: "${subject}" to ${OWNER_EMAIL}`);
-    return true;
-  }
-
-  try {
-    await postJSON('https://api.resend.com/emails', {
-      from: `Broadway Digest <${FROM_EMAIL}>`,
-      to: [OWNER_EMAIL],
-      subject,
-      html,
-    }, {
-      'Authorization': `Bearer ${RESEND_API_KEY}`,
-    });
-    console.log(`Email sent: "${subject}" to ${OWNER_EMAIL}`);
-    return true;
-  } catch (e) {
-    console.error(`Failed to send email: ${e.message}`);
-    return false;
-  }
+function writeDigestSnapshot({ subject, bannerText, items }) {
+  const snapshot = {
+    generatedAt: new Date().toISOString(),
+    subject,
+    bannerText,
+    items: items.slice(0, DIGEST_ITEM_CAP),
+    moreCount: Math.max(0, items.length - DIGEST_ITEM_CAP),
+  };
+  fs.mkdirSync(path.dirname(DIGEST_SNAPSHOT_FILE), { recursive: true });
+  fs.writeFileSync(DIGEST_SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
+  console.log(`Snapshot written (${snapshot.items.length} item(s)) — folds into the morning email, not sent separately`);
 }
 
 // ── Main ────────────────────────────────────────────────────────────────────
@@ -624,6 +556,7 @@ async function main() {
   const threads = await fetchRecentThreads(history);
   if (threads.length === 0) {
     console.log('\nNo recent threads found. Skipping digest.');
+    if (!DRY_RUN) writeDigestSnapshot({ subject: 'r/Broadway — no threads today', bannerText: 'No threads found', items: [] });
     return;
   }
 
@@ -631,6 +564,7 @@ async function main() {
   const enriched = await enrichWithComments(threads);
   if (enriched.length === 0) {
     console.log('\nNo threads after comment enrichment. Skipping digest.');
+    if (!DRY_RUN) writeDigestSnapshot({ subject: 'r/Broadway — no threads today', bannerText: 'No threads found', items: [] });
     return;
   }
 
@@ -638,17 +572,18 @@ async function main() {
   const suggestions = await evaluateThreads(enriched, history);
   if (suggestions.length === 0) {
     console.log('\nNo threads worth replying to. Skipping digest.');
+    if (!DRY_RUN) writeDigestSnapshot({ subject: 'r/Broadway — nothing worth replying to today', bannerText: 'Nothing worth replying to', items: [] });
     return;
   }
 
-  // 4. Build and send email
-  const { subject, html } = buildDigestEmail(suggestions, history);
+  // 4. Build the digest snapshot (card #511 — no longer emails on its own).
+  const phaseLabel = getPhaseLabel(getPromoPhase(history.digestCount));
+  const subject = `r/Broadway — ${suggestions.length} thread${suggestions.length !== 1 ? 's' : ''} for you`;
+  const bannerText = `${suggestions.length} thread${suggestions.length !== 1 ? 's' : ''} (${phaseLabel})`;
+  const items = buildDigestItems(suggestions);
 
   if (DRY_RUN) {
-    // Write HTML to file for preview
-    const previewPath = '/tmp/reddit-digest-preview.html';
-    fs.writeFileSync(previewPath, html);
-    console.log(`\nDry run — preview saved to ${previewPath}`);
+    console.log(`\nDry run — would write digest snapshot:`);
     console.log(`Subject: ${subject}`);
     console.log(`\nSuggestions:`);
     for (const s of suggestions) {
@@ -658,9 +593,12 @@ async function main() {
       if (s.assumesSaw) console.log(`    ** Assumes saw: ${s.assumesSaw} **`);
       console.log();
     }
+  } else {
+    // DRY_RUN must never touch the real digest snapshot — it must stay a
+    // preview, not silently overwrite what the morning email will actually
+    // read (same ship-check finding card #497 fixed for send-daily-digest.js).
+    writeDigestSnapshot({ subject, bannerText, items });
   }
-
-  const sent = await sendDigest(subject, html);
 
   // 5. Update history
   // Track promo digests BEFORE incrementing count (so the recorded number matches)
@@ -689,7 +627,6 @@ async function main() {
     threadsEvaluated: enriched.length,
     threadsSuggested: suggestions.length,
     promoLinksIncluded: suggestions.filter(s => s.promoLink).length,
-    sent,
     dryRun: DRY_RUN,
   };
   fs.writeFileSync('/tmp/reddit-digest-result.json', JSON.stringify(result, null, 2));
