@@ -65,6 +65,28 @@ const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `rebuild-all-reviews.js — rebuild reviews.json from data/review-texts.
+
+Usage:
+  node scripts/rebuild-all-reviews.js                 rebuild + write reviews.json
+  node scripts/rebuild-all-reviews.js --ignore-pause   bypass an opening-night rebuild-pause tombstone
+  node scripts/rebuild-all-reviews.js --force-write    suppress the >2% review-count regression guard
+  node scripts/rebuild-all-reviews.js --help, -h       print this usage and exit — no reads/writes
+
+WARNING: this script has no main() wrapper — the whole rebuild pipeline (shows.json
+read, review-texts walk, reviews.json write) is top-level module code, so --help
+MUST be checked before any of it runs (see task #498 / memory/feedback_local_rebuild_stale_clone_hazard.md).
+`;
+
+// --help/-h checked BEFORE any of the "Main execution" pipeline below —
+// no shows.json/review-texts read, no reviews.json write (cousin of
+// #260/#263/#264/#266, this script's own bug per task #498's evidence).
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(USAGE);
+  process.exit(0);
+}
 
 // Authoritative NYT Critic's Pick set — union of two sources:
 //   1. data/nyt-critics-picks.json — scraped from nytimes.com/spotlight/theater-critics-picks
