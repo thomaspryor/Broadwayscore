@@ -23,7 +23,11 @@
 #
 set -uo pipefail
 
-die() { echo "❌ $*" >&2; exit 1; }
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/lib/push-mutex.sh
+source "$SCRIPT_DIR/lib/push-mutex.sh"
+
+die() { push_mutex_release; echo "❌ $*" >&2; exit 1; }
 log() { echo "→ $*"; }
 
 # --- Parse args: optional branch, optional "-- files..." ---
@@ -61,6 +65,19 @@ if [ ${#VERIFY_FILES[@]} -eq 0 ]; then
   fi
 fi
 log "will verify ${#VERIFY_FILES[@]} file(s) on origin after push"
+
+# ── Local push mutex (task #556) ─────────────────────────────────────────────
+# The whole flow below — stash, checkout main, fetch+merge origin, merge the
+# worktree branch, push, verify — operates on the SHARED main worktree
+# directory ($MAIN_DIR) and origin's ref. Two concurrent sessions running this
+# script interleave on both, which is exactly the #546 incident class
+# (concurrent session reset origin's tip between this script's push and its
+# own verify step). Acquire before touching anything and release via the EXIT
+# trap on every path, including die(). Fails OPEN on timeout: the existing
+# ancestor-check verify step below remains as defense in depth. See
+# scripts/lib/push-mutex.sh.
+push_mutex_acquire
+trap 'push_mutex_release' EXIT
 
 # --- Stash any dirty tracked files (the data-daemon race) ---
 STASHED=0
