@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-26T12:20:34.737Z",
+  "generatedAt": "2026-07-26T13:20:58.799Z",
   "windowDays": 45,
   "showsScanned": 51,
   "gaps": [
@@ -18,7 +18,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-07-26T10:36:40.359Z",
-      "nonTerminalAgeHours": 1.7317716666666667
+      "nonTerminalAgeHours": 2.7384555555555554
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -28,14 +28,14 @@
       "outletId": "independent",
       "tier": 1,
       "type": "empty-body",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html?loginSuccessful=true",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
       "recovery": null,
       "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html?loginSuccessful=true --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-07-26T12:20:34.737Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 1.006683888888889
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 71.14951305555556,
+      "fileAgeHours": 72.15619611111111,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 30.45244472222222
+      "nonTerminalAgeHours": 31.45912861111111
     }
   ],
   "contradictions": []
