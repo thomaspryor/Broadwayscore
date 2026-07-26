@@ -69,7 +69,11 @@ const inScoreRange = (min: number, max: number): FilterPredicate => (s, ctx) => 
     ? s.audienceCombinedScore
     : s.criticScore?.score;
   if (typeof score !== 'number') return false;
-  return score >= min && score <= max;
+  // Round to match the displayed badge (e.g. 82.94 shows as 83) — a raw
+  // fractional score can fall in the open interval between two tiers
+  // (54-55, 64-65, etc.) and match neither without this.
+  const rounded = Math.round(score);
+  return rounded >= min && rounded <= max;
 };
 
 export const SCORE_TIER_CRITICAL_GOLD = inScoreRange(83, 100);
