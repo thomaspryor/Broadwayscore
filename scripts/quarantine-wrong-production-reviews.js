@@ -14,6 +14,17 @@
 const fs = require('fs');
 const path = require('path');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `quarantine-wrong-production-reviews.js — Quarantine Wrong Production Reviews.
+
+Usage:
+  node scripts/quarantine-wrong-production-reviews.js [options]
+  node scripts/quarantine-wrong-production-reviews.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'wrong-production-reviews.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const QUARANTINE_DIR = path.join(__dirname, '..', 'data', 'review-texts-quarantine');

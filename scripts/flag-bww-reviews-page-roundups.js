@@ -23,6 +23,17 @@ const path = require('path');
 const { isRoundupUrl, shouldSkipRoundupAudit } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `flag-bww-reviews-page-roundups.js — Sweep review-texts for BroadwayWorld /reviews/{slug} critics-aggregation.
+
+Usage:
+  node scripts/flag-bww-reviews-page-roundups.js [options]
+  node scripts/flag-bww-reviews-page-roundups.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';

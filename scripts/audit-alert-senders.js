@@ -140,7 +140,22 @@ function scanFile(absPath, relPath) {
       const window = lines.slice(i, i + 10).join('\n');
       const hasEmailTrue = /email:\s*true/.test(window);
       const severityMatch = window.match(/severity:\s*'(\w+)'/);
-      const severity = severityMatch ? severityMatch[1] : null;
+      let severity = severityMatch ? severityMatch[1] : null;
+      if (severity === null) {
+        // severity passed as a variable (e.g. `severity: alertSeverity` where
+        // `const alertSeverity = 'warning'` sits nearby so shouldEmailAlert()
+        // can reuse it — check-opening-night-completeness.js / verify-all-scored.js
+        // pattern, card #532). Resolve it from a single-quoted literal
+        // assignment in the surrounding lines; unresolvable stays null →
+        // treated as emailable (fail-noisy, same trust model as the rest of
+        // this heuristic scanner).
+        const identMatch = window.match(/severity:\s*([A-Za-z_$][\w$]*)/);
+        if (identMatch) {
+          const nearby = lines.slice(Math.max(0, i - 8), i + 10).join('\n');
+          const assignMatch = nearby.match(new RegExp(`\\b${identMatch[1].replace(/\$/g, '\\$')}\\s*=\\s*'(\\w+)'`));
+          if (assignMatch) severity = assignMatch[1];
+        }
+      }
       const emailable = hasEmailTrue && (severity === 'error' || severity === 'critical' || severity === null);
       if (!emailable) continue; // warning/info-only sendAlert calls are log-only, not owner-facing email
       findings.push({

@@ -14,6 +14,17 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `clear-wrong-show-blockers.js — Clear wrongShow slot-blockers: delete files that have wrongShow=true and contain.
+
+Usage:
+  node scripts/clear-wrong-show-blockers.js [options]
+  node scripts/clear-wrong-show-blockers.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const includeScored = args.includes('--include-scored');

@@ -35,6 +35,17 @@ const os = require('os');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-null-dates-from-url.js — Reads data/audit/null-dates-report.json and, for every entry the audit.
+
+Usage:
+  node scripts/fix-null-dates-from-url.js [options]
+  node scripts/fix-null-dates-from-url.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const REPO_ROOT = path.join(__dirname, '..');
 const REPORT_PATH = path.join(REPO_ROOT, 'data', 'audit', 'null-dates-report.json');
 

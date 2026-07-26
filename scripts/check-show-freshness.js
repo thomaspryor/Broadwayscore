@@ -16,6 +16,17 @@ const path = require('path');
 const { classifyBadSynopsis } = require('./lib/synopsis-validation');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `check-show-freshness.js — Comprehensive freshness check for Broadway show data:.
+
+Usage:
+  node scripts/check-show-freshness.js [options]
+  node scripts/check-show-freshness.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const GROSSES_FILE = path.join(__dirname, '..', 'data', 'grosses.json');
 const REPORT_FILE = path.join(__dirname, '..', 'data', 'freshness-report.json');

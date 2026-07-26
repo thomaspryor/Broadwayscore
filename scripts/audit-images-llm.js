@@ -21,6 +21,14 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { GEMINI_FLASH } = require('./lib/models');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-images-llm.js — Uses Gemini 2.0 Flash vision to verify that every show's thumbnail.
+
+Usage:
+  node scripts/audit-images-llm.js [options]
+  node scripts/audit-images-llm.js --help, -h    print this usage and exit
+`;
 // ============================================================
 // CONFIG
 // ============================================================
@@ -718,6 +726,8 @@ function printSummary(results, verifier) {
 
 async function main() {
   const args = process.argv.slice(2);
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const applyMode = args.includes('--apply');
   const validateOnly = args.includes('--validate-only');
   const showArg = args.find(a => a.startsWith('--show='));

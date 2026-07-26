@@ -45,6 +45,17 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-aggregator-gap-override-contamination.js — One-shot remediation for the 2026-06-21 operator-trust contamination.
+
+Usage:
+  node scripts/fix-aggregator-gap-override-contamination.js [options]
+  node scripts/fix-aggregator-gap-override-contamination.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = !process.argv.includes('--apply');
