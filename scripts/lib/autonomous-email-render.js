@@ -220,8 +220,13 @@ function renderHealthDigestBlock(health) {
   // owner-alert-router's disposition='digest' queue — routed conditions that
   // would otherwise vanish silently the moment health-check.js drains the
   // queue (card #475's original bug, reintroduced then fixed in #364).
-  const queuedHtml = queued.length
-    ? `<div style="margin-top:8px;">${queued.map(q => `<div style="font-size:12px;color:#555;margin:0 0 3px;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` — ${esc(q.description)}` : ''}</div>`).join('')}</div>`
+  // .filter(Boolean): a corrupted/partial write to alert-digest-queue.json
+  // (drainDigestQueue does no per-item validation on read) must not crash the
+  // whole email render — that would be strictly worse than the silent-drop
+  // bug this block exists to fix (ship-check follow-up finding).
+  const validQueued = queued.filter(Boolean);
+  const queuedHtml = validQueued.length
+    ? `<div style="margin-top:8px;">${validQueued.map(q => `<div style="font-size:12px;color:#555;margin:0 0 3px;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` — ${esc(q.description)}` : ''}</div>`).join('')}</div>`
     : '';
 
   if (!errors.length && !warns.length) {
