@@ -49,6 +49,46 @@ function extractShowTitleFromWetRoundup(postTitle) {
 }
 
 /**
+ * BWW Google-News sitemap <n:title> values are "Review Roundup: TITLE, ..."
+ * for opening-night roundups (the format audit-reverse-discovery.js needs),
+ * mixed with syndication-shaped titles for non-stage content (a movie/TV
+ * tie-in "comes to" theaters, not a new production). Returns the show title,
+ * or null when the title isn't a per-show roundup, or names non-stage media.
+ */
+// Non-stage-production mentions (film/streaming tie-ins) aren't a missing
+// show even though they're formatted as a roundup headline. Exported so the
+// caller can distinguish "deliberately filtered" from "format drift" when a
+// window's only roundup-shaped titles happen to be tie-ins.
+const BWW_NON_STAGE_TIE_IN_RE = /\b(movie theaters?|film adaptation|now streaming|on netflix|the big screen|in theaters)\b/i;
+function isBwwNonStageTieIn(rawTitle) {
+  return BWW_NON_STAGE_TIE_IN_RE.test(rawTitle);
+}
+
+// This source is scoped to NYC (see audit-reverse-discovery.js's hardcoded
+// market: 'nyc') but the feed itself is not NYC-exclusive — West End/tour/
+// regional roundups share the same "Review Roundup: TITLE, ..." shape.
+const BWW_NON_NYC_RE = /\b(west end|in london|national tour|on tour|touring production|the muny|us tour)\b/i;
+
+function extractShowTitleFromBwwRoundup(rawTitle) {
+  const decoded = decodeEntities(rawTitle).trim();
+  const m = decoded.match(/^Review\s+Roundup:\s*(.+)$/i);
+  if (!m) return null;
+  const rest = m[1].trim();
+  if (!rest) return null;
+  if (isBwwNonStageTieIn(rest) || BWW_NON_NYC_RE.test(rest)) return null;
+  // Keyword separators are tried before a bare comma — a bare comma is only
+  // treated as a title boundary when it's immediately followed by one of the
+  // "who's in it" words, matching the real "TITLE, Starring ..." shape.
+  // Otherwise titles with internal commas (OH, MARY!, GOOD NIGHT, AND GOOD
+  // LUCK) would get truncated at the first comma.
+  const sep = rest.match(
+    /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+(?:Opens?\s+(?:on|in)|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b)/i
+  );
+  const title = (sep ? sep[1] : rest).trim();
+  return title || null;
+}
+
+/**
  * DTLI show-page slugs → display-ish title. Slugs carry SEO noise tails
  * ("-broadway-theater-review(s)") and WordPress collision suffixes
  * ("giant-2", "death-of-a-salesman-3") that aren't part of the show title.
@@ -107,13 +147,18 @@ const WE_CATEGORIES = new Set(['west-end', 'off-west-end']);
  * Titles also index their pre-" - " head ("Mother Courage and Her Children -
  * Globe" carries a venue tail after " - " — live FP class).
  *
- * Returns { exact: Set<variant>, containment: string[] } — containment holds
+ * Returns { exact: Set<variant>, containment: string[], statusByVariant:
+ * Map<variant, Array<{status, closingDate}>> } — containment holds
  * multi-word (≥2 words, ≥8 chars) base titles for substring matching of
- * headline-style items.
+ * headline-style items; statusByVariant carries per-show status/closingDate
+ * so callers can distinguish "title matches a LIVE show" (real match) from
+ * "title matches only CLOSED productions" (a same-title revival, still a
+ * missing-show candidate — see titleMatchesIndex's allowClosedRevival).
  */
 function buildShowTitleIndex(shows, market = null) {
   const exact = new Set();
   const containment = new Set();
+  const statusByVariant = new Map();
   for (const s of shows) {
     if (market) {
       const cat = s.category || null;
@@ -126,19 +171,42 @@ function buildShowTitleIndex(shows, market = null) {
       if (!raw) continue;
       const n = normalizeTitle(raw);
       if (!n) continue;
-      for (const v of titleVariants(n)) exact.add(v);
+      for (const v of titleVariants(n)) {
+        exact.add(v);
+        if (!statusByVariant.has(v)) statusByVariant.set(v, []);
+        statusByVariant.get(v).push({ status: s.status || null, closingDate: s.closingDate || null });
+      }
       if (n.includes(' ') && n.length >= 8) containment.add(n);
     }
   }
-  return { exact, containment: [...containment] };
+  return { exact, containment: [...containment], statusByVariant };
 }
 
 const HEADLINE_WORD_THRESHOLD = 6;
 
-function titleMatchesIndex(title, index) {
+/**
+ * opts.allowClosedRevival: when true, a title that matches ONLY closed
+ * productions under every matching variant does NOT count as a match — it
+ * surfaces as a missing-show candidate (a same-title revival, e.g. a 2026
+ * Gin Game roundup when the catalogue's only Gin Game entries are 1977/1997/
+ * 2015, all closed). A title matching at least one open/upcoming show under
+ * any variant is always a genuine match. Off by default: WET/DTLI page
+ * lastmod timestamps can touch old show pages for reasons unrelated to a new
+ * production, so only sources confirmed roundup-shaped (BWW) opt in.
+ */
+function titleMatchesIndex(title, index, opts = {}) {
+  const { allowClosedRevival = false } = opts;
   const n = normalizeTitle(title);
   if (!n) return true; // unparseable → never a candidate
-  for (const v of titleVariants(n)) if (index.exact.has(v)) return true;
+  for (const v of titleVariants(n)) {
+    if (!index.exact.has(v)) continue;
+    if (!allowClosedRevival) return true;
+    const entries = (index.statusByVariant && index.statusByVariant.get(v)) || [];
+    const allClosed = entries.length > 0 && entries.every((e) => e.status === 'closed');
+    if (!allClosed) return true; // a live/upcoming show under this title — genuine match
+    // Every catalogued production under this variant has closed — keep
+    // checking other variants before concluding it's a revival candidate.
+  }
   // Headline-style items (DTLI slugs that are review headlines, not titles)
   // can't match exactly — but a headline NAMING a catalogued show should not
   // surface ("kelli ohara and rose byrne … in fallen angels" when Fallen
@@ -155,9 +223,10 @@ function titleMatchesIndex(title, index) {
 
 /**
  * items: [{ title, source, url, date }] → subset whose title matches no show.
+ * opts forwards to titleMatchesIndex (see allowClosedRevival there).
  */
-function findUnmatchedCandidates(items, index) {
-  return items.filter((it) => it && it.title && !titleMatchesIndex(it.title, index));
+function findUnmatchedCandidates(items, index, opts = {}) {
+  return items.filter((it) => it && it.title && !titleMatchesIndex(it.title, index, opts));
 }
 
 function candidateKey(c) {
@@ -167,6 +236,8 @@ function candidateKey(c) {
 module.exports = {
   decodeEntities,
   extractShowTitleFromWetRoundup,
+  extractShowTitleFromBwwRoundup,
+  isBwwNonStageTieIn,
   titleFromDtliSlug,
   titleVariants,
   buildShowTitleIndex,
