@@ -50,7 +50,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { sendAlert } = require('./lib/discord-notify');
+const { sendAlert, shouldEmailAlert } = require('./lib/discord-notify');
 // Canonical rebuild-includability gate. Used here instead of a bespoke
 // exclusion-flag list so this guard cannot drift away from rebuild's actual
 // inclusion logic (Codex 2026-04-27 P0: bespoke predicate would silently miss
@@ -58,6 +58,14 @@ const { sendAlert } = require('./lib/discord-notify');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { dispatchRescore: dispatchRescoreShared } = require('./lib/dispatch-rescore');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `verify-all-scored.js — Gap 1: post-rebuild orphan-unscored guard.
+
+Usage:
+  node scripts/verify-all-scored.js [options]
+  node scripts/verify-all-scored.js --help, -h    print this usage and exit
+`;
 const REPO_ROOT = path.resolve(__dirname, '..');
 const DATA_DIR = path.join(REPO_ROOT, 'data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
@@ -339,6 +347,8 @@ function auditShow(showId, show) {
 // ─── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const now = new Date();
 
   const showsDoc = loadJSON(SHOWS_FILE);
@@ -401,8 +411,6 @@ async function main() {
       continue;
     }
 
-    showsWithOrphans.push({ show, result });
-
     const prev = state.shows[show.id];
     const prevAlertAt = prev?.lastAlertAt || null;
     let suppressAlert = false;
@@ -416,6 +424,11 @@ async function main() {
         suppressAlert = true;
       }
     }
+
+    // suppressAlert travels with the entry so the post-sendAlert() stamping
+    // loop (below, after the aggregate email resolves) knows which shows
+    // were actually part of this run's alert batch vs. already in cooldown.
+    showsWithOrphans.push({ show, result, prevAlertAt, suppressAlert });
 
     let dispatchInfo = null;
     if (!suppressAlert && !NO_DISPATCH && !DRY_RUN) {
@@ -466,15 +479,18 @@ async function main() {
       writeMarker(show.id, markerPayload);
     }
 
+    // lastAlertAt is intentionally left at its previous value here — it's
+    // stamped AFTER the aggregate sendAlert() call resolves (below), and
+    // only for shows whose email actually went out (or was policy-
+    // suppressed, which is a successful no-op, not a failure). Stamping it
+    // here — before sendAlert() even runs — is the bug this fixes: a failed
+    // send would still mark the show "already alerted," silently
+    // suppressing the same orphan recurring within the cooldown window.
     state.shows[show.id] = {
       openingDate: show.openingDate || null,
       lastOrphanCount: result.orphans.length,
       lastSeenAt: now.toISOString(),
-      lastAlertAt: suppressAlert
-        ? prevAlertAt
-        : DRY_RUN
-          ? prevAlertAt
-          : now.toISOString(),
+      lastAlertAt: prevAlertAt,
     };
 
     if (suppressAlert) continue;
@@ -500,18 +516,8 @@ async function main() {
     }
   }
 
-  // Concurrency note (Codex round-2 P2): rebuild-fast and rebuild-reviews
-  // can run simultaneously and both call saveState. The atomic rename
-  // prevents corrupt JSON, but the read-decide-write is still a lost-update
-  // race on `lastAlertAt`. Worst case: cooldown timestamp gets rolled back
-  // to an older run's value, allowing a duplicate Discord alert one rebuild
-  // cycle later. Duplicate dispatch is harmless (per-show concurrency lane
-  // in llm-ensemble-score.yml serializes them). Accepted, not fixed —
-  // proper resolution would require a workflow-level concurrency group on
-  // the verify-all-scored step or a CAS-style lock helper.
-  if (!DRY_RUN) saveState(state);
-
   if (showsWithOrphans.length === 0) {
+    if (!DRY_RUN) saveState(state);
     console.log('[verify-all-scored] All eligible reviews scored across all shows in window.');
     process.exit(0);
   }
@@ -548,18 +554,47 @@ async function main() {
     // Direct sendAlert, not routeAlert — this already has its own cooldown
     // (per-show lastAlertAt + COOLDOWN_MS, computed as `suppressAlert` above),
     // so a show already in cooldown never reaches showsWithOrphans/this call.
+    const alertSeverity = 'warning';
     const delivered = await sendAlert({
       title: `Orphan-Unscored Reviews — ${showsWithOrphans.length} show(s)`,
       description,
-      severity: 'warning',
+      severity: alertSeverity,
       fields,
       url: `https://github.com/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions`,
       email: true,
     });
+    // notifyOk mirrors owner-alert-router's routeAlert() gate: warning
+    // severity is policy-suppressed by design (shouldEmailAlert === false,
+    // sendAlert() never even attempts a send) — that's a successful no-op,
+    // not a failure, so it's still safe to stamp the cooldown. Only a
+    // genuine delivery failure (severity WAS emailable but Resend/the API
+    // key failed) must leave lastAlertAt untouched so the next run retries
+    // instead of silently suppressing the same orphan set. Shows that were
+    // already in cooldown this run (suppressAlert) keep their existing
+    // lastAlertAt — they weren't part of this alert batch.
+    const notifyOk = !shouldEmailAlert(alertSeverity) || delivered;
+    if (notifyOk) {
+      for (const { show, suppressAlert } of showsWithOrphans) {
+        if (!suppressAlert) state.shows[show.id].lastAlertAt = now.toISOString();
+      }
+    } else {
+      console.error('[verify-all-scored] Alert delivery FAILED — cooldown NOT stamped, will retry next run.');
+    }
     console.log(delivered
       ? '[verify-all-scored] Alert dispatched via email.'
       : '[verify-all-scored] ⚠️ Alert email NOT delivered — logged only.');
   }
+
+  // Concurrency note (Codex round-2 P2): rebuild-fast and rebuild-reviews
+  // can run simultaneously and both call saveState. The atomic rename
+  // prevents corrupt JSON, but the read-decide-write is still a lost-update
+  // race on `lastAlertAt`. Worst case: cooldown timestamp gets rolled back
+  // to an older run's value, allowing a duplicate Discord alert one rebuild
+  // cycle later. Duplicate dispatch is harmless (per-show concurrency lane
+  // in llm-ensemble-score.yml serializes them). Accepted, not fixed —
+  // proper resolution would require a workflow-level concurrency group on
+  // the verify-all-scored step or a CAS-style lock helper.
+  if (!DRY_RUN) saveState(state);
 
   // We DO NOT exit non-zero. The rebuild pipeline calls this with
   // continue-on-error: true anyway, but exiting 0 keeps the workflow log

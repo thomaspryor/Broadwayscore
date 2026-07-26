@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   buildImplementerPrompt, buildDataImplementerPrompt, parseClaudeJson, classifyFailure, decideChecks,
-  cardCheckArgv, shouldThrottle, preflightVerdict, resolveOwnerEmail,
+  cardCheckArgv, shouldThrottle, preflightVerdict, resolveOwnerEmail, isAutoMergeable,
 } = require('./autonomous-run-core.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 
@@ -204,4 +204,44 @@ test('throttle above 8 open approvals; unknown count fails safe', () => {
   assert.equal(shouldThrottle(null), true);
   assert.equal(shouldThrottle(undefined), true);
   assert.equal(shouldThrottle(NaN), true);
+});
+
+// ── newCheckPaths (card #529) ───────────────────────────────────────────────
+
+test('implementer prompt names to-be-created check files as part of the work', () => {
+  const p = buildImplementerPrompt(
+    { name: 'Fix review-census junk outlets', notes: 'x' },
+    { checkableDone: 'node --test scripts/lib/review-census.test.mjs', newCheckPaths: ['scripts/lib/review-census.test.mjs'] },
+  );
+  assert.match(p, /do NOT exist yet/);
+  assert.match(p, /scripts\/lib\/review-census\.test\.mjs/);
+  assert.match(p, /require\(\) the real function/); // must not restate the logic in the test
+});
+
+test('implementer prompt omits the create-these line when every check target already exists', () => {
+  const p = buildImplementerPrompt({ name: 'x', notes: 'y' }, { checkableDone: 'npx tsc --noEmit' });
+  assert.doesNotMatch(p, /do NOT exist yet/);
+  const empty = buildImplementerPrompt({ name: 'x', notes: 'y' }, { checkableDone: 'npx tsc --noEmit', newCheckPaths: [] });
+  assert.doesNotMatch(empty, /do NOT exist yet/);
+});
+
+// ── isAutoMergeable (ship-check: self-graded tests must keep the owner tap) ──
+
+test('isAutoMergeable: a tests-only diff still auto-merges when the proof predates the run', () => {
+  assert.equal(isAutoMergeable({}, ['tests/unit/foo.test.mjs']), true);
+  assert.equal(isAutoMergeable({ newCheckPaths: [] }, ['tests/unit/foo.test.mjs', 'docs/x.md']), true);
+});
+
+test('isAutoMergeable: a card whose proof is a test THIS run wrote never skips the owner tap', () => {
+  assert.equal(
+    isAutoMergeable({ newCheckPaths: ['tests/unit/foo.test.mjs'] }, ['tests/unit/foo.test.mjs']),
+    false,
+    'the model would be both author and grader of its own evidence',
+  );
+});
+
+test('isAutoMergeable: a non-deterministic-green diff is never auto-mergeable either way', () => {
+  assert.equal(isAutoMergeable({}, ['src/app/page.tsx']), false);
+  assert.equal(isAutoMergeable({}, []), false); // empty diff
+  assert.equal(isAutoMergeable({ newCheckPaths: ['tests/unit/a.test.mjs'] }, ['scripts/lib/x.js']), false);
 });

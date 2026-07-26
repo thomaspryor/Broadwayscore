@@ -140,11 +140,21 @@ function assignRanksAndTiers(groups) {
   const strength = (d) => (Number.isFinite(d.effectiveVolume) ? d.effectiveVolume : (d.volume || 0));
 
   for (const [, entries] of groups) {
-    // Sort by composite (blended) score, not raw volume
+    // Sort by composite (blended) score, not raw volume. `positivePct` is
+    // passed through as-is (not `|| 0`) — computeCompositeScore treats a
+    // real 0% and a null (zero opinion sample) differently, and coercing
+    // null to 0 here would erase that distinction before it gets there.
+    //
+    // Tie-break on volume desc: composite legitimately floors near 0 for
+    // both a loud-but-hated show (real 0%) and a zero-volume show, and
+    // without an explicit tie-break Array.sort falls back to file-read
+    // order (arbitrary) — which is exactly how a 103-mention show ranked
+    // below a 0-mention show in the 2026-07-26 credibility audit.
     entries.sort((a, b) => {
-      const aScore = computeCompositeScore(strength(a.data), a.data.positivePct || 0);
-      const bScore = computeCompositeScore(strength(b.data), b.data.positivePct || 0);
-      return bScore - aScore;
+      const aScore = computeCompositeScore(strength(a.data), a.data.positivePct);
+      const bScore = computeCompositeScore(strength(b.data), b.data.positivePct);
+      if (bScore !== aScore) return bScore - aScore;
+      return (b.data.volume || 0) - (a.data.volume || 0);
     });
 
     // Compute peer stats once for the whole market
@@ -152,7 +162,7 @@ function assignRanksAndTiers(groups) {
       entries.map((e) => ({
         volume: e.data.volume || 0,
         effectiveVolume: strength(e.data),
-        positivePct: e.data.positivePct || 0,
+        positivePct: e.data.positivePct,
       })),
     );
 
@@ -177,14 +187,14 @@ function assignRanksAndTiers(groups) {
       entry.newTier = derivePeerTier({
         volume: entry.data.volume || 0,
         effectiveVolume: strength(entry.data),
-        positivePct: entry.data.positivePct || 0,
+        positivePct: entry.data.positivePct,
         peerStats,
       });
 
       // Composite score is useful as a debug field too
       entry.newCompositeScore = computeCompositeScore(
         strength(entry.data),
-        entry.data.positivePct || 0,
+        entry.data.positivePct,
       );
     });
   }
@@ -268,10 +278,11 @@ function main() {
   for (const [market, entries] of groups) {
     console.log(`\n${market}:`);
     for (const entry of entries.slice(0, 5)) {
+      const posLabel = typeof entry.data.positivePct === 'number' ? `${entry.data.positivePct}%` : 'n/a';
       console.log(
         `  #${entry.newRank.position}/${entry.newRank.total}  ${entry.data.showId.padEnd(40)}  ` +
           `vol=${String(entry.data.volume).padStart(4)}  ` +
-          `pos=${String(entry.data.positivePct || 0).padStart(3)}%  ` +
+          `pos=${posLabel.padStart(4)}  ` +
           `cs=${String(Math.round(entry.newCompositeScore)).padStart(4)}  ` +
           `tier=${entry.newTier}`,
       );

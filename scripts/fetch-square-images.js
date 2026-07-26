@@ -22,6 +22,14 @@ const http = require('http');
 const { execSync } = require('child_process');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fetch-square-images.js — Fetches native square (1080x1080) promotional images from Google Images.
+
+Usage:
+  node scripts/fetch-square-images.js [options]
+  node scripts/fetch-square-images.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
@@ -304,6 +312,8 @@ async function processShow(show) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   if (!SCRAPINGBEE_API_KEY) {
     console.error('ERROR: Set SCRAPINGBEE_API_KEY environment variable');
     process.exit(1);

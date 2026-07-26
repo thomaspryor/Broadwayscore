@@ -19,6 +19,14 @@
 const fs = require('fs');
 const path = require('path');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-critic-name-duplicates.js — Fix critic name duplicates.
+
+Usage:
+  node scripts/fix-critic-name-duplicates.js [options]
+  node scripts/fix-critic-name-duplicates.js --help, -h    print this usage and exit
+`;
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
 // Known critic name variations to merge
@@ -158,6 +166,8 @@ function findDuplicatePairs(showDir) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const dryRun = process.argv.includes('--dry-run');
   console.log(dryRun ? '=== DRY RUN ===' : '=== APPLYING FIXES ===');
   console.log('');

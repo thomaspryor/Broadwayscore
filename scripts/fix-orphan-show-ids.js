@@ -16,6 +16,14 @@
 const fs = require('fs');
 const path = require('path');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-orphan-show-ids.js — Finds review-text directories whose showId doesn't match any show in shows.json,.
+
+Usage:
+  node scripts/fix-orphan-show-ids.js [options]
+  node scripts/fix-orphan-show-ids.js --help, -h    print this usage and exit
+`;
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 const applyMode = process.argv.includes('--apply');
@@ -48,6 +56,8 @@ const KNOWN_MAPPINGS = {
 };
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log(`\n${'='.repeat(60)}`);
   console.log(`FIX ORPHAN SHOW IDs — ${applyMode ? 'APPLY MODE' : 'DRY RUN'}`);
   console.log('='.repeat(60));

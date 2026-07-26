@@ -48,6 +48,14 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { shouldSkipNonReviewStamp } = require('./lib/flagged-recovery');
 const { CLAUDE_SONNET, CLAUDE_OPUS, GEMINI_FLASH, GPT4O } = require('./lib/models');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `classify-non-reviews.js — Review vs. Non-Review Classification.
+
+Usage:
+  node scripts/classify-non-reviews.js [options]
+  node scripts/classify-non-reviews.js --help, -h    print this usage and exit
+`;
 // --- Load .env ---
 try {
   const envPath = path.join(__dirname, '..', '.env');
@@ -800,6 +808,8 @@ async function runReclassifyFlagged() {
 // ============================================================
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('=== Non-Review Classification ===');
   console.log(`Provider: ${PROVIDER} | Cost/call: $${COST_PER_CALL}`);
   console.log(`Budget: $${MAX_COST} | Concurrency: ${CONCURRENCY}`);

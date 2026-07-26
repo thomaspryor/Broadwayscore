@@ -14,6 +14,14 @@ const path = require('path');
 const { stripWikiMarkup, hasWikiMarkup, stripLeadingJunk } = require('./lib/wiki-utils');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `clean-synopsis-markup.js — One-shot script: Clean raw Wikipedia markup from existing synopses in shows.json.
+
+Usage:
+  node scripts/clean-synopsis-markup.js [options]
+  node scripts/clean-synopsis-markup.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -45,6 +53,8 @@ function trimToSynopsis(text) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showsData = loadShows();
   const shows = showsData.shows;
 

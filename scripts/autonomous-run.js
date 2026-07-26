@@ -36,13 +36,13 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const https = require('https');
 const { transition } = require('./lib/autonomous-state.js');
-const { isDiffAllowed, isCodeDiffAllowed, isDiffDeterministicGreen, classifyDataCard, DATA_CLASS_REPO, isDataRepoDiffAllowed } = require('./lib/autonomous-eligibility.js');
+const { isDiffAllowed, isCodeDiffAllowed, classifyDataCard, DATA_CLASS_REPO, isDataRepoDiffAllowed } = require('./lib/autonomous-eligibility.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 const { createNightBudget, clampNightToWeekly, checkSharedDailyCap, pickModel, ENVELOPES, inadmissibleSizes } = require('./lib/autonomous-budget.js');
 const ledger = require('./lib/autonomous-ledger.js');
 const {
   buildImplementerPrompt, buildDataImplementerPrompt, parseClaudeJson, classifyFailure, shouldThrottle, preflightVerdict,
-  resolveOwnerEmail,
+  resolveOwnerEmail, isAutoMergeable,
 } = require('./lib/autonomous-run-core.js');
 const { evidenceCommentText } = require('./lib/autonomous-notion-evidence.js');
 const { captureUiScreenshots } = require('./lib/autonomous-ui-capture.js');
@@ -633,6 +633,11 @@ async function attemptCard(item, budget, cfg, runId, opts) {
                   checks: checks.map(c => `${c.name}: PASS`),
                   summary: (imp.resultText || '').slice(0, 600),
                   checkableDone: item.checkableDone || null,
+                  // Surfaced so the owner's approval email can say the proof
+                  // was a test THIS run authored, not a pre-existing one
+                  // (ship-check: otherwise a self-graded green looks identical
+                  // to a green against established coverage).
+                  newCheckPaths: (item.newCheckPaths && item.newCheckPaths.length) ? item.newCheckPaths : null,
                   tier: tierOf(item),
                   sha: git(workdir, ['rev-parse', 'HEAD']).trim(),
                   ui: isUiDiff(files),
@@ -683,9 +688,12 @@ async function attemptCard(item, budget, cfg, runId, opts) {
         // Durable evidence for the CI merge path (Sprint 3) — the ledger is
         // Mac-local and unreachable from GitHub Actions.
         postEvidenceComment(item.id, evidence);
-        if (isDiffDeterministicGreen(evidence.files)) {
+        if (isAutoMergeable(item, evidence.files)) {
           // Mechanical file-path predicate, not a model judgment call — see
           // scripts/lib/autonomous-eligibility.js isDiffDeterministicGreen.
+          // isAutoMergeable additionally keeps the owner's tap on any card
+          // whose proof command names a test the implementer itself wrote
+          // (newCheckPaths) — see scripts/lib/autonomous-run-core.js.
           transition('attempted', 'run.auto-approve');
           notionUpdate(item.id, ['--auto', 'approved']);
           ledger.appendEntry({ event: 'auto-approve', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), note: 'deterministic-green diff — skipping human tap' });

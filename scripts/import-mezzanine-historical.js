@@ -21,6 +21,14 @@ const path = require('path');
 const https = require('https');
 const { classifyProduction, slugify, parseDate } = require('./lib/mezzanine-classify.js');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `import-mezzanine-historical.js — Import historical show data from Mezzanine (theaterdiary.com) Parse API.
+
+Usage:
+  node scripts/import-mezzanine-historical.js [options]
+  node scripts/import-mezzanine-historical.js --help, -h    print this usage and exit
+`;
 // Parse CLI args
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -277,6 +285,8 @@ function processProductions(productions) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('Mezzanine Historical Show Import');
   console.log('================================\n');
   console.log(`Min ratings: ${MIN_RATINGS}`);

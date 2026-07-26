@@ -17,12 +17,22 @@ const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `enrich-ob-dates-from-showscore.js — One-time enrichment of OB show dates/statuses from ShowScore.
+
+Usage:
+  node scripts/enrich-ob-dates-from-showscore.js [options]
+  node scripts/enrich-ob-dates-from-showscore.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'show-score');
 const dryRun = process.argv.includes('--dry-run');
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showsData = loadShows();
   const urlsData = JSON.parse(fs.readFileSync(URLS_PATH, 'utf8'));
   const urls = urlsData.shows || {};
