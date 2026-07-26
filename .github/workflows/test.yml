@@ -1139,9 +1139,6 @@ jobs:
 
       - name: Audit — alert-sender direct-bypass gate
         # Alert-sender regression gate (card 3a9637c5; #475/#486/#514/#515
-        # lineage). NOTE: the step NAME deliberately avoids quoting the
-        # "sendAlert(email:true)" pattern — a name: line is not a YAML comment,
-        # so the scanner would flag this very step as a phantom direct sender.
         # lineage): a NEW workflow/script calling sendAlert with email:true
         # directly bypasses owner-alert-router's ACTION-only bar + dedup and
         # silently regresses the direct-sender drain. Blocking on any direct
@@ -1153,6 +1150,9 @@ jobs:
         # (CLAUDE.md rule 14); audit-t1-silent-gaps.js drain is card #531;
         # audit-opening-night-coverage.js drain is carded (see card body).
         # Shrink the baseline as migrations land: --update-baseline.
+        # NOTE: the step NAME deliberately avoids quoting the flagged pattern
+        # verbatim — a name: line is not a YAML comment, so the scanner would
+        # flag this very step as a phantom direct sender.
         run: node scripts/audit-alert-senders.js --check
 
       - name: Audit — CLAUDE.md integrity anchors + byte cap
