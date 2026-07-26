@@ -588,6 +588,15 @@ export class OpenAIReviewScorer {
     };
   }
 
+  /**
+   * Fold Batch API usage into the same counters the live path accumulates,
+   * so --batch runs report tokens/cost identically to sync runs (task #516).
+   */
+  recordBatchUsage(usage: { input?: number; output?: number }): void {
+    this.totalInputTokens += usage.input || 0;
+    this.totalOutputTokens += usage.output || 0;
+  }
+
   resetTokenUsage(): void {
     this.totalInputTokens = 0;
     this.totalOutputTokens = 0;

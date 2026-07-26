@@ -55,7 +55,18 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
 import { ReviewScorer } from './scorer';
-import { EnsembleReviewScorer } from './ensemble-scorer';
+import { EnsembleReviewScorer, ModelOutcome, ScoreReviewFileResult } from './ensemble-scorer';
+import {
+  assembleRequests,
+  estimateBatchUsage,
+  submitBatches,
+  pollUntilTerminal,
+  fetchAndMerge,
+  outcomesForItem,
+  buildBatchState,
+  BatchState,
+  PendingBatchItem,
+} from './batch-runner';
 import { runCalibration, runEnsembleCalibration } from './calibration';
 import { runValidation } from './validation';
 import { findGroundTruthReviews, calculateGroundTruthCalibration, printGroundTruthReport } from './ground-truth';
@@ -245,6 +256,7 @@ const SHOWS_JSON_PATH = path.join(__dirname, '../../data/shows.json');
 const RUNS_LOG_PATH = path.join(__dirname, '../../data/llm-scoring-runs.json');
 const GARBAGE_SKIPS_PATH = path.join(__dirname, '../../data/llm-scoring-garbage-skips.json');
 const PROJECT_ROOT = path.join(__dirname, '../..');
+const SCORING_PROGRESS_PATH = path.join(PROJECT_ROOT, 'data', 'collection-state', 'scoring-progress.json');
 
 // Every saveReviewFile() call increments this, regardless of whether the
 // file ended up scored or merely rejected/flagged. `processed` alone misses
@@ -384,7 +396,12 @@ function writeProgress(
   }
 
   // Write progress JSON for monitoring
-  const progressPath = path.join(PROJECT_ROOT, 'data', 'collection-state', 'scoring-progress.json');
+  const progressPath = SCORING_PROGRESS_PATH;
+  // Preserve the `batch` key (task #516). writeProgress rewrites this file
+  // wholesale several times per run; without carrying `batch` forward, an
+  // in-flight batch's IDs + manifest would be erased and the next scheduled
+  // run would resubmit — paying for the same reviews twice.
+  const priorBatch = readProgressFile().batch;
   const progress = {
     pipeline: 'llm-ensemble-scoring',
     processed: processedSoFar,
@@ -406,9 +423,45 @@ function writeProgress(
       globalScored: globalCounts.totalScored,
       globalUnscored: globalCounts.totalUnscored,
       globalSkipped: globalCounts.totalSkipped,
-    } : {})
+    } : {}),
+    ...(priorBatch ? { batch: priorBatch } : {})
   };
   try { fs.writeFileSync(progressPath, JSON.stringify(progress, null, 2) + '\n'); } catch {}
+}
+
+// ========================================
+// BATCH STATE (--batch resume, task #516)
+// ========================================
+
+/**
+ * In-flight batch state lives under scoring-progress.json's `batch` key —
+ * the one pipeline-state file gitCheckpoint() already commits and pushes, so
+ * a runner that is cancelled or times out mid-poll leaves its vendor batch
+ * IDs + manifest on origin for the next scheduled run to resume from.
+ */
+function readProgressFile(): any {
+  try {
+    return JSON.parse(fs.readFileSync(SCORING_PROGRESS_PATH, 'utf-8'));
+  } catch {
+    return {};
+  }
+}
+
+function readBatchState(): BatchState | null {
+  const progress = readProgressFile();
+  const batch = progress && progress.batch;
+  return batch && batch.submittedAt && Array.isArray(batch.manifest) ? (batch as BatchState) : null;
+}
+
+function writeBatchState(batch: BatchState | null): void {
+  const progress = readProgressFile();
+  if (batch) progress.batch = batch;
+  else delete progress.batch;
+  try {
+    fs.writeFileSync(SCORING_PROGRESS_PATH, JSON.stringify(progress, null, 2) + '\n');
+  } catch (e: any) {
+    console.log(`   ⚠️ Failed to persist batch state: ${e.message}`);
+  }
 }
 
 // ========================================
@@ -520,6 +573,8 @@ function parseArgs(): ScoringPipelineOptions & {
   scoreRange?: [number, number];
   maxPromptVersion?: string;
   skipAlreadyAnchored: boolean;
+  batch: boolean;
+  batchPollMinutes: number;
 } {
   const args = process.argv.slice(2);
 
@@ -586,6 +641,15 @@ function parseArgs(): ScoringPipelineOptions & {
   // --rescore semantics for other workflows.
   const skipAlreadyAnchored = args.includes('--skip-already-anchored');
 
+  // Task #516: --batch routes every model call through the vendor Batch APIs
+  // (Anthropic Message Batches / OpenAI Batches / Gemini batch mode) at a 50%
+  // discount, at the cost of submit-now/poll-later latency. Scheduled nightly
+  // runs use it; opening-night workflow_dispatch/chain runs stay synchronous
+  // because latency is the whole point there.
+  const batch = args.includes('--batch');
+  const batchPollArg = args.find(a => a.startsWith('--batch-poll-minutes='));
+  const batchPollMinutes = batchPollArg ? parseInt(batchPollArg.split('=')[1]) : 20;
+
   return {
     showId,
     unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource && !args.includes('--stale-scores') && !upgradeEnsemble && !retryEmergency,
@@ -617,7 +681,9 @@ function parseArgs(): ScoringPipelineOptions & {
     maxPromptVersion,
     rescoreReason,
     maxCost,
-    skipAlreadyAnchored
+    skipAlreadyAnchored,
+    batch,
+    batchPollMinutes
   };
 }
 
@@ -1226,8 +1292,390 @@ async function main(): Promise<void> {
     console.log(`\n🔁 --skip-already-anchored: files with scoreSource='anchored-v6' or 'llm-v6' will be skipped for safe re-run.\n`);
   }
 
-  for (let i = 0; i < finalFiles.length; i++) {
+  /**
+   * Everything that happens to a scoring result AFTER the models have
+   * spoken: scoreability-rejection routing (wrongShow / wrongProduction /
+   * contentTier), the manually-cleared Haiku rescue, needsRescore clearing,
+   * singleModelEmergency retry bookkeeping, post-scoring garbage-reasoning
+   * detection, and the file write + stage-latency emit.
+   *
+   * Extracted verbatim from the per-file loop (task #516) so --batch feeds
+   * its merged results through the IDENTICAL post-processing. This block has
+   * accumulated a decade of incident-driven carve-outs; forking it for batch
+   * mode would have been the single largest correctness risk in this change.
+   */
+  async function handleScoringResult(
+    result: ScoreReviewFileResult,
+    filePath: string,
+    reviewFile: ReviewTextFile,
+    priorEmergencyRetryCount: number
+  ): Promise<void> {
+
+    // Handle scoreability rejection (v5.2+)
+    if (result.success && (result as any).rejected) {
+      const rejection = (result as any).rejection as string;
+      const rejectionReasoning = (result as any).rejectionReasoning as string;
+
+      if (!options.dryRun) {
+        const fileData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+
+        // Skip rejection write if a human has manually cleared wrongProduction.
+        // Discovered 2026-04-22 (Notion 34b637c5-416f-81ff-a6d6-d453e7ed537c):
+        // the ensemble rejected 4 audit B-class false-positive clears because the
+        // scoreability-check prompt told the LLM the market was Broadway even for
+        // WE shows. Without this carve-out, re-running llm-scoring after a manual
+        // clear would re-set rejectedAt/rejectedBy and the downstream
+        // isIncludableForRebuild rejectedAt guard would exclude them again.
+        // The guard at scripts/lib/review-guards.js also respects these flags as
+        // belt-and-suspenders, so dropping this write just avoids churn and
+        // preserves the human verdict as the source of truth.
+        // Also covers `wrong_show`: human-verified correct production implies correct
+        // show — the 2026-04-22 Giant case surfaced a second round where the LLM
+        // re-rejected with wrong_show ("Mark Rosenblatt play, not the musical I know")
+        // despite wrong_production being manually cleared. Treating both rejection
+        // types symmetrically matches the isIncludableForRebuild guard at
+        // scripts/lib/review-guards.js.
+        // Combined reviews (joint NYer/Variety pieces covering 2+ shows) are
+        // expected to fail wrong_show on the half of the article about the
+        // OTHER show. Treat them like manually-cleared so the Haiku fallback
+        // scores the trimmed section instead of leaving the file in
+        // "rejected but no score" limbo. Issue #316 ship-check (P0/B).
+        const manuallyCleared =
+          fileData.wrongProductionManualClear === true ||
+          fileData.wrongProductionOverride === true ||
+          fileData.wrongShowManualClear === true ||
+          fileData.wrongShowOverride === true ||
+          fileData.humanReviewedWrongProduction === false ||
+          fileData.isCombinedReview === true ||
+          // Aliases for sweep scripts that historically wrote the `Cleared`
+          // suffix instead of `ManualClear` — discovered 2026-05-01 when 4
+          // opera sweeps used the wrong field name and the gate silently
+          // re-flagged every cycle. Treating both suffixes as equivalent
+          // closes the gap without requiring every sweep to be migrated.
+          // Notion 362637c5-416f-8142-a088-f44f0cdaa98b.
+          fileData.wrongProductionCleared === true ||
+          fileData.wrongShowCleared === true;
+        if (manuallyCleared && (rejection === 'wrong_production' || rejection === 'wrong_show')) {
+          console.log(`SKIP-REJECT (${rejection} on manually-cleared file): ${rejectionReasoning?.substring(0, 80) || ''}`);
+          // Fallback: a human has verified this file matches the show, but the
+          // ensemble still rejected it — score the text directly with a single
+          // Haiku call so the file lands in reviews.json instead of staying in
+          // 'manually-cleared but unscored' limbo. (2026-05-01 Eugene Onegin /
+          // La Traviata opera incident — required manual rescue with Haiku.)
+          if (!manualClearFallbackScorer) {
+            manualClearFallbackScorer = new ReviewScorer(claudeApiKey, {
+              // claude-3-5-haiku-20241022 deprecated 2026-02-19; bumped to
+              // current Haiku 4.5 (2026-05-17 root fix per Notion
+              // 363637c5-416f-81cc-8240-c48df8b4cfd2). With opera-aware
+              // input-builder this fallback should rarely fire, but keep
+              // it on a non-deprecated model so the rescue actually works.
+              model: 'claude-haiku-4-5-20251001',
+              verbose: false,
+            });
+          }
+          try {
+            const fbResult = await manualClearFallbackScorer.scoreReviewFile(reviewFile);
+            if (fbResult.success && fbResult.scoredFile) {
+              const scoredAny = fbResult.scoredFile as any;
+              if (scoredAny.llmScore) {
+                scoredAny.llmScore.reasoning =
+                  '[manual-cleared Haiku fallback] ' + (scoredAny.llmScore.reasoning || '');
+              }
+              scoredAny.scoreSource = 'manual-cleared-haiku-fallback';
+              scoredAny.scoreSourceReason =
+                `ensemble rejected as ${rejection} but file is human-cleared via wrongProductionManualClear/wrongShowManualClear; Haiku single-model scored the text directly`;
+              scoredAny.scoredAt = new Date().toISOString();
+              if (!options.dryRun) saveReviewFile(filePath, scoredAny);
+              console.log(`  ✓ FALLBACK SCORED (Haiku): ${scoredAny.assignedScore} (${scoredAny.llmScore?.bucket})`);
+              processed++;
+              return;
+            }
+            console.log(`  ⚠ Haiku fallback did not produce a score: ${fbResult.error || 'unknown'}`);
+            recordManualClearFallbackFailure(filePath, fileData, fbResult.error || 'no_score_produced');
+          } catch (e: any) {
+            console.log(`  ⚠ Haiku fallback exception: ${e.message}`);
+            recordManualClearFallbackFailure(filePath, fileData, e.message);
+          }
+          skipped++;
+          return;
+        }
+
+        // Route rejection to appropriate flags
+        // Off-Broadway shows are exempt from wrongProduction flagging:
+        // OB shows commonly transfer from regional/fringe theaters, so LLM often
+        // misidentifies the production as "wrong" when it's actually correct.
+        // WE shows now get market+venue context in the prompt (2026-04-13), so the
+        // LLM can correctly distinguish Broadway vs West End productions.
+        const showInfo = showPriority.get(reviewFile.showId || '');
+        const isOffBroadway = showInfo?.category === 'off-broadway';
+        if (rejection === 'wrong_show') {
+          // Combined reviews are excluded from manuallyCleared above and
+          // would normally hit this branch — but a joint review should NOT
+          // get wrongShow:true on the half about the other show. The
+          // manuallyCleared carve-out routes them to the Haiku fallback.
+          // This guard is belt-and-suspenders: if execution somehow lands
+          // here for a combined review (e.g. config drift), don't churn
+          // wrongShow:true on every poller pass. Issue #316 ship-check
+          // (P0/A).
+          if (fileData.isCombinedReview === true) {
+            console.log(` (combined review — skipping wrongShow flag write)`);
+          } else {
+            fileData.wrongShow = true;
+          }
+        } else if (rejection === 'wrong_production' && !isOffBroadway) {
+          fileData.wrongProduction = true;
+        } else if (rejection === 'wrong_production' && isOffBroadway) {
+          console.log(` (OB exempt — skipping wrongProduction flag)`);
+        } else if (rejection === 'not_a_review') {
+          fileData.contentTier = 'invalid';
+        } else if (rejection === 'garbage_text') {
+          fileData.contentTier = 'needs-rescrape';
+        }
+
+        fileData.rejectedAt = new Date().toISOString();
+        fileData.rejectedBy = 'ensemble-scoreability-check';
+        fileData.rejectionReason = rejection;
+        fileData.rejectionReasoning = rejectionReasoning;
+        fileData.promptVersion = PROMPT_VERSION;
+        saveReviewFile(filePath, fileData);
+      }
+
+      console.log(`REJECTED (${rejection}): ${(result as any).rejectionReasoning?.substring(0, 80) || ''}`);
+      skipped++;
+      return;
+    }
+
+    if (result.success && result.scoredFile) {
+      // Always clear needsRescore flag after successful scoring
+      const scoredAny = result.scoredFile as any;
+      if (scoredAny.needsRescore) {
+        delete scoredAny.needsRescore;
+        scoredAny.rescoreCompletedAt = new Date().toISOString();
+      }
+
+      // singleModelEmergency retry lifecycle: if scoring rebuilt ensembleData with the
+      // emergency flag still set (Gemini/etc still down), record the retry attempt so
+      // the daily auto-retry phase skips this file going forward. If the flag cleared,
+      // ensembleData was rebuilt without it and the count is naturally absent.
+      if (
+        options.retryEmergency &&
+        priorEmergencyRetryCount === 0 &&
+        scoredAny.ensembleData?.singleModelEmergency === true
+      ) {
+        scoredAny.ensembleData.singleModelEmergencyRetryCount = priorEmergencyRetryCount + 1;
+        scoredAny.ensembleData.singleModelEmergencyRetriedAt = new Date().toISOString();
+      }
+
+      // Post-scoring garbage detection: check if LLM reasoning indicates
+      // the text was not an actual review (closes the feedback loop)
+      const llmResult = result.scoredFile.llmScore;
+      if (llmResult) {
+        const garbageCheck = detectGarbageFromReasoning(
+          llmResult.reasoning,
+          llmResult.confidence
+        );
+        if (garbageCheck.isGarbage) {
+          scoredAny.contentTier = 'needs-rescrape';
+          scoredAny.garbageReasoningDetected = garbageCheck.matchedPattern;
+          scoredAny.garbageReasoningFlaggedAt = new Date().toISOString();
+        }
+      }
+
+      if (!options.dryRun) {
+        saveReviewFile(filePath, result.scoredFile);
+        try {
+          const sd = result.scoredFile as any;
+          emitStage({
+            showId: sd.showId,
+            reviewKey: `${sd.outletId}:${sd.criticName}:${sd.url || ''}`,
+            stage: 'scored',
+            metadata: { score: (result.scoredFile.llmScore as any).score, ensemble: !!(sd.ensembleData) },
+          });
+        } catch (e: any) { process.stderr.write(`[stage-latency] score emit failed: ${e.message}\n`); }
+      }
+
+      const score = result.scoredFile.llmScore.score;
+      const bucket = result.scoredFile.llmScore.bucket;
+      const confidence = result.scoredFile.llmScore.confidence;
+
+      // Show ensemble details if available
+      const ed = result.scoredFile.ensembleData;
+      let ensembleInfo = '';
+      if (ed) {
+        const geminiPart = ed.geminiScore !== null && ed.geminiScore !== undefined ? ` G:${ed.geminiScore}` : '';
+        const kimiPart = ed.kimiScore !== null && ed.kimiScore !== undefined ? ` K:${ed.kimiScore}` : '';
+        ensembleInfo = ` [C:${ed.claudeScore} O:${ed.openaiScore}${geminiPart}${kimiPart}${ed.needsReview ? ' ⚠️' : ''}]`;
+      }
+
+      console.log(`${score} (${bucket}, ${confidence})${ensembleInfo}`);
+      processed++;
+    } else {
+      console.log(`FAILED: ${result.error}`);
+      errors++;
+      errorDetails.push({
+        showId: reviewFile.showId,
+        outletId: reviewFile.outletId || '',
+        error: result.error || 'Unknown error'
+      });
+    }
+  }
+
+  /**
+   * Rebuild the prepared items for a batch that was submitted by an EARLIER
+   * run (resume path). The prep is deliberately not persisted — it embeds the
+   * full review text — so it is recomputed from the same review file on disk.
+   *
+   * That recomputation is deterministic as long as the file hasn't changed:
+   * prepareScoringInput() is pure, and the pre-flagged multi-show trim is
+   * re-applied here because the submitting run had already written
+   * isMultiShowReview:true to disk before trimming. An entry whose file has
+   * since gone missing or become unscorable yields null and is reported, not
+   * silently dropped.
+   */
+  function reconstructBatchItems(state: BatchState): Array<PendingBatchItem | null> {
+    const items: Array<PendingBatchItem | null> = new Array(state.itemCount).fill(null);
+    for (const entry of state.manifest) {
+      try {
+        const reviewFile = JSON.parse(fs.readFileSync(entry.filePath, 'utf-8')) as ReviewTextFile;
+        reviewFile.showTitle = showTitles.get(reviewFile.showId) || undefined;
+        const showMeta = showPriority.get(reviewFile.showId);
+        if (showMeta) {
+          reviewFile.category = showMeta.category ?? undefined;
+          reviewFile.venue = showMeta.venue ?? undefined;
+          reviewFile.type = showMeta.type ?? undefined;
+        }
+        if (reviewFile.isMultiShowReview && reviewFile.fullText) {
+          const showTitle = showTitles.get(reviewFile.showId);
+          if (showTitle) {
+            const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId);
+            if (trimResult.trimmed && !trimResult.trimFailed) reviewFile.fullText = trimResult.text;
+          }
+        }
+        const prepared = (scorer as EnsembleReviewScorer).prepareScoringInput(reviewFile);
+        if (!prepared.ok || !prepared.prep) {
+          console.log(`   ⚠️ Resume prep failed for ${entry.showId}/${entry.outletId}: ${prepared.failure?.error}`);
+          continue;
+        }
+        items[entry.index] = {
+          filePath: entry.filePath,
+          showId: entry.showId,
+          outletId: entry.outletId,
+          reviewFile,
+          prep: prepared.prep,
+          priorEmergencyRetryCount: ((reviewFile as any).ensembleData?.singleModelEmergencyRetryCount) || 0,
+        };
+      } catch (e: any) {
+        console.log(`   ⚠️ Resume reload failed for ${entry.filePath}: ${e.message}`);
+      }
+    }
+    return items;
+  }
+
+  /**
+   * Fetch a terminal batch's results and drive each item through the same
+   * three stages the synchronous path uses: combineOutcomes →
+   * finalizeScoredFile → handleScoringResult. Returns the set of filePaths
+   * that were actually processed, so the caller can skip re-queueing them.
+   */
+  async function processBatchResults(
+    state: BatchState,
+    items: Array<PendingBatchItem | null>
+  ): Promise<Set<string>> {
+    const rows = await fetchAndMerge(state, batchKeys);
+    const cfg = (scorer as EnsembleReviewScorer).getBatchConfig();
+    const done = new Set<string>();
+
+    for (const row of rows) {
+      const item = items[row.index];
+      if (!item) {
+        console.log(`[batch ${row.index + 1}/${rows.length}] SKIPPED (no reconstructable item for this request)`);
+        errors++;
+        continue;
+      }
+      process.stdout.write(`[batch ${row.index + 1}/${rows.length}] ${item.showId} / ${item.outletId}... `);
+      try {
+        const { outcomes, usage } = outcomesForItem(row, scorer as EnsembleReviewScorer, cfg.geminiEnabled);
+        (scorer as EnsembleReviewScorer).recordBatchUsage(usage);
+        const ensembleResult = (scorer as EnsembleReviewScorer).combineOutcomes(outcomes, item.prep.band);
+        const result = (scorer as EnsembleReviewScorer).finalizeScoredFile(
+          item.reviewFile,
+          ensembleResult,
+          item.prep
+        );
+        await handleScoringResult(result, item.filePath, item.reviewFile, item.priorEmergencyRetryCount);
+        done.add(item.filePath);
+      } catch (e: any) {
+        console.log(`ERROR: ${e.message}`);
+        errors++;
+        errorDetails.push({ showId: item.showId, outletId: item.outletId, error: e.message });
+      }
+    }
+    return done;
+  }
+
+  // ========================================
+  // --batch MODE SETUP (task #516)
+  // ========================================
+  // In batch mode the per-file loop stops calling scoreReviewFile() and
+  // instead runs stage 1 (prepareScoringInput) and queues the item. Every
+  // pre-filter above it — garbage detection, multi-show trim, the
+  // already-anchored skip — runs completely unchanged, so batch and sync
+  // score exactly the same set of files with exactly the same input text.
+  const batchMode: boolean = (options as any).batch === true;
+  const batchPollMinutes: number = (options as any).batchPollMinutes || 20;
+  const pendingBatchItems: PendingBatchItem[] = [];
+  const batchKeys = { anthropic: claudeApiKey!, openai: openaiApiKey!, gemini: geminiApiKey };
+  let skipNewWork = false;
+  let resumedFilePaths: Set<string> = new Set();
+
+  if (batchMode) {
+    if (!options.ensemble) {
+      console.log(`\n⛔ --batch requires --ensemble (batch mode is defined per ensemble leg). Aborting.\n`);
+      process.exit(2);
+    }
+    const cfg = (scorer as EnsembleReviewScorer).getBatchConfig();
+    if (cfg.kimiEnabled) {
+      // OpenRouter has no batch tier. Silently dropping Kimi would mean batch
+      // runs score a 3-model ensemble where sync scored 4 — a scoring-logic
+      // change disguised as a cost optimisation. Refuse instead.
+      console.log(`\n⛔ --batch cannot run with Kimi enabled (OpenRouter has no batch tier; dropping it would change the ensemble). Unset OPENROUTER_API_KEY. Aborting.\n`);
+      process.exit(2);
+    }
+    if (maxCost > 0) {
+      console.log(`\n⚠️  --max-cost is inert in --batch mode: batch cost is committed at submission, not per call. A pre-submit estimate is printed instead.\n`);
+    }
+    console.log(`\n📦 BATCH MODE — vendor Batch APIs (50% discount), submit → poll (≤${batchPollMinutes} min this run) → merge.\n`);
+  }
+
+  // Resume an in-flight batch from a previous run BEFORE queueing new work,
+  // so a cancelled/timed-out runner drains what it already paid for instead
+  // of resubmitting the same reviews (decideNextAction from llm-batch.js).
+  if (batchMode && !options.dryRun) {
+    const existing = readBatchState();
+    if (existing) {
+      console.log(`🔁 Resuming in-flight batch submitted ${existing.submittedAt} (${existing.itemCount} items)`);
+      const poll = await pollUntilTerminal(existing, batchKeys, { budgetMinutes: batchPollMinutes });
+      if (poll.ready) {
+        if (poll.forced) console.log(`   ⚠️ Forced merge: ${poll.reason}`);
+        const items = reconstructBatchItems(existing);
+        resumedFilePaths = await processBatchResults(existing, items);
+        writeBatchState(null);
+        console.log(`   ✓ Resumed batch merged — ${resumedFilePaths.size} file(s) written\n`);
+      } else {
+        console.log(`   ⏳ Still in flight (${poll.reason}). Keeping state; NOT submitting new work this run.\n`);
+        skipNewWork = true;
+      }
+    }
+  }
+
+  // `!skipNewWork` short-circuits the whole loop when a resumed batch is
+  // still in flight — submitting a second batch on top of it would double
+  // the spend and race two manifests through one state slot.
+  for (let i = 0; !skipNewWork && i < finalFiles.length; i++) {
     const { path: filePath, data: reviewFile } = finalFiles[i];
+
+    // Already written by this run's resume drain — don't re-queue it.
+    if (resumedFilePaths.has(filePath)) continue;
 
     // Capture prior retry count BEFORE scoring rebuilds ensembleData (ensemble-scorer.ts:464).
     // If retry succeeds (2+ models), the new ensembleData has no singleModelEmergency and
@@ -1365,216 +1813,36 @@ async function main(): Promise<void> {
       ? JSON.parse(JSON.stringify((scorer as any).getTokenUsage()))
       : null;
 
-    try {
-      const result = await scorer.scoreReviewFile(reviewFile);
-
-      // Handle scoreability rejection (v5.2+)
-      if (result.success && (result as any).rejected) {
-        const rejection = (result as any).rejection as string;
-        const rejectionReasoning = (result as any).rejectionReasoning as string;
-
-        if (!options.dryRun) {
-          const fileData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-
-          // Skip rejection write if a human has manually cleared wrongProduction.
-          // Discovered 2026-04-22 (Notion 34b637c5-416f-81ff-a6d6-d453e7ed537c):
-          // the ensemble rejected 4 audit B-class false-positive clears because the
-          // scoreability-check prompt told the LLM the market was Broadway even for
-          // WE shows. Without this carve-out, re-running llm-scoring after a manual
-          // clear would re-set rejectedAt/rejectedBy and the downstream
-          // isIncludableForRebuild rejectedAt guard would exclude them again.
-          // The guard at scripts/lib/review-guards.js also respects these flags as
-          // belt-and-suspenders, so dropping this write just avoids churn and
-          // preserves the human verdict as the source of truth.
-          // Also covers `wrong_show`: human-verified correct production implies correct
-          // show — the 2026-04-22 Giant case surfaced a second round where the LLM
-          // re-rejected with wrong_show ("Mark Rosenblatt play, not the musical I know")
-          // despite wrong_production being manually cleared. Treating both rejection
-          // types symmetrically matches the isIncludableForRebuild guard at
-          // scripts/lib/review-guards.js.
-          // Combined reviews (joint NYer/Variety pieces covering 2+ shows) are
-          // expected to fail wrong_show on the half of the article about the
-          // OTHER show. Treat them like manually-cleared so the Haiku fallback
-          // scores the trimmed section instead of leaving the file in
-          // "rejected but no score" limbo. Issue #316 ship-check (P0/B).
-          const manuallyCleared =
-            fileData.wrongProductionManualClear === true ||
-            fileData.wrongProductionOverride === true ||
-            fileData.wrongShowManualClear === true ||
-            fileData.wrongShowOverride === true ||
-            fileData.humanReviewedWrongProduction === false ||
-            fileData.isCombinedReview === true ||
-            // Aliases for sweep scripts that historically wrote the `Cleared`
-            // suffix instead of `ManualClear` — discovered 2026-05-01 when 4
-            // opera sweeps used the wrong field name and the gate silently
-            // re-flagged every cycle. Treating both suffixes as equivalent
-            // closes the gap without requiring every sweep to be migrated.
-            // Notion 362637c5-416f-8142-a088-f44f0cdaa98b.
-            fileData.wrongProductionCleared === true ||
-            fileData.wrongShowCleared === true;
-          if (manuallyCleared && (rejection === 'wrong_production' || rejection === 'wrong_show')) {
-            console.log(`SKIP-REJECT (${rejection} on manually-cleared file): ${rejectionReasoning?.substring(0, 80) || ''}`);
-            // Fallback: a human has verified this file matches the show, but the
-            // ensemble still rejected it — score the text directly with a single
-            // Haiku call so the file lands in reviews.json instead of staying in
-            // 'manually-cleared but unscored' limbo. (2026-05-01 Eugene Onegin /
-            // La Traviata opera incident — required manual rescue with Haiku.)
-            if (!manualClearFallbackScorer) {
-              manualClearFallbackScorer = new ReviewScorer(claudeApiKey, {
-                // claude-3-5-haiku-20241022 deprecated 2026-02-19; bumped to
-                // current Haiku 4.5 (2026-05-17 root fix per Notion
-                // 363637c5-416f-81cc-8240-c48df8b4cfd2). With opera-aware
-                // input-builder this fallback should rarely fire, but keep
-                // it on a non-deprecated model so the rescue actually works.
-                model: 'claude-haiku-4-5-20251001',
-                verbose: false,
-              });
-            }
-            try {
-              const fbResult = await manualClearFallbackScorer.scoreReviewFile(reviewFile);
-              if (fbResult.success && fbResult.scoredFile) {
-                const scoredAny = fbResult.scoredFile as any;
-                if (scoredAny.llmScore) {
-                  scoredAny.llmScore.reasoning =
-                    '[manual-cleared Haiku fallback] ' + (scoredAny.llmScore.reasoning || '');
-                }
-                scoredAny.scoreSource = 'manual-cleared-haiku-fallback';
-                scoredAny.scoreSourceReason =
-                  `ensemble rejected as ${rejection} but file is human-cleared via wrongProductionManualClear/wrongShowManualClear; Haiku single-model scored the text directly`;
-                scoredAny.scoredAt = new Date().toISOString();
-                if (!options.dryRun) saveReviewFile(filePath, scoredAny);
-                console.log(`  ✓ FALLBACK SCORED (Haiku): ${scoredAny.assignedScore} (${scoredAny.llmScore?.bucket})`);
-                processed++;
-                continue;
-              }
-              console.log(`  ⚠ Haiku fallback did not produce a score: ${fbResult.error || 'unknown'}`);
-              recordManualClearFallbackFailure(filePath, fileData, fbResult.error || 'no_score_produced');
-            } catch (e: any) {
-              console.log(`  ⚠ Haiku fallback exception: ${e.message}`);
-              recordManualClearFallbackFailure(filePath, fileData, e.message);
-            }
-            skipped++;
-            continue;
-          }
-
-          // Route rejection to appropriate flags
-          // Off-Broadway shows are exempt from wrongProduction flagging:
-          // OB shows commonly transfer from regional/fringe theaters, so LLM often
-          // misidentifies the production as "wrong" when it's actually correct.
-          // WE shows now get market+venue context in the prompt (2026-04-13), so the
-          // LLM can correctly distinguish Broadway vs West End productions.
-          const showInfo = showPriority.get(reviewFile.showId || '');
-          const isOffBroadway = showInfo?.category === 'off-broadway';
-          if (rejection === 'wrong_show') {
-            // Combined reviews are excluded from manuallyCleared above and
-            // would normally hit this branch — but a joint review should NOT
-            // get wrongShow:true on the half about the other show. The
-            // manuallyCleared carve-out routes them to the Haiku fallback.
-            // This guard is belt-and-suspenders: if execution somehow lands
-            // here for a combined review (e.g. config drift), don't churn
-            // wrongShow:true on every poller pass. Issue #316 ship-check
-            // (P0/A).
-            if (fileData.isCombinedReview === true) {
-              console.log(` (combined review — skipping wrongShow flag write)`);
-            } else {
-              fileData.wrongShow = true;
-            }
-          } else if (rejection === 'wrong_production' && !isOffBroadway) {
-            fileData.wrongProduction = true;
-          } else if (rejection === 'wrong_production' && isOffBroadway) {
-            console.log(` (OB exempt — skipping wrongProduction flag)`);
-          } else if (rejection === 'not_a_review') {
-            fileData.contentTier = 'invalid';
-          } else if (rejection === 'garbage_text') {
-            fileData.contentTier = 'needs-rescrape';
-          }
-
-          fileData.rejectedAt = new Date().toISOString();
-          fileData.rejectedBy = 'ensemble-scoreability-check';
-          fileData.rejectionReason = rejection;
-          fileData.rejectionReasoning = rejectionReasoning;
-          fileData.promptVersion = PROMPT_VERSION;
-          saveReviewFile(filePath, fileData);
-        }
-
-        console.log(`REJECTED (${rejection}): ${(result as any).rejectionReasoning?.substring(0, 80) || ''}`);
-        skipped++;
-        continue;
-      }
-
-      if (result.success && result.scoredFile) {
-        // Always clear needsRescore flag after successful scoring
-        const scoredAny = result.scoredFile as any;
-        if (scoredAny.needsRescore) {
-          delete scoredAny.needsRescore;
-          scoredAny.rescoreCompletedAt = new Date().toISOString();
-        }
-
-        // singleModelEmergency retry lifecycle: if scoring rebuilt ensembleData with the
-        // emergency flag still set (Gemini/etc still down), record the retry attempt so
-        // the daily auto-retry phase skips this file going forward. If the flag cleared,
-        // ensembleData was rebuilt without it and the count is naturally absent.
-        if (
-          options.retryEmergency &&
-          priorEmergencyRetryCount === 0 &&
-          scoredAny.ensembleData?.singleModelEmergency === true
-        ) {
-          scoredAny.ensembleData.singleModelEmergencyRetryCount = priorEmergencyRetryCount + 1;
-          scoredAny.ensembleData.singleModelEmergencyRetriedAt = new Date().toISOString();
-        }
-
-        // Post-scoring garbage detection: check if LLM reasoning indicates
-        // the text was not an actual review (closes the feedback loop)
-        const llmResult = result.scoredFile.llmScore;
-        if (llmResult) {
-          const garbageCheck = detectGarbageFromReasoning(
-            llmResult.reasoning,
-            llmResult.confidence
-          );
-          if (garbageCheck.isGarbage) {
-            scoredAny.contentTier = 'needs-rescrape';
-            scoredAny.garbageReasoningDetected = garbageCheck.matchedPattern;
-            scoredAny.garbageReasoningFlaggedAt = new Date().toISOString();
-          }
-        }
-
-        if (!options.dryRun) {
-          saveReviewFile(filePath, result.scoredFile);
-          try {
-            const sd = result.scoredFile as any;
-            emitStage({
-              showId: sd.showId,
-              reviewKey: `${sd.outletId}:${sd.criticName}:${sd.url || ''}`,
-              stage: 'scored',
-              metadata: { score: (result.scoredFile.llmScore as any).score, ensemble: !!(sd.ensembleData) },
-            });
-          } catch (e: any) { process.stderr.write(`[stage-latency] score emit failed: ${e.message}\n`); }
-        }
-
-        const score = result.scoredFile.llmScore.score;
-        const bucket = result.scoredFile.llmScore.bucket;
-        const confidence = result.scoredFile.llmScore.confidence;
-
-        // Show ensemble details if available
-        const ed = result.scoredFile.ensembleData;
-        let ensembleInfo = '';
-        if (ed) {
-          const geminiPart = ed.geminiScore !== null && ed.geminiScore !== undefined ? ` G:${ed.geminiScore}` : '';
-          const kimiPart = ed.kimiScore !== null && ed.kimiScore !== undefined ? ` K:${ed.kimiScore}` : '';
-          ensembleInfo = ` [C:${ed.claudeScore} O:${ed.openaiScore}${geminiPart}${kimiPart}${ed.needsReview ? ' ⚠️' : ''}]`;
-        }
-
-        console.log(`${score} (${bucket}, ${confidence})${ensembleInfo}`);
-        processed++;
-      } else {
-        console.log(`FAILED: ${result.error}`);
+    // BATCH: run stage 1 only, queue the item, and move on. The models are
+    // called once for the whole run after this loop finishes.
+    if (batchMode) {
+      const prepared = (scorer as EnsembleReviewScorer).prepareScoringInput(reviewFile);
+      if (!prepared.ok || !prepared.prep) {
+        const failure = prepared.failure || { success: false, error: 'prepare_scoring_input_failed' };
+        console.log(`FAILED: ${failure.error}`);
         errors++;
         errorDetails.push({
           showId: reviewFile.showId,
           outletId: reviewFile.outletId || '',
-          error: result.error || 'Unknown error'
+          error: failure.error || 'Unknown error'
         });
+        continue;
       }
+      pendingBatchItems.push({
+        filePath,
+        showId: reviewFile.showId,
+        outletId: reviewFile.outletId || '',
+        reviewFile,
+        prep: prepared.prep,
+        priorEmergencyRetryCount,
+      });
+      console.log(`QUEUED (batch #${pendingBatchItems.length})`);
+      continue;
+    }
+
+    try {
+      const result = await scorer.scoreReviewFile(reviewFile);
+      await handleScoringResult(result, filePath, reviewFile, priorEmergencyRetryCount);
     } catch (e: any) {
       console.log(`ERROR: ${e.message}`);
       errors++;
@@ -1631,6 +1899,66 @@ async function main(): Promise<void> {
       if (processed > 0 && processed % options.checkpointInterval === 0) {
         writeProgress(processed, finalFiles.length, errors, skipped, startTime);
         gitCheckpoint(processed, finalFiles.length);
+      }
+    }
+  }
+
+  // ========================================
+  // --batch SUBMIT → POLL → MERGE (task #516)
+  // ========================================
+  if (batchMode && !skipNewWork) {
+    if (pendingBatchItems.length === 0) {
+      console.log(`\n📦 Batch mode: nothing queued — no batch submitted.`);
+    } else {
+      const cfg = (scorer as EnsembleReviewScorer).getBatchConfig();
+      const requests = assembleRequests(pendingBatchItems, {
+        geminiEnabled: cfg.geminiEnabled,
+        claudeModel: cfg.claudeModel,
+        openaiModel: cfg.openaiModel,
+      });
+
+      // Cost is committed at submission, so print the (batch-discounted)
+      // estimate BEFORE spending it — the batch-mode analogue of --max-cost's
+      // per-call circuit breaker, which cannot apply here.
+      const estUsage = estimateBatchUsage(requests);
+      const estCost = __estimateCost(estUsage as any, { claudeModelName: options.model, batch: true });
+      const syncCost = __estimateCost(estUsage as any, { claudeModelName: options.model });
+      console.log(`\n📦 Submitting batch: ${pendingBatchItems.length} reviews × ${cfg.geminiEnabled ? 3 : 2} vendors`);
+      console.log(
+        `   Estimated cost (batch-discounted, upper bound): $${estCost.toFixed(4)} — vs $${syncCost.toFixed(4)} synchronous`
+      );
+
+      if (options.dryRun) {
+        console.log(`   --dry-run: not submitting.\n`);
+      } else {
+        const ids = await submitBatches(requests, batchKeys, { geminiModel: cfg.geminiModel });
+        if (!ids.claudeBatchId && !ids.openaiBatchId && !ids.geminiBatchId) {
+          console.log(`   ⛔ No vendor accepted the batch — nothing to poll. Exiting with code 2.`);
+          process.exitCode = 2;
+        } else {
+          const state = buildBatchState(
+            pendingBatchItems,
+            ids,
+            { claudeModel: cfg.claudeModel, openaiModel: cfg.openaiModel, geminiModel: cfg.geminiEnabled ? cfg.geminiModel : undefined },
+            new Date().toISOString()
+          );
+          // Persist + push the IDs BEFORE polling: if the runner is cancelled
+          // mid-poll (GitHub job timeout, cascade cancel), the next scheduled
+          // run resumes this batch instead of paying for it a second time.
+          writeBatchState(state);
+          gitCheckpoint(processed, finalFiles.length);
+
+          const poll = await pollUntilTerminal(state, batchKeys, { budgetMinutes: batchPollMinutes });
+          if (poll.ready) {
+            if (poll.forced) console.log(`   ⚠️ Forced merge: ${poll.reason}`);
+            const written = await processBatchResults(state, pendingBatchItems);
+            writeBatchState(null);
+            console.log(`\n   ✓ Batch merged — ${written.size} file(s) written`);
+          } else {
+            console.log(`\n   ⏳ Batch still in flight (${poll.reason}).`);
+            console.log(`      State persisted to scoring-progress.json — the next scheduled run resumes polling.`);
+          }
+        }
       }
     }
   }
@@ -1692,11 +2020,14 @@ async function main(): Promise<void> {
       openai: ensembleUsage.openai,
       gemini: ensembleUsage.gemini || undefined,
       kimi: ensembleUsage.kimi || undefined,
-    }, { claudeModelName: options.model, openaiModelName: options.openaiModel });
+    }, { claudeModelName: options.model, batch: batchMode });
     const costParts = [`Claude: $${breakdown.claude.toFixed(4)}`, `OpenAI: $${breakdown.openai.toFixed(4)}`];
     if (ensembleUsage.gemini) costParts.push(`Gemini: $${breakdown.gemini.toFixed(4)}`);
     if (ensembleUsage.kimi) costParts.push(`Kimi: $${breakdown.kimi.toFixed(4)}`);
-    console.log(`Estimated cost: $${breakdown.total.toFixed(4)} (${costParts.join(', ')})`);
+    // batch:true applies BATCH_DISCOUNT_MULTIPLIER to the claude/openai/gemini
+    // legs, so the printed figure is what the vendors actually bill for a
+    // --batch run rather than the sync-rate equivalent.
+    console.log(`Estimated cost${batchMode ? ' (batch-discounted)' : ''}: $${breakdown.total.toFixed(4)} (${costParts.join(', ')})`);
   } else {
     // Single scorer
     const singleUsage = tokenUsage as { input: number; output: number; total: number };
@@ -1810,10 +2141,11 @@ Options:
   --validate-only       Only run validation (no scoring)
   --ensemble-calibrate  Only run ensemble calibration (analyzes per-model performance)
   --model=<model>       Claude model: sonnet (default) or haiku
-  --ensemble            Use ensemble mode (Claude + OpenAI for triangulation)
-  --openai-model=<id>   OpenAI ensemble leg model (default: gpt-4o; pass
-                        gpt-5.4-mini to re-run the task #504 A/B — it failed
-                        the rule-13 gate on the V5 prompt as of 2026-07-26)
+  --ensemble            Use ensemble mode (Claude + GPT-4o-mini for triangulation)
+  --batch               Score via the vendor Batch APIs (50% cheaper, submit→poll→merge).
+                        Requires --ensemble; refuses to run with Kimi enabled.
+                        In-flight batches resume from scoring-progress.json.
+  --batch-poll-minutes=N  Wall-clock budget for polling a batch this run (default: 20)
   --ground-truth        Run ground truth calibration against numeric ratings
   --rate-limit=N        Delay between API calls in ms (default: 100)
 
