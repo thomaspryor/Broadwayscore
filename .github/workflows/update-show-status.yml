@@ -1322,6 +1322,21 @@ jobs:
           echo "Recent failures: $FAILURES out of last 10 scheduled runs"
           echo "failure_count=$FAILURES" >> "$GITHUB_OUTPUT"
 
+      # This job only runs `if: failure()`, so this step never sees a fully
+      # green run — but a later failing run can still see failure_count drop
+      # below 6 as older failures age out of the trailing-10 window. Resolving
+      # here (rather than requiring a success run that never triggers this
+      # job) means the NEXT time the streak climbs back to 6+, routeAlert
+      # treats it as a fresh incident and pages immediately instead of
+      # silently waiting out the 7-day cooldown.
+      - name: Resolve repeat-failure condition if streak has dropped
+        if: fromJSON(steps.check.outputs.failure_count) < 6
+        run: |
+          node -e '
+            const { resolveCondition } = require("./scripts/lib/owner-alert-router.js");
+            resolveCondition("update-show-status:repeat-failure");
+          '
+
       # Resolve the actual failing step from THIS run. Previously this used
       # `gh run list --status=failure --limit=5 --jq '.[0]'` which coincidentally
       # returned the in-flight current run, but the design was misleading — and
@@ -1357,7 +1372,7 @@ jobs:
           PRE_VALIDATION_STATUS: ${{ needs.update-shows.outputs.pre_validation_status }}
         run: |
           node -e '
-            const { sendAlert } = require("./scripts/lib/discord-notify.js");
+            const { routeAlert } = require("./scripts/lib/owner-alert-router.js");
             const count = process.env.FAILURE_COUNT;
             const step = process.env.FAILING_STEP || "unknown";
             const runUrl = process.env.RUN_URL || undefined;
@@ -1383,11 +1398,12 @@ jobs:
               hint = "Inspect the failing step in the linked run.";
             }
 
-            sendAlert({
+            routeAlert({
+              conditionKey: "update-show-status:repeat-failure",
               title: "Update Shows — " + count + " of last 10 scheduled runs failed",
               description: "Failing step: `" + step + "`. " + hint,
               severity: "error",
-              email: true,
+              disposition: "human",
               url: runUrl,
               fields: [
                 { name: "Failing step", value: "`" + step + "`" },
@@ -1396,3 +1412,20 @@ jobs:
               ]
             }).catch(e => console.error("Alert failed:", e.message));
           '
+
+      - name: Commit alert ledger
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # MUST commit here or the routeAlert/resolveCondition ledger state
+          # never persists across daily cron runs — the alert would re-open
+          # and re-email every run, reintroducing the exact storm this
+          # migration fixes (#486, same class as #406's opening-night fix).
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "audit: update-show-status alert ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi

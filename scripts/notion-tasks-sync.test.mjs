@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { mapStatus, mapCardToTask, planPull, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm } = require('./notion-tasks-sync.js');
+const { mapStatus, mapCardToTask, planPull, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock } = require('./notion-tasks-sync.js');
 
 function tmpDir() { return fs.mkdtempSync(path.join(os.tmpdir(), 'nts-')); }
 
@@ -124,4 +124,42 @@ test('executor claim: a card flipped to In progress mirrors as in_progress, neve
   assert.equal(mergeStatus('pending', 'in_progress'), 'in_progress');
   assert.equal(mergeStatus('pending', 'completed'), 'completed');
   assert.equal(mergeStatus(undefined, 'pending'), 'pending');
+});
+
+// ── #485: .sync-lock staleness must use its own acquiredAt, not fs mtime ────
+// Same bug class as json-write-guard.js and #476's monitor.lock: mtime is
+// trivially reset by any unrelated process touching the lock file.
+
+test('#485: a live lock (fresh acquiredAt) is NOT stolen even if its mtime is old', () => {
+  const dir = tmpDir();
+  const lockPath = path.join(dir, '.sync-lock');
+  fs.writeFileSync(lockPath, JSON.stringify({ pid: process.pid, acquiredAt: new Date().toISOString() }));
+  const old = new Date(Date.now() - 10 * 60 * 1000); // 10 min old mtime, well past the 2-min TTL
+  fs.utimesSync(lockPath, old, old);
+  const release = acquireLock(dir);
+  assert.equal(release, null, 'a fresh acquiredAt must block acquisition regardless of stale mtime');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('#485: a stale lock (old acquiredAt) is stolen even if its mtime was just touched', () => {
+  const dir = tmpDir();
+  const lockPath = path.join(dir, '.sync-lock');
+  fs.writeFileSync(lockPath, JSON.stringify({ pid: process.pid, acquiredAt: new Date(Date.now() - 3 * 60 * 1000).toISOString() }));
+  fs.utimesSync(lockPath, new Date(), new Date()); // unrelated touch resets mtime to "now"
+  const release = acquireLock(dir);
+  assert.ok(typeof release === 'function', 'a stale acquiredAt must be stolen despite a fresh mtime');
+  release();
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('#485: an old-format lock (bare PID, no acquiredAt) falls back to mtime staleness', () => {
+  const dir = tmpDir();
+  const lockPath = path.join(dir, '.sync-lock');
+  fs.writeFileSync(lockPath, String(process.pid)); // pre-fix format
+  const old = new Date(Date.now() - 3 * 60 * 1000);
+  fs.utimesSync(lockPath, old, old);
+  const release = acquireLock(dir);
+  assert.ok(typeof release === 'function', 'old-format lock past the mtime TTL must still be stealable');
+  release();
+  fs.rmSync(dir, { recursive: true, force: true });
 });

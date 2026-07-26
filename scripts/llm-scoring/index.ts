@@ -513,6 +513,7 @@ function parseArgs(): ScoringPipelineOptions & {
   ensembleCalibrateOnly: boolean;
   upgradeEnsemble: boolean;
   retryEmergency: boolean;
+  openaiModel: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini';
   checkpointInterval: number;
   shard?: number;
   totalShards?: number;
@@ -547,6 +548,15 @@ function parseArgs(): ScoringPipelineOptions & {
     : 'claude-sonnet-4-6' as const;
 
   const outdated = args.includes('--outdated');
+
+  // Task #504 (2026-07-26): ensemble OpenAI leg model, overridable for the
+  // gpt-4o vs gpt-5.4-mini A/B comparison. Default STAYS gpt-4o — the A/B
+  // (n=24 real reviews) failed the rule-13 gate: Mixed bucket collapsed
+  // 29%->0%, max bucket shift 29.2pp (limit 5pp). Pass --openai-model=gpt-5.4-mini
+  // to experiment further once the V5 prompt is recalibrated for it.
+  const { GPT4O } = require('../lib/models');
+  const openaiModelArg = args.find(a => a.startsWith('--openai-model='));
+  const openaiModel = (openaiModelArg ? openaiModelArg.split('=')[1] : GPT4O) as 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini';
 
   const ensembleSourceArg = args.find(a => a.startsWith('--ensemble-source='));
   const ensembleSource = ensembleSourceArg ? ensembleSourceArg.split('=')[1] : undefined;
@@ -599,6 +609,7 @@ function parseArgs(): ScoringPipelineOptions & {
     ensembleCalibrateOnly: args.includes('--ensemble-calibrate'),
     upgradeEnsemble,
     retryEmergency,
+    openaiModel,
     checkpointInterval,
     shard,
     totalShards,
@@ -788,21 +799,21 @@ async function main(): Promise<void> {
   if (options.ensemble) {
     scorer = new EnsembleReviewScorer(claudeApiKey, openaiApiKey!, geminiApiKey, openrouterApiKey, {
       claudeModel: options.model,
-      openaiModel: 'gpt-4o',
+      openaiModel: options.openaiModel,
       geminiModel: 'gemini-2.5-flash',
       kimiModel: 'moonshotai/kimi-k2.5',
       verbose: options.verbose
     });
     const modelCount = (scorer as EnsembleReviewScorer).getModelCount();
     if (modelCount === 4) {
-      console.log('Using 4-MODEL ensemble mode (Claude Sonnet + GPT-4o + Gemini 2.5 Flash + Kimi K2.5)\n');
+      console.log(`Using 4-MODEL ensemble mode (Claude Sonnet + ${options.openaiModel} + Gemini 2.5 Flash + Kimi K2.5)\n`);
     } else if (modelCount === 3) {
-      console.log('Using 3-MODEL ensemble mode (Claude Sonnet + GPT-4o + Gemini 2.5 Flash)\n');
+      console.log(`Using 3-MODEL ensemble mode (Claude Sonnet + ${options.openaiModel} + Gemini 2.5 Flash)\n`);
       if (!openrouterApiKey) {
         console.log('  (Set OPENROUTER_API_KEY to enable 4-model mode with Kimi K2.5)\n');
       }
     } else {
-      console.log('Using 2-MODEL ensemble mode (Claude Sonnet + GPT-4o)\n');
+      console.log(`Using 2-MODEL ensemble mode (Claude Sonnet + ${options.openaiModel})\n`);
       if (!geminiApiKey) {
         console.log('  (Set GEMINI_API_KEY to enable 3-model mode)\n');
       }
@@ -1596,7 +1607,7 @@ async function main(): Promise<void> {
           usageDelta[m] = { input: after.input, output: after.output, cacheWrite: after.cacheWrite || 0, cacheRead: after.cacheRead || 0 };
         }
       }
-      const callCost = __estimateCost(usageDelta, { claudeModelName: options.model });
+      const callCost = __estimateCost(usageDelta, { claudeModelName: options.model, openaiModelName: options.openaiModel });
       budgetUsed += callCost;
       if (budgetUsed >= maxCost) {
         console.log(`\n⛔ Budget cap reached ($${budgetUsed.toFixed(4)} >= $${maxCost.toFixed(2)}). Aborting cleanly after this review.`);
@@ -1681,7 +1692,7 @@ async function main(): Promise<void> {
       openai: ensembleUsage.openai,
       gemini: ensembleUsage.gemini || undefined,
       kimi: ensembleUsage.kimi || undefined,
-    }, { claudeModelName: options.model });
+    }, { claudeModelName: options.model, openaiModelName: options.openaiModel });
     const costParts = [`Claude: $${breakdown.claude.toFixed(4)}`, `OpenAI: $${breakdown.openai.toFixed(4)}`];
     if (ensembleUsage.gemini) costParts.push(`Gemini: $${breakdown.gemini.toFixed(4)}`);
     if (ensembleUsage.kimi) costParts.push(`Kimi: $${breakdown.kimi.toFixed(4)}`);
@@ -1799,7 +1810,10 @@ Options:
   --validate-only       Only run validation (no scoring)
   --ensemble-calibrate  Only run ensemble calibration (analyzes per-model performance)
   --model=<model>       Claude model: sonnet (default) or haiku
-  --ensemble            Use ensemble mode (Claude + GPT-4o-mini for triangulation)
+  --ensemble            Use ensemble mode (Claude + OpenAI for triangulation)
+  --openai-model=<id>   OpenAI ensemble leg model (default: gpt-4o; pass
+                        gpt-5.4-mini to re-run the task #504 A/B — it failed
+                        the rule-13 gate on the V5 prompt as of 2026-07-26)
   --ground-truth        Run ground truth calibration against numeric ratings
   --rate-limit=N        Delay between API calls in ms (default: 100)
 

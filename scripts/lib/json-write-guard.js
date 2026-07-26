@@ -58,6 +58,44 @@ function lockOwnerPath(lockDir) {
 }
 
 /**
+ * Whether the lock at lockDir has been held longer than LOCK_STALE_MS.
+ * Judged off owner.json's own `acquiredAt` field — NEVER fs mtime, which any
+ * unrelated process touching/stat-ing the lock dir (a smoketest, an `ls`/
+ * `find` sweep) can silently reset. That's the exact bug class #476 fixed
+ * for monitor.lock (see monitor-lock-staleness.js): mtime looks like a
+ * reasonable proxy but is trivially reset by code that never touches the
+ * lock's actual owner.
+ *
+ * Falls back to mtime ONLY when owner.json is unreadable, corrupt, or
+ * (old-format) missing `acquiredAt` — an unreadable file can't tell us
+ * anything else. Throws if owner.json doesn't exist at all, same as a bare
+ * statSync would; callers treat that as "can't tell, don't break the lock"
+ * rather than as stale (a concurrent acquirer's mkdir may be mid-flight).
+ */
+function isLockStale(lockDir, now = Date.now()) {
+  const ownerPath = lockOwnerPath(lockDir);
+  let acquiredAt = NaN;
+  try {
+    const owner = JSON.parse(fs.readFileSync(ownerPath, 'utf8'));
+    acquiredAt = Date.parse(owner.acquiredAt);
+    // A present-but-unparseable acquiredAt (e.g. a future refactor drops
+    // .toISOString() and writes a raw number) silently falls back to the
+    // exact mtime anti-pattern this function exists to avoid — warn so a
+    // format regression is observable instead of quietly reintroducing #476.
+    if (!Number.isFinite(acquiredAt) && owner.acquiredAt !== undefined) {
+      console.warn(
+        `json-write-guard: ${ownerPath} has an unparseable acquiredAt (${JSON.stringify(owner.acquiredAt)}) — falling back to mtime staleness`
+      );
+    }
+  } catch {
+    acquiredAt = NaN;
+  }
+  if (Number.isFinite(acquiredAt)) return now - acquiredAt > LOCK_STALE_MS;
+  const stat = fs.statSync(ownerPath); // throws if owner.json is missing entirely
+  return now - stat.mtimeMs > LOCK_STALE_MS;
+}
+
+/**
  * Acquires the lock and returns a unique token identifying THIS acquisition.
  * releaseLock() must be called with that exact token, and only removes the
  * lock if it still owns it — see shows-write-guard.js's docstring for the
@@ -79,8 +117,7 @@ function acquireLock(lockDir) {
 
       // Break a stale lock (crashed holder never released it).
       try {
-        const stat = fs.statSync(lockOwnerPath(lockDir));
-        if (Date.now() - stat.mtimeMs > LOCK_STALE_MS) {
+        if (isLockStale(lockDir)) {
           fs.rmSync(lockDir, { recursive: true, force: true });
           continue; // retry immediately, no sleep
         }
@@ -315,4 +352,7 @@ module.exports = {
   mergeArrayRecords,
   mergeMapRecords,
   recordCount,
+  isLockStale,
+  lockOwnerPath,
+  LOCK_STALE_MS,
 };

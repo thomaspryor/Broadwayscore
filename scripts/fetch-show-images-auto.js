@@ -28,8 +28,18 @@ const path = require('path');
 const { compressImage } = require('./lib/compress-image');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const crypto = require('crypto');
+
+const USAGE = `fetch-show-images-auto.js — discover + fetch show images (TodayTix/Playbill/IBDB).
+
+Usage:
+  node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only]
+    [--bad-images] [--dry-run] [--audit-existing] [--concurrency=N] [--no-verify]
+    [--flagged] [--max-runtime=MIN]
+  node scripts/fetch-show-images-auto.js --help, -h   print this usage and exit — no fetches/writes
+`;
 
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
@@ -2522,6 +2532,9 @@ ${showCards}
 
 async function main() {
   const args = process.argv.slice(2);
+  // --help/-h checked BEFORE loadShows/any fetch/any write (cousin of
+  // #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
   const onlyMissing = args.includes('--missing') || args.includes('--missing-only');
   const badImagesOnly = args.includes('--bad-images');

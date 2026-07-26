@@ -46,6 +46,14 @@ const HEALTH_DIGEST_PATH = path.join(REPO, 'data', 'audit', 'health-digest-snaps
 // cron itself is stuck or broken, not just "yesterday's news"; show nothing
 // rather than pass off day-old health data as this morning's.
 const HEALTH_DIGEST_MAX_AGE_H = 36;
+// Card #497 (owner merge decision — exactly one scheduled email/day, not
+// three): daily-digest.yml (score-drift) and opening-digest.yml no longer
+// email on their own either. Same snapshot-then-fold pattern as #364's
+// health digest above.
+const DAILY_DIGEST_PATH = path.join(REPO, 'data', 'audit', 'daily-digest-snapshot.json');
+const OPENING_DIGEST_PATH = path.join(REPO, 'data', 'audit', 'opening-digest-snapshot.json');
+const DAILY_DIGEST_MAX_AGE_H = 36;
+const OPENING_DIGEST_MAX_AGE_H = 36;
 // Raised 3 → 5 (S4-T2): approvals were arriving faster than 3/morning could
 // drain, so items aged out of sight behind a "+N more" line for days. The
 // counter below the items still names anything past the cap.
@@ -177,6 +185,32 @@ function readHealthDigest() {
     const snap = JSON.parse(fs.readFileSync(HEALTH_DIGEST_PATH, 'utf8'));
     const ageH = (Date.now() - new Date(snap.generatedAt).getTime()) / 3600e3;
     if (!(ageH < HEALTH_DIGEST_MAX_AGE_H)) return null;
+    return snap;
+  } catch {
+    return null;
+  }
+}
+
+// Card #497: send-daily-digest.js's (score-drift) snapshot — same fail-soft
+// shape/reasoning as readHealthDigest above.
+function readDailyDigestSnapshot() {
+  try {
+    const snap = JSON.parse(fs.readFileSync(DAILY_DIGEST_PATH, 'utf8'));
+    const ageH = (Date.now() - new Date(snap.generatedAt).getTime()) / 3600e3;
+    if (!(ageH < DAILY_DIGEST_MAX_AGE_H)) return null;
+    return snap;
+  } catch {
+    return null;
+  }
+}
+
+// Card #497: send-opening-digest.js's snapshot — same fail-soft
+// shape/reasoning as readHealthDigest above.
+function readOpeningDigestSnapshot() {
+  try {
+    const snap = JSON.parse(fs.readFileSync(OPENING_DIGEST_PATH, 'utf8'));
+    const ageH = (Date.now() - new Date(snap.generatedAt).getTime()) / 3600e3;
+    if (!(ageH < OPENING_DIGEST_MAX_AGE_H)) return null;
     return snap;
   } catch {
     return null;
@@ -397,6 +431,10 @@ async function main() {
   // Site health (card #364): folds health-check.js's former standalone
   // digest email into this one. null when no fresh snapshot exists.
   const health = readHealthDigest();
+  // Card #497: same fold-in for the two remaining routine scheduled digests
+  // (score-drift + opening-night radar) — null when no fresh snapshot exists.
+  const dailyDigest = readDailyDigestSnapshot();
+  const openingDigest = readOpeningDigestSnapshot();
 
   // Screenshot attachments (S2-T6): the owner reads this on a phone as often
   // as at the Mac, where a local file path is useless — the pictures have to
@@ -436,6 +474,8 @@ async function main() {
     items,
     digest,
     health,
+    dailyDigest,
+    openingDigest,
     recheck,
     prunedCount,
     moreAwaiting: Math.max(0, awaiting.length - items.length),

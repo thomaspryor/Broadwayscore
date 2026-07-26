@@ -7,6 +7,7 @@ const {
   renderEmail, renderItem, renderUsageBlock, renderRecheckBlock, extractWhy, summarizeQueue,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
   renderHealthDigestBlock, healthIssueCount,
+  renderDailyDigestBlock, renderOpeningDigestBlock,
 } = require('./autonomous-email-render.js');
 
 const STATS = {
@@ -518,4 +519,80 @@ test('renderEmail: merged digest — site health block appears below the divider
 test('renderEmail: no health field renders no site-health block (backward compatible)', () => {
   const html = renderEmail({ items: [], stats: STATS, awaitingTotal: 0 });
   assert.ok(!html.includes('Site health:'));
+});
+
+// ── Named digest snapshots (card #497 — daily-digest.yml score-drift +
+// opening-digest.yml folded in the same way #364 folded in site health) ────
+
+test('renderDailyDigestBlock: nothing to render without a snapshot', () => {
+  assert.equal(renderDailyDigestBlock(null), '');
+});
+
+test('renderDailyDigestBlock: renders label, banner text, items, and freshness stamp', () => {
+  const html = renderDailyDigestBlock({
+    subject: 'Daily Digest: 3 changes on 2026-07-26',
+    bannerText: '3 changes',
+    generatedAt: '2026-07-26T06:50:00.000Z',
+    items: [
+      { title: 'Hamilton', detail: 'Score 91 → 95' },
+      { title: 'Some New Show', detail: 'New show added (broadway)', url: 'https://broadwayscorecard.com/show/x' },
+    ],
+    moreCount: 2,
+  });
+  assert.match(html, /Score drift: 3 changes/);
+  assert.match(html, /Hamilton/);
+  assert.match(html, /Score 91 → 95/);
+  assert.match(html, /<a href="https:\/\/broadwayscorecard\.com\/show\/x"[^>]*>Some New Show<\/a>/);
+  assert.match(html, /\+2 more/);
+  assert.match(html, /as of 2026-07-26 06:50 UTC/);
+});
+
+test('renderDailyDigestBlock: html-escapes item fields', () => {
+  const html = renderDailyDigestBlock({
+    bannerText: 'x', items: [{ title: '<script>alert(1)</script>', detail: 'a & b' }],
+  });
+  assert.doesNotMatch(html, /<script>alert/);
+  assert.match(html, /&lt;script&gt;/);
+  assert.match(html, /a &amp; b/);
+});
+
+test('renderDailyDigestBlock: a corrupted item (null/malformed) is skipped, never crashes the render (ship-check finding)', () => {
+  assert.doesNotThrow(() => renderDailyDigestBlock({
+    bannerText: '2 changes', items: [null, { title: 'Real Show', detail: 'Score 80 → 82' }, undefined],
+  }));
+  const html = renderDailyDigestBlock({
+    bannerText: '2 changes', items: [null, { title: 'Real Show', detail: 'Score 80 → 82' }, undefined],
+  });
+  assert.match(html, /Real Show/);
+});
+
+test('renderDailyDigestBlock: a non-http item url is not rendered as a link (no javascript:/data: in the inbox)', () => {
+  for (const bad of ['javascript:alert(1)', 'data:text/html,<script>x</script>', 'ftp://example.com/x', 42]) {
+    const html = renderDailyDigestBlock({
+      bannerText: '1 change', items: [{ title: 'Sketchy', detail: 'd', url: bad }],
+    });
+    assert.match(html, /Sketchy/, `title still renders for url=${String(bad)}`);
+    assert.doesNotMatch(html, /<a href=/, `no anchor emitted for url=${String(bad)}`);
+  }
+});
+
+test('renderOpeningDigestBlock: nothing to render without a snapshot; label differs from daily digest', () => {
+  assert.equal(renderOpeningDigestBlock(null), '');
+  const html = renderOpeningDigestBlock({ bannerText: '2 needs help', items: [] });
+  assert.match(html, /Opening radar: 2 needs help/);
+});
+
+test('renderEmail: both named digests render below the divider, alongside site health', () => {
+  const dailyDigest = { bannerText: '3 changes', items: [{ title: 'Hamilton', detail: 'Score 91 → 95' }] };
+  const openingDigest = { bannerText: '1 needs help', items: [{ title: 'Some Show', detail: 'Needs help: only 1 T1' }] };
+  const html = renderEmail({ items: [], stats: STATS, awaitingTotal: 0, dailyDigest, openingDigest });
+  assert.match(html, /Score drift: 3 changes/);
+  assert.match(html, /Opening radar: 1 needs help/);
+  assert.ok(html.indexOf('Score drift:') > html.indexOf('For your records'), 'daily digest is below the divider');
+});
+
+test('renderEmail: no dailyDigest/openingDigest fields render nothing (backward compatible)', () => {
+  const html = renderEmail({ items: [], stats: STATS, awaitingTotal: 0 });
+  assert.ok(!html.includes('Score drift:'));
+  assert.ok(!html.includes('Opening radar:'));
 });
