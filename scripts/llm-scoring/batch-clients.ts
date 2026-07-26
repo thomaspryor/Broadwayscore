@@ -36,11 +36,11 @@ export interface VendorResult {
 // ========================================
 
 export async function submitAnthropicBatch(
-  requests: Array<{ custom_id: string; params: any }>,
+  requests: Array<Anthropic.Messages.Batches.BatchCreateParams.Request>,
   apiKey: string
 ): Promise<{ id: string }> {
   const client = new Anthropic({ apiKey });
-  const batch = await client.messages.batches.create({ requests: requests as any });
+  const batch = await client.messages.batches.create({ requests });
   return { id: batch.id };
 }
 
@@ -132,6 +132,29 @@ export async function getOpenAIBatchStatus(
     outputFileId: batch.output_file_id || undefined,
     errorFileId: batch.error_file_id || undefined,
   };
+}
+
+/**
+ * A batch can be terminal with `outputFileId` undefined (every request in it
+ * errored, or the whole batch failed/expired before producing output) — a
+ * caller that only calls fetchOpenAIBatchResults would get zero results and
+ * no diagnostic. Callers MUST check getOpenAIBatchStatus().errorFileId and
+ * pull this alongside (or instead of) fetchOpenAIBatchResults.
+ */
+export async function fetchOpenAIBatchErrors(errorFileId: string, apiKey: string): Promise<VendorResult[]> {
+  const res = await fetch(`${OPENAI_BASE}/files/${errorFileId}/content`, {
+    headers: { Authorization: `Bearer ${apiKey}` },
+  });
+  if (!res.ok) {
+    throw new Error(`OpenAI error file fetch failed: ${res.status} ${await res.text()}`);
+  }
+  const text = await res.text();
+  // Error-file lines: { id, custom_id, error: { code, message } } — no
+  // `response` field, so reuse parseOpenAIBatchResult's `line.error` branch.
+  return text
+    .split('\n')
+    .filter((line) => line.trim().length > 0)
+    .map((line) => parseOpenAIBatchResult(JSON.parse(line)));
 }
 
 export async function fetchOpenAIBatchResults(outputFileId: string, apiKey: string): Promise<VendorResult[]> {

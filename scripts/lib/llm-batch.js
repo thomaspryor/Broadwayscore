@@ -158,6 +158,13 @@ function parseOpenAIBatchResult(line) {
  * gemini-scorer.ts:85-87's `systemPrompt + '\n\n' + userPrompt` concatenation
  * exactly, or the batch leg would score on a different prompt than sync.
  */
+// `temperature` defaults to 0.3 to match GeminiScorer's own constructor
+// default (gemini-scorer.ts) — but unlike Claude/OpenAI, where the sync path
+// hardcodes `temperature: 0.3` as a literal (so this default can never
+// drift), Gemini's sync temperature IS configurable via GeminiScorer
+// constructor options. A future caller that builds a GeminiScorer with a
+// non-default temperature MUST pass that same value here explicitly, or
+// batch mode will silently score at a different temperature than sync.
 function buildGeminiBatchRequest({ customId, systemPrompt, userPrompt, temperature = 0.3, maxOutputTokens = 500 }) {
   if (!customId || !systemPrompt || !userPrompt) {
     throw new Error('buildGeminiBatchRequest: customId, systemPrompt, userPrompt are required');

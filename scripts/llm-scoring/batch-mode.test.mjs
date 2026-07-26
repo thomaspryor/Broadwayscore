@@ -388,6 +388,51 @@ describe('sync/batch parity — parseBatchResponseV5 on unwrapped batch text', (
     assert.strictEqual(viaBatch.result.score, expectedScore);
   });
 
+  test('OpenAI: batch-unwrapped rejection parses identically to a direct call', () => {
+    const scorer = new OpenAIReviewScorer('sk-fake-not-a-real-key');
+    const line = { custom_id: 'req-0', response: { status_code: 200, body: { choices: [{ message: { content: REJECTION_JSON } }] } } };
+    const unwrapped = parseOpenAIBatchResult(line);
+    const viaBatch = scorer.parseBatchResponseV5(unwrapped.text);
+    const viaDirect = scorer.parseBatchResponseV5(REJECTION_JSON);
+    assert.deepStrictEqual(viaBatch, viaDirect);
+    assert.strictEqual(viaBatch.rejected, true);
+    assert.strictEqual(viaBatch.rejection, 'wrong_show');
+  });
+
+  test('Gemini: batch-unwrapped rejection parses identically to a direct call', () => {
+    const scorer = new GeminiScorer('fake-key-not-real');
+    const entry = { key: 'req-0', response: { candidates: [{ content: { parts: [{ text: REJECTION_JSON }] } }] } };
+    const unwrapped = parseGeminiBatchResult(entry);
+    const viaBatch = scorer.parseBatchResponseV5(unwrapped.text);
+    const viaDirect = scorer.parseBatchResponseV5(REJECTION_JSON);
+    assert.deepStrictEqual(viaBatch, viaDirect);
+    assert.strictEqual(viaBatch.rejected, true);
+    assert.strictEqual(viaBatch.rejection, 'wrong_show');
+  });
+
+  test('malformed JSON: all three vendors fall back to the same extraction pipeline', () => {
+    const malformed = '```json\n{"bucket": "Mixed", "score": 55, incomplete';
+    const claudeEntry = { custom_id: 'req-0', result: { type: 'succeeded', message: { content: [{ type: 'text', text: malformed }], usage: {} } } };
+    const openaiLine = { custom_id: 'req-0', response: { status_code: 200, body: { choices: [{ message: { content: malformed } }] } } };
+    const geminiEntry = { key: 'req-0', response: { candidates: [{ content: { parts: [{ text: malformed }] } }] } };
+
+    const claudeScorer = new ReviewScorer('sk-fake-not-a-real-key');
+    const openaiScorer = new OpenAIReviewScorer('sk-fake-not-a-real-key');
+    const geminiScorer = new GeminiScorer('fake-key-not-real');
+
+    const claudeViaBatch = claudeScorer.parseBatchResponseV5(parseAnthropicBatchResult(claudeEntry).text);
+    const claudeViaDirect = claudeScorer.parseBatchResponseV5(malformed);
+    assert.deepStrictEqual(claudeViaBatch, claudeViaDirect);
+
+    const openaiViaBatch = openaiScorer.parseBatchResponseV5(parseOpenAIBatchResult(openaiLine).text);
+    const openaiViaDirect = openaiScorer.parseBatchResponseV5(malformed);
+    assert.deepStrictEqual(openaiViaBatch, openaiViaDirect);
+
+    const geminiViaBatch = geminiScorer.parseBatchResponseV5(parseGeminiBatchResult(geminiEntry).text);
+    const geminiViaDirect = geminiScorer.parseBatchResponseV5(malformed);
+    assert.deepStrictEqual(geminiViaBatch, geminiViaDirect);
+  });
+
   test('a vendor batch error never reaches the parser — caller must treat as null outcome', () => {
     // Mirrors the sync path's Promise.all().catch(() => null): an errored
     // batch item has no text to parse at all, so mergeVendorResults leaves
