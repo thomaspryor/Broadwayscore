@@ -68,7 +68,8 @@ async function main(argv = process.argv.slice(2)) {
   const { fetchPage, fetchJSON } = require('./lib/scraper');
   const {
     extractShowTitleFromWetRoundup, titleFromDtliSlug, extractShowTitleFromBwwRoundup,
-    isBwwNonStageTieIn, buildShowTitleIndex, findUnmatchedCandidates, candidateKey,
+    isBwwNonStageTieIn, isBwwNonNycRoundup,
+    buildShowTitleIndex, findUnmatchedCandidates, candidateKey,
   } = require('./lib/reverse-discovery');
 
   const dryRun = argv.includes('--dry-run');
@@ -176,7 +177,7 @@ async function main(argv = process.argv.slice(2)) {
         /<url>\s*<loc>([^<]+)<\/loc>(?:(?!<\/url>)[\s\S])*?<n:title>([^<]+)<\/n:title>(?:(?!<\/url>)[\s\S])*?<n:publication_date>([^<]+)<\/n:publication_date>(?:(?!<\/url>)[\s\S])*?<\/url>/g
       )];
       if (entries.length === 0) throw new Error('BWW gnews sitemap parsed to 0 <url> entries');
-      let parsed = 0, roundups = 0, tieIns = 0;
+      let parsed = 0, roundups = 0, filtered = 0;
       for (const [, url, rawTitle, pubDate] of entries) {
         const ts = Date.parse(pubDate);
         if (!Number.isFinite(ts) || ts < cutoff) continue;
@@ -184,7 +185,9 @@ async function main(argv = process.argv.slice(2)) {
         if (isRoundupShaped) roundups++;
         const title = extractShowTitleFromBwwRoundup(rawTitle);
         if (!title) {
-          if (isRoundupShaped && isBwwNonStageTieIn(rawTitle)) tieIns++;
+          // Deliberate filters (non-stage tie-in, non-NYC market) are not
+          // parse failures — count them so the drift guard can subtract them.
+          if (isRoundupShaped && (isBwwNonStageTieIn(rawTitle) || isBwwNonNycRoundup(rawTitle))) filtered++;
           continue;
         }
         parsed++;
@@ -192,12 +195,13 @@ async function main(argv = process.argv.slice(2)) {
       }
       // Same structure-drift guard as WET/DTLI: recent roundup-shaped titles
       // that all fail to parse means the title format changed underneath us.
-      // Deliberately-filtered tie-ins don't count against the guard — a
-      // window whose only roundups are movie tie-ins is not format drift.
-      if (roundups > tieIns && parsed === 0) {
-        throw new Error(`BWW title-format drift: ${roundups} roundup posts (${tieIns} tie-ins), 0 parsed`);
+      // Deliberately-filtered items don't count against the guard — a window
+      // whose only roundups are movie tie-ins or West End/tour items is a
+      // normal quiet NYC day, not drift.
+      if (roundups > filtered && parsed === 0) {
+        throw new Error(`BWW title-format drift: ${roundups} roundup posts (${filtered} deliberately filtered), 0 parsed`);
       }
-      console.log(`BWW: ${parsed} roundups within ${days}d (of ${entries.length} recent articles, ${tieIns} tie-ins filtered)`);
+      console.log(`BWW: ${parsed} roundups within ${days}d (of ${entries.length} recent articles, ${filtered} filtered as tie-in/non-NYC)`);
       sourcesOk++;
     } catch (e) {
       console.error(`BWW source failed: ${e.message}`);
