@@ -52,7 +52,17 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const https = require('https');
+
+const USAGE = `collect-review-texts.js — multi-tier fallback review text scraper.
+
+Usage:
+  node scripts/collect-review-texts.js [--aggressive] [--tier=N] [--test-url=URL] [--stealth-proxy]
+  node scripts/collect-review-texts.js --help, -h   print this usage and exit — no scraping/writes
+
+See file header comment for the full env-var config surface (BATCH_SIZE, MAX_REVIEWS, etc).
+`;
 // const { HttpsProxyAgent } = require('https-proxy-agent'); // Not used - Bright Data needs zone setup
 
 // Catch unhandled promise rejections from playwright-extra stealth plugin
@@ -6792,6 +6802,10 @@ function generateReport() {
 // ============================================================================
 
 async function main() {
+  // --help/-h is checked BEFORE loadDependencies/loadState/any network or fs
+  // work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
+
   // Test URL mode
   if (CLI.testUrl) {
     await loadDependencies();

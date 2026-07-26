@@ -120,6 +120,12 @@ send flag, never ask the owner for permission to send.** The owner clicks
 Send in the Resend UI themselves. If you're ever tempted to send "just this
 once because it looks ready" — that's not your call; don't.
 
+This is backstopped mechanically, not just by this instruction:
+`~/.claude/hooks/block-resend-broadcasts.sh` blocks any Bash command
+containing `resend.com/broadcasts` unless it's one of the three sanctioned
+wrapper scripts — it runs for this headless session exactly as it does
+interactively.
+
 ## 6. Email the owner a 3-line summary
 
 Use the sanctioned single-recipient transactional pattern (CLAUDE.md rule

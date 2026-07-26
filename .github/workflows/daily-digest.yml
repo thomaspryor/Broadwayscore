@@ -1,7 +1,13 @@
-name: Daily Digest Email
+name: Daily Digest (score drift)
 on:
   schedule:
-    - cron: '0 12 * * *'  # 12 PM UTC (7-8 AM ET) — after overnight pipelines
+    # 06:30 UTC daily. Card #497 (owner merge decision — exactly one scheduled
+    # email/day, not three): this no longer emails on its own. It writes
+    # data/audit/daily-digest-snapshot.json instead; autonomous-email.js folds
+    # it into the loop's single scheduled morning email. Runs BEFORE the loop
+    # starts (03:30 ET / 07:30 UTC) so the snapshot is same-day fresh — same
+    # reasoning as data-health-check.yml's 06:45 UTC move (card #364).
+    - cron: '30 6 * * *'
   workflow_dispatch: {}
 
 concurrency:
@@ -9,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  send-digest:
+  write-digest:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -21,18 +27,15 @@ jobs:
         with:
           node-version: 20
 
-      - name: Send daily digest
-        env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+      - name: Write daily digest snapshot
         run: node scripts/send-daily-digest.js
 
-      - name: Commit updated snapshot
+      - name: Commit updated snapshots
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/daily-snapshot.json
+          git add data/audit/daily-snapshot.json data/audit/daily-digest-snapshot.json
           if git diff --staged --quiet; then
             echo "No snapshot changes"
           else
@@ -44,6 +47,7 @@ jobs:
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Daily Digest Email Failed'
+          title: 'Daily Digest Snapshot Failed'
+          description: 'Daily digest script crashed — its snapshot may not have written, so tomorrow''s morning email won''t carry score-drift data.'
           severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

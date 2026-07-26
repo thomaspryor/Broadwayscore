@@ -248,6 +248,11 @@ async function main(argv = process.argv.slice(2)) {
   // candidates file (reverseDiscoveryBacklogResults) — same pattern as
   // detect-ob-closings. sendAlert without email:true is LOG-ONLY by design
   // (alert-volume policy), so this just annotates the CI step output.
+  // Not routed through owner-alert-router — this already has its own cooldown:
+  // `fresh` above is computed against statePath, keyed per candidate, so a
+  // given show only ever appears here once (permanently, not time-boxed) until
+  // its key is cleared; re-alerting the router's ledger on top would be
+  // redundant dedup on dedup.
   if (fresh.length > 0) {
     const { sendAlert } = require('./lib/discord-notify');
     await sendAlert({

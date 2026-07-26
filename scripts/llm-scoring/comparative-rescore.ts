@@ -134,7 +134,11 @@ async function callOpenAI(prompt: string): Promise<string | null> {
       body: JSON.stringify({
         model: 'gpt-4o',
         messages: [{ role: 'user', content: prompt }],
-        max_tokens: 2000,
+        // max_completion_tokens (not max_tokens) — gpt-5.4-mini rejects
+        // max_tokens with HTTP 400; this form works for gpt-4o too, so if
+        // this call site is ever pointed at gpt-5.4-mini it won't 400
+        // (task #504, 2026-07-26).
+        max_completion_tokens: 2000,
         temperature: 0.3,
       }),
     });

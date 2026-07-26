@@ -224,9 +224,19 @@ function renderHealthDigestBlock(health) {
   // (drainDigestQueue does no per-item validation on read) must not crash the
   // whole email render — that would be strictly worse than the silent-drop
   // bug this block exists to fix (ship-check follow-up finding).
+  // q.url renders as a trailing link when present. routeAlert() has always
+  // accepted a url and queueDigestLine() has always persisted it, but this
+  // renderer dropped it — so digest-routed conditions whose whole point is
+  // "go look at this page" (e.g. a regional show going live) arrived with no
+  // way to click through. http(s) only: a queued javascript:/data: url would
+  // otherwise become a live link in the owner's inbox.
+  const safeUrl = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u) ? u : null);
   const validQueued = queued.filter(Boolean);
   const queuedHtml = validQueued.length
-    ? `<div style="margin-top:8px;">${validQueued.map(q => `<div style="font-size:12px;color:#555;margin:0 0 3px;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` — ${esc(q.description)}` : ''}</div>`).join('')}</div>`
+    ? `<div style="margin-top:8px;">${validQueued.map(q => {
+        const href = safeUrl(q.url);
+        return `<div style="font-size:12px;color:#555;margin:0 0 3px;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` — ${esc(q.description)}` : ''}${href ? ` <a href="${esc(href)}" style="color:#2563eb;">view</a>` : ''}</div>`;
+      }).join('')}</div>`
     : '';
 
   if (!errors.length && !warns.length) {
@@ -260,6 +270,47 @@ function renderHealthDigestBlock(health) {
 function healthIssueCount(health) {
   const h = health || {};
   return (h.errors?.length || 0) + (h.warns?.length || 0);
+}
+
+// ── Named digest snapshots (card #497 — daily-digest.yml score-drift +
+// opening-digest.yml, folded in the same way #364 folded in site health) ───
+// Both scripts write { generatedAt, subject, bannerText, items: [{title,
+// detail, url?}], moreCount } — routine FYI content, not errors/warnings, so
+// unlike renderHealthDigestBlock this never bumps the "N things to look at"
+// count; it's context, same tier as the overnight digest block below it.
+function renderNamedDigestBlock(label, snapshot) {
+  if (!snapshot) return '';
+  // .filter(Boolean): a corrupted/partial snapshot write must not crash the
+  // whole email render — same guard as renderHealthDigestBlock's queued items
+  // (ship-check follow-up finding, card #497).
+  const items = (Array.isArray(snapshot.items) ? snapshot.items : []).filter(Boolean);
+  // http(s) only: same guard as renderHealthDigestBlock's safeUrl() above —
+  // a malformed/malicious url must not become a live javascript:/data: link
+  // in the owner's inbox (ship-check follow-up finding, card #497).
+  const safeUrl = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u) ? u : null);
+  const rows = items.map(it => {
+    const href = safeUrl(it.url);
+    return `<div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">${href ? `<a href="${esc(href)}" style="color:#333;text-decoration:none;">${esc(it.title)}</a>` : esc(it.title)}</span>
+      ${it.detail ? `<div style="font-size:11px;color:#999;margin:2px 0 0 2px;">${esc(it.detail)}</div>` : ''}
+    </div>`;
+  }).join('');
+  const more = snapshot.moreCount > 0
+    ? `<div style="font-size:11px;color:#999;margin-top:4px;">+${snapshot.moreCount} more</div>` : '';
+  const asOf = snapshot.generatedAt && !Number.isNaN(new Date(snapshot.generatedAt).getTime())
+    ? `<div style="font-size:11px;color:#999;margin-top:6px;">as of ${esc(String(snapshot.generatedAt).slice(0, 16).replace('T', ' '))} UTC</div>` : '';
+  return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">${esc(label)}: ${esc(snapshot.bannerText || '')}</div>
+    ${rows}${more}${asOf}
+  </div>`;
+}
+
+function renderDailyDigestBlock(snapshot) {
+  return renderNamedDigestBlock('Score drift', snapshot);
+}
+
+function renderOpeningDigestBlock(snapshot) {
+  return renderNamedDigestBlock('Opening radar', snapshot);
 }
 
 function renderItem(item) {
@@ -490,6 +541,10 @@ function renderEmail(data) {
   // former standalone "BSC Daily"/"BSC URGENT" email now lands here instead —
   // one scheduled morning email, not two. null when no fresh snapshot exists.
   if (data.health) tail.push(renderHealthDigestBlock(data.health));
+  // Card #497: the two remaining routine scheduled digests (score-drift +
+  // opening-night radar) fold in the same way. null when no fresh snapshot.
+  if (data.dailyDigest) tail.push(renderDailyDigestBlock(data.dailyDigest));
+  if (data.openingDigest) tail.push(renderOpeningDigestBlock(data.openingDigest));
   tail.push(renderUsageBlock(stats, admin, config));
 
   // "Closed N finished tabs" (S4-T3): the owner watches the workspace list
@@ -516,5 +571,6 @@ module.exports = {
   renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderRecheckBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
   attentionCountOf, actionableAttentionCountOf, digestStuckCount,
   renderHealthDigestBlock, healthIssueCount,
+  renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
 };

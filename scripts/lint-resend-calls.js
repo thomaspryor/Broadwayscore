@@ -49,6 +49,8 @@ const ALLOWLIST = new Set([
   'scripts/process-feedback.js',
   'scripts/autonomous-deadman.js',
   'scripts/check-secrets-health.js', // GET /domains key-validity probe, not an alert send
+  'scripts/newsletter/check-drafts-status.mjs', // GET /broadcasts read-only status probe, never touches /send
+  'scripts/monitor-scheduled-email-count.js', // GET /emails read-only monitor (card #510) — routeAlert() for the actual alert, this is just data collection
   'scripts/send-follow-notifications.js',
   'scripts/newsletter/create-broadcast-draft.mjs',
   'scripts/newsletter/send-test.mjs',

@@ -545,6 +545,9 @@ async function main() {
   } else {
     // email:true — orphan-unscored reviews in the opening window are precisely the
     // silent-strand class (Springwood 2026-07). Log-only alerts reached nobody.
+    // Direct sendAlert, not routeAlert — this already has its own cooldown
+    // (per-show lastAlertAt + COOLDOWN_MS, computed as `suppressAlert` above),
+    // so a show already in cooldown never reaches showsWithOrphans/this call.
     const delivered = await sendAlert({
       title: `Orphan-Unscored Reviews — ${showsWithOrphans.length} show(s)`,
       description,

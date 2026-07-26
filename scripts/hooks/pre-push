@@ -132,17 +132,22 @@ done
 run_audit() {
   local label="$1"
   local script="$2"
-  if ! node "$script" >/tmp/pre-push-audit.out 2>&1; then
+  # PID+random-scoped, not a fixed filename: this repo commonly has many
+  # concurrent local `git push` invocations (parallel worktree sessions), and
+  # a shared /tmp/pre-push-audit.out let one process's rm -f race another's
+  # still-in-flight `cat`, corrupting/blanking the error output it prints.
+  local AUDIT_OUT="/tmp/pre-push-audit.$$.$RANDOM.out"
+  if ! node "$script" >"$AUDIT_OUT" 2>&1; then
     echo ""
     echo "=== PRE-PUSH BLOCKED: $label failed ==="
     echo ""
-    cat /tmp/pre-push-audit.out
+    cat "$AUDIT_OUT"
     echo ""
     echo "(Bypass for emergencies: git push --no-verify)"
-    rm -f /tmp/pre-push-audit.out
+    rm -f "$AUDIT_OUT"
     exit 1
   fi
-  rm -f /tmp/pre-push-audit.out
+  rm -f "$AUDIT_OUT"
 }
 
 # Pure-deletion push (every spec was a delete) — nothing to audit.
