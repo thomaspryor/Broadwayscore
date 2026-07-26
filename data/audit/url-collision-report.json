@@ -1,10 +1,38 @@
 {
-  "generatedAt": "2026-07-26T02:07:33.853Z",
+  "generatedAt": "2026-07-26T02:43:21.443Z",
   "summary": {
-    "total": 0,
-    "high": 0,
+    "total": 1,
+    "high": 1,
     "medium": 0,
     "low": 0
   },
-  "collisions": []
+  "collisions": [
+    {
+      "url": "https://www.huffpost.com/michael-giltz/theater-kinky-boots-too-v_b_3018475.html",
+      "normalizedUrl": "https://huffpost.com/michael-giltz/theater-kinky-boots-too-v_b_3018475.html",
+      "candidates": [
+        {
+          "showId": "kinky-boots-2013",
+          "file": "huffpost--michael-giltz.json",
+          "publishDate": "2013-04-04",
+          "openingDate": "2013-04-04",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "huffpost"
+        },
+        {
+          "showId": "kinky-boots-2026",
+          "file": "huffpost--michael-giltz.json",
+          "publishDate": null,
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "huffpost"
+        }
+      ],
+      "suggestedWinner": "kinky-boots-2013",
+      "reason": "publishDate 2013-04-04 is 0 days from kinky-boots-2013 opening (2013-04-04)",
+      "confidence": "high"
+    }
+  ]
 }
