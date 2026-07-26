@@ -71,7 +71,11 @@ function readEntries(ledgerPath = LEDGER_PATH) {
 }
 
 function deadAttemptsForTask(taskId, entries) {
-  return entries.filter(e => e.event === 'dead' && String(e.taskId) === String(taskId));
+  // Failed/orphaned headless jobs count as dead attempts too — this is the
+  // "one ledger, one guard" promise: a task cannot burn unlimited headless
+  // jobs just because its deaths use the job-* vocabulary (Opus ship-check P1).
+  const DEADLIKE = new Set(['dead', JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED]);
+  return entries.filter(e => DEADLIKE.has(e.event) && String(e.taskId) === String(taskId));
 }
 
 function launchByRef(workspaceRef, entries) {
@@ -98,7 +102,43 @@ function deadBreadcrumbs(idleWorkspaces, entries) {
   return out;
 }
 
+// ── Headless-job events (Autopilot v5, task #459) ──────────────────────────
+// bsc-runner.js appends these; bsc-reconcile.js and bsc-status.js fold them.
+// One ledger for tabs AND jobs on purpose: the dead-attempt guard must see
+// every prior attempt on a task in ONE file (plan-review design finding P1-6 —
+// a second ledger recreates "counts only recorded deaths" in a new shape).
+// Lines stay SMALL (ids + paths, never prompt/result text) so appendFileSync
+// stays within the atomic-append window; big text lives in the per-job log.
+const JOB_EVENTS = Object.freeze({
+  SPAWNED: 'job-spawned',   // + pid, sessionId(null until envelope), cwd, logFile, model
+  DONE: 'job-done',         // + sessionId, costUSD
+  FAILED: 'job-failed',     // + stage (claude-cli STAGES / autonomous-run-core vocabulary)
+  ORPHANED: 'job-orphaned', // appended by bsc-reconcile when pid is dead with no terminal event
+  RETRIED: 'job-retried',   // reconciler-initiated resume attempt (capped)
+});
+
+// RETRIED is terminal for the OLD jobId: a retry supersedes it with a brand-new
+// job (its own spawned→done/failed chain). Leaving it open made the old id a
+// permanent ghost that every tick re-orphaned (ship-check Codex blocker).
+const TERMINAL_JOB_EVENTS = new Set([JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED, JOB_EVENTS.RETRIED]);
+
+// Latest job state per jobId: fold events, last one wins. Returns
+// Map<jobId, {jobId, taskId, event, ...lastEntryFields}>.
+function foldJobs(entries) {
+  const jobs = new Map();
+  for (const e of entries) {
+    if (!e.jobId || !String(e.event || '').startsWith('job-')) continue;
+    jobs.set(e.jobId, { ...(jobs.get(e.jobId) || {}), ...e });
+  }
+  return jobs;
+}
+
+function openJobs(entries) {
+  return [...foldJobs(entries).values()].filter(j => !TERMINAL_JOB_EVENTS.has(j.event));
+}
+
 module.exports = {
-  LEDGER_PATH, DEAD_ATTEMPT_LIMIT,
+  LEDGER_PATH, DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
+  foldJobs, openJobs,
 };

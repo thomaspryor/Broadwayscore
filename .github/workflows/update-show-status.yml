@@ -356,14 +356,28 @@ jobs:
         # min per GENUINE (non-stalled) conflict-resolution cycle under this
         # workflow's high main-branch churn (run 30186060030) — the shared 240s
         # default only fit ~1.3 cycles before self-aborting, so "failed after 7
-        # attempts" was misleading (only ~2 real cycles ran). 600s fits ~3 real
-        # cycles. Scoped to THIS step only (not the shared script default —
-        # see push-with-retry.sh's PUSH_DEADLINE_SEC comment for why) since
-        # this job has the headroom (75-min timeout, see job comment above)
-        # and the other push-with-retry.sh calls below push much smaller,
-        # rarely-conflicting files.
+        # attempts" was misleading (only ~2 real cycles ran).
+        #
+        # 600s (round 1) verified live on run 30187244663: correctly fit ~4
+        # real cycles (up from ~2) but STILL exhausted before a fetch cleanly
+        # landed — the underlying per-cycle cost is genuinely ~190s under
+        # sustained high churn (root cause: two consecutive 90s
+        # GIT_NET_TIMEOUT_SEC fetch timeouts, not rebase/merge compute — see
+        # task #464). That same live run's TOTAL job wall-clock was only
+        # ~31.5 min against the 75-min timeout, so there was 40+ min of
+        # measured (not guessed) unused headroom. Raised to 1200s (round 2,
+        # ~6 real cycles) — keeps ~5 min of buffer under the job's own
+        # documented worst-case non-push budget (discovery 30 + enrichment 10
+        # + StubHub 5 + setup 5 = 50 min / 3000s, leaving 1500s for push;
+        # 1200s preserves 300s of that as margin rather than spending all of
+        # it). Scoped to THIS step only (not the shared script default — see
+        # push-with-retry.sh's PUSH_DEADLINE_SEC comment for why) since the
+        # other push-with-retry.sh calls below push much smaller,
+        # rarely-conflicting files. If churn persists past this, the real
+        # fix is task #464 (root-cause + shorten the per-cycle cost itself),
+        # not another deadline bump.
         env:
-          PUSH_DEADLINE_SEC: '600'
+          PUSH_DEADLINE_SEC: '1200'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
