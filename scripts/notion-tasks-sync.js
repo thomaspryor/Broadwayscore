@@ -181,16 +181,32 @@ function allocateFreeId(dir, startId) {
 
 // Best-effort cross-process lock so N Cmux panes pulling at once don't race.
 // Stale locks (>2 min) are stolen. Returns a release() fn or null if held.
+// Age is judged off the lock file's own embedded `acquiredAt`, not fs mtime
+// — mtime is trivially reset by any unrelated process that touches/stats
+// the file (the #476 bug class; see monitor-lock-staleness.js). mtime is
+// kept only as a fallback for an old-format (bare-PID) or corrupt lock file.
 function acquireLock(dir) {
   const lock = path.join(dir, '.sync-lock');
   try {
     const fd = fs.openSync(lock, 'wx'); // O_EXCL: fails if it already exists
-    fs.writeSync(fd, String(process.pid));
+    fs.writeSync(fd, JSON.stringify({ pid: process.pid, acquiredAt: new Date().toISOString() }));
     fs.closeSync(fd);
     return () => { try { fs.unlinkSync(lock); } catch {} };
   } catch {
     try {
-      const age = Date.now() - fs.statSync(lock).mtimeMs;
+      let acquiredAt = NaN;
+      try {
+        const content = JSON.parse(fs.readFileSync(lock, 'utf8'));
+        acquiredAt = Date.parse(content.acquiredAt);
+        if (!Number.isFinite(acquiredAt) && content.acquiredAt !== undefined) {
+          console.warn(`notion-tasks-sync: ${lock} has an unparseable acquiredAt (${JSON.stringify(content.acquiredAt)}) — falling back to mtime staleness`);
+        }
+      } catch {
+        acquiredAt = NaN;
+      }
+      const age = Number.isFinite(acquiredAt)
+        ? Date.now() - acquiredAt
+        : Date.now() - fs.statSync(lock).mtimeMs; // old-format (bare pid) or corrupt — mtime fallback
       if (age > 120000) { fs.unlinkSync(lock); return acquireLock(dir); }
     } catch {}
     return null;
@@ -351,4 +367,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm };
+module.exports = { parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock };

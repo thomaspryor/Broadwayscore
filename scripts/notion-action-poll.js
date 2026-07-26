@@ -86,23 +86,41 @@ function acquireLock() {
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const fd = fs.openSync(LOCK_FILE, 'wx');
-      fs.writeSync(fd, String(process.pid));
+      fs.writeSync(fd, JSON.stringify({ pid: process.pid, acquiredAt: new Date().toISOString() }));
       fs.closeSync(fd);
       return true;
     } catch {
       try {
         // Liveness first: a dead holder's lock is stale immediately, and a
         // LIVE holder's lock is never stolen — a Fix pipeline can legitimately
-        // hold it for hours (4 stages × 30 min). Age is only the fallback for
-        // unreadable/foreign PIDs.
-        const holderPid = parseInt(fs.readFileSync(LOCK_FILE, 'utf8'), 10);
+        // hold it for hours (4 stages × 30 min). When the PID can't be
+        // checked (corrupt/old-format lock content), fall back to the lock's
+        // own embedded acquiredAt rather than fs mtime — mtime is trivially
+        // reset by any unrelated process touching the lock file (the
+        // #476/#485 bug class). mtime is the LAST-resort fallback, used only
+        // when acquiredAt itself is also unreadable/missing (old bare-PID
+        // format written before this fix).
+        const raw = fs.readFileSync(LOCK_FILE, 'utf8');
+        let holderPid = NaN;
+        let acquiredAt = NaN;
+        try {
+          const content = JSON.parse(raw);
+          holderPid = content.pid;
+          acquiredAt = Date.parse(content.acquiredAt);
+        } catch {
+          holderPid = parseInt(raw, 10); // old-format: bare PID string
+        }
         let holderAlive = false;
         if (Number.isFinite(holderPid) && holderPid > 0) {
           try { process.kill(holderPid, 0); holderAlive = true; } catch { holderAlive = false; }
         }
         if (holderAlive) return false;
-        const age = Date.now() - fs.statSync(LOCK_FILE).mtimeMs;
-        if (!Number.isFinite(holderPid) && age < 150 * 60 * 1000) return false; // unreadable PID: age fallback
+        if (!Number.isFinite(holderPid)) {
+          const age = Number.isFinite(acquiredAt)
+            ? Date.now() - acquiredAt
+            : Date.now() - fs.statSync(LOCK_FILE).mtimeMs; // unreadable PID + no acquiredAt: mtime fallback
+          if (age < 150 * 60 * 1000) return false;
+        }
         fs.unlinkSync(LOCK_FILE);
         continue; // stale — retry acquisition once
       } catch { continue; } // lock vanished between open and stat — retry
