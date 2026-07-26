@@ -66,8 +66,11 @@ Inspiration audit:
   card on the home screen links here in December.
 - **Feed:** the diary timeline itself (§4) — photos make it a private
   scrapbook, not a social feed.
-- **Scope pill** (All time / 2026 / 2025 …) pinned under the Stats header;
-  filters every module.
+- **Scope pill** pinned under the Stats header; filters every module. Two
+  interleaved scope families, both kept: **seasons** ("2025–26 Season" — the
+  primary unit; theater years end with the Tonys, not December) and **calendar
+  years** (2026, 2025 …), plus All time. Section headers: All time · Seasons ·
+  Years. Default after first launch: current season.
 
 **Stats module order (v2):**
 1. Marquee numbers (hero tiles)
@@ -208,15 +211,33 @@ Day-of-week split ("a Saturday person, 41%"), month × year heatmap (single-hue
 brand-gold ramp), most shows in a week/month, longest monthly streak.
 (Matinee vs. evening needs showtime capture — §8 backlog.)
 
-### 5.7 Curtain Call — the year in review ⭐
-Unlocks Nov 15 (data through Dec 31, available all January), push
-notification. Eight swipeable full-screen cards, each exportable 9:16 + 1:1
-via SwiftUI `ImageRenderer` (no server): cover collage → the numbers → your
-year in bars → top-five poster podium → taste card (alignment + most
-contrarian take) → people card → canon card (Tonys seen, houses unlocked) →
-sign-off + share CTA. Every export carries the wordmark + App Store QR — the
-acquisition moment. Cards use share-safe data only; feed photos are never
-auto-included (explicit pick only).
+### 5.7 Curtain Call — two editions ⭐
+
+Both share one card engine (eight swipeable full-screen cards, each
+exportable 9:16 + 1:1 via SwiftUI `ImageRenderer`, no server): cover collage
+→ the numbers → your period in bars → top-five poster podium → taste card
+(alignment + most contrarian take) → people card → canon card → sign-off +
+share CTA. Every export carries the wordmark + App Store QR. Cards use
+share-safe data only; feed photos are never auto-included (explicit pick
+only).
+
+**Season Finale (flagship) — unlocks the morning after the Tony Awards.**
+The theater year ends on Tony night, so this is the marquee recap:
+- Covers the season window (see boundary rule below): "Your 2025–26 Season."
+- Canon card becomes a **Tony-night scorecard**: nominees and winners you
+  saw, "you'd seen 7 of the 10 Best Musical nominees before the ceremony,"
+  saw-it-before-it-won additions this season.
+- Push notification lands while Tony chatter is still hot — peak share moment.
+
+**Year in Review — unlocks Nov 15, data through Dec 31, live all January.**
+The calendar cut, kept for December-recap culture (Wrapped season): same
+cards scoped to the calendar year, canon card in its general form.
+
+**Season boundary rule:** a season runs from the day after one Tony ceremony
+through the day of the next. Ceremony dates ship in `stats-canon.json`; for
+the in-progress season (next ceremony unannounced), the provisional end is
+June 30, corrected when the date lands. Shows logged on ceremony day count in
+the season then ending.
 
 ## 6. Interaction grammar & sharing
 
@@ -247,7 +268,9 @@ Shipped already: `mobile-shows.json` (`v`, `rt`, `cs`, `ag`, `tg`, `ct`, `od`,
 rows (venue/city/country). New artifacts:
 1. **Theater lat/lng** (+ West End file, ≈39 houses) for the map — v1.1.
 2. **`stats-canon.json`** — Tony Best Musical/Play winners (year, showId|null,
-   title, poster), ceremony dates, NYT picks, Pulitzers — v1.1/v2.
+   title, poster), ceremony dates, NYT picks, Pulitzers. Ceremony dates are
+   needed at **V1** (they define season boundaries for the scope pill); the
+   winner/nominee lists can land v1.1/v2.
 3. **Community rating distributions** — per-show aggregate histograms (k≥5)
    for the ratings ghost — v2, volume-dependent.
 Supabase: `user_review_photos` table + private storage bucket (§4).
@@ -283,6 +306,8 @@ Per owner rule (recorded in
   `mobile-shows.json` (unit-tested reducers).
 - **V1.1:** You vs. Critics/Audience, Tony & Canon (`stats-canon.json`),
   People, MapKit theater map (lat/lng artifact), share cards.
-- **V2 (December):** Curtain Call story + push unlock, community ghost
+- **V2:** Curtain Call both editions — **Season Finale ships first (June,
+  post-Tonys)**, Year in Review follows (December) — plus community ghost
   overlay, Habits heatmap, The Mix earliness profile, milestone toasts
-  ("that was show #200 🎉").
+  ("that was show #200 🎉"). Season scoping in the pill ships with V1 (it's
+  just a date-window filter once ceremony dates are in `stats-canon.json`).

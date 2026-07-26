@@ -263,9 +263,10 @@
     hues. Layout is the only bold move: the four priority modules fill the first scroll.</p>
     <div class="note"><span class="pin">a</span><p><b>Hero tiles</b> — shows, hours (Σ runtime),
     theaters, this-year pace. Tabular numerals, existing card component.</p></div>
-    <div class="note"><span class="pin">b</span><p><b>Shows per year</b> — tap a bar (or the scope
-    pill) to scope the whole screen to that year; bars become months. Records strip beneath;
-    every pill taps to its shows.</p></div>
+    <div class="note"><span class="pin">b</span><p><b>Scope pill holds both time systems:</b>
+    seasons first ("2025–26 Season" — theater years end with the Tonys; boundary = ceremony to
+    ceremony), then calendar years, then All time. Current season is the default. Tapping a bar
+    in <b>Shows per year</b> scopes to that year; bars become months.</p></div>
     <div class="note"><span class="pin">c</span><p><b>Broadway theaters teaser ring</b> sits on the
     first scroll and opens the full tracker (screen 2). The "4 to go" line makes it actionable
     immediately.</p></div>
@@ -589,16 +590,16 @@
   <div class="phone"><div class="screen-inner">
     <div class="statusbar"><span>9:41</span><span class="r">●●● ᯤ ▮</span></div>
     <div class="story">
-      <div class="brand-l">BroadwayScorecard · Curtain Call</div>
-      <h3>Your 2026<br>at the theater</h3>
+      <div class="brand-l">BroadwayScorecard · Season Finale</div>
+      <h3>Your 2025–26<br>season</h3>
       <div class="bignums">
-        <div class="bn"><div class="v num">41</div><div class="l">shows</div></div>
-        <div class="bn"><div class="v num">103h</div><div class="l">in a seat</div></div>
-        <div class="bn"><div class="v num">18</div><div class="l">theaters</div></div>
-        <div class="bn"><div class="v num">3</div><div class="l">cities</div></div>
+        <div class="bn"><div class="v num">54</div><div class="l">shows this season</div></div>
+        <div class="bn"><div class="v num">134h</div><div class="l">in a seat</div></div>
+        <div class="bn"><div class="v num">21</div><div class="l">theaters</div></div>
+        <div class="bn"><div class="v num">4</div><div class="l">houses unlocked</div></div>
       </div>
       <div>
-        <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-bottom:8px">Your top five</div>
+        <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-bottom:8px">Your top five of the season</div>
         <div class="podium">
           <span class="poster" style="background:linear-gradient(160deg,#20515f,#0e2429)">MHE</span>
           <span class="poster p1" style="background:linear-gradient(160deg,#8a6d1f,#3d3010)">GYP</span>
@@ -607,26 +608,35 @@
           <span class="poster" style="background:linear-gradient(160deg,#4a2f68,#241536)">CJB</span>
         </div>
       </div>
-      <p style="font-size:12.5px;color:var(--ink-2);max-width:32ch">Most contrarian take:
-      <b style="color:var(--ink)">Sunset Boulevard</b> — critics 89, you ★★½. Never change.</p>
+      <div class="card" style="padding:12px">
+        <h4 style="margin-bottom:6px">Tony-night scorecard</h4>
+        <p style="font-size:12px;color:var(--ink-2)">You'd seen <b style="color:var(--ink)">7 of the 10</b>
+        Best Musical nominees before the ceremony — including the winner.
+        <b style="color:var(--brand)">🏆 Saw it before it won: +2 this season.</b></p>
+      </div>
       <div class="qr"><span class="q"></span><span>broadwayscorecard.com<br>Get your own Scorecard</span></div>
     </div>
   </div></div>
   <div class="notes">
-    <div class="kicker">Screen 6 · The December moment</div>
-    <h2>Curtain Call — a year in review worth posting</h2>
-    <p>Eight swipeable full-screen cards, unlocked Nov 15 by push notification, every card
-    exportable as a 9:16 story or 1:1 square via SwiftUI <code>ImageRenderer</code> — no server.
-    Same tokens as everything else: system type, gold on the app surfaces.</p>
-    <div class="note"><span class="pin">a</span><p><b>Card run:</b> cover collage → the numbers →
-    your year in bars → top five podium → taste card (alignment + most contrarian take) →
-    people card → canon card (Tonys seen, houses unlocked) → sign-off.</p></div>
-    <div class="note"><span class="pin">b</span><p><b>Every export carries the wordmark + QR</b> —
-    the recap is the acquisition channel. Sharing is always explicit; the diary and feed photos
-    stay private (a photo joins a card only via explicit pick).</p></div>
-    <div class="note"><span class="pin">c</span><p><b>Share glyphs on stats modules</b> reuse the
-    same card renderer year-round: marquee numbers, contrarian picks, the theater checklist,
-    any canon shelf.</p></div>
+    <div class="kicker">Screen 6 · Two curtain calls a year</div>
+    <h2>Season Finale (post-Tonys) + Year in Review (December)</h2>
+    <p>The theater year ends on Tony night, not December 31 — so the <b>flagship recap is the
+    Season Finale</b>, unlocking the morning after the Tony Awards. The calendar-year edition
+    stays for Wrapped-season culture. One card engine, two editions; eight swipeable cards each,
+    exportable 9:16 / 1:1 via SwiftUI <code>ImageRenderer</code>.</p>
+    <div class="note"><span class="pin">a</span><p><b>Season Finale</b> ("Your 2025–26 season"):
+    the canon card becomes a <b>Tony-night scorecard</b> — nominees/winners you saw, "7 of 10 Best
+    Musical nominees before the ceremony," saw-it-before-it-won additions. Push lands while Tony
+    chatter is still hot — peak share moment.</p></div>
+    <div class="note"><span class="pin">b</span><p><b>Season boundary:</b> day after one Tony
+    ceremony → day of the next (ceremony dates ship in <code>stats-canon.json</code>; provisional
+    June 30 end for the in-progress season). The scope pill gets the same season entries —
+    "2025–26 Season" next to calendar years, seasons listed first, current season as the
+    post-onboarding default.</p></div>
+    <div class="note"><span class="pin">c</span><p><b>Year in Review</b> (Nov 15 unlock, data
+    through Dec 31): identical card run scoped to the calendar year, canon card in its general
+    form. Both editions: wordmark + QR on every export, sharing always explicit, feed photos
+    never auto-included.</p></div>
   </div>
 </section>
 
