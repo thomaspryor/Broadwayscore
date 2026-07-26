@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-07-26T03:02:27.170Z",
-  "processed": 67,
-  "failed": 845,
-  "successRate": "7.3%",
+  "updatedAt": "2026-07-26T03:06:02.886Z",
+  "processed": 69,
+  "failed": 853,
+  "successRate": "7.5%",
   "tierBreakdown": {
-    "playwright": 54,
+    "playwright": 55,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 2,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archiveToday": 35,
+    "brightdata": 6,
+    "archiveToday": 36,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-07-25T19:48:42.510Z",
-      "event": "bb-session",
-      "session": "167e9eb0",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
-    },
-    {
-      "t": "2026-07-25T19:48:42.975Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-25T19:50:14.960Z",
-      "event": "bb-session",
-      "session": "1e45b192",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
-    },
-    {
-      "t": "2026-07-25T19:50:15.396Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
     {
       "t": "2026-07-25T20:34:16.962Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-07-25T23:59:24.978Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-26T03:03:36.490Z",
+      "event": "bb-session",
+      "session": "4ad377dc",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-26T03:03:36.818Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-26T03:03:52.431Z",
+      "event": "bb-session",
+      "session": "dcc2760d",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-26T03:03:52.801Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
