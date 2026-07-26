@@ -19,16 +19,19 @@ const EXEMPT_FILE = path.join(__dirname, '..', '.cron-health-exempt.txt');
 // design). DO NOT "fix" these toward the generic 36h daily cushion — doing so
 // silently defeats the detection they exist for. Map: workflow filename → { maxHours, why }.
 const TIGHT_BY_DESIGN = {
-  // Digest carrier: a cancelled run blacks out all non-critical alerting.
-  // 30h (vs the generic 36h daily cushion) keeps the band tight to the 24h
-  // cadence so a dead cron trips fast, while leaving ~7h healthy-state slack.
-  // The digest moved 07→16 UTC on 2026-07-24 (card #409); the noon-UTC check now
-  // runs before it, so healthy age at check time rose from ~5h to ~20h and a
-  // single cancel is caught at ~44h the next noon (not same-day). 30h (raised
-  // from 26h in #409) restores slack so a lagged check can't false-trip and
-  // self-heal into a duplicate digest email; it still catches the 44h case.
+  // Digest snapshot carrier: a cancelled run writes no snapshot, blacking out
+  // all non-critical alerting for that day. 26h (vs the generic 36h daily
+  // cushion) keeps the band tight to the 24h cadence so a dead cron trips
+  // fast, while leaving ~2h healthy-state slack.
+  // Card #364 (owner merge decision 2026-07-26) moved this back to 06:45 UTC —
+  // the pre-#409 slot — since health-check.js no longer emails its own digest
+  // (it writes data/audit/health-digest-snapshot.json; autonomous-email.js
+  // folds it into the loop's single scheduled morning email), so #409's
+  // reason for spacing it away from that email no longer applies. The
+  // noon-UTC check now runs ~5h AFTER it (healthy age ~5h), matching the
+  // original pre-#409 geometry, hence the restored 26h band.
   // See Notion 381637c5-416f-81af and the comment on this entry in check-cron-health.yml.
-  'data-health-check.yml': { maxHours: 30, why: 'digest-carrier cancel detection (tight to 24h cadence)' },
+  'data-health-check.yml': { maxHours: 26, why: 'digest-snapshot-carrier cancel detection (tight to 24h cadence)' },
 };
 
 function parseField(field, min, max) {

@@ -70,6 +70,15 @@ fi
 # reads the freshest card mirror. Never fatal: a fetch hiccup shouldn't
 # skip the night, worktrees fetch again themselves.
 git fetch origin main || echo "[nightly] WARN git fetch failed"
+# Card #364 ship-check finding: fetch alone updates refs/remotes/origin/main
+# but NOT this checkout's working tree — autonomous-email.js reads
+# data/audit/health-digest-snapshot.json (committed by data-health-check.yml,
+# a DIFFERENT machine — GitHub Actions) straight off this tree, so without a
+# fast-forward here it would silently read yesterday's file, or none. --ff-only
+# is a no-op success if this checkout has no local commits ahead of origin/main
+# (the normal case — the executor does its work in separate worktrees), and
+# harmlessly fails (never fatal) if it ever does diverge.
+git merge --ff-only origin/main || echo "[nightly] WARN could not fast-forward to origin/main (local checkout diverged? investigate) — health digest / other CI-committed files may read stale tonight"
 
 echo "--- triage ---"
 node scripts/autonomous-triage.js --limit 30 || echo "[nightly] WARN triage failed (executor will use yesterday's queue only if <12h old)"

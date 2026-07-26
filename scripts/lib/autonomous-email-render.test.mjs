@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   renderEmail, renderItem, renderUsageBlock, renderRecheckBlock, extractWhy, summarizeQueue,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
+  renderHealthDigestBlock, healthIssueCount,
 } = require('./autonomous-email-render.js');
 
 const STATS = {
@@ -416,4 +417,68 @@ test('the more-awaiting counter names everything past the item cap', () => {
     moreAwaiting: 4, stats: STATS, awaitingTotal: 5,
   });
   assert.ok(html.includes('+4 more items awaiting approval'));
+});
+
+// ── Merged digest (card #364 — owner decision 2026-07-26: one scheduled
+// morning email instead of the standalone BSC URGENT/Daily digest) ─────────
+
+test('renderHealthDigestBlock: nothing to render without a snapshot', () => {
+  assert.equal(renderHealthDigestBlock(null), '');
+});
+
+test('renderHealthDigestBlock: all-clear snapshot renders a calm passed line', () => {
+  const html = renderHealthDigestBlock({ subject: 'BSC Daily: All clear (27/27 passed)', errors: [], warns: [], passedCount: 27 });
+  assert.match(html, /Site health: all 27 checks passed/);
+});
+
+test('renderHealthDigestBlock: escalated URGENT snapshot lists errors and the day count in red', () => {
+  const health = {
+    subject: 'BSC URGENT (day 6): 2 unresolved errors',
+    bannerText: '2 errors, 1 warning',
+    consecutiveErrorDays: 6,
+    errors: [{ name: 'Data: cookie expiration', message: 'The Stage cookie expired' }, { name: 'Pipeline: stuck work', message: '5 shows stuck' }],
+    warns: [{ name: 'SEO: health', message: 'field LCP still red' }],
+    autoFixedCount: 1,
+  };
+  const html = renderHealthDigestBlock(health);
+  assert.match(html, /color:#dc2626/);
+  assert.match(html, /\(day 6\)/);
+  assert.match(html, /Data: cookie expiration/);
+  assert.match(html, /The Stage cookie expired/);
+  assert.match(html, /1 auto-fixed overnight/);
+});
+
+test('renderHealthDigestBlock: queued digest-router items render (never silently dropped after drainDigestQueue)', () => {
+  const html = renderHealthDigestBlock({
+    subject: 'BSC Daily: All clear (27/27 passed)', errors: [], warns: [], passedCount: 27,
+    queued: [{ title: 'Credits: ScrapingDog', description: 'balance below 10%', severity: 'warning' }],
+    generatedAt: '2026-07-26T06:50:00.000Z',
+  });
+  assert.match(html, /Credits: ScrapingDog/);
+  assert.match(html, /balance below 10%/);
+  assert.match(html, /as of 2026-07-26 06:50 UTC/);
+});
+
+test('healthIssueCount: sums errors + warns, 0 when absent', () => {
+  assert.equal(healthIssueCount(null), 0);
+  assert.equal(healthIssueCount({ errors: [{ name: 'a' }], warns: [{ name: 'b' }, { name: 'c' }] }), 3);
+});
+
+test('renderEmail: merged digest — site health block appears below the divider, errors bump "N things to look at"', () => {
+  const health = {
+    subject: 'BSC URGENT (day 3): 1 unresolved error',
+    bannerText: '1 error',
+    consecutiveErrorDays: 3,
+    errors: [{ name: 'Data: cookie expiration', message: 'The Stage cookie expired' }],
+    warns: [],
+  };
+  const html = renderEmail({ items: [], stats: STATS, awaitingTotal: 0, health });
+  assert.match(html, /Site health: 1 error/);
+  assert.ok(html.indexOf('Site health:') > html.indexOf('For your records'), 'health block is below the divider, not above');
+  assert.match(html, /1 thing to look at below/);
+});
+
+test('renderEmail: no health field renders no site-health block (backward compatible)', () => {
+  const html = renderEmail({ items: [], stats: STATS, awaitingTotal: 0 });
+  assert.ok(!html.includes('Site health:'));
 });

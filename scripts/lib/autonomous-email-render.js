@@ -197,6 +197,66 @@ function renderRecheckBlock(recheck) {
   </div>`;
 }
 
+// ── Site health digest (card #364 — owner merge decision 2026-07-26) ───────
+// health-check.js used to email its own "BSC Daily"/"BSC URGENT" digest
+// separately from this morning email. The owner: "I don't like getting
+// emails unless they're urgent. I want things to self handle." health-check.js
+// now writes its results to data/audit/health-digest-snapshot.json instead of
+// sending mail; autonomous-email.js reads that snapshot and folds it in here
+// so there is exactly one scheduled morning email, not two.
+function renderHealthDigestBlock(health) {
+  if (!health) return '';
+  const errors = Array.isArray(health.errors) ? health.errors : [];
+  const warns = Array.isArray(health.warns) ? health.warns : [];
+  const queued = Array.isArray(health.queued) ? health.queued : [];
+  const urgent = /URGENT/.test(health.subject || '');
+  const autoFixedNote = health.autoFixedCount > 0
+    ? `<div style="font-size:11px;color:#16a34a;margin-top:6px;">${health.autoFixedCount} auto-fixed overnight</div>` : '';
+  // Ship-check finding (card #364): a cancelled/late health-check.js run can
+  // leave a snapshot up to ~36h old (see HEALTH_DIGEST_MAX_AGE_H) — stamp it
+  // so a stale read never masquerades as this morning's status.
+  const asOf = health.generatedAt && !Number.isNaN(new Date(health.generatedAt).getTime())
+    ? `<div style="font-size:11px;color:#999;margin-top:6px;">as of ${esc(String(health.generatedAt).slice(0, 16).replace('T', ' '))} UTC</div>` : '';
+  // owner-alert-router's disposition='digest' queue — routed conditions that
+  // would otherwise vanish silently the moment health-check.js drains the
+  // queue (card #475's original bug, reintroduced then fixed in #364).
+  const queuedHtml = queued.length
+    ? `<div style="margin-top:8px;">${queued.map(q => `<div style="font-size:12px;color:#555;margin:0 0 3px;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` — ${esc(q.description)}` : ''}</div>`).join('')}</div>`
+    : '';
+
+  if (!errors.length && !warns.length) {
+    return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+      <div style="font-size:13px;font-weight:700;">Site health: all ${health.passedCount ?? ''} checks passed</div>
+      ${queuedHtml}${autoFixedNote}${asOf}
+    </div>`;
+  }
+
+  const rows = [...errors.map(e => ({ ...e, kind: 'error' })), ...warns.map(w => ({ ...w, kind: 'warn' }))]
+    .slice(0, 6)
+    .map(r => `<div style="margin:0 0 6px;">
+      <span style="display:inline-block;background:${r.kind === 'error' ? '#dc2626' : '#b45309'};color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;vertical-align:middle;text-transform:uppercase;">${r.kind}</span>
+      <span style="font-size:13px;color:#333;margin-left:6px;">${esc(r.name)}</span>
+      ${r.message ? `<div style="font-size:11px;color:#999;margin:2px 0 0 2px;">${esc(r.message)}</div>` : ''}
+    </div>`).join('');
+  const total = errors.length + warns.length;
+  const more = total > 6 ? `<div style="font-size:11px;color:#999;margin-top:4px;">+${total - 6} more</div>` : '';
+  const escalation = health.consecutiveErrorDays > 1
+    ? ` <span style="color:#999;font-weight:400;">(day ${health.consecutiveErrorDays})</span>` : '';
+
+  return `<div style="border:1px solid ${urgent ? '#fca5a5' : '#e5e5e5'};background:${urgent ? '#fef2f2' : '#fff'};border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;${urgent ? 'color:#dc2626;' : ''}">Site health: ${esc(health.bannerText || `${errors.length} error${errors.length === 1 ? '' : 's'}, ${warns.length} warning${warns.length === 1 ? '' : 's'}`)}${escalation}</div>
+    ${rows}${more}${queuedHtml}${autoFixedNote}${asOf}
+  </div>`;
+}
+
+// Count of health-digest errors+warnings — folded into renderSummaryLine's
+// "N things to look at below" so the top line never says "nothing broken"
+// while the merged site-health block below shows real issues.
+function healthIssueCount(health) {
+  const h = health || {};
+  return (h.errors?.length || 0) + (h.warns?.length || 0);
+}
+
 function renderItem(item) {
   const badge = `<span style="display:inline-block;background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;vertical-align:middle;">PASS</span>`;
   const cost = `<span style="color:#999;font-size:12px;margin-left:6px;">~${money(item.usd)}</span>`;
@@ -318,12 +378,12 @@ function digestStuckCount(digest) {
 }
 
 function renderSummaryLine(data) {
-  const { items = [], failedCount = 0, throttled = null, runSkipped = null, attention = null, stats = null, digest = null } = data;
+  const { items = [], failedCount = 0, throttled = null, runSkipped = null, attention = null, stats = null, digest = null, health = null } = data;
   // A partially-failed digest (a source it couldn't check) means health is
   // UNKNOWN, not clean — count it so the top line never says "nothing broken"
   // while the digest below shows a "Couldn't check: …" line.
   const digestUnknown = digest && Array.isArray(digest.errors) && digest.errors.length ? 1 : 0;
-  const issues = failedCount + attentionCountOf(attention) + digestStuckCount(digest) + digestUnknown + (throttled ? 1 : 0);
+  const issues = failedCount + attentionCountOf(attention) + digestStuckCount(digest) + digestUnknown + healthIssueCount(health) + (throttled ? 1 : 0);
   const actionableAttention = actionableAttentionCountOf(attention);
 
   let headline;
@@ -421,6 +481,10 @@ function renderEmail(data) {
   // Owner's daily "what changed / did anything get stuck" digest — data is
   // gathered fail-soft by scripts/lib/overnight-digest.js; null renders nothing.
   if (data.digest) tail.push(require('./overnight-digest.js').renderDigestBlock(data.digest));
+  // Site health (card #364 owner merge decision 2026-07-26): health-check.js's
+  // former standalone "BSC Daily"/"BSC URGENT" email now lands here instead —
+  // one scheduled morning email, not two. null when no fresh snapshot exists.
+  if (data.health) tail.push(renderHealthDigestBlock(data.health));
   tail.push(renderUsageBlock(stats, admin, config));
 
   // "Closed N finished tabs" (S4-T3): the owner watches the workspace list
@@ -446,5 +510,6 @@ function renderEmail(data) {
 module.exports = {
   renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderRecheckBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
   attentionCountOf, actionableAttentionCountOf, digestStuckCount,
+  renderHealthDigestBlock, healthIssueCount,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
 };
