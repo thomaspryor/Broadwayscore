@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-26T03:43:22.535Z",
+  "timestamp": "2026-07-26T04:42:20.162Z",
   "stats": {
-    "totalReviews": 40457,
-    "alreadyFlagged": 17818,
+    "totalReviews": 40467,
+    "alreadyFlagged": 17819,
     "dateGuardCatches": 59,
     "directorMismatch": 912,
-    "tvFilmSignals": 1108,
+    "tvFilmSignals": 1110,
     "londonSignals": 759,
     "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3239
+    "noPublishDate": 3238
   },
   "findings": [
     {
@@ -991,6 +991,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "allegra-west-end-2026",
+      "file": "theupcoming--unknown.json",
+      "publishDate": "2026-07-10",
+      "url": "https://www.theupcoming.co.uk/2026/07/10/allegra-at-harold-pinter-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"pilot episode\""
         }
       ]
     },
@@ -9960,6 +9973,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "vulture--jesse-green.json",
+      "publishDate": "2015-08-07",
+      "url": "http://www.vulture.com/2015/08/theater-review-hamilton.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
