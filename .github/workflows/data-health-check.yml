@@ -1,13 +1,19 @@
 name: Daily Data Health Check
 on:
   schedule:
-    # 16:00 UTC daily (noon ET). Moved off 07:00 UTC on 2026-07-24 (card #409):
-    # the BSC digest and the autonomous loop's overnight approval email both
-    # landed in the 07:00-10:30 UTC early-AM window and read as one noisy blast.
-    # The approval email (Mac Studio launchd, 03:30 ET → tail ~07:30-10:30 UTC)
-    # stays in the morning; this routine digest moves to midday, ≥3h clear of it.
-    # See the staleness-band note in check-cron-health.yml before re-timing again.
-    - cron: '0 16 * * *'
+    # 06:45 UTC daily. Card #364 (owner merge decision 2026-07-26 — "I don't
+    # like getting emails unless they're urgent") REVERSES #409's 07:00→16:00
+    # move: health-check.js no longer sends its own "BSC Daily"/"BSC URGENT"
+    # email (see health-check.js's sendEmailDigest — it now writes
+    # data/audit/health-digest-snapshot.json instead of emailing). That
+    # snapshot is folded into the autonomous loop's ONE scheduled morning email
+    # (scripts/autonomous-email.js), so there's no second email to space away
+    # from anymore — the constraint that justified 16:00 is gone. 06:45 runs
+    # BEFORE the loop starts (03:30 ET / 07:30 UTC) so the snapshot is same-day
+    # fresh when the morning email reads it, with margin before the 07:00 UTC
+    # trio. See the staleness-band note in check-cron-health.yml before
+    # re-timing again.
+    - cron: '45 6 * * *'
   workflow_dispatch: {}
 
 # Ship-check finding (card #374): a manual workflow_dispatch overlapping the
@@ -126,7 +132,7 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Daily Data Health Check Crashed'
-          description: 'Health check script crashed — email digest may not have sent.'
+          description: 'Health check script crashed — its digest snapshot may not have written, so tomorrow''s morning email won''t carry site-health data.'
           severity: 'critical'
           email: 'true'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -37,6 +37,15 @@ const { summarize: summarizeRecheck, describeResult } = require('./lib/autonomou
 const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
+// Card #364 (owner merge decision 2026-07-26): health-check.js used to email
+// its own "BSC Daily"/"BSC URGENT" digest separately from this one. It now
+// writes its results here instead; this is the ONE place that reads it back
+// out, so one scheduled morning email carries both, not two.
+const HEALTH_DIGEST_PATH = path.join(REPO, 'data', 'audit', 'health-digest-snapshot.json');
+// data-health-check.yml runs once/day — a snapshot older than this means the
+// cron itself is stuck or broken, not just "yesterday's news"; show nothing
+// rather than pass off day-old health data as this morning's.
+const HEALTH_DIGEST_MAX_AGE_H = 36;
 // Raised 3 → 5 (S4-T2): approvals were arriving faster than 3/morning could
 // drain, so items aged out of sight behind a "+N more" line for days. The
 // counter below the items still names anything past the cap.
@@ -155,6 +164,20 @@ async function fetchAdminUsage() {
     };
     walk(cost.json.data || cost.json.results || []);
     return { actualUSD7d: Math.round(usd * 100) / 100, spendLimitUSD: null };
+  } catch {
+    return null;
+  }
+}
+
+// Reads health-check.js's digest snapshot (card #364). Fail-soft — missing
+// file (health-check.js hasn't run yet on this repo) or a stale one (the cron
+// broke) both just omit the section rather than show wrong data as current.
+function readHealthDigest() {
+  try {
+    const snap = JSON.parse(fs.readFileSync(HEALTH_DIGEST_PATH, 'utf8'));
+    const ageH = (Date.now() - new Date(snap.generatedAt).getTime()) / 3600e3;
+    if (!(ageH < HEALTH_DIGEST_MAX_AGE_H)) return null;
+    return snap;
   } catch {
     return null;
   }
@@ -371,6 +394,10 @@ async function main() {
   try { digest = gatherDigest({ repo: REPO }); }
   catch (err) { console.error(`[email] WARN digest gathering failed: ${String(err.message).slice(0, 120)}`); }
 
+  // Site health (card #364): folds health-check.js's former standalone
+  // digest email into this one. null when no fresh snapshot exists.
+  const health = readHealthDigest();
+
   // Screenshot attachments (S2-T6): the owner reads this on a phone as often
   // as at the Mac, where a local file path is useless — the pictures have to
   // travel WITH the email or the "look at it before approving" instruction
@@ -408,6 +435,7 @@ async function main() {
   const html = renderEmail({
     items,
     digest,
+    health,
     recheck,
     prunedCount,
     moreAwaiting: Math.max(0, awaiting.length - items.length),
@@ -431,7 +459,7 @@ async function main() {
   // A skipped run outranks everything in the subject — stale approvals from
   // earlier nights must not hide an expired login (ship-check finding).
   const skipLabel = runSkipped ? (/^auth:/.test(runSkipped) ? 'login expired on Mac Studio' : 'preflight failed') : null;
-  const subject = runSkipped
+  const baseSubject = runSkipped
     ? `Overnight: ⛔ run skipped — ${skipLabel}${items.length ? ` (+${items.length} still awaiting your tap)` : ''}`
     : executorSkipped
       ? `Overnight: ⏸ ${executorSkipped}${items.length ? ` (+${items.length} still awaiting your tap)` : ''}`
@@ -444,6 +472,18 @@ async function main() {
             : queueSummary
               ? `Overnight: no items to approve (${queueSummary.total} triaged, 0 workable)`
               : `Overnight: no items to approve (${failedCount} failed)`;
+
+  // Card #364: fold health-check.js's escalation into this ONE subject line
+  // instead of a second email. "BSC URGENT" (day 3/7/weekly milestone, see
+  // health-check.js's isEscalationDay) gets a ⛔ suffix; any other unresolved
+  // error/warning set gets a quieter ⚠️ one. Clean snapshots add nothing.
+  const healthErrorCount = health ? (health.errors?.length || 0) : 0;
+  const healthWarnCount = health ? (health.warns?.length || 0) : 0;
+  const healthUrgent = health && /URGENT/.test(health.subject || '');
+  const healthSuffix = healthErrorCount || healthWarnCount
+    ? ` · ${healthUrgent ? '⛔' : '⚠️'} site health: ${healthErrorCount} error${healthErrorCount === 1 ? '' : 's'}, ${healthWarnCount} warning${healthWarnCount === 1 ? '' : 's'}`
+    : '';
+  const subject = `${baseSubject}${healthSuffix}`;
 
   if (dryRun) {
     const out = path.join(REPO, 'data', 'audit', 'autonomous-email-preview.html');

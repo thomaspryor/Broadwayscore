@@ -16,7 +16,9 @@
  *   J. API Credits (1) — ScrapingBee credit balance
  *
  * Progressive alerting:
- *   - Email digest: always (daily summary email via Resend — the single source of truth)
+ *   - Digest snapshot: always (data/audit/health-digest-snapshot.json — card #364,
+ *     folded into the autonomous loop's single scheduled morning email instead
+ *     of sending its own "BSC Daily"/"BSC URGENT" email via Resend)
  *   - #weekly-reports: always (Discord daily summary)
  *   - #alerts: only after 2+ consecutive error days
  *
@@ -55,6 +57,11 @@ const AUDIT_DIR = path.join(DATA_DIR, 'audit');
 const PIPELINE_DIR = path.join(AUDIT_DIR, 'pipeline-health');
 const TRIAGE_DIR = path.join(AUDIT_DIR, 'triage');
 const HISTORY_FILE = path.join(AUDIT_DIR, 'health-check-history.json');
+// Card #364 (owner merge decision 2026-07-26): health-check.js no longer emails
+// its own "BSC Daily"/"BSC URGENT" digest. It writes results here instead;
+// autonomous-email.js reads this snapshot and folds it into the single
+// scheduled morning email — one email/day, not two.
+const HEALTH_DIGEST_SNAPSHOT_FILE = path.join(AUDIT_DIR, 'health-digest-snapshot.json');
 
 // --- Auto-Fix Playbook ---
 // Maps health check names (regex) to automated fixes or human-readable instructions.
@@ -2042,15 +2049,17 @@ function buildExclusionSummaryHtml() {
   }
 }
 
+// Card #364 (owner merge decision 2026-07-26 — "I don't like getting emails
+// unless they're urgent. I want things to self handle."): this function used
+// to email its own "BSC Daily"/"BSC URGENT" digest via Resend, landing
+// separately from the autonomous loop's morning email. It no longer sends
+// mail at all — it still runs every check, still dispatches Action Queue
+// cards for humanAction items via routeAlert (disposition='auto', unrelated
+// to email delivery), and now WRITES its results to
+// HEALTH_DIGEST_SNAPSHOT_FILE instead. autonomous-email.js reads that
+// snapshot and folds it into the one scheduled morning email, so the owner
+// gets exactly one scheduled email/day instead of two.
 async function sendEmailDigest(results, history, workflowSummary, autoFixResults) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const ownerEmail = process.env.OWNER_EMAIL;
-
-  if (!apiKey || !ownerEmail) {
-    console.log('[Email Digest] RESEND_API_KEY or OWNER_EMAIL not set, skipping');
-    return;
-  }
-
   // Drain owner-alert-router's digest queue (data/audit/alert-digest-queue.json)
   // — the ONE consumer, since drainDigestQueue() had no production caller
   // before this (card #475 ship-check finding): every disposition='digest'
@@ -2464,61 +2473,26 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
 </body>
 </html>`;
 
-  // Send via Resend — throw on failure so health-check exits non-zero
-  // (triggers notify-failure → Discord, avoiding bootstrap circularity)
-  return new Promise((resolve, reject) => {
-    const data = JSON.stringify({
-      from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
-      to: [ownerEmail],
-      subject,
-      html,
-    });
-
-    const req = require('https').request({
-      hostname: 'api.resend.com',
-      path: '/emails',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Length': Buffer.byteLength(data),
-      },
-    }, (res) => {
-      let body = '';
-      res.on('data', chunk => body += chunk);
-      res.on('end', () => {
-        if (res.statusCode >= 200 && res.statusCode < 300) {
-          console.log('[Email Digest] Daily digest sent successfully');
-          resolve(true);
-        } else {
-          const errMsg = `[Email Digest] Failed: ${res.statusCode} ${body}`;
-          console.error(errMsg);
-          // Don't throw for rate limits during soak period — just warn
-          if (res.statusCode === 429) {
-            console.error('[Email Digest] Rate limited — digest not sent');
-            resolve(false);
-          } else {
-            // Don't crash health check for email failures — log and continue
-            console.error(errMsg);
-            resolve(false);
-          }
-        }
-      });
-    });
-
-    req.on('error', (err) => {
-      console.error('[Email Digest] Request error:', err.message);
-      reject(err);
-    });
-
-    req.setTimeout(15000, () => {
-      req.destroy();
-      reject(new Error('[Email Digest] Request timed out'));
-    });
-
-    req.write(data);
-    req.end();
-  });
+  // Write the snapshot instead of emailing (see the function-level comment
+  // above). `html` above is built but no longer sent anywhere — kept for a
+  // future debug dump, not wasted: writing it out would bloat a file the
+  // owner never opens, so it deliberately does NOT go into the snapshot.
+  const autoFixedCount = Object.values(autoFixMap).filter(f => f.fixed).length;
+  const snapshot = {
+    generatedAt: new Date().toISOString(),
+    subject,
+    bannerText,
+    consecutiveErrorDays: history.consecutiveErrorDays || 0,
+    errors: unfixedErrors.map(r => ({ name: r.name, message: r.message })),
+    warns: unfixedWarns.map(r => ({ name: r.name, message: r.message })),
+    autoFixedCount,
+    passedCount: passed.length,
+    totalCount: results.length,
+  };
+  fs.mkdirSync(path.dirname(HEALTH_DIGEST_SNAPSHOT_FILE), { recursive: true });
+  fs.writeFileSync(HEALTH_DIGEST_SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
+  console.log(`[Health Digest] Snapshot written (${snapshot.errors.length} error(s), ${snapshot.warns.length} warning(s)) — folds into the morning email, not sent separately`);
+  return true;
 }
 
 // --- Triage State (per-system files) ---
@@ -2755,7 +2729,8 @@ async function main() {
   // workflowSummary was fetched earlier (before the alerting block) so repeat
   // failures could be promoted into allResults; reuse it for the digest body.
 
-  // Send email digest (throws on failure → triggers notify-failure).
+  // Write the digest snapshot (card #364: no longer emails on its own —
+  // autonomous-email.js folds this into the single scheduled morning email).
   // history.lastErrorFingerprint still holds YESTERDAY's error set here —
   // getDigestSubject compares against it to detect "same bad news as yesterday".
   await sendEmailDigest(allResults, history, workflowSummary, autoFixResults);
@@ -2785,4 +2760,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint };
+module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE };
