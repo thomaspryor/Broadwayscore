@@ -65,6 +65,16 @@ test('scanFile skips warning-severity and comment-line sendAlert mentions', () =
   assert.strictEqual(findings.length, 0);
 });
 
+test('scanFile ignores trailing-comment mentions but keeps real calls and https:// intact', () => {
+  const findings = scanFixture('scripts/trailing.js', [
+    "registerPath('foo.js'); // sendAlert() path, email: true when severity: 'error'",
+    "const url = 'https://example.com'; sendAlert({ email: true, severity: 'critical', url });",
+  ].join('\n'));
+  assert.strictEqual(findings.length, 1);
+  assert.strictEqual(findings[0].line, 2);
+  assert.strictEqual(findings[0].classification, 'direct');
+});
+
 test('buildDirectCounts counts only direct findings, per file', () => {
   const counts = buildDirectCounts([
     { file: 'scripts/a.js', classification: 'direct' },

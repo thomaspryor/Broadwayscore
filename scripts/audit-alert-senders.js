@@ -108,7 +108,18 @@ function scanFile(absPath, relPath) {
   const findings = [];
   let content;
   try { content = fs.readFileSync(absPath, 'utf8'); } catch { return findings; }
-  const lines = content.split('\n');
+  const ext = path.extname(relPath);
+  const isYaml = ext === '.yml' || ext === '.yaml';
+  // Truncate a line at a whitespace-preceded trailing comment marker so prose
+  // like `'foo.js', // sendAlert() path, email: true` can't read as a real
+  // call site (adversarial review finding — a false positive here REDS the
+  // blocking CI gate, not just the inventory). The leading-whitespace guard
+  // keeps `https://` (preceded by ':') intact; YAML uses `#`.
+  const stripTrailingComment = (l) => {
+    const m = (isYaml ? /(^|\s)#/ : /(^|\s)\/\//).exec(l);
+    return m ? l.slice(0, m.index) : l;
+  };
+  const lines = content.split('\n').map(stripTrailingComment);
 
   for (let i = 0; i < lines.length; i++) {
     // Skip comment lines (this file, opening-night-sla.js, and ux-walkthrough.yml
