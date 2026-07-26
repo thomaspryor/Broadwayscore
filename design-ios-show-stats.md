@@ -230,6 +230,14 @@ being theater-native. Trivial to rename.)
   "**Ben Brantley — 91% aligned · 31 shows together**," with a signed-bias
   footnote ("runs 6 pts colder than you"). Corpus check (2026-07-26): 140
   critics have 25+ scored shows, 50 have 100+ — real diaries will match.
+- **Calibration (measured, 2026-07-26):** pairwise alignment between major
+  critics themselves spans only ~35–68% under the ±12pt window (top pair:
+  Rooney × Feldman 68%/152 shows; Hofler is the corpus-wide nemesis, in 4 of
+  the 5 least-aligned pairs). So display bands must be calibrated to that
+  distribution — ~60%+ is "practically the same person," not a C grade — and
+  final copy thresholds should be re-derived once real user diaries exist.
+  User-vs-critic distributions may run higher (coarser half-star ratings);
+  re-measure before locking copy.
 - **Critic Nemesis:** lowest alignment at ≥8 shared shows, framed with love:
   "You and Jesse Green disagree 68% of the time. Keep him around for
   balance." The share-bait row.
