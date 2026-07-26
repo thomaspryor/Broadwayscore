@@ -7,6 +7,7 @@ const {
   extractShowTitleFromWetRoundup,
   extractShowTitleFromBwwRoundup,
   isBwwNonStageTieIn,
+  isBwwNonNycRoundup,
   titleFromDtliSlug,
   buildShowTitleIndex,
   titleMatchesIndex,
@@ -201,6 +202,79 @@ test('allowClosedRevival: BWW roundup for an all-closed title surfaces as a miss
   const out = findUnmatchedCandidates(items, nyc, { allowClosedRevival: true });
   assert.equal(out.length, 1);
   assert.equal(out[0].url, items[0].url);
+});
+
+// Audit findings 2026-07-26 (third-pass review of the merged code). Each case
+// below is a verbatim failing input from that audit.
+test('BWW venue/lead-in tails are stripped (audit finding 1)', () => {
+  // Junk tail retained → single-word titles alerted as missing even when
+  // catalogued and OPEN (containment can't rescue them: it needs a space).
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: GYPSY Opens at the Majestic'), 'GYPSY');
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: 13 THE MUSICAL Opens at the Bernard B. Jacobs Theatre'),
+    '13 THE MUSICAL'
+  );
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: SUNSET BOULEVARD - All the Reviews!'), 'SUNSET BOULEVARD');
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: What Did the Critics Think Of MAYBE HAPPY ENDING?'),
+    'MAYBE HAPPY ENDING?'
+  );
+  // A bare " at " must NOT split — real titles contain it.
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: DINNER AT EIGHT'), 'DINNER AT EIGHT');
+});
+
+// Regression guard for a defect introduced by the fix above and caught in
+// review before it could fire: a standalone " at the " separator truncated
+// real catalogued titles. Both inputs are verbatim from data/shows.json.
+test('BWW: " at the " inside a real title is never a separator', () => {
+  // The originating miss of this whole detector (task #281). Truncating to
+  // "MIDNIGHT" exact-matches the UNRELATED show "Midnight" and silently
+  // suppresses a genuine missing show — the worst failure mode here.
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: MIDNIGHT AT THE NEVER GET Opens Off-Broadway'),
+    'MIDNIGHT AT THE NEVER GET'
+  );
+  // Open off-broadway show; truncation produced a false "missing show" alert.
+  assert.equal(
+    extractShowTitleFromBwwRoundup('Review Roundup: HUGO MARCHAND | ARTISTS AT THE CENTER'),
+    'HUGO MARCHAND | ARTISTS AT THE CENTER'
+  );
+  // An opening verb still splits the venue tail correctly.
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: GYPSY Opens at the Majestic'), 'GYPSY');
+});
+
+test('BWW non-NYC filter: NYC venue kept, London tail caught (audit finding 2)', () => {
+  // The West End Theatre is a real Off-Broadway house (263 W 86th St) — a
+  // genuine NYC miss must NOT be dropped.
+  // The point of this case is that the NYC venue must NOT be filtered to null.
+  // The venue tail is left attached (no bare " at the " split — see the
+  // regression test below); an unsplit tail costs at most a noisy candidate.
+  assert.equal(
+    extractShowTitleFromBwwRoundup("Review Roundup: BEDLAM'S OTHELLO at The West End Theatre"),
+    "BEDLAM'S OTHELLO at The West End Theatre"
+  );
+  assert.equal(isBwwNonNycRoundup('OTHELLO at The West End Theatre'), false);
+  // ...but a real West End / London item still filters out.
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: EVITA at London Palladium Opens'), null);
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: HAMILTON West End'), null);
+  // LONDON ROAD is a real show — a bare "london" match would swallow it.
+  assert.equal(isBwwNonNycRoundup('LONDON ROAD'), false);
+});
+
+test('allowClosedRevival also applies on the containment path (audit finding 3)', () => {
+  const nyc = buildShowTitleIndex(GIN_GAME_CATALOGUE, 'nyc');
+  // A long headline naming an all-closed title must still surface as a
+  // revival candidate — previously containment returned true unconditionally
+  // and suppressed the exact case this option exists for.
+  const headline = 'what did critics think of the gin game revival on stage';
+  assert.equal(titleMatchesIndex(headline, nyc), true);
+  assert.equal(titleMatchesIndex(headline, nyc, { allowClosedRevival: true }), false);
+  // A live show under that title still suppresses via containment.
+  const withLive = [...GIN_GAME_CATALOGUE, { id: 'the-gin-game-2026', title: 'The Gin Game', slug: 'the-gin-game-2026', category: 'off-broadway', status: 'open' }];
+  assert.equal(
+    titleMatchesIndex(headline, buildShowTitleIndex(withLive, 'nyc'), { allowClosedRevival: true }),
+    true
+  );
 });
 
 test('allowClosedRevival: a LIVE show under the same title still suppresses (genuine match)', () => {

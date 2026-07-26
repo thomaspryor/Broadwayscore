@@ -1,0 +1,301 @@
+name: Diag — push-with-retry fetch timing
+
+# hygiene-notify-ok: one-off manual diagnostic. It reads timings and pushes
+# nothing; a failed arm IS a result the operator is already watching the run for,
+# and routing it to the owner alert channel would be pure noise (email policy:
+# ACTION-only). Delete this workflow once task #466 is closed.
+#
+# ONE-OFF DIAGNOSTIC (task #466 / Notion 3a9637c5-416f-8183). Not scheduled.
+#
+# Question: push-with-retry.sh's `git fetch origin '+refs/heads/main:refs/remotes/
+# origin/main'` timed out at the full GIT_NET_TIMEOUT_SEC=90 cap on 7/7 attempts in
+# run 30191044729 (update-show-status.yml) with ~zero variance. The card hypothesised
+# the EXPLICIT destination-refspec form is structurally slower than the bare
+# `git fetch origin main` form.
+#
+# Why the card's suggested test would have lied: timing form A then form B
+# back-to-back IN THE SAME CLONE is confounded — whichever fetch runs first
+# downloads the objects, so the second one is near-free BY CONSTRUCTION and looks
+# like a smoking gun. This workflow controls for that:
+#   * every arm gets its OWN fresh runner + fresh checkout (no warm object cache)
+#   * two extra arms run the pair in BOTH orders, to measure the ordering artifact
+#     explicitly rather than pretend it isn't there
+#
+# Second variable the card didn't consider, which the run log points at harder:
+# update-show-status.yml checks out with actions/checkout@v5 DEFAULT fetch-depth,
+# i.e. `git fetch --depth=1` (run 30191044729 job log line 93) — so the repo is a
+# SHALLOW depth-1 clone of a 165k-commit / 1.16M-object / 1.65 GiB repo, and
+# push-with-retry.sh then fetches WITHOUT any --depth. Arms below isolate that:
+# same explicit refspec with --depth=1, and the same fetch from a full (depth-0)
+# clone.
+#
+# Each arm checks out an OLD main tip (~25 min back) so the fetch has a realistic
+# delta to close — matching the ~19 min / ~17 commit gap between checkout and the
+# push step in the failing run. Fetching at the current tip would transfer nothing
+# and every arm would read "fast".
+#
+# KNOWN RESIDUAL CONFOUNDS — read the results with these in hand; they are
+# documented, not eliminated:
+#  * main is a MOVING target. Arms start within a few minutes of each other but
+#    do not fetch a pinned snapshot, so a later arm can face a larger delta. This
+#    is why every fetch reports `behind` (computed against the ls-remote tip taken
+#    immediately BEFORE that fetch, so it is the delta that fetch actually had to
+#    close) and the "Receiving objects" line. Compare seconds-per-commit, never
+#    raw seconds, across arms — and never conclude from a single pair.
+#  * runner region, GitHub server load, and server-side pack caching are not
+#    controlled. n=3 on the decisive arms is the mitigation, not a fix.
+#  * `--progress` is not what production runs. It changes stderr verbosity only
+#    (the transfer is identical) and it is what makes the byte counts visible; it
+#    is applied uniformly to every arm.
+#  * the `git ls-remote` probe warms DNS/TLS before each timed fetch. This is
+#    applied uniformly AND it moves the arm closer to production, where the fetch
+#    is always preceded by a rejected `git push` over the same connection.
+
+on:
+  workflow_dispatch:
+    inputs:
+      minutes_back:
+        description: 'How far back to pin the starting checkout (simulates the checkout→push gap)'
+        required: false
+        default: '25'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  pick-sha:
+    runs-on: ubuntu-latest
+    outputs:
+      old_sha: ${{ steps.pick.outputs.old_sha }}
+      tip_sha: ${{ steps.pick.outputs.tip_sha }}
+    steps:
+      - name: Pick an old main tip
+        id: pick
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MINUTES_BACK: ${{ inputs.minutes_back }}
+        run: |
+          set -euo pipefail
+          UNTIL=$(date -u -d "-${MINUTES_BACK} minutes" +%Y-%m-%dT%H:%M:%SZ)
+          OLD_SHA=$(gh api "repos/${GITHUB_REPOSITORY}/commits?sha=main&until=${UNTIL}&per_page=1" --jq '.[0].sha')
+          TIP_SHA=$(gh api "repos/${GITHUB_REPOSITORY}/commits?sha=main&per_page=1" --jq '.[0].sha')
+          echo "old_sha=$OLD_SHA" >> "$GITHUB_OUTPUT"
+          echo "tip_sha=$TIP_SHA" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Baseline"
+            echo ""
+            echo "- until: \`$UNTIL\` (${MINUTES_BACK} min back)"
+            echo "- old (checkout) sha: \`$OLD_SHA\`"
+            echo "- current main tip:   \`$TIP_SHA\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  measure:
+    needs: pick-sha
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # The three single-fetch arms carry the conclusion, so they get n=3 —
+          # each replicate on its OWN runner with its OWN fresh checkout, never a
+          # repeat inside one clone (that would just re-measure a warm cache).
+          # n=1 was the first thing the pre-run design review shot down: the
+          # production evidence is CENSORED at the 90s cap, so "all 7 identical"
+          # is consistent with anything from 90s to forever, and a single fast
+          # reading in one arm proves nothing about its distribution.
+          #
+          # Card's hypothesis, isolated (fresh clone, single fetch, no warm cache).
+          - { arm: explicit,        rep: 1, depth: 1, seq: explicit }
+          - { arm: explicit,        rep: 2, depth: 1, seq: explicit }
+          - { arm: explicit,        rep: 3, depth: 1, seq: explicit }
+          - { arm: bare,            rep: 1, depth: 1, seq: bare }
+          - { arm: bare,            rep: 2, depth: 1, seq: bare }
+          - { arm: bare,            rep: 3, depth: 1, seq: bare }
+          # Same explicit refspec, but depth-limited like actions/checkout's own fetch.
+          - { arm: explicit-depth1, rep: 1, depth: 1, seq: explicit_d1 }
+          - { arm: explicit-depth1, rep: 2, depth: 1, seq: explicit_d1 }
+          - { arm: explicit-depth1, rep: 3, depth: 1, seq: explicit_d1 }
+          # Completes the 2x2 (refspec form x depth behaviour). Without this,
+          # "depth-1 is fast" and "bare is fast" stay confounded with each other.
+          - { arm: bare-depth1,     rep: 1, depth: 1, seq: bare_d1 }
+          - { arm: bare-depth1,     rep: 2, depth: 1, seq: bare_d1 }
+          # Ordering-artifact controls: same pair, both orders, same clone. These
+          # exist to MEASURE the warm-cache artifact, not to compare forms — read
+          # them only as "how much does going second buy you".
+          - { arm: explicit-then-bare, rep: 1, depth: 1, seq: explicit bare }
+          - { arm: bare-then-explicit, rep: 1, depth: 1, seq: bare explicit }
+          # Shallowness gradient: does a DEEPER negotiation base make the fetch
+          # cheap? depth-50 still lacks the new commits (so there is real delta to
+          # close) but gives the client actual history to negotiate with.
+          #
+          # NOT fetch-depth: 0. A full checkout pinned at the OLD sha fetches every
+          # ref — including the CURRENT main tip — so the objects the timed fetch
+          # is supposed to transfer are already on disk before it runs. That arm
+          # would report ~1s with "Receiving objects: (none reported)" and would be
+          # read as "shallowness proven", measuring nothing. (Adversarial review
+          # called this exact log signature before the run.)
+          - { arm: explicit-depth50, rep: 1, depth: 50, seq: explicit }
+          - { arm: explicit-depth50, rep: 2, depth: 50, seq: explicit }
+    name: ${{ matrix.arm }} r${{ matrix.rep }} (depth ${{ matrix.depth }})
+    timeout-minutes: 45
+    steps:
+      - name: Checkout at the old tip
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.pick-sha.outputs.old_sha }}
+          fetch-depth: ${{ matrix.depth }}
+
+      # FIDELITY FIX (adversarial review). `ref: <sha>` is the only way to create a
+      # behind-the-tip checkout, but it does NOT leave the same repo state as
+      # production's `ref: main`: actions/checkout writes a SHA-pinned
+      # remote.origin.fetch and may not create refs/remotes/origin/main at all.
+      # That difference is not cosmetic here — it is the EXACT condition
+      # push-with-retry.sh:399-410 blames for the stale-tracking-ref bug, so
+      # leaving it unnormalized could make the two fetch forms *semantically*
+      # different rather than just syntactically different, and invalidate any
+      # speed conclusion. Restore the production-equivalent state, and log both
+      # sides so the normalization is auditable rather than assumed.
+      - name: Normalize to production checkout state
+        run: |
+          set -uo pipefail
+          echo "── as actions/checkout left it ──"
+          echo "remote.origin.fetch: $(git config --get-all remote.origin.fetch | tr '\n' ' ')"
+          echo "origin/main:         $(git rev-parse --verify --quiet refs/remotes/origin/main || echo ABSENT)"
+          echo "packed-refs lines:   $(wc -l < .git/packed-refs 2>/dev/null || echo 0)"
+
+          # What `ref: main` + fetch-depth: N would have produced.
+          git config --unset-all remote.origin.fetch || true
+          git config --add remote.origin.fetch '+refs/heads/main*:refs/remotes/origin/main*'
+          git update-ref refs/remotes/origin/main "$(git rev-parse HEAD)"
+
+          echo "── normalized to production equivalent ──"
+          echo "remote.origin.fetch: $(git config --get-all remote.origin.fetch | tr '\n' ' ')"
+          echo "origin/main:         $(git rev-parse --verify --quiet refs/remotes/origin/main || echo ABSENT)"
+
+      - name: Repo state before fetch
+        run: |
+          set -euo pipefail
+          echo "shallow-file: $([ -f .git/shallow ] && echo YES || echo NO)"
+          echo "commits-reachable-from-HEAD: $(git rev-list --count HEAD)"
+          git count-objects -vH
+          du -sm .git | awk '{print "git-dir-MiB: "$1}'
+
+      - name: Time fetch form(s)
+        env:
+          SEQ: ${{ matrix.seq }}
+          ARM: ${{ matrix.arm }}
+          REP: ${{ matrix.rep }}
+          # Deliberately far above push-with-retry.sh's 90s cap: we need the TRUE
+          # duration of a slow form, not a value truncated at the cap. A reading
+          # that still hits THIS cap is censored too and is reported as such
+          # (rc=124 → CENSORED), never as a duration.
+          FETCH_CAP: '600'
+        run: |
+          # NOTE: deliberately no `set -e` here — a fetch that fails or times out is
+          # a RESULT to record, not a reason to abort the arm before the later forms
+          # in $SEQ run.
+          set -uo pipefail
+
+          # Ref advertisement only — no object transfer. Splits "the remote is slow
+          # to even talk to us / 649 refs cost something" from "the pack costs
+          # something". If ls-remote is instant and the fetch is 90s, the cost is
+          # object negotiation/transfer, not connection setup.
+          ls_start=$(date +%s)
+          TARGET_TIP=$(timeout -k 10 120 git ls-remote origin refs/heads/main 2>/dev/null | awk '{print $1}')
+          ls_rc=$?
+          echo "RESULT|$ARM|$REP|ls-remote|$(( $(date +%s) - ls_start ))|${ls_rc}|-|-"
+          echo "target tip at fetch time: ${TARGET_TIP:-UNKNOWN}"
+
+          run_fetch() {
+            local label="$1"; shift
+            local start end dur rc behind recv
+            start=$(date +%s)
+            timeout -k 10 "$FETCH_CAP" \
+              git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=45 \
+              fetch --progress "$@" > "/tmp/fetch-$label.log" 2>&1
+            rc=$?
+            end=$(date +%s); dur=$(( end - start ))
+
+            # How much work did this fetch actually have to do? Without this, a
+            # fast arm is indistinguishable from an arm that simply had less to
+            # transfer because it started later in the run.
+            behind=$(git rev-list --count "HEAD..${TARGET_TIP:-FETCH_HEAD}" 2>/dev/null || echo '?')
+            recv=$(grep -o 'Receiving objects:.*' "/tmp/fetch-$label.log" 2>/dev/null | tail -1 | tr -d '\r' || true)
+            [ -n "$recv" ] || recv='(none reported)'
+
+            # Censoring detection. rc=124 is `timeout`'s TERM-triggered exit, but
+            # `timeout -k` escalates to SIGKILL for a process that ignores TERM,
+            # which surfaces as 137 — that would otherwise be misfiled as an
+            # ordinary failure and its ">= cap" duration read as a real time. The
+            # duration check is the belt: any reading at/over the cap is censored
+            # no matter what rc says.
+            local censored=no
+            if [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ] || [ "$dur" -ge "$FETCH_CAP" ]; then
+              censored=yes
+            fi
+
+            echo "::group::fetch output — $label (${dur}s, rc=$rc)"
+            cat "/tmp/fetch-$label.log" || true
+            echo "::endgroup::"
+            if [ "$censored" = yes ]; then
+              echo "::warning::$ARM r$REP $label hit the ${FETCH_CAP}s diagnostic cap (rc=$rc) — duration is CENSORED (>= ${FETCH_CAP}s). Do NOT read ${dur}s as a measurement."
+            fi
+            # Machine-readable line the analysis greps for.
+            echo "RESULT|$ARM|$REP|$label|${dur}|${rc}|censored=${censored}|${behind}|${recv}"
+            echo "| \`$ARM\` | $REP | \`$label\` | ${dur}s$([ "$censored" = yes ] && echo ' **(CENSORED)**') | $rc | ${behind} |" >> "$GITHUB_STEP_SUMMARY"
+          }
+
+          echo "| arm | rep | form | seconds | rc | commits behind |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| --- | --- | --- | --- | --- | --- |" >> "$GITHUB_STEP_SUMMARY"
+
+          for form in $SEQ; do
+            case "$form" in
+              explicit)
+                run_fetch explicit origin "+refs/heads/main:refs/remotes/origin/main" ;;
+              bare)
+                run_fetch bare origin main ;;
+              explicit_d1)
+                run_fetch explicit_d1 --depth=1 origin "+refs/heads/main:refs/remotes/origin/main" ;;
+              bare_d1)
+                run_fetch bare_d1 --depth=1 origin main ;;
+              *)
+                echo "unknown form: $form"; exit 1 ;;
+            esac
+          done
+
+      - name: Repo state after fetch
+        if: always()
+        run: |
+          set -euo pipefail
+          echo "shallow-file: $([ -f .git/shallow ] && echo YES || echo NO)"
+          echo "commits-reachable-from-HEAD: $(git rev-list --count HEAD)"
+          echo "commits-behind (HEAD..FETCH_HEAD): $(git rev-list --count HEAD..FETCH_HEAD 2>/dev/null || echo n/a)"
+          git count-objects -vH
+          du -sm .git | awk '{print "git-dir-MiB: "$1}'
+
+      # A fast fetch is only a candidate FIX if the result is still usable by the
+      # code that consumes it. push-with-retry.sh immediately runs
+      # `git rebase -X theirs origin/$PULL_BRANCH` (and merge / reset+cherry-pick
+      # fallbacks) against the fetched tip — all of which need a merge base. A
+      # depth-limited fetch can return the new tip with NO common ancestor
+      # reachable, which would be FAST and USELESS. Without this probe an arm
+      # that wins on seconds could be adopted as the fix and then silently break
+      # every conflict-resolution path. Reported, never asserted — this workflow
+      # measures, it does not gate.
+      - name: Post-fetch usability probe (merge base + tracking ref)
+        if: always()
+        run: |
+          set -uo pipefail
+          TRACK=$(git rev-parse --verify --quiet refs/remotes/origin/main || echo NONE)
+          FH=$(git rev-parse --verify --quiet FETCH_HEAD || echo NONE)
+          echo "tracking-ref refs/remotes/origin/main: $TRACK"
+          echo "FETCH_HEAD:                           $FH"
+          echo "tracking-ref updated by this fetch:   $([ "$TRACK" = "$FH" ] && echo YES || echo 'NO (bare form only writes FETCH_HEAD — push-with-retry.sh compensates with git update-ref)')"
+          if [ "$FH" != "NONE" ]; then
+            MB=$(git merge-base HEAD "$FH" 2>/dev/null || echo NONE)
+            echo "merge-base(HEAD, FETCH_HEAD):         $MB"
+            if [ "$MB" = "NONE" ]; then
+              echo "::warning::No merge base — a rebase/merge onto this fetched tip would FAIL. This arm is not a usable fix regardless of how fast it was."
+            fi
+          fi

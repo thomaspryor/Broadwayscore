@@ -67,22 +67,53 @@ function isBwwNonStageTieIn(rawTitle) {
 // This source is scoped to NYC (see audit-reverse-discovery.js's hardcoded
 // market: 'nyc') but the feed itself is not NYC-exclusive — West End/tour/
 // regional roundups share the same "Review Roundup: TITLE, ..." shape.
-const BWW_NON_NYC_RE = /\b(west end|in london|national tour|on tour|touring production|the muny|us tour)\b/i;
+//
+// "West End" is deliberately NOT matched when immediately followed by
+// Theatre/Theater: The West End Theatre is a real Off-Broadway house at
+// 263 W 86th St, and dropping it would silently lose a genuine NYC miss.
+// "London" is only a signal after a preposition ("at/in/to London") — a bare
+// \blondon\b would swallow real titles such as LONDON ROAD.
+const BWW_NON_NYC_RE = /\b(?:west end(?!\s+theat(?:re|er))|(?:in|at|to|from)\s+london|national tour|on tour|touring production|the muny|us tour)\b/i;
+function isBwwNonNycRoundup(rawTitle) {
+  return BWW_NON_NYC_RE.test(rawTitle);
+}
+
+// Headline shapes that put the show title AFTER a lead-in phrase rather than
+// first ("What Did the Critics Think of X?"). Stripped before separator
+// splitting so the title isn't buried in the lead-in.
+const BWW_LEADIN_RE = /^What\s+Did\s+(?:the\s+)?Critics\s+Think\s+O(?:f|n)\s+/i;
 
 function extractShowTitleFromBwwRoundup(rawTitle) {
   const decoded = decodeEntities(rawTitle).trim();
   const m = decoded.match(/^Review\s+Roundup:\s*(.+)$/i);
   if (!m) return null;
-  const rest = m[1].trim();
+  let rest = m[1].trim();
   if (!rest) return null;
-  if (isBwwNonStageTieIn(rest) || BWW_NON_NYC_RE.test(rest)) return null;
+  if (isBwwNonStageTieIn(rest) || isBwwNonNycRoundup(rest)) return null;
+  rest = rest.replace(BWW_LEADIN_RE, '').trim();
+  if (!rest) return null;
   // Keyword separators are tried before a bare comma — a bare comma is only
   // treated as a title boundary when it's immediately followed by one of the
   // "who's in it" words, matching the real "TITLE, Starring ..." shape.
   // Otherwise titles with internal commas (OH, MARY!, GOOD NIGHT, AND GOOD
   // LUCK) would get truncated at the first comma.
+  //
+  // Venue tails split ONLY via an opening verb ("Opens at the Majestic").
+  //
+  // A standalone " at the " branch was tried and REVERTED (2026-07-26): real
+  // catalogued titles contain it, and truncating them is worse than leaving a
+  // venue tail on. Two verified harms, both from data/shows.json:
+  //   "MIDNIGHT AT THE NEVER GET" -> "MIDNIGHT", which then exact-matches the
+  //     unrelated show "Midnight" and SILENTLY SUPPRESSES a real missing show
+  //     — and Midnight at the Never Get is the originating miss this whole
+  //     detector was built for (task #281).
+  //   "HUGO MARCHAND | ARTISTS AT THE CENTER" (open, off-broadway) ->
+  //     "HUGO MARCHAND | ARTISTS", a false "missing show" alert.
+  // A venue-word tail check doesn't save it either — "Center" IS a venue word.
+  // Leaving a tail on costs at most one noisy candidate; truncating loses real
+  // shows silently, so the asymmetry favors under-splitting.
   const sep = rest.match(
-    /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+(?:Opens?\s+(?:on|in)|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b)/i
+    /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+-\s+All\s+the\s+Reviews|\s+(?:Opens?\b|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b)/i
   );
   const title = (sep ? sep[1] : rest).trim();
   return title || null;
@@ -215,7 +246,14 @@ function titleMatchesIndex(title, index, opts = {}) {
   if (n.split(' ').length > HEADLINE_WORD_THRESHOLD) {
     const padded = ` ${n} `;
     for (const t of index.containment) {
-      if (padded.includes(` ${t} `)) return true;
+      if (!padded.includes(` ${t} `)) continue;
+      if (!allowClosedRevival) return true;
+      // Same all-closed rule as the exact path above — otherwise a long
+      // headline ("What Did Critics Think Of THE GIN GAME Revival?") would
+      // suppress the very revival this option exists to surface.
+      const entries = (index.statusByVariant && index.statusByVariant.get(t)) || [];
+      const allClosed = entries.length > 0 && entries.every((e) => e.status === 'closed');
+      if (!allClosed) return true;
     }
   }
   return false;
@@ -238,6 +276,7 @@ module.exports = {
   extractShowTitleFromWetRoundup,
   extractShowTitleFromBwwRoundup,
   isBwwNonStageTieIn,
+  isBwwNonNycRoundup,
   titleFromDtliSlug,
   titleVariants,
   buildShowTitleIndex,

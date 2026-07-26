@@ -5,6 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 0fc535b0-5090-4ae5-bb2a-50b4728216a7
+  modified: 2026-07-26T19:26:01.354Z
 ---
 
 `scripts/audit-review-contamination.js --strict` runs as a separate step in the Data Validation CI job (`test.yml` line 762), AFTER `validate-data.js`. A passing `validate-data.js` does NOT mean the Data Validation job passes.
@@ -19,3 +20,5 @@ metadata:
 **Why:** Caught 2026-05-20: `matilda-the-musical-west-end-2021/thestage--lisa-martland.json` — Stage review published 9 days before 2011-11-24 previews, wrongly flagged by date guard. Show has openingDate=2011-11-24 (same year), so the review IS for this production. Fix: clear `wrongProduction` + `wrongProductionNote` from the private repo file.
 
 **How to apply:** When Data Validation fails in CI but local `validate-data.js` passes, run `node scripts/audit-review-contamination.js --strict` locally against the REMOTE private repo content (pull first). Check `B_false_positive_wp` count.
+
+**Class A can be transient — check for self-heal before hand-fixing.** Happened twice (task #26, then #484, 2026-07-26): a class-A cross-market leak went red in CI, but `fix-circular-duplicate-pairs` (a separate cron) canonicalized the colliding review away within ~2h, and a later main run went green with zero code/data changes. Before editing any review file to fix a class-A leak: run `node scripts/audit-review-contamination.js --strict` locally first — if it already shows 0 for `A_cross_market`/`A2_cross_market_relative`, the CI red is stale, not live. Confirm by checking the latest completed run on main (not the one the alert referenced) before touching data.

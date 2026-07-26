@@ -452,6 +452,31 @@ export class ReviewScorer {
   }
 
   /**
+   * Parse an already-fetched V5 response body (e.g. a Batch API result line)
+   * through the same rejection-check + parse pipeline scoreReviewV5's live
+   * path uses, so sync and --batch mode (task #505) stay byte-identical.
+   * Makes no network call.
+   */
+  parseBatchResponseV5(responseText: string): {
+    success: boolean;
+    result?: SimplifiedLLMResult;
+    rejected?: boolean;
+    rejection?: string;
+    rejectionReasoning?: string;
+    error?: string;
+  } {
+    const rejection = this.parseRejection(responseText);
+    if (rejection) {
+      return { success: true, rejected: true, rejection: rejection.rejection, rejectionReasoning: rejection.reasoning };
+    }
+    const result = this.parseV5Response(responseText);
+    if (!result) {
+      return { success: false, error: 'Failed to parse V5 response JSON' };
+    }
+    return { success: true, result };
+  }
+
+  /**
    * Parse V5 simplified response format
    */
   private parseV5Response(responseText: string): SimplifiedLLMResult | null {
