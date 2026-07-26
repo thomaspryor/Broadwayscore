@@ -1,0 +1,65 @@
+title = "Broadwayscore gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Known false positives and historically rotated leaks"
+
+paths = [
+  # Slug-redirect files contain hex-like slug strings that trip generic-api-key
+  '''(^|/)data/slug-redirects.*\.json$''',
+  # Public per-show JSONs contain expired WaPo gift-link JWTs inside archived review URLs (third party, expired 2023)
+  '''(^|/)public/data/shows/.*\.json$''',
+  # Scraped third-party HTML archives — Firebase web SDK config, Google Tag Manager IDs, etc. Not our credentials.
+  '''(^|/)data/aggregator-archive/.*''',
+  # Test fixtures contain third-party HTML by design
+  '''(^|/)tests/fixtures/.*''',
+  # Test files reference slug strings like hamilton-2015 that trip generic-api-key
+  '''(^|/)tests/unit/.*\.m?(j|t)s$''',
+  # Aggregated reviews.json contains the same third-party URL fragments as the per-show JSONs
+  '''(^|/)data/reviews\.json$''',
+  '''(^|/)public/data/reviews\.json$''',
+  '''(^|/)reviews\.json$''',
+  '''(^|/)data/reviews\.json\.pre-symlink-backup$''',
+  # West End review input list contains paywall shareTokens in third-party URLs (not ours)
+  '''(^|/)data/west-end-reviews-input\.json$''',
+  # Audit dumps and one-off snapshots include the same third-party URL fragments
+  '''(^|/)data/audit/.*\.(json|jsonl)$''',
+  # Memory notes occasionally document past leaks for context (the actual values have been rotated)
+  '''(^|/)cloud-memory/.*\.md$''',
+]
+
+regexes = [
+  # The Times of London's public Algolia search-only client key (intentionally embedded — same call their own site makes)
+  '''3835bd37d54757eda130c4055ca98c68''',
+  # PostHog "Project API Key" (phc_ prefix) — public client-side analytics key, designed to be embedded in browser JS
+  '''phc_[A-Za-z0-9]{40,}''',
+  # IndexNow site verification key — public by design, also served at /<key>.txt on the site
+  '''c98817f2581efaac8a239e3dbed189ba''',
+  # Dead BUFFER_TOKEN. Hardcoded in scripts/social-infographics/schedule-buffer.js from
+  # 2026-03-28 and live in this public repo until 2026-07-26, when it was revoked in
+  # Buffer and replaced with an env var. Verified dead: mcp.buffer.com returns
+  # "Unauthorized: Invalid or expired token". Allowlisted by value rather than by commit
+  # because the literal persists across every commit that touched that file.
+  '''SMLYpPtBh8gl6K4-EQw-CM_UjAg1U8Up9ULTnhzbg2i''',
+]
+
+commits = [
+  # Historical leak of BRIGHTDATA_TOKEN + SCRAPINGBEE_API_KEY in docs/SCRAPING-MIGRATION-GUIDE.md.
+  # Exposed Jan 25-29, 2026 in this public repo; both credentials rotated since.
+  # File no longer in HEAD. Allowlisted so the dead values don't keep tripping CI.
+  "eb356cf8566d59e1bcb1009684ddfcc3cd292e0d",
+  "4269e7214c63669411861bb1ad6bf9bf183face6",
+  "de5dd248885f799064c61231ec6b0c77a93209ea",
+  "0dba582650dcc53f68a1051a95b150c33e4d8df3",
+  # Same dead SCRAPINGBEE key as fallback inside scripts/verify-reviews.ts. Refactored
+  # to require env var; these historical commits keep the literal value in history.
+  "8d3bf9b005714668346ddfec75c6ae35a84f49b8",
+  "41fe9b54a95d96c4ecbd74e1baeb0ab409f37c66",
+  "ddf02e7d2b432130c1933feda8148006321a8611",
+  "7f50f6f572ac4393da640421173fda337d17728a",
+  # The BUFFER_TOKEN leak (introduced 091fe189) is allowlisted by value in `regexes`
+  # above, not by commit — the literal appears in every commit that touched
+  # schedule-buffer.js, so enumerating them would go stale on the next edit.
+]
