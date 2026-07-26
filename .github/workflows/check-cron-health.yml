@@ -30,6 +30,13 @@ jobs:
             "opening-night-broadcast.yml|36|Opening Night Broadcast"
             "monitor-gate-ab.yml|184|Weekly A/B Monitors"
             "check-flag-parity.yml|184|Check Flag Parity"
+            # Sunday 06:00 UTC weekly offsite backup. CRITICAL, not digest-only: this is
+            # the ONLY point-in-time recovery that exists. The 3 GitLab mirrors are
+            # replicas, not backups — each does clone --mirror then push --force every
+            # 6h, so destructive changes propagate to them within 6 hours. A backup cron
+            # that silently stops is undetectable until the day you need it.
+            # 184h = weekly cadence + 16h cron-lag cushion.
+            "r2-cold-backup.yml|184|R2 Cold Backup"
             # Monday 07:00 UTC weekly full-history secret scan. Deliberately CRITICAL
             # rather than digest-only: this workflow exists BECAUSE a live Buffer token
             # sat in the public repo ~4 months with nothing scanning for it. A secret
