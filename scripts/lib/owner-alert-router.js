@@ -186,18 +186,33 @@ function queueDigestLine({ title, description, severity, conditionKey, url }) {
   fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify(queue, null, 2) + '\n');
 }
 
-// Reads and clears the digest queue — called by the Daily Digest composer
-// once per send so queued lines appear exactly once.
-function drainDigestQueue() {
-  let queue = [];
+// Reads the digest queue WITHOUT clearing it. Prefer peek + clearDigestQueue()
+// over drainDigestQueue() when the consumer does substantial work between
+// reading and durably persisting the lines: a read-and-clear leaves a window
+// where a throw loses the lines permanently. Permanently, not transiently —
+// the ledger already recorded those conditions as notified, so routeAlert()
+// will not re-queue them (cooldownHours, default 7 days), and a one-shot
+// event like a regional show going live never fires again at all.
+function peekDigestQueue() {
   try {
     const parsed = JSON.parse(fs.readFileSync(DIGEST_QUEUE_PATH, 'utf8'));
-    if (Array.isArray(parsed)) queue = parsed;
-  } catch { /* missing/corrupt — nothing to drain */ }
-  if (queue.length > 0) {
-    fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
-    fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify([], null, 2) + '\n');
-  }
+    if (Array.isArray(parsed)) return parsed;
+  } catch { /* missing/corrupt — nothing queued */ }
+  return [];
+}
+
+// Clears the queue. Call only AFTER the peeked lines are durably persisted.
+function clearDigestQueue() {
+  fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
+  fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify([], null, 2) + '\n');
+}
+
+// Reads and clears in one step — retained for callers whose read and use are
+// adjacent. See peekDigestQueue() for why a wide read-to-persist gap should
+// use the two-step form instead.
+function drainDigestQueue() {
+  const queue = peekDigestQueue();
+  if (queue.length > 0) clearDigestQueue();
   return queue;
 }
 
@@ -345,6 +360,8 @@ module.exports = {
   deleteCondition,
   loadLedger,
   drainDigestQueue,
+  peekDigestQueue,
+  clearDigestQueue,
   readDispatchAttempts,
   DEFAULT_COOLDOWN_HOURS,
   DISPOSITIONS,
