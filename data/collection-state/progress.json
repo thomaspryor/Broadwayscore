@@ -73,7 +73,8 @@
     "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
     "11-to-midnight-off-broadway-2026/one-minute-critic--ryan-leeds.json",
     "spring-awakening-2015/washington-times--mark-kennedy.json",
-    "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026/london-theatre--unknown.json"
+    "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026/london-theatre--unknown.json",
+    "the-whoopi-monologues-off-broadway-2026/theater-pizzazz--unknown.json"
   ],
   "failed": [
     "trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
@@ -1562,7 +1563,16 @@
     "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
     "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
     "shifters-off-broadway-2026/thestage--tom-wicker.json",
-    "shifters-off-broadway-2026/times-uk--donald-hutera.json"
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "sukkot-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
+    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "dukes-off-broadway-2026/nytimes--helen-shaw.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1626,7 +1636,8 @@
       "just-in-time-2025/timeout--unknown.json",
       "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
       "11-to-midnight-off-broadway-2026/one-minute-critic--ryan-leeds.json",
-      "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026/london-theatre--unknown.json"
+      "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026/london-theatre--unknown.json",
+      "the-whoopi-monologues-off-broadway-2026/theater-pizzazz--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1711,7 +1722,7 @@
     ]
   },
   "startTime": "2026-07-25T16:57:11.198Z",
-  "lastProcessed": "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+  "lastProcessed": "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
   "log": [
     {
       "t": "2026-07-25T19:48:42.510Z",
@@ -1844,6 +1855,28 @@
       "t": "2026-07-26T05:37:42.090Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-26T12:13:41.152Z",
+      "event": "bb-session",
+      "session": "bdfe3911",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-26T12:13:42.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-26T12:13:57.863Z",
+      "event": "bb-session",
+      "session": "86124cb1",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-26T12:13:58.614Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
