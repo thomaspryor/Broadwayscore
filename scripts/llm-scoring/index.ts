@@ -64,6 +64,7 @@ import {
   fetchAndMerge,
   outcomesForItem,
   buildBatchState,
+  computeInputHash,
   BatchState,
   PendingBatchItem,
 } from './batch-runner';
@@ -257,6 +258,14 @@ const RUNS_LOG_PATH = path.join(__dirname, '../../data/llm-scoring-runs.json');
 const GARBAGE_SKIPS_PATH = path.join(__dirname, '../../data/llm-scoring-garbage-skips.json');
 const PROJECT_ROOT = path.join(__dirname, '../..');
 const SCORING_PROGRESS_PATH = path.join(PROJECT_ROOT, 'data', 'collection-state', 'scoring-progress.json');
+// In-flight batch state lives in its OWN file, not inside scoring-progress.json.
+// scoring-progress.json is rewritten wholesale by every run (including parallel
+// rescore lanes, which get their own workflow concurrency group), and
+// gitCheckpoint resolves push conflicts with `merge -X ours` — so a concurrent
+// run's stale copy could erase the vendor batch IDs from origin and make the
+// next scheduled run resubmit a batch we had already paid for. A file only the
+// batch path ever writes has no such second writer. (task #516 ship-check)
+const SCORING_BATCH_STATE_PATH = path.join(PROJECT_ROOT, 'data', 'collection-state', 'scoring-batch-state.json');
 
 // Every saveReviewFile() call increments this, regardless of whether the
 // file ended up scored or merely rejected/flagged. `processed` alone misses
@@ -397,11 +406,10 @@ function writeProgress(
 
   // Write progress JSON for monitoring
   const progressPath = SCORING_PROGRESS_PATH;
-  // Preserve the `batch` key (task #516). writeProgress rewrites this file
-  // wholesale several times per run; without carrying `batch` forward, an
-  // in-flight batch's IDs + manifest would be erased and the next scheduled
-  // run would resubmit — paying for the same reviews twice.
-  const priorBatch = readProgressFile().batch;
+  // Surface in-flight batch status here (the authoritative copy lives in
+  // scoring-batch-state.json) so a poll-only night is legible to monitors
+  // instead of just reporting processed: 0 with no explanation.
+  const batchStatus = readBatchState();
   const progress = {
     pipeline: 'llm-ensemble-scoring',
     processed: processedSoFar,
@@ -424,7 +432,11 @@ function writeProgress(
       globalUnscored: globalCounts.totalUnscored,
       globalSkipped: globalCounts.totalSkipped,
     } : {}),
-    ...(priorBatch ? { batch: priorBatch } : {})
+    ...(batchStatus ? {
+      batchInFlight: true,
+      batchSubmittedAt: batchStatus.submittedAt,
+      batchItemCount: batchStatus.itemCount,
+    } : {})
   };
   try { fs.writeFileSync(progressPath, JSON.stringify(progress, null, 2) + '\n'); } catch {}
 }
@@ -434,11 +446,18 @@ function writeProgress(
 // ========================================
 
 /**
- * In-flight batch state lives under scoring-progress.json's `batch` key —
- * the one pipeline-state file gitCheckpoint() already commits and pushes, so
- * a runner that is cancelled or times out mid-poll leaves its vendor batch
- * IDs + manifest on origin for the next scheduled run to resume from.
+ * In-flight batch state is committed by gitCheckpoint(), so a runner that is
+ * cancelled or times out mid-poll leaves its vendor batch IDs + manifest on
+ * origin for the next scheduled run to resume from instead of resubmitting.
+ *
+ * Vendors expire a batch 24h after submission. Anything older than the grace
+ * window below can no longer be fetched, and merging it would write model
+ * output derived from days-old review text over whatever has happened since —
+ * including scores a synchronous run wrote in the meantime. Expired state is
+ * discarded loudly rather than merged. (task #516 ship-check)
  */
+const BATCH_STATE_MAX_AGE_HOURS = 48;
+
 function readProgressFile(): any {
   try {
     return JSON.parse(fs.readFileSync(SCORING_PROGRESS_PATH, 'utf-8'));
@@ -448,17 +467,26 @@ function readProgressFile(): any {
 }
 
 function readBatchState(): BatchState | null {
-  const progress = readProgressFile();
-  const batch = progress && progress.batch;
-  return batch && batch.submittedAt && Array.isArray(batch.manifest) ? (batch as BatchState) : null;
+  try {
+    const batch = JSON.parse(fs.readFileSync(SCORING_BATCH_STATE_PATH, 'utf-8'));
+    return batch && batch.submittedAt && Array.isArray(batch.manifest) ? (batch as BatchState) : null;
+  } catch {
+    return null;
+  }
+}
+
+function batchStateAgeHours(batch: BatchState): number {
+  const ms = Date.parse(batch.submittedAt);
+  return Number.isFinite(ms) ? (Date.now() - ms) / 3_600_000 : Infinity;
 }
 
 function writeBatchState(batch: BatchState | null): void {
-  const progress = readProgressFile();
-  if (batch) progress.batch = batch;
-  else delete progress.batch;
   try {
-    fs.writeFileSync(SCORING_PROGRESS_PATH, JSON.stringify(progress, null, 2) + '\n');
+    if (batch) {
+      fs.writeFileSync(SCORING_BATCH_STATE_PATH, JSON.stringify(batch, null, 2) + '\n');
+    } else if (fs.existsSync(SCORING_BATCH_STATE_PATH)) {
+      fs.unlinkSync(SCORING_BATCH_STATE_PATH);
+    }
   } catch (e: any) {
     console.log(`   ⚠️ Failed to persist batch state: ${e.message}`);
   }
@@ -481,7 +509,12 @@ function gitCheckpoint(processedSoFar: number, totalFiles: number): boolean {
   try {
     console.log(`\n📌 Checkpoint: committing ${processedSoFar}/${totalFiles} scored reviews...`);
 
+    // The batch-state file must ride along or a cancelled runner's vendor batch
+    // IDs never reach origin and the next scheduled run resubmits (double spend).
     execSync('git add data/collection-state/scoring-progress.json', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+    try {
+      execSync('git add -A data/collection-state/scoring-batch-state.json', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+    } catch { /* file may not exist outside batch mode */ }
 
     // Check if there are staged changes
     try {
@@ -1204,43 +1237,6 @@ async function main(): Promise<void> {
   if (options.dryRun) console.log('DRY RUN - no files will be modified\n');
   console.log('');
 
-  if (finalFiles.length === 0) {
-    console.log('No reviews to process.');
-
-    // Still run calibration/validation if requested
-    if (options.runCalibration) {
-      runCalibration(true);
-    }
-    if (options.runValidation) {
-      runValidation(true);
-    }
-    return;
-  }
-
-  // ========================================
-  // A/B DISTRIBUTION CHECK (rescore guardrail)
-  // ========================================
-  // When rescoring >100 reviews (--outdated or --rescore), run a sample comparison
-  // to catch unintended distribution shifts BEFORE spending hundreds of dollars.
-  // upgradeEnsemble = first-time ensemble scores (not a rescore), skip A/B check
-  const isRescore = options.outdated || (!options.unscoredOnly && !options.needsRescore && !options.ensembleSource && !options.upgradeEnsemble && !options.retryEmergency);
-  if (isRescore && finalFiles.length > 100 && !options.forceFullRun && !options.dryRun && options.ensemble) {
-    const abResult = await runABDistributionCheck(
-      finalFiles,
-      getScorableText,
-      scorer as EnsembleReviewScorer,
-      options.verbose
-    );
-
-    if (!abResult.passed) {
-      console.log(`\n⛔ ABORTING: Distribution check failed.`);
-      console.log(`   ${abResult.details}`);
-      console.log(`\n   To override, re-run with --force-full-run`);
-      console.log(`   To investigate, re-run with --limit=20 --verbose\n`);
-      process.exit(1);
-    }
-  }
-
   // Process files
   const startedAt = new Date().toISOString();
   const startTime = Date.now();
@@ -1303,13 +1299,24 @@ async function main(): Promise<void> {
    * its merged results through the IDENTICAL post-processing. This block has
    * accumulated a decade of incident-driven carve-outs; forking it for batch
    * mode would have been the single largest correctness risk in this change.
+   *
+   * Returns TRUE where the original inline block did `continue` — the caller
+   * must then skip the rest of the loop iteration. That is not cosmetic: the
+   * loop tail runs the --max-cost token accounting, the rate-limit sleep and
+   * the `processed % checkpointInterval === 0` git checkpoint. Because a
+   * rejected/skipped file does not increment `processed`, letting it fall
+   * through would re-fire gitCheckpoint (commit + fetch + rebase + push to the
+   * public repo) on EVERY subsequent rejection once `processed` sits on a
+   * multiple of the interval, and would start charging rejection-path tokens
+   * against the budget cap. Both are sync-path regressions, so the signal is
+   * plumbed rather than dropped.
    */
   async function handleScoringResult(
     result: ScoreReviewFileResult,
     filePath: string,
     reviewFile: ReviewTextFile,
     priorEmergencyRetryCount: number
-  ): Promise<void> {
+  ): Promise<boolean> {
 
     // Handle scoreability rejection (v5.2+)
     if (result.success && (result as any).rejected) {
@@ -1388,7 +1395,7 @@ async function main(): Promise<void> {
               if (!options.dryRun) saveReviewFile(filePath, scoredAny);
               console.log(`  ✓ FALLBACK SCORED (Haiku): ${scoredAny.assignedScore} (${scoredAny.llmScore?.bucket})`);
               processed++;
-              return;
+              return true;
             }
             console.log(`  ⚠ Haiku fallback did not produce a score: ${fbResult.error || 'unknown'}`);
             recordManualClearFallbackFailure(filePath, fileData, fbResult.error || 'no_score_produced');
@@ -1397,7 +1404,7 @@ async function main(): Promise<void> {
             recordManualClearFallbackFailure(filePath, fileData, e.message);
           }
           skipped++;
-          return;
+          return true;
         }
 
         // Route rejection to appropriate flags
@@ -1442,7 +1449,7 @@ async function main(): Promise<void> {
 
       console.log(`REJECTED (${rejection}): ${(result as any).rejectionReasoning?.substring(0, 80) || ''}`);
       skipped++;
-      return;
+      return true;
     }
 
     if (result.success && result.scoredFile) {
@@ -1518,6 +1525,8 @@ async function main(): Promise<void> {
         error: result.error || 'Unknown error'
       });
     }
+    // Success and hard-failure both fell THROUGH in the original loop.
+    return false;
   }
 
   /**
@@ -1534,9 +1543,23 @@ async function main(): Promise<void> {
    */
   function reconstructBatchItems(state: BatchState): Array<PendingBatchItem | null> {
     const items: Array<PendingBatchItem | null> = new Array(state.itemCount).fill(null);
+    const submittedMs = Date.parse(state.submittedAt);
     for (const entry of state.manifest) {
+      // Manifest paths are stored repo-relative (they get committed to the
+      // public repo and must resolve on a different checkout).
+      const absPath = path.isAbsolute(entry.filePath)
+        ? entry.filePath
+        : path.join(PROJECT_ROOT, entry.filePath);
       try {
-        const reviewFile = JSON.parse(fs.readFileSync(entry.filePath, 'utf-8')) as ReviewTextFile;
+        const reviewFile = JSON.parse(fs.readFileSync(absPath, 'utf-8')) as ReviewTextFile;
+        // Someone (a sync run, a manual ingest) scored this file AFTER the
+        // batch was submitted. Merging now would overwrite a newer score with
+        // older model output. Leave it alone.
+        const scoredAt = Date.parse((reviewFile as any).llmMetadata?.scoredAt || '');
+        if (Number.isFinite(scoredAt) && Number.isFinite(submittedMs) && scoredAt > submittedMs) {
+          console.log(`   ⚠️ Resume skip ${entry.showId}/${entry.outletId}: scored after submission (${(reviewFile as any).llmMetadata.scoredAt})`);
+          continue;
+        }
         reviewFile.showTitle = showTitles.get(reviewFile.showId) || undefined;
         const showMeta = showPriority.get(reviewFile.showId);
         if (showMeta) {
@@ -1554,10 +1577,22 @@ async function main(): Promise<void> {
         const prepared = (scorer as EnsembleReviewScorer).prepareScoringInput(reviewFile);
         if (!prepared.ok || !prepared.prep) {
           console.log(`   ⚠️ Resume prep failed for ${entry.showId}/${entry.outletId}: ${prepared.failure?.error}`);
+          errorDetails.push({ showId: entry.showId, outletId: entry.outletId, error: `resume_prep_failed:${prepared.failure?.error || 'unknown'}` });
+          continue;
+        }
+        // The models scored the text as it was at SUBMIT time. If it changed
+        // since (re-scrape, fullText upgrade, a star rating added that flips
+        // the file into anchored-v6 mode), the stored output no longer
+        // corresponds to this input — merging it would stamp current
+        // provenance onto a stale score. Skip; the next run rescores it fresh.
+        const currentHash = computeInputHash(prepared.prep);
+        if (entry.inputHash && entry.inputHash !== currentHash) {
+          console.log(`   ⚠️ Resume skip ${entry.showId}/${entry.outletId}: review input changed since submission`);
+          errorDetails.push({ showId: entry.showId, outletId: entry.outletId, error: 'resume_input_hash_mismatch' });
           continue;
         }
         items[entry.index] = {
-          filePath: entry.filePath,
+          filePath: absPath,
           showId: entry.showId,
           outletId: entry.outletId,
           reviewFile,
@@ -1566,6 +1601,7 @@ async function main(): Promise<void> {
         };
       } catch (e: any) {
         console.log(`   ⚠️ Resume reload failed for ${entry.filePath}: ${e.message}`);
+        errorDetails.push({ showId: entry.showId, outletId: entry.outletId, error: `resume_reload_failed:${e.message}` });
       }
     }
     return items;
@@ -1580,10 +1616,22 @@ async function main(): Promise<void> {
   async function processBatchResults(
     state: BatchState,
     items: Array<PendingBatchItem | null>
-  ): Promise<Set<string>> {
-    const rows = await fetchAndMerge(state, batchKeys);
+  ): Promise<{ written: Set<string>; merged: boolean }> {
+    const { rows, unretrievableVendors } = await fetchAndMerge(state, batchKeys);
     const cfg = (scorer as EnsembleReviewScorer).getBatchConfig();
     const done = new Set<string>();
+
+    // A vendor leg we PAID for whose results could not be retrieved is not the
+    // same as a vendor returning per-item errors. Merging anyway would publish
+    // a 2-model (or 1-model) consensus across the whole corpus off a transient
+    // 429 on a results download — and then clear the state so the paid results
+    // could never be retried. Keep the state; the next run re-fetches.
+    if (unretrievableVendors.length > 0) {
+      console.log(`\n   ⛔ REFUSING TO MERGE — could not retrieve results for: ${unretrievableVendors.join('; ')}`);
+      console.log(`      Merging would write a degraded ensemble corpus-wide. Batch state kept; the next run retries the fetch.`);
+      process.exitCode = 2;
+      return { written: done, merged: false };
+    }
 
     for (const row of rows) {
       const item = items[row.index];
@@ -1610,7 +1658,7 @@ async function main(): Promise<void> {
         errorDetails.push({ showId: item.showId, outletId: item.outletId, error: e.message });
       }
     }
-    return done;
+    return { written: done, merged: true };
   }
 
   // ========================================
@@ -1621,8 +1669,8 @@ async function main(): Promise<void> {
   // pre-filter above it — garbage detection, multi-show trim, the
   // already-anchored skip — runs completely unchanged, so batch and sync
   // score exactly the same set of files with exactly the same input text.
-  const batchMode: boolean = (options as any).batch === true;
-  const batchPollMinutes: number = (options as any).batchPollMinutes || 20;
+  const batchMode: boolean = options.batch === true;
+  const batchPollMinutes: number = options.batchPollMinutes || 20;
   const pendingBatchItems: PendingBatchItem[] = [];
   const batchKeys = { anthropic: claudeApiKey!, openai: openaiApiKey!, gemini: geminiApiKey };
   let skipNewWork = false;
@@ -1647,24 +1695,96 @@ async function main(): Promise<void> {
     console.log(`\n📦 BATCH MODE — vendor Batch APIs (50% discount), submit → poll (≤${batchPollMinutes} min this run) → merge.\n`);
   }
 
-  // Resume an in-flight batch from a previous run BEFORE queueing new work,
-  // so a cancelled/timed-out runner drains what it already paid for instead
-  // of resubmitting the same reviews (decideNextAction from llm-batch.js).
-  if (batchMode && !options.dryRun) {
+  // Drain an in-flight batch from a previous run BEFORE queueing new work, so
+  // a cancelled/timed-out runner collects what it already paid for instead of
+  // resubmitting (decideNextAction from llm-batch.js).
+  //
+  // Deliberately NOT gated on batchMode. DISABLE_BATCH_SCORING=1 must stop new
+  // batch SUBMISSIONS without stranding a paid batch: if the drain only ran in
+  // batch mode, flipping the kill switch would leave the state on disk while
+  // the sync path rescored the very same files, and re-enabling weeks later
+  // would merge long-stale output over those newer scores.
+  if (options.ensemble && !options.dryRun) {
     const existing = readBatchState();
     if (existing) {
-      console.log(`🔁 Resuming in-flight batch submitted ${existing.submittedAt} (${existing.itemCount} items)`);
-      const poll = await pollUntilTerminal(existing, batchKeys, { budgetMinutes: batchPollMinutes });
-      if (poll.ready) {
-        if (poll.forced) console.log(`   ⚠️ Forced merge: ${poll.reason}`);
-        const items = reconstructBatchItems(existing);
-        resumedFilePaths = await processBatchResults(existing, items);
+      const ageHours = batchStateAgeHours(existing);
+      if (ageHours > BATCH_STATE_MAX_AGE_HOURS) {
+        console.log(`🗑️  Discarding batch state submitted ${existing.submittedAt} — ${ageHours.toFixed(1)}h old, past the ${BATCH_STATE_MAX_AGE_HOURS}h window (vendors expire batches at 24h). Those reviews will be scored fresh.\n`);
         writeBatchState(null);
-        console.log(`   ✓ Resumed batch merged — ${resumedFilePaths.size} file(s) written\n`);
+      } else if (existing.promptVersion && existing.promptVersion !== PROMPT_VERSION) {
+        // The prompt shipped a new version while this batch was in flight. Its
+        // model output came from the OLD prompt; finalizeScoredFile would stamp
+        // the CURRENT promptVersion on it, hiding it from --outdated forever.
+        console.log(`🗑️  Discarding batch state: submitted under prompt v${existing.promptVersion}, current is v${PROMPT_VERSION}. Those reviews will be scored fresh.\n`);
+        writeBatchState(null);
       } else {
-        console.log(`   ⏳ Still in flight (${poll.reason}). Keeping state; NOT submitting new work this run.\n`);
-        skipNewWork = true;
+        if (!batchMode) {
+          console.log(`🔁 --batch is off, but a paid batch is in flight — draining it before anything else (no new batch will be submitted).`);
+        }
+        console.log(`🔁 Resuming in-flight batch submitted ${existing.submittedAt} (${existing.itemCount} items)`);
+        const poll = await pollUntilTerminal(existing, batchKeys, { budgetMinutes: batchPollMinutes });
+        if (poll.ready) {
+          if (poll.forced) console.log(`   ⚠️ Forced merge: ${poll.reason}`);
+          const items = reconstructBatchItems(existing);
+          const outcome = await processBatchResults(existing, items);
+          resumedFilePaths = outcome.written;
+          if (outcome.merged) {
+            writeBatchState(null);
+            console.log(`   ✓ Resumed batch merged — ${resumedFilePaths.size} file(s) written\n`);
+          } else {
+            console.log(`   ⏸️  Merge refused — state kept for the next run.\n`);
+            skipNewWork = true;
+          }
+        } else {
+          console.log(`   ⏳ Still in flight (${poll.reason}). Keeping state; NOT submitting new work this run.\n`);
+          skipNewWork = true;
+        }
       }
+    }
+  }
+
+  if (finalFiles.length === 0) {
+    console.log('No reviews to process.');
+
+    // A drained batch above may still have written files — record it so the
+    // CI scoring-progress gate sees the real review-text writes instead of
+    // concluding "nothing happened" (P1 352637c5-416f-81ab).
+    if (resumedFilePaths.size > 0 && !options.dryRun) {
+      writeProgress(processed, resumedFilePaths.size, errors, skipped, startTime);
+      gitCheckpoint(processed, resumedFilePaths.size);
+    }
+
+    // Still run calibration/validation if requested
+    if (options.runCalibration) {
+      runCalibration(true);
+    }
+    if (options.runValidation) {
+      runValidation(true);
+    }
+    return;
+  }
+
+  // ========================================
+  // A/B DISTRIBUTION CHECK (rescore guardrail)
+  // ========================================
+  // When rescoring >100 reviews (--outdated or --rescore), run a sample comparison
+  // to catch unintended distribution shifts BEFORE spending hundreds of dollars.
+  // upgradeEnsemble = first-time ensemble scores (not a rescore), skip A/B check
+  const isRescore = options.outdated || (!options.unscoredOnly && !options.needsRescore && !options.ensembleSource && !options.upgradeEnsemble && !options.retryEmergency);
+  if (isRescore && finalFiles.length > 100 && !options.forceFullRun && !options.dryRun && options.ensemble) {
+    const abResult = await runABDistributionCheck(
+      finalFiles,
+      getScorableText,
+      scorer as EnsembleReviewScorer,
+      options.verbose
+    );
+
+    if (!abResult.passed) {
+      console.log(`\n⛔ ABORTING: Distribution check failed.`);
+      console.log(`   ${abResult.details}`);
+      console.log(`\n   To override, re-run with --force-full-run`);
+      console.log(`   To investigate, re-run with --limit=20 --verbose\n`);
+      process.exit(1);
     }
   }
 
@@ -1840,9 +1960,13 @@ async function main(): Promise<void> {
       continue;
     }
 
+    // `skipLoopTail` reproduces the `continue` the inline block used to do:
+    // rejected / skipped / Haiku-fallback files must NOT reach the budget
+    // accounting, the rate-limit sleep, or the checkpoint gate below.
+    let skipLoopTail = false;
     try {
       const result = await scorer.scoreReviewFile(reviewFile);
-      await handleScoringResult(result, filePath, reviewFile, priorEmergencyRetryCount);
+      skipLoopTail = await handleScoringResult(result, filePath, reviewFile, priorEmergencyRetryCount);
     } catch (e: any) {
       console.log(`ERROR: ${e.message}`);
       errors++;
@@ -1852,6 +1976,7 @@ async function main(): Promise<void> {
         error: e.message
       });
     }
+    if (skipLoopTail) continue;
 
     // Phase B-WE W1-T5: per-call cost delta + budget cap check.
     if (maxCost > 0 && tokensBefore && (scorer as any).getTokenUsage) {
@@ -1915,6 +2040,7 @@ async function main(): Promise<void> {
         geminiEnabled: cfg.geminiEnabled,
         claudeModel: cfg.claudeModel,
         openaiModel: cfg.openaiModel,
+        geminiTemperature: cfg.geminiTemperature,
       });
 
       // Cost is committed at submission, so print the (batch-discounted)
@@ -1932,15 +2058,31 @@ async function main(): Promise<void> {
         console.log(`   --dry-run: not submitting.\n`);
       } else {
         const ids = await submitBatches(requests, batchKeys, { geminiModel: cfg.geminiModel });
-        if (!ids.claudeBatchId && !ids.openaiBatchId && !ids.geminiBatchId) {
-          console.log(`   ⛔ No vendor accepted the batch — nothing to poll. Exiting with code 2.`);
+        // All-or-nothing across the ENABLED legs. A partial submit would run
+        // the entire night's corpus through a 2-model ensemble off one vendor's
+        // transient 429 — a corpus-wide quality change that looks identical to
+        // a normal run downstream. In sync mode the same outage degrades a
+        // handful of individual reviews; here it degrades everything, so batch
+        // holds itself to a stricter bar and lets the next run retry.
+        const expectedVendors = ['claude', 'openai', ...(cfg.geminiEnabled ? ['gemini'] : [])];
+        const acceptedVendors = [
+          ids.claudeBatchId ? 'claude' : null,
+          ids.openaiBatchId ? 'openai' : null,
+          ids.geminiBatchId ? 'gemini' : null,
+        ].filter(Boolean) as string[];
+        const missing = expectedVendors.filter(v => !acceptedVendors.includes(v));
+        if (missing.length > 0) {
+          console.log(`   ⛔ Only ${acceptedVendors.length}/${expectedVendors.length} vendors accepted (missing: ${missing.join(', ')}).`);
+          console.log(`      Abandoning this batch rather than scoring the whole corpus on a degraded ensemble.`);
+          console.log(`      The ${acceptedVendors.length} accepted batch(es) will expire unused; these reviews stay unscored for the next run.`);
           process.exitCode = 2;
         } else {
           const state = buildBatchState(
             pendingBatchItems,
             ids,
             { claudeModel: cfg.claudeModel, openaiModel: cfg.openaiModel, geminiModel: cfg.geminiEnabled ? cfg.geminiModel : undefined },
-            new Date().toISOString()
+            new Date().toISOString(),
+            PROJECT_ROOT
           );
           // Persist + push the IDs BEFORE polling: if the runner is cancelled
           // mid-poll (GitHub job timeout, cascade cancel), the next scheduled
@@ -1951,9 +2093,13 @@ async function main(): Promise<void> {
           const poll = await pollUntilTerminal(state, batchKeys, { budgetMinutes: batchPollMinutes });
           if (poll.ready) {
             if (poll.forced) console.log(`   ⚠️ Forced merge: ${poll.reason}`);
-            const written = await processBatchResults(state, pendingBatchItems);
-            writeBatchState(null);
-            console.log(`\n   ✓ Batch merged — ${written.size} file(s) written`);
+            const outcome = await processBatchResults(state, pendingBatchItems);
+            if (outcome.merged) {
+              writeBatchState(null);
+              console.log(`\n   ✓ Batch merged — ${outcome.written.size} file(s) written`);
+            } else {
+              console.log(`\n   ⏸️  Merge refused — state kept; the next scheduled run retries the fetch.`);
+            }
           } else {
             console.log(`\n   ⏳ Batch still in flight (${poll.reason}).`);
             console.log(`      State persisted to scoring-progress.json — the next scheduled run resumes polling.`);

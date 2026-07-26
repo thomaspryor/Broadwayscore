@@ -182,6 +182,7 @@ export class EnsembleReviewScorer {
     openaiModel: string;
     geminiModel: string;
     geminiEnabled: boolean;
+    geminiTemperature: number;
     kimiEnabled: boolean;
   } {
     return {
@@ -189,6 +190,9 @@ export class EnsembleReviewScorer {
       openaiModel: this.options.openaiModel,
       geminiModel: this.options.geminiModel,
       geminiEnabled: !!this.geminiScorer,
+      // Threaded explicitly: Gemini's temperature is the one ensemble knob
+      // that is configurable at construction, so batch must not assume 0.3.
+      geminiTemperature: this.geminiScorer ? this.geminiScorer.getTemperature() : 0.3,
       kimiEnabled: !!this.kimiScorer,
     };
   }

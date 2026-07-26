@@ -456,7 +456,7 @@ describe('sync/batch parity — parseBatchResponseV5 on unwrapped batch text', (
 // sync fails here.
 
 const { EnsembleReviewScorer } = require('./ensemble-scorer');
-const { assembleRequests, outcomesForItem, estimateBatchUsage, buildBatchState } = require('./batch-runner');
+const { assembleRequests, outcomesForItem, estimateBatchUsage, buildBatchState, computeInputHash } = require('./batch-runner');
 const { SYSTEM_PROMPT_V5, buildPromptV5, PROMPT_VERSION } = require('./config');
 
 /** Scorer with throwaway keys — no constructor makes a network call. */
@@ -842,12 +842,12 @@ describe('buildBatchState — resume manifest', () => {
 
     assert.strictEqual(state.itemCount, 3);
     assert.strictEqual(state.manifest.length, 3);
-    assert.deepStrictEqual(state.manifest[1], {
-      index: 1,
-      showId: 'a-catered-affair-2008',
-      outletId: 'outlet-1',
-      filePath: '/data/review-texts/a-catered-affair-2008/outlet-1.json',
-    });
+    assert.strictEqual(state.manifest[1].index, 1);
+    assert.strictEqual(state.manifest[1].showId, 'a-catered-affair-2008');
+    assert.strictEqual(state.manifest[1].outletId, 'outlet-1');
+    assert.strictEqual(state.manifest[1].filePath, '/data/review-texts/a-catered-affair-2008/outlet-1.json');
+    // Provenance fingerprint — the resume path refuses to merge without it.
+    assert.match(state.manifest[1].inputHash, /^[0-9a-f]{32}$/);
     assert.strictEqual(state.promptVersion, PROMPT_VERSION);
     assert.strictEqual(state.submittedAt, '2026-07-26T04:00:00.000Z');
     // The prep (which embeds full review text) must NOT be persisted.
@@ -860,5 +860,64 @@ describe('buildBatchState — resume manifest', () => {
     assert.strictEqual(decideNextAction({ batchState: null, vendorStatuses: {}, now }).action, 'submit');
     assert.strictEqual(decideNextAction({ batchState: state, vendorStatuses: { claude: 'in_progress' }, now }).action, 'poll');
     assert.strictEqual(decideNextAction({ batchState: state, vendorStatuses: { claude: 'ended' }, now }).action, 'fetch_and_merge');
+  });
+});
+
+
+describe('resume provenance guards (task #516 ship-check)', () => {
+  test('buildBatchState stores manifest paths RELATIVE to the repo root', () => {
+    // The state file is committed to the public repo. Absolute paths would leak
+    // the local username and would not resolve on the CI checkout that resumes.
+    const scorer = makeScorer();
+    const reviewFile = reviewFileFixture();
+    const prepared = scorer.prepareScoringInput(reviewFile);
+    const items = [{
+      filePath: '/Users/someone/Broadwayscore/data/review-texts/a-catered-affair-2008/nytimes.json',
+      showId: reviewFile.showId,
+      outletId: reviewFile.outletId,
+      reviewFile,
+      prep: prepared.prep,
+      priorEmergencyRetryCount: 0,
+    }];
+
+    const state = buildBatchState(
+      items, { claudeBatchId: 'a' }, { claudeModel: 'c', openaiModel: 'o' },
+      '2026-07-26T04:00:00.000Z', '/Users/someone/Broadwayscore'
+    );
+
+    assert.strictEqual(state.manifest[0].filePath, 'data/review-texts/a-catered-affair-2008/nytimes.json');
+    assert.ok(!JSON.stringify(state).includes('/Users/'));
+  });
+
+  test('computeInputHash changes when the review text changes', () => {
+    const scorer = makeScorer();
+    const a = scorer.prepareScoringInput(reviewFileFixture());
+    const b = scorer.prepareScoringInput(
+      reviewFileFixture({ fullText: LONG_REVIEW_TEXT + ' A late paragraph added by a re-scrape after submission.' })
+    );
+    assert.strictEqual(a.ok, true);
+    assert.strictEqual(b.ok, true);
+    assert.notStrictEqual(computeInputHash(a.prep), computeInputHash(b.prep));
+  });
+
+  test('computeInputHash is stable for identical input', () => {
+    const scorer = makeScorer();
+    const a = scorer.prepareScoringInput(reviewFileFixture());
+    const b = scorer.prepareScoringInput(reviewFileFixture());
+    assert.strictEqual(computeInputHash(a.prep), computeInputHash(b.prep));
+  });
+
+  test('computeInputHash covers the anchored-V6 system prompt, not just the text', () => {
+    // A star rating added mid-flight flips the file into anchored mode: the
+    // models never saw the V6 band prompt, so the stored output must not be
+    // stamped anchored-v6. Differing hashes are what make the merge refuse.
+    const scorer = makeScorer();
+    const plain = scorer.prepareScoringInput(reviewFileFixture());
+    const withBand = {
+      ...plain.prep,
+      band: { floor: 20, ceiling: 40, fraction: 0.25 },
+      systemPromptOverride: 'V6 SYSTEM PROMPT WITH A HARD BAND CONSTRAINT',
+    };
+    assert.notStrictEqual(computeInputHash(plain.prep), computeInputHash(withBand));
   });
 });
