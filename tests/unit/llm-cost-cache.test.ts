@@ -57,3 +57,37 @@ test('costBreakdown claude leg matches estimateCost for cache usage', () => {
   assert.ok(Math.abs(b.claude - estimateCost(usage)) < 1e-9);
   assert.strictEqual(b.total, b.claude + b.openai + b.gemini + b.kimi);
 });
+
+// Task #504 (2026-07-26): openaiModelName selects between gpt-4o and
+// gpt-5.4-mini pricing. Behavioral (not just source-text) coverage — an
+// inverted ternary in openaiPricing() would pass the source-text guard in
+// openai-leg-model.test.mjs but silently mis-cost every ensemble run.
+const GPT4O = COST_PER_MILLION_TOKENS.openai;
+const GPT54_MINI = COST_PER_MILLION_TOKENS['openai-gpt54-mini'];
+
+test('estimateCost defaults openai usage to gpt-4o pricing when openaiModelName omitted', () => {
+  const cost = estimateCost({ openai: { input: M, output: M } });
+  assert.strictEqual(cost, GPT4O.input + GPT4O.output);
+});
+
+test('estimateCost prices openai usage as gpt-5.4-mini when openaiModelName says so', () => {
+  const cost = estimateCost({ openai: { input: M, output: M } }, { openaiModelName: 'gpt-5.4-mini' });
+  assert.strictEqual(cost, GPT54_MINI.input + GPT54_MINI.output);
+});
+
+test('estimateCost falls back to gpt-4o pricing for an unrecognized openaiModelName', () => {
+  const cost = estimateCost({ openai: { input: M, output: M } }, { openaiModelName: 'gpt-4o-mini' });
+  assert.strictEqual(cost, GPT4O.input + GPT4O.output);
+});
+
+test('costBreakdown openai leg matches estimateCost for both model names', () => {
+  const usage = { openai: { input: 200_000, output: 50_000 } };
+  for (const openaiModelName of [undefined, 'gpt-5.4-mini']) {
+    const opts = openaiModelName ? { openaiModelName } : {};
+    const b = costBreakdown(usage, opts);
+    assert.ok(Math.abs(b.openai - estimateCost(usage, opts)) < 1e-9, `mismatch for ${openaiModelName}`);
+  }
+  const cheaper = costBreakdown(usage, { openaiModelName: 'gpt-5.4-mini' }).openai;
+  const legacy = costBreakdown(usage).openai;
+  assert.ok(cheaper < legacy, 'gpt-5.4-mini pricing should be cheaper than gpt-4o');
+});

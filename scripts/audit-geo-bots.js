@@ -7,19 +7,20 @@
  * duration + ~1.0 pages/session), and alerts if any NEW bot country has
  * appeared since last audit (compared against data/audit/known-bot-geos.json).
  *
- * On new bot detection: sends a Discord alert + email via lib/discord-notify
- * (sendAlert with email:true). Silent if no new bots.
+ * On new bot detection: routes each newly-detected country through
+ * owner-alert-router (disposition: digest — per-country conditionKey, so a
+ * country nobody has triaged yet queues one Daily Digest line per 7-day
+ * cooldown instead of a fresh line every week). Silent if no new bots.
  *
  * Run weekly via .github/workflows/weekly-geo-audit.yml.
  *
- * Env: GA4_PROPERTY_ID, GA_SERVICE_ACCOUNT_KEY (base64) or GA_KEY_FILE,
- *      DISCORD_WEBHOOK_ALERTS, RESEND_API_KEY, OWNER_EMAIL
+ * Env: GA4_PROPERTY_ID, GA_SERVICE_ACCOUNT_KEY (base64) or GA_KEY_FILE
  */
 
 const fs = require('fs');
 const path = require('path');
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
-const { sendAlert } = require('./lib/discord-notify');
+const { routeAlert } = require('./lib/owner-alert-router');
 
 const KNOWN_BOTS_FILE = path.join(__dirname, '..', 'data', 'audit', 'known-bot-geos.json');
 
@@ -116,29 +117,28 @@ async function main() {
     return;
   }
 
-  // Alert: Discord + email in one call
-  const fields = newBots.map((b) => ({
-    name: b.country,
-    value: formatStats(b),
-    inline: false,
-  }));
+  // Route each new bot country through owner-alert-router individually so a
+  // country that's still undispositioned after 7 days re-queues instead of
+  // going silent forever, while a country the owner just triaged doesn't
+  // requeue every week until it's actually added to known-bot-geos.json.
+  for (const b of newBots) {
+    await routeAlert({
+      conditionKey: `geo-bots:${b.country}`,
+      title: `New bot country detected: ${b.country}`,
+      description:
+        `Weekly geo audit found ${b.country} matching the bot signature ` +
+        `(${formatStats(b)}; thresholds: ≥${BOT_THRESHOLDS.minSessions} sessions, ` +
+        `<${BOT_THRESHOLDS.maxEngagementPct}% engagement, ` +
+        `<${BOT_THRESHOLDS.maxDurationSeconds}s avg session, ` +
+        `<${BOT_THRESHOLDS.maxPagesPerSession} pages/session). ` +
+        `Add to data/audit/known-bot-geos.json + memory/analytics-real-users-segment.md ` +
+        `+ the 3 PostHog Real Users insights + the GA4 Real Users comparison.`,
+      severity: 'warning',
+      disposition: 'digest',
+    });
+  }
 
-  await sendAlert({
-    title: `New bot countries detected (${newBots.length})`,
-    description:
-      `Weekly geo audit found ${newBots.length} new countr${newBots.length === 1 ? 'y' : 'ies'} ` +
-      `matching the bot signature (≥${BOT_THRESHOLDS.minSessions} sessions, ` +
-      `<${BOT_THRESHOLDS.maxEngagementPct}% engagement, ` +
-      `<${BOT_THRESHOLDS.maxDurationSeconds}s avg session, ` +
-      `<${BOT_THRESHOLDS.maxPagesPerSession} pages/session). ` +
-      `Add to data/audit/known-bot-geos.json + memory/analytics-real-users-segment.md ` +
-      `+ the 3 PostHog Real Users insights + the GA4 Real Users comparison.`,
-    severity: 'warning',
-    fields,
-    email: true,
-  });
-
-  console.log(`\nAlerted via Discord + email about ${newBots.length} new bot countries.`);
+  console.log(`\nQueued digest alert(s) for ${newBots.length} new bot countr${newBots.length === 1 ? 'y' : 'ies'}.`);
 }
 
 main().catch((err) => {

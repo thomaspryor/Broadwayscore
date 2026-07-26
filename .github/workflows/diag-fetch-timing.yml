@@ -137,6 +137,19 @@ jobs:
           # called this exact log signature before the run.)
           - { arm: explicit-depth50, rep: 1, depth: 50, seq: explicit }
           - { arm: explicit-depth50, rep: 2, depth: 50, seq: explicit }
+          # ROUND 2 — the actual candidate FIX, measured before it is written.
+          # Round 1 proved: no-depth fetch from a depth-1 clone never finishes
+          # (>=600s, .git 415->1781 MiB), --depth=1 finishes in ~2s but leaves NO
+          # merge base (fast and useless), and a depth-50 base makes the ordinary
+          # no-depth fetch cost 2s / 67 KiB. The shared-helper fix therefore has to
+          # be a BOUNDED deepening fetch from the shallow clone. These arms measure
+          # exactly that operation — cost AND whether it yields a usable merge base.
+          # Churn is ~43 commits/hr and jobs run up to 75 min, so the bound must
+          # cover ~55 commits of drift; 200 is the headroom candidate.
+          - { arm: fix-depth200,  rep: 1, depth: 1, seq: explicit_d200 }
+          - { arm: fix-depth200,  rep: 2, depth: 1, seq: explicit_d200 }
+          - { arm: fix-deepen200, rep: 1, depth: 1, seq: deepen200 }
+          - { arm: fix-deepen200, rep: 2, depth: 1, seq: deepen200 }
     name: ${{ matrix.arm }} r${{ matrix.rep }} (depth ${{ matrix.depth }})
     timeout-minutes: 45
     steps:
@@ -259,6 +272,10 @@ jobs:
                 run_fetch explicit_d1 --depth=1 origin "+refs/heads/main:refs/remotes/origin/main" ;;
               bare_d1)
                 run_fetch bare_d1 --depth=1 origin main ;;
+              explicit_d200)
+                run_fetch explicit_d200 --depth=200 origin "+refs/heads/main:refs/remotes/origin/main" ;;
+              deepen200)
+                run_fetch deepen200 --deepen=200 origin "+refs/heads/main:refs/remotes/origin/main" ;;
               *)
                 echo "unknown form: $form"; exit 1 ;;
             esac

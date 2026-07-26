@@ -2,8 +2,8 @@
 /**
  * send-opening-digest.js
  *
- * Action-first daily digest emailed to the owner. Surfaces shows that
- * need intervention TODAY, not just a flat status list.
+ * Action-first daily digest of shows that need intervention TODAY, not just
+ * a flat status list.
  *
  * Sections, in order:
  *   1. Needs help — opened, underperforming cohort, T1 missing, etc.
@@ -13,7 +13,11 @@
  *   4. Other recent — opened in last 7 days, no action needed.
  *   5. Other upcoming — opens this week, OB/OWE (not in important list).
  *
- * Sent transactionally via Resend — never a broadcast.
+ * Card #497 (owner merge decision — one scheduled morning email, not three):
+ * this no longer emails on its own. It writes a structured snapshot to
+ * data/audit/opening-digest-snapshot.json instead; autonomous-email.js reads
+ * it and folds it into the single scheduled morning email, same pattern as
+ * card #364's health-check.js digest / #497's daily-digest sibling.
  *
  * Importance:
  *   - Broadway + West End: always important
@@ -22,14 +26,12 @@
  *     shows like New Born / Kenrex)
  *
  * Usage:
- *   node scripts/send-opening-digest.js                       # send
- *   node scripts/send-opening-digest.js --send-to=EMAIL       # override recipient
- *   node scripts/send-opening-digest.js --dry-run             # print HTML, no send
+ *   node scripts/send-opening-digest.js                       # write snapshot
+ *   node scripts/send-opening-digest.js --dry-run             # print HTML, don't write
  */
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 
 const { predictReviewCount } = require('./predict-review-count');
 const { getTier } = require('./lib/outlet-tiers');
@@ -51,11 +53,6 @@ const {
 // Config
 // ---------------------------------------------------------------------------
 
-const DEFAULT_RECIPIENT = 'thomas.pryor@gmail.com';
-const FROM_EMAIL = 'updates@broadwayscorecard.com';
-const FROM_NAME = 'Broadway Scorecard Digest';
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
-
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
@@ -63,6 +60,8 @@ const AUDIENCE_PATH = path.join(DATA_DIR, 'audience-buzz.json');
 const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
 const IMPORTANT_PATH = path.join(DATA_DIR, 'digest-important-shows.json');
 const EXCLUDED_PATH = path.join(DATA_DIR, 'digest-excluded-shows.json');
+const DIGEST_SNAPSHOT_FILE = path.join(DATA_DIR, 'audit', 'opening-digest-snapshot.json');
+const DIGEST_ITEM_CAP = 8;
 
 const SITE_URL = 'https://broadwayscorecard.com';
 
@@ -96,7 +95,6 @@ const MIN_AUDIENCE_REVIEWS = 15;
 // ---------------------------------------------------------------------------
 
 const args = process.argv.slice(2);
-const SEND_TO = (args.find(a => a.startsWith('--send-to=')) || '').split('=')[1] || DEFAULT_RECIPIENT;
 const DRY_RUN = args.includes('--dry-run');
 
 // ---------------------------------------------------------------------------
@@ -633,8 +631,9 @@ function renderTable(rows, renderRow) {
   return `<table style="width:100%;border-collapse:collapse;">${rows.map(renderRow).join('')}</table>`;
 }
 
-function buildSubject({ needsHelp, broadcastReady, comingUp }) {
-  const todayHuman = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+// The lead clause (no date) doubles as the folded-in morning email's
+// bannerText (card #497) — buildSubject appends the date on top of it.
+function buildDigestLead({ needsHelp, broadcastReady, comingUp }) {
   const parts = [];
   if (needsHelp.length) parts.push(`${needsHelp.length} need${needsHelp.length === 1 ? 's' : ''} help`);
   if (broadcastReady.length) parts.push(`${broadcastReady.length} broadcast-ready`);
@@ -642,8 +641,12 @@ function buildSubject({ needsHelp, broadcastReady, comingUp }) {
   if (openingToday) parts.push(`${openingToday} opening today`);
   const openingTomorrow = comingUp.filter(r => r.daysFromToday === 1).length;
   if (openingTomorrow && !openingToday) parts.push(`${openingTomorrow} tomorrow`);
-  const lead = parts.length ? parts.join(' · ') : (comingUp.length ? `${comingUp.length} upcoming this week` : 'Quiet week');
-  return `${lead} · ${todayHuman}`;
+  return parts.length ? parts.join(' · ') : (comingUp.length ? `${comingUp.length} upcoming this week` : 'Quiet week');
+}
+
+function buildSubject(sections) {
+  const todayHuman = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return `${buildDigestLead(sections)} · ${todayHuman}`;
 }
 
 // Per-region brand: NYC = Broadway gold (#d4a574), London = West End pink
@@ -749,31 +752,38 @@ function buildHtml({ needsHelp, broadcastReady, comingUp, otherRecent, otherUpco
 }
 
 // ---------------------------------------------------------------------------
-// Resend send
+// Digest snapshot (card #497 — no longer emails on its own)
 // ---------------------------------------------------------------------------
 
-function postJSON(url, body, headers = {}) {
-  return new Promise((resolve, reject) => {
-    const u = new URL(url);
-    const data = JSON.stringify(body);
-    const req = https.request({
-      hostname: u.hostname,
-      port: 443,
-      path: u.pathname + u.search,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(data), ...headers },
-    }, res => {
-      let chunks = '';
-      res.on('data', c => chunks += c);
-      res.on('end', () => {
-        if (res.statusCode >= 400) return reject(new Error(`HTTP ${res.statusCode}: ${chunks}`));
-        try { resolve(JSON.parse(chunks)); } catch { resolve(chunks); }
-      });
-    });
-    req.on('error', reject);
-    req.write(data);
-    req.end();
-  });
+// Same subject/bannerText + item-list shape as health-check.js's snapshot
+// (card #364) and send-daily-digest.js's sibling (card #497), so
+// autonomous-email.js can fold all the daily scheduled digests through a
+// shared render block.
+function buildDigestItems(sections) {
+  const items = [];
+  for (const r of sections.needsHelp) {
+    items.push({ title: r.title, detail: `Needs help: ${(r.helpReasons || []).join(' · ')}`, url: r.url });
+  }
+  for (const r of sections.broadcastReady) {
+    items.push({ title: r.title, detail: 'Broadcast ready', url: r.url });
+  }
+  for (const r of sections.comingUp) {
+    items.push({ title: r.title, detail: `Opens ${whenLabel(r.daysFromToday)} · ${formatHumanDate(r.date)}`, url: r.url });
+  }
+  return items;
+}
+
+function writeDigestSnapshot({ subject, bannerText, items }) {
+  const snapshot = {
+    generatedAt: new Date().toISOString(),
+    subject,
+    bannerText,
+    items: items.slice(0, DIGEST_ITEM_CAP),
+    moreCount: Math.max(0, items.length - DIGEST_ITEM_CAP),
+  };
+  fs.mkdirSync(path.dirname(DIGEST_SNAPSHOT_FILE), { recursive: true });
+  fs.writeFileSync(DIGEST_SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
+  console.log(`[Opening Digest] Snapshot written (${snapshot.items.length} item(s)) — folds into the morning email, not sent separately`);
 }
 
 // ---------------------------------------------------------------------------
@@ -801,11 +811,12 @@ async function main() {
 
   const todayHuman = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   const subject = buildSubject(sections);
-  const html = buildHtml({ ...sections, todayHuman });
+  const bannerText = buildDigestLead(sections);
+  const items = buildDigestItems(sections);
 
   if (DRY_RUN) {
+    const html = buildHtml({ ...sections, todayHuman });
     console.log(`Subject: ${subject}`);
-    console.log(`Recipient: ${SEND_TO}`);
     console.log(`Needs help: ${sections.needsHelp.length}`);
     console.log(`Broadcast ready: ${sections.broadcastReady.length}`);
     console.log(`Coming up (important): ${sections.comingUp.length}`);
@@ -816,21 +827,8 @@ async function main() {
     return;
   }
 
-  if (!RESEND_API_KEY) {
-    console.error('RESEND_API_KEY not set.');
-    process.exit(1);
-  }
-
-  console.log(`Sending opening digest to ${SEND_TO}...`);
-  await postJSON('https://api.resend.com/emails', {
-    from: `${FROM_NAME} <${FROM_EMAIL}>`,
-    to: [SEND_TO],
-    subject,
-    html,
-  }, {
-    'Authorization': `Bearer ${RESEND_API_KEY}`,
-  });
-  console.log(`Sent. ${subject}`);
+  writeDigestSnapshot({ subject, bannerText, items });
+  console.log(`Snapshot written. ${subject}`);
 }
 
 // Exported for unit tests (tests/unit/opening-digest-gates.test.mjs). The display

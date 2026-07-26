@@ -274,6 +274,11 @@ async function runDigest(opts) {
       // severity 'error' + email:true — a NEW post-rollout T1/T2 gap >24h with its
       // exact fix command is the actionable-only bar (EMAILABLE_SEVERITIES gate;
       // 'warning' is policy-suppressed and left this alert log-only for weeks).
+      // Direct sendAlert, not routeAlert — this call already has its own cooldown:
+      // only cells present in `emailed` and actually `delivered` get persisted to
+      // digestStatePath.alertedCells below, so a given gap cell notifies once and
+      // stays silent on repeat runs until it clears the ledger (see the block
+      // below this one for the write + the two-guard rationale).
       delivered = await sendAlert({
         title: 'T1 Coverage — new gaps past 24h',
         description: `${actions.length} T1/T2 outlet(s) still missing >24h after they became measurable${actions.length > emailed.length ? ` (first ${emailed.length} below; the rest escalate next run)` : ''}.`,

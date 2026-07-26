@@ -1716,6 +1716,10 @@ async function pollCycle() {
         // (sendAlert) per UTC day — no human log-watching required. The hard daily cap still
         // auto-stops further bursts regardless. tripwireAlerted (persisted in the ledger)
         // dedupes so we don't email every cycle.
+        // Direct sendAlert, not routeAlert — this already has its own cooldown:
+        // tripwireAlerted resets with the rest of the SERP burst ledger at the
+        // next UTC day boundary, giving the same one-per-day dedup the router's
+        // ledger would provide.
         if (isCascadeTripwireExceeded(updated.globalBursts) && !updated.tripwireAlerted) {
           updated.tripwireAlerted = true;
           writeSerpBurstLedger(updated);
