@@ -408,11 +408,48 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # call site swallows it — so the alert-ledger (or any state file) NEVER persists
   # from CI. An explicit ":refs/remotes/origin/X" destination ALWAYS updates the
   # tracking ref regardless of the configured refspec. Falls back to the bare form
-  # if the explicit refspec is rejected (fail-open).
+  # if the explicit refspec is rejected (fail-open) — but NOT if it timed out (see
+  # task #464 below): a fast rejection (bad refspec) is a different remote under a
+  # different condition than a timeout, so retrying the bare form after a rejection
+  # is still worth it.
+  #
+  # Task #464 ROOT-CAUSE FIX: the explicit-refspec fetch above and the bare-form
+  # fallback were BOTH hitting the full GIT_NET_TIMEOUT_SEC=90 cap back-to-back
+  # under high main-branch churn (measured: exact 180s gaps in 3 real CI runs,
+  # 2026-07-25/26 — 'Update Shows', 'Audit Aggregator Review Gap', 'Process
+  # Feedback Submissions'). The low-speed guard (http.lowSpeedLimit/Time, 45s)
+  # never fired in these runs, which rules out a stalled/idle connection — a
+  # genuinely stalled transfer aborts at 45s, well under the 90s hard cap. So the
+  # fetch was actively transferring data the whole time and still didn't finish in
+  # 90s: a real, not stalled, slow fetch. Retrying the SAME operation (same repo,
+  # same remote, same network path, seconds later) under the SAME slow condition
+  # has near-zero chance of finishing faster, so the fallback was burning a second
+  # full 90s for nothing — the doubled-timeout that starved PUSH_DEADLINE_SEC (see
+  # task #458 above) down to ~1.3 real retry cycles instead of several. Fix: only
+  # fall back to the bare form when the explicit form failed FAST (e.g. refspec
+  # rejected) — exit 124 from the `timeout` wrapper means it hit the wall, so skip
+  # straight to the outer retry loop's backoff+next-iteration, which gets a FRESH
+  # 90s budget instead of doubling down on a doomed retry. Per-fetch wall-clock is
+  # now logged so a future incident is directly measurable, not inferred from gaps.
   fetch_ok=false
-  if git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null \
-      || git_fetch origin "$PULL_BRANCH" 2>/dev/null; then
+  fetch_start=$SECONDS
+  if git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null; then
     fetch_ok=true
+    echo "  fetch(explicit-refspec) OK in $((SECONDS - fetch_start))s"
+  else
+    explicit_fetch_rc=$?
+    echo "  fetch(explicit-refspec) FAILED in $((SECONDS - fetch_start))s (rc=$explicit_fetch_rc)"
+    if [ "$explicit_fetch_rc" -eq 124 ]; then
+      echo "  Skipping bare-form fallback fetch: explicit form timed out (rc=124) — retrying the identical fetch under the same slow network condition would likely also burn the full ${GIT_NET_TIMEOUT_SEC}s for nothing (task #464). Backing off to next retry attempt instead."
+    else
+      fetch_start=$SECONDS
+      if git_fetch origin "$PULL_BRANCH" 2>/dev/null; then
+        fetch_ok=true
+        echo "  fetch(bare-form fallback) OK in $((SECONDS - fetch_start))s"
+      else
+        echo "  fetch(bare-form fallback) FAILED in $((SECONDS - fetch_start))s (rc=$?)"
+      fi
+    fi
   fi
   # Authoritative remote tip for the post-resolution progress assertion below.
   # ONLY capture it when THIS iteration's fetch succeeded — otherwise FETCH_HEAD may
