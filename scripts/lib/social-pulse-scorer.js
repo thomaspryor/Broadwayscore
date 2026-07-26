@@ -375,6 +375,35 @@ function computeWeeklyMentions(counters) {
 const NEUTRAL_POSITIVE_PCT = 50;
 
 /**
+ * Minimum opinion-bearing posts behind `positivePct` before a caller is
+ * allowed to TRUST the percentage for ranking or display. Mirrors
+ * src/lib/social-pulse-display.ts's MIN_OPINION_SAMPLE/shouldShowSentiment —
+ * duplicated (not imported) because this file is plain CommonJS and that one
+ * is TypeScript with a deliberate zero-import contract for the client bundle
+ * (same trade-off already made in scripts/newsletter/generate.mjs). Keep the
+ * two in sync: task #544 found ranking (this file, via computeCompositeScore)
+ * trusting a thin-sample positivePct the display layer had already learned
+ * not to print — a 2-post 100%-positive show got a full sentiment multiplier
+ * in the /trending sort despite the card itself refusing to show "100%".
+ */
+const MIN_OPINION_SAMPLE = 10;
+
+/**
+ * True when a positivePct is trustworthy enough to use for RANKING (not just
+ * display) — same contract as social-pulse-display.ts's shouldShowSentiment.
+ * Object arg (not positional) for the same reason as the TS original: a
+ * transposed (opinionSample, positivePct) call compiles cleanly and silently
+ * returns wrong answers.
+ */
+function shouldShowSentiment({ positivePct, opinionSample }) {
+  if (typeof positivePct !== 'number' || !Number.isFinite(positivePct) || positivePct < 0 || positivePct > 100) {
+    return false;
+  }
+  if (opinionSample === undefined || opinionSample === null) return true;
+  return opinionSample >= MIN_OPINION_SAMPLE;
+}
+
+/**
  * Composite score blending raw volume with positive sentiment %. Used for
  * peer ranking. A loud-but-hated show shouldn't outrank a smaller positive one.
  *
@@ -790,6 +819,8 @@ module.exports = {
   QUOTES_ON_CARD,
   MIN_QUOTE_RELEVANCE,
   NEUTRAL_POSITIVE_PCT,
+  MIN_OPINION_SAMPLE,
+  shouldShowSentiment,
   X_UNSAMPLED_FALLBACK_RATE,
   TIER_RULES,
   QUOTE_BLOCKLIST,
