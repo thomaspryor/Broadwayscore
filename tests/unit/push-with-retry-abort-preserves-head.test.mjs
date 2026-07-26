@@ -29,6 +29,31 @@ function sh(cmd, cwd) {
   return execSync(cmd, { cwd, stdio: 'pipe', env: { ...process.env, ...GIT_ENV } }).toString();
 }
 
+// A `git` wrapper that forces `git rebase ... -X ...` and `git merge ... -X
+// ...` to fail while passing every other invocation (fetch, push, reset,
+// cherry-pick, rev-parse, rebase --abort/--continue, merge --abort, ...)
+// straight to the real git. This deterministically drives push-with-retry.sh
+// into its "last resort: reset + cherry-pick" fallback without needing to
+// construct a git conflict that survives the script's own auto-resolution
+// (resolve_conflicts() handles almost every real conflict shape, including
+// modify/delete and binary — the fallback is otherwise very hard to reach
+// with a realistic fixture).
+function makeFakeGitDir(tmp) {
+  const dir = path.join(tmp, 'fake-git-bin');
+  fs.mkdirSync(dir);
+  const realGit = execSync('command -v git').toString().trim();
+  fs.writeFileSync(path.join(dir, 'git'), `#!/usr/bin/env bash
+case "$1" in
+  rebase|merge)
+    for a in "$@"; do if [ "$a" = "-X" ]; then exit 1; fi; done
+    ;;
+esac
+exec "${realGit}" "$@"
+`);
+  fs.chmodSync(path.join(dir, 'git'), 0o755);
+  return dir;
+}
+
 test('#466 shallow-ancestry-unrecoverable abort leaves local HEAD byte-identical', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-head-'));
   const originDir = path.join(tmp, 'origin.git');
@@ -185,6 +210,88 @@ test('an uncontrolled set -e crash right after a successful rebase still restore
 
     assert.notEqual(code, 0, `expected non-zero exit (stubbed restore-protected-fields.js always fails); got 0. Output:\n${stdout}`);
     assert.equal(postRunHead, preRunHead, `HEAD moved from ${preRunHead} to ${postRunHead} and was NOT restored — the EXIT trap backstop did not fire. Output:\n${stdout}`);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('reset+cherry-pick fallback replays ALL outgoing commits, not just the tip', () => {
+  // The actual root cause (confirmed by a parallel investigation on the
+  // Notion card, 2026-07-26): when rebase and merge both fail and the script
+  // falls back to "reset --hard origin/$PULL_BRANCH; cherry-pick $OUR_HEAD",
+  // `git cherry-pick <sha>` replays only THAT ONE commit's diff. If 2+ local
+  // commits were outgoing, `reset --hard` throws away the whole branch and
+  // cherry-pick puts back only the last one — the earlier commit(s) vanish
+  // with no error anywhere (the push of the resulting state SUCCEEDS). This
+  // is the exact "two local commits" symptom from the incident. Forces the
+  // script down this exact fallback via a git wrapper (see makeFakeGitDir)
+  // rather than fighting to construct a conflict the script's own
+  // resolve_conflicts() can't already auto-resolve.
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-cherrypick-'));
+  const originDir = path.join(tmp, 'origin.git');
+  const seedDir = path.join(tmp, 'seed');
+  const runnerDir = path.join(tmp, 'runner');
+
+  try {
+    sh(`git init -q --bare "${originDir}"`, tmp);
+    sh(`git init -q "${seedDir}"`, tmp);
+    sh('git config user.email t@t.t', seedDir);
+    sh('git config user.name t', seedDir);
+    sh('git commit -q --allow-empty -m base', seedDir);
+    sh('git branch -M main', seedDir);
+    sh(`git push -q "${originDir}" main`, seedDir);
+
+    fs.mkdirSync(runnerDir);
+    sh('git init -q', runnerDir);
+    sh('git config user.email t@t.t', runnerDir);
+    sh('git config user.name t', runnerDir);
+    sh(`git remote add origin "${originDir}"`, runnerDir);
+    sh('git fetch -q origin main', runnerDir);
+    sh('git checkout -q -B main origin/main', runnerDir);
+
+    // Two outgoing commits touching DIFFERENT files — the crux of the bug.
+    fs.writeFileSync(path.join(runnerDir, 'first-commit-file.js'), 'const a = 1;\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "first commit"', runnerDir);
+    fs.writeFileSync(path.join(runnerDir, 'second-commit-file.js'), 'const b = 2;\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "second commit"', runnerDir);
+
+    // A concurrent, unrelated commit on the remote so the push is rejected
+    // and the retry loop's fetch+rebase/merge/fallback machinery engages.
+    fs.writeFileSync(path.join(seedDir, 'remote-change.js'), 'const remote = 1;\n');
+    sh('git add -A', seedDir);
+    sh('git commit -q -m "concurrent commit"', seedDir);
+    sh(`git push -q "${originDir}" main`, seedDir);
+
+    const fakeGitDir = makeFakeGitDir(tmp);
+
+    let stdout = '';
+    let code = 0;
+    try {
+      stdout = execSync(`bash "${SCRIPT}" 1 main`, {
+        cwd: runnerDir,
+        stdio: 'pipe',
+        env: {
+          ...process.env, ...GIT_ENV,
+          PATH: `${fakeGitDir}:${process.env.PATH}`,
+          PUSH_FAILURE_LOG: path.join(tmp, 'failures.jsonl'),
+        },
+      }).toString();
+    } catch (err) {
+      code = err.status ?? 1;
+      stdout = `${err.stdout || ''}${err.stderr || ''}`;
+    }
+
+    assert.match(stdout, /reset \+ cherry-pick approach/, `expected the reset+cherry-pick fallback to engage. Output:\n${stdout}`);
+    assert.equal(code, 0, `expected the fallback to succeed and push cleanly; got ${code}. Output:\n${stdout}`);
+    assert.equal(fs.existsSync(path.join(runnerDir, 'first-commit-file.js')), true,
+      `first commit's file is MISSING after the fallback — the single-commit cherry-pick bug reproduced. Output:\n${stdout}`);
+    assert.equal(fs.existsSync(path.join(runnerDir, 'second-commit-file.js')), true,
+      `second commit's file is missing after the fallback. Output:\n${stdout}`);
+
+    const originLog = sh(`git --git-dir="${originDir}" log --oneline main`).trim();
+    assert.match(originLog, /first commit/, `origin/main is missing "first commit" — it was pushed without the earlier local commit. Log:\n${originLog}`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
