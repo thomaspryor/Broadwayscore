@@ -475,11 +475,12 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 ## `llm-ensemble-score.yml`
 - **Runs:** Daily at 5 AM UTC (1 AM EST, after rebuild at 4 AM), auto-triggered by rebuild if 5+ unscored reviews, or manually
 - **Concurrency:** `scoring-reviews` group (queued, not cancelled — separate from rebuild to avoid blocking)
-- **Does:** Scores reviews using 3-model ensemble (Claude Sonnet + GPT-4o + Gemini 2.0 Flash) with bucket-first approach
+- **Does:** Scores reviews using 3-model ensemble (Claude Sonnet + gpt-4o + Gemini 2.5 Flash) with bucket-first approach
   - **Bucket-first scoring:** Models classify into bucket (Rave/Positive/Mixed/Negative/Pan) first, then score within range
   - **Voting logic:** Unanimous (all 3 agree) → Majority (2/3) → No consensus (uses median)
   - **Graceful degradation:** 3→2→1 model fallback if any model fails
-  - **2-model mode:** If GEMINI_API_KEY not set, uses Claude + GPT-4o only
+  - **2-model mode:** If GEMINI_API_KEY not set, uses Claude + gpt-4o only
+  - **OpenAI leg model:** gpt-4o stays the default (task #504, 2026-07-26) — the gpt-5.4-mini A/B (n=24 real reviews) failed the rule-13 gate: Mixed bucket collapsed 29%->0%, max shift 29.2pp (limit 5pp). It polarizes scores away from the middle rather than being a like-for-like cheaper substitute. `--openai-model=gpt-5.4-mini` is wired for re-testing once the V5 prompt is recalibrated for it.
 - **Options:** `show`, `limit`, `run_calibration` (default true), `run_validation`, `dry_run`, `needs_rescore`
 - **Script:** `scripts/llm-scoring/index.ts`
 - **Requires:** ANTHROPIC_API_KEY, OPENAI_API_KEY

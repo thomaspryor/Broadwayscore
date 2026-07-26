@@ -13,6 +13,7 @@ import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, Ense
 import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5, buildSystemPromptV6, clampScoreToBand, ScoreBand } from './config';
 import { buildScoringInput, ReviewInputData } from './input-builder';
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
+const { GPT4O, GPT54_MINI } = require('../lib/models');
 const { detectBandFromReviewFile, shouldUseAnchoredMode } = require('../lib/star-reliability');
 import { ensembleScore, toModelScore } from './ensemble';
 
@@ -22,7 +23,7 @@ import { ensembleScore, toModelScore } from './ensemble';
 
 export interface EnsembleScoringOptions {
   claudeModel: 'claude-sonnet-4-6' | 'claude-3-5-haiku-20241022';
-  openaiModel: 'gpt-4o-mini' | 'gpt-4o';
+  openaiModel: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini';
   geminiModel: 'gemini-2.5-flash' | 'gemini-2.5-flash' | 'gemini-1.5-flash';
   kimiModel: string;
   maxDelta: number;  // Maximum acceptable difference between models
@@ -60,7 +61,13 @@ export class EnsembleReviewScorer {
   ) {
     this.options = {
       claudeModel: options.claudeModel || 'claude-sonnet-4-6',
-      openaiModel: options.openaiModel || 'gpt-4o',
+      // NOT swapped to GPT54_MINI: task #504 A/B (n=24 real reviews, 2026-07-26)
+      // failed the rule-13 gate hard — Mixed bucket collapsed 29%->0%, max bucket
+      // shift 29.2pp (limit 5pp). gpt-5.4-mini polarizes scores away from the
+      // middle instead of just being a cheaper gpt-4o. Keep gpt-4o as the
+      // scoring-path default; GPT54_MINI stays wired for --openai-model= testing
+      // once the V5 prompt is recalibrated for it. See card #504 for the full readout.
+      openaiModel: options.openaiModel || GPT4O,
       geminiModel: options.geminiModel || 'gemini-2.5-flash',
       kimiModel: options.kimiModel || 'moonshotai/kimi-k2.5',
       maxDelta: options.maxDelta ?? 15,
@@ -655,7 +662,7 @@ export class EnsembleReviewScorer {
       parts.push(`Claude: ${modelResults.claude.reasoning}`);
     }
     if (modelResults.openai?.reasoning) {
-      parts.push(`GPT-4o: ${modelResults.openai.reasoning}`);
+      parts.push(`OpenAI: ${modelResults.openai.reasoning}`);
     }
     if (modelResults.gemini?.reasoning) {
       parts.push(`Gemini: ${modelResults.gemini.reasoning}`);

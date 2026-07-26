@@ -415,7 +415,7 @@ function rolePromptHeader(refRoles) {
   (the change didn't land) or if there are NEW regressions unrelated to the BEFORE diff.`;
 }
 
-async function reviewWithOpenAI({ refPaths, refRoles, implPaths, apiKey, model = 'gpt-4o' }) {
+async function reviewWithOpenAI({ refPaths, refRoles, implPaths, apiKey, model = 'gpt-5.4-mini' }) {
   const roles = refRoles && refRoles.length === refPaths.length ? refRoles : refPaths.map(() => 'goal');
   const refBlocks = [];
   for (let i = 0; i < refPaths.length; i++) {
@@ -438,7 +438,9 @@ async function reviewWithOpenAI({ refPaths, refRoles, implPaths, apiKey, model =
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-    body: JSON.stringify({ model, messages, max_tokens: 2048, temperature: 0 }),
+    // gpt-5.4-mini rejects max_tokens (400: unsupported_parameter); max_completion_tokens
+    // works for it and for gpt-4o/-mini alike.
+    body: JSON.stringify({ model, messages, max_completion_tokens: 2048, temperature: 0 }),
     signal: AbortSignal.timeout(60000),
   });
 

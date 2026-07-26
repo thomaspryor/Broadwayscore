@@ -15,5 +15,11 @@ module.exports = {
   CLAUDE_OPUS: 'claude-opus-4-7',
   GPT4O: 'gpt-4o',
   GPT4O_MINI: 'gpt-4o-mini',
+  // Cheaper gpt-4o candidate evaluated in task #504 (2026-07-26) — API id
+  // confirmed live via GET /v1/models. NOT the ensemble default: its A/B
+  // (n=24 real reviews) failed the rule-13 gate (Mixed bucket 29%->0%, max
+  // shift 29.2pp). Wired for --openai-model= re-testing after prompt tuning.
+  // Requires max_completion_tokens (not max_tokens) in chat completion calls.
+  GPT54_MINI: 'gpt-5.4-mini',
   KIMI: 'moonshotai/kimi-k2.5',
 };

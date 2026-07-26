@@ -43,8 +43,15 @@ export const COST_PER_MILLION_TOKENS = {
   // model name routing matches the inline logic at index.ts L1516.
   'claude-sonnet': { input: 3.00, output: 15.00 },
   'claude-haiku':  { input: 0.80, output: 4.00 },
-  // OpenAI — gpt-4o (default for ensemble).
+  // OpenAI — gpt-4o. This is the ENSEMBLE DEFAULT (see ensemble-scorer.ts) —
+  // removed from OpenAI's current pricing page but still the live/served model.
   openai: { input: 2.50, output: 10.00 },
+  // OpenAI — gpt-5.4-mini. Evaluated as a cheaper replacement in task #504
+  // (2026-07-26) — ~70% cheaper than gpt-4o — but its real A/B (n=24 reviews)
+  // failed the rule-13 bucket-shift gate, so it is NOT the ensemble default.
+  // Kept priced here so --openai-model= re-tests don't silently mis-cost.
+  // Cached input billed separately at $0.075/M, not modeled here.
+  'openai-gpt54-mini': { input: 0.75, output: 4.50 },
   // Gemini — 2.5-flash: $0.30 in / $2.50 out (verified against Google's
   // published pricing 2026-07-26; the previous 1.25/5.00 were 2.5-PRO
   // prices and overstated the gemini leg ~4x in estimates).
@@ -69,22 +76,36 @@ export const COST_PER_MILLION_TOKENS = {
 export const BATCH_DISCOUNT_MULTIPLIER = 0.5;
 
 /**
+ * Pick the OpenAI pricing row for a given configured model name. Defaults to
+ * legacy gpt-4o pricing so existing callers that don't pass the option keep
+ * their current (correct) cost until they thread the model name through.
+ */
+function openaiPricing(modelName?: string) {
+  return (modelName || '').includes('gpt-5.4-mini')
+    ? COST_PER_MILLION_TOKENS['openai-gpt54-mini']
+    : COST_PER_MILLION_TOKENS.openai;
+}
+
+/**
  * Estimate cost in USD given cumulative or per-call token usage.
  *
  * @param usage Per-model token counts. Missing models cost 0.
  * @param opts.claudeModelName Used to pick claude-sonnet vs claude-haiku
  *        pricing. Defaults to sonnet pricing (matches existing
  *        `options.model.includes('haiku')` check at index.ts L1516).
+ * @param opts.openaiModelName Used to pick gpt-4o vs gpt-5.4-mini pricing.
+ *        Defaults to gpt-4o (legacy) pricing when omitted.
  * @param opts.batch When true, apply BATCH_DISCOUNT_MULTIPLIER to the
  *        claude/openai/gemini legs (not kimi — no batch tier).
  */
 export function estimateCost(
   usage: AllModelUsage,
-  opts: { claudeModelName?: string; batch?: boolean } = {}
+  opts: { claudeModelName?: string; openaiModelName?: string; batch?: boolean } = {}
 ): number {
   const claudePricing = (opts.claudeModelName || '').toLowerCase().includes('haiku')
     ? COST_PER_MILLION_TOKENS['claude-haiku']
     : COST_PER_MILLION_TOKENS['claude-sonnet'];
+  const openaiPrice = openaiPricing(opts.openaiModelName);
   const discount = opts.batch ? BATCH_DISCOUNT_MULTIPLIER : 1;
 
   let total = 0;
@@ -96,8 +117,8 @@ export function estimateCost(
     total += claudeTotal * discount;
   }
   if (usage.openai) {
-    let openaiTotal = (usage.openai.input / 1_000_000) * COST_PER_MILLION_TOKENS.openai.input;
-    openaiTotal += (usage.openai.output / 1_000_000) * COST_PER_MILLION_TOKENS.openai.output;
+    let openaiTotal = (usage.openai.input / 1_000_000) * openaiPrice.input;
+    openaiTotal += (usage.openai.output / 1_000_000) * openaiPrice.output;
     total += openaiTotal * discount;
   }
   if (usage.gemini) {
@@ -116,16 +137,19 @@ export function estimateCost(
  * Per-model cost breakdown (for the end-of-run print, matches the existing
  * cost-line format).
  *
+ * @param opts.openaiModelName See estimateCost — selects gpt-4o vs
+ *        gpt-5.4-mini pricing for the openai leg.
  * @param opts.batch See estimateCost — applies BATCH_DISCOUNT_MULTIPLIER to
  *        claude/openai/gemini.
  */
 export function costBreakdown(
   usage: AllModelUsage,
-  opts: { claudeModelName?: string; batch?: boolean } = {}
+  opts: { claudeModelName?: string; openaiModelName?: string; batch?: boolean } = {}
 ): { claude: number; openai: number; gemini: number; kimi: number; total: number } {
   const claudePricing = (opts.claudeModelName || '').toLowerCase().includes('haiku')
     ? COST_PER_MILLION_TOKENS['claude-haiku']
     : COST_PER_MILLION_TOKENS['claude-sonnet'];
+  const openaiPrice = openaiPricing(opts.openaiModelName);
   const discount = opts.batch ? BATCH_DISCOUNT_MULTIPLIER : 1;
 
   const claude = usage.claude
@@ -135,8 +159,8 @@ export function costBreakdown(
       ((usage.claude.cacheRead || 0) / 1_000_000) * claudePricing.input * CACHE_READ_MULTIPLIER) * discount
     : 0;
   const openai = usage.openai
-    ? ((usage.openai.input / 1_000_000) * COST_PER_MILLION_TOKENS.openai.input +
-      (usage.openai.output / 1_000_000) * COST_PER_MILLION_TOKENS.openai.output) * discount
+    ? ((usage.openai.input / 1_000_000) * openaiPrice.input +
+      (usage.openai.output / 1_000_000) * openaiPrice.output) * discount
     : 0;
   const gemini = usage.gemini
     ? ((usage.gemini.input / 1_000_000) * COST_PER_MILLION_TOKENS.gemini.input +
