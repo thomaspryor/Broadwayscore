@@ -19,15 +19,45 @@
  *                 notify-failure severity:'critical' path, tracked
  *                 separately, not scanned here).
  *
- * Not a lint gate (yet) — this is the inventory snapshot the card's
- * acceptance criteria asks for. Re-run any time to see what's drifted:
- *   node scripts/audit-alert-senders.js [--json]
+ * Modes:
+ *   node scripts/audit-alert-senders.js            inventory snapshot (writes
+ *                                                  data/audit/alert-sender-inventory.json)
+ *   node scripts/audit-alert-senders.js --json     same, JSON to stdout
+ *   node scripts/audit-alert-senders.js --check    CI lint gate (read-only):
+ *                                                  fail on any direct sender in a file
+ *                                                  not in scripts/.alert-sender-baseline.json,
+ *                                                  or a baselined file's count growing.
+ *                                                  Shrinking counts warn (run
+ *                                                  --update-baseline), never fail.
+ *   node scripts/audit-alert-senders.js --update-baseline
+ *                                                  regenerate the baseline from current
+ *                                                  direct findings (review the diff!)
+ *
+ * The baseline is a {relPath: directCallCount} map, NOT a flat file list (its
+ * sibling gate, audit-help-flag-safety.js's baseline, is per-file boolean; this
+ * one needs counts because audit-t1-silent-gaps.js has 2 sites and a new bypass
+ * added to an already-baselined file must still fail). Never stores line
+ * numbers — they churn. Baselined debt is tracked: audit-t1-silent-gaps.js
+ * drain is card #531; opening-night-broadcast.yml + opening-night-poller.js are
+ * the two permanent real-time-critical senders (CLAUDE.md rule 14's critical
+ * workflows) and stay in the baseline deliberately.
  */
 
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-alert-senders.js — inventory + CI gate for direct sendAlert(email:true) bypasses.
+
+Usage:
+  node scripts/audit-alert-senders.js                    inventory snapshot (writes data/audit/)
+  node scripts/audit-alert-senders.js --json             same, JSON to stdout
+  node scripts/audit-alert-senders.js --check            CI gate: fail on new/grown direct senders
+  node scripts/audit-alert-senders.js --update-baseline  regenerate scripts/.alert-sender-baseline.json
+  node scripts/audit-alert-senders.js --help, -h         print this usage and exit
+`;
 
 const REPO_ROOT = path.join(__dirname, '..');
 const SCAN_DIRS = ['scripts', '.github/workflows'];
@@ -106,7 +136,9 @@ function scanFile(absPath, relPath) {
   return findings;
 }
 
-function main() {
+const BASELINE_PATH = path.join(__dirname, '.alert-sender-baseline.json');
+
+function collectFindings() {
   const files = [];
   for (const dir of SCAN_DIRS) walk(path.join(REPO_ROOT, dir), files);
 
@@ -114,8 +146,97 @@ function main() {
   for (const absPath of files) {
     const relPath = path.relative(REPO_ROOT, absPath).split(path.sep).join('/');
     if (relPath.endsWith('.test.mjs') || relPath.endsWith('.test.js')) continue;
+    // Self-exclude: this script's usage text and gate messages quote the
+    // "sendAlert(email:true)" pattern verbatim in non-comment lines, which the
+    // regex scanner would flag as 4 phantom direct senders (same reason
+    // audit-help-flag-safety.js filters out its own basename).
+    if (relPath === 'scripts/' + path.basename(__filename)) continue;
     all = all.concat(scanFile(absPath, relPath));
   }
+  return all;
+}
+
+/** {relPath: count} of direct-classified findings, keys sorted. */
+function buildDirectCounts(findings) {
+  const counts = {};
+  for (const f of findings) {
+    if (f.classification !== 'direct') continue;
+    counts[f.file] = (counts[f.file] || 0) + 1;
+  }
+  return Object.fromEntries(Object.entries(counts).sort(([a], [b]) => a.localeCompare(b)));
+}
+
+/**
+ * Pure baseline comparison. `newFiles` and `grown` are regressions (blocking);
+ * `shrunk` and `stale` mean the baseline is behind reality (warn: run
+ * --update-baseline so the frozen debt keeps shrinking with the drain cards).
+ */
+function compareToBaseline(counts, baseline) {
+  const newFiles = Object.keys(counts).filter((f) => !(f in baseline));
+  const grown = Object.keys(counts)
+    .filter((f) => f in baseline && counts[f] > baseline[f])
+    .map((f) => ({ file: f, baseline: baseline[f], current: counts[f] }));
+  const shrunk = Object.keys(counts)
+    .filter((f) => f in baseline && counts[f] < baseline[f])
+    .map((f) => ({ file: f, baseline: baseline[f], current: counts[f] }));
+  const stale = Object.keys(baseline).filter((f) => !(f in counts));
+  return { newFiles, grown, shrunk, stale, ok: newFiles.length === 0 && grown.length === 0 };
+}
+
+function loadBaseline() {
+  try { return JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8')); } catch { return {}; }
+}
+
+function runCheck() {
+  const counts = buildDirectCounts(collectFindings());
+  const result = compareToBaseline(counts, loadBaseline());
+
+  for (const f of result.stale) {
+    console.log(`ℹ️  baseline entry already drained (no direct senders left): ${f} — run --update-baseline to shrink the list.`);
+  }
+  for (const s of result.shrunk) {
+    console.log(`ℹ️  ${s.file}: direct senders shrank ${s.baseline} → ${s.current} — run --update-baseline to lock in the improvement.`);
+  }
+
+  if (result.ok) {
+    const debt = Object.values(counts).reduce((a, b) => a + b, 0);
+    console.log(`✅ Alert-sender gate: no new direct sendAlert(email:true) bypasses (${debt} baselined call site(s) remain — drain tracked in #531 etc.).`);
+    return;
+  }
+
+  console.log(`🚨 Alert-sender gate: new direct sendAlert(email:true) bypass(es) of owner-alert-router:\n`);
+  for (const f of result.newFiles) {
+    console.log(`  ${f} (${counts[f]} call site(s)) — not in ${path.basename(BASELINE_PATH)}`);
+  }
+  for (const g of result.grown) {
+    console.log(`  ${g.file} — direct call sites grew ${g.baseline} → ${g.current}`);
+  }
+  console.log(`\nFix: route the alert through routeAlert() from scripts/lib/owner-alert-router.js`);
+  console.log(`(ACTION-only bar + per-condition dedup) instead of calling sendAlert(email:true)`);
+  console.log(`directly. If the sender is genuinely real-time-critical (opening-night class,`);
+  console.log(`CLAUDE.md rule 14), get it reviewed and freeze it via --update-baseline.\n`);
+  process.exitCode = 1;
+}
+
+function updateBaseline() {
+  const counts = buildDirectCounts(collectFindings());
+  const old = loadBaseline();
+  const added = Object.keys(counts).filter((f) => !(f in old));
+  const removed = Object.keys(old).filter((f) => !(f in counts));
+  const changed = Object.keys(counts).filter((f) => f in old && old[f] !== counts[f]);
+  fs.writeFileSync(BASELINE_PATH, JSON.stringify(counts, null, 2) + '\n');
+  console.log(`Wrote ${Object.keys(counts).length} file entr${Object.keys(counts).length === 1 ? 'y' : 'ies'} to ${path.relative(process.cwd(), BASELINE_PATH)} (was ${Object.keys(old).length}). Review the diff!`);
+  if (added.length) console.log(`  + added: ${added.join(', ')}`);
+  if (removed.length) console.log(`  - removed: ${removed.join(', ')}`);
+  for (const f of changed) console.log(`  ~ ${f}: ${old[f]} → ${counts[f]}`);
+}
+
+function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  if (process.argv.includes('--check')) return runCheck();
+  if (process.argv.includes('--update-baseline')) return updateBaseline();
+
+  const all = collectFindings();
 
   const summary = {
     generatedAt: new Date().toISOString(),
@@ -149,4 +270,6 @@ function main() {
   console.log(`\nWritten to data/audit/alert-sender-inventory.json`);
 }
 
-main();
+module.exports = { scanFile, buildDirectCounts, compareToBaseline, DIGEST_OR_REVIEWED };
+
+if (require.main === module) main();
