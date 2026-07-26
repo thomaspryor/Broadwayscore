@@ -30,7 +30,7 @@ const { execFileSync } = require('child_process');
 const ledger = require('./lib/autonomous-ledger.js');
 const { gatherDigest } = require('./lib/overnight-digest.js');
 const { buildActionUrl } = require('./lib/autonomous-links.js');
-const { renderEmail, extractWhy, summarizeQueue, buildPlainLanguageItemPrompt, sanitizePlainLanguageText } = require('./lib/autonomous-email-render.js');
+const { renderEmail, extractWhy, summarizeQueue, buildPlainLanguageItemPrompt, sanitizePlainLanguageText, actionableAttentionCountOf } = require('./lib/autonomous-email-render.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { summarize: summarizeRecheck, describeResult } = require('./lib/autonomous-recheck-core.js');
 
@@ -290,7 +290,15 @@ async function main() {
       if (p && p.size && !enabled.has(p.size)) attention.parkedItems.push({ name: p.name, size: p.size });
     }
   }
-  const attentionCount = attention.configWarnings.length + attention.failedCards.length + attention.parkedItems.length;
+  // Only configWarnings + failedCards name a decision the owner must actually
+  // make tonight — parkedItems are a routine skip reason ("bigger than the
+  // loop's enabled size tiers"), not new information, so they're excluded
+  // from the subject's "needs your triage" escalation (card #475 fix: the
+  // subject previously counted parked items too, producing "10 items
+  // stalling the loop — needs your triage" on nights where every one of
+  // those 10 was just a parked-by-config item, contradicted by the body's
+  // own "Nothing needs you this morning" headline).
+  const attentionCount = actionableAttentionCountOf(attention);
 
   // Acceptance recheck (S3-T4): last night's shadow results, straight off the
   // ledger. Fail-soft — a missing/short ledger just omits the section.

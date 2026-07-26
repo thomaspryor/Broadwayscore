@@ -66,20 +66,25 @@ jobs:
       - name: Notify — self-heal succeeded (informational)
         if: steps.rt1.outcome == 'failure' && steps.rt2.outcome == 'success'
         uses: actions/github-script@v7
-        env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         with:
           script: |
-            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            // Was a direct sendAlert(severity:'error', email:true) — an
+            // immediate [CRITICAL] email for a condition its OWN title calls
+            // "no action needed". Card #475 (2026-07-26): the step's stated
+            // intent ("worth knowing, signal to consider Supabase Pro") is a
+            // trend to notice over time, not a page — routed through
+            // owner-alert-router's 'digest' disposition instead, so repeated
+            // idle-pauses accumulate visibly in the daily digest.
+            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            await sendAlert({
+            await routeAlert({
+              conditionKey: 'ugc-roundtrip:supabase-self-heal',
               title: 'UGC: Supabase auto-restored (no action needed)',
               description: 'The Supabase project had idle-paused (sign-in was briefly down); the round-trip auto-restored it and re-verified all UGC flows are working. If this recurs, consider Supabase Pro to stop idle-pauses.',
-              severity: 'error',
-              email: true,
+              severity: 'info',
+              disposition: 'digest',
               url: runUrl,
-              fields: [{ name: 'Run', value: `[View logs](${runUrl})` }],
+              cooldownHours: 20,
             }).catch(e => console.error('Self-heal notice failed:', e.message));
 
       - name: Fail job if not recovered

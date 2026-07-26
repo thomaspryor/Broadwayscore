@@ -33,6 +33,7 @@ const { execSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { routeAlert, readDispatchAttempts } = require('./lib/owner-alert-router.js');
+const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 // Discord daily reports removed — email digest is the single notification channel.
@@ -2354,6 +2355,34 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     `;
   }
 
+  // Owner email volume (7d) — card #475 regression guard: makes creep in the
+  // number of CRITICAL emails visible in the ONE place already read daily,
+  // instead of requiring a manual inbox comb the next time volume spikes.
+  let ownerEmailHtml = '';
+  try {
+    const sent = readOwnerEmailLog({ days: 7 });
+    if (sent.length > 0) {
+      const bySender = new Map();
+      for (const e of sent) {
+        // Bucket by the text before the first colon (e.g. "Secret Health
+        // Check — 2 Failed" has none, so falls back to the full title) —
+        // good enough to spot one sender dominating the week's volume
+        // without needing per-caller instrumentation.
+        const key = (e.title || 'unknown').split(':')[0].trim().slice(0, 60);
+        bySender.set(key, (bySender.get(key) || 0) + 1);
+      }
+      const rows = [...bySender.entries()].sort((a, b) => b[1] - a[1]);
+      const rowsHtml = rows.map(([name, count]) =>
+        `<li style="color:#ccc;margin-bottom:2px;">${count}&times; — ${name}</li>`).join('');
+      ownerEmailHtml = `
+        <h3 style="color:#aaa;margin:24px 0 8px;">Owner Emails (7d): ${sent.length} total</h3>
+        <ul style="padding-left:20px;margin:4px 0;">${rowsHtml}</ul>
+      `;
+    }
+  } catch (e) {
+    console.log(`[Owner Email Volume] Skipped — ${e.message}`);
+  }
+
   // Overall status banner
   const unfixedErrors = errors.filter(r => !autoFixResults?.[r.name]?.fixed);
   const unfixedWarns = warns.filter(r => !autoFixResults?.[r.name]?.fixed);
@@ -2399,6 +2428,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     ${mezzanineCoverageHtml}
     ${obCandidatesHtml}
     ${workflowHtml}
+    ${ownerEmailHtml}
     ${buildExclusionSummaryHtml()}
 
     <!-- Footer -->
