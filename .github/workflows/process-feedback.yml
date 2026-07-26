@@ -94,17 +94,29 @@ jobs:
             const diagnosed = wellFormed.filter(d => d.diagnosis);
             const undiagnosed = wellFormed.filter(d => !d.diagnosis);
 
+            // Undiagnosed entries whose issue creation fails must survive to
+            // the next run — since content requests always take this path, a
+            // transient GitHub API error would otherwise permanently lose the
+            // user's request (both exit paths below rewrite the pending file).
+            const failedUndiagnosed = [];
             for (const entry of undiagnosed) {
               const { item, submission } = entry;
               try {
+                // Content-addition requests (missing show/reviews) deliberately
+                // skip diagnosis — they're data work, not code bugs.
+                const isContentRequest = item.contentRequest === true;
                 const issue = await github.rest.issues.create({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  title: `Bug report needs manual review (auto-diagnosis failed): ${(item.summary || 'no summary').substring(0, 60)}`,
+                  title: isContentRequest
+                    ? `Content request needs review: ${(item.summary || 'no summary').substring(0, 60)}`
+                    : `Bug report needs manual review (auto-diagnosis failed): ${(item.summary || 'no summary').substring(0, 60)}`,
                   body: [
-                    `Auto-diagnosis failed for this feedback submission — review manually.`,
+                    isContentRequest
+                      ? `Content-addition request from user feedback — needs data work (add show/reviews), not a code fix.`
+                      : `Auto-diagnosis failed for this feedback submission — review manually.`,
                     '',
-                    `**From:** ${submission.name || 'Anonymous'} (${submission.email || 'no email'}) | **Show:** ${submission.show || 'N/A'} | **Priority:** ${item.priority || 'unknown'}`,
+                    `**From:** ${submission.name || 'Anonymous'} | **Show:** ${submission.show || 'N/A'} | **Priority:** ${item.priority || 'unknown'}`,
                     '',
                     `**Original message:**`,
                     `> ${(submission.message || '(no message)').replace(/\n/g, '\n> ')}`,
@@ -114,12 +126,16 @@ jobs:
                 console.log(`Created needs-review issue #${issue.data.number} for undiagnosed report`);
               } catch (err) {
                 console.log(`Failed to create needs-review issue for undiagnosed report: ${err.message}`);
+                failedUndiagnosed.push(entry);
               }
             }
 
             if (diagnosed.length === 0) {
               console.log('No bugs diagnosed');
-              fs.writeFileSync(PENDING_PATH, '[]\n');
+              fs.writeFileSync(PENDING_PATH, JSON.stringify(failedUndiagnosed, null, 2) + '\n');
+              if (failedUndiagnosed.length > 0) {
+                console.log(`${failedUndiagnosed.length} undiagnosed entr(ies) NOT issued — left for the next run`);
+              }
               return;
             }
 
@@ -270,7 +286,7 @@ jobs:
                 await new Promise(r => setTimeout(r, 10000));
               }
             } finally {
-              const leftover = [...remaining];
+              const leftover = [...remaining, ...failedUndiagnosed];
               fs.writeFileSync(PENDING_PATH, JSON.stringify(leftover, null, 2) + '\n');
               if (leftover.length > 0) {
                 console.log(`${leftover.length} diagnosis(es) NOT issued — left in ${PENDING_PATH} for the next run`);
