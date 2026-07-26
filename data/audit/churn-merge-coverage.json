@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-26T18:03:40.584Z",
+    "generatedAt": "2026-07-26T19:12:55.367Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,7 +16,7 @@
   "flagged": [
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 239
+      "churn": 237
     },
     {
       "path": "data/audit/processed-feedback.json",
@@ -24,19 +24,19 @@
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 47
+      "churn": 48
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 43
+      "churn": 45
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 43
+      "churn": 45
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 43
+      "churn": 45
     },
     {
       "path": ".github/workflows/test.yml",
@@ -58,7 +58,7 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 106
+      "churn": 105
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
@@ -78,18 +78,18 @@
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 61
+      "churn": 60
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 57
-    },
-    {
-      "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
-      "churn": 50
+      "churn": 56
     },
     {
       "path": "data/commercial-rss-state.json",
+      "churn": 47
+    },
+    {
+      "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
       "churn": 47
     },
     {
@@ -104,12 +104,12 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 769,
+      "churn": 780,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 745,
+      "churn": 756,
       "mergeAttr": "ours"
     },
     {
@@ -119,17 +119,17 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 525,
+      "churn": 524,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 239,
+      "churn": 237,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 239,
+      "churn": 237,
       "mergeAttr": "ours"
     },
     {
@@ -139,7 +139,7 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 110,
+      "churn": 109,
       "mergeAttr": "ours"
     },
     {
@@ -158,12 +158,12 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/gather-collisions.json",
+      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
       "churn": 78,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
+      "path": "data/audit/gather-collisions.json",
       "churn": 77,
       "mergeAttr": "ours"
     },
@@ -203,22 +203,22 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/midnight-at-the-never-get-west-end-2026.json",
+      "churn": 56,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 57,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 57,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 57,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/midnight-at-the-never-get-west-end-2026.json",
       "churn": 56,
       "mergeAttr": "ours"
     },
@@ -234,7 +234,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 44,
+      "churn": 42,
       "mergeAttr": "ours"
     },
     {

@@ -98,10 +98,22 @@ function extractShowTitleFromBwwRoundup(rawTitle) {
   // Otherwise titles with internal commas (OH, MARY!, GOOD NIGHT, AND GOOD
   // LUCK) would get truncated at the first comma.
   //
-  // Venue tails split on "Opens at" or " at the " — NOT on a bare " at ",
-  // which would truncate real titles like DINNER AT EIGHT.
+  // Venue tails split ONLY via an opening verb ("Opens at the Majestic").
+  //
+  // A standalone " at the " branch was tried and REVERTED (2026-07-26): real
+  // catalogued titles contain it, and truncating them is worse than leaving a
+  // venue tail on. Two verified harms, both from data/shows.json:
+  //   "MIDNIGHT AT THE NEVER GET" -> "MIDNIGHT", which then exact-matches the
+  //     unrelated show "Midnight" and SILENTLY SUPPRESSES a real missing show
+  //     — and Midnight at the Never Get is the originating miss this whole
+  //     detector was built for (task #281).
+  //   "HUGO MARCHAND | ARTISTS AT THE CENTER" (open, off-broadway) ->
+  //     "HUGO MARCHAND | ARTISTS", a false "missing show" alert.
+  // A venue-word tail check doesn't save it either — "Center" IS a venue word.
+  // Leaving a tail on costs at most one noisy candidate; truncating loses real
+  // shows silently, so the asymmetry favors under-splitting.
   const sep = rest.match(
-    /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+-\s+All\s+the\s+Reviews|\s+at\s+the\s+|\s+(?:Opens?\s+(?:on|in|at)|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b)/i
+    /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+-\s+All\s+the\s+Reviews|\s+(?:Opens?\b|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b)/i
   );
   const title = (sep ? sep[1] : rest).trim();
   return title || null;

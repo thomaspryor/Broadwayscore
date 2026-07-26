@@ -171,6 +171,32 @@ export class GeminiScorer {
   }
 
   /**
+   * Parse an already-fetched V5 response body (e.g. a Batch API result entry)
+   * through the same rejection-check + parse pipeline scoreReview's live
+   * path uses (including the calibration offset applied in
+   * validateAndNormalize), so sync and --batch mode (task #505) stay
+   * byte-identical. Makes no network call.
+   */
+  parseBatchResponseV5(responseText: string): {
+    success: boolean;
+    result?: SimplifiedLLMResult;
+    rejected?: boolean;
+    rejection?: string;
+    rejectionReasoning?: string;
+    error?: string;
+  } {
+    const rejection = this.parseRejection(responseText);
+    if (rejection) {
+      return { success: true, rejected: true, rejection: rejection.rejection, rejectionReasoning: rejection.reasoning };
+    }
+    const parsed = this.parseResponse(responseText);
+    if (!parsed) {
+      return { success: false, error: 'Failed to parse Gemini response' };
+    }
+    return { success: true, result: parsed };
+  }
+
+  /**
    * Parse Gemini response into structured result
    */
   private parseResponse(response: string): SimplifiedLLMResult | null {
