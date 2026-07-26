@@ -194,17 +194,17 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
    >
    > WHAT WAS BUILT: [describe the feature and list key files]
 
-2. **GPT-4o — Fresh-eyes UX review** — Run this curl command via Bash.
+2. **gpt-5.4-mini — Fresh-eyes UX review** — Run this curl command via Bash.
    **OpenAI check:** Run `echo ${OPENAI_API_KEY:+SET}` first.
-   - If SET: run the curl, then **check the response** — if it's empty or `echo "$RESP" | jq -e '.error'` matches (bad key, quota, blocked host), do NOT swallow it. Print the error and record GPT-4o as **FAILED** in the coverage banner (Phase 6). A present key that errors is a real problem the user must see, not a silent Claude fallback.
-   - If empty: this is a fixable misconfiguration, not a routine fallback. In a cloud session, add `OPENAI_API_KEY` in the environment settings at claude.ai/code (cloud icon → gear → Environment variables), and make sure Network access is **Full** or its Custom allowlist includes `api.openai.com`. Fall back to a Claude agent with the same system prompt so the review still runs, but record GPT-4o as **MISSING** in the coverage banner and surface it prominently.
-   **GPT-4o gets a description of the pages + what they should show, but NOT the code. It reviews from a pure user perspective.**
+   - If SET: run the curl, then **check the response** — if it's empty or `echo "$RESP" | jq -e '.error'` matches (bad key, quota, blocked host), do NOT swallow it. Print the error and record gpt-5.4-mini as **FAILED** in the coverage banner (Phase 6). A present key that errors is a real problem the user must see, not a silent Claude fallback.
+   - If empty: this is a fixable misconfiguration, not a routine fallback. In a cloud session, add `OPENAI_API_KEY` in the environment settings at claude.ai/code (cloud icon → gear → Environment variables), and make sure Network access is **Full** or its Custom allowlist includes `api.openai.com`. Fall back to a Claude agent with the same system prompt so the review still runs, but record gpt-5.4-mini as **MISSING** in the coverage banner and surface it prominently.
+   **gpt-5.4-mini gets a description of the pages + what they should show, but NOT the code. It reviews from a pure user perspective.**
    ```
    curl -s https://api.openai.com/v1/chat/completions \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $OPENAI_API_KEY" \
      -d "$(jq -n --arg context "$(cat /tmp/review-ux-context.txt)" '{
-       model: "gpt-4o",
+       model: "gpt-5.4-mini",
        temperature: 0.3,
        messages: [
          {role: "system", content: "You are a theater fan who just discovered broadwayscorecard.com on your phone. You have never seen the site before. You are NOT a developer — you are a user.\n\nYou will receive a description of pages you are looking at and what they are supposed to show.\n\n**YOUR TASKS:**\n\n1. **First impression:** What stands out? What is confusing? What would you tap first? Is it obvious what this page is for?\n\n2. **Information hierarchy:** Is the most important info the most prominent? Is anything buried that should be front and center? Is anything prominent that does not matter?\n\n3. **Trust signals:** Does this look professional or janky? Would you trust the scores? Is anything inconsistent that would undermine trust (different styles, misaligned elements, weird spacing)?\n\n4. **Missing expectations:** As a theater fan, what do you EXPECT to see that is not here? What question does this page raise but not answer?\n\n5. **The one thing:** If you could change ONE thing to make this page better for you as a user, what would it be?\n\n6. **Would you screenshot this?** If you took a screenshot of the top of any ranked list and posted it to Reddit or Twitter, would anyone reply 'but that is only based on 1 show' or 'that average is meaningless'? If any ranking or average looks like it could be challenged for having too little data behind it, flag it.\n\nBe specific and opinionated. Under 500 words. Bullet points only."},
@@ -222,7 +222,7 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
 3. **Codex (GPT-5.x with codebase access) — Adversarial design review** — Run via Bash.
    **Codex check:** Run `command -v codex >/dev/null && echo READY || echo MISSING`.
    - READY (local): run Codex as below.
-   - MISSING (expected in cloud — there is no Codex CLI): do NOT drop to a Claude reviewer, which would leave **zero** non-Claude adversarial review. Instead run this SAME adversarial prompt + diff against **GPT-4o via `api.openai.com`** — reuse reviewer 2's curl mechanics (write `PROMPT_HEAD` + the diff to a temp file, send it as the `user` message, `model: "gpt-4o"`, check `jq -e '.error'` and surface any error). This preserves a real GPT-family adversarial reviewer. Only if `OPENAI_API_KEY` is also unavailable, fall back to a Claude agent. Record which reviewer actually ran (Codex / GPT-4o / Claude) in the coverage banner.
+   - MISSING (expected in cloud — there is no Codex CLI): do NOT drop to a Claude reviewer, which would leave **zero** non-Claude adversarial review. Instead run this SAME adversarial prompt + diff against **gpt-5.4-mini via `api.openai.com`** — reuse reviewer 2's curl mechanics (write `PROMPT_HEAD` + the diff to a temp file, send it as the `user` message, `model: "gpt-5.4-mini"`, check `jq -e '.error'` and surface any error). This preserves a real GPT-family adversarial reviewer. Only if `OPENAI_API_KEY` is also unavailable, fall back to a Claude agent. Record which reviewer actually ran (Codex / gpt-5.4-mini / Claude) in the coverage banner.
    **This reviewer challenges the design from a different model family. It reads the diff and the surrounding code, then questions whether the chosen approach is right — not whether it's correct.**
    ```bash
    set -o pipefail
