@@ -713,7 +713,7 @@ function upcomingOpeningsSection() {
   if (!items.length) return null;
   items.sort((a, b) => a.eventDate.localeCompare(b.eventDate));
   const top = items.slice(0, 4); // cap card height — surface the closest 4
-  _upcomingLede = { title: top[0].show.title, eventLabel: top[0].eventLabel, eventDate: top[0].eventDate, count: items.length };
+  _upcomingLede = { title: top[0].show.title, id: top[0].show.id, slug: top[0].show.slug, eventLabel: top[0].eventLabel, eventDate: top[0].eventDate, count: items.length };
   const remaining = items.length - top.length;
   // Placement signal: when Coming Up has a Broadway entry it earns a slot near
   // the top of the email (just after the openings cards). An OB-only slate is
@@ -1368,7 +1368,7 @@ function closingSection() {
     return a && a.count >= minReviews(s.category);
   }).sort((a, b) => a.closingDate.localeCompare(b.closingDate));
   if (!list.length) return null;
-  _closingLede = { title: list[0].title, closingDate: list[0].closingDate, count: list.length };
+  _closingLede = { title: list[0].title, id: list[0].id, slug: list[0].slug, closingDate: list[0].closingDate, count: list.length };
   markFeatured(...list.map(s => s.id));
   const rowFor = (s, isLast) => {
     const a = aggregateScore(s.id);
@@ -1633,7 +1633,7 @@ function boxOfficeSection() {
       </td>
     </tr>`;
   }
-  _boxOfficeLede = { wow: _md.wow, topTitle: topGross.show.title, topGross: topGross.gross };
+  _boxOfficeLede = { wow: _md.wow, topTitle: topGross.show.title, topId: topGross.show.id, topSlug: topGross.show.slug, topGross: topGross.gross };
   const rowsClean = [
     row('Top Gross',        topGross, '$' + (topGross.gross / 1000000).toFixed(2) + 'M', `${topGross.performances} perf`, 'gross'),
     row('Highest Capacity', topCap,   topCap.capacity.toFixed(1) + '%', topCap.attendance.toLocaleString() + ' attendees', 'capacity'),
@@ -2240,8 +2240,14 @@ const newsworthyInputs = {
   // Single show, single direction — small enough to recompute here.
   // Same source of truth biggestMoverSection uses — the scorer can never
   // surface a mover that the section doesn't actually render. Returns null
-  // when no candidate passes the section's newsworthy gates.
-  topMover: (() => { const m = findRenderableCriticMovers()[0]; return (m && Math.abs(m.after - m.before) >= 5) ? m : null; })(),
+  // when no candidate passes the section's newsworthy gates. IS_WE-gated
+  // (lede ⊆ body invariant, card #482): the Biggest Movers section is
+  // Broadway-edition-only (line ~2003, `IS_WE ? null : sections.run(...)`),
+  // so findRenderableCriticMovers()'s isPrimaryMarket() gate — which is
+  // itself edition-aware and would happily pass a WE show — isn't enough;
+  // the WE edition must never see a mover candidate at all, same fix as
+  // the recoupments gate above.
+  topMover: IS_WE ? null : (() => { const m = findRenderableCriticMovers()[0]; return (m && Math.abs(m.after - m.before) >= 5) ? m : null; })(),
   tonyDaysOut: (() => {
     const ceremony = new Date('2026-06-08T00:00:00');
     return Math.max(0, Math.ceil((ceremony - new Date(weekEndStr + 'T12:00:00')) / 86400000));
@@ -2271,8 +2277,9 @@ const LEDE_STYLE = process.env.NEWSLETTER_LEDE_STYLE || 'short';
 function _boxOfficeCtx() {
   if (!_boxOfficeLede) return null;
   const money = '$' + (_boxOfficeLede.topGross / 1e6).toFixed(2) + 'M';
+  const showRef = { id: _boxOfficeLede.topId, slug: _boxOfficeLede.topSlug, title: _boxOfficeLede.topTitle };
   const wow = _boxOfficeLede.wow;
-  if (wow == null) return { tag: 'Box office', text: `${_boxOfficeLede.topTitle} led the box office at ${money}.`, brief: `${_boxOfficeLede.topTitle} led at ${money}` };
+  if (wow == null) return { tag: 'Box office', text: `${_boxOfficeLede.topTitle} led the box office at ${money}.`, brief: `${_boxOfficeLede.topTitle} led at ${money}`, showRef };
   const r = Math.round(Math.abs(wow));
   const move = wow <= -2 ? `slipped ${r}% week-over-week` : wow >= 2 ? `climbed ${r}% week-over-week` : 'held steady week-over-week';
   const arrow = wow <= -2 ? '↓' : wow >= 2 ? '↑' : '→';
@@ -2280,6 +2287,7 @@ function _boxOfficeCtx() {
     tag: 'Box office',
     text: `At the box office, grosses ${move}, with ${_boxOfficeLede.topTitle} on top at ${money}.`,
     brief: `${arrow} ${r}% week-over-week · ${_boxOfficeLede.topTitle} led at ${money}`,
+    showRef,
   };
 }
 function _comingUpCtx() {
@@ -2292,6 +2300,7 @@ function _comingUpCtx() {
     tag: 'Coming up',
     text: `Looking ahead, ${_upcomingLede.title} ${verb} ${when}${moreText}.`,
     brief: `${_upcomingLede.title} ${verb} ${when}${n > 0 ? ` (+${n} more)` : ''}`,
+    showRef: { id: _upcomingLede.id, slug: _upcomingLede.slug, title: _upcomingLede.title },
   };
 }
 function _closingCtx(usedKinds) {
@@ -2302,9 +2311,10 @@ function _closingCtx(usedKinds) {
     tag: 'Last chance',
     text: `Last chance for ${_closingLede.title}, which plays its final performance ${when}${n > 1 ? ` — one of ${n} productions in their final week` : ''}.`,
     brief: `${_closingLede.title} plays its final performance ${when}${n > 1 ? ` (one of ${n} closing)` : ''}`,
+    showRef: { id: _closingLede.id, slug: _closingLede.slug, title: _closingLede.title },
   };
 }
-const _ledeParts = buildLedeSentences(newsworthyCandidates, LEDE_STYLE === 'short' ? 3 : 4) || { sentences: [], kinds: [] };
+const _ledeParts = buildLedeSentences(newsworthyCandidates, LEDE_STYLE === 'short' ? 3 : 4) || { sentences: [], kinds: [], showRefs: [] };
 const _ctx = [];
 if (LEDE_STYLE !== 'short' && !process.env.LEDE_OVERRIDE) {
   for (const c of [_boxOfficeCtx(), _closingCtx(_ledeParts.kinds), _comingUpCtx()]) if (c) _ctx.push(c);
@@ -2312,18 +2322,27 @@ if (LEDE_STYLE !== 'short' && !process.env.LEDE_OVERRIDE) {
 let ledeText;               // primary paragraph (all styles)
 let ledeSecondaryText = ''; // second paragraph (expanded-two)
 let ledeBullets = [];       // compact strip (expanded-brief): {tag, text}
+// Shows the PRIMARY paragraph (ledeText) names — the mechanical input to the
+// pre-send-check lede-⊆-body gate (scripts/lib/lede-body-invariant.js). Only
+// track this when the primary paragraph is auto-generated: LEDE_OVERRIDE is
+// hand-written editorial copy the gate can't parse into show references.
+let ledeShowRefs = [];
 if (process.env.LEDE_OVERRIDE) {
   ledeText = process.env.LEDE_OVERRIDE;
 } else if (LEDE_STYLE === 'expanded-para') {
   ledeText = _ledeParts.sentences.concat(_ctx.map(c => c.text)).join(' ');
+  ledeShowRefs = _ledeParts.showRefs.concat(_ctx.map(c => c.showRef));
 } else if (LEDE_STYLE === 'expanded-two') {
   ledeText = _ledeParts.sentences.join(' ');
   ledeSecondaryText = _ctx.map(c => c.text).join(' ');
+  ledeShowRefs = _ledeParts.showRefs;
 } else if (LEDE_STYLE === 'expanded-brief') {
   ledeText = _ledeParts.sentences.join(' ');
   ledeBullets = _ctx;
+  ledeShowRefs = _ledeParts.showRefs;
 } else {
   ledeText = _ledeParts.sentences.slice(0, 3).join(' ') || '';
+  ledeShowRefs = _ledeParts.showRefs.slice(0, 3);
 }
 // Subject is plain text in every inbox — strip any *emphasis* markers an editor
 // (or a future marker-aware scorer) left in, so they never render literally.
@@ -2444,6 +2463,10 @@ ${ledeText ? `<tr><td style="padding:6px 4px 20px;">
     ${ledeBulletsHtml ? `<div style="margin-top:10px;">${ledeBulletsHtml}</div>` : ''}
   </div>
 </td></tr>` : '<tr><td style="padding:0 4px 12px;"></td></tr>'}
+<!-- BODY_SECTIONS_START: pre-send-check.mjs's lede-⊆-body gate splits on this
+     marker so it only checks REAL body content — everything above (subject
+     comment, hidden preheader, header/date row, lede paragraph) echoes lede
+     text and would make the gate a no-op if included. -->
 ${sectionOrder.join('')}
 <tr><td align="center" style="padding:40px 4px 8px;">
   <div style="border-top:1px solid rgba(255,255,255,0.05);padding-top:24px;">
@@ -2492,6 +2515,10 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   weekEnd: weekEndStr,
   htmlPath: `${outDir}/${slug}.html`,
   headerCounts,
+  // Shows the lede paragraph names, {id, slug, title} each — pre-send-check.mjs
+  // hard-fails if any of these don't appear in the body (Notion 3a9637c5:
+  // "lede ⊆ body" invariant, mechanically enforced instead of per-input gating).
+  ledeShows: ledeShowRefs.filter(Boolean),
 });
 sections.printSummary();
 console.log(`Wrote ${outDir}/${slug}.html (${sectionOrder.length} sections, headerCounts="${headerCounts}")`);

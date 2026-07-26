@@ -274,9 +274,12 @@ export function buildLedeFromCandidates(candidates, maxSentences = 3) {
   return r ? r.sentences.join(' ') : null;
 }
 
-// Sentence-level variant: returns { sentences, kinds } so the expanded-lede
-// composer in generate.mjs can add box-office / coming-up context without
-// duplicating a kind that already made the cut.
+// Sentence-level variant: returns { sentences, kinds, showRefs } so the
+// expanded-lede composer in generate.mjs can add box-office / coming-up
+// context without duplicating a kind that already made the cut. `showRefs`
+// (one per surviving candidate, {id, slug, title}) lets the caller record
+// exactly which shows the lede named — the mechanical input to the
+// lede-⊆-body pre-send check (scripts/lib/lede-body-invariant.js).
 export function buildLedeSentences(candidates, maxSentences = 3) {
   if (!candidates.length) return null;
   const unique = dedupeByKind(candidates).slice(0, maxSentences);
@@ -293,7 +296,11 @@ export function buildLedeSentences(candidates, maxSentences = 3) {
     }
     return headlineToSentence({ ...c, headline });
   });
-  return { sentences, kinds: unique.map(c => c.kind) };
+  const showRefs = unique
+    .map(c => c.show)
+    .filter(Boolean)
+    .map(s => ({ id: s.id, slug: s.slug, title: s.title }));
+  return { sentences, kinds: unique.map(c => c.kind), showRefs };
 }
 
 function headlineToSentence(c) {
