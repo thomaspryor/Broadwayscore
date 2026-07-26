@@ -1,0 +1,120 @@
+/**
+ * Guards the rescore-queue retirement contract (2026-07-26 incident).
+ *
+ * The bug: scripts/llm-scoring/index.ts had two success paths that persist a
+ * score, and only one cleared `needsRescore`. Files scored via the Haiku
+ * fallback stayed queued and were re-scored by every subsequent drain — a
+ * queue that could never reach zero and unbounded 3-model API spend.
+ *
+ * Test 1-3 cover the pure helper. Test 4 is the one that actually prevents
+ * recurrence: it reads index.ts and asserts every scoring success path that
+ * calls saveReviewFile() is preceded by markRescoreComplete(). A new success
+ * path added without the call fails here.
+ */
+import { test } from 'node:test';
+import assert from 'node:assert';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const REPO = path.resolve(__dirname, '../..');
+
+const { markRescoreComplete, isStuckInRescoreQueue } = require(
+  path.join(REPO, 'scripts/lib/rescore-lifecycle.js')
+);
+
+test('markRescoreComplete clears the flag and stamps completion', () => {
+  const f = { needsRescore: true, rescoreReason: 'bw-v6-decompression', assignedScore: 91 };
+  markRescoreComplete(f, '2026-07-26T21:00:00.000Z');
+  assert.equal(f.needsRescore, undefined, 'needsRescore must be gone');
+  assert.equal(f.rescoreCompletedAt, '2026-07-26T21:00:00.000Z');
+  assert.equal(
+    f.rescoreReason,
+    'bw-v6-decompression',
+    'rescoreReason is history — audits group by it and must keep it'
+  );
+});
+
+test('markRescoreComplete handles the snake_case spelling in older sweeps', () => {
+  const f = { needs_rescore: true, assignedScore: 80 };
+  markRescoreComplete(f, '2026-07-26T21:00:00.000Z');
+  assert.equal(f.needs_rescore, undefined);
+  assert.equal(f.rescoreCompletedAt, '2026-07-26T21:00:00.000Z');
+});
+
+test('markRescoreComplete is a no-op on a file that was never queued', () => {
+  const f = { assignedScore: 75 };
+  markRescoreComplete(f, '2026-07-26T21:00:00.000Z');
+  assert.equal(f.rescoreCompletedAt, undefined, 'no stamp when nothing was retired');
+});
+
+test('isStuckInRescoreQueue detects a scored-but-still-queued file', () => {
+  // The exact shape of the 10 files found stuck on 2026-07-26.
+  assert.equal(
+    isStuckInRescoreQueue({
+      needsRescore: true,
+      rescoreReason: 'bw-v6-decompression',
+      llmMetadata: { scoredAt: '2026-07-26T20:13:59.984Z' },
+    }),
+    true
+  );
+  // Queued and genuinely never scored — not stuck, just pending.
+  assert.equal(
+    isStuckInRescoreQueue({ needsRescore: true, rescoreReason: 'bw-v6-decompression' }),
+    false
+  );
+  // Retired correctly.
+  assert.equal(
+    isStuckInRescoreQueue({ rescoreCompletedAt: '2026-07-26T21:00:00.000Z' }),
+    false
+  );
+});
+
+test('every scoring success path in index.ts retires the rescore queue', () => {
+  const src = fs.readFileSync(path.join(REPO, 'scripts/llm-scoring/index.ts'), 'utf8');
+  const lines = src.split('\n');
+
+  // Success-path saves persist a *scored* object. The rejection/failure paths
+  // save `fileData` (the untouched input) and must NOT retire the queue —
+  // those files still need a rescore.
+  const successSaves = [];
+  lines.forEach((line, i) => {
+    if (!/saveReviewFile\(/.test(line)) return;
+    if (/saveReviewFile\(filePath,\s*(scoredAny|result\.scoredFile)\s*\)/.test(line)) {
+      successSaves.push(i);
+    }
+  });
+
+  assert.ok(
+    successSaves.length >= 2,
+    `expected at least 2 scoring success paths, found ${successSaves.length} — ` +
+      'if a path was renamed, update this test rather than deleting it'
+  );
+
+  // Anchor on the enclosing success block rather than a fixed line window: the
+  // main path legitimately has ~30 lines of unrelated lifecycle handling
+  // (singleModelEmergency, garbage detection) between the retirement call and
+  // the save, and a fixed window produced a false positive on it.
+  const SUCCESS_BLOCK = /\b(result|fbResult)\.success\s*&&\s*\1\.scoredFile\b/;
+  for (const idx of successSaves) {
+    let blockStart = -1;
+    for (let i = idx; i >= 0; i--) {
+      if (SUCCESS_BLOCK.test(lines[i])) { blockStart = i; break; }
+    }
+    assert.ok(
+      blockStart !== -1,
+      `saveReviewFile of a scored object at index.ts:${idx + 1} is not inside a ` +
+        'recognized success block — update SUCCESS_BLOCK if the guard was reworded'
+    );
+    const block = lines.slice(blockStart, idx + 1).join('\n');
+    assert.ok(
+      /markRescoreComplete\(/.test(block),
+      `scoring success path at index.ts:${idx + 1} persists a score without ` +
+        'markRescoreComplete() — the file will be re-scored on every drain forever. ' +
+        'See scripts/lib/rescore-lifecycle.js.'
+    );
+  }
+});

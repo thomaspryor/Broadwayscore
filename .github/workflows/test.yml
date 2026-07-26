@@ -261,6 +261,14 @@ on:
       - 'scripts/lib/transfer-detection.js'
       - 'scripts/detect-regional-transfers.js'
       - 'tests/unit/transfer-detection.test.mjs'
+      # Rescore-queue retirement (2026-07-26): the Haiku-fallback success path
+      # persisted scores without clearing needsRescore, so those files were
+      # re-scored by every drain forever. The test asserts every success path in
+      # index.ts calls markRescoreComplete(); path-list all three or a solo edit
+      # to any of them gets ZERO CI.
+      - 'scripts/lib/rescore-lifecycle.js'
+      - 'scripts/llm-scoring/index.ts'
+      - 'tests/unit/rescore-lifecycle.test.mjs'
       # Post-rebase cross-show ownership gate in push-review-texts (2026-07-12).
       # Without these a solo edit triggers ZERO CI.
       - 'scripts/validate-added-review-ownership.js'
@@ -2426,6 +2434,7 @@ jobs:
             tests/unit/review-gap-url-matching.test.mjs \
             tests/unit/review-gap-host-normalization.test.mjs \
             tests/unit/review-gap-lsa-phantom.test.mjs \
+            tests/unit/rescore-lifecycle.test.mjs \
             tests/unit/data-quality-pipeline.test.js \
             tests/unit/integrity-report.test.js \
             tests/unit/review-normalization.test.js \
