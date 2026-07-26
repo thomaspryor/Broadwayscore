@@ -41,6 +41,27 @@ function setAutoColor(ref) {
   try { spawnSync(CMUX, ['workspace-action', '--action', 'set-color', '--color', 'Blue', '--workspace', ref], { encoding: 'utf8', timeout: 3000 }); } catch { /* cosmetic only */ }
 }
 
+// Fail-CLOSED liveness for the late-adopt path. cmuxws.claudeAliveIn is
+// fail-OPEN (returns true on ANY cmux socket error) — correct for the CLOSE
+// path (never kill a maybe-alive tab) but UNSAFE for adoption: a transient
+// socket error would adopt a DEAD workspace and report a launch that never
+// happened. Require a SUCCESSFUL workspace listing that still contains the ref
+// before trusting the process check, so a socket failure yields "not alive"
+// (report the failure) instead of "adopt the corpse".
+function strictlyAliveWorkspace(ref) {
+  try {
+    if (!cmuxws.listWorkspaces().some(w => w.ref === ref)) return false;
+    return cmuxws.claudeAliveIn(ref);
+  } catch { return false; }
+}
+
+// A launch result is adoptable when it FAILED verification but left a real
+// workspace behind that is now demonstrably alive — i.e. claude registered
+// after the verify window, not never.
+function shouldAdoptLateStart(result, isAlive) {
+  return !!(result && !result.ok && result.workspaceRef && isAlive);
+}
+
 /**
  * Launch a cmux workspace running `claude` on a seed prompt and verify a live
  * claude process actually started.
@@ -67,9 +88,17 @@ function setAutoColor(ref) {
  *                                 came alive AFTER the 30s window, got its
  *                                 workspace close-and-retried, and left an
  *                                 untracked live session behind.
- * @returns {{ok: boolean, ref?: string, reason?: string, workspaceRef?: string|null, seedFile: string, command: string}}
+ * @param {number}  [opts.lateAdoptSec] seconds to keep watching a FAILED
+ *                                 launch's leftover workspace before calling
+ *                                 it dead. A claude that registers here is
+ *                                 healthy-but-slow, not a corpse: adopt it
+ *                                 (ok:true, adoptedLate:true) instead of
+ *                                 reporting a false failure the caller then
+ *                                 "fixes" by dispatching a duplicate.
+ *                                 0 = off (legacy behavior).
+ * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, reason?: string, workspaceRef?: string|null, seedFile: string, command: string}}
  */
-function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30 }) {
+function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0 }) {
   const seedFile = path.join(os.tmpdir(), `bsc-seed-${seedKey}.txt`);
   fs.writeFileSync(seedFile, seed);
   // The wrapper script expands $(cat …) so the multi-line prompt survives
@@ -128,12 +157,30 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
       sleepSec(2);
     }
   }
-  return {
+  const failed = {
     ok: false,
     reason: `no running claude in ${lastWs ? lastWs.ref : 'the new workspace'} after 2 attempts`,
     workspaceRef: lastWs ? lastWs.ref : null,
     seedFile, command,
   };
+
+  // Late-start adoption (task #503, generalized from the monitor launcher's
+  // 2026-07-24 fix): the attempt-2 workspace is NOT closed above, so a claude
+  // that registers a few seconds past the verify window keeps running while
+  // the caller is told the launch died. Every such false failure produced an
+  // untracked, unjournaled live shell AND a duplicate dispatch onto the same
+  // task (10 of them on 2026-07-26). Watch the survivor here instead.
+  if (lateAdoptSec > 0 && failed.workspaceRef) {
+    const live = pollUntil(() => strictlyAliveWorkspace(failed.workspaceRef), lateAdoptSec);
+    if (shouldAdoptLateStart(failed, live)) {
+      if (autoColor) setAutoColor(failed.workspaceRef);
+      return { ok: true, ref: failed.workspaceRef, adoptedLate: true, seedFile, command };
+    }
+  }
+  return failed;
 }
 
-module.exports = { launchCmuxSession, CMUX, pollUntil, sleepSec, setAutoColor };
+module.exports = {
+  launchCmuxSession, CMUX, pollUntil, sleepSec, setAutoColor,
+  strictlyAliveWorkspace, shouldAdoptLateStart,
+};
