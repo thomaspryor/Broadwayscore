@@ -71,7 +71,11 @@ function readEntries(ledgerPath = LEDGER_PATH) {
 }
 
 function deadAttemptsForTask(taskId, entries) {
-  return entries.filter(e => e.event === 'dead' && String(e.taskId) === String(taskId));
+  // Failed/orphaned headless jobs count as dead attempts too — this is the
+  // "one ledger, one guard" promise: a task cannot burn unlimited headless
+  // jobs just because its deaths use the job-* vocabulary (Opus ship-check P1).
+  const DEADLIKE = new Set(['dead', JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED]);
+  return entries.filter(e => DEADLIKE.has(e.event) && String(e.taskId) === String(taskId));
 }
 
 function launchByRef(workspaceRef, entries) {

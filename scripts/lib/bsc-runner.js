@@ -144,8 +144,16 @@ async function runJob(opts) {
   let out = null; // returned object; finally patches keptWorktree onto it
   try {
     if (isolate && !resumeSessionId) {
-      wtPath = provisionJobWorktree(jobId);
-      cwd = wtPath;
+      try {
+        wtPath = provisionJobWorktree(jobId);
+        cwd = wtPath;
+      } catch (e) {
+        // Provisioning failure must leave a ledger trace — an invisible throw
+        // here is exactly the F2 class this module exists to kill.
+        ledger.appendEntry({ event: ledger.JOB_EVENTS.FAILED, taskId, jobId, stage: 'worktree-error', detail: String(e.message).slice(0, 300) });
+        out = { ok: false, jobId, stage: 'worktree-error', sessionId: null, resultText: '', logFile, cwd: null, keptWorktree: false };
+        return out;
+      }
     } else if (resumeSessionId && opts.cwd) {
       cwd = opts.cwd; // resume is cwd-scoped: caller must pass the original cwd
     }

@@ -129,6 +129,8 @@ function runClaudeCli(opts) {
     const pid = child.pid || null;
     if (onSpawn && pid) { try { onSpawn(pid); } catch { /* caller's problem, not the job's */ } }
 
+    child.stdout.setEncoding('utf8'); // multibyte chars must never split across chunks
+    child.stderr.setEncoding('utf8');
     let stdout = '';
     let stderr = '';
     let timedOut = false;

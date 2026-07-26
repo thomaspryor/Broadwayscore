@@ -641,6 +641,12 @@ on:
       # colocated test runs in the lib-test glob; path-listed so a solo edit
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/bsc-status.js'
+      # Autopilot v5 headless runner (task #459) — colocated tests in the main
+      # unit batch; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/bsc-runner.js'
+      - 'scripts/lib/claude-cli.js'
+      - 'scripts/bsc-reconcile.js'
+      - 'tests/unit/bsc-runner-lease.test.mjs'
       - 'scripts/lib/session-wrapups.js'
       - 'scripts/lib/session-wrapups.test.mjs'
       - 'scripts/lib/cli-help.js'

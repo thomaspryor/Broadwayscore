@@ -113,6 +113,9 @@ async function main() {
         resumeSessionId: sessionId,
         prompt: 'Your previous headless run was interrupted (process died). Continue exactly where you left off and finish the task.',
         model: job.model || undefined,
+        // Short leash: a retry blocking this tick for the full 30-min default
+        // would stall orphan detection (launchd skips overlapping runs).
+        timeoutMs: 10 * 60 * 1000,
       });
     }
   }
@@ -126,6 +129,12 @@ async function main() {
     if (openTasks.has(dir)) continue;
     const lease = readLease(dir);
     if (lease && pidLooksLikeClaude(lease.pid)) continue; // live process, not ours to sweep
+    // Same startup grace as the orphan loop (Opus ship-check P0): runJob
+    // acquires the lease BEFORE provisioning the worktree and appending
+    // job-spawned, so a young pid:null lease with no open job is a healthy
+    // job mid-startup, not a straggler.
+    const ageMs = lease && lease.acquiredAt ? Date.now() - Date.parse(lease.acquiredAt) : Infinity;
+    if (ageMs < GRACE_MS) continue;
     sweptLeases++;
     if (!DRY) releaseLease(dir);
   }

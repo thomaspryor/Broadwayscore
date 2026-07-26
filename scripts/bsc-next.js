@@ -427,6 +427,12 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const { runJob } = require('./lib/bsc-runner.js');
     console.log(`[bsc-next] headless job starting on #${task.id}: ${task.subject} (model ${model})`);
     const verifyH = extractVerifyCmd((card && card.notes) || task.description || '', isSafeCheckCommand);
+    // Same 'launch' journal entry as the cmux path (Opus ship-check P1): the
+    // acceptance recheck keys on event==='launch' && notionId, and the
+    // verifyCmd must be captured while the card text is in hand — otherwise
+    // headless work silently escapes the days-later re-verification.
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, notionId: pid || null }); }
+    catch (e) { console.error(`[bsc-next] WARN dispatch-ledger launch write failed (non-fatal): ${e.message}`); }
     runJob({ taskId: String(task.id), subject: task.subject, prompt: seed, model, isolate: true })
       .then(r => {
         if (r.stage === 'lease-held') {
