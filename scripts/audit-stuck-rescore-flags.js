@@ -127,10 +127,24 @@ function main() {
   const byReason = {};
   for (const s of stuck) byReason[s.reason] = (byReason[s.reason] || 0) + 1;
 
-  if (opts.fix && stuck.length) {
+  // REPORT-ONLY for kind==='scored-but-queued' (2026-07-26). That predicate keys
+  // on scoreSource==='manual-cleared-haiku-fallback', but scoreSource is NOT
+  // durable provenance: collect-review-texts.js:4186 requeues a file (fullText
+  // arrived after excerpt scoring) WITHOUT resetting scoreSource, so a perfectly
+  // valid pending rescore can still carry the fallback source. --fix deletes
+  // needsRescore, which would silently cancel that real rescore. The producing
+  // bug is already fixed at source (rescore-lifecycle.js markRescoreComplete on
+  // every success path), so this class only needs to be VISIBLE, never auto-fixed.
+  // Revisit once producers stamp rescoreFlaggedAt (Notion 3a9637c5-416f-8155).
+  const fixable = stuck.filter((s) => s.kind !== 'scored-but-queued');
+  const reportOnly = stuck.length - fixable.length;
+  if (opts.fix && reportOnly) {
+    console.log(`[stuck-rescore] ${reportOnly} scored-but-queued flag(s) reported but NOT auto-fixed (see comment above --fix)`);
+  }
+  if (opts.fix && fixable.length) {
     // Lazy-require so the pure/report path has no write-guard dependency.
     const { safeWriteReview } = require('./lib/review-write-guard');
-    for (const s of stuck) {
+    for (const s of fixable) {
       const d = JSON.parse(fs.readFileSync(s.path, 'utf8'));
       delete d.needsRescore;
       delete d.rescoreReason;

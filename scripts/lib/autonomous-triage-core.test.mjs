@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const {
@@ -310,6 +311,50 @@ test('fetchCardWithRetry: transient wins — a 5xx or rate-limit still retries e
     assert.equal(calls, 2, `${msg} must retry`);
     assert.equal(r.permanent, false, msg);
   }
+});
+
+// Not a synthetic string: this is the VERBATIM message a real
+// `node scripts/notion-brain.js get <nonexistent-id>` produced through
+// execFileSync on 2026-07-26. Regexes that only ever see strings their own
+// author wrote are tautological — this pins the classifier to the shape the
+// Notion SDK actually emits, so an SDK message change fails the test instead
+// of silently turning every 404 into a retry.
+const REAL_NOTION_404 = `Command failed: node scripts/notion-brain.js get 00000000-0000-0000-0000-000000000000
+@notionhq/client warn: request fail {
+  code: 'object_not_found',
+  message: 'Could not find page with ID: 00000000-0000-0000-0000-000000000000. Make sure the relevant pages and databases are shared with your integration "BWSC Action Dispatcher".',
+  attempt: 0,
+  requestId: 'c02361b6-f434-43cb-b18a-340483d7087f'
+}
+Error: Could not find page with ID: 00000000-0000-0000-0000-000000000000.`;
+
+// The whole permanent-vs-transient classifier reads err.MESSAGE, and it only
+// works because Node's execFileSync folds the child's stderr INTO the thrown
+// error's message. Ship-check round 3 asserted the opposite (that the Notion
+// text lands only on err.stderr, making the permanent branch dead code); an
+// empirical probe on 2026-07-26 disproved it — err.message was 978 chars and
+// contained both "Could not find page" and "object_not_found". This test pins
+// that Node behaviour hermetically (no Notion, no network, no API key), so if
+// a future Node release ever stops folding stderr in, THIS fails and names the
+// reason instead of every 404 silently starting to burn a retry.
+test('execFileSync folds child stderr into err.message — the assumption the whole classifier rests on', () => {
+  let err = null;
+  try {
+    execFileSync(process.execPath, ['-e', 'console.error("Could not find page with ID: xyz"); process.exit(1)'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (e) { err = e; }
+  assert.ok(err, 'the child must fail');
+  assert.match(String(err.message), /Could not find page with ID: xyz/,
+    'execFileSync no longer folds stderr into err.message — isTransientFetchError reads err.message and would stop seeing Notion error text');
+});
+
+test('fetchCardWithRetry: the REAL notion-brain 404 text is classified permanent and never retried', async () => {
+  let calls = 0;
+  const slept = [];
+  const r = await fetchCardWithRetry('gone', async () => { calls++; throw new Error(REAL_NOTION_404); }, { sleepFn: async ms => slept.push(ms) });
+  assert.equal(r.ok, false);
+  assert.equal(calls, 1, 'a real deleted-card 404 must not burn a retry');
+  assert.equal(r.permanent, true);
+  assert.deepEqual(slept, []);
 });
 
 test('fetchCardWithRetry: a PERMANENT failure (404 / auth) is never retried', async () => {

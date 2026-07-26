@@ -158,6 +158,7 @@ assert_no_conflict_markers() {
 
   if ! node "$SCRIPT_DIR/conflict-markers.js" "${existing[@]}"; then
     echo "::error::Refusing to push: one or more staged/outgoing files contain unresolved git conflict markers (see paths above). This is the corruption class that committed invalid JSON to review-texts (commit 09e78a7a). Resolve the markers, re-commit, then push. Bypass only if these are intentional fixture lines: PUSH_SKIP_CONFLICT_CHECK=1."
+    restore_head_if_moved "conflict-markers"
     exit 1
   fi
 }
@@ -183,6 +184,7 @@ assert_no_orphan_commit() {
 
   if ! node "$SCRIPT_DIR/../check-orphan-commits.js" --range="origin/$PULL_BRANCH..HEAD"; then
     echo "::error::Refusing to push: an outgoing commit has NO parent (a second repo root). See task #209 — a shallow checkout feeding a rebase/merge/reset path produced a rootless full-tree commit. Do NOT push this; investigate how HEAD became unborn."
+    restore_head_if_moved "orphan-commit"
     exit 1
   fi
 }
@@ -197,6 +199,57 @@ fi
 
 # (The conflict-marker guard is invoked at the top of each retry-loop iteration
 # below, after PULL_BRANCH is known and after any in-loop rebase/merge resolution.)
+
+# ── Preserve-HEAD guard (task #543) ──────────────────────────────────────────
+# Captured ONCE, before this script performs ANY fetch/rebase/merge/reset, so
+# every abort (`exit 1`) below can prove — or forcibly restore — that local
+# refs were left exactly as this script found them. Incident: 2026-07-26, a
+# run that ended in the #466 shallow-ancestry-unrecoverable abort left local
+# main missing two committed-but-unpushed commits, discovered only because
+# they happened to also exist on a feature branch. The exact mutation was
+# never pinned down (every read of the abort path shows it touching only
+# remote-tracking refs), so this is deliberate defense-in-depth: whatever
+# moves HEAD — this script's own resolution paths, a stale restore-on-failure,
+# or something else entirely — every exit path now re-checks and repairs it
+# before handing control back, instead of leaving a silently-shortened main.
+SCRIPT_ENTRY_HEAD="$(git rev-parse HEAD 2>/dev/null || true)"
+
+# Call immediately before every `exit 1` in the retry loop below. If local
+# HEAD no longer matches what it was when this script started, force it back
+# and name the at-risk commit(s) loudly — an abort must be a true no-op on
+# local refs, never a silent partial rewrite.
+restore_head_if_moved() {
+  local reason="${1:-unknown}"
+  [ -n "$SCRIPT_ENTRY_HEAD" ] || return 0
+  local current_head
+  current_head="$(git rev-parse HEAD 2>/dev/null || true)"
+  [ -n "$current_head" ] && [ "$current_head" != "$SCRIPT_ENTRY_HEAD" ] || return 0
+
+  echo "::error::push-with-retry: local HEAD moved from $SCRIPT_ENTRY_HEAD to $current_head during this run (abort reason: $reason)."
+  echo "::error::  Commit(s) unique to the current (about-to-be-discarded) HEAD:"
+  git log --oneline "$SCRIPT_ENTRY_HEAD".."$current_head" 2>/dev/null | sed 's/^/    /' || true
+  echo "::error::  Commit(s) being restored (this run's original local history):"
+  git log --oneline "$SCRIPT_ENTRY_HEAD" -5 2>/dev/null | sed 's/^/    /' || true
+  if git reset --hard "$SCRIPT_ENTRY_HEAD" 2>/dev/null; then
+    echo "::error::push-with-retry: restored HEAD to $SCRIPT_ENTRY_HEAD before aborting — the commit(s) above are intact on local main again."
+  else
+    echo "::error::push-with-retry: FAILED to restore HEAD to $SCRIPT_ENTRY_HEAD — recover manually with: git reset --hard $SCRIPT_ENTRY_HEAD"
+  fi
+}
+
+# Backstop for the P0 gap the manual call sites above can't cover: an
+# uncontrolled `set -e` exit (e.g. a non-`|| true`-guarded command failing
+# right after a rebase/merge/cherry-pick has already moved HEAD, such as
+# restore_protected_fields()'s `count=$(node ...)`) skips every explicit
+# `restore_head_if_moved` call below — the script just dies mid-function with
+# HEAD already moved and no repair ever runs. An EXIT trap fires on ALL exits,
+# including these, so it closes the gap regardless of which line triggered it.
+# Gated on non-zero exit status only: on a genuine successful push (exit 0),
+# HEAD legitimately differs from SCRIPT_ENTRY_HEAD (the rebase/merge WAS
+# supposed to move it and its result WAS just pushed) — resetting there would
+# silently strand local main behind what was just pushed. Idempotent with the
+# manual calls (restore_head_if_moved no-ops if HEAD already matches).
+trap 'rc=$?; [ "$rc" -ne 0 ] && restore_head_if_moved "trap-nonzero-exit-$rc"; exit $rc' EXIT
 
 # Check if a file has a modify/delete conflict.
 # git checkout --ours/--theirs fails on these because one side has no version.
@@ -616,6 +669,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         # the failure telemetry still run.
         record_push_failure "shallow-ancestry-unrecoverable" "$i"
         echo "::error::push-with-retry: depth-bounded fetch could not restore ancestry — base $_shallow_base_sha is still NOT an ancestor of the fetched tip after widening with ${_widen_args[*]}. refs/remotes/origin/$PULL_BRANCH now points at a tip with unrelated history, so rebase/merge would replay this shallow checkout's whole-tree snapshot over whatever else landed on $PULL_BRANCH. Aborting instead (task #466). Re-run the job; if this repeats, the checkout needs fetch-depth: 0. Logged to data/audit/push-retry-failures.jsonl."
+        restore_head_if_moved "shallow-ancestry-unrecoverable"
         exit 1
       fi
     fi
@@ -706,21 +760,42 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     else
       echo "  Merge also failed, aborting..."
       git merge --abort 2>/dev/null || true
-      # Last resort: reset to remote, then cherry-pick our commit on top.
+      # Last resort: reset to remote, then cherry-pick our commit(s) on top.
       # This guarantees we end up ahead of remote with our changes applied.
       echo "  Trying reset + cherry-pick approach..."
       OUR_HEAD=$(git rev-parse HEAD 2>/dev/null || true)
       if [ -n "$OUR_HEAD" ]; then
+        # Range-replay EVERY outgoing commit, not just the tip (task #543
+        # root cause, 2026-07-26). `git cherry-pick "$OUR_HEAD"` replays only
+        # that ONE commit's diff; `git reset --hard origin/$PULL_BRANCH` just
+        # above throws away the ENTIRE local branch first. With 2+ outgoing
+        # commits this silently dropped every commit except the last —
+        # "success" was reported, the push landed, and the earlier commit(s)
+        # were gone from main with no error anywhere. Computed BEFORE the
+        # reset (which only moves the local branch ref, not origin/$PULL_
+        # BRANCH) so it reflects what OUR_HEAD was actually built on.
+        MERGE_BASE=$(git merge-base "$OUR_HEAD" "origin/$PULL_BRANCH" 2>/dev/null || true)
         git reset --hard "origin/$PULL_BRANCH" 2>/dev/null || true
-        if git cherry-pick "$OUR_HEAD" --strategy-option=theirs 2>/dev/null; then
+        if [ -n "$MERGE_BASE" ] && git cherry-pick "${MERGE_BASE}..${OUR_HEAD}" --strategy-option=theirs 2>/dev/null; then
           echo "  Cherry-pick succeeded (our changes on top of remote)"
           history_changed=true
           RESOLUTION_PATH="reset+cherry-pick(-X theirs)"
           restore_protected_fields
         else
           git cherry-pick --abort 2>/dev/null || true
-          git reset --hard "$OUR_HEAD" 2>/dev/null || true
-          echo "  All conflict resolution strategies failed for this attempt"
+          # Restore must be LOUD (task #543): the old `|| true` here silently
+          # swallowed a failed restore, leaving main stuck at the remote tip
+          # with every outgoing commit missing — and nothing to report it. A
+          # later retry iteration could then trivially "succeed" pushing that
+          # commit-less state, so this must fail the WHOLE run, not just fall
+          # through to another attempt.
+          if git reset --hard "$OUR_HEAD" 2>/dev/null && [ "$(git rev-parse HEAD 2>/dev/null)" = "$OUR_HEAD" ]; then
+            echo "  All conflict resolution strategies failed for this attempt"
+          else
+            echo "::error::push-with-retry: reset+cherry-pick fallback failed AND could not restore HEAD to $OUR_HEAD — local main may be stranded at the remote tip with outgoing commit(s) missing. Recover manually with: git reset --hard $OUR_HEAD"
+            restore_head_if_moved "reset-cherry-pick-restore-failed"
+            exit 1
+          fi
         fi
       fi
     fi
@@ -738,6 +813,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       if ! node "$SCRIPT_DIR/../check-post-rebase-survival.js" --before-sha="$PRE_REBASE_SHA" --remote-ref="origin/$PULL_BRANCH"; then
         echo "::error::Post-rebase survival check failed (resolution path: ${RESOLUTION_PATH:-unknown}) — aborting push to avoid shipping a corrupt state"
         echo "::error::See per-file diagnosis above: PRESENT-ON-REMOTE/RENAMED = likely legitimate concurrent change; ABSENT-EVERYWHERE = genuine loss."
+        restore_head_if_moved "post-rebase-survival-check-failed"
         exit 1
       fi
     else
@@ -790,6 +866,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     if [ "$(node "$SCRIPT_DIR/push-rebase-progress.js" --remote-in-history="$_remote_in_history" --history-changed="$history_changed" 2>/dev/null || true)" = "NOOP" ]; then
       record_push_failure "noop-rebase(${RESOLUTION_PATH:-unknown})" "$i"
       echo "::error::push-with-retry: rebase/merge was a NO-OP (resolution path: ${RESOLUTION_PATH:-unknown}) — the fetched remote tip ${FETCHED_REMOTE_SHA} is still NOT in HEAD's history, so every push attempt will be rejected with 'fetch first'. This is the task-#394 silent-forever failure (a stale refs/remotes/origin/$PULL_BRANCH under a SHA-pinned checkout refspec). Aborting instead of burning $MAX_RETRIES retries. Logged to data/audit/push-retry-failures.jsonl."
+      restore_head_if_moved "noop-rebase(${RESOLUTION_PATH:-unknown})"
       exit 1
     fi
   fi
@@ -823,5 +900,6 @@ done
 if [ "$pushed" != "true" ]; then
   record_push_failure "retries-exhausted" "$MAX_RETRIES"
   echo "::error::All push attempts failed after $MAX_RETRIES attempts"
+  restore_head_if_moved "retries-exhausted"
   exit 1
 fi
