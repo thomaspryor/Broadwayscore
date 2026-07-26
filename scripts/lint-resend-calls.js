@@ -49,6 +49,7 @@ const ALLOWLIST = new Set([
   'scripts/process-feedback.js',
   'scripts/autonomous-deadman.js',
   'scripts/check-secrets-health.js', // GET /domains key-validity probe, not an alert send
+  'scripts/newsletter/check-drafts-status.mjs', // GET /broadcasts read-only status probe, never touches /send
   'scripts/send-follow-notifications.js',
   'scripts/newsletter/create-broadcast-draft.mjs',
   'scripts/newsletter/send-test.mjs',
