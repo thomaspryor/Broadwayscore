@@ -20,6 +20,14 @@ const { validatePageMatchesShow } = require('./lib/page-validator');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { urlLooksLikeReview } = require('./lib/review-guards');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `scrape-dtli.js — Dedicated Did They Like It (DTLI) Scraper.
+
+Usage:
+  node scripts/scrape-dtli.js [options]
+  node scripts/scrape-dtli.js --help, -h    print this usage and exit
+`;
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -477,6 +485,8 @@ async function processShow(show) {
  */
 async function main() {
   const args = process.argv.slice(2);
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
 
   // Parse arguments
   const showArg = args.find(a => a.startsWith('--show='));

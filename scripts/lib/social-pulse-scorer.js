@@ -534,8 +534,16 @@ function deriveTier({ currentVolume, baseline, positivePct, weekOverWeekPct }) {
   // Baseline too small to divide by meaningfully — treat as building
   if (baseline.mean < 5) return 'BuildingBaseline';
 
+  // Sentiment-evidence gate (mirrors derivePeerTier): positivePct === null
+  // means zero opinion-bearing posts — no sentiment CLAIM exists, so this
+  // can never be Troubled/Buzzing/Rising. Without this, this legacy path
+  // (still hit by fetch-social-pulse.js's per-show write, before the
+  // ranks step re-tiers via derivePeerTier) would coerce null to 0 and
+  // could mis-tier a no-evidence show as Troubled.
+  if (!Number.isFinite(positivePct)) return 'Steady';
+
   const baselineMultiple = currentVolume / baseline.mean;
-  const pct = typeof positivePct === 'number' ? positivePct : 0;
+  const pct = positivePct;
 
   // Troubled first: high volume + negative sentiment trumps everything
   if (baselineMultiple >= TIER_RULES.TROUBLED.minBaselineMultiple && pct < TIER_RULES.TROUBLED.maxPositivePct) {

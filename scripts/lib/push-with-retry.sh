@@ -509,7 +509,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     # prevent. A fixed depth is still bounded (and the ancestry check below
     # escalates if that depth doesn't reach our base).
     if [ ${#FETCH_DEPTH_ARGS[@]} -eq 0 ]; then
-      FETCH_DEPTH_ARGS=(--depth=200)
+      FETCH_DEPTH_ARGS=(--deepen=200)
     fi
     echo "  fetch: SHALLOW checkout ($(git rev-list --count HEAD 2>/dev/null || echo '?') local commit(s)) — bounding with ${FETCH_DEPTH_ARGS[*]} (task #466)"
   fi
@@ -537,8 +537,8 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       # which is the whole point of this block (ship-check finding).
       _fallback_depth_args=()
       if [ ${#FETCH_DEPTH_ARGS[@]} -gt 0 ]; then
-        _fallback_depth_args=(--depth=200)
-        echo "  Bare-form fallback degrades the bound ${FETCH_DEPTH_ARGS[*]} → --depth=200 (the bound itself may be what was rejected)"
+        _fallback_depth_args=(--deepen=200)
+        echo "  Bare-form fallback degrades the bound ${FETCH_DEPTH_ARGS[*]} → --deepen=200 (the bound itself may be what was rejected)"
       fi
       fetch_start=$SECONDS
       if git_fetch ${_fallback_depth_args[@]+"${_fallback_depth_args[@]}"} origin "$PULL_BRANCH" 2>/dev/null; then
@@ -555,7 +555,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # tip; otherwise every resolution path below sees an unrelated history and the
   # no-op guard further down aborts the whole push. --shallow-since anchored
   # before the boundary should always satisfy this (its window contains the
-  # boundary by construction), so reaching here means either the --depth=200
+  # boundary by construction), so reaching here means either the --deepen=200
   # fallback ran and 200 commits didn't span the gap (this repo lands ~150
   # commits/hour, so ~80 min of headroom), or a committer-date skew pushed an
   # intermediate commit outside the window. Widen to a full day — still ~1% of

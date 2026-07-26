@@ -35,6 +35,14 @@ const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routi
 const { isLondonMarket } = require('./lib/venue-classification');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-we-market-misroutes.js — Replay the gather-time market-routing classifier.
+
+Usage:
+  node scripts/audit-we-market-misroutes.js [options]
+  node scripts/audit-we-market-misroutes.js --help, -h    print this usage and exit
+`;
 const ROOT = path.join(__dirname, '..');
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -72,6 +80,8 @@ function findExistingInTarget(targetDir, outletId, criticSlug) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const shows = loadShows();
   const showMap = new Map(shows.map(s => [s.id, s]));
   const siblingIndex = buildSiblingIndex(shows);

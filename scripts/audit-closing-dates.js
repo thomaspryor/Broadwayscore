@@ -55,6 +55,14 @@ const { classifyMissingSchedule, possiblyClosedPressAgreement } = require('./lib
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-closing-dates.js — Daily bidirectional audit of closingDate values for open shows.
+
+Usage:
+  node scripts/audit-closing-dates.js [options]
+  node scripts/audit-closing-dates.js --help, -h    print this usage and exit
+`;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const AUDIT_FILE = path.join(__dirname, '..', 'data', 'audit', 'closing-date-discrepancies.json');
 const CONFIG_FILE = path.join(__dirname, '..', 'data', 'closing-date-audit-config.json');
@@ -332,6 +340,8 @@ async function notifyNotion(ambiguous, todayStr) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
   console.log('CLOSING DATE AUDIT (bidirectional)');
   console.log('='.repeat(60));

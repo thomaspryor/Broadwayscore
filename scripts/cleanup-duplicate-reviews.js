@@ -34,6 +34,14 @@ const {
 } = require('./lib/review-normalization');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `cleanup-duplicate-reviews.js — Cleanup Duplicate Reviews (Sprint 2.2).
+
+Usage:
+  node scripts/cleanup-duplicate-reviews.js [options]
+  node scripts/cleanup-duplicate-reviews.js --help, -h    print this usage and exit
+`;
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
 const DUPLICATES_FILE = path.join(AUDIT_DIR, 'duplicates-found.json');
@@ -378,6 +386,8 @@ function processFromAudit() {
  * Main function
  */
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('=== CLEANUP DUPLICATE REVIEWS ===');
   console.log(dryRun ? '(DRY RUN - no changes will be made)\n' : '\n');
 

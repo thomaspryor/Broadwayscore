@@ -15,6 +15,14 @@ const https = require('https');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fetch-synopses-wikipedia.js — Fetches show synopses from Wikipedia's free API for shows missing synopsis data.
+
+Usage:
+  node scripts/fetch-synopses-wikipedia.js [options]
+  node scripts/fetch-synopses-wikipedia.js --help, -h    print this usage and exit
+`;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
 // Parse args
@@ -183,6 +191,8 @@ async function fetchWikipediaSynopsis(show) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showsData = loadShows();
   const showList = showsData.shows || showsData;
 

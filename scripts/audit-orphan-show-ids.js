@@ -24,6 +24,14 @@
 const fs = require('fs');
 const path = require('path');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-orphan-show-ids.js — Flags show IDs that appear in derived data (slim show files, audience-buzz,.
+
+Usage:
+  node scripts/audit-orphan-show-ids.js [options]
+  node scripts/audit-orphan-show-ids.js --help, -h    print this usage and exit
+`;
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
 const SLIM_SHOWS_DIR = path.join(ROOT, 'public', 'data', 'shows');
@@ -67,6 +75,8 @@ function scanJsonKeys(filePath, accessor, validIds) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const validIds = loadShowIds();
   const orphans = {
     slimShowFiles: scanSlimShowFiles(validIds),

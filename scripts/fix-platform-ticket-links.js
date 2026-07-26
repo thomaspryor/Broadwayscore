@@ -34,6 +34,14 @@ const { buildTelechargeUrl, normalizeShowName } = require('./lib/url-utils');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `fix-platform-ticket-links.js — Validate and fix Telecharge/Ticketmaster links in shows.json.
+
+Usage:
+  node scripts/fix-platform-ticket-links.js [options]
+  node scripts/fix-platform-ticket-links.js --help, -h    print this usage and exit
+`;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
@@ -142,6 +150,8 @@ async function serpVerifyTicketmaster(showTitle, existingUrl) {
 // ============================================================================
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log(`Platform Ticket Link Validator ${DRY_RUN ? '(DRY RUN)' : ''}`);
   console.log('='.repeat(60));
 

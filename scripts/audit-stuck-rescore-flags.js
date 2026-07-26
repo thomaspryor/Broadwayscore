@@ -30,6 +30,14 @@ const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { isStuckRescoreFlag } = require('./lib/stuck-rescore-flag');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-stuck-rescore-flags.js — corpus invariant: no review may carry.
+
+Usage:
+  node scripts/audit-stuck-rescore-flags.js [options]
+  node scripts/audit-stuck-rescore-flags.js --help, -h    print this usage and exit
+`;
 const ROOT = path.join(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 
@@ -87,6 +95,8 @@ function findStuck(reviewTextsDir, titleById) {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const opts = parseArgs(process.argv.slice(2));
 
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {

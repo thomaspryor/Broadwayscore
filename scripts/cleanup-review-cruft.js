@@ -11,6 +11,14 @@
 const fs = require('fs');
 const path = require('path');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `cleanup-review-cruft.js — Clean up review-text cruft:.
+
+Usage:
+  node scripts/cleanup-review-cruft.js [options]
+  node scripts/cleanup-review-cruft.js --help, -h    print this usage and exit
+`;
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const dryRun = process.argv.includes('--dry-run');
 
@@ -135,6 +143,8 @@ function findCruftFiles() {
 }
 
 function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log(`Scanning for review cruft... ${dryRun ? '(DRY RUN)' : ''}\n`);
 
   const cruftFiles = findCruftFiles();

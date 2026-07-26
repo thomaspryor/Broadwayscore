@@ -35,6 +35,14 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { decide } = require('./lib/orphan-pending-decision');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `clean-orphan-pending.js — One-shot cleanup of orphaned files in data/review-texts/_pending/.
+
+Usage:
+  node scripts/clean-orphan-pending.js [options]
+  node scripts/clean-orphan-pending.js --help, -h    print this usage and exit
+`;
 const REPO_ROOT = path.join(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(REPO_ROOT, 'data/review-texts');
 const PENDING_DIR = path.join(REVIEW_TEXTS_DIR, '_pending');
@@ -87,6 +95,8 @@ function perShowCommit(showId, deleted, promoted) {
 }
 
 async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log(`mode: ${CONFIG.execute ? 'EXECUTE' : 'DRY-RUN'}${CONFIG.onlySynthetic ? ' (synthetic only)' : ''}`);
   if (!fs.existsSync(PENDING_DIR)) {
     console.log('No _pending directory; nothing to clean.');
