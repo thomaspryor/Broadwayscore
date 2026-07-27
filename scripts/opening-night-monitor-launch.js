@@ -32,7 +32,10 @@ const { spawnSync } = require('child_process');
 const REPO = '/Users/tompryor/Broadwayscore';
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { selectOpeningNightShows } = require('./lib/opening-night-selection.js');
-const { activeWindows, nightKey, launchDecision, computeWindow } = require('./lib/opening-night-windows.js');
+const {
+  activeWindows, nightKey, launchDecision, computeWindow,
+  claimLockGeneration, isLockGenerationOwner,
+} = require('./lib/opening-night-windows.js');
 const { launchCmuxSession, shouldAdoptLateStart } = require('./lib/cmux-launch.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
@@ -276,6 +279,14 @@ async function main(argv = process.argv.slice(2)) {
     log('lock exists (concurrent tick won the race) — skipping');
     return 0;
   }
+  // Stamp our ownership token IMMEDIATELY — before any slow work (preflight
+  // auth, cmux launch) a later reclaimer could race past. Every later
+  // destructive write to this lock (meta.json, or the dir itself) must
+  // re-check this token is still current before touching it (#569): a
+  // reclaim-and-launch on a later tick deletes+recreates LOCK_DIR based on a
+  // stale in-memory decision, and if THIS process wasn't actually dead — just
+  // slow — its eventual writes must not clobber the new owner.
+  const myGenToken = claimLockGeneration(LOCK_DIR);
 
   // Count the attempt BEFORE the side-effecting launch so a launch that dies
   // mid-flight still consumed one.
@@ -305,14 +316,38 @@ async function main(argv = process.argv.slice(2)) {
 
   if (!result.ok) {
     // Genuinely dead — close the lingering workspace so it can't become an
-    // untracked orphan, drop the lock, and page.
+    // untracked orphan, drop the lock (only if we still own it — a later
+    // tick may have already reclaimed it out from under this slow failure),
+    // and page.
     if (result.workspaceRef) { try { cmuxws.closeWorkspace(result.workspaceRef); } catch { /* already gone */ } }
-    fs.rmSync(LOCK_DIR, { recursive: true, force: true });
+    if (isLockGenerationOwner(LOCK_DIR, myGenToken)) {
+      fs.rmSync(LOCK_DIR, { recursive: true, force: true });
+    } else {
+      log('lock generation changed while launching — another tick already reclaimed it; not touching its lock');
+    }
     await alert({
       conditionKey: `on-monitor-launch-failed-${key}`,
       title: `Opening-night monitor launch FAILED for ${windows.map(w => w.showId).join(', ')}`,
       description: `launchCmuxSession: ${result.reason}. Attempt ${nightState.attempts + 1}/3; next tick retries. Command: ${result.command}`,
       severity: 'error', disposition: 'human', cooldownHours: 3,
+    });
+    return 1;
+  }
+
+  // #569: re-verify ownership right before writing meta.json — a slow
+  // launch (preflight auth + up to ~150s of cmux launch time) can finish
+  // AFTER a later tick reclaimed this lock as dead. Writing anyway would
+  // silently overwrite the new owner's meta.json with our stale
+  // workspaceRef, exactly the split-brain json-write-guard.js guards
+  // against for commercial.json/audience-buzz.json saves.
+  if (!isLockGenerationOwner(LOCK_DIR, myGenToken)) {
+    log(`lock generation changed before meta.json write — another tick reclaimed ${LOCK_DIR} while this launch (workspace ${result.ref}) was in flight; closing the orphaned workspace instead of clobbering the new owner's meta.json`);
+    try { cmuxws.closeWorkspace(result.ref); } catch { /* already gone */ }
+    await alert({
+      conditionKey: `on-monitor-generation-lost-${key}`,
+      title: `Opening-night monitor: lock reclaimed mid-launch for ${windows.map(w => w.showId).join(', ')}`,
+      description: `This tick's launch (workspace ${result.ref}) finished after another tick reclaimed the lock as dead. Closed the orphaned workspace rather than overwrite the newer generation's meta.json.`,
+      severity: 'warning', disposition: 'digest',
     });
     return 1;
   }

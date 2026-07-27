@@ -1,8 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import {
   utcFromZoned, computeWindow, activeWindows, nightKey, launchDecision,
   HEARTBEAT_STALE_MIN, MAX_ATTEMPTS_PER_NIGHT, LAUNCH_INFLIGHT_GRACE_SEC,
+  claimLockGeneration, isLockGenerationOwner,
 } from './opening-night-windows.js';
 import { computeClaudeAlive } from './cmux-workspaces.js';
 
@@ -200,4 +204,45 @@ test('decision: attempt cap → escalate, never a 4th Fable session', () => {
   assert.equal(launchDecision({ ...base, attemptsTonight: MAX_ATTEMPTS_PER_NIGHT }).action, 'escalate');
   const dead = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: 200, claudeAlive: false, attemptsTonight: MAX_ATTEMPTS_PER_NIGHT });
   assert.equal(dead.action, 'escalate');
+});
+
+// ── lock generation token (#569 TOCTOU fix) ────────────────────────────────
+
+function mkLockDir() {
+  return fs.mkdtempSync(path.join(os.tmpdir(), 'on-monitor-lock-'));
+}
+
+test('claimLockGeneration: the claimant is its own owner', () => {
+  const dir = mkLockDir();
+  const token = claimLockGeneration(dir);
+  assert.equal(isLockGenerationOwner(dir, token), true);
+});
+
+test('#569 repro: a stale writer holding an old generation token cannot overwrite a newer lock after reclaim', () => {
+  const dir = mkLockDir();
+  // Tick A launches first and claims generation A — this token is what a
+  // slow-but-not-actually-dead launch would still be holding in memory.
+  const tokenA = claimLockGeneration(dir);
+  assert.equal(isLockGenerationOwner(dir, tokenA), true);
+
+  // A later tick decides (via launchDecision) that A's lock is dead, does
+  // its rmSync + mkdirSync reclaim, and claims a fresh generation B — the
+  // exact sequence opening-night-monitor-launch.js runs in the
+  // reclaim-and-launch branch.
+  fs.rmSync(dir, { recursive: true, force: true });
+  fs.mkdirSync(dir);
+  const tokenB = claimLockGeneration(dir);
+  assert.notEqual(tokenA, tokenB);
+
+  // Tick A's launchCmuxSession() call finally returns (it wasn't dead, just
+  // slow) and it's about to writeFileSync(LOCK_META, ...) using its own
+  // stale token — the guard must refuse: A is no longer the owner, B is.
+  assert.equal(isLockGenerationOwner(dir, tokenA), false);
+  assert.equal(isLockGenerationOwner(dir, tokenB), true);
+});
+
+test('isLockGenerationOwner: missing lock dir / generation file reads as not-owner, never throws', () => {
+  assert.equal(isLockGenerationOwner('/tmp/does-not-exist-on-monitor-lock-569', 'anything'), false);
+  const dir = mkLockDir(); // claimLockGeneration never called — no generation.json yet
+  assert.equal(isLockGenerationOwner(dir, 'anything'), false);
 });
