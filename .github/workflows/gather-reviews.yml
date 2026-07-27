@@ -568,6 +568,18 @@ jobs:
             exit 0
           fi
 
+          # Jitter (#312): when several single-show gather-reviews.yml runs are
+          # dispatched within seconds of each other (observed 2026-07-20/21:
+          # 12-13 near-simultaneous dispatches fanning out into that many
+          # independent Collect Review Texts runs, each burning its own
+          # Browserbase allowance blind to the others), this check-then-act
+          # guard races — every run reads RUNNING=0 before any of them start.
+          # A random pre-check delay spreads dispatches out so later runs in a
+          # burst actually observe the earlier ones as RUNNING/QUEUED. Doesn't
+          # fully eliminate the race (that's fixed at the cost-cap layer in
+          # collect-review-texts.js) but sharply cuts fan-out frequency.
+          sleep $((RANDOM % 20 + 1))
+
           RUNNING=$(gh run list --workflow=collect-review-texts.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           QUEUED=$(gh run list --workflow=collect-review-texts.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
           WAITING=$(gh run list --workflow=collect-review-texts.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
