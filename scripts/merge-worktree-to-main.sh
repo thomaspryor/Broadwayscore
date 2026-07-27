@@ -105,6 +105,16 @@ g checkout "$DEFAULT_BRANCH" >/dev/null 2>&1 || { restore_stash; die "could not 
 
 log "fetch + merge origin/$DEFAULT_BRANCH (no rebase)"
 g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null || log "  ⚠ fetch failed (offline?) — continuing with cached ref"
+# Diff base for the post-merge syntax floor below: origin's CURRENT tip, not
+# local HEAD before this run. A prior invocation that died AFTER merging but
+# BEFORE pushing (e.g. the syntax check below caught a collision) leaves the
+# broken merge commit sitting in $MAIN_DIR — a naive "diff since local HEAD at
+# script start" would then see NO new changes on retry (both merges become
+# no-ops) and silently push the still-broken commit. Anchoring to origin's tip
+# instead always answers the question that actually matters — "does what
+# we're about to push differ from what's live, and does that diff parse" —
+# regardless of how many retries it took to get here.
+ORIGIN_BASE_SHA=$(g rev-parse "origin/$DEFAULT_BRANCH" 2>/dev/null || g rev-parse HEAD)
 if ! g merge "origin/$DEFAULT_BRANCH" --no-edit >/dev/null 2>&1; then
   restore_stash; die "merge of origin/$DEFAULT_BRANCH failed — resolve manually"
 fi
@@ -112,6 +122,45 @@ fi
 log "merge $BRANCH"
 if ! g merge "$BRANCH" --no-edit >/dev/null 2>&1; then
   restore_stash; die "merge of $BRANCH failed — resolve manually"
+fi
+
+# --- Post-merge JS syntax floor (card 3aa637c5, 2026-07-26 collision incident) ---
+# Two concurrent sessions can each cleanly insert the identical line into a
+# destructured require() at the same spot; git's 3-way merge doesn't treat
+# that as a conflict (each diff applies against its own base, e.g. session A's
+# commit lands in origin/main above, then session B's independent commit
+# merges in here on top) — the RESULT can still fail to parse ("Identifier
+# 'x' has already been declared") with zero git-level conflict. This exact
+# incident (shouldShowSentiment double-declared across two sessions' fixes)
+# broke main CI for ~10min until a manual dedup commit (3d9caac467c). `node
+# --check` on every scripts/**/*.{js,mjs,cjs} file this integration touched
+# catches that class instantly and for free, LOCALLY, before the broken merge
+# ever reaches origin — instead of waiting for CI to turn main red. Scoped to
+# scripts/ only, mirroring the proven tier-3 syntax-floor check in
+# scripts/lib/autonomous-checks.js (`node --check` per changed scripts/ file)
+# — src/ has JSX/TSX that `node --check` cannot parse; that's tsc's job
+# (CLAUDE.md rule 12), unaffected by this addition.
+SYNTAX_CHECK_FILES=()
+while IFS= read -r f; do
+  case "$f" in
+    scripts/*.js|scripts/*.mjs|scripts/*.cjs) SYNTAX_CHECK_FILES+=("$f") ;;
+  esac
+done < <(g diff --name-only --diff-filter=d "$ORIGIN_BASE_SHA" HEAD 2>/dev/null)
+if [ ${#SYNTAX_CHECK_FILES[@]} -gt 0 ]; then
+  log "syntax-checking ${#SYNTAX_CHECK_FILES[@]} changed scripts/ file(s) (post-merge floor)"
+  SYNTAX_FAIL=0
+  for f in "${SYNTAX_CHECK_FILES[@]}"; do
+    [ -f "$MAIN_DIR/$f" ] || continue
+    if ! ERR=$(node --check "$MAIN_DIR/$f" 2>&1); then
+      echo "  ✗ $f" >&2
+      echo "$ERR" | sed 's/^/      /' >&2
+      SYNTAX_FAIL=1
+    fi
+  done
+  if [ "$SYNTAX_FAIL" = 1 ]; then
+    restore_stash
+    die "post-merge syntax check failed — likely a concurrent-session collision (two branches independently edited the same file; see Notion card 3aa637c5). Resolve the duplication in $MAIN_DIR, commit the fix, then re-run this script."
+  fi
 fi
 
 # --- Push, integrating remote moves via merge (never rebase) on rejection ---
