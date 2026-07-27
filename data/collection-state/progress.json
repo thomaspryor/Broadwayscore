@@ -13,7 +13,8 @@
     "shifters-off-broadway-2026/nytg--gillian-russo.json",
     "the-gin-game-2026/nytimes--laura-collins-hughes.json",
     "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json"
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+    "dukes-off-broadway-2026/nytimes--helen-shaw.json"
   ],
   "failed": [
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
@@ -461,7 +462,14 @@
     "the-gin-game-2026/northjerseycom--robert-feldberg.json",
     "sukkot-off-broadway-2026/theater-pizzazz--alix-cohen.json",
     "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
-    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json"
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
+    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -493,7 +501,8 @@
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
-      "the-gin-game-2026/nytimes--laura-collins-hughes.json"
+      "the-gin-game-2026/nytimes--laura-collins-hughes.json",
+      "dukes-off-broadway-2026/nytimes--helen-shaw.json"
     ],
     "archiveToday": [
       "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
@@ -520,14 +529,15 @@
       "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--unknown.json",
       "data/review-texts/the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
       "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
-      "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json"
+      "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ],
     "archive": [
       "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json"
     ]
   },
   "startTime": "2026-07-26T17:14:57.666Z",
-  "lastProcessed": "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
+  "lastProcessed": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
   "log": [
     {
       "t": "2026-07-26T21:38:21.459Z",
@@ -649,6 +659,28 @@
       "t": "2026-07-27T00:55:07.390Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-27T00:58:32.246Z",
+      "event": "bb-session",
+      "session": "ab8b6872",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-27T00:58:32.701Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-27T00:58:48.250Z",
+      "event": "bb-session",
+      "session": "1126810e",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-27T00:58:48.632Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
