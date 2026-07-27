@@ -112,6 +112,12 @@ jobs:
 
       - name: Commit post history
         if: always() && inputs.dry_run != 'true'
+        # Task #574: commits social-post-history.json (union-merged managed
+        # file) — see push-with-retry.sh's reconcile_merged_json(). This
+        # workflow runs per-run-group per show (see comment at top of file),
+        # so concurrent pushes for different shows are the expected case.
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"

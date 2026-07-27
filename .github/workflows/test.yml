@@ -70,6 +70,14 @@ on:
       # Node wrapper every JS/TS caller now uses to reach push-with-retry.sh,
       # so the eighth push fix lands everywhere at once (task #420).
       - 'scripts/lib/push-with-retry.js'
+      # PUSH_RECONCILE_MERGED_JSON coverage lint (task #574): generalizes the
+      # opt-in flag #420 shipped for one caller to the other 9 workflows that
+      # commit a union-merged managed JSON file through push-with-retry.sh.
+      # Detection is pure + colocated-tested (lib-test glob); path-listed so a
+      # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/reconcile-coverage.js'
+      - 'scripts/lib/reconcile-coverage.test.mjs'
+      - 'scripts/audit-reconcile-coverage.js'
       # Social Pulse ranking must trust the same sentiment gate the display
       # layer uses (task #544) — a thin-sample % should score neutral, not
       # its raw untrusted value. tests/unit/social-pulse-ranking-parity.test.mjs
@@ -1189,6 +1197,21 @@ jobs:
         # style debt. Waive a reviewed false positive with an inline
         # "unbounded-fetch-ok: <reason>".
         run: node scripts/audit-unbounded-fetch.js
+
+      - name: Audit — PUSH_RECONCILE_MERGED_JSON coverage on push-with-retry.sh callers
+        # Prevents the task #574 bug class recurring. push-with-retry.sh
+        # rebases with `-X theirs`, which resolves conflicting hunks in favour
+        # of our replayed commits WITHOUT ever reporting a conflict — so the
+        # per-slug union mergers in resolve_conflicts() never fire on the
+        # common path, and a concurrent writer's nearby-slug edit is silently
+        # dropped. #420 shipped the reconciliation machinery + opted in ONE
+        # caller behind PUSH_RECONCILE_MERGED_JSON=1 (flipping the default for
+        # all ~114 push-with-retry.sh callers was out of scope for that card);
+        # #574 generalized the flag to the other 9 workflows that commit a
+        # union-merged managed file. Blocking — a violation is silent data
+        # loss on the next concurrent write, not style debt. Waive a reviewed
+        # false positive with an inline "push-reconcile-ok: <reason>".
+        run: node scripts/audit-reconcile-coverage.js
 
       - name: Audit — no direct Resend calls outside alert-router allowlist
         # Email-consolidation Sprint 1 (Notion 3a4637c5-416f-81eb, #279): every

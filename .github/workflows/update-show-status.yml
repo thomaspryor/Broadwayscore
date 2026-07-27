@@ -406,6 +406,10 @@ jobs:
 
       - name: Queue new Broadway shows for commercial research
         if: steps.discover.outputs.new_shows_count != '' && steps.discover.outputs.new_shows_count != '0'
+        # Task #574: commits commercial-research-queue.json (union-merged
+        # managed file) — see push-with-retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           NEW_SLUGS="${{ steps.discover.outputs.new_slugs }}"
           if [ -z "$NEW_SLUGS" ]; then
@@ -425,6 +429,10 @@ jobs:
 
       - name: Queue pre-opening shows for commercial research
         continue-on-error: true
+        # Task #574: commits commercial-research-queue.json (union-merged
+        # managed file) — see push-with-retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           node scripts/queue-commercial-research.js --pre-opening
           QUEUE_FILE="data/commercial-research-queue.json"
@@ -436,6 +444,10 @@ jobs:
 
       - name: Queue closing TBD shows for commercial research
         continue-on-error: true
+        # Task #574: commits commercial-research-queue.json (union-merged
+        # managed file) — see push-with-retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           node scripts/queue-commercial-research.js --closing
           QUEUE_FILE="data/commercial-research-queue.json"

@@ -95,6 +95,12 @@ jobs:
 
       - name: Commit pending results
         if: always() && github.event.inputs.dry_run != 'true'
+        # Task #574: this step commits commercial-pending-review.json, one of
+        # the union-merged managed files — see push-with-retry.sh's
+        # reconcile_merged_json() for why the flag is needed on the common
+        # (non-conflicting) rebase path.
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git add data/commercial-pending-review.json
 

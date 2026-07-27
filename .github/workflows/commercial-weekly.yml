@@ -90,6 +90,10 @@ jobs:
 
       - name: Commit batch research results
         if: always() && inputs.dry_run != true
+        # Task #574: commits commercial-pending-review.json (union-merged
+        # managed file) — see push-with-retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-batch-progress.json
           if git diff --staged --quiet; then
@@ -153,6 +157,11 @@ jobs:
 
       - name: Commit sweep results
         if: always() && inputs.dry_run != true
+        # Task #574: commits commercial-pending-review.json + commercial-
+        # research-queue.json (union-merged managed files) — see push-with-
+        # retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-pending-archive.json data/commercial-research-queue.json
           if git diff --staged --quiet; then
@@ -213,6 +222,11 @@ jobs:
 
       - name: Commit deep research results
         if: always() && inputs.dry_run != true
+        # Task #574: commits commercial-pending-review.json + commercial-
+        # research-queue.json (union-merged managed files) — see push-with-
+        # retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           # commercial.json is gitignored (core data); push-core-data syncs it to the private repo.
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json
@@ -366,6 +380,10 @@ jobs:
 
       - name: Commit applied data + audit
         if: always()
+        # Task #574: commits commercial-pending-review.json (union-merged
+        # managed file) — see push-with-retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/audit/commercial-data-audit.json data/audit/commercial-data-history.json data/recoupment-calibration-anchors.json
           bash scripts/lib/stage-data-changes.sh

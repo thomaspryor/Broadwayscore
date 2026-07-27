@@ -157,6 +157,10 @@ jobs:
 
       - name: Commit applied data
         if: inputs.dry_run != true
+        # Task #574: commits commercial-pending-review.json (union-merged
+        # managed file) — see push-with-retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git add data/commercial-pending-review.json data/recoupment-calibration-anchors.json 2>/dev/null || true
           bash scripts/lib/stage-data-changes.sh
