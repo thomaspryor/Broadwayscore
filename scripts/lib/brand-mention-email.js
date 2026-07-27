@@ -152,6 +152,34 @@ function buildSubject({ pairs }) {
 }
 
 /**
+ * Owner email policy is ACTION-only (email-broadcast-rules): a digest where
+ * the drafter classified EVERY mention as "no reply needed" is noise, not
+ * action — it must not email (2026-07-27: a run emailed one no-reply Google
+ * result of the owner's own mirror domain). Mentions still persist to state
+ * either way. Unknowns conservatively count as actionable: verdict-less
+ * pairs (--no-draft, no API key) and verdict.draftError (drafter model
+ * failure / parse failure / per-mention exception — those paths return a
+ * populated shouldRespond:false verdict, NOT null). Negative-sentiment
+ * mentions also count even when no-reply (a hostile article is worth an
+ * email despite having no reply box).
+ *
+ * @param {Array<{mention, verdict}>} pairs
+ * @returns {{send: boolean, reason: string}}
+ */
+function shouldSendDigest(pairs) {
+  if (!pairs || pairs.length === 0) {
+    return { send: false, reason: 'no new mentions — skipping email' };
+  }
+  const actionable = pairs.filter(
+    (p) => !p.verdict || p.verdict.draftError || p.verdict.shouldRespond || p.verdict.sentiment === 'negative'
+  );
+  if (actionable.length === 0) {
+    return { send: false, reason: `all ${pairs.length} mention(s) are no-reply noise — ACTION-only email policy, skipping` };
+  }
+  return { send: true, reason: `${actionable.length} actionable mention(s)` };
+}
+
+/**
  * Send the digest email.
  *
  * @param {object} opts
@@ -162,8 +190,9 @@ function buildSubject({ pairs }) {
  * @returns {Promise<{sent: boolean, reason?: string, subject?: string}>}
  */
 async function sendBrandMentionDigest({ pairs, totalFetched, dropped, dryRun = false }) {
-  if (!pairs || pairs.length === 0) {
-    return { sent: false, reason: 'no new mentions — skipping email' };
+  const gate = shouldSendDigest(pairs);
+  if (!gate.send) {
+    return { sent: false, reason: gate.reason };
   }
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
@@ -201,6 +230,7 @@ async function sendBrandMentionDigest({ pairs, totalFetched, dropped, dryRun = f
 
 module.exports = {
   sendBrandMentionDigest,
+  shouldSendDigest,
   // exported for tests
   _internal: { buildDigestHtml, buildSubject, buildMentionCardHtml },
 };
