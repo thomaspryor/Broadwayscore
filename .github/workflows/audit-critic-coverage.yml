@@ -72,7 +72,9 @@ jobs:
           # (`/data/audit/**/*.md`), never tracked, harmless to skip.
           for f in data/audit/critic-coverage-audit.json \
                    data/audit/critic-coverage-buckets.json \
-                   data/audit/critic-coverage-cooldown.json; do
+                   data/audit/critic-coverage-cooldown.json \
+                   data/audit/outlet-heartbeat.json \
+                   data/audit/outlet-heartbeat-state.json; do
             if [ -f "$f" ]; then
               git add "$f"
             else
