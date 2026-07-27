@@ -10,7 +10,54 @@
  * duplicate Fable session into the same working tree (plan-review pre-mortem
  * primary scenario). Liveness is therefore heartbeat-file freshness first,
  * process probe second.
+ *
+ * claimLockGeneration/isLockGenerationOwner (#569) close a second race in the
+ * same launcher: the 'reclaim-and-launch' path deletes+recreates LOCK_DIR
+ * based on a stale in-memory decision, then writes meta.json well after
+ * (preflight auth + up to ~150s of cmux launch time later). If the ORIGINAL
+ * "dead" launch wasn't actually dead — just slow — it can reach its own
+ * meta.json write after a newer generation has already reclaimed the same
+ * directory, silently clobbering the new owner's meta with a stale
+ * workspaceRef. Every claimant stamps a random token into the lock dir
+ * immediately after its mkdir succeeds; every later destructive write
+ * (meta.json, or the lock dir itself) must re-check that token is still
+ * current before writing — the same ownership-check pattern
+ * json-write-guard.js uses around commercial.json/audience-buzz.json saves.
  */
+
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+
+function lockGenerationPath(lockDir) { return path.join(lockDir, 'generation.json'); }
+
+/**
+ * Stamps a fresh ownership token into lockDir. Must be called immediately
+ * after the mkdir that created/reclaimed lockDir succeeds — before any other
+ * operation — so the token is on disk before any slow work (auth preflight,
+ * cmux launch) that a later reclaimer could race past.
+ */
+function claimLockGeneration(lockDir) {
+  const token = crypto.randomUUID();
+  fs.writeFileSync(lockGenerationPath(lockDir), JSON.stringify({
+    token, pid: process.pid, claimedAt: new Date().toISOString(),
+  }));
+  return token;
+}
+
+/**
+ * Whether `token` (returned by an earlier claimLockGeneration(lockDir) call)
+ * still matches what's on disk. False means a newer generation has since
+ * reclaimed the lock — the caller must not write meta.json or delete
+ * lockDir, since either would stomp on the new owner.
+ */
+function isLockGenerationOwner(lockDir, token) {
+  try {
+    return JSON.parse(fs.readFileSync(lockGenerationPath(lockDir), 'utf8')).token === token;
+  } catch {
+    return false; // dir gone, generation file gone/corrupt — definitely not ours anymore
+  }
+}
 
 // Press-night markets only: OB/OWE open "cold" (no press night; the
 // orchestrator anchors them to previewsStartDate) so there is no single
@@ -193,4 +240,5 @@ function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, clau
 module.exports = {
   MARKET_TZ, WINDOW_START_HOUR_LOCAL, HEARTBEAT_STALE_MIN, MAX_ATTEMPTS_PER_NIGHT, LAUNCH_INFLIGHT_GRACE_SEC,
   tzOffsetMinutes, utcFromZoned, nextDay, computeWindow, activeWindows, nightKey, launchDecision,
+  claimLockGeneration, isLockGenerationOwner, lockGenerationPath,
 };
