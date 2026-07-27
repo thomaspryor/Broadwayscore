@@ -303,10 +303,12 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed) {
   // degraded provider doesn't burn a credit + latency on every query before the
   // BD/SB fallback runs. Resets to 0 on any success.
   if (!USE_SCRAPINGDOG || !SCRAPINGDOG_API_KEY || _scrapingdogSerpFailures >= MAX_CONSECUTIVE_FAILURES) return null;
-  // Daily-pace circuit breaker (task #213 A3) — same quota check scraper.js's
+  // Actual-exhaustion circuit breaker — same quota check scraper.js's
   // fetchWithScrapingdog uses, shared/memoized across both call sites per
-  // process. Fire-and-forget: a live /account round-trip must never add
-  // latency to SERP discovery (see scraper.js's fetchWithScrapingdog).
+  // process (trips only when the prepaid pool is truly empty; pace projections
+  // are log/health-check-only since the 2026-07-26 BD recharge incident).
+  // Fire-and-forget: a live /account round-trip must never add latency to
+  // SERP discovery (see scraper.js's fetchWithScrapingdog).
   scraper.checkScrapingdogQuotaOnce();
   if (scraper.sdQuotaExceeded) return null;
 
