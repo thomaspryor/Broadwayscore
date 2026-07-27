@@ -28,16 +28,12 @@
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseCidr, isCoveredByAny, cidrContains } = require('./lib/ip-cidr.js');
 
-if (hasHelpFlag(process.argv.slice(2))) {
-  console.log(
-    'Usage: node scripts/check-bd-blacklist.js [--dry-run] [--zone=NAME]\n\n' +
-      'Removes Bright Data zone blacklist entries that fall inside GitHub\n' +
-      "Actions' published runner ranges (api.github.com/meta). Non-GitHub\n" +
-      'entries are kept and routed to the owner digest. --dry-run reports\n' +
-      'without deleting. Zone defaults to $BRIGHTDATA_ZONE or web_unlocker2.'
-  );
-  process.exit(0);
-}
+const USAGE =
+  'Usage: node scripts/check-bd-blacklist.js [--dry-run] [--zone=NAME]\n\n' +
+  'Removes Bright Data zone blacklist entries that fall inside GitHub\n' +
+  "Actions' published runner ranges (api.github.com/meta). Non-GitHub\n" +
+  'entries are kept and routed to the owner digest. --dry-run reports\n' +
+  'without deleting. Zone defaults to $BRIGHTDATA_ZONE or web_unlocker2.';
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const zoneArg = process.argv.find((a) => a.startsWith('--zone='));
@@ -109,6 +105,14 @@ function sameCidr(a, b) {
 }
 
 async function main() {
+  // --help/-h checked BEFORE any network work (cousin of #260/#263/#264 —
+  // see scripts/lib/cli-help.js). The guard lives here, not at module top:
+  // audit-help-flag-safety.js's ordering check windows from main()'s
+  // declaration, so a top-level guard is invisible to it (task #601).
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log(USAGE);
+    return;
+  }
   if (!TOKEN) throw new Error('BRIGHTDATA_TOKEN not set');
 
   const entries = await getBlacklist();
