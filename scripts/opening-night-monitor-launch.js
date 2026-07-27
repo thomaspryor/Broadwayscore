@@ -105,8 +105,15 @@ function heartbeatAgeMin() {
   try { return (Date.now() - fs.statSync(HEARTBEAT).mtimeMs) / 60000; } catch { return null; }
 }
 
+// birthtime, not mtime: LOCK_DIR is not gitignored (data/ is core-data-only
+// gitignore territory), so a `git add -A`/checkout/clean in another session
+// touching a file inside it would silently reset mtime and misreport a
+// launch that's actually been in flight for a while as brand new — the
+// exact anti-pattern monitor-lock-staleness.js already documents (#476).
+// birthtime is stamped once at mkdir and nothing else in this launch path
+// rewrites it.
 function lockAgeSec() {
-  try { return (Date.now() - fs.statSync(LOCK_DIR).mtimeMs) / 1000; } catch { return null; }
+  try { return (Date.now() - fs.statSync(LOCK_DIR).birthtimeMs) / 1000; } catch { return null; }
 }
 
 function lockMeta() {
@@ -209,6 +216,7 @@ async function main(argv = process.argv.slice(2)) {
     killSwitch: fs.existsSync(KILL_FILE) || process.env.ON_MONITOR_DISABLED === '1',
     lockExists: fs.existsSync(LOCK_DIR),
     lockAgeSec: lockAgeSec(),
+    metaExists: meta !== null,
     heartbeatAgeMin: heartbeatAgeMin(),
     claudeAlive: cmuxws.computeClaudeAlive(meta),
     attemptsTonight: nightState.attempts,

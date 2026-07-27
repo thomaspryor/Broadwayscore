@@ -40,16 +40,21 @@ const HEARTBEAT_STALE_MIN = 90;
 // outside it). 3 matches dispatch-ledger's DEAD_ATTEMPT_LIMIT convention.
 const MAX_ATTEMPTS_PER_NIGHT = 3;
 
-// LOCK_META (meta.json) and the heartbeat are both written only AFTER
-// launchCmuxSession() returns — up to verifyTimeoutSec(90) + lateAdoptSec(60)
-// = 150s of real launch time, plus overhead. A concurrent tick that sees the
-// lock with no meta and no heartbeat yet is indistinguishable from "session
-// died before ever writing meta" UNLESS it also knows how old the lock is:
-// younger than this grace window means a launch is actively in flight (#568,
-// same failure class as #559/#564/#567 but a write-ordering race, not a
-// liveness-signal one) — older means it really did die before establishing
-// itself and is safe to reclaim.
-const LAUNCH_INFLIGHT_GRACE_SEC = 180;
+// LOCK_META (meta.json) is written only AFTER launchCmuxSession() returns —
+// up to verifyTimeoutSec(90) x 2 attempts + lateAdoptSec(60) = ~240s of real
+// launch time, plus overhead. A concurrent tick that sees the lock with no
+// meta yet is indistinguishable from "session died before ever writing meta"
+// UNLESS it also knows how old the lock is: younger than this grace window
+// means a launch is actively in flight (#568, same failure class as
+// #559/#564/#567 but a write-ordering race, not a liveness-signal one) —
+// older means it really did die before establishing itself and is safe to
+// reclaim. Shares monitor-lock-staleness.js's LAUNCH_GRACE_MS (a sibling
+// helper solving a related but distinct question — "should the nightly
+// executor skip because a monitor might be active" vs this file's "should
+// THIS tick reclaim the lock") so the two launch-grace policies can't drift
+// apart (ship-check finding, ~2026-07-26).
+const { LAUNCH_GRACE_MS } = require('./monitor-lock-staleness.js');
+const LAUNCH_INFLIGHT_GRACE_SEC = LAUNCH_GRACE_MS / 1000;
 
 /** Offset of `tz` from UTC in minutes at instant `date` (DST-correct). */
 function tzOffsetMinutes(date, tz) {
@@ -139,10 +144,13 @@ function nightKey(windows) {
  *                                         session's workspace
  * @param {number}  state.attemptsTonight  ledger count of launches for nightKey
  * @param {number|null} [state.lockAgeSec] seconds since LOCK_DIR was created (mkdir
- *                                         mtime); null/omitted = unknown
+ *                                         birthtime); null/omitted = unknown
+ * @param {boolean} [state.metaExists]     LOCK_META (meta.json) has been written for
+ *                                         THIS lock instance; default true (safe:
+ *                                         unknown callers get the pre-#568 behavior)
  * @returns {{action: 'skip'|'launch'|'reclaim-and-launch'|'escalate', reason: string}}
  */
-function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, claudeAlive, attemptsTonight, lockAgeSec = null }) {
+function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, claudeAlive, attemptsTonight, lockAgeSec = null, metaExists = true }) {
   if (killSwitch) return { action: 'skip', reason: 'kill switch active' };
   if (!windows.length) return { action: 'skip', reason: 'no show in its opening-night window' };
   if (lockExists) {
@@ -157,14 +165,19 @@ function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, clau
     if (claudeAlive) {
       return { action: 'skip', reason: 'live session (process probe; heartbeat stale — long tool call?)' };
     }
-    // No heartbeat has EVER been written for this lock (heartbeatAgeMin is
-    // still null, not just stale) — meta.json and the heartbeat are both
-    // only written after launchCmuxSession() returns, so this is exactly the
-    // state a concurrent tick sees while a launch is still in flight. A lock
-    // younger than its own worst-case launch time is not evidence of death;
-    // only treat it as reclaimable once it's outlasted that window (#568).
-    if (heartbeatAgeMin === null && lockAgeSec !== null && lockAgeSec < LAUNCH_INFLIGHT_GRACE_SEC) {
-      return { action: 'skip', reason: `lock is ${Math.round(lockAgeSec)}s old — launch likely still in flight (no meta/heartbeat yet)` };
+    // meta.json has never been written for THIS lock instance — it (and the
+    // heartbeat) are only written after launchCmuxSession() returns, so this
+    // is exactly the state a concurrent tick sees while a launch is still in
+    // flight. This must key off metaExists, NOT heartbeatAgeMin===null: the
+    // heartbeat file is a single global path (not scoped to this lock) that
+    // a prior night's session already wrote and never gets deleted, so
+    // heartbeatAgeMin is realistically always a large stale number, never
+    // null (ship-check finding, 2026-07-26 — the original heartbeat-based
+    // check was unreachable in production). A lock younger than its own
+    // worst-case launch time is not evidence of death; only treat it as
+    // reclaimable once it's outlasted that window (#568).
+    if (!metaExists && lockAgeSec !== null && lockAgeSec < LAUNCH_INFLIGHT_GRACE_SEC) {
+      return { action: 'skip', reason: `lock is ${Math.round(lockAgeSec)}s old, no meta.json yet — launch likely still in flight` };
     }
     if (attemptsTonight >= MAX_ATTEMPTS_PER_NIGHT) {
       return { action: 'escalate', reason: `session dead and ${attemptsTonight} attempts already spent tonight` };

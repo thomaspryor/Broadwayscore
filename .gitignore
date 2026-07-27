@@ -66,6 +66,11 @@ data/pending-fixes/
 # Opening night broadcast dedup state (regenerated from Formspree sync + send receipts)
 data/opening-night-sent.json
 
+# Opening-night monitor's runtime lock — mkdir'd/rm'd every launch cycle; a
+# `git add -A` picking it up would let a later checkout/clean reset its
+# birthtime and defeat #568's in-flight-launch grace window.
+data/opening-night-monitor/monitor.lock/
+
 # SQLite database (ephemeral query layer, rebuilt from JSON)
 data/broadway.db
 data/broadway.db.tmp
