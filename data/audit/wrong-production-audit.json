@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-27T01:37:45.113Z",
+  "timestamp": "2026-07-27T05:21:17.525Z",
   "stats": {
-    "totalReviews": 40730,
+    "totalReviews": 40733,
     "alreadyFlagged": 17867,
     "dateGuardCatches": 67,
     "directorMismatch": 928,
     "tvFilmSignals": 1116,
-    "londonSignals": 764,
+    "londonSignals": 765,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3289
+    "noPublishDate": 3284
   },
   "findings": [
     {
@@ -37440,7 +37440,7 @@
     {
       "showId": "oh-mary-west-end-2025",
       "file": "guardian-uk--unknown.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2025-12-19",
       "url": "https://www.inkl.com/news/oh-mary-at-the-trafalgar-theatre-review-a-boozy-glitter-bomb-of-outrageousness",
       "findings": [
@@ -40614,6 +40614,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tender-off-west-end-2026",
+      "file": "revstanstheatreblog--unknown.json",
+      "score": 79,
+      "publishDate": "2026-07-14",
+      "url": "https://revstanstheatreblog.co.uk/2026/07/14/review-tender-bush-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
