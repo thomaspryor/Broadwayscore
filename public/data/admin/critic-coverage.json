@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-07-27T10:20:29.911Z",
+  "generatedAt": "2026-07-27T12:15:47.507Z",
   "current": {
-    "totalCritics": 81,
-    "totalGaps": 1076,
+    "totalCritics": 82,
+    "totalGaps": 425,
     "gapsByBucket": {
-      "A": 45,
-      "B": 20,
-      "C": 1005,
-      "D": 6,
+      "A": 32,
+      "B": 6,
+      "C": 383,
+      "D": 4,
       "E": 0
     },
     "gapsBySource": {
-      "muckrack": 1076
+      "muckrack": 425
     }
   },
   "history": [
@@ -612,6 +612,36 @@
         "Gillian Russo": 1,
         "Shania Russell": 1
       }
+    },
+    {
+      "date": "2026-07-27",
+      "timestamp": "2026-07-27T10:37:07.379Z",
+      "totalCritics": 82,
+      "totalGaps": 425,
+      "gapsByBucket": {
+        "A": 32,
+        "B": 6,
+        "C": 383,
+        "D": 4,
+        "E": 0
+      },
+      "gapsBySource": {
+        "muckrack": 425
+      },
+      "perCritic": {
+        "Chris Jones": 119,
+        "Elysa Gardner": 108,
+        "Jesse Green": 77,
+        "Frank Scheck": 28,
+        "Juan A. Ramirez": 23,
+        "Helen Shaw": 18,
+        "Pete Hempstead": 15,
+        "Anya Ryan": 15,
+        "Arifa Akbar": 11,
+        "Tim Teeman": 5,
+        "Mark Kennedy": 4,
+        "David Rooney": 2
+      }
     }
   ],
   "topCriticsByGap": [
@@ -619,7 +649,7 @@
       "name": "Chris Jones",
       "outlet": "chicagotribune",
       "tier": 2,
-      "missingCount": 123,
+      "missingCount": 119,
       "lastDate": "2026-06-30"
     },
     {
@@ -627,63 +657,63 @@
       "outlet": "usatoday",
       "tier": 2,
       "missingCount": 108,
-      "lastDate": "2026-07-16"
+      "lastDate": "2026-07-21"
     },
     {
       "name": "Jesse Green",
       "outlet": "vulture",
       "tier": 1,
-      "missingCount": 81,
+      "missingCount": 77,
       "lastDate": "2026-04-08"
-    },
-    {
-      "name": "Steven Suskin",
-      "outlet": "nysr",
-      "tier": 2,
-      "missingCount": 63,
-      "lastDate": "2026-06-24"
     },
     {
       "name": "Frank Scheck",
       "outlet": "nysr",
       "tier": 2,
-      "missingCount": 51,
-      "lastDate": "2026-07-14"
+      "missingCount": 28,
+      "lastDate": "2026-07-21"
     },
     {
       "name": "Juan A. Ramirez",
       "outlet": "theatrely",
       "tier": 2,
-      "missingCount": 49,
+      "missingCount": 23,
       "lastDate": "2026-06-19"
+    },
+    {
+      "name": "Helen Shaw",
+      "outlet": "vulture",
+      "tier": 1,
+      "missingCount": 18,
+      "lastDate": "2026-07-17"
     },
     {
       "name": "Pete Hempstead",
       "outlet": "theatermania",
       "tier": 2,
-      "missingCount": 47,
+      "missingCount": 15,
       "lastDate": "2026-06-08"
     },
     {
-      "name": "Laura Collins-Hughes",
-      "outlet": "nytimes",
+      "name": "Anya Ryan",
+      "outlet": "london-theatre",
+      "tier": 2,
+      "missingCount": 15,
+      "lastDate": "2026-07-14"
+    },
+    {
+      "name": "Arifa Akbar",
+      "outlet": "guardian",
       "tier": 1,
-      "missingCount": 40,
-      "lastDate": "2026-06-16"
+      "missingCount": 11,
+      "lastDate": "2026-07-22"
     },
     {
-      "name": "Andrzej Lukowski",
-      "outlet": "timeout-london",
+      "name": "Tim Teeman",
+      "outlet": "dailybeast",
       "tier": 2,
-      "missingCount": 39,
-      "lastDate": "2026-07-15"
-    },
-    {
-      "name": "Bob Verini",
-      "outlet": "nysr",
-      "tier": 2,
-      "missingCount": 39,
-      "lastDate": "2026-06-16"
+      "missingCount": 5,
+      "lastDate": "2026-04-21"
     }
   ]
 }

@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-07-27T10:21:03.075Z",
+  "timestamp": "2026-07-27T12:16:20.950Z",
   "stats": {
-    "totalReviews": 40758,
-    "alreadyFlagged": 17881,
+    "totalReviews": 40770,
+    "alreadyFlagged": 17888,
     "dateGuardCatches": 67,
-    "directorMismatch": 928,
+    "directorMismatch": 927,
     "tvFilmSignals": 1115,
-    "londonSignals": 764,
+    "londonSignals": 765,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
     "noPublishDate": 3293
@@ -5849,20 +5849,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2026",
-      "file": "latimes--charles-mcnulty.json",
-      "score": 75,
-      "publishDate": null,
-      "url": "https://www.latimes.com/entertainment-arts/story/2026-04-01/arthur-miller-plays-revivals-death-of-a-salesman-the-price-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
         }
       ]
     },
@@ -44032,6 +44018,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2026-07-01",
+      "url": "https://www.britishtheatre.com/posts/to-kill-a-mockingbird-review-a-powerful-stage-adaptation-that-resonates-more-tha",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
