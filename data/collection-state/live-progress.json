@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-07-27T09:56:59.858Z",
-  "processed": 28,
-  "failed": 133,
-  "successRate": "17.4%",
+  "updatedAt": "2026-07-27T09:59:49.235Z",
+  "processed": 29,
+  "failed": 142,
+  "successRate": "17.0%",
   "tierBreakdown": {
     "playwright": 23,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archiveToday": 6,
-    "archive": 6
+    "brightdata": 6,
+    "archiveToday": 3,
+    "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-27T09:57:19.295Z",
+      "event": "bb-session",
+      "session": "1914f5c0",
+      "url": "https://www.nytimes.com/2026/07/24/theater/debra-winger-arliss-howard-gin-game.h"
+    },
+    {
+      "t": "2026-07-27T09:57:19.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
