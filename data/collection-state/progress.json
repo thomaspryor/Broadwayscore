@@ -608,7 +608,17 @@
     "shifters-off-broadway-2026/standard--nick-curtis.json",
     "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
     "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
-    "shifters-off-broadway-2026/thestage--tom-wicker.json"
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "the-gin-game-2026/wsj--charles-isherwood.json",
+    "the-gin-game-2026/american-theater-web--andy-propst.json",
+    "the-gin-game-2026/ap--mark-kennedy.json",
+    "the-gin-game-2026/center-on-the-aisle--steve-schonberg.json",
+    "the-gin-game-2026/northjerseycom--robert-feldberg.json",
+    "sukkot-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -692,14 +702,15 @@
       "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json",
-      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json"
     ],
     "archive": [
       "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json"
     ]
   },
   "startTime": "2026-07-26T17:14:57.666Z",
-  "lastProcessed": "shifters-off-broadway-2026/thestage--tom-wicker.json",
+  "lastProcessed": "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
   "log": [
     {
       "t": "2026-07-26T21:38:21.459Z",
@@ -1019,6 +1030,17 @@
       "t": "2026-07-27T03:47:40.907Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-27T03:49:45.386Z",
+      "event": "bb-session",
+      "session": "f5783c7a",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-27T03:49:45.997Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
