@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-27T03:05:41.100Z",
+  "updatedAt": "2026-07-27T03:41:47.364Z",
   "processed": 16,
-  "failed": 581,
-  "successRate": "2.7%",
+  "failed": 591,
+  "successRate": "2.6%",
   "tierBreakdown": {
     "playwright": 13,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archiveToday": 41,
+    "archiveToday": 46,
     "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-07-27T01:51:01.167Z",
-      "event": "bb-session",
-      "session": "4e2b4329",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-07-27T01:51:01.605Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-07-27T01:55:29.699Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-07-27T03:02:41.205Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-27T03:41:39.321Z",
+      "event": "bb-session",
+      "session": "623971b8",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-27T03:41:39.766Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
