@@ -368,6 +368,16 @@ test('PUSH_RECONCILE_MERGED_JSON=1 survives a nearby-slug remote edit through th
     sh('git commit -q -m base', seedDir);
     sh('git branch -M main', seedDir);
     sh(`git push -q "${originDir}" main`, seedDir);
+    // Pin the bare origin's HEAD to `main` explicitly. `git init --bare`
+    // sets HEAD from `init.defaultBranch`, which is NOT the same everywhere
+    // (this Mac's global config defaults to "main"; the GitHub Actions
+    // ubuntu runner's git defaults to "master"). If HEAD still points at a
+    // ref that was never pushed, `git clone` checks out an EMPTY working
+    // tree — refs and objects are all present, but no files land on disk —
+    // so every `fs.writeFileSync` below into a fresh clone's `data/`
+    // silently ENOENTs. Reproduced exactly this way in CI (run 30234641991)
+    // after passing locally many times.
+    sh(`git --git-dir="${originDir}" symbolic-ref HEAD refs/heads/main`, tmp);
 
     // Runner clone: this is "our" branch, about to edit show-a and push
     // through push-with-retry.sh with PUSH_RECONCILE_MERGED_JSON=1.
