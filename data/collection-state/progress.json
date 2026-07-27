@@ -441,7 +441,17 @@
     "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
     "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
     "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
-    "the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json"
+    "the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
+    "hugo-marchand-artists-at-the-center-off-broadway-2026/nytimes--marina-harss.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+    "shifters-off-broadway-2026/independent--alice-saville.json",
+    "shifters-off-broadway-2026/standard--nick-curtis.json",
+    "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+    "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
+    "shifters-off-broadway-2026/thestage--tom-wicker.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -498,14 +508,15 @@
       "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
       "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--unknown.json",
-      "data/review-texts/the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json"
+      "data/review-texts/the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
       "midnight-at-the-never-get-west-end-2026/south-london--michael-holland.json"
     ]
   },
   "startTime": "2026-07-26T17:14:57.666Z",
-  "lastProcessed": "the-smile-of-her-off-west-end-2026/chichester-observer--unknown.json",
+  "lastProcessed": "shifters-off-broadway-2026/thestage--tom-wicker.json",
   "log": [
     {
       "t": "2026-07-26T21:38:21.459Z",
@@ -594,6 +605,28 @@
       "t": "2026-07-27T00:20:45.438Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-27T01:01:13.287Z",
+      "event": "bb-session",
+      "session": "ddfbf5d9",
+      "url": "https://www.nytimes.com/2026/07/22/arts/dance/hugo-marchand-paris-opera-ballet-n"
+    },
+    {
+      "t": "2026-07-27T01:01:14.323Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-27T01:01:30.647Z",
+      "event": "bb-session",
+      "session": "8bc8621d",
+      "url": "https://www.nytimes.com/2026/07/22/arts/dance/hugo-marchand-paris-opera-ballet-n"
+    },
+    {
+      "t": "2026-07-27T01:01:31.518Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
