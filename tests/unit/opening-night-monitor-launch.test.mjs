@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import { launchDecision, activeWindows, LAUNCH_INFLIGHT_GRACE_SEC } from '../../scripts/lib/opening-night-windows.js';
 
 const require = createRequire(import.meta.url);
 const { shouldAdoptLateStart } = require('../../scripts/opening-night-monitor-launch.js');
@@ -50,4 +51,50 @@ test('does NOT adopt when there is no workspace to adopt', () => {
 test('a genuine success is not an adoption case', () => {
   const result = { ok: true, ref: 'workspace:272' };
   assert.equal(shouldAdoptLateStart(result, true), false);
+});
+
+// Card #568: LOCK_DIR is the atomic test-and-set (mkdir, before the launch
+// even starts) but LOCK_META and the heartbeat are both only written AFTER
+// launchCmuxSession() resolves — up to verifyTimeoutSec(90) + lateAdoptSec(60)
+// = 150s later. A concurrent tick that lands inside that gap sees
+// lockExists=true, meta=null (heartbeatAgeMin=null, claudeAlive=false) — the
+// exact same shape as a launch that died before ever writing meta. Without a
+// lock-age signal, launchDecision can't tell "still launching" from "long
+// dead" and reclaims a still-in-flight session out from under it.
+test('a launch actively in flight (fresh lock, no meta/heartbeat yet) is NOT reclaimed', () => {
+  const windows = activeWindows(
+    [{ id: 'giant-2026', category: 'broadway', openingDate: '2026-07-30' }],
+    new Date('2026-07-30T22:00:00Z'),
+  );
+  const d = launchDecision({
+    windows, killSwitch: false, lockExists: true,
+    heartbeatAgeMin: null, claudeAlive: false, attemptsTonight: 0,
+    lockAgeSec: 10, // fresh lock — well inside the grace window
+  });
+  assert.notEqual(d.action, 'reclaim-and-launch');
+  assert.equal(d.action, 'skip');
+});
+
+test('a lock that outlived the grace window with no meta/heartbeat IS reclaimed', () => {
+  const windows = activeWindows(
+    [{ id: 'giant-2026', category: 'broadway', openingDate: '2026-07-30' }],
+    new Date('2026-07-30T22:00:00Z'),
+  );
+  const d = launchDecision({
+    windows, killSwitch: false, lockExists: true,
+    heartbeatAgeMin: null, claudeAlive: false, attemptsTonight: 0,
+    lockAgeSec: LAUNCH_INFLIGHT_GRACE_SEC + 30,
+  });
+  assert.equal(d.action, 'reclaim-and-launch');
+});
+
+// Guards the launcher's own wiring: main() must actually compute and pass
+// lockAgeSec into launchDecision's state, or the grace window above is dead
+// code that never fires against real ticks (same silent-revert risk as the
+// claudeAlive guard above).
+test('launcher state object passes lockAgeSec through to launchDecision', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const lockAgeLine = src.split('\n').find(l => l.includes('lockAgeSec:'));
+  assert.ok(lockAgeLine, 'expected a `lockAgeSec:` field in the state object literal');
+  assert.match(lockAgeLine, /lockAgeSec\(\)/, 'lockAgeSec must be computed from LOCK_DIR mtime, not hardcoded/omitted');
 });

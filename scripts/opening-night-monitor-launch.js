@@ -105,6 +105,10 @@ function heartbeatAgeMin() {
   try { return (Date.now() - fs.statSync(HEARTBEAT).mtimeMs) / 60000; } catch { return null; }
 }
 
+function lockAgeSec() {
+  try { return (Date.now() - fs.statSync(LOCK_DIR).mtimeMs) / 1000; } catch { return null; }
+}
+
 function lockMeta() {
   try { return JSON.parse(fs.readFileSync(LOCK_META, 'utf8')); } catch { return null; }
 }
@@ -204,6 +208,7 @@ async function main(argv = process.argv.slice(2)) {
     windows,
     killSwitch: fs.existsSync(KILL_FILE) || process.env.ON_MONITOR_DISABLED === '1',
     lockExists: fs.existsSync(LOCK_DIR),
+    lockAgeSec: lockAgeSec(),
     heartbeatAgeMin: heartbeatAgeMin(),
     claudeAlive: cmuxws.computeClaudeAlive(meta),
     attemptsTonight: nightState.attempts,

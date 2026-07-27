@@ -40,6 +40,17 @@ const HEARTBEAT_STALE_MIN = 90;
 // outside it). 3 matches dispatch-ledger's DEAD_ATTEMPT_LIMIT convention.
 const MAX_ATTEMPTS_PER_NIGHT = 3;
 
+// LOCK_META (meta.json) and the heartbeat are both written only AFTER
+// launchCmuxSession() returns — up to verifyTimeoutSec(90) + lateAdoptSec(60)
+// = 150s of real launch time, plus overhead. A concurrent tick that sees the
+// lock with no meta and no heartbeat yet is indistinguishable from "session
+// died before ever writing meta" UNLESS it also knows how old the lock is:
+// younger than this grace window means a launch is actively in flight (#568,
+// same failure class as #559/#564/#567 but a write-ordering race, not a
+// liveness-signal one) — older means it really did die before establishing
+// itself and is safe to reclaim.
+const LAUNCH_INFLIGHT_GRACE_SEC = 180;
+
 /** Offset of `tz` from UTC in minutes at instant `date` (DST-correct). */
 function tzOffsetMinutes(date, tz) {
   const dtf = new Intl.DateTimeFormat('en-US', {
@@ -127,9 +138,11 @@ function nightKey(windows) {
  * @param {boolean} state.claudeAlive      point-in-time process probe of the locked
  *                                         session's workspace
  * @param {number}  state.attemptsTonight  ledger count of launches for nightKey
+ * @param {number|null} [state.lockAgeSec] seconds since LOCK_DIR was created (mkdir
+ *                                         mtime); null/omitted = unknown
  * @returns {{action: 'skip'|'launch'|'reclaim-and-launch'|'escalate', reason: string}}
  */
-function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, claudeAlive, attemptsTonight }) {
+function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, claudeAlive, attemptsTonight, lockAgeSec = null }) {
   if (killSwitch) return { action: 'skip', reason: 'kill switch active' };
   if (!windows.length) return { action: 'skip', reason: 'no show in its opening-night window' };
   if (lockExists) {
@@ -144,6 +157,15 @@ function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, clau
     if (claudeAlive) {
       return { action: 'skip', reason: 'live session (process probe; heartbeat stale — long tool call?)' };
     }
+    // No heartbeat has EVER been written for this lock (heartbeatAgeMin is
+    // still null, not just stale) — meta.json and the heartbeat are both
+    // only written after launchCmuxSession() returns, so this is exactly the
+    // state a concurrent tick sees while a launch is still in flight. A lock
+    // younger than its own worst-case launch time is not evidence of death;
+    // only treat it as reclaimable once it's outlasted that window (#568).
+    if (heartbeatAgeMin === null && lockAgeSec !== null && lockAgeSec < LAUNCH_INFLIGHT_GRACE_SEC) {
+      return { action: 'skip', reason: `lock is ${Math.round(lockAgeSec)}s old — launch likely still in flight (no meta/heartbeat yet)` };
+    }
     if (attemptsTonight >= MAX_ATTEMPTS_PER_NIGHT) {
       return { action: 'escalate', reason: `session dead and ${attemptsTonight} attempts already spent tonight` };
     }
@@ -156,6 +178,6 @@ function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, clau
 }
 
 module.exports = {
-  MARKET_TZ, WINDOW_START_HOUR_LOCAL, HEARTBEAT_STALE_MIN, MAX_ATTEMPTS_PER_NIGHT,
+  MARKET_TZ, WINDOW_START_HOUR_LOCAL, HEARTBEAT_STALE_MIN, MAX_ATTEMPTS_PER_NIGHT, LAUNCH_INFLIGHT_GRACE_SEC,
   tzOffsetMinutes, utcFromZoned, nextDay, computeWindow, activeWindows, nightKey, launchDecision,
 };
