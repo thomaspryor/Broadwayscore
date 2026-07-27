@@ -3,12 +3,21 @@
 ## The Tier Chain (in order)
 
 ```
-Tier 0:  Direct fetch (no proxy) — for non-blocked sites
-Tier 1:  Bright Data web_unlocker — handles most bot-detection
-Tier 2:  ScrapingBee — fallback when BD fails
-Tier 3:  Playwright (headless Chrome) — for JS-heavy sites
+Tier 0:   Direct fetch (no proxy) — for non-blocked sites
+Tier 0.5: ScrapingDog — cheap primary (~$0.09-0.45/1k), tried BEFORE Bright Data
+Tier 1:   Bright Data web_unlocker — handles hard sites SD can't (~$1.50/1k)
+Tier 2:   ScrapingBee — fallback when BD fails
+Tier 3:   Playwright (headless Chrome) — for JS-heavy sites
 Tier 1.5: Browserbase — Cloudflare-protected sites ONLY
 ```
+
+## ScrapingDog (the cheap primary since 2026-06)
+
+- Default ON (`SCRAPER_USE_SCRAPINGDOG=0` to opt out). Key is GH-secrets-only, not in local .env.
+- **Billing: prepaid monthly plan** (~1M credits/cycle, credits EXPIRE at renewal — not PAYG). Plain fetch = 1 credit, dynamic/premium = 5-10, Google SERP = 5.
+- SERP also goes SD-first (`_serpViaScrapingdog` in url-discovery.js, Google Light Search).
+- Quota breaker (`shouldSkipScrapingdogAtRuntime` in scrapingdog-ack.js) trips ONLY on actual exhaustion. NEVER re-add pace-projection routing — prepaid credits must be drained before BD's 17x cost (2026-07-26 $50 BD recharge incident). Mid-run exhaustion latches via 401/403/429 from the scrape endpoint.
+- SD HTTP 400 = "host needs premium/stealth" (fetchJSON escalates); it is NOT a quota signal.
 
 ## When Each Tier Is Used
 
