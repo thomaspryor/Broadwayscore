@@ -18,11 +18,14 @@ import {
   DRIFT_BUDGET_LINES,
   SECOND_OPINION_MAX_LINES,
   gatedDiffStats,
+  gatedDiffPatchText,
   computeDiffHash,
   queryPushAllowed,
+  queryCiRedClaimConflict,
   recordVerdict,
   resolveBase,
 } from '../../scripts/lib/review-gate.mjs';
+import { appendClaim } from '../../scripts/lib/ci-red-claims.js';
 
 function git(repo, ...args) {
   return execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8' });
@@ -199,4 +202,88 @@ test('no-base scratch clone fails open (never wedges)', (t) => {
   git(repo, 'commit', '-q', '-m', 'init');
   const r = queryPushAllowed({ repoRoot: repo });
   assert.equal(r.allowed, true);
+});
+
+// ── CI-red claim conflict (task #584 — closes the #542 wiring gap) ─────────
+// The claim ledger + predicate already shipped (scripts/lib/ci-red-claims.js,
+// scripts/lib/duplicate-dispatch-guard.js); this wires them into the actual
+// push-boundary hook. Independent of queryPushAllowed above — its own
+// function, own tests — so it can't regress the existing gate's coverage.
+
+function tmpClaimsPath() {
+  const dir = mkdtempSync(join(tmpdir(), 'ci-red-claims-gate-test-'));
+  return join(dir, 'ci-red-claims.jsonl');
+}
+
+test('gatedDiffPatchText: contains gated-file content, excludes non-gated paths', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  commitLines(repo, 'scripts/monitor.js', 5, 'shouldShowSentiment fix');
+  writeFileSync(join(repo, 'data', 'scratch.json'), '{"shouldShowSentiment": true}\n'.repeat(5));
+  git(repo, 'add', '-A');
+  git(repo, 'commit', '-q', '-m', 'data churn');
+  const base = resolveBase(repo);
+  const patch = gatedDiffPatchText(repo, base, 'HEAD');
+  assert.match(patch, /shouldShowSentiment fix/);
+  assert.doesNotMatch(patch, /"shouldShowSentiment": true/);
+});
+
+test('queryCiRedClaimConflict: no claims file — not blocked (fail open)', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  commitLines(repo, 'scripts/fix.js', 3, 'shouldShowSentiment fix');
+  const r = queryCiRedClaimConflict({ repoRoot: repo, claimsPath: '/nonexistent/ci-red-claims.jsonl' });
+  assert.equal(r.blocked, false);
+});
+
+test('queryCiRedClaimConflict: diff matches another in_progress claim — blocked', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  const claimsPath = tmpClaimsPath();
+  appendClaim({ taskId: '563', symbol: 'shouldShowSentiment' }, claimsPath);
+  commitLines(repo, 'scripts/fix.js', 3, 'shouldShowSentiment ReferenceError fix');
+  const r = queryCiRedClaimConflict({ repoRoot: repo, claimsPath });
+  assert.equal(r.blocked, true);
+  assert.match(r.reason, /#563/);
+});
+
+test('queryCiRedClaimConflict: own claim excluded via ownTaskId — not blocked', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  const claimsPath = tmpClaimsPath();
+  appendClaim({ taskId: '584', symbol: 'shouldShowSentiment' }, claimsPath);
+  commitLines(repo, 'scripts/fix.js', 3, 'shouldShowSentiment ReferenceError fix');
+  const r = queryCiRedClaimConflict({ repoRoot: repo, claimsPath, ownTaskId: '584' });
+  assert.equal(r.blocked, false);
+});
+
+test('queryCiRedClaimConflict: diff does not reference the claimed symbol — not blocked', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  const claimsPath = tmpClaimsPath();
+  appendClaim({ taskId: '563', symbol: 'shouldShowSentiment' }, claimsPath);
+  commitLines(repo, 'scripts/unrelated.js', 5, 'unrelated typo fix');
+  const r = queryCiRedClaimConflict({ repoRoot: repo, claimsPath });
+  assert.equal(r.blocked, false);
+});
+
+test('queryCiRedClaimConflict: expired claim (past TTL) does not block', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  const claimsPath = tmpClaimsPath();
+  appendClaim({ taskId: '563', symbol: 'shouldShowSentiment' }, claimsPath);
+  commitLines(repo, 'scripts/fix.js', 3, 'shouldShowSentiment ReferenceError fix');
+  const farFuture = Date.now() + 3 * 60 * 60 * 1000; // beyond CLAIM_TTL_MS (2h)
+  const r = queryCiRedClaimConflict({ repoRoot: repo, claimsPath, now: farFuture });
+  assert.equal(r.blocked, false);
+});
+
+test('queryCiRedClaimConflict: matches on runId too', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  const claimsPath = tmpClaimsPath();
+  appendClaim({ taskId: '9', runId: '30120249897' }, claimsPath);
+  commitLines(repo, 'scripts/fix.js', 3, 'fix flake in CI run 30120249897');
+  const r = queryCiRedClaimConflict({ repoRoot: repo, claimsPath });
+  assert.equal(r.blocked, true);
 });
