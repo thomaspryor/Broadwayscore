@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   utcFromZoned, computeWindow, activeWindows, nightKey, launchDecision,
-  HEARTBEAT_STALE_MIN, MAX_ATTEMPTS_PER_NIGHT,
+  HEARTBEAT_STALE_MIN, MAX_ATTEMPTS_PER_NIGHT, LAUNCH_INFLIGHT_GRACE_SEC,
 } from './opening-night-windows.js';
 import { computeClaudeAlive } from './cmux-workspaces.js';
 
@@ -140,6 +140,33 @@ test('decision: end-to-end via computeClaudeAlive — stale heartbeat + both sig
   });
   assert.equal(claudeAlive, false);
   const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: HEARTBEAT_STALE_MIN + 30, claudeAlive, attemptsTonight: 1 });
+  assert.equal(d.action, 'reclaim-and-launch');
+});
+
+// Card #568: LOCK_META (meta.json) and the heartbeat are both written only
+// AFTER launchCmuxSession() returns, up to ~150s later — a concurrent tick
+// landing in that gap sees lockExists=true, heartbeatAgeMin=null, and no live
+// process to probe. Without lockAgeSec, that's indistinguishable from "died
+// before ever writing meta" and gets reclaimed out from under the still-
+// launching session.
+test('decision: fresh lock, no heartbeat ever written → launch still in flight, NOT reclaimed', () => {
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: null, claudeAlive: false, attemptsTonight: 0, lockAgeSec: 5 });
+  assert.equal(d.action, 'skip');
+  assert.match(d.reason, /in flight/);
+});
+
+test('decision: lock right at the edge of the grace window is still in-flight', () => {
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: null, claudeAlive: false, attemptsTonight: 0, lockAgeSec: LAUNCH_INFLIGHT_GRACE_SEC - 1 });
+  assert.equal(d.action, 'skip');
+});
+
+test('decision: lock past the grace window with no heartbeat → genuinely dead, reclaim', () => {
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: null, claudeAlive: false, attemptsTonight: 0, lockAgeSec: LAUNCH_INFLIGHT_GRACE_SEC + 1 });
+  assert.equal(d.action, 'reclaim-and-launch');
+});
+
+test('decision: unknown lock age (not supplied) falls back to prior stale-path behavior', () => {
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: null, claudeAlive: false, attemptsTonight: 1 });
   assert.equal(d.action, 'reclaim-and-launch');
 });
 
