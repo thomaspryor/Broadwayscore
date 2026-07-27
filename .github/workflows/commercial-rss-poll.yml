@@ -82,6 +82,32 @@ jobs:
             echo "No pending file — nothing to apply"
           fi
 
+      - name: Clear BD blacklist of GitHub runner IPs
+        # Bright Data's unknown-IP detector auto-blacklists rotating GitHub
+        # Actions runner ranges on the zone, silently degrading the scraping
+        # fallback chain (2026-07-27: 158.23.190.0/24 on web_unlocker2).
+        # Control-plane API only (3 calls, no page fetches) — hosted here
+        # because this workflow is the hourly cron that already carries the
+        # BD token. Runs even when the poll fails; must run BEFORE the commit
+        # step so digest-queue writes for genuinely unknown IPs persist.
+        # continue-on-error: a BD-API blip or /meta rate-limit must not red
+        # this CRITICAL data cron or fire "Commercial RSS Poll Failed";
+        # persistent BD auth breakage still surfaces via check-secrets-health.
+        # hygiene-run-budget-ok: check-bd-blacklist.js makes a handful of
+        # bounded control-plane API calls (2 reads + one delete per blacklist
+        # entry + 1 verify), each with an AbortSignal timeout — no per-item
+        # page-fetch loop to budget. (poll-trade-press-rss.js already wires
+        # run-budget; this exemption is for the blacklist step's FP only.)
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          # Authenticated /meta: unauthenticated is 60 req/hr per source IP,
+          # shared with every tenant on the runner's egress IP.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/check-bd-blacklist.js
+
       - name: Commit data changes
         if: always() && inputs.dry_run != true
         # Task #574: commits commercial-pending-review.json (union-merged
