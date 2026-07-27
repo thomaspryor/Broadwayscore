@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-27T04:19:38.501Z",
+  "generatedAt": "2026-07-27T06:19:25.679Z",
   "windowDays": 45,
   "showsScanned": 53,
   "gaps": [
@@ -18,7 +18,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-07-26T10:36:40.359Z",
-      "nonTerminalAgeHours": 17.716150555555554
+      "nonTerminalAgeHours": 19.712588611111112
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-07-26T12:20:34.737Z",
-      "nonTerminalAgeHours": 15.98437888888889
+      "nonTerminalAgeHours": 17.980816944444445
     },
     {
       "showId": "tender-off-west-end-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=tender-off-west-end-2026 --url=https://www.dailymail.co.uk/tvshowbiz/article-15888377/Doctor-Christmas-special-episode-AXED-BBC-tender-invest-long-term-future.html --outlet=daily-mail --critic=\"Rebecca Davison\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-17T06:49:09.308Z",
-      "fileAgeHours": 237.5080975,
+      "fileAgeHours": 239.504535,
       "gapSeenAt": "2026-07-26T20:24:00.725Z",
-      "nonTerminalAgeHours": 7.92716
+      "nonTerminalAgeHours": 9.923598055555555
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -67,9 +67,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 87.13389194444444,
+      "fileAgeHours": 89.13032944444444,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 46.43682361111111
+      "nonTerminalAgeHours": 48.43326166666667
     }
   ],
   "contradictions": []

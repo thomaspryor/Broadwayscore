@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-27T05:21:17.525Z",
+  "timestamp": "2026-07-27T06:35:51.270Z",
   "stats": {
-    "totalReviews": 40733,
-    "alreadyFlagged": 17867,
+    "totalReviews": 40732,
+    "alreadyFlagged": 17876,
     "dateGuardCatches": 67,
     "directorMismatch": 928,
-    "tvFilmSignals": 1116,
-    "londonSignals": 765,
+    "tvFilmSignals": 1115,
+    "londonSignals": 764,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3284
+    "noPublishDate": 3274
   },
   "findings": [
     {
@@ -8388,7 +8388,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 92,
+      "score": 97,
       "publishDate": "2025-05-02",
       "url": "https://www.broadwayworld.com/westend/article/Review-GIANT-Harold-Pinter-Theatre-Starring-John-Lithgow-20250502",
       "findings": [
@@ -10065,7 +10065,7 @@
     {
       "showId": "hamilton-2015",
       "file": "vulture--jesse-green.json",
-      "score": 90,
+      "score": 91,
       "publishDate": "2015-08-07",
       "url": "http://www.vulture.com/2015/08/theater-review-hamilton.html",
       "findings": [
@@ -15608,7 +15608,7 @@
     {
       "showId": "midnight-at-the-never-get-west-end-2026",
       "file": "telegraph--marianka-swain.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-07-21",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/midnight-at-the-never-get-review/",
       "findings": [
@@ -15622,7 +15622,7 @@
     {
       "showId": "midnight-at-the-never-get-west-end-2026",
       "file": "thestage--holly-omahony.json",
-      "score": 75,
+      "score": 60,
       "publishDate": "2026-07-21",
       "url": "https://www.thestage.co.uk/reviews/midnight-at-the-never-get-review-menier-chocolate-factory-ben-platt",
       "findings": [
@@ -19878,7 +19878,7 @@
     {
       "showId": "sherlock-holmes-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 88,
+      "score": 79,
       "publishDate": "2026-05-16",
       "url": "http://theartsdesk.com/theatre/sherlock-holmes-regents-park-open-air-theatre-review-gleefully-madcap-and-unashamedly-cerebral",
       "findings": [
@@ -23998,7 +23998,7 @@
     {
       "showId": "the-gin-game-2026",
       "file": "nysr--frank-scheck.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2026-07-21",
       "url": "https://nystagereview.com/2026/07/20/the-gin-game-debra-winger-and-arliss-howard-deliver-a-winning-hand/",
       "findings": [
@@ -24901,24 +24901,6 @@
       "showId": "the-oresteia-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
       "score": 57,
-      "publishDate": "2026-07-15",
-      "url": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-oresteia-west-end-2026",
-      "file": "broadwayworld--persson-alexander-cohen.json",
       "publishDate": "2026-07-15",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
       "findings": [
