@@ -71,6 +71,17 @@ data/opening-night-sent.json
 # birthtime and defeat #568's in-flight-launch grace window.
 data/opening-night-monitor/monitor.lock/
 
+# Opening-night monitor's other runtime state/logs — heartbeat.json getting
+# git-tracked (c5881300e89) is what made the original #568 fix unreachable in
+# production: it sat 2 days stale in the repo while launchDecision assumed
+# heartbeatAgeMin could still be null. None of these are read via git/CI, only
+# local fs — untracked from here on (#568 follow-up).
+data/opening-night-monitor/heartbeat.json
+data/opening-night-monitor/night-state-*.json
+data/opening-night-monitor/session-state-*.json
+data/opening-night-monitor/*.log
+data/opening-night-monitor/*.err
+
 # SQLite database (ephemeral query layer, rebuilt from JSON)
 data/broadway.db
 data/broadway.db.tmp
