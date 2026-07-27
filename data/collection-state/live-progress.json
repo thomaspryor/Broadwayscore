@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-27T03:03:07.468Z",
+  "updatedAt": "2026-07-27T03:02:38.062Z",
   "processed": 16,
-  "failed": 581,
-  "successRate": "2.7%",
+  "failed": 564,
+  "successRate": "2.8%",
   "tierBreakdown": {
     "playwright": 13,
     "amp": 0,
@@ -13,8 +13,19 @@
     "archiveToday": 41,
     "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
+    {
+      "t": "2026-07-27T01:48:49.205Z",
+      "event": "bb-session",
+      "session": "850b4290",
+      "url": "https://www.nytimes.com/2026/07/22/arts/dance/hugo-marchand-paris-opera-ballet-n"
+    },
+    {
+      "t": "2026-07-27T01:48:49.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
     {
       "t": "2026-07-27T01:51:01.167Z",
       "event": "bb-session",
@@ -93,37 +104,26 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-07-27T02:57:20.189Z",
+      "t": "2026-07-27T03:00:08.176Z",
       "event": "bb-session",
-      "session": "012f6258",
+      "session": "483b7962",
       "url": "https://www.nytimes.com/2026/07/22/arts/dance/hugo-marchand-paris-opera-ballet-n"
     },
     {
-      "t": "2026-07-27T02:57:20.720Z",
+      "t": "2026-07-27T03:00:09.092Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-07-27T02:57:36.475Z",
+      "t": "2026-07-27T03:00:24.993Z",
       "event": "bb-session",
-      "session": "dc560134",
+      "session": "99571d20",
       "url": "https://www.nytimes.com/2026/07/22/arts/dance/hugo-marchand-paris-opera-ballet-n"
     },
     {
-      "t": "2026-07-27T02:57:36.988Z",
+      "t": "2026-07-27T03:00:25.866Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-27T02:59:54.627Z",
-      "event": "bb-session",
-      "session": "ade1a785",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-07-27T02:59:55.255Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }
