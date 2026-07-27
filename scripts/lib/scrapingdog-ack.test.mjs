@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { SCRAPINGDOG_ACKNOWLEDGED_BURN, isScrapingdogBurnAcknowledged, evaluateScrapingdogCredits } = require('./scrapingdog-ack.js');
+const { SCRAPINGDOG_ACKNOWLEDGED_BURN, isScrapingdogBurnAcknowledged, evaluateScrapingdogCredits, shouldSkipScrapingdogAtRuntime } = require('./scrapingdog-ack.js');
 
 // The real account shape from api.scrapingdog.com/account that fired the
 // daily alert (task #418): 923k left of 1M, ~77k/day burn, renews in 29d →
@@ -113,4 +113,50 @@ test('expiry is the day after the ScrapingBee reset it depends on', () => {
 test('default-today path returns a boolean and matches the explicit-date result', () => {
   const today = new Date().toISOString().slice(0, 10);
   assert.equal(isScrapingdogBurnAcknowledged(), isScrapingdogBurnAcknowledged(today));
+});
+
+// --- shouldSkipScrapingdogAtRuntime (2026-07-26 BD recharge incident) ---
+
+test('runtime skip: pace projection with credits remaining must NOT skip SD (the $50-recharge regression)', () => {
+  // The exact live shape from the incident day: 868k of ~1M left (87%),
+  // 44k/day burn, renews in 27d → projects exhaustion ~20d, BEFORE renewal.
+  // The old breaker tripped here and routed everything to BD at ~17x cost.
+  const r = shouldSkipScrapingdogAtRuntime({ requestLimit: 1000000, requestUsed: 132000, validity: 27 });
+  assert.equal(r.skip, false);
+  assert.match(r.logLine, /still using SD/);
+  assert.match(r.logLine, /projects exhaustion/);
+});
+
+test('runtime skip: actually exhausted account skips SD (saves a doomed round-trip per call)', () => {
+  const r = shouldSkipScrapingdogAtRuntime({ requestLimit: 1000000, requestUsed: 1000000, validity: 10 });
+  assert.equal(r.skip, true);
+  assert.match(r.logLine, /exhausted/);
+  const over = shouldSkipScrapingdogAtRuntime({ requestLimit: 1000000, requestUsed: 1000012, validity: 10 });
+  assert.equal(over.skip, true);
+});
+
+test('runtime skip: near-dry but non-zero balance still uses SD (prepaid credits get spent to the last)', () => {
+  const r = shouldSkipScrapingdogAtRuntime({ requestLimit: 1000000, requestUsed: 999999, validity: 10 });
+  assert.equal(r.skip, false);
+});
+
+test('runtime skip: healthy account, healthy pace → no skip, no log', () => {
+  const r = shouldSkipScrapingdogAtRuntime({ requestLimit: 1000000, requestUsed: 100000, validity: 25 });
+  assert.equal(r.skip, false);
+  assert.equal(r.logLine, null);
+});
+
+test('runtime skip: malformed account response fails OPEN (pre-check must never block scraping)', () => {
+  for (const bad of [null, {}, { requestLimit: 'a lot', requestUsed: 5 }, { requestLimit: 0, requestUsed: 0 }, { requestLimit: 1000000 }, { requestLimit: 1000000, requestUsed: -5 }]) {
+    const r = shouldSkipScrapingdogAtRuntime(bad);
+    assert.equal(r.skip, false, `expected no skip for ${JSON.stringify(bad)}`);
+    assert.equal(r.logLine, null);
+  }
+});
+
+test('runtime skip: garbage validity is ignored, credits remaining → no skip', () => {
+  for (const v of [-1, NaN, Infinity, 'soon']) {
+    const r = shouldSkipScrapingdogAtRuntime({ requestLimit: 1000000, requestUsed: 900000, validity: v });
+    assert.equal(r.skip, false, `validity=${v}`);
+  }
 });

@@ -84,4 +84,49 @@ function evaluateScrapingdogCredits(acct, today) {
   return { status, message: msg };
 }
 
-module.exports = { SCRAPINGDOG_ACKNOWLEDGED_BURN, isScrapingdogBurnAcknowledged, evaluateScrapingdogCredits };
+/**
+ * Runtime routing decision for scraper.js's SD pre-check: should fetchPage
+ * skip ScrapingDog for the rest of this run?
+ *
+ * Trips ONLY on actual exhaustion (remaining <= 0), where skipping saves a
+ * doomed HTTP round-trip per call. It must NOT trip on the pace projection:
+ * SD credits are PREPAID and expire at renewal, so "pacing" the pool by
+ * rerouting to Bright Data (~$1.50/1k) while 87% of the paid-for credits
+ * (~$0.09-0.45/1k) sit unused is strictly more expensive — that projection
+ * math routed every request to BD for days and triggered the 2026-07-26
+ * $50 auto-recharge incident. Pace projections belong to health-check.js
+ * (evaluateScrapingdogCredits above), which alerts; routing never pre-pays.
+ *
+ * @param {{requestLimit:number, requestUsed:number, validity?:number}} acct
+ * @returns {{skip: boolean, logLine: string|null}}
+ */
+function shouldSkipScrapingdogAtRuntime(acct) {
+  // Fail open on malformed responses — the pre-check must never block scraping.
+  if (!acct || !Number.isFinite(acct.requestLimit) || acct.requestLimit <= 0
+      || !Number.isFinite(acct.requestUsed) || acct.requestUsed < 0) {
+    return { skip: false, logLine: null };
+  }
+  const remaining = acct.requestLimit - acct.requestUsed;
+  if (remaining <= 0) {
+    return {
+      skip: true,
+      logLine: `Scrapingdog account exhausted (${acct.requestUsed}/${acct.requestLimit}) — routing to BD/SB for the rest of this run`,
+    };
+  }
+  const daysToRenewal = (typeof acct.validity === 'number' && Number.isFinite(acct.validity) && acct.validity >= 0)
+    ? acct.validity : null;
+  if (daysToRenewal !== null) {
+    const daysIntoCycle = Math.max(1, 30 - daysToRenewal);
+    const dailyBurn = acct.requestUsed / daysIntoCycle;
+    const daysUntilExhaustion = dailyBurn > 0 ? remaining / dailyBurn : Infinity;
+    if (daysUntilExhaustion < daysToRenewal) {
+      return {
+        skip: false,
+        logLine: `Scrapingdog pace (~${Math.round(dailyBurn)}/day) projects exhaustion in ~${Math.round(daysUntilExhaustion)}d, before the ${daysToRenewal}d-out renewal — still using SD (prepaid credits beat BD's ~17x cost); health-check tracks the burn`,
+      };
+    }
+  }
+  return { skip: false, logLine: null };
+}
+
+module.exports = { SCRAPINGDOG_ACKNOWLEDGED_BURN, isScrapingdogBurnAcknowledged, evaluateScrapingdogCredits, shouldSkipScrapingdogAtRuntime };

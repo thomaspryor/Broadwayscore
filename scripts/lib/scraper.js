@@ -34,6 +34,7 @@ const {
 } = require('./cookie-loader');
 const { fetchWithCookiesPlain } = require('./fetch-plain');
 const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
+const { shouldSkipScrapingdogAtRuntime } = require('./scrapingdog-ack');
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
@@ -224,14 +225,17 @@ async function checkScrapingBeeCredits() {
   });
 }
 
-// --- SD quota pre-check (daily-pace circuit breaker, task #213 A3) ---
-// SB's per-run SB_CREDIT_BUDGET rations a fixed monthly plan run-by-run, but SD
-// bills PAYG against a period that renews on a fixed date — a steady per-run
-// budget can't see a burn-rate spike until the account is already dry
-// mid-cycle. health-check.js's 'Credits: ScrapingDog' check (added 2026-07-19)
-// does this same requestUsed/requestLimit/validity math but only ALERTS; this
-// acts on it at call time by stopping SD offers before the account exhausts
-// before renewal, same as _sbCreditsLow does for ScrapingBee.
+// --- SD quota pre-check (actual-exhaustion circuit breaker) ---
+// History: task #213 A3 originally tripped this on a PACE PROJECTION
+// (daysUntilExhaustion < daysToRenewal), reasoning SD "bills PAYG" and should
+// be paced. Both halves were wrong (2026-07-26 BD recharge incident): the
+// account is a prepaid monthly plan whose credits expire at renewal, and the
+// projection tripped while 87% of the pool was unspent — rerouting every
+// request to Bright Data at ~$1.50/1k while paid-for SD credits
+// (~$0.09-0.45/1k) sat idle. The skip decision now lives in
+// scrapingdog-ack.js's shouldSkipScrapingdogAtRuntime (§15 extraction) and
+// trips ONLY on actual exhaustion, where skipping saves a doomed round-trip
+// per call. Pace projections stay health-check-only (they alert, never route).
 let _sdQuotaCheckPromise = null;
 let _sdQuotaExceeded = false;
 
@@ -254,16 +258,10 @@ function _checkScrapingdogQuotaOnce() {
         req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
       });
       const acct = JSON.parse(body);
-      if (!acct.requestLimit) return;
-      const remaining = acct.requestLimit - acct.requestUsed;
-      const daysToRenewal = typeof acct.validity === 'number' ? acct.validity : null;
-      if (daysToRenewal === null) return;
-      const daysIntoCycle = Math.max(1, 30 - daysToRenewal);
-      const dailyBurn = acct.requestUsed / daysIntoCycle;
-      const daysUntilExhaustion = dailyBurn > 0 ? remaining / dailyBurn : Infinity;
-      if (remaining <= 0 || daysUntilExhaustion < daysToRenewal) {
+      const { skip, logLine } = shouldSkipScrapingdogAtRuntime(acct);
+      if (logLine) console.warn(`  ⚠️  ${logLine}`);
+      if (skip) {
         _sdQuotaExceeded = true;
-        console.warn(`  ⚠️  Scrapingdog daily pace (~${Math.round(dailyBurn)}/day) projects exhaustion in ~${Math.round(daysUntilExhaustion)}d, before the ${daysToRenewal}d-out renewal — routing to BD instead of SD for the rest of this run`);
         recordSdCall({ host: 'account', fn: 'quota-check', success: false, status: 'quota', credits: 0 });
       }
     } catch {
