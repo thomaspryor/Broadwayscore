@@ -24,6 +24,7 @@
 
 const { execFileSync } = require('child_process');
 const { evaluateWorktreeEntry } = require('./lib/duplicate-dispatch-guard');
+const { hasHelpFlag } = require('./lib/cli-help');
 
 function getWorktreeState(name, repoRoot) {
   let porcelain;
@@ -70,6 +71,10 @@ function getWorktreeState(name, repoRoot) {
 }
 
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('usage: node scripts/check-worktree-collision.js <name>\nExits 0/ALLOW, 1/REFUSE, or 3/ERROR — see file header. Does not modify anything.');
+    process.exit(0);
+  }
   const name = process.argv[2];
   if (!name) {
     console.error('usage: check-worktree-collision.js <name>');
