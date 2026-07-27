@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-26T21:24:13.492Z",
+  "timestamp": "2026-07-27T01:37:45.113Z",
   "stats": {
-    "totalReviews": 40717,
-    "alreadyFlagged": 17857,
+    "totalReviews": 40730,
+    "alreadyFlagged": 17867,
     "dateGuardCatches": 67,
     "directorMismatch": 928,
     "tvFilmSignals": 1116,
-    "londonSignals": 763,
+    "londonSignals": 764,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3292
+    "noPublishDate": 3289
   },
   "findings": [
     {
@@ -37429,6 +37429,20 @@
       "score": 82,
       "publishDate": "2025-12-19",
       "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "file": "guardian-uk--unknown.json",
+      "score": null,
+      "publishDate": "2025-12-19",
+      "url": "https://www.inkl.com/news/oh-mary-at-the-trafalgar-theatre-review-a-boozy-glitter-bomb-of-outrageousness",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
