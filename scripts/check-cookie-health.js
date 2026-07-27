@@ -94,6 +94,30 @@ const CRITICAL_OUTLETS = {
     authCookies: [], // Complex subscriber auth — monitor via structural/volume check
     minCookies: 15, // Times bundle historically has 20+ cookies; <15 signals stale
   },
+  nypost: {
+    // No NYPOST_COOKIES secret exists (card #582 leads confirmed it's absent from
+    // every COOKIES_BUNDLE_*) and no hard paywall gates theater reviews — the
+    // production scrape path doesn't send auth for this domain. Layer 1/2 would
+    // therefore permanently report "Not found" and check nothing; noCookiesRequired
+    // routes straight to a cookie-free Layer 3 body-length check instead, so a
+    // FUTURE extractor break on this outlet doesn't go unnoticed for months again.
+    noCookiesRequired: true,
+    testUrl: 'https://nypost.com/2026/04/26/entertainment/the-lost-boys-review-vampire-show-is-best-new-musical-on-broadway/',
+    authCookies: [],
+    minBodyChars: 800,
+  },
+  hollywoodreporter: {
+    // Same as nypost: no THR_COOKIES secret configured, no hard paywall on theater
+    // reviews. Card #582: THR's theater critic (Frank Scheck) stopped filing
+    // Broadway reviews to hollywoodreporter.com around April 2026 (his Broadway
+    // output now runs on New York Stage Review instead) — a genuine editorial
+    // change, not a scraper/auth failure. This entry exists so a FUTURE extractor
+    // break on this outlet doesn't go unnoticed the same way for another 3 months.
+    noCookiesRequired: true,
+    testUrl: 'https://www.hollywoodreporter.com/lifestyle/lifestyle-news/the-fear-of-13-theater-review-adrien-brody-tessa-thompson-1236566080/',
+    authCookies: [],
+    minBodyChars: 800,
+  },
 };
 
 // All outlet fileKey → envVar mappings (from shared cookie-loader)
@@ -374,6 +398,35 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyCh
   }
 }
 
+// --- Layer 3 (no-auth outlets): plain fetch, no cookies, no ScrapingBee ---
+// For outlets with no hard paywall on theater reviews (nypost, hollywoodreporter):
+// mirrors the production scrape path, which sends no auth to these domains.
+async function checkLiveAccessNoAuth(testUrl, minBodyChars) {
+  try {
+    const res = await httpsGet(testUrl, {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36',
+    }, 20000);
+
+    if (res.status === 0) return { status: 'warn', message: `Request failed: ${res.body}` };
+    if (res.status !== 200) return { status: 'warn', message: `HTTP ${res.status} (may need JS-rendering proxy — not necessarily broken)` };
+
+    const html = res.body;
+    if (isBlocked(html)) return { status: 'warn', message: `Blocked (${html.length} chars)` };
+    if (html.length < 2000) return { status: 'warn', message: `Short (${html.length} chars)` };
+
+    if (minBodyChars) {
+      const body = extractArticleTextFromUrl(html, testUrl) || '';
+      if (body.length < minBodyChars) {
+        return { status: 'fail', message: `Body too short: ${body.length}/${minBodyChars} chars (extractor broke or page structure changed)` };
+      }
+      return { status: 'pass', message: `OK (body ${body.length} chars)` };
+    }
+    return { status: 'pass', message: `OK (${html.length} chars)` };
+  } catch (err) {
+    return { status: 'warn', message: `Error: ${err.message}` };
+  }
+}
+
 // --- Layer 3 (production-path): for outlets where SB proxies are blocked ---
 // Mirrors what gather/collect scripts actually do for WSJ/New Yorker:
 //   1. Try plain HTTPS with cookies (works from residential IPs)
@@ -478,6 +531,15 @@ async function main() {
   console.log('--- Critical Outlets (Layer 1+2) ---\n');
 
   for (const [fileKey, config] of Object.entries(CRITICAL_OUTLETS)) {
+    if (config.noCookiesRequired) {
+      // Layer 1/2 don't apply — no cookie file is expected to exist. The real
+      // signal for these outlets is the cookie-free Layer 3 check below.
+      const msg = liveCheck ? 'no auth required, see Live Access Test' : 'no auth required (run with LIVE_CHECK=true to verify live)';
+      console.log(`${icons.pass} ${fileKey}: ${msg}`);
+      results.push({ name: fileKey, status: 'pass', message: msg, isCritical: true, layer: 1, cookies: [] });
+      continue;
+    }
+
     const structure = checkStructure(fileKey);
     if (structure.status !== 'pass') {
       const icon = icons[structure.status] || '?';
@@ -552,6 +614,12 @@ async function main() {
 
     // Run all 7 in parallel
     const livePromises = Object.entries(CRITICAL_OUTLETS).map(async ([fileKey, config]) => {
+      if (config.noCookiesRequired) {
+        const live = await checkLiveAccessNoAuth(config.testUrl, config.minBodyChars);
+        console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
+        return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true };
+      }
+
       const existing = results.find(r => r.name === fileKey && r.cookies);
       if (!existing || !existing.cookies || existing.cookies.length === 0) {
         const msg = 'No cookies loaded';
