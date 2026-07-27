@@ -90,14 +90,22 @@ jobs:
         # because this workflow is the hourly cron that already carries the
         # BD token. Runs even when the poll fails; must run BEFORE the commit
         # step so digest-queue writes for genuinely unknown IPs persist.
-        # hygiene-run-budget-ok: check-bd-blacklist.js makes 3 bounded
-        # control-plane API calls with AbortSignal timeouts — no per-item
-        # network loop to budget. (poll-trade-press-rss.js already wires
+        # continue-on-error: a BD-API blip or /meta rate-limit must not red
+        # this CRITICAL data cron or fire "Commercial RSS Poll Failed";
+        # persistent BD auth breakage still surfaces via check-secrets-health.
+        # hygiene-run-budget-ok: check-bd-blacklist.js makes a handful of
+        # bounded control-plane API calls (2 reads + one delete per blacklist
+        # entry + 1 verify), each with an AbortSignal timeout — no per-item
+        # page-fetch loop to budget. (poll-trade-press-rss.js already wires
         # run-budget; this exemption is for the blacklist step's FP only.)
         if: always() && inputs.dry_run != true
+        continue-on-error: true
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          # Authenticated /meta: unauthenticated is 60 req/hr per source IP,
+          # shared with every tenant on the runner's egress IP.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/check-bd-blacklist.js
 
       - name: Commit data changes
