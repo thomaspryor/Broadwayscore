@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-13",
+  "generatedAt": "2026-07-27",
   "params": {
     "minReviews": 3,
     "gapDays": 180
   },
   "summary": {
-    "totalCandidates": 209,
+    "totalCandidates": 213,
     "likelyTransfersNeedingPriorRuns": 68,
     "crossMarketTransfers": 47
   },
@@ -16,8 +16,8 @@
       "openingDate": "2024-02-22",
       "currentVenue": "Lyric Theatre",
       "hasPriorRuns": false,
-      "discardedCount": 64,
-      "majorOutletCount": 39,
+      "discardedCount": 63,
+      "majorOutletCount": 38,
       "routedToSibling": 0,
       "dateRange": "2018-07-01 .. 2023-02-22",
       "spanDays": 1697,
@@ -26,7 +26,7 @@
       "marketMatch": true,
       "siblingEntryCovers": "hadestown-2019",
       "classification": "routed-elsewhere",
-      "weight": 2560,
+      "weight": 2457,
       "discarded": [
         {
           "file": "guardian--michael-billington",
@@ -40,13 +40,6 @@
           "date": "2018-11-14",
           "tier": 1,
           "outlet": "Financial Times",
-          "market": "uk"
-        },
-        {
-          "file": "london-box-office--phil-willmott",
-          "date": "2018-11-14",
-          "tier": 2,
-          "outlet": "London Box Office",
           "market": "uk"
         },
         {
@@ -1210,8 +1203,8 @@
       "openingDate": "2026-03-31",
       "currentVenue": "Harold Pinter Theatre",
       "hasPriorRuns": false,
-      "discardedCount": 45,
-      "majorOutletCount": 38,
+      "discardedCount": 46,
+      "majorOutletCount": 39,
       "routedToSibling": 0,
       "dateRange": "2011-07-12 .. 2025-08-08",
       "spanDays": 5141,
@@ -1220,7 +1213,7 @@
       "marketMatch": true,
       "siblingEntryCovers": null,
       "classification": "wide-span-review",
-      "weight": 1755,
+      "weight": 1840,
       "discarded": [
         {
           "file": "nytimes--charles-isherwood",
@@ -1284,6 +1277,13 @@
           "tier": 2,
           "outlet": "Broadway World",
           "market": null
+        },
+        {
+          "file": "guardian--arifa-akbar",
+          "date": "2023-06-15",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
         },
         {
           "file": "london-theatre--marianka-swain",
@@ -1545,8 +1545,8 @@
       "openingDate": "2025-10-08",
       "currentVenue": "Palace Theatre",
       "hasPriorRuns": false,
-      "discardedCount": 40,
-      "majorOutletCount": 28,
+      "discardedCount": 38,
+      "majorOutletCount": 26,
       "routedToSibling": 0,
       "dateRange": "2019-04-25 .. 2021-01-01",
       "spanDays": 617,
@@ -1555,7 +1555,7 @@
       "marketMatch": false,
       "siblingEntryCovers": "beetlejuice-2019",
       "classification": "routed-elsewhere",
-      "weight": 1160,
+      "weight": 1026,
       "discarded": [
         {
           "file": "amny--matt-windman",
@@ -1709,20 +1709,6 @@
           "date": "2019-04-26",
           "tier": 3,
           "outlet": "Newsweek",
-          "market": null
-        },
-        {
-          "file": "nysr--david-finkle",
-          "date": "2019-04-26",
-          "tier": 2,
-          "outlet": "New York Stage Review",
-          "market": null
-        },
-        {
-          "file": "nysr--jesse-oxfeld",
-          "date": "2019-04-26",
-          "tier": 2,
-          "outlet": "New York Stage Review",
           "market": null
         },
         {
@@ -2098,211 +2084,218 @@
       ]
     },
     {
-      "showId": "cyrano-de-bergerac-west-end-2026",
-      "title": "Cyrano de Bergerac",
-      "openingDate": "2026-06-25",
-      "currentVenue": "Noël Coward Theatre",
+      "showId": "slave-play-2021",
+      "title": "Slave Play",
+      "openingDate": "2021-12-02",
+      "currentVenue": "August Wilson Theatre",
       "hasPriorRuns": false,
-      "discardedCount": 27,
-      "majorOutletCount": 27,
-      "routedToSibling": 1,
-      "dateRange": "2012-10-11 .. 2025-10-08",
-      "spanDays": 4745,
-      "showMarket": "uk",
+      "discardedCount": 28,
+      "majorOutletCount": 25,
+      "routedToSibling": 0,
+      "dateRange": "2018-12-10 .. 2019-10-22",
+      "spanDays": 316,
+      "showMarket": "us",
       "earlierMarket": "uk",
-      "marketMatch": true,
+      "marketMatch": false,
       "siblingEntryCovers": null,
-      "classification": "wide-span-review",
-      "weight": 756,
+      "classification": "cross-market-transfer",
+      "weight": 728,
       "discarded": [
         {
-          "file": "amny--unknown",
-          "date": "2012-10-11",
+          "file": "thewrap--thom-geier",
+          "date": "2018-12-10",
           "tier": 2,
-          "outlet": "amNewYork",
+          "outlet": "The Wrap",
           "market": null
         },
         {
-          "file": "ap--unknown",
-          "date": "2012-10-11",
+          "file": "theatres-leiter-side--samuel-l-leiter",
+          "date": "2018-12-13",
+          "tier": 3,
+          "outlet": "Theatre's Leiter Side",
+          "market": null
+        },
+        {
+          "file": "njcom--christopher-kelly",
+          "date": "2019-07-01",
+          "tier": 2,
+          "outlet": "NJ.com",
+          "market": null
+        },
+        {
+          "file": "theatre-is-easy--dan-dinero",
+          "date": "2019-07-01",
+          "tier": 3,
+          "outlet": "Theatre is Easy",
+          "market": null
+        },
+        {
+          "file": "towleroad--naveen-kumar",
+          "date": "2019-07-01",
+          "tier": 3,
+          "outlet": "Towleroad",
+          "market": null
+        },
+        {
+          "file": "broadwaynews--charles-isherwood",
+          "date": "2019-10-06",
           "tier": 1,
-          "outlet": "Associated Press",
+          "outlet": "Broadway News",
           "market": null
         },
         {
-          "file": "bloomberg--jeremy-gerard",
-          "date": "2012-10-11",
+          "file": "broadwayworld--michael-dale",
+          "date": "2019-10-06",
           "tier": 2,
-          "outlet": "Bloomberg",
+          "outlet": "BroadwayWorld",
+          "market": null
+        },
+        {
+          "file": "deadline--greg-evans",
+          "date": "2019-10-06",
+          "tier": 1,
+          "outlet": "Deadline",
           "market": null
         },
         {
           "file": "hollywood-reporter--david-rooney",
-          "date": "2012-10-11",
-          "tier": 1,
-          "outlet": "Hollywood Reporter",
-          "market": null
-        },
-        {
-          "file": "hollywood-reporter--unknown",
-          "date": "2012-10-11",
+          "date": "2019-10-06",
           "tier": 1,
           "outlet": "The Hollywood Reporter",
           "market": null
         },
         {
-          "file": "newsday--unknown",
-          "date": "2012-10-11",
-          "tier": 1,
-          "outlet": "Newsday",
-          "market": null
-        },
-        {
-          "file": "vulture--helen-shaw",
-          "date": "2012-10-11",
-          "tier": 1,
-          "outlet": "Vulture",
-          "market": null
-        },
-        {
-          "file": "about-entertainment--ben-brantley",
-          "date": "2012-10-12",
-          "tier": 1,
-          "outlet": "About Entertainment",
-          "market": null
-        },
-        {
-          "file": "backstage--erik-haagensen",
-          "date": "2012-10-12",
+          "file": "ny1--roma-torre",
+          "date": "2019-10-06",
           "tier": 2,
-          "outlet": "Backstage",
+          "outlet": "NY1",
           "market": null
         },
         {
-          "file": "standard--fiona-mountford",
-          "date": "2016-02-23",
-          "tier": 1,
-          "outlet": "evening-standard",
-          "market": "uk"
+          "file": "nydailynews--unknown",
+          "date": "2019-10-06",
+          "tier": 2,
+          "outlet": "New York Daily News",
+          "market": null
         },
         {
-          "file": "independent--paul-taylor",
-          "date": "2019-12-08",
-          "tier": 1,
-          "outlet": "The Independent",
-          "market": "uk"
-        },
-        {
-          "file": "standard--nick-curtis",
-          "date": "2019-12-08",
-          "tier": 1,
-          "outlet": "Evening Standard",
-          "market": "uk"
-        },
-        {
-          "file": "times-uk--marc-brenner",
-          "date": "2019-12-09",
-          "tier": 1,
-          "outlet": "The Times",
-          "market": "uk"
-        },
-        {
-          "file": "i-paper--sam-marlowe",
-          "date": "2022-02-13",
-          "tier": 1,
-          "outlet": "inews",
-          "market": "uk"
-        },
-        {
-          "file": "timeout-london--andrzej-lukowski",
-          "date": "2022-02-17",
-          "tier": 1,
-          "outlet": "Time Out London",
-          "market": "uk"
-        },
-        {
-          "file": "washpost--peter-marks",
-          "date": "2022-04-14",
-          "tier": 1,
-          "outlet": "Washington Post",
+          "file": "nypost--johnny-oleksinski",
+          "date": "2019-10-06",
+          "tier": 2,
+          "outlet": "New York Post",
           "market": null
         },
         {
           "file": "nysr--melissa-rose-bernardo",
-          "date": "2022-04-15",
+          "date": "2019-10-06",
           "tier": 2,
           "outlet": "New York Stage Review",
           "market": null
         },
         {
-          "file": "nytimes--by",
-          "date": "2022-04-15",
+          "file": "nysr--steven-suskin",
+          "date": "2019-10-06",
+          "tier": 2,
+          "outlet": "New York Stage Review",
+          "market": null
+        },
+        {
+          "file": "nytimes--jesse-green",
+          "date": "2019-10-06",
           "tier": 1,
           "outlet": "The New York Times",
           "market": null
         },
         {
-          "file": "observer--httpsobservercomauthordavid-cote",
-          "date": "2022-04-15",
+          "file": "talkinbroadway--howard-miller",
+          "date": "2019-10-06",
+          "tier": 2,
+          "outlet": "Talkin' Broadway",
+          "market": null
+        },
+        {
+          "file": "theatermania--pete-hempstead",
+          "date": "2019-10-06",
+          "tier": 2,
+          "outlet": "TheaterMania",
+          "market": null
+        },
+        {
+          "file": "timeout--adam-feldman",
+          "date": "2019-10-06",
+          "tier": 1,
+          "outlet": "Time Out New York",
+          "market": null
+        },
+        {
+          "file": "variety--marilyn-stasio",
+          "date": "2019-10-06",
+          "tier": 1,
+          "outlet": "Variety",
+          "market": null
+        },
+        {
+          "file": "vulture--sara-holdren",
+          "date": "2019-10-06",
+          "tier": 1,
+          "outlet": "Vulture",
+          "market": null
+        },
+        {
+          "file": "washpost--peter-marks",
+          "date": "2019-10-06",
+          "tier": 1,
+          "outlet": "Washington Post",
+          "market": null
+        },
+        {
+          "file": "chicagotribune--chris-jones",
+          "date": "2019-10-07",
+          "tier": 2,
+          "outlet": "Chicago Tribune",
+          "market": "us"
+        },
+        {
+          "file": "ew--leah-greenblatt",
+          "date": "2019-10-07",
+          "tier": 2,
+          "outlet": "Entertainment Weekly",
+          "market": null
+        },
+        {
+          "file": "observer--david-cote",
+          "date": "2019-10-07",
           "tier": 1,
           "outlet": "Observer",
           "market": null
         },
         {
-          "file": "slantmagazine--dan-rubins",
-          "date": "2022-04-15",
-          "tier": 2,
-          "outlet": "Slant Magazine",
+          "file": "telegraph--diane-snyder",
+          "date": "2019-10-07",
+          "tier": 1,
+          "outlet": "Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "wsj--terry-teachout",
+          "date": "2019-10-07",
+          "tier": 1,
+          "outlet": "The Wall Street Journal",
           "market": null
         },
         {
-          "file": "nytg--gillian-russo",
-          "date": "2022-09-29",
+          "file": "nyt-theater--jonathan-mandell",
+          "date": "2019-10-11",
           "tier": 2,
-          "outlet": "New York Theatre Guide",
+          "outlet": "New York Theater",
           "market": null
         },
         {
-          "file": "financialtimes--sarah-hemming",
-          "date": "2025-10-08",
-          "tier": 1,
-          "outlet": "The Financial Times",
-          "market": "uk"
-        },
-        {
-          "file": "guardian--arifa-akbar",
-          "date": "2025-10-08",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "thestage--dave-fargnoli",
-          "date": "2025-10-08",
-          "tier": 1,
-          "outlet": "The Stage",
-          "market": "uk"
-        },
-        {
-          "file": "thestage--unknown",
-          "date": "2025-10-08",
-          "tier": 1,
-          "outlet": "The Stage",
-          "market": "uk"
-        },
-        {
-          "file": "times-uk--dominic-maxwell",
-          "date": "2025-10-08",
-          "tier": 1,
-          "outlet": "The Times",
-          "market": "uk"
-        },
-        {
-          "file": "whatsonstage--sarah-crompton",
-          "date": "2025-10-08",
+          "file": "dailybeast--tim-teeman",
+          "date": "2019-10-22",
           "tier": 2,
-          "outlet": "WhatsOnStage",
-          "market": "uk"
+          "outlet": "The Daily Beast",
+          "market": null
         }
       ]
     },
@@ -2523,441 +2516,197 @@
       ]
     },
     {
-      "showId": "slave-play-2021",
-      "title": "Slave Play",
-      "openingDate": "2021-12-02",
-      "currentVenue": "August Wilson Theatre",
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "title": "Cyrano de Bergerac",
+      "openingDate": "2026-06-25",
+      "currentVenue": "Noël Coward Theatre",
       "hasPriorRuns": false,
-      "discardedCount": 27,
-      "majorOutletCount": 24,
-      "routedToSibling": 0,
-      "dateRange": "2018-12-10 .. 2019-10-11",
-      "spanDays": 305,
-      "showMarket": "us",
+      "discardedCount": 25,
+      "majorOutletCount": 25,
+      "routedToSibling": 1,
+      "dateRange": "2012-10-11 .. 2025-10-08",
+      "spanDays": 4745,
+      "showMarket": "uk",
       "earlierMarket": "uk",
-      "marketMatch": false,
+      "marketMatch": true,
       "siblingEntryCovers": null,
-      "classification": "cross-market-transfer",
-      "weight": 675,
+      "classification": "wide-span-review",
+      "weight": 650,
       "discarded": [
         {
-          "file": "thewrap--thom-geier",
-          "date": "2018-12-10",
+          "file": "amny--unknown",
+          "date": "2012-10-11",
           "tier": 2,
-          "outlet": "The Wrap",
+          "outlet": "amNewYork",
           "market": null
         },
         {
-          "file": "theatres-leiter-side--samuel-l-leiter",
-          "date": "2018-12-13",
-          "tier": 3,
-          "outlet": "Theatre's Leiter Side",
-          "market": null
-        },
-        {
-          "file": "njcom--christopher-kelly",
-          "date": "2019-07-01",
-          "tier": 2,
-          "outlet": "NJ.com",
-          "market": null
-        },
-        {
-          "file": "theatre-is-easy--dan-dinero",
-          "date": "2019-07-01",
-          "tier": 3,
-          "outlet": "Theatre is Easy",
-          "market": null
-        },
-        {
-          "file": "towleroad--naveen-kumar",
-          "date": "2019-07-01",
-          "tier": 3,
-          "outlet": "Towleroad",
-          "market": null
-        },
-        {
-          "file": "broadwaynews--charles-isherwood",
-          "date": "2019-10-06",
+          "file": "ap--unknown",
+          "date": "2012-10-11",
           "tier": 1,
-          "outlet": "Broadway News",
+          "outlet": "Associated Press",
           "market": null
         },
         {
-          "file": "broadwayworld--michael-dale",
-          "date": "2019-10-06",
+          "file": "bloomberg--jeremy-gerard",
+          "date": "2012-10-11",
           "tier": 2,
-          "outlet": "BroadwayWorld",
-          "market": null
-        },
-        {
-          "file": "deadline--greg-evans",
-          "date": "2019-10-06",
-          "tier": 1,
-          "outlet": "Deadline",
+          "outlet": "Bloomberg",
           "market": null
         },
         {
           "file": "hollywood-reporter--david-rooney",
-          "date": "2019-10-06",
-          "tier": 1,
-          "outlet": "The Hollywood Reporter",
-          "market": null
-        },
-        {
-          "file": "ny1--roma-torre",
-          "date": "2019-10-06",
-          "tier": 2,
-          "outlet": "NY1",
-          "market": null
-        },
-        {
-          "file": "nydailynews--unknown",
-          "date": "2019-10-06",
-          "tier": 2,
-          "outlet": "New York Daily News",
-          "market": null
-        },
-        {
-          "file": "nypost--johnny-oleksinski",
-          "date": "2019-10-06",
-          "tier": 2,
-          "outlet": "New York Post",
-          "market": null
-        },
-        {
-          "file": "nysr--melissa-rose-bernardo",
-          "date": "2019-10-06",
-          "tier": 2,
-          "outlet": "New York Stage Review",
-          "market": null
-        },
-        {
-          "file": "nysr--steven-suskin",
-          "date": "2019-10-06",
-          "tier": 2,
-          "outlet": "New York Stage Review",
-          "market": null
-        },
-        {
-          "file": "nytimes--jesse-green",
-          "date": "2019-10-06",
-          "tier": 1,
-          "outlet": "The New York Times",
-          "market": null
-        },
-        {
-          "file": "talkinbroadway--howard-miller",
-          "date": "2019-10-06",
-          "tier": 2,
-          "outlet": "Talkin' Broadway",
-          "market": null
-        },
-        {
-          "file": "theatermania--pete-hempstead",
-          "date": "2019-10-06",
-          "tier": 2,
-          "outlet": "TheaterMania",
-          "market": null
-        },
-        {
-          "file": "timeout--adam-feldman",
-          "date": "2019-10-06",
-          "tier": 1,
-          "outlet": "Time Out New York",
-          "market": null
-        },
-        {
-          "file": "variety--marilyn-stasio",
-          "date": "2019-10-06",
-          "tier": 1,
-          "outlet": "Variety",
-          "market": null
-        },
-        {
-          "file": "vulture--sara-holdren",
-          "date": "2019-10-06",
-          "tier": 1,
-          "outlet": "Vulture",
-          "market": null
-        },
-        {
-          "file": "washpost--peter-marks",
-          "date": "2019-10-06",
-          "tier": 1,
-          "outlet": "Washington Post",
-          "market": null
-        },
-        {
-          "file": "chicagotribune--chris-jones",
-          "date": "2019-10-07",
-          "tier": 2,
-          "outlet": "Chicago Tribune",
-          "market": "us"
-        },
-        {
-          "file": "ew--leah-greenblatt",
-          "date": "2019-10-07",
-          "tier": 2,
-          "outlet": "Entertainment Weekly",
-          "market": null
-        },
-        {
-          "file": "observer--david-cote",
-          "date": "2019-10-07",
-          "tier": 1,
-          "outlet": "Observer",
-          "market": null
-        },
-        {
-          "file": "telegraph--diane-snyder",
-          "date": "2019-10-07",
-          "tier": 1,
-          "outlet": "Telegraph",
-          "market": "uk"
-        },
-        {
-          "file": "wsj--terry-teachout",
-          "date": "2019-10-07",
-          "tier": 1,
-          "outlet": "The Wall Street Journal",
-          "market": null
-        },
-        {
-          "file": "nyt-theater--jonathan-mandell",
-          "date": "2019-10-11",
-          "tier": 2,
-          "outlet": "New York Theater",
-          "market": null
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "title": "The Play That Goes Wrong",
-      "openingDate": "2019-02-11",
-      "currentVenue": "New World Stages",
-      "hasPriorRuns": false,
-      "discardedCount": 30,
-      "majorOutletCount": 21,
-      "routedToSibling": 0,
-      "dateRange": "2017-04-02 .. 2018-07-11",
-      "spanDays": 465,
-      "showMarket": "us",
-      "earlierMarket": "uk",
-      "marketMatch": false,
-      "siblingEntryCovers": "the-play-that-goes-wrong-2017",
-      "classification": "routed-elsewhere",
-      "weight": 660,
-      "discarded": [
-        {
-          "file": "broadwaynews--charles-isherwood",
-          "date": "2017-04-02",
-          "tier": 1,
-          "outlet": "Broadway News",
-          "market": null
-        },
-        {
-          "file": "dailybeast--tim-teeman",
-          "date": "2017-04-02",
-          "tier": 2,
-          "outlet": "Daily Beast",
-          "market": null
-        },
-        {
-          "file": "dctheatrescene--jonathan-mandell",
-          "date": "2017-04-02",
-          "tier": 2,
-          "outlet": "DC Theatre Scene",
-          "market": null
-        },
-        {
-          "file": "deadline--jeremy-gerard",
-          "date": "2017-04-02",
-          "tier": 1,
-          "outlet": "Deadline",
-          "market": null
-        },
-        {
-          "file": "ew--isabella-biedenharn",
-          "date": "2017-04-02",
-          "tier": 2,
-          "outlet": "Entertainment Weekly",
-          "market": null
-        },
-        {
-          "file": "frontmezzjunkies--steven-ross",
-          "date": "2017-04-02",
-          "tier": 3,
-          "outlet": "Front Mezz Junkies",
-          "market": "us"
-        },
-        {
-          "file": "hollywood-reporter--frank-scheck",
-          "date": "2017-04-02",
+          "date": "2012-10-11",
           "tier": 1,
           "outlet": "Hollywood Reporter",
           "market": null
         },
         {
-          "file": "nydailynews--joe-dziemianowicz",
-          "date": "2017-04-02",
-          "tier": 2,
-          "outlet": "New York Daily News",
-          "market": null
-        },
-        {
-          "file": "nytimes--ben-brantley",
-          "date": "2017-04-02",
+          "file": "hollywood-reporter--unknown",
+          "date": "2012-10-11",
           "tier": 1,
-          "outlet": "The New York Times",
+          "outlet": "The Hollywood Reporter",
           "market": null
         },
         {
-          "file": "scribicide--aaron-botwick",
-          "date": "2017-04-02",
-          "tier": 3,
-          "outlet": "Scribicide",
-          "market": null
-        },
-        {
-          "file": "timeout--adam-feldman",
-          "date": "2017-04-02",
+          "file": "newsday--unknown",
+          "date": "2012-10-11",
           "tier": 1,
-          "outlet": "Time Out New York",
+          "outlet": "Newsday",
           "market": null
         },
         {
-          "file": "vulture--jesse-green",
-          "date": "2017-04-02",
+          "file": "vulture--helen-shaw",
+          "date": "2012-10-11",
           "tier": 1,
           "outlet": "Vulture",
           "market": null
         },
         {
-          "file": "amny--matt-windman",
-          "date": "2017-04-03",
-          "tier": 2,
-          "outlet": "amNY",
-          "market": null
-        },
-        {
-          "file": "huffpost--christian-lewis",
-          "date": "2017-04-03",
-          "tier": 2,
-          "outlet": "HuffPost",
-          "market": null
-        },
-        {
-          "file": "thewrap--thom-geier",
-          "date": "2017-04-03",
-          "tier": 2,
-          "outlet": "The Wrap",
-          "market": null
-        },
-        {
-          "file": "variety--frank-rizzo",
-          "date": "2017-04-03",
+          "file": "about-entertainment--ben-brantley",
+          "date": "2012-10-12",
           "tier": 1,
-          "outlet": "Variety",
+          "outlet": "About Entertainment",
           "market": null
         },
         {
-          "file": "talkinbroadway--matthew-murray",
-          "date": "2017-04-05",
+          "file": "backstage--erik-haagensen",
+          "date": "2012-10-12",
           "tier": 2,
-          "outlet": "Talkin' Broadway",
+          "outlet": "Backstage",
           "market": null
         },
         {
-          "file": "newyorker--michael-schulman",
-          "date": "2017-04-06",
+          "file": "standard--fiona-mountford",
+          "date": "2016-02-23",
           "tier": 1,
-          "outlet": "The New Yorker",
-          "market": null
-        },
-        {
-          "file": "wsj--edward-rothstein",
-          "date": "2017-04-06",
-          "tier": 1,
-          "outlet": "The Wall Street Journal",
-          "market": null
-        },
-        {
-          "file": "dctheatrescene--richard-seff",
-          "date": "2017-04-08",
-          "tier": 2,
-          "outlet": "DC Theatre Scene",
-          "market": null
-        },
-        {
-          "file": "ny1--david-cote",
-          "date": "2017-04-08",
-          "tier": 2,
-          "outlet": "NY1",
-          "market": null
-        },
-        {
-          "file": "theater-scene--david-kaufman",
-          "date": "2017-04-13",
-          "tier": 2,
-          "outlet": "Theater Scene",
-          "market": null
-        },
-        {
-          "file": "this-week-in-new-york--mark-rifkin",
-          "date": "2017-04-20",
-          "tier": 4,
-          "outlet": "This Week in New York",
-          "market": null
-        },
-        {
-          "file": "thestage--erin-kahn",
-          "date": "2017-05-01",
-          "tier": 1,
-          "outlet": "stagebuddy",
+          "outlet": "evening-standard",
           "market": "uk"
         },
         {
-          "file": "theater-pizzazz--sandi-durell",
-          "date": "2017-05-07",
-          "tier": 4,
-          "outlet": "Theater Pizzazz",
+          "file": "independent--paul-taylor",
+          "date": "2019-12-08",
+          "tier": 1,
+          "outlet": "The Independent",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--marc-brenner",
+          "date": "2019-12-09",
+          "tier": 1,
+          "outlet": "The Times",
+          "market": "uk"
+        },
+        {
+          "file": "i-paper--sam-marlowe",
+          "date": "2022-02-13",
+          "tier": 1,
+          "outlet": "inews",
+          "market": "uk"
+        },
+        {
+          "file": "timeout-london--andrzej-lukowski",
+          "date": "2022-02-17",
+          "tier": 1,
+          "outlet": "Time Out London",
+          "market": "uk"
+        },
+        {
+          "file": "washpost--peter-marks",
+          "date": "2022-04-14",
+          "tier": 1,
+          "outlet": "Washington Post",
           "market": null
         },
         {
-          "file": "act-three-the-reviews--doug-marino",
-          "date": "2017-07-01",
-          "tier": 3,
-          "outlet": "Act Three: The Reviews",
+          "file": "nysr--melissa-rose-bernardo",
+          "date": "2022-04-15",
+          "tier": 2,
+          "outlet": "New York Stage Review",
           "market": null
         },
         {
-          "file": "frequentbusinesstraveler--jonathan-spira",
-          "date": "2017-07-01",
-          "tier": 3,
-          "outlet": "Frequentbusinesstraveler",
+          "file": "nytimes--by",
+          "date": "2022-04-15",
+          "tier": 1,
+          "outlet": "The New York Times",
           "market": null
         },
         {
-          "file": "paste-magazine--stuart-miller",
-          "date": "2017-07-01",
-          "tier": 3,
-          "outlet": "Paste Magazine",
+          "file": "observer--httpsobservercomauthordavid-cote",
+          "date": "2022-04-15",
+          "tier": 1,
+          "outlet": "Observer",
           "market": null
         },
         {
-          "file": "theatre-is-easy--gabriella-steinberg",
-          "date": "2017-08-14",
-          "tier": 3,
-          "outlet": "Theatre is Easy",
+          "file": "slantmagazine--dan-rubins",
+          "date": "2022-04-15",
+          "tier": 2,
+          "outlet": "Slant Magazine",
           "market": null
         },
         {
-          "file": "theatre-reviews-limited--david-roberts",
-          "date": "2018-07-11",
-          "tier": 3,
-          "outlet": "Theatre Reviews Limited",
+          "file": "nytg--gillian-russo",
+          "date": "2022-09-29",
+          "tier": 2,
+          "outlet": "New York Theatre Guide",
           "market": null
+        },
+        {
+          "file": "financialtimes--sarah-hemming",
+          "date": "2025-10-08",
+          "tier": 1,
+          "outlet": "The Financial Times",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--arifa-akbar",
+          "date": "2025-10-08",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "thestage--dave-fargnoli",
+          "date": "2025-10-08",
+          "tier": 1,
+          "outlet": "The Stage",
+          "market": "uk"
+        },
+        {
+          "file": "thestage--unknown",
+          "date": "2025-10-08",
+          "tier": 1,
+          "outlet": "The Stage",
+          "market": "uk"
+        },
+        {
+          "file": "whatsonstage--sarah-crompton",
+          "date": "2025-10-08",
+          "tier": 2,
+          "outlet": "WhatsOnStage",
+          "market": "uk"
         }
       ]
     },
@@ -3366,6 +3115,229 @@
       ]
     },
     {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "title": "The Play That Goes Wrong",
+      "openingDate": "2019-02-11",
+      "currentVenue": "New World Stages",
+      "hasPriorRuns": false,
+      "discardedCount": 29,
+      "majorOutletCount": 20,
+      "routedToSibling": 2,
+      "dateRange": "2017-04-02 .. 2018-07-11",
+      "spanDays": 465,
+      "showMarket": "us",
+      "earlierMarket": "us",
+      "marketMatch": true,
+      "siblingEntryCovers": "the-play-that-goes-wrong-2017",
+      "classification": "routed-elsewhere",
+      "weight": 609,
+      "discarded": [
+        {
+          "file": "broadwaynews--charles-isherwood",
+          "date": "2017-04-02",
+          "tier": 1,
+          "outlet": "Broadway News",
+          "market": null
+        },
+        {
+          "file": "dailybeast--tim-teeman",
+          "date": "2017-04-02",
+          "tier": 2,
+          "outlet": "Daily Beast",
+          "market": null
+        },
+        {
+          "file": "dctheatrescene--jonathan-mandell",
+          "date": "2017-04-02",
+          "tier": 2,
+          "outlet": "DC Theatre Scene",
+          "market": null
+        },
+        {
+          "file": "deadline--jeremy-gerard",
+          "date": "2017-04-02",
+          "tier": 1,
+          "outlet": "Deadline",
+          "market": null
+        },
+        {
+          "file": "ew--isabella-biedenharn",
+          "date": "2017-04-02",
+          "tier": 2,
+          "outlet": "Entertainment Weekly",
+          "market": null
+        },
+        {
+          "file": "frontmezzjunkies--steven-ross",
+          "date": "2017-04-02",
+          "tier": 3,
+          "outlet": "Front Mezz Junkies",
+          "market": "us"
+        },
+        {
+          "file": "hollywood-reporter--frank-scheck",
+          "date": "2017-04-02",
+          "tier": 1,
+          "outlet": "Hollywood Reporter",
+          "market": null
+        },
+        {
+          "file": "nydailynews--joe-dziemianowicz",
+          "date": "2017-04-02",
+          "tier": 2,
+          "outlet": "New York Daily News",
+          "market": null
+        },
+        {
+          "file": "nytimes--ben-brantley",
+          "date": "2017-04-02",
+          "tier": 1,
+          "outlet": "The New York Times",
+          "market": null
+        },
+        {
+          "file": "scribicide--aaron-botwick",
+          "date": "2017-04-02",
+          "tier": 3,
+          "outlet": "Scribicide",
+          "market": null
+        },
+        {
+          "file": "timeout--adam-feldman",
+          "date": "2017-04-02",
+          "tier": 1,
+          "outlet": "Time Out New York",
+          "market": null
+        },
+        {
+          "file": "vulture--jesse-green",
+          "date": "2017-04-02",
+          "tier": 1,
+          "outlet": "Vulture",
+          "market": null
+        },
+        {
+          "file": "amny--matt-windman",
+          "date": "2017-04-03",
+          "tier": 2,
+          "outlet": "amNY",
+          "market": null
+        },
+        {
+          "file": "huffpost--christian-lewis",
+          "date": "2017-04-03",
+          "tier": 2,
+          "outlet": "HuffPost",
+          "market": null
+        },
+        {
+          "file": "thewrap--thom-geier",
+          "date": "2017-04-03",
+          "tier": 2,
+          "outlet": "The Wrap",
+          "market": null
+        },
+        {
+          "file": "variety--frank-rizzo",
+          "date": "2017-04-03",
+          "tier": 1,
+          "outlet": "Variety",
+          "market": null
+        },
+        {
+          "file": "talkinbroadway--matthew-murray",
+          "date": "2017-04-05",
+          "tier": 2,
+          "outlet": "Talkin' Broadway",
+          "market": null
+        },
+        {
+          "file": "newyorker--michael-schulman",
+          "date": "2017-04-06",
+          "tier": 1,
+          "outlet": "The New Yorker",
+          "market": null
+        },
+        {
+          "file": "wsj--edward-rothstein",
+          "date": "2017-04-06",
+          "tier": 1,
+          "outlet": "The Wall Street Journal",
+          "market": null
+        },
+        {
+          "file": "dctheatrescene--richard-seff",
+          "date": "2017-04-08",
+          "tier": 2,
+          "outlet": "DC Theatre Scene",
+          "market": null
+        },
+        {
+          "file": "ny1--david-cote",
+          "date": "2017-04-08",
+          "tier": 2,
+          "outlet": "NY1",
+          "market": null
+        },
+        {
+          "file": "theater-scene--david-kaufman",
+          "date": "2017-04-13",
+          "tier": 2,
+          "outlet": "Theater Scene",
+          "market": null
+        },
+        {
+          "file": "this-week-in-new-york--mark-rifkin",
+          "date": "2017-04-20",
+          "tier": 4,
+          "outlet": "This Week in New York",
+          "market": null
+        },
+        {
+          "file": "theater-pizzazz--sandi-durell",
+          "date": "2017-05-07",
+          "tier": 4,
+          "outlet": "Theater Pizzazz",
+          "market": null
+        },
+        {
+          "file": "act-three-the-reviews--doug-marino",
+          "date": "2017-07-01",
+          "tier": 3,
+          "outlet": "Act Three: The Reviews",
+          "market": null
+        },
+        {
+          "file": "frequentbusinesstraveler--jonathan-spira",
+          "date": "2017-07-01",
+          "tier": 3,
+          "outlet": "Frequentbusinesstraveler",
+          "market": null
+        },
+        {
+          "file": "paste-magazine--stuart-miller",
+          "date": "2017-07-01",
+          "tier": 3,
+          "outlet": "Paste Magazine",
+          "market": null
+        },
+        {
+          "file": "theatre-is-easy--gabriella-steinberg",
+          "date": "2017-08-14",
+          "tier": 3,
+          "outlet": "Theatre is Easy",
+          "market": null
+        },
+        {
+          "file": "theatre-reviews-limited--david-roberts",
+          "date": "2018-07-11",
+          "tier": 3,
+          "outlet": "Theatre Reviews Limited",
+          "market": null
+        }
+      ]
+    },
+    {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
       "openingDate": "2026-11-24",
@@ -3554,201 +3526,13 @@
       ]
     },
     {
-      "showId": "beetlejuice-west-end-2026",
-      "title": "Beetlejuice",
-      "openingDate": "2026-05-28",
-      "currentVenue": "Prince Edward Theatre",
-      "hasPriorRuns": false,
-      "discardedCount": 24,
-      "majorOutletCount": 23,
-      "routedToSibling": 0,
-      "dateRange": "2018-11-04 .. 2025-06-03",
-      "spanDays": 2403,
-      "showMarket": "uk",
-      "earlierMarket": "uk",
-      "marketMatch": true,
-      "siblingEntryCovers": "beetlejuice-2019",
-      "classification": "routed-elsewhere",
-      "weight": 576,
-      "discarded": [
-        {
-          "file": "washpost--peter-marks",
-          "date": "2018-11-04",
-          "tier": 1,
-          "outlet": "The Washington Post",
-          "market": null
-        },
-        {
-          "file": "deadline--greg-evans",
-          "date": "2019-04-25",
-          "tier": 1,
-          "outlet": "Deadline",
-          "market": null
-        },
-        {
-          "file": "hollywood-reporter--david-rooney",
-          "date": "2019-04-25",
-          "tier": 1,
-          "outlet": "Hollywood Reporter",
-          "market": null
-        },
-        {
-          "file": "newsday--barbara-schuler",
-          "date": "2019-04-25",
-          "tier": 1,
-          "outlet": "Newsday",
-          "market": null
-        },
-        {
-          "file": "nydailynews--chris-jones",
-          "date": "2019-04-25",
-          "tier": 2,
-          "outlet": "New York Daily News",
-          "market": null
-        },
-        {
-          "file": "nytg--mark-shenton",
-          "date": "2019-04-25",
-          "tier": 2,
-          "outlet": "New York Theatre Guide",
-          "market": null
-        },
-        {
-          "file": "nytimes--ben-brantley",
-          "date": "2019-04-25",
-          "tier": 1,
-          "outlet": "The New York Times",
-          "market": null
-        },
-        {
-          "file": "thewrap--robert-hofler",
-          "date": "2019-04-25",
-          "tier": 2,
-          "outlet": "The Wrap",
-          "market": null
-        },
-        {
-          "file": "variety--frank-rizzo",
-          "date": "2019-04-25",
-          "tier": 1,
-          "outlet": "Variety",
-          "market": null
-        },
-        {
-          "file": "vulture--sara-holdren",
-          "date": "2019-04-25",
-          "tier": 1,
-          "outlet": "Vulture",
-          "market": null
-        },
-        {
-          "file": "dailybeast--tim-teeman",
-          "date": "2019-04-26",
-          "tier": 2,
-          "outlet": "The Daily Beast",
-          "market": null
-        },
-        {
-          "file": "nypost--unknown",
-          "date": "2019-04-26",
-          "tier": 2,
-          "outlet": "New York Post",
-          "market": null
-        },
-        {
-          "file": "nysr--david-finkle",
-          "date": "2019-04-26",
-          "tier": 2,
-          "outlet": "New York Stage Review",
-          "market": null
-        },
-        {
-          "file": "nysr--jesse-oxfeld",
-          "date": "2019-04-26",
-          "tier": 2,
-          "outlet": "New York Stage Review",
-          "market": null
-        },
-        {
-          "file": "wsj--edward-rothstein",
-          "date": "2019-05-01",
-          "tier": 1,
-          "outlet": "The Wall Street Journal",
-          "market": null
-        },
-        {
-          "file": "ew--nick-romano",
-          "date": "2022-07-01",
-          "tier": 2,
-          "outlet": "Entertainment Weekly",
-          "market": null
-        },
-        {
-          "file": "nytimes--sarah-bahr",
-          "date": "2023-01-09",
-          "tier": 1,
-          "outlet": "The New York Times",
-          "market": null
-        },
-        {
-          "file": "independent--benjamin-salmon",
-          "date": "2023-09-13",
-          "tier": 1,
-          "outlet": "The Independent",
-          "market": "uk"
-        },
-        {
-          "file": "times-uk--john-bleasdale",
-          "date": "2023-11-03",
-          "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
-        },
-        {
-          "file": "tribune--unknown",
-          "date": "2024-06-04",
-          "tier": 3,
-          "outlet": "Tribune Magazine",
-          "market": "uk"
-        },
-        {
-          "file": "variety--owen-gleiberman",
-          "date": "2024-07-01",
-          "tier": 1,
-          "outlet": "Variety",
-          "market": null
-        },
-        {
-          "file": "times-uk--susannah-butter",
-          "date": "2024-09-03",
-          "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
-        },
-        {
-          "file": "guardian--tim-byrne",
-          "date": "2025-05-18",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "nytimes--unknown",
-          "date": "2025-06-03",
-          "tier": 1,
-          "outlet": "The New York Times",
-          "market": null
-        }
-      ]
-    },
-    {
       "showId": "girl-from-the-north-country-2022",
       "title": "Girl From The North Country",
       "openingDate": "2022-04-29",
       "currentVenue": "Belasco Theatre",
       "hasPriorRuns": false,
-      "discardedCount": 23,
-      "majorOutletCount": 22,
+      "discardedCount": 24,
+      "majorOutletCount": 23,
       "routedToSibling": 0,
       "dateRange": "2017-07-27 .. 2021-10-14",
       "spanDays": 1540,
@@ -3757,7 +3541,7 @@
       "marketMatch": false,
       "siblingEntryCovers": null,
       "classification": "wide-span-review",
-      "weight": 529,
+      "weight": 576,
       "discarded": [
         {
           "file": "hollywood-reporter--stephen-dalton",
@@ -3786,6 +3570,13 @@
           "tier": 2,
           "outlet": "Chicago Tribune",
           "market": "us"
+        },
+        {
+          "file": "curtainup--simon-saltzman",
+          "date": "2020-03-05",
+          "tier": 2,
+          "outlet": "CurtainUp",
+          "market": null
         },
         {
           "file": "deadline--greg-evans",
@@ -4800,6 +4591,340 @@
       ]
     },
     {
+      "showId": "beetlejuice-west-end-2026",
+      "title": "Beetlejuice",
+      "openingDate": "2026-05-28",
+      "currentVenue": "Prince Edward Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 20,
+      "majorOutletCount": 19,
+      "routedToSibling": 0,
+      "dateRange": "2018-11-04 .. 2025-06-03",
+      "spanDays": 2403,
+      "showMarket": "uk",
+      "earlierMarket": "uk",
+      "marketMatch": true,
+      "siblingEntryCovers": "beetlejuice-2019",
+      "classification": "routed-elsewhere",
+      "weight": 400,
+      "discarded": [
+        {
+          "file": "washpost--peter-marks",
+          "date": "2018-11-04",
+          "tier": 1,
+          "outlet": "The Washington Post",
+          "market": null
+        },
+        {
+          "file": "deadline--greg-evans",
+          "date": "2019-04-25",
+          "tier": 1,
+          "outlet": "Deadline",
+          "market": null
+        },
+        {
+          "file": "hollywood-reporter--david-rooney",
+          "date": "2019-04-25",
+          "tier": 1,
+          "outlet": "Hollywood Reporter",
+          "market": null
+        },
+        {
+          "file": "newsday--barbara-schuler",
+          "date": "2019-04-25",
+          "tier": 1,
+          "outlet": "Newsday",
+          "market": null
+        },
+        {
+          "file": "nydailynews--chris-jones",
+          "date": "2019-04-25",
+          "tier": 2,
+          "outlet": "New York Daily News",
+          "market": null
+        },
+        {
+          "file": "nytg--mark-shenton",
+          "date": "2019-04-25",
+          "tier": 2,
+          "outlet": "New York Theatre Guide",
+          "market": null
+        },
+        {
+          "file": "nytimes--ben-brantley",
+          "date": "2019-04-25",
+          "tier": 1,
+          "outlet": "The New York Times",
+          "market": null
+        },
+        {
+          "file": "thewrap--robert-hofler",
+          "date": "2019-04-25",
+          "tier": 2,
+          "outlet": "The Wrap",
+          "market": null
+        },
+        {
+          "file": "variety--frank-rizzo",
+          "date": "2019-04-25",
+          "tier": 1,
+          "outlet": "Variety",
+          "market": null
+        },
+        {
+          "file": "vulture--sara-holdren",
+          "date": "2019-04-25",
+          "tier": 1,
+          "outlet": "Vulture",
+          "market": null
+        },
+        {
+          "file": "dailybeast--tim-teeman",
+          "date": "2019-04-26",
+          "tier": 2,
+          "outlet": "The Daily Beast",
+          "market": null
+        },
+        {
+          "file": "nypost--unknown",
+          "date": "2019-04-26",
+          "tier": 2,
+          "outlet": "New York Post",
+          "market": null
+        },
+        {
+          "file": "wsj--edward-rothstein",
+          "date": "2019-05-01",
+          "tier": 1,
+          "outlet": "The Wall Street Journal",
+          "market": null
+        },
+        {
+          "file": "ew--nick-romano",
+          "date": "2022-07-01",
+          "tier": 2,
+          "outlet": "Entertainment Weekly",
+          "market": null
+        },
+        {
+          "file": "nytimes--sarah-bahr",
+          "date": "2023-01-09",
+          "tier": 1,
+          "outlet": "The New York Times",
+          "market": null
+        },
+        {
+          "file": "independent--benjamin-salmon",
+          "date": "2023-09-13",
+          "tier": 1,
+          "outlet": "The Independent",
+          "market": "uk"
+        },
+        {
+          "file": "tribune--unknown",
+          "date": "2024-06-04",
+          "tier": 3,
+          "outlet": "Tribune Magazine",
+          "market": "uk"
+        },
+        {
+          "file": "variety--owen-gleiberman",
+          "date": "2024-07-01",
+          "tier": 1,
+          "outlet": "Variety",
+          "market": null
+        },
+        {
+          "file": "guardian--tim-byrne",
+          "date": "2025-05-18",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "nytimes--unknown",
+          "date": "2025-06-03",
+          "tier": 1,
+          "outlet": "The New York Times",
+          "market": null
+        }
+      ]
+    },
+    {
+      "showId": "orlando-off-broadway-2026",
+      "title": "Orlando",
+      "openingDate": "2024-04-15",
+      "currentVenue": "Signature Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 22,
+      "majorOutletCount": 17,
+      "routedToSibling": 0,
+      "dateRange": "2013-04-01 .. 2022-12-07",
+      "spanDays": 3537,
+      "showMarket": "us",
+      "earlierMarket": "uk",
+      "marketMatch": false,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
+      "weight": 396,
+      "discarded": [
+        {
+          "file": "latimes--unknown",
+          "date": "2013-04-01",
+          "tier": 1,
+          "outlet": "Los Angeles Times",
+          "market": "us"
+        },
+        {
+          "file": "daily-herald--unknown",
+          "date": "2013-10-26",
+          "tier": 3,
+          "outlet": "Daily Herald",
+          "market": "us"
+        },
+        {
+          "file": "artsfuse--roberta-silman",
+          "date": "2018-03-13",
+          "tier": 3,
+          "outlet": "The Arts Fuse",
+          "market": "us"
+        },
+        {
+          "file": "indiependent--httpsmfacebookcom100016996623460",
+          "date": "2022-12-05",
+          "tier": 3,
+          "outlet": "indiependent",
+          "market": null
+        },
+        {
+          "file": "telegraph--dominic-cavendish",
+          "date": "2022-12-05",
+          "tier": 1,
+          "outlet": "The Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "broadwayworld--aliya-al-hassan",
+          "date": "2022-12-06",
+          "tier": 2,
+          "outlet": "BroadwayWorld",
+          "market": null
+        },
+        {
+          "file": "city-am--adam-bloodworth",
+          "date": "2022-12-06",
+          "tier": 3,
+          "outlet": "City A.M.",
+          "market": "uk"
+        },
+        {
+          "file": "i-paper--alice-saville",
+          "date": "2022-12-06",
+          "tier": 1,
+          "outlet": "The i",
+          "market": "uk"
+        },
+        {
+          "file": "london-theatre--unknown",
+          "date": "2022-12-06",
+          "tier": 2,
+          "outlet": "London Theatre",
+          "market": "uk"
+        },
+        {
+          "file": "londontheatre1--tom-carter",
+          "date": "2022-12-06",
+          "tier": 2,
+          "outlet": "LondonTheatre1",
+          "market": "uk"
+        },
+        {
+          "file": "lovelondonloveculture--emma",
+          "date": "2022-12-06",
+          "tier": 3,
+          "outlet": "lovelondonloveculture",
+          "market": null
+        },
+        {
+          "file": "daily-mail--georgina-brown",
+          "date": "2022-12-07",
+          "tier": 1,
+          "outlet": "Daily Mail",
+          "market": "uk"
+        },
+        {
+          "file": "financialtimes--sarah-hemming",
+          "date": "2022-12-07",
+          "tier": 1,
+          "outlet": "Financial Times",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--david-jays",
+          "date": "2022-12-07",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--unknown",
+          "date": "2022-12-07",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "independent--jessie-thompson",
+          "date": "2022-12-07",
+          "tier": 1,
+          "outlet": "The Independent",
+          "market": "uk"
+        },
+        {
+          "file": "standard--nick-curtis",
+          "date": "2022-12-07",
+          "tier": 1,
+          "outlet": "Evening Standard",
+          "market": "uk"
+        },
+        {
+          "file": "thestage--sam-marlowe",
+          "date": "2022-12-07",
+          "tier": 1,
+          "outlet": "The Stage",
+          "market": "uk"
+        },
+        {
+          "file": "thestage--unknown",
+          "date": "2022-12-07",
+          "tier": 1,
+          "outlet": "The Stage",
+          "market": "uk"
+        },
+        {
+          "file": "timeout-london--andrzej-lukowski",
+          "date": "2022-12-07",
+          "tier": 1,
+          "outlet": "Time Out London",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--clive-davis",
+          "date": "2022-12-07",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--quentin-letts",
+          "date": "2022-12-07",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        }
+      ]
+    },
+    {
       "showId": "the-comedy-about-spies-west-end-2026",
       "title": "The Comedy About Spies",
       "openingDate": "2026-08-06",
@@ -4843,13 +4968,6 @@
           "date": "2025-05-13",
           "tier": 2,
           "outlet": "Theatre Weekly",
-          "market": "uk"
-        },
-        {
-          "file": "times-uk--clive-davis",
-          "date": "2025-05-13",
-          "tier": 1,
-          "outlet": "The Times (UK)",
           "market": "uk"
         },
         {
@@ -4934,6 +5052,13 @@
           "date": "2025-05-14",
           "tier": 1,
           "outlet": "Time Out London",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--clive-davis",
+          "date": "2025-05-14",
+          "tier": 1,
+          "outlet": "The Times (UK)",
           "market": "uk"
         },
         {
@@ -5126,24 +5251,17 @@
       "currentVenue": "Trafalgar Theatre",
       "hasPriorRuns": false,
       "discardedCount": 19,
-      "majorOutletCount": 17,
-      "routedToSibling": 3,
-      "dateRange": "2024-02-08 .. 2024-07-12",
-      "spanDays": 155,
+      "majorOutletCount": 18,
+      "routedToSibling": 2,
+      "dateRange": "2024-02-09 .. 2024-07-12",
+      "spanDays": 154,
       "showMarket": "uk",
       "earlierMarket": "uk",
       "marketMatch": true,
       "siblingEntryCovers": "oh-mary-2024",
       "classification": "routed-elsewhere",
-      "weight": 342,
+      "weight": 361,
       "discarded": [
-        {
-          "file": "queerty--jude-cramer",
-          "date": "2024-02-08",
-          "tier": 3,
-          "outlet": "Queerty",
-          "market": null
-        },
         {
           "file": "front-row-center--david-walters",
           "date": "2024-02-09",
@@ -5163,6 +5281,13 @@
           "date": "2024-07-11",
           "tier": 2,
           "outlet": "The Daily Beast",
+          "market": null
+        },
+        {
+          "file": "deadline--greg-evans",
+          "date": "2024-07-11",
+          "tier": 1,
+          "outlet": "Deadline",
           "market": null
         },
         {
@@ -5229,6 +5354,13 @@
           "market": null
         },
         {
+          "file": "theatermania--zachary-stewart",
+          "date": "2024-07-11",
+          "tier": 2,
+          "outlet": "TheaterMania",
+          "market": null
+        },
+        {
           "file": "theatrely--nolan-boggess",
           "date": "2024-07-11",
           "tier": 2,
@@ -5240,13 +5372,6 @@
           "date": "2024-07-11",
           "tier": 2,
           "outlet": "TheWrap",
-          "market": null
-        },
-        {
-          "file": "timeout--adam-feldman",
-          "date": "2024-07-11",
-          "tier": 1,
-          "outlet": "Time Out New York",
           "market": null
         },
         {
@@ -5732,162 +5857,148 @@
       ]
     },
     {
-      "showId": "orlando-off-broadway-2026",
-      "title": "Orlando",
-      "openingDate": "2024-04-15",
-      "currentVenue": "Signature Theatre",
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "title": "Glengarry Glen Ross",
+      "openingDate": "2026-06-17",
+      "currentVenue": "The Old Vic",
       "hasPriorRuns": false,
-      "discardedCount": 20,
-      "majorOutletCount": 15,
+      "discardedCount": 18,
+      "majorOutletCount": 17,
       "routedToSibling": 0,
-      "dateRange": "2013-04-01 .. 2022-12-07",
-      "spanDays": 3537,
-      "showMarket": "us",
+      "dateRange": "2012-12-09 .. 2025-04-01",
+      "spanDays": 4496,
+      "showMarket": "uk",
       "earlierMarket": "uk",
-      "marketMatch": false,
+      "marketMatch": true,
       "siblingEntryCovers": null,
       "classification": "wide-span-review",
-      "weight": 320,
+      "weight": 324,
       "discarded": [
         {
-          "file": "latimes--unknown",
-          "date": "2013-04-01",
+          "file": "about-entertainment--ben-brantley",
+          "date": "2012-12-09",
           "tier": 1,
-          "outlet": "Los Angeles Times",
-          "market": "us"
-        },
-        {
-          "file": "daily-herald--unknown",
-          "date": "2013-10-26",
-          "tier": 3,
-          "outlet": "Daily Herald",
-          "market": "us"
-        },
-        {
-          "file": "artsfuse--roberta-silman",
-          "date": "2018-03-13",
-          "tier": 3,
-          "outlet": "The Arts Fuse",
-          "market": "us"
-        },
-        {
-          "file": "indiependent--httpsmfacebookcom100016996623460",
-          "date": "2022-12-05",
-          "tier": 3,
-          "outlet": "indiependent",
+          "outlet": "About Entertainment",
           "market": null
         },
         {
-          "file": "telegraph--dominic-cavendish",
-          "date": "2022-12-05",
+          "file": "chicagotribune--unknown",
+          "date": "2012-12-09",
+          "tier": 2,
+          "outlet": "Chicago Tribune",
+          "market": "us"
+        },
+        {
+          "file": "hollywood-reporter--unknown",
+          "date": "2012-12-09",
+          "tier": 1,
+          "outlet": "The Hollywood Reporter",
+          "market": null
+        },
+        {
+          "file": "variety--marilyn-stasio",
+          "date": "2012-12-09",
+          "tier": 1,
+          "outlet": "Variety",
+          "market": null
+        },
+        {
+          "file": "washpost--unknown",
+          "date": "2012-12-09",
+          "tier": 1,
+          "outlet": "The Washington Post",
+          "market": null
+        },
+        {
+          "file": "newsday--linda-winer",
+          "date": "2012-12-10",
+          "tier": 1,
+          "outlet": "Newsday",
+          "market": null
+        },
+        {
+          "file": "telegraph--dominic-cavendish-2017-playhouse",
+          "date": "2017-11-09",
           "tier": 1,
           "outlet": "The Telegraph",
           "market": "uk"
         },
         {
-          "file": "broadwayworld--aliya-al-hassan",
-          "date": "2022-12-06",
-          "tier": 2,
-          "outlet": "BroadwayWorld",
-          "market": null
-        },
-        {
-          "file": "city-am--adam-bloodworth",
-          "date": "2022-12-06",
-          "tier": 3,
-          "outlet": "City A.M.",
-          "market": "uk"
-        },
-        {
-          "file": "i-paper--alice-saville",
-          "date": "2022-12-06",
-          "tier": 1,
-          "outlet": "The i",
-          "market": "uk"
-        },
-        {
-          "file": "london-theatre--unknown",
-          "date": "2022-12-06",
-          "tier": 2,
-          "outlet": "London Theatre",
-          "market": "uk"
-        },
-        {
-          "file": "londontheatre1--tom-carter",
-          "date": "2022-12-06",
-          "tier": 2,
-          "outlet": "LondonTheatre1",
-          "market": "uk"
-        },
-        {
-          "file": "lovelondonloveculture--emma",
-          "date": "2022-12-06",
-          "tier": 3,
-          "outlet": "lovelondonloveculture",
-          "market": null
-        },
-        {
-          "file": "daily-mail--georgina-brown",
-          "date": "2022-12-07",
-          "tier": 1,
-          "outlet": "Daily Mail",
-          "market": "uk"
-        },
-        {
-          "file": "financialtimes--sarah-hemming",
-          "date": "2022-12-07",
-          "tier": 1,
-          "outlet": "Financial Times",
-          "market": "uk"
-        },
-        {
-          "file": "guardian--david-jays",
-          "date": "2022-12-07",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "independent--jessie-thompson",
-          "date": "2022-12-07",
-          "tier": 1,
-          "outlet": "The Independent",
-          "market": "uk"
-        },
-        {
-          "file": "standard--nick-curtis",
-          "date": "2022-12-07",
+          "file": "standard--henry-hitchings",
+          "date": "2017-11-10",
           "tier": 1,
           "outlet": "Evening Standard",
           "market": "uk"
         },
         {
-          "file": "thestage--unknown",
-          "date": "2022-12-07",
+          "file": "thestage--natasha-tripney",
+          "date": "2017-11-10",
           "tier": 1,
           "outlet": "The Stage",
           "market": "uk"
         },
         {
-          "file": "timeout-london--andrzej-lukowski",
-          "date": "2022-12-07",
-          "tier": 1,
-          "outlet": "Time Out London",
-          "market": "uk"
-        },
-        {
-          "file": "times-uk--clive-davis",
-          "date": "2022-12-07",
+          "file": "times-uk--ann-treneman",
+          "date": "2017-11-10",
           "tier": 1,
           "outlet": "The Times (UK)",
           "market": "uk"
         },
         {
-          "file": "times-uk--quentin-letts",
-          "date": "2022-12-07",
-          "tier": 1,
-          "outlet": "The Times (UK)",
+          "file": "artsdesk--aleks-sierz",
+          "date": "2017-11-11",
+          "tier": 2,
+          "outlet": "The Arts Desk",
           "market": "uk"
+        },
+        {
+          "file": "artsdesk--unknown",
+          "date": "2017-11-11",
+          "tier": 2,
+          "outlet": "The Arts Desk",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--susan-sheahan",
+          "date": "2017-11-12",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "ew--httpswwwfacebookcomentertainmentweekly",
+          "date": "2025-03-31",
+          "tier": 2,
+          "outlet": "Entertainment Weekly",
+          "market": null
+        },
+        {
+          "file": "hollywood-reporter--david-rooney",
+          "date": "2025-04-01",
+          "tier": 1,
+          "outlet": "The Hollywood Reporter",
+          "market": null
+        },
+        {
+          "file": "nydailynews--chris-jones",
+          "date": "2025-04-01",
+          "tier": 2,
+          "outlet": "New York Daily News",
+          "market": null
+        },
+        {
+          "file": "observer--david-cote",
+          "date": "2025-04-01",
+          "tier": 1,
+          "outlet": "Observer",
+          "market": null
+        },
+        {
+          "file": "yahoo--unknown",
+          "date": "2025-04-01",
+          "tier": 3,
+          "outlet": "Yahoo",
+          "market": null
         }
       ]
     },
@@ -6033,145 +6144,6 @@
           "date": "2022-10-20",
           "tier": 3,
           "outlet": "Stage Buddy",
-          "market": null
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-west-end-2026",
-      "title": "Glengarry Glen Ross",
-      "openingDate": "2026-06-17",
-      "currentVenue": "The Old Vic",
-      "hasPriorRuns": false,
-      "discardedCount": 17,
-      "majorOutletCount": 16,
-      "routedToSibling": 0,
-      "dateRange": "2012-12-09 .. 2025-04-01",
-      "spanDays": 4496,
-      "showMarket": "uk",
-      "earlierMarket": "uk",
-      "marketMatch": true,
-      "siblingEntryCovers": null,
-      "classification": "wide-span-review",
-      "weight": 289,
-      "discarded": [
-        {
-          "file": "about-entertainment--ben-brantley",
-          "date": "2012-12-09",
-          "tier": 1,
-          "outlet": "About Entertainment",
-          "market": null
-        },
-        {
-          "file": "chicagotribune--unknown",
-          "date": "2012-12-09",
-          "tier": 2,
-          "outlet": "Chicago Tribune",
-          "market": "us"
-        },
-        {
-          "file": "hollywood-reporter--unknown",
-          "date": "2012-12-09",
-          "tier": 1,
-          "outlet": "The Hollywood Reporter",
-          "market": null
-        },
-        {
-          "file": "variety--marilyn-stasio",
-          "date": "2012-12-09",
-          "tier": 1,
-          "outlet": "Variety",
-          "market": null
-        },
-        {
-          "file": "washpost--unknown",
-          "date": "2012-12-09",
-          "tier": 1,
-          "outlet": "The Washington Post",
-          "market": null
-        },
-        {
-          "file": "newsday--linda-winer",
-          "date": "2012-12-10",
-          "tier": 1,
-          "outlet": "Newsday",
-          "market": null
-        },
-        {
-          "file": "telegraph--dominic-cavendish-2017-playhouse",
-          "date": "2017-11-09",
-          "tier": 1,
-          "outlet": "The Telegraph",
-          "market": "uk"
-        },
-        {
-          "file": "standard--henry-hitchings",
-          "date": "2017-11-10",
-          "tier": 1,
-          "outlet": "Evening Standard",
-          "market": "uk"
-        },
-        {
-          "file": "thestage--natasha-tripney",
-          "date": "2017-11-10",
-          "tier": 1,
-          "outlet": "The Stage",
-          "market": "uk"
-        },
-        {
-          "file": "artsdesk--aleks-sierz",
-          "date": "2017-11-11",
-          "tier": 2,
-          "outlet": "The Arts Desk",
-          "market": "uk"
-        },
-        {
-          "file": "artsdesk--unknown",
-          "date": "2017-11-11",
-          "tier": 2,
-          "outlet": "The Arts Desk",
-          "market": "uk"
-        },
-        {
-          "file": "guardian--susan-sheahan",
-          "date": "2017-11-12",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "ew--httpswwwfacebookcomentertainmentweekly",
-          "date": "2025-03-31",
-          "tier": 2,
-          "outlet": "Entertainment Weekly",
-          "market": null
-        },
-        {
-          "file": "hollywood-reporter--david-rooney",
-          "date": "2025-04-01",
-          "tier": 1,
-          "outlet": "The Hollywood Reporter",
-          "market": null
-        },
-        {
-          "file": "nydailynews--chris-jones",
-          "date": "2025-04-01",
-          "tier": 2,
-          "outlet": "New York Daily News",
-          "market": null
-        },
-        {
-          "file": "observer--david-cote",
-          "date": "2025-04-01",
-          "tier": 1,
-          "outlet": "Observer",
-          "market": null
-        },
-        {
-          "file": "yahoo--unknown",
-          "date": "2025-04-01",
-          "tier": 3,
-          "outlet": "Yahoo",
           "market": null
         }
       ]
@@ -6768,127 +6740,287 @@
       ]
     },
     {
-      "showId": "macbeth-off-broadway-2026",
-      "title": "Macbeth",
-      "openingDate": "2026-09-22",
+      "showId": "carmen-off-broadway-2025",
+      "title": "Carmen",
+      "openingDate": "2025-10-28",
       "currentVenue": "Metropolitan Opera House",
       "hasPriorRuns": false,
-      "discardedCount": 15,
-      "majorOutletCount": 15,
+      "discardedCount": 17,
+      "majorOutletCount": 14,
       "routedToSibling": 0,
-      "dateRange": "2013-04-21 .. 2024-10-09",
-      "spanDays": 4189,
+      "dateRange": "2018-06-27 .. 2024-01-06",
+      "spanDays": 2019,
       "showMarket": "us",
       "earlierMarket": "uk",
       "marketMatch": false,
       "siblingEntryCovers": null,
       "classification": "wide-span-review",
-      "weight": 240,
+      "weight": 255,
       "discarded": [
         {
-          "file": "newsday--linda-winer",
-          "date": "2013-04-21",
-          "tier": 1,
-          "outlet": "Newsday",
-          "market": null
-        },
-        {
-          "file": "amny--unknown",
-          "date": "2013-05-01",
+          "file": "dctheatrescene--jonathan-mandell",
+          "date": "2018-06-27",
           "tier": 2,
-          "outlet": "amNewYork",
-          "market": null
-        },
-        {
-          "file": "chicagotribune--chris-jones",
-          "date": "2013-11-21",
-          "tier": 2,
-          "outlet": "Chicago Tribune",
-          "market": "us"
-        },
-        {
-          "file": "hollywood-reporter--frank-scheck",
-          "date": "2013-11-21",
-          "tier": 1,
-          "outlet": "The Hollywood Reporter",
-          "market": null
-        },
-        {
-          "file": "timeout--naveen-kumar",
-          "date": "2013-11-21",
-          "tier": 1,
-          "outlet": "Time Out New York",
-          "market": null
-        },
-        {
-          "file": "ew--leah-greenblatt",
-          "date": "2022-04-29",
-          "tier": 2,
-          "outlet": "Entertainment Weekly",
+          "outlet": "DC Theatre Scene",
           "market": null
         },
         {
           "file": "thewrap--robert-hofler",
-          "date": "2022-04-29",
+          "date": "2018-06-27",
           "tier": 2,
           "outlet": "TheWrap",
           "market": null
         },
         {
-          "file": "financialtimes--shirley-apthorp",
-          "date": "2024-10-09",
+          "file": "dailybeast--tim-teeman",
+          "date": "2018-06-28",
+          "tier": 2,
+          "outlet": "The Daily Beast",
+          "market": null
+        },
+        {
+          "file": "nysr--steven-suskin",
+          "date": "2018-06-28",
+          "tier": 2,
+          "outlet": "New York Stage Review",
+          "market": null
+        },
+        {
+          "file": "new-york-classical-review--rick-perdian",
+          "date": "2024-01-01",
+          "tier": 3,
+          "outlet": "New York Classical Review",
+          "market": null
+        },
+        {
+          "file": "nytimes--zachary-woolfe",
+          "date": "2024-01-01",
+          "tier": 1,
+          "outlet": "The New York Times",
+          "market": null
+        },
+        {
+          "file": "washpost--andor-brodeur",
+          "date": "2024-01-01",
+          "tier": 1,
+          "outlet": "The Washington Post",
+          "market": null
+        },
+        {
+          "file": "washpost--justin-davidson",
+          "date": "2024-01-01",
+          "tier": 1,
+          "outlet": "The Washington Post",
+          "market": null
+        },
+        {
+          "file": "washpost--michael-andor-brodeur",
+          "date": "2024-01-01",
+          "tier": 1,
+          "outlet": "The Washington Post",
+          "market": null
+        },
+        {
+          "file": "financialtimes--george-grella",
+          "date": "2024-01-02",
           "tier": 1,
           "outlet": "Financial Times",
           "market": "uk"
         },
         {
-          "file": "guardian--arifa-akbar",
-          "date": "2024-10-09",
+          "file": "wsj--heidi-waleson",
+          "date": "2024-01-02",
           "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
+          "outlet": "The Wall Street Journal",
+          "market": null
         },
         {
-          "file": "i-paper--fiona-mountford",
-          "date": "2024-10-09",
+          "file": "wsj--justin-davidson",
+          "date": "2024-01-02",
           "tier": 1,
-          "outlet": "The i",
-          "market": "uk"
+          "outlet": "The Wall Street Journal",
+          "market": null
         },
         {
-          "file": "independent--alice-saville",
-          "date": "2024-10-09",
-          "tier": 1,
-          "outlet": "The Independent",
-          "market": "uk"
+          "file": "parterre-box--david-salazar",
+          "date": "2024-01-03",
+          "tier": 3,
+          "outlet": "Parterre Box",
+          "market": null
         },
         {
-          "file": "standard--nick-curtis",
-          "date": "2024-10-09",
+          "file": "observer--christopher-corwin",
+          "date": "2024-01-04",
           "tier": 1,
-          "outlet": "Evening Standard",
-          "market": "uk"
+          "outlet": "Observer",
+          "market": null
         },
         {
-          "file": "telegraph--dominic-cavendish",
-          "date": "2024-10-09",
-          "tier": 1,
-          "outlet": "The Telegraph",
-          "market": "uk"
+          "file": "operawire--david-salazar",
+          "date": "2024-01-04",
+          "tier": 3,
+          "outlet": "Operawire",
+          "market": null
         },
         {
-          "file": "times-uk--clive-davis",
-          "date": "2024-10-09",
+          "file": "vulture--justin-davidson",
+          "date": "2024-01-04",
           "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
+          "outlet": "Vulture",
+          "market": null
         },
         {
-          "file": "whatsonstage--sarah-crompton",
-          "date": "2024-10-09",
+          "file": "broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow",
+          "date": "2024-01-06",
           "tier": 2,
-          "outlet": "WhatsOnStage",
-          "market": "uk"
+          "outlet": "BroadwayWorld",
+          "market": null
+        }
+      ]
+    },
+    {
+      "showId": "miles-for-mary-off-broadway-2026",
+      "title": "MILES FOR MARY",
+      "openingDate": "2027-02-23",
+      "currentVenue": "Signature Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 18,
+      "majorOutletCount": 13,
+      "routedToSibling": 0,
+      "dateRange": "2016-10-10 .. 2026-04-15",
+      "spanDays": 3474,
+      "showMarket": "us",
+      "earlierMarket": null,
+      "marketMatch": null,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
+      "weight": 252,
+      "discarded": [
+        {
+          "file": "timeout--helen-shaw",
+          "date": "2016-10-10",
+          "tier": 1,
+          "outlet": "Time Out New York",
+          "market": null
+        },
+        {
+          "file": "culturebot--jennifer-cayer",
+          "date": "2016-10-14",
+          "tier": 3,
+          "outlet": "culturebot",
+          "market": null
+        },
+        {
+          "file": "curtainup--paulanne-simmons",
+          "date": "2018-01-22",
+          "tier": 2,
+          "outlet": "CurtainUp",
+          "market": null
+        },
+        {
+          "file": "nytimes--ben-brantley",
+          "date": "2018-01-22",
+          "tier": 1,
+          "outlet": "The New York Times",
+          "market": null
+        },
+        {
+          "file": "talkinbroadway--marc-miller",
+          "date": "2018-01-22",
+          "tier": 2,
+          "outlet": "Talkin' Broadway",
+          "market": null
+        },
+        {
+          "file": "theater-pizzazz--michael-bracken",
+          "date": "2018-01-22",
+          "tier": 4,
+          "outlet": "Theater Pizzazz",
+          "market": null
+        },
+        {
+          "file": "theatermania--zachary-stewart",
+          "date": "2018-01-22",
+          "tier": 2,
+          "outlet": "TheaterMania",
+          "market": null
+        },
+        {
+          "file": "times-square-chronicles--suzanna-bowling",
+          "date": "2018-01-22",
+          "tier": 4,
+          "outlet": "Times Square Chronicles",
+          "market": null
+        },
+        {
+          "file": "vulture--sara-holdren",
+          "date": "2018-01-22",
+          "tier": 1,
+          "outlet": "Vulture",
+          "market": null
+        },
+        {
+          "file": "front-row-center--tulis-mccall",
+          "date": "2018-01-23",
+          "tier": 2,
+          "outlet": "Front Row Center",
+          "market": null
+        },
+        {
+          "file": "nyt-theater--jonathan-mandell",
+          "date": "2018-01-23",
+          "tier": 2,
+          "outlet": "New York Theater",
+          "market": null
+        },
+        {
+          "file": "thewrap--robert-hofler",
+          "date": "2018-01-23",
+          "tier": 2,
+          "outlet": "TheWrap",
+          "market": null
+        },
+        {
+          "file": "lighting-and-sound-america--david-barbour",
+          "date": "2018-01-24",
+          "tier": 2,
+          "outlet": "Lighting & Sound America",
+          "market": null
+        },
+        {
+          "file": "village-voice--david-cote",
+          "date": "2018-01-24",
+          "tier": 2,
+          "outlet": "Village Voice",
+          "market": null
+        },
+        {
+          "file": "broadwayselect--peter-filichia",
+          "date": "2018-01-29",
+          "tier": 3,
+          "outlet": "Broadway Select",
+          "market": null
+        },
+        {
+          "file": "theatre-arts-daily--mark-johnson",
+          "date": "2018-02-05",
+          "tier": 3,
+          "outlet": "Theatre Arts Daily",
+          "market": null
+        },
+        {
+          "file": "theater-scene--victor-gluck",
+          "date": "2018-02-09",
+          "tier": 2,
+          "outlet": "Theater Scene",
+          "market": null
+        },
+        {
+          "file": "broadwayworld--bww-news-desk",
+          "date": "2026-04-15",
+          "tier": 2,
+          "outlet": "BroadwayWorld",
+          "market": null
         }
       ]
     },
@@ -7025,277 +7157,6 @@
       ]
     },
     {
-      "showId": "carmen-off-broadway-2025",
-      "title": "Carmen",
-      "openingDate": "2025-10-28",
-      "currentVenue": "Metropolitan Opera House",
-      "hasPriorRuns": false,
-      "discardedCount": 16,
-      "majorOutletCount": 13,
-      "routedToSibling": 0,
-      "dateRange": "2018-06-27 .. 2024-01-06",
-      "spanDays": 2019,
-      "showMarket": "us",
-      "earlierMarket": "uk",
-      "marketMatch": false,
-      "siblingEntryCovers": null,
-      "classification": "wide-span-review",
-      "weight": 224,
-      "discarded": [
-        {
-          "file": "dctheatrescene--jonathan-mandell",
-          "date": "2018-06-27",
-          "tier": 2,
-          "outlet": "DC Theatre Scene",
-          "market": null
-        },
-        {
-          "file": "thewrap--robert-hofler",
-          "date": "2018-06-27",
-          "tier": 2,
-          "outlet": "TheWrap",
-          "market": null
-        },
-        {
-          "file": "dailybeast--tim-teeman",
-          "date": "2018-06-28",
-          "tier": 2,
-          "outlet": "The Daily Beast",
-          "market": null
-        },
-        {
-          "file": "nysr--steven-suskin",
-          "date": "2018-06-28",
-          "tier": 2,
-          "outlet": "New York Stage Review",
-          "market": null
-        },
-        {
-          "file": "new-york-classical-review--rick-perdian",
-          "date": "2024-01-01",
-          "tier": 3,
-          "outlet": "New York Classical Review",
-          "market": null
-        },
-        {
-          "file": "washpost--andor-brodeur",
-          "date": "2024-01-01",
-          "tier": 1,
-          "outlet": "The Washington Post",
-          "market": null
-        },
-        {
-          "file": "washpost--justin-davidson",
-          "date": "2024-01-01",
-          "tier": 1,
-          "outlet": "The Washington Post",
-          "market": null
-        },
-        {
-          "file": "washpost--michael-andor-brodeur",
-          "date": "2024-01-01",
-          "tier": 1,
-          "outlet": "The Washington Post",
-          "market": null
-        },
-        {
-          "file": "financialtimes--george-grella",
-          "date": "2024-01-02",
-          "tier": 1,
-          "outlet": "Financial Times",
-          "market": "uk"
-        },
-        {
-          "file": "wsj--heidi-waleson",
-          "date": "2024-01-02",
-          "tier": 1,
-          "outlet": "The Wall Street Journal",
-          "market": null
-        },
-        {
-          "file": "wsj--justin-davidson",
-          "date": "2024-01-02",
-          "tier": 1,
-          "outlet": "The Wall Street Journal",
-          "market": null
-        },
-        {
-          "file": "parterre-box--david-salazar",
-          "date": "2024-01-03",
-          "tier": 3,
-          "outlet": "Parterre Box",
-          "market": null
-        },
-        {
-          "file": "observer--christopher-corwin",
-          "date": "2024-01-04",
-          "tier": 1,
-          "outlet": "Observer",
-          "market": null
-        },
-        {
-          "file": "operawire--david-salazar",
-          "date": "2024-01-04",
-          "tier": 3,
-          "outlet": "Operawire",
-          "market": null
-        },
-        {
-          "file": "vulture--justin-davidson",
-          "date": "2024-01-04",
-          "tier": 1,
-          "outlet": "Vulture",
-          "market": null
-        },
-        {
-          "file": "broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow",
-          "date": "2024-01-06",
-          "tier": 2,
-          "outlet": "BroadwayWorld",
-          "market": null
-        }
-      ]
-    },
-    {
-      "showId": "miles-for-mary-off-broadway-2026",
-      "title": "MILES FOR MARY",
-      "openingDate": "2027-02-23",
-      "currentVenue": "Signature Theatre",
-      "hasPriorRuns": false,
-      "discardedCount": 17,
-      "majorOutletCount": 12,
-      "routedToSibling": 0,
-      "dateRange": "2016-10-10 .. 2018-02-09",
-      "spanDays": 487,
-      "showMarket": "us",
-      "earlierMarket": null,
-      "marketMatch": null,
-      "siblingEntryCovers": null,
-      "classification": "likely-transfer",
-      "weight": 221,
-      "discarded": [
-        {
-          "file": "timeout--helen-shaw",
-          "date": "2016-10-10",
-          "tier": 1,
-          "outlet": "Time Out New York",
-          "market": null
-        },
-        {
-          "file": "culturebot--jennifer-cayer",
-          "date": "2016-10-14",
-          "tier": 3,
-          "outlet": "culturebot",
-          "market": null
-        },
-        {
-          "file": "curtainup--paulanne-simmons",
-          "date": "2018-01-22",
-          "tier": 2,
-          "outlet": "CurtainUp",
-          "market": null
-        },
-        {
-          "file": "nytimes--ben-brantley",
-          "date": "2018-01-22",
-          "tier": 1,
-          "outlet": "The New York Times",
-          "market": null
-        },
-        {
-          "file": "talkinbroadway--marc-miller",
-          "date": "2018-01-22",
-          "tier": 2,
-          "outlet": "Talkin' Broadway",
-          "market": null
-        },
-        {
-          "file": "theater-pizzazz--michael-bracken",
-          "date": "2018-01-22",
-          "tier": 4,
-          "outlet": "Theater Pizzazz",
-          "market": null
-        },
-        {
-          "file": "theatermania--zachary-stewart",
-          "date": "2018-01-22",
-          "tier": 2,
-          "outlet": "TheaterMania",
-          "market": null
-        },
-        {
-          "file": "times-square-chronicles--suzanna-bowling",
-          "date": "2018-01-22",
-          "tier": 4,
-          "outlet": "Times Square Chronicles",
-          "market": null
-        },
-        {
-          "file": "vulture--sara-holdren",
-          "date": "2018-01-22",
-          "tier": 1,
-          "outlet": "Vulture",
-          "market": null
-        },
-        {
-          "file": "front-row-center--tulis-mccall",
-          "date": "2018-01-23",
-          "tier": 2,
-          "outlet": "Front Row Center",
-          "market": null
-        },
-        {
-          "file": "nyt-theater--jonathan-mandell",
-          "date": "2018-01-23",
-          "tier": 2,
-          "outlet": "New York Theater",
-          "market": null
-        },
-        {
-          "file": "thewrap--robert-hofler",
-          "date": "2018-01-23",
-          "tier": 2,
-          "outlet": "TheWrap",
-          "market": null
-        },
-        {
-          "file": "lighting-and-sound-america--david-barbour",
-          "date": "2018-01-24",
-          "tier": 2,
-          "outlet": "Lighting & Sound America",
-          "market": null
-        },
-        {
-          "file": "village-voice--david-cote",
-          "date": "2018-01-24",
-          "tier": 2,
-          "outlet": "Village Voice",
-          "market": null
-        },
-        {
-          "file": "broadwayselect--peter-filichia",
-          "date": "2018-01-29",
-          "tier": 3,
-          "outlet": "Broadway Select",
-          "market": null
-        },
-        {
-          "file": "theatre-arts-daily--mark-johnson",
-          "date": "2018-02-05",
-          "tier": 3,
-          "outlet": "Theatre Arts Daily",
-          "market": null
-        },
-        {
-          "file": "theater-scene--victor-gluck",
-          "date": "2018-02-09",
-          "tier": 2,
-          "outlet": "Theater Scene",
-          "market": null
-        }
-      ]
-    },
-    {
       "showId": "the-hills-of-california-2024",
       "title": "The Hills of California",
       "openingDate": "2024-09-29",
@@ -7414,6 +7275,124 @@
         {
           "file": "whatsonstage--sarah-crompton",
           "date": "2024-02-08",
+          "tier": 2,
+          "outlet": "WhatsOnStage",
+          "market": "uk"
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "title": "Macbeth",
+      "openingDate": "2026-09-22",
+      "currentVenue": "Metropolitan Opera House",
+      "hasPriorRuns": false,
+      "discardedCount": 14,
+      "majorOutletCount": 14,
+      "routedToSibling": 0,
+      "dateRange": "2012-07-10 .. 2024-10-09",
+      "spanDays": 4474,
+      "showMarket": "us",
+      "earlierMarket": "uk",
+      "marketMatch": false,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
+      "weight": 210,
+      "discarded": [
+        {
+          "file": "huffpost--gazelle-emami",
+          "date": "2012-07-10",
+          "tier": 2,
+          "outlet": "HuffPost",
+          "market": null
+        },
+        {
+          "file": "amny--unknown",
+          "date": "2013-05-01",
+          "tier": 2,
+          "outlet": "amNewYork",
+          "market": null
+        },
+        {
+          "file": "chicagotribune--chris-jones",
+          "date": "2013-11-21",
+          "tier": 2,
+          "outlet": "Chicago Tribune",
+          "market": "us"
+        },
+        {
+          "file": "timeout--naveen-kumar",
+          "date": "2013-11-21",
+          "tier": 1,
+          "outlet": "Time Out New York",
+          "market": null
+        },
+        {
+          "file": "newsday--linda-winer",
+          "date": "2014-06-05",
+          "tier": 1,
+          "outlet": "Newsday",
+          "market": null
+        },
+        {
+          "file": "ew--leah-greenblatt",
+          "date": "2022-04-29",
+          "tier": 2,
+          "outlet": "Entertainment Weekly",
+          "market": null
+        },
+        {
+          "file": "financialtimes--shirley-apthorp",
+          "date": "2024-10-09",
+          "tier": 1,
+          "outlet": "Financial Times",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--arifa-akbar",
+          "date": "2024-10-09",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "i-paper--fiona-mountford",
+          "date": "2024-10-09",
+          "tier": 1,
+          "outlet": "The i",
+          "market": "uk"
+        },
+        {
+          "file": "independent--alice-saville",
+          "date": "2024-10-09",
+          "tier": 1,
+          "outlet": "The Independent",
+          "market": "uk"
+        },
+        {
+          "file": "standard--nick-curtis",
+          "date": "2024-10-09",
+          "tier": 1,
+          "outlet": "Evening Standard",
+          "market": "uk"
+        },
+        {
+          "file": "telegraph--dominic-cavendish",
+          "date": "2024-10-09",
+          "tier": 1,
+          "outlet": "The Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--clive-davis",
+          "date": "2024-10-09",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "whatsonstage--sarah-crompton",
+          "date": "2024-10-09",
           "tier": 2,
           "outlet": "WhatsOnStage",
           "market": "uk"
@@ -7879,110 +7858,221 @@
       ]
     },
     {
-      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
-      "title": "A Midsummer Night's Dream - Globe",
-      "openingDate": "2026-05-01",
-      "currentVenue": "Shakespeare's Globe",
+      "showId": "vanya-off-broadway-2025",
+      "title": "Vanya",
+      "openingDate": "2025-03-18",
+      "currentVenue": "Lucille Lortel Theatre",
       "hasPriorRuns": false,
       "discardedCount": 13,
       "majorOutletCount": 13,
       "routedToSibling": 0,
-      "dateRange": "2013-11-04 .. 2025-06-06",
-      "spanDays": 4232,
-      "showMarket": "uk",
+      "dateRange": "2013-03-14 .. 2023-09-22",
+      "spanDays": 3844,
+      "showMarket": "us",
       "earlierMarket": "uk",
-      "marketMatch": true,
+      "marketMatch": false,
       "siblingEntryCovers": null,
       "classification": "wide-span-review",
       "weight": 182,
       "discarded": [
         {
-          "file": "bloomberg--unknown",
-          "date": "2013-11-04",
+          "file": "about-entertainment--charles-isherwood",
+          "date": "2013-03-14",
+          "tier": 1,
+          "outlet": "About Entertainment",
+          "market": null
+        },
+        {
+          "file": "bloomberg--jeremy-gerard",
+          "date": "2013-03-14",
           "tier": 2,
           "outlet": "Bloomberg",
           "market": null
         },
         {
-          "file": "nydailynews--unknown",
-          "date": "2013-11-04",
-          "tier": 2,
-          "outlet": "New York Daily News",
+          "file": "washpost--unknown",
+          "date": "2013-03-14",
+          "tier": 1,
+          "outlet": "The Washington Post",
           "market": null
         },
         {
-          "file": "times-uk--quentin-letts",
-          "date": "2019-06-15",
-          "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
-        },
-        {
-          "file": "london-box-office--marian-pashley",
-          "date": "2019-07-04",
-          "tier": 2,
-          "outlet": "London Box Office",
-          "market": "uk"
-        },
-        {
-          "file": "whatsonstage--judi-herman",
-          "date": "2020-02-21",
-          "tier": 2,
-          "outlet": "WhatsOnStage",
-          "market": "uk"
-        },
-        {
-          "file": "times-uk--clive-davis",
-          "date": "2023-05-23",
-          "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
-        },
-        {
-          "file": "standard--nick-curtissurprised",
-          "date": "2024-05-24",
-          "tier": 1,
-          "outlet": "The Standard",
-          "market": "uk"
-        },
-        {
-          "file": "times-uk--richard-morrison",
-          "date": "2024-10-13",
-          "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
-        },
-        {
           "file": "financialtimes--sarah-hemming",
-          "date": "2025-06-06",
+          "date": "2023-09-22",
           "tier": 1,
           "outlet": "Financial Times",
           "market": "uk"
         },
         {
-          "file": "london-box-office--stuart-king",
-          "date": "2025-06-06",
-          "tier": 2,
-          "outlet": "London Box Office",
+          "file": "guardian--arifa-akbar",
+          "date": "2023-09-22",
+          "tier": 1,
+          "outlet": "The Guardian",
           "market": "uk"
         },
         {
-          "file": "thestage--katie-chambers",
-          "date": "2025-06-06",
+          "file": "i-paper--fiona-mountford",
+          "date": "2023-09-22",
+          "tier": 1,
+          "outlet": "The i",
+          "market": "uk"
+        },
+        {
+          "file": "independent--alice-saville",
+          "date": "2023-09-22",
+          "tier": 1,
+          "outlet": "The Independent",
+          "market": "uk"
+        },
+        {
+          "file": "standard--nick-curtis",
+          "date": "2023-09-22",
+          "tier": 1,
+          "outlet": "Evening Standard",
+          "market": "uk"
+        },
+        {
+          "file": "telegraph--ben-lawren",
+          "date": "2023-09-22",
+          "tier": 1,
+          "outlet": "The Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "thestage--sam-marlowe",
+          "date": "2023-09-22",
           "tier": 1,
           "outlet": "The Stage",
           "market": "uk"
         },
         {
-          "file": "timeout--andrzej-lukowski",
-          "date": "2025-06-06",
+          "file": "timeout-london--andrzej-lukowski",
+          "date": "2023-09-22",
           "tier": 1,
-          "outlet": "Time Out",
-          "market": null
+          "outlet": "Time Out London",
+          "market": "uk"
         },
         {
           "file": "times-uk--dominic-maxwell",
-          "date": "2025-06-06",
+          "date": "2023-09-22",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "whatsonstage--sarah-crompton",
+          "date": "2023-09-22",
+          "tier": 2,
+          "outlet": "WhatsOnStage",
+          "market": "uk"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2026",
+      "title": "Medea",
+      "openingDate": "2026-10-30",
+      "currentVenue": "Metropolitan Opera House",
+      "hasPriorRuns": false,
+      "discardedCount": 13,
+      "majorOutletCount": 12,
+      "routedToSibling": 0,
+      "dateRange": "2014-07-24 .. 2023-02-18",
+      "spanDays": 3131,
+      "showMarket": "us",
+      "earlierMarket": "uk",
+      "marketMatch": false,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
+      "weight": 169,
+      "discarded": [
+        {
+          "file": "express-uk--neil-norman",
+          "date": "2014-07-24",
+          "tier": 4,
+          "outlet": "Express  (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "hollywood-reporter--david-rooney",
+          "date": "2019-07-25",
+          "tier": 1,
+          "outlet": "The Hollywood Reporter",
+          "market": null
+        },
+        {
+          "file": "dailybeast--tim-teeman",
+          "date": "2020-01-31",
+          "tier": 2,
+          "outlet": "The Daily Beast",
+          "market": null
+        },
+        {
+          "file": "timeout--adam-feldman",
+          "date": "2020-01-31",
+          "tier": 1,
+          "outlet": "Time Out New York",
+          "market": null
+        },
+        {
+          "file": "guardian--arifa-akbar",
+          "date": "2023-02-18",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--susannah-clapp",
+          "date": "2023-02-18",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "i-paper--fiona-mountford",
+          "date": "2023-02-18",
+          "tier": 1,
+          "outlet": "The i",
+          "market": "uk"
+        },
+        {
+          "file": "independent--alice-saville",
+          "date": "2023-02-18",
+          "tier": 1,
+          "outlet": "The Independent",
+          "market": "uk"
+        },
+        {
+          "file": "standard--nick-curtis",
+          "date": "2023-02-18",
+          "tier": 1,
+          "outlet": "Evening Standard",
+          "market": "uk"
+        },
+        {
+          "file": "telegraph--dominic-cavendish",
+          "date": "2023-02-18",
+          "tier": 1,
+          "outlet": "The Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "thestage--sam-marlowe",
+          "date": "2023-02-18",
+          "tier": 1,
+          "outlet": "The Stage",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--clive-davis",
+          "date": "2023-02-18",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--quentin-letts",
+          "date": "2023-02-18",
           "tier": 1,
           "outlet": "The Times (UK)",
           "market": "uk"
@@ -8101,6 +8191,110 @@
       ]
     },
     {
+      "showId": "shifters-off-broadway-2026",
+      "title": "Shifters",
+      "openingDate": "2026-07-16",
+      "currentVenue": "Cherry Lane Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 12,
+      "majorOutletCount": 12,
+      "routedToSibling": 0,
+      "dateRange": "2024-08-22 .. 2024-08-22",
+      "spanDays": 0,
+      "showMarket": "us",
+      "earlierMarket": "uk",
+      "marketMatch": false,
+      "siblingEntryCovers": null,
+      "classification": "cross-market-transfer",
+      "weight": 156,
+      "discarded": [
+        {
+          "file": "financialtimes--sarah-hemming",
+          "date": "2024-08-22",
+          "tier": 1,
+          "outlet": "Financial Times",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--arifa-akbar",
+          "date": "2024-08-22",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--susannah-clapp",
+          "date": "2024-08-22",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "i-paper--fiona-mountford",
+          "date": "2024-08-22",
+          "tier": 1,
+          "outlet": "The i",
+          "market": "uk"
+        },
+        {
+          "file": "independent--alice-saville",
+          "date": "2024-08-22",
+          "tier": 1,
+          "outlet": "The Independent",
+          "market": "uk"
+        },
+        {
+          "file": "standard--nick-curtis",
+          "date": "2024-08-22",
+          "tier": 1,
+          "outlet": "Evening Standard",
+          "market": "uk"
+        },
+        {
+          "file": "telegraph--dzifa-benson",
+          "date": "2024-08-22",
+          "tier": 1,
+          "outlet": "The Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "telegraph--kirsten-grant",
+          "date": "2024-08-22",
+          "tier": 1,
+          "outlet": "The Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "thestage--tom-wicker",
+          "date": "2024-08-22",
+          "tier": 1,
+          "outlet": "The Stage",
+          "market": "uk"
+        },
+        {
+          "file": "timeout-london--anya-ryan",
+          "date": "2024-08-22",
+          "tier": 1,
+          "outlet": "Time Out London",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--donald-hutera",
+          "date": "2024-08-22",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--rachel-halliburton",
+          "date": "2024-08-22",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        }
+      ]
+    },
+    {
       "showId": "oedipus-2025",
       "title": "Oedipus",
       "openingDate": "2025-11-13",
@@ -8205,106 +8399,210 @@
       ]
     },
     {
-      "showId": "medea-off-broadway-2026",
-      "title": "Medea",
-      "openingDate": "2026-10-30",
-      "currentVenue": "Metropolitan Opera House",
+      "showId": "equus-west-end-2026",
+      "title": "Equus",
+      "openingDate": "2026-05-18",
+      "currentVenue": "Menier Chocolate Factory",
       "hasPriorRuns": false,
       "discardedCount": 12,
       "majorOutletCount": 11,
       "routedToSibling": 0,
-      "dateRange": "2020-01-30 .. 2023-02-18",
-      "spanDays": 1115,
-      "showMarket": "us",
+      "dateRange": "2010-06-25 .. 2019-07-16",
+      "spanDays": 3308,
+      "showMarket": "uk",
       "earlierMarket": "uk",
-      "marketMatch": false,
+      "marketMatch": true,
       "siblingEntryCovers": null,
       "classification": "wide-span-review",
       "weight": 144,
       "discarded": [
         {
-          "file": "hollywood-reporter--frank-scheck",
-          "date": "2020-01-30",
+          "file": "nytimes--charles-isherwood",
+          "date": "2010-06-25",
           "tier": 1,
-          "outlet": "The Hollywood Reporter",
+          "outlet": "The New York Times",
           "market": null
         },
         {
-          "file": "dailybeast--tim-teeman",
-          "date": "2020-01-31",
-          "tier": 2,
-          "outlet": "The Daily Beast",
-          "market": null
-        },
-        {
-          "file": "express-uk--neil-norman",
-          "date": "2023-02-18",
-          "tier": 4,
-          "outlet": "Express  (UK)",
-          "market": "uk"
-        },
-        {
-          "file": "guardian--arifa-akbar",
-          "date": "2023-02-18",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "guardian--susannah-clapp",
-          "date": "2023-02-18",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "i-paper--fiona-mountford",
-          "date": "2023-02-18",
-          "tier": 1,
-          "outlet": "The i",
-          "market": "uk"
-        },
-        {
-          "file": "independent--alice-saville",
-          "date": "2023-02-18",
-          "tier": 1,
-          "outlet": "The Independent",
-          "market": "uk"
-        },
-        {
-          "file": "standard--nick-curtis",
-          "date": "2023-02-18",
-          "tier": 1,
-          "outlet": "Evening Standard",
-          "market": "uk"
-        },
-        {
-          "file": "telegraph--dominic-cavendish",
-          "date": "2023-02-18",
-          "tier": 1,
-          "outlet": "The Telegraph",
-          "market": "uk"
-        },
-        {
-          "file": "thestage--sam-marlowe",
-          "date": "2023-02-18",
+          "file": "thestage--tim-bano",
+          "date": "2019-02-22",
           "tier": 1,
           "outlet": "The Stage",
           "market": "uk"
         },
         {
-          "file": "times-uk--clive-davis",
-          "date": "2023-02-18",
-          "tier": 1,
-          "outlet": "The Times (UK)",
+          "file": "whatsonstage--alun-hood",
+          "date": "2019-02-22",
+          "tier": 2,
+          "outlet": "WhatsOnStage",
           "market": "uk"
         },
         {
-          "file": "times-uk--quentin-letts",
-          "date": "2023-02-18",
+          "file": "guardian--michael-billington",
+          "date": "2019-02-25",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--unknown",
+          "date": "2019-02-25",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "telegraph--dominic-cavendish",
+          "date": "2019-07-15",
+          "tier": 1,
+          "outlet": "The Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "artsdesk--tom-birchenough",
+          "date": "2019-07-16",
+          "tier": 2,
+          "outlet": "The Arts Desk",
+          "market": "uk"
+        },
+        {
+          "file": "artsdesk--unknown",
+          "date": "2019-07-16",
+          "tier": 2,
+          "outlet": "The Arts Desk",
+          "market": "uk"
+        },
+        {
+          "file": "standard--nick-curtis",
+          "date": "2019-07-16",
+          "tier": 1,
+          "outlet": "Evening Standard",
+          "market": "uk"
+        },
+        {
+          "file": "theupcoming--unknown",
+          "date": "2019-07-16",
+          "tier": 4,
+          "outlet": "The Upcoming",
+          "market": "uk"
+        },
+        {
+          "file": "timeout-london--andrzej-lukowski",
+          "date": "2019-07-16",
+          "tier": 1,
+          "outlet": "Time Out London",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--sam-marlowe",
+          "date": "2019-07-16",
           "tier": 1,
           "outlet": "The Times (UK)",
           "market": "uk"
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "title": "Schmigadoon!",
+      "openingDate": "2026-04-20",
+      "currentVenue": "Nederlander Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 12,
+      "majorOutletCount": 10,
+      "routedToSibling": 0,
+      "dateRange": "2021-07-06 .. 2025-02-03",
+      "spanDays": 1308,
+      "showMarket": "us",
+      "earlierMarket": null,
+      "marketMatch": null,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
+      "weight": 132,
+      "discarded": [
+        {
+          "file": "decider--unknown",
+          "date": "2021-07-06",
+          "tier": 3,
+          "outlet": "Decider",
+          "market": null
+        },
+        {
+          "file": "observer--httpsobservercomauthorbrandon-katz",
+          "date": "2021-07-06",
+          "tier": 1,
+          "outlet": "Observer",
+          "market": null
+        },
+        {
+          "file": "slate--karen-han",
+          "date": "2021-07-06",
+          "tier": 2,
+          "outlet": "Slate",
+          "market": null
+        },
+        {
+          "file": "rollingstone--alan-sepinwall",
+          "date": "2021-07-12",
+          "tier": 2,
+          "outlet": "Rolling Stone",
+          "market": null
+        },
+        {
+          "file": "thewrap--jason-clark",
+          "date": "2021-07-12",
+          "tier": 2,
+          "outlet": "TheWrap",
+          "market": null
+        },
+        {
+          "file": "hollywood-reporter--daniel-fienberg",
+          "date": "2021-07-15",
+          "tier": 1,
+          "outlet": "The Hollywood Reporter",
+          "market": null
+        },
+        {
+          "file": "npr--linda-holmes",
+          "date": "2021-07-15",
+          "tier": 3,
+          "outlet": "NPR",
+          "market": null
+        },
+        {
+          "file": "vulture--sara-holdren",
+          "date": "2021-07-15",
+          "tier": 1,
+          "outlet": "Vulture",
+          "market": null
+        },
+        {
+          "file": "wsj--john-anderson",
+          "date": "2021-07-15",
+          "tier": 1,
+          "outlet": "The Wall Street Journal",
+          "market": null
+        },
+        {
+          "file": "nytimes--jesse-green",
+          "date": "2025-02-03",
+          "tier": 1,
+          "outlet": "The New York Times",
+          "market": null
+        },
+        {
+          "file": "vulture--rhoda-feng",
+          "date": "2025-02-03",
+          "tier": 1,
+          "outlet": "Vulture",
+          "market": null
+        },
+        {
+          "file": "washpost--naveen-kumar",
+          "date": "2025-02-03",
+          "tier": 1,
+          "outlet": "The Washington Post",
+          "market": null
         }
       ]
     },
@@ -8600,6 +8898,103 @@
       ]
     },
     {
+      "showId": "1536-west-end-2026",
+      "title": "1536",
+      "openingDate": "2026-05-12",
+      "currentVenue": "Ambassadors Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 11,
+      "majorOutletCount": 11,
+      "routedToSibling": 0,
+      "dateRange": "2025-05-14 .. 2025-05-21",
+      "spanDays": 7,
+      "showMarket": "uk",
+      "earlierMarket": "uk",
+      "marketMatch": true,
+      "siblingEntryCovers": null,
+      "classification": "likely-transfer",
+      "weight": 132,
+      "discarded": [
+        {
+          "file": "guardian--miriam-gillinson",
+          "date": "2025-05-14",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "london-box-office--stuart-king",
+          "date": "2025-05-14",
+          "tier": 2,
+          "outlet": "London Box Office",
+          "market": "uk"
+        },
+        {
+          "file": "london-theatre--marianka-swain",
+          "date": "2025-05-14",
+          "tier": 2,
+          "outlet": "London Theatre",
+          "market": "uk"
+        },
+        {
+          "file": "telegraph--claire-allfree",
+          "date": "2025-05-14",
+          "tier": 1,
+          "outlet": "The Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "thestage--sam-marlowe",
+          "date": "2025-05-14",
+          "tier": 1,
+          "outlet": "The Stage",
+          "market": "uk"
+        },
+        {
+          "file": "timeout-london--andrzej-lukowski",
+          "date": "2025-05-14",
+          "tier": 1,
+          "outlet": "Time Out London",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--clive-davis",
+          "date": "2025-05-14",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "whatsonstage--sarah-crompton",
+          "date": "2025-05-14",
+          "tier": 2,
+          "outlet": "WhatsOnStage",
+          "market": "uk"
+        },
+        {
+          "file": "artsdesk--rachel-halliburton",
+          "date": "2025-05-15",
+          "tier": 2,
+          "outlet": "The Arts Desk",
+          "market": "uk"
+        },
+        {
+          "file": "timeout-london--andrjez-lukowski",
+          "date": "2025-05-20",
+          "tier": 1,
+          "outlet": "Time Out London",
+          "market": "uk"
+        },
+        {
+          "file": "londontheatre1--chris-omaweng",
+          "date": "2025-05-21",
+          "tier": 2,
+          "outlet": "LondonTheatre1",
+          "market": "uk"
+        }
+      ]
+    },
+    {
       "showId": "dracula-west-end-2025",
       "title": "Dracula",
       "openingDate": "2026-02-17",
@@ -8700,6 +9095,214 @@
           "tier": 2,
           "outlet": "BroadwayWorld",
           "market": null
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "title": "Heathers the Musical",
+      "openingDate": "2026-07-14",
+      "currentVenue": "The Arts at Marble Arch powered by TodayTix",
+      "hasPriorRuns": false,
+      "discardedCount": 12,
+      "majorOutletCount": 10,
+      "routedToSibling": 0,
+      "dateRange": "2014-03-31 .. 2024-05-30",
+      "spanDays": 3713,
+      "showMarket": "uk",
+      "earlierMarket": "uk",
+      "marketMatch": true,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
+      "weight": 132,
+      "discarded": [
+        {
+          "file": "hollywood-reporter--david-rooney",
+          "date": "2014-03-31",
+          "tier": 1,
+          "outlet": "The Hollywood Reporter",
+          "market": null
+        },
+        {
+          "file": "nbcny--robert-kahn",
+          "date": "2014-03-31",
+          "tier": 2,
+          "outlet": "NBC New York",
+          "market": null
+        },
+        {
+          "file": "nypost--elisabeth-vincentelli",
+          "date": "2014-03-31",
+          "tier": 2,
+          "outlet": "New York Post",
+          "market": null
+        },
+        {
+          "file": "vulture--jesse-green",
+          "date": "2014-03-31",
+          "tier": 1,
+          "outlet": "Vulture",
+          "market": null
+        },
+        {
+          "file": "abc-news--peter-santilli",
+          "date": "2014-04-01",
+          "tier": 3,
+          "outlet": "ABC News",
+          "market": null
+        },
+        {
+          "file": "nytimes--ben-brantley",
+          "date": "2014-04-01",
+          "tier": 1,
+          "outlet": "The New York Times",
+          "market": null
+        },
+        {
+          "file": "times-uk--ann-treneman",
+          "date": "2018-09-13",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "whatsonstage--sarah-crompton",
+          "date": "2018-09-13",
+          "tier": 2,
+          "outlet": "WhatsOnStage",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--dominic-maxwell",
+          "date": "2021-06-29",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "broadwayworld--abbie-grundy",
+          "date": "2024-05-29",
+          "tier": 2,
+          "outlet": "BroadwayWorld",
+          "market": null
+        },
+        {
+          "file": "london-theatre--olivia-rook",
+          "date": "2024-05-29",
+          "tier": 2,
+          "outlet": "London Theatre",
+          "market": "uk"
+        },
+        {
+          "file": "all-that-dazzles-uk--daz-gale",
+          "date": "2024-05-30",
+          "tier": 3,
+          "outlet": "All That Dazzles  (UK)",
+          "market": "uk"
+        }
+      ]
+    },
+    {
+      "showId": "caroline-off-broadway-2026",
+      "title": "Caroline",
+      "openingDate": "2025-10-01",
+      "currentVenue": "MCC Theater",
+      "hasPriorRuns": false,
+      "discardedCount": 12,
+      "majorOutletCount": 10,
+      "routedToSibling": 0,
+      "dateRange": "2017-05-20 .. 2021-11-15",
+      "spanDays": 1640,
+      "showMarket": "us",
+      "earlierMarket": "us",
+      "marketMatch": true,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
+      "weight": 132,
+      "discarded": [
+        {
+          "file": "daily-mail--georgina-brown",
+          "date": "2017-05-20",
+          "tier": 1,
+          "outlet": "Daily Mail",
+          "market": "uk"
+        },
+        {
+          "file": "philadelphia-inquirer--unknown",
+          "date": "2018-05-14",
+          "tier": 2,
+          "outlet": "The Philadelphia Inquirer",
+          "market": "us"
+        },
+        {
+          "file": "thestage--unknown",
+          "date": "2021-01-27",
+          "tier": 1,
+          "outlet": "The Stage",
+          "market": "uk"
+        },
+        {
+          "file": "amny--matt-windman",
+          "date": "2021-10-27",
+          "tier": 2,
+          "outlet": "amNewYork",
+          "market": null
+        },
+        {
+          "file": "nyt-theater--jonathan-mandell",
+          "date": "2021-10-27",
+          "tier": 2,
+          "outlet": "New York Theater",
+          "market": null
+        },
+        {
+          "file": "observer--httpsobservercomauthordavid-cote",
+          "date": "2021-10-27",
+          "tier": 1,
+          "outlet": "Observer",
+          "market": null
+        },
+        {
+          "file": "talkinbroadway--unknown",
+          "date": "2021-10-27",
+          "tier": 2,
+          "outlet": "Talkin' Broadway",
+          "market": null
+        },
+        {
+          "file": "chicagotribune--chris-jones",
+          "date": "2021-10-28",
+          "tier": 2,
+          "outlet": "Chicago Tribune",
+          "market": "us"
+        },
+        {
+          "file": "dailybeast--tim-teeman",
+          "date": "2021-10-28",
+          "tier": 2,
+          "outlet": "The Daily Beast",
+          "market": null
+        },
+        {
+          "file": "hollywood-reporter--unknown",
+          "date": "2021-10-28",
+          "tier": 1,
+          "outlet": "The Hollywood Reporter",
+          "market": null
+        },
+        {
+          "file": "frontmezzjunkies--unknown",
+          "date": "2021-11-12",
+          "tier": 3,
+          "outlet": "Front Mezz Junkies",
+          "market": "us"
+        },
+        {
+          "file": "artsfuse--arts-fuse-editor",
+          "date": "2021-11-15",
+          "tier": 3,
+          "outlet": "The Arts Fuse",
+          "market": "us"
         }
       ]
     },
@@ -8912,103 +9515,6 @@
       ]
     },
     {
-      "showId": "schmigadoon-2026",
-      "title": "Schmigadoon!",
-      "openingDate": "2026-04-20",
-      "currentVenue": "Nederlander Theatre",
-      "hasPriorRuns": false,
-      "discardedCount": 11,
-      "majorOutletCount": 9,
-      "routedToSibling": 0,
-      "dateRange": "2021-07-06 .. 2025-02-03",
-      "spanDays": 1308,
-      "showMarket": "us",
-      "earlierMarket": null,
-      "marketMatch": null,
-      "siblingEntryCovers": null,
-      "classification": "wide-span-review",
-      "weight": 110,
-      "discarded": [
-        {
-          "file": "decider--unknown",
-          "date": "2021-07-06",
-          "tier": 3,
-          "outlet": "Decider",
-          "market": null
-        },
-        {
-          "file": "observer--httpsobservercomauthorbrandon-katz",
-          "date": "2021-07-06",
-          "tier": 1,
-          "outlet": "Observer",
-          "market": null
-        },
-        {
-          "file": "slate--karen-han",
-          "date": "2021-07-06",
-          "tier": 2,
-          "outlet": "Slate",
-          "market": null
-        },
-        {
-          "file": "rollingstone--alan-sepinwall",
-          "date": "2021-07-12",
-          "tier": 2,
-          "outlet": "Rolling Stone",
-          "market": null
-        },
-        {
-          "file": "thewrap--jason-clark",
-          "date": "2021-07-12",
-          "tier": 2,
-          "outlet": "TheWrap",
-          "market": null
-        },
-        {
-          "file": "hollywood-reporter--daniel-fienberg",
-          "date": "2021-07-15",
-          "tier": 1,
-          "outlet": "The Hollywood Reporter",
-          "market": null
-        },
-        {
-          "file": "npr--linda-holmes",
-          "date": "2021-07-15",
-          "tier": 3,
-          "outlet": "NPR",
-          "market": null
-        },
-        {
-          "file": "wsj--john-anderson",
-          "date": "2021-07-15",
-          "tier": 1,
-          "outlet": "The Wall Street Journal",
-          "market": null
-        },
-        {
-          "file": "nytimes--jesse-green",
-          "date": "2025-02-03",
-          "tier": 1,
-          "outlet": "The New York Times",
-          "market": null
-        },
-        {
-          "file": "vulture--rhoda-feng",
-          "date": "2025-02-03",
-          "tier": 1,
-          "outlet": "Vulture",
-          "market": null
-        },
-        {
-          "file": "washpost--naveen-kumar",
-          "date": "2025-02-03",
-          "tier": 1,
-          "outlet": "The Washington Post",
-          "market": null
-        }
-      ]
-    },
-    {
       "showId": "the-fear-of-13-2026",
       "title": "The Fear of 13",
       "openingDate": "2026-04-15",
@@ -9196,96 +9702,6 @@
       ]
     },
     {
-      "showId": "1536-west-end-2026",
-      "title": "1536",
-      "openingDate": "2026-05-12",
-      "currentVenue": "Ambassadors Theatre",
-      "hasPriorRuns": false,
-      "discardedCount": 10,
-      "majorOutletCount": 10,
-      "routedToSibling": 0,
-      "dateRange": "2025-05-14 .. 2025-05-20",
-      "spanDays": 6,
-      "showMarket": "uk",
-      "earlierMarket": "uk",
-      "marketMatch": true,
-      "siblingEntryCovers": null,
-      "classification": "likely-transfer",
-      "weight": 110,
-      "discarded": [
-        {
-          "file": "guardian--miriam-gillinson",
-          "date": "2025-05-14",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "london-box-office--stuart-king",
-          "date": "2025-05-14",
-          "tier": 2,
-          "outlet": "London Box Office",
-          "market": "uk"
-        },
-        {
-          "file": "london-theatre--marianka-swain",
-          "date": "2025-05-14",
-          "tier": 2,
-          "outlet": "London Theatre",
-          "market": "uk"
-        },
-        {
-          "file": "telegraph--claire-allfree",
-          "date": "2025-05-14",
-          "tier": 1,
-          "outlet": "The Telegraph",
-          "market": "uk"
-        },
-        {
-          "file": "thestage--sam-marlowe",
-          "date": "2025-05-14",
-          "tier": 1,
-          "outlet": "The Stage",
-          "market": "uk"
-        },
-        {
-          "file": "timeout-london--andrzej-lukowski",
-          "date": "2025-05-14",
-          "tier": 1,
-          "outlet": "Time Out London",
-          "market": "uk"
-        },
-        {
-          "file": "times-uk--clive-davis",
-          "date": "2025-05-14",
-          "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
-        },
-        {
-          "file": "whatsonstage--sarah-crompton",
-          "date": "2025-05-14",
-          "tier": 2,
-          "outlet": "WhatsOnStage",
-          "market": "uk"
-        },
-        {
-          "file": "artsdesk--rachel-halliburton",
-          "date": "2025-05-15",
-          "tier": 2,
-          "outlet": "The Arts Desk",
-          "market": "uk"
-        },
-        {
-          "file": "timeout-london--andrjez-lukowski",
-          "date": "2025-05-20",
-          "tier": 1,
-          "outlet": "Time Out London",
-          "market": "uk"
-        }
-      ]
-    },
-    {
       "showId": "black-is-the-color-of-my-voice-west-end-2026",
       "title": "Black Is The Color Of My Voice",
       "openingDate": "2026-01-12",
@@ -9376,92 +9792,92 @@
       ]
     },
     {
-      "showId": "jesus-christ-superstar-west-end-2026",
-      "title": "Jesus Christ Superstar",
-      "openingDate": "2026-07-07",
-      "currentVenue": "London Palladium",
+      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
+      "title": "A Midsummer Night's Dream - Globe",
+      "openingDate": "2026-05-01",
+      "currentVenue": "Shakespeare's Globe",
       "hasPriorRuns": false,
       "discardedCount": 10,
       "majorOutletCount": 10,
       "routedToSibling": 0,
-      "dateRange": "2012-03-22 .. 2025-02-18",
-      "spanDays": 4716,
+      "dateRange": "2013-11-04 .. 2025-06-06",
+      "spanDays": 4232,
       "showMarket": "uk",
-      "earlierMarket": null,
-      "marketMatch": null,
-      "siblingEntryCovers": "jesus-christ-superstar-2012",
-      "classification": "routed-elsewhere",
+      "earlierMarket": "uk",
+      "marketMatch": true,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
       "weight": 110,
       "discarded": [
         {
-          "file": "about-entertainment--charles-isherwood",
-          "date": "2012-03-22",
-          "tier": 1,
-          "outlet": "About Entertainment",
-          "market": null
-        },
-        {
-          "file": "ap--mark-kennedy",
-          "date": "2012-03-22",
-          "tier": 1,
-          "outlet": "Associated Press",
-          "market": null
-        },
-        {
-          "file": "backstage--david-sheward",
-          "date": "2012-03-22",
+          "file": "bloomberg--unknown",
+          "date": "2013-11-04",
           "tier": 2,
-          "outlet": "Backstage",
+          "outlet": "Bloomberg",
           "market": null
         },
         {
-          "file": "hollywood-reporter--david-rooney",
-          "date": "2012-03-22",
-          "tier": 1,
-          "outlet": "The Hollywood Reporter",
-          "market": null
-        },
-        {
-          "file": "newsday--linda-winer",
-          "date": "2012-03-22",
-          "tier": 1,
-          "outlet": "Newsday",
-          "market": null
-        },
-        {
-          "file": "usatoday--elysa-gardner",
-          "date": "2012-03-22",
+          "file": "nydailynews--unknown",
+          "date": "2013-11-04",
           "tier": 2,
-          "outlet": "USA Today",
+          "outlet": "New York Daily News",
           "market": null
         },
         {
-          "file": "deadline--dino-ray-ramos",
-          "date": "2018-04-02",
+          "file": "times-uk--quentin-letts",
+          "date": "2019-06-15",
           "tier": 1,
-          "outlet": "Deadline",
-          "market": null
+          "outlet": "The Times (UK)",
+          "market": "uk"
         },
         {
-          "file": "variety--maureen-ryan",
-          "date": "2018-04-02",
-          "tier": 1,
-          "outlet": "Variety",
-          "market": null
-        },
-        {
-          "file": "observer--kate-kellaway",
-          "date": "2024-07-28",
-          "tier": 1,
-          "outlet": "The Observer",
-          "market": null
-        },
-        {
-          "file": "ew--melissa-rose-bernardo",
-          "date": "2025-02-18",
+          "file": "whatsonstage--judi-herman",
+          "date": "2020-02-21",
           "tier": 2,
-          "outlet": "Entertainment Weekly",
-          "market": null
+          "outlet": "WhatsOnStage",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--clive-davis",
+          "date": "2023-05-23",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "standard--nick-curtissurprised",
+          "date": "2024-05-24",
+          "tier": 1,
+          "outlet": "The Standard",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--richard-morrison",
+          "date": "2024-10-13",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "financialtimes--sarah-hemming",
+          "date": "2025-06-06",
+          "tier": 1,
+          "outlet": "Financial Times",
+          "market": "uk"
+        },
+        {
+          "file": "thestage--katie-chambers",
+          "date": "2025-06-06",
+          "tier": 1,
+          "outlet": "The Stage",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--dominic-maxwell",
+          "date": "2025-06-06",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
         }
       ]
     },
@@ -9474,8 +9890,8 @@
       "discardedCount": 10,
       "majorOutletCount": 10,
       "routedToSibling": 0,
-      "dateRange": "2017-11-27 .. 2023-03-24",
-      "spanDays": 1943,
+      "dateRange": "2013-01-02 .. 2023-03-24",
+      "spanDays": 3733,
       "showMarket": "uk",
       "earlierMarket": "uk",
       "marketMatch": true,
@@ -9484,17 +9900,17 @@
       "weight": 110,
       "discarded": [
         {
+          "file": "financialtimes--sarah-hemming",
+          "date": "2013-01-02",
+          "tier": 1,
+          "outlet": "Financial Times",
+          "market": "uk"
+        },
+        {
           "file": "london-box-office--marian-pashley",
           "date": "2017-11-27",
           "tier": 2,
           "outlet": "London Box Office",
-          "market": "uk"
-        },
-        {
-          "file": "financialtimes--sarah-hemming",
-          "date": "2021-08-20",
-          "tier": 1,
-          "outlet": "Financial Times",
           "market": "uk"
         },
         {
@@ -9564,8 +9980,8 @@
       "discardedCount": 10,
       "majorOutletCount": 10,
       "routedToSibling": 0,
-      "dateRange": "2025-09-15 .. 2026-06-08",
-      "spanDays": 266,
+      "dateRange": "2025-10-25 .. 2026-06-08",
+      "spanDays": 226,
       "showMarket": "us",
       "earlierMarket": null,
       "marketMatch": null,
@@ -9573,20 +9989,6 @@
       "classification": "likely-transfer",
       "weight": 110,
       "discarded": [
-        {
-          "file": "broadwayworld--david-friscic",
-          "date": "2025-09-15",
-          "tier": 2,
-          "outlet": "BroadwayWorld",
-          "market": null
-        },
-        {
-          "file": "broadwayworld--jeffrey-kare",
-          "date": "2025-10-08",
-          "tier": 2,
-          "outlet": "BroadwayWorld",
-          "market": null
-        },
         {
           "file": "broadwayworld--tina-st-angelo",
           "date": "2025-10-25",
@@ -9609,6 +10011,13 @@
           "market": null
         },
         {
+          "file": "broadwayworld--anikatrina-fageol",
+          "date": "2026-01-11",
+          "tier": 2,
+          "outlet": "BroadwayWorld",
+          "market": null
+        },
+        {
           "file": "broadwayworld--r-scott-reedy",
           "date": "2026-01-11",
           "tier": 2,
@@ -9616,14 +10025,21 @@
           "market": null
         },
         {
-          "file": "broadwayworld--joni-lorraine",
-          "date": "2026-02-04",
+          "file": "broadwayworld--david-friscic",
+          "date": "2026-02-18",
           "tier": 2,
           "outlet": "BroadwayWorld",
           "market": null
         },
         {
-          "file": "broadwayworld--anikatrina-fageol",
+          "file": "broadwayworld--jeffrey-kare",
+          "date": "2026-02-18",
+          "tier": 2,
+          "outlet": "BroadwayWorld",
+          "market": null
+        },
+        {
+          "file": "broadwayworld--joni-lorraine",
           "date": "2026-02-18",
           "tier": 2,
           "outlet": "BroadwayWorld",
@@ -9642,186 +10058,6 @@
           "tier": 2,
           "outlet": "BroadwayWorld",
           "market": null
-        }
-      ]
-    },
-    {
-      "showId": "and-juliet-2022",
-      "title": "& Juliet",
-      "openingDate": "2022-11-17",
-      "currentVenue": "Stephen Sondheim Theatre",
-      "hasPriorRuns": false,
-      "discardedCount": 10,
-      "majorOutletCount": 9,
-      "routedToSibling": 0,
-      "dateRange": "2019-11-21 .. 2019-11-21",
-      "spanDays": 0,
-      "showMarket": "us",
-      "earlierMarket": "uk",
-      "marketMatch": false,
-      "siblingEntryCovers": null,
-      "classification": "cross-market-transfer",
-      "weight": 100,
-      "discarded": [
-        {
-          "file": "express-uk--stefan-kyriazis",
-          "date": "2019-11-21",
-          "tier": 4,
-          "outlet": "Express  (UK)",
-          "market": "uk"
-        },
-        {
-          "file": "guardian--gregory-robinson",
-          "date": "2019-11-21",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "guardian--michael-billington",
-          "date": "2019-11-21",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "i-paper--sam-marlowe",
-          "date": "2019-11-21",
-          "tier": 1,
-          "outlet": "The i",
-          "market": "uk"
-        },
-        {
-          "file": "independent--alexandra-pollard",
-          "date": "2019-11-21",
-          "tier": 1,
-          "outlet": "The Independent",
-          "market": "uk"
-        },
-        {
-          "file": "standard--nick-curtis",
-          "date": "2019-11-21",
-          "tier": 1,
-          "outlet": "Evening Standard",
-          "market": "uk"
-        },
-        {
-          "file": "telegraph--dominic-cavendish",
-          "date": "2019-11-21",
-          "tier": 1,
-          "outlet": "The Telegraph",
-          "market": "uk"
-        },
-        {
-          "file": "thestage--tim-bano",
-          "date": "2019-11-21",
-          "tier": 1,
-          "outlet": "The Stage",
-          "market": "uk"
-        },
-        {
-          "file": "timeout-london--andrzej-lukowski",
-          "date": "2019-11-21",
-          "tier": 1,
-          "outlet": "Time Out London",
-          "market": "uk"
-        },
-        {
-          "file": "times-uk--clive-davis",
-          "date": "2019-11-21",
-          "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
-        }
-      ]
-    },
-    {
-      "showId": "equus-west-end-2026",
-      "title": "Equus",
-      "openingDate": "2026-05-18",
-      "currentVenue": "Menier Chocolate Factory",
-      "hasPriorRuns": false,
-      "discardedCount": 10,
-      "majorOutletCount": 9,
-      "routedToSibling": 0,
-      "dateRange": "2010-06-25 .. 2019-07-16",
-      "spanDays": 3308,
-      "showMarket": "uk",
-      "earlierMarket": "uk",
-      "marketMatch": true,
-      "siblingEntryCovers": null,
-      "classification": "wide-span-review",
-      "weight": 100,
-      "discarded": [
-        {
-          "file": "nytimes--charles-isherwood",
-          "date": "2010-06-25",
-          "tier": 1,
-          "outlet": "The New York Times",
-          "market": null
-        },
-        {
-          "file": "thestage--tim-bano",
-          "date": "2019-02-22",
-          "tier": 1,
-          "outlet": "The Stage",
-          "market": "uk"
-        },
-        {
-          "file": "guardian--michael-billington",
-          "date": "2019-02-25",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "telegraph--dominic-cavendish",
-          "date": "2019-07-15",
-          "tier": 1,
-          "outlet": "The Telegraph",
-          "market": "uk"
-        },
-        {
-          "file": "artsdesk--tom-birchenough",
-          "date": "2019-07-16",
-          "tier": 2,
-          "outlet": "The Arts Desk",
-          "market": "uk"
-        },
-        {
-          "file": "artsdesk--unknown",
-          "date": "2019-07-16",
-          "tier": 2,
-          "outlet": "The Arts Desk",
-          "market": "uk"
-        },
-        {
-          "file": "standard--nick-curtis",
-          "date": "2019-07-16",
-          "tier": 1,
-          "outlet": "Evening Standard",
-          "market": "uk"
-        },
-        {
-          "file": "theupcoming--unknown",
-          "date": "2019-07-16",
-          "tier": 4,
-          "outlet": "The Upcoming",
-          "market": "uk"
-        },
-        {
-          "file": "timeout-london--andrzej-lukowski",
-          "date": "2019-07-16",
-          "tier": 1,
-          "outlet": "Time Out London",
-          "market": "uk"
-        },
-        {
-          "file": "times-uk--sam-marlowe",
-          "date": "2019-07-16",
-          "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
         }
       ]
     },
@@ -10228,92 +10464,168 @@
       ]
     },
     {
-      "showId": "caroline-off-broadway-2026",
-      "title": "Caroline",
-      "openingDate": "2025-10-01",
-      "currentVenue": "MCC Theater",
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "title": "Jesus Christ Superstar",
+      "openingDate": "2026-07-07",
+      "currentVenue": "London Palladium",
       "hasPriorRuns": false,
-      "discardedCount": 10,
-      "majorOutletCount": 8,
+      "discardedCount": 9,
+      "majorOutletCount": 9,
       "routedToSibling": 0,
-      "dateRange": "2017-05-20 .. 2021-11-15",
-      "spanDays": 1640,
-      "showMarket": "us",
-      "earlierMarket": "us",
-      "marketMatch": true,
-      "siblingEntryCovers": null,
-      "classification": "wide-span-review",
+      "dateRange": "2012-03-22 .. 2025-02-18",
+      "spanDays": 4716,
+      "showMarket": "uk",
+      "earlierMarket": null,
+      "marketMatch": null,
+      "siblingEntryCovers": "jesus-christ-superstar-2012",
+      "classification": "routed-elsewhere",
       "weight": 90,
       "discarded": [
         {
-          "file": "daily-mail--georgina-brown",
-          "date": "2017-05-20",
+          "file": "about-entertainment--charles-isherwood",
+          "date": "2012-03-22",
           "tier": 1,
-          "outlet": "Daily Mail",
+          "outlet": "About Entertainment",
+          "market": null
+        },
+        {
+          "file": "ap--mark-kennedy",
+          "date": "2012-03-22",
+          "tier": 1,
+          "outlet": "Associated Press",
+          "market": null
+        },
+        {
+          "file": "backstage--david-sheward",
+          "date": "2012-03-22",
+          "tier": 2,
+          "outlet": "Backstage",
+          "market": null
+        },
+        {
+          "file": "hollywood-reporter--david-rooney",
+          "date": "2012-03-22",
+          "tier": 1,
+          "outlet": "The Hollywood Reporter",
+          "market": null
+        },
+        {
+          "file": "newsday--linda-winer",
+          "date": "2012-03-22",
+          "tier": 1,
+          "outlet": "Newsday",
+          "market": null
+        },
+        {
+          "file": "usatoday--elysa-gardner",
+          "date": "2012-03-22",
+          "tier": 2,
+          "outlet": "USA Today",
+          "market": null
+        },
+        {
+          "file": "deadline--dino-ray-ramos",
+          "date": "2018-04-02",
+          "tier": 1,
+          "outlet": "Deadline",
+          "market": null
+        },
+        {
+          "file": "variety--maureen-ryan",
+          "date": "2018-04-02",
+          "tier": 1,
+          "outlet": "Variety",
+          "market": null
+        },
+        {
+          "file": "ew--melissa-rose-bernardo",
+          "date": "2025-02-18",
+          "tier": 2,
+          "outlet": "Entertainment Weekly",
+          "market": null
+        }
+      ]
+    },
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "openingDate": "2026-10-13",
+      "currentVenue": "New York City Center",
+      "hasPriorRuns": false,
+      "discardedCount": 9,
+      "majorOutletCount": 9,
+      "routedToSibling": 0,
+      "dateRange": "2025-10-21 .. 2025-10-21",
+      "spanDays": 0,
+      "showMarket": "us",
+      "earlierMarket": "uk",
+      "marketMatch": false,
+      "siblingEntryCovers": null,
+      "classification": "cross-market-transfer",
+      "weight": 90,
+      "discarded": [
+        {
+          "file": "financialtimes--sarah-hemming",
+          "date": "2025-10-21",
+          "tier": 1,
+          "outlet": "Financial Times",
           "market": "uk"
         },
         {
-          "file": "philadelphia-inquirer--unknown",
-          "date": "2018-05-14",
-          "tier": 2,
-          "outlet": "The Philadelphia Inquirer",
-          "market": "us"
-        },
-        {
-          "file": "amny--matt-windman",
-          "date": "2021-10-27",
-          "tier": 2,
-          "outlet": "amNewYork",
-          "market": null
-        },
-        {
-          "file": "nyt-theater--jonathan-mandell",
-          "date": "2021-10-27",
-          "tier": 2,
-          "outlet": "New York Theater",
-          "market": null
-        },
-        {
-          "file": "observer--httpsobservercomauthordavid-cote",
-          "date": "2021-10-27",
+          "file": "guardian--arifa-akbar",
+          "date": "2025-10-21",
           "tier": 1,
-          "outlet": "Observer",
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "i-paper--fiona-mountford",
+          "date": "2025-10-21",
+          "tier": 1,
+          "outlet": "The i",
+          "market": "uk"
+        },
+        {
+          "file": "standard--nick-curtis",
+          "date": "2025-10-21",
+          "tier": 1,
+          "outlet": "Evening Standard",
+          "market": "uk"
+        },
+        {
+          "file": "telegraph--dominic-cavendish",
+          "date": "2025-10-21",
+          "tier": 1,
+          "outlet": "The Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "thestage--sam-marlowe",
+          "date": "2025-10-21",
+          "tier": 1,
+          "outlet": "The Stage",
+          "market": "uk"
+        },
+        {
+          "file": "timeout--andrzej-lukowski",
+          "date": "2025-10-21",
+          "tier": 1,
+          "outlet": "Time Out New York",
           "market": null
         },
         {
-          "file": "talkinbroadway--unknown",
-          "date": "2021-10-27",
+          "file": "times-uk--clive-davis",
+          "date": "2025-10-21",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "whatsonstage--alun-hood",
+          "date": "2025-10-21",
           "tier": 2,
-          "outlet": "Talkin' Broadway",
-          "market": null
-        },
-        {
-          "file": "chicagotribune--chris-jones",
-          "date": "2021-10-28",
-          "tier": 2,
-          "outlet": "Chicago Tribune",
-          "market": "us"
-        },
-        {
-          "file": "dailybeast--tim-teeman",
-          "date": "2021-10-28",
-          "tier": 2,
-          "outlet": "The Daily Beast",
-          "market": null
-        },
-        {
-          "file": "frontmezzjunkies--unknown",
-          "date": "2021-11-12",
-          "tier": 3,
-          "outlet": "Front Mezz Junkies",
-          "market": "us"
-        },
-        {
-          "file": "artsfuse--arts-fuse-editor",
-          "date": "2021-11-15",
-          "tier": 3,
-          "outlet": "The Arts Fuse",
-          "market": "us"
+          "outlet": "WhatsOnStage",
+          "market": "uk"
         }
       ]
     },
@@ -10397,82 +10709,6 @@
           "tier": 2,
           "outlet": "Front Row Center",
           "market": null
-        }
-      ]
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
-      "title": "Every Brilliant Thing",
-      "openingDate": "2026-03-12",
-      "currentVenue": "Hudson Theatre",
-      "hasPriorRuns": false,
-      "discardedCount": 8,
-      "majorOutletCount": 8,
-      "routedToSibling": 0,
-      "dateRange": "2014-12-14 .. 2025-08-11",
-      "spanDays": 3893,
-      "showMarket": "us",
-      "earlierMarket": "uk",
-      "marketMatch": false,
-      "siblingEntryCovers": null,
-      "classification": "wide-span-review",
-      "weight": 72,
-      "discarded": [
-        {
-          "file": "nydailynews--joe-dziemianowicz",
-          "date": "2014-12-14",
-          "tier": 2,
-          "outlet": "New York Daily News",
-          "market": null
-        },
-        {
-          "file": "ew--lee-lenker",
-          "date": "2015-01-15",
-          "tier": 2,
-          "outlet": "Entertainment Weekly",
-          "market": null
-        },
-        {
-          "file": "guardian--miriam-gillinson",
-          "date": "2025-08-11",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "standard--nick-curtis",
-          "date": "2025-08-11",
-          "tier": 1,
-          "outlet": "Evening Standard",
-          "market": "uk"
-        },
-        {
-          "file": "telegraph--marianka-swain",
-          "date": "2025-08-11",
-          "tier": 1,
-          "outlet": "The Telegraph",
-          "market": "uk"
-        },
-        {
-          "file": "thestage--dave-fargnoli",
-          "date": "2025-08-11",
-          "tier": 1,
-          "outlet": "The Stage",
-          "market": "uk"
-        },
-        {
-          "file": "times-uk--alice-jones",
-          "date": "2025-08-11",
-          "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
-        },
-        {
-          "file": "whatsonstage--julia-rank",
-          "date": "2025-08-11",
-          "tier": 2,
-          "outlet": "WhatsOnStage",
-          "market": "uk"
         }
       ]
     },
@@ -10795,82 +11031,6 @@
       ]
     },
     {
-      "showId": "the-unbelievers-off-broadway-2026",
-      "title": "The Unbelievers",
-      "openingDate": "2026-10-13",
-      "currentVenue": "New York City Center",
-      "hasPriorRuns": false,
-      "discardedCount": 8,
-      "majorOutletCount": 8,
-      "routedToSibling": 0,
-      "dateRange": "2025-10-21 .. 2025-10-21",
-      "spanDays": 0,
-      "showMarket": "us",
-      "earlierMarket": "uk",
-      "marketMatch": false,
-      "siblingEntryCovers": null,
-      "classification": "cross-market-transfer",
-      "weight": 72,
-      "discarded": [
-        {
-          "file": "financialtimes--sarah-hemming",
-          "date": "2025-10-21",
-          "tier": 1,
-          "outlet": "Financial Times",
-          "market": "uk"
-        },
-        {
-          "file": "guardian--arifa-akbar",
-          "date": "2025-10-21",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "i-paper--fiona-mountford",
-          "date": "2025-10-21",
-          "tier": 1,
-          "outlet": "The i",
-          "market": "uk"
-        },
-        {
-          "file": "standard--nick-curtis",
-          "date": "2025-10-21",
-          "tier": 1,
-          "outlet": "Evening Standard",
-          "market": "uk"
-        },
-        {
-          "file": "telegraph--dominic-cavendish",
-          "date": "2025-10-21",
-          "tier": 1,
-          "outlet": "The Telegraph",
-          "market": "uk"
-        },
-        {
-          "file": "thestage--sam-marlowe",
-          "date": "2025-10-21",
-          "tier": 1,
-          "outlet": "The Stage",
-          "market": "uk"
-        },
-        {
-          "file": "timeout--andrzej-lukowski",
-          "date": "2025-10-21",
-          "tier": 1,
-          "outlet": "Time Out New York",
-          "market": null
-        },
-        {
-          "file": "times-uk--clive-davis",
-          "date": "2025-10-21",
-          "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
-        }
-      ]
-    },
-    {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
       "title": "White Rabbit Red Rabbit",
       "openingDate": "2026-06-09",
@@ -10942,6 +11102,165 @@
           "date": "2024-10-06",
           "tier": 1,
           "outlet": "The Guardian",
+          "market": "uk"
+        }
+      ]
+    },
+    {
+      "showId": "aida-off-broadway-2027",
+      "title": "Aida",
+      "openingDate": "2027-03-09",
+      "currentVenue": "Metropolitan Opera House",
+      "hasPriorRuns": false,
+      "discardedCount": 9,
+      "majorOutletCount": 7,
+      "routedToSibling": 0,
+      "dateRange": "2022-07-17 .. 2025-01-06",
+      "spanDays": 904,
+      "showMarket": "us",
+      "earlierMarket": "uk",
+      "marketMatch": false,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
+      "weight": 72,
+      "discarded": [
+        {
+          "file": "broadwayworld--jay-irwin",
+          "date": "2022-07-17",
+          "tier": 2,
+          "outlet": "BroadwayWorld",
+          "market": null
+        },
+        {
+          "file": "broadwayworld--steve-callahan",
+          "date": "2024-07-29",
+          "tier": 2,
+          "outlet": "BroadwayWorld",
+          "market": null
+        },
+        {
+          "file": "new-york-classical-review--david-wright",
+          "date": "2025-01-01",
+          "tier": 3,
+          "outlet": "New York Classical Review",
+          "market": null
+        },
+        {
+          "file": "nytimes--zachary-woolfe",
+          "date": "2025-01-01",
+          "tier": 1,
+          "outlet": "The New York Times",
+          "market": null
+        },
+        {
+          "file": "operawire--david-salazar",
+          "date": "2025-01-01",
+          "tier": 3,
+          "outlet": "Operawire",
+          "market": null
+        },
+        {
+          "file": "washpost--michael-andor-brodeur",
+          "date": "2025-01-02",
+          "tier": 1,
+          "outlet": "The Washington Post",
+          "market": null
+        },
+        {
+          "file": "wsj--heidi-waleson",
+          "date": "2025-01-02",
+          "tier": 1,
+          "outlet": "The Wall Street Journal",
+          "market": null
+        },
+        {
+          "file": "financialtimes--george-grella",
+          "date": "2025-01-03",
+          "tier": 1,
+          "outlet": "Financial Times",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--kevin-ng",
+          "date": "2025-01-06",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        }
+      ]
+    },
+    {
+      "showId": "and-juliet-2022",
+      "title": "& Juliet",
+      "openingDate": "2022-11-17",
+      "currentVenue": "Stephen Sondheim Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 8,
+      "majorOutletCount": 7,
+      "routedToSibling": 0,
+      "dateRange": "2019-11-21 .. 2019-11-21",
+      "spanDays": 0,
+      "showMarket": "us",
+      "earlierMarket": "uk",
+      "marketMatch": false,
+      "siblingEntryCovers": null,
+      "classification": "cross-market-transfer",
+      "weight": 64,
+      "discarded": [
+        {
+          "file": "express-uk--stefan-kyriazis",
+          "date": "2019-11-21",
+          "tier": 4,
+          "outlet": "Express  (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--gregory-robinson",
+          "date": "2019-11-21",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--michael-billington",
+          "date": "2019-11-21",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "i-paper--sam-marlowe",
+          "date": "2019-11-21",
+          "tier": 1,
+          "outlet": "The i",
+          "market": "uk"
+        },
+        {
+          "file": "independent--alexandra-pollard",
+          "date": "2019-11-21",
+          "tier": 1,
+          "outlet": "The Independent",
+          "market": "uk"
+        },
+        {
+          "file": "standard--nick-curtis",
+          "date": "2019-11-21",
+          "tier": 1,
+          "outlet": "Evening Standard",
+          "market": "uk"
+        },
+        {
+          "file": "telegraph--dominic-cavendish",
+          "date": "2019-11-21",
+          "tier": 1,
+          "outlet": "The Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--clive-davis",
+          "date": "2019-11-21",
+          "tier": 1,
+          "outlet": "The Times (UK)",
           "market": "uk"
         }
       ]
@@ -11458,75 +11777,6 @@
       ]
     },
     {
-      "showId": "war-horse-west-end-2026",
-      "title": "War Horse",
-      "openingDate": "2026-06-02",
-      "currentVenue": "National Theatre (Olivier)",
-      "hasPriorRuns": false,
-      "discardedCount": 7,
-      "majorOutletCount": 7,
-      "routedToSibling": 0,
-      "dateRange": "2011-04-14 .. 2015-03-06",
-      "spanDays": 1422,
-      "showMarket": "uk",
-      "earlierMarket": "uk",
-      "marketMatch": true,
-      "siblingEntryCovers": "war-horse-2011",
-      "classification": "routed-elsewhere",
-      "weight": 56,
-      "discarded": [
-        {
-          "file": "about-entertainment--ben-brantley",
-          "date": "2011-04-14",
-          "tier": 1,
-          "outlet": "About Entertainment",
-          "market": null
-        },
-        {
-          "file": "chicagotribune--unknown",
-          "date": "2011-04-14",
-          "tier": 2,
-          "outlet": "Chicago Tribune",
-          "market": "us"
-        },
-        {
-          "file": "hollywood-reporter--david-rooney",
-          "date": "2011-04-14",
-          "tier": 1,
-          "outlet": "The Hollywood Reporter",
-          "market": null
-        },
-        {
-          "file": "hollywood-reporter--unknown",
-          "date": "2011-04-14",
-          "tier": 1,
-          "outlet": "The Hollywood Reporter",
-          "market": null
-        },
-        {
-          "file": "variety--unknown",
-          "date": "2011-04-14",
-          "tier": 1,
-          "outlet": "Variety",
-          "market": null
-        },
-        {
-          "file": "variety--marilyn-stasio",
-          "date": "2011-04-15",
-          "tier": 1,
-          "outlet": "Variety",
-          "market": null
-        },
-        {
-          "file": "london-box-office--daniel-perks",
-          "date": "2015-03-06",
-          "tier": 2,
-          "outlet": "London Box Office",
-          "market": "uk"
-        }
-      ]
-    },
-    {
       "showId": "the-p-word-off-west-end-2026",
       "title": "The P Word",
       "openingDate": "2026-05-28",
@@ -11667,82 +11917,6 @@
           "date": "2024-07-11",
           "tier": 1,
           "outlet": "Time Out London",
-          "market": "uk"
-        }
-      ]
-    },
-    {
-      "showId": "aida-off-broadway-2027",
-      "title": "Aida",
-      "openingDate": "2027-03-09",
-      "currentVenue": "Metropolitan Opera House",
-      "hasPriorRuns": false,
-      "discardedCount": 8,
-      "majorOutletCount": 6,
-      "routedToSibling": 0,
-      "dateRange": "2024-07-29 .. 2025-01-06",
-      "spanDays": 161,
-      "showMarket": "us",
-      "earlierMarket": "uk",
-      "marketMatch": false,
-      "siblingEntryCovers": null,
-      "classification": "cross-market-transfer",
-      "weight": 56,
-      "discarded": [
-        {
-          "file": "broadwayworld--steve-callahan",
-          "date": "2024-07-29",
-          "tier": 2,
-          "outlet": "BroadwayWorld",
-          "market": null
-        },
-        {
-          "file": "new-york-classical-review--david-wright",
-          "date": "2025-01-01",
-          "tier": 3,
-          "outlet": "New York Classical Review",
-          "market": null
-        },
-        {
-          "file": "nytimes--zachary-woolfe",
-          "date": "2025-01-01",
-          "tier": 1,
-          "outlet": "The New York Times",
-          "market": null
-        },
-        {
-          "file": "operawire--david-salazar",
-          "date": "2025-01-01",
-          "tier": 3,
-          "outlet": "Operawire",
-          "market": null
-        },
-        {
-          "file": "washpost--michael-andor-brodeur",
-          "date": "2025-01-02",
-          "tier": 1,
-          "outlet": "The Washington Post",
-          "market": null
-        },
-        {
-          "file": "wsj--heidi-waleson",
-          "date": "2025-01-02",
-          "tier": 1,
-          "outlet": "The Wall Street Journal",
-          "market": null
-        },
-        {
-          "file": "financialtimes--george-grella",
-          "date": "2025-01-03",
-          "tier": 1,
-          "outlet": "Financial Times",
-          "market": "uk"
-        },
-        {
-          "file": "times-uk--kevin-ng",
-          "date": "2025-01-06",
-          "tier": 1,
-          "outlet": "The Times (UK)",
           "market": "uk"
         }
       ]
@@ -12121,6 +12295,75 @@
       ]
     },
     {
+      "showId": "the-encounter-2016",
+      "title": "The Encounter",
+      "openingDate": "2016-09-29",
+      "currentVenue": "John Golden Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 7,
+      "majorOutletCount": 6,
+      "routedToSibling": 0,
+      "dateRange": "2016-01-01 .. 2016-03-01",
+      "spanDays": 60,
+      "showMarket": "us",
+      "earlierMarket": "uk",
+      "marketMatch": false,
+      "siblingEntryCovers": null,
+      "classification": "cross-market-transfer",
+      "weight": 49,
+      "discarded": [
+        {
+          "file": "village-voice--miriam-felton-dansky",
+          "date": "2016-01-01",
+          "tier": 2,
+          "outlet": "Village Voice",
+          "market": null
+        },
+        {
+          "file": "a-younger-theatre--camilla-gurtler",
+          "date": "2016-02-17",
+          "tier": 3,
+          "outlet": "A Younger Theatre",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--michael-billington",
+          "date": "2016-02-17",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "standard--henry-hitchings",
+          "date": "2016-02-17",
+          "tier": 1,
+          "outlet": "Evening Standard",
+          "market": "uk"
+        },
+        {
+          "file": "timeout-london--alice-saville",
+          "date": "2016-02-17",
+          "tier": 1,
+          "outlet": "Time Out London",
+          "market": "uk"
+        },
+        {
+          "file": "financialtimes--ian-shuttleworth",
+          "date": "2016-02-18",
+          "tier": 1,
+          "outlet": "Financial Times",
+          "market": "uk"
+        },
+        {
+          "file": "huffpost--lucy-bell",
+          "date": "2016-03-01",
+          "tier": 2,
+          "outlet": "HuffPost",
+          "market": null
+        }
+      ]
+    },
+    {
       "showId": "skylight-2015",
       "title": "Skylight",
       "openingDate": "2015-04-02",
@@ -12407,6 +12650,68 @@
           "tier": 3,
           "outlet": "amsterdam-news",
           "market": null
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "title": "Every Brilliant Thing",
+      "openingDate": "2026-03-12",
+      "currentVenue": "Hudson Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 6,
+      "majorOutletCount": 6,
+      "routedToSibling": 0,
+      "dateRange": "2014-12-14 .. 2025-08-11",
+      "spanDays": 3893,
+      "showMarket": "us",
+      "earlierMarket": "uk",
+      "marketMatch": false,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
+      "weight": 42,
+      "discarded": [
+        {
+          "file": "theatermania--hayley-levitt",
+          "date": "2014-12-14",
+          "tier": 2,
+          "outlet": "TheaterMania",
+          "market": null
+        },
+        {
+          "file": "ew--lee-lenker",
+          "date": "2015-01-15",
+          "tier": 2,
+          "outlet": "Entertainment Weekly",
+          "market": null
+        },
+        {
+          "file": "guardian--miriam-gillinson",
+          "date": "2025-08-11",
+          "tier": 1,
+          "outlet": "The Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "standard--nick-curtis",
+          "date": "2025-08-11",
+          "tier": 1,
+          "outlet": "Evening Standard",
+          "market": "uk"
+        },
+        {
+          "file": "telegraph--marianka-swain",
+          "date": "2025-08-11",
+          "tier": 1,
+          "outlet": "The Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--alice-jones",
+          "date": "2025-08-11",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
         }
       ]
     },
@@ -12790,6 +13095,130 @@
       ]
     },
     {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It - Globe",
+      "openingDate": "2026-08-14",
+      "currentVenue": "Shakespeare's Globe",
+      "hasPriorRuns": false,
+      "discardedCount": 6,
+      "majorOutletCount": 6,
+      "routedToSibling": 0,
+      "dateRange": "2012-09-10 .. 2023-08-31",
+      "spanDays": 4007,
+      "showMarket": "uk",
+      "earlierMarket": "uk",
+      "marketMatch": true,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
+      "weight": 42,
+      "discarded": [
+        {
+          "file": "telegraph--dominic-cavendish",
+          "date": "2012-09-10",
+          "tier": 1,
+          "outlet": "Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "london-box-office--phil-willmott",
+          "date": "2015-11-04",
+          "tier": 2,
+          "outlet": "London Box Office",
+          "market": "uk"
+        },
+        {
+          "file": "london-box-office--nicky-allpress",
+          "date": "2018-07-06",
+          "tier": 2,
+          "outlet": "London Box Office",
+          "market": "uk"
+        },
+        {
+          "file": "guardian--arifa-akbar",
+          "date": "2022-07-01",
+          "tier": 1,
+          "outlet": "Guardian",
+          "market": "uk"
+        },
+        {
+          "file": "whatsonstage--sarah-crompton",
+          "date": "2022-12-15",
+          "tier": 2,
+          "outlet": "WhatsOnStage",
+          "market": "uk"
+        },
+        {
+          "file": "standard--nick-curtis",
+          "date": "2023-08-31",
+          "tier": 1,
+          "outlet": "Evening Standard",
+          "market": "uk"
+        }
+      ]
+    },
+    {
+      "showId": "loves-labours-lost-globe-west-end-2026",
+      "title": "Love's Labour's Lost - Globe",
+      "openingDate": "2026-07-17",
+      "currentVenue": "Shakespeare's Globe",
+      "hasPriorRuns": false,
+      "discardedCount": 6,
+      "majorOutletCount": 6,
+      "routedToSibling": 0,
+      "dateRange": "2012-02-01 .. 2025-03-05",
+      "spanDays": 4781,
+      "showMarket": "uk",
+      "earlierMarket": "uk",
+      "marketMatch": true,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
+      "weight": 42,
+      "discarded": [
+        {
+          "file": "times-uk--the-times",
+          "date": "2012-02-01",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "telegraph--ben-lawrence",
+          "date": "2018-08-30",
+          "tier": 1,
+          "outlet": "The Telegraph",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--dominic-maxwell",
+          "date": "2018-08-30",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--david-jays-and-maxie-szalwinska",
+          "date": "2018-09-08",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--clive-davis",
+          "date": "2024-04-19",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        },
+        {
+          "file": "times-uk--holly-williams",
+          "date": "2025-03-05",
+          "tier": 1,
+          "outlet": "The Times (UK)",
+          "market": "uk"
+        }
+      ]
+    },
+    {
       "showId": "arcadia-west-end-2026",
       "title": "Arcadia",
       "openingDate": "2026-02-04",
@@ -12909,6 +13338,68 @@
           "date": "2024-06-05",
           "tier": 1,
           "outlet": "Observer",
+          "market": null
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "title": "War Horse",
+      "openingDate": "2026-06-02",
+      "currentVenue": "National Theatre (Olivier)",
+      "hasPriorRuns": false,
+      "discardedCount": 6,
+      "majorOutletCount": 6,
+      "routedToSibling": 0,
+      "dateRange": "2011-04-14 .. 2011-04-15",
+      "spanDays": 1,
+      "showMarket": "uk",
+      "earlierMarket": "us",
+      "marketMatch": false,
+      "siblingEntryCovers": "war-horse-2011",
+      "classification": "routed-elsewhere",
+      "weight": 42,
+      "discarded": [
+        {
+          "file": "about-entertainment--ben-brantley",
+          "date": "2011-04-14",
+          "tier": 1,
+          "outlet": "About Entertainment",
+          "market": null
+        },
+        {
+          "file": "chicagotribune--unknown",
+          "date": "2011-04-14",
+          "tier": 2,
+          "outlet": "Chicago Tribune",
+          "market": "us"
+        },
+        {
+          "file": "hollywood-reporter--david-rooney",
+          "date": "2011-04-14",
+          "tier": 1,
+          "outlet": "The Hollywood Reporter",
+          "market": null
+        },
+        {
+          "file": "hollywood-reporter--unknown",
+          "date": "2011-04-14",
+          "tier": 1,
+          "outlet": "The Hollywood Reporter",
+          "market": null
+        },
+        {
+          "file": "variety--unknown",
+          "date": "2011-04-14",
+          "tier": 1,
+          "outlet": "Variety",
+          "market": null
+        },
+        {
+          "file": "variety--marilyn-stasio",
+          "date": "2011-04-15",
+          "tier": 1,
+          "outlet": "Variety",
           "market": null
         }
       ]
@@ -13555,68 +14046,6 @@
       ]
     },
     {
-      "showId": "the-encounter-2016",
-      "title": "The Encounter",
-      "openingDate": "2016-09-29",
-      "currentVenue": "John Golden Theatre",
-      "hasPriorRuns": false,
-      "discardedCount": 6,
-      "majorOutletCount": 5,
-      "routedToSibling": 0,
-      "dateRange": "2016-02-17 .. 2016-03-01",
-      "spanDays": 13,
-      "showMarket": "us",
-      "earlierMarket": "uk",
-      "marketMatch": false,
-      "siblingEntryCovers": null,
-      "classification": "cross-market-transfer",
-      "weight": 36,
-      "discarded": [
-        {
-          "file": "a-younger-theatre--camilla-gurtler",
-          "date": "2016-02-17",
-          "tier": 3,
-          "outlet": "A Younger Theatre",
-          "market": "uk"
-        },
-        {
-          "file": "guardian--michael-billington",
-          "date": "2016-02-17",
-          "tier": 1,
-          "outlet": "The Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "standard--henry-hitchings",
-          "date": "2016-02-17",
-          "tier": 1,
-          "outlet": "Evening Standard",
-          "market": "uk"
-        },
-        {
-          "file": "timeout-london--alice-saville",
-          "date": "2016-02-17",
-          "tier": 1,
-          "outlet": "Time Out London",
-          "market": "uk"
-        },
-        {
-          "file": "financialtimes--ian-shuttleworth",
-          "date": "2016-02-18",
-          "tier": 1,
-          "outlet": "Financial Times",
-          "market": "uk"
-        },
-        {
-          "file": "huffpost--lucy-bell",
-          "date": "2016-03-01",
-          "tier": 2,
-          "outlet": "HuffPost",
-          "market": null
-        }
-      ]
-    },
-    {
       "showId": "allegiance-2015",
       "title": "Allegiance",
       "openingDate": "2015-11-08",
@@ -14079,6 +14508,61 @@
       ]
     },
     {
+      "showId": "torch-song-2018",
+      "title": "Torch Song",
+      "openingDate": "2018-11-01",
+      "currentVenue": "Helen Hayes Theater",
+      "hasPriorRuns": false,
+      "discardedCount": 5,
+      "majorOutletCount": 5,
+      "routedToSibling": 0,
+      "dateRange": "1983-06-05 .. 2018-03-27",
+      "spanDays": 12714,
+      "showMarket": "us",
+      "earlierMarket": null,
+      "marketMatch": null,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
+      "weight": 30,
+      "discarded": [
+        {
+          "file": "thewrap--robert-hofler",
+          "date": "1983-06-05",
+          "tier": 2,
+          "outlet": "TheWrap",
+          "market": null
+        },
+        {
+          "file": "theater-life--barry-gordin",
+          "date": "2017-11-18",
+          "tier": 2,
+          "outlet": "Theater Life",
+          "market": null
+        },
+        {
+          "file": "theater-life--david-sheward",
+          "date": "2017-11-18",
+          "tier": 2,
+          "outlet": "Theater Life",
+          "market": null
+        },
+        {
+          "file": "curtainup--elyse-sommer",
+          "date": "2018-02-21",
+          "tier": 2,
+          "outlet": "CurtainUp",
+          "market": null
+        },
+        {
+          "file": "theatermania--zachary-stewart",
+          "date": "2018-03-27",
+          "tier": 2,
+          "outlet": "TheaterMania",
+          "market": null
+        }
+      ]
+    },
+    {
       "showId": "sweat-2017",
       "title": "Sweat",
       "openingDate": "2017-03-26",
@@ -14198,6 +14682,68 @@
           "date": "2015-07-01",
           "tier": 2,
           "outlet": "Front Row Center",
+          "market": null
+        }
+      ]
+    },
+    {
+      "showId": "the-visit-2015",
+      "title": "The Visit",
+      "openingDate": "2015-04-23",
+      "currentVenue": "Lyceum Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 6,
+      "majorOutletCount": 4,
+      "routedToSibling": 0,
+      "dateRange": "2014-07-01 .. 2014-08-17",
+      "spanDays": 47,
+      "showMarket": "us",
+      "earlierMarket": null,
+      "marketMatch": null,
+      "siblingEntryCovers": null,
+      "classification": "likely-transfer",
+      "weight": 30,
+      "discarded": [
+        {
+          "file": "theatermania--hayley-levitt",
+          "date": "2014-07-01",
+          "tier": 2,
+          "outlet": "TheaterMania",
+          "market": null
+        },
+        {
+          "file": "curtainup--elyse-sommer",
+          "date": "2014-08-03",
+          "tier": 2,
+          "outlet": "CurtainUp",
+          "market": null
+        },
+        {
+          "file": "ct-now--frank-rizzo",
+          "date": "2014-08-04",
+          "tier": 3,
+          "outlet": "CT Now",
+          "market": null
+        },
+        {
+          "file": "albany-times-union--steve-barnes",
+          "date": "2014-08-05",
+          "tier": 3,
+          "outlet": "Albany Times-Union",
+          "market": null
+        },
+        {
+          "file": "observer--rex-reed",
+          "date": "2014-08-07",
+          "tier": 1,
+          "outlet": "Observer",
+          "market": null
+        },
+        {
+          "file": "talkinbroadway--fred-sokol",
+          "date": "2014-08-17",
+          "tier": 2,
+          "outlet": "Talkin' Broadway",
           "market": null
         }
       ]
@@ -14822,61 +15368,6 @@
       ]
     },
     {
-      "showId": "as-you-like-it-globe-west-end-2026",
-      "title": "As You Like It - Globe",
-      "openingDate": "2026-08-14",
-      "currentVenue": "Shakespeare's Globe",
-      "hasPriorRuns": false,
-      "discardedCount": 5,
-      "majorOutletCount": 5,
-      "routedToSibling": 0,
-      "dateRange": "2012-09-10 .. 2023-08-31",
-      "spanDays": 4007,
-      "showMarket": "uk",
-      "earlierMarket": "uk",
-      "marketMatch": true,
-      "siblingEntryCovers": null,
-      "classification": "wide-span-review",
-      "weight": 30,
-      "discarded": [
-        {
-          "file": "telegraph--dominic-cavendish",
-          "date": "2012-09-10",
-          "tier": 1,
-          "outlet": "Telegraph",
-          "market": "uk"
-        },
-        {
-          "file": "london-box-office--phil-willmott",
-          "date": "2015-11-04",
-          "tier": 2,
-          "outlet": "London Box Office",
-          "market": "uk"
-        },
-        {
-          "file": "london-box-office--nicky-allpress",
-          "date": "2018-07-06",
-          "tier": 2,
-          "outlet": "London Box Office",
-          "market": "uk"
-        },
-        {
-          "file": "guardian--arifa-akbar",
-          "date": "2022-07-01",
-          "tier": 1,
-          "outlet": "Guardian",
-          "market": "uk"
-        },
-        {
-          "file": "standard--nick-curtis",
-          "date": "2023-08-31",
-          "tier": 1,
-          "outlet": "Evening Standard",
-          "market": "uk"
-        }
-      ]
-    },
-    {
       "showId": "hercules-west-end-2025",
       "title": "Hercules",
       "openingDate": "2025-07-10",
@@ -15232,6 +15723,13 @@
           "market": null
         },
         {
+          "file": "musical-theatre-report--ben-west",
+          "date": "2025-03-11",
+          "tier": 3,
+          "outlet": "themusicaltheatrereport",
+          "market": null
+        },
+        {
           "file": "nysr--michael-sommers",
           "date": "2025-03-11",
           "tier": 2,
@@ -15250,13 +15748,6 @@
           "date": "2025-03-11",
           "tier": 2,
           "outlet": "TheaterMania",
-          "market": null
-        },
-        {
-          "file": "themusicaltheatrereport--ben-west",
-          "date": "2025-03-11",
-          "tier": 3,
-          "outlet": "themusicaltheatrereport",
           "market": null
         }
       ]
@@ -15444,61 +15935,6 @@
           "tier": 1,
           "outlet": "The Times",
           "market": "uk"
-        }
-      ]
-    },
-    {
-      "showId": "the-visit-2015",
-      "title": "The Visit",
-      "openingDate": "2015-04-23",
-      "currentVenue": "Lyceum Theatre",
-      "hasPriorRuns": false,
-      "discardedCount": 5,
-      "majorOutletCount": 3,
-      "routedToSibling": 0,
-      "dateRange": "2014-07-01 .. 2014-08-17",
-      "spanDays": 47,
-      "showMarket": "us",
-      "earlierMarket": null,
-      "marketMatch": null,
-      "siblingEntryCovers": null,
-      "classification": "likely-transfer",
-      "weight": 20,
-      "discarded": [
-        {
-          "file": "theatermania--hayley-levitt",
-          "date": "2014-07-01",
-          "tier": 2,
-          "outlet": "TheaterMania",
-          "market": null
-        },
-        {
-          "file": "ct-now--frank-rizzo",
-          "date": "2014-08-04",
-          "tier": 3,
-          "outlet": "CT Now",
-          "market": null
-        },
-        {
-          "file": "albany-times-union--steve-barnes",
-          "date": "2014-08-05",
-          "tier": 3,
-          "outlet": "Albany Times-Union",
-          "market": null
-        },
-        {
-          "file": "observer--rex-reed",
-          "date": "2014-08-07",
-          "tier": 1,
-          "outlet": "Observer",
-          "market": null
-        },
-        {
-          "file": "talkinbroadway--fred-sokol",
-          "date": "2014-08-17",
-          "tier": 2,
-          "outlet": "Talkin' Broadway",
-          "market": null
         }
       ]
     },
@@ -15709,6 +16145,54 @@
       ]
     },
     {
+      "showId": "the-producers-west-end-2025",
+      "title": "The Producers",
+      "openingDate": "2025-09-13",
+      "currentVenue": "Garrick Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 4,
+      "majorOutletCount": 4,
+      "routedToSibling": 0,
+      "dateRange": "2024-12-11 .. 2024-12-11",
+      "spanDays": 0,
+      "showMarket": "uk",
+      "earlierMarket": "uk",
+      "marketMatch": true,
+      "siblingEntryCovers": null,
+      "classification": "likely-transfer",
+      "weight": 20,
+      "discarded": [
+        {
+          "file": "financialtimes--sarah-hemming",
+          "date": "2024-12-11",
+          "tier": 1,
+          "outlet": "The Financial Times",
+          "market": "uk"
+        },
+        {
+          "file": "financialtimes--unknown",
+          "date": "2024-12-11",
+          "tier": 1,
+          "outlet": "The Financial Times",
+          "market": "uk"
+        },
+        {
+          "file": "i-paper--fiona-mountford",
+          "date": "2024-12-11",
+          "tier": 1,
+          "outlet": "The i Paper",
+          "market": "uk"
+        },
+        {
+          "file": "independent--louis-chilton",
+          "date": "2024-12-11",
+          "tier": 1,
+          "outlet": "The Independent",
+          "market": "uk"
+        }
+      ]
+    },
+    {
       "showId": "sting-west-end-2026",
       "title": "Sting",
       "openingDate": "2026-06-23",
@@ -15901,50 +16385,50 @@
       ]
     },
     {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "title": "Much Ado About Nothing - Globe",
-      "openingDate": "2026-06-20",
-      "currentVenue": "Globe Theatre",
+      "showId": "miss-saigon-west-end-2026",
+      "title": "Miss Saigon",
+      "openingDate": "2027-05-27",
+      "currentVenue": "TBA",
       "hasPriorRuns": false,
       "discardedCount": 4,
       "majorOutletCount": 4,
       "routedToSibling": 0,
-      "dateRange": "2018-04-19 .. 2025-04-23",
-      "spanDays": 2561,
+      "dateRange": "1991-07-01 .. 2026-02-02",
+      "spanDays": 12635,
       "showMarket": "uk",
-      "earlierMarket": "uk",
-      "marketMatch": true,
+      "earlierMarket": null,
+      "marketMatch": null,
       "siblingEntryCovers": null,
       "classification": "wide-span-review",
       "weight": 20,
       "discarded": [
         {
-          "file": "times-uk--ann-treneman",
-          "date": "2018-04-19",
-          "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
+          "file": "amny--matt-windman",
+          "date": "1991-07-01",
+          "tier": 2,
+          "outlet": "amNewYork",
+          "market": null
         },
         {
-          "file": "times-uk--dominic-maxwell",
-          "date": "2022-05-01",
+          "file": "hollywood-reporter--david-rooney",
+          "date": "2017-03-23",
           "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
+          "outlet": "The Hollywood Reporter",
+          "market": null
         },
         {
-          "file": "times-uk--clive-davis",
-          "date": "2025-02-20",
-          "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
+          "file": "broadwayworld--michael-dale",
+          "date": "2026-02-02",
+          "tier": 2,
+          "outlet": "BroadwayWorld",
+          "market": null
         },
         {
-          "file": "times-uk--rachel-halliburton",
-          "date": "2025-04-23",
+          "file": "timeout--david-cote",
+          "date": "2026-02-02",
           "tier": 1,
-          "outlet": "The Times (UK)",
-          "market": "uk"
+          "outlet": "Time Out New York",
+          "market": null
         }
       ]
     },
@@ -16210,49 +16694,49 @@
       ]
     },
     {
-      "showId": "titanique-west-end-2024",
-      "title": "Titanique",
-      "openingDate": "2025-01-08",
-      "currentVenue": "Criterion Theatre",
+      "showId": "sinatra-the-musical-west-end-2026",
+      "title": "Sinatra The Musical",
+      "openingDate": "2026-06-24",
+      "currentVenue": "Aldwych Theatre",
       "hasPriorRuns": false,
       "discardedCount": 4,
       "majorOutletCount": 3,
       "routedToSibling": 0,
-      "dateRange": "2022-06-28 .. 2023-01-17",
-      "spanDays": 203,
+      "dateRange": "2015-07-23 .. 2023-07-01",
+      "spanDays": 2900,
       "showMarket": "uk",
-      "earlierMarket": null,
-      "marketMatch": null,
-      "siblingEntryCovers": "titanique-off-broadway-2022",
-      "classification": "routed-elsewhere",
+      "earlierMarket": "uk",
+      "marketMatch": true,
+      "siblingEntryCovers": null,
+      "classification": "wide-span-review",
       "weight": 16,
       "discarded": [
         {
-          "file": "nytimes--elisabeth-vincentelli",
-          "date": "2022-06-28",
-          "tier": 1,
-          "outlet": "New York Times",
-          "market": null
-        },
-        {
-          "file": "nytimes--unknown",
-          "date": "2022-06-28",
-          "tier": 1,
-          "outlet": "The New York Times",
-          "market": null
-        },
-        {
-          "file": "nypost--johnny-oleksinski",
-          "date": "2022-08-05",
+          "file": "london-box-office--phil-willmott",
+          "date": "2015-07-23",
           "tier": 2,
-          "outlet": "New York Post",
-          "market": null
+          "outlet": "London Box Office",
+          "market": "uk"
         },
         {
-          "file": "the-queer-review--james-kleinmann",
-          "date": "2023-01-17",
+          "file": "express-uk--west-end-theatre",
+          "date": "2015-08-01",
           "tier": 4,
-          "outlet": "The Queer Review",
+          "outlet": "Daily Express",
+          "market": "uk"
+        },
+        {
+          "file": "london-box-office--john-yap",
+          "date": "2019-10-29",
+          "tier": 2,
+          "outlet": "London Box Office",
+          "market": "uk"
+        },
+        {
+          "file": "variety--unknown",
+          "date": "2023-07-01",
+          "tier": 1,
+          "outlet": "Variety",
           "market": null
         }
       ]
@@ -16466,47 +16950,6 @@
           "date": "2014-07-29",
           "tier": 3,
           "outlet": "the-record-theater",
-          "market": null
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-2026",
-      "title": "CATS: The Jellicle Ball",
-      "openingDate": "2026-04-07",
-      "currentVenue": "Broadhurst Theatre",
-      "hasPriorRuns": false,
-      "discardedCount": 3,
-      "majorOutletCount": 3,
-      "routedToSibling": 0,
-      "dateRange": "2024-06-20 .. 2024-07-08",
-      "spanDays": 18,
-      "showMarket": "us",
-      "earlierMarket": null,
-      "marketMatch": null,
-      "siblingEntryCovers": "cats-the-jellicle-ball-off-broadway-2024",
-      "classification": "routed-elsewhere",
-      "weight": 12,
-      "discarded": [
-        {
-          "file": "nytimes--jesse-green",
-          "date": "2024-06-20",
-          "tier": 1,
-          "outlet": "The New York Times",
-          "market": null
-        },
-        {
-          "file": "newyorker--helen-shaw-2024-bway",
-          "date": "2024-06-27",
-          "tier": 1,
-          "outlet": "New Yorker",
-          "market": null
-        },
-        {
-          "file": "newyorker--helen-shaw",
-          "date": "2024-07-08",
-          "tier": 1,
-          "outlet": "The New Yorker",
           "market": null
         }
       ]
@@ -16765,47 +17208,6 @@
       ]
     },
     {
-      "showId": "torch-song-2018",
-      "title": "Torch Song",
-      "openingDate": "2018-11-01",
-      "currentVenue": "Helen Hayes Theater",
-      "hasPriorRuns": false,
-      "discardedCount": 3,
-      "majorOutletCount": 3,
-      "routedToSibling": 0,
-      "dateRange": "1983-06-05 .. 2018-02-21",
-      "spanDays": 12680,
-      "showMarket": "us",
-      "earlierMarket": null,
-      "marketMatch": null,
-      "siblingEntryCovers": null,
-      "classification": "wide-span-review",
-      "weight": 12,
-      "discarded": [
-        {
-          "file": "thewrap--robert-hofler",
-          "date": "1983-06-05",
-          "tier": 2,
-          "outlet": "TheWrap",
-          "market": null
-        },
-        {
-          "file": "theater-life--david-sheward",
-          "date": "2017-11-18",
-          "tier": 2,
-          "outlet": "Theater Life",
-          "market": null
-        },
-        {
-          "file": "curtainup--elyse-sommer",
-          "date": "2018-02-21",
-          "tier": 2,
-          "outlet": "CurtainUp",
-          "market": null
-        }
-      ]
-    },
-    {
       "showId": "the-color-purple-2015",
       "title": "The Color Purple",
       "openingDate": "2015-12-10",
@@ -17032,47 +17434,6 @@
       ]
     },
     {
-      "showId": "the-producers-west-end-2025",
-      "title": "The Producers",
-      "openingDate": "2025-09-13",
-      "currentVenue": "Garrick Theatre",
-      "hasPriorRuns": false,
-      "discardedCount": 3,
-      "majorOutletCount": 3,
-      "routedToSibling": 0,
-      "dateRange": "2024-12-11 .. 2024-12-11",
-      "spanDays": 0,
-      "showMarket": "uk",
-      "earlierMarket": "uk",
-      "marketMatch": true,
-      "siblingEntryCovers": null,
-      "classification": "likely-transfer",
-      "weight": 12,
-      "discarded": [
-        {
-          "file": "financialtimes--sarah-hemming",
-          "date": "2024-12-11",
-          "tier": 1,
-          "outlet": "The Financial Times",
-          "market": "uk"
-        },
-        {
-          "file": "i-paper--fiona-mountford",
-          "date": "2024-12-11",
-          "tier": 1,
-          "outlet": "The i Paper",
-          "market": "uk"
-        },
-        {
-          "file": "independent--louis-chilton",
-          "date": "2024-12-11",
-          "tier": 1,
-          "outlet": "The Independent",
-          "market": "uk"
-        }
-      ]
-    },
-    {
       "showId": "an-ideal-husband-west-end-2026",
       "title": "An Ideal Husband",
       "openingDate": "2026-05-12",
@@ -17232,47 +17593,6 @@
           "date": "2024-10-20",
           "tier": 2,
           "outlet": "Exeunt Magazine",
-          "market": null
-        }
-      ]
-    },
-    {
-      "showId": "miss-saigon-west-end-2026",
-      "title": "Miss Saigon",
-      "openingDate": "2027-05-27",
-      "currentVenue": "TBA",
-      "hasPriorRuns": false,
-      "discardedCount": 3,
-      "majorOutletCount": 3,
-      "routedToSibling": 0,
-      "dateRange": "1991-07-01 .. 2017-03-24",
-      "spanDays": 9398,
-      "showMarket": "uk",
-      "earlierMarket": "uk",
-      "marketMatch": true,
-      "siblingEntryCovers": null,
-      "classification": "wide-span-review",
-      "weight": 12,
-      "discarded": [
-        {
-          "file": "amny--matt-windman",
-          "date": "1991-07-01",
-          "tier": 2,
-          "outlet": "amNewYork",
-          "market": null
-        },
-        {
-          "file": "london-box-office--phil-willmott",
-          "date": "2014-05-30",
-          "tier": 2,
-          "outlet": "London Box Office",
-          "market": "uk"
-        },
-        {
-          "file": "broadwayworld--michael-dale",
-          "date": "2017-03-24",
-          "tier": 2,
-          "outlet": "BroadwayWorld",
           "market": null
         }
       ]
@@ -17511,6 +17831,47 @@
       ]
     },
     {
+      "showId": "liberation-2025",
+      "title": "Liberation",
+      "openingDate": "2025-10-28",
+      "currentVenue": "James Earl Jones Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 3,
+      "majorOutletCount": 2,
+      "routedToSibling": 0,
+      "dateRange": "2025-02-20 .. 2025-02-21",
+      "spanDays": 1,
+      "showMarket": "us",
+      "earlierMarket": null,
+      "marketMatch": null,
+      "siblingEntryCovers": null,
+      "classification": "likely-transfer",
+      "weight": 9,
+      "discarded": [
+        {
+          "file": "front-row-center--tulis-mccall",
+          "date": "2025-02-20",
+          "tier": 2,
+          "outlet": "The Front Row Center",
+          "market": null
+        },
+        {
+          "file": "theater-pizzazz--unknown",
+          "date": "2025-02-20",
+          "tier": 4,
+          "outlet": "Theater Pizzazz",
+          "market": null
+        },
+        {
+          "file": "vulture--sandy-macdonald",
+          "date": "2025-02-21",
+          "tier": 1,
+          "outlet": "New York Notebook",
+          "market": null
+        }
+      ]
+    },
+    {
       "showId": "home-2024",
       "title": "Home",
       "openingDate": "2024-06-05",
@@ -17675,10 +18036,51 @@
       ]
     },
     {
+      "showId": "titanique-west-end-2024",
+      "title": "Titanique",
+      "openingDate": "2025-01-08",
+      "currentVenue": "Criterion Theatre",
+      "hasPriorRuns": false,
+      "discardedCount": 3,
+      "majorOutletCount": 2,
+      "routedToSibling": 0,
+      "dateRange": "2022-06-28 .. 2023-01-17",
+      "spanDays": 203,
+      "showMarket": "uk",
+      "earlierMarket": null,
+      "marketMatch": null,
+      "siblingEntryCovers": "titanique-off-broadway-2022",
+      "classification": "routed-elsewhere",
+      "weight": 9,
+      "discarded": [
+        {
+          "file": "nytimes--elisabeth-vincentelli",
+          "date": "2022-06-28",
+          "tier": 1,
+          "outlet": "New York Times",
+          "market": null
+        },
+        {
+          "file": "nytimes--unknown",
+          "date": "2022-06-28",
+          "tier": 1,
+          "outlet": "The New York Times",
+          "market": null
+        },
+        {
+          "file": "the-queer-review--james-kleinmann",
+          "date": "2023-01-17",
+          "tier": 4,
+          "outlet": "The Queer Review",
+          "market": null
+        }
+      ]
+    },
+    {
       "showId": "the-oresteia-west-end-2026",
       "title": "The Oresteia",
       "openingDate": "2026-07-14",
-      "currentVenue": "TBA",
+      "currentVenue": "Bridge Theatre",
       "hasPriorRuns": false,
       "discardedCount": 3,
       "majorOutletCount": 2,
