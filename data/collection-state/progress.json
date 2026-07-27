@@ -20,8 +20,11 @@
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
     "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
     "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
-    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-    "medea-off-broadway-2026/timeout--adam-feldman.json"
+    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "macbeth-off-broadway-2026/timeout--naveen-kumar.json",
+    "trainspotting-the-musical-west-end-2026/radio-times--olivia-garrett.json",
+    "trainspotting-the-musical-west-end-2026/west-end-best-friend--unknown.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -150,8 +153,14 @@
     "macbeth-off-broadway-2026/abc-news--peter-travers.json",
     "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
     "macbeth-off-broadway-2026/newsday--linda-winer.json",
-    "macbeth-off-broadway-2026/timeout--naveen-kumar.json",
-    "macbeth-off-broadway-2026/amny--unknown.json"
+    "trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+    "trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
+    "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+    "trainspotting-the-musical-west-end-2026/london-unattached--jeanne-horak.json",
+    "trainspotting-the-musical-west-end-2026/london-unattached--unknown.json",
+    "trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+    "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
+    "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -174,7 +183,10 @@
       "amaze-off-broadway-2026/timeout--adam-feldman.json",
       "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
       "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
-      "medea-off-broadway-2026/timeout--adam-feldman.json"
+      "medea-off-broadway-2026/timeout--adam-feldman.json",
+      "macbeth-off-broadway-2026/timeout--naveen-kumar.json",
+      "trainspotting-the-musical-west-end-2026/radio-times--olivia-garrett.json",
+      "trainspotting-the-musical-west-end-2026/west-end-best-friend--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -185,13 +197,46 @@
       "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
     "archiveToday": [
-      "data/review-texts/miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json"
+      "data/review-texts/miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json"
     ],
     "archive": [
       "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json"
     ]
   },
-  "startTime": "2026-07-27T10:38:36.310Z",
-  "lastProcessed": "macbeth-off-broadway-2026/amny--unknown.json",
-  "log": []
+  "startTime": "2026-07-27T10:00:22.560Z",
+  "lastProcessed": "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+  "log": [
+    {
+      "t": "2026-07-27T10:02:13.649Z",
+      "event": "bb-session",
+      "session": "00919e39",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-27T10:02:14.437Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-27T10:02:30.229Z",
+      "event": "bb-session",
+      "session": "a38838d7",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-27T10:02:31.027Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-27T10:06:30.418Z",
+      "event": "bb-session",
+      "session": "e9f68a29",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    }
+  ]
 }
