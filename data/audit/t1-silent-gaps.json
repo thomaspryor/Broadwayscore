@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-27T08:13:00.367Z",
+  "generatedAt": "2026-07-27T10:18:38.682Z",
   "windowDays": 45,
   "showsScanned": 53,
   "gaps": [
@@ -18,7 +18,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-07-26T10:36:40.359Z",
-      "nonTerminalAgeHours": 21.60555777777778
+      "nonTerminalAgeHours": 23.699534166666666
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-07-26T12:20:34.737Z",
-      "nonTerminalAgeHours": 19.873786111111112
+      "nonTerminalAgeHours": 21.9677625
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 91.02329916666666,
+      "fileAgeHours": 93.11727583333334,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 50.326230833333334
+      "nonTerminalAgeHours": 52.420207222222224
     }
   ],
   "contradictions": []
