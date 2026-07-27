@@ -1,15 +1,15 @@
 {
-  "system": "cwv",
+  "system": "scoring",
   "status": "pass",
-  "lastChecked": "2026-07-27T08:00:24.721Z",
+  "lastChecked": "2026-07-27T08:00:24.720Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
-      "name": "CWV: performance",
+      "name": "Scoring: batch state",
       "status": "pass",
-      "message": "All metrics within thresholds (22h ago)"
+      "message": "No batch in flight"
     }
   ]
 }

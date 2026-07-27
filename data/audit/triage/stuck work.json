@@ -1,7 +1,7 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-07-26T16:23:09.497Z",
+  "lastChecked": "2026-07-27T08:00:24.721Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Stuck work: paused P0/P1 cards",
       "status": "warn",
-      "message": "3 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (1d); push-with-retry.sh PUSH_DEADLINE_SEC=240 too tight for large (0d); iOS Show Stats takeover: data artifacts + Aisle Mates real-d (0d)"
+      "message": "2 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (2d); push-with-retry.sh PUSH_DEADLINE_SEC=240 too tight for large (1d)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "18 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Kill ScrapingBee premium_proxy direct calls (cost more than  (4d); Rebuild same-URL dedup: prefer a real criticName over 'Unkno (4d); Trainspotting: only 4 reviews on site + email said 7 (invest (3d)"
+      "message": "18 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Kill ScrapingBee premium_proxy direct calls (cost more than  (4d); Rebuild same-URL dedup: prefer a real criticName over 'Unkno (4d); Trainspotting: only 4 reviews on site + email said 7 (invest (4d)"
     }
   ]
 }
