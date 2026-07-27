@@ -111,6 +111,14 @@ jobs:
 
       - name: Commit pending results
         if: always() && inputs.dry_run != true
+        # Task #574: this step (the workflow's own end-of-job commit) was NOT
+        # covered by #420 — that card opted in scripts/deep-research-
+        # commercial.js's mid-run checkpoint push (the Node pushWithRetry()
+        # wrapper, reconcileMergedJson: true), a DIFFERENT push call site from
+        # this bash step. Commits commercial-pending-review.json +
+        # commercial-research-queue.json (union-merged managed files).
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           # commercial.json is gitignored (core data); push-core-data syncs it to the private repo.
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json

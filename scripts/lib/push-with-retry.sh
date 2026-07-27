@@ -463,16 +463,30 @@ reconcile_merged_json() {
   [ "${PUSH_RECONCILE_MERGED_JSON:-}" = "1" ] || return 0
   command -v node >/dev/null 2>&1 || return 0
   [ -f "$SCRIPT_DIR/reconcile-merged-json.js" ] || return 0
-  # ONE invocation: stdout is the changed-file count, stderr streams to the job
-  # log. Running it twice (once for the log, once for the count) would report 0
-  # the second time — the first pass has already written the merged files.
-  local count
-  count=$(node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH") || return 0
-  if [ "$count" -gt 0 ] 2>/dev/null; then
-    echo "  Reconciled $count union-merged JSON file(s) against origin/$PULL_BRANCH (task #420)"
-    git add -A
-    git commit --amend --no-edit 2>/dev/null || true
-  fi
+  # ONE invocation: stdout is one changed repo-relative path per line (empty =
+  # nothing to do), stderr streams to the job log. Running it twice (once for
+  # the log, once for the list) would report empty the second time — the
+  # first pass has already written the merged files.
+  local out
+  out=$(node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH") || return 0
+  [ -n "$out" ] || return 0
+
+  # `git add` exactly the reconciled paths — NEVER `-A` (task #574 ship-check/
+  # Codex finding: a blanket -A would also sweep up any OTHER untracked file
+  # sitting in the job's working tree at this point, e.g. update-show-
+  # status.yml's discovery-blocked audit JSON, which is deliberately pushed
+  # to the PRIVATE repo only via a separate `gh api` step and must never land
+  # in this public amended commit).
+  local changed_files=()
+  local line
+  while IFS= read -r line; do
+    [ -n "$line" ] && changed_files+=("$line")
+  done <<< "$out"
+  [ ${#changed_files[@]} -gt 0 ] || return 0
+
+  echo "  Reconciled ${#changed_files[@]} union-merged JSON file(s) against origin/$PULL_BRANCH (task #420): ${changed_files[*]}"
+  git add -- "${changed_files[@]}"
+  git commit --amend --no-edit 2>/dev/null || true
 }
 
 pushed=false
