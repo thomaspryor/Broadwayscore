@@ -219,6 +219,11 @@ async function draftMentionResponse(mention, { apiKey = process.env.ANTHROPIC_AP
       return {
         sentiment: 'neutral',
         shouldRespond: false,
+        // draftError marks "we could not classify" (vs a real no-reply
+        // verdict) — the email gate must treat these as actionable or an
+        // LLM outage silently swallows genuine mentions forever (they get
+        // marked seen and never re-alert).
+        draftError: true,
         confidence: 'low',
         reason: `Drafter failed: ${e2.message}`,
         draftResponse: null,
@@ -238,6 +243,7 @@ async function draftMentionResponse(mention, { apiKey = process.env.ANTHROPIC_AP
     return {
       sentiment: 'neutral',
       shouldRespond: false,
+      draftError: true,
       confidence: 'low',
       reason: `Could not parse drafter verdict: ${e.message}`,
       draftResponse: null,
@@ -311,6 +317,7 @@ async function draftMentions(mentions, opts = {}) {
         verdict: {
           sentiment: 'neutral',
           shouldRespond: false,
+          draftError: true,
           confidence: 'low',
           reason: `Drafter exception: ${e.message}`,
           draftResponse: null,
