@@ -287,3 +287,29 @@ test('queryCiRedClaimConflict: matches on runId too', (t) => {
   const r = queryCiRedClaimConflict({ repoRoot: repo, claimsPath });
   assert.equal(r.blocked, true);
 });
+
+// Adversarial review (task #584): `symbol || runId` previously meant a claim
+// with BOTH set only ever searched the symbol — a diff naming just the runId
+// silently passed through. Both fields must be checked independently.
+test('queryCiRedClaimConflict: claim has both symbol+runId, diff matches only runId — still blocked', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  const claimsPath = tmpClaimsPath();
+  appendClaim({ taskId: '9', symbol: 'shouldShowSentiment', runId: '30120249897' }, claimsPath);
+  commitLines(repo, 'scripts/fix.js', 3, 'fix flake in CI run 30120249897');
+  const r = queryCiRedClaimConflict({ repoRoot: repo, claimsPath });
+  assert.equal(r.blocked, true, JSON.stringify(r));
+});
+
+// Adversarial review (task #584): a short generic claimed symbol would match
+// almost any diff via plain substring search — a minimum length floor keeps
+// the heuristic from firing on unrelated pushes.
+test('queryCiRedClaimConflict: short generic symbol below MIN_NEEDLE_LEN does not block', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  const claimsPath = tmpClaimsPath();
+  appendClaim({ taskId: '9', symbol: 'run' }, claimsPath);
+  commitLines(repo, 'scripts/unrelated.js', 5, 'totally unrelated change to run the pipeline');
+  const r = queryCiRedClaimConflict({ repoRoot: repo, claimsPath });
+  assert.equal(r.blocked, false);
+});

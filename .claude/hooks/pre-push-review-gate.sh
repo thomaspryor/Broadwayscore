@@ -227,23 +227,33 @@ fi
 # via `node scripts/claim-ci-red.js claim`. Self-exempt with an inline
 # `# CI-RED-TASK: <taskId>` comment on the push command (same convention as
 # NO-SHIP-CHECK above) — without it, the session that owns the claim would
-# block its own fix.
-CI_RED_OWN_TASK=$(printf '%s' "$command" | grep -oE '(^|[[:space:]])#[[:space:]]*CI-RED-TASK:[[:space:]]+[0-9]+' | grep -oE '[0-9]+$' | head -1)
+# block its own fix. `tail -1` (not `head -1`, adversarial review task #584):
+# a marker appended at the END of the command — the conventional place for an
+# inline comment — must win over an earlier incidental match (e.g. inside an
+# echoed usage string or heredoc body earlier in the same command).
+# Emergency escape hatch for a false positive: CI_RED_CLAIM_DISABLE=1 (mirrors
+# REVIEW_GATE_DISABLE / ENTERWORKTREE_GUARD_DISABLE conventions in this repo)
+# — deliberately NOT the NO-SHIP-CHECK bypass, since that's meant to skip
+# "no review yet", not silence a real duplicate-fix collision.
+[ "${CI_RED_CLAIM_DISABLE:-0}" = "1" ] && CI_RED_SKIP=1 || CI_RED_SKIP=0
+CI_RED_OWN_TASK=$(printf '%s' "$command" | grep -oE '(^|[[:space:]])#[[:space:]]*CI-RED-TASK:[[:space:]]+[0-9]+' | grep -oE '[0-9]+$' | tail -1)
 CI_RED_BLOCK=""
-for ref in $CANDIDATES; do
-  CRC_ARGS=(--query=ci-red-claim-conflict --repo="$EVAL_ROOT" --ref="$ref")
-  [ -n "$CI_RED_OWN_TASK" ] && CRC_ARGS+=(--own-task="$CI_RED_OWN_TASK")
-  CRC_RESULT=$(node "$GATE" "${CRC_ARGS[@]}" 2>/dev/null)
-  [ -z "$CRC_RESULT" ] && continue        # lib error — fail open for this ref
-  CRC_BLOCKED=$(echo "$CRC_RESULT" | jq -r '.blocked // false' 2>/dev/null)
-  if [ "$CRC_BLOCKED" = "true" ]; then
-    CI_RED_BLOCK="$CRC_RESULT"
-    break
-  fi
-done
+if [ "$CI_RED_SKIP" != "1" ]; then
+  for ref in $CANDIDATES; do
+    CRC_ARGS=(--query=ci-red-claim-conflict --repo="$EVAL_ROOT" --ref="$ref")
+    [ -n "$CI_RED_OWN_TASK" ] && CRC_ARGS+=(--own-task="$CI_RED_OWN_TASK")
+    CRC_RESULT=$(node "$GATE" "${CRC_ARGS[@]}" 2>/dev/null)
+    [ -z "$CRC_RESULT" ] && continue        # lib error — fail open for this ref
+    CRC_BLOCKED=$(echo "$CRC_RESULT" | jq -r '.blocked // false' 2>/dev/null)
+    if [ "$CRC_BLOCKED" = "true" ]; then
+      CI_RED_BLOCK="$CRC_RESULT"
+      break
+    fi
+  done
+fi
 if [ -n "$CI_RED_BLOCK" ]; then
   CRC_REASON=$(echo "$CI_RED_BLOCK" | jq -r '.reason // "another task already claims this CI red"' 2>/dev/null)
-  echo "🛑 BLOCKED: push conflicts with an active CI-red claim — $CRC_REASON. If this is YOUR OWN claimed fix, append \` # CI-RED-TASK: <your task id>\` to the push command (claim it first: node scripts/claim-ci-red.js claim --task <id> --symbol <name>). Otherwise coordinate with that task before pushing — this is the exact double-fix collision task #542/#584 exist to prevent." >&2
+  echo "🛑 BLOCKED: push conflicts with an active CI-red claim — $CRC_REASON. If this is YOUR OWN claimed fix, append \` # CI-RED-TASK: <your task id>\` to the push command (claim it first: node scripts/claim-ci-red.js claim --task <id> --symbol <name>). Otherwise coordinate with that task before pushing — this is the exact double-fix collision task #542/#584 exist to prevent. False positive? Emergency override: CI_RED_CLAIM_DISABLE=1 (logged nowhere yet — use sparingly, prefer the CI-RED-TASK marker)." >&2
   exit 2
 fi
 

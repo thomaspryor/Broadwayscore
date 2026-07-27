@@ -348,12 +348,21 @@ export function activeCiRedClaims({ now = Date.now(), excludeTaskId = null, clai
     .filter(c => excludeTaskId == null || String(c.taskId) !== String(excludeTaskId));
 }
 
-// Blocks when the pushed diff's gated-file content contains the symbol/runId
-// of another in_progress task's claim — the same substring-match heuristic
-// duplicate-dispatch-guard.js's taskClaimsTarget already uses for task
-// subject/description, applied here to diff patch text instead. Best-effort:
-// a fix that doesn't literally reference the symbol name won't be caught,
-// same known limitation evaluateCiRedClaim already has for task subjects.
+// Minimum needle length for the substring match below. Without a floor, a
+// short generic claimed symbol (e.g. "run", "main", "config") would match
+// almost any diff — adversarial review (task #584) flagged this as a
+// realistic false-positive source. 4 chars matches this codebase's shortest
+// real CI-red symbol names seen in practice (e.g. "fold", still excludes
+// single tokens like "run"/"id").
+const MIN_NEEDLE_LEN = 4;
+
+// Blocks when the pushed diff's gated-file content contains the symbol
+// and/or runId of another in_progress task's claim — the same substring-
+// match heuristic duplicate-dispatch-guard.js's taskClaimsTarget already
+// uses for task subject/description, applied here to diff patch text
+// instead. Best-effort: a fix that doesn't literally reference the symbol
+// name won't be caught, same known limitation evaluateCiRedClaim already
+// has for task subjects.
 export function queryCiRedClaimConflict({ repoRoot, ref = 'HEAD', ownTaskId = null, claimsPath = undefined, now = Date.now() }) {
   const base = resolveBase(repoRoot);
   if (!base) return { blocked: false, reason: 'no origin/main or main ref — fail open' };
@@ -361,15 +370,26 @@ export function queryCiRedClaimConflict({ repoRoot, ref = 'HEAD', ownTaskId = nu
   if (!patchText) return { blocked: false, reason: 'no gated diff text' };
   const claims = activeCiRedClaims({ now, excludeTaskId: ownTaskId, claimsPath });
   for (const claim of claims) {
-    const needle = String(claim.symbol || claim.runId || '').toLowerCase();
-    if (!needle || !patchText.includes(needle)) continue;
+    // Check symbol AND runId independently — a claim can carry both, and a
+    // diff that names only one of them (e.g. references the CI run number
+    // but not the failing symbol) must still be caught (adversarial review,
+    // task #584: `symbol || runId` here previously meant a claim with both
+    // set never matched on runId content at all).
+    const symbolNeedle = String(claim.symbol || '').toLowerCase();
+    const runIdNeedle = String(claim.runId || '').toLowerCase();
+    const symbolHit = symbolNeedle.length >= MIN_NEEDLE_LEN && patchText.includes(symbolNeedle);
+    const runIdHit = runIdNeedle.length >= MIN_NEEDLE_LEN && patchText.includes(runIdNeedle);
+    if (!symbolHit && !runIdHit) continue;
     const asTask = {
       id: claim.taskId,
       status: 'in_progress',
       subject: [claim.symbol, claim.runId].filter(Boolean).join(' '),
       description: '',
     };
-    const verdict = evaluateCiRedClaim({ symbol: claim.symbol, runId: claim.runId }, [asTask]);
+    const verdict = evaluateCiRedClaim(
+      { symbol: symbolHit ? claim.symbol : null, runId: runIdHit ? claim.runId : null },
+      [asTask]
+    );
     if (!verdict.allow) {
       return { blocked: true, reason: verdict.reason, claimedBy: verdict.claimedBy };
     }
