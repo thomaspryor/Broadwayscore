@@ -406,6 +406,8 @@ on:
       - 'scripts/lib/outlet-heartbeat-state.js'
       - 'scripts/lib/outlet-heartbeat-state.test.mjs'
       - 'scripts/audit-critic-coverage.js'
+      - 'scripts/monitor-outlet-recency.js'
+      - 'tests/unit/outlet-recency-monitor.test.mjs'
       - 'scripts/lib/feedback-dedup.js'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.
