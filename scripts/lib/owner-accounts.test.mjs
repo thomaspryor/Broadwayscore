@@ -65,6 +65,27 @@ test('serp helpers handle subdomain variants and host-anchor correctly', () => {
   assert.deepEqual(parseXUrl('https://mobile.twitter.com/somefan/status/42'), { handle: 'somefan', tweetId: '42' });
 });
 
+test('owner alias domains are classified as owner URLs (theaterscorecard leak 2026-07-27)', () => {
+  const owned = [
+    // The actual leaked mention: alias domain on the broadwayscore Vercel
+    // project that mirrors the site (canonical → broadwayscorecard.com)
+    'https://www.theaterscorecard.com/',
+    'https://theaterscorecard.com/browse/best-recent-shows',
+    'https://showscorecard.com/',
+    'https://www.operascorecard.com/',
+    'https://offbroadwayscorecard.com/show/primary-trust',
+    'https://westendscorecard.com/west-end',
+    'https://broadwaymetascore.com/',
+    'https://www.scorekeep.co/',
+    'https://eveandadammusical.com/',
+    'https://broadwayscore.vercel.app/',
+    'https://broadwayscore-git-main-thomaspryors-projects.vercel.app/show/hamilton',
+  ];
+  for (const url of owned) {
+    assert.ok(isOwnerUrl(url), `expected owner URL: ${url}`);
+  }
+});
+
 test('genuine third-party URLs still pass through', () => {
   const thirdParty = [
     'https://www.instagram.com/p/DAbCdEfGhIj/', // opaque post URL — resolved by drafter, not URL filter
@@ -77,6 +98,8 @@ test('genuine third-party URLs still pass through', () => {
     'https://www.nytimes.com/2026/07/01/theater/review-aggregators.html',
     'https://x.com/someoneelse/status/456',
     'https://www.netflix.com/broadwayscorecard', // host must not false-match *.x.com
+    'https://mytheaterscorecard.com/', // prefixed host must NOT match the alias-domain pattern
+    'https://theaterscorecards.com/', // near-miss domain (trailing s)
   ];
   for (const url of thirdParty) {
     assert.ok(!isOwnerUrl(url), `expected third-party URL to pass: ${url}`);

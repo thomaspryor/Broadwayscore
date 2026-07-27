@@ -60,7 +60,16 @@ const OWNER_URL_PATTERNS = [
   // hashtag pages aggregate third-party posts and are genuine signal.
   /^https?:\/\/(?:[a-z0-9-]+\.)*instagram\.com\/popular\/(?:broadway-?scorecard|bway-?scorecard)(?:[/?#]|$)/i,
   /^https?:\/\/(?:[a-z0-9-]+\.)*threads\.(?:com|net)\/@?(?:bwayscorecard|broadwayscorecard|thomaspryor)(?:[/?#]|$)/i,
-  /^https?:\/\/(?:[a-z0-9-]+\.)*broadwayscorecard\.com(?:[/?#]|$)/i,
+  // Every apex domain the owner controls, not just broadwayscorecard.com:
+  // several are aliases on the same Vercel project that SERVE the full site
+  // (mirror, canonical → broadwayscorecard.com) rather than redirecting, so
+  // Google indexes them as separate sites and they surface as "mentions"
+  // (theaterscorecard.com leak, 2026-07-27). Source of truth: Vercel account
+  // domains (GET /v5/domains) — update here when attaching a new domain.
+  /^https?:\/\/(?:[a-z0-9-]+\.)*(?:broadwayscorecard|theaterscorecard|showscorecard|operascorecard|offbroadwayscorecard|westendscorecard|broadwaymetascore|eveandadammusical)\.com(?:[/?#]|$)/i,
+  /^https?:\/\/(?:[a-z0-9-]+\.)*scorekeep\.co(?:[/?#]|$)/i,
+  // Owner Vercel deployment URLs (broadwayscore.vercel.app + preview aliases)
+  /^https?:\/\/broadwayscore[a-z0-9-]*\.vercel\.app(?:[/?#]|$)/i,
   /^https?:\/\/(?:www\.)?github\.com\/thomaspryor\/Broadwayscore(?:\/|$)/i,
   // Full owner handles with a terminating boundary — a bare "broadwayscorecard"
   // prefix would also swallow third parties like broadwayscorecardfan.bsky.social
