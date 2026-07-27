@@ -1,18 +1,23 @@
 {
-  "generatedAt": "2026-07-20T12:44:09.913Z",
+  "generatedAt": "2026-07-27T13:03:50.308Z",
   "mode": "dry-run",
   "reviewTextSweep": {
-    "scanned": 36,
-    "showsWithNoTexts": 7,
+    "scanned": 40,
+    "showsWithNoTexts": 5,
     "candidates": [
       {
         "showId": "my-joy-is-heavy-off-broadway-2025",
         "proposedClosingDate": "2026-04-05",
         "confidence": "high",
-        "reason": "3 reviews agree",
+        "reason": "4 reviews agree",
         "evidence": [
           {
             "reviewId": "my-joy-is-heavy-off-broadway-2025/culturesauce--thom-geier.json",
+            "isoDate": "2026-04-05",
+            "quote": "through April 5"
+          },
+          {
+            "reviewId": "my-joy-is-heavy-off-broadway-2025/nytg--amelia-merrill.json",
             "isoDate": "2026-04-05",
             "quote": "through April 5"
           },
@@ -32,7 +37,7 @@
         "showId": "the-whoopi-monologues-off-broadway-2026",
         "proposedClosingDate": "2026-08-30",
         "confidence": "high",
-        "reason": "6 reviews agree",
+        "reason": "7 reviews agree",
         "evidence": [
           {
             "reviewId": "the-whoopi-monologues-off-broadway-2026/culturesauce--thom-geier.json",
@@ -58,6 +63,11 @@
             "reviewId": "the-whoopi-monologues-off-broadway-2026/theater-scene--darryl-reilly.json",
             "isoDate": "2026-08-30",
             "quote": "through August 30, 2026"
+          },
+          {
+            "reviewId": "the-whoopi-monologues-off-broadway-2026/vulture--unknown.json",
+            "isoDate": "2026-08-30",
+            "quote": "through August 30"
           },
           {
             "reviewId": "the-whoopi-monologues-off-broadway-2026/wsj--charles-isherwood.json",
@@ -322,8 +332,8 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "small-off-broadway-2026",
-        "proposedClosingDate": "2026-07-25",
+        "showId": "sukkot-off-broadway-2026",
+        "proposedClosingDate": "2026-08-09",
         "reason": "already-has-closing-date"
       },
       {
@@ -340,36 +350,46 @@
         "showId": "the-black-mirror-experience-off-broadway-2026",
         "proposedClosingDate": "2026-09-06",
         "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "the-gin-game-2026",
+        "proposedClosingDate": "2026-08-09",
+        "reason": "already-has-closing-date"
       }
     ]
   },
   "todaytixStaleness": {
-    "checked": 33,
+    "checked": 35,
     "skipped": false,
     "candidates": [
       {
         "showId": "drunk-shakespeare-off-broadway-2022",
-        "consecutiveMissingChecks": 3,
+        "consecutiveMissingChecks": 4,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "my-joy-is-heavy-off-broadway-2025",
-        "consecutiveMissingChecks": 2,
+        "consecutiveMissingChecks": 3,
         "firstMissingDate": "2026-07-13"
       },
       {
         "showId": "age-is-a-feeling-off-broadway-2024",
-        "consecutiveMissingChecks": 3,
+        "consecutiveMissingChecks": 4,
         "firstMissingDate": "2026-07-12"
       },
       {
+        "showId": "the-whoopi-monologues-off-broadway-2026",
+        "consecutiveMissingChecks": 2,
+        "firstMissingDate": "2026-07-20"
+      },
+      {
         "showId": "gotta-dance-off-broadway-2026",
-        "consecutiveMissingChecks": 3,
+        "consecutiveMissingChecks": 4,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "the-black-mirror-experience-off-broadway-2026",
-        "consecutiveMissingChecks": 3,
+        "consecutiveMissingChecks": 4,
         "firstMissingDate": "2026-07-12"
       }
     ]
