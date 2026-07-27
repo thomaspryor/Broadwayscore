@@ -34,7 +34,7 @@ const {
 } = require('./cookie-loader');
 const { fetchWithCookiesPlain } = require('./fetch-plain');
 const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
-const { shouldSkipScrapingdogAtRuntime } = require('./scrapingdog-ack');
+const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
@@ -393,7 +393,8 @@ async function fetchWithScrapingdog(url, options = {}) {
   // Fire-and-forget (not awaited): a live /account HTTP round-trip must never
   // add latency to the scraping hot path, especially opening-night polling.
   // The very first SD call in a process may proceed before the check resolves
-  // — acceptable, since this is a soft daily-pace breaker, not a hard limit.
+  // — acceptable: it only skips on ACTUAL exhaustion, and a truly dry account
+  // also trips the reactive HTTP-status latch below on the first failure.
   _checkScrapingdogQuotaOnce();
   if (_sdQuotaExceeded) {
     return null;
@@ -486,6 +487,19 @@ async function fetchWithScrapingdog(url, options = {}) {
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
   recordSdCall({ host: hostname, fn: stealthMode ? 'stealth' : (premium ? 'premium' : (renderJs ? 'render' : 'page')), success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade });
   console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}${stealthMode ? ', stealth_mode' : ''}, domain=${hostname}): ${lastError.message}`);
+  // Reactive quota latch (mirrors _scrapingBeePageExhausted): the /account
+  // pre-check is memoized once per process, so credits hitting 0 MID-RUN would
+  // otherwise leave every later call paying a doomed SD round-trip (up to 45s)
+  // before falling to BD/SB. 401/403/429 from the scrape endpoint means
+  // out-of-credits/auth — disable SD for the rest of the process. The exported
+  // sdQuotaExceeded getter carries this to url-discovery's SERP path too.
+  {
+    const failStatus = /Scrapingdog HTTP (\d+)/.exec(lastError.message || '')?.[1];
+    if (failStatus && isSdQuotaHttpStatus(failStatus) && !_sdQuotaExceeded) {
+      _sdQuotaExceeded = true;
+      console.warn(`  ⚠️  Scrapingdog disabled for the rest of this process (HTTP ${failStatus} — credits exhausted or auth failure)`);
+    }
+  }
   if (options.throwOn400) {
     const statusMatch = /Scrapingdog HTTP (\d+)/.exec(lastError.message || '');
     if (statusMatch && statusMatch[1] === '400') {
@@ -985,8 +999,8 @@ async function fetchJSON(url, options = {}) {
   // (10cr) when the plain tier 400s — Scrapingdog's own error body on a
   // WAF-protected host explicitly recommends that (task #203 reopen:
   // westendtheatre.com wp-json). Respects the same budget/quota guards as
-  // every other SD caller so a daily-pace or per-run exhaustion still routes
-  // past SD to ScrapingBee/Bright Data below instead of retrying here.
+  // every other SD caller so an actual account exhaustion or per-run budget
+  // still routes past SD to ScrapingBee/Bright Data below instead of retrying.
   if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded && !skips.has('scrapingdog')) {
     let sdStealthEligible = false;
     try {

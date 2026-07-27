@@ -129,4 +129,16 @@ function shouldSkipScrapingdogAtRuntime(acct) {
   return { skip: false, logLine: null };
 }
 
-module.exports = { SCRAPINGDOG_ACKNOWLEDGED_BURN, isScrapingdogBurnAcknowledged, evaluateScrapingdogCredits, shouldSkipScrapingdogAtRuntime };
+/**
+ * Is this HTTP status from the SD /scrape endpoint the out-of-credits/auth
+ * shape? Mirrors fetchWithScrapingBee's 401/403/429 reactive latch: the
+ * once-per-process /account pre-check can't see credits hitting 0 mid-run
+ * (ship-check 2026-07-26, both reviewers), so the scrape response itself must
+ * trip the breaker. 400 is deliberately excluded — Scrapingdog uses it for
+ * "host needs premium/stealth", which fetchJSON escalates on (task #203).
+ */
+function isSdQuotaHttpStatus(status) {
+  return [401, 403, 429].includes(Number(status));
+}
+
+module.exports = { SCRAPINGDOG_ACKNOWLEDGED_BURN, isScrapingdogBurnAcknowledged, evaluateScrapingdogCredits, shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus };

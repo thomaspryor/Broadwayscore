@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { SCRAPINGDOG_ACKNOWLEDGED_BURN, isScrapingdogBurnAcknowledged, evaluateScrapingdogCredits, shouldSkipScrapingdogAtRuntime } = require('./scrapingdog-ack.js');
+const { SCRAPINGDOG_ACKNOWLEDGED_BURN, isScrapingdogBurnAcknowledged, evaluateScrapingdogCredits, shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack.js');
 
 // The real account shape from api.scrapingdog.com/account that fired the
 // daily alert (task #418): 923k left of 1M, ~77k/day burn, renews in 29d →
@@ -152,6 +152,11 @@ test('runtime skip: malformed account response fails OPEN (pre-check must never 
     assert.equal(r.skip, false, `expected no skip for ${JSON.stringify(bad)}`);
     assert.equal(r.logLine, null);
   }
+});
+
+test('quota HTTP statuses: 401/403/429 latch, 400 (premium-needed escalation) and transient/5xx do not', () => {
+  for (const s of [401, 403, 429, '403']) assert.equal(isSdQuotaHttpStatus(s), true, `status ${s}`);
+  for (const s of [400, '400', 404, 410, 500, 502, undefined, null, 'error']) assert.equal(isSdQuotaHttpStatus(s), false, `status ${s}`);
 });
 
 test('runtime skip: garbage validity is ignored, credits remaining → no skip', () => {
