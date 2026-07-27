@@ -39,6 +39,14 @@ on:
       # path-listed so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/owner-accounts.js'
       - 'scripts/lib/owner-accounts.test.mjs'
+      # Brand-mention digest ACTION-only email gate (2026-07-27): noise-only
+      # runs must not email; drafter failures must. Colocated *.test.mjs runs
+      # in the lib-test glob; path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/brand-mention-email.js'
+      - 'scripts/lib/brand-mention-email.test.mjs'
+      - 'scripts/lib/brand-mention-drafter.js'
+      - 'scripts/lib/brand-mention-serp.js'
       # ScrapingDog burn-rate acknowledgment (task #418, 2026-07-26): expiring
       # ack for the SB-exhaustion fallthrough spike. Colocated *.test.mjs runs
       # in the lib-test glob; path-listed so a solo edit triggers CI
