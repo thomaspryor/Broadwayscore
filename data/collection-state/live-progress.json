@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-27T03:02:38.062Z",
+  "updatedAt": "2026-07-27T03:03:53.547Z",
   "processed": 16,
-  "failed": 564,
-  "successRate": "2.8%",
+  "failed": 574,
+  "successRate": "2.7%",
   "tierBreakdown": {
     "playwright": 13,
     "amp": 0,
@@ -13,19 +13,8 @@
     "archiveToday": 41,
     "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-07-27T01:48:49.205Z",
-      "event": "bb-session",
-      "session": "850b4290",
-      "url": "https://www.nytimes.com/2026/07/22/arts/dance/hugo-marchand-paris-opera-ballet-n"
-    },
-    {
-      "t": "2026-07-27T01:48:49.621Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-27T01:51:01.167Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-07-27T03:00:25.866Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-27T03:02:40.176Z",
+      "event": "bb-session",
+      "session": "d9ca8218",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-27T03:02:41.205Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
