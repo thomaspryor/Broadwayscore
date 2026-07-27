@@ -41,6 +41,14 @@ import { createHash } from 'node:crypto';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, realpathSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { createRequire } from 'node:module';
+
+// CJS libs — ci-red-claims.js/duplicate-dispatch-guard.js predate this file's
+// ESM conversion and are shared with scripts/claim-ci-red.js, so require()
+// rather than porting them to ESM.
+const require = createRequire(import.meta.url);
+const { readClaims, CLAIM_TTL_MS } = require('./ci-red-claims.js');
+const { evaluateCiRedClaim } = require('./duplicate-dispatch-guard.js');
 
 // ── constants (exported for tests) ──────────────────────────────────────────
 
@@ -155,25 +163,38 @@ export function gatedDiffStats(repoRoot, base, ref, { twoDot = false } = {}) {
   return { files, totalLines };
 }
 
+// Patch text for the gated files only: split on "diff --git" headers and
+// keep hunks whose post-image path matches GATED_PATH_RE. Paths with
+// spaces/unicode are C-quoted (`diff --git "a/x y" "b/x y"`). Shared by
+// computeDiffHash (below) and gatedDiffPatchText (CI-red claim matching).
+function gatedPatchChunks(repoRoot, base, ref) {
+  let patch;
+  try {
+    patch = git(repoRoot, ['diff', ...DIFF_STABLE_FLAGS, ...diffRangeArgs(repoRoot, base, ref, false), '--', 'src', 'scripts', '.github/workflows']);
+  } catch {
+    return [];
+  }
+  return patch.split(/^(?=diff --git )/m).filter(c => {
+    const m = c.match(/^diff --git "?a\/.* "?b\/(.+?)"?$/m);
+    return m && GATED_PATH_RE.test(m[1]);
+  });
+}
+
 // Content-addressed hash of the gated diff. Uses patch text (blob-hash index
 // lines depend only on content), so a merge/rebase that leaves the diff
 // identical keeps the hash — a verdict recorded on a worktree branch stays
 // valid when main is pushed after merging that branch.
 export function computeDiffHash(repoRoot, base, ref) {
-  let patch;
-  try {
-    patch = git(repoRoot, ['diff', ...DIFF_STABLE_FLAGS, ...diffRangeArgs(repoRoot, base, ref, false), '--', 'src', 'scripts', '.github/workflows']);
-  } catch {
-    return null;
-  }
-  // Keep only hunks belonging to gated files: split on "diff --git" headers.
-  // Paths with spaces/unicode are C-quoted (`diff --git "a/x y" "b/x y"`).
-  const chunks = patch.split(/^(?=diff --git )/m).filter(c => {
-    const m = c.match(/^diff --git "?a\/.* "?b\/(.+?)"?$/m);
-    return m && GATED_PATH_RE.test(m[1]);
-  });
+  const chunks = gatedPatchChunks(repoRoot, base, ref);
   if (chunks.length === 0) return 'empty';
   return createHash('sha256').update(chunks.join('')).digest('hex').slice(0, 16);
+}
+
+// Full patch text of the gated diff (not hashed) — used by
+// queryCiRedClaimConflict to substring-match a claimed symbol/runId against
+// what this push actually changes.
+export function gatedDiffPatchText(repoRoot, base, ref) {
+  return gatedPatchChunks(repoRoot, base, ref).join('');
 }
 
 function isAncestor(repoRoot, maybeAncestor, ref) {
@@ -307,6 +328,75 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
   };
 }
 
+// ── CI-red claim conflict (task #584) ───────────────────────────────────────
+// Closes the gap task #542's evaluateCiRedClaim shipped with: nothing called
+// it, because a PreToolUse hook can't query the shared task-list tool.
+// scripts/lib/ci-red-claims.js is the file-based ledger a hook CAN read
+// (data/audit/ci-red-claims.jsonl, appended by scripts/claim-ci-red.js).
+// This query is deliberately independent of queryPushAllowed above (its own
+// function, its own CLI query, its own bash-hook block) — the goal is to add
+// duplicate-fix detection without touching the existing, working review gate.
+
+// Unexpired claims, excluding the caller's own (ownTaskId) — same TTL +
+// exclude semantics as ci-red-claims.js's activeClaimsAsTasks, but returning
+// raw {symbol, runId, taskId} entries so the diff-text substring match below
+// has the literal values to search for (activeClaimsAsTasks only returns a
+// folded subject string, which is lossy when both symbol and runId are set).
+export function activeCiRedClaims({ now = Date.now(), excludeTaskId = null, claimsPath = undefined } = {}) {
+  return readClaims(claimsPath)
+    .filter(c => c && c.taskId && now - new Date(c.ts).getTime() < CLAIM_TTL_MS)
+    .filter(c => excludeTaskId == null || String(c.taskId) !== String(excludeTaskId));
+}
+
+// Minimum needle length for the substring match below. Without a floor, a
+// short generic claimed symbol (e.g. "run", "main", "config") would match
+// almost any diff — adversarial review (task #584) flagged this as a
+// realistic false-positive source. 4 chars matches this codebase's shortest
+// real CI-red symbol names seen in practice (e.g. "fold", still excludes
+// single tokens like "run"/"id").
+const MIN_NEEDLE_LEN = 4;
+
+// Blocks when the pushed diff's gated-file content contains the symbol
+// and/or runId of another in_progress task's claim — the same substring-
+// match heuristic duplicate-dispatch-guard.js's taskClaimsTarget already
+// uses for task subject/description, applied here to diff patch text
+// instead. Best-effort: a fix that doesn't literally reference the symbol
+// name won't be caught, same known limitation evaluateCiRedClaim already
+// has for task subjects.
+export function queryCiRedClaimConflict({ repoRoot, ref = 'HEAD', ownTaskId = null, claimsPath = undefined, now = Date.now() }) {
+  const base = resolveBase(repoRoot);
+  if (!base) return { blocked: false, reason: 'no origin/main or main ref — fail open' };
+  const patchText = gatedDiffPatchText(repoRoot, base, ref).toLowerCase();
+  if (!patchText) return { blocked: false, reason: 'no gated diff text' };
+  const claims = activeCiRedClaims({ now, excludeTaskId: ownTaskId, claimsPath });
+  for (const claim of claims) {
+    // Check symbol AND runId independently — a claim can carry both, and a
+    // diff that names only one of them (e.g. references the CI run number
+    // but not the failing symbol) must still be caught (adversarial review,
+    // task #584: `symbol || runId` here previously meant a claim with both
+    // set never matched on runId content at all).
+    const symbolNeedle = String(claim.symbol || '').toLowerCase();
+    const runIdNeedle = String(claim.runId || '').toLowerCase();
+    const symbolHit = symbolNeedle.length >= MIN_NEEDLE_LEN && patchText.includes(symbolNeedle);
+    const runIdHit = runIdNeedle.length >= MIN_NEEDLE_LEN && patchText.includes(runIdNeedle);
+    if (!symbolHit && !runIdHit) continue;
+    const asTask = {
+      id: claim.taskId,
+      status: 'in_progress',
+      subject: [claim.symbol, claim.runId].filter(Boolean).join(' '),
+      description: '',
+    };
+    const verdict = evaluateCiRedClaim(
+      { symbol: symbolHit ? claim.symbol : null, runId: runIdHit ? claim.runId : null },
+      [asTask]
+    );
+    if (!verdict.allow) {
+      return { blocked: true, reason: verdict.reason, claimedBy: verdict.claimedBy };
+    }
+  }
+  return { blocked: false, reason: 'no active CI-red claim conflicts with this diff' };
+}
+
 // ── CLI ──────────────────────────────────────────────────────────────────────
 
 function parseCliArgs(argv) {
@@ -330,6 +420,9 @@ Queries:
   record         append a review verdict to the ledger
                    --reviewer=ship-check|code-review|second-opinion --result=pass|fail
   push-allowed   should a push of --ref be allowed without a fresh review?
+  ci-red-claim-conflict   does --ref's gated diff conflict with an active
+                   CI-red claim from another task? --own-task=<id> excludes
+                   the caller's own claim (task #584).
 
 Common options:
   --repo=<path>         git repo/worktree to diff in (default: cwd)
@@ -376,6 +469,9 @@ if (__isMain) {
       break;
     case 'push-allowed':
       result = queryPushAllowed({ repoRoot, ledgerRoot, ref });
+      break;
+    case 'ci-red-claim-conflict':
+      result = queryCiRedClaimConflict({ repoRoot, ref, ownTaskId: args['own-task'] || null });
       break;
     default:
       console.error(`ERROR: unknown or missing --query "${args.query || ''}"`);
