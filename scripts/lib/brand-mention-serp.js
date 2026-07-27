@@ -204,7 +204,10 @@ function parseXUrl(url) {
  */
 function buildQuery(keyword, extraFilter = '') {
   const base = `"${keyword}"`;
-  const exclude = '-site:broadwayscorecard.com -site:github.com/thomaspryor';
+  // theaterscorecard/showscorecard are owner alias domains Google indexed as
+  // mirrors (2026-07-27); excluding them at the source keeps SERP result
+  // slots for genuine third parties while the 308 redirects de-index them.
+  const exclude = '-site:broadwayscorecard.com -site:theaterscorecard.com -site:showscorecard.com -site:github.com/thomaspryor';
   return `${base} ${extraFilter} ${exclude}`.trim();
 }
 
