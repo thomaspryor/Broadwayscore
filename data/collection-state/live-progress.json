@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-27T03:41:47.364Z",
+  "updatedAt": "2026-07-27T03:46:21.371Z",
   "processed": 16,
-  "failed": 591,
+  "failed": 601,
   "successRate": "2.6%",
   "tierBreakdown": {
     "playwright": 13,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archiveToday": 46,
+    "archiveToday": 48,
     "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-07-27T01:55:29.699Z",
-      "event": "bb-session",
-      "session": "9d94f605",
-      "url": "https://www.nytimes.com/2026/07/22/arts/dance/hugo-marchand-paris-opera-ballet-n"
-    },
-    {
-      "t": "2026-07-27T01:55:30.289Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-27T01:55:46.141Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-07-27T03:41:39.766Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-27T03:43:22.890Z",
+      "event": "bb-session",
+      "session": "8cdf5922",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-27T03:43:23.251Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
