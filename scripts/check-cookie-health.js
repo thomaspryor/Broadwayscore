@@ -94,6 +94,28 @@ const CRITICAL_OUTLETS = {
     authCookies: [], // Complex subscriber auth — monitor via structural/volume check
     minCookies: 15, // Times bundle historically has 20+ cookies; <15 signals stale
   },
+  nypost: {
+    envVar: 'NYPOST_COOKIES',
+    // No hard paywall for theater reviews — cookies aren't required for extraction
+    // (card #582 confirmed via direct fetchPage test: auth made no difference).
+    // Tracked here anyway so a dead scrape path/body-length regression surfaces
+    // structurally instead of silently draining to zero, same as vulture/variety.
+    testUrl: 'https://nypost.com/2026/04/26/entertainment/the-lost-boys-review-vampire-show-is-best-new-musical-on-broadway/',
+    authCookies: [],
+    minBodyChars: 800,
+  },
+  hollywoodreporter: {
+    envVar: 'THR_COOKIES',
+    // No hard paywall for theater reviews. Card #582: THR's theater critic
+    // (Frank Scheck) stopped filing Broadway reviews to hollywoodreporter.com
+    // around April 2026 (his Broadway output now runs on New York Stage Review
+    // instead) — a genuine editorial change, not a scraper/auth failure. This
+    // entry exists so a FUTURE extractor break on this outlet doesn't go
+    // unnoticed the same way for another 3 months.
+    testUrl: 'https://www.hollywoodreporter.com/lifestyle/lifestyle-news/the-fear-of-13-theater-review-adrien-brody-tessa-thompson-1236566080/',
+    authCookies: [],
+    minBodyChars: 800,
+  },
 };
 
 // All outlet fileKey → envVar mappings (from shared cookie-loader)
