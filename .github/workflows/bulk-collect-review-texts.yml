@@ -288,6 +288,7 @@ jobs:
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled || 'true' }}
           BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_per_job || '15' }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.test_mode == true && '5' || inputs.max_per_job }}
           SHOW_FILTER: ${{ matrix.shows }}
