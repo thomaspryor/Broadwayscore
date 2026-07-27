@@ -60,7 +60,18 @@ const OWNER_URL_PATTERNS = [
   // hashtag pages aggregate third-party posts and are genuine signal.
   /^https?:\/\/(?:[a-z0-9-]+\.)*instagram\.com\/popular\/(?:broadway-?scorecard|bway-?scorecard)(?:[/?#]|$)/i,
   /^https?:\/\/(?:[a-z0-9-]+\.)*threads\.(?:com|net)\/@?(?:bwayscorecard|broadwayscorecard|thomaspryor)(?:[/?#]|$)/i,
-  /^https?:\/\/(?:[a-z0-9-]+\.)*broadwayscorecard\.com(?:[/?#]|$)/i,
+  // Every apex domain the owner controls, not just broadwayscorecard.com:
+  // several are aliases on the same Vercel project that SERVE the full site
+  // (mirror, canonical → broadwayscorecard.com) rather than redirecting, so
+  // Google indexes them as separate sites and they surface as "mentions"
+  // (theaterscorecard.com leak, 2026-07-27). Source of truth: Vercel account
+  // domains (GET /v5/domains) — update here when attaching a new domain.
+  /^https?:\/\/(?:[a-z0-9-]+\.)*(?:broadwayscorecard|theaterscorecard|showscorecard|operascorecard|offbroadwayscorecard|westendscorecard|broadwaymetascore|eveandadammusical)\.com(?:[/?#]|$)/i,
+  /^https?:\/\/(?:[a-z0-9-]+\.)*scorekeep\.co(?:[/?#]|$)/i,
+  // Owner Vercel deployment URLs. vercel.app is a PUBLIC shared namespace —
+  // anchor to the owner's exact project/team slugs so a third party's
+  // broadwayscore-fan-tracker.vercel.app is not swallowed.
+  /^https?:\/\/broadwayscore(?:-[a-z0-9-]+-thomaspryors-projects)?\.vercel\.app(?:[/?#]|$)/i,
   /^https?:\/\/(?:www\.)?github\.com\/thomaspryor\/Broadwayscore(?:\/|$)/i,
   // Full owner handles with a terminating boundary — a bare "broadwayscorecard"
   // prefix would also swallow third parties like broadwayscorecardfan.bsky.social
@@ -73,6 +84,12 @@ const OWNER_URL_PATTERNS = [
   /^https?:\/\/(?:www\.)?podscan\.fm\/podcasts\/broadway-breakdown/i,
   /^https?:\/\/podcasts\.apple\.com\/.*?(?:broadway-breakdown|id1260430031)/i,
   /^https?:\/\/open\.spotify\.com\/show\/.*broadway.?breakdown/i,
+  // Podcast aggregators that re-list Broadway Breakdown episodes (each new
+  // episode page previously surfaced as a "new mention"; stored leaks:
+  // pod.wave.co, podchaser, Amazon ASIN B08K5ZJNBJ)
+  /^https?:\/\/pod\.wave\.co\/podcast\/broadway-breakdown(?:[/?#]|$)/i,
+  /^https?:\/\/(?:www\.)?podchaser\.com\/podcasts\/broadway-breakdown-/i,
+  /^https?:\/\/(?:www\.)?amazon\.[a-z.]+\/.*\bB08K5ZJNBJ\b/i,
   // Owner social profiles on additional platforms (fb.com/fb.me are
   // Facebook's redirect shorteners for the same profile paths)
   /^https?:\/\/(?:[a-z0-9-]+\.)*(?:facebook\.com|fb\.com|fb\.me)\/(?:broadwayscorecard|bwayscorecard)(?:[/?#]|$)/i,

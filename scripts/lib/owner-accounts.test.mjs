@@ -65,6 +65,48 @@ test('serp helpers handle subdomain variants and host-anchor correctly', () => {
   assert.deepEqual(parseXUrl('https://mobile.twitter.com/somefan/status/42'), { handle: 'somefan', tweetId: '42' });
 });
 
+test('owner alias domains are classified as owner URLs (theaterscorecard leak 2026-07-27)', () => {
+  const owned = [
+    // The actual leaked mention: alias domain on the broadwayscore Vercel
+    // project that mirrors the site (canonical → broadwayscorecard.com)
+    'https://www.theaterscorecard.com/',
+    'https://theaterscorecard.com/browse/best-recent-shows',
+    'https://showscorecard.com/',
+    'https://www.operascorecard.com/',
+    'https://offbroadwayscorecard.com/show/primary-trust',
+    'https://westendscorecard.com/west-end',
+    'https://broadwaymetascore.com/',
+    'https://www.scorekeep.co/',
+    'https://eveandadammusical.com/',
+    'https://broadwayscore.vercel.app/',
+    'https://broadwayscore-git-main-thomaspryors-projects.vercel.app/show/hamilton',
+  ];
+  for (const url of owned) {
+    assert.ok(isOwnerUrl(url), `expected owner URL: ${url}`);
+  }
+});
+
+test('every vercel.json host-redirect domain is classified as an owner URL', () => {
+  // Prevention for the alias-domain leak class (theaterscorecard 2026-07-27,
+  // showscorecard twice before): when a new owner domain gets a host-redirect
+  // block in vercel.json, the brand-mention filter must know it too. Zero
+  // network — parity between the two files is the invariant.
+  const vercel = require('../../vercel.json');
+  const hosts = new Set();
+  for (const r of vercel.redirects || []) {
+    for (const h of r.has || []) {
+      if (h.type === 'host' && h.value) hosts.add(h.value);
+    }
+    if (r.destination && r.destination.startsWith('https://')) {
+      hosts.add(new URL(r.destination.replace(/\$1|:path\+/g, '')).hostname);
+    }
+  }
+  assert.ok(hosts.size >= 10, `expected 10+ host-redirect domains, found ${hosts.size}`);
+  for (const host of hosts) {
+    assert.ok(isOwnerUrl(`https://${host}/`), `vercel.json domain missing from OWNER_URL_PATTERNS: ${host}`);
+  }
+});
+
 test('genuine third-party URLs still pass through', () => {
   const thirdParty = [
     'https://www.instagram.com/p/DAbCdEfGhIj/', // opaque post URL — resolved by drafter, not URL filter
@@ -77,6 +119,8 @@ test('genuine third-party URLs still pass through', () => {
     'https://www.nytimes.com/2026/07/01/theater/review-aggregators.html',
     'https://x.com/someoneelse/status/456',
     'https://www.netflix.com/broadwayscorecard', // host must not false-match *.x.com
+    'https://mytheaterscorecard.com/', // prefixed host must NOT match the alias-domain pattern
+    'https://theaterscorecards.com/', // near-miss domain (trailing s)
   ];
   for (const url of thirdParty) {
     assert.ok(!isOwnerUrl(url), `expected third-party URL to pass: ${url}`);
