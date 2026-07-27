@@ -368,27 +368,30 @@ test('PUSH_RECONCILE_MERGED_JSON=1 survives a nearby-slug remote edit through th
     sh('git commit -q -m base', seedDir);
     sh('git branch -M main', seedDir);
     sh(`git push -q "${originDir}" main`, seedDir);
-    // Pin the bare origin's HEAD to `main` explicitly. `git init --bare`
-    // sets HEAD from `init.defaultBranch`, which is NOT the same everywhere
-    // (this Mac's global config defaults to "main"; the GitHub Actions
-    // ubuntu runner's git defaults to "master"). If HEAD still points at a
-    // ref that was never pushed, `git clone` checks out an EMPTY working
-    // tree — refs and objects are all present, but no files land on disk —
-    // so every `fs.writeFileSync` below into a fresh clone's `data/`
-    // silently ENOENTs. Reproduced exactly this way in CI (run 30234641991)
-    // after passing locally many times.
-    sh(`git --git-dir="${originDir}" symbolic-ref HEAD refs/heads/main`, tmp);
+
+    // Both clones below pass --branch main explicitly instead of relying on
+    // the bare origin's HEAD symref. `git init --bare` sets HEAD from
+    // `init.defaultBranch`, which is NOT the same everywhere (this Mac's
+    // global config defaults to "main"; the GitHub Actions ubuntu runner's
+    // git defaults to "master") — a plain `git clone` follows HEAD, and if
+    // it still points at a never-pushed ref name, the clone checks out an
+    // EMPTY working tree (refs/objects present, zero files on disk), so
+    // every fs.writeFileSync below into `data/` silently ENOENTs.
+    // Reproduced exactly this way in CI (run 30234641991). --branch main
+    // sidesteps HEAD-following entirely rather than mutating the origin's
+    // HEAD to match it, so it needs no regression guard tied to ambient
+    // init.defaultBranch config.
 
     // Runner clone: this is "our" branch, about to edit show-a and push
     // through push-with-retry.sh with PUSH_RECONCILE_MERGED_JSON=1.
-    sh(`git clone -q "${originDir}" "${runnerDir}"`, tmp);
+    sh(`git clone -q --branch main "${originDir}" "${runnerDir}"`, tmp);
     sh('git config user.email t@t.t', runnerDir);
     sh('git config user.name t', runnerDir);
 
     // Concurrent writer: pushes a remote commit editing show-b's claim
     // BEFORE our push attempt — same fixture shape as #420 (different
     // slugs, few lines apart, both sides touch the same file).
-    sh(`git clone -q "${originDir}" "${seedDir}-writer"`, tmp);
+    sh(`git clone -q --branch main "${originDir}" "${seedDir}-writer"`, tmp);
     const writerDir = `${seedDir}-writer`;
     sh('git config user.email t@t.t', writerDir);
     sh('git config user.name t', writerDir);
@@ -421,7 +424,7 @@ test('PUSH_RECONCILE_MERGED_JSON=1 survives a nearby-slug remote edit through th
     // reproduced fresh so a future refactor of push-with-retry.sh can't
     // silently stop needing the flag without this test noticing).
     const bugCheckDir = `${runnerDir}-bugcheck`;
-    sh(`git clone -q "${runnerDir}" "${bugCheckDir}"`, tmp);
+    sh(`git clone -q --branch main "${runnerDir}" "${bugCheckDir}"`, tmp);
     sh('git config user.email t@t.t', bugCheckDir);
     sh('git config user.name t', bugCheckDir);
     sh('git fetch -q origin main', bugCheckDir);
