@@ -1459,6 +1459,50 @@
       "permanent": true
     },
     {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "theaterscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.theaterscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "showscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.showscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/$1",
+      "permanent": true
+    },
+    {
       "source": "/show/can-i-be-frank-off-broadway",
       "destination": "/show/morgan-bassichis-can-i-be-frank-off-broadway",
       "permanent": true

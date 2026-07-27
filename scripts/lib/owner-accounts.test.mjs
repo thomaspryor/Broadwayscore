@@ -86,6 +86,27 @@ test('owner alias domains are classified as owner URLs (theaterscorecard leak 20
   }
 });
 
+test('every vercel.json host-redirect domain is classified as an owner URL', () => {
+  // Prevention for the alias-domain leak class (theaterscorecard 2026-07-27,
+  // showscorecard twice before): when a new owner domain gets a host-redirect
+  // block in vercel.json, the brand-mention filter must know it too. Zero
+  // network — parity between the two files is the invariant.
+  const vercel = require('../../vercel.json');
+  const hosts = new Set();
+  for (const r of vercel.redirects || []) {
+    for (const h of r.has || []) {
+      if (h.type === 'host' && h.value) hosts.add(h.value);
+    }
+    if (r.destination && r.destination.startsWith('https://')) {
+      hosts.add(new URL(r.destination.replace(/\$1|:path\+/g, '')).hostname);
+    }
+  }
+  assert.ok(hosts.size >= 10, `expected 10+ host-redirect domains, found ${hosts.size}`);
+  for (const host of hosts) {
+    assert.ok(isOwnerUrl(`https://${host}/`), `vercel.json domain missing from OWNER_URL_PATTERNS: ${host}`);
+  }
+});
+
 test('genuine third-party URLs still pass through', () => {
   const thirdParty = [
     'https://www.instagram.com/p/DAbCdEfGhIj/', // opaque post URL — resolved by drafter, not URL filter
