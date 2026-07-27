@@ -189,6 +189,46 @@ function terminalSurfaceAliveIn(ref) {
   }
 }
 
+// Shared two-signal liveness check (cards #559/#564). claudeAliveIn alone
+// queries only cmux's tag/process registry, which can desync from the truth
+// in EITHER direction (#548: false positive; #559: false negative, verified
+// live in production). Every call site that treats a workspace as
+// confirmed-dead — closing it, or writing a 'dead' ledger breadcrumb that
+// feeds the duplicate-dispatch guard — must require the independent
+// terminal-surface registry (surfaceAliveFn) to ALSO report it gone before
+// trusting that verdict. Any error deciding either signal = treat as alive
+// (fail-safe): every caller of this function treats "dead" as license to do
+// something consequential (close a tab, count a dispatch as failed), so
+// uncertainty must never resolve to "dead".
+//
+// Returns { dead, disagreement }. disagreement is true when the primary
+// registry said dead but the surface registry said alive — direct evidence
+// the underlying cmux registry desync is happening in production right now,
+// not just a theoretical risk this function guards against.
+function checkLiveness(ref, aliveFn, surfaceAliveFn) {
+  let primaryAlive = true;
+  try { primaryAlive = aliveFn(ref); } catch { primaryAlive = true; }
+  if (primaryAlive) return { dead: false, disagreement: false };
+  let surfaceAlive = true;
+  try { surfaceAlive = surfaceAliveFn(ref); } catch { surfaceAlive = true; }
+  return { dead: !surfaceAlive, disagreement: surfaceAlive };
+}
+
+// Shared claudeAlive computation for launch-decision call sites (card #567,
+// same class as #559/#564). A bare `claudeAliveIn(ref)` trusts cmux's
+// tag/process registry alone, which can desync (see checkLiveness's header
+// comment above) — here a false-negative ("dead" when the workspace is
+// actually still running a long tool call) would make launchDecision return
+// 'reclaim-and-launch' and open a duplicate babysitter session on top of a
+// live one. Requires BOTH signals to agree "dead" before reporting not-alive.
+// Test-only seams mirror pruneDone's pattern.
+function computeClaudeAlive(meta, opts = {}) {
+  if (!meta || !meta.workspaceRef) return false;
+  const aliveFn = opts.claudeAliveIn || claudeAliveIn;
+  const surfaceAliveFn = opts.terminalSurfaceAliveIn || terminalSurfaceAliveIn;
+  return !checkLiveness(meta.workspaceRef, aliveFn, surfaceAliveFn).dead;
+}
+
 // Close every ✅-marked workspace WITHOUT a LIVE claude process. Alive-but-
 // waiting counts as live: ✅ auto-marks land when a task completes even while
 // the owner is still reviewing in the tab, and closing kills claude (10 tabs
@@ -197,11 +237,9 @@ function terminalSurfaceAliveIn(ref) {
 // closable. Skipped tabs are reported; the owner closes them by hand.
 //
 // A "not alive" verdict from claudeAliveIn alone is not enough to close
-// (card #559): it only queries one of cmux's two registries, and that
-// registry can desync from the truth (#548). Before closing, the
-// independent terminal-surface registry (terminalSurfaceAliveIn) must ALSO
-// report the workspace gone — closing requires both signals to agree.
-// Returns { closed, skipped }; failures to close one workspace don't abort.
+// (card #559) — see checkLiveness's header comment. Returns
+// { closed, skipped, disagreements }; failures to close one workspace don't
+// abort.
 function pruneDone(opts = {}) {
   // Seams are test-only (prove the skip/throw paths without a cmux socket).
   const aliveFn = opts.claudeAliveIn || claudeAliveIn;
@@ -211,24 +249,16 @@ function pruneDone(opts = {}) {
   const done = listFn().filter(w => isDoneTitle(w.title));
   const closed = [];
   const skipped = [];
+  const disagreements = [];
   for (const w of done) {
-    // Any error deciding liveness = treat as alive. Closing is the only
-    // irreversible outcome here; never close on uncertainty.
-    let alive = true;
-    try { alive = aliveFn(w.ref); } catch { alive = true; }
-    if (!alive) {
-      // Primary registry says dead — require the independent surface
-      // registry to agree before trusting that verdict (#559).
-      let surfaceAlive = true;
-      try { surfaceAlive = surfaceAliveFn(w.ref); } catch { surfaceAlive = true; }
-      alive = surfaceAlive;
-    }
-    if (alive) { skipped.push(w); continue; }
+    const { dead, disagreement } = checkLiveness(w.ref, aliveFn, surfaceAliveFn);
+    if (disagreement) disagreements.push(w);
+    if (!dead) { skipped.push(w); continue; }
     if (opts.dryRun) { closed.push(w); continue; }
     try { closeFn(w.ref); closed.push(w); }
     catch (e) { console.error(`[cmux-workspaces] failed to close ${w.ref}: ${e.message}`); }
   }
-  return { closed, skipped };
+  return { closed, skipped, disagreements };
 }
 
 module.exports = {
@@ -236,5 +266,5 @@ module.exports = {
   parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude,
   hasClaudeChrome, isNotFoundError,
   listWorkspaces, closeWorkspace, claudeRunningIn, claudeAliveIn,
-  terminalSurfaceAliveIn, pruneDone,
+  terminalSurfaceAliveIn, checkLiveness, computeClaudeAlive, pruneDone,
 };
