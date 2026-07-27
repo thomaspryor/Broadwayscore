@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-27T00:21:15.611Z",
+  "generatedAt": "2026-07-27T01:32:18.820Z",
   "windowDays": 45,
   "showsScanned": 53,
   "gaps": [
@@ -18,7 +18,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-07-26T10:36:40.359Z",
-      "nonTerminalAgeHours": 13.743125555555556
+      "nonTerminalAgeHours": 14.92735
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -28,14 +28,14 @@
       "outletId": "independent",
       "tier": 1,
       "type": "empty-body",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html?loginSuccessful=true",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
       "recovery": null,
       "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html?loginSuccessful=true --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-07-26T12:20:34.737Z",
-      "nonTerminalAgeHours": 12.01135388888889
+      "nonTerminalAgeHours": 13.195578333333334
     },
     {
       "showId": "tender-off-west-end-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=tender-off-west-end-2026 --url=https://www.dailymail.co.uk/tvshowbiz/article-15888377/Doctor-Christmas-special-episode-AXED-BBC-tender-invest-long-term-future.html --outlet=daily-mail --critic=\"Rebecca Davison\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-17T06:49:09.308Z",
-      "fileAgeHours": 233.53507472222222,
+      "fileAgeHours": 234.71929777777777,
       "gapSeenAt": "2026-07-26T20:24:00.725Z",
-      "nonTerminalAgeHours": 3.954135
+      "nonTerminalAgeHours": 5.138359444444444
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -67,9 +67,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 83.16086888888888,
+      "fileAgeHours": 84.34509194444445,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 42.46379861111111
+      "nonTerminalAgeHours": 43.648023055555555
     }
   ],
   "contradictions": []
