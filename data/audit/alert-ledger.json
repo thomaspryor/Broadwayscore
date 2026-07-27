@@ -36,22 +36,22 @@
       "disposition": "auto",
       "title": "BSC Daily: Credits: ScrapingDog",
       "firstSeen": "2026-07-24T07:50:33.764Z",
-      "lastSeen": "2026-07-26T16:23:12.303Z",
+      "lastSeen": "2026-07-27T08:00:25.944Z",
       "lastNotifiedAt": "2026-07-24T07:50:33.764Z",
       "notifyCount": 1,
       "cardId": "3a7637c5-416f-813f-b4d9-ecbfd564ab6f",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Workflow repeat-failure: Test Suite": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Test Suite",
       "firstSeen": "2026-07-24T07:50:34.248Z",
-      "lastSeen": "2026-07-26T16:23:10.755Z",
+      "lastSeen": "2026-07-27T08:00:24.726Z",
       "lastNotifiedAt": "2026-07-24T07:50:34.248Z",
       "notifyCount": 1,
       "cardId": "3a7637c5-416f-81c9-b841-daeea9387118",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Workflow repeat-failure: Commercial RSS Poll": {
       "status": "open",
@@ -69,33 +69,33 @@
       "disposition": "auto",
       "title": "BSC Daily: Audience coverage: open-show gaps",
       "firstSeen": "2026-07-24T07:50:35.242Z",
-      "lastSeen": "2026-07-26T16:23:11.269Z",
+      "lastSeen": "2026-07-27T08:00:24.726Z",
       "lastNotifiedAt": "2026-07-24T07:50:35.242Z",
       "notifyCount": 1,
       "cardId": "3a7637c5-416f-8183-90ff-d3b51e7be23d",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Sync: baseline drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-07-25T16:22:17.812Z",
+      "lastSeen": "2026-07-27T08:00:24.727Z",
       "lastNotifiedAt": "2026-07-24T07:50:35.775Z",
       "notifyCount": 1,
       "cardId": "3a7637c5-416f-8145-a6b5-c8e39ea3e262",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-07-26T16:23:11.824Z",
+      "lastSeen": "2026-07-27T08:00:25.453Z",
       "lastNotifiedAt": "2026-07-24T07:50:36.268Z",
       "notifyCount": 1,
       "cardId": "3a7637c5-416f-81d3-909d-e97d2bd72154",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-sla:pages-stuck": {
       "status": "open",
@@ -140,6 +140,36 @@
       "cardId": null,
       "silentRefires": 2,
       "resolvedAt": "2026-07-27T00:17:48.955Z"
+    },
+    "health-check:Quality: star-vs-score mismatch": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Quality: star-vs-score mismatch",
+      "firstSeen": "2026-07-27T08:00:24.727Z",
+      "lastSeen": "2026-07-27T08:00:24.727Z",
+      "lastNotifiedAt": "2026-07-27T08:00:24.727Z",
+      "notifyCount": 1,
+      "cardId": "3aa637c5-416f-818d-a590-d33bd1655341"
+    },
+    "health-check:Credits: ScrapingBee": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Credits: ScrapingBee",
+      "firstSeen": "2026-07-27T08:00:25.454Z",
+      "lastSeen": "2026-07-27T08:00:25.454Z",
+      "lastNotifiedAt": "2026-07-27T08:00:25.454Z",
+      "notifyCount": 1,
+      "cardId": "3aa637c5-416f-81f1-985a-ce121eb8a558"
+    },
+    "health-check:Credits: Bright Data": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Credits: Bright Data",
+      "firstSeen": "2026-07-27T08:00:25.944Z",
+      "lastSeen": "2026-07-27T08:00:25.944Z",
+      "lastNotifiedAt": "2026-07-27T08:00:25.944Z",
+      "notifyCount": 1,
+      "cardId": "3aa637c5-416f-81c3-b4e4-e1b1fc273987"
     }
   }
 }

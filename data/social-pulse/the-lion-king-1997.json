@@ -3,62 +3,67 @@
   "showId": "the-lion-king-1997",
   "showTitle": "The Lion King",
   "market": "Broadway",
-  "fetchedAt": "2026-07-26T20:23:01.637Z",
-  "tier": "Steady",
-  "volume": 20,
-  "effectiveVolume": 2.9,
+  "fetchedAt": "2026-07-27T07:21:57.760Z",
+  "tier": "Hidden",
+  "volume": 11,
+  "effectiveVolume": 4.5,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0.2222222222222222,
-      "bluesky": 1
+      "bluesky": 0.8
     },
-    "overall": 0.5
+    "overall": 0.8,
+    "classified": 5
   },
   "positivePct": 100,
-  "opinionSample": 4,
-  "weekOverWeekPct": -13,
-  "baselineMultiple": 0.87,
+  "opinionSample": 2,
+  "weekOverWeekPct": -45,
+  "baselineMultiple": 0.51,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 2,
-    "bluesky": 5
+    "reddit": 0,
+    "bluesky": 4
   },
   "topQuotes": [
-    {
-      "text": "What was the first musical you ever saw live? Mine was The Lion King on Broadway in 2011 as a kid, I had been begging…",
-      "platform": "reddit",
-      "author": "u/One-Method-1312",
-      "url": "https://www.reddit.com/r/musicals/comments/1v480b6/what_was_the_first_musical_you_ever_saw_live/"
-    },
     {
       "text": "I have played “Rafiki” in two different professional musicals - neither of which were The Lion King and one of which…",
       "platform": "bluesky",
       "author": "@shauntelleb.bsky.social",
       "url": "https://bsky.app/profile/shauntelleb.bsky.social/post/3mrbaokomg22l"
+    },
+    {
+      "text": "Thrilled to announce that India Bolds-Browne will be an instructor at our CFA Broadway Studio Intensive! India…",
+      "platform": "bluesky",
+      "author": "@cfaarts.bsky.social",
+      "url": "https://bsky.app/profile/cfaarts.bsky.social/post/3mrfoq5hrzp2p"
     }
   ],
   "counters": {
-    "reddit": 9,
+    "reddit": null,
     "bluesky": 5,
     "x": 6,
-    "wikipedia": 3310
+    "wikipedia": 3374
   },
   "wikipediaTitle": "The Lion King (musical)",
   "baseline": {
-    "mean": 21.5,
-    "weeksOfHistory": 2
+    "mean": 18,
+    "weeksOfHistory": 3
   },
   "rawCounts": {
-    "reddit": 9,
+    "reddit": 0,
     "bluesky": 5
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "reddit",
+      "error": "all providers down (see log)"
+    }
+  ],
   "rank": {
-    "position": 24,
+    "position": 20,
     "total": 30,
-    "text": "24/30 Broadway"
+    "text": "20/30 Broadway"
   },
-  "compositeScore": 1.45
+  "compositeScore": 2.25
 }

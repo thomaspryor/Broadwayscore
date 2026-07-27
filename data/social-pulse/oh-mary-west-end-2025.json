@@ -3,27 +3,28 @@
   "showId": "oh-mary-west-end-2025",
   "showTitle": "Oh, Mary!",
   "market": "West End",
-  "fetchedAt": "2026-07-26T20:38:08.105Z",
+  "fetchedAt": "2026-07-27T07:35:27.112Z",
   "tier": "Hidden",
   "volume": 18,
-  "effectiveVolume": 4,
+  "effectiveVolume": 4.8,
   "relevanceRates": {
     "byPlatform": {
       "reddit": 1,
-      "bluesky": 0.75
+      "bluesky": 1
     },
-    "overall": 0.8
+    "overall": 1,
+    "classified": 5
   },
   "positivePct": 100,
-  "opinionSample": 1,
-  "weekOverWeekPct": -87,
-  "baselineMultiple": 0.13,
+  "opinionSample": 2,
+  "weekOverWeekPct": 0,
+  "baselineMultiple": 0.24,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
     "reddit": 1,
-    "bluesky": 3
+    "bluesky": 4
   },
   "topQuotes": [
     {
@@ -31,18 +32,24 @@
       "platform": "bluesky",
       "author": "@emyunks.bsky.social",
       "url": "https://bsky.app/profile/emyunks.bsky.social/post/3mrfzipjotk2y"
+    },
+    {
+      "text": "Congratulations to the gifted Michael Urie on his 2026 Emmy nomination for Outstanding Supporting Actor in a Comedy…",
+      "platform": "bluesky",
+      "author": "@paulscottadamo.bsky.social",
+      "url": "https://bsky.app/profile/paulscottadamo.bsky.social/post/3mr6l4zw4t22j"
     }
   ],
   "counters": {
     "reddit": 1,
     "bluesky": 5,
     "x": 12,
-    "wikipedia": 8759
+    "wikipedia": 8842
   },
   "wikipediaTitle": "Oh, Mary!",
   "baseline": {
-    "mean": 76,
-    "weeksOfHistory": 2
+    "mean": 56.666666666666664,
+    "weeksOfHistory": 3
   },
   "rawCounts": {
     "reddit": 1,
@@ -54,5 +61,5 @@
     "total": 48,
     "text": "6/48 West End"
   },
-  "compositeScore": 2
+  "compositeScore": 2.4
 }

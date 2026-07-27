@@ -3,55 +3,56 @@
   "showId": "hadestown-2019",
   "showTitle": "Hadestown",
   "market": "Broadway",
-  "fetchedAt": "2026-07-26T20:14:26.050Z",
+  "fetchedAt": "2026-07-27T07:13:27.567Z",
   "tier": "Buzzing",
-  "volume": 572,
-  "effectiveVolume": 143.4,
+  "volume": 622,
+  "effectiveVolume": 163,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0.8727272727272727,
-      "bluesky": 0.94
+      "reddit": 0.9333333333333333,
+      "bluesky": 0.96
     },
-    "overall": 0.9161290322580645
+    "overall": 0.95,
+    "classified": 160
   },
-  "positivePct": 81,
-  "opinionSample": 79,
-  "weekOverWeekPct": 126,
-  "baselineMultiple": 2.26,
+  "positivePct": 80,
+  "opinionSample": 87,
+  "weekOverWeekPct": 9,
+  "baselineMultiple": 1.51,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 48,
-    "bluesky": 94
+    "reddit": 56,
+    "bluesky": 96
   },
   "topQuotes": [
+    {
+      "text": "the hadestown proshot reminds me of my favorite broadway experience; at the start of act two Orpheus runs up the aisle…",
+      "platform": "bluesky",
+      "author": "@overlysarcastic.bsky.social",
+      "url": "https://bsky.app/profile/overlysarcastic.bsky.social/post/3mrlgraxejs2x"
+    },
     {
       "text": "Go see Hadestown proshot Please go see the Hadestown in the movie theater during this limited run! I went to AMC on…",
       "platform": "reddit",
       "author": "u/DirectFreedom9307",
       "url": "https://www.reddit.com/r/Broadway/comments/1v5uanc/go_see_hadestown_proshot/"
-    },
-    {
-      "text": "Also, I’m so glad I decided on a whim that this evening was the night to see it. I’m a mess, and I absolutely needed…",
-      "platform": "bluesky",
-      "author": "@chrisgeidner.bsky.social",
-      "url": "https://bsky.app/profile/chrisgeidner.bsky.social/post/3mrgp3zijhk2b"
     }
   ],
   "counters": {
-    "reddit": 55,
-    "bluesky": 153,
-    "x": 364,
-    "wikipedia": 88416
+    "reddit": 60,
+    "bluesky": 181,
+    "x": 381,
+    "wikipedia": 122529
   },
   "wikipediaTitle": "Hadestown",
   "baseline": {
-    "mean": 412.5,
-    "weeksOfHistory": 2
+    "mean": 482.3333333333333,
+    "weeksOfHistory": 3
   },
   "rawCounts": {
-    "reddit": 55,
+    "reddit": 60,
     "bluesky": 100
   },
   "errors": [],
@@ -60,5 +61,5 @@
     "total": 30,
     "text": "1/30 Broadway"
   },
-  "compositeScore": 116.15
+  "compositeScore": 130.4
 }
