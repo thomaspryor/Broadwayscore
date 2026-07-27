@@ -116,6 +116,16 @@ const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { extractVerifyCmd } = require('./lib/autonomous-verify-cmd.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 
+// CI-red claim auto-invocation (task #598): the ledger built by task #584
+// (evaluateCiRedClaim, enforced at the push-gate hook) stayed empty in
+// practice because nothing ever called appendClaim() outside a human running
+// scripts/claim-ci-red.js by hand. bsc-next.js is every CI-red fix task's
+// single dispatch chokepoint (cmux, --headless, --exec all route through
+// main()), so it records the claim itself instead of relying on the
+// dispatched session to remember the CLI exists.
+const { extractCiRedTarget } = require('./lib/ci-red-dispatch-heuristic.js');
+const { appendClaim } = require('./lib/ci-red-claims.js');
+
 // Actionable list, best-first: by Notion priority, then pending before
 // in_progress (fresh work first), then task id. Completed dropped;
 // Marketing/Partnerships dropped unless includeExcluded (used by --list to show
@@ -329,6 +339,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     terminalSurfaceAliveIn: surfaceAliveInFn = cmuxws.terminalSurfaceAliveIn,
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
+    appendCiRedClaim: appendCiRedClaimFn = appendClaim,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -449,7 +460,31 @@ function main(argv = process.argv.slice(2), deps = {}) {
     console.error(`[bsc-next] WARN dispatching #${task.id} unarmed: full card unavailable (${pid ? 'Notion fetch failed' : 'native task, no card'}) — gate not enforceable on the truncated mirror.`);
   }
 
+  // CI-red claim auto-invocation (task #598): record a claim so another
+  // in_progress task's pre-push-review-gate.sh check (task #584) sees it —
+  // closes the gap where nothing ever called claim-ci-red.js automatically.
+  // Recorded at each branch's own confirmed-dispatch point (ship-check catch:
+  // an earlier version wrote the claim before the duplicate/dead-dispatch/
+  // launch-failure guards below could still refuse — a refused dispatch would
+  // leave a phantom 2h lock on the ledger blocking unrelated sessions from the
+  // same symbol). Non-fatal: a ledger write failure must never block an
+  // otherwise-good dispatch.
+  const ciRedTarget = extractCiRedTarget(task, card);
+  function recordCiRedClaim() {
+    if (!ciRedTarget) return;
+    try {
+      const claim = appendCiRedClaimFn({ taskId: task.id, symbol: ciRedTarget.symbol, runId: ciRedTarget.runId });
+      console.log(`[bsc-next] recorded CI-red claim for #${task.id}: ${JSON.stringify(claim)}`);
+    } catch (e) {
+      console.error(`[bsc-next] WARN CI-red claim write failed (non-fatal): ${e.message}`);
+    }
+  }
+
   if (args.exec) {
+    // No guard sits between here and the spawn below — exec has no
+    // duplicate-dispatch check of its own — so this is already the
+    // confirmed-dispatch point.
+    recordCiRedClaim();
     // Run an interactive claude on the seed in this terminal (no Cmux).
     const r = spawnSync('claude', ['--model', model, '--dangerously-skip-permissions', seed], { stdio: 'inherit', cwd: REPO });
     if (r.error) { console.error(`[bsc-next] failed to launch claude: ${r.error.message}`); process.exit(1); }
@@ -478,6 +513,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
         }
       } catch (e) { console.error(`[bsc-next] tab duplicate check failed (continuing): ${e.message}`); }
     }
+    recordCiRedClaim();
     const { runJob } = require('./lib/bsc-runner.js');
     console.log(`[bsc-next] headless job starting on #${task.id}: ${task.subject} (model ${model})`);
     const verifyH = verifyGate; // extracted once at the dispatch gate above
@@ -548,6 +584,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
   const res = launchCmuxFn(task, seed, undefined, model, project);
   if (res.ok) {
     console.log(`[bsc-next] opened Cmux workspace ${res.ref} on #${task.id}: ${task.subject} (claude verified running${res.adoptedLate ? ', adopted after a late start' : ''})`);
+    recordCiRedClaim();
     // Journal the launch (task #334) so a later bsc-prune sweep can attribute
     // a dead shell back to this task, and a future dispatch can see how many
     // times this task has already died before blindly opening another one.
