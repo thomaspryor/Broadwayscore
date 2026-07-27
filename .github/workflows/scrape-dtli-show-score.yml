@@ -387,6 +387,11 @@ jobs:
             exit 0
           fi
 
+          # Jitter (#312 cousin fix): spreads out this check-then-dispatch guard
+          # so overlapping triggers don't all read RUNNING=0 before any of them
+          # start. See gather-reviews.yml for the incident this was copied from.
+          sleep $((RANDOM % 20 + 1))
+
           RUNNING=$(gh run list --workflow=collect-review-texts.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           if [ "$RUNNING" -gt 0 ]; then
             echo "Text collection already running. Skipping."
