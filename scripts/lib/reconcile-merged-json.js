@@ -35,11 +35,14 @@
  * Usage:
  *   node scripts/lib/reconcile-merged-json.js <remote-ref> [file...]
  *
- * With no file list, every managed file that exists is considered. Prints the
- * number of files actually CHANGED by reconciliation (0 = nothing to do), so the
- * caller can skip an empty `git commit --amend`. Fails OPEN: any error leaves
- * the file untouched and exits 0 — a reconciliation problem must never block a
- * push that would otherwise succeed.
+ * With no file list, every managed file that exists is considered. Prints one
+ * repo-relative path per line on stdout for each file actually CHANGED by
+ * reconciliation (empty output = nothing to do), so the caller can both skip
+ * an empty `git commit --amend` AND `git add` exactly those paths — never a
+ * blanket `-A` (task #574 hardening: see the call site's comment for why).
+ * Fails OPEN: any error leaves the file untouched and exits 0 — a
+ * reconciliation problem must never block a push that would otherwise
+ * succeed.
  */
 'use strict';
 
@@ -83,7 +86,7 @@ function main() {
     ? only.map((f) => ({ ...(mergerFor(f) || {}), file: f })).filter((t) => t.merge)
     : MANAGED;
 
-  let changed = 0;
+  const changedFiles = [];
   for (const t of targets) {
     try {
       if (!fs.existsSync(t.file)) continue;
@@ -97,14 +100,21 @@ function main() {
       if (after === before) continue;
 
       fs.writeFileSync(t.file, after);
-      changed++;
+      changedFiles.push(t.file);
       console.error(`  reconciled ${t.file} against ${ref} — ${JSON.stringify(result.stats)}`);
     } catch (e) {
       // Fail OPEN, loudly enough to debug but never blocking.
       console.error(`  ::warning::reconcile-merged-json: ${t.file} skipped (${String(e.message).slice(0, 120)})`);
     }
   }
-  process.stdout.write(String(changed));
+  // One changed path per line on stdout — NOT just a count. push-with-retry.sh
+  // uses this to `git add` exactly these paths before amending, instead of
+  // `git add -A` (ship-check/Codex finding: a blanket -A would also sweep up
+  // any OTHER untracked file sitting in the working tree at reconcile time —
+  // e.g. update-show-status.yml's discovery-blocked audit JSON, which is
+  // deliberately pushed to the PRIVATE repo only and must never land in this
+  // public amended commit).
+  process.stdout.write(changedFiles.join('\n'));
 }
 
 module.exports = { MANAGED, mergerFor };

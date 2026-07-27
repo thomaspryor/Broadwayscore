@@ -421,6 +421,12 @@ jobs:
 
       - name: Commit and push changes
         if: always() && steps.changes.outputs.has_changes == 'true'
+        # Task #574: bare stage-data-changes.sh stages all of data/, so a
+        # managed union-merged file (commercial.json et al.) could be swept
+        # in even though this step never names one — see push-with-retry.sh's
+        # reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
