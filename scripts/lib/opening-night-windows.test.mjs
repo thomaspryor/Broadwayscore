@@ -143,31 +143,57 @@ test('decision: end-to-end via computeClaudeAlive — stale heartbeat + both sig
   assert.equal(d.action, 'reclaim-and-launch');
 });
 
-// Card #568: LOCK_META (meta.json) and the heartbeat are both written only
-// AFTER launchCmuxSession() returns, up to ~150s later — a concurrent tick
-// landing in that gap sees lockExists=true, heartbeatAgeMin=null, and no live
-// process to probe. Without lockAgeSec, that's indistinguishable from "died
-// before ever writing meta" and gets reclaimed out from under the still-
-// launching session.
-test('decision: fresh lock, no heartbeat ever written → launch still in flight, NOT reclaimed', () => {
-  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: null, claudeAlive: false, attemptsTonight: 0, lockAgeSec: 5 });
+// Card #568: LOCK_META (meta.json) is written only AFTER launchCmuxSession()
+// returns, up to ~240s later — a concurrent tick landing in that gap sees
+// lockExists=true, metaExists=false, and no live process to probe. Without
+// lockAgeSec, that's indistinguishable from "died before ever writing meta"
+// and gets reclaimed out from under the still-launching session.
+//
+// The realistic-heartbeat variant matters: HEARTBEAT is a single global file
+// (not scoped to this lock instance) that a prior successful night already
+// wrote and nothing ever deletes — heartbeatAgeMin in production is
+// realistically always a large STALE number, essentially never `null`
+// (ship-check finding: an earlier version of this fix keyed off
+// heartbeatAgeMin===null and was unreachable in production because of this).
+// metaExists is therefore the only signal that actually distinguishes
+// in-flight from pre-meta-dead.
+test('decision: fresh lock, no meta.json yet → launch still in flight, NOT reclaimed (realistic stale-heartbeat-from-a-prior-night case)', () => {
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: 2880, claudeAlive: false, attemptsTonight: 0, lockAgeSec: 5, metaExists: false });
   assert.equal(d.action, 'skip');
   assert.match(d.reason, /in flight/);
 });
 
 test('decision: lock right at the edge of the grace window is still in-flight', () => {
-  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: null, claudeAlive: false, attemptsTonight: 0, lockAgeSec: LAUNCH_INFLIGHT_GRACE_SEC - 1 });
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: 2880, claudeAlive: false, attemptsTonight: 0, lockAgeSec: LAUNCH_INFLIGHT_GRACE_SEC - 1, metaExists: false });
   assert.equal(d.action, 'skip');
 });
 
-test('decision: lock past the grace window with no heartbeat → genuinely dead, reclaim', () => {
-  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: null, claudeAlive: false, attemptsTonight: 0, lockAgeSec: LAUNCH_INFLIGHT_GRACE_SEC + 1 });
+test('decision: lock past the grace window with no meta.json → genuinely dead, reclaim', () => {
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: 2880, claudeAlive: false, attemptsTonight: 0, lockAgeSec: LAUNCH_INFLIGHT_GRACE_SEC + 1, metaExists: false });
   assert.equal(d.action, 'reclaim-and-launch');
 });
 
 test('decision: unknown lock age (not supplied) falls back to prior stale-path behavior', () => {
-  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: null, claudeAlive: false, attemptsTonight: 1 });
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: 2880, claudeAlive: false, attemptsTonight: 1, metaExists: false });
   assert.equal(d.action, 'reclaim-and-launch');
+});
+
+test('decision: metaExists not supplied (unknown caller) defaults to pre-#568 behavior — reclaim, not stuck skipping forever', () => {
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: 2880, claudeAlive: false, attemptsTonight: 1, lockAgeSec: 5 });
+  assert.equal(d.action, 'reclaim-and-launch');
+});
+
+test('decision: meta.json exists (attempt died just after writing it) → not treated as in-flight even with a fresh lock', () => {
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: 2880, claudeAlive: false, attemptsTonight: 1, lockAgeSec: 5, metaExists: true });
+  assert.equal(d.action, 'reclaim-and-launch');
+});
+
+// Ordering pin (adversarial-review finding): the in-flight skip must beat
+// the attempt-cap escalate, or a slow-but-healthy launch on attempt 3 pages
+// the owner mid-launch instead of being left alone.
+test('decision: in-flight skip beats attempt-cap escalate — never pages the owner mid-launch', () => {
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: 2880, claudeAlive: false, attemptsTonight: MAX_ATTEMPTS_PER_NIGHT, lockAgeSec: 5, metaExists: false });
+  assert.equal(d.action, 'skip');
 });
 
 test('decision: attempt cap → escalate, never a 4th Fable session', () => {
