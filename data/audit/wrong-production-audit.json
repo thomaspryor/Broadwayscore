@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-27T19:30:56.337Z",
+  "timestamp": "2026-07-27T19:51:13.781Z",
   "stats": {
     "totalReviews": 40782,
-    "alreadyFlagged": 17886,
+    "alreadyFlagged": 17890,
     "dateGuardCatches": 67,
-    "directorMismatch": 928,
+    "directorMismatch": 927,
     "tvFilmSignals": 1116,
     "londonSignals": 765,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3297
+    "noPublishDate": 3295
   },
   "findings": [
     {
@@ -4296,19 +4296,6 @@
           "severity": "HIGH",
           "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
         },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "broadwayworld--michael-dale.json",
-      "publishDate": "2026-07-24",
-      "url": "https://www.broadwayworld.com/article/Lin-Manuel-Miranda-and-Gaten-Matarazzo-Guest-Judge-Filmed-Performance-of-CATS-THE-JELLICLE-BALL-20260724",
-      "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
