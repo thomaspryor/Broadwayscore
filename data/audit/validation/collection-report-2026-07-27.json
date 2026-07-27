@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-07-27T17:53:33.222Z",
+  "runDate": "2026-07-27T18:16:57.235Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "rosie-odonnell-common-knowledge-off-broadway-2026,hungry-women-off-broadway-2026,the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
+    "showFilter": "the-saviors-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
+    "processed": 0,
     "failed": 1,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,8 +27,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 3,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -50,18 +50,12 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "rosie-odonnell-common-knowledge-off-broadway-2026/nytg--unknown.json",
-    "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026/broadwayworld--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
+    "the-saviors-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "rosie-odonnell-common-knowledge-off-broadway-2026/nytg--unknown.json",
-      "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026/broadwayworld--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
