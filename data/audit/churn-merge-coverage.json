@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-27T07:39:02.577Z",
+    "generatedAt": "2026-07-27T12:46:28.114Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,19 +16,19 @@
   "flagged": [
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 245
+      "churn": 244
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 98
+      "churn": 95
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 74
+      "churn": 75
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 68
+      "churn": 70
     },
     {
       "path": ".github/workflows/test.yml",
@@ -36,153 +36,153 @@
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 46
+      "churn": 48
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 46
+      "churn": 48
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 46
+      "churn": 48
     },
     {
       "path": "data/audit/autoclear-shadow-report.json",
-      "churn": 32
+      "churn": 33
     },
     {
       "path": "data/audit/t1-coverage-signals.json",
-      "churn": 32
+      "churn": 33
     },
     {
       "path": "data/audit/t1-silent-gaps.json",
-      "churn": 32
+      "churn": 33
     }
   ],
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 113
+      "churn": 111
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 92
+      "churn": 90
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 76
+      "churn": 78
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 76
+      "churn": 78
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 76
+      "churn": 78
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 68
+      "churn": 69
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 58
+      "churn": 59
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 50
-    },
-    {
-      "path": "public/data/shows/a-midsummer-nights-dream-west-end-2026.json",
-      "churn": 43
+      "churn": 48
     },
     {
       "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
-      "churn": 43
+      "churn": 40
+    },
+    {
+      "path": "public/data/shows/a-midsummer-nights-dream-west-end-2026.json",
+      "churn": 34
     },
     {
       "path": "public/data/shows/the-oresteia-west-end-2026.json",
-      "churn": 35
+      "churn": 34
     },
     {
       "path": "public/data/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 30
+      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 804,
+      "churn": 866,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 783,
+      "churn": 843,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 621,
+      "churn": 623,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 533,
+      "churn": 534,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 245,
+      "churn": 244,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 245,
+      "churn": 244,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 138,
+      "churn": 140,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 133,
+      "churn": 136,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/giulia-the-poison-queen-of-palermo-off-broadway-2026.json",
-      "churn": 97,
+      "churn": 95,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/shifters-off-broadway-2026.json",
-      "churn": 97,
+      "churn": 95,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/hugo-marchand-artists-at-the-center-off-broadway-2026.json",
-      "churn": 93,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 79,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 76,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 74,
+      "churn": 71,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 71,
+      "churn": 70,
       "mergeAttr": "ours"
     },
     {
@@ -217,17 +217,17 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 58,
+      "churn": 59,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 58,
+      "churn": 59,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 58,
+      "churn": 59,
       "mergeAttr": "ours"
     },
     {
@@ -237,27 +237,27 @@
     },
     {
       "path": "data/audit/drift-state.json",
-      "churn": 50,
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/are-you-mad-at-me-off-broadway-2026.json",
-      "churn": 46,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/show-review-gap.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
