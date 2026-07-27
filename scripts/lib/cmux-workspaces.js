@@ -214,6 +214,21 @@ function checkLiveness(ref, aliveFn, surfaceAliveFn) {
   return { dead: !surfaceAlive, disagreement: surfaceAlive };
 }
 
+// Shared claudeAlive computation for launch-decision call sites (card #567,
+// same class as #559/#564). A bare `claudeAliveIn(ref)` trusts cmux's
+// tag/process registry alone, which can desync (see checkLiveness's header
+// comment above) — here a false-negative ("dead" when the workspace is
+// actually still running a long tool call) would make launchDecision return
+// 'reclaim-and-launch' and open a duplicate babysitter session on top of a
+// live one. Requires BOTH signals to agree "dead" before reporting not-alive.
+// Test-only seams mirror pruneDone's pattern.
+function computeClaudeAlive(meta, opts = {}) {
+  if (!meta || !meta.workspaceRef) return false;
+  const aliveFn = opts.claudeAliveIn || claudeAliveIn;
+  const surfaceAliveFn = opts.terminalSurfaceAliveIn || terminalSurfaceAliveIn;
+  return !checkLiveness(meta.workspaceRef, aliveFn, surfaceAliveFn).dead;
+}
+
 // Close every ✅-marked workspace WITHOUT a LIVE claude process. Alive-but-
 // waiting counts as live: ✅ auto-marks land when a task completes even while
 // the owner is still reviewing in the tab, and closing kills claude (10 tabs
@@ -251,5 +266,5 @@ module.exports = {
   parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude,
   hasClaudeChrome, isNotFoundError,
   listWorkspaces, closeWorkspace, claudeRunningIn, claudeAliveIn,
-  terminalSurfaceAliveIn, checkLiveness, pruneDone,
+  terminalSurfaceAliveIn, checkLiveness, computeClaudeAlive, pruneDone,
 };

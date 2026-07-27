@@ -4,6 +4,7 @@ import {
   utcFromZoned, computeWindow, activeWindows, nightKey, launchDecision,
   HEARTBEAT_STALE_MIN, MAX_ATTEMPTS_PER_NIGHT,
 } from './opening-night-windows.js';
+import { computeClaudeAlive } from './cmux-workspaces.js';
 
 // ── timezone math ──────────────────────────────────────────────────────────
 
@@ -110,6 +111,35 @@ test('decision: stale heartbeat + no process → reclaim and relaunch', () => {
 
 test('decision: lock present but heartbeat never written (launch died pre-loop) → stale path applies', () => {
   const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: null, claudeAlive: false, attemptsTonight: 1 });
+  assert.equal(d.action, 'reclaim-and-launch');
+});
+
+// Card #567: opening-night-monitor-launch.js used to compute claudeAlive via
+// a bare claudeAliveIn(ref) — the same single-signal trust that #559/#564
+// proved has a real false-negative mode. Feeding that straight into
+// launchDecision meant a session sleeping through a long tool call (stale
+// heartbeat, primary registry falsely says dead) would be treated as dead
+// and get 'reclaim-and-launch' — a duplicate babysitter session launched on
+// top of one that is still alive and working. computeClaudeAlive requires
+// the independent terminal-surface signal to ALSO say dead before reporting
+// not-alive, so this end-to-end wiring must resolve to 'skip'.
+test('decision: end-to-end via computeClaudeAlive — stale heartbeat + registry desync (primary dead, surface alive) → skip, NOT reclaim-and-launch', () => {
+  const claudeAlive = computeClaudeAlive({ workspaceRef: 'workspace:1' }, {
+    claudeAliveIn: () => false,        // primary registry falsely says dead
+    terminalSurfaceAliveIn: () => true, // surface registry: still alive
+  });
+  assert.equal(claudeAlive, true);
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: HEARTBEAT_STALE_MIN + 30, claudeAlive });
+  assert.equal(d.action, 'skip');
+});
+
+test('decision: end-to-end via computeClaudeAlive — stale heartbeat + both signals agree dead → reclaim-and-launch', () => {
+  const claudeAlive = computeClaudeAlive({ workspaceRef: 'workspace:1' }, {
+    claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => false,
+  });
+  assert.equal(claudeAlive, false);
+  const d = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: HEARTBEAT_STALE_MIN + 30, claudeAlive, attemptsTonight: 1 });
   assert.equal(d.action, 'reclaim-and-launch');
 });
 
