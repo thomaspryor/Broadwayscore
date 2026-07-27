@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-07-27T03:58:11.413Z",
+  "updatedAt": "2026-07-27T03:59:03.726Z",
   "processed": 16,
-  "failed": 628,
+  "failed": 618,
   "successRate": "2.5%",
   "tierBreakdown": {
     "playwright": 13,
@@ -13,7 +13,7 @@
     "archiveToday": 50,
     "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-07-27T02:49:19.081Z",
@@ -124,6 +124,28 @@
       "t": "2026-07-27T03:55:16.801Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-27T03:56:35.816Z",
+      "event": "bb-session",
+      "session": "ada6e519",
+      "url": "https://www.nytimes.com/2026/07/22/arts/dance/hugo-marchand-paris-opera-ballet-n"
+    },
+    {
+      "t": "2026-07-27T03:56:36.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-27T03:56:52.406Z",
+      "event": "bb-session",
+      "session": "dd102a97",
+      "url": "https://www.nytimes.com/2026/07/22/arts/dance/hugo-marchand-paris-opera-ballet-n"
+    },
+    {
+      "t": "2026-07-27T03:56:53.044Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
