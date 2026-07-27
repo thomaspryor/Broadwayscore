@@ -35,3 +35,8 @@ Authoritative version: BroadwayScorecard-app/CLAUDE.md "Design Proposals (princi
 - After editing module-level constants (sizing consts, the variant flag), fast refresh can render a stale/hybrid layout (phantom columns). Terminate + relaunch via the dev-client deep link before trusting a capture.
 - RN yoga traps hit twice: flexWrap + percentage-width + aspectRatio over-computes container height (phantom rows), and flex:1 + aspectRatio over-sizes row children. For calendar-like grids compute a fixed cell size in JS from Dimensions and use explicit week rows.
 - LogBox error toasts photobomb captures: `LogBox.ignoreAllLogs(true)` gated behind the design flag.
+
+**Pipeline gotchas added 2026-07-27 (task #300 v2, post-Stats rebase):**
+- Worktree Metro needs `.env.local` COPIED in (not just node_modules symlink) — without EXPO_PUBLIC_SUPABASE_* the auth client silently nulls and dev auto-signin never fires. Delete the copy before ending the session (gitignored but still credentials on disk).
+- Fresh dev-client build from a worktree: `xcodebuild -workspace ios/BroadwayScorecard.xcworkspace -scheme BroadwayScorecard -configuration Debug -destination "platform=iOS Simulator,id=<udid>" -derivedDataPath ios/build/<name> build` — do NOT pass CODE_SIGNING_ALLOWED=NO (strips the keychain entitlement → SecureStore getValueWithKeyAsync throws → sign-in dead, the #323 class). Default sim ad-hoc signing works. `npx expo run:ios --device <udid>` mis-resolves to a physical-device signing path; use xcodebuild.
+- The dev-test account (dev-test@broadwayscorecard.com, EXPO_PUBLIC_DEV_AUTO_SIGNIN=1) carries a full mirror of the owner's ~102-show diary — design rounds can render REAL data without owner credentials.
