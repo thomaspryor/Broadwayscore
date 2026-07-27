@@ -1,19 +1,23 @@
 {
-  "totalCandidates": 3,
-  "cdxFound": 0,
+  "totalCandidates": 27,
+  "cdxFound": 3,
   "cdxNotFound": 2,
-  "recovered": 0,
+  "recovered": 3,
   "recoveredByTier": {
-    "1": 0,
+    "1": 1,
     "2": 0,
-    "3": 0
+    "3": 2
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "nytimes.com": 1,
+    "theatreweekly.com": 1,
+    "thereviewshub.com": 1
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 1,
+  "errors": 22,
   "notInArchive": 2,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
