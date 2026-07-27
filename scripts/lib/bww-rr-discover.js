@@ -19,6 +19,7 @@
  */
 
 const axios = require('axios');
+const { fetchLiveBrowserbaseSessionsToday } = require('./browserbase-live-usage');
 
 const REVIEWS_PAGE_URL = 'https://www.broadwayworld.com/reviews.php';
 const BROWSERBASE_API = 'https://api.browserbase.com/v1/sessions';
@@ -144,6 +145,20 @@ async function fetchReviewsPageAnchors() {
   const projectId = process.env.BROWSERBASE_PROJECT_ID;
   if (!apiKey || !projectId) {
     throw new Error('BROWSERBASE_API_KEY + BROWSERBASE_PROJECT_ID required');
+  }
+  if (process.env.BROWSERBASE_KILL_SWITCH === 'true') {
+    throw new Error('Browserbase kill switch active (BROWSERBASE_KILL_SWITCH=true)');
+  }
+  // #312: this path (opening-night-poller.js, watch-aggregator-urls.js,
+  // audit-show-review-gap.js) had NO session-count cap at all — only "cadence
+  // gated at the caller side" per the module docstring, which in practice
+  // meant nothing actually stopped it. Enforce the SAME account-wide daily
+  // ceiling collect-review-texts.js uses, checked against the live API so it
+  // reflects real total spend regardless of which script is calling.
+  const maxPerDay = parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '250', 10);
+  const liveSessionsToday = await fetchLiveBrowserbaseSessionsToday(apiKey, projectId);
+  if (liveSessionsToday !== null && liveSessionsToday >= maxPerDay) {
+    throw new Error(`Browserbase daily cap reached (${liveSessionsToday}/${maxPerDay}) — BWW RR discovery skipped`);
   }
 
   let browser = null;

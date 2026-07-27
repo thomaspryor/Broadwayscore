@@ -33,6 +33,15 @@
             "command": "bash .claude/hooks/check-skill-redaction.sh"
           }
         ]
+      },
+      {
+        "matcher": "EnterWorktree",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/enterworktree-guard.sh"
+          }
+        ]
       }
     ],
     "PostToolUse": [

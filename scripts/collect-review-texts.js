@@ -129,6 +129,7 @@ const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps } = require('./lib/browserbase-caps');
+const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
@@ -317,6 +318,11 @@ const CONFIG = {
   // Feb 2026 runaway: max 2,448/day = $244.80 in one day, $1,548 in one week.
   // The 250/day hard ceiling means worst-case month = $750 instead of unbounded.
   browserbaseEnabled: process.env.BROWSERBASE_ENABLED === 'true',
+  // Emergency kill switch (#312): flip BROWSERBASE_KILL_SWITCH=true as a repo/org
+  // variable to disable Browserbase globally without a code change or redeploy —
+  // same pattern as the SB SERP exhaustion breaker (#201). Checked first in
+  // canUseBrowserbase(), ahead of every other gate.
+  browserbaseKillSwitch: process.env.BROWSERBASE_KILL_SWITCH === 'true',
   browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '250'), // $25/day ceiling = $750/mo MAX; normal $5-9/day
   browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '30'), // Per workflow run; matches typical opening-night batch
   browserbaseMaxSessionsPerDomain: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DOMAIN || '10'), // Prevent one paywalled outlet monopolizing
@@ -1946,9 +1952,39 @@ async function browserbaseLogin(bbPage, domain, email, password) {
 }
 
 /**
- * Load Browserbase usage from disk (tracks daily spending)
+ * Query Browserbase's own API for the actual number of sessions created in the
+ * last 24h (rolling), same endpoint + method scraper-cost-report.yml already
+ * treats as billing ground truth. Returns null on any failure (network, auth,
+ * unexpected shape) — callers must treat null as "unknown," not "zero."
+ *
+ * Why this exists (#312): the local sessionsToday counter in
+ * browserbase-usage.json is read once at process start and written once at
+ * exit. When multiple collect-review-texts.js runs execute concurrently
+ * (explicitly supported — "Parallel runs: YES" per the workflow doc, and
+ * observed in practice: gather-reviews.yml's per-show auto-dispatch guard
+ * (checkoutRUNNING/QUEUED) races when many single-show runs fire within
+ * seconds of each other, e.g. 12 parallel Collect Review Texts dispatches
+ * 2026-07-20 15:49-15:50 and 13 more 2026-07-21 15:58-15:59), every run in the
+ * burst loads the SAME stale snapshot and each independently enforces the
+ * 250/day cap against that one stale number — so N concurrent runs can each
+ * spend up to their own per-run allowance before any of them would see the
+ * others' spend. Reconciling against the live API count closes that gap
+ * regardless of how many runners are in flight.
  */
-function loadBrowserbaseUsage() {
+async function fetchLiveBrowserbaseSessionsToday() {
+  const count = await _fetchLiveBBSessions(CONFIG.browserbaseApiKey, CONFIG.browserbaseProjectId);
+  if (count === null) {
+    console.log(`  ⚠ Browserbase live session count unavailable — falling back to local counter only`);
+  }
+  return count;
+}
+
+/**
+ * Load Browserbase usage from disk (tracks daily spending), then reconcile
+ * against the live API count (#312) so a stale/raced local file can never
+ * UNDER-report actual spend — only the max of the two is trusted.
+ */
+async function loadBrowserbaseUsage() {
   const usagePath = CONFIG.browserbaseUsageFile;
   const today = new Date().toISOString().split('T')[0];
 
@@ -1979,6 +2015,12 @@ function loadBrowserbaseUsage() {
   } catch (e) {
     console.log(`  Could not load Browserbase usage: ${e.message}`);
   }
+
+  const liveCount = await fetchLiveBrowserbaseSessionsToday();
+  if (liveCount !== null && liveCount > browserbaseUsage.sessionsToday) {
+    console.log(`  Browserbase live count (${liveCount}) exceeds local counter (${browserbaseUsage.sessionsToday}) — trusting live count (concurrent run or lost commit)`);
+    browserbaseUsage.sessionsToday = liveCount;
+  }
 }
 
 /**
@@ -1993,6 +2035,7 @@ function saveBrowserbaseUsage() {
  * Check if we can use Browserbase (within spending limits)
  */
 function canUseBrowserbase(urlDomain) {
+  if (CONFIG.browserbaseKillSwitch) return false;
   if (!CONFIG.browserbaseEnabled) return false;
   if (!CONFIG.browserbaseApiKey) return false;
 
@@ -2051,6 +2094,19 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
   // domain-level guard — caught by ship-check on commit ae46715a0a).
   let urlDomain;
   try { urlDomain = new URL(url).hostname.replace('www.', ''); } catch {}
+
+  // Mid-run resync (#312): a run that opens dozens of sessions can outlive the
+  // start-of-run snapshot by many minutes — long enough for a SIBLING run
+  // (e.g. another burst-dispatched single-show Collect Review Texts job) to
+  // burn sessions this process has no way to see otherwise. Re-check the live
+  // API every 5 sessions rather than every single fetch, to bound API calls.
+  if (browserbaseUsage.sessionsThisRun > 0 && browserbaseUsage.sessionsThisRun % 5 === 0) {
+    const liveCount = await fetchLiveBrowserbaseSessionsToday();
+    if (liveCount !== null && liveCount > browserbaseUsage.sessionsToday) {
+      console.log(`    ⚠ Browserbase live count (${liveCount}) exceeds local counter mid-run — resyncing`);
+      browserbaseUsage.sessionsToday = liveCount;
+    }
+  }
 
   if (!canUseBrowserbase(urlDomain)) {
     throw new Error('Browserbase unavailable (limits reached or not configured)');
@@ -6800,7 +6856,7 @@ async function main() {
 
   // Load Browserbase usage tracking (for spending limits)
   if (CONFIG.browserbaseEnabled) {
-    loadBrowserbaseUsage();
+    await loadBrowserbaseUsage();
   }
 
   // Find reviews to process
