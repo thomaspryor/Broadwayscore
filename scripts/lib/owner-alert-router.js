@@ -15,9 +15,14 @@
  *               machine-investigable conditions — no owner judgment required.
  *   - 'digest': queues a line for the next Daily Digest "Automation" section
  *               instead of sending its own email.
- *   - 'human':  sends an immediate email via the existing sendAlert() path.
- *               Reserved for conditions that genuinely need owner judgment or
- *               authorization (secret rotation, billing, "should I do X").
+ *   - 'human':  sends an immediate email via the existing sendAlert() path —
+ *               BUT only if conditionKey is on the page-worthy allowlist in
+ *               ./page-worthy-alerts.js (owner mandate 2026-07-28, card
+ *               #611: "NO sender emails me directly anymore" except a tiny
+ *               explicit list). Any other conditionKey requesting 'human' is
+ *               transparently downgraded to 'digest' — the caller still gets
+ *               back the disposition it asked for having been honored in
+ *               spirit (the owner IS told), just not by immediate email.
  *
  * Ledger (data/audit/alert-ledger.json) keys on conditionKey: a condition
  * notifies ONCE per open incident. Re-fires while the incident is still open
@@ -43,6 +48,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { sendAlert } = require('./discord-notify');
+const { isPageWorthy } = require('./page-worthy-alerts');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
 const LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-ledger.json');
@@ -280,11 +286,22 @@ async function routeAlert(opts) {
     return { action: 'silent', conditionKey, cardId: existing.cardId || null };
   }
 
+  // Page-worthy gate (card #611): 'human' only actually pages if conditionKey
+  // is on the allowlist. Everything else requesting 'human' is transparently
+  // downgraded to 'digest' — the caller's requested disposition is honored in
+  // spirit (the owner is still told, just not by immediate email).
+  const pageGated = disposition === 'human' && !isPageWorthy(conditionKey);
+  const effectiveDisposition = pageGated ? 'digest' : disposition;
+  if (pageGated) {
+    console.log(`[alert-router] disposition 'human' requested for "${conditionKey}" ("${title}") is not on the page-worthy allowlist — routed to the morning digest instead. Add it to scripts/lib/page-worthy-alerts.js if this should page immediately.`);
+  }
+
   // New incident: first time, or reoccurred after resolveCondition() /
-  // cooldown expiry. Dispatch per disposition.
-  const result = { action: disposition, conditionKey };
+  // cooldown expiry. Dispatch per effective disposition.
+  const result = { action: effectiveDisposition, conditionKey };
+  if (pageGated) result.requestedDisposition = disposition;
   let notifyOk = true;
-  if (disposition === 'auto') {
+  if (effectiveDisposition === 'auto') {
     const dispatch = dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey });
     result.cardId = dispatch.cardId || null;
     result.dispatchOk = dispatch.ok;
@@ -293,9 +310,9 @@ async function routeAlert(opts) {
     // can surface the true underlying failure instead of re-guessing one.
     if (!dispatch.ok) result.dispatchError = dispatch.error;
     notifyOk = dispatch.ok;
-  } else if (disposition === 'digest') {
+  } else if (effectiveDisposition === 'digest') {
     queueDigestLine({ title, description, severity, conditionKey, url });
-  } else if (disposition === 'human') {
+  } else if (effectiveDisposition === 'human') {
     const delivered = await sendAlert({ title, description, severity, fields, url, email: true });
     result.delivered = delivered;
     notifyOk = delivered;
@@ -313,7 +330,8 @@ async function routeAlert(opts) {
 
   ledger.conditions[conditionKey] = {
     status: 'open',
-    disposition,
+    disposition: effectiveDisposition,
+    ...(pageGated ? { requestedDisposition: disposition } : {}),
     title,
     firstSeen: existing?.firstSeen || now,
     lastSeen: now,
@@ -373,6 +391,7 @@ function readDispatchAttempts({ days = 7 } = {}) {
 
 module.exports = {
   routeAlert,
+  isPageWorthy, // re-exported for callers/tests that want to check gating without calling routeAlert
   resolveCondition,
   deleteCondition,
   loadLedger,
