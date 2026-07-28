@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-28T01:01:20.275Z",
+  "updatedAt": "2026-07-28T00:58:49.981Z",
   "processed": 55,
-  "failed": 966,
-  "successRate": "5.4%",
+  "failed": 946,
+  "successRate": "5.5%",
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 10,
-    "archiveToday": 21,
+    "archiveToday": 24,
     "archive": 8
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-28T00:16:56.469Z",
@@ -49,37 +49,15 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-07-28T00:57:01.378Z",
+      "t": "2026-07-28T00:58:37.613Z",
       "event": "bb-session",
-      "session": "35deffe3",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+      "session": "b617425b",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
     },
     {
-      "t": "2026-07-28T00:57:02.004Z",
+      "t": "2026-07-28T00:58:38.543Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-07-28T00:58:41.900Z",
-      "event": "bb-session",
-      "session": "79fd8262",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
-    {
-      "t": "2026-07-28T00:58:42.493Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-28T00:58:58.304Z",
-      "event": "bb-session",
-      "session": "e0bf81fc",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
-    {
-      "t": "2026-07-28T00:58:58.833Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "thetimes.com"
     }
   ]
 }
