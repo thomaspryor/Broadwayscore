@@ -812,6 +812,12 @@ on:
       # the same reason (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/owner-alert-router.js'
       - 'scripts/lib/owner-alert-router.test.mjs'
+      # Lint guard: routeAlert()/resolveCondition() callers must commit
+      # alert-ledger.json in the same job (card #618, 5th recurrence
+      # prevention). Colocated *.test.mjs runs via the lib-test glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/alert-ledger-commit-check.js'
+      - 'scripts/lib/alert-ledger-commit-check.test.mjs'
       # E2E canary for the alert→card→dispatch chain (card #374) — path-listed
       # for the same reason (feedback_test_yml_push_path_allowlist); it has no
       # colocated unit test (it deliberately exercises the REAL Notion API,
@@ -1492,6 +1498,14 @@ jobs:
           # local pre-push hook. [skip-demo-flag-check] commit-message bypass
           # preserved inside the script.
           bash scripts/lint-workflow-guards.sh demo-flags
+
+      - name: Check routeAlert() callers commit alert-ledger.json
+        run: |
+          # Logic lives in scripts/lint-workflow-guards.sh — shared with the
+          # local pre-push hook. Prevents the 5th recurrence of the class
+          # fixed in audit-aggregator-gap.yml/test-ugc-roundtrip.yml/
+          # ux-walkthrough.yml/check-cron-health.yml (card #618).
+          bash scripts/lint-workflow-guards.sh alert-ledger-commit
 
       - name: Check scripts route review-texts writes through safeWriteReview
         run: |
