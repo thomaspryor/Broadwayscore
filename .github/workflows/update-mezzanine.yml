@@ -179,7 +179,15 @@ jobs:
           # never persists across cron runs — the alert would re-open and
           # re-email every run, reintroducing the exact storm this migration
           # fixes (#515, same class as #486/#406).
-          git add data/audit/alert-ledger.json 2>/dev/null || true
+          # alert-digest-queue.json: the scrape-mezzanine job's
+          # mezzanine:transient-failure condition uses disposition:'digest',
+          # which WRITES this file on the runner (queueDigestLine()) — omit
+          # it and the queued digest line dies with the runner every time,
+          # even though the ledger correctly marks the condition "notified"
+          # so it never re-queues (card #618 what-else finding — staged here
+          # in all 3 jobs for consistency even though only scrape-mezzanine
+          # uses 'digest' today).
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else
@@ -317,7 +325,15 @@ jobs:
           # never persists across cron runs — the alert would re-open and
           # re-email every run, reintroducing the exact storm this migration
           # fixes (#515, same class as #486/#406).
-          git add data/audit/alert-ledger.json 2>/dev/null || true
+          # alert-digest-queue.json: the scrape-mezzanine job's
+          # mezzanine:transient-failure condition uses disposition:'digest',
+          # which WRITES this file on the runner (queueDigestLine()) — omit
+          # it and the queued digest line dies with the runner every time,
+          # even though the ledger correctly marks the condition "notified"
+          # so it never re-queues (card #618 what-else finding — staged here
+          # in all 3 jobs for consistency even though only scrape-mezzanine
+          # uses 'digest' today).
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else
@@ -453,7 +469,15 @@ jobs:
           # never persists across cron runs — the alert would re-open and
           # re-email every run, reintroducing the exact storm this migration
           # fixes (#515, same class as #486/#406).
-          git add data/audit/alert-ledger.json 2>/dev/null || true
+          # alert-digest-queue.json: the scrape-mezzanine job's
+          # mezzanine:transient-failure condition uses disposition:'digest',
+          # which WRITES this file on the runner (queueDigestLine()) — omit
+          # it and the queued digest line dies with the runner every time,
+          # even though the ledger correctly marks the condition "notified"
+          # so it never re-queues (card #618 what-else finding — staged here
+          # in all 3 jobs for consistency even though only scrape-mezzanine
+          # uses 'digest' today).
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else
