@@ -496,6 +496,8 @@ jobs:
                   url: runUrl,
                   fields: [{ name: "Run", value: `[View logs](${runUrl})` }],
                 });
+                // result.action==='digest' means the page-worthy gate (card #611) downgraded
+                // this from 'human' — the owner WILL see it in the next digest.
                 console.log(`[cron-health] ${conditionKey}: ${result.action}` + (result.action === "silent" ? " (24h cooldown, already reported)" : ""));
               }
             })().catch(e => { console.error("routeAlert failed:", e.message); process.exit(1); });

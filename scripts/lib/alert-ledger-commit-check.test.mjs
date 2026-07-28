@@ -59,9 +59,28 @@ jobs:
             await routeAlert({ conditionKey: 'x', title: 'y', disposition: 'digest' });
       - name: Commit
         run: |
-          for f in data/audit/foo.json data/audit/alert-ledger.json; do
+          for f in data/audit/foo.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json; do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
+          git commit -m 'x'
+`;
+
+const DIGEST_NO_QUEUE_FIXTURE = `name: Bad Example (digest disposition without queue commit)
+on:
+  push:
+jobs:
+  broken:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alert
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
+            await routeAlert({ conditionKey: 'x', title: 'y', disposition: 'digest' });
+      - name: Commit
+        run: |
+          git add data/audit/alert-ledger.json 2>/dev/null || true
           git commit -m 'x'
 `;
 
@@ -81,6 +100,41 @@ jobs:
       - name: Commit
         run: |
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git commit -m 'x'
+`;
+
+const SPLIT_DO_LOOP_FIXTURE = `name: Good Example (for-loop with do on next line)
+on:
+  push:
+jobs:
+  ok:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alert
+        run: |
+          node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('x')"
+      - name: Commit
+        run: |
+          for f in data/audit/foo.json data/audit/alert-ledger.json
+          do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          git commit -m 'x'
+`;
+
+const COMMENTED_OUT_STAGE_FIXTURE = `name: Bad Example (commented-out staging line)
+on:
+  push:
+jobs:
+  broken:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alert
+        run: |
+          node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('x')"
+      - name: Commit
+        run: |
+          # git add data/audit/alert-ledger.json 2>/dev/null || true
           git commit -m 'x'
 `;
 
@@ -107,6 +161,23 @@ test('clean: direct `git add ... alert-ledger.json` in the same job', () => {
 
 test('clean: for-loop staging pattern (audit-aggregator-gap.yml style)', () => {
   assert.deepEqual(findMissingLedgerCommits(LOOP_COMMIT_FIXTURE), []);
+});
+
+test('clean: for-loop with `do` on its own next line', () => {
+  assert.deepEqual(findMissingLedgerCommits(SPLIT_DO_LOOP_FIXTURE), []);
+});
+
+test('flags disposition:\'digest\' with no alert-digest-queue.json commit', () => {
+  const violations = findMissingLedgerCommits(DIGEST_NO_QUEUE_FIXTURE);
+  assert.equal(violations.length, 1);
+  assert.match(violations[0], /job 'broken'/);
+  assert.match(violations[0], /alert-digest-queue\.json/);
+});
+
+test('flags a job whose only "staging" is a commented-out git add line', () => {
+  const violations = findMissingLedgerCommits(COMMENTED_OUT_STAGE_FIXTURE);
+  assert.equal(violations.length, 1);
+  assert.match(violations[0], /job 'broken'/);
 });
 
 test('flags routeAlert in one job when the commit happens in a DIFFERENT job', () => {

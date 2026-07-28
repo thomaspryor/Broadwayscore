@@ -55,6 +55,36 @@
  *   the ambiguity guard (all assignments must agree on ONE literal) covers
  *   the realistic reassignment case, and shadowed severity idents around a
  *   sendAlert call don't exist in this corpus today.
+ *
+ * Second check (card #616): routeAlert()'s disposition='human' path can now
+ * silently downgrade to result.action==='digest' (the page-worthy allowlist
+ * gate, card #611) — a caller that requested 'human' and branches on
+ * result.action but was written before #611 may only handle 'silent'/'human'
+ * and treat a downgraded 'digest' result as "nobody was told", double-firing
+ * a fallback notifier or getting stuck retrying forever. For every
+ * routeAlert(...) call site with disposition:'human', if the caller's
+ * result-handling code inspects `<resultVar>.action` (via a same-line
+ * `const x = await routeAlert(` assignment, a reassignment to a pre-declared
+ * var, a destructured `const { action } = await routeAlert(`, or a later
+ * `.then((x) => ...)`), that same post-call code must also mention the
+ * literal string "digest" — otherwise it's flagged as a
+ * 'human-caller-ignores-digest' finding. Baselined the same way as the
+ * direct-sender gate above, in scripts/.human-caller-digest-baseline.json.
+ * Known limitations (both regex-inherent, same trust model as the rest of
+ * this gate):
+ * - A call site that stores `result.action` into a field nobody branches on
+ *   (informational logging only) still flags — annotate with a comment
+ *   naming why (see dispatch-orphan-rescore-requeue.js's `alertRouted` field
+ *   for the pattern) rather than trying to make the gate infer intent.
+ * - Calls routed through a local wrapper/alias (e.g. an injectable `route =
+ *   routeAlert` default param, or a `function alert(opts) { return
+ *   routeAlert(opts); }` helper) are invisible — the gate only matches the
+ *   literal text `routeAlert(`. scripts/lib/opening-night-sla.js and
+ *   scripts/opening-night-monitor-launch.js both wrap it this way; their
+ *   digest-safety currently rests on scripts/lib/page-worthy-alerts.js
+ *   keeping their conditionKeys allowlisted (see that file's header), not on
+ *   this lint. Resolving true aliases needs an AST pass, out of reach for a
+ *   regex gate.
  */
 
 'use strict';
@@ -63,13 +93,15 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-const USAGE = `audit-alert-senders.js — inventory + CI gate for direct sendAlert(email:true) bypasses.
+const USAGE = `audit-alert-senders.js — inventory + CI gate for direct sendAlert(email:true) bypasses
+and routeAlert(disposition:'human') callers that ignore a downgraded 'digest' result.
 
 Usage:
   node scripts/audit-alert-senders.js                    inventory snapshot (writes data/audit/)
   node scripts/audit-alert-senders.js --json             same, JSON to stdout
   node scripts/audit-alert-senders.js --check            CI gate: fail on new/grown direct senders
-  node scripts/audit-alert-senders.js --update-baseline  regenerate scripts/.alert-sender-baseline.json
+                                                          or new/grown human-caller-ignores-digest sites
+  node scripts/audit-alert-senders.js --update-baseline  regenerate both baseline files
   node scripts/audit-alert-senders.js --help, -h         print this usage and exit
 `;
 
@@ -107,6 +139,99 @@ function walk(dir, files) {
   }
 }
 
+// Card #616: a routeAlert(...) call site requesting disposition:'human' may
+// get silently downgraded to result.action==='digest' by the page-worthy
+// allowlist gate (card #611). A caller written before #611 that branches on
+// result.action but only accounts for 'silent'/'human' will misread a
+// downgraded 'digest' result as "the owner was never told" — see the real
+// regressions ship-check caught in opening-night-broadcast.yml and
+// audit-show-review-gap.js (card #611 commit d4128a2024a).
+//
+// Best-effort, not an AST parse. Two adversarial-review fixes shape the
+// window math below (both proved as live false positives/negatives on this
+// corpus, not hypotheticals):
+// - A single fixed-size window from the call's OPENING line burns budget on
+//   the call's own (sometimes long) argument list, then bleeds into the
+//   NEXT unrelated routeAlert()/sendAlert() call if one follows soon after —
+//   either hides a real finding (digest mention borrowed from later code) or
+//   fabricates one (.action usage borrowed from later code). Fixed by
+//   locating the call's own closing `});` first (findCallBodyEnd) and
+//   scoping "does this caller inspect .action" / "does it mention digest"
+//   to the POST-call portion only, capped at the next alert call site.
+// - "digest" search must exclude the call's OWN argument lines — a
+//   conditionKey or title literally containing the word "digest" (e.g.
+//   'daily-digest-missing') would silence a real finding if searched.
+const CALL_BODY_MAX_LINES = 40; // generous cap on one routeAlert({...}) call's own arg list
+const POST_CALL_WINDOW = 20; // lines after the call closes, for result-handling inspection
+
+// Locates the line where a routeAlert({...}) call's argument object closes
+// (first line after the call opens whose trimmed text starts with '})'),
+// capped at CALL_BODY_MAX_LINES so a malformed call can't scan past it.
+function findCallBodyEnd(lines, callLineIdx) {
+  const limit = Math.min(lines.length, callLineIdx + CALL_BODY_MAX_LINES);
+  for (let j = callLineIdx + 1; j < limit; j++) {
+    if (/^\s*\}\)/.test(lines[j])) return j;
+  }
+  return limit - 1;
+}
+
+function scanHumanDispositionCaller(lines, callLineIdx, relPath, rawLines) {
+  const bodyEnd = findCallBodyEnd(lines, callLineIdx);
+
+  // Post-call window starts AT the closing line (so `}).then((result) => {`
+  // on the same line as the close is included) and stops at the next
+  // routeAlert(/sendAlert( call site if one appears first.
+  let windowEnd = Math.min(lines.length, bodyEnd + POST_CALL_WINDOW);
+  for (let j = bodyEnd + 1; j < windowEnd; j++) {
+    if (/\b(?:routeAlert|sendAlert)\s*\(/.test(lines[j])) { windowEnd = j; break; }
+  }
+  const postCall = lines.slice(bodyEnd, windowEnd).join('\n');
+
+  // Result binding, in priority order: destructured `const { action } = await
+  // routeAlert(`; a plain assignment `const x = await routeAlert(` OR a
+  // reassignment to a pre-declared variable `x = await routeAlert(` (no
+  // const/let/var — the injectable-for-tests pattern some callers use); or a
+  // later `.then((x) => ...)` promise chain.
+  const assignMatch = lines[callLineIdx].match(/(?:(?:const|let|var)\s+)?(\w+)\s*=\s*await\s+routeAlert\s*\(/);
+  const destructureMatch = !assignMatch && lines[callLineIdx].match(/(?:const|let|var)\s*\{\s*([^}]*)\}\s*=\s*await\s+routeAlert\s*\(/);
+  const thenMatch = !assignMatch && !destructureMatch && (
+    postCall.match(/\.then\s*\(\s*(?:async\s*)?\(?\s*(\w+)\s*\)?\s*=>/) ||
+    postCall.match(/\.then\s*\(\s*function\s*\(\s*(\w+)\s*\)/)
+  );
+
+  let resultVar = null;
+  let usesAction = false;
+  if (destructureMatch) {
+    const names = destructureMatch[1].split(',').map((s) => s.trim().split(':')[0].trim());
+    if (names.includes('action')) {
+      resultVar = '{ action }';
+      usesAction = true; // destructuring `action` out IS using it
+    }
+  } else {
+    resultVar = assignMatch ? assignMatch[1] : (thenMatch ? thenMatch[1] : null);
+    if (resultVar) usesAction = new RegExp(`\\b${resultVar}\\.action\\b`).test(postCall);
+  }
+  if (!resultVar) return null; // fire-and-forget (.catch() only, or result discarded) — no assumption to break
+  if (!usesAction) return null; // captured but never inspects .action
+
+  // Search the RAW (pre-stripTrailingComment) POST-CALL lines for "digest" —
+  // stripTrailingComment blanks whole `//`-only lines (it treats leading
+  // whitespace + `//` as a "trailing" comment marker at index 0), which would
+  // erase exactly the explanatory comments this escape hatch is meant to
+  // recognize. Scoped to post-call only (excludes the call's own arg lines)
+  // so an unrelated "digest" substring in a conditionKey/title can't
+  // silence a real finding.
+  const rawPostCall = (rawLines || lines).slice(bodyEnd, windowEnd).join('\n');
+  if (/digest/i.test(rawPostCall)) return null; // already accounts for the downgraded case
+
+  return {
+    file: relPath,
+    line: callLineIdx + 1,
+    kind: 'human-caller-ignores-digest',
+    resultVar,
+  };
+}
+
 // Best-effort: does this sendAlert(...) call site's surrounding ~8 lines
 // carry an emailable disposition (email: true, or severity 'error'/'critical'
 // alongside email logic)? Regex-based, not an AST parse — good enough for an
@@ -127,7 +252,8 @@ function scanFile(absPath, relPath) {
     const m = (isYaml ? /(^|\s)#/ : /(^|\s)\/\//).exec(l);
     return m ? l.slice(0, m.index) : l;
   };
-  const lines = content.split('\n').map(stripTrailingComment);
+  const rawLines = content.split('\n');
+  const lines = rawLines.map(stripTrailingComment);
 
   for (let i = 0; i < lines.length; i++) {
     // Skip comment lines (this file, opening-night-sla.js, and ux-walkthrough.yml
@@ -136,13 +262,28 @@ function scanFile(absPath, relPath) {
     const trimmed = lines[i].trim();
     if (trimmed.startsWith('//') || trimmed.startsWith('#') || trimmed.startsWith('*')) continue;
     if (/\brouteAlert\s*\(/.test(lines[i])) {
-      const window = lines.slice(i, i + 12).join('\n');
-      const dispositionMatch = window.match(/disposition:\s*'(\w+)'/);
+      // Bounded by the call's OWN closing '});' (findCallBodyEnd), not a
+      // fixed line count — a fixed window either truncates a long argument
+      // list (misclassifying a real disposition:'human' as 'unknown', card
+      // #616 ship-check finding) or bleeds into the NEXT unrelated call's
+      // disposition if one follows soon after (adversarial review finding).
+      // Quotes: `['"]`, not just `'` — .yml-embedded JS in this repo uses
+      // double quotes at some call sites (e.g. check-cron-health.yml,
+      // update-show-status.yml), which a single-quote-only regex misses
+      // entirely (adversarial review finding).
+      const bodyEnd = findCallBodyEnd(lines, i);
+      const window = lines.slice(i, bodyEnd + 1).join('\n');
+      const dispositionMatch = window.match(/disposition:\s*['"](\w+)['"]/);
+      const disposition = dispositionMatch ? dispositionMatch[1] : 'unknown';
       findings.push({
         file: relPath, line: i + 1, kind: 'routeAlert',
         classification: 'router',
-        disposition: dispositionMatch ? dispositionMatch[1] : 'unknown',
+        disposition,
       });
+      if (disposition === 'human') {
+        const digestFinding = scanHumanDispositionCaller(lines, i, relPath, rawLines);
+        if (digestFinding) findings.push(digestFinding);
+      }
     }
     if (/\bsendAlert\s*\(/.test(lines[i]) && !/function sendAlert/.test(lines[i])) {
       const window = lines.slice(i, i + 10).join('\n');
@@ -184,6 +325,7 @@ function scanFile(absPath, relPath) {
 }
 
 const BASELINE_PATH = path.join(__dirname, '.alert-sender-baseline.json');
+const HUMAN_DIGEST_BASELINE_PATH = path.join(__dirname, '.human-caller-digest-baseline.json');
 
 function collectFindings() {
   const files = [];
@@ -208,6 +350,16 @@ function buildDirectCounts(findings) {
   const counts = {};
   for (const f of findings) {
     if (f.classification !== 'direct') continue;
+    counts[f.file] = (counts[f.file] || 0) + 1;
+  }
+  return Object.fromEntries(Object.entries(counts).sort(([a], [b]) => a.localeCompare(b)));
+}
+
+/** {relPath: count} of human-caller-ignores-digest findings, keys sorted. */
+function buildHumanDigestCounts(findings) {
+  const counts = {};
+  for (const f of findings) {
+    if (f.kind !== 'human-caller-ignores-digest') continue;
     counts[f.file] = (counts[f.file] || 0) + 1;
   }
   return Object.fromEntries(Object.entries(counts).sort(([a], [b]) => a.localeCompare(b)));
@@ -243,9 +395,16 @@ function loadBaseline() {
   try { return JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8')); } catch { return {}; }
 }
 
+function loadHumanDigestBaseline() {
+  try { return JSON.parse(fs.readFileSync(HUMAN_DIGEST_BASELINE_PATH, 'utf8')); } catch { return {}; }
+}
+
 function runCheck() {
-  const counts = buildDirectCounts(collectFindings());
+  const all = collectFindings();
+  const counts = buildDirectCounts(all);
   const result = compareToBaseline(counts, loadBaseline());
+  const digestCounts = buildHumanDigestCounts(all);
+  const digestResult = compareToBaseline(digestCounts, loadHumanDigestBaseline());
 
   for (const f of result.stale) {
     console.log(`ℹ️  baseline entry already drained (no direct senders left): ${f} — run --update-baseline to shrink the list.`);
@@ -257,25 +416,51 @@ function runCheck() {
   if (result.ok) {
     const debt = Object.values(counts).reduce((a, b) => a + b, 0);
     console.log(`✅ Alert-sender gate: no new direct sendAlert(email:true) bypasses (${debt} baselined call site(s) remain — drain tracked in #531 etc.).`);
+  } else {
+    console.log(`🚨 Alert-sender gate: new direct sendAlert(email:true) bypass(es) of owner-alert-router:\n`);
+    for (const f of result.newFiles) {
+      console.log(`  ${f} (${counts[f]} call site(s)) — not in ${path.basename(BASELINE_PATH)}`);
+    }
+    for (const g of result.grown) {
+      console.log(`  ${g.file} — direct call sites grew ${g.baseline} → ${g.current}`);
+    }
+    console.log(`\nFix: route the alert through routeAlert() from scripts/lib/owner-alert-router.js`);
+    console.log(`(ACTION-only bar + per-condition dedup) instead of calling sendAlert(email:true)`);
+    console.log(`directly. If the sender is genuinely real-time-critical (opening-night class,`);
+    console.log(`CLAUDE.md rule 14), get it reviewed and freeze it via --update-baseline.\n`);
+    process.exitCode = 1;
+  }
+
+  for (const f of digestResult.stale) {
+    console.log(`ℹ️  human-caller-digest baseline entry already drained: ${f} — run --update-baseline to shrink the list.`);
+  }
+  for (const s of digestResult.shrunk) {
+    console.log(`ℹ️  ${s.file}: human-caller-ignores-digest sites shrank ${s.baseline} → ${s.current} — run --update-baseline.`);
+  }
+
+  if (digestResult.ok) {
+    const debt = Object.values(digestCounts).reduce((a, b) => a + b, 0);
+    console.log(`✅ Human-disposition digest gate: no routeAlert(disposition:'human') caller ignores a downgraded 'digest' result (${debt} baselined call site(s) remain).`);
     return;
   }
 
-  console.log(`🚨 Alert-sender gate: new direct sendAlert(email:true) bypass(es) of owner-alert-router:\n`);
-  for (const f of result.newFiles) {
-    console.log(`  ${f} (${counts[f]} call site(s)) — not in ${path.basename(BASELINE_PATH)}`);
+  console.log(`🚨 Human-disposition digest gate: routeAlert(disposition:'human') caller(s) that branch on result.action but never mention 'digest':\n`);
+  for (const f of digestResult.newFiles) {
+    console.log(`  ${f} (${digestCounts[f]} call site(s)) — not in ${path.basename(HUMAN_DIGEST_BASELINE_PATH)}`);
   }
-  for (const g of result.grown) {
-    console.log(`  ${g.file} — direct call sites grew ${g.baseline} → ${g.current}`);
+  for (const g of digestResult.grown) {
+    console.log(`  ${g.file} — sites grew ${g.baseline} → ${g.current}`);
   }
-  console.log(`\nFix: route the alert through routeAlert() from scripts/lib/owner-alert-router.js`);
-  console.log(`(ACTION-only bar + per-condition dedup) instead of calling sendAlert(email:true)`);
-  console.log(`directly. If the sender is genuinely real-time-critical (opening-night class,`);
-  console.log(`CLAUDE.md rule 14), get it reviewed and freeze it via --update-baseline.\n`);
+  console.log(`\nFix: the page-worthy allowlist gate (card #611) can downgrade disposition:'human' to`);
+  console.log(`result.action==='digest' — add a branch (or comment) that treats 'digest' the same as`);
+  console.log(`a delivered 'human' result (the owner WILL see it in the next digest). See the fixes in`);
+  console.log(`opening-night-broadcast.yml / audit-show-review-gap.js from card #611's commit for the pattern.\n`);
   process.exitCode = 1;
 }
 
 function updateBaseline() {
-  const counts = buildDirectCounts(collectFindings());
+  const all = collectFindings();
+  const counts = buildDirectCounts(all);
   const old = loadBaseline();
   const added = Object.keys(counts).filter((f) => !(f in old));
   const removed = Object.keys(old).filter((f) => !(f in counts));
@@ -285,6 +470,17 @@ function updateBaseline() {
   if (added.length) console.log(`  + added: ${added.join(', ')}`);
   if (removed.length) console.log(`  - removed: ${removed.join(', ')}`);
   for (const f of changed) console.log(`  ~ ${f}: ${old[f]} → ${counts[f]}`);
+
+  const digestCounts = buildHumanDigestCounts(all);
+  const oldDigest = loadHumanDigestBaseline();
+  const addedDigest = Object.keys(digestCounts).filter((f) => !(f in oldDigest));
+  const removedDigest = Object.keys(oldDigest).filter((f) => !(f in digestCounts));
+  const changedDigest = Object.keys(digestCounts).filter((f) => f in oldDigest && oldDigest[f] !== digestCounts[f]);
+  fs.writeFileSync(HUMAN_DIGEST_BASELINE_PATH, JSON.stringify(digestCounts, null, 2) + '\n');
+  console.log(`Wrote ${Object.keys(digestCounts).length} file entr${Object.keys(digestCounts).length === 1 ? 'y' : 'ies'} to ${path.relative(process.cwd(), HUMAN_DIGEST_BASELINE_PATH)} (was ${Object.keys(oldDigest).length}). Review the diff!`);
+  if (addedDigest.length) console.log(`  + added: ${addedDigest.join(', ')}`);
+  if (removedDigest.length) console.log(`  - removed: ${removedDigest.join(', ')}`);
+  for (const f of changedDigest) console.log(`  ~ ${f}: ${oldDigest[f]} → ${digestCounts[f]}`);
 }
 
 function main() {
@@ -300,6 +496,7 @@ function main() {
       router: all.filter(f => f.classification === 'router').length,
       digest: all.filter(f => f.classification === 'digest').length,
       direct: all.filter(f => f.classification === 'direct').length,
+      humanCallerIgnoresDigest: all.filter(f => f.kind === 'human-caller-ignores-digest').length,
     },
     senders: all.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line),
   };
@@ -316,16 +513,29 @@ function main() {
   console.log(`=== Alert Sender Inventory (${summary.senders.length} call site(s)) ===\n`);
   console.log(`router (owner-alert-router, ACTION-only + dedup):  ${summary.counts.router}`);
   console.log(`digest (reviewed scheduled email, direct Resend):  ${summary.counts.digest}`);
-  console.log(`direct (bypasses router — migration candidates):  ${summary.counts.direct}\n`);
+  console.log(`direct (bypasses router — migration candidates):  ${summary.counts.direct}`);
+  console.log(`human-caller-ignores-digest (card #616):           ${summary.counts.humanCallerIgnoresDigest}\n`);
 
   const direct = summary.senders.filter(f => f.classification === 'direct');
   if (direct.length) {
     console.log('Direct-bypass call sites (candidates for routeAlert migration):');
     for (const f of direct) console.log(`  - ${f.file}:${f.line} (severity: ${f.severity || 'unknown'})`);
   }
+  const digestIgnored = summary.senders.filter(f => f.kind === 'human-caller-ignores-digest');
+  if (digestIgnored.length) {
+    console.log('\nroutedAlert(disposition:\'human\') callers ignoring a downgraded \'digest\' result:');
+    for (const f of digestIgnored) console.log(`  - ${f.file}:${f.line} (result var: ${f.resultVar})`);
+  }
   console.log(`\nWritten to data/audit/alert-sender-inventory.json`);
 }
 
-module.exports = { scanFile, buildDirectCounts, compareToBaseline, DIGEST_OR_REVIEWED };
+module.exports = {
+  scanFile,
+  buildDirectCounts,
+  buildHumanDigestCounts,
+  compareToBaseline,
+  DIGEST_OR_REVIEWED,
+  scanHumanDispositionCaller,
+};
 
 if (require.main === module) main();
