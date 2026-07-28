@@ -374,7 +374,11 @@ jobs:
                 cooldownHours: 24,
                 fields: [{ name: 'Shows', value: process.env.BREACHED_LIST || '(unknown)' }],
               }).then((result) => {
-                const informed = result.action === 'silent' || (result.action === 'human' && result.delivered);
+                // action==='digest' means the page-worthy gate (card #611) downgraded this
+                // from 'human' — the owner WILL see it in the morning digest, so that
+                // counts as informed too (otherwise this falls through to the generic
+                // direct-email notify-failure step below, defeating the gate).
+                const informed = result.action === 'silent' || result.action === 'digest' || (result.action === 'human' && result.delivered);
                 if (informed) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'blocked=true\n');
                 else console.error('::warning::Alert delivery unconfirmed — leaving generic fallback notifier enabled');
                 process.exit(1);
@@ -444,7 +448,11 @@ jobs:
                 cooldownHours: 24,
                 fields: [{ name: 'Shows', value: process.env.BREACHED_LIST || '(unknown)' }],
               }).then((result) => {
-                const informed = result.action === 'silent' || (result.action === 'human' && result.delivered);
+                // action==='digest' means the page-worthy gate (card #611) downgraded this
+                // from 'human' — the owner WILL see it in the morning digest, so that
+                // counts as informed too (otherwise this falls through to the generic
+                // direct-email notify-failure step below, defeating the gate).
+                const informed = result.action === 'silent' || result.action === 'digest' || (result.action === 'human' && result.delivered);
                 if (informed) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'blocked=true\n');
                 else console.error('::warning::Alert delivery unconfirmed — leaving generic fallback notifier enabled');
                 process.exit(1);
