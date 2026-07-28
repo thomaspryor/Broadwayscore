@@ -109,14 +109,22 @@ function buildDailyReport(emails, ownerEmail) {
 // owner emails (one-off CRITICAL/ACTION alerts routed via owner-alert-router)
 // are reported for visibility but never count toward this verdict — they're
 // a separate, already-monitored noise class (alert-ledger dedup, E2E canary #374).
-function decideDayViolation(dayBucket) {
+// Transition forgiveness is date-bounded (ship-check codex P0): without a
+// bound, a resurrected retired sender firing alongside its replacement would
+// be forgiven FOREVER. The loop retired 2026-07-27; a few days covers
+// cutover-day overlap plus any straggler queued send.
+const RETIRED_FORGIVENESS_ENDS = '2026-07-30';
+
+function decideDayViolation(dayBucket, dayKey = null) {
   const allKeys = [...dayBucket.senders.keys()];
   // Transition forgiveness: a retired sender whose replacement ALSO fired the
-  // same day doesn't count (the cutover day inevitably has both). A retired
-  // sender firing alone still counts — that's the old path resurrecting.
+  // same day doesn't count — but ONLY during the cutover window. After
+  // RETIRED_FORGIVENESS_ENDS, or when the retired sender fires alone, it
+  // counts: that's the old path resurrecting.
+  const inWindow = dayKey === null || dayKey <= RETIRED_FORGIVENESS_ENDS;
   const senderKeys = allKeys.filter((k) => {
     const def = SCHEDULED_SENDERS.find((s) => s.key === k);
-    return !(def && def.retired && def.replacedBy && dayBucket.senders.has(def.replacedBy));
+    return !(inWindow && def && def.retired && def.replacedBy && dayBucket.senders.has(def.replacedBy));
   });
   return {
     violation: senderKeys.length > 1,
@@ -127,12 +135,17 @@ function decideDayViolation(dayBucket) {
 
 // Zero-send floor (loop-retirement plan review, 5-reviewer consensus): the
 // >1 rule above can NEVER catch a silently dead morning email — zero sends
-// build zero buckets and read as "No violations". A complete ET day with no
-// scheduled sender at all is its own violation. `dayBucket` may be undefined
-// (no owner emails that day at all) — that's the loudest missing signal.
+// build zero buckets and read as "No violations". The floor is keyed to the
+// PRIMARY sender specifically (ship-check codex P0): "some other scheduled
+// sender fired" must not mask a dead morning digest — e.g. a resurrected
+// retired sender would otherwise satisfy a size>0 check while the intended
+// email is dead. `dayBucket` may be undefined (no owner emails at all).
+const PRIMARY_SENDER_KEY = 'morning-digest';
+
 function decideDayMissing(dayBucket) {
   const senderCount = dayBucket ? dayBucket.senders.size : 0;
-  return { missing: senderCount === 0, senderCount };
+  const primaryFired = !!(dayBucket && dayBucket.senders.has(PRIMARY_SENDER_KEY));
+  return { missing: !primaryFired, primaryFired, senderCount };
 }
 
-module.exports = { SCHEDULED_SENDERS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing };
+module.exports = { SCHEDULED_SENDERS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };

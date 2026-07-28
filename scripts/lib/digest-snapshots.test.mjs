@@ -28,6 +28,11 @@ test('readSnapshot: fresh / stale / missing / invalid', () => {
   write(dir, 'stale.json', { generatedAt: staleAt });
   write(dir, 'garbage.json', '{not json');
   write(dir, 'no-date.json', { hello: 1 });
+  // JSON literal null parses fine but must not crash (ship-check QA P0)
+  write(dir, 'null.json', 'null');
+  write(dir, 'array.json', '[1,2]');
+  // Future generatedAt = producer clock bug, not fresh (ship-check codex P1)
+  write(dir, 'future.json', { generatedAt: new Date(NOW + 100 * 3600e3).toISOString() });
 
   const fresh = readSnapshot(path.join(dir, 'fresh.json'), 36, NOW);
   assert.equal(fresh.status, 'fresh');
@@ -38,6 +43,9 @@ test('readSnapshot: fresh / stale / missing / invalid', () => {
   assert.equal(readSnapshot(path.join(dir, 'absent.json'), 36, NOW).status, 'missing');
   assert.equal(readSnapshot(path.join(dir, 'garbage.json'), 36, NOW).status, 'invalid');
   assert.equal(readSnapshot(path.join(dir, 'no-date.json'), 36, NOW).status, 'invalid');
+  assert.equal(readSnapshot(path.join(dir, 'null.json'), 36, NOW).status, 'invalid');
+  assert.equal(readSnapshot(path.join(dir, 'array.json'), 36, NOW).status, 'invalid');
+  assert.equal(readSnapshot(path.join(dir, 'future.json'), 36, NOW).status, 'invalid');
 });
 
 test('readAllSnapshots: fresh sections render, everything else lands in problems', () => {
@@ -62,8 +70,9 @@ test('describeProblems names every non-fresh source; null when all fresh', () =>
     { key: 'health', label: 'site health', status: 'stale', generatedAt: '2026-07-26T03:12:00.000Z' },
     { key: 'redditDigest', label: 'Reddit engagement', status: 'missing', generatedAt: null },
   ]);
-  assert.match(note, /site health \(last 2026-07-26 03:12 UTC\)/);
-  assert.match(note, /Reddit engagement \(no snapshot\)/);
+  assert.match(note, /site health \(last update 2026-07-26 03:12 UTC\)/);
+  assert.match(note, /Reddit engagement \(no data\)/);
+  assert.match(note, /^didn't update overnight:/);
 });
 
 test('registry covers exactly the four folded digests', () => {
@@ -86,21 +95,23 @@ test('buildSubject output classifies as the morning-digest scheduled sender', ()
   assert.doesNotMatch(quiet, /\d+ items?/);
 });
 
-test('buildHtml never renders loop language and says "all quiet" when empty', () => {
+test('buildHtml never renders loop language; empty day reads calm, not broken', () => {
   const empty = buildHtml({ sections: {}, problemsNote: null, changesHtml: null, now: new Date('2026-07-28T11:30:00Z') });
-  assert.match(empty, /Nothing new this morning/);
+  assert.match(empty, /Nothing needs your attention this morning/);
+  assert.match(empty, /All quiet — no overnight changes to report/);
   for (const banned of ['Auto tag', 'needs your triage', 'awaiting your tap', 'stalling the loop', 'autonomous loop', 'Approve', 'clear the Auto']) {
     assert.ok(!empty.includes(banned), `digest HTML must never contain "${banned}"`);
   }
 });
 
-test('buildHtml surfaces the no-fresh-data banner and renders fresh sections', () => {
+test('buildHtml: top verdict line reflects site health; freshness banner renders', () => {
   const html = buildHtml({
-    sections: { health: { generatedAt: '2026-07-28T09:00:00Z', errors: [], warns: [], checks: [] } },
-    problemsNote: 'no fresh data from: Reddit engagement (no snapshot)',
+    sections: { health: { generatedAt: '2026-07-28T09:00:00Z', errors: ['e1'], warns: ['w1', 'w2'], checks: [] } },
+    problemsNote: "didn't update overnight: Reddit engagement (no data)",
     changesHtml: null,
     now: new Date('2026-07-28T11:30:00Z'),
   });
-  assert.match(html, /no fresh data from: Reddit engagement/);
-  assert.doesNotMatch(html, /Nothing new this morning/);
+  assert.match(html, /1 site error, 2 warnings — details below/);
+  assert.match(html, /didn't update overnight: Reddit engagement/);
+  assert.doesNotMatch(html, /Nothing needs your attention/);
 });
