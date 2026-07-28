@@ -791,6 +791,7 @@ on:
       # registered explicitly in the unit-test node --test list below.
       - 'scripts/audit-alert-senders.js'
       - 'scripts/.alert-sender-baseline.json'
+      - 'scripts/.human-caller-digest-baseline.json'
       - 'scripts/audit-alert-senders.test.mjs'
       - 'scripts/lib/exec-error-detail.js'
       - 'scripts/lib/exec-error-detail.test.mjs'
