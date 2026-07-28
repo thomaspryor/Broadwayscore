@@ -85,7 +85,7 @@ Run `/verify-opening-night <show-id>` for the full 9-point checklist. Check the 
 ## Project Reference
 
 **Stack:** Next.js 14, TypeScript, Tailwind CSS, static export. Production: https://broadwayscorecard.com
-**Scale:** 727+ shows, 14,000+ scored reviews, 420+ outlets, 870+ critics.
+**Scale:** 726+ shows, 15,300+ scored reviews, 394+ outlets, 880+ critics (via `getDataStats()`, `src/lib/data-core.ts` — rerun to refresh if stale).
 
 ### Scoring
 Composite = tier-weighted average. T1 (NYT, Vulture, Variety): 1.0 | T2 (TheaterMania, NY Post): 0.75 | T3 (blogs): 0.35
