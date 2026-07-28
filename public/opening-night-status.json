@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-28T14:55:48.942Z",
+  "generatedAt": "2026-07-28T15:50:20.689Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -126,27 +126,27 @@
       "status": "open",
       "slug": "the-saviors-off-broadway",
       "thumbnail": "/images/shows/the-saviors-off-broadway-2026/thumbnail.webp",
-      "siteScore": 81.6,
-      "liveScore": 82,
-      "scoreDrift": 0.4000000000000057,
+      "siteScore": 81.08,
+      "liveScore": 81,
+      "scoreDrift": -0.0799999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 9,
       "t1": 1,
-      "t2": 6,
+      "t2": 7,
       "t3": 1,
-      "positive": 7,
+      "positive": 8,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "8/12 total",
+          "9/12 total",
           "T1:1/3",
-          "hi-conf:6/8"
+          "hi-conf:7/8"
         ],
-        "highConfidence": 6,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -307,10 +307,6 @@
         },
         {
           "name": "NY1",
-          "isDualMarket": false
-        },
-        {
-          "name": "Front Row Center",
           "isDualMarket": false
         },
         {
@@ -519,6 +515,18 @@
           "t2": 6,
           "t3": 1,
           "p": 7,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-28T15:50:20.689Z",
+          "rc": 9,
+          "s": 81.08,
+          "t1": 1,
+          "t2": 7,
+          "t3": 1,
+          "p": 8,
           "m": 1,
           "n": 0,
           "bc": "waiting"
