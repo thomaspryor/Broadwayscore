@@ -76,15 +76,15 @@
  *   (informational logging only) still flags — annotate with a comment
  *   naming why (see dispatch-orphan-rescore-requeue.js's `alertRouted` field
  *   for the pattern) rather than trying to make the gate infer intent.
- * - Calls routed through a local wrapper/alias (e.g. an injectable `route =
+ * - Calls routed through a local wrapper/alias (an injectable `route =
  *   routeAlert` default param, or a `function alert(opts) { return
- *   routeAlert(opts); }` helper) are invisible — the gate only matches the
- *   literal text `routeAlert(`. scripts/lib/opening-night-sla.js and
- *   scripts/opening-night-monitor-launch.js both wrap it this way; their
- *   digest-safety currently rests on scripts/lib/page-worthy-alerts.js
- *   keeping their conditionKeys allowlisted (see that file's header), not on
- *   this lint. Resolving true aliases needs an AST pass, out of reach for a
- *   regex gate.
+ *   routeAlert(opts); }` helper — scripts/lib/opening-night-sla.js and
+ *   scripts/opening-night-monitor-launch.js both do this) are now resolved
+ *   mechanically by findWrapperNames() and folded into every check in this
+ *   file, not just this one. A wrapper whose own body is more than ~300
+ *   chars, or an alias assigned via anything other than a literal default
+ *   param / thin pass-through, still evades detection — true AST-level
+ *   alias resolution is out of reach for a regex gate.
  */
 
 'use strict';
@@ -164,10 +164,29 @@ function walk(dir, files) {
 const CALL_BODY_MAX_LINES = 40; // generous cap on one routeAlert({...}) call's own arg list
 const POST_CALL_WINDOW = 20; // lines after the call closes, for result-handling inspection
 
+// A line whose parens are already balanced (net 0 or negative unclosed opens)
+// is a complete, single-line call — e.g. a wrapper's own pass-through
+// `return await routeAlert(opts);`, as opposed to the usual multi-line
+// `routeAlert({` object-literal call this file's real callers all use.
+function parensBalanced(line) {
+  let depth = 0;
+  for (const ch of line) {
+    if (ch === '(') depth++;
+    else if (ch === ')') depth--;
+  }
+  return depth <= 0;
+}
+
 // Locates the line where a routeAlert({...}) call's argument object closes
 // (first line after the call opens whose trimmed text starts with '})'),
-// capped at CALL_BODY_MAX_LINES so a malformed call can't scan past it.
+// capped at CALL_BODY_MAX_LINES so a malformed call can't scan past it. A
+// call that's already balanced on its own line (findCallBodyEnd's caller
+// line) needs no forward scan at all — scanning anyway would walk past this
+// call's own end and bleed a LATER unrelated call's disposition/digest text
+// into it (real bug: a wrapper's single-line `routeAlert(opts);` pass-
+// through, which has no `})` of its own to stop at).
 function findCallBodyEnd(lines, callLineIdx) {
+  if (parensBalanced(lines[callLineIdx])) return callLineIdx;
   const limit = Math.min(lines.length, callLineIdx + CALL_BODY_MAX_LINES);
   for (let j = callLineIdx + 1; j < limit; j++) {
     if (/^\s*\}\)/.test(lines[j])) return j;
@@ -175,15 +194,44 @@ function findCallBodyEnd(lines, callLineIdx) {
   return limit - 1;
 }
 
-function scanHumanDispositionCaller(lines, callLineIdx, relPath, rawLines) {
+// Some callers route through a local wrapper instead of calling routeAlert()
+// directly, which evades every literal `routeAlert(` regex in this file (not
+// just the digest check) — e.g. scripts/lib/opening-night-sla.js's
+// injectable-for-tests default param (`route = routeAlert`) and
+// scripts/opening-night-monitor-launch.js's thin pass-through
+// (`function alert(opts) { return routeAlert(opts); }`). Detected
+// mechanically (not AST): a function whose body opens with `routeAlert(`
+// within ~300 chars of its own opening brace is a wrapper; a default
+// parameter literally assigned `routeAlert` is the injectable-test-double
+// pattern. Both resolve their own name to routeAlert for the rest of this
+// scan. Known remaining gap: a wrapper that itself takes an options object
+// passed through unexamined (as both real cases do) still can't have its
+// disposition/digest-handling inspected AT the wrapper definition — only at
+// each call site, which is what this resolves.
+function findWrapperNames(rawLines) {
+  const src = rawLines.join('\n');
+  const names = new Set();
+  const funcRe = /(?:async\s+)?function\s+(\w+)\s*\([^)]*\)\s*\{([\s\S]{0,300})/g;
+  let m;
+  while ((m = funcRe.exec(src))) {
+    if (/\brouteAlert\s*\(/.test(m[2])) names.add(m[1]);
+  }
+  const paramRe = /\b(\w+)\s*=\s*routeAlert\s*[,}]/g;
+  while ((m = paramRe.exec(src))) names.add(m[1]);
+  return names;
+}
+
+function scanHumanDispositionCaller(lines, callLineIdx, relPath, rawLines, calleeAlt) {
   const bodyEnd = findCallBodyEnd(lines, callLineIdx);
+  const callee = calleeAlt || 'routeAlert';
 
   // Post-call window starts AT the closing line (so `}).then((result) => {`
   // on the same line as the close is included) and stops at the next
-  // routeAlert(/sendAlert( call site if one appears first.
+  // routeAlert(/sendAlert(/wrapper( call site if one appears first.
   let windowEnd = Math.min(lines.length, bodyEnd + POST_CALL_WINDOW);
+  const nextCallRe = new RegExp(`\\b(?:${callee}|sendAlert)\\s*\\(`);
   for (let j = bodyEnd + 1; j < windowEnd; j++) {
-    if (/\b(?:routeAlert|sendAlert)\s*\(/.test(lines[j])) { windowEnd = j; break; }
+    if (nextCallRe.test(lines[j])) { windowEnd = j; break; }
   }
   const postCall = lines.slice(bodyEnd, windowEnd).join('\n');
 
@@ -192,8 +240,8 @@ function scanHumanDispositionCaller(lines, callLineIdx, relPath, rawLines) {
   // reassignment to a pre-declared variable `x = await routeAlert(` (no
   // const/let/var — the injectable-for-tests pattern some callers use); or a
   // later `.then((x) => ...)` promise chain.
-  const assignMatch = lines[callLineIdx].match(/(?:(?:const|let|var)\s+)?(\w+)\s*=\s*await\s+routeAlert\s*\(/);
-  const destructureMatch = !assignMatch && lines[callLineIdx].match(/(?:const|let|var)\s*\{\s*([^}]*)\}\s*=\s*await\s+routeAlert\s*\(/);
+  const assignMatch = lines[callLineIdx].match(new RegExp(`(?:(?:const|let|var)\\s+)?(\\w+)\\s*=\\s*await\\s+(?:${callee})\\s*\\(`));
+  const destructureMatch = !assignMatch && lines[callLineIdx].match(new RegExp(`(?:const|let|var)\\s*\\{\\s*([^}]*)\\}\\s*=\\s*await\\s+(?:${callee})\\s*\\(`));
   const thenMatch = !assignMatch && !destructureMatch && (
     postCall.match(/\.then\s*\(\s*(?:async\s*)?\(?\s*(\w+)\s*\)?\s*=>/) ||
     postCall.match(/\.then\s*\(\s*function\s*\(\s*(\w+)\s*\)/)
@@ -255,13 +303,22 @@ function scanFile(absPath, relPath) {
   const rawLines = content.split('\n');
   const lines = rawLines.map(stripTrailingComment);
 
+  // Resolve any local wrapper names (injectable default param, thin
+  // pass-through function) to routeAlert so calls made through them aren't
+  // invisible to this whole scan (card #616 follow-up). The negative
+  // lookbehind excludes the wrapper's OWN `function alert(...)` declaration
+  // line from matching itself as a call site.
+  const wrapperNames = findWrapperNames(rawLines);
+  const calleeAlt = ['routeAlert', ...wrapperNames].join('|');
+  const callSiteRe = new RegExp(`(?<!function\\s+)\\b(?:${calleeAlt})\\s*\\(`);
+
   for (let i = 0; i < lines.length; i++) {
     // Skip comment lines (this file, opening-night-sla.js, and ux-walkthrough.yml
     // all have prose referencing "sendAlert(" inside // // # or * comments
     // describing PAST bugs or migrations — real matches, not real call sites).
     const trimmed = lines[i].trim();
     if (trimmed.startsWith('//') || trimmed.startsWith('#') || trimmed.startsWith('*')) continue;
-    if (/\brouteAlert\s*\(/.test(lines[i])) {
+    if (callSiteRe.test(lines[i])) {
       // Bounded by the call's OWN closing '});' (findCallBodyEnd), not a
       // fixed line count — a fixed window either truncates a long argument
       // list (misclassifying a real disposition:'human' as 'unknown', card
@@ -281,7 +338,7 @@ function scanFile(absPath, relPath) {
         disposition,
       });
       if (disposition === 'human') {
-        const digestFinding = scanHumanDispositionCaller(lines, i, relPath, rawLines);
+        const digestFinding = scanHumanDispositionCaller(lines, i, relPath, rawLines, calleeAlt);
         if (digestFinding) findings.push(digestFinding);
       }
     }
