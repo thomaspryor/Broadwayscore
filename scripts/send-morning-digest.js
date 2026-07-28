@@ -130,13 +130,25 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, now
   const parts = [];
   parts.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
   parts.push(`<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
+
+  // One-line 2-second verdict up top (ship-check fresh-eyes review): the
+  // reader decides from this line alone whether to keep reading.
+  const errs = sections.health ? (sections.health.errors?.length || 0) : 0;
+  const warns = sections.health ? (sections.health.warns?.length || 0) : 0;
+  if (errs || warns) {
+    parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 12px;">${errs} site error${errs === 1 ? '' : 's'}, ${warns} warning${warns === 1 ? '' : 's'} — details below.</p>`);
+  } else {
+    parts.push(`<p style="font-size:13px;font-weight:700;color:#15803d;margin:0 0 12px;">Nothing needs your attention this morning.</p>`);
+  }
   if (problemsNote) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
   }
 
+  // Section order (fresh-eyes review): "is the site okay?" first, then what
+  // changed, then scores/openings/Reddit.
   const blocks = [];
-  if (changesHtml) blocks.push(changesHtml);
   if (sections.health) blocks.push(renderHealthDigestBlock(sections.health));
+  if (changesHtml) blocks.push(changesHtml);
   if (sections.dailyDigest) blocks.push(renderDailyDigestBlock(sections.dailyDigest));
   if (sections.openingDigest) blocks.push(renderOpeningDigestBlock(sections.openingDigest));
   if (sections.redditDigest) blocks.push(renderRedditDigestBlock(sections.redditDigest));
@@ -144,7 +156,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, now
   if (blocks.length) {
     parts.push(blocks.join('\n'));
   } else {
-    parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">Nothing new this morning — all quiet.</p>`);
+    parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">All quiet — no overnight changes to report.</p>`);
   }
 
   parts.push(`<p style="color:#999;font-size:11px;margin-top:16px;text-align:center;">Broadway Scorecard morning digest</p>`);

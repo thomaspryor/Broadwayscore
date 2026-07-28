@@ -79,6 +79,26 @@ test('decideDayViolation: 1 sender is fine, 2+ is a violation', () => {
   assert.equal(decideDayViolation(zeroSenders).violation, false);
 });
 
+test('decideDayViolation forgiveness is date-bounded: after the cutover window both count', () => {
+  const both = {
+    senders: new Map([
+      ['autonomous-email', { label: 'Overnight morning email', subjects: ['Overnight: 0 items'] }],
+      ['morning-digest', { label: 'Morning digest', subjects: ['Morning digest — Mon, Aug 10'] }],
+    ]),
+    other: [],
+  };
+  // Inside the window: forgiven. After it: a resurrected retired sender is a violation.
+  assert.equal(decideDayViolation(both, '2026-07-28').violation, false);
+  assert.equal(decideDayViolation(both, '2026-08-10').violation, true);
+});
+
+test('decideDayMissing is keyed to the PRIMARY morning-digest sender specifically', () => {
+  // A resurrected retired sender firing alone must NOT satisfy the floor.
+  const onlyRetired = { senders: new Map([['autonomous-email', { label: 'x', subjects: ['Overnight: 1 item'] }]]), other: [] };
+  assert.equal(decideDayMissing(onlyRetired).missing, true);
+  assert.equal(decideDayMissing(onlyRetired).senderCount, 1);
+});
+
 test('decideDayViolation forgives the loop→digest transition day but not a resurrection', () => {
   // Cutover day: last "Overnight:" send + first "Morning digest" send on the
   // same ET date — retired sender is forgiven because its replacement fired.

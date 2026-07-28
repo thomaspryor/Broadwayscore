@@ -47,9 +47,20 @@ function readSnapshot(filePath, maxAgeH, now = Date.now()) {
   let snap;
   try { snap = JSON.parse(raw); }
   catch { return { status: 'invalid', snapshot: null, generatedAt: null }; }
+  // JSON literal null/number/string parse fine but aren't snapshots — without
+  // this guard, `null.generatedAt` throws and kills the whole send (ship-check
+  // QA P0: a truncated producer write must degrade to one missing section,
+  // never zero email).
+  if (snap === null || typeof snap !== 'object' || Array.isArray(snap)) {
+    return { status: 'invalid', snapshot: null, generatedAt: null };
+  }
   const t = new Date(snap.generatedAt).getTime();
   if (!Number.isFinite(t)) return { status: 'invalid', snapshot: null, generatedAt: null };
   const ageH = (now - t) / 3600e3;
+  // A future generatedAt (beyond 1h of clock skew) is a producer clock/config
+  // bug, not fresh data — without this it would render as "fresh" until the
+  // wall clock caught up (ship-check codex P1).
+  if (ageH < -1) return { status: 'invalid', snapshot: null, generatedAt: snap.generatedAt };
   if (!(ageH < maxAgeH)) return { status: 'stale', snapshot: null, generatedAt: snap.generatedAt };
   return { status: 'fresh', snapshot: snap, generatedAt: snap.generatedAt };
 }
@@ -75,16 +86,18 @@ function readAllSnapshots({ auditDir = DEFAULT_AUDIT_DIR, now = Date.now() } = {
 
 // One amber banner line naming every source that didn't deliver, with the
 // last-write time when one exists — "stale silently vanishes" was the exact
-// failure the plan review flagged.
+// failure the plan review flagged. Plain-recipient wording ("didn't update
+// overnight", not "snapshot"): the reader is not an engineer (ship-check
+// fresh-eyes review).
 function describeProblems(problems) {
   if (!problems || !problems.length) return null;
   const bits = problems.map((p) => {
     if (p.status === 'stale' && p.generatedAt) {
-      return `${p.label} (last ${String(p.generatedAt).slice(0, 16).replace('T', ' ')} UTC)`;
+      return `${p.label} (last update ${String(p.generatedAt).slice(0, 16).replace('T', ' ')} UTC)`;
     }
-    return `${p.label} (${p.status === 'missing' ? 'no snapshot' : 'unreadable snapshot'})`;
+    return `${p.label} (no data)`;
   });
-  return `no fresh data from: ${bits.join(', ')}`;
+  return `didn't update overnight: ${bits.join(', ')}`;
 }
 
 module.exports = { SNAPSHOTS, readSnapshot, readAllSnapshots, describeProblems, DEFAULT_AUDIT_DIR };

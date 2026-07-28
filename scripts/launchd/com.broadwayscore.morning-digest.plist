@@ -30,7 +30,7 @@
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; exec node scripts/send-morning-digest.js --send-to-owner</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; { git fetch origin main --quiet &amp;&amp; git merge --ff-only origin/main --quiet || echo "[digest] ff-only update skipped (dirty/diverged checkout) — sending with local data"; } &amp;&amp; exec node scripts/send-morning-digest.js --send-to-owner</string>
     </array>
     <key>StartCalendarInterval</key>
     <dict>

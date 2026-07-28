@@ -131,7 +131,7 @@ async function main() {
   const violations = [];
   for (const dayKey of sortedDays) {
     const bucket = days.get(dayKey);
-    const decision = decideDayViolation(bucket);
+    const decision = decideDayViolation(bucket, dayKey);
     const senderList = decision.senders.map((s) => `${s.label} (${s.subjects.length}x)`).join(', ') || '(none)';
     const partial = dayKey === todayKey ? ' [in progress]' : '';
     console.log(`${dayKey}${partial}: ${decision.senderCount} scheduled sender${decision.senderCount === 1 ? '' : 's'} — ${senderList}${bucket.other.length ? ` [+${bucket.other.length} unclassified owner email(s)]` : ''}`);
@@ -167,8 +167,8 @@ async function main() {
   if (missingDecision.missing) {
     const result = await routeAlert({
       conditionKey: `scheduled-email-missing:${yesterdayKey}`,
-      title: `No scheduled morning email arrived on ${yesterdayKey}`,
-      description: `Zero scheduled digest senders fired on ${yesterdayKey} (ET). The owner's single daily email (scripts/send-morning-digest.js, launchd com.broadwayscore.morning-digest at 07:30 ET) likely failed silently — Mac asleep, launchd job unloaded, missing env, or a send error.`,
+      title: `Morning digest did not arrive on ${yesterdayKey}`,
+      description: `The morning-digest sender did not fire on ${yesterdayKey} (ET)${missingDecision.senderCount ? ` (${missingDecision.senderCount} other scheduled sender(s) did — which may itself be a resurrection to investigate)` : ''}. The owner's single daily email (scripts/send-morning-digest.js, launchd com.broadwayscore.morning-digest at 07:30 ET) likely failed silently — Mac asleep, launchd job unloaded, missing env, or a send error.`,
       hint: 'On the Mac Studio: launchctl print gui/501/com.broadwayscore.morning-digest (loaded?), then check /tmp/morning-digest-launchd.log, then `node scripts/send-morning-digest.js --send-to-owner` to send manually.',
       severity: 'warning',
       disposition: 'auto',
