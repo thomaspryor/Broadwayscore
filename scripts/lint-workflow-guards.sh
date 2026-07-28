@@ -12,7 +12,8 @@
 #
 # Usage: lint-workflow-guards.sh <check>[,<check>...]
 #   Checks: prebuild | core-data-pairing | private-git-add | merge-drivers
-#         | scraping-fallback | theatr-token | demo-flags
+#         | scraping-fallback | theatr-token | demo-flags | snapshot-overwrite
+#         | alert-ledger-commit
 #   Groups: workflows (all .github/workflows-scoped checks) | all
 
 set -uo pipefail
@@ -286,6 +287,38 @@ check_snapshot_overwrite() {
   fi
 }
 
+check_alert_ledger_commit() {
+  # Any job calling routeAlert()/resolveCondition() (owner-alert-router.js)
+  # must stage data/audit/alert-ledger.json for commit in the SAME job, or
+  # the cooldown/dedup ledger resets every run (5th recurrence of this class
+  # after audit-aggregator-gap.yml, test-ugc-roundtrip.yml, ux-walkthrough.yml,
+  # check-cron-health.yml — card #618). Pure-function check lives in
+  # scripts/lib/alert-ledger-commit-check.js (colocated test:
+  # scripts/lib/alert-ledger-commit-check.test.mjs).
+  local VIOLATIONS="" f name out
+  for f in .github/workflows/*.yml; do
+    name=$(basename "$f")
+    out=$(node -e "
+      const { findMissingLedgerCommits } = require('./scripts/lib/alert-ledger-commit-check.js');
+      const fs = require('fs');
+      const violations = findMissingLedgerCommits(fs.readFileSync(process.argv[1], 'utf8'));
+      violations.forEach(v => console.log(v));
+    " "$f")
+    if [ -n "$out" ]; then
+      VIOLATIONS="$VIOLATIONS\n$name: $out"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Workflows call routeAlert()/resolveCondition() without committing data/audit/alert-ledger.json in the same job:"
+    echo -e "$VIOLATIONS"
+    echo "Fix: stage data/audit/alert-ledger.json (git add, or scripts/lib/git-add-existing.sh) before the job's commit step."
+    echo "See scripts/lib/owner-alert-router.js header comment + check-cron-health.yml for a working example."
+    FAILED=1
+  else
+    echo "All routeAlert()/resolveCondition() callers commit data/audit/alert-ledger.json in the same job"
+  fi
+}
+
 run_check() {
   case "$1" in
     prebuild)          check_prebuild ;;
@@ -296,15 +329,16 @@ run_check() {
     theatr-token)      check_theatr_token ;;
     demo-flags)        check_demo_flags ;;
     snapshot-overwrite) check_snapshot_overwrite ;;
+    alert-ledger-commit) check_alert_ledger_commit ;;
     workflows)
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_theatr_token
-      check_snapshot_overwrite ;;
+      check_snapshot_overwrite; check_alert_ledger_commit ;;
     all)
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_theatr_token
-      check_demo_flags; check_snapshot_overwrite ;;
-    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|theatr-token|demo-flags|snapshot-overwrite|workflows|all>[,...]" >&2; exit 2 ;;
+      check_demo_flags; check_snapshot_overwrite; check_alert_ledger_commit ;;
+    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|workflows|all>[,...]" >&2; exit 2 ;;
   esac
 }
 
