@@ -1707,6 +1707,9 @@ async function main(argv = process.argv.slice(2)) {
             disposition: 'human',
             cooldownHours: 24,
           });
+          // notifyPending stays false when result.action === 'digest' too (the
+          // page-worthy gate, card #611, downgraded this from 'human') — the
+          // owner WILL see it in the next digest, so there's nothing pending.
           proving.notifyPending = result.action === 'human' && !result.delivered;
           proving.enabledAt = new Date().toISOString(); // terminal state: decision handed to operator, never re-fire
           saveWeProving(proving);
@@ -1731,6 +1734,9 @@ async function main(argv = process.argv.slice(2)) {
             disposition: 'human',
             cooldownHours: 24,
           });
+          // Same as above: result.action === 'digest' (page-worthy gate, card
+          // #611, downgraded 'human') is NOT a delivery failure — only a
+          // genuinely undelivered 'human' result should retry hourly.
           if (flipped && result.action === 'human' && !result.delivered) {
             proving.notifyPending = true;
             saveWeProving(proving);
