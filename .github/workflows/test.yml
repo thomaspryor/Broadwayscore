@@ -1749,7 +1749,14 @@ jobs:
     # design-tokens-lint cover the relevant bumps.
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    # Was 5 — the last known-good run before card #616's follow-up already took
+    # 4:45 (95% of budget) with ~350 test files across two `node --test`/`npx tsx
+    # --test` invocations sharing this one job-level timeout. Adding 3 more tests
+    # this session tipped it into a consistent (not flaky) cancellation at ~6:00.
+    # Bumped to 10 for headroom as the suite keeps growing — see task #80 (CI
+    # health: test.yml cancels under data-commit churn) for the related but
+    # distinct concurrency-group flakiness this does NOT fix.
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v5
