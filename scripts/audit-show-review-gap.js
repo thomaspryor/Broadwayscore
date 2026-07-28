@@ -1682,7 +1682,10 @@ async function main(argv = process.argv.slice(2)) {
         disposition: 'human',
         cooldownHours: 24,
       });
-      if (result.action === 'human' && result.delivered) { proving.notifyPending = false; saveWeProving(proving); }
+      // action === 'digest' means routeAlert's page-worthy gate (card #611)
+      // downgraded this from the requested 'human' — the owner WILL see it in
+      // tomorrow's digest, so that counts as notified same as a delivered email.
+      if ((result.action === 'human' && result.delivered) || result.action === 'digest') { proving.notifyPending = false; saveWeProving(proving); }
       else if (result.action === 'human') console.error('::error::WE auto-ingest is ON but the owner still could not be notified (email failing). Fix RESEND_API_KEY/OWNER_EMAIL.');
     } else if (!proving.enabledAt && attemptDue) {
       const verdict = evaluateProving(proving);
