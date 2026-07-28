@@ -1,5 +1,20 @@
 # Autonomous Loop — Cron Map & Schedule Pick
 
+> **⛔ LOOP RETIRED 2026-07-27 (owner decision — do not re-enable).** Both
+> launchd jobs (`com.broadwayscore.autonomous-nightly`, `.autonomous-deadman`)
+> unloaded AND their plists deleted from `~/Library/LaunchAgents/`; templates
+> remain in `scripts/launchd/`. The morning email survived the loop: it is now
+> `scripts/send-morning-digest.js` (snapshot registry:
+> `scripts/lib/digest-snapshots.js`), scheduled by
+> `com.broadwayscore.morning-digest` at **07:30 AM ET** and watched by
+> monitor-scheduled-email-count.yml's zero-send floor (CI, 15:00 UTC daily —
+> the deadman's replacement). Loop code (`scripts/autonomous-*.js`,
+> autonomous-merge.yml, /api/autonomous-action) is dormant, pending one-commit
+> deletion after the 3-day delivery watch (Notion card 3aa637c5-…-ebfdc62626b6).
+> Ledger `data/audit/autonomous-ledger.jsonl` is a closed historical record.
+> Sections below are kept for the still-valid cron map; loop-scheduling
+> rationale (sections 4–6) is historical.
+
 Generated 2026-07-12 from `grep -rn "cron:" .github/workflows/`.
 
 **Count check:** grep found **161** `cron:` lines. **157** are active schedule entries (all listed below: 12 in section 1 + 145 in section 2 = 157 ✓). The other 4 are non-schedules: `scrape-stagedoor.yml:13` (disabled, domain dead), `update-commercial.yml:7` (commented out), `rebuild-fast.yml:17` and `recover-explicit-ratings.yml:103` (prose comments containing the word "cron:"). 157 + 4 = 161 ✓.
@@ -186,7 +201,8 @@ Note: CLAUDE.md §14 says orchestrator fires "3 AM UTC Broadway / 10 PM UTC West
 |---|---|---|
 | com.broadwayscore.backfill-gather | daily 04:00 ET (= 08:00 UTC in EDT) | backfill gather run |
 | com.broadwayscore.worktree-gc | Sun 04:00 ET | worktree garbage collection |
-| com.bwsc.nightly-digest | daily 23:00 ET (= 03:00 UTC) | nightly digest |
+| ~~com.bwsc.nightly-digest~~ | — | GONE (verified absent from ~/Library/LaunchAgents 2026-07-27) |
+| com.broadwayscore.morning-digest | daily 07:30 ET | the ONE scheduled owner email (send-morning-digest.js, added 2026-07-27) |
 | com.bwsc.opening-night-backup-trigger | daily 21:00 ET (= 01:00 UTC) | orchestrator backup trigger |
 | com.bwsc.weekly-retro | Sun 10:00 ET | weekly retro |
 | com.tompryor.claude-token-health | daily 09:30 ET | token health check |
