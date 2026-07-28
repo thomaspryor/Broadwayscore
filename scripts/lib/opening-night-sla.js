@@ -235,7 +235,12 @@ async function dispatchSlaAlerts({ warnings, pages }, { dryRun = false, route = 
   // still returns action:'human' with delivered:false and does NOT record its
   // ledger, so it retries next run — we must not advance the peak past a page
   // nobody received (ship-check finding #4). A 'silent' refire (incident open,
-  // not growing) also leaves the peak.
+  // not growing) also leaves the peak. A downgraded action==='digest' (page-
+  // worthy gate, card #611 — currently prevented by this conditionKey's entry
+  // in page-worthy-alerts.js, but harmless if that ever lapses) also leaves
+  // the peak unadvanced: the next run's `pages.length > prevNotified` check
+  // just re-resolves and re-queues a fresh digest line, which is the correct
+  // "tell them again" behavior, not a silent drop.
   if (res && res.action === 'human' && res.delivered !== false) {
     saveSlaState({ notifiedPageCount: pages.length, lastNotifiedAt: new Date().toISOString() }, statePath);
   }

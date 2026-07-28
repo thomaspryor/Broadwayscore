@@ -391,6 +391,45 @@ test('scanFile ignores an incidental "digest" substring in the call\'s OWN argum
   assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 1);
 });
 
+test('scanFile resolves calls through a thin pass-through wrapper function to routeAlert', () => {
+  // Real pattern: scripts/opening-night-monitor-launch.js's local
+  // `alert(opts) { return routeAlert(opts); }` — invisible to a literal
+  // `routeAlert(` regex, so the whole scan (not just this check) missed it.
+  const findings = scanFixture('scripts/wrapper-passthrough.js', [
+    'async function alert(opts) {',
+    '  return await routeAlert(opts);',
+    '}',
+    'const result = await alert({',
+    "  conditionKey: 'x',",
+    "  title: 'y',",
+    "  disposition: 'human',",
+    '});',
+    "if (result.action === 'human' && result.delivered) { console.log('told'); }",
+  ].join('\n'));
+  const routeFindings = findings.filter(f => f.kind === 'routeAlert' && f.disposition === 'human');
+  assert.strictEqual(routeFindings.length, 1);
+  assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 1);
+});
+
+test('scanFile resolves calls through an injectable-for-tests default parameter wrapper', () => {
+  // Real pattern: scripts/lib/opening-night-sla.js's `route = routeAlert`
+  // default param (injectable for test doubles) — a different alias shape
+  // than the pass-through-function pattern above.
+  const findings = scanFixture('scripts/wrapper-default-param.js', [
+    'async function dispatch(opts, { route = routeAlert } = {}) {',
+    '  const res = await route({',
+    "    conditionKey: 'x',",
+    "    title: 'y',",
+    "    disposition: 'human',",
+    '  });',
+    "  if (res.action === 'human' && res.delivered) { console.log('told'); }",
+    '}',
+  ].join('\n'));
+  const routeFindings = findings.filter(f => f.kind === 'routeAlert' && f.disposition === 'human');
+  assert.strictEqual(routeFindings.length, 1);
+  assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 1);
+});
+
 test('buildHumanDigestCounts counts only human-caller-ignores-digest findings, per file', () => {
   const counts = buildHumanDigestCounts([
     { file: 'scripts/a.js', kind: 'human-caller-ignores-digest' },
