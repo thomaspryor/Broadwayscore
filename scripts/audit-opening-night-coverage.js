@@ -21,6 +21,7 @@ const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet } = req
 const { buildDigest } = require('./lib/t1-digest');
 const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
 const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
+const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const LEDGER_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-ledger.json');
@@ -270,26 +271,37 @@ async function runDigest(opts) {
   let delivered = false;
   if (opts.alert && actions.length) {
     try {
-      const { sendAlert } = require('./lib/discord-notify');
-      // severity 'error' + email:true — a NEW post-rollout T1/T2 gap >24h with its
-      // exact fix command is the actionable-only bar (EMAILABLE_SEVERITIES gate;
-      // 'warning' is policy-suppressed and left this alert log-only for weeks).
-      // Direct sendAlert, not routeAlert — this call already has its own cooldown:
-      // only cells present in `emailed` and actually `delivered` get persisted to
-      // digestStatePath.alertedCells below, so a given gap cell notifies once and
-      // stays silent on repeat runs until it clears the ledger (see the block
-      // below this one for the write + the two-guard rationale).
-      delivered = await sendAlert({
+      // Routed through owner-alert-router (not raw sendAlert) with a STATIC
+      // conditionKey + 24h cooldown — card #608 (2026-07-28): this alert fired
+      // 4x in ~25h because the per-cell alertedCells dedup below only silences
+      // a cell ONCE IT'S BEEN IN A DELIVERED EMAIL, but every hourly run that
+      // finds even one freshly-24h-old cell fired a brand new "new gaps" email
+      // immediately — there was no cooldown on the ALERT itself, only on
+      // individual cells. Batching behavior is preserved: routeAlert's 'silent'
+      // branch below still leaves `delivered=false`, so cells stay un-marked in
+      // alertedCells and accumulate into one batch the next time the cooldown
+      // clears (see the two-guard rationale in the block below this one).
+      const routed = await routeAlert({
+        conditionKey: 't1-coverage:new-gaps-24h',
         title: 'T1 Coverage — new gaps past 24h',
         description: `${actions.length} T1/T2 outlet(s) still missing >24h after they became measurable${actions.length > emailed.length ? ` (first ${emailed.length} below; the rest escalate next run)` : ''}.`,
         severity: 'error',
-        email: true,
+        disposition: 'human',
+        cooldownHours: 24,
         fields: emailed.map(r => ({ name: `${r.title} — ${r.outletId} (${r.ageHours}h)`, value: r.fix })),
       });
+      delivered = routed.action !== 'silent' && routed.delivered !== false;
       console.log(delivered
         ? `\nSent ACTION alert for ${emailed.length}/${actions.length} new gap(s).`
-        : `\nACTION alert NOT delivered — gaps stay un-deduped and retry next run.`);
+        : routed.action === 'silent'
+          ? `\nACTION alert suppressed by 24h cooldown (condition still open) — gaps stay un-deduped and accumulate for the next real send.`
+          : `\nACTION alert NOT delivered — gaps stay un-deduped and retry next run.`);
     } catch (e) { console.error('Digest alert failed:', e.message); }
+  } else if (opts.alert) {
+    // No actionable gaps this run — if the condition was open, resolve it so
+    // the NEXT new gap notifies immediately instead of waiting out the 24h
+    // cooldown from a now-irrelevant prior incident.
+    resolveCondition('t1-coverage:new-gaps-24h');
   }
 
   // Persist state ONLY on a real (non-dry-run) alert pass: stamp rolloutAt once and

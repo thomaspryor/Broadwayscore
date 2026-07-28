@@ -246,12 +246,14 @@ jobs:
             PREV_REDISPATCHED=$(jq -r '.redispatched[]?' "$STATE_FILE" 2>/dev/null | sort -u)
           fi
           PAGE_LIST=""
+          PAGE_NAMES=""
           REDISPATCHED_NOW=""
           # Still stale despite last check's redispatch → self-heal failed, page.
           STILL_STALE_AFTER_HEAL=$(comm -12 <(printf '%s\n' "$CURRENT_STALE") <(printf '%s\n' "$PREV_REDISPATCHED") | sed '/^$/d')
           while IFS= read -r name; do
             [ -z "$name" ] && continue
             PAGE_LIST="${PAGE_LIST}${name} (still stale after auto-redispatch)"$'\n'
+            PAGE_NAMES="${PAGE_NAMES}${name}"$'\n'
           done <<< "$STILL_STALE_AFTER_HEAL"
           while IFS= read -r name; do
             [ -z "$name" ] && continue
@@ -262,6 +264,7 @@ jobs:
             else
               echo "🚨 Self-heal FAILED for '${name}' (${wf:-no workflow file mapped}) — paging"
               PAGE_LIST="${PAGE_LIST}${name} (auto-redispatch failed — workflow disabled or undispatchable)"$'\n'
+              PAGE_NAMES="${PAGE_NAMES}${name}"$'\n'
             fi
           done <<< "$NEWLY_STALE"
           PAGE_COUNT=$(printf '%s' "$PAGE_LIST" | grep -c . || true)
@@ -282,6 +285,11 @@ jobs:
           echo "chronic_stale_count=${CHRONIC_COUNT}" >> "$GITHUB_OUTPUT"
           echo "page_count=${PAGE_COUNT}" >> "$GITHUB_OUTPUT"
           echo "page_list=$(printf '%s' "$PAGE_LIST" | paste -sd ';' - | sed 's/;/; /g')" >> "$GITHUB_OUTPUT"
+          # Bare cron names (no parenthetical reason) for routeAlert's per-cron
+          # conditionKey (card #608) — page_list above stays for the human-readable
+          # email body.
+          echo "page_names=$(printf '%s' "$PAGE_NAMES" | paste -sd ';' -)" >> "$GITHUB_OUTPUT"
+          echo "recovered_names=$(printf '%s' "$RECOVERED" | paste -sd ';' -)" >> "$GITHUB_OUTPUT"
           if [ -n "$RECOVERED" ]; then
             echo "✅ Recovered crons (no longer stale):"
             printf '%s\n' "$RECOVERED" | sed 's/^/  /'
@@ -451,17 +459,62 @@ jobs:
       # page used to ask the owner to perform. Chronic stale falls through to the
       # digest (warning, Discord-only — notify-failure is a no-op for warning per
       # workflows/CLAUDE.md, intentionally).
-      - name: Notify — stale critical crons self-heal failed (paging)
+      #
+      # Routed per-cron through owner-alert-router (not notify-failure) — card #608
+      # (2026-07-28): notify-failure's built-in cooldown is TIME-based (default 2h)
+      # keyed on the check-cron-health WORKFLOW as a whole, which is a no-op for a
+      # once-daily cron: 24h between runs always clears a 2h window, so a cron that
+      # stays broken (Commercial Weekly Orchestrator failed its --strict gate 5
+      # days running, 07-24 through 07-28) pages fresh every single day. routeAlert
+      # gives each STALE CRON its own conditionKey + a real 24h cooldown, and
+      # resolveCondition below re-arms it the moment that cron actually recovers —
+      # so a genuinely new incident still pages immediately, only the "still
+      # broken, already told you" repeat is silenced.
+      - name: Notify — stale critical crons self-heal failed (paging, deduped per-cron)
         if: failure() && steps.check.outputs.page_count != '0' && steps.check.outputs.page_count != ''
-        uses: ./.github/actions/notify-failure
-        with:
-          title: ${{ format('🚨 {0} critical cron(s) stale, self-heal failed — see run log', steps.check.outputs.page_count) }}
-          description: ${{ steps.check.outputs.page_list }}
-          severity: 'critical'
-          email: 'true'
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-          resend_api_key: ${{ secrets.RESEND_API_KEY }}
-          owner_email: ${{ secrets.OWNER_EMAIL }}
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          PAGE_NAMES: ${{ steps.check.outputs.page_names }}
+          PAGE_LIST: ${{ steps.check.outputs.page_list }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          node -e '
+            const { routeAlert } = require("./scripts/lib/owner-alert-router.js");
+            const names = (process.env.PAGE_NAMES || "").split(";").map(s => s.trim()).filter(Boolean);
+            const runUrl = process.env.RUN_URL;
+            (async () => {
+              for (const name of names) {
+                const conditionKey = `cron-health:${name}`;
+                const result = await routeAlert({
+                  conditionKey,
+                  title: `🚨 Critical cron stale, self-heal failed: ${name}`,
+                  description: `Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.`,
+                  severity: "critical",
+                  disposition: "human",
+                  cooldownHours: 24,
+                  url: runUrl,
+                  fields: [{ name: "Run", value: `[View logs](${runUrl})` }],
+                });
+                console.log(`[cron-health] ${conditionKey}: ${result.action}` + (result.action === "silent" ? " (24h cooldown, already reported)" : ""));
+              }
+            })().catch(e => { console.error("routeAlert failed:", e.message); process.exit(1); });
+          '
+
+      # Recovered crons re-arm their condition immediately (same rationale as
+      # update-show-status.yml's #486 fix) — without this a cron that flaps
+      # (broken → self-heals → breaks again next week) would wait out the 24h
+      # cooldown from its PRIOR incident before paging the new one.
+      - name: Resolve recovered cron conditions
+        if: always() && steps.check.outputs.recovered_names != ''
+        run: |
+          node -e '
+            const { resolveCondition } = require("./scripts/lib/owner-alert-router.js");
+            const names = (process.env.RECOVERED_NAMES || "").split(";").map(s => s.trim()).filter(Boolean);
+            for (const name of names) resolveCondition(`cron-health:${name}`);
+          '
+        env:
+          RECOVERED_NAMES: ${{ steps.check.outputs.recovered_names }}
 
       - name: Notify — chronic stale (digest only)
         if: failure() && (steps.check.outputs.page_count == '0' || steps.check.outputs.page_count == '')
@@ -477,13 +530,14 @@ jobs:
       - name: Persist cron-health state
         if: always()
         run: |
-          if [ ! -f data/audit/cron-health-state.json ]; then
-            echo "No state file written — skipping commit."
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/cron-health-state.json
+          # alert-ledger.json: routeAlert()/resolveCondition()'s cooldown ledger
+          # (card #608) — must be committed here or the per-cron 24h cooldown
+          # added above never persists across daily runs (same class as #394).
+          for f in data/audit/cron-health-state.json data/audit/alert-ledger.json; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
           if git diff --staged --quiet; then
             echo "No state change to commit."
             exit 0

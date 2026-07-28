@@ -414,8 +414,26 @@ jobs:
             if (newerRuns.length > 0) {
               console.log(`Skipping alert — ${newerRuns.length} newer deploy(s) already queued/running`);
               core.setOutput('skip_alert', 'true');
+              return;
+            }
+
+            // Confirm-before-page (card #608, 2026-07-28): the 5-min cron means an
+            // isolated blip pages immediately, then self-heals 2-3 ticks later —
+            // exactly what happened 2026-07-28 (run failed 12:53 UTC, next TWO runs
+            // at 13:06/13:11 succeeded). Only page if the most recently COMPLETED
+            // run before this one ALSO failed — i.e. this is at least the 2nd
+            // consecutive real failure (~5-10min of broken deploys), not a
+            // one-off. check-streak (below) still escalates further at streak 3.
+            const completedRuns = data.workflow_runs
+              .filter(r => r.id < context.runId && r.status === 'completed'
+                && r.conclusion !== 'skipped' && r.conclusion !== 'cancelled')
+              .sort((a, b) => b.id - a.id);
+            const previous = completedRuns[0];
+            if (!previous || previous.conclusion !== 'failure') {
+              console.log(`Skipping alert — previous completed run ${previous ? previous.id : '(none)'} was '${previous ? previous.conclusion : 'n/a'}', not a confirmed repeat failure. Will page if the NEXT run also fails.`);
+              core.setOutput('skip_alert', 'true');
             } else {
-              console.log('No newer deploys pending — sending alert');
+              console.log(`Previous completed run ${previous.id} also failed — confirmed repeat failure, sending alert`);
               core.setOutput('skip_alert', 'false');
             }
 
