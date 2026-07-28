@@ -1,14 +1,9 @@
 {
-  "generatedAt": "2026-07-27T08:00:26.441Z",
-  "subject": "BSC URGENT (day 9): 1 unresolved error",
-  "bannerText": "1 error, 12 warnings",
-  "consecutiveErrorDays": 9,
-  "errors": [
-    {
-      "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 3 times in the last 24h — likely broken, not transient."
-    }
-  ],
+  "generatedAt": "2026-07-28T07:42:03.099Z",
+  "subject": "BSC Daily: 12 warnings (1 auto-fixed)",
+  "bannerText": "14 warnings",
+  "consecutiveErrorDays": 0,
+  "errors": [],
   "warns": [
     {
       "name": "Audience coverage: open-show gaps",
@@ -16,7 +11,7 @@
     },
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 19185 vs baseline 19197"
+      "message": "Reviews dropped: 19191 vs baseline 19203"
     },
     {
       "name": "Quality: star-vs-score mismatch",
@@ -24,7 +19,7 @@
     },
     {
       "name": "Quality: corpus drift",
-      "message": "8 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+      "message": "7 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
     },
     {
       "name": "Credits: ScrapingBee",
@@ -32,31 +27,35 @@
     },
     {
       "name": "Credits: ScrapingDog",
-      "message": "838k credits left (84%) · 40k/day burn · renews in 26d · exhausts in ~21d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
+      "message": "769k credits left (77%) · 46k/day burn · renews in 25d · exhausts in ~17d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
     },
     {
       "name": "Credits: Bright Data",
-      "message": "balance $59.81 · pending invoice $254.80 · month-to-date $250.33 (serp+unlocker)"
+      "message": "balance $54.02 · pending invoice $260.59 · month-to-date $257.74 (serp+unlocker)"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "2 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (2d); push-with-retry.sh PUSH_DEADLINE_SEC=240 too tight for large (1d)"
+      "message": "3 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (3d); push-with-retry.sh PUSH_DEADLINE_SEC=240 too tight for large (2d); UX audit #326: watchlist-grid delete icon color fix blocked  (1d)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "18 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Kill ScrapingBee premium_proxy direct calls (cost more than  (4d); Rebuild same-URL dedup: prefer a real criticName over 'Unkno (4d); Trainspotting: only 4 reviews on site + email said 7 (invest (4d)"
+      "message": "27 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Kill ScrapingBee premium_proxy direct calls (cost more than  (5d); Rebuild same-URL dedup: prefer a real criticName over 'Unkno (5d); Trainspotting: only 4 reviews on site + email said 7 (invest (5d)"
+    },
+    {
+      "name": "Workflow repeat-failure: Check Corpus Drift",
+      "message": "Check Corpus Drift failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: OB closing candidates awaiting review",
-      "message": "9 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
+      "message": "10 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "4 discovered review(s) not reaching the composite score (2 T1). First: jesus-christ-superstar-west-end-2026 — artsdesk (empty-body)"
+      "message": "2 discovered review(s) not reaching the composite score (0 T1). First: jesus-christ-superstar-west-end-2026 — artsdesk (empty-body)"
     }
   ],
   "queued": [],
-  "autoFixedCount": 0,
-  "passedCount": 48,
+  "autoFixedCount": 1,
+  "passedCount": 47,
   "totalCount": 64
 }
