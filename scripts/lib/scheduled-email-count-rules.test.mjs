@@ -109,9 +109,11 @@ test('decideDayViolation forgives the loop→digest transition day but not a res
     ]),
     other: [],
   };
-  const transition = decideDayViolation(transitionDay);
+  const transition = decideDayViolation(transitionDay, '2026-07-27');
   assert.equal(transition.violation, false);
   assert.equal(transition.senderCount, 1);
+  // Omitted dayKey fails closed: no forgiveness (codex P2 hardening).
+  assert.equal(decideDayViolation(transitionDay).violation, true);
 
   // A retired sender firing WITHOUT its replacement is the old path
   // resurrecting — it still counts, so 2 distinct = violation.

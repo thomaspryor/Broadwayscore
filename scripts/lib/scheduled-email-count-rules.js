@@ -121,7 +121,9 @@ function decideDayViolation(dayBucket, dayKey = null) {
   // same day doesn't count — but ONLY during the cutover window. After
   // RETIRED_FORGIVENESS_ENDS, or when the retired sender fires alone, it
   // counts: that's the old path resurrecting.
-  const inWindow = dayKey === null || dayKey <= RETIRED_FORGIVENESS_ENDS;
+  // Null dayKey = NO forgiveness (fail-closed): a caller that forgets the
+  // param must not silently reintroduce permanent forgiveness (codex P2).
+  const inWindow = dayKey !== null && dayKey <= RETIRED_FORGIVENESS_ENDS;
   const senderKeys = allKeys.filter((k) => {
     const def = SCHEDULED_SENDERS.find((s) => s.key === k);
     return !(inWindow && def && def.retired && def.replacedBy && dayBucket.senders.has(def.replacedBy));
