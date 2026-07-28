@@ -1,25 +1,8 @@
 {
-  "generatedAt": "2026-07-28T08:51:28.187Z",
+  "generatedAt": "2026-07-28T09:52:50.082Z",
   "windowDays": 45,
   "showsScanned": 53,
   "gaps": [
-    {
-      "showId": "jesus-christ-superstar-west-end-2026",
-      "title": "Jesus Christ Superstar",
-      "openingDate": "2026-07-07",
-      "file": "artsdesk--rachel-halliburton.json",
-      "outletId": "artsdesk",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.google.com/url?q=https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original&sa=D&source=editors&ust=1783600902761325&usg=AOvVaw1R81oiKDlLSdlgyTHrcoRL",
-      "recovery": null,
-      "recoveryCount": 3,
-      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://www.google.com/url?q=https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original&sa=D&source=editors&ust=1783600902761325&usg=AOvVaw1R81oiKDlLSdlgyTHrcoRL --outlet=artsdesk --critic=\"Rachel Halliburton\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": null,
-      "fileAgeHours": null,
-      "gapSeenAt": "2026-07-27T20:29:31.201Z",
-      "nonTerminalAgeHours": 12.365829444444444
-    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -33,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 115.66435583333333,
+      "fileAgeHours": 116.68710472222222,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 74.96729194444444
+      "nonTerminalAgeHours": 75.99004055555555
     }
   ],
   "contradictions": []
