@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-28T00:18:07.881Z",
+  "updatedAt": "2026-07-28T00:21:31.454Z",
   "processed": 55,
-  "failed": 926,
-  "successRate": "5.6%",
+  "failed": 936,
+  "successRate": "5.5%",
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 19,
     "archive": 8
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-07-28T00:16:56.469Z",
@@ -25,6 +25,28 @@
       "t": "2026-07-28T00:16:56.964Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-28T00:18:48.908Z",
+      "event": "bb-session",
+      "session": "05755843",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-28T00:18:49.294Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-28T00:19:04.923Z",
+      "event": "bb-session",
+      "session": "62be4370",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-28T00:19:05.273Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
