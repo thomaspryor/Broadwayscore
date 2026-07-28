@@ -29,6 +29,7 @@ const ALLOWLIST = new Set([
   // Router + base send lib
   'scripts/lib/discord-notify.js', // sendAlert() — the shared human-disposition email path
   // KEEP — owner-confirmed product emails (email-consolidation-plan-2026-07-21.md)
+  'scripts/send-morning-digest.js', // the ONE scheduled owner email/day (loop retired 2026-07-27)
   'scripts/send-daily-digest.js',
   'scripts/send-opening-digest.js',
   'scripts/reddit-engagement-digest.js',

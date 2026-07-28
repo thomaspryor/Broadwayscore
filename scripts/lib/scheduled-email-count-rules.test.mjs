@@ -5,9 +5,12 @@ import {
   dayKeyET,
   buildDailyReport,
   decideDayViolation,
+  decideDayMissing,
 } from './scheduled-email-count-rules.js';
 
 test('classifySubject matches each known scheduled sender', () => {
+  assert.equal(classifySubject('Morning digest — Tue, Jul 28').key, 'morning-digest');
+  assert.equal(classifySubject('Morning digest — Tue, Jul 28 · ⚠️ site health: 2 errors, 1 warning').key, 'morning-digest');
   assert.equal(classifySubject('Overnight: 3 items awaiting your tap').key, 'autonomous-email');
   assert.equal(classifySubject('Daily Digest: 12 changes on 2026-07-26').key, 'daily-digest');
   assert.equal(classifySubject('⚠️ Daily Digest: 25 changes (1 warning) on 2026-07-24').key, 'daily-digest');
@@ -74,6 +77,39 @@ test('decideDayViolation: 1 sender is fine, 2+ is a violation', () => {
 
   const zeroSenders = { senders: new Map(), other: [] };
   assert.equal(decideDayViolation(zeroSenders).violation, false);
+});
+
+test('decideDayViolation forgives the loop→digest transition day but not a resurrection', () => {
+  // Cutover day: last "Overnight:" send + first "Morning digest" send on the
+  // same ET date — retired sender is forgiven because its replacement fired.
+  const transitionDay = {
+    senders: new Map([
+      ['autonomous-email', { label: 'Overnight morning email', subjects: ['Overnight: 0 items'] }],
+      ['morning-digest', { label: 'Morning digest', subjects: ['Morning digest — Mon, Jul 27'] }],
+    ]),
+    other: [],
+  };
+  const transition = decideDayViolation(transitionDay);
+  assert.equal(transition.violation, false);
+  assert.equal(transition.senderCount, 1);
+
+  // A retired sender firing WITHOUT its replacement is the old path
+  // resurrecting — it still counts, so 2 distinct = violation.
+  const resurrection = {
+    senders: new Map([
+      ['autonomous-email', { label: 'Overnight morning email', subjects: ['Overnight: 1 item'] }],
+      ['reddit-engagement-digest', { label: 'Reddit', subjects: ['r/Broadway — 2 threads for you'] }],
+    ]),
+    other: [],
+  };
+  assert.equal(decideDayViolation(resurrection).violation, true);
+});
+
+test('decideDayMissing: zero scheduled senders (or no bucket at all) is a miss', () => {
+  assert.equal(decideDayMissing(undefined).missing, true);
+  assert.equal(decideDayMissing({ senders: new Map(), other: [{ subject: '[CRITICAL] x' }] }).missing, true);
+  const ok = { senders: new Map([['morning-digest', { label: 'Morning digest', subjects: ['Morning digest — Tue, Jul 28'] }]]), other: [] };
+  assert.equal(decideDayMissing(ok).missing, false);
 });
 
 test('real-world regression fixture: 2026-07-26 had 3+ distinct scheduled senders (pre-#497 fold)', () => {
