@@ -1,7 +1,107 @@
 {
-  "generatedAt": "2026-07-27T19:51:19.265Z",
+  "generatedAt": "2026-07-28T00:19:27.928Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "the-enormous-crocodile-west-end-2026",
+      "title": "The Enormous Crocodile",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-07-28",
+      "status": "upcoming",
+      "slug": "the-enormous-crocodile-west-end",
+      "thumbnail": "/images/shows/the-enormous-crocodile-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    },
     {
       "id": "the-saviors-off-broadway-2026",
       "title": "The Saviors",
@@ -995,10 +1095,6 @@
           "isDualMarket": false
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "amNewYork",
           "isDualMarket": false
         },
@@ -1415,31 +1511,6 @@
   ],
   "upcoming": [
     {
-      "id": "the-enormous-crocodile-west-end-2026",
-      "title": "The Enormous Crocodile",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-07-28",
-      "status": "upcoming",
-      "slug": "the-enormous-crocodile-west-end",
-      "thumbnail": "/images/shows/the-enormous-crocodile-west-end-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
-    {
       "id": "dog-man-the-musical-west-end-2026",
       "title": "Dog Man - The Musical",
       "market": "west-end",
@@ -1449,7 +1520,7 @@
       "status": "upcoming",
       "slug": "dog-man-the-musical-west-end",
       "thumbnail": "/images/shows/dog-man-the-musical-west-end-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1474,7 +1545,7 @@
       "status": "previews",
       "slug": "tao-of-glass-west-end",
       "thumbnail": "/images/shows/tao-of-glass-west-end-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1499,7 +1570,7 @@
       "status": "upcoming",
       "slug": "death-note-the-musical-west-end",
       "thumbnail": "/images/shows/death-note-the-musical-west-end-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1524,7 +1595,46 @@
       "status": "previews",
       "slug": "the-vessel-off-broadway",
       "thumbnail": "/images/shows/the-vessel-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 3,
+      "daysUntil": 2,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "weve-been-here-before-a-one-woman-musical-off-broadway-2026",
+      "title": "We've Been Here Before: A One Woman Musical",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-08-04",
+      "status": "previews",
+      "slug": "weve-been-here-before-a-one-woman-musical-off-broadway",
+      "thumbnail": "/images/shows/weve-been-here-before-a-one-woman-musical-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
