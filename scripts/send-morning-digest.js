@@ -1,0 +1,220 @@
+#!/usr/bin/env node
+/**
+ * send-morning-digest.js — the owner's ONE scheduled daily email.
+ *
+ * Replaces autonomous-email.js as the consumer of the digest snapshots
+ * (cards #364/#497/#511) after the autonomous loop's retirement
+ * (2026-07-27, owner decision). Reads ONLY:
+ *   - the four snapshot files in scripts/lib/digest-snapshots.js
+ *   - the fail-soft "what changed while you slept" collector
+ *     (scripts/lib/overnight-digest.js — git/deploy/worktree facts)
+ * It deliberately reads NO loop state: no autonomous ledger, no Notion auto
+ * states, no HMAC approval links, no LLM calls. It must never render a
+ * triage list or ask the owner to do bookkeeping (owner mandate 2026-07-27:
+ * "giant wall of text, completely unactionable" is the failure mode this
+ * design forbids).
+ *
+ * RULE 17 (email broadcast safety): TRANSACTIONAL ONLY — direct POST /emails
+ * to one explicit recipient. Never a broadcast, never an audience.
+ *
+ *   node scripts/send-morning-digest.js --send-to you@example.com   send
+ *   node scripts/send-morning-digest.js --send-to-owner             send to OWNER_EMAIL from .env
+ *   node scripts/send-morning-digest.js --dry-run                   write HTML preview, send nothing
+ *
+ * Scheduled by scripts/launchd/com.broadwayscore.morning-digest.plist
+ * (07:30 ET). Delivery is watched by monitor-scheduled-email-count.js's
+ * zero-send floor (CI, 15:00 UTC) — if this job silently dies, that check
+ * is the alarm, not the owner's memory.
+ */
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+
+const REPO = path.join(__dirname, '..');
+
+// .env preamble (same pattern as the other launchd-run senders — launchd
+// does not inherit shell env, so keys must come from the repo's .env).
+for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.env']) {
+  if (!fs.existsSync(envPath)) continue;
+  for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
+    const t = line.trim();
+    if (!t || t.startsWith('#')) continue;
+    const eq = t.indexOf('=');
+    if (eq === -1) continue;
+    if (!process.env[t.slice(0, eq)]) process.env[t.slice(0, eq)] = t.slice(eq + 1);
+  }
+  break;
+}
+
+const { readAllSnapshots, describeProblems } = require('./lib/digest-snapshots.js');
+const {
+  esc,
+  renderHealthDigestBlock,
+  renderDailyDigestBlock,
+  renderOpeningDigestBlock,
+  renderRedditDigestBlock,
+} = require('./lib/autonomous-email-render.js');
+
+const USAGE = `send-morning-digest.js — the owner's single scheduled morning email.
+
+Usage:
+  node scripts/send-morning-digest.js --send-to <address>   send (rule 17: one explicit recipient)
+  node scripts/send-morning-digest.js --send-to-owner       send to OWNER_EMAIL (from .env)
+  node scripts/send-morning-digest.js --dry-run             write HTML preview, no send
+  --help, -h   show this message, do nothing else`;
+
+function parseArgs(argv) {
+  const a = { _: [] };
+  for (let i = 0; i < argv.length; i++) {
+    const t = argv[i];
+    if (t.startsWith('--')) {
+      const k = t.slice(2);
+      const n = argv[i + 1];
+      if (n === undefined || n.startsWith('--')) a[k] = true;
+      else { a[k] = n; i++; }
+    } else a._.push(t);
+  }
+  return a;
+}
+
+function httpsJson(method, url, headers, body) {
+  return new Promise((resolve) => {
+    const u = new URL(url);
+    const data = body ? JSON.stringify(body) : null;
+    const req = https.request({
+      hostname: u.hostname, path: u.pathname + u.search, method,
+      headers: { 'Content-Type': 'application/json', ...headers, ...(data ? { 'Content-Length': Buffer.byteLength(data) } : {}) },
+      timeout: 15000,
+    }, (res) => {
+      let out = '';
+      res.on('data', (c) => out += c);
+      res.on('end', () => {
+        try { resolve({ status: res.statusCode, json: JSON.parse(out) }); }
+        catch { resolve({ status: res.statusCode, json: null }); }
+      });
+    });
+    req.on('error', () => resolve({ status: 0, json: null }));
+    req.on('timeout', () => { req.destroy(); resolve({ status: 0, json: null }); });
+    if (data) req.write(data);
+    req.end();
+  });
+}
+
+// Subject contract: MUST match SCHEDULED_SENDERS['morning-digest'].pattern in
+// scripts/lib/scheduled-email-count-rules.js — the one-email-per-day monitor
+// classifies by this prefix, and the parity test in digest-snapshots.test.mjs
+// enforces it. Never a count ("0 items" reads as broken, owner feedback
+// 2026-07-27); the site-health escalation suffix is the only variable part.
+function buildSubject({ health = null, now = new Date() } = {}) {
+  const dateLabel = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric',
+  }).format(now);
+  const errs = health ? (health.errors?.length || 0) : 0;
+  const warns = health ? (health.warns?.length || 0) : 0;
+  const urgent = health && /URGENT/.test(health.subject || '');
+  const suffix = errs || warns
+    ? ` · ${urgent ? '⛔' : '⚠️'} site health: ${errs} error${errs === 1 ? '' : 's'}, ${warns} warning${warns === 1 ? '' : 's'}`
+    : '';
+  return `Morning digest — ${dateLabel}${suffix}`;
+}
+
+// Sections render via the SAME exported block renderers the old email used —
+// identical visual output for the parts the owner kept, none of the loop
+// parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, now = new Date() } = {}) {
+  const dateLabel = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
+  }).format(now);
+  const parts = [];
+  parts.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
+  parts.push(`<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
+  if (problemsNote) {
+    parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
+  }
+
+  const blocks = [];
+  if (changesHtml) blocks.push(changesHtml);
+  if (sections.health) blocks.push(renderHealthDigestBlock(sections.health));
+  if (sections.dailyDigest) blocks.push(renderDailyDigestBlock(sections.dailyDigest));
+  if (sections.openingDigest) blocks.push(renderOpeningDigestBlock(sections.openingDigest));
+  if (sections.redditDigest) blocks.push(renderRedditDigestBlock(sections.redditDigest));
+
+  if (blocks.length) {
+    parts.push(blocks.join('\n'));
+  } else {
+    parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">Nothing new this morning — all quiet.</p>`);
+  }
+
+  parts.push(`<p style="color:#999;font-size:11px;margin-top:16px;text-align:center;">Broadway Scorecard morning digest</p>`);
+  parts.push(`</div>`);
+  return parts.join('\n');
+}
+
+async function main() {
+  // --help must never fall through to a real send (bug class #260/#263/#264).
+  const { hasHelpFlag } = require('./lib/cli-help.js');
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
+  const args = parseArgs(process.argv.slice(2));
+  const dryRun = !!args['dry-run'];
+  let sendTo = args['send-to'] && args['send-to'] !== true ? String(args['send-to']) : null;
+  if (!sendTo && args['send-to-owner']) {
+    sendTo = process.env.OWNER_EMAIL || null;
+    if (!sendTo) { console.error('[digest] --send-to-owner but OWNER_EMAIL is not set (.env)'); process.exit(1); }
+  }
+  if (!dryRun && !sendTo) {
+    console.error('[digest] refusing to run without an explicit recipient (rule 17) — use --send-to <addr>, --send-to-owner, or --dry-run');
+    process.exit(1);
+  }
+
+  const { sections, problems } = readAllSnapshots();
+  const problemsNote = describeProblems(problems);
+
+  // "What changed while you slept" — fail-soft; a broken collector must
+  // never block the digest itself.
+  let changesHtml = null;
+  try {
+    const { gatherDigest, renderDigestBlock } = require('./lib/overnight-digest.js');
+    const digest = gatherDigest({ repo: REPO });
+    if (digest) changesHtml = renderDigestBlock(digest);
+  } catch (err) {
+    console.error(`[digest] WARN overnight-changes gathering failed: ${String(err.message).slice(0, 120)}`);
+  }
+
+  const now = new Date();
+  const subject = buildSubject({ health: sections.health, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, now });
+
+  if (dryRun) {
+    const out = path.join(REPO, 'data', 'audit', 'morning-digest-preview.html');
+    fs.mkdirSync(path.dirname(out), { recursive: true });
+    fs.writeFileSync(out, html);
+    console.log(`[digest] DRY RUN — preview written to ${out} (subject: ${subject})`);
+    return;
+  }
+
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) { console.error('[digest] RESEND_API_KEY not set'); process.exit(1); }
+  const res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, {
+    // Same From as the retired morning email on purpose: the owner's Gmail
+    // filters, threading, and iOS notification trust key off the sender
+    // (plan-review user-impact finding).
+    from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
+    to: [sendTo],
+    subject,
+    html,
+  });
+  if (res.status < 200 || res.status >= 300) {
+    console.error(`[digest] send failed: ${res.status} ${JSON.stringify(res.json || {}).slice(0, 200)}`);
+    process.exit(1);
+  }
+  console.log(`[digest] sent to ${sendTo} (subject: ${subject} · id ${res.json?.id || '?'})`);
+}
+
+if (require.main === module) {
+  main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
+}
+
+module.exports = { buildSubject, buildHtml, parseArgs };

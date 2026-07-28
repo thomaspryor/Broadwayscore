@@ -35,7 +35,18 @@
 'use strict';
 
 const SCHEDULED_SENDERS = [
-  { key: 'autonomous-email', label: 'Overnight morning email', script: 'scripts/autonomous-email.js', pattern: /^Overnight:/ },
+  // The owner's single scheduled morning email since the autonomous loop's
+  // retirement (2026-07-27, owner decision) — subject built by
+  // send-morning-digest.js:buildSubject(); the parity test in
+  // scripts/lib/digest-snapshots.test.mjs asserts the two stay in sync.
+  { key: 'morning-digest', label: 'Morning digest', script: 'scripts/send-morning-digest.js', pattern: /^Morning digest/ },
+  // Retired 2026-07-27 with the autonomous loop. Kept (like health-check
+  // below) so an old send still classifies; `retired`+`replacedBy` lets
+  // decideDayViolation forgive the ONE transition day where both the last
+  // "Overnight:" email and the first "Morning digest" email land on the same
+  // ET date — after that, an "Overnight:" send firing alongside the digest
+  // is a real regression and counts again.
+  { key: 'autonomous-email', label: 'Overnight morning email', script: 'scripts/autonomous-email.js', pattern: /^Overnight:/, retired: true, replacedBy: 'morning-digest' },
   { key: 'daily-digest', label: 'Daily Digest (score-drift)', script: 'scripts/send-daily-digest.js', pattern: /Daily Digest:/ },
   { key: 'opening-digest', label: 'Opening-night admin digest', script: 'scripts/send-opening-digest.js', pattern: /needs help|broadcast-ready|upcoming this week|^Quiet week/ },
   { key: 'reddit-engagement-digest', label: 'Reddit engagement digest', script: 'scripts/reddit-engagement-digest.js', pattern: /^r\/Broadway —/ },
@@ -99,7 +110,14 @@ function buildDailyReport(emails, ownerEmail) {
 // are reported for visibility but never count toward this verdict — they're
 // a separate, already-monitored noise class (alert-ledger dedup, E2E canary #374).
 function decideDayViolation(dayBucket) {
-  const senderKeys = [...dayBucket.senders.keys()];
+  const allKeys = [...dayBucket.senders.keys()];
+  // Transition forgiveness: a retired sender whose replacement ALSO fired the
+  // same day doesn't count (the cutover day inevitably has both). A retired
+  // sender firing alone still counts — that's the old path resurrecting.
+  const senderKeys = allKeys.filter((k) => {
+    const def = SCHEDULED_SENDERS.find((s) => s.key === k);
+    return !(def && def.retired && def.replacedBy && dayBucket.senders.has(def.replacedBy));
+  });
   return {
     violation: senderKeys.length > 1,
     senderCount: senderKeys.length,
@@ -107,4 +125,14 @@ function decideDayViolation(dayBucket) {
   };
 }
 
-module.exports = { SCHEDULED_SENDERS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation };
+// Zero-send floor (loop-retirement plan review, 5-reviewer consensus): the
+// >1 rule above can NEVER catch a silently dead morning email — zero sends
+// build zero buckets and read as "No violations". A complete ET day with no
+// scheduled sender at all is its own violation. `dayBucket` may be undefined
+// (no owner emails that day at all) — that's the loudest missing signal.
+function decideDayMissing(dayBucket) {
+  const senderCount = dayBucket ? dayBucket.senders.size : 0;
+  return { missing: senderCount === 0, senderCount };
+}
+
+module.exports = { SCHEDULED_SENDERS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing };

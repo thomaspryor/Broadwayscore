@@ -146,12 +146,36 @@ async function main() {
   // Only complete days are eligible to alert — "today" is still accumulating
   // and a partial-day sender count of 1 doesn't mean the day will stay that way.
   const completeViolations = violations.filter((v) => v.dayKey < todayKey);
-  if (completeViolations.length === 0) {
-    console.log('No violations on complete days in window.');
+
+  // Zero-send floor (loop-retirement plan review): a silently dead morning
+  // digest produces NO bucket and used to read as "No violations" — the
+  // owner's only daily email could vanish for days unnoticed (its launchd
+  // deadman was retired with the loop; this CI check is the replacement and
+  // runs regardless of the Mac's state). Checked for ET-yesterday, the most
+  // recent complete day.
+  const { decideDayMissing } = require('./lib/scheduled-email-count-rules');
+  const yesterdayKey = dayKeyET(new Date(Date.now() - 24 * 3600 * 1000).toISOString());
+  const missingDecision = yesterdayKey < todayKey ? decideDayMissing(days.get(yesterdayKey)) : { missing: false };
+
+  if (completeViolations.length === 0 && !missingDecision.missing) {
+    console.log('No violations on complete days in window (and yesterday had a scheduled send).');
     return;
   }
 
   const { routeAlert } = require('./lib/owner-alert-router');
+
+  if (missingDecision.missing) {
+    const result = await routeAlert({
+      conditionKey: `scheduled-email-missing:${yesterdayKey}`,
+      title: `No scheduled morning email arrived on ${yesterdayKey}`,
+      description: `Zero scheduled digest senders fired on ${yesterdayKey} (ET). The owner's single daily email (scripts/send-morning-digest.js, launchd com.broadwayscore.morning-digest at 07:30 ET) likely failed silently — Mac asleep, launchd job unloaded, missing env, or a send error.`,
+      hint: 'On the Mac Studio: launchctl print gui/501/com.broadwayscore.morning-digest (loaded?), then check /tmp/morning-digest-launchd.log, then `node scripts/send-morning-digest.js --send-to-owner` to send manually.',
+      severity: 'warning',
+      disposition: 'auto',
+      cooldownHours: 24,
+    });
+    console.log(`${yesterdayKey}: missing scheduled email — routeAlert -> ${result.action}${result.cardId ? ` (card ${result.cardId})` : ''}`);
+  }
   for (const { dayKey, decision } of completeViolations) {
     const subjectLines = decision.senders.map((s) => `- ${s.label}: ${s.subjects.join('; ')}`).join('\n');
     const result = await routeAlert({
