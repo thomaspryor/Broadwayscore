@@ -2,7 +2,7 @@
 
 ## Stack
 Next.js 14, TypeScript, Tailwind CSS, static export. Production: https://broadwayscorecard.com
-726+ shows, 15,300+ scored reviews, 394+ outlets, 880+ critics (via `getDataStats()`, `src/lib/data-core.ts`).
+2,800+ shows, 19,000+ scored reviews, 490+ outlets, 1,350+ critics (raw counts: `data/shows.json`/`data/reviews.json`).
 
 ## Before You Start
 Run `npm run data:check` — if data files are missing, stop and report it; do not proceed without data.
