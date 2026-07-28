@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- The owner's ONE scheduled daily email (loop retirement, 2026-07-27).
+         Runs scripts/send-morning-digest.js, which folds the four digest
+         snapshots (site health, score drift, opening-night radar, Reddit)
+         into a single morning email. It reads NO autonomous-loop state and
+         never renders a triage list — see the script header.
+
+         StartCalendarInterval Hour/Minute is LOCAL TIME on this Mac
+         (America/New_York, DST-safe — launchd reads the system clock).
+         07:30 ET keeps the owner's 7-9 AM email convention.
+
+         Secrets (RESEND_API_KEY, OWNER_EMAIL) come from the repo's .env via
+         the script's own preamble — launchd does NOT inherit shell env.
+
+         Delivery watch: monitor-scheduled-email-count.yml (CI, 15:00 UTC
+         daily) alerts if a complete ET day passes with zero scheduled
+         sends — that check replaced the retired autonomous-deadman.
+
+         Install:  cp scripts/launchd/com.broadwayscore.morning-digest.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.morning-digest.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.morning-digest
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.morning-digest
+         Manual send (Mac down at 07:30): node scripts/send-morning-digest.js --send-to-owner -->
+    <key>Label</key>
+    <string>com.broadwayscore.morning-digest</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; exec node scripts/send-morning-digest.js --send-to-owner</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>7</integer>
+        <key>Minute</key>
+        <integer>30</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/morning-digest-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/morning-digest-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>
