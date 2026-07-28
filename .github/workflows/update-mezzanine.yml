@@ -178,15 +178,13 @@ jobs:
           # MUST commit here or the routeAlert/resolveCondition ledger state
           # never persists across cron runs — the alert would re-open and
           # re-email every run, reintroducing the exact storm this migration
-          # fixes (#515, same class as #486/#406).
-          # alert-digest-queue.json: the scrape-mezzanine job's
-          # mezzanine:transient-failure condition uses disposition:'digest',
-          # which WRITES this file on the runner (queueDigestLine()) — omit
-          # it and the queued digest line dies with the runner every time,
-          # even though the ledger correctly marks the condition "notified"
-          # so it never re-queues (card #618 what-else finding — staged here
-          # in all 3 jobs for consistency even though only scrape-mezzanine
-          # uses 'digest' today).
+          # fixes (#515, same class as #486/#406). This job's
+          # mezzanine:transient-failure condition uses routeAlert with a
+          # digest disposition, which also WRITES alert-digest-queue.json
+          # (queueDigestLine()) — omit it and the queued line dies with the
+          # runner every time, even though the ledger correctly marks the
+          # condition notified so it never re-queues (card #618 what-else
+          # finding).
           git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
@@ -324,16 +322,11 @@ jobs:
           # MUST commit here or the routeAlert/resolveCondition ledger state
           # never persists across cron runs — the alert would re-open and
           # re-email every run, reintroducing the exact storm this migration
-          # fixes (#515, same class as #486/#406).
-          # alert-digest-queue.json: the scrape-mezzanine job's
-          # mezzanine:transient-failure condition uses disposition:'digest',
-          # which WRITES this file on the runner (queueDigestLine()) — omit
-          # it and the queued digest line dies with the runner every time,
-          # even though the ledger correctly marks the condition "notified"
-          # so it never re-queues (card #618 what-else finding — staged here
-          # in all 3 jobs for consistency even though only scrape-mezzanine
-          # uses 'digest' today).
-          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
+          # fixes (#515, same class as #486/#406). This job only ever calls
+          # routeAlert with a human disposition (mezzanine:session-token-expired)
+          # so alert-digest-queue.json isn't needed here — that file is only
+          # written by scrape-mezzanine's digest-disposition condition.
+          git add data/audit/alert-ledger.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else
@@ -468,16 +461,11 @@ jobs:
           # MUST commit here or the routeAlert/resolveCondition ledger state
           # never persists across cron runs — the alert would re-open and
           # re-email every run, reintroducing the exact storm this migration
-          # fixes (#515, same class as #486/#406).
-          # alert-digest-queue.json: the scrape-mezzanine job's
-          # mezzanine:transient-failure condition uses disposition:'digest',
-          # which WRITES this file on the runner (queueDigestLine()) — omit
-          # it and the queued digest line dies with the runner every time,
-          # even though the ledger correctly marks the condition "notified"
-          # so it never re-queues (card #618 what-else finding — staged here
-          # in all 3 jobs for consistency even though only scrape-mezzanine
-          # uses 'digest' today).
-          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
+          # fixes (#515, same class as #486/#406). This job only ever calls
+          # routeAlert with a human disposition (mezzanine:session-token-expired)
+          # so alert-digest-queue.json isn't needed here — that file is only
+          # written by scrape-mezzanine's digest-disposition condition.
+          git add data/audit/alert-ledger.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else
