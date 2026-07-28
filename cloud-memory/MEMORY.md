@@ -62,7 +62,7 @@
 
 ## 📋 Open work
 - [Sprint plans must be durable](feedback_sprint_plans_must_be_durable.md) — cards must point at claude-outputs/repo paths, session scratchpad dies; reconstruct from plan-card Outcome + prior merge commit
-- [Autonomous loop schedule](autonomous-loop-schedule.md) — nightly slot 07:30 UTC, email 7:30am ET; full 157-cron map; DST fallback + Sunday worktree-gc caveats
+- [Autonomous loop schedule](autonomous-loop-schedule.md) — LOOP RETIRED 2026-07-27, do NOT re-enable; email lives on as send-morning-digest.js @ 7:30am ET + CI zero-send floor; cron map still valid
 - [OB venue historical backfill](project_ob_venue_historical_backfill.md) — Atlantic/Vineyard/MCC archive pages; Tier A deferred TFANA+2ndStage ([[project_ob_tier_a_deferred.md]])
 - [Manual stubs bypass venue/date validation](feedback_manual_stub_bypasses_validation.md) — NEVER stub shows.json from memory; look up Playbill first
 - [Regional auto-promotion](project_regional_expansion_watchlist.md) — roundup=go-live; auto add+reviews+images; transferOf/transferredTo cross-link tryout↔Broadway; cast/audience manual
