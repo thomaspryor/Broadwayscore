@@ -1,88 +1,73 @@
 {
-  "runDate": "2026-07-28T08:48:53.828Z",
+  "runDate": "2026-07-28T09:35:04.850Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-saviors-off-broadway-2026,rosie-odonnell-common-knowledge-off-broadway-2026,hungry-women-off-broadway-2026,the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
+    "showFilter": "the-enormous-crocodile-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 3,
+    "processed": 1,
+    "failed": 1,
     "skipped": 0,
     "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 3,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-saviors-off-broadway-2026/theatrely--unknown.json",
-    "the-saviors-off-broadway-2026/talkinbroadway--howard-miller.json",
-    "rosie-odonnell-common-knowledge-off-broadway-2026/nytg--unknown.json"
+    "the-enormous-crocodile-west-end-2026/everything-theatre--unknown.json"
   ],
   "failed": [
-    "the-saviors-off-broadway-2026/broadwayworld--unknown.json",
-    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
-    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
+    "the-enormous-crocodile-west-end-2026/west-end-best-friend--chris-abbott.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-saviors-off-broadway-2026/theatrely--unknown.json",
-      "rosie-odonnell-common-knowledge-off-broadway-2026/nytg--unknown.json"
+      "the-enormous-crocodile-west-end-2026/everything-theatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [
-      "the-saviors-off-broadway-2026/talkinbroadway--howard-miller.json"
-    ],
+    "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "BroadwayWorld": {
-      "count": 1,
-      "domain": "broadwayworld.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
