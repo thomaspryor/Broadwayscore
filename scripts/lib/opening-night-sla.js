@@ -230,18 +230,26 @@ async function dispatchSlaAlerts({ warnings, pages }, { dryRun = false, route = 
     cooldownHours: 24 * 30,
   }).catch(e => { console.error('[SLA] page route failed:', e.message); return { action: 'error' }; });
 
-  // Advance the notified peak only when an email actually went out: action
-  // 'human' AND delivery didn't fail. On a Resend/policy failure routeAlert
-  // still returns action:'human' with delivered:false and does NOT record its
-  // ledger, so it retries next run — we must not advance the peak past a page
-  // nobody received (ship-check finding #4). A 'silent' refire (incident open,
-  // not growing) also leaves the peak. A downgraded action==='digest' (page-
-  // worthy gate, card #611 — currently prevented by this conditionKey's entry
-  // in page-worthy-alerts.js, but harmless if that ever lapses) also leaves
-  // the peak unadvanced: the next run's `pages.length > prevNotified` check
-  // just re-resolves and re-queues a fresh digest line, which is the correct
-  // "tell them again" behavior, not a silent drop.
-  if (res && res.action === 'human' && res.delivered !== false) {
+  // Advance the notified peak when the owner was actually told: either a
+  // real email went out (action:'human', delivery didn't fail) or the
+  // request was downgraded to a digest queue entry (page-worthy gate, card
+  // #611) — both are non-silent notifications under routeAlert's own
+  // contract. This MUST include 'digest': routeAlert records the condition
+  // 'open' with THIS call's cooldownHours (24*30 = 720h) regardless of
+  // which disposition actually fired, so if the peak were left at 0 on a
+  // digest downgrade, `pages.length > prevNotified && prevNotified > 0`
+  // above could never go true (prevNotified stuck at 0), the incident would
+  // never resolve-and-reopen, and every subsequent call would come back
+  // 'silent' from the ledger's own cooldown for up to 30 days instead of
+  // re-queuing a digest line on the next check (adversarial-review find,
+  // card #616 follow-up — a prior version of this comment claimed the
+  // re-queue happened; traced through owner-alert-router.js and confirmed
+  // it did not). On a Resend/policy failure routeAlert still returns
+  // action:'human' with delivered:false and does NOT record its ledger, so
+  // it retries next run — we must not advance the peak past a page nobody
+  // received (ship-check finding #4). A 'silent' refire (incident open, not
+  // growing) also leaves the peak unadvanced, same as before.
+  if (res && (res.action === 'digest' || (res.action === 'human' && res.delivered !== false))) {
     saveSlaState({ notifiedPageCount: pages.length, lastNotifiedAt: new Date().toISOString() }, statePath);
   }
 }
