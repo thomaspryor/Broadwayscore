@@ -1,6 +1,7 @@
 # Email Worker: Multi-Machine Coordination
 
 **Status:** Live as of 2026-04-10. Safe to run on multiple machines.
+Worktree isolation for `[fix]`/`[deep]` added 2026-07-28.
 
 **File:** `~/.claude-email-worker/poll.py`
 
@@ -121,16 +122,63 @@ claude-processed label ..."` (or just `"No new tasks found"` if it polls
 after the claim landed — the search filter would already exclude the claimed
 message).
 
+## Worktree isolation for `[fix]` / `[deep]`
+
+Separate from the label protocol, but it shares the same motivation: another
+process on the same machine must never be able to clobber this one's work.
+
+Write-capable tags (`[fix]`, `[deep]`) no longer run in the shared
+`~/Broadwayscore` working tree. The old path did `git stash` →
+`git checkout -b` → `git stash pop` in main. With ~20 parallel worktree
+sessions live on this machine at any time, that `stash pop` could pop a
+*different* session's stash and destroy its uncommitted work. `[info]` and
+untagged (read-only) tasks still run in `REPO_DIR` — they never write.
+
+What happens now:
+
+1. **`create_worktree(slug)`** — `git fetch origin main`, then
+   `git worktree add -b worktree-email-<slug>-<timestamp>
+   .claude/worktrees/email-<slug>-<timestamp> origin/main`. Branching from
+   `origin/main` means the PR is against current remote state; if the fetch
+   fails (offline) it falls back to local `main`.
+2. **Gitignored runtime deps are symlinked in** (`WORKTREE_LINKED_DEPS` =
+   `.env`, `node_modules`) so the session can still run `npx tsc` and scripts
+   that read `.env`. Deliberately NOT `review-texts` — scripts resolve that to
+   `~/broadway-review-texts`, and the in-repo copy is a stale independent
+   clone (`memory/feedback_review_texts_not_symlink.md`).
+3. **Claude runs with `cwd` set to the worktree**, so every Edit/Write lands
+   inside it.
+4. **`finish_worktree(...)`** — `git -C <worktree> status --porcelain`, then
+   `add -A` → `commit` → `push -u origin <branch>` → `gh pr create` (run with
+   `cwd` = the worktree). Everything in the worktree is by definition this
+   task's work, so there's no file-by-file filtering and no stash.
+5. **Cleanup is success-gated.** The worktree is removed only after a
+   successful push; `git worktree remove` leaves the branch behind because the
+   branch backs the PR. If the task changed nothing, the worktree AND its empty
+   branch are both deleted (`git branch -D`). If `add`/`commit`/`push` fails,
+   the worktree is **kept on disk** and the failure path is quoted in the email
+   reply so the work is recoverable.
+
+Failure modes worth knowing:
+
+- **Worktree creation fails** → the task is downgraded to a read-only `info`
+  run rather than being allowed to write into main.
+- **Thread follow-ups reuse the worktree** if it still exists (recorded as
+  `workdir` + `branch` in `sessions.json`). Because `claude --resume` is
+  cwd-scoped, a recorded worktree that has since been removed (the normal
+  outcome after a successful PR) means the resume is dropped and a fresh
+  session starts in a new worktree.
+
 ## Things that are NOT part of this protocol
 
-- **Thread→session resume** still uses `sessions.json` (untouched). Both
-  machines write to their own local `sessions.json`, so session resume is
-  best-effort per-machine. A reply that arrives on a machine that did NOT
-  process the original will start a fresh session. Acceptable tradeoff —
-  fixing it would require sharing `sessions.json` across machines, which is
-  out of scope.
-- **Reply handling, attachment extraction, PR creation for `[fix]` tasks,
-  tag dispatcher** — all unchanged.
+- **Thread→session resume** uses `sessions.json`, which is local per machine,
+  so session resume is best-effort per-machine. A reply that arrives on a
+  machine that did NOT process the original will start a fresh session.
+  Acceptable tradeoff — fixing it would require sharing `sessions.json` across
+  machines, which is out of scope. (Its records now also carry `workdir` and
+  `branch` for worktree reuse — see the section above — but that's orthogonal
+  to the label protocol.)
+- **Reply handling, attachment extraction, tag dispatcher** — all unchanged.
 - **launchd plists, health check, lock file** — all unchanged.
 
 ## Files touched by this protocol
