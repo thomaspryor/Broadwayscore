@@ -21,7 +21,7 @@ const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet } = req
 const { buildDigest } = require('./lib/t1-digest');
 const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
 const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
-const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
+const { routeAlert } = require('./lib/owner-alert-router');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const LEDGER_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-ledger.json');
@@ -297,12 +297,19 @@ async function runDigest(opts) {
           ? `\nACTION alert suppressed by 24h cooldown (condition still open) — gaps stay un-deduped and accumulate for the next real send.`
           : `\nACTION alert NOT delivered — gaps stay un-deduped and retry next run.`);
     } catch (e) { console.error('Digest alert failed:', e.message); }
-  } else if (opts.alert) {
-    // No actionable gaps this run — if the condition was open, resolve it so
-    // the NEXT new gap notifies immediately instead of waiting out the 24h
-    // cooldown from a now-irrelevant prior incident.
-    resolveCondition('t1-coverage:new-gaps-24h');
   }
+  // No resolveCondition() call when actions.length === 0: unlike a monotonic
+  // health check, "zero NEW actionable gaps this hour" does NOT mean the
+  // incident is over — audit-aggregator-gap.yml runs hourly, but a cell only
+  // becomes "actionable" at the exact hour it crosses the 24h grace period, so
+  // most hourly ticks see actions.length===0 between events even while older
+  // gaps sit un-alerted (ship-check finding, 2026-07-28: an earlier version of
+  // this fix called resolveCondition() here, which reset routeAlert's 24h
+  // cooldown on every quiet hour — so a DIFFERENT gap crossing 24h just 1-2
+  // hours after a real send would page immediately instead of waiting out the
+  // cooldown, reproducing the exact "4 emails in 25h" bug this card fixes).
+  // The cooldown already expires naturally 24h after lastNotifiedAt — no
+  // early-resolve signal is needed or safe here.
 
   // Persist state ONLY on a real (non-dry-run) alert pass: stamp rolloutAt once and
   // record alerted cells so they dedupe next run. Two guards (review 2026-07-23):
