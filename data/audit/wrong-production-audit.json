@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-28T05:06:38.082Z",
+  "timestamp": "2026-07-28T06:22:12.590Z",
   "stats": {
-    "totalReviews": 40791,
-    "alreadyFlagged": 17891,
+    "totalReviews": 40792,
+    "alreadyFlagged": 17896,
     "dateGuardCatches": 67,
     "directorMismatch": 927,
     "tvFilmSignals": 1116,
-    "londonSignals": 765,
+    "londonSignals": 766,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3291
+    "noPublishDate": 3283
   },
   "findings": [
     {
@@ -36906,6 +36906,20 @@
       "score": 83,
       "publishDate": null,
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 56,
+      "publishDate": "October 20th, 2022",
+      "url": "https://www.standard.co.uk/culture/theatre/my-neighbour-totoro-barbican-studio-ghibli-theatre-review-b1033681.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
