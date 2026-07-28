@@ -267,3 +267,44 @@ test('a failed page delivery does not advance the notified peak (retries next ru
   assert.notEqual(state.notifiedPageCount, 1, 'peak not advanced on failed delivery');
   if (exists) fs.rmSync(statePath, { force: true });
 });
+
+test('a page-worthy-gate digest downgrade still advances the peak and re-fires on growth (card #616 follow-up)', async () => {
+  // Simulates routeAlert() downgrading disposition:'human' to action:'digest'
+  // (page-worthy gate, card #611) — the peak must still advance, or the
+  // resolve-on-growth check below can never see prevNotified > 0 and the
+  // condition goes silent under the router's own 30-day cooldown instead of
+  // re-queuing a digest line on the next stuck-count check.
+  const calls = { routed: [], resolved: [] };
+  const openIncidents = new Set();
+  const route = async (opts) => {
+    calls.routed.push(opts);
+    if (openIncidents.has(opts.conditionKey)) return { action: 'silent', conditionKey: opts.conditionKey };
+    openIncidents.add(opts.conditionKey);
+    return { action: 'digest', conditionKey: opts.conditionKey, requestedDisposition: opts.disposition };
+  };
+  const resolve = (key) => {
+    calls.resolved.push(key);
+    const had = openIncidents.has(key);
+    openIncidents.delete(key);
+    return had;
+  };
+  const statePath = tmpStatePath();
+
+  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 's1', outletId: 'o', elapsedMin: 70 }] }, { route, resolve, statePath });
+  let state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
+  assert.equal(state.notifiedPageCount, 1, 'peak advances on a digest downgrade, not just a real email');
+
+  // grew 1 → 3 while still gated to digest — must resolve-and-reopen, not go silent.
+  await dispatchSlaAlerts({ warnings: [], pages: [
+    { showId: 's1', outletId: 'o', elapsedMin: 90 },
+    { showId: 's2', outletId: 'o', elapsedMin: 65 },
+    { showId: 's3', outletId: 'o', elapsedMin: 61 },
+  ] }, { route, resolve, statePath });
+
+  assert.ok(calls.resolved.includes('opening-night-sla:pages-stuck'), 'growth resolves the incident even under a digest downgrade');
+  const digestRoutes = calls.routed.filter(r => r.conditionKey === 'opening-night-sla:pages-stuck' && r.disposition === 'human');
+  assert.equal(digestRoutes.length, 2, 'both calls requested human — neither was silently skipped');
+  state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
+  assert.equal(state.notifiedPageCount, 3, 'peak advanced to the grown count on the second digest downgrade');
+  fs.rmSync(statePath, { force: true });
+});

@@ -208,13 +208,22 @@ function findCallBodyEnd(lines, callLineIdx) {
 // passed through unexamined (as both real cases do) still can't have its
 // disposition/digest-handling inspected AT the wrapper definition — only at
 // each call site, which is what this resolves.
+// Strips comments from a small extracted window before testing it for a
+// routeAlert mention — an unrelated `// ...routeAlert(...)` remark inside a
+// wrapper candidate's first 300 chars would otherwise misclassify a function
+// that never actually calls routeAlert as a wrapper (adversarial-review find,
+// card #616 follow-up).
+function stripCommentsForWrapperScan(str) {
+  return str.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '');
+}
+
 function findWrapperNames(rawLines) {
   const src = rawLines.join('\n');
   const names = new Set();
   const funcRe = /(?:async\s+)?function\s+(\w+)\s*\([^)]*\)\s*\{([\s\S]{0,300})/g;
   let m;
   while ((m = funcRe.exec(src))) {
-    if (/\brouteAlert\s*\(/.test(m[2])) names.add(m[1]);
+    if (/\brouteAlert\s*\(/.test(stripCommentsForWrapperScan(m[2]))) names.add(m[1]);
   }
   const paramRe = /\b(\w+)\s*=\s*routeAlert\s*[,}]/g;
   while ((m = paramRe.exec(src))) names.add(m[1]);
@@ -229,7 +238,11 @@ function scanHumanDispositionCaller(lines, callLineIdx, relPath, rawLines, calle
   // on the same line as the close is included) and stops at the next
   // routeAlert(/sendAlert(/wrapper( call site if one appears first.
   let windowEnd = Math.min(lines.length, bodyEnd + POST_CALL_WINDOW);
-  const nextCallRe = new RegExp(`\\b(?:${callee}|sendAlert)\\s*\\(`);
+  // (?<!\.) keeps a wrapper named e.g. `alert` from matching an unrelated
+  // `logger.alert(...)`/`window.alert(...)` member access and prematurely
+  // truncating the window before a real .action check (adversarial-review
+  // find, card #616 follow-up).
+  const nextCallRe = new RegExp(`(?<!\\.)\\b(?:${callee}|sendAlert)\\s*\\(`);
   for (let j = bodyEnd + 1; j < windowEnd; j++) {
     if (nextCallRe.test(lines[j])) { windowEnd = j; break; }
   }
@@ -306,11 +319,16 @@ function scanFile(absPath, relPath) {
   // Resolve any local wrapper names (injectable default param, thin
   // pass-through function) to routeAlert so calls made through them aren't
   // invisible to this whole scan (card #616 follow-up). The negative
-  // lookbehind excludes the wrapper's OWN `function alert(...)` declaration
-  // line from matching itself as a call site.
+  // lookbehinds exclude (a) the wrapper's OWN `function alert(...)`
+  // declaration line from matching itself as a call site, and (b) a member
+  // access on an unrelated object — a wrapper named e.g. `alert` must not
+  // match `logger.alert(...)` or `window.alert(...)`, which \b alone allows
+  // since "." is a non-word char (adversarial-review find, card #616
+  // follow-up: this previously both mis-flagged a safe caller AND could
+  // prematurely end a real call's post-call scan window at the false match).
   const wrapperNames = findWrapperNames(rawLines);
   const calleeAlt = ['routeAlert', ...wrapperNames].join('|');
-  const callSiteRe = new RegExp(`(?<!function\\s+)\\b(?:${calleeAlt})\\s*\\(`);
+  const callSiteRe = new RegExp(`(?<!function\\s+)(?<!\\.)\\b(?:${calleeAlt})\\s*\\(`);
 
   for (let i = 0; i < lines.length; i++) {
     // Skip comment lines (this file, opening-night-sla.js, and ux-walkthrough.yml
