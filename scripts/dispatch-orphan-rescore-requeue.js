@@ -189,6 +189,9 @@ async function run(showId) {
     showId,
     action: 'alert',
     orphanCount: marker.orphanCount,
+    // Informational only — may be 'silent'|'human'|'digest' (the page-worthy
+    // allowlist gate, card #611, can downgrade the 'human' request above).
+    // Nothing branches on this field; it's surfaced for CLI/log visibility.
     alertRouted: routed.action,
   };
 }
