@@ -210,11 +210,14 @@ test('routeAlert: resolveCondition then re-fire notifies again immediately (stat
   }
 });
 
-test('routeAlert: disposition=human calls sendAlert with email:true, never shells out', async () => {
+test('routeAlert: disposition=human on a page-worthy conditionKey calls sendAlert with email:true, never shells out', async () => {
   const { router, calls, restore } = loadRouterWithFakes();
   try {
+    // 'alert-router:deadman' is on the page-worthy allowlist
+    // (scripts/lib/page-worthy-alerts.js) — the router's own self-test must
+    // always be able to page.
     const result = await router.routeAlert({
-      conditionKey: 'test:human',
+      conditionKey: 'alert-router:deadman',
       title: 'Needs a human',
       description: 'Owner judgment required',
       severity: 'critical',
@@ -225,6 +228,55 @@ test('routeAlert: disposition=human calls sendAlert with email:true, never shell
     assert.equal(calls.sendAlert.length, 1);
     assert.equal(calls.sendAlert[0].email, true);
     assert.equal(calls.execFileSync.length, 0);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: disposition=human on a non-allowlisted conditionKey is downgraded to digest (card #611)', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    const result = await router.routeAlert({
+      conditionKey: 'test:not-page-worthy',
+      title: 'Needs a human, allegedly',
+      description: 'Some sender asked for disposition human',
+      severity: 'error',
+      disposition: 'human',
+    });
+    // Downgraded — no email sent, effective action is 'digest'.
+    assert.equal(result.action, 'digest');
+    assert.equal(result.requestedDisposition, 'human');
+    assert.equal(calls.sendAlert.length, 0);
+    assert.equal(calls.execFileSync.length, 0);
+
+    const queue = router.peekDigestQueue();
+    assert.equal(queue.length, 1);
+    assert.equal(queue[0].conditionKey, 'test:not-page-worthy');
+    assert.equal(queue[0].title, 'Needs a human, allegedly');
+
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['test:not-page-worthy'].disposition, 'digest');
+    assert.equal(ledger.conditions['test:not-page-worthy'].requestedDisposition, 'human');
+  } finally {
+    restore();
+  }
+});
+
+test('isPageWorthy: allowlist matches exact keys and documented prefixes, rejects everything else', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    assert.equal(router.isPageWorthy('alert-router:deadman'), true);
+    assert.equal(router.isPageWorthy('e2e-canary:chain-broken'), true);
+    assert.equal(router.isPageWorthy('on-monitor-launch-failed-2026-07-28'), true);
+    assert.equal(router.isPageWorthy('broadcast:draft-creation-failed:broadway'), true);
+    // opening-night-sla.js only advances its re-notify "peak" on disposition
+    // 'human' — this MUST stay allowlisted or SLA breaches silently stop
+    // re-paging after the first downgrade (ship-check adversarial finding).
+    assert.equal(router.isPageWorthy('opening-night-sla:pages-stuck'), true);
+    assert.equal(router.isPageWorthy('t1-coverage:new-gaps-24h'), false);
+    assert.equal(router.isPageWorthy('secrets-health:Vercel'), false);
+    assert.equal(router.isPageWorthy(''), false);
+    assert.equal(router.isPageWorthy(undefined), false);
   } finally {
     restore();
   }
@@ -357,8 +409,10 @@ test('routeAlert: disposition=human re-fire within an explicit cooldownHours is 
   // 168h default. A retry hitting the SAME stuck condition must not re-email.
   const { router, calls, restore } = loadRouterWithFakes();
   try {
+    // 'broadcast:draft-creation-failed:' is a page-worthy prefix
+    // (scripts/lib/page-worthy-alerts.js) — real callers append the market.
     const first = await router.routeAlert({
-      conditionKey: 'test:broadcast-gate-repeat',
+      conditionKey: 'broadcast:draft-creation-failed:broadway',
       title: 'Opening Night Broadcast Blocked — Orphan-Unscored Reviews',
       description: 'desc',
       severity: 'error',
@@ -370,7 +424,7 @@ test('routeAlert: disposition=human re-fire within an explicit cooldownHours is 
 
     // Simulated retry (same run repeating, or a later CI retry) — must go silent.
     const second = await router.routeAlert({
-      conditionKey: 'test:broadcast-gate-repeat',
+      conditionKey: 'broadcast:draft-creation-failed:broadway',
       title: 'Opening Night Broadcast Blocked — Orphan-Unscored Reviews',
       description: 'desc',
       severity: 'error',
@@ -381,7 +435,7 @@ test('routeAlert: disposition=human re-fire within an explicit cooldownHours is 
     assert.equal(calls.sendAlert.length, 1);
 
     const ledger = router.loadLedger();
-    assert.equal(ledger.conditions['test:broadcast-gate-repeat'].silentRefires, 1);
+    assert.equal(ledger.conditions['broadcast:draft-creation-failed:broadway'].silentRefires, 1);
   } finally {
     restore();
   }

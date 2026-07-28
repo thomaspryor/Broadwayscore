@@ -93,6 +93,27 @@ jobs:
           echo "::error::UGC round-trip failed and self-heal did not recover it (restore outcome: ${{ steps.heal.outcome }}, retry outcome: ${{ steps.rt2.outcome }})."
           exit 1
 
+      # routeAlert() above writes data/audit/alert-ledger.json (and, for
+      # disposition='digest', data/audit/alert-digest-queue.json) — this step
+      # was missing entirely (ship-check finding, 2026-07-28, same class as
+      # card #394): without it the cooldown/queue state never persisted past
+      # job end, so the 20h cooldown on 'ugc-roundtrip:supabase-self-heal' was
+      # silently a no-op and every self-heal re-queued a fresh digest line.
+      - name: Commit alert state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in data/audit/alert-ledger.json data/audit/alert-digest-queue.json; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          if git diff --cached --quiet; then
+            echo "No alert state changes to commit"
+          else
+            git commit -m "audit: UGC round-trip alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
