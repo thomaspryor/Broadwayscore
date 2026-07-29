@@ -5,6 +5,7 @@
     "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
     "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json",
+    "dukes-off-broadway-2026/nytimes--helen-shaw.json",
     "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
     "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "birthright-off-broadway-2026/the-recs--unknown.json",
@@ -16,7 +17,6 @@
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "little-shop-of-horrors-off-broadway-2019/musical-theatre-review--unknown.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "amaze-off-broadway-2026/timeout--adam-feldman.json",
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
@@ -42,7 +42,6 @@
     "shifters-off-broadway-2026/thestage--tom-wicker.json",
     "shifters-off-broadway-2026/times-uk--donald-hutera.json",
     "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
-    "dukes-off-broadway-2026/nytimes--helen-shaw.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
@@ -202,7 +201,17 @@
     "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
     "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
     "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
-    "shifters-off-broadway-2026/i-paper--fiona-mountford.json"
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+    "shifters-off-broadway-2026/independent--alice-saville.json",
+    "shifters-off-broadway-2026/standard--nick-curtis.json",
+    "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+    "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "the-smile-of-her-off-west-end-2026/theatre-vibe--unknown.json",
+    "the-gin-game-2026/american-theater-web--andy-propst.json",
+    "the-gin-game-2026/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -236,85 +245,55 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
-      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
-      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
-      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
-      "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json",
-      "little-shop-of-horrors-off-broadway-2019/musical-theatre-review--unknown.json"
+      "dukes-off-broadway-2026/nytimes--helen-shaw.json"
     ],
-    "archiveToday": [
-      "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
-      "data/review-texts/trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
-      "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
-      "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
-      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json"
-    ],
+    "archiveToday": [],
     "archive": [
+      "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json",
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-07-29T09:55:46.610Z",
-  "lastProcessed": "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+  "lastProcessed": "the-gin-game-2026/ap--mark-kennedy.json",
   "log": [
     {
-      "t": "2026-07-29T10:34:57.882Z",
+      "t": "2026-07-29T09:57:18.443Z",
       "event": "bb-session",
-      "session": "9468cfa6",
+      "session": "3da1e75c",
       "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
     },
     {
-      "t": "2026-07-29T10:34:58.317Z",
+      "t": "2026-07-29T09:57:19.095Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-07-29T10:35:13.908Z",
+      "t": "2026-07-29T09:57:34.892Z",
       "event": "bb-session",
-      "session": "850912fb",
+      "session": "be5ab02e",
       "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
     },
     {
-      "t": "2026-07-29T10:35:14.281Z",
+      "t": "2026-07-29T09:57:35.411Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-07-29T10:39:17.118Z",
+      "t": "2026-07-29T10:01:55.372Z",
       "event": "bb-session",
-      "session": "799e127e",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+      "session": "a1319aff",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
     },
     {
-      "t": "2026-07-29T10:46:31.782Z",
+      "t": "2026-07-29T10:08:10.129Z",
       "event": "bb-session",
       "session": "0b7bbf01",
       "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
-    },
-    {
-      "t": "2026-07-29T10:48:39.944Z",
-      "event": "bb-session",
-      "session": "b26c3c64",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
-    },
-    {
-      "t": "2026-07-29T10:48:40.787Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-29T10:50:07.341Z",
-      "event": "bb-session",
-      "session": "8062fcbd",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
-    },
-    {
-      "t": "2026-07-29T10:50:08.236Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
     }
   ]
 }
