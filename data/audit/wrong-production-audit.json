@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-29T08:57:46.119Z",
+  "timestamp": "2026-07-29T09:27:17.017Z",
   "stats": {
-    "totalReviews": 40843,
-    "alreadyFlagged": 17906,
+    "totalReviews": 40880,
+    "alreadyFlagged": 17910,
     "dateGuardCatches": 67,
     "directorMismatch": 928,
-    "tvFilmSignals": 1116,
-    "londonSignals": 766,
-    "offBroadwaySignals": 465,
+    "tvFilmSignals": 1114,
+    "londonSignals": 765,
+    "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3314
+    "noPublishDate": 3348
   },
   "findings": [
     {
@@ -11786,25 +11786,6 @@
     },
     {
       "showId": "ink-2019",
-      "file": "nypost--johnny-oleksinski.json",
-      "score": 91,
-      "publishDate": "2019-04-24T20:16:59-04:00",
-      "url": "https://nypost.com/2019/04/24/ink-review-broadways-latest-is-a-scrappy-seductive-tabloid-tale/?utm_medium=SocialFlow&amp;utm_campaign=SocialFlow&amp;utm_source=NYPTwitter",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "ink-2019",
       "file": "nysr--steven-suskin.json",
       "score": 97,
       "publishDate": "2019-04-24T21:46:31",
@@ -13862,20 +13843,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry zaks\" from la-cage-aux-folles-2004"
-        }
-      ]
-    },
-    {
-      "showId": "la-cage-aux-folles-2010",
-      "file": "variety--steven-suskin.json",
-      "score": 82,
-      "publishDate": "April 18, 2010",
-      "url": "https://variety.com/2010/legit/reviews/la-cage-aux-folles-1117942582/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -22355,11 +22322,18 @@
       "showId": "sylvia-off-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 84,
+      "publishDate": "2023-02-15",
+      "url": "https://www.theguardian.com/stage/2023/feb/15/sylvia-pankhurst-review-old-vic-london",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -22367,11 +22341,18 @@
       "showId": "sylvia-off-west-end-2026",
       "file": "guardian--susannah-clapp.json",
       "score": 67,
+      "publishDate": "2023-02-15",
+      "url": "https://www.theguardian.com/stage/2023/feb/19/phaedra-simon-stone-national-theatre-janet-mcteer-review-sylvia-musica-old-vic-kate-prince-beverley-knight-standing-at-the-skys-edge-national-chris-bush-richard-hawley",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -29931,20 +29912,6 @@
     },
     {
       "showId": "angels-in-america-2018",
-      "file": "thewrap--robert-hofler.json",
-      "score": 78,
-      "publishDate": "2018-03-25T20:02:24-04:00",
-      "url": "http://%C2%93Angels%20in%20America%C2%94%20returns%20to%20Broadway%20to%20help%20remind%20us%20why%20Tony%20Kushner%20was%20the%20Lin-Manuel%20Miranda%20of%20the%201990s.%20It's%20the%20second%20Broadway%20revival%20for%20this%201993%20marathon%20AIDS%20drama,%20and%20Marianne%20Elliott's%20staging%20enthralls%20by%20putting%20the%20fantasy%20of%20Kushner's%20play%20front%20and%20center.%20Her%20much-praised%20National%20Theatre%20production%20opened%20Sunday%20at%20the%20Neil%20Simon%20Theatre.",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-2018",
       "file": "towleroad--naveen-kumar.json",
       "score": 80,
       "publishDate": "2018-03-26",
@@ -30038,20 +30005,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "arcadia-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": 84,
-      "publishDate": "2026-02-06",
-      "url": "https://www.standard.co.uk/culture/theatre/arcadia-at-the-old-vic-review-tom-stoppard-b1269701.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -33623,20 +33576,6 @@
       "score": 79,
       "publishDate": "October 13, 2016",
       "url": "http://bobs-theater-blog.blogspot.com/2016/10/hamilton-revisited.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-2015",
-      "file": "boston-globe--don-aucoin.json",
-      "score": 93,
-      "publishDate": "August 7, 2015",
-      "url": "https://www.bostonglobe.com/arts/theater-art/2015/08/06/political-rivalries-and-rap-battles-broadway-dynamic-hamilton/tnohgXXg2ud9ffjQGrCX5I/story.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
