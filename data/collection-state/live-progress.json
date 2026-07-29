@@ -1,20 +1,53 @@
 {
-  "updatedAt": "2026-07-29T06:05:57.464Z",
+  "updatedAt": "2026-07-29T06:06:15.077Z",
   "processed": 70,
-  "failed": 1280,
-  "successRate": "5.2%",
+  "failed": 1290,
+  "successRate": "5.1%",
   "tierBreakdown": {
     "playwright": 52,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 2,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 16,
     "archiveToday": 38,
     "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-07-29T00:10:22.858Z",
+      "event": "bb-session",
+      "session": "4bed19fb",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-29T00:10:23.980Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-29T00:14:36.746Z",
+      "event": "bb-session",
+      "session": "dd9ec0f8",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-29T00:14:37.709Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-29T00:14:53.678Z",
+      "event": "bb-session",
+      "session": "aa9f2e7a",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-29T00:14:54.595Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
     {
       "t": "2026-07-29T00:52:14.185Z",
       "event": "bb-session",
@@ -91,39 +124,6 @@
       "t": "2026-07-29T04:54:50.737Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-07-29T05:32:10.453Z",
-      "event": "bb-session",
-      "session": "7f71193a",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-07-29T05:32:11.464Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-07-29T05:58:00.068Z",
-      "event": "bb-session",
-      "session": "986d8716",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
-    },
-    {
-      "t": "2026-07-29T05:58:00.602Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-29T05:59:45.439Z",
-      "event": "bb-session",
-      "session": "8e4d3fe7",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
-    },
-    {
-      "t": "2026-07-29T05:59:45.795Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
     }
   ]
 }
