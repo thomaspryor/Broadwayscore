@@ -1,9 +1,14 @@
 {
-  "generatedAt": "2026-07-28T07:42:03.099Z",
-  "subject": "BSC Daily: 12 warnings (1 auto-fixed)",
-  "bannerText": "14 warnings",
-  "consecutiveErrorDays": 0,
-  "errors": [],
+  "generatedAt": "2026-07-29T07:42:40.768Z",
+  "subject": "BSC Daily: 1 error need attention",
+  "bannerText": "1 error, 14 warnings",
+  "consecutiveErrorDays": 1,
+  "errors": [
+    {
+      "name": "Sync: cast coverage",
+      "message": "29 empty cast: The Lost Boys, The Rocky Horror Show, Schmigadoon!"
+    }
+  ],
   "warns": [
     {
       "name": "Audience coverage: open-show gaps",
@@ -11,7 +16,7 @@
     },
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 19191 vs baseline 19203"
+      "message": "Reviews dropped: 19204 vs baseline 19216"
     },
     {
       "name": "Quality: star-vs-score mismatch",
@@ -27,23 +32,19 @@
     },
     {
       "name": "Credits: ScrapingDog",
-      "message": "769k credits left (77%) · 46k/day burn · renews in 25d · exhausts in ~17d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
+      "message": "706k credits left (71%) · 49k/day burn · renews in 24d · exhausts in ~14d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
     },
     {
       "name": "Credits: Bright Data",
-      "message": "balance $54.02 · pending invoice $260.59 · month-to-date $257.74 (serp+unlocker)"
+      "message": "balance $47.97 · pending invoice $266.64 · month-to-date $264.48 (serp+unlocker)"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "3 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (3d); push-with-retry.sh PUSH_DEADLINE_SEC=240 too tight for large (2d); UX audit #326: watchlist-grid delete icon color fix blocked  (1d)"
+      "message": "3 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (4d); push-with-retry.sh PUSH_DEADLINE_SEC=240 too tight for large (3d); UX audit #326: watchlist-grid delete icon color fix blocked  (2d)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "27 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Kill ScrapingBee premium_proxy direct calls (cost more than  (5d); Rebuild same-URL dedup: prefer a real criticName over 'Unkno (5d); Trainspotting: only 4 reviews on site + email said 7 (invest (5d)"
-    },
-    {
-      "name": "Workflow repeat-failure: Check Corpus Drift",
-      "message": "Check Corpus Drift failed 2 times in the last 24h — likely broken, not transient."
+      "message": "32 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Kill ScrapingBee premium_proxy direct calls (cost more than  (6d); Rebuild same-URL dedup: prefer a real criticName over 'Unkno (6d); Trainspotting: only 4 reviews on site + email said 7 (invest (6d)"
     },
     {
       "name": "Data: OB closing candidates awaiting review",
@@ -52,10 +53,21 @@
     {
       "name": "Data: T1/T2 silent review gaps",
       "message": "2 discovered review(s) not reaching the composite score (0 T1). First: jesus-christ-superstar-west-end-2026 — artsdesk (empty-body)"
+    },
+    {
+      "name": "Data: reviewed shows missing from shows.json",
+      "message": "1 aggregator-reviewed show(s) not in the catalogue. First: \"Cat Cohen's BROAD STROKES\" (bww-roundup)"
     }
   ],
-  "queued": [],
+  "queued": [
+    {
+      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+      "description": "main test.yml is STILL red after 7 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+      "severity": "error",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30372252330"
+    }
+  ],
   "autoFixedCount": 1,
-  "passedCount": 47,
+  "passedCount": 46,
   "totalCount": 64
 }

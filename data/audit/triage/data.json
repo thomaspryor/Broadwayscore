@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-07-28T07:41:59.571Z",
+  "lastChecked": "2026-07-29T07:42:37.525Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -15,6 +15,11 @@
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
       "message": "2 discovered review(s) not reaching the composite score (0 T1). First: jesus-christ-superstar-west-end-2026 — artsdesk (empty-body)"
+    },
+    {
+      "name": "Data: reviewed shows missing from shows.json",
+      "status": "warn",
+      "message": "1 aggregator-reviewed show(s) not in the catalogue. First: \"Cat Cohen's BROAD STROKES\" (bww-roundup)"
     }
   ]
 }
