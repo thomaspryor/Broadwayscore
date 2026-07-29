@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-28T21:45:39.473Z",
+  "timestamp": "2026-07-29T00:09:24.159Z",
   "stats": {
     "totalReviews": 40842,
-    "alreadyFlagged": 17903,
+    "alreadyFlagged": 17902,
     "dateGuardCatches": 67,
-    "directorMismatch": 926,
+    "directorMismatch": 928,
     "tvFilmSignals": 1116,
-    "londonSignals": 765,
+    "londonSignals": 766,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3319
+    "noPublishDate": 3318
   },
   "findings": [
     {
@@ -9491,6 +9491,20 @@
       "score": 88,
       "publishDate": "December 20, 2024",
       "url": "https://www.broadwaynews.com/the-broadway-review-a-gypsy-completely-beholden-to-its-beaming-star/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2024",
+      "file": "cbsnews--shania-russell.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.cbsnews.com/news/audra-mcdonald-on-gypsy-and-playing-the-mother-of-all-stage-mothers/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -27089,6 +27103,20 @@
       ]
     },
     {
+      "showId": "tru-off-broadway-2026",
+      "file": "vulture--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.vulture.com/article/theater-review-bughouse-darger-tru-capote.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        }
+      ]
+    },
+    {
       "showId": "true-west-2019",
       "file": "nysr--jesse-oxfeld.json",
       "score": 78,
@@ -41678,6 +41706,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "file": "westendtheatre--west-end-theatre.json",
+      "publishDate": "2026-07-22",
+      "url": "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
