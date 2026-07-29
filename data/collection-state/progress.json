@@ -10,7 +10,10 @@
     "birthright-off-broadway-2026/the-recs--unknown.json",
     "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
-    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json"
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
+    "mercury-off-broadway-2026/washpost--doug-feinberg.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -31,7 +34,14 @@
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
-    "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/hollywood-reporter--david-rooney.json"
+    "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "mercury-off-broadway-2026/nytimes--ben-brantley.json",
+    "mercury-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "mercury-off-broadway-2026/theatrecat--unknown.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--brent-lang.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -45,10 +55,15 @@
       "birthright-off-broadway-2026/the-recs--unknown.json",
       "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
-      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json"
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "mercury-off-broadway-2026/washpost--doug-feinberg.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
@@ -58,7 +73,7 @@
     "archive": []
   },
   "startTime": "2026-07-29T10:32:43.456Z",
-  "lastProcessed": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
+  "lastProcessed": "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
   "log": [
     {
       "t": "2026-07-29T10:34:57.882Z",
@@ -81,6 +96,12 @@
       "t": "2026-07-29T10:35:14.281Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-29T10:39:17.118Z",
+      "event": "bb-session",
+      "session": "799e127e",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }
