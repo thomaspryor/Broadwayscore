@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-29T09:32:35.310Z",
-  "processed": 24,
-  "failed": 126,
-  "successRate": "16.0%",
+  "updatedAt": "2026-07-29T09:50:06.924Z",
+  "processed": 26,
+  "failed": 156,
+  "successRate": "14.3%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 23,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 4,
     "archive": 1
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-07-29T09:17:18.656Z",
@@ -48,6 +48,39 @@
       "event": "bb-session",
       "session": "af6a6d6b",
       "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-07-29T09:44:21.883Z",
+      "event": "bb-session",
+      "session": "9d255317",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-29T09:44:22.913Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-29T09:47:36.041Z",
+      "event": "bb-session",
+      "session": "08969f8f",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-29T09:47:36.964Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-29T09:47:52.939Z",
+      "event": "bb-session",
+      "session": "2f974300",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-29T09:47:53.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
