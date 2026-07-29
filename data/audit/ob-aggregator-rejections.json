@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-28T14:54:04.933Z",
+  "generatedAt": "2026-07-29T14:49:34.529Z",
   "counts": {
     "accepted": 0,
-    "rejected": 8,
+    "rejected": 9,
     "byReason": {
       "low-confidence-existing-match": 5,
       "bot-shell": 2,
-      "placeholder-venue-no-theater": 1
+      "placeholder-venue-no-theater": 2
     }
   },
   "rejected": [
@@ -55,6 +55,12 @@
     {
       "url": "https://www.broadwayworld.com/article/Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway-20260518",
       "slug": "Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway-20260518",
+      "source": "bww-roundup",
+      "reason": "placeholder-venue-no-theater"
+    },
+    {
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727",
+      "slug": "Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727",
       "source": "bww-roundup",
       "reason": "placeholder-venue-no-theater"
     }
