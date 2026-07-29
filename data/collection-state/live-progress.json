@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-29T13:54:31.062Z",
+  "updatedAt": "2026-07-29T13:55:14.172Z",
   "processed": 63,
-  "failed": 747,
-  "successRate": "7.8%",
+  "failed": 757,
+  "successRate": "7.7%",
   "tierBreakdown": {
     "playwright": 43,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 9,
-    "archiveToday": 9,
+    "archiveToday": 11,
     "archive": 10
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-29T09:57:18.443Z",
@@ -79,6 +79,17 @@
     },
     {
       "t": "2026-07-29T12:40:09.129Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-29T13:54:35.604Z",
+      "event": "bb-session",
+      "session": "3c2907b3",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-29T13:54:36.261Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
