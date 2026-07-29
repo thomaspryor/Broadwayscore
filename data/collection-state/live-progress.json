@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-29T06:06:15.077Z",
-  "processed": 70,
-  "failed": 1290,
-  "successRate": "5.1%",
+  "updatedAt": "2026-07-29T06:06:58.530Z",
+  "processed": 72,
+  "failed": 1298,
+  "successRate": "5.3%",
   "tierBreakdown": {
     "playwright": 52,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 6,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 16,
     "archiveToday": 38,
     "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-07-29T00:10:22.858Z",
-      "event": "bb-session",
-      "session": "4bed19fb",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-07-29T00:10:23.980Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-07-29T00:14:36.746Z",
       "event": "bb-session",
@@ -124,6 +113,18 @@
       "t": "2026-07-29T04:54:50.737Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-29T06:06:28.806Z",
+      "event": "bb-session",
+      "session": "7f1658e0",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-29T06:06:44.804Z",
+      "event": "bb-session",
+      "session": "a4998582",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
     }
   ]
 }
