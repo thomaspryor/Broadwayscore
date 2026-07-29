@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-29T09:27:17.017Z",
+  "timestamp": "2026-07-29T09:39:56.674Z",
   "stats": {
     "totalReviews": 40880,
     "alreadyFlagged": 17910,
     "dateGuardCatches": 67,
     "directorMismatch": 928,
-    "tvFilmSignals": 1114,
+    "tvFilmSignals": 1115,
     "londonSignals": 765,
     "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3348
+    "noPublishDate": 3347
   },
   "findings": [
     {
@@ -3767,6 +3767,19 @@
       "score": 67,
       "publishDate": "2014-04-22",
       "url": "http://www.newsday.com/entertainment/theater/casa-valentina-review-harvey-fierstein-back-on-broadway-1.7793273",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "file": "theatermania--zachary-stewart.json",
+      "publishDate": "2026-07-28",
+      "url": "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
