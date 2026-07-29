@@ -1,22 +1,90 @@
 {
-  "generatedAt": "2026-07-29T19:22:47.934Z",
+  "generatedAt": "2026-07-29T20:27:14.257Z",
   "windowDays": 1095,
-  "targets": 12,
+  "targets": 13,
   "counts": {
-    "withGap": 7,
-    "totalMissing": 26,
+    "withGap": 4,
+    "totalMissing": 3,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 55,
-    "totalRecoverable": 1,
+    "totalFlaggedMisses": 22,
+    "totalRecoverable": 0,
     "totalRecovered": 0
   },
   "results": [
     {
-      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
-      "title": "The Wind in the Willows - Theatre On Kew",
+      "showId": "hungry-women-off-broadway-2026",
+      "title": "Hungry Women",
       "openingDate": "2026-07-25",
       "status": "open",
-      "category": "off-west-end",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://pagesonstages.com/2026/07/25/hungry-women/",
+        "https://www.newyorktheatreguide.com/reviews/hungry-women-off-broadway-review-julia-lester",
+        "https://www.broadwayworld.com/reviews/hungry-women",
+        "https://www.newyorktheatreguide.com/show/47348-hungry-women"
+      ],
+      "dirFiles": 4,
+      "dirClean": 3,
+      "inReviewsJson": 3,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.broadwayworld.com/reviews/hungry-women",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--unknown.json",
+              "flag": "roundup",
+              "urlInDir": "https://www.broadwayworld.com/reviews/hungry-women"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Hungry Women\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Hungry Women\" Off-Broadway review 2026",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Hungry Women\" review soho",
+            "ok": true,
+            "results": 8,
+            "error": null
+          }
+        ],
+        "queriesOk": 2,
+        "resultCount": 3,
+        "error": null
+      }
+    },
+    {
+      "showId": "tao-of-glass-west-end-2026",
+      "title": "Tao of Glass",
+      "openingDate": "2026-07-30",
+      "status": "previews",
+      "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -25,6 +93,70 @@
       "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "title": "The Enormous Crocodile",
+      "openingDate": "2026-07-28",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
+        "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this",
+        "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
+        "https://www.mybaba.com/event/roald-dahls-the-enormous-crocodile-the-musical-returns-to-london/"
+      ],
+      "dirFiles": 7,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this",
+          "host": "threads.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
+          "host": "threads.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.mybaba.com/event/roald-dahls-the-enormous-crocodile-the-musical-returns-to-london/",
+          "host": "mybaba.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "westendtheatre--west-end-theatre.json",
+              "flag": "clean",
+              "urlInDir": "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -58,130 +190,60 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
-    },
-    {
-      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
-      "title": "Rosie O'Donnell: Common Knowledge",
-      "openingDate": "2026-07-25",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://deadline.com/2026/07/rosie-odonnell-common-knowledge-off-broadway-1237003334/",
-        "https://www.newyorktheatreguide.com/reviews/common-knowledge-off-broadway-review-rosie-odonnell",
-        "https://www.theatermania.com/news/rosie-odonnell-discusses-her-new-off-broadway-show-common-knowledge_1845820/",
-        "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/",
-        "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons"
-      ],
-      "dirFiles": 5,
-      "dirClean": 1,
-      "inReviewsJson": 1,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/common-knowledge-off-broadway-review-rosie-odonnell",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytg--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.newyorktheatreguide.com/show/47210-common-knowledge"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/rosie-odonnell-discusses-her-new-off-broadway-show-common-knowledge_1845820/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatermania.com/news/rosie-odonnell-discusses-her-new-off-broadway-show-common-knowledge_1845820/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/",
-          "host": "darylroththeatre.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "darylroththeatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons",
-          "host": "sparkhamptons.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "sparkhamptons--angela-lagreca.json",
-              "flag": "clean",
-              "urlInDir": "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
       "serpCensus": {
         "ran": true,
         "complete": true,
-        "query": "\"Rosie O'Donnell: Common Knowledge\" Off-Broadway review 2026",
+        "query": "\"The Enormous Crocodile\" West End review 2026",
         "queryStatus": [
           {
-            "query": "\"Rosie O'Donnell: Common Knowledge\" Off-Broadway review 2026",
+            "query": "\"The Enormous Crocodile\" West End review 2026",
             "ok": true,
             "results": 10,
             "error": null
           },
           {
-            "query": "\"Rosie O'Donnell: Common Knowledge\" review daryl",
+            "query": "\"The Enormous Crocodile\" review lyric",
             "ok": true,
             "results": 10,
             "error": null
           }
         ],
         "queriesOk": 2,
-        "resultCount": 5,
+        "resultCount": 4,
         "error": null
-      }
+      },
+      "ingestResults": [
+        {
+          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this",
+          "host": "threads.com",
+          "outletId": "threads",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~55039/day) projects exhaustion in ~12d, before the 24d-out renewal — still us"
+        },
+        {
+          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
+          "host": "threads.com",
+          "outletId": "threads",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~55039/day) projects exhaustion in ~12d, before the 24d-out renewal — still us"
+        },
+        {
+          "url": "https://www.mybaba.com/event/roald-dahls-the-enormous-crocodile-the-musical-returns-to-london/",
+          "host": "mybaba.com",
+          "outletId": "mybaba",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~55039/day) projects exhaustion in ~12d, before the 24d-out renewal — still us"
+        }
+      ],
+      "ingestSkippedByCap": []
     },
     {
       "showId": "dog-man-the-musical-west-end-2026",
@@ -238,1768 +300,22 @@
       }
     },
     {
-      "showId": "maybe-happy-ending-2024",
-      "title": "Maybe Happy Ending",
-      "openingDate": "2024-11-12",
-      "status": "open",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-broadway-reviews-for-maybe-happy-ending",
-        "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112"
-      ],
-      "aggregatorListedUrls": [
-        "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
-        "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
-        "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/",
-        "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
-        "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
-        "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
-        "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/",
-        "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
-        "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
-        "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
-        "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
-        "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
-        "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
-        "https://www.slantmagazine.com/theater/maybe-happy-ending-review-darren-criss/",
-        "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/",
-        "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review",
-        "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
-        "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
-        "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
-        "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
-        "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
-        "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/",
-        "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
-        "https://baltimorefishbowl.com/stories/tony-nominated-robot-love-story-maybe-happy-ending-to-launch-national-tour-from-baltimores-hippodrome-theatre/"
-      ],
-      "dirFiles": 51,
-      "dirClean": 38,
-      "inReviewsJson": 35,
-      "missing": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
-          "host": "cititour.com",
-          "knownOutletId": "cititour"
-        },
-        {
-          "url": "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
-          "host": "today.com",
-          "knownOutletId": null
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "chicagotribune.com",
-          "count": 1
-        },
-        {
-          "host": "frontmezzjunkies.com",
-          "count": 1
-        },
-        {
-          "host": "theguardian.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "newyorker.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
-          "host": "thecontending.com",
-          "count": 1
-        },
-        {
-          "host": "thekomisarscoop.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "theatrereviews.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        },
-        {
-          "host": "wsj.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--rex-reed.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/"
-            }
-          ]
-        },
-        {
-          "url": "https://baltimorefishbowl.com/stories/tony-nominated-robot-love-story-maybe-happy-ending-to-launch-national-tour-from-baltimores-hippodrome-theatre/",
-          "host": "baltimorefishbowl.com",
-          "knownOutletId": "baltimorefishbowl",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "baltimorefishbowl--ed-gunts.json",
-              "flag": "clean",
-              "urlInDir": "https://baltimorefishbowl.com/stories/tony-nominated-robot-love-story-maybe-happy-ending-to-launch-national-tour-from-baltimores-hippodrome-theatre/"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "ingestResults": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
-          "host": "cititour.com",
-          "outletId": "cititour",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~54451/day) projects exhaustion in ~12d, before the 24d-out renewal — still us"
-        },
-        {
-          "url": "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
-          "host": "today.com",
-          "outletId": "today",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~54451/day) projects exhaustion in ~12d, before the 24d-out renewal — still us"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "oh-mary-2024",
-      "title": "Oh, Mary!",
-      "openingDate": "2024-07-11",
-      "status": "open",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-oh-mary",
-        "https://playbill.com/article/what-do-london-reviews-think-of-oh-mary-in-the-west-end",
-        "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
-        "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-at-the-Lucille-Lortel-Theatre-20240208"
-      ],
-      "aggregatorListedUrls": [
-        "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
-        "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
-        "https://thefrontrowcenter.com/2024/02/oh-mary/",
-        "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
-        "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
-        "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
-        "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
-        "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
-        "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
-        "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
-        "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
-        "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
-        "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
-        "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
-        "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
-        "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
-        "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
-        "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
-        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
-        "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
-        "https://londonist.com/london/on-stage/oh-mary-west-end-review",
-        "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
-        "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
-        "https://www.londontheatredirect.com/news/oh-mary-review",
-        "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
-        "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/",
-        "https://www.nytimes.com/2025/12/19/arts/oh-mary-trafalgar-theater-london.html",
-        "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
-        "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
-        "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
-        "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
-        "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
-        "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
-        "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
-        "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
-        "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
-        "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
-        "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
-        "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
-        "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
-        "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
-        "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
-        "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
-        "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway",
-        "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
-        "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
-        "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
-        "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
-        "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
-        "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
-        "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
-        "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
-        "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
-        "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
-        "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
-        "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
-        "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
-        "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
-        "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
-        "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
-        "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
-        "https://www.newyorktheatreguide.com/theatre-news/news/purpose-wins-2025-pulitzer-prize-for-drama-oh-mary-named-a-finalist",
-        "https://www.newyorktheatreguide.com/theatre-news/news/tituss-burgess-to-return-to-oh-mary-broadway-cast-cole-escola-sets-departure"
-      ],
-      "dirFiles": 78,
-      "dirClean": 33,
-      "inReviewsJson": 33,
-      "missing": [
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
-          "host": "huffingtonpost.co.uk",
-          "knownOutletId": "huffpost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
-          "host": "the-independent.com",
-          "knownOutletId": "independent",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
-          "host": "jonathanbaz.com",
-          "knownOutletId": "jonathan-baz",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://londonist.com/london/on-stage/oh-mary-west-end-review",
-          "host": "londonist.com",
-          "knownOutletId": "londonist",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatredirect.com/news/oh-mary-review",
-          "host": "londontheatredirect.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
-          "host": "loureviews.blog",
-          "knownOutletId": "loureviews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
-          "host": "readaboutstuff.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "knownOutletId": "theupcoming",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.wordpress.com",
-          "count": 1
-        },
-        {
-          "host": "interestedbystander.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 2
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "culturesauce--thom-geier.json",
-              "flag": "clean",
-              "urlInDir": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--aliya-al-hassan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "musical-theatre-review--angela-thomas.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://musicaltheatrereview.com/oh-mary-creator-cole-escola-to-make-west-end-debut-in-show/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": true,
-          "recoverableFile": "telegraph--unknown.json",
-          "recoverableOutletId": "telegraph",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/tickets/london/oh-mary/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "west-end-best-friend--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.westendbestfriend.co.uk/news/full-casting-summer-performances-oh-mary-west-end"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "culturesauce--thom-geier.json",
-              "flag": "clean",
-              "urlInDir": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-oh-mary",
-          "publishDate": "2024-02-09"
-        },
-        {
-          "url": "https://playbill.com/article/what-do-london-reviews-think-of-oh-mary-in-the-west-end",
-          "publishDate": "2025-12-19"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-at-the-Lucille-Lortel-Theatre-20240208",
-          "publishDate": "2024-02-08"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
-          "host": "allthatdazzles.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
-          "host": "huffingtonpost.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
-          "host": "the-independent.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
-          "host": "jonathanbaz.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://londonist.com/london/on-stage/oh-mary-west-end-review",
-          "host": "londonist.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
-          "host": "londontheatre1.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
-          "host": "londontheatre.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.londontheatredirect.com/news/oh-mary-review",
-          "host": "londontheatredirect.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
-          "host": "loureviews.blog",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
-          "host": "readaboutstuff.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
-          "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
-          "host": "theatreandtonic.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
-          "host": "theatreweekly.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
-          "host": "whatsonstage.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "tender-off-west-end-2026",
-      "title": "Tender",
-      "openingDate": "2026-07-09",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.timeout.com/london/theatre/tender-1-review",
-        "https://www.thestage.co.uk/reviews/tender-review-soho-theatre-london-dave-harris-matthew-xia",
-        "https://theartsdesk.com/theatre/tender-soho-theatre-review-anarchic-takedown-cliched-masculinity",
-        "https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
-        "https://www.whatsonstage.com/news/tender-at-soho-theatre-review_1720027/",
-        "https://www.londontheatre.co.uk/reviews/tender-review-bush-theatre-2026",
-        "https://www.londontheatre1.com/reviews/tender-bush-theatre/",
-        "https://saltertonartsreview.com/2026/07/tender-bush-theatre-london/",
-        "https://www.theguardian.com/stage/2026/jul/15/tender-review-bush-theatre-london",
-        "https://lovelondonloveculture.com/2026/07/19/review-round-up-tender-bush-theatre/",
-        "https://www.londontheatre.co.uk/show/40809-tender",
-        "https://www.timeout.com/london/theatre/tender-review",
-        "https://diva-magazine.com/2026/07/20/review-eleanor-tindall-tender/"
-      ],
-      "dirFiles": 37,
-      "dirClean": 15,
-      "inReviewsJson": 14,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "afridiziak.com",
-          "count": 1
-        },
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "everything-theatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "ft.com",
-          "count": 1
-        },
-        {
-          "host": "revstanstheatreblog.co.uk",
-          "count": 1
-        },
-        {
-          "host": "stagedtheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 2
-        },
-        {
-          "host": "theupcoming.co.uk",
-          "count": 1
-        },
-        {
-          "host": "viewfromthegods.co.uk",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/tender-review-soho-theatre-london-dave-harris-matthew-xia",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--dave-fargnoli.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/tender-review-soho-theatre-london-dave-harris-matthew-xia"
-            }
-          ]
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/tender-soho-theatre-review-anarchic-takedown-cliched-masculinity",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "artsdesk--aleks-sierz.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theartsdesk.com/theatre/tender-soho-theatre-review-anarchic-takedown-cliched-masculinity"
-            },
-            {
-              "file": "artsdesk--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theartsdesk.com/theatre/tender-bush-theatre-review-haunting-blood-relations"
-            }
-          ]
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/tender-at-soho-theatre-review_1720027/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--oliver-ainley.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/tender-napalam-at-the-kings-head-theatre-review_55018/"
-            },
-            {
-              "file": "whatsonstage--rachel-agyekum.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/tender-at-soho-theatre-review_1720027/"
-            }
-          ]
-        },
-        {
-          "url": "https://saltertonartsreview.com/2026/07/tender-bush-theatre-london/",
-          "host": "saltertonartsreview.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "saltertonartsreview--salterton-arts-review.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://saltertonartsreview.com/2026/07/tender-bush-theatre-london/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://lovelondonloveculture.com/2026/07/19/review-round-up-tender-bush-theatre/",
-          "host": "lovelondonloveculture.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lovelondonloveculture--unknown.json",
-              "flag": "roundup",
-              "urlInDir": "https://lovelondonloveculture.com/2026/07/19/review-round-up-tender-bush-theatre/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://diva-magazine.com/2026/07/20/review-eleanor-tindall-tender/",
-          "host": "diva-magazine.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "diva-magazine--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://diva-magazine.com/2026/07/20/review-eleanor-tindall-tender/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
-      },
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Tender\" West End review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Tender\" West End review 2026",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"Tender\" review bush",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"Tender\" Tindall review",
-            "ok": true,
-            "results": 9,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 8,
-        "error": null
-      }
-    },
-    {
-      "showId": "allegra-west-end-2026",
-      "title": "Allegra",
-      "openingDate": "2026-07-09",
-      "status": "open",
-      "category": "west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://playsinternational.org.uk/allegra-harold-pinter-theatre/",
-        "https://www.londontheatre.co.uk/reviews/allegra-review-harold-pinter-theatre",
-        "https://www.allthatdazzles.co.uk/post/review-allegra-harold-pinter-theatre",
-        "https://thespyinthestalls.com/2026/07/allegra-2/",
-        "https://www.theupcoming.co.uk/2026/07/10/allegra-at-harold-pinter-theatre-theatre-review/",
-        "https://readaboutstuff.com/2026/07/10/review-allegra-harold-pinter-theatre-london/",
-        "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/allegra_1722344/",
-        "https://www.threads.com/@theatrenewsweb/post/DaptxDTID1u/allegra-pinter-theatre-allegratheplay-allegratheplay-harold-pinter-h-pinter/",
-        "https://www.ft.com/content/d72d2b65-5a9a-4bf1-bce0-b6032f1fb132",
-        "https://www.whatsonstage.com/news/allegra-with-maureen-lipman-on-tour-review_1724142/",
-        "https://www.thetimes.com/culture/theatre-dance/article/allegra-review-maureen-lipman-80-deserves-a-hit-play-this-isnt-it-sqhvqv3cl",
-        "https://www.allegraplay.com/"
-      ],
-      "dirFiles": 22,
-      "dirClean": 10,
-      "inReviewsJson": 16,
-      "missing": [
-        {
-          "url": "https://www.threads.com/@theatrenewsweb/post/DaptxDTID1u/allegra-pinter-theatre-allegratheplay-allegratheplay-harold-pinter-h-pinter/",
-          "host": "threads.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londongrip.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatre-news.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://thespyinthestalls.com/2026/07/allegra-2/",
-          "host": "thespyinthestalls.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thespyinthestalls--thespyinthestalls.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://thespyinthestalls.com/2026/07/allegra-2/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://readaboutstuff.com/2026/07/10/review-allegra-harold-pinter-theatre-london/",
-          "host": "readaboutstuff.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "readaboutstuff--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://readaboutstuff.com/2026/07/10/review-allegra-harold-pinter-theatre-london/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.allegraplay.com/",
-          "host": "allegraplay.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "wwwallegraplaycom--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.allegraplay.com/"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 2,
-          "weRefStarsSource": "theatre-reviews"
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 5,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": true,
-            "rows": 5,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 5,
-        "corroborated": 4,
-        "perSource": {
-          "theatre-reviews": {
-            "cited": 5,
-            "corroborated": 4
-          }
-        }
-      },
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Allegra\" West End review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Allegra\" West End review 2026",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Allegra\" review harold",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"Allegra\" Quilter review",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 8,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://www.threads.com/@theatrenewsweb/post/DaptxDTID1u/allegra-pinter-theatre-allegratheplay-allegratheplay-harold-pinter-h-pinter/",
-          "host": "threads.com",
-          "outletId": "threads",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~54523/day) projects exhaustion in ~12d, before the 24d-out renewal — still us"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "title": "The Great Gatsby",
-      "openingDate": "2024-04-25",
-      "status": "open",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway",
-        "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann",
-        "https://playbill.com/article/reviews-critics-sound-off-on-paper-mill-playhouses-the-great-gatsby",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424",
-        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024",
-        "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.broadwaynews.com/the-broadway-review-with-the-great-gatsby-a-production-thats-more-pyrite-than-treasure/",
-        "https://cititour.com/NYC_Broadway/The-Great-Gatsby/1231",
-        "https://www.digitaljournal.com/entertainment/review-jeremy-jordan-and-eva-noblezada-star-in-the-great-gatsby-musical-on-broadway/article",
-        "https://ew.com/the-great-gatsby-review-musical-broadway-8637932",
-        "https://www.theguardian.com/stage/2024/apr/25/great-gatsby-broadway-review",
-        "https://nystagereview.com/2024/04/25/the-great-gatsby-fitzgeralds-roaring-20s-classic-musicalized-as-a-loud-whimper/",
-        "https://nystagereview.com/2024/04/25/the-great-gatsby-all-that-glitters-but-short-on-depth/",
-        "https://newyorktheater.me/2024/04/26/the-great-gatsby-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-broadway-review-jeremy-jordan-eva-noblezada",
-        "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jordan.html",
-        "https://observer.com/2024/04/review-flashy-and-fake-great-gatsby-caps-a-weak-season/",
-        "https://www.slantmagazine.com/theater/the-great-gatsby-review-broadway-musical/",
-        "https://www.thestage.co.uk/reviews/the-great-gatsby-review-at-broadway-theatre-new-york-by-f-scott-fitzgerald",
-        "https://www.theatermania.com/news/review-a-no-expense-spared-great-gatsby-on-broadway-with-jeremy-jordan-belting-to-the-rafters_1738140/",
-        "https://www.theaterpizzazz.com/the-great-gatsby-a-hundred-years-later/",
-        "https://www.theatrely.com/post/big-ol-fashioned-broadway-fun-at-the-great-gatsby-review",
-        "https://www.timeout.com/newyork/theater/the-great-gatsby-musical-broadway-review-jeremy-jordan-eva-noblezada",
-        "https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-jeremy-jordan-1235981841/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/04/25/great-gatsby-musical-broadway-review/",
-        "https://www.thewrap.com/the-great-gatsby-broadway-review/",
-        "https://1883magazine.com/great-gatsby-musical-review-london/",
-        "https://www.dailymail.co.uk/tvshowbiz/article-14645813/VERONICA-LEE-reviews-Great-Gatsby.html",
-        "https://www.theguardian.com/stage/2025/apr/24/the-great-gatsby-a-new-musical-review-coliseum-london-f-scott-fitzgerald",
-        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/the-great-gatsby-musical-west-end-review-b2738859.html",
-        "https://inews.co.uk/culture/arts/great-gatsby-musical-review-vacuous-pretty-costumes-3657293",
-        "https://www.londontheatre.co.uk/reviews/the-great-gatsby-review-london-coliseum",
-        "https://www.thestage.co.uk/reviews/the-great-gatsby-review-london-coliseum-marc-bruni-jamie-muscato",
-        "https://www.standard.co.uk/culture/theatre/the-great-gatsby-coliseum-review-b1224186.html",
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-great-gatsby-coliseum-review/",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-great-gatsby-review-west-end-2025-vj3f6hcsj",
-        "https://www.timeout.com/london/theatre/the-great-gatsby-9-review",
-        "https://www.theupcoming.co.uk/2025/04/25/the-great-gatsby-at-london-coliseum-theatre-review/",
-        "https://www.whatsonstage.com/news/the-great-gatsby-review-luxuriously-glitzy-yet-glib-west-end-musical_1674830/",
-        "https://www.broadwayworld.com/new-jersey/article/Review-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-The-Exceptional-World-Premiere-20231024",
-        "https://nystagereview.com/2023/10/24/the-great-gatsby-fitzergeralds-classic-impressively-staged-once-again-defies-translation/",
-        "https://www.nytimes.com/2023/10/26/theater/great-gatsby-musical-review.html",
-        "https://www.theatermania.com/news/review-the-great-gatsby-reflects-the-excesses-of-the-roaring-twenties-in-all-the-wrong-ways_1719309/",
-        "https://www.theaterpizzazz.com/the-great-gatsby-at-paper-mill-playhouse/",
-        "https://www.nydailynews.com/2024/04/25/broadway-review-the-great-gatsby-brings-back-big-broadway-lacks-heart/",
-        "https://nypost.com/2024/04/25/entertainment/great-gatsby-review-broadway-musical-messes-up-beloved-novel/",
-        "https://mdtheatreguide.com/2026/02/theatre-review-the-great-gatsby-a-new-musical-at-the-hippodrome/",
-        "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/",
-        "https://dallasvoice.com/stage-notes-kdt-partners-with-art-galleries-review-of-bds-the-great-gatsby/",
-        "https://www.houstonchronicle.com/entertainment/theater/article/the-great-gatsby-hobby-center-21955604.php",
-        "https://www.statesman.com/entertainment/arts/article/austin-great-gatsby-musical-broadway-tour-22071169.php",
-        "https://chicagoreader.com/performing-arts/theater/theater-review/great-gatsby-broadway-in-chicago/",
-        "https://chicago.suntimes.com/theater/2026/04/24/review-great-gatsby-musical-broadway-chicago-theater-things-to-do",
-        "https://mdtheatreguide.com/2026/05/theatre-review-the-great-gatsby-a-new-musical-at-the-national-theatre/",
-        "https://triblive.com/aande/theater-arts/review-musical-adaptation-of-the-great-gatsby-at-the-benedum-center-is-heavy-on-style/",
-        "https://www.startribune.com/review-this-gatsby-aint-so-great-after-all/601852668",
-        "https://www.twincities.com/2026/06/03/theater-review-great-gatsby-turns-st-paul-native-f-scott-fitzgeralds-novel-into-a-romcom/",
-        "https://www.news-herald.com/2026/06/11/the-great-gatsby-at-playhouse-square-review-pretty-close-to-great-yes/",
-        "https://www.cleveland.com/entertainment/2026/06/the-great-gatsby-review-lavish-musical-delivers-the-full-broadway-experience-at-playhouse-square.html",
-        "https://stageandcinema.com/2026/07/12/the-great-gatsby-review-tour/",
-        "https://revuewm.com/arts/review-spectacle-steals-the-show-in-the-great-gatsby",
-        "https://musicaltheatrereview.com/the-great-gatsby-a-new-musical-london-coliseum/",
-        "https://theatreandtonic.co.uk/blog/the-great-gatsby-at-london-coliseum-review",
-        "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
-        "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
-        "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
-        "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review"
-      ],
-      "dirFiles": 82,
-      "dirClean": 40,
-      "inReviewsJson": 39,
-      "missing": [
-        {
-          "url": "https://1883magazine.com/great-gatsby-musical-review-london/",
-          "host": "1883magazine.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2026/02/theatre-review-the-great-gatsby-a-new-musical-at-the-hippodrome/",
-          "host": "mdtheatreguide.com",
-          "knownOutletId": "maryland-theatre-guide",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2026/05/theatre-review-the-great-gatsby-a-new-musical-at-the-national-theatre/",
-          "host": "mdtheatreguide.com",
-          "knownOutletId": "maryland-theatre-guide",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.cleveland.com/entertainment/2026/06/the-great-gatsby-review-lavish-musical-delivers-the-full-broadway-experience-at-playhouse-square.html",
-          "host": "cleveland.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://revuewm.com/arts/review-spectacle-steals-the-show-in-the-great-gatsby",
-          "host": "revuewm.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://musicaltheatrereview.com/the-great-gatsby-a-new-musical-london-coliseum/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "chicagotribune.com",
-          "count": 1
-        },
-        {
-          "host": "culturesauce.com",
-          "count": 1
-        },
-        {
-          "host": "dctheaterarts.org",
-          "count": 1
-        },
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "frontmezzjunkies.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.wordpress.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
-          "host": "thekomisarscoop.com",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        },
-        {
-          "host": "wsj.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-great-gatsby-review-at-broadway-theatre-new-york-by-f-scott-fitzgerald",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--lane-williamson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/the-great-gatsby-review-at-broadway-theatre-new-york-by-f-scott-fitzgerald"
-            },
-            {
-              "file": "thestage--laurie-yule.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/the-great-gatsby-review-london-coliseum-marc-bruni-jamie-muscato"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theaterpizzazz.com/the-great-gatsby-a-hundred-years-later/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-pizzazz--brian-scott-lipton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theaterpizzazz.com/the-great-gatsby-a-hundred-years-later/"
-            },
-            {
-              "file": "theater-pizzazz--ron-fassler.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.theaterpizzazz.com/the-great-gatsby-a-hundred-years-later/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14645813/VERONICA-LEE-reviews-Great-Gatsby.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "daily-mail--veronica-lee.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.dailymail.co.uk/tvshowbiz/article-14645813/VERONICA-LEE-reviews-Great-Gatsby.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/the-great-gatsby-musical-west-end-review-b2738859.html",
-          "host": "the-independent.com",
-          "knownOutletId": "independent",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "independent--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/the-great-gatsby-musical-west-end-review-b2738859.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://inews.co.uk/culture/arts/great-gatsby-musical-review-vacuous-pretty-costumes-3657293",
-          "host": "inews.co.uk",
-          "knownOutletId": "i-paper",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "i-paper--fiona-mountford.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://inews.co.uk/culture/arts/great-gatsby-musical-review-vacuous-pretty-costumes-3657293?srsltid=AfmBOop5U_-0yuiwqrCKTKI2tUkV7MZV9Ru-O0CAT730Y988zxEOxyoB"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-great-gatsby-review-london-coliseum-marc-bruni-jamie-muscato",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--lane-williamson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/the-great-gatsby-review-at-broadway-theatre-new-york-by-f-scott-fitzgerald"
-            },
-            {
-              "file": "thestage--laurie-yule.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/the-great-gatsby-review-london-coliseum-marc-bruni-jamie-muscato"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/the-great-gatsby-coliseum-review-b1224186.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/the-great-gatsby-coliseum-review-b1224186.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-great-gatsby-coliseum-review/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--claire-allfree.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/the-great-gatsby-coliseum-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/the-great-gatsby-review-luxuriously-glitzy-yet-glib-west-end-musical_1674830/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--alun-hood.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/the-great-gatsby-review-luxuriously-glitzy-yet-glib-west-end-musical_1674830/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theaterpizzazz.com/the-great-gatsby-at-paper-mill-playhouse/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-pizzazz--brian-scott-lipton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theaterpizzazz.com/the-great-gatsby-a-hundred-years-later/"
-            },
-            {
-              "file": "theater-pizzazz--ron-fassler.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.theaterpizzazz.com/the-great-gatsby-a-hundred-years-later/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/",
-          "host": "baltimoresun.com",
-          "knownOutletId": "baltimoresun",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "baltimoresun--mary-carole-mccauley.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.houstonchronicle.com/entertainment/theater/article/the-great-gatsby-hobby-center-21955604.php",
-          "host": "houstonchronicle.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "houstonchronicle--doni-wilson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.houstonchronicle.com/entertainment/theater/article/the-great-gatsby-hobby-center-21955604.php"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://chicagoreader.com/performing-arts/theater/theater-review/great-gatsby-broadway-in-chicago/",
-          "host": "chicagoreader.com",
-          "knownOutletId": "chicago-reader",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "chicago-reader--kerry-reid.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://chicagoreader.com/performing-arts/theater/theater-review/great-gatsby-broadway-in-chicago/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://chicago.suntimes.com/theater/2026/04/24/review-great-gatsby-musical-broadway-chicago-theater-things-to-do",
-          "host": "suntimes.com",
-          "knownOutletId": "suntimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "suntimes--catey-sullivan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://chicago.suntimes.com/theater/2026/04/24/review-great-gatsby-musical-broadway-chicago-theater-things-to-do"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://triblive.com/aande/theater-arts/review-musical-adaptation-of-the-great-gatsby-at-the-benedum-center-is-heavy-on-style/",
-          "host": "triblive.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "triblive--alexis-papalia.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://triblive.com/aande/theater-arts/review-musical-adaptation-of-the-great-gatsby-at-the-benedum-center-is-heavy-on-style/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.startribune.com/review-this-gatsby-aint-so-great-after-all/601852668",
-          "host": "startribune.com",
-          "knownOutletId": "minneapolis-star-tribune",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "minneapolis-star-tribune--rohan-preston.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.startribune.com/review-this-gatsby-aint-so-great-after-all/601852668"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.twincities.com/2026/06/03/theater-review-great-gatsby-turns-st-paul-native-f-scott-fitzgeralds-novel-into-a-romcom/",
-          "host": "twincities.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "twincities--ross-raihala.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.twincities.com/2026/06/03/theater-review-great-gatsby-turns-st-paul-native-f-scott-fitzgeralds-novel-into-a-romcom/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.news-herald.com/2026/06/11/the-great-gatsby-at-playhouse-square-review-pretty-close-to-great-yes/",
-          "host": "news-herald.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "news-herald--mark-meszoros.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.news-herald.com/2026/06/11/the-great-gatsby-at-playhouse-square-review-pretty-close-to-great-yes/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://stageandcinema.com/2026/07/12/the-great-gatsby-review-tour/",
-          "host": "stageandcinema.com",
-          "knownOutletId": "stageandcinema",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "stageandcinema--lynne-weiss.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://stageandcinema.com/2026/07/12/the-great-gatsby-review-tour/"
-            },
-            {
-              "file": "stageandcinema--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://stageandcinema.com/2026/07/12/the-great-gatsby-review-tour/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/the-great-gatsby-at-london-coliseum-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatreandtonic--emmie-newitt.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreandtonic.co.uk/blog/the-great-gatsby-at-london-coliseum-review"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dailybeast--tim-teeman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann",
-          "publishDate": "2025-04-25"
-        },
-        {
-          "url": "https://playbill.com/article/reviews-critics-sound-off-on-paper-mill-playhouses-the-great-gatsby",
-          "publishDate": "2023-10-26"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211",
-          "publishDate": "2026-03-11"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424",
-          "publishDate": "2025-04-24"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024",
-          "publishDate": "2023-10-24"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627",
-          "publishDate": "2023-06-27"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://1883magazine.com/great-gatsby-musical-review-london/",
-          "host": "1883magazine.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2026/02/theatre-review-the-great-gatsby-a-new-musical-at-the-hippodrome/",
-          "host": "mdtheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2026/05/theatre-review-the-great-gatsby-a-new-musical-at-the-national-theatre/",
-          "host": "mdtheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.cleveland.com/entertainment/2026/06/the-great-gatsby-review-lavish-musical-delivers-the-full-broadway-experience-at-playhouse-square.html",
-          "host": "cleveland.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://revuewm.com/arts/review-spectacle-steals-the-show-in-the-great-gatsby",
-          "host": "revuewm.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://musicaltheatrereview.com/the-great-gatsby-a-new-musical-london-coliseum/",
-          "host": "musicaltheatrereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "labelless-off-broadway-2026",
-      "title": "Label•less",
-      "openingDate": "2026-06-18",
+      "showId": "pied-a-terre-off-broadway-2026",
+      "title": "Pied à Terre",
+      "openingDate": "2026-03-04",
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/review-labelless-an-obama-era-throwback-dance-spectacular_1842310/",
-        "https://culturesauce.com/drew-lachey-label-less-off-broadway-review/"
+        "https://www.theaterscene.net/plays/offbway-plays/pied-a-terre/victor-gluck/"
       ],
-      "dirFiles": 3,
-      "dirClean": 3,
-      "inReviewsJson": 3,
+      "dirFiles": 5,
+      "dirClean": 2,
+      "inReviewsJson": 1,
       "missing": [],
       "dirOnly": [
         {
-          "host": "1minutecritic.com",
+          "host": "wsj.com",
           "count": 1
         }
       ],
@@ -2012,117 +328,86 @@
       }
     },
     {
-      "showId": "the-outsiders-2024",
-      "title": "The Outsiders",
-      "openingDate": "2024-04-11",
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "title": "Heathers The Musical",
+      "openingDate": "2025-06-30",
       "status": "open",
-      "category": "broadway",
+      "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-the-outsiders-on-broadway",
-        "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-the-musical-adaptation-of-the-outsiders",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Embarks-on-National-Tour-20251029",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-World-Premiere-Opens-at-La-Jolla-Playhouse-20230307"
+        "https://playbill.com/article/reviews-are-out-for-the-heathers-off-broadway-revival",
+        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
+        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Returns-Off-Broadway-at-New-World-Stages-20250710"
       ],
       "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/theater/review-outsiders-gets-lost-in-the-rumble/",
-        "https://www.broadwaynews.com/the-broadway-review-the-outsiders-a-rival-gang-story-void-of-any-risk/",
-        "https://www.chicagotribune.com/2024/04/11/review-in-the-outsiders-on-broadway-what-should-be-ponyboys-story-has-a-grown-up-chill/",
-        "https://cititour.com/NYC_Broadway/The-Outsiders/1220",
-        "https://www.digitaljournal.com/entertainment/review-the-outsiders-is-a-new-coming-of-age-musical-on-broadway/article",
-        "https://ew.com/the-outsiders-review-broadway-musical-8629965",
-        "https://www.theguardian.com/stage/2024/apr/11/the-outsiders-broadway-review",
-        "https://nypost.com/2024/04/11/entertainment/the-outsiders-broadway-review-warring-teens-tug-at-the-heart-in-one-of-the-seasons-best-new-musicals/",
-        "https://newyorktheater.me/2024/04/11/the-outsiders-broadway-review/",
-        "https://nystagereview.com/2024/04/11/the-outsiders-the-popular-novel-and-film-is-now-a-killer-musical/",
-        "https://nystagereview.com/2024/04/11/the-outsiders-lets-get-ready-to-rumble/",
-        "https://www.newyorktheatreguide.com/reviews/the-outsiders-broadway-review",
-        "https://www.nytimes.com/2024/04/11/theater/review-outsiders-musical.html",
-        "https://www.slantmagazine.com/theater/the-outsiders-broadway-review/",
-        "https://www.theatermania.com/news/review-the-outsiders-becomes-a-soggy-broadway-musical_1736986/",
-        "https://www.theatrely.com/post/the-outsiders-finds-greatness-on-broadway-review",
-        "https://www.timeout.com/newyork/theater/the-outsiders",
-        "https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-1235966796/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/04/11/outsiders-broadway-review/",
-        "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-danya-taymor-musical-jamestown-revival-2e20f5ca",
-        "https://www.thewrap.com/the-outsiders-broadway-review-improves-coppola-cult-classic/",
-        "https://www.latimes.com/entertainment-arts/story/2023-03-07/review-the-outsiders-musical-la-jolla-playhouse",
-        "https://www.nytimes.com/2023/03/06/theater/the-outsiders-review-la-jolla-playhouse.html",
-        "https://www.sandiegouniontribune.com/entertainment/theater/story/2023-03-06/review-la-jolla-playhouses-the-outsiders-a-faithful-tuneful-and-muscular-homage-to-classic-60s-tale",
-        "https://www.theatrely.com/post/the-outsiders-in-california-a-gripping-adaptation-review",
-        "https://www.buffalorising.com/2025/09/stay-gold-the-outsiders-at-sheas-is-a-benchmark-musical-that-will-be-talked-about-for-years/",
-        "https://www.dailynebraskan.com/culture/review-the-outsiders-stays-gold-beyond-broadway/article_babf90fd-be8c-4aaa-8c90-9246b32a4248.html",
-        "https://www.austinchronicle.com/arts/arts-reviews/open-hearted-outsiders/",
-        "https://www.houstonpress.com/arts/the-outsiders-stays-gold-in-musical-form/",
-        "https://chicago.suntimes.com/theater/2026/02/13/the-outsiders-musical-review-chicago-theater-broadway-cadillac-palace",
-        "https://www.chicagotribune.com/2026/02/12/review-outsiders-cadillac-palace/",
-        "https://www.theonlycritic.com/post/the-outsiders-review-a-vulnerable-high-voltage-musical-reimagining-that-honors-the-novel-s-heart",
-        "https://www.theoaklandpress.com/2026/03/05/the-outsiders-is-deep-emotional-and-transformative-at-the-fisher-theatre/",
-        "https://columbusunderground.com/theater-review-broadway-in-columbuss-the-outsiders-conjures-the-lightning-fire-and-blood-of-adolescence-rs1/",
-        "https://www.bostonglobe.com/2026/04/02/arts/the-outsiders-broadway-in-boston/",
-        "https://warwickpost.com/ppacs-the-outsiders-dazzles/",
-        "https://www.clevescene.com/arts/the-outsiders-at-playhouse-square-is-ephemeral-artistry/",
-        "https://www.axios.com/local/cleveland/2026/05/01/the-outsiders-musical-playhouses-square-opening",
-        "https://www.news-herald.com/2026/04/30/the-outsiders-at-playhouse-square-review-musical-adaptation-hits-hard/",
-        "https://www.cleveland.com/entertainment/2026/04/the-outsiders-review-rain-rumble-and-raw-emotion-at-playhouse-square.html",
-        "https://www.timesunion.com/theater/article/outsiders-musical-proctors-theater-review-22266482.php",
-        "http://https://www.latimes.com/entertainment-arts/story/2023-03-07/review-the-outsiders-musical-la-jolla-playhouse",
-        "https://www.timeout.com/newyork/theater/the-outsiders-broadway-musical-review"
+        "https://cititour.com/NYC_Broadway/Heathers/1313",
+        "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
+        "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
+        "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
+        "https://exeuntnyc.com/reviews/review-heathers-the-musical-at-new-world-stages/",
+        "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
+        "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
+        "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
+        "https://www.newyorktheatreguide.com/reviews/heathers-off-broadway-review",
+        "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
+        "https://1minutecritic.com/heathers-off-broadway-review/",
+        "https://recliningstandards.com/2025/07/10/ck-df-review-heathers-at-new-world-stages/",
+        "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
+        "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
+        "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
+        "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html",
+        "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186",
+        "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398",
+        "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
+        "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html",
+        "http://www.timeout.com/newyork/theater/heathers-the-musical",
+        "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
+        "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
+        "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/",
+        "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html",
+        "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
+        "https://pagesonstages.com/2025/07/10/heathers/",
+        "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
+        "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
+        "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-QBZQD9",
+        "https://www.talkinbroadway.com/page/ob/07_10_25.html",
+        "https://www.theaterscene.net/musicals/offbway/heathers-the-musical/victor-gluck/"
       ],
-      "dirFiles": 55,
-      "dirClean": 35,
-      "inReviewsJson": 32,
-      "missing": [
-        {
-          "url": "https://www.dailynebraskan.com/culture/review-the-outsiders-stays-gold-beyond-broadway/article_babf90fd-be8c-4aaa-8c90-9246b32a4248.html",
-          "host": "dailynebraskan.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://https://www.latimes.com/entertainment-arts/story/2023-03-07/review-the-outsiders-musical-la-jolla-playhouse",
-          "host": "https",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "dirFiles": 60,
+      "dirClean": 19,
+      "inReviewsJson": 19,
+      "missing": [],
       "dirOnly": [
         {
-          "host": "thefrontrowcenter.com",
+          "host": "aaroninnyc.com",
           "count": 1
         },
         {
-          "host": "pagesonstages.com",
+          "host": "lavocedinewyork.com",
           "count": 1
         },
         {
-          "host": "stageandcinema.com",
+          "host": "mashable.com",
           "count": 1
         },
         {
-          "host": "talkinbroadway.com",
-          "count": 2
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "northjersey.com",
+          "count": 1
         },
         {
           "host": "theaterlife.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.thewrap.com/the-outsiders-broadway-review-improves-coppola-cult-classic/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
+          "url": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2130,16 +415,16 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "thewrap--robert-hofler.json",
+              "file": "dailybeast--tim-teeman.json",
               "flag": "wrongShow",
-              "urlInDir": "https://www.thewrap.com/the-outsiders-broadway-review-improves-coppola-cult-classic/"
+              "urlInDir": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/"
             }
           ]
         },
         {
-          "url": "https://www.houstonpress.com/arts/the-outsiders-stays-gold-in-musical-form/",
-          "host": "houstonpress.com",
-          "knownOutletId": null,
+          "url": "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
+          "host": "digitaljournal.com",
+          "knownOutletId": "digital-journal",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2147,18 +432,118 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "houstonpress--natalie-de-la-garza.json",
+              "file": "digital-journal--mark-papadatos.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/"
+            }
+          ]
+        },
+        {
+          "url": "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.houstonpress.com/arts/the-outsiders-stays-gold-in-musical-form/"
+              "urlInDir": "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "observer--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/"
+            },
+            {
+              "file": "observer--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--kobi-kassal.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review"
+            },
+            {
+              "file": "theatrely--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review"
+            }
+          ]
+        },
+        {
+          "url": "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--ben-brantley.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html"
+            },
+            {
+              "file": "nytimes--elisabeth-vincentelli.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://chicago.suntimes.com/theater/2026/02/13/the-outsiders-musical-review-chicago-theater-broadway-cadillac-palace",
-          "host": "suntimes.com",
-          "knownOutletId": "suntimes",
+          "url": "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186",
+          "host": "go.com",
+          "knownOutletId": "abc-news",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2166,18 +551,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "suntimes--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json",
+              "file": "ap--peter-santilli.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://chicago.suntimes.com/theater/2026/02/13/the-outsiders-musical-review-chicago-theater-broadway-cadillac-palace"
+              "urlInDir": "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.theoaklandpress.com/2026/03/05/the-outsiders-is-deep-emotional-and-transformative-at-the-fisher-theatre/",
-          "host": "theoaklandpress.com",
-          "knownOutletId": null,
+          "url": "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2185,18 +570,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theoaklandpress--gary-graff.json",
+              "file": "hollywood-reporter--david-rooney.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.theoaklandpress.com/2026/03/05/the-outsiders-is-deep-emotional-and-transformative-at-the-fisher-theatre/"
+              "urlInDir": "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://columbusunderground.com/theater-review-broadway-in-columbuss-the-outsiders-conjures-the-lightning-fire-and-blood-of-adolescence-rs1/",
-          "host": "columbusunderground.com",
-          "knownOutletId": null,
+          "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2204,18 +589,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "columbusunderground--richard-sanford.json",
+              "file": "usatoday--elysa-gardner.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://columbusunderground.com/theater-review-broadway-in-columbuss-the-outsiders-conjures-the-lightning-fire-and-blood-of-adolescence-rs1/"
+              "urlInDir": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.bostonglobe.com/2026/04/02/arts/the-outsiders-broadway-in-boston/",
-          "host": "bostonglobe.com",
-          "knownOutletId": "boston-globe",
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2223,18 +608,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "boston-globe--unknown.json",
+              "file": "nbcny--robert-kahn.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.bostonglobe.com/2026/04/02/arts/the-outsiders-broadway-in-boston/"
+              "urlInDir": "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://warwickpost.com/ppacs-the-outsiders-dazzles/",
-          "host": "warwickpost.com",
-          "knownOutletId": null,
+          "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2242,18 +627,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "warwickpost--joe-siegel.json",
+              "file": "nydailynews--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://warwickpost.com/ppacs-the-outsiders-dazzles/"
+              "urlInDir": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.clevescene.com/arts/the-outsiders-at-playhouse-square-is-ephemeral-artistry/",
-          "host": "clevescene.com",
-          "knownOutletId": null,
+          "url": "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2261,18 +646,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "clevescene--gwendolyn-kochur.json",
+              "file": "nypost--elisabeth-vincentelli.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.clevescene.com/arts/the-outsiders-at-playhouse-square-is-ephemeral-artistry/"
+              "urlInDir": "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.axios.com/local/cleveland/2026/05/01/the-outsiders-musical-playhouses-square-opening",
-          "host": "axios.com",
-          "knownOutletId": null,
+          "url": "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2280,18 +665,23 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "axios--troy-smith.json",
+              "file": "vulture--jackson-mchenry.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.vulture.com/article/heathers-musical-nyc-revival-new-world-stages.html"
+            },
+            {
+              "file": "vulture--jesse-green.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.axios.com/local/cleveland/2026/05/01/the-outsiders-musical-playhouses-square-opening"
+              "urlInDir": "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.news-herald.com/2026/04/30/the-outsiders-at-playhouse-square-review-musical-adaptation-hits-hard/",
-          "host": "news-herald.com",
-          "knownOutletId": null,
+          "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2299,18 +689,21 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "news-herald--mark-meszoros.json",
+              "file": "frontmezzjunkies--ross.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.news-herald.com/2026/04/30/the-outsiders-at-playhouse-square-review-musical-adaptation-hits-hard/"
+              "urlInDir": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/"
+            },
+            {
+              "file": "frontmezzjunkies--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.cleveland.com/entertainment/2026/04/the-outsiders-review-rain-rumble-and-raw-emotion-at-playhouse-square.html",
-          "host": "cleveland.com",
-          "knownOutletId": null,
+          "url": "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2318,18 +711,16 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "cleveland--joey-morona.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.cleveland.com/entertainment/2026/04/the-outsiders-review-rain-rumble-and-raw-emotion-at-playhouse-square.html"
+              "file": "theater-pizzazz--ron-fassler.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.timesunion.com/theater/article/outsiders-musical-proctors-theater-review-22266482.php",
-          "host": "timesunion.com",
-          "knownOutletId": "albany-times-union",
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-QBZQD9",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2337,13 +728,28 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "albany-times-union--katherine-kiessling.json",
+              "file": "lighting-and-sound-america--david-barbour.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.timesunion.com/theater/article/outsiders-musical-proctors-theater-review-22266482.php"
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-QBZQD9"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/07_10_25.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "talkinbroadway--howard-miller.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.talkinbroadway.com/page/ob/07_10_25.html"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -2354,34 +760,248 @@
       },
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-the-musical-adaptation-of-the-outsiders",
-          "publishDate": "2023-03-06"
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
+          "publishDate": "2014-03-31"
+        }
+      ]
+    },
+    {
+      "showId": "crazysexycool-regional-2026",
+      "title": "CrazySexyCool: The TLC Musical",
+      "openingDate": "2026-06-26",
+      "status": "open",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-CRAZYSEXYCOOL-THE-TLC-MUSICAL-at-Arena-Stage-20260701"
+      ],
+      "aggregatorListedUrls": [
+        "https://mdtheatreguide.com/2026/06/theatre-review-crazysexycool-the-tlc-musical-at-arena-stage/"
+      ],
+      "dirFiles": 7,
+      "dirClean": 4,
+      "inReviewsJson": 5,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "dctheaterarts.org",
+          "count": 1
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Embarks-on-National-Tour-20251029",
-          "publishDate": "2025-10-29"
+          "host": "featurepresentationvideo.substack.com",
+          "count": 1
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-World-Premiere-Opens-at-La-Jolla-Playhouse-20230307",
-          "publishDate": "2023-03-07"
+          "host": "morristheatredc.com",
+          "count": 1
         }
       ],
-      "weIngestBlocked": [
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "iceboy-regional-2026",
+      "title": "Iceboy!",
+      "openingDate": "2026-06-29",
+      "status": "open",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "los-soles-truncos-off-broadway-2025",
+      "title": "LOS SOLES TRUNCOS",
+      "openingDate": "2025-02-20",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "music-city-off-broadway-2026",
+      "title": "Music City",
+      "openingDate": "2026-03-23",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-MUSIC-CITY-Returns-Off-Broadway-20260625"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/music-city-off-broadway-review",
+        "https://www.theatermania.com/news/review-music-city-returns-better-than-ever_1843039/",
+        "https://1minutecritic.com/music-city-review-lolo-pritchard/"
+      ],
+      "dirFiles": 19,
+      "dirClean": 7,
+      "inReviewsJson": 7,
+      "missing": [],
+      "dirOnly": [
         {
-          "url": "https://www.dailynebraskan.com/culture/review-the-outsiders-stays-gold-beyond-broadway/article_babf90fd-be8c-4aaa-8c90-9246b32a4248.html",
-          "host": "dailynebraskan.com",
-          "priorRun": true,
-          "reason": "prior-run"
+          "host": "thefrontrowcenter.com",
+          "count": 1
         },
         {
-          "url": "http://https://www.latimes.com/entertainment-arts/story/2023-03-07/review-the-outsiders-musical-la-jolla-playhouse",
-          "host": "https",
-          "priorRun": true,
-          "reason": "prior-run"
+          "host": "lightingandsoundamerica.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
         }
       ],
-      "ingestResults": [],
-      "ingestSkippedByCap": []
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-MUSIC-CITY-Returns-Off-Broadway-20260625",
+          "publishDate": "2026-06-25"
+        }
+      ]
+    },
+    {
+      "showId": "la-llamada-off-broadway-2024",
+      "title": "La Llamada",
+      "openingDate": "2024-05-01",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
+      "title": "The 25th Annual Putnam County Spelling Bee",
+      "openingDate": "2025-11-17",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-25TH-ANNUAL-PUTNAM-COUNTY-SPELLING-BEE-Returns-Off-Broadway-20251117"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/",
+        "https://www.newyorktheatreguide.com/reviews/the-25th-annual-putnam-county-spelling-bee-off-broadway-review-charming",
+        "https://exeuntnyc.com/reviews/review-the-25th-annual-putnam-county-spelling-bee-at-new-world-stages/",
+        "https://1minutecritic.com/25th-annual-putnam-county-spelling-bee-off-broadway-review/",
+        "https://culturesauce.com/2025/11/17/25th-annual-putnam-county-spelling-bee-off-broadway-review/",
+        "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/",
+        "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-bee-review.html"
+      ],
+      "dirFiles": 19,
+      "dirClean": 10,
+      "inReviewsJson": 10,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "aaroninnyc.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--roma-torre.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
     }
   ]
 }
