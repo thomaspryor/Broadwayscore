@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-29T20:16:07.135Z",
-  "processed": 43,
-  "failed": 540,
-  "successRate": "7.4%",
+  "updatedAt": "2026-07-29T20:17:33.789Z",
+  "processed": 47,
+  "failed": 546,
+  "successRate": "7.9%",
   "tierBreakdown": {
-    "playwright": 35,
+    "playwright": 36,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 4,
     "archiveToday": 3,
-    "archive": 5
+    "archive": 6
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-07-29T19:16:28.885Z",
@@ -58,6 +58,18 @@
       "t": "2026-07-29T20:04:25.614Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-29T20:16:09.761Z",
+      "event": "bb-session",
+      "session": "65d6e93b",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    },
+    {
+      "t": "2026-07-29T20:17:19.939Z",
+      "event": "bb-session",
+      "session": "6efad41f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
     }
   ]
 }
