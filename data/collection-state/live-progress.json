@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-29T20:02:51.173Z",
-  "processed": 40,
-  "failed": 313,
-  "successRate": "11.3%",
+  "updatedAt": "2026-07-29T20:18:43.212Z",
+  "processed": 51,
+  "failed": 552,
+  "successRate": "8.5%",
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 38,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 8,
     "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archiveToday": 2,
-    "archive": 5
+    "brightdata": 4,
+    "archiveToday": 3,
+    "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-07-29T19:16:28.885Z",
@@ -36,6 +36,52 @@
       "t": "2026-07-29T19:16:45.863Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-29T20:04:09.103Z",
+      "event": "bb-session",
+      "session": "9a4cc58f",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-29T20:04:09.550Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-29T20:04:25.207Z",
+      "event": "bb-session",
+      "session": "cfbe5f7f",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-29T20:04:25.614Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-29T20:16:09.761Z",
+      "event": "bb-session",
+      "session": "65d6e93b",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    },
+    {
+      "t": "2026-07-29T20:17:19.939Z",
+      "event": "bb-session",
+      "session": "6efad41f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-07-29T20:17:54.977Z",
+      "event": "bb-session",
+      "session": "b5cd20ed",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-07-29T20:18:11.569Z",
+      "event": "bb-session",
+      "session": "e324fbda",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
     }
   ]
 }
