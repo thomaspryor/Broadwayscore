@@ -1,16 +1,239 @@
 {
-  "generatedAt": "2026-07-29T22:15:02.562Z",
+  "generatedAt": "2026-07-29T23:20:24.121Z",
   "windowDays": 1095,
-  "targets": 11,
+  "targets": 13,
   "counts": {
     "withGap": 4,
-    "totalMissing": 55,
+    "totalMissing": 29,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 18,
+    "totalFlaggedMisses": 11,
     "totalRecoverable": 0,
     "totalRecovered": 0
   },
   "results": [
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "title": "Cat Cohen: Broad Strokes",
+      "openingDate": "2026-07-27",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
+        "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
+        "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
+        "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
+        "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
+        "https://www.thewrap.com/creative-content/theater/broad-strokes-off-broadway-review-cat-cohen/",
+        "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
+        "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/",
+        "https://www.nytimes.com/2026/07/20/theater/cat-cohen-broad-strokes-comedy.html",
+        "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/cat-cohen-broad-strokes_1847158/",
+        "https://seatplan.com/new-york/cat-cohen-broad-strokes-tickets/"
+      ],
+      "dirFiles": 10,
+      "dirClean": 9,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic"
+        },
+        {
+          "url": "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce"
+        },
+        {
+          "url": "https://seatplan.com/new-york/cat-cohen-broad-strokes-tickets/",
+          "host": "seatplan.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Cat Cohen: Broad Strokes\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Cat Cohen: Broad Strokes\" Off-Broadway review 2026",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Cat Cohen: Broad Strokes\" review lucille",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Cat Cohen: Broad Strokes\" Cohen review",
+            "ok": true,
+            "results": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 3,
+        "resultCount": 7,
+        "error": null
+      },
+      "ingestResults": [
+        {
+          "url": "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
+          "host": "1minutecritic.com",
+          "outletId": "one-minute-critic",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
+          "host": "culturesauce.com",
+          "outletId": "culturesauce",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://seatplan.com/new-york/cat-cohen-broad-strokes-tickets/",
+          "host": "seatplan.com",
+          "outletId": "seatplan",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
+      "title": "The Wind in the Willows - Theatre On Kew",
+      "openingDate": "2026-07-25",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.thereviewshub.com/the-wind-in-the-willows-theatre-on-kew-london/",
+        "https://www.londontheatre.co.uk/show/23388-the-wind-in-the-willows---theatre-on-kew",
+        "https://www.broadwayworld.com/translate/nl/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727"
+      ],
+      "dirFiles": 3,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.londontheatre.co.uk/show/23388-the-wind-in-the-willows---theatre-on-kew",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.londontheatre.co.uk/show/23388-the-wind-in-the-willows---theatre-on-kew"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Wind in the Willows - Theatre On Kew\" West End review 2026",
+        "queryStatus": [
+          {
+            "query": "\"The Wind in the Willows - Theatre On Kew\" West End review 2026",
+            "ok": true,
+            "results": 8,
+            "error": null
+          }
+        ],
+        "queriesOk": 1,
+        "resultCount": 3,
+        "error": null
+      }
+    },
+    {
+      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
+      "title": "Rosie O'Donnell: Common Knowledge",
+      "openingDate": "2026-07-25",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      }
+    },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
       "title": "The Enormous Crocodile",
@@ -115,714 +338,50 @@
         "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Dog Man - The Musical\" West End review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Dog Man - The Musical\" West End review 2026",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"Dog Man - The Musical\" review queen",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 2,
-        "resultCount": 0,
-        "error": null
-      }
-    },
-    {
-      "showId": "my-joy-is-heavy-off-broadway-2025",
-      "title": "My Joy Is Heavy",
-      "openingDate": "2026-03-17",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-reviews-for-the-bengsons-my-joy-is-heavy-at-new-york-theatre-workshop"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.timeout.com/newyork/news/theater-review-the-bengsons-sing-of-a-pregnant-pause-in-my-joy-is-heavy-031726",
-        "https://www.newyorktheatreguide.com/reviews/my-joy-is-heavy-off-broadway-review",
-        "https://1minutecritic.com/my-joy-is-heavy-bengsons-review/",
-        "https://www.nytimes.com/2026/03/18/theater/my-joy-is-heavy-review-bengsons.html",
-        "https://www.theatermania.com/news/review-my-joy-is-heavy-asks-can-grief-and-happiness-coexist_1828198/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCF48I",
-        "https://www.talkinbroadway.com/page/ob/03_17_26.html",
-        "https://www.theatrereviews.com/off-broadway-review-my-joy-is-heavy-at-the-new-york-theatre-workshop-through-sunday-april-5-2026/"
-      ],
-      "dirFiles": 16,
-      "dirClean": 8,
-      "inReviewsJson": 9,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "theaterpizzazz.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCF48I",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCF48I"
-            }
-          ]
-        },
-        {
-          "url": "https://www.talkinbroadway.com/page/ob/03_17_26.html",
-          "host": "talkinbroadway.com",
-          "knownOutletId": "talkinbroadway",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "talkinbroadway--marc-miller.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.talkinbroadway.com/page/ob/03_17_26.html"
-            },
-            {
-              "file": "talkinbroadway--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2643876"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theatrereviews.com/off-broadway-review-my-joy-is-heavy-at-the-new-york-theatre-workshop-through-sunday-april-5-2026/",
-          "host": "theatrereviews.com",
-          "knownOutletId": "theatre-reviews-limited",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-reviews-limited--david-roberts.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatrereviews.com/off-broadway-review-my-joy-is-heavy-at-the-new-york-theatre-workshop-through-sunday-april-5-2026/"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
         "ran": false,
-        "reason": "out-of-window"
+        "reason": "cooldown"
       }
     },
     {
-      "showId": "age-is-a-feeling-off-broadway-2024",
-      "title": "Age Is a Feeling",
-      "openingDate": "2024-09-11",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "birthright-off-broadway-2026",
-      "title": "Birthright",
+      "showId": "sinatra-the-musical-west-end-2026",
+      "title": "Sinatra The Musical",
       "openingDate": "2026-06-24",
       "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-birthright-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-BIRTHRIGHT-Opens-at-MCC-Theater-20260629"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/birthright-mcc-theater-review/",
-        "https://culturesauce.com/birthright-off-broadway-review/",
-        "https://nystagereview.com/2026/06/29/birthright-political-and-personal-issues-intersect-to-powerful-effect/",
-        "https://nystagereview.com/2026/06/29/birthright-six-characters-in-search-of-a-common-ground/",
-        "https://www.theatermania.com/news/review-birthright-is-a-safe-three-and-a-half-hour-play-about-israel-palestine-and-fractured-friendships_1844046/",
-        "https://www.thewrap.com/creative-content/theater/birthright-off-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/birthright-off-broadway-review-a-profound-exploration-of-judaism-and-friendship",
-        "https://www.nytimes.com/2026/06/30/theater/birthright-review-israel-spector.html",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=8LP3R9",
-        "https://pagesonstages.com/2026/06/29/birthright/"
-      ],
-      "dirFiles": 26,
-      "dirClean": 21,
-      "inReviewsJson": 19,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "amny.com",
-          "count": 1
-        },
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "newyorker.com",
-          "count": 1
-        },
-        {
-          "host": "thecontending.com",
-          "count": 1
-        },
-        {
-          "host": "therecs.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 1
-        },
-        {
-          "host": "theaterpizzazz.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        },
-        {
-          "host": "wsj.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "the-misanthrope-west-end-2026",
-      "title": "The Misanthrope",
-      "openingDate": "2026-06-23",
-      "status": "open",
-      "category": "west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "title": "To Kill a Mockingbird",
-      "openingDate": "2026-06-30",
-      "status": "open",
       "category": "west-end",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-broadways-to-kill-a-mockingbird",
-        "https://playbill.com/article/read-the-reviews-for-rafe-spall-in-to-kill-a-mockingbird-in-londons-west-end",
-        "https://www.broadwayworld.com/article/Review-Roundup-See-The-Critics-Verdict-On-TO-KILL-A-MOCKINGBIRD-On-Broadway-20181213",
-        "https://www.broadwayworld.com/article/Review-Roundup-TO-KILL-A-MOCKINGBIRD-Kicks-Off-First-National-Tour-What-Are-the-Critics-Saying-20220420"
+        "https://www.broadwayworld.com/article/Review-Roundup-SINATRA-THE-MUSICAL-at-the-Aldwych-Theatre-20260626"
       ],
       "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/to-kill-a-mockingbird-review-1.24536801",
-        "https://broadway.news/2018/12/13/review-to-kill-a-mockingbird-misses-out-on-theatricality/",
-        "https://www.thedailybeast.com/aaron-sorkins-to-kill-a-mockingbird-on-broadway-puts-atticus-finch-on-trial",
-        "https://deadline.com/2018/12/to-kill-a-mockingbird-broadway-review-aaron-sorkin-jeff-daniels-harper-lee-1202519134/",
-        "https://ew.com/theater-reviews/2018/12/13/to-kill-a-mockingbird-broadway-review/",
-        "https://www.theguardian.com/stage/2018/dec/13/to-kill-a-mockingbird-review-aaron-sorkin",
-        "http://www.philly.com/arts/theater/to-kill-a-mockingbird-shubert-theatre-broadway-jeff-daniels-aaron-sorkin-harper-lee-20181217.html",
-        "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-to-kill-mockingbird-broadway-review-20181213-story.html",
-        "https://www.nydailynews.com/entertainment/broadway/ny-ent-kill-mockingbird-broadway-review-1019-story.html",
-        "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-a-timeless-favorite-revered-and-reborn/",
-        "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-harper-lees-classic-makes-magnificent-theater/",
-        "https://www.newsday.com/entertainment/theater/to-kill-a-mockingbird-broadway-review-1.24451435",
-        "https://observer.com/2018/12/to-kill-a-mockingbird-review-jeff-daniels-rex-reed/",
-        "https://www.timeout.com/newyork/theater/to-kill-a-mockingbird-1",
-        "https://www.nytimes.com/2018/12/13/theater/to-kill-a-mockingbird-review-jeff-daniels.html",
-        "https://variety.com/2018/legit/reviews/to-kill-a-mockingbird-review-broadway-play-1203088941/",
-        "https://www.wsj.com/articles/harper-lees-to-kill-a-mockingbird-a-new-play-by-aaron-sorkin-and-a-childs-christmas-in-wales-reviews-perils-and-perks-of-reworking-classics-11544751000",
-        "https://www.thewrap.com/to-kill-a-mockingbird-broadway-review-aaron-sorkin-jeff-daniels-harper-lee/",
-        "https://www.standard.co.uk/culture/theatre/to-kill-a-mockingbird-gielgud-theatre-review-aaron-sorkin-rafe-spall-london-b991748.html",
-        "https://www.theguardian.com/stage/2022/mar/31/to-kill-a-mockingbird-review-aaron-sorkin-rafe-spall-gielgud-theatre",
-        "https://inews.co.uk/culture/arts/to-kill-a-mockingbird-gielgud-theatre-review-rafe-spall-plays-the-hero-in-a-tremendous-reimagining-1550710",
-        "https://www.thestage.co.uk/long-reviews/long-reviews/to-kill-a-mockingbird-review-gielgud-london-harper-lee-rafe-spall",
-        "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/",
-        "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-        "https://www.hollywoodreporter.com/review/kill-a-mockingbird-theater-review-1169085",
-        "http://www.amny.com/entertainment/to-kill-a-mockingbird-review-1.24536801",
-        "https://variety.com/t/to-kill-a-mockingbird/",
-        "https://www.vulture.com/2018/12/theater-sorkins-to-kill-a-mockingbird-walks-the-walk.html",
-        "https://buffalonews.com/entertainment/arts-and-theatre/an-a-plus-to-kill-a-mockingbird-finally-arrives-in-sheas/article_ff567652-b03d-11ec-a89c-5f6f673fc8eb.html",
-        "https://jewishchronicle.timesofisrael.com/aaron-sorkins-to-kill-a-mockingbird-a-21st-century-retelling-of-a-classic-story/",
-        "https://www.cleveland.com/entertainment/2022/04/theatrical-adaptation-of-to-kill-a-mockingbird-gives-powerful-new-voice-to-literary-classic.html",
-        "https://www.cleveland.com/entertainment/2022/04/leads-in-to-kill-a-mockingbird-invite-viewers-to-revisit-or-discover-a-classic-at-playhouse-square.html",
-        "https://www.clevescene.com/arts/brisk-dramatic-pace-of-to-kill-a-mockingbird-now-at-playhouse-square-enough-to-compensate-for-its-missteps-38834856",
-        "https://thirdcoastreview.com/2022/05/20/review-to-kill-a-mockingbird/",
-        "https://behindthecurtaincincy.com/2022/06/03/to-kill-a-mockingbird-quick-review/",
-        "https://www.timesunion.com/theater/article/To-Kill-a-Mockingbird-masterful-at-Proctors-17240262.php",
-        "https://theberkshireedge.com/theater-review-to-kill-a-mockingbird-at-proctors-theatre/",
-        "https://www.phillytrib.com/review-sorkin-takes-on-to-kill-a-mockingbird/article_724b4106-21b4-579a-943f-e2704736c707.html",
-        "https://datebook.sfchronicle.com/theater/review-aaron-sorkins-to-kill-a-mockingbird-shows-how-to-push-back-against-a-text",
-        "https://www.seattletimes.com/entertainment/theater/aaron-sorkins-to-kill-a-mockingbird-at-seattles-paramount-theatre-doesnt-feel-right/",
-        "https://www.portlandmercury.com/Theater/2022/10/21/46146233/even-at-three-hours-sorkins-to-kill-a-mockingbird-is-riveting",
-        "https://nerdreactor.com/2022/11/01/to-kill-a-mockingbird-pantages-theatre/",
-        "https://www.latimes.com/entertainment-arts/story/2022-10-28/to-kill-a-mockingbird-national-tour-pantages",
-        "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-12-01/review-updated-to-kill-a-mockingbird-play-makes-a-fierce-and-powerful-statement-against-racism",
-        "https://www.ocregister.com/2022/12/28/theater-review-to-kill-a-mockingbird-brings-literature-to-life-in-costa-mesa/",
-        "https://www.denverpost.com/2023/01/25/aaron-sorkin-to-kill-a-mockingbird-broadway-tour-denver/",
-        "https://twincitiesarts.com/2023/02/15/review-to-kill-a-mockingbird-orpheum/",
-        "https://www.postcrescent.com/story/entertainment/theater/2023/02/22/review-to-kill-a-mockingbird-at-fox-cities-performing-arts-center/69931243007/",
-        "https://www.laduenews.com/arts-and-culture/aaron-sorkin-s-version-of-to-kill-a-mockingbird-at-the-fabulous-fox-theatre-is/article_afca3caa-bc4d-11ed-9c18-af515220f6ae.html",
-        "https://www.riverfronttimes.com/arts/review-now-at-the-fox-to-kill-a-mockingbird-resonates-powerfully-39586377",
-        "https://mdtheatreguide.com/2023/03/theatre-review-to-kill-a-mockingbird-at-the-hippodrome-theatre/",
-        "https://www.orlandosentinel.com/entertainment/arts-and-theater/os-et-to-kill-a-mockingbird-dr-phillips-center-review-20230322-gp7jdfkwarfbhovxiwwgspftpm-story.html",
-        "https://www.sun-sentinel.com/entertainment/theater-and-arts/fl-et-broadway-review-to-kill-a-mockingbird-fort-lauderdale-broward-center-20230330-5lc2rqk5ifdi7iwag3btkvr2qu-story.html",
-        "https://www.houstonchronicle.com/entertainment/theater/article/to-kill-a-mockingbird-review-17920385.php",
-        "https://www.houstonpress.com/arts/review-to-kill-a-mockingbird-at-the-hobby-15564751",
-        "https://www.austinchronicle.com/daily/arts/2023-05-10/review-broadway-in-austins-to-kill-a-mockingbird/",
-        "https://redcarpetcrash.com/dallas-theater-review-to-kill-a-mockingbird/",
-        "https://dallasvoice.com/to-kill-a-mockingbird-is-superb/",
-        "https://columbusunderground.com/theater-review-to-kill-a-mockingbird-comes-to-broadway-in-columbus-s1/",
-        "https://patch.com/connecticut/hartford/theater-review-harper-lee-s-kill-mockingbird-tour",
-        "https://www.lansingcitypulse.com/stories/to-kill-a-mockingbird-at-wharton-offers-a-new-take-on-a-classic-story,73395",
-        "https://freepressokc.com/to-kill-a-mockingbird-at-civic-center-rises-to-the-challenge/",
-        "https://www.jsonline.com/story/entertainment/arts/2023/11/08/to-kill-a-mockingbird-richard-thomas-review/71486495007/",
-        "https://nextmag.ca/review-the-grand-scale-of-mirvishs-to-kill-a-mockingbird-is-entrancing/",
-        "https://www.spokesman.com/stories/2023/dec/07/stage-review-aaron-sorkins-to-kill-a-mockingbird-a/",
-        "https://www.palmbeachdailynews.com/story/entertainment/theater/2024/01/03/review-to-kill-a-mockingbird-is-a-must-see-show-of-the-season/72094228007/",
-        "https://www.pilotonline.com/2024/02/01/review-harper-lees-to-kill-a-mockingbird-by-aaron-sorkin-soars-at-chrysler-hall/",
-        "https://www.theoaklandpress.com/2024/03/07/to-kill-a-mockingbird-spreads-its-wings-on-stage-at-the-fisher-theatre/",
-        "https://www.tulsakids.com/to-kill-a-mockingbird-entertains-and-puts-new-twist-on-the-classic-novel/",
-        "https://artsknoxville.com/index.php/2024/04/04/review-to-kill-a-mockingbird-at-the-tennessee-theatre-timely-and-strong/",
-        "https://www.newyorker.com/magazine/2018/12/24/black-and-white-in-slave-play-and-to-kill-a-mockingbird"
+        "https://www.theguardian.com/stage/2026/jun/25/sinatra-the-musical-review-aldwych-theatre-london",
+        "https://www.telegraph.co.uk/theatre/what-to-see/sinatra-the-musical-review/",
+        "https://www.dailymail.com/tvshowbiz/article-15927453/PATRICK-MARMIONs-night-review-intoxicating-voice-like-double-whiskey-you-never-skin-airbrushed-Sinatra.html",
+        "https://www.timeout.com/london/news/review-sinatra-the-musical-at-the-aldwych-theatre-062426",
+        "https://theatreweekly.com/review-sinatra-the-musical-at-aldwych-theatre/",
+        "https://www.standard.co.uk/culture/theatre/sinatra-the-musical-review-old-blue-eyes-musical-is-frankly-disappointing-b1287454.html",
+        "https://nypost.com/2026/07/16/entertainment/frank-sinatra-bio-musical-in-london-is-an-insult-and-not-ready-for-broadway/"
       ],
-      "dirFiles": 55,
-      "dirClean": 15,
-      "inReviewsJson": 20,
+      "dirFiles": 50,
+      "dirClean": 33,
+      "inReviewsJson": 33,
       "missing": [
         {
-          "url": "https://broadway.news/2018/12/13/review-to-kill-a-mockingbird-misses-out-on-theatricality/",
-          "host": "broadway.news",
-          "knownOutletId": "broadwaynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "url": "https://www.dailymail.com/tvshowbiz/article-15927453/PATRICK-MARMIONs-night-review-intoxicating-voice-like-double-whiskey-you-never-skin-airbrushed-Sinatra.html",
+          "host": "dailymail.com",
+          "knownOutletId": null
         },
         {
-          "url": "https://deadline.com/2018/12/to-kill-a-mockingbird-broadway-review-aaron-sorkin-jeff-daniels-harper-lee-1202519134/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://ew.com/theater-reviews/2018/12/13/to-kill-a-mockingbird-broadway-review/",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-a-timeless-favorite-revered-and-reborn/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-harper-lees-classic-makes-magnificent-theater/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2018/12/to-kill-a-mockingbird-review-jeff-daniels-rex-reed/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2018/12/13/theater/to-kill-a-mockingbird-review-jeff-daniels.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2018/legit/reviews/to-kill-a-mockingbird-review-broadway-play-1203088941/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/long-reviews/to-kill-a-mockingbird-review-gielgud-london-harper-lee-rafe-spall",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/t/to-kill-a-mockingbird/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2018/12/theater-sorkins-to-kill-a-mockingbird-walks-the-walk.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://buffalonews.com/entertainment/arts-and-theatre/an-a-plus-to-kill-a-mockingbird-finally-arrives-in-sheas/article_ff567652-b03d-11ec-a89c-5f6f673fc8eb.html",
-          "host": "buffalonews.com",
-          "knownOutletId": "buffalo-news",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://jewishchronicle.timesofisrael.com/aaron-sorkins-to-kill-a-mockingbird-a-21st-century-retelling-of-a-classic-story/",
-          "host": "timesofisrael.com",
-          "knownOutletId": "the-times-of-israel",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.cleveland.com/entertainment/2022/04/theatrical-adaptation-of-to-kill-a-mockingbird-gives-powerful-new-voice-to-literary-classic.html",
-          "host": "cleveland.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.cleveland.com/entertainment/2022/04/leads-in-to-kill-a-mockingbird-invite-viewers-to-revisit-or-discover-a-classic-at-playhouse-square.html",
-          "host": "cleveland.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.clevescene.com/arts/brisk-dramatic-pace-of-to-kill-a-mockingbird-now-at-playhouse-square-enough-to-compensate-for-its-missteps-38834856",
-          "host": "clevescene.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://thirdcoastreview.com/2022/05/20/review-to-kill-a-mockingbird/",
-          "host": "thirdcoastreview.com",
-          "knownOutletId": "third-coast-review",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://behindthecurtaincincy.com/2022/06/03/to-kill-a-mockingbird-quick-review/",
-          "host": "behindthecurtaincincy.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timesunion.com/theater/article/To-Kill-a-Mockingbird-masterful-at-Proctors-17240262.php",
-          "host": "timesunion.com",
-          "knownOutletId": "albany-times-union",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://theberkshireedge.com/theater-review-to-kill-a-mockingbird-at-proctors-theatre/",
-          "host": "theberkshireedge.com",
-          "knownOutletId": "berkshire-edge",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.phillytrib.com/review-sorkin-takes-on-to-kill-a-mockingbird/article_724b4106-21b4-579a-943f-e2704736c707.html",
-          "host": "phillytrib.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/review-aaron-sorkins-to-kill-a-mockingbird-shows-how-to-push-back-against-a-text",
-          "host": "sfchronicle.com",
-          "knownOutletId": "san-francisco-chronicle",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.seattletimes.com/entertainment/theater/aaron-sorkins-to-kill-a-mockingbird-at-seattles-paramount-theatre-doesnt-feel-right/",
-          "host": "seattletimes.com",
-          "knownOutletId": "seattle-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.portlandmercury.com/Theater/2022/10/21/46146233/even-at-three-hours-sorkins-to-kill-a-mockingbird-is-riveting",
-          "host": "portlandmercury.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nerdreactor.com/2022/11/01/to-kill-a-mockingbird-pantages-theatre/",
-          "host": "nerdreactor.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-12-01/review-updated-to-kill-a-mockingbird-play-makes-a-fierce-and-powerful-statement-against-racism",
-          "host": "sandiegouniontribune.com",
-          "knownOutletId": "san-diego-union-tribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.ocregister.com/2022/12/28/theater-review-to-kill-a-mockingbird-brings-literature-to-life-in-costa-mesa/",
-          "host": "ocregister.com",
-          "knownOutletId": "oc-register",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.denverpost.com/2023/01/25/aaron-sorkin-to-kill-a-mockingbird-broadway-tour-denver/",
-          "host": "denverpost.com",
-          "knownOutletId": "denver-post",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://twincitiesarts.com/2023/02/15/review-to-kill-a-mockingbird-orpheum/",
-          "host": "twincitiesarts.com",
-          "knownOutletId": "twin-cities-arts-reader",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.postcrescent.com/story/entertainment/theater/2023/02/22/review-to-kill-a-mockingbird-at-fox-cities-performing-arts-center/69931243007/",
-          "host": "postcrescent.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.laduenews.com/arts-and-culture/aaron-sorkin-s-version-of-to-kill-a-mockingbird-at-the-fabulous-fox-theatre-is/article_afca3caa-bc4d-11ed-9c18-af515220f6ae.html",
-          "host": "laduenews.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.riverfronttimes.com/arts/review-now-at-the-fox-to-kill-a-mockingbird-resonates-powerfully-39586377",
-          "host": "riverfronttimes.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2023/03/theatre-review-to-kill-a-mockingbird-at-the-hippodrome-theatre/",
-          "host": "mdtheatreguide.com",
-          "knownOutletId": "maryland-theatre-guide",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.orlandosentinel.com/entertainment/arts-and-theater/os-et-to-kill-a-mockingbird-dr-phillips-center-review-20230322-gp7jdfkwarfbhovxiwwgspftpm-story.html",
-          "host": "orlandosentinel.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.sun-sentinel.com/entertainment/theater-and-arts/fl-et-broadway-review-to-kill-a-mockingbird-fort-lauderdale-broward-center-20230330-5lc2rqk5ifdi7iwag3btkvr2qu-story.html",
-          "host": "sun-sentinel.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.houstonchronicle.com/entertainment/theater/article/to-kill-a-mockingbird-review-17920385.php",
-          "host": "houstonchronicle.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.houstonpress.com/arts/review-to-kill-a-mockingbird-at-the-hobby-15564751",
-          "host": "houstonpress.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.austinchronicle.com/daily/arts/2023-05-10/review-broadway-in-austins-to-kill-a-mockingbird/",
-          "host": "austinchronicle.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://redcarpetcrash.com/dallas-theater-review-to-kill-a-mockingbird/",
-          "host": "redcarpetcrash.com",
-          "knownOutletId": "red-carpet-crash",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://dallasvoice.com/to-kill-a-mockingbird-is-superb/",
-          "host": "dallasvoice.com",
-          "knownOutletId": "dallasvoice",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://columbusunderground.com/theater-review-to-kill-a-mockingbird-comes-to-broadway-in-columbus-s1/",
-          "host": "columbusunderground.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://patch.com/connecticut/hartford/theater-review-harper-lee-s-kill-mockingbird-tour",
-          "host": "patch.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.lansingcitypulse.com/stories/to-kill-a-mockingbird-at-wharton-offers-a-new-take-on-a-classic-story,73395",
-          "host": "lansingcitypulse.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://freepressokc.com/to-kill-a-mockingbird-at-civic-center-rises-to-the-challenge/",
-          "host": "freepressokc.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.jsonline.com/story/entertainment/arts/2023/11/08/to-kill-a-mockingbird-richard-thomas-review/71486495007/",
-          "host": "jsonline.com",
-          "knownOutletId": "milwaukee-journal-sentinel",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nextmag.ca/review-the-grand-scale-of-mirvishs-to-kill-a-mockingbird-is-entrancing/",
-          "host": "nextmag.ca",
-          "knownOutletId": "next-magazine",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.spokesman.com/stories/2023/dec/07/stage-review-aaron-sorkins-to-kill-a-mockingbird-a/",
-          "host": "spokesman.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.palmbeachdailynews.com/story/entertainment/theater/2024/01/03/review-to-kill-a-mockingbird-is-a-must-see-show-of-the-season/72094228007/",
-          "host": "palmbeachdailynews.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.pilotonline.com/2024/02/01/review-harper-lees-to-kill-a-mockingbird-by-aaron-sorkin-soars-at-chrysler-hall/",
-          "host": "pilotonline.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theoaklandpress.com/2024/03/07/to-kill-a-mockingbird-spreads-its-wings-on-stage-at-the-fisher-theatre/",
-          "host": "theoaklandpress.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.tulsakids.com/to-kill-a-mockingbird-entertains-and-puts-new-twist-on-the-classic-novel/",
-          "host": "tulsakids.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://artsknoxville.com/index.php/2024/04/04/review-to-kill-a-mockingbird-at-the-tennessee-theatre-timely-and-strong/",
-          "host": "artsknoxville.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorker.com/magazine/2018/12/24/black-and-white-in-slave-play-and-to-kill-a-mockingbird",
-          "host": "newyorker.com",
-          "knownOutletId": "newyorker"
+          "url": "https://nypost.com/2026/07/16/entertainment/frank-sinatra-bio-musical-in-london-is-an-insult-and-not-ready-for-broadway/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost"
         }
       ],
       "dirOnly": [
         {
-          "host": "afridiziak.com",
+          "host": "allthatdazzles.co.uk",
           "count": 1
         },
         {
-          "host": "allthatdazzles.co.uk",
+          "host": "theartsdesk.com",
           "count": 1
         },
         {
@@ -830,11 +389,11 @@
           "count": 1
         },
         {
-          "host": "britishtheatre.com",
+          "host": "broadwayworld.com",
           "count": 1
         },
         {
-          "host": "broadwayworld.com",
+          "host": "dailymail.co.uk",
           "count": 1
         },
         {
@@ -850,7 +409,59 @@
           "count": 1
         },
         {
+          "host": "londontheatrereviews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "london-unattached.com",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "loureviews.blog",
+          "count": 1
+        },
+        {
+          "host": "musicaltheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "northwestend.com",
+          "count": 1
+        },
+        {
+          "host": "nytimes.com",
+          "count": 1
+        },
+        {
+          "host": "playsinternational.org.uk",
+          "count": 1
+        },
+        {
+          "host": "stagedtheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatrevibe.co.uk",
+          "count": 1
+        },
+        {
           "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatrecat.com",
+          "count": 2
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 2
+        },
+        {
+          "host": "thestage.co.uk",
           "count": 1
         },
         {
@@ -858,15 +469,332 @@
           "count": 1
         },
         {
-          "host": "thetimes.co.uk",
-          "count": 2
+          "host": "thetimes.com",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "ingestResults": [
+        {
+          "url": "https://www.dailymail.com/tvshowbiz/article-15927453/PATRICK-MARMIONs-night-review-intoxicating-voice-like-double-whiskey-you-never-skin-airbrushed-Sinatra.html",
+          "host": "dailymail.com",
+          "outletId": "dailymail",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~55670/day) projects exhaustion in ~12d, before the 24d-out renewal — still us"
+        },
+        {
+          "url": "https://nypost.com/2026/07/16/entertainment/frank-sinatra-bio-musical-in-london-is-an-insult-and-not-ready-for-broadway/",
+          "host": "nypost.com",
+          "outletId": "nypost",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+      "title": "The Truth",
+      "openingDate": "2026-06-24",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "title": "Heathers the Musical",
+      "openingDate": "2026-07-14",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-are-out-for-the-heathers-off-broadway-revival",
+        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
+        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Returns-Off-Broadway-at-New-World-Stages-20250710"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/Heathers/1313",
+        "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
+        "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
+        "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
+        "https://exeuntnyc.com/reviews/review-heathers-the-musical-at-new-world-stages/",
+        "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
+        "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
+        "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
+        "https://www.newyorktheatreguide.com/reviews/heathers-off-broadway-review",
+        "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
+        "https://1minutecritic.com/heathers-off-broadway-review/",
+        "https://recliningstandards.com/2025/07/10/ck-df-review-heathers-at-new-world-stages/",
+        "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
+        "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
+        "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
+        "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html",
+        "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186",
+        "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398",
+        "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
+        "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html",
+        "http://www.timeout.com/newyork/theater/heathers-the-musical",
+        "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
+        "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
+        "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/",
+        "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html",
+        "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
+        "https://pagesonstages.com/2025/07/10/heathers/",
+        "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
+        "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
+        "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
+        "https://www.londontheatre.co.uk/reviews/heathers-the-musical-review-the-arts-at-marble-arch",
+        "https://www.allthatdazzles.co.uk/post/review-heathers-the-arts-at-marble-arch",
+        "https://seatplan.com/london/heathers-the-musical-tickets/",
+        "https://www.thereviewshub.com/heathers-the-musical-the-arts-at-marble-arch-london/",
+        "https://broadwayscorecard.com/show/heathers-the-musical-off-west-end",
+        "https://westendwilma.com/heathers-musical-review-marble-arch-theatre-2026/",
+        "https://notesfromrowh.com/2026/07/15/review-heathers-the-musical-at-the-arts-at-marble-arch/"
+      ],
+      "dirFiles": 39,
+      "dirClean": 12,
+      "inReviewsJson": 12,
+      "missing": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Heathers/1313",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
+          "host": "digitaljournal.com",
+          "knownOutletId": "digital-journal",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-heathers-the-musical-at-new-world-stages/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/heathers-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://1minutecritic.com/heathers-off-broadway-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://recliningstandards.com/2025/07/10/ck-df-review-heathers-at-new-world-stages/",
+          "host": "recliningstandards.com",
+          "knownOutletId": "reclining-standards",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/heathers-the-musical",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://pagesonstages.com/2025/07/10/heathers/",
+          "host": "pagesonstages.com",
+          "knownOutletId": "pages-on-stages",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
+          "host": "stageandcinema.com",
+          "knownOutletId": "stageandcinema",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "londontheatredirect.com",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "musicaltheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "voicemag.uk",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.amny.com/entertainment/to-kill-a-mockingbird-review-1.24536801",
-          "host": "amny.com",
-          "knownOutletId": "amny",
+          "url": "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -874,18 +802,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "amny--matt-windman.json",
+              "file": "nytimes--ben-brantley.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.amny.com/entertainment/to-kill-a-mockingbird-review-1.24536801"
+              "urlInDir": "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thedailybeast.com/aaron-sorkins-to-kill-a-mockingbird-on-broadway-puts-atticus-finch-on-trial",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
+          "url": "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186",
+          "host": "go.com",
+          "knownOutletId": "abc-news",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -893,212 +821,16 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "dailybeast--tim-teeman.json",
+              "file": "abc-news--peter-santilli.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.thedailybeast.com/aaron-sorkins-to-kill-a-mockingbird-on-broadway-puts-atticus-finch-on-trial"
+              "urlInDir": "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.philly.com/arts/theater/to-kill-a-mockingbird-shubert-theatre-broadway-jeff-daniels-aaron-sorkin-harper-lee-20181217.html",
-          "host": "philly.com",
-          "knownOutletId": "philadelphia-inquirer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "inquirer--toby-zinman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.philly.com/arts/theater/to-kill-a-mockingbird-shubert-theatre-broadway-jeff-daniels-aaron-sorkin-harper-lee-20181217.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-to-kill-mockingbird-broadway-review-20181213-story.html",
-          "host": "latimes.com",
-          "knownOutletId": "latimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "latimes--charles-mcnulty.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-to-kill-mockingbird-broadway-review-20181213-story.html"
-            },
-            {
-              "file": "latimes--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-to-kill-mockingbird-broadway-review-20181213-story.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-ent-kill-mockingbird-broadway-review-1019-story.html",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nydailynews.com/entertainment/broadway/ny-ent-kill-mockingbird-broadway-review-1019-story.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newsday.com/entertainment/theater/to-kill-a-mockingbird-broadway-review-1.24451435",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "newsday--elisabeth-vincentelli.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newsday.com/entertainment/theater/to-kill-a-mockingbird-broadway-review-1.24451435"
-            },
-            {
-              "file": "newsday--elysa-gardner.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newsday.com/entertainment/theater/to-kill-a-mockingbird-broadway-review-1.24451435"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/to-kill-a-mockingbird-1",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--adam-feldman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/theater/to-kill-a-mockingbird-1"
-            },
-            {
-              "file": "timeout-london--andrzej-lukowski.json",
-              "flag": "clean",
-              "urlInDir": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/harper-lees-to-kill-a-mockingbird-a-new-play-by-aaron-sorkin-and-a-childs-christmas-in-wales-reviews-perils-and-perks-of-reworking-classics-11544751000",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "wsj--terry-teachout.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.wsj.com/articles/harper-lees-to-kill-a-mockingbird-a-new-play-by-aaron-sorkin-and-a-childs-christmas-in-wales-reviews-perils-and-perks-of-reworking-classics-11544751000"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/to-kill-a-mockingbird-broadway-review-aaron-sorkin-jeff-daniels-harper-lee/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewrap--thom-geier.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thewrap.com/to-kill-a-mockingbird-broadway-review-aaron-sorkin-jeff-daniels-harper-lee/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--diane-snyder.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-broadway-review-aaron-sorkins-vigorous-version/"
-            },
-            {
-              "file": "telegraph--dominic-cavendish.json",
-              "flag": "clean",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--adam-feldman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/theater/to-kill-a-mockingbird-1"
-            },
-            {
-              "file": "timeout-london--andrzej-lukowski.json",
-              "flag": "clean",
-              "urlInDir": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/kill-a-mockingbird-theater-review-1169085",
+          "url": "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398",
           "host": "hollywoodreporter.com",
           "knownOutletId": "hollywood-reporter",
           "recoverable": false,
@@ -1110,16 +842,16 @@
             {
               "file": "hollywood-reporter--david-rooney.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.hollywoodreporter.com/review/kill-a-mockingbird-theater-review-1169085"
+              "urlInDir": "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.amny.com/entertainment/to-kill-a-mockingbird-review-1.24536801",
-          "host": "amny.com",
-          "knownOutletId": "amny",
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1127,18 +859,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "amny--matt-windman.json",
+              "file": "nbcny--robert-kahn.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.amny.com/entertainment/to-kill-a-mockingbird-review-1.24536801"
+              "urlInDir": "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.latimes.com/entertainment-arts/story/2022-10-28/to-kill-a-mockingbird-national-tour-pantages",
-          "host": "latimes.com",
-          "knownOutletId": "latimes",
+          "url": "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1146,609 +878,339 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "latimes--charles-mcnulty.json",
+              "file": "nypost--elisabeth-vincentelli.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-to-kill-mockingbird-broadway-review-20181213-story.html"
+              "urlInDir": "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-heathers-the-arts-at-marble-arch",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "all-that-dazzles-uk--daz-gale.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-heathers-sohoplace"
             },
             {
-              "file": "latimes--unknown.json",
+              "file": "all-that-dazzles-uk--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-to-kill-mockingbird-broadway-review-20181213-story.html"
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-heathers-the-arts-at-marble-arch"
             }
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "serpCensus": true
+        },
+        {
+          "url": "https://seatplan.com/london/heathers-the-musical-tickets/",
+          "host": "seatplan.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "seatplan--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://seatplan.com/london/heathers-the-musical-tickets/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwayscorecard.com/show/heathers-the-musical-off-west-end",
+          "host": "broadwayscorecard.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayscorecard--alicia-bridge.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://broadwayscorecard.com/show/heathers-the-musical-off-west-end"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://notesfromrowh.com/2026/07/15/review-heathers-the-musical-at-the-arts-at-marble-arch/",
+          "host": "notesfromrowh.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "notesfromrowh--helena6.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://notesfromrowh.com/2026/07/15/review-heathers-the-musical-at-the-arts-at-marble-arch/"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
-      "weReference": null,
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": true,
+            "rows": 0,
+            "emptyParse": true,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Heathers the Musical\" West End review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Heathers the Musical\" West End review 2026",
+            "ok": true,
+            "results": 10,
+            "error": null
+          },
+          {
+            "query": "\"Heathers the Musical\" review marble",
+            "ok": true,
+            "results": 10,
+            "error": null
+          },
+          {
+            "query": "\"Heathers the Musical\" O'Keefe review",
+            "ok": true,
+            "results": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 3,
+        "resultCount": 7,
+        "error": null
       },
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/read-the-reviews-for-broadways-to-kill-a-mockingbird",
-          "publishDate": "2018-12-13"
+          "url": "https://playbill.com/article/reviews-are-out-for-the-heathers-off-broadway-revival",
+          "publishDate": "2025-07-10"
         },
         {
-          "url": "https://playbill.com/article/read-the-reviews-for-rafe-spall-in-to-kill-a-mockingbird-in-londons-west-end",
-          "publishDate": "2022-04-01"
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
+          "publishDate": "2014-03-31"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-See-The-Critics-Verdict-On-TO-KILL-A-MOCKINGBIRD-On-Broadway-20181213",
-          "publishDate": "2018-12-13"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-TO-KILL-A-MOCKINGBIRD-Kicks-Off-First-National-Tour-What-Are-the-Critics-Saying-20220420",
-          "publishDate": "2022-04-20"
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Returns-Off-Broadway-at-New-World-Stages-20250710",
+          "publishDate": "2025-07-10"
         }
       ],
       "weIngestBlocked": [
         {
-          "url": "https://broadway.news/2018/12/13/review-to-kill-a-mockingbird-misses-out-on-theatricality/",
-          "host": "broadway.news",
+          "url": "https://cititour.com/NYC_Broadway/Heathers/1313",
+          "host": "cititour.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://deadline.com/2018/12/to-kill-a-mockingbird-broadway-review-aaron-sorkin-jeff-daniels-harper-lee-1202519134/",
-          "host": "deadline.com",
+          "url": "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
+          "host": "culturesauce.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://ew.com/theater-reviews/2018/12/13/to-kill-a-mockingbird-broadway-review/",
-          "host": "ew.com",
+          "url": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
+          "host": "thedailybeast.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-a-timeless-favorite-revered-and-reborn/",
+          "url": "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
+          "host": "digitaljournal.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-heathers-the-musical-at-new-world-stages/",
+          "host": "exeuntnyc.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
+          "host": "thefrontrowcenter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
           "host": "nystagereview.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-harper-lees-classic-makes-magnificent-theater/",
-          "host": "nystagereview.com",
+          "url": "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
+          "host": "newyorktheater.me",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://observer.com/2018/12/to-kill-a-mockingbird-review-jeff-daniels-rex-reed/",
+          "url": "https://www.newyorktheatreguide.com/reviews/heathers-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
           "host": "observer.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.nytimes.com/2018/12/13/theater/to-kill-a-mockingbird-review-jeff-daniels.html",
-          "host": "nytimes.com",
+          "url": "https://1minutecritic.com/heathers-off-broadway-review/",
+          "host": "1minutecritic.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://variety.com/2018/legit/reviews/to-kill-a-mockingbird-review-broadway-play-1203088941/",
-          "host": "variety.com",
+          "url": "https://recliningstandards.com/2025/07/10/ck-df-review-heathers-at-new-world-stages/",
+          "host": "recliningstandards.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.thestage.co.uk/long-reviews/long-reviews/to-kill-a-mockingbird-review-gielgud-london-harper-lee-rafe-spall",
-          "host": "thestage.co.uk",
+          "url": "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
+          "host": "theatermania.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://variety.com/t/to-kill-a-mockingbird/",
-          "host": "variety.com",
+          "url": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
+          "host": "theatrely.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.vulture.com/2018/12/theater-sorkins-to-kill-a-mockingbird-walks-the-walk.html",
-          "host": "vulture.com",
+          "url": "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
+          "host": "timeout.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://buffalonews.com/entertainment/arts-and-theatre/an-a-plus-to-kill-a-mockingbird-finally-arrives-in-sheas/article_ff567652-b03d-11ec-a89c-5f6f673fc8eb.html",
-          "host": "buffalonews.com",
+          "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
+          "host": "usatoday.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://jewishchronicle.timesofisrael.com/aaron-sorkins-to-kill-a-mockingbird-a-21st-century-retelling-of-a-classic-story/",
-          "host": "timesofisrael.com",
+          "url": "http://www.timeout.com/newyork/theater/heathers-the-musical",
+          "host": "timeout.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.cleveland.com/entertainment/2022/04/theatrical-adaptation-of-to-kill-a-mockingbird-gives-powerful-new-voice-to-literary-classic.html",
-          "host": "cleveland.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.cleveland.com/entertainment/2022/04/leads-in-to-kill-a-mockingbird-invite-viewers-to-revisit-or-discover-a-classic-at-playhouse-square.html",
-          "host": "cleveland.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.clevescene.com/arts/brisk-dramatic-pace-of-to-kill-a-mockingbird-now-at-playhouse-square-enough-to-compensate-for-its-missteps-38834856",
-          "host": "clevescene.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://thirdcoastreview.com/2022/05/20/review-to-kill-a-mockingbird/",
-          "host": "thirdcoastreview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://behindthecurtaincincy.com/2022/06/03/to-kill-a-mockingbird-quick-review/",
-          "host": "behindthecurtaincincy.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.timesunion.com/theater/article/To-Kill-a-Mockingbird-masterful-at-Proctors-17240262.php",
-          "host": "timesunion.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://theberkshireedge.com/theater-review-to-kill-a-mockingbird-at-proctors-theatre/",
-          "host": "theberkshireedge.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.phillytrib.com/review-sorkin-takes-on-to-kill-a-mockingbird/article_724b4106-21b4-579a-943f-e2704736c707.html",
-          "host": "phillytrib.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/review-aaron-sorkins-to-kill-a-mockingbird-shows-how-to-push-back-against-a-text",
-          "host": "sfchronicle.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.seattletimes.com/entertainment/theater/aaron-sorkins-to-kill-a-mockingbird-at-seattles-paramount-theatre-doesnt-feel-right/",
-          "host": "seattletimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.portlandmercury.com/Theater/2022/10/21/46146233/even-at-three-hours-sorkins-to-kill-a-mockingbird-is-riveting",
-          "host": "portlandmercury.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nerdreactor.com/2022/11/01/to-kill-a-mockingbird-pantages-theatre/",
-          "host": "nerdreactor.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-12-01/review-updated-to-kill-a-mockingbird-play-makes-a-fierce-and-powerful-statement-against-racism",
-          "host": "sandiegouniontribune.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.ocregister.com/2022/12/28/theater-review-to-kill-a-mockingbird-brings-literature-to-life-in-costa-mesa/",
-          "host": "ocregister.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.denverpost.com/2023/01/25/aaron-sorkin-to-kill-a-mockingbird-broadway-tour-denver/",
-          "host": "denverpost.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://twincitiesarts.com/2023/02/15/review-to-kill-a-mockingbird-orpheum/",
-          "host": "twincitiesarts.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.postcrescent.com/story/entertainment/theater/2023/02/22/review-to-kill-a-mockingbird-at-fox-cities-performing-arts-center/69931243007/",
-          "host": "postcrescent.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.laduenews.com/arts-and-culture/aaron-sorkin-s-version-of-to-kill-a-mockingbird-at-the-fabulous-fox-theatre-is/article_afca3caa-bc4d-11ed-9c18-af515220f6ae.html",
-          "host": "laduenews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.riverfronttimes.com/arts/review-now-at-the-fox-to-kill-a-mockingbird-resonates-powerfully-39586377",
-          "host": "riverfronttimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2023/03/theatre-review-to-kill-a-mockingbird-at-the-hippodrome-theatre/",
-          "host": "mdtheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.orlandosentinel.com/entertainment/arts-and-theater/os-et-to-kill-a-mockingbird-dr-phillips-center-review-20230322-gp7jdfkwarfbhovxiwwgspftpm-story.html",
-          "host": "orlandosentinel.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.sun-sentinel.com/entertainment/theater-and-arts/fl-et-broadway-review-to-kill-a-mockingbird-fort-lauderdale-broward-center-20230330-5lc2rqk5ifdi7iwag3btkvr2qu-story.html",
-          "host": "sun-sentinel.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.houstonchronicle.com/entertainment/theater/article/to-kill-a-mockingbird-review-17920385.php",
-          "host": "houstonchronicle.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.houstonpress.com/arts/review-to-kill-a-mockingbird-at-the-hobby-15564751",
-          "host": "houstonpress.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.austinchronicle.com/daily/arts/2023-05-10/review-broadway-in-austins-to-kill-a-mockingbird/",
-          "host": "austinchronicle.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://redcarpetcrash.com/dallas-theater-review-to-kill-a-mockingbird/",
-          "host": "redcarpetcrash.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://dallasvoice.com/to-kill-a-mockingbird-is-superb/",
-          "host": "dallasvoice.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://columbusunderground.com/theater-review-to-kill-a-mockingbird-comes-to-broadway-in-columbus-s1/",
-          "host": "columbusunderground.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://patch.com/connecticut/hartford/theater-review-harper-lee-s-kill-mockingbird-tour",
-          "host": "patch.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.lansingcitypulse.com/stories/to-kill-a-mockingbird-at-wharton-offers-a-new-take-on-a-classic-story,73395",
-          "host": "lansingcitypulse.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://freepressokc.com/to-kill-a-mockingbird-at-civic-center-rises-to-the-challenge/",
-          "host": "freepressokc.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.jsonline.com/story/entertainment/arts/2023/11/08/to-kill-a-mockingbird-richard-thomas-review/71486495007/",
-          "host": "jsonline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nextmag.ca/review-the-grand-scale-of-mirvishs-to-kill-a-mockingbird-is-entrancing/",
-          "host": "nextmag.ca",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.spokesman.com/stories/2023/dec/07/stage-review-aaron-sorkins-to-kill-a-mockingbird-a/",
-          "host": "spokesman.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.palmbeachdailynews.com/story/entertainment/theater/2024/01/03/review-to-kill-a-mockingbird-is-a-must-see-show-of-the-season/72094228007/",
-          "host": "palmbeachdailynews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.pilotonline.com/2024/02/01/review-harper-lees-to-kill-a-mockingbird-by-aaron-sorkin-soars-at-chrysler-hall/",
-          "host": "pilotonline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theoaklandpress.com/2024/03/07/to-kill-a-mockingbird-spreads-its-wings-on-stage-at-the-fisher-theatre/",
-          "host": "theoaklandpress.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.tulsakids.com/to-kill-a-mockingbird-entertains-and-puts-new-twist-on-the-classic-novel/",
-          "host": "tulsakids.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://artsknoxville.com/index.php/2024/04/04/review-to-kill-a-mockingbird-at-the-tennessee-theatre-timely-and-strong/",
-          "host": "artsknoxville.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.newyorker.com/magazine/2018/12/24/black-and-white-in-slave-play-and-to-kill-a-mockingbird",
-          "host": "newyorker.com",
-          "outletId": "newyorker",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-guilty-west-end-2026",
-      "title": "The Guilty",
-      "openingDate": "2026-06-30",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
-      "title": "Giulia: The Poison Queen of Palermo",
-      "openingDate": "2026-07-10",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-GIULIA-THE-POISON-QUEEN-OF-PALERMO-Written-by-and-Starring-Jennifer-Nettles-20260710"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.nytimes.com/2026/07/10/theater/giulia-poison-queen-of-palermo-review-nettles.html",
-        "https://nystagereview.com/2026/07/10/giulia-the-poison-queen-of-palermo-pure-theatrical-alchemy/",
-        "https://nystagereview.com/2026/07/10/giulia-the-poison-queen-of-palermo-jennifer-nettles-brews-a-tasty-mass-murder-musical/https://nystagereview.com/2026/07/10/giulia-the-poison-queen-of-palermo-jennifer-nettles-brews-a-tasty-mass-murder-musical/",
-        "https://www.slantmagazine.com/theater/giulia-the-poison-queen-of-palermo-review-jennifer-nettles/",
-        "https://www.thewrap.com/creative-content/theater/giulia-the-poison-queen-of-palermo-off-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/giulia-the-poison-queen-of-palermo-off-broadway-review-jennifer-nettles",
-        "https://www.theatrely.com/post/jennifer-nettles-shines-but-giulia-the-poison-queen-of-palermo-muddles-its-mix-review",
-        "https://stageandcinema.com/2026/07/10/giulia-poison-queen-of-palermo-review-pac-nyc/",
-        "https://exeuntnyc.com/reviews/review-giulia-the-poison-queen-of-palermo-at-perelman-performing-arts-center/",
-        "https://1minutecritic.com/iulia-poison-queen-palermo-review-jennifer-nettles/",
-        "https://www.theatermania.com/news/review-jennifer-nettless-giulia-is-a-female-empowerment-sweeney-todd_1845124/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TI4ATU",
-        "https://newyorktheater.me/2026/07/25/giulia-the-poison-queen-of-palermo/",
-        "https://www.show-score.com/off-broadway-shows/giulia-the-poison-queen-of-palermo",
-        "https://medium.com/counterarts/theater-review-giulia-the-poison-queen-of-palermo-fa435b4cf875"
-      ],
-      "dirFiles": 27,
-      "dirClean": 21,
-      "inReviewsJson": 21,
-      "missing": [
-        {
-          "url": "https://www.show-score.com/off-broadway-shows/giulia-the-poison-queen-of-palermo",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
+          "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
           "host": "amny.com",
-          "count": 1
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
-          "host": "culturesauce.com",
-          "count": 1
+          "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
-          "host": "lavocedinewyork.com",
-          "count": 1
+          "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
+          "host": "frontmezzjunkies.com",
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
-          "host": "offoffonline.com",
-          "count": 1
+          "url": "https://pagesonstages.com/2025/07/10/heathers/",
+          "host": "pagesonstages.com",
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
-          "host": "theaterlife.com",
-          "count": 1
+          "url": "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
+          "host": "theaterpizzazz.com",
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
-          "host": "theaterscene.org",
-          "count": 1
+          "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
-          "host": "vulture.com",
-          "count": 1
+          "url": "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
+          "host": "stageandcinema.com",
+          "priorRun": true,
+          "reason": "prior-run"
         }
       ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Giulia: The Poison Queen of Palermo\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Giulia: The Poison Queen of Palermo\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"Giulia: The Poison Queen of Palermo\" review perelman",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Giulia: The Poison Queen of Palermo\" Nettles review",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 6,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://www.show-score.com/off-broadway-shows/giulia-the-poison-queen-of-palermo",
-          "host": "show-score.com",
-          "outletId": "show-score",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": []
-    },
-    {
-      "showId": "hershey-felder-the-piano-and-me-off-broadway-2026",
-      "title": "Hershey Felder: The Piano and Me",
-      "openingDate": "2026-07-10",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://theaterlife.com/hershey-felder-the-piano-and-me-1-2/",
-        "https://www.offoffonline.com/offoffonline/2026/7/14/hershey-felder-the-piano-and-me",
-        "https://pagesonstages.com/2026/07/16/the-piano-and-me/",
-        "https://www.theatermania.com/shows/new-york-city-theater/hershey-felder-the-piano-and-me_1845363/",
-        "https://www.newyorktheatreguide.com/show/47303-hershey-felder-the-piano-and-me",
-        "https://www.theatermania.com/news/review-hershey-felder-the-piano-and-me-a-musical-memoir_1845939/"
-      ],
-      "dirFiles": 5,
-      "dirClean": 4,
-      "inReviewsJson": 3,
-      "missing": [
-        {
-          "url": "https://www.newyorktheatreguide.com/show/47303-hershey-felder-the-piano-and-me",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/7/14/hershey-felder-the-piano-and-me",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "off-off-online--deirdre-donovan.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/7/14/hershey-felder-the-piano-and-me"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Hershey Felder: The Piano and Me\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Hershey Felder: The Piano and Me\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Hershey Felder: The Piano and Me\" review midtown",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Hershey Felder: The Piano and Me\" Felder review",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 4,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://www.newyorktheatreguide.com/show/47303-hershey-felder-the-piano-and-me",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~55603/day) projects exhaustion in ~12d, before the 24d-out renewal — still us"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "title": "Much Ado About Nothing - Globe",
-      "openingDate": "2026-06-20",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
     }
   ]
 }
