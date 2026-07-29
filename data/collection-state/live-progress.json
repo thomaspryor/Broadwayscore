@@ -1,75 +1,53 @@
 {
-  "updatedAt": "2026-07-29T10:50:24.300Z",
-  "processed": 29,
-  "failed": 141,
-  "successRate": "17.1%",
+  "updatedAt": "2026-07-29T11:26:52.111Z",
+  "processed": 51,
+  "failed": 399,
+  "successRate": "11.3%",
   "tierBreakdown": {
-    "playwright": 24,
+    "playwright": 39,
     "amp": 0,
-    "browserbase": 6,
-    "directCookies": 0,
+    "browserbase": 4,
+    "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 5,
-    "archive": 2
+    "brightdata": 3,
+    "archiveToday": 0,
+    "archive": 7
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-07-29T10:34:57.882Z",
+      "t": "2026-07-29T09:57:18.443Z",
       "event": "bb-session",
-      "session": "9468cfa6",
+      "session": "3da1e75c",
       "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
     },
     {
-      "t": "2026-07-29T10:34:58.317Z",
+      "t": "2026-07-29T09:57:19.095Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-07-29T10:35:13.908Z",
+      "t": "2026-07-29T09:57:34.892Z",
       "event": "bb-session",
-      "session": "850912fb",
+      "session": "be5ab02e",
       "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
     },
     {
-      "t": "2026-07-29T10:35:14.281Z",
+      "t": "2026-07-29T09:57:35.411Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-07-29T10:39:17.118Z",
+      "t": "2026-07-29T10:01:55.372Z",
       "event": "bb-session",
-      "session": "799e127e",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+      "session": "a1319aff",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
     },
     {
-      "t": "2026-07-29T10:46:31.782Z",
+      "t": "2026-07-29T10:08:10.129Z",
       "event": "bb-session",
       "session": "0b7bbf01",
       "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
-    },
-    {
-      "t": "2026-07-29T10:48:39.944Z",
-      "event": "bb-session",
-      "session": "b26c3c64",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
-    },
-    {
-      "t": "2026-07-29T10:48:40.787Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-29T10:50:07.341Z",
-      "event": "bb-session",
-      "session": "8062fcbd",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
-    },
-    {
-      "t": "2026-07-29T10:50:08.236Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
     }
   ]
 }
