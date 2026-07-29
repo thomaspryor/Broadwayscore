@@ -21,7 +21,9 @@
     "amaze-off-broadway-2026/timeout--adam-feldman.json",
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
     "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
-    "tosca-off-broadway-2026/broadwayworld--dc-felton.json"
+    "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -121,7 +123,15 @@
     "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
     "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
-    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json"
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json",
+    "medea-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "medea-off-broadway-2026/times-uk--clive-davis.json",
+    "medea-off-broadway-2026/times-uk--quentin-letts.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -143,12 +153,15 @@
       "amaze-off-broadway-2026/timeout--adam-feldman.json",
       "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
       "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
-      "tosca-off-broadway-2026/broadwayworld--dc-felton.json"
+      "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+      "medea-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -162,7 +175,7 @@
     ]
   },
   "startTime": "2026-07-29T10:32:43.456Z",
-  "lastProcessed": "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+  "lastProcessed": "medea-off-broadway-2026/times-uk--quentin-letts.json",
   "log": [
     {
       "t": "2026-07-29T10:34:57.882Z",
@@ -191,6 +204,12 @@
       "event": "bb-session",
       "session": "799e127e",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-07-29T10:46:31.782Z",
+      "event": "bb-session",
+      "session": "19c58d8c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
     }
   ]
 }
