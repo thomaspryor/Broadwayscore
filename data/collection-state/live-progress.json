@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-29T05:32:06.650Z",
+  "updatedAt": "2026-07-29T05:33:32.282Z",
   "processed": 60,
-  "failed": 1150,
-  "successRate": "5.0%",
+  "failed": 1160,
+  "successRate": "4.9%",
   "tierBreakdown": {
     "playwright": 47,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 14,
-    "archiveToday": 38,
+    "archiveToday": 39,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-07-29T00:10:22.858Z",
-      "event": "bb-session",
-      "session": "4bed19fb",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-07-29T00:10:23.980Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-07-29T00:14:36.746Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-07-29T04:54:50.737Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-29T05:32:10.453Z",
+      "event": "bb-session",
+      "session": "7f71193a",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-29T05:32:11.464Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
