@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-29T20:46:58.784Z",
-  "processed": 52,
+  "updatedAt": "2026-07-29T22:57:33.792Z",
+  "processed": 60,
   "failed": 851,
-  "successRate": "5.8%",
+  "successRate": "6.6%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 42,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 6,
+    "brightdata": 10,
     "archiveToday": 3,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-07-29T19:16:28.885Z",
@@ -82,6 +82,28 @@
       "event": "bb-session",
       "session": "e324fbda",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
+    },
+    {
+      "t": "2026-07-29T22:54:53.260Z",
+      "event": "bb-session",
+      "session": "f6c3a392",
+      "url": "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html"
+    },
+    {
+      "t": "2026-07-29T22:54:54.197Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-29T22:55:10.192Z",
+      "event": "bb-session",
+      "session": "ee1e4974",
+      "url": "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html"
+    },
+    {
+      "t": "2026-07-29T22:55:11.081Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
