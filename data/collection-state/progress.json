@@ -751,7 +751,27 @@
     "every-brilliant-thing-2026/telegraph--marianka-swain.json",
     "every-brilliant-thing-2026/times-uk--alice-jones.json",
     "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
-    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json"
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json",
+    "the-enormous-crocodile-west-end-2026/everything-theatre--mary-pollard.json",
+    "the-enormous-crocodile-west-end-2026/west-end-best-friend--chris-abbott.json",
+    "trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+    "trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
+    "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+    "trainspotting-the-musical-west-end-2026/london-unattached--jeanne-horak.json",
+    "trainspotting-the-musical-west-end-2026/london-unattached--unknown.json",
+    "trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+    "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
+    "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+    "the-gruffalo-west-end-2026/daily-mail--jennifer-ruby.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
+    "loves-labours-lost-globe-west-end-2026/london-theatre--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/thestage--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -804,7 +824,9 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
-      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -821,7 +843,14 @@
       "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
       "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+      "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--unknown.json"
+    ],
     "archive": [
       "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json",
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
@@ -836,7 +865,7 @@
     ]
   },
   "startTime": "2026-07-29T09:55:46.610Z",
-  "lastProcessed": "oh-mary-west-end-2025/nytg--olivia-rook.json",
+  "lastProcessed": "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
   "log": [
     {
       "t": "2026-07-29T09:57:18.443Z",
@@ -871,6 +900,28 @@
       "event": "bb-session",
       "session": "0b7bbf01",
       "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-07-29T12:26:40.641Z",
+      "event": "bb-session",
+      "session": "c314014e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-29T12:26:41.212Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-29T12:28:26.165Z",
+      "event": "bb-session",
+      "session": "eb4764ea",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-29T12:28:26.620Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
