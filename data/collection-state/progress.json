@@ -1,7 +1,10 @@
 {
   "processed": [
     "rosie-odonnell-common-knowledge-off-broadway-2026/nytg--unknown.json",
-    "shifters-off-broadway-2026/nytg--gillian-russo.json"
+    "shifters-off-broadway-2026/nytg--gillian-russo.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+    "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -11,23 +14,57 @@
     "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
     "shifters-off-broadway-2026/independent--alice-saville.json",
     "shifters-off-broadway-2026/standard--nick-curtis.json",
-    "shifters-off-broadway-2026/telegraph--dzifa-benson.json"
+    "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+    "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "dukes-off-broadway-2026/nytimes--helen-shaw.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "rosie-odonnell-common-knowledge-off-broadway-2026/nytg--unknown.json",
-      "shifters-off-broadway-2026/nytg--gillian-russo.json"
+      "shifters-off-broadway-2026/nytg--gillian-russo.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-07-29T10:32:43.456Z",
-  "lastProcessed": "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
-  "log": []
+  "lastProcessed": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+  "log": [
+    {
+      "t": "2026-07-29T10:34:57.882Z",
+      "event": "bb-session",
+      "session": "9468cfa6",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-29T10:34:58.317Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-29T10:35:13.908Z",
+      "event": "bb-session",
+      "session": "850912fb",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-29T10:35:14.281Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
