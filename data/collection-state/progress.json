@@ -25,7 +25,10 @@
     "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
     "medea-off-broadway-2026/timeout--adam-feldman.json",
     "dog-man-the-musical-west-end-2026/daily-echo--unknown.json",
-    "trainspotting-the-musical-west-end-2026/radio-times--olivia-garrett.json"
+    "trainspotting-the-musical-west-end-2026/radio-times--olivia-garrett.json",
+    "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
+    "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
+    "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -162,7 +165,14 @@
     "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
     "trainspotting-the-musical-west-end-2026/london-unattached--jeanne-horak.json",
     "trainspotting-the-musical-west-end-2026/london-unattached--unknown.json",
-    "trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json"
+    "trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+    "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
+    "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+    "the-gruffalo-west-end-2026/daily-mail--jennifer-ruby.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -187,14 +197,19 @@
       "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
       "medea-off-broadway-2026/timeout--adam-feldman.json",
       "dog-man-the-musical-west-end-2026/daily-echo--unknown.json",
-      "trainspotting-the-musical-west-end-2026/radio-times--olivia-garrett.json"
+      "trainspotting-the-musical-west-end-2026/radio-times--olivia-garrett.json",
+      "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
+      "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
+      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
-      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -206,14 +221,15 @@
       "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
       "data/review-texts/trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
-      "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json"
+      "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json"
     ],
     "archive": [
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-07-29T09:55:46.610Z",
-  "lastProcessed": "trainspotting-the-musical-west-end-2026/radio-times--olivia-garrett.json",
+  "lastProcessed": "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
   "log": [
     {
       "t": "2026-07-29T10:34:57.882Z",
@@ -246,8 +262,30 @@
     {
       "t": "2026-07-29T10:46:31.782Z",
       "event": "bb-session",
-      "session": "19c58d8c",
-      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+      "session": "0b7bbf01",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-07-29T10:48:39.944Z",
+      "event": "bb-session",
+      "session": "b26c3c64",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-29T10:48:40.787Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-29T10:50:07.341Z",
+      "event": "bb-session",
+      "session": "8062fcbd",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-29T10:50:08.236Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
