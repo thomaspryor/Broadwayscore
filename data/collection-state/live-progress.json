@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-07-29T06:35:26.520Z",
+  "updatedAt": "2026-07-29T06:39:33.881Z",
   "processed": 80,
-  "failed": 1459,
+  "failed": 1469,
   "successRate": "5.2%",
   "tierBreakdown": {
     "playwright": 56,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 16,
-    "archiveToday": 45,
+    "archiveToday": 47,
     "archive": 8
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-07-29T00:14:53.678Z",
-      "event": "bb-session",
-      "session": "aa9f2e7a",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
-    {
-      "t": "2026-07-29T00:14:54.595Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-29T00:52:14.185Z",
-      "event": "bb-session",
-      "session": "b69e0ebf",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-07-29T00:52:14.720Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-07-29T01:35:53.901Z",
       "event": "bb-session",
@@ -125,6 +103,28 @@
       "t": "2026-07-29T06:25:54.126Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-29T06:36:36.920Z",
+      "event": "bb-session",
+      "session": "8a4fa063",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-29T06:36:37.381Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-29T06:38:02.304Z",
+      "event": "bb-session",
+      "session": "d4811dfd",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-29T06:38:02.768Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

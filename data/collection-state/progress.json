@@ -1540,7 +1540,17 @@
     "trainspotting-the-musical-west-end-2026/london-unattached--unknown.json",
     "trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
     "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
-    "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json"
+    "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+    "the-gruffalo-west-end-2026/daily-mail--jennifer-ruby.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
+    "loves-labours-lost-globe-west-end-2026/london-theatre--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/thestage--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1609,7 +1619,9 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
-      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json"
+      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -1678,7 +1690,9 @@
       "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
       "data/review-texts/trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
-      "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json"
+      "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+      "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -1692,7 +1706,7 @@
     ]
   },
   "startTime": "2026-07-28T18:12:15.017Z",
-  "lastProcessed": "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+  "lastProcessed": "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
   "log": [
     {
       "t": "2026-07-29T00:10:22.858Z",
@@ -1826,6 +1840,28 @@
       "t": "2026-07-29T06:25:54.126Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-29T06:36:36.920Z",
+      "event": "bb-session",
+      "session": "8a4fa063",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-29T06:36:37.381Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-29T06:38:02.304Z",
+      "event": "bb-session",
+      "session": "d4811dfd",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-29T06:38:02.768Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
