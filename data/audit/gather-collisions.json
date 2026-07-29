@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-07-26T12:19:48.058Z",
-    "showId": "heathers-the-musical-off-west-end-2026",
-    "newFile": "whatsonstage--unknown.json",
-    "ok": false,
-    "file": "whatsonstage--sarah-crompton.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.whatsonstage.com/news/review-heathers-the-musical-haymarket-theatre_47588/",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2018-09-13",
-      "incomingUrl": "https://www.whatsonstage.com/news/heathers-the-musical-filmed-release-review_57377/",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-07-26T12:19:48.101Z",
     "showId": "heathers-the-musical-off-west-end-2026",
     "newFile": "whatsonstage--unknown.json",
@@ -9449,6 +9430,25 @@
       "existingPublishDate": null,
       "incomingUrl": "https://www.whatsonstage.com/news/heathers-the-musical-at-theatre-royal-haymarket-review_54381/",
       "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-07-29T00:42:27.114Z",
+    "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+    "newFile": "nytimes--unknown.json",
+    "ok": false,
+    "file": "nytimes--lindsay-gellman.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.nytimes.com/2026/07/20/theater/cat-cohen-broad-strokes-comedy.html",
+      "existingFlags": {
+        "wrongProduction": false,
+        "wrongShow": true,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": "2026-07-20",
+      "incomingUrl": "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
+      "incomingPublishDate": "2026-07-28"
     }
   }
 ]
