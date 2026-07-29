@@ -102,11 +102,11 @@
       "disposition": "human",
       "title": "Opening Night SLA P0 — 4 review(s) stuck ≥60 min",
       "firstSeen": "2026-07-24T15:48:32.752Z",
-      "lastSeen": "2026-07-29T07:14:40.059Z",
+      "lastSeen": "2026-07-29T08:10:06.298Z",
       "lastNotifiedAt": "2026-07-26T17:39:13.740Z",
       "notifyCount": 2,
       "cardId": null,
-      "silentRefires": 50
+      "silentRefires": 51
     },
     "health-check:Workflow repeat-failure: Audit Aggregator Review Gap": {
       "status": "open",
@@ -223,20 +223,11 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-07-28T19:25:18.269Z",
+      "lastSeen": "2026-07-29T07:54:27.180Z",
       "lastNotifiedAt": "2026-07-28T19:25:18.269Z",
       "notifyCount": 1,
-      "cardId": null
-    },
-    "health-check:Sync: cast coverage": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "BSC Daily: Sync: cast coverage",
-      "firstSeen": "2026-07-29T07:42:39.063Z",
-      "lastSeen": "2026-07-29T07:42:39.063Z",
-      "lastNotifiedAt": "2026-07-29T07:42:39.063Z",
-      "notifyCount": 1,
-      "cardId": "3ac637c5-416f-81ec-b199-d33cc15657fe"
+      "cardId": null,
+      "silentRefires": 1
     }
   }
 }
