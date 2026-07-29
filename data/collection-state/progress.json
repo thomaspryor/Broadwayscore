@@ -66,7 +66,9 @@
     "tender-off-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
     "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
     "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
-    "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json"
+    "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
+    "oh-mary-west-end-2025/nytimes--jesse-green.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -1149,7 +1151,15 @@
     "every-brilliant-thing-2026/telegraph--marianka-swain.json",
     "every-brilliant-thing-2026/times-uk--alice-jones.json",
     "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
-    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json"
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
+    "oh-mary-west-end-2025/nypost--johnny-oleksinski.json",
+    "oh-mary-west-end-2025/thewrap--robert-hofler.json",
+    "oh-mary-west-end-2025/wsj--charles-isherwood.json",
+    "oh-mary-west-end-2025/chicagotribune--chris-jones.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1206,7 +1216,9 @@
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
-      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
@@ -1222,7 +1234,8 @@
       "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
       "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
       "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
-      "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json"
+      "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
+      "oh-mary-west-end-2025/nytimes--jesse-green.json"
     ],
     "archiveToday": [
       "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
@@ -1257,7 +1270,7 @@
     ]
   },
   "startTime": "2026-07-29T09:55:46.610Z",
-  "lastProcessed": "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "oh-mary-west-end-2025/chicagotribune--chris-jones.json",
   "log": [
     {
       "t": "2026-07-29T09:57:18.443Z",
@@ -1347,6 +1360,34 @@
       "t": "2026-07-29T14:48:30.157Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-29T15:58:43.943Z",
+      "event": "bb-session",
+      "session": "f7d630f2",
+      "url": "https://www.nytimes.com/2025/12/19/theater/oh-mary-trafalgar-theater-london.html"
+    },
+    {
+      "t": "2026-07-29T15:58:44.893Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-29T15:59:00.842Z",
+      "event": "bb-session",
+      "session": "7683192f",
+      "url": "https://www.nytimes.com/2025/12/19/theater/oh-mary-trafalgar-theater-london.html"
+    },
+    {
+      "t": "2026-07-29T15:59:01.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-29T15:59:57.264Z",
+      "event": "bb-session",
+      "session": "83178528",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
     }
   ]
 }
