@@ -23,7 +23,8 @@
     "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
     "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
     "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-    "medea-off-broadway-2026/timeout--adam-feldman.json"
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "the-gin-game-2026/tickpick--tickpick.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -161,7 +162,16 @@
     "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
     "shifters-off-broadway-2026/independent--alice-saville.json",
     "shifters-off-broadway-2026/standard--nick-curtis.json",
-    "shifters-off-broadway-2026/telegraph--dzifa-benson.json"
+    "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+    "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "the-gin-game-2026/wsj--charles-isherwood.json",
+    "the-gin-game-2026/american-theater-web--andy-propst.json",
+    "the-gin-game-2026/ap--mark-kennedy.json",
+    "the-gin-game-2026/center-on-the-aisle--steve-schonberg.json",
+    "the-gin-game-2026/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -186,7 +196,8 @@
       "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
       "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
       "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
-      "medea-off-broadway-2026/timeout--adam-feldman.json"
+      "medea-off-broadway-2026/timeout--adam-feldman.json",
+      "the-gin-game-2026/tickpick--tickpick.json"
     ],
     "amp": [],
     "browserbase": [
@@ -200,14 +211,15 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json",
-      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json"
     ],
     "archive": [
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
     ]
   },
   "startTime": "2026-07-29T09:15:54.628Z",
-  "lastProcessed": "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+  "lastProcessed": "the-gin-game-2026/tickpick--tickpick.json",
   "log": [
     {
       "t": "2026-07-29T09:17:18.656Z",
@@ -242,6 +254,17 @@
       "event": "bb-session",
       "session": "af6a6d6b",
       "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-07-29T09:44:21.883Z",
+      "event": "bb-session",
+      "session": "9d255317",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-29T09:44:22.913Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

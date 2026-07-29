@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-29T09:44:15.904Z",
-  "processed": 24,
-  "failed": 136,
-  "successRate": "15.0%",
+  "updatedAt": "2026-07-29T09:45:24.948Z",
+  "processed": 25,
+  "failed": 145,
+  "successRate": "14.7%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 22,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 3,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-29T09:17:18.656Z",
@@ -48,6 +48,17 @@
       "event": "bb-session",
       "session": "af6a6d6b",
       "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-07-29T09:44:21.883Z",
+      "event": "bb-session",
+      "session": "9d255317",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-29T09:44:22.913Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
