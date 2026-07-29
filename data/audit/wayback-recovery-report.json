@@ -1,24 +1,28 @@
 {
-  "totalCandidates": 27,
-  "cdxFound": 3,
-  "cdxNotFound": 2,
-  "recovered": 3,
+  "totalCandidates": 51,
+  "cdxFound": 11,
+  "cdxNotFound": 8,
+  "recovered": 8,
   "recoveredByTier": {
-    "1": 1,
+    "1": 2,
     "2": 0,
-    "3": 2
+    "3": 6
   },
   "recoveredByDomain": {
-    "nytimes.com": 1,
-    "theatreweekly.com": 1,
-    "thereviewshub.com": 1
+    "vulture.com": 1,
+    "washingtonpost.com": 1,
+    "cbsnews.com": 1,
+    "inquirer.com": 1,
+    "playbill.com": 2,
+    "stageandcinema.com": 1,
+    "playstosee.com": 1
   },
-  "tooShort": 0,
+  "tooShort": 11,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 22,
-  "notInArchive": 2,
+  "errors": 32,
+  "notInArchive": 8,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
