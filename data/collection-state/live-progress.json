@@ -1,130 +1,47 @@
 {
-  "updatedAt": "2026-07-29T07:01:34.534Z",
-  "processed": 80,
-  "failed": 1499,
-  "successRate": "5.1%",
+  "updatedAt": "2026-07-29T09:26:41.567Z",
+  "processed": 19,
+  "failed": 81,
+  "successRate": "19.0%",
   "tierBreakdown": {
-    "playwright": 56,
+    "playwright": 17,
     "amp": 0,
-    "browserbase": 8,
-    "directCookies": 1,
+    "browserbase": 2,
+    "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 16,
-    "archiveToday": 49,
-    "archive": 8
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-07-29T01:45:59.794Z",
+      "t": "2026-07-29T09:17:18.656Z",
       "event": "bb-session",
-      "session": "e39b69ca",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+      "session": "fb44624e",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
     },
     {
-      "t": "2026-07-29T01:46:00.493Z",
+      "t": "2026-07-29T09:17:19.157Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-07-29T02:50:16.376Z",
+      "t": "2026-07-29T09:17:34.799Z",
       "event": "bb-session",
-      "session": "b10b0e16",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+      "session": "922d63da",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
     },
     {
-      "t": "2026-07-29T02:50:17.522Z",
+      "t": "2026-07-29T09:17:35.143Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-07-29T03:48:16.970Z",
+      "t": "2026-07-29T09:21:43.420Z",
       "event": "bb-session",
-      "session": "d2d0744b",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-07-29T03:48:17.964Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-07-29T04:40:53.755Z",
-      "event": "bb-session",
-      "session": "9704c003",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-07-29T04:40:54.174Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-07-29T04:54:50.226Z",
-      "event": "bb-session",
-      "session": "4c9a8985",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-07-29T04:54:50.737Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-07-29T06:06:28.806Z",
-      "event": "bb-session",
-      "session": "7f1658e0",
-      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
-    },
-    {
-      "t": "2026-07-29T06:06:44.804Z",
-      "event": "bb-session",
-      "session": "a4998582",
-      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
-    },
-    {
-      "t": "2026-07-29T06:25:53.282Z",
-      "event": "bb-session",
-      "session": "9a906075",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-07-29T06:25:54.126Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-07-29T06:36:36.920Z",
-      "event": "bb-session",
-      "session": "8a4fa063",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
-    },
-    {
-      "t": "2026-07-29T06:36:37.381Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-29T06:38:02.304Z",
-      "event": "bb-session",
-      "session": "d4811dfd",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
-    },
-    {
-      "t": "2026-07-29T06:38:02.768Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-29T06:58:31.080Z",
-      "event": "bb-session",
-      "session": "c91cc0a4",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-07-29T06:58:31.609Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "session": "9af1d77c",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }
