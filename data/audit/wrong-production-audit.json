@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-30T11:59:33.063Z",
+  "timestamp": "2026-07-30T12:41:40.209Z",
   "stats": {
     "totalReviews": 40960,
-    "alreadyFlagged": 17930,
+    "alreadyFlagged": 17932,
     "dateGuardCatches": 67,
     "directorMismatch": 930,
-    "tvFilmSignals": 1120,
+    "tvFilmSignals": 1121,
     "londonSignals": 766,
     "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3376
+    "noPublishDate": 3374
   },
   "findings": [
     {
@@ -26322,6 +26322,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "the-whoopi-monologues-off-broadway-2026",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": 91,
+      "publishDate": "2026-07-30",
+      "url": "https://t2conline.com/the-whoopi-monologues-review-five-extraordinary-women-prove-whoopi-goldbergs-words-are-timeless/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
