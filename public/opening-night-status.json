@@ -1,7 +1,591 @@
 {
-  "generatedAt": "2026-07-29T23:26:42.915Z",
+  "generatedAt": "2026-07-30T00:17:55.449Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "tao-of-glass-west-end-2026",
+      "title": "Tao of Glass",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-07-30",
+      "status": "previews",
+      "slug": "tao-of-glass-west-end",
+      "thumbnail": "/images/shows/tao-of-glass-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 7,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    },
+    {
+      "id": "death-note-the-musical-west-end-2026",
+      "title": "Death Note: The Musical",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "musical",
+      "openingDate": "2026-07-30",
+      "status": "upcoming",
+      "slug": "death-note-the-musical-west-end",
+      "thumbnail": "/images/shows/death-note-the-musical-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    },
+    {
+      "id": "the-vessel-off-broadway-2026",
+      "title": "The Vessel",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-07-30",
+      "status": "previews",
+      "slug": "the-vessel-off-broadway",
+      "thumbnail": "/images/shows/the-vessel-off-broadway-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/12 total",
+          "T1:0/3",
+          "T2:0/3",
+          "hi-conf:0/8"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 12,
+          "minT1": 3,
+          "minT2": 3,
+          "minHiConf": 8
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Vulture",
+          "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Hollywood Reporter",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New Yorker",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Wall Street Journal",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Washington Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "Associated Press",
+          "isDualMarket": false
+        },
+        {
+          "name": "Deadline",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Los Angeles Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "Newsday",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Broadway News",
+          "isDualMarket": false
+        },
+        {
+          "name": "About Entertainment",
+          "isDualMarket": false
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The Baltimore Sun",
+          "isDualMarket": false
+        },
+        {
+          "name": "Entertainment Weekly",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheaterMania",
+          "isDualMarket": false
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "amNewYork",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Stage Review",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Tribune",
+          "isDualMarket": false
+        },
+        {
+          "name": "USA Today",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Daily News",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheWrap",
+          "isDualMarket": false
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Daily Beast",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theater",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theatrely",
+          "isDualMarket": false
+        },
+        {
+          "name": "Talkin' Broadway",
+          "isDualMarket": false
+        },
+        {
+          "name": "Cititour",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slant Magazine",
+          "isDualMarket": false
+        },
+        {
+          "name": "Lighting & Sound America",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New York Sun",
+          "isDualMarket": false
+        },
+        {
+          "name": "Billboard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theater Scene",
+          "isDualMarket": false
+        },
+        {
+          "name": "Village Voice",
+          "isDualMarket": false
+        },
+        {
+          "name": "IndieWire",
+          "isDualMarket": false
+        },
+        {
+          "name": "NorthJersey.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "CurtainUp",
+          "isDualMarket": false
+        },
+        {
+          "name": "DC Theatre Scene",
+          "isDualMarket": false
+        },
+        {
+          "name": "NY1",
+          "isDualMarket": false
+        },
+        {
+          "name": "Front Row Center",
+          "isDualMarket": false
+        },
+        {
+          "name": "NJ.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "HuffPost",
+          "isDualMarket": false
+        },
+        {
+          "name": "NBC New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time",
+          "isDualMarket": false
+        },
+        {
+          "name": "Backstage",
+          "isDualMarket": false
+        },
+        {
+          "name": "Bloomberg",
+          "isDualMarket": false
+        },
+        {
+          "name": "WNYC",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "Rolling Stone",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Philadelphia Inquirer",
+          "isDualMarket": false
+        },
+        {
+          "name": "Vox",
+          "isDualMarket": false
+        },
+        {
+          "name": "Broadway Blog",
+          "isDualMarket": false
+        },
+        {
+          "name": "Exeunt Magazine",
+          "isDualMarket": false
+        },
+        {
+          "name": "Parade",
+          "isDualMarket": false
+        },
+        {
+          "name": "People",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slate",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theater Life",
+          "isDualMarket": false
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "CBS News",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Sun-Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theatre Weekly",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator  (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        },
+        {
+          "name": "Everything Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Tennessean",
+          "isDualMarket": false
+        }
+      ]
+    },
     {
       "id": "dog-man-the-musical-west-end-2026",
       "title": "Dog Man - The Musical",
@@ -687,26 +1271,26 @@
       "status": "open",
       "slug": "cat-cohen-broad-strokes-off-broadway",
       "thumbnail": "/images/shows/cat-cohen-broad-strokes-off-broadway-2026/thumbnail.webp",
-      "siteScore": 74.79,
+      "siteScore": 74.54,
       "liveScore": 75,
-      "scoreDrift": 0.20999999999999375,
+      "scoreDrift": 0.45999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 11,
       "t1": 2,
       "t2": 7,
-      "t3": 0,
-      "positive": 5,
-      "mixed": 4,
+      "t3": 2,
+      "positive": 6,
+      "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "9/12 total",
+          "11/12 total",
           "T1:2/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1038,72 +1622,34 @@
           "m": 4,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-07-30T00:17:55.449Z",
+          "rc": 11,
+          "s": 74.54,
+          "t1": 2,
+          "t2": 7,
+          "t3": 2,
+          "p": 6,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     }
   ],
   "upcoming": [
     {
-      "id": "tao-of-glass-west-end-2026",
-      "title": "Tao of Glass",
-      "market": "west-end",
-      "category": "west-end",
-      "type": "play",
-      "openingDate": "2026-07-30",
-      "status": "previews",
-      "slug": "tao-of-glass-west-end",
-      "thumbnail": "/images/shows/tao-of-glass-west-end-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
-    {
-      "id": "death-note-the-musical-west-end-2026",
-      "title": "Death Note: The Musical",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "musical",
-      "openingDate": "2026-07-30",
-      "status": "upcoming",
-      "slug": "death-note-the-musical-west-end",
-      "thumbnail": "/images/shows/death-note-the-musical-west-end-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
-    {
-      "id": "the-vessel-off-broadway-2026",
-      "title": "The Vessel",
+      "id": "weve-been-here-before-a-one-woman-musical-off-broadway-2026",
+      "title": "We've Been Here Before: A One Woman Musical",
       "market": "broadway",
       "category": "off-broadway",
       "type": "play",
-      "openingDate": "2026-07-30",
+      "openingDate": "2026-08-04",
       "status": "previews",
-      "slug": "the-vessel-off-broadway",
-      "thumbnail": "/images/shows/the-vessel-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 1,
+      "slug": "weve-been-here-before-a-one-woman-musical-off-broadway",
+      "thumbnail": "/images/shows/weve-been-here-before-a-one-woman-musical-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1133,16 +1679,105 @@
       "preflight": false
     },
     {
-      "id": "weve-been-here-before-a-one-woman-musical-off-broadway-2026",
-      "title": "We've Been Here Before: A One Woman Musical",
+      "id": "cats-west-end-2026",
+      "title": "Cats",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "musical",
+      "openingDate": "2026-08-06",
+      "status": "previews",
+      "slug": "cats-west-end",
+      "thumbnail": "/images/shows/cats-west-end-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-comedy-about-spies-west-end-2026",
+      "title": "The Comedy About Spies",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-08-06",
+      "status": "upcoming",
+      "slug": "the-comedy-about-spies-west-end",
+      "thumbnail": "/images/shows/the-comedy-about-spies-west-end-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "matilda-the-musical-theatre-row-off-broadway-2026",
+      "title": "Matilda The Musical (Theatre Row)",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "musical",
+      "openingDate": "2026-08-06",
+      "status": "previews",
+      "slug": "matilda-the-musical-theatre-row-off-broadway",
+      "thumbnail": "/images/shows/matilda-the-musical-theatre-row-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "masticate-off-broadway-2026",
+      "title": "Masticate",
       "market": "broadway",
       "category": "off-broadway",
       "type": "play",
-      "openingDate": "2026-08-04",
+      "openingDate": "2026-08-06",
       "status": "previews",
-      "slug": "weve-been-here-before-a-one-woman-musical-off-broadway",
-      "thumbnail": "/images/shows/weve-been-here-before-a-one-woman-musical-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 6,
+      "slug": "masticate-off-broadway",
+      "thumbnail": "/images/shows/masticate-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,

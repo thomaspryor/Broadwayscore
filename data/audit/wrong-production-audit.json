@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-29T23:26:37.400Z",
+  "timestamp": "2026-07-30T00:17:49.895Z",
   "stats": {
-    "totalReviews": 40912,
-    "alreadyFlagged": 17923,
+    "totalReviews": 40909,
+    "alreadyFlagged": 17922,
     "dateGuardCatches": 67,
-    "directorMismatch": 928,
-    "tvFilmSignals": 1119,
+    "directorMismatch": 931,
+    "tvFilmSignals": 1120,
     "londonSignals": 765,
-    "offBroadwaySignals": 464,
+    "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3360
+    "noPublishDate": 3357
   },
   "findings": [
     {
@@ -383,6 +383,20 @@
       "score": 56,
       "publishDate": "December 14, 2009",
       "url": "http://theater.nytimes.com/2009/12/14/theater/reviews/14little.html?ref=theater",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from a-little-night-music-1973"
+        }
+      ]
+    },
+    {
+      "showId": "a-little-night-music-2009",
+      "file": "talkinbroadway--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/world/LittleNightMusic.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -3765,7 +3779,8 @@
     {
       "showId": "cat-cohen-broad-strokes-off-broadway-2026",
       "file": "culturesauce--unknown.json",
-      "publishDate": null,
+      "score": 66,
+      "publishDate": "2026-07-27",
       "url": "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
       "findings": [
         {
@@ -4816,6 +4831,20 @@
       ]
     },
     {
+      "showId": "clydes-2021",
+      "file": "latimes--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.latimes.com/entertainment-arts/story/2022-01-06/clydes-livestream-uzo-aduba-theater",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
       "showId": "cold-war-choir-practice-off-broadway-2026",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 62,
@@ -5667,6 +5696,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "file": "timeout--david-cote.json",
+      "score": 87,
+      "publishDate": "2012-03-15T20:42:51-04:00",
+      "url": "http://newyork.timeout.com/arts-culture/theater/2847381/review-death-of-a-salesman",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert falls\" from death-of-a-salesman-1999"
         }
       ]
     },
@@ -25617,6 +25660,20 @@
     },
     {
       "showId": "the-price-2017",
+      "file": "playbill--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playbill.com/article/how-did-critics-review-mark-ruffalo-and-danny-devito-in-the-price",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james naughton\" from the-price-1999"
+        }
+      ]
+    },
+    {
+      "showId": "the-price-2017",
       "file": "showbiz411--roger-friedman.json",
       "score": 89,
       "publishDate": "2017-03-16",
@@ -32759,6 +32816,20 @@
       "score": 78,
       "publishDate": "April 13, 2023",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review-1235391595/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "fat-ham-2023",
+      "file": "philadelphia-edge--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.foodandwine.com/food-in-broadway-plays-sweeney-todd-fat-ham-sancocho-7497733",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
