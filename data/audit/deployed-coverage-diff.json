@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-30T18:26:28.001Z",
+  "generatedAt": "2026-07-30T19:26:13.683Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -18,12 +18,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.46 vs local 78.64 (Δ0.18)"
+          "detail": "deployed cs 81.9 vs local 80.92 (Δ0.98)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 3,
-      "deployedCount": 4
+      "localCount": 6,
+      "deployedCount": 6
     }
   ]
 }

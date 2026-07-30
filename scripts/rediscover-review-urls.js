@@ -216,10 +216,23 @@ function updateReviewUrl(candidate, newUrl, method) {
       delete data.textQuality;
       // The helper's contentVerification correction asserts isValid:true against
       // the OLD (about-to-be-discarded) text — that verdict says nothing about
-      // whatever the new URL will return. Drop it entirely so the next fetch's
-      // real CV pass produces a fresh verdict instead of inheriting a false
-      // affirmative one (Codex adversarial review, 2026-07-30).
-      delete data.contentVerification;
+      // whatever the new URL will return. Strip the session-specific fields so
+      // the next fetch's real CV pass produces a fresh verdict instead of
+      // inheriting a false affirmative one (Codex adversarial review,
+      // 2026-07-30). Delete individual subfields rather than the whole object —
+      // regression-guards.test.mjs forbids `delete data.contentVerification`
+      // because other code (e.g. rebuild-all-reviews.js's CV pre-pass) expects
+      // wrongProduction/isFilmTv to still be present (even if false) on the
+      // object rather than the whole thing vanishing.
+      if (data.contentVerification) {
+        delete data.contentVerification.wrongArticle;
+        delete data.contentVerification.verifiedAt;
+        delete data.contentVerification.verifiedBy;
+        delete data.contentVerification.reasoning;
+        delete data.contentVerification.contentHash;
+        delete data.contentVerification.issues;
+        data.contentVerification.isValid = false;
+      }
       // Re-scraping means the current contentTier is meaningless until the
       // new fetch lands — override the helper's reclassification with a hard
       // reset (matches this branch's original intent).
