@@ -1214,7 +1214,21 @@ async function main() {
       for (const f of pre.failures) {
         console.error(`[preflight] ${f.reason}`);
       }
-      process.exit(1);
+      // A degraded TIER is not an outage. fetchPage() falls through
+      // BrightData -> ScrapingBee -> Playwright, so ScrapingBee sitting below the
+      // 25% threshold only means that one tier gets skipped. Aborting the whole
+      // sweep on it took the West End aggregator arm dark for 16 days: 8
+      // consecutive failed runs from 2026-07-17, every one exiting on
+      // "SB credit check failed: 0% remaining" while BrightData was healthy in
+      // the same run (e.g. run 30530145995). Only abort when the PRIMARY
+      // provider is down and there is genuinely nothing left to fetch with.
+      const bd = pre.results.find((r) => r.provider === 'BrightData');
+      if (bd && bd.ok) {
+        console.error('[preflight] continuing — BrightData healthy; degraded tiers will be skipped by fetchPage()');
+      } else {
+        console.error('[preflight] aborting — primary provider (BrightData) unavailable');
+        process.exit(1);
+      }
     }
     console.log('');
   }

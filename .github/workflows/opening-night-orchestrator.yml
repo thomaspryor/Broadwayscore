@@ -416,7 +416,29 @@ jobs:
           echo "║  Skip SERP: ${SKIP_SERP:-false}"
           echo "╚══════════════════════════════════════════════════╝"
 
+          # Wall-clock deadline, 60min under `timeout-minutes: 360`.
+          #
+          # The loop could never finish: MAX_ITERATIONS=10 x (poller p50 45.8min +
+          # POLL_INTERVAL 10min) = 558min against a 360min cap. As the selection
+          # window grew (14 shows on Jul 5 -> 40 on Jul 30) per-iteration cost
+          # crossed the threshold, and from 2026-07-19 EVERY scheduled run was
+          # killed at exactly 360.0min with conclusion=cancelled — 11 straight days
+          # (last scheduled success 2026-07-19T00:19:57Z).
+          #
+          # Two things died with it, both silently:
+          #   1. SERP_DEFER_ITERATIONS=8 means iterations 9-10 are the ONLY
+          #      SERP-enabled ones, so the targeted per-outlet SERP arm of the
+          #      review hunt never ran at all.
+          #   2. `if: always()` does NOT run on cancellation, so the Discord status
+          #      report and the checklist + SLA dispatch tail steps never fired.
+          # Exiting cleanly under the cap restores both.
+          DEADLINE=$(( $(date +%s) + 300*60 ))
+
           for ITERATION in $(seq 1 $MAX_ITERATIONS); do
+            if [ "$(date +%s)" -ge "$DEADLINE" ]; then
+              echo "::warning::Wall-clock deadline reached at iteration $ITERATION/$MAX_ITERATIONS — exiting loop cleanly so the always() tail steps run"
+              break
+            fi
             echo ""
             echo "══════════════════════════════════════════════════"
             echo "  ITERATION $ITERATION / $MAX_ITERATIONS — $(date -u '+%Y-%m-%d %H:%M UTC')"

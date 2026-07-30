@@ -25,6 +25,18 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # rebuild-all-reviews.js reads data/review-texts/ (the source of truth) to
+      # regenerate reviews.json. This was the ONLY workflow invoking that script
+      # without checking review-texts out, so the rebuild step failed on every
+      # scheduled run since 2026-03-01 (5 consecutive failures) and
+      # data/audit/scoring-audit.json is frozen at generatedAt 2026-02-01 /
+      # totalReviews 2299, against ~19,248 reviews today.
+      - name: Checkout review texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
