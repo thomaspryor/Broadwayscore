@@ -326,6 +326,7 @@ async function processRecover(items) {
           // card #632: a rebuild between recovery and this fix re-flagged both
           // reviews from the stale sub-object despite the top-level clear above.
           if (data.contentVerification) {
+            data.contentVerification.isValid = true;
             data.contentVerification.wrongProduction = false;
             data.contentVerification.wrongArticle = false;
             data.contentVerification.isFilmTv = false;
