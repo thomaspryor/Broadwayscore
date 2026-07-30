@@ -17,10 +17,49 @@
  *                        market (coverageExpectation:'none' / reviewsTheater:false).
  *   SUPPRESSED         — censused but unfetchable from CI (WSJ / New Yorker): stays
  *                        visible, never dispatchable, never counted as an SLA miss.
+ *   CIRCUIT_OPEN       — (B2) would be a GAP, but lib/outlet-circuit-breaker.js has
+ *                        tripped for this outlet: retrieval is systemically failing
+ *                        across shows, so re-dispatching burns quota for nothing.
+ *                        Same disposition as SUPPRESSED (visible, blocks `complete`,
+ *                        never dispatchable) but LEARNED from ledger evidence rather
+ *                        than hardcoded, and self-healing via the half-open probe.
  * Present-and-scored cells are NOT recorded (absence = covered).
+ *
+ * B2 (v2 reconciler plan) asked for richer semantics on top of that set —
+ * "live / excluded(enum reason) / unactionable (CI_UNFETCHABLE, outlet-skips-show)
+ * / in-flight (attempt count, backoff, SLA clock)". That lives in
+ * classifyCellDetailed() below, which maps each state to a stable
+ * {disposition, reason} pair plus the SLA clock and retry-eligibility. The plain
+ * string-returning classifyCell() is UNCHANGED for its existing callers.
  */
 
 const GRACE_HOURS = 24;
+
+// Cell states, grouped by what the pipeline may DO with them (the B2 semantics).
+// `actionable` is the only group dispatch/ACTION-email may act on; `waiting` is
+// legitimately still arriving; `unactionable` is visible-but-hopeless — it blocks
+// `complete` and counts against coverage %, but must never drive a fetch.
+const CELL_DISPOSITION = {
+  GAP: 'actionable',
+  IN_FLIGHT: 'waiting',
+  SUPPRESSED: 'unactionable',
+  CIRCUIT_OPEN: 'unactionable',
+  NO_REVIEW_EXPECTED: 'excluded',
+};
+
+// Human-readable reason per state — the "excluded(enum reason)" the plan asks for.
+const CELL_REASON = {
+  GAP: 'sla-breach',
+  IN_FLIGHT: 'within-grace',
+  SUPPRESSED: 'ci-unfetchable',
+  CIRCUIT_OPEN: 'outlet-circuit-open',
+  NO_REVIEW_EXPECTED: 'outlet-skips-market',
+};
+
+/** Is this state something the pipeline may spend a fetch/dispatch on? */
+function isActionableState(state) {
+  return CELL_DISPOSITION[state] === 'actionable';
+}
 
 /**
  * Tier gate for dispatch/severity/ledger decisions: only registered T1/T2
@@ -41,8 +80,10 @@ function isDispatchTierOutlet(outlets, outletId) {
 /**
  * Classify a single missing (show, outlet) cell. Pure.
  * @param {object} c
- *   { noReviewExpected:boolean, suppressed:boolean, clockAgeHours:number|null }
- * @returns {'IN_FLIGHT'|'GAP'|'NO_REVIEW_EXPECTED'|'SUPPRESSED'}
+ *   { noReviewExpected:boolean, suppressed:boolean, clockAgeHours:number|null,
+ *     circuitOpen?:boolean }
+ *   circuitOpen (B2) is OPTIONAL: omitted → pre-B2 behavior, byte-for-byte.
+ * @returns {'IN_FLIGHT'|'GAP'|'NO_REVIEW_EXPECTED'|'SUPPRESSED'|'CIRCUIT_OPEN'}
  */
 function classifyCell(c) {
   if (c.noReviewExpected) return 'NO_REVIEW_EXPECTED';
@@ -51,7 +92,39 @@ function classifyCell(c) {
   // claim the 24h grace has elapsed; treat as IN_FLIGHT so it never counts against
   // the SLA until a real clock exists.
   if (c.clockAgeHours == null) return 'IN_FLIGHT';
-  return c.clockAgeHours < GRACE_HOURS ? 'IN_FLIGHT' : 'GAP';
+  if (c.clockAgeHours < GRACE_HOURS) return 'IN_FLIGHT';
+  // Grace is spent, so this WOULD be a GAP. The breaker only ever converts a GAP
+  // — never an IN_FLIGHT cell — because a brand-new show's outlet still has a real
+  // chance of ingesting normally (the roundup may cite a fetchable URL), and
+  // suppressing it during grace would hide the one window where a fix is cheap.
+  if (c.circuitOpen) return 'CIRCUIT_OPEN';
+  return 'GAP';
+}
+
+/**
+ * The B2 rich form: same decision as classifyCell plus the semantics the v2 plan
+ * asked for. Callers that need to branch on "may I act on this?" should read
+ * `.actionable` rather than string-matching a growing state list.
+ *
+ * @param {object} c  same input as classifyCell, plus optional
+ *   { attempts:number, nextEligibleAt:string|null } from the outlet breaker
+ * @returns {{state, disposition, reason, actionable:boolean, slaClockHours:number|null,
+ *            attempts:number, nextEligibleAt:string|null}}
+ */
+function classifyCellDetailed(c) {
+  const state = classifyCell(c);
+  return {
+    state,
+    disposition: CELL_DISPOSITION[state],
+    reason: CELL_REASON[state],
+    actionable: isActionableState(state),
+    // The SLA clock keeps running even for unactionable cells — "NYT has been
+    // missing 400h and we've stopped trying" is the honest report, and the
+    // scoreboard needs the age to rank it.
+    slaClockHours: c.clockAgeHours == null ? null : Math.round(c.clockAgeHours),
+    attempts: Number.isFinite(c.attempts) ? c.attempts : 0,
+    nextEligibleAt: c.nextEligibleAt || null,
+  };
 }
 
 /**
@@ -108,4 +181,8 @@ function serializeLedger(ledger) {
   return JSON.stringify(sortDeep(ledger), null, 2) + '\n';
 }
 
-module.exports = { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, GRACE_HOURS };
+module.exports = {
+  classifyCell, classifyCellDetailed, isActionableState,
+  mergeLedger, serializeLedger, isDispatchTierOutlet,
+  GRACE_HOURS, CELL_DISPOSITION, CELL_REASON,
+};

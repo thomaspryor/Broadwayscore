@@ -60,3 +60,50 @@ test('non-GAP cells (IN_FLIGHT / SUPPRESSED / NO_REVIEW_EXPECTED) are not in the
   assert.equal(digest.length, 0, 'only GAP cells are digested');
   assert.equal(actions.length, 0);
 });
+
+// --- ship-check fix: CIRCUIT_OPEN must stay VISIBLE but never ACTIONABLE -----
+
+test('a CIRCUIT_OPEN cell IS listed in the digest (it used to vanish entirely)', () => {
+  // Regression guard for the worst defect in this sprint: the breaker converted
+  // GAP→CIRCUIT_OPEN and the cell then disappeared from the digest AND the
+  // scoreboard, so "we quietly stopped trying" became invisible — the exact
+  // silent-gap failure the v2 reconciler plan exists to eliminate.
+  const ledger = { shows: { s: { title: 'S', market: 'broadway', cells: {
+    nytimes: { state: 'CIRCUIT_OPEN', firstSeenAt: '2026-06-01T00:00:00.000Z' },
+    vulture: { state: 'GAP', firstSeenAt: '2026-07-01T00:00:00.000Z' },
+    ap: { state: 'SUPPRESSED', firstSeenAt: '2026-07-01T00:00:00.000Z' },
+    ew: { state: 'IN_FLIGHT', firstSeenAt: '2026-07-29T00:00:00.000Z' },
+  } } } };
+  const { digest } = buildDigest(ledger, { rolloutAt: '2026-01-01T00:00:00.000Z' }, Date.parse('2026-07-30T00:00:00Z'));
+  const byOutlet = Object.fromEntries(digest.map((r) => [r.outletId, r]));
+  assert.deepEqual(Object.keys(byOutlet).sort(), ['nytimes', 'vulture'],
+    'GAP + CIRCUIT_OPEN listed; SUPPRESSED/IN_FLIGHT still excluded');
+  assert.equal(byOutlet.nytimes.state, 'CIRCUIT_OPEN');
+  assert.equal(byOutlet.nytimes.actionable, false);
+  assert.equal(byOutlet.vulture.actionable, true);
+  assert.ok(byOutlet.nytimes.ageHours > 1000, 'its age is reported, not reset');
+});
+
+test('CIRCUIT_OPEN never becomes an ACTION email, however old', () => {
+  const ledger = { shows: { s: { title: 'S', market: 'broadway', cells: {
+    nytimes: { state: 'CIRCUIT_OPEN', firstSeenAt: '2026-07-25T00:00:00.000Z' }, // post-rollout, >24h
+  } } } };
+  const { digest, actions } = buildDigest(ledger,
+    { rolloutAt: '2026-07-01T00:00:00.000Z', alertedCells: [] },
+    Date.parse('2026-07-30T00:00:00Z'));
+  assert.equal(digest.length, 1, 'still reported');
+  assert.deepEqual(actions, [], 'but never paged — the owner cannot act, and a gather would be a no-op');
+});
+
+test('CIRCUIT_OPEN fix text points at the breaker, not at another gather', () => {
+  const ledger = { shows: { s: { title: 'S', market: 'broadway', cells: {
+    nytimes: { state: 'CIRCUIT_OPEN', firstSeenAt: '2026-07-01T00:00:00.000Z' },
+    vulture: { state: 'GAP', firstSeenAt: '2026-07-01T00:00:00.000Z' },
+  } } } };
+  const { digest } = buildDigest(ledger, { rolloutAt: '2026-01-01T00:00:00.000Z' }, Date.parse('2026-07-30T00:00:00Z'));
+  const co = digest.find((r) => r.outletId === 'nytimes');
+  const gap = digest.find((r) => r.outletId === 'vulture');
+  assert.match(co.fix, /circuit breaker/i);
+  assert.doesNotMatch(co.fix, /gh workflow run gather-reviews/, 'must not suggest the spend the breaker just stopped');
+  assert.match(gap.fix, /gh workflow run gather-reviews/, 'a real GAP still gets the gather command');
+});
