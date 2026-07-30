@@ -117,6 +117,12 @@ const AUTO_FIX_PLAYBOOK = [
     humanAction: "A scheduled pipeline hasn't run recently. It may just be delayed — check again tomorrow." },
 
   // Quality — needs investigation
+  { match: /^Quality: standingCoverage drift$/, urgency: 'this-week',
+    humanAction: 'Some critic outlets should be added to or removed from the "reviews every Broadway opening" list, based on their actual coverage. Open Claude Code and say: "Check the standingCoverage drift and update outlet-registry.json."' },
+  { match: /^Quality: coverageExpectation drift$/, urgency: 'this-week',
+    humanAction: 'An outlet\'s "does not review theatre" flag is stale or contradicted by actual coverage. Open Claude Code and say: "Check the coverageExpectation drift and re-decide the flagged outlets."' },
+  { match: /^Quality: outlet-heartbeat red flags$/, urgency: 'this-week',
+    humanAction: 'One or more critic outlets have gone quiet for 2+ straight weekly checks. Open Claude Code and say: "Check the outlet-heartbeat red flags and find out if the outlet stopped reviewing or an extractor broke."' },
   { match: /^Quality:/, urgency: 'this-week',
     humanAction: 'The percentage of scored reviews has dropped. Open Claude Code and say: "Check why the scored review percentage dropped and fix it."' },
 
@@ -887,6 +893,124 @@ function checkQuality() {
         return { name: 'Quality: corpus drift', status: 'warn', message: `${drifted.length} audit(s) drifting: ${drifted.map(a => a.label || a.name).join(', ')}`, hint: 'Non-blocking corpus drift — review data/audit/corpus-drift.json' };
       }
       return { name: 'Quality: corpus drift', status: 'pass', message: `${audits.length} audits within thresholds (${formatAge(age)} ago)` };
+    }),
+  ];
+}
+
+// --- Outlet health signals (card #641) ---
+// standingCoverage drift (card #627), coverageExpectation drift (card #640), and
+// outlet-heartbeat red flags (card #582/#299) were all computed correctly but
+// dead-ended in an unread GH Actions step summary of a weekly unattended cron —
+// nobody opens that run to scroll it. Same fix as "Quality: corpus drift" above:
+// give each signal a digest row so it's visible without opening Actions.
+function loadOutletHealthCoreData() {
+  const showsFile = path.join(DATA_DIR, 'shows.json');
+  const reviewsFile = path.join(DATA_DIR, 'reviews.json');
+  const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
+  if (!fs.existsSync(showsFile) || !fs.existsSync(reviewsFile) || !fs.existsSync(registryFile)) {
+    return null;
+  }
+  // Called directly in checkOutletHealth() (not through runCheck), so a
+  // concurrent writer leaving one of these files mid-write/truncated must not
+  // throw here — that would escape to main().catch() and kill the whole
+  // digest, sending no email at all (ship-check finding, 2026-07-30).
+  try {
+    return {
+      shows: readJSON(showsFile).shows,
+      reviews: readJSON(reviewsFile).reviews,
+      outlets: readJSON(registryFile).outlets,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function checkOutletHealth() {
+  const core = loadOutletHealthCoreData();
+
+  return [
+    // standingCoverage is DERIVED from measured Broadway coverage (card #627) —
+    // recomputed live off current core data every run, same as the source
+    // audit-standing-coverage.js script does, so no separate snapshot file or
+    // staleness window is needed.
+    runCheck('Quality: standingCoverage drift', () => {
+      if (!core) {
+        return { name: 'Quality: standingCoverage drift', status: 'pass', message: 'Skipped (core data not checked out)' };
+      }
+      const { evaluateStandingCoverage } = require('./audit-standing-coverage');
+      const result = evaluateStandingCoverage(core.shows, core.reviews, core.outlets, Date.now());
+      const drifted = result.promote.length + result.demote.length;
+      if (drifted === 0) {
+        return { name: 'Quality: standingCoverage drift', status: 'pass', message: 'No standingCoverage drift' };
+      }
+      const parts = [];
+      if (result.promote.length) parts.push(`promote: ${result.promote.join(', ')}`);
+      if (result.demote.length) parts.push(`demote: ${result.demote.join(', ')}`);
+      return {
+        name: 'Quality: standingCoverage drift',
+        status: 'warn',
+        message: `${drifted} outlet(s) drifted from outlet-registry.json standingCoverage flags (${parts.join('; ')})`,
+        hint: 'Run `node scripts/audit-standing-coverage.js` and update outlet-registry.json standingCoverage flags.',
+      };
+    }),
+
+    // coverageExpectation ("this outlet does NOT review theatre") claims decay
+    // on their own DECAY_DAYS window (card #640) — same live recompute, no
+    // snapshot file.
+    runCheck('Quality: coverageExpectation drift', () => {
+      if (!core) {
+        return { name: 'Quality: coverageExpectation drift', status: 'pass', message: 'Skipped (core data not checked out)' };
+      }
+      const { evaluateCoverageExpectationDrift } = require('./audit-standing-coverage');
+      const result = evaluateCoverageExpectationDrift(core.shows, core.reviews, core.outlets, Date.now());
+      if (result.needsReprobe.length === 0) {
+        return { name: 'Quality: coverageExpectation drift', status: 'pass', message: 'No coverageExpectation re-probes needed' };
+      }
+      return {
+        name: 'Quality: coverageExpectation drift',
+        status: 'warn',
+        message: `${result.needsReprobe.length} outlet(s) need coverageExpectation re-decision: ${result.needsReprobe.join(', ')}`,
+        hint: 'Run `node scripts/audit-standing-coverage.js --coverage-expectation` and update outlet-registry.json coverageExpectation/coverageExpectationDecidedAt.',
+      };
+    }),
+
+    // outlet-heartbeat DOES have a persisted weekly snapshot (committed by
+    // audit-critic-coverage.yml) — read it and check staleness, same posture
+    // as "Quality: corpus drift". Actionability is gated on the SAME
+    // redStreak>=2 threshold outlet-heartbeat-state.js already uses for its
+    // Discord ACTION alert (data/audit/outlet-heartbeat-state.json,
+    // updateHeartbeatState()) rather than raw current-run status==='red' —
+    // a single red week is deliberately treated as noise there (long-silent
+    // outlets like newsday sit red every week), so re-warning on every row
+    // that's merely red-this-week would just recreate the "unread signal"
+    // problem this card exists to fix (ship-check finding, 2026-07-30).
+    runCheck('Quality: outlet-heartbeat red flags', () => {
+      const heartbeatFile = path.join(AUDIT_DIR, 'outlet-heartbeat.json');
+      if (!fs.existsSync(heartbeatFile)) {
+        return { name: 'Quality: outlet-heartbeat red flags', status: 'warn', message: 'No outlet-heartbeat.json (audit-critic-coverage.yml may not have run)', hint: 'Trigger the "Audit Critic Coverage" workflow' };
+      }
+      const data = readJSON(heartbeatFile);
+      const age = data?.generatedAt ? hoursAgo(data.generatedAt) : Infinity;
+      // Weekly cron; 8 days means it's missed a week's run.
+      if (age > 192) {
+        return { name: 'Quality: outlet-heartbeat red flags', status: 'warn', message: `Heartbeat monitor last ran ${formatAge(age)} ago (>8d)`, hint: 'audit-critic-coverage.yml may be stale/disabled' };
+      }
+      const rows = Array.isArray(data?.rows) ? data.rows : [];
+      const stateFile = path.join(AUDIT_DIR, 'outlet-heartbeat-state.json');
+      const state = fs.existsSync(stateFile) ? readJSON(stateFile) : {};
+      const actionable = rows
+        .filter((r) => (state[`${r.outletId}::${r.market}`]?.redStreak || 0) >= 2)
+        .sort((a, b) => b.silentDays - a.silentDays);
+      if (actionable.length === 0) {
+        return { name: 'Quality: outlet-heartbeat red flags', status: 'pass', message: `${rows.length} outlet×market rows checked, none silent 2+ consecutive weeks (${formatAge(age)} ago)` };
+      }
+      const worst = actionable[0];
+      return {
+        name: 'Quality: outlet-heartbeat red flags',
+        status: 'warn',
+        message: `${actionable.length} T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: ${worst.outletId}/${worst.market}, ${worst.silentDays}d silent vs ${worst.thresholdDays}d threshold)`,
+        hint: 'Run `node scripts/monitor-outlet-recency.js` — check whether the outlet stopped reviewing or an extractor broke (card #582 class).',
+      };
     }),
   ];
 }
@@ -2715,6 +2839,7 @@ async function main() {
     ...checkPipelines(),
     ...checkBatchState(),
     ...checkQuality(),
+    ...checkOutletHealth(),
     ...checkCommercialModelDrift(),
     ...checkCookieExpiration(),
     ...checkCWV(),
