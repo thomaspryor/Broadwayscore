@@ -262,6 +262,18 @@ test('renderAttentionBlock: attemptMemoryParked alone still renders (no crash on
   assert.match(html, /Solo parked card/);
 });
 
+test('attentionCountOf counts attemptMemoryParked, but actionableAttentionCountOf excludes it (ship-check: routine skip, not an owner decision)', () => {
+  const { attentionCountOf, actionableAttentionCountOf } = require('./autonomous-email-render.js');
+  const attention = {
+    configWarnings: [],
+    failedCards: [],
+    parkedItems: [],
+    attemptMemoryParked: [{ name: 'a' }, { name: 'b' }],
+  };
+  assert.equal(attentionCountOf(attention), 2);
+  assert.equal(actionableAttentionCountOf(attention), 0);
+});
+
 test('renderEmail: attention block appears above approval items', () => {
   const { renderEmail } = require('./autonomous-email-render.js');
   const html = renderEmail({
