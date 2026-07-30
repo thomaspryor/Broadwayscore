@@ -772,14 +772,19 @@ function postJSON(url, body, headers = {}) {
       path: u.pathname + u.search,
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(data), ...headers },
+      // Same success contract as send-morning-digest.js (ship-check codex
+      // finding): only 2xx is a send, and a hung socket must fail the run
+      // (which alerts via notify-failure) rather than hang the job.
+      timeout: 15000,
     }, res => {
       let chunks = '';
       res.on('data', c => chunks += c);
       res.on('end', () => {
-        if (res.statusCode >= 400) return reject(new Error(`HTTP ${res.statusCode}: ${chunks}`));
+        if (res.statusCode < 200 || res.statusCode >= 300) return reject(new Error(`HTTP ${res.statusCode}: ${chunks}`));
         try { resolve(JSON.parse(chunks)); } catch { resolve(chunks); }
       });
     });
+    req.on('timeout', () => { req.destroy(new Error('Resend request timed out after 15s')); });
     req.on('error', reject);
     req.write(data);
     req.end();
@@ -844,7 +849,7 @@ async function main() {
   }
 
   console.log(`Sending opening digest to ${SEND_TO}...`);
-  await postJSON('https://api.resend.com/emails', {
+  const res = await postJSON('https://api.resend.com/emails', {
     from: `${FROM_NAME} <${FROM_EMAIL}>`,
     to: [SEND_TO],
     subject,
@@ -852,12 +857,13 @@ async function main() {
   }, {
     'Authorization': `Bearer ${RESEND_API_KEY}`,
   });
-  console.log(`Sent. ${subject}`);
+  console.log(`Sent. ${subject} (id ${res?.id || '?'})`);
 }
 
-// Exported for unit tests (tests/unit/opening-digest-gates.test.mjs). The display
-// gates are the load-bearing trust logic — test them against the real fns.
-module.exports = { minReviewsToShowScore, getAudience, MIN_AUDIENCE_REVIEWS };
+// Exported for unit tests (tests/unit/opening-digest-gates.test.mjs + the
+// subject↔classifier parity test in scheduled-email-count-rules.test.mjs).
+// The display gates are the load-bearing trust logic — test the real fns.
+module.exports = { minReviewsToShowScore, getAudience, MIN_AUDIENCE_REVIEWS, buildSubject, buildDigestLead };
 
 if (require.main === module) {
   main().catch(err => {

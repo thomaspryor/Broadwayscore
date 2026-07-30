@@ -155,7 +155,7 @@ async function main() {
   // recent complete day.
   const { decideDayMissing } = require('./lib/scheduled-email-count-rules');
   const yesterdayKey = dayKeyET(new Date(Date.now() - 24 * 3600 * 1000).toISOString());
-  const missingDecision = yesterdayKey < todayKey ? decideDayMissing(days.get(yesterdayKey)) : { missing: false, missingExpected: [] };
+  const missingDecision = yesterdayKey < todayKey ? decideDayMissing(days.get(yesterdayKey), yesterdayKey) : { missing: false, missingExpected: [] };
   const missingExpected = missingDecision.missingExpected || [];
 
   if (completeViolations.length === 0 && missingExpected.length === 0) {
