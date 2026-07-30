@@ -318,6 +318,20 @@ async function processRecover(items) {
           delete data.wrongShow;
           delete data.wrongShowReason;
 
+          // The embedded contentVerification sub-object (the ORIGINAL CV verdict that
+          // caused the flag) must also be corrected — rebuild-all-reviews.js's CV
+          // pre-pass reads d.contentVerification.wrongProduction directly and
+          // re-promotes it to the top-level field on every rebuild, silently undoing
+          // this recovery the next time rebuild-all-reviews.js runs. Found live via
+          // card #632: a rebuild between recovery and this fix re-flagged both
+          // reviews from the stale sub-object despite the top-level clear above.
+          if (data.contentVerification) {
+            data.contentVerification.wrongProduction = false;
+            data.contentVerification.wrongArticle = false;
+            data.contentVerification.isFilmTv = false;
+            data.contentVerification.reasoning = `Superseded by retroactive-llm-verify recovery (${provider}, ${result.confidence}): ${result.reasoning || ''}`.trim();
+          }
+
           // A stale contentTier:'invalid' (set when the file was originally flagged)
           // otherwise permanently blocks isIncludableForRebuild's separate invalid-tier
           // gate (review-guards.js) even after wrongProduction/wrongShow are cleared above —
