@@ -1214,19 +1214,26 @@ async function main() {
       for (const f of pre.failures) {
         console.error(`[preflight] ${f.reason}`);
       }
-      // A degraded TIER is not an outage. fetchPage() falls through
-      // BrightData -> ScrapingBee -> Playwright, so ScrapingBee sitting below the
-      // 25% threshold only means that one tier gets skipped. Aborting the whole
-      // sweep on it took the West End aggregator arm dark for 16 days: 8
-      // consecutive failed runs from 2026-07-17, every one exiting on
-      // "SB credit check failed: 0% remaining" while BrightData was healthy in
-      // the same run (e.g. run 30530145995). Only abort when the PRIMARY
-      // provider is down and there is genuinely nothing left to fetch with.
-      const bd = pre.results.find((r) => r.provider === 'BrightData');
-      if (bd && bd.ok) {
-        console.error('[preflight] continuing — BrightData healthy; degraded tiers will be skipped by fetchPage()');
+      // A degraded provider is not a total outage — abort only when NOTHING is
+      // usable. Aborting on ANY degraded provider took the West End aggregator
+      // arm dark for 16 days: 8 consecutive failed runs from 2026-07-17, every
+      // one exiting on "SB credit check failed: 0% remaining" while BrightData
+      // was healthy in the same run (e.g. run 30530145995).
+      //
+      // NOTE for whoever touches this next: this script does NOT go through
+      // fetchPage(), so there is no automatic BD -> SB -> Playwright fallback
+      // here. It calls ScrapingBee directly (scrapingBeeRender at ~:252 and the
+      // WET WP-JSON fallback at ~:484), and in BOTH places SB is already a
+      // second-choice path behind curlJson/direct fetch. So running with SB
+      // exhausted degrades to "curl-only": the WET WordPress API still works,
+      // and only the WAF/Cloudflare-blocked pages are lost. Partial coverage
+      // beats the zero coverage we had for 16 days, but it IS partial — that is
+      // why the surviving-provider list is logged loudly below.
+      const usable = pre.results.filter((r) => r.ok).map((r) => r.provider);
+      if (usable.length > 0) {
+        console.error(`[preflight] continuing DEGRADED — usable provider(s): ${usable.join(', ')}. Blocked pages needing an exhausted provider will be skipped this run.`);
       } else {
-        console.error('[preflight] aborting — primary provider (BrightData) unavailable');
+        console.error('[preflight] aborting — no usable provider');
         process.exit(1);
       }
     }

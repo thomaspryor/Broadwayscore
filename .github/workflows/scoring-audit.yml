@@ -9,6 +9,16 @@ permissions:
   contents: write
   issues: write
 
+# Serialize with every other reviews.json writer. This workflow rebuilds
+# reviews.json and commits shared audit files; it had no concurrency group
+# because it had been failing since 2026-03-01 and was effectively dead. Adding
+# the review-texts checkout makes it a LIVE writer again, so it must join the
+# same lane as rebuild-reviews.yml / rebuild-fast.yml or it can clobber a
+# concurrent rebuild.
+concurrency:
+  group: rebuild-reviews
+  cancel-in-progress: false
+
 jobs:
   scoring-audit:
     runs-on: ubuntu-latest

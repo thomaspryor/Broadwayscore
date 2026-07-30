@@ -34,7 +34,7 @@ test('loadEnv populates keys that launchd would not have provided', () => {
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
-test('loadEnv never clobbers a value already in process.env (CI secrets win)', () => {
+test('loadEnv never clobbers a NON-EMPTY value already in process.env (CI secrets win)', () => {
   const dir = tmpRepo('LOADENV_CI_KEY=from_dotenv\n');
   process.env.LOADENV_CI_KEY = 'from_ci';
 
@@ -44,6 +44,52 @@ test('loadEnv never clobbers a value already in process.env (CI secrets win)', (
   assert.ok(!res.keys.includes('LOADENV_CI_KEY'), 'must not report keys it did not set');
 
   delete process.env.LOADENV_CI_KEY;
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// launchd/CI can export FOO= with no value. Treating that as "already set" would
+// leave the credential blank — the exact silent failure this file exists to stop.
+test('loadEnv DOES fill an empty-string env var from .env', () => {
+  const dir = tmpRepo('LOADENV_EMPTY_KEY=real_value\n');
+  process.env.LOADENV_EMPTY_KEY = '';
+
+  const res = loadEnv(dir);
+
+  assert.equal(process.env.LOADENV_EMPTY_KEY, 'real_value');
+  assert.ok(res.keys.includes('LOADENV_EMPTY_KEY'));
+
+  delete process.env.LOADENV_EMPTY_KEY;
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('loadEnv strips a UTF-8 BOM so the first key is not mangled', () => {
+  const dir = tmpRepo('﻿LOADENV_BOM_KEY=bom_value\n');
+  delete process.env.LOADENV_BOM_KEY;
+  loadEnv(dir);
+  assert.equal(process.env.LOADENV_BOM_KEY, 'bom_value');
+  assert.equal(process.env['﻿LOADENV_BOM_KEY'], undefined);
+  delete process.env.LOADENV_BOM_KEY;
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('loadEnv handles `export KEY=value` (shell-sourceable .env)', () => {
+  const dir = tmpRepo('export LOADENV_EXPORT_KEY=exported\n');
+  delete process.env.LOADENV_EXPORT_KEY;
+  loadEnv(dir);
+  assert.equal(process.env.LOADENV_EXPORT_KEY, 'exported');
+  assert.equal(process.env['export LOADENV_EXPORT_KEY'], undefined);
+  delete process.env.LOADENV_EXPORT_KEY;
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// It must NEVER throw — throwing kills the launchd job it exists to keep alive.
+test('loadEnv returns cleanly when .env is unreadable (a directory)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'load-env-'));
+  fs.mkdirSync(path.join(dir, '.env')); // a DIRECTORY named .env
+  let res;
+  assert.doesNotThrow(() => { res = loadEnv(dir); });
+  assert.equal(res.loaded, false);
+  assert.deepEqual(res.keys, []);
   fs.rmSync(dir, { recursive: true, force: true });
 });
 

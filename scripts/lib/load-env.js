@@ -17,8 +17,9 @@
  * MODULE_NOT_FOUND and take the whole job down — strictly worse than the
  * missing-credential bug it is meant to fix.
  *
- * Existing process.env values always win, so CI (which injects real secrets via
- * `env:`) is unaffected and a stale local .env can never shadow them.
+ * A non-empty existing process.env value always wins, so CI (which injects real
+ * secrets via `env:`) is unaffected and a stale local .env can never shadow it.
+ * An EMPTY existing value is treated as absent and gets filled from .env.
  */
 
 const fs = require('fs');
@@ -34,12 +35,28 @@ const path = require('path');
 function loadEnv(repoRoot) {
   const root = repoRoot || path.join(__dirname, '..', '..');
   const envPath = path.join(root, '.env');
-  if (!fs.existsSync(envPath)) return { loaded: false, path: envPath, keys: [] };
+
+  // NEVER throw. This function exists to keep a launchd job alive; if it dies
+  // here it takes down the very job it is meant to fix. existsSync + readFileSync
+  // is a TOCTOU race, and readFileSync also throws on a directory, a permissions
+  // problem, or a mid-read unlink — all of which must degrade to "no .env".
+  let raw;
+  try {
+    raw = fs.readFileSync(envPath, 'utf8');
+  } catch (err) {
+    return { loaded: false, path: envPath, keys: [], error: err.code || String(err) };
+  }
+
+  // Strip a UTF-8 BOM, else the first key parses as "﻿RESEND_API_KEY".
+  if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
 
   const keys = [];
-  for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
-    const trimmed = line.trim();
+  for (const line of raw.split('\n')) {
+    let trimmed = line.trim();
     if (!trimmed || trimmed.startsWith('#')) continue;
+    // `export FOO=bar` is valid in a shell-sourced .env (opening-night-monitor.sh
+    // does `source .env`), and without this the key parses as "export FOO".
+    if (trimmed.startsWith('export ')) trimmed = trimmed.slice(7).trim();
     const eq = trimmed.indexOf('=');
     if (eq === -1) continue;
     const key = trimmed.slice(0, eq).trim();
@@ -49,8 +66,12 @@ function loadEnv(repoRoot) {
     if (val.length >= 2 && ((val[0] === '"' && val.endsWith('"')) || (val[0] === "'" && val.endsWith("'")))) {
       val = val.slice(1, -1);
     }
-    // Never clobber a value the caller/CI already set.
-    if (process.env[key] === undefined) {
+    // Fill in anything the environment did not usefully provide. An empty-string
+    // env var counts as absent on purpose: launchd/CI can export FOO= with no
+    // value, and treating that as "already set" would leave the credential
+    // blank — the exact silent-no-credential failure this file exists to stop.
+    // A real CI secret is non-empty, so it still wins.
+    if (process.env[key] === undefined || process.env[key] === '') {
       process.env[key] = val;
       keys.push(key);
     }
