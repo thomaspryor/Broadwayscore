@@ -22,7 +22,11 @@ concurrency:
 jobs:
   scoring-audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 30, not 15: all 6 prior runs failed in 45-100s (missing review-texts
+    # checkout), so the 15min budget was never actually exercised against a real
+    # rebuild. The comparable rebuild-reviews.yml allots 30min and takes 6-12min
+    # WITHOUT this workflow's cold-cache `npm ci` on a monthly cron.
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -74,6 +78,14 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          # rebuild-all-reviews.js also rewrites TRACKED public files
+          # (public/data/admin/locks.json, public/data/admin/critic-coverage.json).
+          # This workflow is an AUDIT — rebuild-reviews.yml owns publishing — so
+          # discard them. Leaving them dirty breaks the push: push-with-retry.sh
+          # runs `git rebase -X theirs` with no --autostash, and git refuses to
+          # rebase with unstaged tracked changes. That failure mode only became
+          # reachable once the review-texts checkout made the rebuild succeed.
+          git checkout -- public/data 2>/dev/null || true
           git add data/audit/scoring-audit.json data/audit/scoring-audit.md data/audit/scoring-audit-history.json data/audit/needs-human-review.json data/audit/rebuild-score-drift.json
           if git diff --staged --quiet; then
             echo "No changes to commit"

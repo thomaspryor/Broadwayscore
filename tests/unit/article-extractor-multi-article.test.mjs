@@ -92,6 +92,44 @@ describe('article-extractor: generic <article> picks largest match', () => {
   });
 });
 
+describe('validateContentMentionsShow: diacritic folding', () => {
+  // Regression for the 2026-07-30 pipeline-health-audit fix. showId slugs are
+  // ASCII ("les-miserables-...") while outlets spell the show correctly
+  // ("Les Misérables"), so before NFD folding NO showId token could match a
+  // correctly-accented headline. The <title> backstop then rejected genuine
+  // reviews as url_content_mismatch: the NY Sun's review of Les Misérables:
+  // The Arena Concert Spectacular had 12 body mentions and was still dropped.
+  const ACCENTED_TITLE = 'Les Misérables: The Arena Concert Spectacular';
+  const ACCENTED_ID = 'les-miserables-arena-concert-spectacular-off-broadway-2026';
+
+  test('accented <title> matches the ASCII showId token', () => {
+    const html =
+      '<html><head><title>Les Misérables Revolutionizes Radio City With a Vengeance ' +
+      '| The New York Sun</title></head><body></body></html>';
+    const text =
+      'Les Misérables: The Arena Concert Spectacular opened at Radio City Music Hall. '.repeat(3) +
+      'The staging is vast. '.repeat(60);
+    const result = validateContentMentionsShow(text, html, ACCENTED_TITLE, ACCENTED_ID);
+    assert.strictEqual(result.valid, true, `expected valid, got: ${result.reason}`);
+    assert.strictEqual(result.htmlTitleMatch, true, 'accented <title> should match the folded token');
+  });
+
+  test('folding does NOT let a different show pass (CDN misroute still rejected)', () => {
+    const wrongText = "Everybody's Talking About Jamie is a joyous coming-of-age musical. ".repeat(20);
+    const wrongHtml = "<title>Everybody's Talking About Jamie review | The New York Sun</title>";
+    const result = validateContentMentionsShow(wrongText, wrongHtml, ACCENTED_TITLE, ACCENTED_ID);
+    assert.strictEqual(result.valid, false, 'a wrong-show page must still be rejected');
+  });
+
+  test('folding does NOT let a roundup page pass on a single mention', () => {
+    const html =
+      '<title>5 shows to see this week: Les Misérables and more | The New York Sun</title>';
+    const text = 'Les Misérables is one of five. ' + 'filler text here. '.repeat(120);
+    const result = validateContentMentionsShow(text, html, ACCENTED_TITLE, ACCENTED_ID);
+    assert.strictEqual(result.valid, false, 'a roundup <title> must still be rejected');
+  });
+});
+
 describe('validateContentMentionsShow: curly quote normalization', () => {
   test("'Joe Turner's' (curly) matches showTitle 'Joe Turner's' (straight)", () => {
     // Text uses curly apostrophe (U+2019) — what the NY Sun and most major
