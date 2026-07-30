@@ -22,19 +22,9 @@ const { execSync, spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
-// Load .env from project root (manual parse to avoid dotenv dependency)
-const envPath = path.join(__dirname, '..', '.env');
-if (fs.existsSync(envPath)) {
-  for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const eq = trimmed.indexOf('=');
-    if (eq === -1) continue;
-    const key = trimmed.slice(0, eq);
-    const val = trimmed.slice(eq + 1);
-    if (!process.env[key]) process.env[key] = val;
-  }
-}
+// Load .env from project root. Shared with opening-night-monitor-launch.js and
+// any other job that runs outside a login shell (launchd/cron get no shell env).
+require('./lib/load-env.js').loadEnv(path.join(__dirname, '..'));
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const REPO_DIR = path.join(__dirname, '..');
