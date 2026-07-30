@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Backlog drain engine (task #654, owner mandate 2026-07-30): ticks
+         3x/day (10:00/14:00/18:00 ET) and runs scripts/backlog-drain.js,
+         which reconciles prior drain dispatches, checks the concurrency cap
+         + spend circuit breaker (#635), and — if clear — dispatches the
+         OLDEST eligible pending card from the FULL backlog pool (any
+         priority) through bsc-next.js's own --headless path. Always
+         recomputes the digest metric (data/audit/backlog-drain-metric.json)
+         so send-morning-digest.js can render it.
+
+         DISABLED BY DEFAULT — this file is NOT installed. Do not
+         `launchctl bootstrap` this without the owner reviewing at least one
+         supervised manual run first (`node scripts/backlog-drain.js`) and
+         explicitly deciding to turn on continuous unattended dispatch.
+
+         StartCalendarInterval entries are LOCAL TIME on this Mac
+         (America/New_York, DST-safe — launchd reads the system clock).
+
+         Secrets (NOTION_TOKEN for `notion-brain.js get`) come from the
+         repo's .env via bsc-next.js's own chain — launchd does NOT inherit
+         shell env; no secrets are read directly by this plist.
+
+         Install (owner action, after reviewing night-1 output):
+           cp scripts/launchd/com.broadwayscore.backlog-drain.plist ~/Library/LaunchAgents/
+           launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.backlog-drain.plist
+         Manual run (no launchd): node scripts/backlog-drain.js
+         Manual tick via launchd: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.backlog-drain
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.backlog-drain -->
+    <key>Label</key>
+    <string>com.broadwayscore.backlog-drain</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; { git fetch origin main --quiet &amp;&amp; git merge --ff-only origin/main --quiet || echo "[backlog-drain] ff-only update skipped (dirty/diverged checkout) — running with local data"; } &amp;&amp; exec node scripts/backlog-drain.js</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict>
+            <key>Hour</key>
+            <integer>10</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>14</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>18</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+    </array>
+    <key>StandardOutPath</key>
+    <string>/tmp/backlog-drain-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/backlog-drain-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

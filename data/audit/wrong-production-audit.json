@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-07-30T19:57:54.554Z",
+  "timestamp": "2026-07-30T23:50:12.052Z",
   "stats": {
-    "totalReviews": 40973,
+    "totalReviews": 40978,
     "alreadyFlagged": 17933,
     "dateGuardCatches": 67,
     "directorMismatch": 934,
-    "tvFilmSignals": 1121,
+    "tvFilmSignals": 1122,
     "londonSignals": 767,
-    "offBroadwaySignals": 464,
+    "offBroadwaySignals": 465,
     "yearMismatch": 85,
     "noPublishDate": 3378
   },
@@ -3823,6 +3823,20 @@
       "score": 62,
       "publishDate": "2026-07-28",
       "url": "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "file": "vanityfair--kase-wickman.json",
+      "score": 88,
+      "publishDate": "2026-07-24",
+      "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -30845,6 +30859,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "black-swan-regional-2026",
+      "file": "playbill--gabby.json",
+      "publishDate": "2026-06-16",
+      "url": "https://playbill.com/article/did-reviewers-think-american-repertory-theaters-black-swan-was-perfect",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },

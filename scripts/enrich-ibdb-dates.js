@@ -20,12 +20,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const { lookupIBDBDates, batchLookupIBDBDates } = require('./lib/ibdb-dates');
 const { cleanup } = require('./lib/scraper');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { parseErrorLines, evaluateCommitDecision } = require('./lib/validation-setdiff');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -58,6 +60,38 @@ function loadShows() {
 
 function saveShows(data) {
   showsWriteGuard.saveShows(data);
+}
+
+const REPO_ROOT = path.join(__dirname, '..');
+
+// Runs validate-data.js as a subprocess and returns its combined output plus
+// exit code, regardless of exit code — used to build error sets for the
+// set-diff below (task #649). validate-data.js always process.exit()s, so it
+// can't be require()'d as a library; execSync + catching the throw is the
+// only way to capture output on a non-zero exit. The exit code feeds
+// evaluateCommitDecision's crash-safety net: a crash/format-change that
+// exits non-zero but prints nothing matching "❌ ERROR:" must not read as a
+// clean pass.
+function runValidateCapture() {
+  try {
+    const output = execSync('node scripts/validate-data.js', { cwd: REPO_ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+    return { output, exitCode: 0 };
+  } catch (e) {
+    return { output: `${e.stdout || ''}${e.stderr || ''}`, exitCode: typeof e.status === 'number' ? e.status : 1 };
+  }
+}
+
+// Mirrors the path validate-data.js and .github/actions/push-core-data use
+// for the push-refusal sentinel. validate-data.js writes this file whenever
+// it exits with ANY error, pre-existing or not — so when this run's
+// post-enrichment error set introduces nothing new over the baseline, we
+// must explicitly clear it ourselves or push-core-data's `if: always()`
+// step stays blocked by a failure this run didn't cause (task #649).
+function clearPushRefusalSentinel() {
+  const sentinel = path.join(process.env.RUNNER_TEMP || '/tmp', '.skip-push-core-data');
+  try {
+    if (fs.existsSync(sentinel)) fs.unlinkSync(sentinel);
+  } catch (_) { /* non-fatal */ }
 }
 
 async function main() {
@@ -335,6 +369,20 @@ async function main() {
 
   // Apply changes (unless dry-run or verify)
   if (!dryRun && !verify && changes.length > 0) {
+    // Baseline BEFORE this run writes anything — lets the post-write check
+    // below tell "this run introduced a new validation error" apart from "a
+    // peripheral file was already broken" (same set-diff pattern as
+    // update-show-status.yml's discovery gate). Scoped to the write branch
+    // so a no-op run (changes.length === 0) never spends the extra
+    // validate-data.js invocation or risks writing a sentinel this run
+    // didn't earn (task #649).
+    console.log('');
+    console.log('Running baseline data validation (pre-enrichment)...');
+    const baselineErrors = parseErrorLines(runValidateCapture().output);
+    if (baselineErrors.length > 0) {
+      console.log(`ℹ️  ${baselineErrors.length} pre-existing validation error(s) — will not block this run's commit unless it introduces NEW ones.`);
+    }
+
     for (const c of changes) {
       const showRecord = data.shows.find(s => s.slug === c.slug);
       if (!showRecord) continue;
@@ -365,15 +413,26 @@ async function main() {
     saveShows(data);
     console.log(`✅ Updated ${updated} show(s) in shows.json`);
 
-    // Run validation
+    // Run validation, compared against the baseline above (task #649).
+    // validate-data.js itself writes the push-refusal sentinel whenever
+    // errors.length > 0 — pre-existing or not — so a run that introduces no
+    // NEW error must explicitly clear it, or the workflow's
+    // `if: always()` push-core-data step stays blocked by a failure this
+    // run didn't cause.
     console.log('');
     console.log('Running data validation...');
-    try {
-      const { execSync } = require('child_process');
-      execSync('node scripts/validate-data.js', { stdio: 'inherit', cwd: path.join(__dirname, '..') });
-      console.log('✅ Validation passed');
-    } catch (e) {
-      console.error('❌ Validation failed! Review changes.');
+    const { output: postOutput, exitCode: postExitCode } = runValidateCapture();
+    const postErrors = parseErrorLines(postOutput);
+    const { shouldCommit, newErrors, reason } = evaluateCommitDecision({ preErrors: baselineErrors, postErrors, postExitCode });
+    if (shouldCommit) {
+      console.log(`✅ Validation passed (${reason})`);
+      if (postErrors.length > 0) {
+        console.log('ℹ️  Clearing the push-refusal sentinel so the commit still lands (pre-existing errors are unrelated to this run).');
+        clearPushRefusalSentinel();
+      }
+    } else {
+      console.error(`❌ Validation failed! ${reason}`);
+      newErrors.forEach((e, i) => console.error(`   ${i + 1}. ${e}`));
       process.exit(1);
     }
   } else if (changes.length === 0) {
