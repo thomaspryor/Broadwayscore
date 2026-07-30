@@ -75,8 +75,13 @@ function loadShows() {
 function monitorCandidates(shows, now) {
   // Same predicate as the orchestrator, with the monitor's broader flags —
   // then narrowed to shows actually inside their curtain window right now.
+  // Evidence keeps the monitor's selection a strict superset of the
+  // orchestrator's — without it, the deliberately-broader monitor would be
+  // NARROWER than the CLI on the evidence-anchored arm (QA finding).
+  const { loadReviewEvidence } = require('./lib/review-evidence.js');
   const selected = selectOpeningNightShows(shows, {
     market: '', now, includeUntrusted: true, ignoreStatus: true,
+    evidence: loadReviewEvidence(),
   });
   return activeWindows(selected, now);
 }

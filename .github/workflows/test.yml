@@ -141,6 +141,12 @@ on:
       - 'scripts/lib/reverse-discovery.js'
       - 'scripts/lib/reverse-discovery.test.mjs'
       - 'scripts/audit-reverse-discovery.js'
+      # Evidence-anchored selection (Sprint A, v2 reconciler plan): the shared
+      # review-evidence store + the roundup date-backfill writer. The evidence
+      # predicate is covered by opening-night-selection.test.mjs and
+      # reverse-discovery.test.mjs (both in the lib-test glob).
+      - 'scripts/lib/review-evidence.js'
+      - 'scripts/backfill-dates-from-roundups.js'
       # Feedback pipeline pending-diagnoses persistence (2026-07-10, cancelled-run
       # recovery). Test lives in tests/unit/pending-diagnoses.test.mjs; path-listed
       # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
