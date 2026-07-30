@@ -28,6 +28,7 @@ const path = require('path');
 const { normalizeOutlet, resolveOutletFromUrl, isJunkOutlet } = require('./review-normalization');
 const { verifyAggregatorUrl } = require('./show-match-verifier');
 const { parseArticleBodyReviews } = require('./bww-roundup-parser');
+const { standingOutletsSource } = require('./standing-outlets');
 
 // Pull the canonical/og URL out of an archived roundup page so verifyAggregatorUrl
 // can score the slug. Falls back to '' (it then relies on the page <title> + venue).
@@ -283,6 +284,13 @@ function buildCensusFromArchives(showId, opts = {}) {
   // roundup set. Callers pass `market` ('nyc'|'broadway'|'off-broadway'|'west-end')
   // or an injected `sources` array (tests). Defaults to WE for legacy callers.
   const sources = opts.sources || sourceExtractors(opts.market || 'west-end');
+  // B1 (standingOutlets): a PSEUDO-source, appended only when the caller passes
+  // an outlet registry — no archive file, so it's kept out of sourceExtractors()
+  // to leave that function pure/archive-only for its existing tests. See
+  // lib/standing-outlets.js for why this makes outlet silence a visible gap.
+  const allSources = opts.outlets
+    ? [...sources, { name: 'standing-outlets', pseudo: true, fn: standingOutletsSource }]
+    : sources;
   const perSource = [];
   // Track which archives EXISTED vs which yielded 0 reviews. A file present but
   // extracting 0 (DOM drift / parser break) is otherwise indistinguishable from
@@ -292,7 +300,17 @@ function buildCensusFromArchives(showId, opts = {}) {
   const archivesPresent = [];
   const zeroExtract = [];
   const wrongRoundup = [];
-  for (const s of sources) {
+  for (const s of allSources) {
+    if (s.pseudo) {
+      // No archive file, no network — computed directly from opts (e.g. the
+      // outlet registry). Never counted in archivesPresent/zeroExtract: an
+      // empty result here is a legitimate "no standing outlets configured
+      // for this market", not a broken parser.
+      let reviews = [];
+      try { reviews = s.fn(showId, opts) || []; } catch (_) { reviews = []; }
+      if (Array.isArray(reviews) && reviews.length) perSource.push({ source: s.name, reviews });
+      continue;
+    }
     const p = path.join(archiveDir, s.dir, `${showId}.${s.ext || 'html'}`);
     if (!fs.existsSync(p)) continue;
     archivesPresent.push(s.name);
@@ -362,4 +380,5 @@ function censusVerdict(census, coveredScoredOutlets, opts = {}) {
 module.exports = {
   buildCensusFromArchives, unionCensus, censusVerdict, CI_UNFETCHABLE_OUTLETS,
   sourceExtractors, parseBwwRoundup, parseDtli, parsePlaybillVerdict, parseShowScore,
+  standingOutletsSource,
 };
