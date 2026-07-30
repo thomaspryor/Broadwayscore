@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-30T02:50:56.276Z",
+  "generatedAt": "2026-07-30T04:05:11.324Z",
   "windowDays": 45,
   "showsScanned": 56,
   "gaps": [
@@ -17,12 +17,12 @@
         "ok": true,
         "reason": null
       },
-      "recoveryCount": 1,
+      "recoveryCount": 2,
       "fix": "node scripts/ingest-review-from-url.js --show=loves-labours-lost-globe-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review-shakespeare-ruined-by-puerile-knob-gags-wtr9x5xl9 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-30T00:20:16.388Z",
-      "fileAgeHours": 2.511055,
+      "fileAgeHours": 3.7485680555555554,
       "gapSeenAt": "2026-07-30T02:50:56.276Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 1.2375133333333332
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -37,9 +37,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 157.65549444444446,
+      "fileAgeHours": 158.89300722222222,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 116.95842777777777
+      "nonTerminalAgeHours": 118.19594111111111
     }
   ],
   "contradictions": []
