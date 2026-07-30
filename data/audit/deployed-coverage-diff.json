@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-07-30T17:29:25.811Z",
+  "generatedAt": "2026-07-30T18:26:28.001Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 238,
-  "clean": 238,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "checked": 149,
+  "clean": 148,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "title": "Les Misérables: The Arena Concert Spectacular",
+      "openingDate": "2026-07-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.46 vs local 78.64 (Δ0.18)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 3,
+      "deployedCount": 4
+    }
+  ]
 }

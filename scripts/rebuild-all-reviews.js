@@ -3569,7 +3569,12 @@ showDirs.forEach(showId => {
         // Tour detection (skip tour-stop shows where touring is expected)
         // Auto-exclude: flagged reviews are excluded from reviews.json, not just audited.
         // Override: add "allowTourSignal": true to the review-text JSON to force inclusion.
-        if (!data.allowTourSignal && showStatusMap[showId] !== 'tour-stop') {
+        // type:'special' shows (concert/arena engagements — see isSpecialEngagementVenue)
+        // are ALSO exempt: their reviews routinely and correctly describe the production
+        // itself as "touring" (Les Mis Arena Concert Spectacular @ Radio City, 2026-07-30 —
+        // theatermania's review opens "This star-studded touring production..." which is
+        // accurate, not contamination from a different sit-down production).
+        if (!data.allowTourSignal && showStatusMap[showId] !== 'tour-stop' && showById[showId]?.type !== 'special') {
           const tourCheck = isTourReviewExcerpt(introText);
           if (tourCheck.isTourReview) {
             flagForHumanReview(data, 'possible-tour-fulltext',
