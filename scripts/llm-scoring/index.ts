@@ -85,7 +85,7 @@ import { isScoreable } from './is-scoreable';
 const { emitStage } = require('../lib/stage-latency');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
 const { isInFallbackCooldown } = require('../lib/manual-clear-fallback-cooldown');
-const { markRescoreComplete } = require('../lib/rescore-lifecycle');
+const { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore } = require('../lib/rescore-lifecycle');
 const { pushWithRetry } = require('../lib/push-with-retry.js');
 // venue-classification import removed — market context now passed via input-builder
 
@@ -956,9 +956,21 @@ async function main(): Promise<void> {
   let filesToProcess: typeof allFiles;
   if (options.needsRescore) {
     // Filter to reviews flagged for rescoring (had excerpt-based score, now have fullText)
+    let blockedSkipped = 0;
     filesToProcess = allFiles.filter(f => {
       if ((f.data as any).needsRescore !== true) return false;
       if (!isScoreable(f.data as any, showFor(f.data as any), f.path)) return false;
+      // Head-of-line blocking fix (Notion 3ad637c5-416f-8169): a file that
+      // already failed a deterministic text-gate check (body_too_short etc.)
+      // with the SAME fullText will fail identically again. Skip it so the
+      // capped drain reaches the scoreable tail instead of re-spending 3-model
+      // API cost on the same unscoreable head every run. A later fullText
+      // change (recovered/re-scraped text) clears this automatically — see
+      // isBlockedFromRescore in scripts/lib/rescore-lifecycle.js.
+      if (isBlockedFromRescore(f.data as any)) {
+        blockedSkipped++;
+        return false;
+      }
       // Optional: filter by specific rescoreReason (enables parallel runs for different reasons)
       if (options.rescoreReason) {
         const reason = (f.data as any).rescoreReason || '';
@@ -966,6 +978,9 @@ async function main(): Promise<void> {
       }
       return true;
     });
+    if (blockedSkipped > 0) {
+      console.log(`Skipping ${blockedSkipped} reviews blocked by a prior terminal text-gate failure (fullText unchanged since)\n`);
+    }
     console.log(`Filtering to reviews flagged for rescoring${options.rescoreReason ? ` (reason: "${options.rescoreReason}")` : ''}: ${filesToProcess.length} reviews\n`);
   } else if (options.outdated) {
     // Filter to reviews scored with an older prompt version
@@ -1526,6 +1541,20 @@ async function main(): Promise<void> {
         outletId: reviewFile.outletId || '',
         error: result.error || 'Unknown error'
       });
+      // Head-of-line blocking fix (Notion 3ad637c5-416f-8169): an
+      // inputValidationFailed error (score-input-validator.js's body_too_short
+      // / nav_chrome_majority gates) is a pure function of fullText — the SAME
+      // file fails identically on every future attempt until the text itself
+      // changes. Stamp it so the --needs-rescore selector can skip past it
+      // next run instead of re-spending 3-model API cost on the same
+      // unscoreable head of the queue forever (112 of 181 flagged files
+      // observed 2026-07-30). Transient failures (timeouts, rate limits,
+      // vendor 5xx) are deliberately NOT stamped here — those deserve a retry.
+      if ((result as any).inputValidationFailed && !options.dryRun) {
+        const fileData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        stampTerminalScoringFailure(fileData, result.error || 'input_validation_failed');
+        saveReviewFile(filePath, fileData);
+      }
     }
     // Success and hard-failure both fell THROUGH in the original loop.
     return false;

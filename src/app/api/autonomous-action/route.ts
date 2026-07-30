@@ -420,6 +420,19 @@ async function handleDispatch(req: NextRequest, method: 'GET' | 'POST'): Promise
       '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>', 410);
   }
 
+  // Kill switch (ship-check adversarial finding, codex 2026-07-30): reverting
+  // the sender stops NEW links but every already-delivered "Fix this" stays
+  // tappable until it expires, and rotating APPROVAL_HMAC_SECRET would also
+  // revoke the unrelated approve/reject/revert links. Setting
+  // DISPATCH_LINKS_DISABLED=true in the Vercel env kills the dispatch action
+  // alone, immediately, without touching the other actions.
+  if (process.env.DISPATCH_LINKS_DISABLED === 'true') {
+    return html('Temporarily Disabled',
+      '<h1>Fix-this Links Are Paused</h1><p>One-tap dispatch is temporarily switched off — nothing was changed. ' +
+      'The issue is still recorded in the morning digest.</p>' +
+      '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>', 503);
+  }
+
   const secret = process.env.APPROVAL_HMAC_SECRET;
   if (!secret) {
     return html('Configuration Error',

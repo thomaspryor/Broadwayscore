@@ -30,7 +30,7 @@ const { execFileSync } = require('child_process');
 const ledger = require('./lib/autonomous-ledger.js');
 const { gatherDigest } = require('./lib/overnight-digest.js');
 const { buildActionUrl } = require('./lib/autonomous-links.js');
-const { buildDispatchUrl } = require('./lib/dispatch-link.js');
+const { buildDispatchUrl, attachHealthFixUrls } = require('./lib/dispatch-link.js');
 const { renderEmail, extractWhy, summarizeQueue, buildPlainLanguageItemPrompt, sanitizePlainLanguageText, actionableAttentionCountOf } = require('./lib/autonomous-email-render.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { summarize: summarizeRecheck, describeResult } = require('./lib/autonomous-recheck-core.js');
@@ -469,12 +469,7 @@ async function main() {
   // call already uses (`health-check:${r.name}`) — a tap on an issue that
   // already auto-dispatched via that path lands on the SAME open card
   // instead of filing a duplicate (see handleDispatch's Notion dedup query).
-  if (health && Array.isArray(health.errors)) {
-    for (const e of health.errors) {
-      if (!e || !e.name) continue;
-      e.fixUrl = buildDispatchUrl({ conditionKey: `health-check:${e.name}`, title: `BSC Daily: ${e.name}`, description: e.message || '', exp, secret, baseUrl });
-    }
-  }
+  attachHealthFixUrls({ health, exp, secret, baseUrl });
   // Card #497: same fold-in for the two remaining routine scheduled digests
   // (score-drift + opening-night radar) — null when no fresh snapshot exists.
   const dailyDigest = readDailyDigestSnapshot();
