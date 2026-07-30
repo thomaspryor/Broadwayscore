@@ -83,6 +83,7 @@ function parseEnvelope(raw) {
  * @param {number} [opts.timeoutMs]       wall clock, default 30 min, SIGKILL on expiry
  * @param {number} [opts.maxBufferBytes]  stdout cap, default 16 MB
  * @param {string} [opts.logFile]         raw envelope appended here (created if absent)
+ * @param {string} [opts.settingsPath]    optional --settings deny-list file
  * @param {object} [opts.env]             extra env merged over the stripped base
  * @param {(pid:number)=>void} [opts.onSpawn]  called with the child PID immediately
  * @returns {Promise<{ok:boolean, stage:string|null, resultText:string, sessionId:string|null,
@@ -96,6 +97,7 @@ function runClaudeCli(opts) {
     timeoutMs = 30 * 60 * 1000,
     maxBufferBytes = 16 * 1024 * 1024,
     logFile = null,
+    settingsPath = null,
     env = {},
     onSpawn = null,
   } = opts;
@@ -116,6 +118,7 @@ function runClaudeCli(opts) {
 
   const args = ['--print', '--output-format', 'json', '--dangerously-skip-permissions'];
   if (model) args.push('--model', model);
+  if (settingsPath) args.push('--settings', settingsPath);
   if (resumeSessionId) args.push('--resume', resumeSessionId);
 
   return new Promise((resolve) => {
