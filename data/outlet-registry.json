@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-07-27T19:50:40.848Z",
+    "lastUpdated": "2026-07-30T17:24:18.168Z",
     "version": "2.1.0",
-    "lastChange": "Fold 5 registry-duplicate outlet IDs (no-domain dupes) into domain-owning canonical entries (card 39c637c5)"
+    "lastChange": "standingCoverage derived from measured 3-season Broadway coverage (card #627): +9 outlets clearing the bar, -hollywood-reporter (19%, silence now caught by outlet-cadence heartbeat)"
   },
   "outlets": {
     "westendtheatre": {
@@ -109,6 +109,10 @@
       "domainAliases": [
         "nymag.com",
         "newyorkmetro.com"
+      ],
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
       ]
     },
     "variety": {
@@ -122,7 +126,11 @@
         "varietycom"
       ],
       "domain": "variety.com",
-      "accessModel": "metered"
+      "accessModel": "metered",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "hollywood-reporter": {
       "displayName": "The Hollywood Reporter",
@@ -136,11 +144,7 @@
         "hollywoodwood-reporter"
       ],
       "domain": "hollywoodreporter.com",
-      "accessModel": "metered",
-      "standingCoverage": true,
-      "standingMarkets": [
-        "broadway"
-      ]
+      "accessModel": "metered"
     },
     "newyorker": {
       "displayName": "The New Yorker",
@@ -265,7 +269,11 @@
         "tmania"
       ],
       "domain": "theatermania.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "broadwayworld": {
       "displayName": "BroadwayWorld",
@@ -310,7 +318,11 @@
       ],
       "domain": "timeout.com",
       "accessModel": "free",
-      "starScale": 5
+      "starScale": 5,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "amny": {
       "displayName": "amNewYork",
@@ -347,7 +359,11 @@
       ],
       "domain": "nystagereview.com",
       "accessModel": "free",
-      "starScale": 5
+      "starScale": 5,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "chicagotribune": {
       "displayName": "Chicago Tribune",
@@ -461,7 +477,11 @@
         "wrap"
       ],
       "domain": "thewrap.com",
-      "accessModel": "metered"
+      "accessModel": "metered",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "observer": {
       "displayName": "Observer",
@@ -553,7 +573,11 @@
         "www.newyorktheaterguide.com"
       ],
       "isDualMarket": true,
-      "region": "dual"
+      "region": "dual",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "nyt-theater": {
       "displayName": "New York Theater",
@@ -568,7 +592,11 @@
       ],
       "domain": "newyorktheater.me",
       "accessModel": "free",
-      "defaultCritic": "Jonathan Mandell"
+      "defaultCritic": "Jonathan Mandell",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "theatrely": {
       "displayName": "Theatrely",
@@ -579,7 +607,11 @@
         "thly"
       ],
       "domain": "theatrely.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "talkinbroadway": {
       "displayName": "Talkin' Broadway",
