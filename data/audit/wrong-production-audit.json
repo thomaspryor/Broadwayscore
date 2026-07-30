@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-29T22:21:14.551Z",
+  "timestamp": "2026-07-29T23:26:37.400Z",
   "stats": {
-    "totalReviews": 40901,
+    "totalReviews": 40912,
     "alreadyFlagged": 17923,
     "dateGuardCatches": 67,
     "directorMismatch": 928,
-    "tvFilmSignals": 1114,
+    "tvFilmSignals": 1119,
     "londonSignals": 765,
     "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3353
+    "noPublishDate": 3360
   },
   "findings": [
     {
@@ -3764,10 +3764,78 @@
     },
     {
       "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "file": "culturesauce--unknown.json",
+      "publishDate": null,
+      "url": "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "file": "nysr--frank-scheck.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 63,
+      "publishDate": null,
+      "url": "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "file": "seatplan--unknown.json",
+      "publishDate": "2026-07-21",
+      "url": "https://seatplan.com/new-york/cat-cohen-broad-strokes-tickets/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
       "file": "theatermania--zachary-stewart.json",
       "score": 62,
       "publishDate": "2026-07-28",
       "url": "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 67,
+      "publishDate": null,
+      "url": "https://www.vulture.com/article/cat-cohen-broad-strokes-lucille-lortel.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
