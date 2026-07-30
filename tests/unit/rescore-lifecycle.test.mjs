@@ -22,7 +22,7 @@ const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(__dirname, '../..');
 
-const { markRescoreComplete } = require(path.join(REPO, 'scripts/lib/rescore-lifecycle.js'));
+const { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore } = require(path.join(REPO, 'scripts/lib/rescore-lifecycle.js'));
 // Detector lives with its sibling in the canonical stuck-flag lib, not here.
 const { isScoredButStillQueued } = require(path.join(REPO, 'scripts/lib/stuck-rescore-flag.js'));
 
@@ -91,6 +91,35 @@ test('isScoredButStillQueued fires only on the fallback fingerprint', () => {
     }),
     false
   );
+});
+
+test('stampTerminalScoringFailure records reason, attempt count, and text fingerprint', () => {
+  const f = { needsRescore: true, rescoreReason: 'bw-v6-decompression', fullText: 'x'.repeat(165) };
+  stampTerminalScoringFailure(f, 'input_validation_failed:body_too_short', '2026-07-30T05:25:00.000Z');
+  assert.equal(f.rescoreAttempts, 1);
+  assert.equal(f.rescoreBlockedReason, 'input_validation_failed:body_too_short');
+  assert.equal(f.rescoreBlockedAt, '2026-07-30T05:25:00.000Z');
+  assert.equal(f.rescoreBlockedTextLength, 165);
+  // needsRescore is untouched — this is queued-but-unscoreable work, not done.
+  assert.equal(f.needsRescore, true);
+
+  // A second failure on the same (unchanged) text increments the counter.
+  stampTerminalScoringFailure(f, 'input_validation_failed:body_too_short', '2026-07-31T05:25:00.000Z');
+  assert.equal(f.rescoreAttempts, 2);
+});
+
+test('isBlockedFromRescore skips only when fullText is unchanged since the block', () => {
+  // No block stamp at all — never attempted, not blocked.
+  assert.equal(isBlockedFromRescore({ needsRescore: true, fullText: 'short' }), false);
+
+  // Blocked, and fullText is still the same length that failed — skip it.
+  const blocked = { fullText: 'x'.repeat(165), rescoreBlockedReason: 'input_validation_failed:body_too_short', rescoreBlockedTextLength: 165 };
+  assert.equal(isBlockedFromRescore(blocked), true);
+
+  // fullText grew (e.g. a recovery pipeline re-scraped it) — eligible again,
+  // no producer needed to remember to clear the stamp.
+  const recovered = { fullText: 'x'.repeat(1200), rescoreBlockedReason: 'input_validation_failed:body_too_short', rescoreBlockedTextLength: 165 };
+  assert.equal(isBlockedFromRescore(recovered), false);
 });
 
 test('every scoring success path in index.ts retires the rescore queue', () => {
