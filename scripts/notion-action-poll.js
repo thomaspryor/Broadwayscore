@@ -462,6 +462,11 @@ function provisionActionWorktree(card) {
   try {
     const branch = `action-${cardSlug(card.id)}`;
     const wtPath = path.join(REPO_DIR, '.claude', 'worktrees', branch);
+    // unbounded-fetch-ok: this script only ever runs via launchd on the
+    // owner's Mac against a full (non-shallow) local clone — it is not
+    // invoked by any GH Actions workflow (test.yml only mentions it in a
+    // comment), so the shallow-checkout unbounded-fetch hazard the guard
+    // warns about does not apply here.
     execSync('git fetch origin main --quiet', { cwd: REPO_DIR, timeout: 60000, stdio: 'ignore' });
     // Idempotent: clear any stale worktree/branch left by a previous run of this card.
     try { execSync(`git worktree remove --force "${wtPath}"`, { cwd: REPO_DIR, stdio: 'ignore' }); } catch {}
