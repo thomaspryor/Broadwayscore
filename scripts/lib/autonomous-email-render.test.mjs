@@ -240,14 +240,26 @@ test('renderAttentionBlock: each category renders with its owner action, escaped
     configWarnings: ['size M is enabled but can never be admitted <script>'],
     failedCards: [{ name: 'Byline recovery & cleanup' }],
     parkedItems: [{ name: 'Clean up 10 clusters', size: 'L' }],
+    attemptMemoryParked: [{ name: 'Flaky migration card', reason: 'parked: failed 2x unchanged (fail 1 | fail 2) — edit the card or clear the park to retry' }],
   });
-  assert.match(html, /3 items stalling the loop/);
+  assert.match(html, /4 items stalling the loop/);
   assert.match(html, /&lt;script&gt;/);              // escaped
   assert.match(html, /Byline recovery &amp; cleanup/);
   assert.match(html, /clear the Auto tag/);
   assert.match(html, /sized L/);
   assert.match(html, /interactive session/);
+  assert.match(html, /Flaky migration card — parked: failed 2x unchanged/);
+  assert.match(html, /re-enter the pool, or clear its park/);
   assert.doesNotMatch(html, /<script>/);
+});
+
+test('renderAttentionBlock: attemptMemoryParked alone still renders (no crash on missing field elsewhere)', () => {
+  const { renderAttentionBlock } = require('./autonomous-email-render.js');
+  const html = renderAttentionBlock({
+    attemptMemoryParked: [{ name: 'Solo parked card', reason: 'parked: failed 2x unchanged — edit the card or clear the park to retry' }],
+  });
+  assert.match(html, /1 item stalling the loop/);
+  assert.match(html, /Solo parked card/);
 });
 
 test('renderEmail: attention block appears above approval items', () => {
