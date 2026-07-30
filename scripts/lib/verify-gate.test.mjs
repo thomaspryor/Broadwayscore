@@ -52,6 +52,15 @@ test('a mutating command is refused even inside Acceptance criteria', () => {
   assert.match(r.reason, /rebuild-all-reviews/);
 });
 
+test('a real command alongside VERIFY: owner-judgment is preserved, not dropped (ship-check finding)', () => {
+  const notes = `## Acceptance criteria\n- \`npx tsc --noEmit\`\n\nVERIFY: owner-judgment`;
+  const r = evaluateVerifiability(notes);
+  assert.equal(r.armed, true);
+  assert.equal(r.cmd, 'npx tsc --noEmit');
+  assert.equal(r.reason, null);
+  assert.equal(r.ownerJudgment, true);
+});
+
 test('empty/null notes are unarmed, not a crash', () => {
   assert.equal(evaluateVerifiability(null).armed, false);
   assert.equal(evaluateVerifiability(undefined).armed, false);

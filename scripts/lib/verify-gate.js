@@ -13,7 +13,7 @@
  */
 'use strict';
 
-const { extractVerifyCmd } = require('./autonomous-verify-cmd.js');
+const { extractVerifyCmd, candidatesFrom } = require('./autonomous-verify-cmd.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 
 const OWNER_JUDGMENT_RE = /VERIFY:\s*owner-judgment/i;
@@ -22,17 +22,18 @@ const OWNER_JUDGMENT_RE = /VERIFY:\s*owner-judgment/i;
  * @param {string} notes - the card's full notes/body (untrusted content)
  * @returns {{armed: boolean, cmd: string|null, reason: string|null, ownerJudgment: boolean}}
  *   armed=true means bsc-next.js would dispatch this card without
- *   --allow-unverifiable. cmd is the extracted safe-form command (null when
- *   ownerJudgment is true or when nothing safe was found). reason explains
- *   why cmd is null.
+ *   --allow-unverifiable. cmd is the extracted safe-form command, populated
+ *   whenever one is present even alongside an ownerJudgment marker (ship-check
+ *   finding: an earlier version short-circuited on the marker and always
+ *   returned cmd:null for such cards, silently dropping a real command the
+ *   dispatch ledger used to record). reason is null whenever armed.
  */
 function evaluateVerifiability(notes) {
   const text = String(notes || '');
-  if (OWNER_JUDGMENT_RE.test(text)) {
-    return { armed: true, cmd: null, reason: null, ownerJudgment: true };
-  }
   const { cmd, reason } = extractVerifyCmd(text, isSafeCheckCommand);
-  return { armed: !!cmd, cmd, reason, ownerJudgment: false };
+  const ownerJudgment = OWNER_JUDGMENT_RE.test(text);
+  const armed = !!cmd || ownerJudgment;
+  return { armed, cmd, reason: armed ? null : reason, ownerJudgment };
 }
 
-module.exports = { evaluateVerifiability, isSafeCheckCommand, extractVerifyCmd, OWNER_JUDGMENT_RE };
+module.exports = { evaluateVerifiability, isSafeCheckCommand, extractVerifyCmd, candidatesFrom, OWNER_JUDGMENT_RE };

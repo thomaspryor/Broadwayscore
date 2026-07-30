@@ -39,10 +39,15 @@ const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { evaluateVerifiability, SECTION_RE } = (() => {
+const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE } = (() => {
   const gate = require('./lib/verify-gate.js');
   const { SECTION_RE } = require('./lib/autonomous-verify-cmd.js');
-  return { evaluateVerifiability: gate.evaluateVerifiability, SECTION_RE };
+  return {
+    evaluateVerifiability: gate.evaluateVerifiability,
+    isSafeCheckCommand: gate.isSafeCheckCommand,
+    candidatesFrom: gate.candidatesFrom,
+    SECTION_RE,
+  };
 })();
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
 const { resolveCheckPaths } = require('./lib/autonomous-triage-core.js');
@@ -170,6 +175,25 @@ function parseEnrichResponse(text) {
   return JSON.parse(s.slice(start));
 }
 
+// Local before/after audit trail (ship-check finding — a bad batch write had
+// no recovery path beyond Notion's own page-history UI). Fail-open: a
+// logging failure must never block an otherwise-good enrichment write.
+const ENRICHMENT_LOG_PATH = path.join(REPO, 'data', 'audit', 'card-enrichment-log.jsonl');
+// logPath is injectable so tests exercise the real write path without polluting
+// the repo's audit log with fixture card IDs. CLI usage omits it and gets the real path.
+function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PATH) {
+  try {
+    fs.mkdirSync(path.dirname(logPath), { recursive: true });
+    const entry = {
+      ts: new Date().toISOString(), id: card.id, name: card.name, action,
+      previousNotes: card.notes || '', newNotes,
+    };
+    fs.appendFileSync(logPath, JSON.stringify(entry) + '\n');
+  } catch (e) {
+    console.error(`[enrich-card-acceptance] WARN enrichment-log write failed (non-fatal) for ${card.id}: ${e.message}`);
+  }
+}
+
 function mergeTags(tags, add) {
   const set = new Set((tags || []).map(String));
   set.add(add);
@@ -205,6 +229,7 @@ async function enrichOneCard(card, opts = {}) {
   if (!eligibility.eligible) {
     const newNotes = `${card.notes || ''}\n\nVERIFY: owner-judgment`.trim();
     if (!opts.dryRun) {
+      logEnrichmentWrite(card, 'owner-judgment', newNotes, opts.logPath);
       opts.notionBrain(['update', card.id, '--notes', newNotes, '--tags', mergeTags(card.tags, 'auto-enriched')]);
     }
     return { id: card.id, name: card.name, action: 'owner-judgment', detail: eligibility.reason };
@@ -228,12 +253,24 @@ async function enrichOneCard(card, opts = {}) {
     return { id: card.id, name: card.name, action: 'failed', detail: 'LLM response missing command/acceptanceCriteria' };
   }
 
-  // Guardrail: validate the BARE command's path(s) BEFORE ever writing (task
+  // Guardrail 1: the bare command must itself be one of the allowed shapes
+  // BEFORE path-resolution runs (ship-check finding — resolveCheckPaths only
+  // validates paths for commands that already matched a SAFE_CHECK_FORMS
+  // regex; an unrecognized command like `git push --force` has no path
+  // group at all and sails through resolveCheckPaths as ok:true since there
+  // is nothing for it to check). Reject unsafe shapes here, before ever
+  // touching the filesystem or Notion.
+  const bareCommand = parsed.command.trim();
+  if (!isSafeCheckCommand(bareCommand)) {
+    return { id: card.id, name: card.name, action: 'failed', detail: `command is not a safe-form shape: ${bareCommand.slice(0, 120)}` };
+  }
+
+  // Guardrail 2: validate the BARE command's path(s) BEFORE ever writing (task
   // #171 class — a phantom test path for existing code must never be
   // accepted just because it's shaped like a safe-form command). Must run on
   // the bare command, not the surrounding markdown — the safe-form regexes
   // are anchored (^...$) and never match free text around a backtick span.
-  const pathCheck = resolveCheckPaths(parsed.command.trim(), { repoRoot: REPO });
+  const pathCheck = resolveCheckPaths(bareCommand, { repoRoot: REPO });
   if (!pathCheck.ok) {
     return { id: card.id, name: card.name, action: 'failed', detail: `phantom path rejected: ${pathCheck.reason}` };
   }
@@ -241,9 +278,25 @@ async function enrichOneCard(card, opts = {}) {
   // tests/unit/x.test.mjs) — substitute the corrected form into the
   // LLM's prose so the section and the actually-checked command can't diverge.
   const finalCommand = pathCheck.checkableDone;
-  const draftedSection = parsed.acceptanceCriteria.includes(parsed.command.trim())
-    ? parsed.acceptanceCriteria.replace(parsed.command.trim(), finalCommand)
+  const draftedSection = parsed.acceptanceCriteria.includes(bareCommand)
+    ? parsed.acceptanceCriteria.replace(bareCommand, finalCommand)
     : `## Acceptance criteria\n- \`${finalCommand}\` passes`;
+
+  // Guardrail 3 (ship-check finding): the LLM's free-form prose can carry a
+  // SECOND backticked command alongside the validated one — e.g. "run `node
+  // scripts/rebuild-all-reviews.js` and check the diff, then `npx tsc
+  // --noEmit`". Only the first candidate was ever being validated; the
+  // mutating second one would ride along into Notion verbatim, since
+  // evaluateVerifiability only needs ONE safe command in the section to
+  // arm. Reject the whole draft if any candidate besides the validated one
+  // isn't itself safe-shaped — never write a card whose own notes document
+  // an unsanctioned command, even if it isn't the one that gets executed.
+  const allCandidates = candidatesFrom(draftedSection);
+  const unsafeExtra = allCandidates.find(c => c.trim() !== finalCommand && !isSafeCheckCommand(c.trim()));
+  if (unsafeExtra) {
+    return { id: card.id, name: card.name, action: 'failed', detail: `drafted section names an additional unsafe command: ${unsafeExtra.slice(0, 120)}` };
+  }
+
   const newNotes = spliceNotes(card.notes, draftedSection);
 
   // Final safety net: re-run the SAME gate the audit/dispatch use before ever
@@ -255,6 +308,7 @@ async function enrichOneCard(card, opts = {}) {
   }
 
   if (!opts.dryRun) {
+    logEnrichmentWrite(card, 'llm-enriched', newNotes, opts.logPath);
     opts.notionBrain(['update', card.id, '--notes', newNotes, '--tags', mergeTags(card.tags, 'auto-enriched')]);
   }
   return { id: card.id, name: card.name, action: 'llm-enriched', detail: finalGate.cmd, newPaths: pathCheck.newPaths || [] };
@@ -331,4 +385,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[enrich-card-acceptance] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { enrichOneCard, buildEnrichPrompt, parseEnrichResponse, mergeTags, spliceNotes, MODEL, DEFAULT_LIMIT, USAGE };
+module.exports = { enrichOneCard, buildEnrichPrompt, parseEnrichResponse, mergeTags, spliceNotes, logEnrichmentWrite, ENRICHMENT_LOG_PATH, MODEL, DEFAULT_LIMIT, USAGE };

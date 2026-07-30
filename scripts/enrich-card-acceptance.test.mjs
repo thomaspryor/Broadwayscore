@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { enrichOneCard, spliceNotes } = require('./enrich-card-acceptance.js');
@@ -8,6 +10,10 @@ const { enrichOneCard, spliceNotes } = require('./enrich-card-acceptance.js');
 function fakeNotionBrain(calls) {
   return (args) => { calls.push(args); return { id: args[1] }; };
 }
+
+// Real (non-dryRun) writes call logEnrichmentWrite — point it at a scratch
+// path so fixture card IDs never land in the repo's real audit log.
+const SCRATCH_LOG_PATH = path.join(os.tmpdir(), `enrich-card-acceptance-test-${process.pid}.jsonl`);
 
 test('already-armed card is skipped with zero LLM calls and zero writes', async () => {
   const calls = [];
@@ -46,6 +52,7 @@ test('human-only card (marketing category) gets VERIFY: owner-judgment, no LLM c
   const r = await enrichOneCard(card, {
     callLLM: async () => { llmCalled = true; return '{}'; },
     notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
   });
   assert.equal(r.action, 'owner-judgment');
   assert.equal(llmCalled, false);
@@ -61,7 +68,7 @@ test('human-only card (marketing category) gets VERIFY: owner-judgment, no LLM c
 test('human-action title with no category gets owner-judgment', async () => {
   const calls = [];
   const card = { id: 'b2', name: 'Email volunteers', category: '', tags: [], notes: 'Reach out.' };
-  const r = await enrichOneCard(card, { callLLM: async () => '{}', notionBrain: fakeNotionBrain(calls) });
+  const r = await enrichOneCard(card, { callLLM: async () => '{}', notionBrain: fakeNotionBrain(calls), logPath: SCRATCH_LOG_PATH });
   assert.equal(r.action, 'owner-judgment');
 });
 
@@ -74,6 +81,7 @@ test('eligible card: LLM drafts a valid tsc command, notes are updated and re-ve
   const r = await enrichOneCard(card, {
     callLLM: async () => JSON.stringify({ command: 'npx tsc --noEmit', acceptanceCriteria: '## Acceptance criteria\n`npx tsc --noEmit` is clean' }),
     notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
   });
   assert.equal(r.action, 'llm-enriched');
   assert.equal(r.detail, 'npx tsc --noEmit');
@@ -101,7 +109,7 @@ test('eligible card: LLM drafts a phantom test path with no real parent dir — 
   assert.equal(calls.length, 0);
 });
 
-test('eligible card: LLM drafts a mutating command — final gate rejects, zero writes', async () => {
+test('eligible card: LLM drafts a mutating command — rejected before ever writing', async () => {
   const calls = [];
   const card = {
     id: 'c3', name: 'Fix scoring bug', category: 'Product', tags: [],
@@ -115,7 +123,26 @@ test('eligible card: LLM drafts a mutating command — final gate rejects, zero 
     notionBrain: fakeNotionBrain(calls),
   });
   assert.equal(r.action, 'failed');
-  assert.match(r.detail, /drafted notes still fail verify-gate/);
+  assert.match(r.detail, /not a safe-form shape/);
+  assert.equal(calls.length, 0);
+});
+
+test('eligible card: LLM drafts a SAFE primary command but a mutating command rides along in the prose — rejected, zero writes', async () => {
+  const calls = [];
+  const card = {
+    id: 'c3b', name: 'Fix scoring bug', category: 'Product', tags: [],
+    notes: '## Problem\nSomething scores wrong.',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'npx tsc --noEmit',
+      acceptanceCriteria: '## Acceptance criteria\nFirst run `node scripts/rebuild-all-reviews.js` to refresh, then verify with `npx tsc --noEmit`.',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+  });
+  assert.equal(r.action, 'failed');
+  assert.match(r.detail, /names an additional unsafe command/);
+  assert.match(r.detail, /rebuild-all-reviews/);
   assert.equal(calls.length, 0);
 });
 
@@ -143,6 +170,7 @@ test('eligible card: LLM names a NEW test under tests/unit/ (real dir) — accep
       acceptanceCriteria: '## Acceptance criteria\n`node --test tests/unit/scoring-bug-c6.test.mjs` passes',
     }),
     notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
   });
   assert.equal(r.action, 'llm-enriched');
   assert.equal(r.detail, 'node --test tests/unit/scoring-bug-c6.test.mjs');
