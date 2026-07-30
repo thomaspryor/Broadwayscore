@@ -358,6 +358,26 @@ test('extractOpeningFactsFromArticle: real Playbill sentence (Broad Strokes)', (
   assert.equal(facts.closingDate, '2026-09-25');
 });
 
+test('extractOpeningFactsFromArticle: concert-roundup headline fallback (Les Mis Arena Concert @ Radio City, 2026-07-30)', () => {
+  // Real live article shape — no "began previews / officially opening" SENTENCE
+  // at all (touring concert, no formal previews), only the auto-generated
+  // "Review Roundup: TITLE Opens At VENUE" headline plus a "playing ... through
+  // DATE" dek. Both new fallbacks must fire.
+  const text = 'Review Roundup: LES MISERABLES: THE ARENA CONCERT SPECTACULAR Opens At Radio City Music Hall ' +
+    'The acclaimed world tour is now playing in New York through August 9.';
+  const facts = extractOpeningFactsFromArticle(text, '2026-07-28');
+  assert.equal(facts.openingDate, '2026-07-28', 'roundup publish date used as opening signal');
+  assert.equal(facts.closingDate, '2026-08-09', '"now playing ... through DATE" matches the widened close pattern');
+});
+
+test('extractOpeningFactsFromArticle: headline fallback does not fire without the literal "Review Roundup:...Opens At/On" shape', () => {
+  // A review body aside like "the show opens on Broadway next season" must
+  // NOT be mistaken for the auto-generated roundup headline.
+  const text = 'This revival is terrific, and producers have hinted the show opens on Broadway next season.';
+  const facts = extractOpeningFactsFromArticle(text, '2026-07-28');
+  assert.equal(facts.openingDate, null);
+});
+
 test('resolveDate: year resolution across boundaries + explicit years', () => {
   assert.equal(resolveDate('January 5', '2026-12-20'), '2027-01-05', 'December article, January date = next year');
   assert.equal(resolveDate('December 20', '2026-01-05'), '2025-12-20', 'January article, December date = prior year');
