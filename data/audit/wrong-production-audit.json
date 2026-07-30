@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-30T07:56:31.378Z",
+  "timestamp": "2026-07-30T09:33:48.664Z",
   "stats": {
-    "totalReviews": 40916,
-    "alreadyFlagged": 17926,
+    "totalReviews": 40953,
+    "alreadyFlagged": 17930,
     "dateGuardCatches": 67,
     "directorMismatch": 931,
-    "tvFilmSignals": 1122,
-    "londonSignals": 768,
+    "tvFilmSignals": 1120,
+    "londonSignals": 766,
     "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3349
+    "noPublishDate": 3373
   },
   "findings": [
     {
@@ -3778,7 +3778,7 @@
     },
     {
       "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-      "file": "culturesauce--unknown.json",
+      "file": "culturesauce--thom-geier.json",
       "score": 66,
       "publishDate": "2026-07-27",
       "url": "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
@@ -5626,24 +5626,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "file": "shortlist--andrew-williams.json",
-      "publishDate": "2026-07-24",
-      "url": "https://www.shortlist.com/entertainment/death-note-the-musicals-limited-barbican-london-run-begins-next-week-all-the-details",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -25022,25 +25004,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-oresteia-west-end-2026",
-      "file": "broadwayworld--alexander-cohen.json",
-      "score": 57,
-      "publishDate": "2026-07-15",
-      "url": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
