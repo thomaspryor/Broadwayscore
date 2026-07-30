@@ -238,6 +238,13 @@ trap 'rc=$?; push_mutex_release; [ "$rc" -ne 0 ] && restore_head_if_moved "trap-
 # or something else entirely — every exit path now re-checks and repairs it
 # before handing control back, instead of leaving a silently-shortened main.
 SCRIPT_ENTRY_HEAD="$(git rev-parse HEAD 2>/dev/null || true)"
+# Merge-base with origin as of script start — the "pre-edit" point for the
+# content-survival check below (task #619). Computed once; a shallow/unborn
+# history yields empty and the check fails OPEN (see push-content-survival.js).
+SCRIPT_ENTRY_BASE=""
+if [ -n "$SCRIPT_ENTRY_HEAD" ] && git rev-parse --verify --quiet "origin/$PULL_BRANCH" >/dev/null 2>&1; then
+  SCRIPT_ENTRY_BASE="$(git merge-base "$SCRIPT_ENTRY_HEAD" "origin/$PULL_BRANCH" 2>/dev/null || true)"
+fi
 
 # Call immediately before every `exit 1` in the retry loop below. If local
 # HEAD no longer matches what it was when this script started, force it back
@@ -417,9 +424,41 @@ resolve_conflicts() {
         fi
         ;;
       *)
-        # Other data files: accept remote (other workflows' changes)
-        echo "  Auto-resolving (keep remote): $file"
-        git checkout $keep_remote "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        # Other data files: accept remote (other workflows' changes) — but
+        # ONLY when doing so doesn't discard real content our own commit
+        # introduced (task #619 P0). Confirmed via fault injection (a
+        # type-change conflict, the one structural shape that survives -X
+        # ours/theirs auto-resolution and reaches this arm): blindly
+        # `checkout $keep_remote` here replaces the WHOLE file with the
+        # remote/base side, with nothing downstream re-checking file
+        # CONTENT — the post-rebase survival check only tracks ADDED files
+        # (--diff-filter=A) and no-ops on a pure modification, and the
+        # no-op-rebase guard only proves the remote tip became an ancestor
+        # of HEAD, a different and insufficient direction. Compare what
+        # we're about to accept against what OUR side actually has for this
+        # file; if identical there's nothing to lose. If they differ, leave
+        # this file's conflict UNRESOLVED instead of silently discarding
+        # real content — the round loop / rebase --continue then fails for
+        # THIS file and the caller cascades to the more careful fallbacks
+        # (merge -X ours, then reset+cherry-pick, which replays our FULL
+        # commit range with --strategy-option=theirs rather than
+        # wholesale-accepting remote for one file). A second, independent
+        # backstop for exactly this class now also runs post-push: see
+        # verify_content_survived() / push-content-survival.js.
+        local accept_ref our_ref accept_blob our_blob
+        if [ "$mode" = "rebase" ]; then
+          accept_ref="HEAD"; our_ref="REBASE_HEAD"
+        else
+          accept_ref="MERGE_HEAD"; our_ref="HEAD"
+        fi
+        accept_blob=$(git show "$accept_ref:$file" 2>/dev/null || echo "__ABSENT__")
+        our_blob=$(git show "$our_ref:$file" 2>/dev/null || echo "__ABSENT__")
+        if [ "$accept_blob" = "$our_blob" ]; then
+          echo "  Auto-resolving (keep remote, content identical): $file"
+          git checkout $keep_remote "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::Refusing to auto-accept remote for $file — our version differs from remote's and would be silently discarded (task #619). Leaving unresolved so a safer fallback (merge/cherry-pick) can integrate it instead."
+        fi
         ;;
     esac
   done <<< "$conflicted_files"
@@ -489,6 +528,36 @@ reconcile_merged_json() {
   git commit --amend --no-edit 2>/dev/null || true
 }
 
+# Post-push CONTENT-survival check (task #619 P0). See scripts/lib/
+# push-content-survival.js for the full rationale: neither the post-rebase
+# survival check (ADDED files only) nor the no-op-rebase ancestor check can
+# detect a rebase/merge/cherry-pick that silently discards a MODIFIED file's
+# content while still producing a genuinely pushable (and pushed) commit.
+# Called right after every point below that believes a push just succeeded.
+# Re-fetches (bounded, best-effort) so the check reads the TRUE current tip,
+# not a possibly-stale local tracking ref. Fails OPEN on the fetch itself (a
+# network hiccup here must not manufacture a failure on an otherwise-good
+# push) — never fails open on the content comparison, since that IS the
+# signal this guard exists to catch.
+verify_content_survived() {
+  [ -n "$SCRIPT_ENTRY_BASE" ] || return 0
+  command -v node >/dev/null 2>&1 || return 0
+  [ -f "$SCRIPT_DIR/push-content-survival.js" ] || return 0
+  # MUST use the explicit-destination refspec (task #394 root cause): a bare
+  # `git fetch origin $PULL_BRANCH` does not advance refs/remotes/origin/
+  # $PULL_BRANCH under a SHA-pinned checkout refspec (actions/checkout), which
+  # would make this check read a STALE tracking ref and false-positive
+  # "REVERTED" on a change that actually landed fine (caught by the existing
+  # noop-rebase integration test when this check was first wired in — it
+  # reproduces exactly that pinned-refspec condition).
+  git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" >/dev/null 2>&1 \
+    || git_fetch origin "$PULL_BRANCH" >/dev/null 2>&1 || true
+  node "$SCRIPT_DIR/push-content-survival.js" \
+    --before-sha="$SCRIPT_ENTRY_HEAD" \
+    --base-sha="$SCRIPT_ENTRY_BASE" \
+    --check-ref="origin/$PULL_BRANCH"
+}
+
 pushed=false
 for i in $(seq 1 "$MAX_RETRIES"); do
   # Overall wall-clock deadline (hang guard, task #183). $SECONDS counts from this
@@ -512,9 +581,15 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   assert_no_conflict_markers
   assert_no_orphan_commit
   if git_push origin "$BRANCH"; then
-    echo "Push succeeded on attempt $i"
-    pushed=true
-    break
+    if verify_content_survived; then
+      echo "Push succeeded on attempt $i"
+      pushed=true
+      break
+    else
+      echo "::error::push-with-retry: push on attempt $i reported success but our own commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619) — a prior iteration's conflict resolution silently discarded it. Resetting local HEAD back to our original commit and retrying instead of reporting false success."
+      record_push_failure "commit-dropped-post-push" "$i"
+      git reset --hard "$SCRIPT_ENTRY_HEAD" 2>/dev/null || true
+    fi
   fi
 
   echo "Push failed (attempt $i/$MAX_RETRIES), fetching remote and rebasing..."
@@ -951,9 +1026,15 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # (ship-check finding, task #183). Bounded by the same per-op timeout; a failure
   # just falls through to the normal backoff + next attempt.
   if [ "$history_changed" = "true" ] && git_push origin "$BRANCH"; then
-    echo "Push succeeded after conflict resolution (attempt $i)"
-    pushed=true
-    break
+    if verify_content_survived; then
+      echo "Push succeeded after conflict resolution (attempt $i)"
+      pushed=true
+      break
+    else
+      echo "::error::push-with-retry: push after conflict resolution (path: ${RESOLUTION_PATH:-unknown}, attempt $i) reported success but our own commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619) — this iteration's resolution silently discarded it. Resetting local HEAD back to our original commit and retrying instead of reporting false success."
+      record_push_failure "commit-dropped-post-push(${RESOLUTION_PATH:-unknown})" "$i"
+      git reset --hard "$SCRIPT_ENTRY_HEAD" 2>/dev/null || true
+    fi
   fi
 
   # Backoff before retry. Shaped fast-then-growing instead of the old flat
