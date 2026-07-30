@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-30T10:44:40.384Z",
+  "timestamp": "2026-07-30T11:18:07.011Z",
   "stats": {
-    "totalReviews": 40955,
-    "alreadyFlagged": 17930,
+    "totalReviews": 40957,
+    "alreadyFlagged": 17931,
     "dateGuardCatches": 67,
     "directorMismatch": 931,
     "tvFilmSignals": 1120,
     "londonSignals": 766,
-    "offBroadwaySignals": 465,
+    "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3372
+    "noPublishDate": 3374
   },
   "findings": [
     {
@@ -43869,19 +43869,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
-        }
-      ]
-    },
-    {
-      "showId": "the-whoopi-monologues-off-broadway-2026",
-      "file": "playbill--unknown.json",
-      "publishDate": "2026-07-14",
-      "url": "https://playbill.com/article/read-the-reviews-for-the-whoopi-monologues-off-broadway",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"classic stage\""
         }
       ]
     },
