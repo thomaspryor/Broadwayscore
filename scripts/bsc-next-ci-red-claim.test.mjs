@@ -124,7 +124,7 @@ test('main(): a CI-red claim ledger write failure is non-fatal — dispatch stil
     console.error = origErr;
   }
   assert.ok(errored.some(l => /WARN CI-red claim write failed/.test(l)));
-  assert.ok(logged.some(l => /opened Cmux workspace/.test(l)));
+  assert.ok(logged.some(l => /opened Cmux tab/.test(l)));
 });
 
 // Both regression tests below drive main() down a path that calls
