@@ -56,7 +56,7 @@ const SCHEDULED_SENDERS = [
   // expectedSince: the first ET day the restored CI cron ran in send mode —
   // decideDayMissing skips earlier days so the restore's first monitor run
   // can't false-fire a dead-sender alarm (ship-check QA finding).
-  { key: 'opening-digest', label: 'Opening digest (standalone radar)', script: 'scripts/send-opening-digest.js', pattern: /(?:\d+ needs? help|\d+ broadcast-ready|\d+ opening today|\d+ tomorrow|\d+ upcoming this week|Quiet week) · [A-Z][a-z]{2} \d{1,2}$/, expected: true, expectedSince: '2026-07-31' },
+  { key: 'opening-digest', label: 'Opening digest (standalone radar)', script: 'scripts/send-opening-digest.js', pattern: /^(?:\d+ needs? help|\d+ broadcast-ready|\d+ opening today|\d+ tomorrow|\d+ upcoming this week|Quiet week)(?: · (?:\d+ needs? help|\d+ broadcast-ready|\d+ opening today|\d+ tomorrow|\d+ upcoming this week))* · [A-Z][a-z]{2} \d{1,2}$/, expected: true, expectedSince: '2026-07-31' },
   { key: 'reddit-engagement-digest', label: 'Reddit engagement digest', script: 'scripts/reddit-engagement-digest.js', pattern: /^r\/Broadway —/ },
   // allowed (not expected): a legitimate WEEKLY send — never a violation,
   // but its absence on the other six days must not read as "missing"
