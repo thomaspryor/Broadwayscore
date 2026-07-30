@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-30T00:47:37.011Z",
-  "processed": 61,
-  "failed": 911,
+  "updatedAt": "2026-07-30T00:54:40.394Z",
+  "processed": 62,
+  "failed": 920,
   "successRate": "6.3%",
   "tierBreakdown": {
     "playwright": 42,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 9,
     "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 11,
-    "archiveToday": 19,
+    "brightdata": 12,
+    "archiveToday": 23,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-07-29T19:16:45.288Z",
-      "event": "bb-session",
-      "session": "dd85bb30",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
-    {
-      "t": "2026-07-29T19:16:45.863Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-29T20:04:09.103Z",
       "event": "bb-session",
@@ -126,6 +115,17 @@
       "t": "2026-07-30T00:14:44.154Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-30T00:49:12.353Z",
+      "event": "bb-session",
+      "session": "36183370",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-30T00:49:13.462Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
