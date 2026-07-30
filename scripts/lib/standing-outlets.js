@@ -14,11 +14,18 @@
  * (task #582) produced zero signal until a human noticed. A standing outlet
  * is expected whether or not any roundup mentions it.
  *
- * Deliberately curated, not derived: only outlets with a DIRECT evidenced
- * silent-gap incident (#582) start with standingCoverage:true. Guessing more
- * outlets into this set risks false "missing" alerts on shows that outlet
- * simply doesn't cover — the same false-positive class isNoReviewExpected's
- * decay window exists to prevent, mirrored here in the opposite direction.
+ * Membership is EARNED, never assumed from tier (card #627). Measured over
+ * three seasons of Broadway openings, tier-1 Hollywood Reporter covers ~19%
+ * of them while tier-2 New York Stage Review covers ~99% — so flagging by
+ * tier would make 4 of every 5 HR cells a false "missing" alert, the same
+ * false-positive class isNoReviewExpected's decay window exists to prevent,
+ * mirrored here in the opposite direction. scripts/audit-standing-coverage.js
+ * derives the qualifying set from reviews.json and reports registry drift in
+ * both directions; run it before hand-editing standingCoverage. An outlet
+ * that covers only a slice of openings still gets silence protection — just
+ * from the market-pulse-aware heartbeat (scripts/lib/outlet-cadence.js), the
+ * right instrument for "this outlet stopped entirely", where standingCoverage
+ * is the right instrument for "this outlet is missing from THIS opening".
  *
  * FAN-OUT CAP: standing outlets only being added/removed from the registry
  * changes what "expected" means for every in-window show at once — unlike
@@ -32,6 +39,37 @@
  */
 
 const DEFAULT_MAX_NEW_PER_RUN = 15;
+
+// "No press night" suppression (card #627 live smoke test). Some Broadway
+// engagements never get a press opening at all: Beetlejuice's 2025 limited
+// return of the 2019 production (0 scored reviews) and All Out (1). Standing
+// coverage says "every outlet reviews every OPENING" — it does not say every
+// outlet reviews every ticketed engagement, so on those shows the whole
+// flagged set turns into one GAP cell per outlet describing a single fact:
+// nobody held a press night. That is a show-level absence, not 11 independent
+// outlet failures, and it drowns the ledger it is supposed to sharpen.
+//
+// The bar is deliberately evidence-based rather than metadata-based
+// (`limitedRun`/`isRevival`/a null previewsStartDate all fire on shows that DO
+// get reviewed). If even a couple of dispatch-tier outlets showed up, there
+// was a press night and every other standing outlet is genuinely missing.
+const NO_PRESS_NIGHT_GRACE_DAYS = 21; // >> the 48h cell GRACE — real reviews land in days
+const NO_PRESS_NIGHT_MIN_OUTLETS = 3;
+
+/**
+ * True when a show is far enough past its clock that near-total dispatch-tier
+ * silence means "no press night", not "every outlet failed at once".
+ * Scoped to standing-outlet insertion ONLY — archive-named gaps are untouched,
+ * so a show an aggregator DID cover keeps producing its real cells, and the
+ * show's coverage % still reports the absence.
+ * @param {number|null} clockAgeHours hours since openingDate/previewsStartDate (null → unknown, never suppress)
+ * @param {number} scoredDispatchTierOutlets distinct T1/T2 outlets with a scored review
+ */
+function isNoPressNightShow(clockAgeHours, scoredDispatchTierOutlets) {
+  if (clockAgeHours == null || !Number.isFinite(clockAgeHours)) return false;
+  if (clockAgeHours < NO_PRESS_NIGHT_GRACE_DAYS * 24) return false;
+  return scoredDispatchTierOutlets < NO_PRESS_NIGHT_MIN_OUTLETS;
+}
 
 /** outletIds with active standingCoverage for `market`. Pure, sorted for determinism. */
 function standingOutletIds(outlets, market) {
@@ -85,4 +123,5 @@ function capNewStandingCells(existingCellKeys, counter, showId, candidateOutletI
 
 module.exports = {
   standingOutletIds, standingOutletsSource, capNewStandingCells, DEFAULT_MAX_NEW_PER_RUN,
+  isNoPressNightShow, NO_PRESS_NIGHT_GRACE_DAYS, NO_PRESS_NIGHT_MIN_OUTLETS,
 };
