@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-30T11:18:07.011Z",
+  "timestamp": "2026-07-30T11:59:33.063Z",
   "stats": {
-    "totalReviews": 40957,
-    "alreadyFlagged": 17931,
+    "totalReviews": 40960,
+    "alreadyFlagged": 17930,
     "dateGuardCatches": 67,
-    "directorMismatch": 931,
+    "directorMismatch": 930,
     "tvFilmSignals": 1120,
     "londonSignals": 766,
     "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3374
+    "noPublishDate": 3376
   },
   "findings": [
     {
@@ -383,20 +383,6 @@
       "score": 56,
       "publishDate": "December 14, 2009",
       "url": "http://theater.nytimes.com/2009/12/14/theater/reviews/14little.html?ref=theater",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince\" from a-little-night-music-1973"
-        }
-      ]
-    },
-    {
-      "showId": "a-little-night-music-2009",
-      "file": "talkinbroadway--unknown.json",
-      "score": 68,
-      "publishDate": "2009-12-13",
-      "url": "https://www.talkinbroadway.com/world/LittleNightMusic.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
