@@ -72,6 +72,25 @@ jobs:
         if: ${{ inputs.skip_runtimes != 'true' }}
         uses: ./.github/actions/setup-playwright
 
+      # Pre-discovery validation snapshot. Runs the same validator that gates
+      # the commit below, but warn-only, and captures full output so the
+      # post-discovery step can set-diff errors (task #649/#663) — a
+      # pre-existing, unrelated error here must not discard today's discovery
+      # commit. Skipped on dry_run since the commit gate never applies there.
+      - name: Pre-validate existing data (baseline error snapshot)
+        id: pre-validate
+        if: inputs.dry_run != 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          if node scripts/validate-data.js 2>&1 | tee /tmp/pre-validate-output.txt; then
+            echo "status=ok" >> $GITHUB_OUTPUT
+            echo "Pre-discovery validation: OK"
+          else
+            echo "status=broken" >> $GITHUB_OUTPUT
+            echo "::warning::Data validation already failing BEFORE discovery — peripheral data file has an unrelated error. Discovery will still run; the commit is only blocked if discovery introduces a NEW validation error (task #649/#663 set-diff)."
+          fi
+
       - name: Discover historical shows
         id: discover
         env:
@@ -97,14 +116,53 @@ jobs:
           fi
           node scripts/discover-historical-shows.js $ARGS
 
+      # Step 4: Validate data after discovery/enrichment. continue-on-error
+      # keeps the job going so the set-diff step below can decide whether
+      # this run should still commit — a pre-existing, unrelated error must
+      # not discard good discovery work (task #649/#663). The "Commit gate"
+      # step further down re-fails the job when the set-diff finds a
+      # genuinely NEW error, restoring the original hard-fail semantics for
+      # that case only.
       - name: Validate data
         id: validate
         if: inputs.dry_run != 'true'
-        run: node scripts/validate-data.js
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          node scripts/validate-data.js 2>&1 | tee /tmp/post-validate-output.txt
+          echo $? > /tmp/post-validate-exitcode.txt
+
+      # Set-diff: did discovery introduce a NEW validation error, or is the
+      # only failure a pre-existing one it didn't cause? Only the former
+      # should block the commit (task #649/#663). --post-exit-code guards
+      # against a validate-data.js crash/format-change that exits non-zero
+      # but prints nothing matching "❌ ERROR:" — without it that would read
+      # as should_commit=true. Pure logic lives in
+      # scripts/lib/validation-setdiff.js, tested in
+      # tests/unit/discovery-validation-setdiff.test.mjs.
+      - name: Compute validation error set-diff
+        id: setdiff
+        if: always() && inputs.dry_run != 'true'
+        run: node scripts/check-validation-setdiff.js --pre=/tmp/pre-validate-output.txt --post=/tmp/post-validate-output.txt --post-exit-code="$(cat /tmp/post-validate-exitcode.txt 2>/dev/null || echo '')" >> "$GITHUB_OUTPUT"
+
+      # Fails the job — WITHOUT continue-on-error — only when the set-diff
+      # found a NEW error. Every downstream `if:` below keys off
+      # steps.commit-gate.outcome instead of steps.validate.outcome, so a
+      # pre-existing-only failure no longer discards discovery's writes
+      # (task #649/#663).
+      - name: Commit gate — block only on NEW validation errors
+        id: commit-gate
+        if: always() && inputs.dry_run != 'true'
+        run: |
+          if [ "${{ steps.setdiff.outputs.should_commit }}" != "true" ]; then
+            echo "::error::Discovery introduced ${{ steps.setdiff.outputs.new_error_count }} new validation error(s): ${{ steps.setdiff.outputs.new_errors_preview }}"
+            exit 1
+          fi
+          echo "No new validation errors — commit is clear to proceed (${{ steps.setdiff.outputs.pre_error_count }} pre-existing error(s) ignored)."
 
       - name: Check for changes
         id: git-check
-        if: inputs.dry_run != 'true' && steps.validate.outcome == 'success'
+        if: inputs.dry_run != 'true' && steps.commit-gate.outcome != 'failure'
         run: |
           git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
           if [ -f data/historical-shows-pending.json ]; then
@@ -112,7 +170,7 @@ jobs:
           fi
 
       - name: Commit and push changes
-        if: always() && steps.git-check.outputs.changes == 'true' && inputs.dry_run != 'true' && steps.validate.outcome == 'success'
+        if: always() && steps.git-check.outputs.changes == 'true' && inputs.dry_run != 'true' && steps.commit-gate.outcome != 'failure'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -145,6 +203,24 @@ jobs:
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
 
+      # validate-data.js writes ${RUNNER_TEMP}/.skip-push-core-data itself
+      # whenever it exits with ANY error — pre-existing or not — since it has
+      # no notion of the set-diff decision made above. Without this step, a
+      # pre-existing-only failure would leave the sentinel written by the
+      # "Validate data" step, and push-core-data's OWN internal refusal-check
+      # would still silently block the private-repo push even though
+      # commit-gate (and the public-repo commit above) proceeded — the exact
+      # discard-good-work bug this fix targets, just one step downstream.
+      # Same ship-check finding as task #649.
+      - name: Clear stale push-refusal sentinel (pre-existing errors only)
+        if: always() && steps.commit-gate.outcome != 'failure'
+        run: |
+          SENTINEL="${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+          if [ -f "$SENTINEL" ]; then
+            echo "Clearing stale push-refusal sentinel — set-diff found no NEW validation errors (task #649/#663)."
+            rm -f "$SENTINEL"
+          fi
+
       - name: Push core data to private repo
         id: core-push
         if: always()
@@ -155,7 +231,7 @@ jobs:
 
       - name: Mark data pushed (gates downstream jobs)
         id: mark-pushed
-        if: always() && steps.core-push.outcome == 'success' && steps.validate.outcome == 'success' && inputs.dry_run != 'true'
+        if: always() && steps.core-push.outcome == 'success' && steps.commit-gate.outcome != 'failure' && inputs.dry_run != 'true'
         run: echo "data_pushed=true" >> "$GITHUB_OUTPUT"
   create-issue:
     needs: discover-historical
