@@ -706,6 +706,12 @@ on:
       - 'scripts/lib/digest-snapshots.js'
       - 'scripts/lib/digest-snapshots.test.mjs'
       - 'scripts/send-morning-digest.js'
+      # Backlog drain engine (task #654) — pure selection/metric logic +
+      # dispatcher CLI; colocated test runs in the scripts/lib/*.test.mjs
+      # glob step, path-listed so a solo edit triggers CI.
+      - 'scripts/lib/backlog-drain.js'
+      - 'scripts/lib/backlog-drain.test.mjs'
+      - 'scripts/backlog-drain.js'
       # Overall email-gate funnel monitor (card #240) — pure rules + runner +
       # analyzer; colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/email-gate-funnel-rules.js'

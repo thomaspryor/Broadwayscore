@@ -53,14 +53,15 @@ test('readAllSnapshots: fresh sections render, everything else lands in problems
   const freshAt = new Date(NOW - 1 * 3600e3).toISOString();
   write(dir, 'health-digest-snapshot.json', { generatedAt: freshAt, errors: [], warns: [] });
   write(dir, 'daily-digest-snapshot.json', { generatedAt: new Date(NOW - 50 * 3600e3).toISOString() });
-  // reddit snapshot absent on purpose
+  // reddit + backlog-drain snapshots absent on purpose
 
   const { sections, problems } = readAllSnapshots({ auditDir: dir, now: NOW });
   assert.ok(sections.health);
   assert.equal(sections.dailyDigest, null);
   assert.equal(sections.redditDigest, null);
-  assert.equal(problems.length, 2);
-  assert.deepEqual(problems.map((p) => p.status).sort(), ['missing', 'stale']);
+  assert.equal(sections.backlogDrain, null);
+  assert.equal(problems.length, 3);
+  assert.deepEqual(problems.map((p) => p.status).sort(), ['missing', 'missing', 'stale']);
 });
 
 test('describeProblems names every non-fresh source; null when all fresh', () => {
@@ -74,8 +75,8 @@ test('describeProblems names every non-fresh source; null when all fresh', () =>
   assert.match(note, /^didn't update overnight:/);
 });
 
-test('registry covers exactly the three folded digests (opening digest is standalone again since 2026-07-30)', () => {
-  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['dailyDigest', 'health', 'redditDigest']);
+test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; backlogDrain added #654)', () => {
+  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['backlogDrain', 'dailyDigest', 'health', 'redditDigest']);
 });
 
 // The contract the plan review flagged as a P0: the monitor's classifier and
