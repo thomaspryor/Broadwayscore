@@ -10,6 +10,8 @@ const {
   hasValidScore,
   hasAggregatorExcerpt,
   isIncludableForRebuild,
+  isLikelyStaleRoundupFlag,
+  isStaleCvPromotedWrongProduction,
 } = require('./review-guards.js');
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -266,4 +268,92 @@ test('excerpt-only review with no recognized excerpt field and no signal is NOT 
     fullText: null,
   };
   assert.equal(isIncludableForRebuild(noExcerptNoSignal), false);
+});
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * #651 (Notion 3ad637c5) — authenticity guard false positives.
+ * Fixtures trimmed from the live 2026-07-30 corpus (JCS Palladium, Heathers
+ * Off-West End, Tender Off-West-End — the 3 confirmed live suppressions).
+ * ────────────────────────────────────────────────────────────────────────── */
+
+test('isLikelyStaleRoundupFlag Signal B: JCS whatsonstage--sarah-crompton — manual flag cites a stale roundup URL, url was corrected in place afterward', () => {
+  const jcs = {
+    isRoundupArticle: true,
+    fullText: 'x'.repeat(900),
+    contentTier: 'complete',
+    isFullReview: true,
+    url: 'https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-in-london-and-on-tour-review_1726828/',
+    roundupFlagNote: 'manual 2026-07-08: WOS review round-up (did-sam-ryder-reach-for-the-stars-...-review-round-up_1726870) — one 902-word roundup quoting 7 critics exploded into per-critic files.',
+    urlUpdatedAt: '2026-07-09T07:06:35.415Z',
+  };
+  assert.equal(isLikelyStaleRoundupFlag(jcs), true);
+});
+
+test('isLikelyStaleRoundupFlag Signal B: does NOT fire when url was NOT updated after the flag date', () => {
+  const stillRoundupUrl = {
+    isRoundupArticle: true,
+    fullText: 'x'.repeat(900),
+    contentTier: 'invalid',
+    url: 'https://www.whatsonstage.com/news/review-round-up-critics-coo-over-to-kill-a-mockingbird_104/',
+    roundupFlagNote: 'manual 2026-07-09: WOS review round-up page as review (isRoundupUrl auto-setter is enrichment-gated and had not run)',
+    urlDiscoveredAt: '2026-04-21T11:40:57.532Z', // BEFORE the flag date — not a later correction
+  };
+  assert.equal(isLikelyStaleRoundupFlag(stillRoundupUrl), false);
+});
+
+test('isLikelyStaleRoundupFlag Signal B: does NOT fire when the numeric article ID matches (same article, not corrected)', () => {
+  const sameArticle = {
+    isRoundupArticle: true,
+    fullText: 'x'.repeat(900),
+    contentTier: 'complete',
+    url: 'https://www.whatsonstage.com/news/foo-review-round-up_1726870/',
+    roundupFlagNote: 'manual 2026-07-08: WOS review round-up (foo-review-round-up_1726870)',
+    urlUpdatedAt: '2026-07-09T07:06:35.415Z',
+  };
+  assert.equal(isLikelyStaleRoundupFlag(sameArticle), false);
+});
+
+test('isLikelyStaleRoundupFlag: original Signal A (whitelisted individual-review URL + isFullReview) still works', () => {
+  const clydeFitch = {
+    isRoundupArticle: true,
+    fullText: 'x'.repeat(900),
+    isFullReview: true,
+    url: 'https://www.clydefitchreport.com/2026/07/some-review/',
+  };
+  assert.equal(isLikelyStaleRoundupFlag(clydeFitch), true);
+});
+
+test('isStaleCvPromotedWrongProduction: Heathers case — Auto-adjudicated note (no wrongProductionReason) + affirming high-conf CV + ensemble score self-heals', () => {
+  const heathers = {
+    wrongProduction: true,
+    wrongProductionNote: 'Auto-adjudicated: national-tour. The review explicitly states this is a London production "before it embarks on tour."',
+    publishDate: '2026-07-14',
+    url: 'https://www.londonboxoffice.co.uk/news/post/review-heathers-the-musical-arts-at-marble-arch',
+    show: null,
+    contentVerification: { isValid: true, confidence: 'high', wrongProduction: false, wrongArticle: false, verifiedAt: '2026-07-15T00:00:00.000Z' },
+    llmScore: { score: 78, confidence: 'high' },
+    ensembleData: { needsReview: false, modelAgreement: 'All 3 models agree: Positive' },
+  };
+  assert.equal(isStaleCvPromotedWrongProduction(heathers, false), true);
+});
+
+test('isStaleCvPromotedWrongProduction: plain wrongProductionNote WITHOUT the Auto-adjudicated: prefix does not match on note alone', () => {
+  const humanNote = {
+    wrongProduction: true,
+    wrongProductionNote: 'Pre-opening guard: pre-window date',
+    contentVerification: { isValid: true, confidence: 'high', wrongProduction: false, wrongArticle: false },
+    llmScore: { score: 78, confidence: 'high' },
+  };
+  assert.equal(isStaleCvPromotedWrongProduction(humanNote, false), false);
+});
+
+test('isStaleCvPromotedWrongProduction: Auto-adjudicated note still respects manual clear', () => {
+  const manuallyCleared = {
+    wrongProduction: true,
+    wrongProductionNote: 'Auto-adjudicated: national-tour.',
+    wrongProductionManualClear: true,
+    contentVerification: { isValid: true, confidence: 'high', wrongProduction: false, wrongArticle: false },
+    llmScore: { score: 78, confidence: 'high' },
+  };
+  assert.equal(isStaleCvPromotedWrongProduction(manuallyCleared, false), false);
 });

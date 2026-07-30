@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   detectFlagContradiction,
+  detectCvFlagContradiction,
   contradictionFixCommand,
   shouldAlertContradiction,
 } = require('./flag-contradiction.js');
@@ -152,4 +153,93 @@ test('dedupe: re-alert only after the window', () => {
   assert.equal(shouldAlertContradiction('2026-07-22T00:00:00Z', now), false); // <7d
   assert.equal(shouldAlertContradiction('2026-07-10T00:00:00Z', now), true);  // >7d
   assert.equal(shouldAlertContradiction('garbage', now), true);               // unparseable → alert
+});
+
+// --- detectCvFlagContradiction (#651) — timestamp-free, broader flag coverage ---
+
+test('JCS case: isRoundupArticle flag + high-confidence affirming CV → contradiction', () => {
+  const jcs = {
+    isRoundupArticle: true,
+    textWordCount: 821,
+    contentVerification: { isValid: true, confidence: 'high', reasoning: 'Reviews the current West End staging.' },
+  };
+  const result = detectCvFlagContradiction(jcs);
+  assert.equal(result.contradicted, true);
+  assert.equal(result.flag, 'isRoundupArticle');
+});
+
+test('Heathers case: wrongProduction flag + high-confidence affirming CV → contradiction', () => {
+  const heathers = {
+    wrongProduction: true,
+    textWordCount: 1092,
+    contentVerification: { isValid: true, confidence: 'high', reasoning: 'Confirms the Off-West End run.' },
+  };
+  const result = detectCvFlagContradiction(heathers);
+  assert.equal(result.contradicted, true);
+  assert.equal(result.flag, 'wrongProduction');
+});
+
+test('wrongShow flag also covered (unlike detectFlagContradiction, which excludes it)', () => {
+  const f = {
+    wrongShow: true,
+    wordCount: 500,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongShow');
+});
+
+test('falls back to wordCount when textWordCount is absent', () => {
+  const f = {
+    wrongProduction: true,
+    wordCount: 400,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.ok(detectCvFlagContradiction(f));
+});
+
+test('no flag set → null', () => {
+  const f = { textWordCount: 900, contentVerification: { isValid: true, confidence: 'high' } };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('CV confidence medium (not high) → null', () => {
+  const f = {
+    wrongProduction: true, textWordCount: 900,
+    contentVerification: { isValid: true, confidence: 'medium' },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('CV isValid false → null (CV itself agrees something is wrong)', () => {
+  const f = {
+    wrongProduction: true, textWordCount: 900,
+    contentVerification: { isValid: false, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('word count at/under 300 → null (too short to trust)', () => {
+  const f = {
+    wrongProduction: true, textWordCount: 300,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('human-decided file never fires (manual clear wins over CV)', () => {
+  const f = {
+    wrongProduction: true, textWordCount: 900,
+    wrongProductionManualClear: true,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('no contentVerification → null', () => {
+  assert.equal(detectCvFlagContradiction({ wrongProduction: true, textWordCount: 900 }), null);
+});
+
+test('null/undefined data → null (never throws)', () => {
+  assert.equal(detectCvFlagContradiction(null), null);
+  assert.equal(detectCvFlagContradiction(undefined), null);
 });
