@@ -1,7 +1,7 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-07-29T07:42:37.524Z",
+  "lastChecked": "2026-07-30T07:40:57.913Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Stuck work: paused P0/P1 cards",
       "status": "warn",
-      "message": "3 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (4d); push-with-retry.sh PUSH_DEADLINE_SEC=240 too tight for large (3d); UX audit #326: watchlist-grid delete icon color fix blocked  (2d)"
+      "message": "3 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (5d); push-with-retry.sh PUSH_DEADLINE_SEC=240 too tight for large (4d); UX audit #326: watchlist-grid delete icon color fix blocked  (3d)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "32 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Kill ScrapingBee premium_proxy direct calls (cost more than  (6d); Rebuild same-URL dedup: prefer a real criticName over 'Unkno (6d); Trainspotting: only 4 reviews on site + email said 7 (invest (6d)"
+      "message": "36 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Kill ScrapingBee premium_proxy direct calls (cost more than  (7d); Rebuild same-URL dedup: prefer a real criticName over 'Unkno (7d); Trainspotting: only 4 reviews on site + email said 7 (invest (7d)"
     }
   ]
 }
