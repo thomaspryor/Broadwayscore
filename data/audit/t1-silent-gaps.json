@@ -1,8 +1,46 @@
 {
-  "generatedAt": "2026-07-30T05:52:05.535Z",
+  "generatedAt": "2026-07-30T06:51:07.861Z",
   "windowDays": 45,
   "showsScanned": 56,
   "gaps": [
+    {
+      "showId": "loves-labours-lost-globe-west-end-2026",
+      "title": "Love's Labour's Lost - Globe",
+      "openingDate": "2026-07-17",
+      "file": "times-uk--clive-davis.json",
+      "outletId": "times-uk",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review-shakespeare-ruined-by-puerile-knob-gags-wtr9x5xl9",
+      "recovery": null,
+      "recoveryCount": 3,
+      "fix": "node scripts/ingest-review-from-url.js --show=loves-labours-lost-globe-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review-shakespeare-ruined-by-puerile-knob-gags-wtr9x5xl9 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-07-30T00:20:16.388Z",
+      "fileAgeHours": 6.480254444444444,
+      "gapSeenAt": "2026-07-30T06:51:07.861Z",
+      "nonTerminalAgeHours": 0
+    },
+    {
+      "showId": "loves-labours-lost-globe-west-end-2026",
+      "title": "Love's Labour's Lost - Globe",
+      "openingDate": "2026-07-17",
+      "file": "times-uk--david-jays-and-maxie-szalwinska.json",
+      "outletId": "times-uk",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review-shakespeare-ruined-by-puerile-knob-gags-wtr9x5xl9",
+      "recovery": {
+        "attempted": true,
+        "ok": true,
+        "reason": null
+      },
+      "recoveryCount": 2,
+      "fix": "node scripts/ingest-review-from-url.js --show=loves-labours-lost-globe-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review-shakespeare-ruined-by-puerile-knob-gags-wtr9x5xl9 --outlet=times-uk --critic=\"David Jays and Maxie Szalwinska\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-07-30T06:51:07.861Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -16,9 +54,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 160.67473305555555,
+      "fileAgeHours": 161.6587113888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 119.97766638888889
+      "nonTerminalAgeHours": 120.96164583333334
     }
   ],
   "contradictions": []
