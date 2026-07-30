@@ -2592,11 +2592,21 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // Includes U+02BC (modifier-letter apostrophe), U+FF07 (full-width
   // apostrophe), and U+00A0 (NBSP) — collapse NBSP to regular space so
   // "Joe Turner's" with NBSP between words still matches.
+  // ALSO fold diacritics (NFD + strip combining marks). showId slugs are ASCII
+  // ("les-miserables-...") but outlets spell the show correctly ("Miserables" with
+  // an accent), so without folding NO showId token can match the headline or body
+  // of a correctly-accented review. That made the <title> backstop below reject
+  // genuine reviews of accented-title shows: NY Sun / Les Miserables Arena Concert
+  // (2026-07-30) had 12 body mentions and was still dropped as url_content_mismatch.
+  // title-match.js:50 and review-guards.js:676 already fold this way — this
+  // function was the lone holdout.
   const normalize = (s) => s
     .replace(/[‘’‚‛ʼ＇]/g, "'")
     .replace(/[“”„‟]/g, '"')
     .replace(/[–—]/g, '-')
-    .replace(/ /g, ' ');
+    .replace(/ /g, ' ')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
   const lower = normalize(text).toLowerCase();
   const threshold = text.length >= 1500 ? minLong : minShort;
 
