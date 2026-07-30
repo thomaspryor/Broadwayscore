@@ -68,6 +68,12 @@ function buildIncidentRepro() {
   execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'CLAUDE.md'))}, 'a'.repeat(200) + '\\n')`]);
   gitc(dir, 'add', '-A');
   gitc(dir, 'commit', '-q', '-m', 'base');
+  // `git init`'s default initial branch name is NOT guaranteed across
+  // environments (init.defaultBranch varies; the CI runner's git produced a
+  // different name than this machine's, breaking the later `checkout main`
+  // with "pathspec 'main' did not match any file(s) known to git"). Force it
+  // explicitly rather than assuming.
+  gitc(dir, 'branch', '-M', 'main');
   const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
 
   // our run's commit: the actual fix (shrinks the file)
