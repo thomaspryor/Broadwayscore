@@ -154,11 +154,21 @@ let _ambiguousPrefixSlugsCache = null;
 function buildAmbiguousPrefixSlugs() {
   if (_ambiguousPrefixSlugsCache) return _ambiguousPrefixSlugsCache;
 
-  const outletAliases = getOutletAliases();
+  // Pull directly from the registry (not just getOutletAliases()) so
+  // displayName variants that aren't duplicated into an outlet's aliases
+  // array (e.g. "Lighting & Sound America" vs alias "lighting and sound
+  // america") are still counted as that outlet's "own name" — matching what
+  // the exact-match phase above already recognizes.
+  const registry = loadOutletRegistry();
   const ownSlugsByCanonical = new Map();
-  for (const [canonical, aliases] of Object.entries(outletAliases)) {
+  for (const [canonical, data] of Object.entries((registry && registry.outlets) || {})) {
+    if (canonical === '_aliasIndex' || canonical === '_meta') continue;
     const slugs = new Set([slugify(canonical)]);
-    for (const alias of aliases) {
+    if (data.displayName) {
+      const s = slugify(data.displayName);
+      if (s) slugs.add(s);
+    }
+    for (const alias of (data.aliases || [])) {
       const s = slugify(alias);
       if (s) slugs.add(s);
     }
