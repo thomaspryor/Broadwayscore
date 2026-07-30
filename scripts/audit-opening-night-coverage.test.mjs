@@ -13,6 +13,14 @@ const OUTLETS = {
   nytimes: { tier: 1, displayName: 'The New York Times', standingCoverage: true, standingMarkets: ['broadway'] },
   nypost: { tier: 2, displayName: 'New York Post', standingCoverage: true, standingMarkets: ['broadway'] },
   variety: { tier: 1, displayName: 'Variety' },
+  // CI-unfetchable (review-census.js's CI_UNFETCHABLE_OUTLETS) AND registry
+  // says it doesn't apply here — exercises the suppressedMissing/NO_REVIEW_EXPECTED
+  // interaction (adversarial review finding).
+  wsj: { tier: 1, displayName: 'The Wall Street Journal', coverageExpectation: 'none', coverageExpectationDecidedAt: '2026-07-25T00:00:00.000Z' },
+  // A London-alias pair (censusVerdict's variants() treats these as the same
+  // outlet for covered/missing purposes) used to exercise totalTier's dedup.
+  timeout: { tier: 1, displayName: 'Time Out' },
+  'timeout-london': { tier: 1, displayName: 'Time Out (London)' },
 };
 
 const NOW_MS = Date.parse('2026-07-30T12:00:00.000Z');
@@ -111,15 +119,22 @@ test('fan-out cap: a cell confirmed by BOTH a real source and standing-outlets i
   assert.equal(counter.used, 0, 'a cell also named by a real source must not consume the fan-out cap budget');
 });
 
-test('fan-out cap: a standing-outlets-ONLY cell IS capped when the budget is exhausted', () => {
+test('fan-out cap: a standing-outlets-ONLY cell IS capped when the budget is exhausted, but STILL counts as missing in coverage', () => {
+  // Regression guard (adversarial review 2026-07-30): a capped-out cell is
+  // excluded from `cells` (ledger display) but must never be silently counted
+  // as covered — a bug that moved coverageMissing++ to after the cap check
+  // would pass every other fan-out test while inflating coverage.covered.
   const fixture = makeArchiveFixture();
   const s = show();
   const counter = { used: 0, cap: 0 };
   const standingCtx = { existingCellKeys: new Set(), counter };
   const censusOpts = { archiveDir: fixture.archiveDir, sources: [] }; // no real archive names nytimes/nypost
-  const { cells } = computeShowCells(s, [], OUTLETS, NOW_MS, standingCtx, censusOpts);
+  const { cells, coverage } = computeShowCells(s, [], OUTLETS, NOW_MS, standingCtx, censusOpts);
   assert.equal(cells.find((c) => c.outletId === 'nytimes'), undefined);
   assert.equal(cells.find((c) => c.outletId === 'nypost'), undefined);
+  assert.equal(coverage.totalTier, 2);
+  assert.equal(coverage.denominator, 2);
+  assert.equal(coverage.covered, 0, 'both capped-out cells must still count as missing, not covered');
 });
 
 test('fan-out cap: a standing-outlets-ONLY cell is allowed through when budget remains, and consumes it', () => {
@@ -166,4 +181,61 @@ test('broadway category with no real source still gets standingOutlets applied (
   const ids = cells.map((c) => c.outletId).sort();
   assert.deepEqual(ids, ['nypost', 'nytimes']);
   assert.equal(coverage.totalTier, 2);
+});
+
+test('censusOpts is allowlisted to sources/archiveDir only — an accidental extra key cannot clobber computed show/market/outlets', () => {
+  const fixture = makeArchiveFixture();
+  const s = show();
+  const standingCtx = { existingCellKeys: new Set(), counter: { used: 0, cap: 100 } };
+  // A hypothetical future caller accidentally passes `outlets: undefined` (or
+  // any other computed key) through censusOpts — this must be silently
+  // ignored, not allowed to disable standing-coverage insertion (adversarial
+  // review finding: censusOpts was previously blind-spread AFTER the computed
+  // opts, so this would have suppressed the pseudo-source entirely).
+  const censusOpts = { archiveDir: fixture.archiveDir, sources: [], outlets: undefined, market: 'bogus' };
+  const { cells, coverage } = computeShowCells(s, [], OUTLETS, NOW_MS, standingCtx, censusOpts);
+  const ids = cells.map((c) => c.outletId).sort();
+  assert.deepEqual(ids, ['nypost', 'nytimes'], 'standing coverage must still apply despite the extraneous censusOpts keys');
+  assert.equal(coverage.totalTier, 2);
+});
+
+test('coverage math: suppressedMissing (CI-unfetchable) entries respect NO_REVIEW_EXPECTED just like ordinary missing entries', () => {
+  const fixture = makeArchiveFixture();
+  const s = show();
+  const censusOpts = {
+    archiveDir: fixture.archiveDir,
+    sources: [fixture.realSource('bww-roundup', [
+      { outlet: 'The Wall Street Journal', outletId: 'wsj', critic: 'Unknown', stars: null, url: '' },
+    ])],
+  };
+  const { cells, coverage } = computeShowCells(s, [], OUTLETS, NOW_MS, null, censusOpts);
+  assert.equal(cells.length, 1);
+  assert.equal(cells[0].outletId, 'wsj');
+  assert.equal(cells[0].state, 'SUPPRESSED', 'ledger display state is unaffected — CI-unfetchable still shows as SUPPRESSED');
+  assert.equal(coverage.totalTier, 1);
+  // wsj is BOTH CI-unfetchable (suppressedMissing) AND NO_REVIEW_EXPECTED here —
+  // it must be excluded from the denominator entirely, not counted as a missing
+  // (uncovered) cell the way plain CI-unfetchable-but-still-expected outlets are.
+  assert.equal(coverage.denominator, 0, 'a NO_REVIEW_EXPECTED suppressed outlet must be excluded from the denominator');
+  assert.equal(coverage.covered, 0);
+});
+
+test('coverage math: totalTier dedupes London-alias pairs (timeout/timeout-london) so one logical outlet is not double-counted', () => {
+  const fixture = makeArchiveFixture();
+  const s = show();
+  const censusOpts = {
+    archiveDir: fixture.archiveDir,
+    sources: [fixture.realSource('bww-roundup', [
+      { outlet: 'Time Out', outletId: 'timeout', critic: 'Unknown', stars: null, url: '' },
+    ])].concat([{
+      name: 'dtli', dir: null,
+      fn: () => [{ outlet: 'Time Out (London)', outletId: 'timeout-london', critic: 'Unknown', stars: null, url: '' }],
+    }]),
+  };
+  // Give the second synthetic source its own real archive file too.
+  fs.mkdirSync(path.join(fixture.archiveDir, 'dtli'), { recursive: true });
+  fs.writeFileSync(path.join(fixture.archiveDir, 'dtli', `${SHOW_ID}.html`), '<html></html>');
+  censusOpts.sources[1].dir = 'dtli';
+  const { coverage } = computeShowCells(s, [], OUTLETS, NOW_MS, null, censusOpts);
+  assert.equal(coverage.totalTier, 1, 'timeout + timeout-london are the same logical outlet — must count once');
 });

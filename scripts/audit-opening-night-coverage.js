@@ -159,12 +159,16 @@ function outletNoReviewExpected(outlets, outletId, nowMs) {
 // Omitted entirely (undefined) → identical behavior to before B1 (no pseudo-source,
 // no cap), which is how the non-ledger console audit path still calls this indirectly
 // via its own separate computation (unaffected — it doesn't call computeShowCells).
-// `censusOpts` (test-only, optional): merged into the opts passed to
-// buildCensusFromArchives — lets unit tests inject a synthetic `sources` array
-// instead of relying on real files under data/aggregator-archive/ (a private,
-// gitignored repo not present in every checkout). Never passed by any
-// production call site (writeLedger calls with 5 args only), so this is a
-// no-op in real usage.
+// `censusOpts` (test-only, optional): a synthetic `sources`/`archiveDir` pair
+// merged into the opts passed to buildCensusFromArchives — lets unit tests
+// inject fixture archives instead of relying on real files under
+// data/aggregator-archive/ (a private, gitignored repo not present in every
+// checkout). Deliberately allowlisted to ONLY `sources`/`archiveDir` below
+// (never blind-spread) — an accidental sixth argument like `{ outlets:
+// undefined }` must never be able to silently clobber the computed
+// show/market/outlets and disable standing-coverage insertion (adversarial
+// review finding, 2026-07-30). Never passed by any production call site
+// (writeLedger calls with 5 args only), so this is a no-op in real usage.
 function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts) {
   const showId = show.id || show.slug;
   const category = show.category || 'broadway';
@@ -185,7 +189,11 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts
   try {
     census = buildCensusFromArchives(showId, {
       ...(applyStanding ? { show, market, outlets } : { show, market }),
-      ...censusOpts,
+      // Allowlisted merge, not a blind spread: censusOpts may ONLY override
+      // sources/archiveDir (test fixtures) — it must never be able to clobber
+      // the computed show/market/outlets (adversarial review finding).
+      ...(censusOpts && censusOpts.sources !== undefined ? { sources: censusOpts.sources } : {}),
+      ...(censusOpts && censusOpts.archiveDir !== undefined ? { archiveDir: censusOpts.archiveDir } : {}),
     });
   }
   catch (_) { return { cells: [], reactivations, coverage: null }; }
@@ -194,7 +202,15 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts
   // B3 scoreboard input: total dispatch-tier (T1/T2) outlets this show's census
   // expects, regardless of covered/missing — the denominator the scoreboard
   // needs and the ledger (missing-only, by design) doesn't carry.
-  const totalTier = census.entries.filter((e) => isDispatchTierOutlet(outlets, e.outletId)).length;
+  // Deduped by canonical id (strip '-london'): censusVerdict's variants() below
+  // treats e.g. 'timeout'/'timeout-london' as the same outlet for covered/missing
+  // purposes, but unionCensus() dedupes only exact ids — if two census sources
+  // ever emit both spellings as separate entries, an ungapped count here would
+  // double-count one logical outlet in the denominator (adversarial review finding).
+  const canonicalTierId = (id) => (id.endsWith('-london') ? id.slice(0, -'-london'.length) : id);
+  const totalTier = new Set(
+    census.entries.filter((e) => isDispatchTierOutlet(outlets, e.outletId)).map((e) => canonicalTierId(e.outletId))
+  ).size;
 
   // Clock start: max(openingDate, showCreatedAt) is the S2-T6 refinement; here we
   // use openingDate/previewsStartDate. No date → null clock → IN_FLIGHT (never a GAP).
@@ -244,7 +260,15 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts
     // suppressedMissing isn't pre-filtered to tier<=2 the way cVerdict.missing's
     // loop above is — gate it the same way totalTier is, so a hypothetical
     // non-tier suppressed outlet can't skew the denominator/numerator apart.
-    if (isDispatchTierOutlet(outlets, m.outletId)) coverageMissing++;
+    // Also apply the SAME noReviewExpected exclusion the missing-loop above uses
+    // (adversarial review finding): without it, a future registry decision to
+    // mark e.g. wsj/newyorker as NO_REVIEW_EXPECTED would still count them
+    // against coverageMissing here, contradicting the stated rule that such
+    // outlets affect neither numerator nor denominator.
+    if (isDispatchTierOutlet(outlets, m.outletId)) {
+      if (outletNoReviewExpected(outlets, m.outletId, nowMs)) noReviewExpectedCount++;
+      else coverageMissing++;
+    }
   }
   // NO_REVIEW_EXPECTED entries are excluded from BOTH numerator and denominator
   // (the registry says this outlet doesn't apply here — it should neither help
