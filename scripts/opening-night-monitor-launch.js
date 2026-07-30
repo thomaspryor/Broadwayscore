@@ -30,6 +30,14 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 
 const REPO = '/Users/tompryor/Broadwayscore';
+
+// launchd hands this process only PATH, HOME and CLAUDE_CODE_OAUTH_TOKEN, so
+// RESEND_API_KEY / OWNER_EMAIL were absent on every tick and every escalation
+// email was dropped ("RESEND_API_KEY or OWNER_EMAIL not set, skipping email
+// alert") — three exhausted launch attempts on a live opening night notified
+// nobody (2026-07-30 audit; task #457). Load .env before anything reads
+// process.env; real CI/shell values always win.
+require('./lib/load-env.js').loadEnv(REPO);
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { selectOpeningNightShows } = require('./lib/opening-night-selection.js');
 const {

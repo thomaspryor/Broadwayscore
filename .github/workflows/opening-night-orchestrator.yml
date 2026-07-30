@@ -416,7 +416,39 @@ jobs:
           echo "║  Skip SERP: ${SKIP_SERP:-false}"
           echo "╚══════════════════════════════════════════════════╝"
 
+          # Wall-clock deadline, 60min under `timeout-minutes: 360`.
+          #
+          # The loop could never finish: MAX_ITERATIONS=10 x (poller p50 45.8min +
+          # POLL_INTERVAL 10min) = 558min against a 360min cap. As the selection
+          # window grew (14 shows on Jul 5 -> 40 on Jul 30) per-iteration cost
+          # crossed the threshold, and from 2026-07-19 EVERY scheduled run was
+          # killed at exactly 360.0min with conclusion=cancelled — 11 straight days
+          # (last scheduled success 2026-07-19T00:19:57Z).
+          #
+          # Two things died with it, both silently:
+          #   1. SERP_DEFER_ITERATIONS=8 means iterations 9-10 are the ONLY
+          #      SERP-enabled ones, so the targeted per-outlet SERP arm of the
+          #      review hunt never ran at all.
+          #   2. `if: always()` does NOT run on cancellation, so the Discord status
+          #      report and the checklist + SLA dispatch tail steps never fired.
+          # Exiting cleanly under the cap restores both.
+          # 240min, not 300: the deadline is only checked at the TOP of each
+          # iteration, and one iteration can then run ~75min (poller's own 60min
+          # job timeout + POLL_INTERVAL sleep + dispatch/verify overhead). So the
+          # true worst case is DEADLINE + ~75min, and 240+75=315 stays under the
+          # 360 cap with a real reserve for the always() tail steps. It also has
+          # to absorb the steps that run BEFORE this one (checkout, npm ci,
+          # budget pre-flight), which are not covered by this clock.
+          DEADLINE=$(( $(date +%s) + 240*60 ))
+          COMPLETED_ITERATIONS=0
+          DEADLINE_EXIT=false
+
           for ITERATION in $(seq 1 $MAX_ITERATIONS); do
+            if [ "$(date +%s)" -ge "$DEADLINE" ]; then
+              DEADLINE_EXIT=true
+              echo "::warning::Wall-clock deadline reached at iteration $ITERATION/$MAX_ITERATIONS — exiting loop cleanly so the always() tail steps run"
+              break
+            fi
             echo ""
             echo "══════════════════════════════════════════════════"
             echo "  ITERATION $ITERATION / $MAX_ITERATIONS — $(date -u '+%Y-%m-%d %H:%M UTC')"
@@ -529,6 +561,8 @@ jobs:
               echo "⚠️ Could not find new poller run after 2 min. Continuing."
             fi
 
+            COMPLETED_ITERATIONS=$ITERATION
+
             # Sleep between iterations (skip on last iteration)
             if [ "$ITERATION" -lt "$MAX_ITERATIONS" ]; then
               echo "Sleeping ${POLL_INTERVAL} minutes until next iteration..."
@@ -538,7 +572,14 @@ jobs:
 
           echo ""
           echo "╔══════════════════════════════════════════════════╗"
-          echo "║  Orchestrator complete: $MAX_ITERATIONS iterations"
+          if [ "$DEADLINE_EXIT" = "true" ]; then
+            echo "║  Orchestrator PARTIAL: $COMPLETED_ITERATIONS/$MAX_ITERATIONS iterations (wall-clock deadline)"
+            echo "║  SERP arm starts at iteration $((SERP_DEFER_ITERATIONS + 1)) — if that was not reached,"
+            echo "║  per-outlet SERP discovery did NOT run this cycle."
+            echo "::warning::Orchestrator exited on deadline after $COMPLETED_ITERATIONS/$MAX_ITERATIONS iterations — coverage is partial"
+          else
+            echo "║  Orchestrator complete: $COMPLETED_ITERATIONS/$MAX_ITERATIONS iterations"
+          fi
           echo "╚══════════════════════════════════════════════════╝"
 
       - name: Setup Node for status notification

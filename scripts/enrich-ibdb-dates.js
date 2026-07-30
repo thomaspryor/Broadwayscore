@@ -350,6 +350,13 @@ async function main() {
           }
         } else {
           showRecord[ch.field] = ch.new;
+          // Stamp provenance alongside the date. Without this the show keeps
+          // whatever (or no) source label it had, and date-source-confidence.js
+          // puts null/''/undefined in ALWAYS_UNCONFIRMED — so an IBDB-confirmed
+          // date is re-queued for correction forever and the currentSource
+          // column in date-enrichment-corrections.json is unreliable for triage.
+          // 71 shows carry an openingDate with no openingDateSource (2026-07-30).
+          if (ch.field === 'openingDate') showRecord.openingDateSource = 'ibdb';
         }
       }
       updated++;
