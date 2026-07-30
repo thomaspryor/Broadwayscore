@@ -278,6 +278,11 @@ tmp/
 /data/audit/dispatch-ledger.jsonl
 # CI-red claim ledger (task #584) — Mac-local, same append-only pattern
 /data/audit/ci-red-claims.jsonl
+# Backlog drain engine (task #654) — Mac-local; both producer
+# (scripts/backlog-drain.js) and consumer (send-morning-digest.js) run on
+# this Mac via launchd, so no git commit is needed to bridge them.
+/data/audit/backlog-drain-ledger.jsonl
+/data/audit/backlog-drain-metric.json
 /data/audit/job-leases/
 /data/audit/reconcile-report.jsonl
 supabase/.temp/
