@@ -9,6 +9,7 @@ const {
   renderHealthDigestBlock, healthIssueCount,
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
 } = require('./autonomous-email-render.js');
+const { buildDispatchUrl, verifyDispatchSignature, selectOpenDispatchCard } = require('./dispatch-link.js');
 
 const STATS = {
   runId: 'run-x',
@@ -447,6 +448,103 @@ test('renderHealthDigestBlock: escalated URGENT snapshot lists errors and the da
   assert.match(html, /Data: cookie expiration/);
   assert.match(html, /The Stage cookie expired/);
   assert.match(html, /1 auto-fixed overnight/);
+});
+
+test('renderHealthDigestBlock: (a) each ERROR row carries a signed Fix-this link; warnings never get one', () => {
+  const secret = 'test-secret';
+  const exp = 1900000000;
+  const fixUrl = buildDispatchUrl({
+    conditionKey: 'health-check:Data: cookie expiration',
+    title: 'BSC Daily: Data: cookie expiration',
+    exp, secret, baseUrl: 'https://broadwayscorecard.com',
+  });
+  const html = renderHealthDigestBlock({
+    subject: 'BSC Daily: 1 unresolved error',
+    errors: [{ name: 'Data: cookie expiration', message: 'The Stage cookie expired', fixUrl }],
+    warns: [{ name: 'SEO: health', message: 'field LCP still red' }],
+  });
+  assert.match(html, /Fix this →/);
+  // href is HTML-escaped like every other card-sourced URL (& → &amp;)
+  const escapedUrl = fixUrl.replace(/&/g, '&amp;');
+  assert.match(html, new RegExp(`href="${escapedUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
+  // only ONE Fix-this link renders — the warning row must not get one
+  assert.equal((html.match(/Fix this →/g) || []).length, 1);
+});
+
+test('renderHealthDigestBlock: an error with no fixUrl renders with no Fix-this link (backward compatible)', () => {
+  const html = renderHealthDigestBlock({
+    subject: 'BSC Daily: 1 unresolved error',
+    errors: [{ name: 'Data: cookie expiration', message: 'expired' }],
+    warns: [],
+  });
+  assert.doesNotMatch(html, /Fix this →/);
+});
+
+test('dispatch-link: (b) a tampered signature is rejected', () => {
+  const secret = 'test-secret';
+  const exp = 1900000000;
+  const conditionKey = 'health-check:Data: cookie expiration';
+  const title = 'BSC Daily: Data: cookie expiration';
+  const url = buildDispatchUrl({ conditionKey, title, exp, secret, baseUrl: 'https://x' });
+  const sig = new URL(url).searchParams.get('sig');
+
+  assert.equal(verifyDispatchSignature({ conditionKey, title, exp, secret, sig }), true);
+  // tamper the conditionKey after the fact — same class of attack the
+  // approve/reject/revert verifier guards against
+  assert.equal(verifyDispatchSignature({ conditionKey: 'health-check:something-else', title, exp, secret, sig }), false);
+  // tamper the signature itself
+  const tampered = sig.slice(0, -1) + (sig.slice(-1) === '0' ? '1' : '0');
+  assert.equal(verifyDispatchSignature({ conditionKey, title, exp, secret, sig: tampered }), false);
+  // truncated-hex + junk suffix must not silently decode back to the valid sig
+  assert.equal(verifyDispatchSignature({ conditionKey, title, exp, secret, sig: `${sig}JUNK` }), false);
+  // wrong secret
+  assert.equal(verifyDispatchSignature({ conditionKey, title, exp, secret: 'wrong-secret', sig }), false);
+});
+
+test('dispatch-link: description travels in the signed message — tampering it is caught too', () => {
+  const secret = 'test-secret';
+  const exp = 1900000000;
+  const conditionKey = 'health-check:Sync: cast coverage';
+  const title = 'BSC Daily: Sync: cast coverage';
+  const url = buildDispatchUrl({ conditionKey, title, description: '29 empty cast: The Lost Boys', exp, secret, baseUrl: 'https://x' });
+  const sig = new URL(url).searchParams.get('sig');
+  const description = new URL(url).searchParams.get('description');
+  assert.equal(description, '29 empty cast: The Lost Boys');
+  assert.equal(verifyDispatchSignature({ conditionKey, title, description, exp, secret, sig }), true);
+  // a swapped description must invalidate the signature — the dispatched
+  // session's context (what to actually fix) is part of the signed payload,
+  // not free-floating query-string text an attacker could rewrite.
+  assert.equal(verifyDispatchSignature({ conditionKey, title, description: 'something else entirely', exp, secret, sig }), false);
+});
+
+test('dispatch-link: (c) a second click within cooldown is a no-op — selectOpenDispatchCard finds the still-open card', () => {
+  // "In progress" or "Not started" means a session is already on it (or
+  // about to be) — a repeat tap must be a no-op, not a second dispatch.
+  assert.deepEqual(
+    selectOpenDispatchCard([{ id: '1', url: 'https://notion.so/1', status: 'In progress', action: null }]),
+    { id: '1', url: 'https://notion.so/1', status: 'In progress', action: null }
+  );
+  assert.deepEqual(
+    selectOpenDispatchCard([{ id: '2', url: 'https://notion.so/2', status: 'Not started', action: null }]),
+    { id: '2', url: 'https://notion.so/2', status: 'Not started', action: null }
+  );
+  // resolved cards (Done/Paused, Action cleared) don't block a fresh
+  // dispatch — a recurred condition is a NEW incident, same semantics as
+  // owner-alert-router's resolveCondition().
+  assert.equal(selectOpenDispatchCard([{ id: '3', url: 'x', status: 'Done', action: null }]), null);
+  assert.equal(selectOpenDispatchCard([{ id: '4', url: 'x', status: 'Paused', action: null }]), null);
+  assert.equal(selectOpenDispatchCard([]), null);
+});
+
+test('dispatch-link: a card manually Paused while Action is still set counts as open (poller runs on Action alone)', () => {
+  // scripts/notion-action-poll.js's getActionableCards() filters ONLY on
+  // `Action is-not-empty` and never reads Status — a card someone paused
+  // while Action=Fix is still queued WILL still run on the poller's next
+  // tick. Treating it as "resolved" here would let a second tap file a
+  // SECOND Fix card for the same condition (ship-check adversarial finding,
+  // codex 2026-07-30).
+  const paused = { id: '5', url: 'https://notion.so/5', status: 'Paused', action: 'Fix' };
+  assert.deepEqual(selectOpenDispatchCard([paused]), paused);
 });
 
 test('renderHealthDigestBlock: queued digest-router items render (never silently dropped after drainDigestQueue)', () => {
