@@ -266,7 +266,7 @@ function renderHealthDigestBlock(health) {
     ? ` <span style="color:#999;font-weight:400;">(day ${health.consecutiveErrorDays})</span>` : '';
 
   return `<div style="border:1px solid ${urgent ? '#fca5a5' : '#e5e5e5'};background:${urgent ? '#fef2f2' : '#fff'};border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;${urgent ? 'color:#dc2626;' : ''}">Site health: ${esc(health.bannerText || `${errors.length} error${errors.length === 1 ? '' : 's'}, ${warns.length} warning${warns.length === 1 ? '' : 's'}`)}${escalation}</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;${urgent ? 'color:#dc2626;' : ''}">Site health: ${errors.length} error${errors.length === 1 ? '' : 's'}, ${warns.length} warning${warns.length === 1 ? '' : 's'}${escalation}</div>
     ${rows}${more}${queuedHtml}${autoFixedNote}${asOf}
   </div>`;
 }
