@@ -1,14 +1,41 @@
 {
-  "lastRun": "2026-07-20T00:48:20.901Z",
+  "lastRun": "2026-07-30T23:44:18.419Z",
   "shows": [
+    {
+      "showId": "black-swan-regional-2026",
+      "query": "\"Black Swan\" review Cambridge",
+      "candidates": 8,
+      "ingested": [
+        {
+          "url": "https://playbill.com/article/did-reviewers-think-american-repertory-theaters-black-swan-was-perfect",
+          "outletId": "playbill",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.reddit.com/r/Broadway/comments/1toslqf/dave_malloy_sonya_tayehs_black_swan_first_preview/",
+          "domain": "reddit.com",
+          "title": "Dave Malloy & Sonya Tayeh's Black Swan first preview ..."
+        },
+        {
+          "url": "https://www.boston-theater.com/shows/american_repertory_theater/black-swan",
+          "domain": "boston-theater.com",
+          "title": "Black Swan · American Repertory Theater Cambridge, MA"
+        }
+      ],
+      "skippedExisting": 3,
+      "skippedUnregistered": 2,
+      "skippedNotReview": 1
+    },
     {
       "showId": "wonder-regional-2026",
       "query": "\"Wonder\" review Cambridge",
       "candidates": 9,
       "ingested": [
         {
-          "url": "https://www.netheatregeek.com/2025/12/30/when-kindness-and-representation-arent-enough-wonder-the-musical/",
-          "outletId": "netheatregeek",
+          "url": "https://www.wsj.com/articles/wonder-review-an-uplifting-musical-of-an-underdog-5224f6b5",
+          "outletId": "wsj",
           "action": "new"
         }
       ],
@@ -22,11 +49,146 @@
           "url": "https://cambridgeusa.org/event/wonder-the-musical-2/",
           "domain": "cambridgeusa.org",
           "title": "Wonder: The Musical"
+        },
+        {
+          "url": "https://www.netheatregeek.com/2025/12/30/when-kindness-and-representation-arent-enough-wonder-the-musical/",
+          "domain": "netheatregeek.com",
+          "title": "When kindness and representation aren't enough: “Wonder"
+        }
+      ],
+      "skippedExisting": 3,
+      "skippedUnregistered": 3,
+      "skippedNotReview": 0
+    },
+    {
+      "showId": "crazysexycool-regional-2026",
+      "query": "\"CrazySexyCool: The TLC Musical\" review Washington",
+      "candidates": 8,
+      "ingested": [],
+      "newOutletCandidates": [],
+      "skippedExisting": 3,
+      "skippedUnregistered": 0,
+      "skippedNotReview": 4
+    },
+    {
+      "showId": "iceboy-regional-2026",
+      "query": "\"Iceboy!\" review Chicago",
+      "candidates": 9,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.reddit.com/r/ChicagoTheater/comments/1uc5fro/iceboy_at_goodman_not_really_a_review/",
+          "domain": "reddit.com",
+          "title": "Iceboy at Goodman - Not Really a Review : r/ChicagoTheater"
+        },
+        {
+          "url": "https://www.facebook.com/ChrisJonesTrib/posts/here-is-my-review-of-iceboy-at-the-goodman-theatre-starring-megan-mullally-and-n/10165409159698854/",
+          "domain": "facebook.com",
+          "title": "Here is my review of \"Iceboy\" at the Goodman Theatre ..."
+        },
+        {
+          "url": "https://www.wbez.org/theater-stages/2026/06/18/iceboy-nick-offerman-megan-mullally-goodman-theatre",
+          "domain": "wbez.org",
+          "title": "Megan Mullally and Nick Offerman are having a ball in “ ..."
+        }
+      ],
+      "skippedExisting": 6,
+      "skippedUnregistered": 3,
+      "skippedNotReview": 0
+    },
+    {
+      "showId": "millions-world-premiere-musical-regional-2025",
+      "query": "\"Millions\" review Atlanta",
+      "candidates": 8,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.reddit.com/r/Broadway/comments/1ktjviq/millions_at_the_alliance_theater_in_atlanta_adam/",
+          "domain": "reddit.com",
+          "title": "Millions at the Alliance Theater in Atlanta — Adam Guettel, ..."
+        },
+        {
+          "url": "https://www.facebook.com/AllianceTheatre/posts/reviews-are-in-millions-is-a-hitcome-see-the-show-artsatlorg-says-touches-hearts/1207855391378759/",
+          "domain": "facebook.com",
+          "title": "Reviews are in — Millions is a hit! Come see the show ARTSATL ..."
+        },
+        {
+          "url": "https://broadwayscorecard.com/show/millions-world-premiere-musical-regional-2025",
+          "domain": "broadwayscorecard.com",
+          "title": "Millions Reviews — Positive 77/100"
+        }
+      ],
+      "skippedExisting": 3,
+      "skippedUnregistered": 3,
+      "skippedNotReview": 2
+    },
+    {
+      "showId": "dolly-a-true-original-musical-regional-2025",
+      "query": "\"Dolly: A True Original Musical\" review Nashville",
+      "candidates": 9,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/TessFrizzell/posts/have-any-of-you-seen-the-new-dolly-musical-what-did-you-think-/1309996730927341/",
+          "domain": "facebook.com",
+          "title": "Have any of you seen the new Dolly musical? What did ..."
+        }
+      ],
+      "skippedExisting": 3,
+      "skippedUnregistered": 1,
+      "skippedNotReview": 5
+    },
+    {
+      "showId": "42-balloons-regional-2025",
+      "query": "\"42 Balloons\" review Chicago",
+      "candidates": 9,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.reddit.com/r/Broadway/comments/1kysi60/42_balloons_musical_at_chicago_shakespeare/",
+          "domain": "reddit.com",
+          "title": "42 Balloons musical at Chicago Shakespeare : r/Broadway"
+        },
+        {
+          "url": "https://www.conversationswithedtracy.com/picksinsix/2025/6/12/picksinsix-review-42-balloons-chicago-shakespeare-theater",
+          "domain": "conversationswithedtracy.com",
+          "title": "PicksInSix Review: 42 Balloons - Chicago Shakespeare ..."
+        },
+        {
+          "url": "https://thefourthwalsh.com/2025/06/review-42-balloons-chicago-shakespeare-theater-quirky-and-uplifting/",
+          "domain": "thefourthwalsh.com",
+          "title": "Review “42 Balloons” (Chicago Shakespeare Theater)"
         }
       ],
       "skippedExisting": 4,
-      "skippedUnregistered": 2,
-      "skippedNotReview": 0
+      "skippedUnregistered": 3,
+      "skippedNotReview": 2
+    },
+    {
+      "showId": "elephant-shoes-regional-2026",
+      "query": "\"Elephant Shoes\" review Red Bank",
+      "candidates": 7,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/jay.lustig1/posts/my-review-of-elephant-shoes-which-is-currently-being-presented-at-two-river-thea/10161100960184649/",
+          "domain": "facebook.com",
+          "title": "Review of 'Elephant Shoes' musical in Red Bank"
+        },
+        {
+          "url": "https://www.jerseyarts.com/stories/elephant-shoes-groundbreaking-musical-theater-experience-takes-stage",
+          "domain": "jerseyarts.com",
+          "title": "In 'Elephant Shoes,' a Groundbreaking Musical Theater ..."
+        },
+        {
+          "url": "https://broadwayscorecard.com/show/elephant-shoes-regional-2026",
+          "domain": "broadwayscorecard.com",
+          "title": "Elephant Shoes Reviews — Positive 79/100"
+        }
+      ],
+      "skippedExisting": 3,
+      "skippedUnregistered": 3,
+      "skippedNotReview": 1
     }
   ]
 }
