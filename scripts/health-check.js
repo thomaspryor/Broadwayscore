@@ -1998,6 +1998,25 @@ function silentGapBacklogResults(report) {
   }];
 }
 
+// Daily-digest surfacing for undispatchable backlog cards (data/audit/
+// card-verifiability.json, written by audit-card-verifiability.js — task
+// #646). bsc-next correctly refuses to dispatch a card with no runnable
+// acceptance-criteria command, but that refusal has no channel of its own —
+// a card can sit stuck indefinitely with nobody noticing. enrich-card-
+// acceptance.js is the fix; this warn row is the visibility that was missing
+// before it existed (#116 sat refused until a human hand-enriched it).
+function cardVerifiabilityBacklogResults(report) {
+  if (!report || !Array.isArray(report.refused) || report.refused.length === 0) return [];
+  const refused = report.refused;
+  const first = refused[0];
+  return [{
+    name: 'Data: undispatchable backlog cards',
+    status: 'warn',
+    message: `${refused.length} of ${report.total} pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [${first.priority || '?'}] ${first.name}`,
+    hint: 'node scripts/enrich-card-acceptance.js --from-report drafts missing criteria (or VERIFY: owner-judgment for human-only cards). Re-run node scripts/audit-card-verifiability.js after to confirm.',
+  }];
+}
+
 // Simple HTTPS GET that returns parsed JSON
 function fetchJSON(url, headers) {
   return new Promise((resolve, reject) => {
@@ -2899,6 +2918,11 @@ async function main() {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
       allResults.push(...reverseDiscoveryBacklogResults(rdReport));
     } catch { /* report absent (detector not yet run) — nothing to surface */ }
+
+    try {
+      const cvReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/card-verifiability.json'), 'utf8'));
+      allResults.push(...cardVerifiabilityBacklogResults(cvReport));
+    } catch { /* report absent (audit not yet run) — nothing to surface */ }
   }
 
   // Print console summary
@@ -2993,4 +3017,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState };
+module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState };

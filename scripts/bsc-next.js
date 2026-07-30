@@ -113,8 +113,7 @@ const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
 // bsc-prune.js journals the matching 'dead' breadcrumb once a launch's
 // workspace turns up idle-and-unmarked. See scripts/lib/dispatch-ledger.js.
 const dispatchLedger = require('./lib/dispatch-ledger.js');
-const { extractVerifyCmd } = require('./lib/autonomous-verify-cmd.js');
-const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
+const { evaluateVerifiability } = require('./lib/verify-gate.js');
 
 // CI-red claim auto-invocation (task #598): the ledger built by task #584
 // (evaluateCiRedClaim, enforced at the push-gate hook) stayed empty in
@@ -435,8 +434,9 @@ function main(argv = process.argv.slice(2), deps = {}) {
   // it with "VERIFY: owner-judgment" in its notes; --allow-unverifiable is the
   // explicit, ledger-visible per-dispatch override.
   const gateNotes = (card && card.notes) || task.description || '';
-  const verifyGate = extractVerifyCmd(gateNotes, isSafeCheckCommand);
-  const ownerJudgmentCard = /VERIFY:\s*owner-judgment/i.test(gateNotes);
+  const gate = evaluateVerifiability(gateNotes);
+  const verifyGate = { cmd: gate.cmd, reason: gate.reason };
+  const ownerJudgmentCard = gate.ownerJudgment;
   // Refuse ONLY when the full card is in hand. When the Notion fetch degraded
   // (fetchCard swallows every error → null) or the task is native (no card),
   // gateNotes is the task-mirror description, which notion-tasks-sync

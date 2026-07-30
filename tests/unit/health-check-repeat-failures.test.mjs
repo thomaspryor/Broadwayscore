@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
+const { repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, cardVerifiabilityBacklogResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
   assert.deepEqual(repeatFailureResults({ skipped: true, repeatFailures: [{ name: 'x.yml', count: 9 }] }), []);
@@ -116,4 +116,27 @@ test('obClosingBacklogResults: candidates warn with count and first show', () =>
   assert.equal(results[0].status, 'warn');
   assert.match(results[0].message, /1 open Off-Broadway show/);
   assert.match(results[0].message, /clara-2026 → 2026-05-10 \[medium\]/);
+});
+
+// --- cardVerifiabilityBacklogResults (task #646: undispatchable backlog cards) ---
+
+test('cardVerifiabilityBacklogResults: empty or absent report yields nothing', () => {
+  assert.deepEqual(cardVerifiabilityBacklogResults(null), []);
+  assert.deepEqual(cardVerifiabilityBacklogResults({ total: 40, refused: [] }), []);
+});
+
+test('cardVerifiabilityBacklogResults: refused cards warn with count and first card', () => {
+  const results = cardVerifiabilityBacklogResults({
+    total: 42,
+    refusedCount: 2,
+    refused: [
+      { id: 'abc', name: 'Fix the widget', priority: 'P1 Next', reason: 'names no runnable command (prose only)' },
+      { id: 'def', name: 'Another card', priority: 'P2 Later', reason: 'no acceptance-criteria section or VERIFY line' },
+    ],
+  });
+  assert.equal(results.length, 1);
+  assert.equal(results[0].status, 'warn');
+  assert.match(results[0].message, /2 of 42 pending\/in-progress card/);
+  assert.match(results[0].message, /\[P1 Next\] Fix the widget/);
+  assert.match(results[0].hint, /enrich-card-acceptance\.js/);
 });
