@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-29T23:58:22.668Z",
-  "processed": 60,
-  "failed": 871,
-  "successRate": "6.4%",
+  "updatedAt": "2026-07-30T00:17:20.705Z",
+  "processed": 61,
+  "failed": 901,
+  "successRate": "6.3%",
   "tierBreakdown": {
     "playwright": 42,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 10,
-    "archiveToday": 12,
+    "brightdata": 11,
+    "archiveToday": 15,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-07-29T19:16:28.885Z",
-      "event": "bb-session",
-      "session": "7059e909",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
-    {
-      "t": "2026-07-29T19:16:29.423Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-29T19:16:45.288Z",
       "event": "bb-session",
@@ -102,6 +91,39 @@
     },
     {
       "t": "2026-07-29T22:55:11.081Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-30T00:10:41.739Z",
+      "event": "bb-session",
+      "session": "c3e5d2c9",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-30T00:10:42.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-30T00:14:26.129Z",
+      "event": "bb-session",
+      "session": "479c9334",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-30T00:14:27.301Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-30T00:14:43.238Z",
+      "event": "bb-session",
+      "session": "308863f7",
+      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
+    },
+    {
+      "t": "2026-07-30T00:14:44.154Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
