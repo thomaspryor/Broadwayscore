@@ -166,7 +166,17 @@ function computeShowCells(show, reviews, outlets, nowMs) {
 // writes deterministic bytes so an unchanged corpus produces NO file diff.
 function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   const cutoff = new Date(nowMs - opts.ledgerDays * 86400000).toISOString().split('T')[0];
-  const target = shows.filter(s => s.status === 'open' || (s.openingDate && s.openingDate >= cutoff));
+  // Evidence-anchored arm (v2 reconciler plan, Sprint A): a show with fresh
+  // review-evidence — a roundup naming it published recently — belongs in the
+  // ledger even when its status is stuck in previews/announced or its
+  // openingDate is null (the Broad Strokes class: this audit shared the
+  // selector's blind spot, so the safety net missed exactly what the primary
+  // missed). Same canonical predicate the selector uses.
+  const { loadReviewEvidence, hasFreshEvidence } = require('./lib/review-evidence.js');
+  const evidence = loadReviewEvidence();
+  const target = shows.filter(s => s.status === 'open'
+    || (s.openingDate && s.openingDate >= cutoff)
+    || (s.status !== 'closed' && hasFreshEvidence(evidence, s.id || s.slug, { now: new Date(nowMs), lookbackDays: opts.ledgerDays })));
   const freshShows = [];
   const reactivations = []; // S4-T3: { showId, title, outletId }
   const lateAdds = []; // S5-T1: { showId, title, ...detectLateAdd() }

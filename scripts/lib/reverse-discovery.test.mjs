@@ -301,3 +301,100 @@ test('digest surfacing: reverseDiscoveryBacklogResults wired in health-check', (
   assert.equal(reverseDiscoveryBacklogResults({ candidates: [] }).length, 0);
   assert.equal(reverseDiscoveryBacklogResults(null).length, 0);
 });
+
+// ── Sprint A (v2 reconciler plan): Playbill roundups + evidence resolution ──
+
+const {
+  extractShowTitleFromPlaybillRoundup,
+  resolveMatchedShowId,
+  extractOpeningFactsFromArticle,
+  resolveDate,
+} = require('./reverse-discovery.js');
+
+test('Playbill roundup title extraction (real headline, Broad Strokes 2026-07-28)', () => {
+  assert.equal(
+    extractShowTitleFromPlaybillRoundup("Reviews: What Do Critics Think of Cat Cohen's Broad Strokes Off-Broadway?"),
+    "Cat Cohen's Broad Strokes"
+  );
+  assert.equal(
+    extractShowTitleFromPlaybillRoundup('Reviews: What Do the Critics Think of Death Becomes Her on Broadway?'),
+    'Death Becomes Her'
+  );
+  // Non-roundup headlines are not roundups.
+  assert.equal(extractShowTitleFromPlaybillRoundup('Mae West Musical Come Up and See Me Sometime Plans NYC Industry Presentations'), null);
+  assert.equal(extractShowTitleFromPlaybillRoundup('Get a 1st Look at The Girl on the Train at Houston&#039;s Alley Theatre'), null);
+});
+
+test('resolveMatchedShowId: possessive headline resolves to the catalogued show (Broad Strokes golden case)', () => {
+  const shows = [
+    { id: 'cat-cohen-broad-strokes-off-broadway-2026', title: 'Cat Cohen: Broad Strokes', category: 'off-broadway', status: 'previews' },
+    { id: 'hamilton-2015', title: 'Hamilton', category: 'broadway', status: 'open' },
+  ];
+  const index = buildShowTitleIndex(shows, 'nyc');
+  assert.equal(
+    resolveMatchedShowId("Cat Cohen's Broad Strokes", index),
+    'cat-cohen-broad-strokes-off-broadway-2026'
+  );
+});
+
+test('resolveMatchedShowId: closed-only and ambiguous matches return null', () => {
+  const shows = [
+    { id: 'the-gin-game-1997', title: 'The Gin Game', category: 'broadway', status: 'closed' },
+    { id: 'twin-a', title: 'Twin Show', category: 'broadway', status: 'open' },
+    { id: 'twin-b', title: 'Twin Show', category: 'off-broadway', status: 'previews' },
+  ];
+  const index = buildShowTitleIndex(shows, 'nyc');
+  assert.equal(resolveMatchedShowId('The Gin Game', index), null, 'closed-only match must not attach evidence');
+  assert.equal(resolveMatchedShowId('Twin Show', index), null, 'two live same-title shows are ambiguous');
+  assert.equal(resolveMatchedShowId('Nonexistent Show', index), null);
+});
+
+test('extractOpeningFactsFromArticle: real Playbill sentence (Broad Strokes)', () => {
+  const text = 'The production began previews July 14, officially opening July 27 at the Lucille Lortel Theatre. ' +
+    'Performances will continue an additional three weeks through September 25.';
+  const facts = extractOpeningFactsFromArticle(text, '2026-07-28');
+  assert.equal(facts.previewsStartDate, '2026-07-14');
+  assert.equal(facts.openingDate, '2026-07-27');
+  assert.equal(facts.closingDate, '2026-09-25');
+});
+
+test('resolveDate: year resolution across boundaries + explicit years', () => {
+  assert.equal(resolveDate('January 5', '2026-12-20'), '2027-01-05', 'December article, January date = next year');
+  assert.equal(resolveDate('December 20', '2026-01-05'), '2025-12-20', 'January article, December date = prior year');
+  assert.equal(resolveDate('July 27, 2026', '2026-07-28'), '2026-07-27');
+  assert.equal(resolveDate('Not A Date', '2026-07-28'), null);
+});
+
+test('titleMatchesIndex: possessive-variant match prevents false missing-show candidates', () => {
+  const shows = [{ id: 'cat-cohen-broad-strokes-off-broadway-2026', title: 'Cat Cohen: Broad Strokes', category: 'off-broadway', status: 'previews' }];
+  const index = buildShowTitleIndex(shows, 'nyc');
+  assert.equal(titleMatchesIndex("Cat Cohen's Broad Strokes", index), true);
+});
+
+// ── Ship-check fix regressions (QA + Codex findings, 2026-07-30) ──
+
+const { isPlaybillNonNycRoundup } = require('./reverse-discovery.js');
+
+test('Playbill non-NYC roundups are droppable, not tail-stripped (Evita crossover)', () => {
+  assert.equal(isPlaybillNonNycRoundup('Reviews: What Do the Critics Think of Evita in the West End?'), true);
+  assert.equal(isPlaybillNonNycRoundup('Reviews: What Do Critics Think of Macbeth in London?'), true);
+  assert.equal(isPlaybillNonNycRoundup("Reviews: What Do Critics Think of Cat Cohen's Broad Strokes Off-Broadway?"), false);
+  assert.equal(isPlaybillNonNycRoundup('Non-roundup headline about the West End'), false);
+});
+
+test('resolveDate direction windows: previews resolve backward, closing forward', () => {
+  // December article, "January 5" previews (past tense window): must resolve to LAST January.
+  assert.equal(resolveDate('January 5', '2026-12-20', { windowMonths: [-15, 0.2] }), '2026-01-05');
+  // December article, "September 25" closing: must resolve FORWARD (not 3 months past).
+  assert.equal(resolveDate('September 25', '2026-12-20', { windowMonths: [-1, 15] }), '2027-09-25');
+  // Explicit year outside the window is rejected.
+  assert.equal(resolveDate('July 27, 2020', '2026-07-28', { windowMonths: [-2, 2] }), null);
+});
+
+test('extractOpeningFactsFromArticle applies per-field windows across a year boundary', () => {
+  const text = 'The production began previews December 20, officially opening January 8. Performances continue through March 1.';
+  const facts = extractOpeningFactsFromArticle(text, '2027-01-09');
+  assert.equal(facts.previewsStartDate, '2026-12-20');
+  assert.equal(facts.openingDate, '2027-01-08');
+  assert.equal(facts.closingDate, '2027-03-01');
+});

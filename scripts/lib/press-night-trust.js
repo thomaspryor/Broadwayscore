@@ -30,6 +30,12 @@ const TRUSTED_EXACT = new Set([
   'theatremonkey',            // WE authoritative press-night listing
   'playbill',                 // Playbill London schedule
   'playbill-production-page', // Playbill per-production page
+  'playbill-article',         // date parsed from a Playbill review-roundup
+                              // article (backfill-dates-from-roundups.js) —
+                              // Playbill states the official opening in its
+                              // roundup lede; without this the backfilled
+                              // field would fill but leave the WE trust gate
+                              // closed (QA ship-check finding)
   'ibdb',                     // authoritative for Broadway press nights
   'manual',                   // human-entered
   'inferred-from-reviews',    // derived from actual review publication cluster
