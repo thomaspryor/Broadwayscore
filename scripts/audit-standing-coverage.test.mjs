@@ -1,12 +1,15 @@
-import test from 'node:test';
+import test, { describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
   evaluateStandingCoverage,
+  evaluateCoverageExpectationDrift,
+  classifyCoverageExpectationDrift,
   MIN_PRESS_OUTLETS,
   MIN_SEASON_SHOWS,
+  COVERAGE_EXPECTATION_DECAY_DAYS,
 } = require('./audit-standing-coverage.js');
 
 const NOW = Date.parse('2026-07-30T12:00:00Z');
@@ -191,4 +194,97 @@ test('no-press-night: exactly at the outlet bar is a press night', () => {
 test('no-press-night: an unknown clock never suppresses', () => {
   assert.equal(isNoPressNightShow(null, 0), false);
   assert.equal(isNoPressNightShow(NaN, 0), false);
+});
+
+// --- coverageExpectation drift (card #640) ---
+
+describe('classifyCoverageExpectationDrift', () => {
+  test('claim active: decided within the decay window, not contradicted', () => {
+    const entry = { coverageExpectation: 'reviews', coverageExpectationDecidedAt: iso(9) };
+    const v = classifyCoverageExpectationDrift(entry, { hasEvidence: true, overall: 0.05 }, NOW);
+    assert.equal(v.status, 'active');
+    assert.equal(v.isNoReviewClaim, false);
+  });
+
+  test('claim decayed: decidedAt older than the decay window', () => {
+    const entry = { coverageExpectation: 'reviews', coverageExpectationDecidedAt: iso(COVERAGE_EXPECTATION_DECAY_DAYS + 1) };
+    const v = classifyCoverageExpectationDrift(entry, { hasEvidence: true, overall: 0.05 }, NOW);
+    assert.equal(v.status, 'decayed');
+  });
+
+  test('claim decayed: no decidedAt timestamp at all', () => {
+    const entry = { coverageExpectation: 'reviews' };
+    const v = classifyCoverageExpectationDrift(entry, { hasEvidence: true, overall: 0.05 }, NOW);
+    assert.equal(v.status, 'decayed');
+    assert.equal(v.ageDays, null);
+  });
+
+  test('claim contradicted: "none" claim but measured coverage is non-trivial', () => {
+    const entry = { coverageExpectation: 'none', coverageExpectationDecidedAt: iso(3) };
+    const v = classifyCoverageExpectationDrift(entry, { hasEvidence: true, overall: 0.6 }, NOW);
+    assert.equal(v.status, 'contradicted');
+    assert.equal(v.isNoReviewClaim, true);
+  });
+
+  test('claim contradicted fires even for an already-decayed determination', () => {
+    const entry = { reviewsTheater: false, coverageExpectationDecidedAt: iso(100) };
+    const v = classifyCoverageExpectationDrift(entry, { hasEvidence: true, overall: 0.9 }, NOW);
+    assert.equal(v.status, 'contradicted');
+  });
+
+  test('no-evidence: too few in-window shows to measure, regardless of age', () => {
+    const entry = { coverageExpectation: 'none', coverageExpectationDecidedAt: iso(1) };
+    const v = classifyCoverageExpectationDrift(entry, { hasEvidence: false }, NOW);
+    assert.equal(v.status, 'no-evidence');
+  });
+
+  test('a "none" claim with low measured coverage is active, not contradicted', () => {
+    const entry = { coverageExpectation: 'none', coverageExpectationDecidedAt: iso(1) };
+    const v = classifyCoverageExpectationDrift(entry, { hasEvidence: true, overall: 0.1 }, NOW);
+    assert.equal(v.status, 'active');
+  });
+
+  test('outlet with no coverageExpectation claim at all returns null', () => {
+    assert.equal(classifyCoverageExpectationDrift({}, { hasEvidence: true, overall: 0.9 }, NOW), null);
+    assert.equal(classifyCoverageExpectationDrift(undefined, { hasEvidence: true, overall: 0.9 }, NOW), null);
+  });
+});
+
+describe('evaluateCoverageExpectationDrift', () => {
+  test('is not tier-filtered — a claim on any outlet is surfaced', () => {
+    const shows = [];
+    const reviews = [];
+    for (let s = 0; s < 3; s++) {
+      const seasonShows = makeShows('bw', 20, s);
+      shows.push(...seasonShows);
+      reviews.push(...makeReviews(seasonShows, 'probe', 20));
+    }
+    const registry = { probe: { tier: 5, coverageExpectation: 'none', coverageExpectationDecidedAt: iso(1) } };
+    const r = evaluateCoverageExpectationDrift(shows, reviews, registry, NOW);
+    assert.deepEqual(r.needsReprobe, ['probe']); // 100% coverage contradicts the "none" claim
+  });
+
+  test('outlets without any coverageExpectation claim are absent from rows', () => {
+    const registry = { probe: { tier: 1 } };
+    const r = evaluateCoverageExpectationDrift([], [], registry, NOW);
+    assert.deepEqual(r.rows, []);
+    assert.deepEqual(r.needsReprobe, []);
+  });
+
+  test('needsReprobe collects both decayed and contradicted, sorted', () => {
+    const shows = [];
+    const reviews = [];
+    for (let s = 0; s < 3; s++) {
+      const seasonShows = makeShows('bw', 20, s);
+      shows.push(...seasonShows);
+      reviews.push(...makeReviews(seasonShows, 'zzz', 20));
+      reviews.push(...makeReviews(seasonShows, 'aaa', 0));
+    }
+    const registry = {
+      zzz: { tier: 1, coverageExpectation: 'none', coverageExpectationDecidedAt: iso(1) }, // contradicted
+      aaa: { tier: 1, coverageExpectation: 'reviews', coverageExpectationDecidedAt: iso(COVERAGE_EXPECTATION_DECAY_DAYS + 5) }, // decayed
+    };
+    const r = evaluateCoverageExpectationDrift(shows, reviews, registry, NOW);
+    assert.deepEqual(r.needsReprobe, ['aaa', 'zzz']);
+  });
 });

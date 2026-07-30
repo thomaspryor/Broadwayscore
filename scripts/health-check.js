@@ -1125,6 +1125,9 @@ function checkCronHealth() {
     { workflow: 'weekly-nyt-critics-picks.yml', maxHours: 72, name: 'NYT Critics Picks' },
     { workflow: 'weekly-video-reviews.yml', maxHours: 192, name: 'Weekly Video Reviews' },
     { workflow: 'update-social-pulse.yml', maxHours: 192, name: 'Update Social Pulse' },
+    // 6-hourly; 24h = four missed runs. If this goes dark the evidence layer
+    // (roundup-anchored selection + missing-show candidates) silently stops.
+    { workflow: 'audit-reverse-discovery.yml', maxHours: 24, name: 'Reverse Discovery' },
   ];
 
   return CRITICAL_CRONS.map(({ workflow, maxHours, name }) =>

@@ -280,7 +280,7 @@ function extractOpeningFactsFromArticle(text, referenceDate) {
   ));
   if (open) {
     facts.openingDate = resolveDate(open[1], referenceDate, { windowMonths: [-2, 2] });
-  } else if (referenceDate && /Review\s+Roundup:[^.]{0,120}?\bOpens\s+(?:At|On)\b/i.test(t)) {
+  } else if (referenceDate && /Review\s+Roundup:[^.]{0,120}?\bOpens\s+(?:At|On)\b/i.test(t.slice(0, 500))) {
     // Concert/limited-engagement roundup fallback (Les Misérables: The Arena
     // Concert Spectacular @ Radio City, 2026-07-30): touring concerts publish
     // a "Review Roundup: TITLE Opens At VENUE" headline with no preview/
@@ -290,7 +290,12 @@ function extractOpeningFactsFromArticle(text, referenceDate) {
     // hasFreshEvidence). Gated to the literal "Review Roundup: ... Opens At/On"
     // headline shape (only ever appears in the auto-generated headline, never
     // in review-body prose) so it can't misfire on an aside like "the show
-    // opens on Broadway next season".
+    // opens on Broadway next season". Scoped to the first 500 chars (the
+    // article's own headline/opening), not the full `t` blob — the caller
+    // (backfill-dates-from-roundups.js) passes up to 8000 chars of stripped
+    // page content that includes related-story rails and footer teasers
+    // whose "Review Roundup: ... Opens At/On" headlines belong to OTHER
+    // shows (ship-check adversarial review finding, 2026-07-30).
     facts.openingDate = String(referenceDate).slice(0, 10);
   }
   const close = t.match(new RegExp(
