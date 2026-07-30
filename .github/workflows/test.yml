@@ -193,6 +193,11 @@ on:
       - 'scripts/lib/opening-night-windows.test.mjs'
       - 'scripts/lib/cmux-launch.js'
       - 'scripts/lib/cmux-launch.test.mjs'
+      # Card #650: cmux refuses launchd-parented process ancestry, so the
+      # launcher now runs headless via this thin wrapper around the shared
+      # scripts/lib/claude-cli.js primitive instead of cmux-launch.js.
+      - 'scripts/lib/opening-night-monitor.js'
+      - 'scripts/lib/opening-night-monitor.test.mjs'
       - 'scripts/lib/push-with-retry.sh'
       - 'scripts/lib/push-with-retry.conflict-marker.test.sh'
       - 'scripts/lib/push-with-retry.deadline.test.sh'

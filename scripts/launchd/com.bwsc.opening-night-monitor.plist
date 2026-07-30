@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Opening-night monitor launcher (card #650): every-20-min tick that
+         runs one bounded headless claude -p pass (via
+         scripts/lib/opening-night-monitor.js) for a show in its opening-night
+         window. This plist did NOT previously exist in the repo (installed
+         ad-hoc, unrestorable on a rebuild) and carried a CLAUDE_CODE_OAUTH_TOKEN
+         in plaintext that was never needed: headless `claude` reads its own
+         stored login (~/.claude/.credentials.json), the same way
+         com.broadwayscore.autonomous-nightly's launchd-parented headless
+         claude calls (scripts/autonomous-run.js) already run every night with
+         PATH/HOME only, no token — verified live 2026-07-30.
+         Install:  cp scripts/launchd/com.bwsc.opening-night-monitor.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.bwsc.opening-night-monitor.plist
+         Kill:     launchctl bootout gui/$(id -u)/com.bwsc.opening-night-monitor -->
+    <key>Label</key>
+    <string>com.bwsc.opening-night-monitor</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/node</string>
+        <string>/Users/tompryor/Broadwayscore/scripts/opening-night-monitor-launch.js</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>1200</integer>
+    <key>StandardOutPath</key>
+    <string>/Users/tompryor/Broadwayscore/data/opening-night-monitor/launcher.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/tompryor/Broadwayscore/data/opening-night-monitor/launcher-err.log</string>
+    <key>WorkingDirectory</key>
+    <string>/Users/tompryor/Broadwayscore</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/Users/tompryor/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <key>HOME</key>
+        <string>/Users/tompryor</string>
+    </dict>
+</dict>
+</plist>
