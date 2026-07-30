@@ -318,6 +318,20 @@ async function processRecover(items) {
           delete data.wrongShow;
           delete data.wrongShowReason;
 
+          // A stale contentTier:'invalid' (set when the file was originally flagged)
+          // otherwise permanently blocks isIncludableForRebuild's separate invalid-tier
+          // gate (review-guards.js) even after wrongProduction/wrongShow are cleared above —
+          // that gate only stands down given wrongProductionManualClear/-Override or
+          // humanReviewedWrongProduction===false, none of which recovery used to set.
+          // Found live via card #632 (Les Mis Arena Concert Spectacular): 2 correctly-
+          // recovered reviews stayed invisible to rebuild despite the flags being cleared.
+          if (data.contentTier === 'invalid') {
+            data.contentTier = (data.fullText && data.fullText.trim().length >= 200)
+              ? 'complete'
+              : (require('./lib/excerpt-fields').hasExcerpt(data) ? 'excerpt' : 'stub');
+          }
+          data.humanReviewedWrongProduction = false;
+
           data.verifiedBy = provider;
           data.recoveredBy = `retroactive-llm-verify`;
           data.recoveredAt = new Date().toISOString().split('T')[0];
