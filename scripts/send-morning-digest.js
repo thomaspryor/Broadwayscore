@@ -69,7 +69,16 @@ const { attachHealthFixUrls } = require('./lib/dispatch-link.js');
 // and ask the owner for no triage — they are the one tap that acts on an
 // error row this email already prints as "Fix needed: …".
 const DISPATCH_CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
-const DEFAULT_LINK_EXPIRY_H = 48;
+// 20h, NOT the loop's 48h linkExpiryHours (ship-check adversarial finding,
+// codex 2026-07-30). This email is sent DAILY at 07:30 ET, so a 48h link
+// outlives its own email by a full send cycle: the owner could tap
+// yesterday's "Fix this" for an error today's health check already cleared,
+// and handleDispatch — which dedups only against still-OPEN cards — would
+// happily file a card and burn a session on a non-issue. 20h expires each
+// link in the small hours before the next digest lands, so at most one live
+// email's buttons are ever tappable. Deliberately independent of the
+// approve/reject links' expiry, which is a different lifecycle.
+const DISPATCH_LINK_EXPIRY_H = 20;
 
 const USAGE = `send-morning-digest.js — the owner's single scheduled morning email.
 
@@ -220,8 +229,7 @@ async function main() {
       try { return JSON.parse(fs.readFileSync(DISPATCH_CONFIG_PATH, 'utf8')); } catch { return {}; }
     })();
     const baseUrl = cfg.baseUrl || 'https://broadwayscorecard.com';
-    const expiryH = Number(cfg.linkExpiryHours) || DEFAULT_LINK_EXPIRY_H;
-    const exp = Math.floor(Date.now() / 1000) + expiryH * 3600;
+    const exp = Math.floor(Date.now() / 1000) + DISPATCH_LINK_EXPIRY_H * 3600;
     const attached = attachHealthFixUrls({ health: sections.health, exp, secret: dispatchSecret, baseUrl });
     console.log(`[digest] Fix-this buttons attached to ${attached} health error row(s)`);
   }
