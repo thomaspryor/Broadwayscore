@@ -26,6 +26,17 @@ const REQUIRED_OVERRIDES = [
   'wrongArticleManualClear',
   'wrongShowManualClear',
   'wrongProductionOverride',
+  // wrongProductionOverrideReason/SetAt/SetBy + wrongShowOverrideReason/At: the
+  // boolean survives without these, but the audit trail (who/why/when) is
+  // silently dropped on rebase — found while migrating card #644's 6 scripts
+  // onto clearWrongProductionFlags, which multiplied the callers writing these
+  // fields from 1 (flag-combined-reviews.js) to 6.
+  'wrongProductionOverrideReason',
+  'wrongProductionOverrideSetAt',
+  'wrongProductionOverrideSetBy',
+  'wrongShowOverride',
+  'wrongShowOverrideReason',
+  'wrongShowOverrideAt',
   'humanReviewedWrongProduction',
   'humanReviewedWrongArticle',
   // Added in Rocky Horror 2026-04-23 postmortem (Session 2 #7)
