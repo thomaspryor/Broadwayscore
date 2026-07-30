@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-30T16:37:17.115Z",
+  "timestamp": "2026-07-30T17:37:57.387Z",
   "stats": {
-    "totalReviews": 40964,
-    "alreadyFlagged": 17933,
+    "totalReviews": 40969,
+    "alreadyFlagged": 17935,
     "dateGuardCatches": 67,
     "directorMismatch": 930,
     "tvFilmSignals": 1121,
-    "londonSignals": 766,
+    "londonSignals": 767,
     "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3377
+    "noPublishDate": 3379
   },
   "findings": [
     {
@@ -36065,6 +36065,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "file": "nydailynews--chris-jones.json",
+      "score": 78,
+      "publishDate": "2026-07-29",
+      "url": "https://www.nydailynews.com/2026/07/28/les-miserables-radio-city-musical-hall-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

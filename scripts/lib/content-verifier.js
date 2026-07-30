@@ -16,7 +16,7 @@
 const https = require('https');
 const crypto = require('crypto');
 const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_HAIKU, CLAUDE_SONNET } = require('./models');
-const { isLondonMarket } = require('./venue-classification');
+const { isLondonMarket, isSpecialEngagementVenue } = require('./venue-classification');
 const { applyTemporalOverrides, applyVenueClassificationCarveout } = require('./review-guards');
 const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
 const { getCvStyle } = require('./outlet-canonicalize');
@@ -34,6 +34,23 @@ const { hasOpinionLanguage } = require('./content-quality');
  * Private to content-verifier — if other modules need URL-year extraction
  * they should extract this to scripts/lib/url-year.js first.
  */
+/**
+ * Single source of truth for the `market` string passed to verifyContent().
+ * Was duplicated as an inline `show?.type === 'opera' ? 'opera' : ...` ternary
+ * across 4 call sites (collect-review-texts.js, reverify-with-haiku.js x2,
+ * verify-existing-reviews.js x2) — none of them accounted for the
+ * special-venue class, so fixing it required updating every call site
+ * anyway. Centralized here so the next carve-out only needs one edit.
+ *
+ * @param {{type?: string, category?: string, venue?: string}|null|undefined} show
+ * @returns {string}
+ */
+function resolveCvMarket(show) {
+  if (show?.type === 'opera') return 'opera';
+  if (isSpecialEngagementVenue(show?.venue)) return 'special-venue';
+  return show?.category || 'broadway';
+}
+
 function _extractUrlYear(url) {
   if (!url || typeof url !== 'string') return null;
   // Try /YYYY/ path segment first (Variety, NYT, Guardian, etc.)
@@ -385,6 +402,25 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         'A DIFFERENT production of the same title: on Broadway, in the West End, on tour, or at a different theater than the named regional venue',
         'A prior year/season production of the title at another venue',
         'Coverage of a later Broadway transfer rather than this regional run'
+      ]
+    },
+    // 'special-venue' — off-broadway/type:'special' shows filed at large or
+    // prestige NYC venues (Radio City Music Hall, Park Avenue Armory, Carnegie
+    // Hall, NYU Skirball, New York City Center) that read as "Broadway-caliber"
+    // to a naive LLM. Same root cause as the 'opera' carve-out above — without
+    // this entry the off-broadway prompt's "Broadway production" red flag fires
+    // on every mention of the venue name, wrongly flagging correctly-attributed
+    // reviews (Les Misérables: The Arena Concert Spectacular @ Radio City,
+    // 2026-07-30). The named venue IS the canonical venue for these shows.
+    'special-venue': {
+      label: 'special engagement',
+      description: 'a one-off or limited-run concert, dance, or special engagement performed at the named NYC venue — not a traditional Off-Broadway house, but the correct and canonical venue for this production',
+      dateLabel: 'opening date',
+      venueLabel: 'venue',
+      wrongProdExamples: [
+        'A DIFFERENT production of the same title reviewed at another venue, on a national tour, or in a different city',
+        'A prior year/season engagement of the same title',
+        'Coverage of a Broadway transfer or different mounting of the same title, rather than this engagement'
       ]
     }
   };
@@ -762,6 +798,7 @@ module.exports = {
   quickValidityCheck,
   contentHash,
   shouldDeferCvWrongShow,
+  resolveCvMarket,
   // Generic prompt→text providers, exported so other verifiers (e.g. the
   // slug-misroute content check) can run multi-model agreement without
   // duplicating the HTTPS plumbing. Each takes a prompt string, returns a

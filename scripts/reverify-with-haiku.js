@@ -34,7 +34,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { verifyContent } = require('./lib/content-verifier');
+const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
 
 const BASE = 'data/review-texts';
 
@@ -98,7 +98,7 @@ function buildVerifyInput(showId, r) {
     openingDate: show?.openingDate || '',
     publishDate: r.publishDate || '',
     venue: show?.venue || '',
-    market: show?.type === 'opera' ? 'opera' : (show?.category || 'broadway'),
+    market: resolveCvMarket(show),
     // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
     // (Hamlet 2026-05-08 FRC class). Critical for backfill flows: without `show`,
     // historical FPs of the FRC class won't get re-classified during reverify.

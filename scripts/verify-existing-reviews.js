@@ -25,7 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { verifyContent } = require('./lib/content-verifier');
+const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
 const { wrongShowCleared } = require('./lib/review-guards');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 
@@ -159,7 +159,7 @@ async function processVerify(items) {
         openingDate: show?.openingDate || '',
         publishDate: r.publishDate || '',
         venue: show?.venue || '',
-        market: show?.type === 'opera' ? 'opera' : (show?.category || 'broadway'),
+        market: resolveCvMarket(show),
         // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
         // (Hamlet 2026-05-08 FRC class). See review-guards.js:hasNamedDifferentDirectorSignal.
         show: show || null,
@@ -253,7 +253,7 @@ async function processRecover(items) {
         openingDate: show?.openingDate || '',
         publishDate: r.publishDate || '',
         venue: show?.venue || '',
-        market: show?.type === 'opera' ? 'opera' : (show?.category || 'broadway'),
+        market: resolveCvMarket(show),
         // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
         // (Hamlet 2026-05-08 FRC class). See review-guards.js:hasNamedDifferentDirectorSignal.
         show: show || null,
