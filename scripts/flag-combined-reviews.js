@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { baseSlug } = require('./lib/combined-review-utils');
+const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -100,11 +101,11 @@ function main() {
         // show dirs is intentional joint coverage, not a wrong-show false
         // positive. Clear the flag so this file lands in reviews.json.
         if (data.wrongShow === true && data.rejectionReason === 'wrong_show') {
-          data.wrongShow = false;
-          data.wrongShowOverride = true;
-          data.wrongShowOverrideReason =
-            'URL co-occurs across ' + uniqueShows.size + ' show dirs — joint review';
-          data.wrongShowOverrideAt = new Date().toISOString();
+          clearWrongProductionFlags(data, {
+            source: 'flag-combined-reviews.js',
+            reason: 'URL co-occurs across ' + uniqueShows.size + ' show dirs — joint review',
+            wrongShowOnly: true,
+          });
           // The override clears the rebuild gate, but the scorer's UNSCORED /
           // needsRescore queries (llm-ensemble-score.yml) BOTH exclude any file
           // that still carries a rejectionReason — so the file would land in

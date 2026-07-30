@@ -29,6 +29,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { wouldAutoClear } = require('./lib/autoclear-shadow');
 const { assessBatchClearGate } = require('./lib/autoclear-batch-gate');
+const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -141,8 +142,21 @@ function main() {
     const fp = path.join(REVIEW_TEXTS_DIR, showId, file);
     const d = loadJson(fp, null);
     if (!d) continue;
-    if (flag === 'wrongProduction') { d.wrongProduction = false; d.wrongProductionManualClear = true; }
-    else if (flag === 'wrongShow') { d.wrongShow = false; d.wrongShowManualClear = true; }
+    // detectFlagContradiction (lib/flag-contradiction.js) only ever returns
+    // 'wrongProduction' or 'wrongShow' — but fail loudly rather than silently
+    // defaulting an unrecognized value to the full (wrongProduction-granting)
+    // clear mode, which would be the dangerous direction to guess wrong
+    // (Codex adversarial review, 2026-07-30).
+    if (flag !== 'wrongProduction' && flag !== 'wrongShow') {
+      throw new Error(`autoclear-stale-flags.js: unrecognized flag "${flag}" for ${showId}/${file}`);
+    }
+    clearWrongProductionFlags(d, {
+      source: 'autoclear-stale-flags.js',
+      reason: 'shadow-gated-contradiction',
+      wrongShowOnly: flag === 'wrongShow',
+    });
+    if (flag === 'wrongProduction') { d.wrongProductionManualClear = true; }
+    else if (flag === 'wrongShow') { d.wrongShowManualClear = true; }
     d.autoClearedAt = new Date().toISOString();
     d.autoClearReason = 'shadow-gated-contradiction';
     safeWriteReview(fp, d);

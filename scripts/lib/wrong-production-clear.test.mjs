@@ -111,3 +111,59 @@ test('returns the same object for chaining', () => {
   const result = clearWrongProductionFlags(data, { source: 'test-script.js' });
   assert.strictEqual(result, data);
 });
+
+test('wrongShowOnly: leaves top-level wrongProduction untouched, only clears wrongShow', () => {
+  const data = {
+    wrongProduction: true,
+    wrongProductionReason: 'genuinely a different production',
+    wrongShow: true,
+    wrongShowReason: 'stale show mismatch',
+  };
+  clearWrongProductionFlags(data, { source: 'test-script.js', wrongShowOnly: true });
+  assert.equal(data.wrongProduction, true);
+  assert.equal(data.wrongProductionReason, 'genuinely a different production');
+  assert.equal(data.wrongShow, undefined);
+  assert.equal(data.wrongShowReason, undefined);
+});
+
+test('wrongShowOnly: leaves contentVerification.wrongProduction untouched but corrects wrongArticle/isFilmTv/isValid', () => {
+  const data = {
+    wrongShow: true,
+    contentVerification: {
+      isValid: false,
+      wrongProduction: true,
+      wrongArticle: true,
+      isFilmTv: false,
+      reasoning: 'original LLM verdict: different show',
+    },
+  };
+  clearWrongProductionFlags(data, { source: 'test-script.js', reason: 'joint review', wrongShowOnly: true });
+  assert.equal(data.contentVerification.isValid, true);
+  assert.equal(data.contentVerification.wrongProduction, true, 'must stay subject to wrongProduction promotion on next rebuild');
+  assert.equal(data.contentVerification.wrongArticle, false);
+  assert.equal(data.contentVerification.isFilmTv, false);
+});
+
+test('wrongShowOnly: stamps wrongShowOverride, not wrongProductionOverride (no blanket wrongProduction immunity)', () => {
+  const data = { wrongShow: true };
+  clearWrongProductionFlags(data, { source: 'audit-review-url-clusters.js', reason: 'venue-body-matched', wrongShowOnly: true });
+  assert.equal(data.wrongShowOverride, true);
+  assert.match(data.wrongShowOverrideReason, /^audit-review-url-clusters\.js/);
+  assert.ok(!Number.isNaN(Date.parse(data.wrongShowOverrideAt)));
+  assert.equal(data.wrongProductionOverride, undefined);
+  assert.equal(data.wrongProductionOverrideReason, undefined);
+  assert.equal(data.wrongProductionOverrideSetAt, undefined);
+  assert.equal(data.wrongProductionOverrideSetBy, undefined);
+});
+
+test('wrongShowOnly: still reclassifies a stale contentTier:"invalid"', () => {
+  const data = {
+    wrongShow: true,
+    contentTier: 'invalid',
+    incompleteReason: 'wrong_content',
+    fullText: Array(80).fill('This is a genuine review sentence about the production.').join(' '),
+  };
+  clearWrongProductionFlags(data, { source: 'test-script.js', wrongShowOnly: true });
+  assert.equal(data.contentTier, 'complete');
+  assert.equal(data.incompleteReason, undefined);
+});
