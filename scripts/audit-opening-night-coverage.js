@@ -23,10 +23,14 @@ const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage
 const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
 const { routeAlert } = require('./lib/owner-alert-router');
 const { capNewStandingCells, DEFAULT_MAX_NEW_PER_RUN } = require('./lib/standing-outlets');
+const { loadAcks, buildScoreboardText } = require('./lib/t1-scoreboard');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const LEDGER_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-ledger.json');
 const DIGEST_STATE_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-digest-state.json');
+// B3 scoreboard: per-market coverage % snapshot, written every --write-ledger
+// run (see writeLedger's marketStats block below); consumed by --scoreboard.
+const MARKET_STATS_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-stats.json');
 // S4-T3/S5-T1 signals (reactivations, late-adds): sendAlert() at 'warning'
 // severity is log-only by design in this codebase (discord-notify.js — no
 // Discord webhook, no email at non-critical severity), so without a durable
@@ -83,6 +87,10 @@ function parseArgs() {
     // >24h gaps. Without --alert it is a pure dry-run (prints, emails nothing).
     if (arg === '--digest') opts.digest = true;
     if (arg.startsWith('--digest-state=')) opts.digestStatePath = arg.split('=')[1];
+    // B3 scoreboard mode: build coverage%/oldest-gap text, route through
+    // routeAlert(disposition:'digest'). Dry-run without --alert.
+    if (arg === '--scoreboard') opts.scoreboard = true;
+    if (arg.startsWith('--market-stats-path=')) opts.marketStatsPath = arg.split('=')[1];
   }
   opts.digestStatePath = opts.digestStatePath || DIGEST_STATE_PATH;
   return opts;
@@ -153,9 +161,13 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx) {
   try {
     census = buildCensusFromArchives(showId, applyStanding ? { show, market, outlets } : { show, market });
   }
-  catch (_) { return { cells: [], reactivations }; }
-  if (!census || !census.hadAnySource) return { cells: [], reactivations };
+  catch (_) { return { cells: [], reactivations, coverage: null }; }
+  if (!census || !census.hadAnySource) return { cells: [], reactivations, coverage: null };
   const cVerdict = censusVerdict(census, scoredOutlets, { suppressed: CI_UNFETCHABLE_OUTLETS });
+  // B3 scoreboard input: total dispatch-tier (T1/T2) outlets this show's census
+  // expects, regardless of covered/missing — the denominator the scoreboard
+  // needs and the ledger (missing-only, by design) doesn't carry.
+  const totalTier = census.entries.filter((e) => isDispatchTierOutlet(outlets, e.outletId)).length;
 
   // Clock start: max(openingDate, showCreatedAt) is the S2-T6 refinement; here we
   // use openingDate/previewsStartDate. No date → null clock → IN_FLIGHT (never a GAP).
@@ -188,7 +200,16 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx) {
   for (const m of cVerdict.suppressedMissing) {
     cells.push({ outletId: m.outletId, state: 'SUPPRESSED', url: m.url || '' });
   }
-  return { cells, reactivations };
+  // NO_REVIEW_EXPECTED cells are excluded from the coverage denominator (the
+  // registry says this outlet doesn't apply here — it should neither help nor
+  // hurt the %), matching t1-ledger's classifyCell rationale.
+  const noReviewExpectedCount = cells.filter((c) => c.state === 'NO_REVIEW_EXPECTED').length;
+  const coverage = {
+    totalTier,
+    denominator: totalTier - noReviewExpectedCount,
+    covered: totalTier - cells.length,
+  };
+  return { cells, reactivations, coverage };
 }
 
 // Build + write the T1 coverage ledger. Scans shows that are open OR opened within
@@ -226,6 +247,7 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
     existingCellKeys,
     counter: { used: 0, cap: opts.standingCap != null ? opts.standingCap : DEFAULT_MAX_NEW_PER_RUN },
   };
+  const marketCoverage = new Map(); // B3 scoreboard: market -> {covered, denominator}
 
   for (const show of target) {
     const showId = show.id || show.slug;
@@ -239,9 +261,21 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
     // (archive-source census, dispatch, digest) is completely unaffected.
     const isRecentOpening = show.openingDate && show.openingDate >= cutoff;
     const showStandingCtx = isRecentOpening ? standingCtx : null;
-    const { cells, reactivations: showReactivations } = computeShowCells(show, reviews, outlets, nowMs, showStandingCtx);
+    const { cells, reactivations: showReactivations, coverage } = computeShowCells(show, reviews, outlets, nowMs, showStandingCtx);
     for (const outletId of showReactivations) {
       reactivations.push({ showId, title: show.title, outletId });
+    }
+
+    // B3 scoreboard: accumulate per-market coverage BEFORE the cells.length===0
+    // continue below — a fully-covered show contributes covered/denominator
+    // too, not just shows with an open gap, or the % would only ever count
+    // the numerator from incomplete shows and never reach 100%.
+    if (coverage && coverage.denominator > 0) {
+      const mkt = censusMarket(show.category || 'broadway');
+      const acc = marketCoverage.get(mkt) || { covered: 0, denominator: 0 };
+      acc.covered += coverage.covered;
+      acc.denominator += coverage.denominator;
+      marketCoverage.set(mkt, acc);
     }
 
     // S5-T1: late-add defect — earliest scored review predates our own
@@ -284,6 +318,23 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
     fs.mkdirSync(path.dirname(opts.ledgerPath), { recursive: true });
     fs.writeFileSync(opts.ledgerPath, bytes);
   }
+  // B3 scoreboard: per-market coverage %, written as its own snapshot file (NOT
+  // folded into the ledger's ledger.shows schema) — it's a point-in-time metric,
+  // not an incremental gap-tracking structure, so it doesn't need mergeLedger's
+  // firstSeenAt-preservation or serializeLedger's commit-on-change determinism.
+  const marketStats = {};
+  for (const [mkt, acc] of marketCoverage) {
+    marketStats[mkt] = {
+      covered: acc.covered,
+      denominator: acc.denominator,
+      coveragePct: acc.denominator > 0 ? Math.round((acc.covered / acc.denominator) * 1000) / 10 : null,
+    };
+  }
+  const marketStatsPath = opts.marketStatsPath || MARKET_STATS_PATH;
+  try {
+    fs.mkdirSync(path.dirname(marketStatsPath), { recursive: true });
+    fs.writeFileSync(marketStatsPath, JSON.stringify({ generatedAt: nowIso, markets: marketStats }, null, 2) + '\n');
+  } catch (e) { console.error('Failed to write t1-coverage-stats.json:', e.message); }
   const cellCount = freshShows.reduce((n, s) => n + s.cells.length, 0);
   const gapCount = freshShows.reduce((n, s) => n + s.cells.filter(c => c.state === 'GAP').length, 0);
   console.log(`T1 coverage ledger: ${freshShows.length} shows, ${cellCount} open cells (${gapCount} GAP) → ${opts.ledgerPath} ${changed ? '[written]' : '[unchanged — no commit]'}`);
@@ -403,10 +454,49 @@ async function runDigest(opts) {
   }
 }
 
+// B3 scoreboard: coverage % per market + oldest gaps, routed through
+// routeAlert(disposition:'digest') — a single conditionKey so it rides the
+// existing daily-digest "Automation (queued)" section (health-check.js) as
+// ONE line, not a new send path. cooldownHours < 24 so a roughly-daily
+// digest-consumption cadence always sees fresh content (routeAlert's default
+// 7-day cooldown would otherwise let a stale scoreboard sit for a week).
+async function runScoreboard(opts) {
+  const marketStatsPath = opts.marketStatsPath || MARKET_STATS_PATH;
+  let marketStats = {};
+  try { ({ markets: marketStats } = JSON.parse(fs.readFileSync(marketStatsPath, 'utf8'))); }
+  catch (_) { console.log('No coverage stats yet — run --write-ledger first.'); return; }
+  let ledger = { shows: {} };
+  try { ledger = JSON.parse(fs.readFileSync(opts.ledgerPath, 'utf8')); } catch (_) { /* no ledger yet */ }
+  const acks = loadAcks();
+  const { text, marketLines, oldestGapLines, omittedByAck, totalOpenGaps } =
+    buildScoreboardText(marketStats, ledger, acks, Date.now());
+
+  console.log('\n=== T1 Coverage Scoreboard ===');
+  console.log(text || '(no market data yet)');
+  if (omittedByAck > 0) console.log(`(${omittedByAck} acked gap(s) omitted from the callout)`);
+
+  if (opts.alert && marketLines.length) {
+    try {
+      const routed = await routeAlert({
+        conditionKey: 't1-coverage:scoreboard',
+        title: 'T1 Coverage Scoreboard',
+        description: text,
+        severity: 'warning',
+        disposition: 'digest',
+        cooldownHours: 20,
+      });
+      console.log(routed.action === 'silent'
+        ? '\nScoreboard queue refresh suppressed (cooldown still open — a fresher line already queued within 20h).'
+        : `\nScoreboard queued for the daily digest (${oldestGapLines.length} oldest-gap line(s), ${totalOpenGaps} total open GAP(s)).`);
+    } catch (e) { console.error('Scoreboard queue failed:', e.message); }
+  }
+}
+
 async function main() {
   const opts = parseArgs();
 
   if (opts.digest) { await runDigest(opts); return; }
+  if (opts.scoreboard) { await runScoreboard(opts); return; }
 
   if (opts.writeLedger) {
     const showsData = loadJSON('shows.json');
