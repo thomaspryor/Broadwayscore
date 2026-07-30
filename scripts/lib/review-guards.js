@@ -975,12 +975,49 @@ function isLikelyStaleRoundupFlag(data) {
   if (!data || data.isRoundupArticle !== true) return false;
   const fullText = (data.fullText || '').trim();
   if (fullText.length < 800) return false;
-  if (data.isFullReview !== true) return false;
   const url = data.url || '';
-  if (!url) return false;
-  if (isRoundupUrl(url).isRoundup) return false;
-  if (/\/article\/Review-Roundup-/i.test(url)) return false;
-  return INDIVIDUAL_REVIEW_URL_PATTERNS.some(re => re.test(url));
+
+  // Signal A (original): the URL matches a known per-outlet individual-review
+  // pattern and the file is stamped isFullReview. Requires both a whitelisted
+  // host AND isFullReview===true, which complete-tier scraped reviews often
+  // lack (isFullReview is set by a narrower code path than contentTier).
+  if (url && data.isFullReview === true
+      && !isRoundupUrl(url).isRoundup
+      && !/\/article\/Review-Roundup-/i.test(url)
+      && INDIVIDUAL_REVIEW_URL_PATTERNS.some(re => re.test(url))) {
+    return true;
+  }
+
+  // Signal B (Notion 3ad637c5, #651): the manual flag's own note cites a
+  // specific old URL (format: `manual YYYY-MM-DD: ... (<url-fragment>)`), and
+  // the file's URL has since been corrected in place to a DIFFERENT article
+  // (urlUpdatedAt/urlDiscoveredAt after the flag's stamped date, with a
+  // different trailing numeric article ID). This is the JCS Palladium case:
+  // whatsonstage--sarah-crompton.json was manually flagged against the WOS
+  // roundup URL (…review-round-up_1726870) on 2026-07-08, then its url field
+  // was corrected the next day to the individual Sarah Crompton review
+  // (…review_1726828) — but the stale isRoundupArticle flag survived because
+  // that correction path didn't run through applyUrlChangeInvariant (#483 is
+  // the broader gap; this is the roundup-flag-specific chokepoint the card
+  // asked for). Doesn't require the URL whitelist or isFullReview — the
+  // date+ID mismatch is itself positive evidence of staleness. contentTier
+  // gate keeps this from firing on files that are still genuinely stubs.
+  if (data.contentTier === 'complete' && url) {
+    const noteMatch = /^manual\s+(\d{4}-\d{2}-\d{2}):.*?\(([^)]+)\)/.exec(data.roundupFlagNote || '');
+    if (noteMatch) {
+      const [, flagDateStr, notedUrlFragment] = noteMatch;
+      const flagDateMs = Date.parse(flagDateStr);
+      const urlUpdateTs = data.urlUpdatedAt || data.urlDiscoveredAt;
+      const updatedAfterFlag = urlUpdateTs && !Number.isNaN(flagDateMs) && Date.parse(urlUpdateTs) > flagDateMs;
+      if (updatedAfterFlag) {
+        const notedId = (notedUrlFragment.match(/_(\d+)\D*$/) || [])[1];
+        const currentId = (url.match(/_(\d+)\D*\/?$/) || [])[1];
+        if (notedId && currentId && notedId !== currentId) return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 /**
@@ -1342,9 +1379,17 @@ function isStaleCvPromotedWrongProduction(data, cvIsStale) {
   if (!data || data.wrongProduction !== true) return false;
   if (cvIsStale) return false;
 
-  // Provenance gate: only self-heal flags CV itself set.
+  // Provenance gate: only self-heal flags CV itself set (or the contamination
+  // adjudicator's "Auto-adjudicated:" verdict, #651 — Heathers off-west-end-2026
+  // london-box-office--shehrazade-zafar-arif.json: adjudicate-review-queue.js
+  // set wrongProduction=true off a Sonnet classifier reading a 1500-char
+  // excerpt and misreading a forward-looking "before it embarks on tour"
+  // mention as tour evidence, while the file's own full-text contentVerification
+  // pass — high confidence — already confirmed this IS the Off-West End run).
+  // wrongProductionReason is unset on that path; the note carries the tag.
   const reason = String(data.wrongProductionReason || '');
-  if (!/^CV-promoted:|^CV-low-but-strong-signal:/.test(reason)) return false;
+  const note = String(data.wrongProductionNote || '');
+  if (!/^CV-promoted:|^CV-low-but-strong-signal:/.test(reason) && !/^Auto-adjudicated:/.test(note)) return false;
 
   // Never re-touch a human/manual decision (and avoid no-op churn).
   if (data.wrongProductionManualClear === true) return false;

@@ -164,8 +164,51 @@ function shouldAlertContradiction(lastAlertedAt, now, days = CONTRADICTION_REALE
   return now.getTime() - last >= days * 24 * 60 * 60 * 1000;
 }
 
+/**
+ * Timestamp-free flag-vs-CV contradiction check (#651, Notion 3ad637c5).
+ *
+ * detectFlagContradiction() above requires a stamped wrongProductionFlaggedAt
+ * and a CV verifiedAt strictly newer than it — deliberately narrow, and it
+ * explicitly punts on wrongShow/isRoundupArticle because no reliable flag-set
+ * timestamp exists for them. That ordering requirement is exactly why the
+ * pipeline-health audit's cheap detector (10 files across 34 shows opened in
+ * the last 30 days, 3 of 5 judged were confirmed false positives — JCS
+ * sarah-crompton, Heathers zafar-arif, Tender artsdesk) had never been
+ * computed anywhere as a standing check: it doesn't need "newer than," only
+ * "currently disagrees." A long-substantial review the pipeline still
+ * excludes while its own most recent full-text CV pass affirms it, at high
+ * confidence, is worth a human look regardless of which verdict landed on
+ * disk first — CV is not authoritative over the exclusion flags (both can be
+ * wrong), it's just cheap, high-recall bait for a human triage pass.
+ *
+ * @param {object} file - parsed review-text JSON
+ * @returns {null | {contradicted: true, flag: string, cvReasoning: string, wordCount: number}}
+ */
+function detectCvFlagContradiction(file) {
+  if (!file || typeof file !== 'object') return null;
+  if (isHumanDecided(file)) return null;
+
+  const cv = file.contentVerification;
+  if (!cv || cv.isValid !== true || cv.confidence !== 'high') return null;
+
+  const wordCount = file.textWordCount ?? file.wordCount ?? 0;
+  if (wordCount <= 300) return null;
+
+  const flag = file.wrongProduction === true ? 'wrongProduction'
+    : file.wrongShow === true ? 'wrongShow'
+    : file.isRoundupArticle === true ? 'isRoundupArticle'
+    : null;
+  if (!flag) return null;
+
+  const reasoning = cv.reasoning
+    || (Array.isArray(cv.issues) && cv.issues.length ? cv.issues[0] : '')
+    || '';
+  return { contradicted: true, flag, cvReasoning: String(reasoning), wordCount };
+}
+
 module.exports = {
   detectFlagContradiction,
+  detectCvFlagContradiction,
   contradictionFixCommand,
   shouldAlertContradiction,
   isHumanDecided,

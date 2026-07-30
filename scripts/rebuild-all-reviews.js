@@ -1592,11 +1592,35 @@ const crossShowFingerprints = new Map();
         // Balusters postmortem CLASS 1: If the ensemble scored this with confidence, CV.wrongArticle
         // is advisory, not blocking. Don't promote to wrongShow.
         const ensembleSaysReview = hasHighConfidenceLlmScore(d);
-        if (cv.wrongArticle === true && !ensembleSaysReview && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
-          // CV outlet-style override (S3-T5): defer wrongShow for known long-biographical
+        // #651 (tao-of-glass/times-uk--richard-morrison): cv.wrongArticle means
+        // "this content is NOT a review at all" (interview/preview/news per the
+        // content-verifier prompt) — a category distinct from wrongShow, which
+        // means "this IS a review, but of the wrong production." Promoting
+        // wrongArticle to wrongShow puts the exclusion in the wrong flag family:
+        // a manual wrongShowManualClear can't clear it, and the file reads as
+        // "wrong production" when it's actually "not a review." Only route to
+        // wrongShow when CV ALSO flagged wrongProduction (genuinely a review,
+        // just of a different production) — pure non-review content routes to
+        // the isNonReview/rejectionReason family instead.
+        const cvIsPureNonReview = cv.wrongArticle === true && cv.wrongProduction !== true;
+        if (cvIsPureNonReview && !ensembleSaysReview && d.isNonReview !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
+          // CV outlet-style override (S3-T5): defer for known long-biographical
           // outlets when the text is substantive + opinionated. The CV pass false-positives
           // on Vulture/NY Sun/NYSR/NYT long-biographical leads. flaggedForReview surfaces
           // these to humanReview rather than auto-promoting.
+          if (shouldDeferCvWrongShow(d)) {
+            d.flaggedForReview = true;
+            d.flagReason = 'cv-promotion-deferred';
+            stats.cvPromotionDeferred = (stats.cvPromotionDeferred || 0) + 1;
+            try { safeWriteReview(path.join(sDir, f), d); } catch {}
+          } else {
+            d.isNonReview = true;
+            d.rejectionReason = d.rejectionReason || 'not_a_review';
+            d.isNonReviewReason = d.isNonReviewReason || `CV-promoted (not a review): ${(cv.reasoning || '').substring(0, 200)}`;
+            promoted = true;
+          }
+        } else if (cv.wrongArticle === true && cv.wrongProduction === true && !ensembleSaysReview && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
+          // Both flags true: genuinely a review, just of a different production — wrongShow family.
           if (shouldDeferCvWrongShow(d)) {
             d.flaggedForReview = true;
             d.flagReason = 'cv-promotion-deferred';
@@ -1675,10 +1699,25 @@ showDirs.forEach(showId => {
           } else if (ucv.wrongProduction === true && uCvWpAdvisory) {
             stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;
           }
-          if (ucv.wrongArticle === true && !uEnsembleSaysReview && ud.wrongShow !== true && !ud.allowEarlyDate && !ud.allowCrossMarket) {
-            // CV outlet-style override (S3-T5 followup): defer wrongShow for known long-biographical
+          // #651: pure non-review (wrongArticle without wrongProduction) routes to
+          // isNonReview, not wrongShow — see the matching non-upcoming pass above.
+          const uCvIsPureNonReview = ucv.wrongArticle === true && ucv.wrongProduction !== true;
+          if (uCvIsPureNonReview && !uEnsembleSaysReview && ud.isNonReview !== true && !ud.allowEarlyDate && !ud.allowCrossMarket) {
+            // CV outlet-style override (S3-T5 followup): defer for known long-biographical
             // outlets even on upcoming-show path. Long-biographical previews share the same
             // FP class as opening-day reviews (e.g., NY Sun biographical lead on an upcoming show).
+            if (shouldDeferCvWrongShow(ud)) {
+              ud.flaggedForReview = true;
+              ud.flagReason = 'cv-promotion-deferred';
+              stats.cvPromotionDeferred = (stats.cvPromotionDeferred || 0) + 1;
+              try { safeWriteReview(path.join(upcomingDir, uf), ud); } catch (e) {}
+            } else {
+              ud.isNonReview = true;
+              ud.rejectionReason = ud.rejectionReason || 'not_a_review';
+              ud.isNonReviewReason = `CV-promoted (not a review): ${(ucv.reasoning || '').substring(0, 200)}`;
+              promoted = true;
+            }
+          } else if (ucv.wrongArticle === true && ucv.wrongProduction === true && !uEnsembleSaysReview && ud.wrongShow !== true && !ud.allowEarlyDate && !ud.allowCrossMarket) {
             if (shouldDeferCvWrongShow(ud)) {
               ud.flaggedForReview = true;
               ud.flagReason = 'cv-promotion-deferred';
@@ -2655,22 +2694,34 @@ showDirs.forEach(showId => {
           // validate-data CHECK 0 hard-errors unflagged >180d-early reviews.
           const corrobIncl = evaluateCurrentRunCorroboration({ review: data, show: showById[showId] });
           if (corrobIncl.strength === 'strong') {
-            console.log(`  [PRE-OPENING-HELD] ${showId}/${file}: date ${data.publishDate} pre-window but current-run corroboration [${corrobIncl.signals.join(', ')}] — excluded, NOT flagged; verify live date + fix publishDate`);
-            logExclusion("heldPreOpeningCorroboration", showId, file, data, { signals: corrobIncl.signals.join(',') });
-            stats.preOpeningHeld = (stats.preOpeningHeld || 0) + 1;
+            // cv-affirms-production is a direct read of the fetched fullText
+            // confirming this IS the current production (unlike the TR-month/
+            // roundup-excerpt signals, which only contradict the date via a
+            // possibly mis-attached URL and can't vouch for the content
+            // itself) — safe to include rather than hold (#651, Tender
+            // artsdesk--unknown.json: publishDate misparsed as "May 1st,
+            // 2026", CV's own reasoning confirms the review is from 2026-07-22).
+            if (corrobIncl.signals.includes('cv-affirms-production')) {
+              console.log(`  [PRE-OPENING-CV-OVERRIDE] ${showId}/${file}: date ${data.publishDate} pre-window but contentVerification affirms this production — included`);
+            } else {
+              console.log(`  [PRE-OPENING-HELD] ${showId}/${file}: date ${data.publishDate} pre-window but current-run corroboration [${corrobIncl.signals.join(', ')}] — excluded, NOT flagged; verify live date + fix publishDate`);
+              logExclusion("heldPreOpeningCorroboration", showId, file, data, { signals: corrobIncl.signals.join(',') });
+              stats.preOpeningHeld = (stats.preOpeningHeld || 0) + 1;
+              return;
+            }
+          } else {
+            console.log(`  [PRE-OPENING] ${showId}/${file}: published ${preWindow.daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
+            logExclusion("skippedPreOpening", showId, file, data);
+            stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
+            // Also flag the source file for future reference
+            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
+              // [GUARD:DAYS-BEFORE-OPENED]
+              data.wrongProduction = true;
+              data.wrongProductionNote = `Review published ${preWindow.daysBefore} days before show opened — pre-window date (>${preWindow.threshold}d), likely reviewing a different production`;
+              safeWriteReview(path.join(showDir, file), data);
+            }
             return;
           }
-          console.log(`  [PRE-OPENING] ${showId}/${file}: published ${preWindow.daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
-          logExclusion("skippedPreOpening", showId, file, data);
-          stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
-          // Also flag the source file for future reference
-          if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
-            // [GUARD:DAYS-BEFORE-OPENED]
-            data.wrongProduction = true;
-            data.wrongProductionNote = `Review published ${preWindow.daysBefore} days before show opened — pre-window date (>${preWindow.threshold}d), likely reviewing a different production`;
-            safeWriteReview(path.join(showDir, file), data);
-          }
-          return;
         }
       }
 

@@ -37,6 +37,17 @@
  *     article page itself (aggregatorStarsSource: stage-star-svg etc.) and
  *     exists on prior-run reviews too (1789 stars-only false corroborations
  *     in the same sweep).
+ *   - 'cv-affirms-production' (STRONG, #651): contentVerification ran a
+ *     full-text LLM pass and came back isValid=true, confidence='high',
+ *     wrongProduction!==true, wrongArticle!==true — an affirmative read of
+ *     the CURRENT production, not just an absence of objection. Tender
+ *     off-west-end-2026 / artsdesk--unknown.json: publishDate field read
+ *     "May 1st, 2026" (a misparse — the file was actually fetched and
+ *     CV-verified 2026-07-22, 13 days after the 2026-07-09 opening; CV's own
+ *     reasoning cites the correct in-window date), but the pre-opening guard
+ *     flagged it as 60+ days early because it only trusts publishDate. CV
+ *     independently confirms the correct show/venue/cast from the full text,
+ *     which is stronger evidence than the (possibly misparsed) date alone.
  */
 
 const { earliestShowDate, DAYS_AFTER_CLOSE, UK_DAYS_BEFORE_PREVIEW } = require('./date-guard');
@@ -88,7 +99,14 @@ function evaluateCurrentRunCorroboration({ review, show }) {
     if (review && review[f]) signals.push(`roundup-excerpt:${f}`);
   }
 
-  const strength = signals.some(s => s.startsWith('theatre-record-month:'))
+  // (c) contentVerification affirmatively confirms the current production.
+  const cv = review && review.contentVerification;
+  if (cv && cv.isValid === true && cv.confidence === 'high'
+      && cv.wrongProduction !== true && cv.wrongArticle !== true) {
+    signals.push('cv-affirms-production');
+  }
+
+  const strength = signals.some(s => s.startsWith('theatre-record-month:') || s === 'cv-affirms-production')
     ? 'strong'
     : (signals.length ? 'weak' : null);
   return { strength, signals };

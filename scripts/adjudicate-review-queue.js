@@ -315,6 +315,8 @@ async function main() {
 **Review text (first 1500 chars):**
 ${text.slice(0, 1500)}
 
+A FORWARD-LOOKING mention of a future tour ("before it embarks on a national tour", "which will then transfer to...", "ahead of its upcoming tour") is NOT evidence this review is ABOUT a tour production — it is background context in a review of the CURRENT ${expectedType} run. Only mark "wrong-market" when the review's own opinion-bearing content (the critic's actual assessment) is evaluating a performance the critic attended at a different venue/production — not when it merely name-checks a later tour in passing.
+
 Respond with ONLY this JSON (no markdown fences):
 {
   "verdict": "correct-market" or "wrong-market",
@@ -356,6 +358,26 @@ Respond with ONLY this JSON (no markdown fences):
             if (shouldSkipWrongProductionAudit(sourceData)) {
               console.log(`  ⏭️  Skipping wrongProduction set — file has manual-clear breadcrumb`);
               results.skipped++;
+              continue;
+            }
+            // CV-affirms bailout (#651, Heathers zafar-arif FP): when the
+            // file's own contentVerification already confirmed — high
+            // confidence — that this review IS of the current production
+            // (not wrongProduction, not wrongArticle), a Sonnet contamination
+            // classifier's "wrong-market" verdict off a 1500-char excerpt is
+            // more likely a false positive than CV's full-text pass. Defer
+            // to CV instead of overwriting it.
+            const cv = sourceData.contentVerification;
+            const cvAffirmsProduction = cv && cv.isValid === true && cv.confidence === 'high'
+              && cv.wrongProduction !== true && cv.wrongArticle !== true;
+            if (cvAffirmsProduction) {
+              console.log(`  ⏭️  Skipping wrongProduction set — contentVerification already affirms this production (${cv.verifiedBy}, high confidence)`);
+              sourceData.tourCheckVerified = 'false-positive';
+              sourceData.tourCheckNote = `Auto-adjudicated wrong-market verdict overridden by CV affirmation: ${cv.reasoning ? cv.reasoning.slice(0, 200) : 'CV isValid=true, high confidence'}`;
+              fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+              console.log(`  ✅ Contamination adjudicated: correct-market (CV override) — ${result.reasoning}`);
+              results.resolved++;
+              await new Promise(resolve => setTimeout(resolve, 1000));
               continue;
             }
             sourceData.wrongProduction = true;
