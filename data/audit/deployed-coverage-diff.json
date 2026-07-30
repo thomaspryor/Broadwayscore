@@ -1,11 +1,36 @@
 {
-  "generatedAt": "2026-07-30T08:50:43.876Z",
+  "generatedAt": "2026-07-30T09:49:36.714Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 237,
-  "clean": 237,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 236,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1,
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "the-oresteia-west-end-2026",
+      "title": "The Oresteia",
+      "openingDate": "2026-07-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: broadwayworld"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.05 vs local 74.32 (Δ0.73)"
+        }
+      ],
+      "missingFromProd": [
+        "broadwayworld"
+      ],
+      "localCount": 23,
+      "deployedCount": 22
+    }
+  ]
 }
