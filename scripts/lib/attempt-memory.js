@@ -121,6 +121,10 @@ function checkPark(ledgerEntries, cardId, currentContentHash, opts = {}) {
 
   if (streak.length < maxFailures) return { parked: false, failureStreak: streak.length, reason: null };
 
+  // The "parked: " prefix is a load-bearing contract — scripts/autonomous-email.js
+  // matches it via /^parked:/ to surface this in the owner's morning digest
+  // (task #635/#637). Don't change the prefix here without updating that regex,
+  // and don't reuse "parked:" for any other preFilter reason elsewhere.
   const reasons = streak.slice(0, 2).reverse().map(o => o.reason).filter(Boolean);
   const reason = `parked: failed ${streak.length}x unchanged${reasons.length ? ` (${reasons.join(' | ')})` : ''} — edit the card or clear the park to retry`;
   return { parked: true, failureStreak: streak.length, reason };
