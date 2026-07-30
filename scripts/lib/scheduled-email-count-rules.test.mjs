@@ -26,6 +26,10 @@ test('classifySubject matches each known scheduled sender', () => {
   // An unrelated owner email mentioning "needs help" must NOT classify as
   // the opening digest (it would mask a dead digest in decideDayMissing).
   assert.equal(classifySubject('[ACTION] Show X needs help with images'), null);
+  // Start anchor: a forwarded/quoted subject embedding a real digest lead
+  // must not classify either (post-fix codex review finding).
+  assert.equal(classifySubject('Re: Quiet week · Jul 30'), null);
+  assert.equal(classifySubject('1 needs help · 2 broadcast-ready · 1 opening today · Jul 30').key, 'opening-digest');
   assert.equal(classifySubject('r/Broadway — 2 threads for you').key, 'reddit-engagement-digest');
   assert.equal(classifySubject('[Action Required] Fantasy weekly draft ready — 2026-07-29').key, 'fantasy-weekly');
   assert.equal(classifySubject('BSC Daily: All clear (27/27 passed)').key, 'health-check-digest');
