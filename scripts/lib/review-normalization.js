@@ -140,6 +140,51 @@ function getOutletAliases() {
 // LEGACY_OUTLET_ALIASES removed — outlet-registry.json is the single source of truth.
 // See: data/outlet-registry.json (outlets + _aliasIndex)
 
+let _ambiguousPrefixSlugsCache = null;
+
+/**
+ * Slugs that are unsafe to use as a concatenated outlet-critic prefix (see
+ * the fuzzy loop in normalizeOutlet) because they are themselves a
+ * hyphen-prefix of a DIFFERENT outlet's own registered name. E.g. vulture's
+ * alias "new york" is a prefix of nytg's "new-york-theater-guide" and of
+ * new-york-sun's "new-york-sun" — treating it as a safe "outlet-critic"
+ * prefix silently misrouted "New York Theater Guide" reviews to vulture
+ * (card #116). Computed once and cached; registry is static at runtime.
+ */
+function buildAmbiguousPrefixSlugs() {
+  if (_ambiguousPrefixSlugsCache) return _ambiguousPrefixSlugsCache;
+
+  const outletAliases = getOutletAliases();
+  const ownSlugsByCanonical = new Map();
+  for (const [canonical, aliases] of Object.entries(outletAliases)) {
+    const slugs = new Set([slugify(canonical)]);
+    for (const alias of aliases) {
+      const s = slugify(alias);
+      if (s) slugs.add(s);
+    }
+    ownSlugsByCanonical.set(canonical, slugs);
+  }
+
+  const allOwnSlugs = [];
+  for (const [canonical, slugs] of ownSlugsByCanonical) {
+    for (const slug of slugs) allOwnSlugs.push({ slug, canonical });
+  }
+
+  const ambiguous = new Set();
+  for (const [canonical, slugs] of ownSlugsByCanonical) {
+    for (const prefixSlug of slugs) {
+      if (prefixSlug.length < 4) continue;
+      const crossesFamily = allOwnSlugs.some(({ slug, canonical: otherCanonical }) =>
+        otherCanonical !== canonical && slug.startsWith(prefixSlug + '-')
+      );
+      if (crossesFamily) ambiguous.add(prefixSlug);
+    }
+  }
+
+  _ambiguousPrefixSlugsCache = ambiguous;
+  return ambiguous;
+}
+
 /**
  * Known critic name variations and typos.
  * Maps variations to canonical names.
@@ -330,21 +375,26 @@ function normalizeOutlet(outletName) {
   // Check for concatenated outlet-critic patterns (e.g., "variety-frank-rizzo", "new-york-magazinevulture-sara-holdren")
   // These come from upstream data sources that merge outlet and critic names
   const slug = slugify(outletName);
+  // Prefixes that also lead a DIFFERENT outlet's own registered name (e.g.
+  // vulture's "new york" vs. nytg's "new-york-theater-guide") can never be
+  // trusted to mean "outlet + critic name" — exclude them (card #116).
+  const ambiguousPrefixSlugs = buildAmbiguousPrefixSlugs();
   for (const [canonical, aliases] of Object.entries(outletAliases)) {
     // Skip short canonical IDs to prevent false prefix matches (e.g., "new", "ap", "ew", "gq")
     if (canonical.length < 4) continue;
     // Check if the slug starts with the canonical outlet ID followed by a critic name
-    if (slug.startsWith(canonical + '-') && slug.length > canonical.length + 3) {
+    if (!ambiguousPrefixSlugs.has(slugify(canonical)) && slug.startsWith(canonical + '-') && slug.length > canonical.length + 3) {
       return canonical;
     }
     // Check if the slug starts with any alias (slugified) followed by a critic name
     for (const alias of aliases) {
       const aliasSlug = slugify(alias);
-      if (aliasSlug && aliasSlug.length >= 4 && slug.startsWith(aliasSlug + '-') && slug.length > aliasSlug.length + 3) {
+      if (!aliasSlug || ambiguousPrefixSlugs.has(aliasSlug)) continue;
+      if (aliasSlug.length >= 4 && slug.startsWith(aliasSlug + '-') && slug.length > aliasSlug.length + 3) {
         return canonical;
       }
       // Also check without separator (e.g., "newyorkmagazinevulture")
-      if (aliasSlug && aliasSlug.length > 5 && slug.startsWith(aliasSlug) && slug.length > aliasSlug.length + 3) {
+      if (aliasSlug.length > 5 && slug.startsWith(aliasSlug) && slug.length > aliasSlug.length + 3) {
         return canonical;
       }
     }
