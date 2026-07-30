@@ -33,7 +33,16 @@ const PRUNE_DAYS = 60;
 function loadReviewEvidence(filePath = EVIDENCE_PATH) {
   try {
     const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    return parsed && typeof parsed.shows === 'object' && parsed.shows ? parsed.shows : {};
+    const shows = parsed && parsed.shows;
+    // Must be a plain object map — an array or scalar here is valid JSON but
+    // malformed evidence, and downstream .items access would crash the
+    // scheduled audit before it writes anything (Codex adversarial finding).
+    if (!shows || typeof shows !== 'object' || Array.isArray(shows)) return {};
+    const clean = {};
+    for (const [id, e] of Object.entries(shows)) {
+      if (e && typeof e === 'object' && !Array.isArray(e) && Array.isArray(e.items)) clean[id] = e;
+    }
+    return clean;
   } catch {
     return {}; // absent/corrupt file = no evidence, never a crash
   }
@@ -53,7 +62,11 @@ function hasFreshEvidence(evidenceShows, showId, { now = new Date(), lookbackDay
   // to a day at the window boundary (QA ship-check finding).
   const n = now instanceof Date ? now : new Date(now);
   const cutoff = Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate() - lookbackDays);
-  return ts >= cutoff && ts <= n.getTime() + 24 * 3600 * 1000;
+  // Future allowance is 2h, not 24h: the only legitimate ahead-of-UTC source
+  // is a BST-dated WET post just after its local midnight (+1h). 24h let
+  // tomorrow-dated evidence select a show before publication (Codex
+  // adversarial finding, executed probe).
+  return ts >= cutoff && ts <= n.getTime() + 2 * 3600 * 1000;
 }
 
 /**

@@ -253,12 +253,22 @@ function renderHealthDigestBlock(health) {
   // (clipped) detail line — they're the actionable rows; warnings render as
   // one name-only line each. The name is enough to recognize a known watch
   // item, and the health snapshot keeps the full text for digging in.
+  // Fix-this button (card #634 — owner ask 2026-07-30): each ERROR row gets a
+  // signed link straight to a session dispatch, no laptop required. The
+  // caller (autonomous-email.js) attaches r.fixUrl per item; this renderer
+  // stays pure (no HMAC/network here) and just draws whatever it's given.
+  // http(s) only, same safeUrl guard as the queued-router links above — a
+  // caller bug must never leak a javascript:/data: URL into the inbox.
+  const fixThisHtml = (url) => safeUrl(url)
+    ? `<div style="margin:4px 0 0 2px;"><a href="${esc(safeUrl(url))}" style="display:inline-block;font-size:11px;font-weight:700;color:#fff;background:#16a34a;text-decoration:none;padding:2px 10px;border-radius:8px;">Fix this →</a></div>`
+    : '';
   const rows = [...errors.map(e => ({ ...e, kind: 'error' })), ...warns.map(w => ({ ...w, kind: 'warn' }))]
     .slice(0, 8)
     .map(r => `<div style="margin:0 0 ${r.kind === 'error' ? 6 : 3}px;">
       <span style="display:inline-block;background:${r.kind === 'error' ? '#dc2626' : '#b45309'};color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;vertical-align:middle;text-transform:uppercase;">${r.kind}</span>
       <span style="font-size:13px;color:#333;margin-left:6px;">${esc(r.name)}</span>
       ${r.kind === 'error' && r.message ? `<div style="font-size:11px;color:#999;margin:2px 0 0 2px;">${esc(clip(r.message, 200))}</div>` : ''}
+      ${r.kind === 'error' ? fixThisHtml(r.fixUrl) : ''}
     </div>`).join('');
   const total = errors.length + warns.length;
   const more = total > 8 ? `<div style="font-size:11px;color:#999;margin-top:4px;">+${total - 8} more</div>` : '';
@@ -266,7 +276,7 @@ function renderHealthDigestBlock(health) {
     ? ` <span style="color:#999;font-weight:400;">(day ${health.consecutiveErrorDays})</span>` : '';
 
   return `<div style="border:1px solid ${urgent ? '#fca5a5' : '#e5e5e5'};background:${urgent ? '#fef2f2' : '#fff'};border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;${urgent ? 'color:#dc2626;' : ''}">Site health: ${esc(health.bannerText || `${errors.length} error${errors.length === 1 ? '' : 's'}, ${warns.length} warning${warns.length === 1 ? '' : 's'}`)}${escalation}</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;${urgent ? 'color:#dc2626;' : ''}">Site health: ${errors.length} error${errors.length === 1 ? '' : 's'}, ${warns.length} warning${warns.length === 1 ? '' : 's'}${escalation}</div>
     ${rows}${more}${queuedHtml}${autoFixedNote}${asOf}
   </div>`;
 }
