@@ -50,9 +50,18 @@ const SCHEDULED_SENDERS = [
   { key: 'daily-digest', label: 'Daily Digest (score-drift)', script: 'scripts/send-daily-digest.js', pattern: /Daily Digest:/ },
   // Restored as a standalone daily send 2026-07-30 (owner ask — "my fave
   // email"): the SECOND expected scheduled email, alongside morning-digest.
-  { key: 'opening-digest', label: 'Opening digest (standalone radar)', script: 'scripts/send-opening-digest.js', pattern: /needs help|broadcast-ready|opening today|upcoming this week|^Quiet week|\d+ tomorrow/, expected: true },
+  // Pattern requires buildSubject()'s terminal " · Mon D" date so an
+  // unrelated owner email that merely contains "needs help" can't classify
+  // as this sender and mask a dead digest (ship-check codex finding).
+  // expectedSince: the first ET day the restored CI cron ran in send mode —
+  // decideDayMissing skips earlier days so the restore's first monitor run
+  // can't false-fire a dead-sender alarm (ship-check QA finding).
+  { key: 'opening-digest', label: 'Opening digest (standalone radar)', script: 'scripts/send-opening-digest.js', pattern: /^(?:\d+ needs? help|\d+ broadcast-ready|\d+ opening today|\d+ tomorrow|\d+ upcoming this week|Quiet week)(?: · (?:\d+ needs? help|\d+ broadcast-ready|\d+ opening today|\d+ tomorrow|\d+ upcoming this week))* · [A-Z][a-z]{2} \d{1,2}$/, expected: true, expectedSince: '2026-07-31' },
   { key: 'reddit-engagement-digest', label: 'Reddit engagement digest', script: 'scripts/reddit-engagement-digest.js', pattern: /^r\/Broadway —/ },
-  { key: 'fantasy-weekly', label: 'Fantasy weekly draft notice', script: 'scripts/fantasy-weekly-email.js', pattern: /^\[Action Required\] Fantasy weekly draft ready/ },
+  // allowed (not expected): a legitimate WEEKLY send — never a violation,
+  // but its absence on the other six days must not read as "missing"
+  // (ship-check QA finding: without this it would alert every Wednesday).
+  { key: 'fantasy-weekly', label: 'Fantasy weekly draft notice', script: 'scripts/fantasy-weekly-email.js', pattern: /^\[Action Required\] Fantasy weekly draft ready/, allowed: true },
   { key: 'health-check-digest', label: 'Health check digest (legacy path)', script: 'scripts/health-check.js', pattern: /^BSC (Daily|URGENT)/ },
 ];
 
@@ -135,7 +144,13 @@ function decideDayViolation(dayBucket, dayKey = null) {
     const def = SCHEDULED_SENDERS.find((s) => s.key === k);
     return !(inWindow && def && def.retired && def.replacedBy && dayBucket.senders.has(def.replacedBy));
   });
-  const unexpected = senderKeys.filter((k) => !EXPECTED_SENDER_KEYS.includes(k));
+  // `allowed` senders (e.g. the weekly fantasy email) are legitimate
+  // scheduled sends that just aren't daily — never a violation, never
+  // required by the missing floor.
+  const unexpected = senderKeys.filter((k) => {
+    const def = SCHEDULED_SENDERS.find((s) => s.key === k);
+    return !(def && (def.expected || def.allowed));
+  });
   return {
     violation: unexpected.length > 0,
     senderCount: senderKeys.length,
@@ -153,14 +168,21 @@ function decideDayViolation(dayBucket, dayKey = null) {
 // email is dead. `dayBucket` may be undefined (no owner emails at all).
 const PRIMARY_SENDER_KEY = 'morning-digest';
 
-function decideDayMissing(dayBucket) {
+function decideDayMissing(dayBucket, dayKey = null) {
   const senderCount = dayBucket ? dayBucket.senders.size : 0;
   const primaryFired = !!(dayBucket && dayBucket.senders.has(PRIMARY_SENDER_KEY));
   // Every expected sender gets the same dead-sender floor (opening-digest
   // restored 2026-07-30) — a silently dead CI cron must alarm just like a
   // silently dead launchd job. `missing` stays keyed to the primary for
-  // callers that predate missingExpected.
-  const missingExpected = EXPECTED_SENDER_KEYS.filter((k) => !(dayBucket && dayBucket.senders.has(k)));
+  // callers that predate missingExpected. A sender's expectedSince gates
+  // the check to days on/after its first real send-mode day, so the day a
+  // sender is (re)introduced can't false-fire (ship-check QA finding).
+  const missingExpected = EXPECTED_SENDER_KEYS.filter((k) => {
+    if (dayBucket && dayBucket.senders.has(k)) return false;
+    const def = SCHEDULED_SENDERS.find((s) => s.key === k);
+    if (def && def.expectedSince && dayKey !== null && dayKey < def.expectedSince) return false;
+    return true;
+  });
   return { missing: !primaryFired, primaryFired, senderCount, missingExpected };
 }
 
