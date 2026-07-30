@@ -25,6 +25,34 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+const USAGE_TEXT = `Retroactive LLM Content Verification
+
+Two modes:
+  1. VERIFY: Check reviews with fullText that were never LLM-verified (12K+)
+  2. RECOVER: Re-evaluate wrongProduction/wrongShow flags for false positives (~650)
+
+Uses the same 4-provider chain as collect-review-texts.js:
+  Kimi → Gemini Flash → GPT-4o-mini → Claude Sonnet
+
+Usage:
+  node scripts/verify-existing-reviews.js                    # Both modes (default)
+  node scripts/verify-existing-reviews.js --verify-only      # Only check unverified
+  node scripts/verify-existing-reviews.js --recover-only     # Only re-evaluate flags
+  node scripts/verify-existing-reviews.js --dry-run          # Log without modifying
+  node scripts/verify-existing-reviews.js --limit=500        # Process at most N
+  node scripts/verify-existing-reviews.js --show=hamilton     # Single show
+
+Env:
+  SHOW_FILTER  — comma-separated show IDs (for CI partitioning)
+  COMMIT_EVERY — checkpoint interval (default 25)`;
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(USAGE_TEXT);
+  process.exit(0);
+}
+
 const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
 const { wrongShowCleared } = require('./lib/review-guards');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
