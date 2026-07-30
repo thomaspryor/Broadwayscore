@@ -121,21 +121,20 @@ jobs:
         run: node scripts/fix-shared-ibdb-urls.js
 
       # Pre-discovery validation snapshot. Runs the same validator that gates
-      # the commit below, but warn-only. If this fails, the data was already
-      # broken BEFORE discovery ran — a peripheral file (lottery-rush.json,
-      # commercial.json, etc.) has an unrelated error. The post-discovery
-      # validate step will fail identically; this step lets the alert
-      # attribute the failure correctly instead of blaming the scraper.
-      - name: Pre-validate existing data (warn-only)
+      # the commit below, but warn-only, and captures full output so the
+      # post-discovery step can set-diff errors (task #649) — a pre-existing,
+      # unrelated error here must not discard today's discovery commit.
+      - name: Pre-validate existing data (baseline error snapshot)
         id: pre-validate
         continue-on-error: true
         run: |
-          if node scripts/validate-data.js; then
+          set -o pipefail
+          if node scripts/validate-data.js 2>&1 | tee /tmp/pre-validate-output.txt; then
             echo "status=ok" >> $GITHUB_OUTPUT
             echo "Pre-discovery validation: OK"
           else
             echo "status=broken" >> $GITHUB_OUTPUT
-            echo "::warning::Data validation already failing BEFORE discovery — peripheral data file has an unrelated error. Discovery will still run, but the post-discovery commit will be blocked until the underlying file is fixed."
+            echo "::warning::Data validation already failing BEFORE discovery — peripheral data file has an unrelated error. Discovery will still run; the commit is only blocked if discovery introduces a NEW validation error (task #649 set-diff)."
           fi
 
       # Step 2a: Discover ShowScore URLs and generate candidates for new show discovery
@@ -252,10 +251,48 @@ jobs:
         if: ${{ inputs.skip_discovery != 'true' }}
         run: node scripts/fix-shared-ibdb-urls.js
 
-      # Step 4: Validate data before committing
+      # Step 4: Validate data after discovery/enrichment. continue-on-error
+      # keeps the job going so the set-diff step below can decide whether
+      # this run should still commit — a pre-existing, unrelated error must
+      # not discard good discovery/enrichment work (task #649). The
+      # "Commit gate" step further down re-fails the job when the set-diff
+      # finds a genuinely NEW error, restoring the original hard-fail
+      # semantics for that case only.
       - name: Validate data
         id: validate
-        run: node scripts/validate-data.js
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          node scripts/validate-data.js 2>&1 | tee /tmp/post-validate-output.txt
+          echo $? > /tmp/post-validate-exitcode.txt
+
+      # Set-diff: did discovery/enrichment introduce a NEW validation error,
+      # or is the only failure a pre-existing one it didn't cause? Only the
+      # former should block the commit (task #649). --post-exit-code guards
+      # against a validate-data.js crash/format-change that exits non-zero
+      # but prints nothing matching "❌ ERROR:" — without it that would read
+      # as should_commit=true (ship-check finding). Pure logic lives in
+      # scripts/lib/validation-setdiff.js, tested in
+      # tests/unit/discovery-validation-setdiff.test.mjs.
+      - name: Compute validation error set-diff
+        id: setdiff
+        if: always()
+        run: node scripts/check-validation-setdiff.js --pre=/tmp/pre-validate-output.txt --post=/tmp/post-validate-output.txt --post-exit-code="$(cat /tmp/post-validate-exitcode.txt 2>/dev/null || echo '')" >> "$GITHUB_OUTPUT"
+
+      # Fails the job — WITHOUT continue-on-error — only when the set-diff
+      # found a NEW error. Every downstream `if:` below keys off
+      # steps.commit-gate.outcome exactly like it previously keyed off
+      # steps.validate.outcome, but the decision now comes from the set-diff
+      # instead of validate-data.js's raw exit code (task #649).
+      - name: Commit gate — block only on NEW validation errors
+        id: commit-gate
+        if: always()
+        run: |
+          if [ "${{ steps.setdiff.outputs.should_commit }}" != "true" ]; then
+            echo "::error::Discovery/enrichment introduced ${{ steps.setdiff.outputs.new_error_count }} new validation error(s) — see data/audit/discovery-blocked/ (written by the next step) for the diff."
+            exit 1
+          fi
+          echo "No new validation errors — commit is clear to proceed (${{ steps.setdiff.outputs.pre_error_count }} pre-existing error(s) ignored)."
 
       # Audit trail when validation blocks the commit. Two outputs:
       #   1. $GITHUB_STEP_SUMMARY — at-a-glance diagnosis on the run page
@@ -265,11 +302,19 @@ jobs:
       #      (audit/ files are in the private core-data repo).
       # Defensive: variables piped through env to avoid YAML interpolation
       # in shell heredocs breaking on exotic characters in show slugs.
+      # should_commit != 'true' now means the set-diff found a genuinely NEW
+      # error — a pre-existing-only failure no longer reaches this step at
+      # all (task #649), so the diagnosis here is always "discovery-
+      # introduced". Includes the actual new-error text (not just counts) so
+      # an operator finding this a week later can tell which file to fix
+      # without re-running validate-data.js locally.
       - name: Audit discovery on validation failure
         id: audit
-        if: always() && steps.validate.outcome == 'failure'
+        if: always() && steps.setdiff.outputs.should_commit != 'true'
         env:
           PRE_VALIDATION: ${{ steps.pre-validate.outputs.status }}
+          NEW_ERROR_COUNT: ${{ steps.setdiff.outputs.new_error_count }}
+          NEW_ERRORS_PREVIEW: ${{ steps.setdiff.outputs.new_errors_preview }}
           NEW_SHOWS_COUNT: ${{ steps.discover.outputs.new_shows_count }}
           NEW_SLUGS: ${{ steps.discover.outputs.new_slugs }}
           OPENED_COUNT: ${{ steps.status-update.outputs.opened_count }}
@@ -279,18 +324,19 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           DIAGNOSIS_KIND="discovery-introduced"
-          DIAGNOSIS_TEXT="Discovery introduced a **new** validation error. Inspect the discover step output and validate-data.js logs."
-          if [ "${PRE_VALIDATION}" = "broken" ]; then
-            DIAGNOSIS_KIND="pre-existing"
-            DIAGNOSIS_TEXT="Validation was **already broken before discovery**. Discovery itself succeeded; the commit was blocked by a pre-existing data error unrelated to show discovery. Fix the failing file (lottery-rush.json, commercial.json, shows.json, etc.) — the next scheduled run will commit naturally."
-          fi
+          DIAGNOSIS_TEXT="Discovery/enrichment introduced ${NEW_ERROR_COUNT} NEW validation error(s) not present before this run (task #649 set-diff). See new_errors_preview below, or re-run \`node scripts/validate-data.js\` locally, for the file to fix."
 
           {
             echo "## Validation blocked commit"
             echo ""
             echo "**Pre-discovery validation:** \`${PRE_VALIDATION}\`"
+            echo "**New errors introduced:** \`${NEW_ERROR_COUNT}\`"
             echo ""
             echo "${DIAGNOSIS_TEXT}"
+            echo ""
+            echo "### New validation errors (preview)"
+            echo ""
+            echo "\`${NEW_ERRORS_PREVIEW}\`"
             echo ""
             echo "### Discovery output (would have been committed)"
             echo ""
@@ -314,6 +360,8 @@ jobs:
               completedAt: new Date().toISOString(),
               diagnosis: process.env.DIAGNOSIS_KIND,
               preValidationStatus: process.env.PRE_VALIDATION,
+              newErrorCount: process.env.NEW_ERROR_COUNT || "",
+              newErrorsPreview: process.env.NEW_ERRORS_PREVIEW || "",
               newShowsCount: process.env.NEW_SHOWS_COUNT || "",
               newSlugs: process.env.NEW_SLUGS || "",
               openedCount: process.env.OPENED_COUNT || "",
@@ -336,7 +384,7 @@ jobs:
 
       # Record pipeline health timestamp (always, even if no show changes)
       - name: Record pipeline success
-        if: always() && steps.validate.outcome != 'failure'
+        if: always() && steps.commit-gate.outcome != 'failure'
         run: |
           mkdir -p data/audit/pipeline-health
           date -u > data/audit/pipeline-health/update-show-status.last-success
@@ -346,12 +394,12 @@ jobs:
       # fallback) in sync with the OB shows now in shows.json. Idempotent —
       # a no-op when no new OB venue appeared. See scripts/build-ob-venues.js.
       - name: Regenerate Off-Broadway venue allowlist
-        if: always() && steps.validate.outcome != 'failure'
+        if: always() && steps.commit-gate.outcome != 'failure'
         run: node scripts/build-ob-venues.js
         continue-on-error: true
 
       - name: Commit and push changes
-        if: always() && steps.validate.outcome != 'failure'
+        if: always() && steps.commit-gate.outcome != 'failure'
         # PUSH_DEADLINE_SEC override (task #458): this step's push measured ~3
         # min per GENUINE (non-stalled) conflict-resolution cycle under this
         # workflow's high main-branch churn (run 30186060030) — the shared 240s
@@ -465,7 +513,7 @@ jobs:
       # "validate failed so nothing pushes" gate. Pattern from
       # memory/feedback_gh_api_emergency_commit.md.
       - name: Push discovery-blocked audit to private repo
-        if: always() && steps.validate.outcome == 'failure' && steps.audit.outputs.audit_file != ''
+        if: always() && steps.commit-gate.outcome == 'failure' && steps.audit.outputs.audit_file != ''
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           RUN_ID: ${{ github.run_id }}
@@ -501,8 +549,27 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Show Score archives from update-show-status'
+
+      # validate-data.js writes ${RUNNER_TEMP}/.skip-push-core-data itself
+      # whenever it exits with ANY error — pre-existing or not — since it has
+      # no notion of the set-diff decision made above. Without this step, a
+      # pre-existing-only failure would leave the sentinel written by the
+      # "Validate data" step, and push-core-data's OWN internal refusal-check
+      # would still silently block the private-repo push even though
+      # commit-gate (and the public-repo commit above) proceeded — the exact
+      # discard-good-work bug this fix targets, just one step downstream.
+      # Ship-check finding, task #649.
+      - name: Clear stale push-refusal sentinel (pre-existing errors only)
+        if: always() && steps.commit-gate.outcome != 'failure'
+        run: |
+          SENTINEL="${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+          if [ -f "$SENTINEL" ]; then
+            echo "Clearing stale push-refusal sentinel — set-diff found no NEW validation errors (task #649)."
+            rm -f "$SENTINEL"
+          fi
+
       - name: Push core data to private repo
-        if: always() && steps.validate.outcome != 'failure'
+        if: always() && steps.commit-gate.outcome != 'failure'
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
@@ -1393,15 +1460,19 @@ jobs:
             // Match order matters: Pre-validate FIRST because /Validate data/i
             // would also match "Pre-validate existing data". Both rules use
             // anchored ^...$ to keep matching deterministic.
+            //
+            // Task #649: "Validate data" and "Compute validation error
+            // set-diff" both run with continue-on-error, so they can no
+            // longer be the failing step reported by the gh api query below
+            // (their conclusion is always success). "Commit gate" is the
+            // step that actually fails the job now, and only for a
+            // genuinely NEW error — a pre-existing-only failure no longer
+            // reaches this alert at all, since the commit still lands.
             let hint;
             if (/^Pre-validate /i.test(step)) {
               hint = "Pre-validation step itself errored — investigate validate-data.js for a thrown exception (not just a non-zero exit). continue-on-error should swallow a clean exit-1, so a real failure here means an uncaught throw or process crash.";
-            } else if (/^Validate data$/i.test(step)) {
-              if (preValidation === "broken") {
-                hint = "Pre-existing data error blocked the commit. Discovery itself succeeded — a peripheral file (lottery-rush.json, commercial.json, shows.json) has an error that predates this run. Open the run summary or data/audit/discovery-blocked/ for the diagnosis.";
-              } else {
-                hint = "validate-data.js rejected the discovered shows. Discovery likely succeeded; commit blocked. Check the run logs for the specific error (often a duplicate show ID or a missing required field).";
-              }
+            } else if (/^Commit gate/i.test(step)) {
+              hint = "Discovery/enrichment introduced a NEW validation error not present before this run (task #649 set-diff) — a pre-existing, unrelated error alone no longer blocks the commit. Check data/audit/discovery-blocked/ (new_errors_preview) or the run's step summary for the specific error.";
             } else if (/^Discover new shows$/i.test(step)) {
               hint = "discover-new-shows.js itself failed. Check Broadway.org availability and ScrapingBee/Bright Data credits.";
             } else if (/^Update show statuses$/i.test(step)) {
