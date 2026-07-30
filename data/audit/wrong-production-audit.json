@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-30T16:37:17.115Z",
+  "timestamp": "2026-07-30T18:15:10.518Z",
   "stats": {
-    "totalReviews": 40964,
+    "totalReviews": 40972,
     "alreadyFlagged": 17933,
     "dateGuardCatches": 67,
-    "directorMismatch": 930,
+    "directorMismatch": 934,
     "tvFilmSignals": 1121,
-    "londonSignals": 766,
+    "londonSignals": 767,
     "offBroadwaySignals": 464,
     "yearMismatch": 85,
-    "noPublishDate": 3377
+    "noPublishDate": 3379
   },
   "findings": [
     {
@@ -14338,6 +14338,35 @@
       "publishDate": "2014-03-23",
       "url": "https://www.vulture.com/2014/03/theater-review-the-return-of-les-miserables.html",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "file": "theatermania--david-gordon.json",
+      "score": 92,
+      "publishDate": "2026-07-29",
+      "url": "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -36065,6 +36094,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "file": "nydailynews--chris-jones.json",
+      "score": 78,
+      "publishDate": "2026-07-29",
+      "url": "https://www.nydailynews.com/2026/07/28/les-miserables-radio-city-musical-hall-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
