@@ -9,7 +9,7 @@ const {
   renderHealthDigestBlock, healthIssueCount,
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
 } = require('./autonomous-email-render.js');
-const { buildDispatchUrl, verifyDispatchSignature, selectOpenDispatchCard } = require('./dispatch-link.js');
+const { buildDispatchUrl, verifyDispatchSignature, selectOpenDispatchCard, attachHealthFixUrls } = require('./dispatch-link.js');
 
 const STATS = {
   runId: 'run-x',
@@ -769,4 +769,58 @@ test('renderEmail: redditDigest renders below the divider, alongside site health
 test('renderEmail: no redditDigest field renders nothing (backward compatible)', () => {
   const html = renderEmail({ items: [], stats: STATS, awaitingTotal: 0 });
   assert.ok(!html.includes('r/Broadway:'));
+});
+
+// ── attachHealthFixUrls (card #634 regression guard) ────────────────────────
+// The Fix-this buttons were wired into autonomous-email.js only. When the
+// autonomous loop was paused (task #599) that sender stopped running, so the
+// buttons reached ZERO delivered emails while the owner's actual daily send
+// (send-morning-digest.js) printed "Fix needed: …" rows with nothing to tap.
+// These lock the shared helper both senders now call.
+
+test('attachHealthFixUrls: every error row gets a verifiable signed URL', () => {
+  const health = {
+    errors: [{ name: 'Sync: cast coverage', message: 'stale 3d' }, { name: 'SEO: health', message: '' }],
+    warns: [{ name: 'a warning' }],
+  };
+  const exp = 1893456000;
+  const n = attachHealthFixUrls({ health, exp, secret: 's3cret', baseUrl: 'https://broadwayscorecard.com' });
+  assert.equal(n, 2);
+  for (const e of health.errors) {
+    assert.ok(e.fixUrl, `${e.name} got a fixUrl`);
+    const u = new URL(e.fixUrl);
+    assert.equal(u.searchParams.get('action'), 'dispatch');
+    // conditionKey convention must match health-check.js's routeAlert so a tap
+    // dedups onto the already-open card instead of filing a second one.
+    assert.equal(u.searchParams.get('conditionKey'), `health-check:${e.name}`);
+    assert.ok(verifyDispatchSignature({
+      conditionKey: u.searchParams.get('conditionKey'),
+      title: u.searchParams.get('title'),
+      description: u.searchParams.get('description') || '',
+      exp, secret: 's3cret', sig: u.searchParams.get('sig'),
+    }), `${e.name} signature verifies`);
+  }
+  assert.ok(!health.warns[0].fixUrl, 'warnings get no button — errors are the actionable rows');
+});
+
+test('attachHealthFixUrls: no secret attaches nothing and does not throw (digest still sends)', () => {
+  const health = { errors: [{ name: 'X', message: 'y' }], warns: [] };
+  assert.equal(attachHealthFixUrls({ health, exp: 1, secret: '', baseUrl: 'https://x.com' }), 0);
+  assert.equal(attachHealthFixUrls({ health, exp: 1, secret: 'k', baseUrl: '' }), 0);
+  assert.ok(!health.errors[0].fixUrl);
+});
+
+test('attachHealthFixUrls: missing/!malformed health is a no-op, never a crash', () => {
+  assert.equal(attachHealthFixUrls({ health: null, exp: 1, secret: 'k', baseUrl: 'https://x.com' }), 0);
+  assert.equal(attachHealthFixUrls({ health: {}, exp: 1, secret: 'k', baseUrl: 'https://x.com' }), 0);
+  const health = { errors: [null, { message: 'no name' }, { name: 'ok' }] };
+  assert.equal(attachHealthFixUrls({ health, exp: 1, secret: 'k', baseUrl: 'https://x.com' }), 1);
+});
+
+test('attachHealthFixUrls: rendered through renderHealthDigestBlock, an error row shows a Fix this button', () => {
+  const health = { bannerText: '1 error', errors: [{ name: 'Sync: cast coverage', message: 'stale' }], warns: [] };
+  attachHealthFixUrls({ health, exp: 1893456000, secret: 'k', baseUrl: 'https://broadwayscorecard.com' });
+  const html = renderHealthDigestBlock(health);
+  assert.match(html, /Fix this/);
+  assert.match(html, /api\/autonomous-action\?action=dispatch/);
 });

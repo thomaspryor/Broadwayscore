@@ -57,4 +57,59 @@ function markRescoreComplete(fileData, completedAt) {
  * of truth for the same question.
  */
 
-module.exports = { markRescoreComplete };
+/**
+ * Head-of-line blocking fix (2026-07-30, Notion 3ad637c5-416f-8169).
+ *
+ * A rejection/failure that is a pure function of a review's current text
+ * (score-input-validator.js's body_too_short / nav_chrome_majority gates) will
+ * ALWAYS reproduce on retry until the text itself changes. Before this, those
+ * failures wrote nothing to disk, so the --needs-rescore selector's
+ * deterministic priority sort re-picked the identical unscoreable head of the
+ * queue every drain run: 112 of 181 flagged files retried forever at full
+ * 3-model API cost while the scoreable tail past the 50-file cap was never
+ * reached. Only the ensemble scoreability rejections (wrong_show etc., which
+ * set an exclusion flag isScoreable() already checks) self-healed; this is the
+ * other half of that seam — a hard failure BEFORE the model ever runs.
+ *
+ * stampTerminalScoringFailure/isBlockedFromRescore are that memory. They are
+ * intentionally separate from markRescoreComplete: the file is NOT done, it is
+ * legitimately-queued-but-currently-unscoreable work, so needsRescore stays
+ * true. The fullText-length fingerprint means a later text recovery (any
+ * producer that grows fullText) makes the file eligible again automatically —
+ * no producer needs to remember to clear the stamp.
+ */
+
+/**
+ * Stamp a review file after a deterministic, text-driven scoring failure.
+ * Mutates in place; returns the same object for saveReviewFile() inlining.
+ *
+ * @param {Object} fileData - review file object about to be persisted
+ * @param {string} reason - e.g. 'input_validation_failed:body_too_short'
+ * @param {string} [blockedAt] - ISO timestamp; defaults to now (injectable for tests)
+ * @returns {Object} the same fileData, mutated
+ */
+function stampTerminalScoringFailure(fileData, reason, blockedAt) {
+  if (!fileData || typeof fileData !== 'object') return fileData;
+  fileData.rescoreAttempts = (fileData.rescoreAttempts || 0) + 1;
+  fileData.rescoreBlockedReason = reason;
+  fileData.rescoreBlockedAt = blockedAt || new Date().toISOString();
+  fileData.rescoreBlockedTextLength = (fileData.fullText || '').length;
+  return fileData;
+}
+
+/**
+ * Read-side predicate for the --needs-rescore selector: true when this file
+ * already hit a terminal text-gate failure AND fullText hasn't changed since
+ * (same length = same deterministic outcome, so retrying now would just
+ * reproduce the identical failure at full API cost).
+ *
+ * @param {Object} data - review-text record
+ * @returns {boolean}
+ */
+function isBlockedFromRescore(data) {
+  if (!data || !data.rescoreBlockedReason) return false;
+  const currentLength = (data.fullText || '').length;
+  return currentLength === data.rescoreBlockedTextLength;
+}
+
+module.exports = { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore };
