@@ -95,10 +95,49 @@ function selectOpenDispatchCard(candidates) {
   return candidates.find(c => c && (OPEN_STATUSES.has(c.status) || (c.action != null && c.action !== ''))) || null;
 }
 
+/**
+ * Attach a signed Fix-this URL to every ERROR row of a health-digest
+ * snapshot, in place. Shared by BOTH email senders on purpose: this used to
+ * be an inline loop in autonomous-email.js only, and when the autonomous
+ * loop was paused (task #599) the buttons silently stopped reaching any
+ * delivered email — send-morning-digest.js, the owner's ONE daily send,
+ * rendered "Fix needed: …" rows with nothing to tap. One function, both
+ * callers, so a future sender can't drift out of the feature again.
+ *
+ * conditionKey convention (`health-check:${name}`) matches health-check.js's
+ * own routeAlert() call, so a tap on an issue that already auto-dispatched
+ * lands on the SAME open card instead of filing a duplicate (see
+ * handleDispatch's Notion dedup query in api/autonomous-action/route.ts).
+ *
+ * Returns the number of rows given a URL. Missing secret/baseUrl returns 0
+ * and attaches nothing rather than throwing: the morning digest must still
+ * send (buttonless) if the secret is absent — a missing env var must never
+ * cost the owner the whole email.
+ */
+function attachHealthFixUrls({ health, exp, secret, baseUrl }) {
+  if (!health || !Array.isArray(health.errors)) return 0;
+  if (!secret || !baseUrl) return 0;
+  let attached = 0;
+  for (const e of health.errors) {
+    if (!e || !e.name) continue;
+    e.fixUrl = buildDispatchUrl({
+      conditionKey: `health-check:${e.name}`,
+      title: `BSC Daily: ${e.name}`,
+      description: e.message || '',
+      exp,
+      secret,
+      baseUrl,
+    });
+    attached++;
+  }
+  return attached;
+}
+
 module.exports = {
   buildDispatchSignature,
   buildDispatchUrl,
   verifyDispatchSignature,
   selectOpenDispatchCard,
+  attachHealthFixUrls,
   OPEN_STATUSES,
 };

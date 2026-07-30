@@ -268,16 +268,22 @@ function renderHealthDigestBlock(health) {
   const fixThisHtml = (url) => safeUrl(url)
     ? `<div style="margin:4px 0 0 2px;"><a href="${esc(safeUrl(url))}" style="display:inline-block;font-size:11px;font-weight:700;color:#fff;background:#16a34a;text-decoration:none;padding:2px 10px;border-radius:8px;">Fix this →</a></div>`
     : '';
-  const rows = [...errors.map(e => ({ ...e, kind: 'error' })), ...warns.map(w => ({ ...w, kind: 'warn' }))]
-    .slice(0, 8)
+  // Errors are the ACTIONABLE rows — they carry the Fix-this button — so the
+  // 8-row budget squeezes warnings only, never errors (ship-check adversarial
+  // finding, codex 2026-07-30: a flat slice(0,8) silently demoted the 9th+
+  // error into an un-tappable "+N more", i.e. "every error gets a button" was
+  // false in the inbox exactly on the days with the most to fix). The email
+  // grows only on a genuinely bad morning, which is when you want it to.
+  const shownWarns = warns.slice(0, Math.max(0, 8 - errors.length));
+  const rows = [...errors.map(e => ({ ...e, kind: 'error' })), ...shownWarns.map(w => ({ ...w, kind: 'warn' }))]
     .map(r => `<div style="margin:0 0 ${r.kind === 'error' ? 6 : 3}px;">
       <span style="display:inline-block;background:${r.kind === 'error' ? '#dc2626' : '#b45309'};color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;vertical-align:middle;text-transform:uppercase;">${r.kind}</span>
       <span style="font-size:13px;color:#333;margin-left:6px;">${esc(r.name)}</span>
       ${r.kind === 'error' && r.message ? `<div style="font-size:11px;color:#999;margin:2px 0 0 2px;">${esc(clip(r.message, 200))}</div>` : ''}
       ${r.kind === 'error' ? fixThisHtml(r.fixUrl) : ''}
     </div>`).join('');
-  const total = errors.length + warns.length;
-  const more = total > 8 ? `<div style="font-size:11px;color:#999;margin-top:4px;">+${total - 8} more</div>` : '';
+  const hiddenWarns = warns.length - shownWarns.length;
+  const more = hiddenWarns > 0 ? `<div style="font-size:11px;color:#999;margin-top:4px;">+${hiddenWarns} more</div>` : '';
   const escalation = health.consecutiveErrorDays > 1
     ? ` <span style="color:#999;font-weight:400;">(day ${health.consecutiveErrorDays})</span>` : '';
 
