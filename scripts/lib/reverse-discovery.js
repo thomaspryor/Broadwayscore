@@ -278,8 +278,24 @@ function extractOpeningFactsFromArticle(text, referenceDate) {
   const open = t.match(new RegExp(
     `(?:officially\\s+open(?:s|ed|ing)?|open(?:s|ed)\\s+officially|opening\\s+(?:is\\s+set\\s+for|night\\s+(?:is|was)))\\s+(?:on\\s+)?${MONTH_DAY}`, 'i'
   ));
-  if (open) facts.openingDate = resolveDate(open[1], referenceDate, { windowMonths: [-2, 2] });
-  const close = t.match(new RegExp(`(?:continue|run(?:s|ning)?|performances)[^.]{0,80}?through\\s+${MONTH_DAY}`, 'i'));
+  if (open) {
+    facts.openingDate = resolveDate(open[1], referenceDate, { windowMonths: [-2, 2] });
+  } else if (referenceDate && /Review\s+Roundup:[^.]{0,120}?\bOpens\s+(?:At|On)\b/i.test(t)) {
+    // Concert/limited-engagement roundup fallback (Les Misérables: The Arena
+    // Concert Spectacular @ Radio City, 2026-07-30): touring concerts publish
+    // a "Review Roundup: TITLE Opens At VENUE" headline with no preview/
+    // opening-date SENTENCE at all (no formal previews). The roundup's own
+    // publish date IS the opening signal — the same assumption the evidence-
+    // anchored selector already makes for these items (see review-evidence.js
+    // hasFreshEvidence). Gated to the literal "Review Roundup: ... Opens At/On"
+    // headline shape (only ever appears in the auto-generated headline, never
+    // in review-body prose) so it can't misfire on an aside like "the show
+    // opens on Broadway next season".
+    facts.openingDate = String(referenceDate).slice(0, 10);
+  }
+  const close = t.match(new RegExp(
+    `(?:continue|run(?:s|ning)?|performances|(?:now\\s+)?playing)[^.]{0,80}?through\\s+${MONTH_DAY}`, 'i'
+  ));
   if (close) facts.closingDate = resolveDate(close[1], referenceDate, { windowMonths: [-1, 15] });
   return facts;
 }
