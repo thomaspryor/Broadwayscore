@@ -11,5 +11,9 @@
   "ownerEmail": null,
   "//ownerEmail": "null here (public repo) — the OWNER_EMAIL env var in .env is the real value; config value, if set, overrides",
   "baseUrl": "https://broadwayscorecard.com",
-  "linkExpiryHours": 48
+  "linkExpiryHours": 48,
+  "attemptMemoryMaxFailures": 2,
+  "//attemptMemoryMaxFailures": "Loop re-enable readiness (owner mandate 2026-07-30, task #635, do-not-re-enable marker #599 'groundhog day'): a card that fails this many times IN A ROW with unchanged text is parked (scripts/lib/attempt-memory.js) and skipped at triage — no LLM call, no attempt — until the owner edits it or clears the park (data/audit/attempt-memory-overrides.json). Matches the lib's own default; set explicitly here so raising/lowering it is a one-line config change, not a code change.",
+  "circuitBreakerUSD": null,
+  "//circuitBreakerUSD": "Spend circuit breaker (task #635, extends the existing nightUSD/weeklyUSD clamps in scripts/lib/autonomous-budget.js — spendCircuitBreakerStatus): re-checked before every card attempt tonight; if the running total across THIS run's implement events reaches this many dollars with ZERO cards reaching completed+verified (card-pass/auto-approve), the run halts for the night rather than keep burning through the same failure mode. null = never halts (today's behavior, and the loop is still paused per task #599 regardless). Deliberately left null/off pending the owner's shadow-mode review — do NOT set a value or flip launchd back on without that sign-off; see the card's Outcome for the recommended starting value (~$20, roughly 3 S-card or one M-card worst case) once shadow-mode evidence is in."
 }

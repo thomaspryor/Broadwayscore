@@ -32,6 +32,7 @@ const { classifyDataCard } = require('./lib/autonomous-eligibility.js');
 const { estimateUSD } = require('./lib/autonomous-budget.js');
 const ledgerLib = require('./lib/autonomous-ledger.js');
 const ledger = require('./lib/autonomous-ledger.js');
+const { loadParkOverrides } = require('./lib/attempt-memory.js');
 
 const REPO = path.join(__dirname, '..');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
@@ -189,14 +190,22 @@ async function main() {
   // flag is the production switch; --tier is the dry-run/test override.
   // Fail-soft to tier 1 — a missing/broken config must never widen scope.
   let tier = 1;
+  let cfg = {};
+  try { cfg = JSON.parse(fs.readFileSync(path.join(REPO, '.claude', 'autonomous-config.json'), 'utf8')); }
+  catch { /* cfg stays {} — every downstream read below fails soft to a default */ }
   if (args.tier) {
     tier = parseInt(args.tier, 10) === 3 ? 3 : 1;
-  } else {
-    try {
-      const cfg = JSON.parse(fs.readFileSync(path.join(REPO, '.claude', 'autonomous-config.json'), 'utf8'));
-      if (cfg.tier3Enabled === true) tier = 3;
-    } catch { /* tier stays 1 */ }
+  } else if (cfg.tier3Enabled === true) {
+    tier = 3;
   }
+
+  // Attempt-memory park (owner mandate 2026-07-30, task #635): loaded ONCE
+  // per triage run (not per-card) — the ledger and overrides file are both
+  // static for the whole pass, so re-reading them per card would just be
+  // wasted I/O across up to `limit` cards.
+  const attemptMemoryLedgerEntries = (() => { try { return ledger.readEntries().entries; } catch { return []; } })();
+  const attemptMemoryOverrides = loadParkOverrides();
+  const attemptMemoryMaxFailures = Number.isInteger(cfg.attemptMemoryMaxFailures) ? cfg.attemptMemoryMaxFailures : undefined;
 
   // 1. Collect cards. Fetch deeper than the triage window (night-1 fix):
   //    prefiltered skips (human categories, deny-tags, already-processed) no
@@ -249,7 +258,10 @@ async function main() {
     // pass — a claim made mid-run would be invisible to cards triaged after
     // it. This is a cheap local read, no network.
     const taskState = loadSharedTaskState();
-    const result = await triageCard(card, callSonnet, { taskState, tier });
+    const result = await triageCard(card, callSonnet, {
+      taskState, tier,
+      attemptMemory: { ledgerEntries: attemptMemoryLedgerEntries, overrides: attemptMemoryOverrides, maxFailures: attemptMemoryMaxFailures },
+    });
     if (result.preFilter.eligible) candidates++; // reached the LLM → consumed a window slot
     const entry = { card: slim(card), ...result };
     entry.decision = decide(entry);

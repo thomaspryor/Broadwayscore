@@ -260,3 +260,57 @@ test('pickModel: Opus-forced cards never retry on a weaker model (attempt-2 pari
   assert.equal(pickModel(2, 'infra', { incremental: true }), MODELS.attempt2Content);
   assert.equal(pickModel(2, 'infra', {}), MODELS.attempt1); // non-forced unchanged
 });
+
+// ── Spend circuit breaker (owner mandate 2026-07-30, task #635) ────────────
+
+test('spend circuit breaker: spend over threshold with zero completions halts selection', () => {
+  const { spendCircuitBreakerStatus } = require('./autonomous-budget.js');
+  const entries = [
+    { event: 'implement', usd: 3 },
+    { event: 'card-fail', totalUSD: 3 }, // duplicate of the implement row's usd — must not double-count
+    { event: 'implement', usd: 4 },
+    { event: 'card-fail', totalUSD: 4 },
+  ];
+  const r = spendCircuitBreakerStatus(entries, { thresholdUSD: 5 });
+  assert.equal(r.halt, true);
+  assert.equal(r.spentUSD, 7);
+  assert.equal(r.completions, 0);
+  assert.match(r.reason, /spend circuit breaker/);
+  assert.match(r.reason, /\$7\.00/);
+});
+
+test('spend circuit breaker: does not halt while under threshold', () => {
+  const { spendCircuitBreakerStatus } = require('./autonomous-budget.js');
+  const entries = [{ event: 'implement', usd: 2 }, { event: 'card-fail', totalUSD: 2 }];
+  const r = spendCircuitBreakerStatus(entries, { thresholdUSD: 5 });
+  assert.equal(r.halt, false);
+  assert.equal(r.reason, null);
+});
+
+test('spend circuit breaker: a single completion (card-pass or auto-approve) prevents the halt even over threshold', () => {
+  const { spendCircuitBreakerStatus } = require('./autonomous-budget.js');
+  const withPass = [
+    { event: 'implement', usd: 6 },
+    { event: 'card-pass', totalUSD: 6 },
+  ];
+  assert.equal(spendCircuitBreakerStatus(withPass, { thresholdUSD: 5 }).halt, false);
+  const withAutoApprove = [
+    { event: 'implement', usd: 6 },
+    { event: 'auto-approve' },
+  ];
+  assert.equal(spendCircuitBreakerStatus(withAutoApprove, { thresholdUSD: 5 }).halt, false);
+});
+
+test('spend circuit breaker: no threshold configured never halts (Infinity)', () => {
+  const { spendCircuitBreakerStatus } = require('./autonomous-budget.js');
+  const entries = [{ event: 'implement', usd: 1000 }, { event: 'card-fail' }];
+  const r = spendCircuitBreakerStatus(entries, {});
+  assert.equal(r.halt, false);
+  assert.equal(r.thresholdUSD, Infinity);
+});
+
+test('spend circuit breaker: fails safe on empty/undefined entries', () => {
+  const { spendCircuitBreakerStatus } = require('./autonomous-budget.js');
+  assert.equal(spendCircuitBreakerStatus([], { thresholdUSD: 1 }).halt, false);
+  assert.equal(spendCircuitBreakerStatus(undefined, { thresholdUSD: 1 }).halt, false);
+});

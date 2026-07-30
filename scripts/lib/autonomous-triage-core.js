@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isCardEligible, describeScope } = require('./autonomous-eligibility.js');
+const { checkPark, computeContentHash } = require('./attempt-memory.js');
 
 // checkableDone is LLM-authored text that a later sprint EXECUTES as the
 // card's verification command. Card notes are untrusted and flow into the
@@ -393,6 +394,21 @@ async function triageCard(card, callLLM, opts = {}) {
   const claimedBy = findClaimedTask(card.id, opts.taskState);
   if (claimedBy) {
     return { preFilter: { eligible: false, reason: `claimed in-flight (shared task #${claimedBy.id} is in_progress — already being worked interactively)` } };
+  }
+  // Attempt-memory park (owner mandate 2026-07-30, task #635): a card that
+  // failed the loop `maxFailures` times in a row with UNCHANGED text has
+  // already proven the loop can't unstick it — re-triaging it nightly is
+  // the "groundhog day" burn the owner called out (task #599). No LLM call
+  // spent on a card the ledger already says is stuck. opts.attemptMemory is
+  // optional so existing callers/tests are unaffected when omitted.
+  if (opts.attemptMemory) {
+    const park = checkPark(
+      opts.attemptMemory.ledgerEntries || [],
+      card.id,
+      computeContentHash(card),
+      { maxFailures: opts.attemptMemory.maxFailures, overrides: opts.attemptMemory.overrides },
+    );
+    if (park.parked) return { preFilter: { eligible: false, reason: park.reason } };
   }
   const preFilter = isCardEligible(card);
   if (!preFilter.eligible) return { preFilter };

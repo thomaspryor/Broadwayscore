@@ -269,6 +269,41 @@ function checkSharedDailyCap(nightUSD, caps = DEFAULT_CAPS) {
   return { ok: true };
 }
 
+// Spend circuit breaker (owner mandate 2026-07-30, task #635: "allows things
+// to be re-attempted and fail and burn money"). Per-card caps already bound
+// ONE card's runaway spend (shouldAbort above); this bounds the NIGHT: if
+// real money has gone out and NOTHING has reached completed+verified yet,
+// something is systemically broken (bad model, bad config, a corrupted
+// queue) rather than one unlucky card, and burning through the rest of
+// tonight's slots the same way is exactly the "burn money" failure mode the
+// owner called out. Extends the existing clamp shape (pure function, same
+// { halt/ok, reason } contract as checkSharedDailyCap) rather than adding a
+// new mechanism.
+//
+// "Completed+verified" = a card whose diff passed every check (card-pass or
+// auto-approve) — not final merge, which can lag behind a live run.
+// `runEntries` must already be scoped to the run in question (e.g.
+// ledger.entriesForRun(entries, runId)) — this function does no filtering
+// of its own. Only `usd` is summed: card-fail/card-pass entries carry
+// `totalUSD`, which DUPLICATES their own `implement` rows' `usd` (see
+// autonomous-run.js's fail()/PASS comments) — summing raw `usd` across every
+// entry already excludes that duplicate for free.
+function spendCircuitBreakerStatus(runEntries, { thresholdUSD } = {}) {
+  const threshold = Number.isFinite(thresholdUSD) && thresholdUSD > 0 ? thresholdUSD : Infinity;
+  const spentUSD = round2((runEntries || []).reduce((s, e) => s + (Number(e && e.usd) || 0), 0));
+  const completions = (runEntries || []).filter(e => e && (e.event === 'card-pass' || e.event === 'auto-approve')).length;
+  const halt = spentUSD >= threshold && completions === 0;
+  return {
+    halt,
+    spentUSD,
+    completions,
+    thresholdUSD: threshold,
+    reason: halt
+      ? `spend circuit breaker: $${spentUSD.toFixed(2)} spent tonight with zero cards completed+verified (threshold $${threshold.toFixed(2)}) — halting further attempts`
+      : null,
+  };
+}
+
 function round2(n) { return Math.round(n * 100) / 100; }
 
 module.exports = {
@@ -284,4 +319,5 @@ module.exports = {
   clampNightToWeekly,
   checkSharedDailyCap,
   inadmissibleSizes,
+  spendCircuitBreakerStatus,
 };

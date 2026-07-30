@@ -884,6 +884,16 @@ on:
       - 'scripts/lib/autonomous-ledger.test.mjs'
       - 'scripts/lib/autonomous-budget.js'
       - 'scripts/lib/autonomous-budget.test.mjs'
+      # Attempt-memory park logic + spend circuit breaker (owner mandate
+      # 2026-07-30, task #635 — loop stays PAUSED per #599 until the owner
+      # reviews this). Colocated *.test.mjs runs in the scripts/lib/*.test.mjs
+      # glob; path-listed so a solo edit triggers CI. autonomous-shadow-run.js
+      # has no colocated test (it proves the wiring via the already-tested
+      # attempt-memory.js + autonomous-triage-core.js pure functions) but is
+      # still path-listed so a solo edit gets `node --check` syntax coverage.
+      - 'scripts/lib/attempt-memory.js'
+      - 'scripts/lib/attempt-memory.test.mjs'
+      - 'scripts/autonomous-shadow-run.js'
       # bsc-next model resolution (task #151) reuses pickModel() above —
       # colocated test runs in the lib-test glob; path-listed so a solo edit
       # triggers CI.

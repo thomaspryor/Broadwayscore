@@ -38,8 +38,9 @@ const https = require('https');
 const { transition } = require('./lib/autonomous-state.js');
 const { isDiffAllowed, isCodeDiffAllowed, classifyDataCard, DATA_CLASS_REPO, isDataRepoDiffAllowed } = require('./lib/autonomous-eligibility.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
-const { createNightBudget, clampNightToWeekly, checkSharedDailyCap, pickModel, ENVELOPES, inadmissibleSizes } = require('./lib/autonomous-budget.js');
+const { createNightBudget, clampNightToWeekly, checkSharedDailyCap, pickModel, ENVELOPES, inadmissibleSizes, spendCircuitBreakerStatus } = require('./lib/autonomous-budget.js');
 const ledger = require('./lib/autonomous-ledger.js');
+const { computeContentHash } = require('./lib/attempt-memory.js');
 const {
   buildImplementerPrompt, buildDataImplementerPrompt, parseClaudeJson, classifyFailure, shouldThrottle, preflightVerdict,
   resolveOwnerEmail, isAutoMergeable,
@@ -532,7 +533,7 @@ async function attemptCard(item, budget, cfg, runId, opts) {
     } catch (e) { console.error(`[run] WARN could not flip ${item.id} to failed: ${e.message.slice(0, 120)}`); }
     // totalUSD (not usd): spend is ledgered on the per-attempt implement
     // lines — a terminal line carrying usd would double-count the night.
-    ledger.appendEntry({ event: 'card-fail', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), note: `${stage}: ${String(reason).slice(0, 300)}` });
+    ledger.appendEntry({ event: 'card-fail', runId, cardId: item.id, name: item.name, contentHash: computeContentHash(card), totalUSD: round2(totalUSD), note: `${stage}: ${String(reason).slice(0, 300)}` });
     console.error(`[run] FAIL ${item.name} [${stage}] ${reason}`);
   };
 
@@ -696,7 +697,7 @@ async function attemptCard(item, budget, cfg, runId, opts) {
           // (newCheckPaths) — see scripts/lib/autonomous-run-core.js.
           transition('attempted', 'run.auto-approve');
           notionUpdate(item.id, ['--auto', 'approved']);
-          ledger.appendEntry({ event: 'auto-approve', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), note: 'deterministic-green diff — skipping human tap' });
+          ledger.appendEntry({ event: 'auto-approve', runId, cardId: item.id, name: item.name, contentHash: computeContentHash(card), totalUSD: round2(totalUSD), note: 'deterministic-green diff — skipping human tap' });
           const merge = dispatchAndWaitMerge(item.id, branch, 'approve', 15);
           let finalCard = null;
           try { finalCard = notionBrain(['get', item.id]); } catch { /* leave finalCard null */ }
@@ -710,7 +711,7 @@ async function attemptCard(item, budget, cfg, runId, opts) {
         } else {
           transition('attempted', 'run.pass');
           notionUpdate(item.id, ['--auto', 'needs-approval']);
-          ledger.appendEntry({ event: 'card-pass', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), attempt, evidence });
+          ledger.appendEntry({ event: 'card-pass', runId, cardId: item.id, name: item.name, contentHash: computeContentHash(card), totalUSD: round2(totalUSD), attempt, evidence });
           console.error(`[run] PASS ${item.name} → ${branch} ($${totalUSD.toFixed(2)})`);
         }
         return;
@@ -800,7 +801,7 @@ function attemptDataCard(item, budget, cfg, runId) {
       // the same permanent stale shared-task claim on failure without this.
       releaseStaleTaskClaim(item.id);
     } catch (e) { console.error(`[run] WARN could not flip ${item.id} to failed: ${e.message.slice(0, 120)}`); }
-    ledger.appendEntry({ event: 'card-fail', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), note: `${stage}: ${String(reason).slice(0, 300)}` });
+    ledger.appendEntry({ event: 'card-fail', runId, cardId: item.id, name: item.name, contentHash: computeContentHash(card), totalUSD: round2(totalUSD), note: `${stage}: ${String(reason).slice(0, 300)}` });
     console.error(`[run] FAIL ${item.name} [${stage}] ${reason}`);
   };
 
@@ -905,7 +906,7 @@ function attemptDataCard(item, budget, cfg, runId) {
       // never classify deterministic-green — every pass needs a human tap.
       transition('attempted', 'run.pass');
       notionUpdate(item.id, ['--auto', 'needs-approval']);
-      ledger.appendEntry({ event: 'card-pass', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), attempt: 1, evidence });
+      ledger.appendEntry({ event: 'card-pass', runId, cardId: item.id, name: item.name, contentHash: computeContentHash(card), totalUSD: round2(totalUSD), attempt: 1, evidence });
       console.error(`[run] PASS ${item.name} → ${repoKey}:${branch} ($${totalUSD.toFixed(2)})`);
       return;
     }
@@ -1048,7 +1049,30 @@ async function live(args, cfg) {
     const capRaw = Number(cfg.tier3MaxItems);
     const tier3Cap = Number.isFinite(capRaw) && capRaw >= 0 ? Math.floor(capRaw) : 3;
     let tier3Count = 0;
+    // Spend circuit breaker (owner mandate 2026-07-30, task #635): re-checked
+    // before EVERY card, reading the ledger fresh so it sees this run's own
+    // just-appended spend/completions — not a one-shot check at the top of
+    // the night. cfg.circuitBreakerUSD is null/unset by default (never halts)
+    // until the owner opts in; see .claude/autonomous-config.json.
+    const circuitBreakerUSD = Number(cfg.circuitBreakerUSD);
+    const circuitBreakerThreshold = Number.isFinite(circuitBreakerUSD) && circuitBreakerUSD > 0 ? circuitBreakerUSD : null;
+    let circuitTripped = false;
+    function checkCircuitBreaker() {
+      if (circuitTripped || circuitBreakerThreshold === null) return circuitTripped;
+      const runEntries = ledger.entriesForRun(ledger.readEntries().entries, runId);
+      const status = spendCircuitBreakerStatus(runEntries, { thresholdUSD: circuitBreakerThreshold });
+      if (status.halt) {
+        circuitTripped = true;
+        ledger.appendEntry({ event: 'circuit-breaker', runId, note: status.reason });
+        console.error(`[run] CIRCUIT BREAKER — ${status.reason}`);
+      }
+      return circuitTripped;
+    }
     for (const item of plan) {
+      if (checkCircuitBreaker()) {
+        ledger.appendEntry({ event: 'card-skip', runId, cardId: item.id, name: item.name, note: 'spend circuit breaker tripped — night halted' });
+        continue;
+      }
       if (item.tier === 3) {
         if (tier3Count >= tier3Cap) {
           ledger.appendEntry({ event: 'card-skip', runId, cardId: item.id, name: item.name, note: `tier-3 night cap (${tier3Cap}) reached` });
@@ -1060,7 +1084,15 @@ async function live(args, cfg) {
     }
     // Tier-2 items never use mockScript today (no fixture harness for the
     // data-repo path yet — carry-forward); a mock run simply attempts none.
-    if (!mockScript) for (const item of dataPlan) attemptDataCard(item, budget, cfg, runId);
+    if (!mockScript) {
+      for (const item of dataPlan) {
+        if (checkCircuitBreaker()) {
+          ledger.appendEntry({ event: 'card-skip', runId, cardId: item.id, name: item.name, note: 'spend circuit breaker tripped — night halted' });
+          continue;
+        }
+        attemptDataCard(item, budget, cfg, runId);
+      }
+    }
 
     const s = budget.state();
     ledger.appendEntry({ event: 'run-end', runId, note: `spent $${s.spent.toFixed(2)} of $${nightUSD} · ${s.items} attempted` });
