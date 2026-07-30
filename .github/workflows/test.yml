@@ -401,6 +401,19 @@ on:
       # consumer audit-opening-night-coverage.js is covered by its own path below.
       - 'scripts/lib/t1-ledger.js'
       - 'scripts/lib/t1-ledger.test.mjs'
+      # B2 per-outlet circuit breaker (v2 reconciler Sprint B). Colocated
+      # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a solo
+      # lib edit triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/outlet-circuit-breaker.js'
+      - 'scripts/lib/outlet-circuit-breaker.test.mjs'
+      # B4 deployed-JSON coverage diff — the publish-stage hop no other audit sees.
+      - 'scripts/lib/deployed-coverage-diff.js'
+      - 'scripts/lib/deployed-coverage-diff.test.mjs'
+      - 'scripts/audit-deployed-coverage.js'
+      # B5 90-day live-refetch backfill (window selection + three-way diff + checkpoint).
+      - 'scripts/lib/live-refetch-backfill.js'
+      - 'scripts/lib/live-refetch-backfill.test.mjs'
+      - 'scripts/backfill-live-roundup-census.js'
       - 'scripts/lib/t1-digest.js'
       - 'scripts/lib/t1-digest.test.mjs'
       - 'scripts/lib/t1-sla.js'

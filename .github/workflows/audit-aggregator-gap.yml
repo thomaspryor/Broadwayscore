@@ -212,6 +212,31 @@ jobs:
         if: always()
         run: node scripts/audit-opening-night-coverage.js --write-ledger
 
+      # B3 scoreboard (coverage % per market + oldest gap). Shipped as a --scoreboard
+      # mode but was never invoked by any workflow, so the whole feature was dead
+      # code on main (found wiring this sprint). Reads t1-coverage-stats.json which
+      # the --write-ledger step above just wrote, and routes ONE line into the daily
+      # digest via routeAlert(disposition:'digest') — no new send path.
+      - name: T1 coverage scoreboard (daily digest line)
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-opening-night-coverage.js --scoreboard --alert
+
+      # B4 deployed-JSON coverage diff. Every other audit in this job compares
+      # aggregator evidence against reviews.json — INTERNAL state. This one asks
+      # what broadwayscorecard.com actually serves, so publish-stage silence (a
+      # cancel-cascaded Vercel deploy: green GitHub run, CANCELED deployment) shows
+      # up as a visible gap instead of a false green. Advisory: no --fail-on-defect
+      # here, because normal deploy lag (5-10 min) would flap the job red.
+      - name: Deployed coverage diff (prod JSON)
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-deployed-coverage.js --days=21 --alert
+
       # T1 coverage digest (S2-T7). Reads the ledger just rebuilt above; ACTION-emails
       # only NEW post-rollout gaps that crossed 24h, deduped via the digest-state file
       # (committed below). Hourly is safe: a gap emails once per gap LIFETIME — a
@@ -257,7 +282,26 @@ jobs:
           # backstop alerts AND this job's T1 Coverage "new gaps" alert (card #608,
           # 2026-07-28) both call routeAlert(), which is a no-op cooldown without this
           # file surviving across hourly runs (same persistence-gap class as #394).
-          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json; do
+          # t1-coverage-stats.json = the B3 scoreboard's per-market coverage %
+          # snapshot (the --scoreboard step above reads it; without committing it
+          # the scoreboard would recompute from scratch and lose nothing, but the
+          # trend is only visible in git history).
+          # t1-outlet-breaker.json = the B2 per-outlet circuit-breaker state. This
+          # one MUST persist: its whole value is hysteresis across hourly runs
+          # (consecutive-failure evidence, the half-open probe clock, the doubled
+          # cooldown). Without the commit every run starts closed and the breaker
+          # can never trip — the same persistence-gap class as #394's alert-ledger.
+          # alert-digest-queue.json: this job now queues digest lines (the B3
+          # scoreboard + the B4 deployed-coverage diff both route with
+          # disposition 'digest'), and queueDigestLine() writes this file
+          # SEPARATELY from alert-ledger.json — so without staging it the queued
+          # line dies on the runner and never reaches the morning email. Enforced
+          # by scripts/lib/alert-ledger-commit-check.js, which caught exactly this
+          # omission when the two steps above were added. NOTE this makes a third
+          # workflow a committer of the file; the keep-local interaction that
+          # implies is tracked in task #537 and is not made worse by ALSO
+          # persisting here (the alternative is losing the line outright).
+          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json; do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then

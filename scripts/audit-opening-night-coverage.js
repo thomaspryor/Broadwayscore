@@ -17,13 +17,17 @@ const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
-const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet } = require('./lib/t1-ledger');
+const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, GRACE_HOURS } = require('./lib/t1-ledger');
 const { buildDigest } = require('./lib/t1-digest');
 const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
 const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
 const { routeAlert } = require('./lib/owner-alert-router');
 const { capNewStandingCells, DEFAULT_MAX_NEW_PER_RUN } = require('./lib/standing-outlets');
 const { loadAcks, buildScoreboardText } = require('./lib/t1-scoreboard');
+const {
+  isOutletTripped, outletBreakerInfo, updateBreaker, buildEvidence,
+  loadBreaker, saveBreaker, BREAKER_PATH,
+} = require('./lib/outlet-circuit-breaker');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const LEDGER_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-ledger.json');
@@ -91,6 +95,8 @@ function parseArgs() {
     // routeAlert(disposition:'digest'). Dry-run without --alert.
     if (arg === '--scoreboard') opts.scoreboard = true;
     if (arg.startsWith('--market-stats-path=')) opts.marketStatsPath = arg.split('=')[1];
+    // B2 per-outlet circuit-breaker state (default lib/outlet-circuit-breaker.js BREAKER_PATH).
+    if (arg.startsWith('--breaker-path=')) opts.breakerPath = arg.split('=')[1];
   }
   opts.digestStatePath = opts.digestStatePath || DIGEST_STATE_PATH;
   return opts;
@@ -141,7 +147,14 @@ function outletNoReviewExpected(outlets, outletId, nowMs) {
 // Omitted entirely (undefined) → identical behavior to before B1 (no pseudo-source,
 // no cap), which is how the non-ledger console audit path still calls this indirectly
 // via its own separate computation (unaffected — it doesn't call computeShowCells).
-function computeShowCells(show, reviews, outlets, nowMs, standingCtx) {
+//
+// `breakerCtx` (B2, optional): { breaker, observations:[], successes:[] }.
+// `breaker` is the PRIOR cycle's per-outlet circuit-breaker state (read-only here) —
+// using the prior state, not one derived from this run's own cells, is what keeps
+// the breaker a hysteresis device instead of a circular self-justifying decision.
+// `observations`/`successes` are APPENDED to (this run's evidence for the NEXT
+// cycle's breaker update). Omitted → no CIRCUIT_OPEN cells, i.e. pre-B2 behavior.
+function computeShowCells(show, reviews, outlets, nowMs, standingCtx, breakerCtx) {
   const showId = show.id || show.slug;
   const category = show.category || 'broadway';
   const scoredOutlets = new Set(
@@ -149,6 +162,23 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx) {
   );
   const reactivations = detectReactivation(outlets, scoredOutlets);
   const market = censusMarket(category);
+
+  // B2 success evidence — recorded BEFORE the census build, because both early
+  // returns below (census threw / no roundup archived yet) would otherwise drop
+  // it. "Did this outlet produce a scored review on an in-window show" is a fact
+  // about reviews.json; it has nothing to do with whether WE archived a roundup
+  // for the show. Getting this order wrong tripped guardian/observer/independent/
+  // i-paper/timeout in a live smoke-test even though guardian alone had 34 scored
+  // in-window reviews — the successes were all on shows with no census archive.
+  const clockStrForSuccess = show.openingDate || show.previewsStartDate || null;
+  const clockMsForSuccess = clockStrForSuccess ? Date.parse(clockStrForSuccess + 'T23:00:00-04:00') : NaN;
+  const successAgeHours = Number.isFinite(clockMsForSuccess) ? (nowMs - clockMsForSuccess) / 3600000 : null;
+  if (breakerCtx) {
+    for (const outletId of scoredOutlets) {
+      if (!isDispatchTierOutlet(outlets, outletId)) continue;
+      breakerCtx.successes.push({ outletId, clockAgeHours: successAgeHours });
+    }
+  }
   // Standing outlets apply only to LITERAL category==='broadway' shows, not merely
   // whatever censusMarket() falls back to for unrecognized categories (e.g.
   // 'regional' resolves to the 'broadway' roundup set for archive-source routing,
@@ -190,10 +220,25 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx) {
       const allowed = capNewStandingCells(standingCtx.existingCellKeys, standingCtx.counter, showId, [m.outletId]);
       if (allowed.length === 0) continue; // deferred to a later cycle
     }
+    const noReviewExpected = outletNoReviewExpected(outlets, m.outletId, nowMs);
+    // B2 evidence: every dispatch-tier cell we lack and don't structurally
+    // exclude is one observation for the per-outlet breaker. Recorded BEFORE
+    // classification and with `wouldBeGap` keyed off the raw clock, not the
+    // final state — otherwise a cell the breaker already suppressed would stop
+    // counting as evidence and the breaker would starve itself back to closed
+    // on the next cycle (the self-erasing-evidence trap).
+    if (breakerCtx && !noReviewExpected) {
+      breakerCtx.observations.push({
+        outletId: m.outletId,
+        wouldBeGap: clockAgeHours != null && clockAgeHours >= GRACE_HOURS,
+        clockAgeHours,
+      });
+    }
     const state = classifyCell({
-      noReviewExpected: outletNoReviewExpected(outlets, m.outletId, nowMs),
+      noReviewExpected,
       suppressed: false,
       clockAgeHours,
+      circuitOpen: !!(breakerCtx && isOutletTripped(breakerCtx.breaker, m.outletId)),
     });
     cells.push({ outletId: m.outletId, state, url: m.url || '' });
   }
@@ -249,6 +294,16 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   };
   const marketCoverage = new Map(); // B3 scoreboard: market -> {covered, denominator}
 
+  // B2 per-outlet circuit breaker. The PRIOR cycle's state decides this run's
+  // CIRCUIT_OPEN cells; this run's observations decide the NEXT cycle's state.
+  // Reading prior state (rather than deriving it from the cells we're about to
+  // compute) is what makes it hysteresis instead of a circular argument.
+  const breakerCtx = {
+    breaker: loadBreaker(opts.breakerPath || BREAKER_PATH),
+    observations: [],
+    successes: [],
+  };
+
   for (const show of target) {
     const showId = show.id || show.slug;
     // B1 recency gate: standingOutlets targets outlet SILENCE on a show whose
@@ -261,7 +316,7 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
     // (archive-source census, dispatch, digest) is completely unaffected.
     const isRecentOpening = show.openingDate && show.openingDate >= cutoff;
     const showStandingCtx = isRecentOpening ? standingCtx : null;
-    const { cells, reactivations: showReactivations, coverage } = computeShowCells(show, reviews, outlets, nowMs, showStandingCtx);
+    const { cells, reactivations: showReactivations, coverage } = computeShowCells(show, reviews, outlets, nowMs, showStandingCtx, breakerCtx);
     for (const outletId of showReactivations) {
       reactivations.push({ showId, title: show.title, outletId });
     }
@@ -335,9 +390,40 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
     fs.mkdirSync(path.dirname(marketStatsPath), { recursive: true });
     fs.writeFileSync(marketStatsPath, JSON.stringify({ generatedAt: nowIso, markets: marketStats }, null, 2) + '\n');
   } catch (e) { console.error('Failed to write t1-coverage-stats.json:', e.message); }
+  // B2: advance the per-outlet breaker with THIS run's evidence, for the next
+  // cycle. Written after the ledger so a crash mid-loop can't half-trip anything.
+  const breakerPath = opts.breakerPath || BREAKER_PATH;
+  // successWindowHours is tied to the SAME window the observations came from
+  // (--ledger-days). Anything narrower rigs the predicate — gaps would accumulate
+  // over 90 days while successes only counted from a slice of it, so a healthy
+  // outlet in a quiet stretch trips (live smoke-test: 14 false trips).
+  const { breaker: nextBreaker, transitions } = updateBreaker(
+    breakerCtx.breaker,
+    buildEvidence(breakerCtx.observations, breakerCtx.successes, { successWindowHours: opts.ledgerDays * 24 }),
+    nowMs);
+  let breakerChanged = false;
+  try { breakerChanged = saveBreaker(breakerPath, nextBreaker); }
+  catch (e) { console.error('Failed to write t1-outlet-breaker.json:', e.message); }
+
   const cellCount = freshShows.reduce((n, s) => n + s.cells.length, 0);
   const gapCount = freshShows.reduce((n, s) => n + s.cells.filter(c => c.state === 'GAP').length, 0);
-  console.log(`T1 coverage ledger: ${freshShows.length} shows, ${cellCount} open cells (${gapCount} GAP) → ${opts.ledgerPath} ${changed ? '[written]' : '[unchanged — no commit]'}`);
+  const brokenCount = freshShows.reduce((n, s) => n + s.cells.filter(c => c.state === 'CIRCUIT_OPEN').length, 0);
+  console.log(`T1 coverage ledger: ${freshShows.length} shows, ${cellCount} open cells (${gapCount} GAP, ${brokenCount} CIRCUIT_OPEN) → ${opts.ledgerPath} ${changed ? '[written]' : '[unchanged — no commit]'}`);
+  if (transitions.length) {
+    console.log(`\n🔌 Outlet circuit breaker (${breakerChanged ? 'written' : 'unchanged'}):`);
+    for (const t of transitions) {
+      const info = outletBreakerInfo(nextBreaker, t.outletId);
+      const detail = t.transition === 'closed'
+        ? 'retrieval verified — dispatch re-enabled'
+        : t.transition === 'half-open'
+          ? 'probe window open — ONE dispatch allowed this cycle'
+          : `no dispatch until ${t.nextProbeAt} (probe #${info.probesUsed + 1}, ${info.gapCells} gapped show(s))`;
+      console.log(`  ${t.outletId}: ${t.transition} — ${detail}`);
+    }
+  } else if (brokenCount > 0) {
+    const openIds = Object.keys(nextBreaker.outlets).filter((id) => nextBreaker.outlets[id].state === 'open');
+    console.log(`  circuit-open outlets (no dispatch, still counted as missing): ${openIds.join(', ')}`);
+  }
   if (standingCtx.counter.used > 0) {
     console.log(`  standing-outlets: ${standingCtx.counter.used}/${standingCtx.counter.cap} new cell(s) this run (fan-out cap)`);
   }
@@ -565,6 +651,9 @@ async function main() {
 
   const gaps = [];
   const floorBreaches = [];
+  // B2: read the breaker ONCE for the whole console pass (it's a per-run
+  // snapshot; the --write-ledger path is its only writer).
+  const breaker = loadBreaker(opts.breakerPath || BREAKER_PATH);
 
   for (const show of targetShows) {
     const showId = show.id || show.slug;
@@ -721,11 +810,21 @@ async function main() {
     // gather re-fired for it every run is the dispatch storm — the T3 long
     // tail stays visible in censusMissing, it just doesn't ACT.
     const censusMissingT12 = censusMissing.filter(id => isDispatchTierOutlet(outlets, id));
+    // B2: the LEARNED half of the same "don't re-fire what can't succeed" rule
+    // the suppressed set encodes by hand. An outlet whose breaker is open is
+    // still reported in censusMissingT12 (it IS missing — visibility is B1's
+    // job), but it must not make the show `dispatchable`, or the exact NYT/WSJ
+    // dispatch storm the v2 plan's point 3 warns about returns through this door.
+    const circuitOpenIds = censusMissingT12.filter(id => isOutletTripped(breaker, id));
+    const censusMissingActionable = censusMissingT12.filter(id => !circuitOpenIds.includes(id));
+    if (circuitOpenIds.length) {
+      console.log(`  🔌 CIRCUIT OPEN (missing but NOT dispatchable — retrieval failing across shows): ${circuitOpenIds.join(', ')}`);
+    }
     // Dispatchable = there is something we can actually go fetch (NON-suppressed,
-    // dispatch-tier census-missing). A show that's incomplete ONLY because of
-    // suppressed/unfetchable outlets, T3+ blogs, or whose extractor broke, is
+    // NON-circuit-open, dispatch-tier census-missing). A show that's incomplete ONLY
+    // because of suppressed/unfetchable outlets, T3+ blogs, or whose extractor broke, is
     // still alert-worthy but must NOT re-fire a gather that can't change the outcome.
-    const dispatchable = censusMissingT12.length > 0;
+    const dispatchable = censusMissingActionable.length > 0;
     // Only surface a gap when there's a HARD (roundup-named) census-missing outlet
     // or a broken extractor. A show whose only census-missing outlets are soft
     // (supplementary-source tryout noise) is honestly "incomplete" but not a gap to
@@ -740,12 +839,19 @@ async function main() {
         scoredCount: scoredReviews.length,
         censusMissing,
         censusMissingT12,
+        censusMissingActionable,
+        circuitOpen: circuitOpenIds,
         censusMissingSoft,
         censusSuppressed,
         censusExtractorBroken,
         censusVerdict: cVerdict ? cVerdict.verdict : null,
         dispatchable,
-        severity: (censusMissingT12.length >= 3 || censusExtractorBroken) ? 'major' : 'minor',
+        // Severity counts only ACTIONABLE misses: escalating to 'major' (which
+        // pages) on outlets we've already decided we cannot fetch is precisely
+        // the alert fatigue B3's ack mechanism exists to prevent. Circuit-open
+        // cells still ride the digest + scoreboard, which is where a
+        // known-permanent gap belongs.
+        severity: (censusMissingActionable.length >= 3 || censusExtractorBroken) ? 'major' : 'minor',
       });
     }
   }
@@ -826,6 +932,7 @@ async function sendDiscordAlert(gaps, floorBreaches = []) {
         if (t3.length) lines.push(`Census-missing T3+/unregistered (informational, not dispatched): ${t3.join(', ')}`);
         if (!t12.length && !t3.length && g.censusVerdict === 'no-census-yet') lines.push(`Census: no roundup published yet`);
         if (g.censusSuppressed && g.censusSuppressed.length) lines.push(`⛔ Blocked (unfetchable from CI — needs manual grab): ${g.censusSuppressed.join(', ')}`);
+        if (g.circuitOpen && g.circuitOpen.length) lines.push(`🔌 Circuit open (retrieval failing across shows — dispatch paused, auto-probes): ${g.circuitOpen.join(', ')}`);
         if (g.censusExtractorBroken) lines.push(`🚨 Census extractor broke (archive present, 0 extracted) — check roundup parser`);
         return { name: `${g.title} (${g.openingDate})`, value: lines.join('\n') };
       });
