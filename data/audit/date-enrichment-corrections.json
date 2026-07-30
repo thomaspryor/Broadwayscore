@@ -25633,6 +25633,354 @@
           }
         }
       ]
+    },
+    {
+      "runAt": "2026-07-30T09:22:14.355Z",
+      "script": "enrich-off-broadway-dates",
+      "mode": {
+        "dryRun": false,
+        "verify": false,
+        "force": false,
+        "fixUnconfirmed": true,
+        "initialBackfill": false,
+        "showFilter": null
+      },
+      "entries": [
+        {
+          "kind": "audit-only",
+          "showId": "los-soles-truncos-off-broadway-2025",
+          "title": "LOS SOLES TRUNCOS",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2025-02-20",
+          "currentPreviews": "2025-02-20",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "los-soles-truncos-off-broadway-2025",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "la-llamada-off-broadway-2024",
+          "title": "La Llamada",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2024-05-01",
+          "currentPreviews": "2024-05-01",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "la-llamada-off-broadway-2024",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "drunk-romeo-and-juliet-off-broadway-2025",
+          "title": "Drunk Romeo & Juliet",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2025-05-29",
+          "currentPreviews": "2025-05-29",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "drunk-romeo-and-juliet-off-broadway-2025",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
+          "title": "La Breve y Maravillosa Vida de Oscar Wao",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2024-02-17",
+          "currentPreviews": "2024-02-17",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "amaze-magic-off-broadway-2025",
+          "title": "AMAZE Magic",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2025-07-20",
+          "currentPreviews": "2025-07-20",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "page-title-or-year-mismatch",
+          "raw": {
+            "miss": {
+              "showId": "amaze-magic-off-broadway-2025",
+              "reason": "page-title-or-year-mismatch",
+              "url": "https://playbill.com/production/jamie-allans-amaze-off-broadway-new-world-stages-stage-5-2025"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "magic-mike-live-new-york-off-broadway-2026",
+          "title": "MAGIC MIKE LIVE New York",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-10-08",
+          "currentPreviews": "2026-10-08",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "magic-mike-live-new-york-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "the-real-ivanov-off-broadway-2026",
+          "title": "The Real Ivanov",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": null,
+          "currentPreviews": "2026-08-17",
+          "currentSource": null,
+          "proposedOpening": "2026-08-25",
+          "proposedPreviews": "2026-08-17",
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "THE REAL IVANOV",
+              "venue": "Lynn F. Angelson Theater",
+              "firstPreview": "2026-08-17",
+              "opening": "2026-08-25",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "garry-starr-classic-penguins-off-broadway-2026",
+          "title": "Garry Starr: Classic Penguins",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": null,
+          "currentPreviews": "2026-09-03",
+          "currentSource": null,
+          "proposedOpening": "2026-09-08",
+          "proposedPreviews": "2026-09-03",
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "GARRY STARR: CLASSIC PENGUINS",
+              "venue": "Studio Seaview",
+              "firstPreview": "2026-09-03",
+              "opening": "2026-09-08",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "america-who-hurt-you-off-broadway-2026",
+          "title": "AMERICA, WHO HURT YOU?",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-09-11",
+          "currentPreviews": null,
+          "currentSource": null,
+          "proposedOpening": "2026-09-11",
+          "proposedPreviews": null,
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "AMERICA, WHO HURT YOU?",
+              "venue": "Theatre for a New Audience/Polonsky Shakespeare Center",
+              "firstPreview": null,
+              "opening": "2026-09-11",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "pre-existing-condition-off-broadway-2026",
+          "title": "Pre-Existing Condition",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": null,
+          "currentPreviews": "2026-09-01",
+          "currentSource": null,
+          "proposedOpening": "2026-09-14",
+          "proposedPreviews": "2026-09-01",
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "PRE-EXISTING CONDITION",
+              "venue": "Greenwich House Theater",
+              "firstPreview": "2026-09-01",
+              "opening": "2026-09-14",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "midnight-off-broadway-2026",
+          "title": "Midnight",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": null,
+          "currentPreviews": "2026-09-12",
+          "currentSource": null,
+          "proposedOpening": "2026-09-27",
+          "proposedPreviews": "2026-09-12",
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "MIDNIGHT",
+              "venue": "Daryl Roth Theatre",
+              "firstPreview": "2026-09-12",
+              "opening": "2026-09-27",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+          "title": "The Curious Case of Benjamin Button",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": null,
+          "currentPreviews": null,
+          "currentSource": null,
+          "proposedOpening": "2026-10-21",
+          "proposedPreviews": "2026-10-08",
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "THE CURIOUS CASE OF BENJAMIN BUTTON",
+              "venue": "The Public Theater/Newman Theater",
+              "firstPreview": "2026-10-08",
+              "opening": "2026-10-21",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "imitation-of-life-off-broadway-2026",
+          "title": "Imitation of Life",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": null,
+          "currentPreviews": null,
+          "proposedOpening": "2026-11-21",
+          "proposedPreviews": null,
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "IMITATION OF LIFE",
+              "venue": "The Shed",
+              "firstPreview": null,
+              "opening": "2026-11-21",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "music-city-off-broadway-2026",
+          "title": "Music City",
+          "confidence": "single-source",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-03-23",
+          "currentPreviews": "2026-03-23",
+          "currentSource": "ibdb",
+          "proposedOpening": "2026-06-24",
+          "proposedPreviews": "2026-06-15",
+          "shiftDays": 93,
+          "reason": "shift-too-large (93d > 60d cap) — likely cross-production",
+          "raw": {
+            "playbill-production-page": {
+              "title": "Music City",
+              "showId": "music-city-off-broadway-2026",
+              "firstPreview": "2026-06-15",
+              "opening": "2026-06-24",
+              "source": "playbill-production-page",
+              "url": "https://playbill.com/production/music-city-off-broadway-st-lukes-theatre-2026"
+            }
+          }
+        }
+      ]
     }
   ]
 }
