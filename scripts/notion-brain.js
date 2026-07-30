@@ -472,19 +472,17 @@ function validateCardNotes({ notes, status, force, context }) {
 // lives at dispatch (bsc-next refuses unarmed cards). Returns null when armed
 // or explicitly owner-judgment.
 function armingWarning(notesStr) {
-  if (/VERIFY:\s*owner-judgment/i.test(notesStr)) return null;
   const armed = (() => {
     try {
-      const { extractVerifyCmd } = require('./lib/autonomous-verify-cmd.js');
-      const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
-      return extractVerifyCmd(notesStr, isSafeCheckCommand);
+      const { evaluateVerifiability } = require('./lib/verify-gate.js');
+      return evaluateVerifiability(notesStr);
     } catch (e) {
-      // Validator modules unavailable (partial checkout): don't block card
+      // Validator module unavailable (partial checkout): don't block card
       // creation on our own tooling being missing.
-      return { cmd: 'validator-unavailable', reason: null };
+      return { armed: true, cmd: 'validator-unavailable', reason: null, ownerJudgment: false };
     }
   })();
-  if (armed.cmd) return null;
+  if (armed.armed) return null;
   return (
     `Acceptance criteria name no runnable command (${armed.reason}).\n\n` +
     `The nightly recheck can only verify a Done card by RE-RUNNING a command captured at dispatch. ` +
