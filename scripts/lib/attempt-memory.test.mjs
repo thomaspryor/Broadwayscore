@@ -49,6 +49,28 @@ test('attemptOutcomesForCard ignores entries for other cards and entries with no
   assert.equal(outcomes[0].outcome, 'fail');
 });
 
+test('attemptOutcomesForCard treats a crash-recovery "fail" action as a failure (ship-check finding: a repeatedly-crashing card must park too)', () => {
+  const hash = computeContentHash(CARD_A);
+  const entries = [
+    { ts: '2026-07-28T02:00:00Z', event: 'recovery', cardId: 'c1', contentHash: hash, note: 'fail: crash-recovery' },
+    { ts: '2026-07-29T02:00:00Z', event: 'recovery', cardId: 'c1', contentHash: hash, note: 'clear: stale-queue' }, // a 'clear' recovery is NOT a failure
+  ];
+  const outcomes = attemptOutcomesForCard(entries, 'c1');
+  assert.equal(outcomes.length, 1);
+  assert.equal(outcomes[0].outcome, 'fail');
+});
+
+test('a card that repeatedly crashes (recovery fail, not card-fail) parks at the same threshold as a normal failure', () => {
+  const hash = computeContentHash(CARD_A);
+  const entries = [
+    { ts: '2026-07-28T02:00:00Z', event: 'recovery', cardId: 'c1', contentHash: hash, note: 'fail: crash-recovery' },
+    { ts: '2026-07-29T02:00:00Z', event: 'card-fail', cardId: 'c1', contentHash: hash, note: 'checks-failed: tsc' },
+  ];
+  const r = checkPark(entries, 'c1', hash);
+  assert.equal(r.parked, true);
+  assert.equal(r.failureStreak, 2);
+});
+
 test('attemptOutcomesForCard sorts chronologically regardless of ledger order', () => {
   const hash = computeContentHash(CARD_A);
   const entries = [

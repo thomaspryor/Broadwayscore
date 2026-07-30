@@ -51,11 +51,17 @@ function computeContentHash(card) {
 
 // This card's chronological attempt outcomes, derived from the shared
 // ledger. Only ledger lines carrying a `contentHash` count.
+//
+// `recovery` events (a crashed run's stranded card, un-wedged at the start
+// of the next run — see autonomous-run.js's runRecovery()) count as a `fail`
+// too when their action was 'fail': a card that repeatedly crashes the
+// executor is exactly the "burn money forever" case attempt-memory exists to
+// stop, not a different category from a normal checks-failed card-fail.
 function attemptOutcomesForCard(ledgerEntries, cardId) {
   const outcomes = [];
   for (const e of ledgerEntries || []) {
     if (!e || e.cardId !== cardId || !e.contentHash) continue;
-    if (e.event === 'card-fail') {
+    if (e.event === 'card-fail' || (e.event === 'recovery' && /^fail:/.test(e.note || ''))) {
       outcomes.push({ ts: e.ts, contentHash: e.contentHash, outcome: 'fail', reason: e.note || null });
     } else if (e.event === 'card-pass' || e.event === 'auto-approve') {
       outcomes.push({ ts: e.ts, contentHash: e.contentHash, outcome: 'pass', reason: null });
