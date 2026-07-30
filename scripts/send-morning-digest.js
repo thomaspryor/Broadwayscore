@@ -54,6 +54,7 @@ const {
   renderHealthDigestBlock,
   renderDailyDigestBlock,
   renderRedditDigestBlock,
+  renderNamedDigestBlock,
 } = require('./lib/autonomous-email-render.js');
 
 const USAGE = `send-morning-digest.js — the owner's single scheduled morning email.
@@ -162,6 +163,11 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   if (changesHtml) blocks.push(changesHtml);
   if (sections.dailyDigest) blocks.push(renderDailyDigestBlock(sections.dailyDigest));
   if (sections.redditDigest) blocks.push(renderRedditDigestBlock(sections.redditDigest));
+  // Backlog drain metric (task #654) — scripts/backlog-drain.js writes
+  // {generatedAt, bannerText, items, moreCount}, the same shape every other
+  // named digest uses, so it reuses renderNamedDigestBlock with no new
+  // render code.
+  if (sections.backlogDrain) blocks.push(renderNamedDigestBlock('Backlog drain', sections.backlogDrain));
 
   if (blocks.length) {
     parts.push(blocks.join('\n'));

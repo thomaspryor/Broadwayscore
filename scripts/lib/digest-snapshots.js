@@ -35,6 +35,11 @@ const SNAPSHOTS = [
   { key: 'health', label: 'site health', file: 'health-digest-snapshot.json', maxAgeH: 36 },
   { key: 'dailyDigest', label: 'score-drift digest', file: 'daily-digest-snapshot.json', maxAgeH: 36 },
   { key: 'redditDigest', label: 'Reddit engagement', file: 'reddit-digest-snapshot.json', maxAgeH: 36 },
+  // scripts/backlog-drain.js (task #654) — Mac-local, NOT committed (unlike
+  // the three above, which are CI-produced and pulled via git): both the
+  // producer and this consumer run on the same Mac via launchd, so there is
+  // no cross-machine gap to bridge with a git commit.
+  { key: 'backlogDrain', label: 'backlog drain', file: 'backlog-drain-metric.json', maxAgeH: 36 },
 ];
 
 /**
