@@ -1,31 +1,11 @@
 {
-  "generatedAt": "2026-07-30T07:50:41.807Z",
+  "generatedAt": "2026-07-30T08:50:43.876Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 237,
-  "clean": 236,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "loves-labours-lost-globe-west-end-2026",
-      "title": "Love's Labour's Lost - Globe",
-      "openingDate": "2026-07-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: times-uk"
-        }
-      ],
-      "missingFromProd": [
-        "times-uk"
-      ],
-      "localCount": 4,
-      "deployedCount": 3
-    }
-  ]
+  "clean": 237,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
