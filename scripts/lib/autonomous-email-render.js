@@ -140,7 +140,7 @@ function renderQueueSummary(qs) {
 // what to do. This block surfaces every state that silently stalls work,
 // each with the concrete owner action.
 function renderAttentionBlock(attention) {
-  const { configWarnings = [], failedCards = [], parkedItems = [] } = attention || {};
+  const { configWarnings = [], failedCards = [], parkedItems = [], attemptMemoryParked = [] } = attention || {};
   const lines = [];
   for (const w of configWarnings) {
     lines.push({ label: 'config', text: w, action: 'fix .claude/autonomous-config.json' });
@@ -155,6 +155,12 @@ function renderAttentionBlock(attention) {
     lines.push({
       label: 'parked', text: `${p.name} (sized ${p.size})`,
       action: 'too big for the loop, needs an interactive session, or split the card',
+    });
+  }
+  for (const p of attemptMemoryParked) {
+    lines.push({
+      label: 'parked', text: `${p.name} — ${p.reason}`,
+      action: 'edit the card to re-enter the pool, or clear its park (task #635/#637)',
     });
   }
   if (!lines.length) return '';
@@ -426,7 +432,7 @@ function renderUsageBlock(stats, admin, config = {}) {
 
 function attentionCountOf(attention) {
   const a = attention || {};
-  return (a.configWarnings?.length || 0) + (a.failedCards?.length || 0) + (a.parkedItems?.length || 0);
+  return (a.configWarnings?.length || 0) + (a.failedCards?.length || 0) + (a.parkedItems?.length || 0) + (a.attemptMemoryParked?.length || 0);
 }
 
 // Subset of attentionCountOf that names an actual owner decision (clear a

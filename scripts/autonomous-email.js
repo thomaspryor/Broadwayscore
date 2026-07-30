@@ -379,7 +379,11 @@ async function main() {
   //   failed cards:    auto=failed — parked until the OWNER clears Auto
   //   parked items:    planned at a size the config doesn't enable (L, or a
   //                    size-floor bump past the enabled set) — skipped nightly
-  const attention = { configWarnings: [], failedCards: [], parkedItems: [] };
+  //   attempt-memory:  triage skipped the card before the LLM call because it
+  //                    failed N times unchanged (task #635/#637) — distinct
+  //                    from parkedItems above (that's a size mismatch, this
+  //                    is a repeat-failure park); was invisible until now.
+  const attention = { configWarnings: [], failedCards: [], parkedItems: [], attemptMemoryParked: [] };
   for (const e of runEntries) {
     // Strip the note's own "config-warning: " prefix — the block's label
     // already says "config" (review tidy).
@@ -395,6 +399,12 @@ async function main() {
     const enabled = new Set(Array.isArray(cfg.sizes) ? cfg.sizes : ['S']);
     for (const p of [...(freshQueue.plan || []), ...(freshQueue.dataPlan || [])]) {
       if (p && p.size && !enabled.has(p.size)) attention.parkedItems.push({ name: p.name, size: p.size });
+    }
+    for (const e of freshQueue.entries || []) {
+      const reason = e && e.preFilter && e.preFilter.reason;
+      if (reason && /^parked:/.test(reason)) {
+        attention.attemptMemoryParked.push({ name: (e.card && e.card.name) || e.card?.id || 'unknown card', reason });
+      }
     }
   }
   // Only configWarnings + failedCards name a decision the owner must actually
