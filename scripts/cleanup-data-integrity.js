@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { verifyFullTextContent } = require('./lib/content-quality');
+const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -117,11 +118,9 @@ if (!TASK_FILTER || TASK_FILTER === '1A') {
           console.log(`    Reason: ${result.positiveSignals.join(', ')}`);
 
           if (!DRY_RUN) {
-            delete data.wrongProduction;
-            if (data.wrongProductionNote) {
-              data.unflaggedNote = `Previously flagged: ${data.wrongProductionNote}`;
-              delete data.wrongProductionNote;
-            }
+            const prevNote = data.wrongProductionNote;
+            clearWrongProductionFlags(data, { source: 'cleanup-data-integrity.js:1A', reason: result.positiveSignals.join(', ') });
+            if (prevNote) data.unflaggedNote = `Previously flagged: ${prevNote}`;
             fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
           }
           unflagged++;
@@ -145,11 +144,9 @@ if (!TASK_FILTER || TASK_FILTER === '1A') {
           if (!otherExists) {
             console.log(`  UNFLAG: ${showDir}/${file} (URL-year flag, no competing production)`);
             if (!DRY_RUN) {
-              delete data.wrongProduction;
-              if (data.wrongProductionNote) {
-                data.unflaggedNote = `Previously flagged: ${data.wrongProductionNote}`;
-                delete data.wrongProductionNote;
-              }
+              const prevNote = data.wrongProductionNote;
+              clearWrongProductionFlags(data, { source: 'cleanup-data-integrity.js:1A', reason: 'URL-year flag, no competing production' });
+              if (prevNote) data.unflaggedNote = `Previously flagged: ${prevNote}`;
               fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
             }
             unflagged++;
@@ -172,7 +169,7 @@ if (!TASK_FILTER || TASK_FILTER === '1A') {
             // Has a score but no note and no competing production — likely false positive
             console.log(`  UNFLAG: ${showDir}/${file} (no note, has score, no competing production)`);
             if (!DRY_RUN) {
-              delete data.wrongProduction;
+              clearWrongProductionFlags(data, { source: 'cleanup-data-integrity.js:1A', reason: 'no note, has score, no competing production' });
               fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
             }
             unflagged++;

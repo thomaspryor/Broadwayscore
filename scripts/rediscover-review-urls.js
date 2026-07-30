@@ -24,6 +24,7 @@ const { OUTLET_DOMAINS, DOMAIN_REDIRECTS, discoverCorrectUrl } = require('./lib/
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { isCrossOutletUrl } = require('./lib/review-normalization');
+const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 
 // ---------------------------------------------------------------------------
@@ -204,10 +205,7 @@ function updateReviewUrl(candidate, newUrl, method) {
         wrongProduction: data.wrongProduction,
         wrongShow: data.wrongShow,
       };
-      delete data.wrongProduction;
-      delete data.wrongShow;
-      delete data.wrongProductionReason;
-      delete data.wrongShowReason;
+      clearWrongProductionFlags(data, { source: 'rediscover-review-urls.js', reason: `re-scrape at ${newUrl}` });
       delete data.showNotMentioned;
       delete data.contentMismatchNote;
       delete data.incompleteReason;
@@ -216,6 +214,15 @@ function updateReviewUrl(candidate, newUrl, method) {
       delete data.fullText;
       delete data.isFullReview;
       delete data.textQuality;
+      // The helper's contentVerification correction asserts isValid:true against
+      // the OLD (about-to-be-discarded) text — that verdict says nothing about
+      // whatever the new URL will return. Drop it entirely so the next fetch's
+      // real CV pass produces a fresh verdict instead of inheriting a false
+      // affirmative one (Codex adversarial review, 2026-07-30).
+      delete data.contentVerification;
+      // Re-scraping means the current contentTier is meaningless until the
+      // new fetch lands — override the helper's reclassification with a hard
+      // reset (matches this branch's original intent).
       delete data.contentTier;
     }
     fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2));

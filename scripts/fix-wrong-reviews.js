@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `fix-wrong-reviews.js — Flag wrong-production/wrong-show reviews and fix outlet misattributions.
@@ -183,8 +184,7 @@ for (const entry of manifest) {
 
     // Read, update, move
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    delete data.wrongProduction;
-    delete data.wrongProductionNote;
+    clearWrongProductionFlags(data, { source: 'fix-wrong-reviews.js:move', reason: entry.reason });
     data.showId = entry.targetShowId; // Update internal showId to match new directory
     data.movedFrom = entry.showId;
     data.movedReason = entry.reason;
@@ -242,8 +242,7 @@ for (const entry of manifest) {
       break;
 
     case 'unflag':
-      delete data.wrongProduction;
-      delete data.wrongShow;
+      clearWrongProductionFlags(data, { source: 'fix-wrong-reviews.js:unflag', reason: entry.reason });
       unflagged++;
       console.log(`✓ unflag ${entry.showId}/${entry.file} | ${entry.reason}`);
       break;
