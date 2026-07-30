@@ -132,3 +132,25 @@ test('severityRank + deployedShowUrl are stable contracts', () => {
   assert.equal(deployedShowUrl('hamilton-2015'), 'https://broadwayscorecard.com/data/shows/hamilton-2015.json');
   assert.equal(deployedShowUrl('x', 'https://staging.example'), 'https://staging.example/data/shows/x.json');
 });
+
+// --- ship-check fix: recency tiebreak inside a severity class ---------------
+
+test('within a severity class the RECENT opening ranks first (evergreens must not bury today)', () => {
+  // The audit targets every status:'open' show, so a CDN hiccup on a decade-old
+  // evergreen could otherwise occupy the digest's 5-line callout and hide a
+  // freshly failed deploy.
+  const rows = [
+    diffShow({ showId: 'evergreen', openingDate: '2015-08-06', localScoredOutletIds: ['nytimes'], localCs: 80, deployedJson: null, fetchError: '404' }),
+    diffShow({ showId: 'today', openingDate: '2026-07-29', localScoredOutletIds: ['nytimes'], localCs: 80, deployedJson: null, fetchError: '404' }),
+    diffShow({ showId: 'undated', openingDate: null, localScoredOutletIds: ['nytimes'], localCs: 80, deployedJson: null, fetchError: '404' }),
+  ];
+  assert.deepEqual(summarize(rows).shows.map((r) => r.showId), ['today', 'evergreen', 'undated']);
+});
+
+test('severity still dominates recency (an old unpublished page outranks a new drift)', () => {
+  const rows = [
+    diffShow({ showId: 'new-drift', openingDate: '2026-07-29', localScoredOutletIds: ['nytimes'], localCs: 80, deployedJson: prodJson(['The New York Times'], 40) }),
+    diffShow({ showId: 'old-gone', openingDate: '2015-01-01', localScoredOutletIds: ['nytimes'], localCs: 80, deployedJson: null, fetchError: '404' }),
+  ];
+  assert.deepEqual(summarize(rows).shows.map((r) => r.showId), ['old-gone', 'new-drift']);
+});

@@ -6,7 +6,8 @@ const {
   isOutletTripped, evaluateOutlet, updateBreaker, buildEvidence, entryOf,
   serializeBreaker, emptyBreaker,
   TRIP_MIN_AGE_HOURS, TRIP_MIN_GAP_CELLS, SUCCESS_WINDOW_HOURS,
-  PROBE_COOLDOWN_HOURS, MAX_PROBE_COOLDOWN_HOURS,
+  PROBE_COOLDOWN_HOURS, MAX_PROBE_COOLDOWN_HOURS, PROBE_WINDOW_HOURS,
+  MAX_NEW_TRIPS_PER_CYCLE,
   STATE_CLOSED, STATE_OPEN, STATE_HALF_OPEN,
 } = require('./outlet-circuit-breaker.js');
 
@@ -172,4 +173,108 @@ test('scenario: NYT hard-blocked across 4 shows trips, stops dispatch, then self
     buildEvidence(obs, [{ outletId: 'nytimes', clockAgeHours: 120 }]), NOW + 26 * H));
   assert.equal(breaker.outlets.nytimes.state, STATE_CLOSED);
   assert.equal(isOutletTripped(breaker, 'nytimes'), false);
+});
+
+// --- ship-check fixes: probe window, mass-trip guard, kill switch, distinct shows ---
+
+test('half-open persists for the probe WINDOW — one hourly tick must not count as a failed probe', () => {
+  // The bug this guards: breaker state advances hourly, but the actual retry is a
+  // per-show gather on a much slower cron. Re-opening on the next tick escalated to
+  // the 7-day cap without ever retrying, so the breaker never self-healed.
+  const halfOpen = {
+    state: STATE_HALF_OPEN, probesUsed: 0, openedAt: '2026-07-01T00:00:00.000Z',
+    probeUntil: new Date(NOW + 6 * H).toISOString(),
+  };
+  const ev = { gapCells: 5, minGapAgeHours: 500, recentSuccess: false };
+
+  const midWindow = evaluateOutlet({ prev: halfOpen, evidence: ev, nowMs: NOW });
+  assert.equal(midWindow.entry.state, STATE_HALF_OPEN, 'still probing — window has 6h left');
+  assert.equal(midWindow.transition, null, 'no churn while the probe window is open');
+  assert.equal(midWindow.entry.probesUsed, 0, 'escalation must NOT advance mid-window');
+
+  const afterWindow = evaluateOutlet({ prev: halfOpen, evidence: ev, nowMs: NOW + 7 * H });
+  assert.equal(afterWindow.entry.state, STATE_OPEN, 'window elapsed with no success → failed probe');
+  assert.equal(afterWindow.transition, 'reopened');
+  assert.equal(afterWindow.entry.probesUsed, 1);
+});
+
+test('open → half-open stamps a probeUntil window', () => {
+  const due = { state: STATE_OPEN, probesUsed: 0, nextProbeAt: new Date(NOW - H).toISOString() };
+  const r = evaluateOutlet({ prev: due, evidence: { gapCells: 4, minGapAgeHours: 500, recentSuccess: false }, nowMs: NOW });
+  assert.equal(r.entry.state, STATE_HALF_OPEN);
+  assert.equal((Date.parse(r.entry.probeUntil) - NOW) / H, PROBE_WINDOW_HOURS);
+});
+
+test('MASS-TRIP GUARD: more than the cap in one cycle trips NOTHING (our pipeline, not theirs)', () => {
+  const bad = { gapCells: 5, minGapAgeHours: 500, recentSuccess: false };
+  const evidence = {};
+  for (let i = 0; i < MAX_NEW_TRIPS_PER_CYCLE + 1; i++) evidence[`outlet-${i}`] = { ...bad };
+  const { breaker, transitions, massTripSuppressed } = updateBreaker(emptyBreaker(), evidence, NOW);
+  assert.equal(massTripSuppressed, MAX_NEW_TRIPS_PER_CYCLE + 1);
+  assert.deepEqual(transitions, [], 'no trip transitions reported');
+  for (const id of Object.keys(evidence)) {
+    assert.equal(breaker.outlets[id].state, STATE_CLOSED, `${id} must stay closed`);
+    assert.equal(breaker.outlets[id].gapCells, 5, 'evidence trail is still recorded');
+  }
+});
+
+test('MASS-TRIP GUARD: at or below the cap, trips proceed normally', () => {
+  const bad = { gapCells: 5, minGapAgeHours: 500, recentSuccess: false };
+  const evidence = {};
+  for (let i = 0; i < MAX_NEW_TRIPS_PER_CYCLE; i++) evidence[`outlet-${i}`] = { ...bad };
+  const { breaker, massTripSuppressed } = updateBreaker(emptyBreaker(), evidence, NOW);
+  assert.equal(massTripSuppressed, 0);
+  for (const id of Object.keys(evidence)) assert.equal(breaker.outlets[id].state, STATE_OPEN);
+});
+
+test('MASS-TRIP GUARD does not roll back breakers that were ALREADY open', () => {
+  const prev = { outlets: { established: { state: STATE_OPEN, probesUsed: 2, nextProbeAt: '2026-09-01T00:00:00.000Z' } } };
+  const bad = { gapCells: 5, minGapAgeHours: 500, recentSuccess: false };
+  const evidence = { established: { ...bad } };
+  for (let i = 0; i < MAX_NEW_TRIPS_PER_CYCLE + 1; i++) evidence[`new-${i}`] = { ...bad };
+  const { breaker, massTripSuppressed } = updateBreaker(prev, evidence, NOW);
+  assert.equal(massTripSuppressed, MAX_NEW_TRIPS_PER_CYCLE + 1);
+  assert.equal(breaker.outlets.established.state, STATE_OPEN, 'a pre-existing open breaker is untouched');
+  assert.equal(breaker.outlets['new-0'].state, STATE_CLOSED);
+});
+
+test('T1_BREAKER_DISABLED kill switch makes isOutletTripped always false', () => {
+  const tripped = { outlets: { nytimes: { state: STATE_OPEN, probesUsed: 0 } } };
+  assert.equal(isOutletTripped(tripped, 'nytimes'), true, 'baseline: tripped');
+  const prior = process.env.T1_BREAKER_DISABLED;
+  try {
+    process.env.T1_BREAKER_DISABLED = 'true';
+    assert.equal(isOutletTripped(tripped, 'nytimes'), false, 'kill switch neutralizes suppression');
+    process.env.T1_BREAKER_DISABLED = 'TRUE';
+    assert.equal(isOutletTripped(tripped, 'nytimes'), false, 'case-insensitive');
+    process.env.T1_BREAKER_DISABLED = 'false';
+    assert.equal(isOutletTripped(tripped, 'nytimes'), true, 'only "true" disables');
+  } finally {
+    if (prior === undefined) delete process.env.T1_BREAKER_DISABLED;
+    else process.env.T1_BREAKER_DISABLED = prior;
+  }
+});
+
+test('buildEvidence counts DISTINCT shows, so one show cannot manufacture a trip', () => {
+  // Three observations, all the SAME show → 1 gap cell, nowhere near the bar.
+  const same = buildEvidence([
+    { outletId: 'nytimes', showId: 's1', wouldBeGap: true, clockAgeHours: 500 },
+    { outletId: 'nytimes', showId: 's1', wouldBeGap: true, clockAgeHours: 500 },
+    { outletId: 'nytimes', showId: 's1', wouldBeGap: true, clockAgeHours: 500 },
+  ], []);
+  assert.equal(same.nytimes.gapCells, 1, 'one show is one cell no matter how many rows');
+  assert.equal(evaluateOutlet({ prev: closed, evidence: same.nytimes, nowMs: NOW }).entry.state, STATE_CLOSED);
+
+  const three = buildEvidence(['s1', 's2', 's3'].map((showId) => (
+    { outletId: 'nytimes', showId, wouldBeGap: true, clockAgeHours: 500 })), []);
+  assert.equal(three.nytimes.gapCells, 3);
+  assert.equal(evaluateOutlet({ prev: closed, evidence: three.nytimes, nowMs: NOW }).entry.state, STATE_OPEN);
+});
+
+test('a success still closes a half-open breaker mid-window (the probe worked)', () => {
+  const halfOpen = { state: STATE_HALF_OPEN, probesUsed: 1, probeUntil: new Date(NOW + 6 * H).toISOString() };
+  const r = evaluateOutlet({ prev: halfOpen, evidence: { gapCells: 4, minGapAgeHours: 500, recentSuccess: true }, nowMs: NOW });
+  assert.equal(r.entry.state, STATE_CLOSED);
+  assert.equal(r.entry.probeUntil, null);
+  assert.equal(r.transition, 'closed');
 });

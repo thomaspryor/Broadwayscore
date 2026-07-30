@@ -66,6 +66,7 @@ function deployedOutletIds(deployedJson) {
  * @param {string} [p.title]
  * @param {Set<string>|string[]} p.localScoredOutletIds  outletIds scored in reviews.json
  * @param {number|null} p.localCs                        local public/data/shows/{id}.json cs
+ * @param {string|null} [p.openingDate]                  used only to rank the report (recent first)
  * @param {object|null} p.deployedJson                   parsed prod JSON (null when unreachable)
  * @param {string} [p.fetchError]                        why it was unreachable
  * @param {object} [opts] { csTolerance }
@@ -86,7 +87,8 @@ function diffShow(p, opts = {}) {
       detail: p.fetchError || 'deployed JSON could not be fetched or parsed',
     });
     return {
-      showId: p.showId, title: p.title || p.showId, ok: false, defects,
+      showId: p.showId, title: p.title || p.showId, openingDate: p.openingDate || null,
+      ok: false, defects,
       missingFromProd: [], localCount: local.size, deployedCount: null,
     };
   }
@@ -115,7 +117,7 @@ function diffShow(p, opts = {}) {
   }
 
   return {
-    showId: p.showId, title: p.title || p.showId,
+    showId: p.showId, title: p.title || p.showId, openingDate: p.openingDate || null,
     ok: defects.length === 0, defects, missingFromProd,
     localCount: local.size, deployedCount: deployed.size,
   };
@@ -141,7 +143,14 @@ function summarize(showDiffs) {
     defective: defective.length,
     byType,
     // Worst first: unreachable (page not published) > missing reviews > score drift.
-    shows: defective.sort((a, b) => severityRank(b) - severityRank(a)),
+    // Within a severity class, RECENT openings first. The audit's target set is
+    // "open OR opened in the window", and `open` includes evergreens that have run
+    // for years — so without a recency tiebreak a CDN hiccup on a 2015 revival can
+    // occupy the digest's 5-line callout and hide today's failed deploy (adversarial
+    // review finding). Undated shows sort last.
+    shows: defective.sort((a, b) =>
+      (severityRank(b) - severityRank(a))
+      || String(b.openingDate || '').localeCompare(String(a.openingDate || ''))),
   };
 }
 

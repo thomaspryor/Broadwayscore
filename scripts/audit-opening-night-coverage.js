@@ -230,6 +230,7 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, breakerCtx
     if (breakerCtx && !noReviewExpected) {
       breakerCtx.observations.push({
         outletId: m.outletId,
+        showId, // the trip bar counts DISTINCT shows — see buildEvidence
         wouldBeGap: clockAgeHours != null && clockAgeHours >= GRACE_HOURS,
         clockAgeHours,
       });
@@ -397,7 +398,7 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   // (--ledger-days). Anything narrower rigs the predicate — gaps would accumulate
   // over 90 days while successes only counted from a slice of it, so a healthy
   // outlet in a quiet stretch trips (live smoke-test: 14 false trips).
-  const { breaker: nextBreaker, transitions } = updateBreaker(
+  const { breaker: nextBreaker, transitions, massTripSuppressed } = updateBreaker(
     breakerCtx.breaker,
     buildEvidence(breakerCtx.observations, breakerCtx.successes, { successWindowHours: opts.ledgerDays * 24 }),
     nowMs);
@@ -409,6 +410,13 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   const gapCount = freshShows.reduce((n, s) => n + s.cells.filter(c => c.state === 'GAP').length, 0);
   const brokenCount = freshShows.reduce((n, s) => n + s.cells.filter(c => c.state === 'CIRCUIT_OPEN').length, 0);
   console.log(`T1 coverage ledger: ${freshShows.length} shows, ${cellCount} open cells (${gapCount} GAP, ${brokenCount} CIRCUIT_OPEN) → ${opts.ledgerPath} ${changed ? '[written]' : '[unchanged — no commit]'}`);
+  if (massTripSuppressed) {
+    // Loud, because the correct read is "our pipeline is broken", not "outlets
+    // blocked us" — and the breaker deliberately did NOT act.
+    console.log(`\n🚨 MASS-TRIP SUPPRESSED: ${massTripSuppressed} outlets would have tripped this cycle `
+      + `(cap ${require('./lib/outlet-circuit-breaker').MAX_NEW_TRIPS_PER_CYCLE}). That many at once means OUR pipeline `
+      + `produced no scored reviews — check the rebuild/scoring chain, not the outlets. No breaker was opened.`);
+  }
   if (transitions.length) {
     console.log(`\n🔌 Outlet circuit breaker (${breakerChanged ? 'written' : 'unchanged'}):`);
     for (const t of transitions) {

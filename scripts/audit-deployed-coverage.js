@@ -167,7 +167,7 @@ async function main() {
     if (budget.exceeded()) { skippedForBudget++; return null; }
     const { deployedJson, fetchError } = await fetchDeployed(showId, opts);
     return diffShow({
-      showId, title: show.title,
+      showId, title: show.title, openingDate: show.openingDate || null,
       localScoredOutletIds: scoredByShow.get(showId) || new Set(),
       localCs: localCs(showId),
       deployedJson, fetchError,

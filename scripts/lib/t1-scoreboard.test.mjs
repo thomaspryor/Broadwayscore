@@ -96,3 +96,46 @@ test('buildScoreboardText: empty ledger + empty market stats produces empty text
   assert.deepEqual(marketLines, []);
   assert.deepEqual(oldestGapLines, []);
 });
+
+// --- ship-check fix: CIRCUIT_OPEN gets its own visible, capped section -------
+
+test('CIRCUIT_OPEN cells appear in their own scoreboard section, not dropped', () => {
+  const ledger = { shows: {
+    a: { title: 'A', market: 'broadway', cells: {
+      nytimes: { state: 'CIRCUIT_OPEN', firstSeenAt: '2026-06-01T00:00:00.000Z' },
+      vulture: { state: 'GAP', firstSeenAt: '2026-07-20T00:00:00.000Z' } } },
+    b: { title: 'B', market: 'broadway', cells: {
+      ap: { state: 'SUPPRESSED', firstSeenAt: '2026-06-01T00:00:00.000Z' },
+      ew: { state: 'IN_FLIGHT', firstSeenAt: '2026-07-29T00:00:00.000Z' } } },
+  } };
+  const r = buildScoreboardText({ broadway: { covered: 5, denominator: 8, coveragePct: 62.5 } },
+    ledger, [], Date.parse('2026-07-30T00:00:00Z'));
+  assert.equal(r.totalOpenGaps, 1, 'GAP count unchanged');
+  assert.equal(r.totalCircuitOpen, 1, 'circuit-open counted separately');
+  assert.equal(r.circuitOpenLines.length, 1);
+  assert.match(r.circuitOpenLines[0], /A — nytimes \(\d+h\)/);
+  assert.match(r.text, /Circuit open \(retrieval failing across shows — dispatch paused/);
+  assert.match(r.text, /Oldest gaps:/, 'the gap section still renders');
+  assert.doesNotMatch(r.text, /\bap\b|\bew\b/, 'SUPPRESSED/IN_FLIGHT stay excluded');
+});
+
+test('circuit-open list obeys the same hard line cap as the gap list', () => {
+  const cells = {};
+  for (let i = 0; i < 9; i++) cells[`outlet-${i}`] = { state: 'CIRCUIT_OPEN', firstSeenAt: `2026-06-0${(i % 9) + 1}T00:00:00.000Z` };
+  const ledger = { shows: { a: { title: 'A', market: 'broadway', cells } } };
+  const r = buildScoreboardText({ broadway: { covered: 1, denominator: 10, coveragePct: 10 } },
+    ledger, [], Date.parse('2026-07-30T00:00:00Z'), { maxOldestGaps: 3 });
+  assert.equal(r.circuitOpenLines.length, 4, '3 lines + 1 overflow summary');
+  assert.match(r.circuitOpenLines[3], /… 6 more circuit-open cell\(s\)/);
+  assert.equal(r.totalCircuitOpen, 9);
+});
+
+test('acking a circuit-open cell suppresses it from the callout too', () => {
+  const ledger = { shows: { a: { title: 'A', market: 'broadway', cells: {
+    nytimes: { state: 'CIRCUIT_OPEN', firstSeenAt: '2026-06-01T00:00:00.000Z' } } } } };
+  const r = buildScoreboardText({ broadway: { covered: 1, denominator: 2, coveragePct: 50 } },
+    ledger, [{ key: 'a::nytimes', ackedAt: 'x', note: 'known dead' }], Date.parse('2026-07-30T00:00:00Z'));
+  assert.equal(r.totalCircuitOpen, 0);
+  assert.equal(r.omittedByAck, 1);
+  assert.deepEqual(r.circuitOpenLines, []);
+});

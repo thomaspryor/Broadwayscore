@@ -18,15 +18,31 @@
 
 const GRACE_HOURS = 24;
 
+// States that belong in the burn-down list. GAP is the actionable one;
+// CIRCUIT_OPEN (B2) is a GAP the per-outlet breaker has paused dispatch on — it
+// MUST still be listed, because "we stopped trying" is precisely the thing the
+// owner needs to see. Including it here was a ship-check finding: the breaker
+// originally converted GAP→CIRCUIT_OPEN and the cell then vanished from BOTH the
+// digest and the scoreboard, recreating the silent-gap failure the whole v2 plan
+// exists to kill (the code even claimed the opposite in a comment).
+const DIGEST_STATES = new Set(['GAP', 'CIRCUIT_OPEN']);
+
 /**
  * @param {object} cell  { outletId, state, firstSeenAt }
  * @param {object} ctx   { rolloutAt: ISO, nowMs: number, alerted: Set<string>, cellKey: string }
- * @returns {{ include:boolean, action:boolean, ageHours:number, preRollout:boolean }}
- *   include — show in the digest at all (GAP cells only)
- *   action  — fire an ACTION email (new, >24h, not-yet-alerted, not pre-rollout)
+ * @returns {{ include:boolean, action:boolean, ageHours:number, preRollout:boolean, actionable:boolean }}
+ *   include    — show in the digest at all (GAP + CIRCUIT_OPEN)
+ *   action     — fire an ACTION email (new, >24h, not-yet-alerted, not pre-rollout,
+ *                and ACTIONABLE — a circuit-open cell is reported, never paged,
+ *                because the owner can't act on it and the ACTION email exists
+ *                to trigger a dispatch that would be a no-op)
+ *   actionable — false for CIRCUIT_OPEN, so callers can label the row
  */
 function classifyGapForDigest(cell, ctx) {
-  if (cell.state !== 'GAP') return { include: false, action: false, ageHours: 0, preRollout: false };
+  if (!DIGEST_STATES.has(cell.state)) {
+    return { include: false, action: false, ageHours: 0, preRollout: false, actionable: false };
+  }
+  const actionable = cell.state === 'GAP';
   const firstMs = Date.parse(cell.firstSeenAt);
   const ageHours = Number.isFinite(firstMs) ? (ctx.nowMs - firstMs) / 3600000 : 0;
   // <= rolloutAt (with a tiny epsilon for same-run stamps) → part of the inherited
@@ -34,8 +50,8 @@ function classifyGapForDigest(cell, ctx) {
   const rolloutMs = Date.parse(ctx.rolloutAt);
   const preRollout = Number.isFinite(rolloutMs) && Number.isFinite(firstMs) && firstMs <= rolloutMs + 1000;
   const alreadyAlerted = ctx.alerted && ctx.alerted.has(ctx.cellKey);
-  const action = !preRollout && ageHours >= GRACE_HOURS && !alreadyAlerted;
-  return { include: true, action, ageHours, preRollout };
+  const action = actionable && !preRollout && ageHours >= GRACE_HOURS && !alreadyAlerted;
+  return { include: true, action, ageHours, preRollout, actionable };
 }
 
 /**
@@ -61,8 +77,14 @@ function buildDigest(ledger, state, nowMs) {
       if (!c.include) continue;
       const row = {
         showId, title: s.title, market: s.market, outletId,
+        state: cell.state,
+        actionable: c.actionable,
         ageHours: Math.round(c.ageHours), preRollout: c.preRollout,
-        fix: `gh workflow run gather-reviews.yml -f shows="${showId}" -f max_tier=3 -f aggregators_only=false`,
+        // A circuit-open cell's "fix" is not another gather — that's the spend the
+        // breaker exists to stop. Point at the breaker state instead.
+        fix: c.actionable
+          ? `gh workflow run gather-reviews.yml -f shows="${showId}" -f max_tier=3 -f aggregators_only=false`
+          : `dispatch PAUSED by the outlet circuit breaker (data/audit/t1-outlet-breaker.json → ${outletId}); auto-probes on its own schedule`,
       };
       digest.push(row);
       if (c.preRollout) preRolloutCount++;
