@@ -48,6 +48,24 @@ function isKnownOffBroadwayVenue(venue) {
   return OFF_BROADWAY_VENUES.has(normalizeVenueName(name));
 }
 
+// Non-traditional NYC venues large/prestigious enough that content-verifier's
+// off-broadway prompt (wrongProdExamples: "Broadway production") makes an LLM
+// treat their mere mention as proof of a wrong production — even though several
+// are already catalogued here as category='off-broadway' (Park Avenue Armory,
+// Carnegie Hall, NYU Skirball, New York City Center) or type='opera'
+// (Metropolitan Opera House, already carved out separately). Found live via
+// Les Misérables: The Arena Concert Spectacular @ Radio City Music Hall
+// (2026-07-30): two correctly-attributed reviews were flagged wrongProduction
+// with reasoning "Radio City Music Hall...is a Broadway venue, not an
+// Off-Broadway venue". Substring match (not exact Set) since venue strings
+// carry suffixes ("Stern Auditorium / Perelman Stage at Carnegie Hall").
+const SPECIAL_ENGAGEMENT_VENUE_RE = /radio city music hall|park avenue armory|carnegie hall|nyu skirball|new york city center|metropolitan opera house/i;
+
+function isSpecialEngagementVenue(venue) {
+  if (!venue || venue === 'TBA') return false;
+  return SPECIAL_ENGAGEMENT_VENUE_RE.test(venue);
+}
+
 /**
  * Get the market pool for a category. Shows within the same pool share a
  * browse page and must be deduplicated against each other.
@@ -182,4 +200,4 @@ const GENERIC_VENUE_SLUGS = new Set([
   'piccadilly', 'savoy', 'vaudeville', 'victoria-palace',
 ]);
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isSpecialEngagementVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS };

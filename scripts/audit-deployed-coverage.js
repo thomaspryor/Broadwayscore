@@ -35,6 +35,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { diffShow, summarize, deployedShowUrl } = require('./lib/deployed-coverage-diff');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { selectDeployedCoverageTargets } = require('./lib/deployed-coverage-targets');
 
 const ROOT = path.join(__dirname, '..');
 const DATA_DIR = path.join(ROOT, 'data');
@@ -141,10 +142,11 @@ async function main() {
   const reviewsData = loadJSON(path.join(DATA_DIR, 'reviews.json'));
   const reviews = reviewsData.reviews || reviewsData;
 
-  const cutoff = new Date(Date.now() - opts.days * 86400000).toISOString().split('T')[0];
+  const nowMs = Date.now();
+  const cutoff = new Date(nowMs - opts.days * 86400000).toISOString().split('T')[0];
   const targets = opts.showId
     ? shows.filter((s) => (s.id || s.slug) === opts.showId)
-    : shows.filter((s) => s.status === 'open' || (s.openingDate && s.openingDate >= cutoff));
+    : selectDeployedCoverageTargets(shows, { days: opts.days, nowMs });
   if (!targets.length) {
     console.log(opts.showId ? `Show not found: ${opts.showId}` : `No shows open or opened since ${cutoff}.`);
     process.exit(opts.showId ? 1 : 0);

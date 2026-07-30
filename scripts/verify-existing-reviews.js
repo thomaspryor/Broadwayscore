@@ -25,7 +25,35 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { verifyContent } = require('./lib/content-verifier');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+const USAGE_TEXT = `Retroactive LLM Content Verification
+
+Two modes:
+  1. VERIFY: Check reviews with fullText that were never LLM-verified (12K+)
+  2. RECOVER: Re-evaluate wrongProduction/wrongShow flags for false positives (~650)
+
+Uses the same 4-provider chain as collect-review-texts.js:
+  Kimi → Gemini Flash → GPT-4o-mini → Claude Sonnet
+
+Usage:
+  node scripts/verify-existing-reviews.js                    # Both modes (default)
+  node scripts/verify-existing-reviews.js --verify-only      # Only check unverified
+  node scripts/verify-existing-reviews.js --recover-only     # Only re-evaluate flags
+  node scripts/verify-existing-reviews.js --dry-run          # Log without modifying
+  node scripts/verify-existing-reviews.js --limit=500        # Process at most N
+  node scripts/verify-existing-reviews.js --show=hamilton     # Single show
+
+Env:
+  SHOW_FILTER  — comma-separated show IDs (for CI partitioning)
+  COMMIT_EVERY — checkpoint interval (default 25)`;
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(USAGE_TEXT);
+  process.exit(0);
+}
+
+const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
 const { wrongShowCleared } = require('./lib/review-guards');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 
@@ -159,7 +187,7 @@ async function processVerify(items) {
         openingDate: show?.openingDate || '',
         publishDate: r.publishDate || '',
         venue: show?.venue || '',
-        market: show?.type === 'opera' ? 'opera' : (show?.category || 'broadway'),
+        market: resolveCvMarket(show),
         // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
         // (Hamlet 2026-05-08 FRC class). See review-guards.js:hasNamedDifferentDirectorSignal.
         show: show || null,
@@ -253,7 +281,7 @@ async function processRecover(items) {
         openingDate: show?.openingDate || '',
         publishDate: r.publishDate || '',
         venue: show?.venue || '',
-        market: show?.type === 'opera' ? 'opera' : (show?.category || 'broadway'),
+        market: resolveCvMarket(show),
         // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
         // (Hamlet 2026-05-08 FRC class). See review-guards.js:hasNamedDifferentDirectorSignal.
         show: show || null,
@@ -289,6 +317,46 @@ async function processRecover(items) {
           delete data.wrongProductionReason;
           delete data.wrongShow;
           delete data.wrongShowReason;
+
+          // The embedded contentVerification sub-object (the ORIGINAL CV verdict that
+          // caused the flag) must also be corrected — rebuild-all-reviews.js's CV
+          // pre-pass reads d.contentVerification.wrongProduction directly and
+          // re-promotes it to the top-level field on every rebuild, silently undoing
+          // this recovery the next time rebuild-all-reviews.js runs. Found live via
+          // card #632: a rebuild between recovery and this fix re-flagged both
+          // reviews from the stale sub-object despite the top-level clear above.
+          if (data.contentVerification) {
+            data.contentVerification.isValid = true;
+            data.contentVerification.wrongProduction = false;
+            data.contentVerification.wrongArticle = false;
+            data.contentVerification.isFilmTv = false;
+            data.contentVerification.reasoning = `Superseded by retroactive-llm-verify recovery (${provider}, ${result.confidence}): ${result.reasoning || ''}`.trim();
+          }
+
+          // A stale contentTier:'invalid' (set when the file was originally flagged)
+          // otherwise permanently blocks isIncludableForRebuild's separate invalid-tier
+          // gate (review-guards.js) even after wrongProduction/wrongShow are cleared above —
+          // that gate only stands down given wrongProductionManualClear/-Override or
+          // humanReviewedWrongProduction===false, none of which recovery used to set.
+          // Found live via card #632 (Les Mis Arena Concert Spectacular): 2 correctly-
+          // recovered reviews stayed invisible to rebuild despite the flags being cleared.
+          if (data.contentTier === 'invalid') {
+            data.contentTier = (data.fullText && data.fullText.trim().length >= 200)
+              ? 'complete'
+              : (require('./lib/excerpt-fields').hasExcerpt(data) ? 'excerpt' : 'stub');
+          }
+          // wrongProductionOverride (not humanReviewedWrongProduction) — the latter's
+          // name and every other setter in this codebase (reverify-era-venue-wrongprod.js,
+          // clear-we-longrunner-fps-2026-04-24.js) reserve it for an actual human decision;
+          // stamping it here would misrepresent an LLM-confidence-gated auto-recovery as
+          // human-verified, permanently exempting the file from every future automated
+          // wrong-production guard (ship-check adversarial review finding, 2026-07-30).
+          // wrongProductionOverride is the established convention for script-driven clears
+          // and is checked identically by every gate that also honors humanReviewedWrongProduction.
+          data.wrongProductionOverride = true;
+          data.wrongProductionOverrideReason = `retroactive-llm-verify recovery (${provider}, ${result.confidence}): ${result.reasoning || ''}`.trim();
+          data.wrongProductionOverrideSetAt = new Date().toISOString();
+          data.wrongProductionOverrideSetBy = 'verify-existing-reviews.js:recover';
 
           data.verifiedBy = provider;
           data.recoveredBy = `retroactive-llm-verify`;

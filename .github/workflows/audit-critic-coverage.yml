@@ -57,6 +57,42 @@ jobs:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: node scripts/lib/critic-coverage-checks/coverage-drift.check.js
 
+      # Card #627: outlet-registry standingCoverage is DERIVED from measured
+      # Broadway coverage, so it rots unless something re-measures. This is the
+      # natural home — the same weekly job already reasons about per-outlet
+      # coverage behaviour. Read-only and non-blocking (|| true): drift is a
+      # judgement call for the operator, not a reason to fail the audit. The
+      # promote/demote lines land in the run log and the step summary.
+      - name: Check standingCoverage drift (advisory)
+        run: |
+          node scripts/audit-standing-coverage.js --strict > /tmp/standing-drift.txt 2>&1 || DRIFTED=1
+          cat /tmp/standing-drift.txt
+          if [ "${DRIFTED:-0}" = "1" ]; then
+            {
+              echo '### ⚠️ standingCoverage drift — outlet-registry.json needs review'
+              echo '```'
+              tail -20 /tmp/standing-drift.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      # Card #640: the mirror check for coverageExpectation (the "outlet does
+      # NOT review theatre" suppression claim) — same rot risk in the opposite
+      # direction: a wrong claim here HIDES a real gap instead of just adding
+      # noise. Read-only and non-blocking (|| true), same as standingCoverage.
+      - name: Check coverageExpectation drift (advisory)
+        run: |
+          node scripts/audit-standing-coverage.js --coverage-expectation --strict > /tmp/coverage-expectation-drift.txt 2>&1 || DRIFTED=1
+          cat /tmp/coverage-expectation-drift.txt
+          if [ "${DRIFTED:-0}" = "1" ]; then
+            {
+              echo '### ⚠️ coverageExpectation drift — outlet-registry.json needs re-decision'
+              echo '```'
+              tail -20 /tmp/coverage-expectation-drift.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Print summary
         run: |
           if [ -f data/audit/critic-coverage-buckets.md ]; then

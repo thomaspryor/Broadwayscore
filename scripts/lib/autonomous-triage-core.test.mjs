@@ -455,6 +455,57 @@ test('a claimed-but-completed task does not block re-triage', async () => {
   assert.equal(decide(r), 'attempt');
 });
 
+// ── attempt-memory park (owner mandate 2026-07-30, task #635) ──────────────
+
+test('a card parked by attempt memory (failed twice unchanged) skips without an LLM call', async () => {
+  const { computeContentHash } = require('./attempt-memory.js');
+  const card = { ...CARD, id: 'card-99' };
+  const hash = computeContentHash(card);
+  const ledgerEntries = [
+    { ts: '2026-07-28T02:00:00Z', event: 'card-fail', cardId: 'card-99', contentHash: hash, note: 'checks-failed: tsc' },
+    { ts: '2026-07-29T02:00:00Z', event: 'card-fail', cardId: 'card-99', contentHash: hash, note: 'checks-failed: lint' },
+  ];
+  let calls = 0;
+  const r = await triageCard(card, async () => { calls++; return JSON.stringify(GOOD); }, { attemptMemory: { ledgerEntries } });
+  assert.equal(calls, 0);
+  assert.equal(r.preFilter.eligible, false);
+  assert.match(r.preFilter.reason, /^parked: failed 2x unchanged/);
+  assert.equal(decide(r), 'skip');
+});
+
+test('a card with only one prior failure is NOT parked and still reaches the LLM', async () => {
+  const { computeContentHash } = require('./attempt-memory.js');
+  const card = { ...CARD, id: 'card-98' };
+  const hash = computeContentHash(card);
+  const ledgerEntries = [{ ts: '2026-07-28T02:00:00Z', event: 'card-fail', cardId: 'card-98', contentHash: hash, note: 'timeout' }];
+  let calls = 0;
+  const r = await triageCard(card, async () => { calls++; return JSON.stringify(GOOD); }, { attemptMemory: { ledgerEntries } });
+  assert.equal(calls, 1);
+  assert.equal(decide(r), 'attempt');
+});
+
+test('editing the card (notes change → hash changes) un-parks it even after 2 prior failures', async () => {
+  const { computeContentHash } = require('./attempt-memory.js');
+  const card = { ...CARD, id: 'card-97' };
+  const oldHash = computeContentHash(card);
+  const editedCard = { ...card, notes: card.notes + '\nEdited with a fix attempt.' };
+  const ledgerEntries = [
+    { ts: '2026-07-28T02:00:00Z', event: 'card-fail', cardId: 'card-97', contentHash: oldHash, note: 'checks-failed' },
+    { ts: '2026-07-29T02:00:00Z', event: 'card-fail', cardId: 'card-97', contentHash: oldHash, note: 'checks-failed' },
+  ];
+  let calls = 0;
+  const r = await triageCard(editedCard, async () => { calls++; return JSON.stringify(GOOD); }, { attemptMemory: { ledgerEntries } });
+  assert.equal(calls, 1);
+  assert.equal(decide(r), 'attempt');
+});
+
+test('omitting opts.attemptMemory entirely leaves triageCard unaffected (backward compatible)', async () => {
+  let calls = 0;
+  const r = await triageCard({ ...CARD, id: 'card-96' }, async () => { calls++; return JSON.stringify(GOOD); });
+  assert.equal(calls, 1);
+  assert.equal(decide(r), 'attempt');
+});
+
 // ── triageCard flow ─────────────────────────────────────────────────────────
 
 test('pre-filter refusal short-circuits: no LLM call for deny-tag cards', async () => {
