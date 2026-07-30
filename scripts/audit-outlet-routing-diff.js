@@ -23,6 +23,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { execFileSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const base = (process.argv.find(a => a.startsWith('--base=')) || '--base=HEAD~1').slice('--base='.length);
@@ -101,6 +102,15 @@ function collectCandidateNames() {
 }
 
 function main() {
+  // Task #498 class: this script shells out (git show) and walks the corpus, so
+  // --help must short-circuit BEFORE any of that runs.
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/audit-outlet-routing-diff.js [--base=<git-ref>]');
+    console.log('  Diffs normalizeOutlet() routing at <git-ref> vs the working tree across every');
+    console.log('  registry name/alias and every raw outlet string in data/review-texts.');
+    console.log('  Read-only. Default --base=HEAD~1. Exits 1 if any routing changed.');
+    process.exit(0);
+  }
   const before = loadNormalizerAt(base);
   const after = loadNormalizerAt('WORKING_TREE');
   const names = collectCandidateNames();
