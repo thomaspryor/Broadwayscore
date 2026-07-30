@@ -22,10 +22,19 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const base = (process.argv.find(a => a.startsWith('--base=')) || '--base=HEAD~1').slice('--base='.length);
+
+// Required at every ref this script will realistically be pointed at — a
+// git-show failure here means the ref/path is wrong, not that the file is
+// legitimately absent, so it must fail loudly rather than silently diffing
+// working-tree-against-working-tree.
+const REQUIRED_FILES = ['data/outlet-registry.json', 'scripts/lib/review-normalization.js'];
+// Genuinely optional: shared helpers that review-normalization.js didn't
+// always depend on. Missing at an old ref is expected, not an error.
+const OPTIONAL_FILES = ['scripts/lib/text-cleaning.js', 'scripts/lib/exclusion-logger.js'];
 
 function loadNormalizerAt(ref) {
   if (ref === 'WORKING_TREE') {
@@ -37,13 +46,16 @@ function loadNormalizerAt(ref) {
   fs.mkdirSync(path.join(tmp, 'data'));
   fs.mkdirSync(path.join(tmp, 'scripts', 'lib'), { recursive: true });
 
-  const files = ['data/outlet-registry.json', 'scripts/lib/review-normalization.js', 'scripts/lib/text-cleaning.js', 'scripts/lib/exclusion-logger.js'];
-  for (const f of files) {
+  for (const f of REQUIRED_FILES) {
+    // execFileSync (no shell) so `ref` can never be interpreted as shell syntax.
+    const content = execFileSync('git', ['show', `${ref}:${f}`], { cwd: REPO_ROOT, maxBuffer: 1024 * 1024 * 50 });
+    fs.writeFileSync(path.join(tmp, f), content);
+  }
+  for (const f of OPTIONAL_FILES) {
     let content;
     try {
-      content = execSync(`git show ${ref}:${f}`, { cwd: REPO_ROOT, maxBuffer: 1024 * 1024 * 50 });
+      content = execFileSync('git', ['show', `${ref}:${f}`], { cwd: REPO_ROOT, maxBuffer: 1024 * 1024 * 50 });
     } catch (e) {
-      // Optional deps (exclusion-logger etc.) may not exist at old refs — fall back to current.
       content = fs.readFileSync(path.join(REPO_ROOT, f));
     }
     fs.writeFileSync(path.join(tmp, f), content);
@@ -61,16 +73,28 @@ function collectCandidateNames() {
     for (const alias of (data.aliases || [])) names.add(alias);
   }
 
+  const registryOnlyCount = names.size;
   let files = [];
+  let corpusAvailable = true;
   try {
-    files = execSync('find data/review-texts -maxdepth 2 -name "*.json"', { cwd: REPO_ROOT, maxBuffer: 1024 * 1024 * 200 })
+    files = execFileSync('find', ['data/review-texts', '-maxdepth', '2', '-name', '*.json'], { cwd: REPO_ROOT, maxBuffer: 1024 * 1024 * 200 })
       .toString().trim().split('\n').filter(Boolean);
-  } catch (e) { /* no review-texts checked out locally — registry-only audit */ }
+  } catch (e) {
+    corpusAvailable = false;
+  }
   for (const f of files) {
     try {
       const d = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, f), 'utf8'));
       if (d.outlet) names.add(d.outlet);
     } catch (e) { /* skip unparseable file */ }
+  }
+
+  if (!corpusAvailable) {
+    console.warn(
+      `WARNING: data/review-texts not found — checking only ${registryOnlyCount} registry names, ` +
+      `NOT the observed raw-corpus outlet strings. Run from a checkout with review-texts populated ` +
+      `(./scripts/setup-local-data.sh) for the full check.`
+    );
   }
 
   return names;
