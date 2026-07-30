@@ -13,7 +13,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { heuristicVerify, quickValidityCheck, contentHash } = require('../../scripts/lib/content-verifier.js');
+const { heuristicVerify, quickValidityCheck, contentHash, resolveCvMarket } = require('../../scripts/lib/content-verifier.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURE = path.join(__dirname, '..', 'fixtures', 'content-verifier-golden', 'real-world-fixtures.json');
@@ -154,5 +154,34 @@ describe('golden fixture integrity', () => {
       const anyFlag = flags.wrongProduction || flags.wrongShow || flags.wrongArticle || flags.isRoundupArticle;
       assert.ok(anyFlag, `${c.id} has no garbage flag — weakens the ground-truth signal`);
     }
+  });
+});
+
+describe('resolveCvMarket (special-venue carve-out, Les Mis Arena Concert @ Radio City, 2026-07-30)', () => {
+  test('opera type wins regardless of venue', () => {
+    assert.equal(resolveCvMarket({ type: 'opera', category: 'off-broadway', venue: 'Metropolitan Opera House' }), 'opera');
+  });
+
+  test('off-broadway show at Radio City Music Hall gets special-venue market', () => {
+    assert.equal(
+      resolveCvMarket({ type: 'special', category: 'off-broadway', venue: 'Radio City Music Hall' }),
+      'special-venue'
+    );
+  });
+
+  test('off-broadway show at Park Avenue Armory / Carnegie Hall / NYU Skirball / NYC Center get special-venue', () => {
+    for (const venue of ['Park Avenue Armory', 'Stern Auditorium / Perelman Stage at Carnegie Hall', 'NYU Skirball', 'New York City Center - Stage II']) {
+      assert.equal(resolveCvMarket({ category: 'off-broadway', venue }), 'special-venue', venue);
+    }
+  });
+
+  test('ordinary off-broadway venue is unaffected', () => {
+    assert.equal(resolveCvMarket({ category: 'off-broadway', venue: "Joe's Pub at The Public Theatre" }), 'off-broadway');
+  });
+
+  test('falls back to category, then broadway, when no special signal', () => {
+    assert.equal(resolveCvMarket({ category: 'west-end', venue: 'Sondheim Theatre' }), 'west-end');
+    assert.equal(resolveCvMarket(null), 'broadway');
+    assert.equal(resolveCvMarket({}), 'broadway');
   });
 });
