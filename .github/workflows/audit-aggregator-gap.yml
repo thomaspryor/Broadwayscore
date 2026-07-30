@@ -227,6 +227,15 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/audit-opening-night-coverage.js --digest --alert
 
+      # T1 coverage scoreboard (B3, v2 reconciler Sprint B): coverage % per market +
+      # oldest-gap callout, queued via routeAlert(disposition:'digest') into the
+      # existing daily digest (health-check.js "Automation (queued)" section) —
+      # NOT its own email. Reads data/audit/t1-coverage-stats.json written by the
+      # "Rebuild T1 coverage ledger" step above, so it must run after that step.
+      - name: T1 coverage scoreboard
+        if: always()
+        run: node scripts/audit-opening-night-coverage.js --scoreboard --alert
+
       # Auto-clear shadow report (S3-T4): refresh the evidence verdict from the
       # shadow log the sweep just appended to. Auto-clear stays OFF until this
       # verdict is 'clean' (≥3 live candidates over ≥48h, 0 human disagreements).
@@ -257,7 +266,14 @@ jobs:
           # backstop alerts AND this job's T1 Coverage "new gaps" alert (card #608,
           # 2026-07-28) both call routeAlert(), which is a no-op cooldown without this
           # file surviving across hourly runs (same persistence-gap class as #394).
-          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json; do
+          # t1-coverage-stats.json: B3 scoreboard's per-market coverage % snapshot,
+          # written by --write-ledger above. t1-coverage-ack.json: B3's ack file
+          # (owner-maintained, see --ack CLI flag). alert-digest-queue.json: the
+          # scoreboard step above calls routeAlert(disposition:'digest'), which
+          # writes this file locally — without committing it here, the queued
+          # line is discarded when this job's runner is torn down (other
+          # workflows already commit the same shared file for their own writes).
+          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json; do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then
