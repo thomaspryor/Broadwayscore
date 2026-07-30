@@ -43,4 +43,30 @@ function updateHeartbeatState(prevState, cadenceRows, nowIso) {
   return { state: next, newlyActionable };
 }
 
-module.exports = { updateHeartbeatState };
+/**
+ * Given this week's heartbeat rows + persisted state + an optional baseline
+ * of already-acknowledged outlet×market keys (card #643), split the rows that
+ * have crossed the 2-consecutive-red threshold into "new" (not yet
+ * acknowledged — should alert) vs "baselined" (owner already knows, stay
+ * quiet). Extracted as a pure function so the digest check and its test don't
+ * duplicate the redStreak/baseline-membership logic.
+ * @param {Array<{outletId, market, silentDays, ...}>} rows this week's outlet-heartbeat.json rows
+ * @param {object} state outlet-heartbeat-state.json — { [key]: { redStreak } }
+ * @param {Set<string>} [baselineKeys] keys already acknowledged as known-silent
+ * @returns {{ actionable: Array, baselinedCount: number, totalCrossedThreshold: number }}
+ *   actionable = new (non-baselined) rows crossing the threshold, sorted worst-first
+ */
+function getActionableOutletRows(rows, state, baselineKeys) {
+  const baseline = baselineKeys || new Set();
+  const crossedThreshold = rows.filter((r) => (state[`${r.outletId}::${r.market}`]?.redStreak || 0) >= 2);
+  const actionable = crossedThreshold
+    .filter((r) => !baseline.has(`${r.outletId}::${r.market}`))
+    .sort((a, b) => b.silentDays - a.silentDays);
+  return {
+    actionable,
+    baselinedCount: crossedThreshold.length - actionable.length,
+    totalCrossedThreshold: crossedThreshold.length,
+  };
+}
+
+module.exports = { updateHeartbeatState, getActionableOutletRows };

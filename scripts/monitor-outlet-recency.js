@@ -18,6 +18,13 @@
  *   node scripts/monitor-outlet-recency.js               # print flagged outlets, exit 1 if any
  *   node scripts/monitor-outlet-recency.js --dry-run      # print only, always exit 0
  *   node scripts/monitor-outlet-recency.js --json         # machine-readable output
+ *   node scripts/monitor-outlet-recency.js --write-baseline  # ack current backlog (card #643)
+ *
+ * --write-baseline snapshots the currently-flagged outlet×market pairs into
+ * data/audit/outlet-heartbeat-baseline.json. The "Quality: outlet-heartbeat
+ * red flags" digest check (scripts/health-check.js) alerts only on rows NOT
+ * in that baseline once they cross the redStreak>=2 threshold — mirrors
+ * audit-star-score-mismatch.js's --write-baseline pattern.
  */
 'use strict';
 
@@ -54,10 +61,16 @@ function getFlaggedOutlets(reviews, outlets, showCategoryById, opts = {}) {
   return rows.filter((r) => r.status === 'red').sort((a, b) => b.silentDays - a.silentDays);
 }
 
+function baselinePath() {
+  if (process.env.OUTLET_HEARTBEAT_BASELINE) return process.env.OUTLET_HEARTBEAT_BASELINE;
+  return path.join(REPO_ROOT, 'data', 'audit', 'outlet-heartbeat-baseline.json');
+}
+
 function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
   const jsonOut = args.includes('--json');
+  const writeBaseline = args.includes('--write-baseline');
 
   const reviewsData = JSON.parse(fs.readFileSync(resolveDataFile('data/reviews.json'), 'utf8'));
   const outletsData = JSON.parse(fs.readFileSync(resolveDataFile('data/outlet-registry.json'), 'utf8'));
@@ -71,6 +84,21 @@ function main() {
   for (const s of shows) if (s.id) showCategoryById[s.id] = s.category;
 
   const flagged = getFlaggedOutlets(reviews, outlets, showCategoryById);
+
+  if (writeBaseline) {
+    const p = baselinePath();
+    const payload = {
+      _meta: {
+        description: 'Known/acknowledged outlet×market pairs already silent beyond cadence (card #643). The "Quality: outlet-heartbeat red flags" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline',
+        count: flagged.length,
+      },
+      keys: flagged.map((r) => `${r.outletId}::${r.market}`).sort(),
+    };
+    fs.mkdirSync(path.dirname(p), { recursive: true });
+    fs.writeFileSync(p, JSON.stringify(payload, null, 2) + '\n');
+    console.error(`Wrote baseline: ${flagged.length} known silent outlet×market pair(s) → ${p}`);
+    process.exit(0);
+  }
 
   if (jsonOut) {
     console.log(JSON.stringify({ generatedAt: new Date().toISOString(), flagged }, null, 2));

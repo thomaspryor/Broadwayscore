@@ -984,6 +984,12 @@ function checkOutletHealth() {
     // outlets like newsday sit red every week), so re-warning on every row
     // that's merely red-this-week would just recreate the "unread signal"
     // problem this card exists to fix (ship-check finding, 2026-07-30).
+    // 29 outlet×market rows are already redStreak=1 as of 2026-07-30 and will
+    // likely all cross the threshold together on the next Monday cron — some
+    // (newsday::broadway, backstage::broadway) have been silent for YEARS.
+    // Same "known backlog vs genuinely new" split as "Quality: star-vs-score
+    // mismatch" above: alert only on rows NOT in the committed baseline
+    // (data/audit/outlet-heartbeat-baseline.json, card #643).
     runCheck('Quality: outlet-heartbeat red flags', () => {
       const heartbeatFile = path.join(AUDIT_DIR, 'outlet-heartbeat.json');
       if (!fs.existsSync(heartbeatFile)) {
@@ -998,18 +1004,22 @@ function checkOutletHealth() {
       const rows = Array.isArray(data?.rows) ? data.rows : [];
       const stateFile = path.join(AUDIT_DIR, 'outlet-heartbeat-state.json');
       const state = fs.existsSync(stateFile) ? readJSON(stateFile) : {};
-      const actionable = rows
-        .filter((r) => (state[`${r.outletId}::${r.market}`]?.redStreak || 0) >= 2)
-        .sort((a, b) => b.silentDays - a.silentDays);
+      let baselineKeys = new Set();
+      try {
+        const b = readJSON(path.join(AUDIT_DIR, 'outlet-heartbeat-baseline.json'));
+        if (b && Array.isArray(b.keys)) baselineKeys = new Set(b.keys);
+      } catch { /* no baseline yet — everything is "new" */ }
+      const { getActionableOutletRows } = require('./lib/outlet-heartbeat-state');
+      const { actionable, baselinedCount } = getActionableOutletRows(rows, state, baselineKeys);
       if (actionable.length === 0) {
-        return { name: 'Quality: outlet-heartbeat red flags', status: 'pass', message: `${rows.length} outlet×market rows checked, none silent 2+ consecutive weeks (${formatAge(age)} ago)` };
+        return { name: 'Quality: outlet-heartbeat red flags', status: 'pass', message: `${rows.length} outlet×market rows checked, none NEW silent 2+ consecutive weeks (${baselinedCount} known/baselined, ${formatAge(age)} ago)` };
       }
       const worst = actionable[0];
       return {
         name: 'Quality: outlet-heartbeat red flags',
         status: 'warn',
-        message: `${actionable.length} T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: ${worst.outletId}/${worst.market}, ${worst.silentDays}d silent vs ${worst.thresholdDays}d threshold)`,
-        hint: 'Run `node scripts/monitor-outlet-recency.js` — check whether the outlet stopped reviewing or an extractor broke (card #582 class).',
+        message: `${actionable.length} NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: ${worst.outletId}/${worst.market}, ${worst.silentDays}d silent vs ${worst.thresholdDays}d threshold; ${baselinedCount} known/baselined)`,
+        hint: 'Run `node scripts/monitor-outlet-recency.js` — check whether the outlet stopped reviewing or an extractor broke (card #582 class). If it\'s a known permanently-silent outlet, `--write-baseline` to ack.',
       };
     }),
   ];

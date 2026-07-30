@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-07-30T18:08:04.378Z",
+  "runDate": "2026-07-30T18:41:32.640Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-saviors-off-broadway-2026,dog-man-the-musical-west-end-2026,the-enormous-crocodile-west-end-2026,cat-cohen-broad-strokes-off-broadway-2026",
+    "showFilter": "tao-of-glass-west-end-2026,death-note-the-musical-west-end-2026,the-vessel-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 5,
+    "processed": 0,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "16.7%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,7 +28,7 @@
   },
   "statistics": {
     "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -39,38 +39,33 @@
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 5,
+    "totalFailed": 4,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 3,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
-  ],
+  "processed": [],
   "failed": [
-    "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json",
-    "the-enormous-crocodile-west-end-2026/everything-theatre--mary-pollard.json",
-    "the-enormous-crocodile-west-end-2026/west-end-best-friend--chris-abbott.json",
-    "the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
-    "the-saviors-off-broadway-2026/playbill--unknown.json"
+    "death-note-the-musical-west-end-2026/thestage--unknown.json",
+    "tao-of-glass-west-end-2026/bachtrack--unknown.json",
+    "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
+    "tao-of-glass-west-end-2026/tribune--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json"
+      "data/review-texts/tao-of-glass-west-end-2026/bachtrack--unknown.json"
     ],
     "archive": []
   },

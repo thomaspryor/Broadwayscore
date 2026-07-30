@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { updateHeartbeatState } = require('./outlet-heartbeat-state.js');
+const { updateHeartbeatState, getActionableOutletRows } = require('./outlet-heartbeat-state.js');
 
 describe('updateHeartbeatState', () => {
   test('first red run: no ACTION, streak = 1', () => {
@@ -84,5 +84,44 @@ describe('updateHeartbeatState', () => {
     );
     assert.equal(r3.state['broadwaynews::broadway'].redStreak, 2);
     assert.equal(r3.newlyActionable.length, 1);
+  });
+});
+
+describe('getActionableOutletRows (card #643 baseline/ack)', () => {
+  const rows = [
+    { outletId: 'newsday', market: 'broadway', silentDays: 2370, thresholdDays: 45 },
+    { outletId: 'freshbreak', market: 'broadway', silentDays: 90, thresholdDays: 45 },
+  ];
+
+  test('rows below redStreak threshold are never actionable, baseline or not', () => {
+    const state = { 'newsday::broadway': { redStreak: 1 }, 'freshbreak::broadway': { redStreak: 1 } };
+    const { actionable, baselinedCount, totalCrossedThreshold } = getActionableOutletRows(rows, state, new Set());
+    assert.deepEqual(actionable, []);
+    assert.equal(baselinedCount, 0);
+    assert.equal(totalCrossedThreshold, 0);
+  });
+
+  test('a baselined key crossing the threshold is excluded from actionable but counted', () => {
+    const state = { 'newsday::broadway': { redStreak: 2 }, 'freshbreak::broadway': { redStreak: 2 } };
+    const baseline = new Set(['newsday::broadway']);
+    const { actionable, baselinedCount, totalCrossedThreshold } = getActionableOutletRows(rows, state, baseline);
+    assert.equal(actionable.length, 1);
+    assert.equal(actionable[0].outletId, 'freshbreak');
+    assert.equal(baselinedCount, 1);
+    assert.equal(totalCrossedThreshold, 2);
+  });
+
+  test('no baseline given: everything crossing the threshold is actionable', () => {
+    const state = { 'newsday::broadway': { redStreak: 2 }, 'freshbreak::broadway': { redStreak: 2 } };
+    const { actionable, baselinedCount } = getActionableOutletRows(rows, state);
+    assert.equal(actionable.length, 2);
+    assert.equal(baselinedCount, 0);
+  });
+
+  test('actionable rows sort worst (most silentDays) first', () => {
+    const state = { 'newsday::broadway': { redStreak: 2 }, 'freshbreak::broadway': { redStreak: 2 } };
+    const { actionable } = getActionableOutletRows(rows, state, new Set());
+    assert.equal(actionable[0].outletId, 'newsday');
+    assert.equal(actionable[1].outletId, 'freshbreak');
   });
 });

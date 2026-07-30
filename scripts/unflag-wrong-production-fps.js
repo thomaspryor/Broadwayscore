@@ -30,6 +30,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const VERBOSE = process.argv.includes('--verbose');
@@ -280,8 +281,7 @@ function doUnflag(showId, dirPath, file, data, show, reason) {
   console.log(`${DRY_RUN ? '[DRY RUN] ' : ''}UNFLAG: ${showId}/${file} — ${reason}`);
 
   if (!DRY_RUN) {
-    delete data.wrongProduction;
-    delete data.wrongProductionNote;
+    clearWrongProductionFlags(data, { source: 'unflag-wrong-production-fps.js', reason });
 
     // Set allow flags as needed
     const dates = extractDates(data);

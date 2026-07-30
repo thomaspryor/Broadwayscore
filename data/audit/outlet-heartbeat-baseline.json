@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "description": "Known/acknowledged outlet×market pairs already silent beyond cadence (card #643). The \"Quality: outlet-heartbeat red flags\" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline",
+    "count": 29
+  },
+  "keys": [
+    "ap::broadway",
+    "backstage::broadway",
+    "billboard::broadway",
+    "bloomberg::broadway",
+    "broadwaynews::broadway",
+    "curtainup::broadway",
+    "dailybeast::broadway",
+    "dailybeast::off-broadway",
+    "financialtimes::broadway",
+    "hollywood-reporter::broadway",
+    "huffpost::broadway",
+    "nbcny::broadway",
+    "newsday::broadway",
+    "njcom::broadway",
+    "northjerseycom::broadway",
+    "ny1::broadway",
+    "observer::broadway",
+    "parade::broadway",
+    "philadelphia-inquirer::broadway",
+    "rollingstone::broadway",
+    "slate::broadway",
+    "telegraph::broadway",
+    "thestage::broadway",
+    "time::broadway",
+    "times-uk::broadway",
+    "usatoday::broadway",
+    "village-voice::broadway",
+    "vox::broadway",
+    "wnyc::broadway"
+  ]
+}

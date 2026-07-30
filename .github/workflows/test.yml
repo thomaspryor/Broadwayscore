@@ -1088,6 +1088,15 @@ on:
       - 'scripts/lib/manual-clear-fallback-cooldown.js'
       - 'scripts/lib/manual-clear-fallback-cooldown.test.mjs'
       - 'scripts/lib/clear-failure-flags.js'
+      # Card #642: shared wrongProduction/wrongShow-clearing helper (also
+      # corrects the embedded contentVerification sub-object so
+      # rebuild-all-reviews.js's CV pre-pass can't silently re-promote a
+      # stale verdict back to the top-level flag after a recovery script
+      # clears it). New scripts/lib/ pure fn with colocated *.test.mjs
+      # (auto-run by the lib-test glob step); path-listed here so a solo
+      # edit still triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/wrong-production-clear.js'
+      - 'scripts/lib/wrong-production-clear.test.mjs'
       - 'scripts/llm-scoring/index.ts'
       # Batch API infrastructure (task #505): pure assembly/parse/merge/resume
       # logic + vendor client wrappers for the future nightly --batch mode.

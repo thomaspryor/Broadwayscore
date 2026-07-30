@@ -25,6 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const { pickRerouteTarget, buildShowKeywordSet, findShowKeywordInText, buildMultiProdYearGuard } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
 const REPO_ROOT = '/Users/tompryor/Broadwayscore';
 const reviewTextsDir = path.join(REPO_ROOT, 'data', 'review-texts');
@@ -422,11 +423,7 @@ if (MODE === 'execute') {
       const migrationLabel = CROSS_MARKET ? 'cross-market rescue 2026-04-12' : 'backlog migration 2026-04-11';
       sourceData.routedReason = `${migrationLabel}: ${entry.yearSource}=${entry.detectedYear} matches sibling ${targetShowId} (distance ${distance})`;
       sourceData.routedAt = new Date().toISOString();
-      delete sourceData.wrongProduction;
-      delete sourceData.wrongProductionNote;
-      delete sourceData.wrongProductionReason;
-      delete sourceData.wrongShow;
-      delete sourceData.wrongShowReason;
+      clearWrongProductionFlags(sourceData, { source: 'migrate-reroute-backlog.js', reason: sourceData.routedReason });
 
       // Stamp allowEarlyDate for distance >= 2 to prevent the early-date guard
       // from re-flagging at the target. Distance 0-1 are close enough that
