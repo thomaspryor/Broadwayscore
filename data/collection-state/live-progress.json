@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-07-30T01:07:55.945Z",
+  "updatedAt": "2026-07-30T01:08:54.093Z",
   "processed": 62,
-  "failed": 934,
+  "failed": 944,
   "successRate": "6.2%",
   "tierBreakdown": {
     "playwright": 42,
@@ -10,22 +10,11 @@
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 12,
-    "archiveToday": 17,
+    "archiveToday": 19,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-07-29T20:04:09.103Z",
-      "event": "bb-session",
-      "session": "9a4cc58f",
-      "url": "https://www.nytimes.com/2026/07/20/theater/heated-rivalry-dukes-jane-wickline-ot"
-    },
-    {
-      "t": "2026-07-29T20:04:09.550Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-29T20:04:25.207Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
     },
     {
       "t": "2026-07-30T00:55:37.162Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-30T01:07:59.208Z",
+      "event": "bb-session",
+      "session": "5df4f79d",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-30T01:07:59.851Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
