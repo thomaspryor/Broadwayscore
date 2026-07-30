@@ -53,7 +53,6 @@ const {
   esc,
   renderHealthDigestBlock,
   renderDailyDigestBlock,
-  renderOpeningDigestBlock,
   renderRedditDigestBlock,
 } = require('./lib/autonomous-email-render.js');
 
@@ -123,7 +122,7 @@ function buildSubject({ health = null, now = new Date() } = {}) {
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, now = new Date() } = {}) {
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -131,12 +130,23 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, now
   parts.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
   parts.push(`<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
 
-  // One-line 2-second verdict up top (ship-check fresh-eyes review): the
-  // reader decides from this line alone whether to keep reading.
+  // The 2-second verdict (owner feedback 2026-07-30: "so hard to read and
+  // understand … very unactionable"): NAME what needs attention instead of
+  // just counting it, and say plainly that warnings are routine watch items.
   const errs = sections.health ? (sections.health.errors?.length || 0) : 0;
   const warns = sections.health ? (sections.health.warns?.length || 0) : 0;
-  if (errs || warns) {
-    parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 12px;">${errs} site error${errs === 1 ? '' : 's'}, ${warns} warning${warns === 1 ? '' : 's'} — details below.</p>`);
+  // Health snapshot items are {name, message} objects; tolerate bare strings.
+  const errNames = (sections.health?.errors || []).filter(Boolean)
+    .map((e) => (typeof e === 'string' ? e : e.name)).filter(Boolean);
+  if (errs || stuckCount) {
+    const bits = [];
+    if (errs) bits.push(`Fix needed: ${errNames.slice(0, 3).join('; ') || `${errs} site error${errs === 1 ? '' : 's'}`}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`);
+    if (stuckCount) bits.push(`${stuckCount} pipeline item${stuckCount === 1 ? '' : 's'} flagged "possibly stuck" below`);
+    parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(bits.join(' · '))}</p>`);
+    if (warns) parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${warns} routine warning${warns === 1 ? '' : 's'} below — being watched, no action needed unless new.</p>`);
+  } else if (warns) {
+    parts.push(`<p style="font-size:13px;font-weight:700;color:#15803d;margin:0 0 6px;">Nothing urgent this morning.</p>`);
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${warns} routine warning${warns === 1 ? '' : 's'} below — being watched, no action needed unless new.</p>`);
   } else {
     parts.push(`<p style="font-size:13px;font-weight:700;color:#15803d;margin:0 0 12px;">Nothing needs your attention this morning.</p>`);
   }
@@ -145,12 +155,12 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, now
   }
 
   // Section order (fresh-eyes review): "is the site okay?" first, then what
-  // changed, then scores/openings/Reddit.
+  // changed, then scores/Reddit. The opening-night radar left this email
+  // 2026-07-30 — it's a standalone daily send again (send-opening-digest.js).
   const blocks = [];
   if (sections.health) blocks.push(renderHealthDigestBlock(sections.health));
   if (changesHtml) blocks.push(changesHtml);
   if (sections.dailyDigest) blocks.push(renderDailyDigestBlock(sections.dailyDigest));
-  if (sections.openingDigest) blocks.push(renderOpeningDigestBlock(sections.openingDigest));
   if (sections.redditDigest) blocks.push(renderRedditDigestBlock(sections.redditDigest));
 
   if (blocks.length) {
@@ -187,17 +197,21 @@ async function main() {
   // "What changed while you slept" — fail-soft; a broken collector must
   // never block the digest itself.
   let changesHtml = null;
+  let stuckCount = 0;
   try {
-    const { gatherDigest, renderDigestBlock } = require('./lib/overnight-digest.js');
+    const { gatherDigest, renderDigestBlock, countStuckSignals } = require('./lib/overnight-digest.js');
     const digest = gatherDigest({ repo: REPO });
-    if (digest) changesHtml = renderDigestBlock(digest);
+    if (digest) {
+      changesHtml = renderDigestBlock(digest);
+      stuckCount = countStuckSignals(digest);
+    }
   } catch (err) {
     console.error(`[digest] WARN overnight-changes gathering failed: ${String(err.message).slice(0, 120)}`);
   }
 
   const now = new Date();
   const subject = buildSubject({ health: sections.health, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, now });
 
   if (dryRun) {
     const out = path.join(REPO, 'data', 'audit', 'morning-digest-preview.html');
