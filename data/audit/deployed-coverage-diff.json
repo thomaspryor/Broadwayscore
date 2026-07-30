@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-30T06:51:16.728Z",
+  "generatedAt": "2026-07-30T07:50:41.807Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -7,7 +7,7 @@
   "clean": 236,
   "defective": 1,
   "byType": {
-    "score-drift": 1
+    "missing-from-prod": 1
   },
   "shows": [
     {
@@ -17,13 +17,15 @@
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 68.71 vs local 87.11 (Δ18.4)"
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: times-uk"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 3,
-      "deployedCount": 4
+      "missingFromProd": [
+        "times-uk"
+      ],
+      "localCount": 4,
+      "deployedCount": 3
     }
   ]
 }
