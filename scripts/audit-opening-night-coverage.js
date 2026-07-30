@@ -407,7 +407,10 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
     // upcoming shows saturated the 15-cell budget, starving the one show that
     // had actually opened). They cost nothing to skip: the cell is created on
     // the first run after the show opens.
-    const todayStr = new Date(nowMs).toISOString().slice(0, 10);
+    // ET, not UTC: openingDate is a bare YYYY-MM-DD authored in show-local time,
+    // and toISOString() rolls over at 20:00 ET — which would call a show "opened"
+    // for the last four hours of the day before it actually does.
+    const todayStr = new Date(nowMs).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
     const isRecentOpening = show.openingDate
       && show.openingDate >= standingCutoff
       && show.openingDate <= todayStr;
@@ -550,7 +553,15 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   // healthy hourly cron (ship-check finding, 2026-07-23).
   try {
     fs.mkdirSync(path.dirname(SIGNALS_PATH), { recursive: true });
-    fs.writeFileSync(SIGNALS_PATH, JSON.stringify({ generatedAt: nowIso, reactivations, lateAdds }, null, 2));
+    // noPressNightShows is a SUPPRESSION, so it belongs in the machine-readable
+    // trail, not only in stdout: the failure mode it can't distinguish is "this
+    // engagement had no press night" from "our ingest collected almost nothing
+    // for a real opening", and only an operator (or a downstream digest) reading
+    // the list can tell those apart. A skip nobody can enumerate is a silent one.
+    fs.writeFileSync(SIGNALS_PATH, JSON.stringify({
+      generatedAt: nowIso, reactivations, lateAdds,
+      standingSuppressedNoPressNight: standingCtx.noPressNightShows,
+    }, null, 2));
   } catch (e) { console.error('Failed to write t1-coverage-signals.json:', e.message); }
   return { changed, shows: freshShows.length, cells: cellCount, gaps: gapCount, reactivations, lateAdds };
 }
