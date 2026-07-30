@@ -348,3 +348,57 @@ test('fail-open: an unverifiable zero-token title (2:22) is NOT rejected as wron
   assert.equal(census.count, 1, 'unverifiable title fails OPEN — roundup kept');
   assert.equal(census.wrongRoundup.length, 0, 'not flagged wrong-show');
 });
+
+// ─── B1: standingOutlets pseudo-source ───────────────────────────────────────
+
+test('standingOutlets pseudo-source only activates when opts.outlets is passed', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-standing-'));
+  const outlets = { nytimes: { displayName: 'The New York Times', standingCoverage: true, standingMarkets: ['broadway'] } };
+  // No archives at all — without outlets, a show with zero roundups has no census.
+  const noOutlets = buildCensusFromArchives('show-no-roundup', { archiveDir: dir, market: 'broadway' });
+  assert.equal(noOutlets.hadAnySource, false);
+  // With outlets passed, the standing outlet itself becomes the census — silence
+  // is now visible instead of collapsing to "no-census-yet".
+  const withOutlets = buildCensusFromArchives('show-no-roundup', { archiveDir: dir, market: 'broadway', outlets });
+  assert.equal(withOutlets.hadAnySource, true);
+  assert.equal(withOutlets.count, 1);
+  assert.equal(withOutlets.entries[0].outletId, 'nytimes');
+  assert.deepEqual(withOutlets.sourcesPresent, ['standing-outlets']);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('standingOutlets pseudo-source unions with real archive sources (dedup by outlet)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-standing-union-'));
+  fs.mkdirSync(path.join(dir, 'bww-roundups'));
+  // A real BWW roundup already names nytimes (with a real critic + URL) plus one
+  // other outlet the standing list doesn't know about.
+  fs.writeFileSync(path.join(dir, 'bww-roundups', 'show-x.html'), `<html><head></head><body>
+    <script type="application/ld+json">{"@type":"BlogPosting","author":{"name":"The New York Times - Jesse Green"},"url":"https://nytimes.com/r"}</script>
+    <script type="application/ld+json">{"@type":"BlogPosting","author":{"name":"Vulture"},"url":"https://vulture.com/r"}</script>
+  </body></html>`);
+  const outlets = {
+    nytimes: { displayName: 'The New York Times', standingCoverage: true, standingMarkets: ['broadway'] },
+    nypost: { displayName: 'New York Post', standingCoverage: true, standingMarkets: ['broadway'] },
+  };
+  const sources = [{ name: 'bww-roundup', dir: 'bww-roundups', fn: (html, id) => {
+    const { parseBwwRoundup } = require('./review-census.js');
+    return parseBwwRoundup(html, id);
+  }}];
+  const census = buildCensusFromArchives('show-x', { archiveDir: dir, market: 'broadway', outlets, sources });
+  // 3 total: nytimes (real critic wins over the pseudo-source's 'Unknown'), vulture, nypost (standing-only).
+  assert.equal(census.count, 3);
+  const nyt = census.entries.find((e) => e.outletId === 'nytimes');
+  assert.equal(nyt.critic, 'Jesse Green', 'real critic from the archive beats the pseudo-source Unknown');
+  assert.ok(nyt.sources.includes('bww-roundup') && nyt.sources.includes('standing-outlets'), 'both sources merged');
+  const nypost = census.entries.find((e) => e.outletId === 'nypost');
+  assert.deepEqual(nypost.sources, ['standing-outlets'], 'nypost is standing-only — no roundup names it');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('standingOutlets pseudo-source respects market scoping (west-end outlet does not leak into broadway)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-standing-market-'));
+  const outlets = { timeout: { displayName: 'Time Out', standingCoverage: true, standingMarkets: ['west-end'] } };
+  const census = buildCensusFromArchives('show-bway', { archiveDir: dir, market: 'broadway', outlets });
+  assert.equal(census.hadAnySource, false, 'west-end-only standing outlet must not apply to a broadway show');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
