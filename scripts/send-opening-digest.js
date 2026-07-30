@@ -13,11 +13,11 @@
  *   4. Other recent — opened in last 7 days, no action needed.
  *   5. Other upcoming — opens this week, OB/OWE (not in important list).
  *
- * Card #497 (owner merge decision — one scheduled morning email, not three):
- * this no longer emails on its own. It writes a structured snapshot to
- * data/audit/opening-digest-snapshot.json instead; autonomous-email.js reads
- * it and folds it into the single scheduled morning email, same pattern as
- * card #364's health-check.js digest / #497's daily-digest sibling.
+ * Standalone daily email, restored 2026-07-30 (owner ask): card #497 folded
+ * this into the merged morning email, but the owner missed the standalone
+ * version ("my fave email") and asked for it back. It sends directly again
+ * and no longer writes the morning-email snapshot — the opening radar's home
+ * is THIS email, not a folded block.
  *
  * Importance:
  *   - Broadway + West End: always important
@@ -26,12 +26,14 @@
  *     shows like New Born / Kenrex)
  *
  * Usage:
- *   node scripts/send-opening-digest.js                       # write snapshot
- *   node scripts/send-opening-digest.js --dry-run             # print HTML, don't write
+ *   node scripts/send-opening-digest.js                       # send to owner
+ *   node scripts/send-opening-digest.js --send-to=EMAIL       # override recipient
+ *   node scripts/send-opening-digest.js --dry-run             # print HTML, don't send
  */
 
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 
 const { predictReviewCount } = require('./predict-review-count');
 const { getTier } = require('./lib/outlet-tiers');
@@ -60,10 +62,14 @@ const AUDIENCE_PATH = path.join(DATA_DIR, 'audience-buzz.json');
 const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
 const IMPORTANT_PATH = path.join(DATA_DIR, 'digest-important-shows.json');
 const EXCLUDED_PATH = path.join(DATA_DIR, 'digest-excluded-shows.json');
-const DIGEST_SNAPSHOT_FILE = path.join(DATA_DIR, 'audit', 'opening-digest-snapshot.json');
-const DIGEST_ITEM_CAP = 8;
-
 const SITE_URL = 'https://broadwayscorecard.com';
+
+// RULE 17 (email broadcast safety): transactional send to ONE explicit
+// recipient — never a broadcast, never an audience.
+const FROM_EMAIL = 'updates@broadwayscorecard.com';
+const FROM_NAME = 'Broadway Scorecard Digest';
+const DEFAULT_RECIPIENT = 'thomas.pryor@gmail.com';
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
 // Publish-score thresholds (mirror send-opening-night-broadcast.js)
 function publishThresholds(market) {
@@ -96,6 +102,7 @@ const MIN_AUDIENCE_REVIEWS = 15;
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
+const SEND_TO = (args.find(a => a.startsWith('--send-to=')) || '').split('=')[1] || DEFAULT_RECIPIENT;
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -752,45 +759,50 @@ function buildHtml({ needsHelp, broadcastReady, comingUp, otherRecent, otherUpco
 }
 
 // ---------------------------------------------------------------------------
-// Digest snapshot (card #497 — no longer emails on its own)
+// Resend send (restored 2026-07-30 — owner asked for the standalone email back)
 // ---------------------------------------------------------------------------
 
-// Same subject/bannerText + item-list shape as health-check.js's snapshot
-// (card #364) and send-daily-digest.js's sibling (card #497), so
-// autonomous-email.js can fold all the daily scheduled digests through a
-// shared render block.
-function buildDigestItems(sections) {
-  const items = [];
-  for (const r of sections.needsHelp) {
-    items.push({ title: r.title, detail: `Needs help: ${(r.helpReasons || []).join(' · ')}`, url: r.url });
-  }
-  for (const r of sections.broadcastReady) {
-    items.push({ title: r.title, detail: 'Broadcast ready', url: r.url });
-  }
-  for (const r of sections.comingUp) {
-    items.push({ title: r.title, detail: `Opens ${whenLabel(r.daysFromToday)} · ${formatHumanDate(r.date)}`, url: r.url });
-  }
-  return items;
-}
-
-function writeDigestSnapshot({ subject, bannerText, items }) {
-  const snapshot = {
-    generatedAt: new Date().toISOString(),
-    subject,
-    bannerText,
-    items: items.slice(0, DIGEST_ITEM_CAP),
-    moreCount: Math.max(0, items.length - DIGEST_ITEM_CAP),
-  };
-  fs.mkdirSync(path.dirname(DIGEST_SNAPSHOT_FILE), { recursive: true });
-  fs.writeFileSync(DIGEST_SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
-  console.log(`[Opening Digest] Snapshot written (${snapshot.items.length} item(s)) — folds into the morning email, not sent separately`);
+function postJSON(url, body, headers = {}) {
+  return new Promise((resolve, reject) => {
+    const u = new URL(url);
+    const data = JSON.stringify(body);
+    const req = https.request({
+      hostname: u.hostname,
+      port: 443,
+      path: u.pathname + u.search,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(data), ...headers },
+    }, res => {
+      let chunks = '';
+      res.on('data', c => chunks += c);
+      res.on('end', () => {
+        if (res.statusCode >= 400) return reject(new Error(`HTTP ${res.statusCode}: ${chunks}`));
+        try { resolve(JSON.parse(chunks)); } catch { resolve(chunks); }
+      });
+    });
+    req.on('error', reject);
+    req.write(data);
+    req.end();
+  });
 }
 
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
+const USAGE = `send-opening-digest.js — daily standalone opening-night radar email (rule 17: one explicit recipient).
+
+Usage:
+  node scripts/send-opening-digest.js                   send to the owner
+  node scripts/send-opening-digest.js --send-to=EMAIL   override recipient
+  node scripts/send-opening-digest.js --dry-run         print subject + HTML, send nothing
+  --help, -h   show this message, do nothing else`;
+
 async function main() {
+  // --help must never fall through to a real send (bug class #498/#260).
+  const { hasHelpFlag } = require('./lib/cli-help.js');
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
   const shows = loadJSON(SHOWS_PATH);
   if (!shows) {
     console.error(`shows.json not found at ${SHOWS_PATH}`);
@@ -811,12 +823,11 @@ async function main() {
 
   const todayHuman = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   const subject = buildSubject(sections);
-  const bannerText = buildDigestLead(sections);
-  const items = buildDigestItems(sections);
+  const html = buildHtml({ ...sections, todayHuman });
 
   if (DRY_RUN) {
-    const html = buildHtml({ ...sections, todayHuman });
     console.log(`Subject: ${subject}`);
+    console.log(`Recipient: ${SEND_TO}`);
     console.log(`Needs help: ${sections.needsHelp.length}`);
     console.log(`Broadcast ready: ${sections.broadcastReady.length}`);
     console.log(`Coming up (important): ${sections.comingUp.length}`);
@@ -827,8 +838,21 @@ async function main() {
     return;
   }
 
-  writeDigestSnapshot({ subject, bannerText, items });
-  console.log(`Snapshot written. ${subject}`);
+  if (!RESEND_API_KEY) {
+    console.error('RESEND_API_KEY not set.');
+    process.exit(1);
+  }
+
+  console.log(`Sending opening digest to ${SEND_TO}...`);
+  await postJSON('https://api.resend.com/emails', {
+    from: `${FROM_NAME} <${FROM_EMAIL}>`,
+    to: [SEND_TO],
+    subject,
+    html,
+  }, {
+    'Authorization': `Bearer ${RESEND_API_KEY}`,
+  });
+  console.log(`Sent. ${subject}`);
 }
 
 // Exported for unit tests (tests/unit/opening-digest-gates.test.mjs). The display

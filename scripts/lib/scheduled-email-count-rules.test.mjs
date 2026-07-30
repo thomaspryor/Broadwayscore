@@ -18,6 +18,10 @@ test('classifySubject matches each known scheduled sender', () => {
   assert.equal(classifySubject('1 broadcast-ready · Jul 24').key, 'opening-digest');
   assert.equal(classifySubject('1 upcoming this week · Jul 25').key, 'opening-digest');
   assert.equal(classifySubject('Quiet week').key, 'opening-digest');
+  // Real subjects from the owner's inbox that the pre-restore pattern missed
+  // (buildDigestLead's "opening today"/"tomorrow" clauses).
+  assert.equal(classifySubject('1 opening today · Jul 22').key, 'opening-digest');
+  assert.equal(classifySubject('2 tomorrow · Jul 21').key, 'opening-digest');
   assert.equal(classifySubject('r/Broadway — 2 threads for you').key, 'reddit-engagement-digest');
   assert.equal(classifySubject('[Action Required] Fantasy weekly draft ready — 2026-07-29').key, 'fantasy-weekly');
   assert.equal(classifySubject('BSC Daily: All clear (27/27 passed)').key, 'health-check-digest');
@@ -60,18 +64,32 @@ test('buildDailyReport buckets unclassified owner emails as "other", not a sende
   assert.equal(bucket.other.length, 1);
 });
 
-test('decideDayViolation: 1 sender is fine, 2+ is a violation', () => {
-  const oneSender = { senders: new Map([['autonomous-email', { label: 'x', subjects: ['a'] }]]), other: [] };
-  assert.equal(decideDayViolation(oneSender).violation, false);
+test('decideDayViolation: expected senders are fine, any unexpected sender is a violation', () => {
+  // The expected daily set (morning-digest + opening-digest, restored
+  // 2026-07-30) firing together is the healthy state, not a violation.
+  const expectedPair = {
+    senders: new Map([
+      ['morning-digest', { label: 'Morning digest', subjects: ['Morning digest — Thu, Jul 30'] }],
+      ['opening-digest', { label: 'Opening digest', subjects: ['1 broadcast-ready · Jul 30'] }],
+    ]),
+    other: [],
+  };
+  assert.equal(decideDayViolation(expectedPair).violation, false);
+  assert.equal(decideDayViolation(expectedPair).senderCount, 2);
 
-  const twoSenders = {
+  // A non-expected scheduled sender firing — even alone — is a resurrection.
+  const oneUnexpected = { senders: new Map([['autonomous-email', { label: 'x', subjects: ['a'] }]]), other: [] };
+  assert.equal(decideDayViolation(oneUnexpected).violation, true);
+  assert.deepEqual(decideDayViolation(oneUnexpected).unexpectedKeys, ['autonomous-email']);
+
+  const twoUnexpected = {
     senders: new Map([
       ['autonomous-email', { label: 'x', subjects: ['a'] }],
       ['reddit-engagement-digest', { label: 'y', subjects: ['b'] }],
     ]),
     other: [],
   };
-  const decision = decideDayViolation(twoSenders);
+  const decision = decideDayViolation(twoUnexpected);
   assert.equal(decision.violation, true);
   assert.equal(decision.senderCount, 2);
 

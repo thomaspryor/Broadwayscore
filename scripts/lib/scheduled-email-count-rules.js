@@ -39,7 +39,7 @@ const SCHEDULED_SENDERS = [
   // retirement (2026-07-27, owner decision) — subject built by
   // send-morning-digest.js:buildSubject(); the parity test in
   // scripts/lib/digest-snapshots.test.mjs asserts the two stay in sync.
-  { key: 'morning-digest', label: 'Morning digest', script: 'scripts/send-morning-digest.js', pattern: /^Morning digest/ },
+  { key: 'morning-digest', label: 'Morning digest', script: 'scripts/send-morning-digest.js', pattern: /^Morning digest/, expected: true },
   // Retired 2026-07-27 with the autonomous loop. Kept (like health-check
   // below) so an old send still classifies; `retired`+`replacedBy` lets
   // decideDayViolation forgive the ONE transition day where both the last
@@ -48,7 +48,9 @@ const SCHEDULED_SENDERS = [
   // is a real regression and counts again.
   { key: 'autonomous-email', label: 'Overnight morning email', script: 'scripts/autonomous-email.js', pattern: /^Overnight:/, retired: true, replacedBy: 'morning-digest' },
   { key: 'daily-digest', label: 'Daily Digest (score-drift)', script: 'scripts/send-daily-digest.js', pattern: /Daily Digest:/ },
-  { key: 'opening-digest', label: 'Opening-night admin digest', script: 'scripts/send-opening-digest.js', pattern: /needs help|broadcast-ready|upcoming this week|^Quiet week/ },
+  // Restored as a standalone daily send 2026-07-30 (owner ask — "my fave
+  // email"): the SECOND expected scheduled email, alongside morning-digest.
+  { key: 'opening-digest', label: 'Opening digest (standalone radar)', script: 'scripts/send-opening-digest.js', pattern: /needs help|broadcast-ready|opening today|upcoming this week|^Quiet week|\d+ tomorrow/, expected: true },
   { key: 'reddit-engagement-digest', label: 'Reddit engagement digest', script: 'scripts/reddit-engagement-digest.js', pattern: /^r\/Broadway —/ },
   { key: 'fantasy-weekly', label: 'Fantasy weekly draft notice', script: 'scripts/fantasy-weekly-email.js', pattern: /^\[Action Required\] Fantasy weekly draft ready/ },
   { key: 'health-check-digest', label: 'Health check digest (legacy path)', script: 'scripts/health-check.js', pattern: /^BSC (Daily|URGENT)/ },
@@ -104,16 +106,21 @@ function buildDailyReport(emails, ownerEmail) {
   return days;
 }
 
-// Pure decision for one day's bucket: violates "exactly 1 scheduled digest
-// sender/day" iff 2+ distinct SCHEDULED_SENDERS fired. Unclassified ("other")
-// owner emails (one-off CRITICAL/ACTION alerts routed via owner-alert-router)
-// are reported for visibility but never count toward this verdict — they're
-// a separate, already-monitored noise class (alert-ledger dedup, E2E canary #374).
+// Pure decision for one day's bucket. The expected daily set is every sender
+// with `expected: true` — morning-digest plus (since 2026-07-30, owner ask)
+// the standalone opening-digest. A day violates iff any OTHER scheduled
+// sender fired: that's a retired/folded email resurrecting. Unclassified
+// ("other") owner emails (one-off CRITICAL/ACTION alerts routed via
+// owner-alert-router) are reported for visibility but never count toward
+// this verdict — they're a separate, already-monitored noise class
+// (alert-ledger dedup, E2E canary #374).
 // Transition forgiveness is date-bounded (ship-check codex P0): without a
 // bound, a resurrected retired sender firing alongside its replacement would
 // be forgiven FOREVER. The loop retired 2026-07-27; a few days covers
 // cutover-day overlap plus any straggler queued send.
 const RETIRED_FORGIVENESS_ENDS = '2026-07-30';
+
+const EXPECTED_SENDER_KEYS = SCHEDULED_SENDERS.filter((s) => s.expected).map((s) => s.key);
 
 function decideDayViolation(dayBucket, dayKey = null) {
   const allKeys = [...dayBucket.senders.keys()];
@@ -128,9 +135,11 @@ function decideDayViolation(dayBucket, dayKey = null) {
     const def = SCHEDULED_SENDERS.find((s) => s.key === k);
     return !(inWindow && def && def.retired && def.replacedBy && dayBucket.senders.has(def.replacedBy));
   });
+  const unexpected = senderKeys.filter((k) => !EXPECTED_SENDER_KEYS.includes(k));
   return {
-    violation: senderKeys.length > 1,
+    violation: unexpected.length > 0,
     senderCount: senderKeys.length,
+    unexpectedKeys: unexpected,
     senders: senderKeys.map((k) => ({ key: k, ...dayBucket.senders.get(k) })),
   };
 }
@@ -147,7 +156,12 @@ const PRIMARY_SENDER_KEY = 'morning-digest';
 function decideDayMissing(dayBucket) {
   const senderCount = dayBucket ? dayBucket.senders.size : 0;
   const primaryFired = !!(dayBucket && dayBucket.senders.has(PRIMARY_SENDER_KEY));
-  return { missing: !primaryFired, primaryFired, senderCount };
+  // Every expected sender gets the same dead-sender floor (opening-digest
+  // restored 2026-07-30) — a silently dead CI cron must alarm just like a
+  // silently dead launchd job. `missing` stays keyed to the primary for
+  // callers that predate missingExpected.
+  const missingExpected = EXPECTED_SENDER_KEYS.filter((k) => !(dayBucket && dayBucket.senders.has(k)));
+  return { missing: !primaryFired, primaryFired, senderCount, missingExpected };
 }
 
-module.exports = { SCHEDULED_SENDERS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };
+module.exports = { SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };

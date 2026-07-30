@@ -6,13 +6,15 @@
  * snapshot files consumed by the autonomous loop's morning email. When the
  * loop was retired (2026-07-27, owner decision), the consumer moved here so
  * the digest no longer depends on any loop machinery (ledger, Notion auto
- * states, HMAC approval links). Producers are unchanged:
+ * states, HMAC approval links). Producers:
  *   health-check.js            → data/audit/health-digest-snapshot.json
  *   send-daily-digest.js       → data/audit/daily-digest-snapshot.json
- *   send-opening-digest.js     → data/audit/opening-digest-snapshot.json
  *   reddit-engagement-digest.js→ data/audit/reddit-digest-snapshot.json
  *
- * Adding a 5th digest = one row in SNAPSHOTS plus a renderer mapping in
+ * send-opening-digest.js left this registry 2026-07-30 (owner ask): it sends
+ * its own standalone daily email again and no longer writes a snapshot.
+ *
+ * Adding a digest = one row in SNAPSHOTS plus a renderer mapping in
  * send-morning-digest.js. Pure module, no I/O beyond readSnapshot's fs read
  * (CLAUDE.md §15: tests require() these functions directly).
  */
@@ -32,7 +34,6 @@ const DEFAULT_AUDIT_DIR = path.join(REPO, 'data', 'audit');
 const SNAPSHOTS = [
   { key: 'health', label: 'site health', file: 'health-digest-snapshot.json', maxAgeH: 36 },
   { key: 'dailyDigest', label: 'score-drift digest', file: 'daily-digest-snapshot.json', maxAgeH: 36 },
-  { key: 'openingDigest', label: 'opening-night radar', file: 'opening-digest-snapshot.json', maxAgeH: 36 },
   { key: 'redditDigest', label: 'Reddit engagement', file: 'reddit-digest-snapshot.json', maxAgeH: 36 },
 ];
 

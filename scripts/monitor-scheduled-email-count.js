@@ -139,7 +139,7 @@ async function main() {
   }
 
   if (DRY_RUN) {
-    console.log(`\n${violations.length} of ${sortedDays.length} day(s) violated the "1 scheduled sender/day" goal.`);
+    console.log(`\n${violations.length} of ${sortedDays.length} day(s) had an unexpected scheduled sender fire (outside the expected daily set).`);
     return;
   }
 
@@ -155,33 +155,55 @@ async function main() {
   // recent complete day.
   const { decideDayMissing } = require('./lib/scheduled-email-count-rules');
   const yesterdayKey = dayKeyET(new Date(Date.now() - 24 * 3600 * 1000).toISOString());
-  const missingDecision = yesterdayKey < todayKey ? decideDayMissing(days.get(yesterdayKey)) : { missing: false };
+  const missingDecision = yesterdayKey < todayKey ? decideDayMissing(days.get(yesterdayKey)) : { missing: false, missingExpected: [] };
+  const missingExpected = missingDecision.missingExpected || [];
 
-  if (completeViolations.length === 0 && !missingDecision.missing) {
-    console.log('No violations on complete days in window (and yesterday had a scheduled send).');
+  if (completeViolations.length === 0 && missingExpected.length === 0) {
+    console.log('No violations on complete days in window (and both expected senders fired yesterday).');
     return;
   }
 
   const { routeAlert } = require('./lib/owner-alert-router');
 
-  if (missingDecision.missing) {
-    const result = await routeAlert({
-      conditionKey: `scheduled-email-missing:${yesterdayKey}`,
-      title: `Morning digest did not arrive on ${yesterdayKey}`,
-      description: `The morning-digest sender did not fire on ${yesterdayKey} (ET)${missingDecision.senderCount ? ` (${missingDecision.senderCount} other scheduled sender(s) did — which may itself be a resurrection to investigate)` : ''}. The owner's single daily email (scripts/send-morning-digest.js, launchd com.broadwayscore.morning-digest at 07:30 ET) likely failed silently — Mac asleep, launchd job unloaded, missing env, or a send error.`,
+  // One alert per dead expected sender (morning-digest on launchd,
+  // opening-digest on a CI cron since its 2026-07-30 restore) — either dying
+  // silently is the exact failure this floor exists to catch.
+  const SENDER_HINTS = {
+    'morning-digest': {
+      title: (day) => `Morning digest did not arrive on ${day}`,
+      body: 'The owner\'s morning email (scripts/send-morning-digest.js, launchd com.broadwayscore.morning-digest at 07:30 ET) likely failed silently — Mac asleep, launchd job unloaded, missing env, or a send error.',
       hint: 'On the Mac Studio: launchctl print gui/501/com.broadwayscore.morning-digest (loaded?), then check /tmp/morning-digest-launchd.log, then `node scripts/send-morning-digest.js --send-to-owner` to send manually.',
+    },
+    'opening-digest': {
+      title: (day) => `Opening digest did not arrive on ${day}`,
+      body: 'The standalone opening-night radar email (scripts/send-opening-digest.js, opening-digest.yml cron at 11:00 UTC) did not send — cron silently disabled, RESEND_API_KEY problem, or the script crashed.',
+      hint: 'Check the latest "Opening Digest Email" run in Actions, then `gh workflow run opening-digest.yml` to send manually.',
+    },
+  };
+  for (const key of missingExpected) {
+    const s = SENDER_HINTS[key] || {
+      title: (day) => `Expected scheduled email "${key}" did not arrive on ${day}`,
+      body: 'An expected daily sender did not fire.',
+      hint: 'Check its schedule and last run.',
+    };
+    const others = missingDecision.senderCount || 0;
+    const result = await routeAlert({
+      conditionKey: `scheduled-email-missing:${key}:${yesterdayKey}`,
+      title: s.title(yesterdayKey),
+      description: `The ${key} sender did not fire on ${yesterdayKey} (ET)${others ? ` (${others} other scheduled sender(s) did)` : ''}. ${s.body}`,
+      hint: s.hint,
       severity: 'warning',
       disposition: 'auto',
       cooldownHours: 24,
     });
-    console.log(`${yesterdayKey}: missing scheduled email — routeAlert -> ${result.action}${result.cardId ? ` (card ${result.cardId})` : ''}`);
+    console.log(`${yesterdayKey}: missing ${key} — routeAlert -> ${result.action}${result.cardId ? ` (card ${result.cardId})` : ''}`);
   }
   for (const { dayKey, decision } of completeViolations) {
     const subjectLines = decision.senders.map((s) => `- ${s.label}: ${s.subjects.join('; ')}`).join('\n');
     const result = await routeAlert({
       conditionKey: `scheduled-email-count:${dayKey}`,
-      title: `Scheduled email count: ${decision.senderCount} distinct digest senders fired on ${dayKey}`,
-      description: `The owner's "exactly 1 scheduled digest email/day" goal (cards #364/#497) was violated on ${dayKey}:\n${subjectLines}`,
+      title: `Unexpected scheduled digest sender fired on ${dayKey}: ${(decision.unexpectedKeys || []).join(', ')}`,
+      description: `A scheduled sender outside the expected daily set (morning-digest + opening-digest, cards #364/#497 + owner restore 2026-07-30) fired on ${dayKey}:\n${subjectLines}`,
       hint: 'Fold the extra sender(s) onto the autonomous-email.js snapshot pattern (see cards #364/#497/#511 for the established fix shape).',
       severity: 'warning',
       disposition: 'auto',

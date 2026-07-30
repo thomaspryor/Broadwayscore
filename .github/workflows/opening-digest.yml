@@ -1,26 +1,27 @@
-name: Opening Digest (radar)
+name: Opening Digest Email
 
 on:
   schedule:
-    # 06:15 UTC daily. Card #497 (owner merge decision — exactly one scheduled
-    # email/day, not three): this no longer emails on its own. It writes
-    # data/audit/opening-digest-snapshot.json instead; autonomous-email.js
-    # folds it into the loop's single scheduled morning email. Runs BEFORE the
-    # loop starts (03:30 ET / 07:30 UTC) so the snapshot is same-day fresh —
-    # same reasoning as data-health-check.yml's 06:45 UTC move (card #364).
-    - cron: '15 6 * * *'
-  workflow_dispatch: {}
+    # 11:00 UTC = 7am ET / 12pm BST. Standalone send restored 2026-07-30
+    # (owner ask): card #497 folded this into the merged morning email, but
+    # the owner missed the standalone version ("my fave email") and asked for
+    # it back. Fires ~30 min after the 07:30 ET morning digest.
+    - cron: '0 11 * * *'
+  workflow_dispatch:
+    inputs:
+      send_to:
+        description: 'Override recipient (default: owner)'
+        required: false
+        default: ''
 
 concurrency:
   group: opening-digest
   cancel-in-progress: false
 
 jobs:
-  write-digest:
+  send-digest:
     runs-on: ubuntu-latest
     timeout-minutes: 8
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v5
 
@@ -33,27 +34,21 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
-      - name: Write opening digest snapshot
-        run: node scripts/send-opening-digest.js
-
-      - name: Commit updated snapshot
-        if: always()
+      - name: Send opening digest
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/opening-digest-snapshot.json
-          if git diff --staged --quiet; then
-            echo "No snapshot changes"
-          else
-            git commit -m "data: Update opening digest snapshot [skip ci]"
-            bash scripts/lib/push-with-retry.sh
+          ARGS=""
+          if [ -n "${{ github.event.inputs.send_to }}" ]; then
+            ARGS="--send-to=${{ github.event.inputs.send_to }}"
           fi
+          node scripts/send-opening-digest.js $ARGS
 
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Opening Digest Snapshot Failed'
-          description: 'Opening digest script crashed — its snapshot may not have written, so tomorrow''s morning email won''t carry the opening-night radar.'
+          title: 'Opening Digest Email Failed'
+          description: 'The standalone opening digest (the owner''s daily radar email) did not send.'
           severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

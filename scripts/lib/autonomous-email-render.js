@@ -231,11 +231,14 @@ function renderHealthDigestBlock(health) {
   // way to click through. http(s) only: a queued javascript:/data: url would
   // otherwise become a live link in the owner's inbox.
   const safeUrl = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u) ? u : null);
+  // Owner reformat 2026-07-30 ("so hard to read"): queued router lines were
+  // arriving as full paragraphs — clip; the alert ledger keeps the full text.
+  const clip = (s, n) => { const t = String(s); return t.length > n ? `${t.slice(0, n - 1)}…` : t; };
   const validQueued = queued.filter(Boolean);
   const queuedHtml = validQueued.length
     ? `<div style="margin-top:8px;">${validQueued.map(q => {
         const href = safeUrl(q.url);
-        return `<div style="font-size:12px;color:#555;margin:0 0 3px;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` — ${esc(q.description)}` : ''}${href ? ` <a href="${esc(href)}" style="color:#2563eb;">view</a>` : ''}</div>`;
+        return `<div style="font-size:12px;color:#555;margin:0 0 3px;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` — ${esc(clip(q.description, 200))}` : ''}${href ? ` <a href="${esc(href)}" style="color:#2563eb;">view</a>` : ''}</div>`;
       }).join('')}</div>`
     : '';
 
@@ -246,15 +249,19 @@ function renderHealthDigestBlock(health) {
     </div>`;
   }
 
+  // Owner reformat 2026-07-30 ("wall of text, unactionable"): errors keep a
+  // (clipped) detail line — they're the actionable rows; warnings render as
+  // one name-only line each. The name is enough to recognize a known watch
+  // item, and the health snapshot keeps the full text for digging in.
   const rows = [...errors.map(e => ({ ...e, kind: 'error' })), ...warns.map(w => ({ ...w, kind: 'warn' }))]
-    .slice(0, 6)
-    .map(r => `<div style="margin:0 0 6px;">
+    .slice(0, 8)
+    .map(r => `<div style="margin:0 0 ${r.kind === 'error' ? 6 : 3}px;">
       <span style="display:inline-block;background:${r.kind === 'error' ? '#dc2626' : '#b45309'};color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;vertical-align:middle;text-transform:uppercase;">${r.kind}</span>
       <span style="font-size:13px;color:#333;margin-left:6px;">${esc(r.name)}</span>
-      ${r.message ? `<div style="font-size:11px;color:#999;margin:2px 0 0 2px;">${esc(r.message)}</div>` : ''}
+      ${r.kind === 'error' && r.message ? `<div style="font-size:11px;color:#999;margin:2px 0 0 2px;">${esc(clip(r.message, 200))}</div>` : ''}
     </div>`).join('');
   const total = errors.length + warns.length;
-  const more = total > 6 ? `<div style="font-size:11px;color:#999;margin-top:4px;">+${total - 6} more</div>` : '';
+  const more = total > 8 ? `<div style="font-size:11px;color:#999;margin-top:4px;">+${total - 8} more</div>` : '';
   const escalation = health.consecutiveErrorDays > 1
     ? ` <span style="color:#999;font-weight:400;">(day ${health.consecutiveErrorDays})</span>` : '';
 
