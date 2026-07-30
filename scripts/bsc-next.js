@@ -583,7 +583,11 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
   const res = launchCmuxFn(task, seed, undefined, model, project);
   if (res.ok) {
-    console.log(`[bsc-next] opened Cmux workspace ${res.ref} on #${task.id}: ${task.subject} (claude verified running${res.adoptedLate ? ', adopted after a late start' : ''})`);
+    // Report the TAB TITLE, not the workspace number — the owner's cmux
+    // sidebar shows titles only, so "workspace:165" is unfindable for them
+    // (owner feedback 2026-07-30, repeat complaint across sessions).
+    const tabTitle = buildAutoTitle({ subject: task.subject, project, model });
+    console.log(`[bsc-next] opened Cmux tab "${tabTitle}" (${res.ref}) on #${task.id} (claude verified running${res.adoptedLate ? ', adopted after a late start' : ''})`);
     recordCiRedClaim();
     // Journal the launch (task #334) so a later bsc-prune sweep can attribute
     // a dead shell back to this task, and a future dispatch can see how many
