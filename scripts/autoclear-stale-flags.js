@@ -142,6 +142,14 @@ function main() {
     const fp = path.join(REVIEW_TEXTS_DIR, showId, file);
     const d = loadJson(fp, null);
     if (!d) continue;
+    // detectFlagContradiction (lib/flag-contradiction.js) only ever returns
+    // 'wrongProduction' or 'wrongShow' — but fail loudly rather than silently
+    // defaulting an unrecognized value to the full (wrongProduction-granting)
+    // clear mode, which would be the dangerous direction to guess wrong
+    // (Codex adversarial review, 2026-07-30).
+    if (flag !== 'wrongProduction' && flag !== 'wrongShow') {
+      throw new Error(`autoclear-stale-flags.js: unrecognized flag "${flag}" for ${showId}/${file}`);
+    }
     clearWrongProductionFlags(d, {
       source: 'autoclear-stale-flags.js',
       reason: 'shadow-gated-contradiction',

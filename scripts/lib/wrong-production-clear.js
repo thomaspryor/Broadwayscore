@@ -37,6 +37,20 @@
  * stamps wrongShowOverride, the narrower, already-established convention
  * (flag-combined-reviews.js) checked by the same guards via an OR alongside
  * wrongProductionOverride (review-guards.js:1015/1017).
+ *
+ * Known scope tradeoff (Codex adversarial review, 2026-07-30): wrongShowOnly
+ * STILL forces contentVerification.{isValid,wrongArticle,isFilmTv} to their
+ * "valid" values, even though a caller's wrongShow-only evidence (e.g. a venue
+ * match or a URL that legitimately co-occurs across show dirs) doesn't
+ * technically prove the content isn't ALSO a film/TV review or a wrong
+ * article for unrelated reasons. This is unavoidable, not an oversight:
+ * rebuild-all-reviews.js's CV pre-pass promotes wrongShow=true from EITHER
+ * cv.wrongArticle===true OR cv.isFilmTv===true (rebuild-all-reviews.js
+ * ~line 2134), so leaving either field stale would silently undo the
+ * recovery on the very next rebuild — the exact bug this helper exists to
+ * fix. wrongProduction itself (the field the 2026-06-21 contamination
+ * incident was about) is NOT touched in this mode; only the two fields that
+ * directly gate wrongShow re-promotion are corrected.
  */
 
 const { classifyContentTier } = require('./content-quality');

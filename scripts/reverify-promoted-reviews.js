@@ -120,6 +120,13 @@ async function main() {
           reason: result.reasoning || 'stored fullText verified as valid by LLM',
           wrongShowOnly: true,
         });
+        // The helper wraps contentVerification.reasoning as "Superseded by ... recovery"
+        // for the general case of recovering from a STALE verdict. Here the CV was just
+        // freshly (re)computed 2 lines above from the current fullText — it's not stale,
+        // so restore the LLM's own reasoning verbatim rather than the generic wrapper
+        // (Codex adversarial review, 2026-07-30: avoid losing the fresh verdict's own
+        // explanation behind an unstructured "Superseded by" prefix).
+        c.data.contentVerification.reasoning = result.reasoning || c.data.contentVerification.reasoning;
         c.data.wrongShowAutoCleared = "reverify: stored fullText verified as valid by LLM";
         c.data.wrongShowAutoClearedAt = new Date().toISOString().split("T")[0];
         delete c.data.contentVerificationPromoted;
