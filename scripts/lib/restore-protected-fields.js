@@ -53,7 +53,12 @@ const MANUAL_FIELDS = [
   'wrongArticleManualClear',
   'wrongShowManualClear',
   'wrongProductionOverride',
+  'wrongProductionOverrideReason',
+  'wrongProductionOverrideSetAt',
+  'wrongProductionOverrideSetBy',
   'wrongShowOverride',
+  'wrongShowOverrideReason',
+  'wrongShowOverrideAt',
   'humanReviewedWrongProduction',
   'humanReviewedWrongArticle',
   // The wrongProduction / wrongShow flags themselves. Added 2026-05-17 alongside
