@@ -47,12 +47,13 @@ function loadReviewEvidence(filePath = EVIDENCE_PATH) {
 function hasFreshEvidence(evidenceShows, showId, { now = new Date(), lookbackDays = 21 } = {}) {
   const e = evidenceShows && evidenceShows[showId];
   if (!e || !e.latest) return false;
-  const ts = Date.parse(e.latest);
+  const ts = Date.parse(e.latest); // date-only string parses as UTC midnight
   if (!Number.isFinite(ts)) return false;
-  const cutoff = new Date(now);
-  cutoff.setDate(cutoff.getDate() - lookbackDays);
-  cutoff.setHours(0, 0, 0, 0);
-  return ts >= cutoff.getTime() && ts <= now.getTime() + 24 * 3600 * 1000;
+  // Cutoff in UTC to match: a local-midnight cutoff diverges from CI by up
+  // to a day at the window boundary (QA ship-check finding).
+  const n = now instanceof Date ? now : new Date(now);
+  const cutoff = Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate() - lookbackDays);
+  return ts >= cutoff && ts <= n.getTime() + 24 * 3600 * 1000;
 }
 
 /**
@@ -82,9 +83,16 @@ function mergeEvidence(existingShows, items, { now = new Date() } = {}) {
 
 function saveReviewEvidence(shows, { now = new Date(), filePath = EVIDENCE_PATH } = {}) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  // Deterministic key order → unchanged corpus produces no file diff.
   const sorted = Object.fromEntries(Object.entries(shows).sort(([a], [b]) => a.localeCompare(b)));
+  // Skip the write when the shows content is unchanged — generatedAt would
+  // otherwise dirty the file on every 6h run and force a no-op commit (QA
+  // ship-check finding).
+  try {
+    const existing = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    if (JSON.stringify(existing.shows) === JSON.stringify(sorted)) return false;
+  } catch { /* absent/corrupt → write fresh */ }
   fs.writeFileSync(filePath, JSON.stringify({ generatedAt: now.toISOString(), shows: sorted }, null, 2) + '\n');
+  return true;
 }
 
 module.exports = {

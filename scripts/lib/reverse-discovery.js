@@ -130,7 +130,19 @@ function extractShowTitleFromBwwRoundup(rawTitle) {
  * possessive-stripped variant.
  */
 const PLAYBILL_ROUNDUP_RE = /^Reviews?:\s*What\s+D(?:o|oes|id)\s+(?:the\s+)?Critics?\s+Think\s+of\s+(.+?)\s*\??$/i;
-const PLAYBILL_MARKET_TAIL_RE = /\s+(?:off[- ]broadway|on\s+broadway|off[- ]west\s+end|in\s+the\s+west\s+end|in\s+london)$/i;
+const PLAYBILL_MARKET_TAIL_RE = /\s+(?:off[- ]broadway|on\s+broadway|off[- ]west\s+end|(?:in|on)\s+the\s+west\s+end|in\s+london)$/i;
+
+// Non-NYC Playbill roundups must be DROPPED before matching, not just have
+// their tail stripped — "Evita in the West End" would otherwise strip to
+// "Evita" and attach evidence to the catalogued BROADWAY Evita (QA ship-check
+// finding, verified live: resolved to evita-2026/upcoming). Playbill's WE
+// coverage is redundant with the WET roundup source anyway.
+const PLAYBILL_NON_NYC_RE = /\b(?:west\s+end(?!\s+theat(?:re|er))|in\s+london|(?:national|us|uk)\s+tour|on\s+tour)\b/i;
+function isPlaybillNonNycRoundup(rawTitle) {
+  const decoded = decodeEntities(rawTitle);
+  const m = decoded.match(PLAYBILL_ROUNDUP_RE);
+  return !!(m && PLAYBILL_NON_NYC_RE.test(m[1]));
+}
 
 function extractShowTitleFromPlaybillRoundup(rawTitle) {
   const decoded = decodeEntities(rawTitle).trim();
@@ -205,7 +217,13 @@ const MONTHS = {
 };
 const MONTH_DAY = '((?:January|February|March|April|May|June|July|August|September|October|November|December|Jan\\.|Feb\\.|Mar\\.|Apr\\.|Aug\\.|Sept\\.|Oct\\.|Nov\\.|Dec\\.)\\s+\\d{1,2}(?:,?\\s+\\d{4})?)';
 
-function resolveDate(monthDayStr, referenceDate) {
+function resolveDate(monthDayStr, referenceDate, opts = {}) {
+  // windowMonths [min, max] bounds the resolved date relative to the article
+  // date. Per-field direction matters (QA ship-check finding): "began
+  // previews" cannot resolve AFTER the article, "through <date>" cannot
+  // resolve months BEFORE it — closest-year alone picks the wrong side at
+  // year boundaries.
+  const [minMonths, maxMonths] = opts.windowMonths || [-9, 15];
   const m = String(monthDayStr || '').match(/^([A-Za-z.]+)\s+(\d{1,2})(?:,?\s+(\d{4}))?$/);
   if (!m) return null;
   const month = MONTHS[m[1].toLowerCase()];
@@ -213,32 +231,56 @@ function resolveDate(monthDayStr, referenceDate) {
   const day = parseInt(m[2], 10);
   const ref = referenceDate instanceof Date ? referenceDate : new Date(referenceDate);
   if (!Number.isFinite(ref.getTime())) return null;
+  // Reject impossible calendar days ("February 30") instead of letting
+  // Date.UTC normalize them into March (Codex ship-check finding).
+  const validDay = (y) => {
+    const d = new Date(Date.UTC(y, month, day));
+    return d.getUTCMonth() === month && d.getUTCDate() === day;
+  };
   if (m[3]) {
-    const d = new Date(Date.UTC(parseInt(m[3], 10), month, day));
+    const y = parseInt(m[3], 10);
+    if (!validDay(y)) return null;
+    const d = new Date(Date.UTC(y, month, day));
+    const diffMonths = (d - ref) / (30 * 86400000);
+    if (diffMonths < minMonths || diffMonths > maxMonths) return null;
     return d.toISOString().split('T')[0];
   }
   // No explicit year: pick the candidate year closest to the reference, then
   // require it inside [-9mo, +15mo] of the article date.
+  // Window-filter FIRST, then take the closest survivor — closest-first
+  // would resolve "January 5" from a December article forward even when the
+  // field's window says the date must lie in the past.
   const candidates = [ref.getUTCFullYear() - 1, ref.getUTCFullYear(), ref.getUTCFullYear() + 1]
+    .filter(validDay)
     .map((y) => new Date(Date.UTC(y, month, day)))
+    .filter((d) => {
+      const diffMonths = (d - ref) / (30 * 86400000);
+      return diffMonths >= minMonths && diffMonths <= maxMonths;
+    })
     .sort((a, b) => Math.abs(a - ref) - Math.abs(b - ref));
-  const best = candidates[0];
-  const diffMonths = (best - ref) / (30 * 86400000);
-  if (diffMonths < -9 || diffMonths > 15) return null;
-  return best.toISOString().split('T')[0];
+  if (candidates.length === 0) return null;
+  return candidates[0].toISOString().split('T')[0];
 }
 
 function extractOpeningFactsFromArticle(text, referenceDate) {
   const t = String(text || '').replace(/\s+/g, ' ');
   const facts = { previewsStartDate: null, openingDate: null, closingDate: null };
-  const prev = t.match(new RegExp(`beg[ai]n(?:s)?\\s+previews\\s+(?:on\\s+)?${MONTH_DAY}`, 'i'));
-  if (prev) facts.previewsStartDate = resolveDate(prev[1], referenceDate);
+  // Per-field direction windows (QA ship-check finding): previews began
+  // BEFORE the roundup ran; the roundup runs AT opening; the run continues
+  // THROUGH a future date. Closest-year alone picks the wrong side of a
+  // year boundary for previews/closing.
+  // Tense picks the direction: "began previews" is past, "begins previews"
+  // is an announcement of a near-future date.
+  const prevPast = t.match(new RegExp(`began\\s+previews\\s+(?:on\\s+)?${MONTH_DAY}`, 'i'));
+  const prevFuture = !prevPast && t.match(new RegExp(`begins?\\s+previews\\s+(?:on\\s+)?${MONTH_DAY}`, 'i'));
+  if (prevPast) facts.previewsStartDate = resolveDate(prevPast[1], referenceDate, { windowMonths: [-15, 0.2] });
+  else if (prevFuture) facts.previewsStartDate = resolveDate(prevFuture[1], referenceDate, { windowMonths: [-0.2, 4] });
   const open = t.match(new RegExp(
     `(?:officially\\s+open(?:s|ed|ing)?|open(?:s|ed)\\s+officially|opening\\s+(?:is\\s+set\\s+for|night\\s+(?:is|was)))\\s+(?:on\\s+)?${MONTH_DAY}`, 'i'
   ));
-  if (open) facts.openingDate = resolveDate(open[1], referenceDate);
+  if (open) facts.openingDate = resolveDate(open[1], referenceDate, { windowMonths: [-2, 2] });
   const close = t.match(new RegExp(`(?:continue|run(?:s|ning)?|performances)[^.]{0,80}?through\\s+${MONTH_DAY}`, 'i'));
-  if (close) facts.closingDate = resolveDate(close[1], referenceDate);
+  if (close) facts.closingDate = resolveDate(close[1], referenceDate, { windowMonths: [-1, 15] });
   return facts;
 }
 
@@ -408,6 +450,7 @@ module.exports = {
   extractShowTitleFromWetRoundup,
   extractShowTitleFromBwwRoundup,
   extractShowTitleFromPlaybillRoundup,
+  isPlaybillNonNycRoundup,
   titleCandidates,
   resolveMatchedShowId,
   extractOpeningFactsFromArticle,

@@ -49,7 +49,7 @@ async function main(argv = process.argv.slice(2)) {
   const path = require('path');
   const { fetchPage } = require('./lib/scraper');
   const { extractOpeningFactsFromArticle } = require('./lib/reverse-discovery');
-  const { loadReviewEvidence } = require('./lib/review-evidence');
+  const { loadReviewEvidence, hasFreshEvidence } = require('./lib/review-evidence');
   const { atomicWriteShowsJson } = require('./lib/atomic-shows-write');
 
   const dryRun = argv.includes('--dry-run');
@@ -72,6 +72,9 @@ async function main(argv = process.argv.slice(2)) {
     if (onlyShow && showId !== onlyShow) continue;
     const show = byId.get(showId);
     if (!show || show.openingDate) continue; // non-null openingDate = nothing to do
+    // Same canonical freshness gate the selector uses — a 60d-retained stale
+    // item must not drive a metadata write (Codex ship-check finding).
+    if (!hasFreshEvidence(evidence, showId)) continue;
     const items = [...(e.items || [])].sort(
       (a, b) => SOURCE_ORDER.indexOf(a.source) - SOURCE_ORDER.indexOf(b.source)
     );
@@ -84,10 +87,15 @@ async function main(argv = process.argv.slice(2)) {
   for (const { show, item } of targets.slice(0, limit)) {
     try {
       const page = await fetchPage(item.url);
+      // Parse only the HEAD of the article body: roundup pages carry
+      // related-story rails and footer teasers whose dates belong to OTHER
+      // productions (Codex ship-check finding). The dates sentence sits in
+      // the article's opening paragraphs on every source we ingest.
       const text = String(page.content || '')
         .replace(/<script[\s\S]*?<\/script>/gi, ' ')
         .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-        .replace(/<[^>]+>/g, ' ');
+        .replace(/<[^>]+>/g, ' ')
+        .slice(0, 8000);
       const facts = extractOpeningFactsFromArticle(text, item.date);
       const changes = {};
       if (facts.openingDate && !show.openingDate) {

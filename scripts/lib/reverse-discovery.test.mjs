@@ -370,3 +370,31 @@ test('titleMatchesIndex: possessive-variant match prevents false missing-show ca
   const index = buildShowTitleIndex(shows, 'nyc');
   assert.equal(titleMatchesIndex("Cat Cohen's Broad Strokes", index), true);
 });
+
+// ── Ship-check fix regressions (QA + Codex findings, 2026-07-30) ──
+
+const { isPlaybillNonNycRoundup } = require('./reverse-discovery.js');
+
+test('Playbill non-NYC roundups are droppable, not tail-stripped (Evita crossover)', () => {
+  assert.equal(isPlaybillNonNycRoundup('Reviews: What Do the Critics Think of Evita in the West End?'), true);
+  assert.equal(isPlaybillNonNycRoundup('Reviews: What Do Critics Think of Macbeth in London?'), true);
+  assert.equal(isPlaybillNonNycRoundup("Reviews: What Do Critics Think of Cat Cohen's Broad Strokes Off-Broadway?"), false);
+  assert.equal(isPlaybillNonNycRoundup('Non-roundup headline about the West End'), false);
+});
+
+test('resolveDate direction windows: previews resolve backward, closing forward', () => {
+  // December article, "January 5" previews (past tense window): must resolve to LAST January.
+  assert.equal(resolveDate('January 5', '2026-12-20', { windowMonths: [-15, 0.2] }), '2026-01-05');
+  // December article, "September 25" closing: must resolve FORWARD (not 3 months past).
+  assert.equal(resolveDate('September 25', '2026-12-20', { windowMonths: [-1, 15] }), '2027-09-25');
+  // Explicit year outside the window is rejected.
+  assert.equal(resolveDate('July 27, 2020', '2026-07-28', { windowMonths: [-2, 2] }), null);
+});
+
+test('extractOpeningFactsFromArticle applies per-field windows across a year boundary', () => {
+  const text = 'The production began previews December 20, officially opening January 8. Performances continue through March 1.';
+  const facts = extractOpeningFactsFromArticle(text, '2027-01-09');
+  assert.equal(facts.previewsStartDate, '2026-12-20');
+  assert.equal(facts.openingDate, '2027-01-08');
+  assert.equal(facts.closingDate, '2027-03-01');
+});

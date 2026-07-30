@@ -68,7 +68,7 @@ async function main(argv = process.argv.slice(2)) {
   const { fetchPage, fetchJSON } = require('./lib/scraper');
   const {
     extractShowTitleFromWetRoundup, titleFromDtliSlug, extractShowTitleFromBwwRoundup,
-    extractShowTitleFromPlaybillRoundup, resolveMatchedShowId,
+    extractShowTitleFromPlaybillRoundup, isPlaybillNonNycRoundup, resolveMatchedShowId,
     isBwwNonStageTieIn, isBwwNonNycRoundup,
     buildShowTitleIndex, findUnmatchedCandidates, candidateKey,
   } = require('./lib/reverse-discovery');
@@ -214,8 +214,9 @@ async function main(argv = process.argv.slice(2)) {
   // Roundup headlines are "Reviews: What Do Critics Think of TITLE …?" —
   // Playbill publishes one for essentially every notable NYC opening, same
   // day the reviews drop (Broad Strokes, 2026-07-28). The RSS window is
-  // shallow (~25 items / a few days), so this source's value is FRESH
-  // openings — the sitemap-based sources carry the longer window.
+  // SHALLOW — measured live at 10 items / ~12h — which is why this workflow
+  // runs every 6h: a roundup can rotate out within a day. --days barely
+  // matters here; the sitemap-based sources carry the longer window.
   if (sourceFilter === 'all' || sourceFilter === 'playbill') {
     sourcesTried++;
     try {
@@ -224,19 +225,29 @@ async function main(argv = process.argv.slice(2)) {
         /<item>(?:(?!<\/item>)[\s\S])*?<title>([^<]+)<\/title>(?:(?!<\/item>)[\s\S])*?<link>([^<]+)<\/link>(?:(?!<\/item>)[\s\S])*?<dc:date>([^<]+)<\/dc:date>(?:(?!<\/item>)[\s\S])*?<\/item>/g
       )];
       if (entries.length === 0) throw new Error('Playbill RSS parsed to 0 <item> entries');
-      let parsed = 0, roundups = 0;
+      let parsed = 0, roundups = 0, filtered = 0;
       for (const [, rawTitle, url, pubDate] of entries) {
         const ts = Date.parse(pubDate);
         if (!Number.isFinite(ts) || ts < cutoff) continue;
-        if (/^Reviews?:/i.test(rawTitle)) roundups++;
+        // Drift guard counts only the FULL roundup shape this extractor
+        // parses — a looser /^Reviews?:/ count false-alarms on headlines
+        // like "Reviews: What Are Critics Saying About X" (QA finding).
+        const isRoundupShaped = /^Reviews?:\s*What\s+D(?:o|oes|id)\s/i.test(rawTitle);
+        if (isRoundupShaped) roundups++;
+        // Non-NYC roundups are DROPPED, not tail-stripped: "Evita in the
+        // West End" would strip to "Evita" and attach evidence to the
+        // catalogued Broadway production (QA finding, verified). Playbill's
+        // WE coverage is redundant with the WET source.
+        if (isPlaybillNonNycRoundup(rawTitle)) { filtered++; continue; }
         const title = extractShowTitleFromPlaybillRoundup(rawTitle);
         if (!title) continue;
         parsed++;
         items.push({ title, source: 'playbill-roundup', url: url.trim(), date: pubDate.trim(), market: 'nyc' });
       }
-      // Same title-format drift guard as the other roundup sources.
-      if (roundups > 0 && parsed === 0) throw new Error(`Playbill title-format drift: ${roundups} "Reviews:" posts, 0 parsed`);
-      console.log(`Playbill: ${parsed} roundups within ${days}d (of ${entries.length} RSS items)`);
+      if (roundups > filtered && parsed === 0) {
+        throw new Error(`Playbill title-format drift: ${roundups} roundup posts (${filtered} deliberately filtered), 0 parsed`);
+      }
+      console.log(`Playbill: ${parsed} roundups within ${days}d (of ${entries.length} RSS items, ${filtered} filtered as non-NYC)`);
       sourcesOk++;
     } catch (e) {
       console.error(`Playbill source failed: ${e.message}`);
