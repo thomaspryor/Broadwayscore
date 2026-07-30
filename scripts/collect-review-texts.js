@@ -100,7 +100,7 @@ const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/text-cleaning');
 
 // LLM-based content verification
-const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
+const { verifyContent, quickValidityCheck, resolveCvMarket } = require('./lib/content-verifier');
 const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-registry');
 
 // Content quality detection (garbage/invalid content filter)
@@ -6285,11 +6285,12 @@ async function processReview(review) {
           criticName: review.critic,
           openingDate: showMeta?.openingDate || null,
           venue: showMeta?.venue || null,
-          // Opera shows (type='opera') get the 'opera' market in marketConfig — Met
-          // is the canonical venue, so the prompt asks LLM to flag wrong PRODUCTION
-          // (different season/cast) but NOT wrong VENUE. Without this, off-broadway
-          // prompt flags Met-venue mentions on every Met review.
-          market: showMeta?.type === 'opera' ? 'opera' : (showMeta?.category || 'broadway'),
+          // Opera shows (type='opera') get the 'opera' market, and shows at known
+          // prestige/arena venues (Radio City, Park Ave Armory, Carnegie Hall, NYU
+          // Skirball, NYC Center) get 'special-venue' — both tell the LLM the named
+          // venue IS canonical instead of flagging wrong PRODUCTION/VENUE on every
+          // mention. See resolveCvMarket() in lib/content-verifier.js.
+          market: resolveCvMarket(showMeta),
           // Long-runners (Mousetrap 1952, Phantom WE 1986, etc.) get a prompt
           // adjustment that tells the LLM not to flag wrongProduction based on
           // publishDate-vs-openingDate age gap alone. See scripts/lib/long-runner-registry.js
