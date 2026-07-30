@@ -304,13 +304,21 @@ function runRecovery(planIds, runId) {
   ];
   for (const a of ledger.recoveryActions(autoCards, planIds)) {
     try {
+      // A crashed attempt is a failure of the same kind attemptCard's fail()
+      // records — it must count toward attempt-memory's park streak the same
+      // way, or a card that repeatedly crashes the executor gets re-attempted
+      // forever (ship-check finding, task #635). contentHash is best-effort:
+      // a failed fetch here must not block the recovery action itself.
+      let contentHash = null;
       if (a.action === 'fail') {
         transition('attempted', 'run.fail', { reason: a.reason }); // validate the move
         notionUpdate(a.id, ['--auto', 'failed']);
+        try { contentHash = computeContentHash(notionBrain(['get', a.id])); }
+        catch (e) { console.error(`[run] WARN could not compute contentHash for recovered ${a.id}: ${e.message.slice(0, 120)}`); }
       } else {
         notionUpdate(a.id, ['--auto', 'clear']);
       }
-      ledger.appendEntry({ event: 'recovery', runId, cardId: a.id, note: `${a.action}: ${a.reason}` });
+      ledger.appendEntry({ event: 'recovery', runId, cardId: a.id, ...(contentHash ? { contentHash } : {}), note: `${a.action}: ${a.reason}` });
       console.error(`[run] recovery: ${a.id} → ${a.action} (${a.reason})`);
     } catch (err) {
       console.error(`[run] WARN recovery failed for ${a.id}: ${err.message.slice(0, 120)}`);
