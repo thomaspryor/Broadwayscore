@@ -15,13 +15,17 @@ test('classifySubject matches each known scheduled sender', () => {
   assert.equal(classifySubject('Daily Digest: 12 changes on 2026-07-26').key, 'daily-digest');
   assert.equal(classifySubject('⚠️ Daily Digest: 25 changes (1 warning) on 2026-07-24').key, 'daily-digest');
   assert.equal(classifySubject('1 needs help · Jul 26').key, 'opening-digest');
+  assert.equal(classifySubject('2 need help · 1 broadcast-ready · Jul 26').key, 'opening-digest');
   assert.equal(classifySubject('1 broadcast-ready · Jul 24').key, 'opening-digest');
   assert.equal(classifySubject('1 upcoming this week · Jul 25').key, 'opening-digest');
-  assert.equal(classifySubject('Quiet week').key, 'opening-digest');
+  assert.equal(classifySubject('Quiet week · Jul 27').key, 'opening-digest');
   // Real subjects from the owner's inbox that the pre-restore pattern missed
   // (buildDigestLead's "opening today"/"tomorrow" clauses).
   assert.equal(classifySubject('1 opening today · Jul 22').key, 'opening-digest');
   assert.equal(classifySubject('2 tomorrow · Jul 21').key, 'opening-digest');
+  // An unrelated owner email mentioning "needs help" must NOT classify as
+  // the opening digest (it would mask a dead digest in decideDayMissing).
+  assert.equal(classifySubject('[ACTION] Show X needs help with images'), null);
   assert.equal(classifySubject('r/Broadway — 2 threads for you').key, 'reddit-engagement-digest');
   assert.equal(classifySubject('[Action Required] Fantasy weekly draft ready — 2026-07-29').key, 'fantasy-weekly');
   assert.equal(classifySubject('BSC Daily: All clear (27/27 passed)').key, 'health-check-digest');
@@ -150,6 +154,59 @@ test('decideDayMissing: zero scheduled senders (or no bucket at all) is a miss',
   assert.equal(decideDayMissing({ senders: new Map(), other: [{ subject: '[CRITICAL] x' }] }).missing, true);
   const ok = { senders: new Map([['morning-digest', { label: 'Morning digest', subjects: ['Morning digest — Tue, Jul 28'] }]]), other: [] };
   assert.equal(decideDayMissing(ok).missing, false);
+});
+
+test('decideDayMissing: expectedSince gates the opening-digest floor; both-fired day is clean', () => {
+  const morningOnly = { senders: new Map([['morning-digest', { label: 'Morning digest', subjects: ['Morning digest — Tue, Jul 28'] }]]), other: [] };
+  // Day BEFORE the restore's first cron day: opening-digest absence is not a miss.
+  assert.deepEqual(decideDayMissing(morningOnly, '2026-07-30').missingExpected, []);
+  // Day ON/AFTER: it is.
+  assert.deepEqual(decideDayMissing(morningOnly, '2026-07-31').missingExpected, ['opening-digest']);
+  // No dayKey (fail-closed): still flagged.
+  assert.deepEqual(decideDayMissing(morningOnly).missingExpected, ['opening-digest']);
+  const both = {
+    senders: new Map([
+      ['morning-digest', { label: 'Morning digest', subjects: ['Morning digest — Fri, Jul 31'] }],
+      ['opening-digest', { label: 'Opening digest', subjects: ['Quiet week · Jul 31'] }],
+    ]),
+    other: [],
+  };
+  assert.deepEqual(decideDayMissing(both, '2026-07-31').missingExpected, []);
+});
+
+test('fantasy-weekly is allowed: never a violation, never required daily', () => {
+  const wednesday = {
+    senders: new Map([
+      ['morning-digest', { label: 'Morning digest', subjects: ['Morning digest — Wed, Aug 5'] }],
+      ['opening-digest', { label: 'Opening digest', subjects: ['1 broadcast-ready · Aug 5'] }],
+      ['fantasy-weekly', { label: 'Fantasy weekly', subjects: ['[Action Required] Fantasy weekly draft ready — 2026-08-05'] }],
+    ]),
+    other: [],
+  };
+  assert.equal(decideDayViolation(wednesday, '2026-08-05').violation, false);
+  assert.deepEqual(decideDayMissing(wednesday, '2026-08-05').missingExpected, []);
+});
+
+// Subject↔classifier parity for the opening digest — the same contract the
+// morning digest has in digest-snapshots.test.mjs. buildDigestLead's real
+// clause variants must all classify, or a real send reads as "missing".
+test('opening digest buildSubject output always classifies as opening-digest', async () => {
+  const { buildDigestLead } = await import('../send-opening-digest.js');
+  const mk = (sections) => `${buildDigestLead(sections)} · Jul 30`;
+  const row = {};
+  const variants = [
+    { needsHelp: [row, row], broadcastReady: [], comingUp: [] },              // "2 need help" (plural!)
+    { needsHelp: [row], broadcastReady: [], comingUp: [] },                   // "1 needs help"
+    { needsHelp: [], broadcastReady: [row], comingUp: [] },                   // "1 broadcast-ready"
+    { needsHelp: [], broadcastReady: [], comingUp: [{ daysFromToday: 0 }] },  // "1 opening today"
+    { needsHelp: [], broadcastReady: [], comingUp: [{ daysFromToday: 1 }] },  // "1 tomorrow"
+    { needsHelp: [], broadcastReady: [], comingUp: [{ daysFromToday: 3 }] },  // "1 upcoming this week"
+    { needsHelp: [], broadcastReady: [], comingUp: [] },                      // "Quiet week"
+  ];
+  for (const sections of variants) {
+    const subject = mk(sections);
+    assert.equal(classifySubject(subject)?.key, 'opening-digest', `subject "${subject}" must classify`);
+  }
 });
 
 test('real-world regression fixture: 2026-07-26 had 3+ distinct scheduled senders (pre-#497 fold)', () => {

@@ -2,10 +2,11 @@ name: Opening Digest Email
 
 on:
   schedule:
-    # 11:00 UTC = 7am ET / 12pm BST. Standalone send restored 2026-07-30
-    # (owner ask): card #497 folded this into the merged morning email, but
-    # the owner missed the standalone version ("my fave email") and asked for
-    # it back. Fires ~30 min after the 07:30 ET morning digest.
+    # 11:00 UTC = 7:00am EDT (6:00am EST) / 12pm BST — lands BEFORE the
+    # 07:30 ET morning digest. Standalone send restored 2026-07-30 (owner
+    # ask): card #497 folded this into the merged morning email, but the
+    # owner missed the standalone version ("my fave email") and asked for
+    # it back.
     - cron: '0 11 * * *'
   workflow_dispatch:
     inputs:
@@ -37,12 +38,15 @@ jobs:
       - name: Send opening digest
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          # env: indirection (not inline ${{ }} in the run body) so a crafted
+          # dispatch input can't inject shell (ship-check QA finding).
+          SEND_TO_INPUT: ${{ github.event.inputs.send_to }}
         run: |
-          ARGS=""
-          if [ -n "${{ github.event.inputs.send_to }}" ]; then
-            ARGS="--send-to=${{ github.event.inputs.send_to }}"
+          if [ -n "$SEND_TO_INPUT" ]; then
+            node scripts/send-opening-digest.js "--send-to=$SEND_TO_INPUT"
+          else
+            node scripts/send-opening-digest.js
           fi
-          node scripts/send-opening-digest.js $ARGS
 
       - name: Notify on failure
         if: failure()
