@@ -29,6 +29,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { wouldAutoClear } = require('./lib/autoclear-shadow');
 const { assessBatchClearGate } = require('./lib/autoclear-batch-gate');
+const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -141,8 +142,13 @@ function main() {
     const fp = path.join(REVIEW_TEXTS_DIR, showId, file);
     const d = loadJson(fp, null);
     if (!d) continue;
-    if (flag === 'wrongProduction') { d.wrongProduction = false; d.wrongProductionManualClear = true; }
-    else if (flag === 'wrongShow') { d.wrongShow = false; d.wrongShowManualClear = true; }
+    clearWrongProductionFlags(d, {
+      source: 'autoclear-stale-flags.js',
+      reason: 'shadow-gated-contradiction',
+      wrongShowOnly: flag === 'wrongShow',
+    });
+    if (flag === 'wrongProduction') { d.wrongProductionManualClear = true; }
+    else if (flag === 'wrongShow') { d.wrongShowManualClear = true; }
     d.autoClearedAt = new Date().toISOString();
     d.autoClearReason = 'shadow-gated-contradiction';
     safeWriteReview(fp, d);

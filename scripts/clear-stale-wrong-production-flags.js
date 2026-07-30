@@ -34,6 +34,7 @@ const fs = require('fs');
 const path = require('path');
 const { isLikelyStaleWrongProduction } = require('./lib/review-guards');
 const { CLAUDE_SONNET } = require('./lib/models');
+const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
@@ -198,9 +199,10 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
   for (const d of toClear) {
     const orig = fs.readFileSync(d.c.filePath, 'utf8');
     const hadTrailingNewline = orig.endsWith('\n');
-    d.c.data.wrongProduction = false;
+    const clearNote = `[2026-04-26 cleared stale wrongProduction — predicate + Sonnet (high-conf) confirmed real review of ${d.c.show.title} — Notion 34e637c5-416f-811d]`;
+    clearWrongProductionFlags(d.c.data, { source: 'clear-stale-wrong-production-flags.js', reason: clearNote });
     d.c.data.wrongProductionManualClear = true;
-    d.c.data.wrongProductionClearedNote = `[2026-04-26 cleared stale wrongProduction — predicate + Sonnet (high-conf) confirmed real review of ${d.c.show.title} — Notion 34e637c5-416f-811d]`;
+    d.c.data.wrongProductionClearedNote = clearNote;
     fs.writeFileSync(d.c.filePath, JSON.stringify(d.c.data, null, 2) + (hadTrailingNewline ? '\n' : ''));
     cleared++;
   }

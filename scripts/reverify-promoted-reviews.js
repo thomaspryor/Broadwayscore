@@ -18,6 +18,7 @@ const path = require("path");
 const { verifyContent, contentHash } = require("./lib/content-verifier");
 const { isLondonMarket } = require("./lib/venue-classification");
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
 const dir = path.join(__dirname, "..", "data", "review-texts");
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "shows.json"), "utf8"));
@@ -114,7 +115,11 @@ async function main() {
       // If the new verification says the content IS valid, clear wrongShow
       if (result.isValid && !result.wrongArticle && !result.wrongProduction && !result.isFilmTv) {
         console.log(`  >>> CLEARING wrongShow — fullText is valid!`);
-        c.data.wrongShow = false;
+        clearWrongProductionFlags(c.data, {
+          source: 'reverify-promoted-reviews.js',
+          reason: result.reasoning || 'stored fullText verified as valid by LLM',
+          wrongShowOnly: true,
+        });
         c.data.wrongShowAutoCleared = "reverify: stored fullText verified as valid by LLM";
         c.data.wrongShowAutoClearedAt = new Date().toISOString().split("T")[0];
         delete c.data.contentVerificationPromoted;

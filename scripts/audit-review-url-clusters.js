@@ -35,6 +35,7 @@ const { decideClusterAction } = require('./lib/cluster-canonical');
 const { contentMatchesFiledUnderVenue } = require('./lib/cross-production-guards');
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 const { GENERIC_VENUE_SLUGS } = require('./lib/venue-classification');
+const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 let isIncludableForRebuild = () => false;
 try { ({ isIncludableForRebuild } = require('./lib/review-guards')); } catch { /* optional */ }
 
@@ -215,7 +216,11 @@ function applyRecover(clusterCtx, decision) {
   // Clear a stale wrongShow ONLY when the body named the venue (decideClusterAction
   // already required venueMatch to keep a wrongShow file as a candidate).
   if (canonData.wrongShow === true) {
-    merged.wrongShow = false;
+    clearWrongProductionFlags(merged, {
+      source: 'audit-review-url-clusters.js',
+      reason: `byline-explosion-canonical, venue-body-matched (${STAMP})`,
+      wrongShowOnly: true,
+    });
     merged.wrongShowManualClear = true;
     prot.add('wrongShow'); prot.add('wrongShowManualClear');
   }
