@@ -11,6 +11,8 @@
  *   node scripts/audit-opening-night-coverage.js --show=SHOW_ID     # check specific show
  *   node scripts/audit-opening-night-coverage.js --dispatch         # auto-dispatch collection for gaps
  *   node scripts/audit-opening-night-coverage.js --alert            # send Discord alerts for gaps
+ *   node scripts/audit-opening-night-coverage.js --scoreboard --alert         # B3: queue coverage-% scoreboard into daily digest
+ *   node scripts/audit-opening-night-coverage.js --ack=showId::outletId [--ack-note="..."]  # silence a known-permanent gap
  */
 
 const fs = require('fs');
@@ -23,7 +25,7 @@ const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage
 const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
 const { routeAlert } = require('./lib/owner-alert-router');
 const { capNewStandingCells, DEFAULT_MAX_NEW_PER_RUN } = require('./lib/standing-outlets');
-const { loadAcks, buildScoreboardText } = require('./lib/t1-scoreboard');
+const { loadAcks, addAck, saveAcks, buildScoreboardText } = require('./lib/t1-scoreboard');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const LEDGER_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-ledger.json');
@@ -66,11 +68,14 @@ const WE_FLOOR_REVIEWS = 6;
 const WE_FLOOR_SCORED = 3;
 const FLOOR_WINDOW_MIN_HOURS = 36;
 const FLOOR_WINDOW_MAX_HOURS = 72;
+// B1: how recent a show's opening must be to get standingOutlets applied.
+// Deliberately its OWN constant, not opts.ledgerDays — see --standing-recency-days.
+const DEFAULT_STANDING_RECENCY_DAYS = 90;
 
 function parseArgs() {
   const args = process.argv.slice(2);
   const opts = { days: 3, dispatch: false, alert: false, showId: null,
-    writeLedger: false, ledgerPath: LEDGER_PATH, ledgerDays: 90 };
+    writeLedger: false, ledgerPath: LEDGER_PATH, ledgerDays: 90, standingRecencyDays: DEFAULT_STANDING_RECENCY_DAYS };
   for (const arg of args) {
     if (arg.startsWith('--days=')) opts.days = parseInt(arg.split('=')[1], 10);
     if (arg.startsWith('--show=')) opts.showId = arg.split('=')[1];
@@ -81,6 +86,13 @@ function parseArgs() {
     if (arg === '--write-ledger') opts.writeLedger = true;
     if (arg.startsWith('--ledger-path=')) opts.ledgerPath = arg.split('=')[1];
     if (arg.startsWith('--ledger-days=')) opts.ledgerDays = parseInt(arg.split('=')[1], 10);
+    // B1's "how recent must an opening be to get standingOutlets applied" is
+    // DELIBERATELY independent of --ledger-days (how far back the whole ledger
+    // scans) — conflating them meant a backfill run with --ledger-days=365
+    // would silently create a year of "always expected" standing-outlet gaps
+    // for old shows, or a shortened ledger-days run would exclude valid
+    // recent openings (adversarial review finding, 2026-07-30).
+    if (arg.startsWith('--standing-recency-days=')) opts.standingRecencyDays = parseInt(arg.split('=')[1], 10);
     // B1 fan-out cap override (default lib/standing-outlets.js DEFAULT_MAX_NEW_PER_RUN).
     if (arg.startsWith('--standing-cap=')) opts.standingCap = parseInt(arg.split('=')[1], 10);
     // Digest mode (S2-T7): read the ledger, list GAP cells, ACTION-email only NEW
@@ -91,6 +103,12 @@ function parseArgs() {
     // routeAlert(disposition:'digest'). Dry-run without --alert.
     if (arg === '--scoreboard') opts.scoreboard = true;
     if (arg.startsWith('--market-stats-path=')) opts.marketStatsPath = arg.split('=')[1];
+    // Ack a known-permanent gap (e.g. "hamilton-2015::nytimes") so the scoreboard's
+    // oldest-gap callout stops repeating it — the cell still counts against
+    // coverage %, only the callout is silenced. Adversarial review finding
+    // (2026-07-30): the ack file/helpers existed with no operator-facing writer.
+    if (arg.startsWith('--ack=')) opts.ackKey = arg.split('=')[1];
+    if (arg.startsWith('--ack-note=')) opts.ackNote = arg.slice('--ack-note='.length);
   }
   opts.digestStatePath = opts.digestStatePath || DIGEST_STATE_PATH;
   return opts;
@@ -141,7 +159,13 @@ function outletNoReviewExpected(outlets, outletId, nowMs) {
 // Omitted entirely (undefined) → identical behavior to before B1 (no pseudo-source,
 // no cap), which is how the non-ledger console audit path still calls this indirectly
 // via its own separate computation (unaffected — it doesn't call computeShowCells).
-function computeShowCells(show, reviews, outlets, nowMs, standingCtx) {
+// `censusOpts` (test-only, optional): merged into the opts passed to
+// buildCensusFromArchives — lets unit tests inject a synthetic `sources` array
+// instead of relying on real files under data/aggregator-archive/ (a private,
+// gitignored repo not present in every checkout). Never passed by any
+// production call site (writeLedger calls with 5 args only), so this is a
+// no-op in real usage.
+function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts) {
   const showId = show.id || show.slug;
   const category = show.category || 'broadway';
   const scoredOutlets = new Set(
@@ -159,7 +183,10 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx) {
   const applyStanding = standingCtx && category === 'broadway';
   let census = null;
   try {
-    census = buildCensusFromArchives(showId, applyStanding ? { show, market, outlets } : { show, market });
+    census = buildCensusFromArchives(showId, {
+      ...(applyStanding ? { show, market, outlets } : { show, market }),
+      ...censusOpts,
+    });
   }
   catch (_) { return { cells: [], reactivations, coverage: null }; }
   if (!census || !census.hadAnySource) return { cells: [], reactivations, coverage: null };
@@ -176,38 +203,56 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx) {
   const clockAgeHours = Number.isFinite(clockMs) ? (nowMs - clockMs) / 3600000 : null;
 
   const cells = [];
+  // Coverage accounting is intentionally SEPARATE from the ledger-display cells
+  // below: totalTier already counts every tier-gated census entry regardless of
+  // source, so "covered" must be computed the same way — an entry filtered out
+  // of the ledger for display reasons (supplementary-only source, fan-out cap)
+  // is still genuinely un-scored and must still count as missing here, or the
+  // % silently inflates (ship-check finding, adversarial review 2026-07-30:
+  // a supplementary-only-sourced entry was skipped from `cells` but NOT from
+  // `totalTier`, so `covered = totalTier - cells.length` counted it as covered).
+  let coverageMissing = 0;
+  let noReviewExpectedCount = 0;
   for (const m of cVerdict.missing) {
-    const srcs = m.sources || [];
-    if (srcs.length > 0 && srcs.every((s) => SUPPLEMENTARY_CENSUS_SOURCES.has(s))) continue; // soft — skip
     // T1 ledger means T1/T2: a roundup-named T3 blog (or unregistered junk id)
-    // is not a retrieval SLA cell — same scoping as the audit's dispatch triggers.
+    // is not a retrieval SLA cell — same scoping as the audit's dispatch triggers,
+    // and the same gate totalTier itself uses (so coverage math stays consistent).
     if (!isDispatchTierOutlet(outlets, m.outletId)) continue;
+    const noReviewExpected = outletNoReviewExpected(outlets, m.outletId, nowMs);
+    if (noReviewExpected) noReviewExpectedCount++; else coverageMissing++;
+
+    const srcs = m.sources || [];
+    if (srcs.length > 0 && srcs.every((s) => SUPPLEMENTARY_CENSUS_SOURCES.has(s))) continue; // soft — skip from the LEDGER only
     // B1 fan-out cap: a cell discovered ONLY via the standingOutlets pseudo-source
-    // (no archive names it) is exactly the new-discovery class that can burst
-    // across many shows in one registry edit — throttle new ones, never ones
-    // already tracked in the prior ledger. See lib/standing-outlets.js.
-    if (standingCtx && srcs.includes('standing-outlets')) {
+    // (no archive names it — sources is EXACTLY ['standing-outlets'], not a real
+    // archive union'd with it) is the new-discovery class that can burst across
+    // many shows in one registry edit — throttle new ones from the LEDGER only,
+    // never from coverage (still genuinely missing) and never cells already
+    // tracked in the prior ledger. See lib/standing-outlets.js. Scoping to the
+    // standing-only case (not "includes") matters: an ordinary archive-confirmed
+    // gap that ALSO happens to be a standing outlet must never consume the cap
+    // budget meant for outlet-silence discovery (adversarial review finding).
+    if (standingCtx && srcs.length === 1 && srcs[0] === 'standing-outlets') {
       const allowed = capNewStandingCells(standingCtx.existingCellKeys, standingCtx.counter, showId, [m.outletId]);
-      if (allowed.length === 0) continue; // deferred to a later cycle
+      if (allowed.length === 0) continue; // deferred to a later cycle (ledger only)
     }
-    const state = classifyCell({
-      noReviewExpected: outletNoReviewExpected(outlets, m.outletId, nowMs),
-      suppressed: false,
-      clockAgeHours,
-    });
+    const state = classifyCell({ noReviewExpected, suppressed: false, clockAgeHours });
     cells.push({ outletId: m.outletId, state, url: m.url || '' });
   }
   for (const m of cVerdict.suppressedMissing) {
     cells.push({ outletId: m.outletId, state: 'SUPPRESSED', url: m.url || '' });
+    // suppressedMissing isn't pre-filtered to tier<=2 the way cVerdict.missing's
+    // loop above is — gate it the same way totalTier is, so a hypothetical
+    // non-tier suppressed outlet can't skew the denominator/numerator apart.
+    if (isDispatchTierOutlet(outlets, m.outletId)) coverageMissing++;
   }
-  // NO_REVIEW_EXPECTED cells are excluded from the coverage denominator (the
-  // registry says this outlet doesn't apply here — it should neither help nor
-  // hurt the %), matching t1-ledger's classifyCell rationale.
-  const noReviewExpectedCount = cells.filter((c) => c.state === 'NO_REVIEW_EXPECTED').length;
+  // NO_REVIEW_EXPECTED entries are excluded from BOTH numerator and denominator
+  // (the registry says this outlet doesn't apply here — it should neither help
+  // nor hurt the %), matching t1-ledger's classifyCell rationale.
   const coverage = {
     totalTier,
     denominator: totalTier - noReviewExpectedCount,
-    covered: totalTier - cells.length,
+    covered: totalTier - noReviewExpectedCount - coverageMissing,
   };
   return { cells, reactivations, coverage };
 }
@@ -217,6 +262,9 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx) {
 // writes deterministic bytes so an unchanged corpus produces NO file diff.
 function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   const cutoff = new Date(nowMs - opts.ledgerDays * 86400000).toISOString().split('T')[0];
+  // B1's own cutoff — NEVER opts.ledgerDays. See DEFAULT_STANDING_RECENCY_DAYS.
+  const standingCutoff = new Date(nowMs - (opts.standingRecencyDays || DEFAULT_STANDING_RECENCY_DAYS) * 86400000)
+    .toISOString().split('T')[0];
   // Evidence-anchored arm (v2 reconciler plan, Sprint A): a show with fresh
   // review-evidence — a roundup naming it published recently — belongs in the
   // ledger even when its status is stuck in previews/announced or its
@@ -259,7 +307,7 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
     // without this gate every long-running revival would get a permanent,
     // unactionable GAP the day this shipped). Everything else about the show
     // (archive-source census, dispatch, digest) is completely unaffected.
-    const isRecentOpening = show.openingDate && show.openingDate >= cutoff;
+    const isRecentOpening = show.openingDate && show.openingDate >= standingCutoff;
     const showStandingCtx = isRecentOpening ? standingCtx : null;
     const { cells, reactivations: showReactivations, coverage } = computeShowCells(show, reviews, outlets, nowMs, showStandingCtx);
     for (const outletId of showReactivations) {
@@ -497,6 +545,12 @@ async function main() {
 
   if (opts.digest) { await runDigest(opts); return; }
   if (opts.scoreboard) { await runScoreboard(opts); return; }
+  if (opts.ackKey) {
+    const acks = addAck(loadAcks(), opts.ackKey, opts.ackNote || '', new Date().toISOString());
+    saveAcks(acks);
+    console.log(`Acked "${opts.ackKey}" — it stays in coverage %, but drops out of the scoreboard's oldest-gap callout.`);
+    return;
+  }
 
   if (opts.writeLedger) {
     const showsData = loadJSON('shows.json');
@@ -886,7 +940,11 @@ async function dispatchCollection(gaps) {
   }
 }
 
-main().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}
+
+module.exports = { computeShowCells, censusMarket };
