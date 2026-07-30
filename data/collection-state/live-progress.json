@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-30T01:51:52.977Z",
+  "updatedAt": "2026-07-30T02:07:08.715Z",
   "processed": 62,
-  "failed": 993,
-  "successRate": "5.9%",
+  "failed": 1016,
+  "successRate": "5.8%",
   "tierBreakdown": {
     "playwright": 42,
     "amp": 0,
@@ -10,23 +10,11 @@
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 12,
-    "archiveToday": 23,
+    "archiveToday": 25,
     "archive": 6
   },
   "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-07-29T20:17:54.977Z",
-      "event": "bb-session",
-      "session": "b5cd20ed",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
-    },
-    {
-      "t": "2026-07-29T20:18:11.569Z",
-      "event": "bb-session",
-      "session": "e324fbda",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
-    },
     {
       "t": "2026-07-29T22:54:53.260Z",
       "event": "bb-session",
@@ -123,6 +111,17 @@
     },
     {
       "t": "2026-07-30T01:50:14.934Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-30T02:05:24.724Z",
+      "event": "bb-session",
+      "session": "bdcc561f",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-30T02:05:25.736Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
