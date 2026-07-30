@@ -76,7 +76,11 @@
       "domain": "nytimes.com",
       "accessModel": "paywalled",
       "hasCredentials": true,
-      "isDualMarket": true
+      "isDualMarket": true,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "vulture": {
       "displayName": "Vulture",
@@ -132,7 +136,11 @@
         "hollywoodwood-reporter"
       ],
       "domain": "hollywoodreporter.com",
-      "accessModel": "metered"
+      "accessModel": "metered",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "newyorker": {
       "displayName": "The New Yorker",
@@ -240,7 +248,11 @@
       ],
       "domain": "nypost.com",
       "accessModel": "free",
-      "starScale": 4
+      "starScale": 4,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "theatermania": {
       "displayName": "TheaterMania",

@@ -22,6 +22,7 @@ const { buildDigest } = require('./lib/t1-digest');
 const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
 const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
 const { routeAlert } = require('./lib/owner-alert-router');
+const { capNewStandingCells, DEFAULT_MAX_NEW_PER_RUN } = require('./lib/standing-outlets');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const LEDGER_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-ledger.json');
@@ -76,6 +77,8 @@ function parseArgs() {
     if (arg === '--write-ledger') opts.writeLedger = true;
     if (arg.startsWith('--ledger-path=')) opts.ledgerPath = arg.split('=')[1];
     if (arg.startsWith('--ledger-days=')) opts.ledgerDays = parseInt(arg.split('=')[1], 10);
+    // B1 fan-out cap override (default lib/standing-outlets.js DEFAULT_MAX_NEW_PER_RUN).
+    if (arg.startsWith('--standing-cap=')) opts.standingCap = parseInt(arg.split('=')[1], 10);
     // Digest mode (S2-T7): read the ledger, list GAP cells, ACTION-email only NEW
     // >24h gaps. Without --alert it is a pure dry-run (prints, emails nothing).
     if (arg === '--digest') opts.digest = true;
@@ -122,15 +125,26 @@ function outletNoReviewExpected(outlets, outletId, nowMs) {
 // Also returns `reactivations` (S4-T3): outlets with a SCORED review this run whose
 // registry entry statically claims they don't review theatre — always surfaced,
 // decayed or not, since a real review directly contradicts the determination.
-function computeShowCells(show, reviews, outlets, nowMs) {
+//
+// `standingCtx` (B1, optional): { existingCellKeys: Set<"showId::outletId">, counter: {used,cap} }.
+// When passed, buildCensusFromArchives also unions in the standingOutlets pseudo-source
+// (outlets/market both flow through opts) and any resulting cell whose census source
+// is standing-outlets-only is subject to the fan-out cap — see lib/standing-outlets.js.
+// Omitted entirely (undefined) → identical behavior to before B1 (no pseudo-source,
+// no cap), which is how the non-ledger console audit path still calls this indirectly
+// via its own separate computation (unaffected — it doesn't call computeShowCells).
+function computeShowCells(show, reviews, outlets, nowMs, standingCtx) {
   const showId = show.id || show.slug;
   const category = show.category || 'broadway';
   const scoredOutlets = new Set(
     reviews.filter(r => r.showId === showId && r.assignedScore != null).map(r => r.outletId).filter(Boolean)
   );
   const reactivations = detectReactivation(outlets, scoredOutlets);
+  const market = censusMarket(category);
   let census = null;
-  try { census = buildCensusFromArchives(showId, { show, market: censusMarket(category) }); }
+  try {
+    census = buildCensusFromArchives(showId, standingCtx ? { show, market, outlets } : { show, market });
+  }
   catch (_) { return { cells: [], reactivations }; }
   if (!census || !census.hadAnySource) return { cells: [], reactivations };
   const cVerdict = censusVerdict(census, scoredOutlets, { suppressed: CI_UNFETCHABLE_OUTLETS });
@@ -148,6 +162,14 @@ function computeShowCells(show, reviews, outlets, nowMs) {
     // T1 ledger means T1/T2: a roundup-named T3 blog (or unregistered junk id)
     // is not a retrieval SLA cell — same scoping as the audit's dispatch triggers.
     if (!isDispatchTierOutlet(outlets, m.outletId)) continue;
+    // B1 fan-out cap: a cell discovered ONLY via the standingOutlets pseudo-source
+    // (no archive names it) is exactly the new-discovery class that can burst
+    // across many shows in one registry edit — throttle new ones, never ones
+    // already tracked in the prior ledger. See lib/standing-outlets.js.
+    if (standingCtx && srcs.includes('standing-outlets')) {
+      const allowed = capNewStandingCells(standingCtx.existingCellKeys, standingCtx.counter, showId, [m.outletId]);
+      if (allowed.length === 0) continue; // deferred to a later cycle
+    }
     const state = classifyCell({
       noReviewExpected: outletNoReviewExpected(outlets, m.outletId, nowMs),
       suppressed: false,
@@ -180,9 +202,26 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   const freshShows = [];
   const reactivations = []; // S4-T3: { showId, title, outletId }
   const lateAdds = []; // S5-T1: { showId, title, ...detectLateAdd() }
+
+  // B1 fan-out cap setup — loaded BEFORE the per-show loop (not after, like the
+  // mergeLedger `prev` read below) so computeShowCells can tell "already tracked"
+  // cells apart from genuinely new standing-outlet discovery this run.
+  let prev = {};
+  try { prev = JSON.parse(fs.readFileSync(opts.ledgerPath, 'utf8')); } catch (_) { prev = {}; }
+  const existingCellKeys = new Set();
+  for (const showId of Object.keys(prev.shows || {})) {
+    for (const outletId of Object.keys((prev.shows[showId] || {}).cells || {})) {
+      existingCellKeys.add(`${showId}::${outletId}`);
+    }
+  }
+  const standingCtx = {
+    existingCellKeys,
+    counter: { used: 0, cap: opts.standingCap != null ? opts.standingCap : DEFAULT_MAX_NEW_PER_RUN },
+  };
+
   for (const show of target) {
     const showId = show.id || show.slug;
-    const { cells, reactivations: showReactivations } = computeShowCells(show, reviews, outlets, nowMs);
+    const { cells, reactivations: showReactivations } = computeShowCells(show, reviews, outlets, nowMs, standingCtx);
     for (const outletId of showReactivations) {
       reactivations.push({ showId, title: show.title, outletId });
     }
@@ -219,8 +258,6 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
       cells,
     });
   }
-  let prev = {};
-  try { prev = JSON.parse(fs.readFileSync(opts.ledgerPath, 'utf8')); } catch (_) { prev = {}; }
   const ledger = mergeLedger(prev, freshShows, nowIso);
   const bytes = serializeLedger(ledger);
   const before = fs.existsSync(opts.ledgerPath) ? fs.readFileSync(opts.ledgerPath, 'utf8') : '';
@@ -232,6 +269,9 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   const cellCount = freshShows.reduce((n, s) => n + s.cells.length, 0);
   const gapCount = freshShows.reduce((n, s) => n + s.cells.filter(c => c.state === 'GAP').length, 0);
   console.log(`T1 coverage ledger: ${freshShows.length} shows, ${cellCount} open cells (${gapCount} GAP) → ${opts.ledgerPath} ${changed ? '[written]' : '[unchanged — no commit]'}`);
+  if (standingCtx.counter.used > 0) {
+    console.log(`  standing-outlets: ${standingCtx.counter.used}/${standingCtx.counter.cap} new cell(s) this run (fan-out cap)`);
+  }
   if (reactivations.length) {
     console.log(`\n⚠️  Reactivation: ${reactivations.length} scored review(s) from a registry "no review expected" outlet:`);
     for (const r of reactivations) console.log(`  ${r.showId} / ${r.outletId} — update outlet-registry.json coverageExpectation`);
