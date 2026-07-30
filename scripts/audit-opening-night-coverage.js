@@ -24,7 +24,7 @@ const { buildDigest } = require('./lib/t1-digest');
 const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
 const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
 const { routeAlert } = require('./lib/owner-alert-router');
-const { capNewStandingCells, DEFAULT_MAX_NEW_PER_RUN } = require('./lib/standing-outlets');
+const { capNewStandingCells, DEFAULT_MAX_NEW_PER_RUN, isNoPressNightShow } = require('./lib/standing-outlets');
 const { loadAcks, addAck, saveAcks, buildScoreboardText } = require('./lib/t1-scoreboard');
 const {
   isOutletTripped, outletBreakerInfo, updateBreaker, buildEvidence,
@@ -214,7 +214,15 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts
   // the pseudo-source there produced false GAP cells for Black Swan/CrazySexyCool
   // regional tryouts in a live smoke-test). censusMarket's fallback is intentional
   // for roundup routing and stays untouched; this is a narrower gate on top of it.
-  const applyStanding = standingCtx && category === 'broadway';
+  // ...and only to shows that actually held a press night — see
+  // isNoPressNightShow. Recorded on standingCtx so the run can report how many
+  // shows it skipped (a silent cap reads as "covered everything").
+  const scoredDispatchTier = [...scoredOutlets].filter((id) => isDispatchTierOutlet(outlets, id)).length;
+  const noPressNight = category === 'broadway' && isNoPressNightShow(successAgeHours, scoredDispatchTier);
+  if (standingCtx && noPressNight && Array.isArray(standingCtx.noPressNightShows)) {
+    standingCtx.noPressNightShows.push(showId);
+  }
+  const applyStanding = standingCtx && category === 'broadway' && !noPressNight;
   let census = null;
   try {
     census = buildCensusFromArchives(showId, {
@@ -367,6 +375,7 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   const standingCtx = {
     existingCellKeys,
     counter: { used: 0, cap: opts.standingCap != null ? opts.standingCap : DEFAULT_MAX_NEW_PER_RUN },
+    noPressNightShows: [], // reported below — a silent skip reads as "covered everything"
   };
   const marketCoverage = new Map(); // B3 scoreboard: market -> {covered, denominator}
 
@@ -390,7 +399,21 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
     // without this gate every long-running revival would get a permanent,
     // unactionable GAP the day this shipped). Everything else about the show
     // (archive-source census, dispatch, digest) is completely unaffected.
-    const isRecentOpening = show.openingDate && show.openingDate >= standingCutoff;
+    // The window is bounded on BOTH sides: an outlet cannot be silent about a
+    // show that has not opened. Announced 2027 openings are legitimately in
+    // `target`, and before this bound each one minted a standing cell per
+    // flagged outlet — cells that can only ever be IN_FLIGHT, yet still consume
+    // the fan-out cap that real opening-night discovery needs (card #627: 9
+    // upcoming shows saturated the 15-cell budget, starving the one show that
+    // had actually opened). They cost nothing to skip: the cell is created on
+    // the first run after the show opens.
+    // ET, not UTC: openingDate is a bare YYYY-MM-DD authored in show-local time,
+    // and toISOString() rolls over at 20:00 ET — which would call a show "opened"
+    // for the last four hours of the day before it actually does.
+    const todayStr = new Date(nowMs).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const isRecentOpening = show.openingDate
+      && show.openingDate >= standingCutoff
+      && show.openingDate <= todayStr;
     const showStandingCtx = isRecentOpening ? standingCtx : null;
     const { cells, reactivations: showReactivations, coverage } = computeShowCells(show, reviews, outlets, nowMs, showStandingCtx, undefined, breakerCtx);
     for (const outletId of showReactivations) {
@@ -510,6 +533,9 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   if (standingCtx.counter.used > 0) {
     console.log(`  standing-outlets: ${standingCtx.counter.used}/${standingCtx.counter.cap} new cell(s) this run (fan-out cap)`);
   }
+  if (standingCtx.noPressNightShows.length) {
+    console.log(`  standing-outlets: skipped ${standingCtx.noPressNightShows.length} show(s) with no press night (archive-named gaps still counted): ${standingCtx.noPressNightShows.join(', ')}`);
+  }
   if (reactivations.length) {
     console.log(`\n⚠️  Reactivation: ${reactivations.length} scored review(s) from a registry "no review expected" outlet:`);
     for (const r of reactivations) console.log(`  ${r.showId} / ${r.outletId} — update outlet-registry.json coverageExpectation`);
@@ -527,7 +553,15 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   // healthy hourly cron (ship-check finding, 2026-07-23).
   try {
     fs.mkdirSync(path.dirname(SIGNALS_PATH), { recursive: true });
-    fs.writeFileSync(SIGNALS_PATH, JSON.stringify({ generatedAt: nowIso, reactivations, lateAdds }, null, 2));
+    // noPressNightShows is a SUPPRESSION, so it belongs in the machine-readable
+    // trail, not only in stdout: the failure mode it can't distinguish is "this
+    // engagement had no press night" from "our ingest collected almost nothing
+    // for a real opening", and only an operator (or a downstream digest) reading
+    // the list can tell those apart. A skip nobody can enumerate is a silent one.
+    fs.writeFileSync(SIGNALS_PATH, JSON.stringify({
+      generatedAt: nowIso, reactivations, lateAdds,
+      standingSuppressedNoPressNight: standingCtx.noPressNightShows,
+    }, null, 2));
   } catch (e) { console.error('Failed to write t1-coverage-signals.json:', e.message); }
   return { changed, shows: freshShows.length, cells: cellCount, gaps: gapCount, reactivations, lateAdds };
 }

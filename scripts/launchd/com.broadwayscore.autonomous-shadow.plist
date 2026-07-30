@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Loop re-enable readiness (owner mandate 2026-07-30, task #635):
+         proves scripts/lib/attempt-memory.js's park logic against real
+         backlog data across multiple real nights, WITHOUT re-enabling the
+         paused autonomous loop (task #599 — do NOT bootstrap
+         com.broadwayscore.autonomous-nightly/-deadman without the owner's
+         explicit re-enable decision; this job is intentionally separate
+         from and independent of those).
+
+         Runs scripts/autonomous-shadow-run.js, which:
+           - proves a synthetic failed-twice-unchanged card parks with
+             zero LLM calls (the wiring proof)
+           - walks a small real backlog slice (--limit 5) through the
+             production triageCard() selection path
+           - NEVER calls the implementer (no attempt-envelope spend)
+           - NEVER writes Notion Auto/Status (read-only list/get only)
+           - logs shadow-* events to data/audit/autonomous-ledger.jsonl
+             (Mac-Studio-local, gitignored — see task #577)
+         Cost: a handful of cheap Sonnet triage calls for cards that reach
+         the LLM stage (most don't — pre-filtered). Not the loop's
+         attempt-envelope spend.
+
+         02:47 local (off-peak, distinct from other crons; not :00/:30).
+
+         Install:  cp scripts/launchd/com.broadwayscore.autonomous-shadow.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.autonomous-shadow.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.autonomous-shadow
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.autonomous-shadow
+
+         To retire once the owner makes the re-enable decision either way:
+           launchctl bootout gui/$(id -u)/com.broadwayscore.autonomous-shadow
+           rm ~/Library/LaunchAgents/com.broadwayscore.autonomous-shadow.plist -->
+    <key>Label</key>
+    <string>com.broadwayscore.autonomous-shadow</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; { git fetch origin main --quiet &amp;&amp; git merge --ff-only origin/main --quiet || echo "[shadow] ff-only update skipped (dirty/diverged checkout) — running with local code"; } &amp;&amp; exec node scripts/autonomous-shadow-run.js --limit 5</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>2</integer>
+        <key>Minute</key>
+        <integer>47</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/autonomous-shadow-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/autonomous-shadow-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>
