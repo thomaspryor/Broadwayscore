@@ -17,8 +17,9 @@
  *     and prior backfills always win. PROTECTED_FIELDS semantics extend,
  *     they are not replaced.
  *   - openingDateSource is stamped only when openingDate itself is written.
- *   - shows.json is written via atomicWriteShowsJson (shrink gate + symlink-
- *     safe rename). Caller (workflow) runs validate-data.js before pushing.
+ *   - shows.json is written via shows-write-guard's saveShows (lock +
+ *     snapshot-merge against concurrent writers + shrink gate). Caller
+ *     (workflow) runs validate-data.js before pushing.
  *
  * Selection does NOT depend on this script succeeding — the evidence-anchored
  * arm in opening-night-selection.js fires on evidence alone. This is display/
@@ -45,19 +46,19 @@ function hasHelpFlag(argv) {
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
 
-  const fs = require('fs');
-  const path = require('path');
   const { fetchPage } = require('./lib/scraper');
   const { extractOpeningFactsFromArticle } = require('./lib/reverse-discovery');
   const { loadReviewEvidence, hasFreshEvidence } = require('./lib/review-evidence');
-  const { atomicWriteShowsJson } = require('./lib/atomic-shows-write');
+  // shows-write-guard, not a raw read/write pair: 14+ scripts mutate
+  // shows.json and the guard's lock+snapshot-merge is what keeps concurrent
+  // writers from clobbering each other (pre-push write-routing lint enforces).
+  const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
   const dryRun = argv.includes('--dry-run');
   const limit = parseInt((argv.find(a => a.startsWith('--limit=')) || '').split('=')[1] || '10', 10);
   const onlyShow = (argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
 
-  const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
-  const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  const showsData = loadShows();
   const shows = showsData.shows || showsData;
   const byId = new Map(shows.map(s => [s.id || s.slug, s]));
 
@@ -116,7 +117,7 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   if (backfilled > 0) {
-    atomicWriteShowsJson(showsPath, showsData);
+    saveShows(showsData);
     console.log(`Wrote shows.json (${backfilled} show(s) backfilled). Run validate-data.js before pushing.`);
   } else if (!dryRun) {
     console.log('No backfills — shows.json untouched.');
