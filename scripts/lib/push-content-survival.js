@@ -105,7 +105,14 @@ if (require.main === module) {
 
   let modifiedFiles;
   try {
-    const diffArgs = ['diff', '--name-only', '--diff-filter=M', `${baseSha}..${beforeSha}`];
+    // MT, not just M (ship-check/Codex finding): the fault-injection test that
+    // proves resolve_conflicts()'s default arm is fixed uses a TYPE-CHANGE
+    // conflict (regular file <-> symlink) — the one structural shape proven,
+    // by direct git experimentation, to survive -X ours/-X theirs
+    // auto-resolution. Without T here, this second-layer check would report
+    // "no modified files to check" on exactly that class, leaving it covered
+    // ONLY by the resolve_conflicts() fix and not by this independent guard.
+    const diffArgs = ['diff', '--name-only', '--diff-filter=MT', `${baseSha}..${beforeSha}`];
     if (pathPrefix) diffArgs.push('--', pathPrefix);
     modifiedFiles = execFileSync('git', diffArgs, { encoding: 'utf8', timeout: 30_000 })
       .split('\n')

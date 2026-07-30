@@ -451,8 +451,14 @@ resolve_conflicts() {
         else
           accept_ref="MERGE_HEAD"; our_ref="HEAD"
         fi
-        accept_blob=$(git show "$accept_ref:$file" 2>/dev/null || echo "__ABSENT__")
-        our_blob=$(git show "$our_ref:$file" 2>/dev/null || echo "__ABSENT__")
+        # git rev-parse (blob OID), NOT `$(git show ...)` (ship-check/Codex
+        # finding): command substitution strips ALL trailing newlines and
+        # mangles binary/NUL content, so e.g. "x\n" and "x\n\n" would compare
+        # equal even though they're genuinely different — silently accepting
+        # remote's version was still "safe, identical" when it wasn't. Blob
+        # OIDs are exact content identity, same as push-content-survival.js.
+        accept_blob=$(git rev-parse --verify --quiet "$accept_ref:$file" 2>/dev/null || echo "__ABSENT__")
+        our_blob=$(git rev-parse --verify --quiet "$our_ref:$file" 2>/dev/null || echo "__ABSENT__")
         if [ "$accept_blob" = "$our_blob" ]; then
           echo "  Auto-resolving (keep remote, content identical): $file"
           git checkout $keep_remote "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
@@ -539,7 +545,25 @@ reconcile_merged_json() {
 # network hiccup here must not manufacture a failure on an otherwise-good
 # push) — never fails open on the content comparison, since that IS the
 # signal this guard exists to catch.
+#
+# KNOWN RESIDUAL GAP (ship-check/Codex finding): this fetches AFTER our own
+# push, so a third workflow that pushes to $PULL_BRANCH in the window between
+# our push and this fetch can advance the file to yet another state — neither
+# our intended content NOR the pre-edit base — which classifyFileSurvival()
+# reports as "ambiguous" (assumed to be a legitimate concurrent edit) rather
+# than "reverted". This is a real, accepted limitation: closing it completely
+# would need a repo-wide lock across every one of the ~130 CI callers, which
+# is out of scope for this fix. What this guard DOES catch reliably — and
+# what neither pre-existing guard caught at all — is the exact task #619
+# signature: our own resolution silently reverting to the pre-edit base with
+# no OTHER concurrent write in between (the reproduced incident).
 verify_content_survived() {
+  # Emergency kill switch (ship-check/Codex finding) — this check is new and
+  # globally affects every one of the ~130 workflows that push through this
+  # helper, unlike the opt-in PUSH_RECONCILE_MERGED_JSON below. Mirrors the
+  # existing PUSH_SKIP_CONFLICT_CHECK convention (conflict-marker guard
+  # above) so a false-positive storm can be disabled without a code revert.
+  [ "${PUSH_SKIP_CONTENT_SURVIVAL_CHECK:-}" = "1" ] && return 0
   [ -n "$SCRIPT_ENTRY_BASE" ] || return 0
   command -v node >/dev/null 2>&1 || return 0
   [ -f "$SCRIPT_DIR/push-content-survival.js" ] || return 0
