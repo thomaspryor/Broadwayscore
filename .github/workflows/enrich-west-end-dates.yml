@@ -58,16 +58,23 @@ jobs:
           FLAGS=""
           MODE="${{ inputs.mode || '' }}"
 
-          # Auto-detect mode from cron schedule if not manually specified
+          # Auto-detect mode from WHICH cron fired — never from the wall clock.
+          # The old check was `date -u +%H` == "08" && `date -u +%u` == 4, but
+          # GitHub crons fire 30 min-3 h late: 4 of 5 Thursday runs in the 30 days
+          # to 2026-07-30 started 09:00-09:14 UTC and silently downgraded to
+          # fix-unconfirmed (run 30529008354 logged "Daily 7 AM UTC cron" on a
+          # Thursday). Thursday's `enrich` arm is the ONLY one that fills MISSING
+          # West End dates -- fix-unconfirmed merely corrects dates that already
+          # exist -- so lateness left 13 null-openingDate WE/OWE shows with no
+          # live filler. github.event.schedule is the literal cron string that
+          # triggered this run, so it is immune to delay.
           if [ -z "$MODE" ] && [ "${{ github.event_name }}" = "schedule" ]; then
-            HOUR=$(date -u +%H)
-            DOW=$(date -u +%u)  # 1=Mon, 4=Thu
-            if [ "$DOW" = "4" ] && [ "$HOUR" = "08" ]; then
+            if [ "${{ github.event.schedule }}" = "0 8 * * 4" ]; then
               MODE="enrich"
-              echo "Thursday 8 AM UTC cron → enrich mode (full enrichment)"
+              echo "Thursday cron (0 8 * * 4) → enrich mode (full enrichment)"
             else
               MODE="fix-unconfirmed"
-              echo "Daily 7 AM UTC cron → fix-unconfirmed mode (correct unconfirmed sources)"
+              echo "Monday cron (${{ github.event.schedule }}) → fix-unconfirmed mode (correct unconfirmed sources)"
             fi
           fi
           MODE="${MODE:-enrich}"
