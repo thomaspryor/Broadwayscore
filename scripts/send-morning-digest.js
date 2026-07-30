@@ -9,10 +9,15 @@
  *   - the fail-soft "what changed while you slept" collector
  *     (scripts/lib/overnight-digest.js — git/deploy/worktree facts)
  * It deliberately reads NO loop state: no autonomous ledger, no Notion auto
- * states, no HMAC approval links, no LLM calls. It must never render a
+ * states, no approve/reject loop links, no LLM calls. It must never render a
  * triage list or ask the owner to do bookkeeping (owner mandate 2026-07-27:
  * "giant wall of text, completely unactionable" is the failure mode this
  * design forbids).
+ *
+ * The ONE signed link it does render is the per-error "Fix this" dispatch
+ * button (card #634, owner ask 2026-07-30) — that is the opposite of
+ * bookkeeping: it turns a "Fix needed: …" line the owner can only read into
+ * a line the owner can act on from a phone.
  *
  * RULE 17 (email broadcast safety): TRANSACTIONAL ONLY — direct POST /emails
  * to one explicit recipient. Never a broadcast, never an audience.
@@ -55,6 +60,16 @@ const {
   renderDailyDigestBlock,
   renderRedditDigestBlock,
 } = require('./lib/autonomous-email-render.js');
+const { attachHealthFixUrls } = require('./lib/dispatch-link.js');
+
+// Fix-this buttons (card #634 — owner ask 2026-07-30: "tap a button in the
+// digest, get a session dispatched on the issue, no laptop required").
+// Signed dispatch links are NOT the approval-loop links this sender
+// deliberately omits (see the header note): they carry no loop bookkeeping
+// and ask the owner for no triage — they are the one tap that acts on an
+// error row this email already prints as "Fix needed: …".
+const DISPATCH_CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
+const DEFAULT_LINK_EXPIRY_H = 48;
 
 const USAGE = `send-morning-digest.js — the owner's single scheduled morning email.
 
@@ -193,6 +208,23 @@ async function main() {
 
   const { sections, problems } = readAllSnapshots();
   const problemsNote = describeProblems(problems);
+
+  // Card #634: sign a dispatch link per health ERROR so the owner can act
+  // from the phone. Fail-soft on purpose — a missing secret costs the
+  // buttons, never the email (rule: the digest must always send).
+  const dispatchSecret = process.env.APPROVAL_HMAC_SECRET;
+  if (!dispatchSecret) {
+    console.error('[digest] WARN APPROVAL_HMAC_SECRET not set — sending without Fix-this buttons');
+  } else {
+    const cfg = (() => {
+      try { return JSON.parse(fs.readFileSync(DISPATCH_CONFIG_PATH, 'utf8')); } catch { return {}; }
+    })();
+    const baseUrl = cfg.baseUrl || 'https://broadwayscorecard.com';
+    const expiryH = Number(cfg.linkExpiryHours) || DEFAULT_LINK_EXPIRY_H;
+    const exp = Math.floor(Date.now() / 1000) + expiryH * 3600;
+    const attached = attachHealthFixUrls({ health: sections.health, exp, secret: dispatchSecret, baseUrl });
+    console.log(`[digest] Fix-this buttons attached to ${attached} health error row(s)`);
+  }
 
   // "What changed while you slept" — fail-soft; a broken collector must
   // never block the digest itself.
