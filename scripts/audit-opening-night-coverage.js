@@ -141,9 +141,17 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx) {
   );
   const reactivations = detectReactivation(outlets, scoredOutlets);
   const market = censusMarket(category);
+  // Standing outlets apply only to LITERAL category==='broadway' shows, not merely
+  // whatever censusMarket() falls back to for unrecognized categories (e.g.
+  // 'regional' resolves to the 'broadway' roundup set for archive-source routing,
+  // but a regional tryout is never plausibly covered by NYT/NYPost/HR — applying
+  // the pseudo-source there produced false GAP cells for Black Swan/CrazySexyCool
+  // regional tryouts in a live smoke-test). censusMarket's fallback is intentional
+  // for roundup routing and stays untouched; this is a narrower gate on top of it.
+  const applyStanding = standingCtx && category === 'broadway';
   let census = null;
   try {
-    census = buildCensusFromArchives(showId, standingCtx ? { show, market, outlets } : { show, market });
+    census = buildCensusFromArchives(showId, applyStanding ? { show, market, outlets } : { show, market });
   }
   catch (_) { return { cells: [], reactivations }; }
   if (!census || !census.hadAnySource) return { cells: [], reactivations };
@@ -221,7 +229,17 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
 
   for (const show of target) {
     const showId = show.id || show.slug;
-    const { cells, reactivations: showReactivations } = computeShowCells(show, reviews, outlets, nowMs, standingCtx);
+    // B1 recency gate: standingOutlets targets outlet SILENCE on a show whose
+    // opening is still within the retrieval window, not "does this evergreen
+    // revival's original 1996/2003/1997 opening have an NYT review on file"
+    // (Chicago/Wicked/Lion King all surfaced as false GAPs in a live smoke-test —
+    // status:'open' alone qualifies a show for `target` regardless of age, so
+    // without this gate every long-running revival would get a permanent,
+    // unactionable GAP the day this shipped). Everything else about the show
+    // (archive-source census, dispatch, digest) is completely unaffected.
+    const isRecentOpening = show.openingDate && show.openingDate >= cutoff;
+    const showStandingCtx = isRecentOpening ? standingCtx : null;
+    const { cells, reactivations: showReactivations } = computeShowCells(show, reviews, outlets, nowMs, showStandingCtx);
     for (const outletId of showReactivations) {
       reactivations.push({ showId, title: show.title, outletId });
     }
