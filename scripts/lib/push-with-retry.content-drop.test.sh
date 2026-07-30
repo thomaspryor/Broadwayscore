@@ -89,6 +89,10 @@ git init -q "$TMP/repro2"
 gitc "$TMP/repro2" config user.email t@t; gitc "$TMP/repro2" config user.name t
 node -e "require('fs').writeFileSync('$TMP/repro2/CLAUDE.md', 'a'.repeat(200)+'\n')"
 gitc "$TMP/repro2" add -A; gitc "$TMP/repro2" commit -q -m base
+# Force the branch name explicitly (init.defaultBranch varies by environment —
+# this exact assumption broke the .test.mjs sibling on the CI runner, whose git
+# named the initial branch differently than this machine's).
+gitc "$TMP/repro2" branch -M main
 BASE2=$(gitc "$TMP/repro2" rev-parse HEAD)
 node -e "require('fs').writeFileSync('$TMP/repro2/CLAUDE.md', 'a'.repeat(50)+'\n')"
 gitc "$TMP/repro2" add -A; gitc "$TMP/repro2" commit -q -m "fix: trim CLAUDE.md byte cap"
