@@ -75,32 +75,57 @@ function buildScoreboardText(marketStats, ledger, acks, nowMs, opts = {}) {
     return `${mkt}: ${pct} (${s.covered}/${s.denominator})`;
   });
 
-  // Gather every open GAP cell (not IN_FLIGHT/SUPPRESSED/NO_REVIEW_EXPECTED —
-  // those aren't retrieval failures), skip acked ones, sort oldest-first.
+  // Gather open cells, split by whether we are still TRYING.
+  //   GAP          — actionable retrieval failure; the SLA burn-down list.
+  //   CIRCUIT_OPEN — (B2) a GAP whose outlet breaker tripped, so dispatch is
+  //                  paused. It gets its OWN section rather than being dropped:
+  //                  a ship-check pass caught that filtering on `!== 'GAP'` made
+  //                  every circuit-open cell vanish from both this scoreboard and
+  //                  the digest, so "we quietly stopped trying" became invisible —
+  //                  exactly the silent-gap failure the v2 plan exists to kill.
+  // IN_FLIGHT / SUPPRESSED / NO_REVIEW_EXPECTED are still excluded (not failures,
+  // or excluded by registry evidence).
   const shows = (ledger && ledger.shows) || {};
   const gaps = [];
+  const circuitOpen = [];
   let omittedByAck = 0;
   for (const showId of Object.keys(shows)) {
     const s = shows[showId];
     for (const outletId of Object.keys(s.cells || {})) {
       const cell = s.cells[outletId];
-      if (cell.state !== 'GAP') continue;
+      const bucket = cell.state === 'GAP' ? gaps : (cell.state === 'CIRCUIT_OPEN' ? circuitOpen : null);
+      if (!bucket) continue;
       const key = cellKey(showId, outletId);
       if (isAcked(key, acks)) { omittedByAck++; continue; }
       const firstMs = Date.parse(cell.firstSeenAt);
       const ageHours = Number.isFinite(firstMs) ? Math.round((nowMs - firstMs) / 3600000) : 0;
-      gaps.push({ showId, title: s.title, outletId, ageHours });
+      bucket.push({ showId, title: s.title, outletId, ageHours });
     }
   }
-  gaps.sort((a, b) => b.ageHours - a.ageHours);
-  const oldestGapLines = gaps.slice(0, maxOldestGaps)
-    .map((g) => `${g.title} — ${g.outletId} (${g.ageHours}h)`);
-  if (gaps.length > maxOldestGaps) {
-    oldestGapLines.push(`… ${gaps.length - maxOldestGaps} more open gap(s)`);
-  }
+  const oldestFirst = (a, b) => b.ageHours - a.ageHours;
+  gaps.sort(oldestFirst);
+  circuitOpen.sort(oldestFirst);
 
-  const text = [...marketLines, ...(oldestGapLines.length ? ['', 'Oldest gaps:', ...oldestGapLines] : [])].join('\n');
-  return { text, marketLines, oldestGapLines, omittedByAck, totalOpenGaps: gaps.length };
+  const capLines = (rows, noun) => {
+    const lines = rows.slice(0, maxOldestGaps).map((g) => `${g.title} — ${g.outletId} (${g.ageHours}h)`);
+    if (rows.length > maxOldestGaps) lines.push(`… ${rows.length - maxOldestGaps} more ${noun}`);
+    return lines;
+  };
+  const oldestGapLines = capLines(gaps, 'open gap(s)');
+  // Same hard cap as the gap list so a broad outlet outage can't flood the one email.
+  const circuitOpenLines = capLines(circuitOpen, 'circuit-open cell(s)');
+
+  const text = [
+    ...marketLines,
+    ...(oldestGapLines.length ? ['', 'Oldest gaps:', ...oldestGapLines] : []),
+    ...(circuitOpenLines.length
+      ? ['', 'Circuit open (retrieval failing across shows — dispatch paused, auto-probing):', ...circuitOpenLines]
+      : []),
+  ].join('\n');
+  return {
+    text, marketLines, oldestGapLines, circuitOpenLines, omittedByAck,
+    totalOpenGaps: gaps.length, totalCircuitOpen: circuitOpen.length,
+  };
 }
 
 module.exports = {

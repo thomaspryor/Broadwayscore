@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet } = require('./t1-ledger.js');
+const { classifyCell, classifyCellDetailed, isActionableState, mergeLedger, serializeLedger, isDispatchTierOutlet } = require('./t1-ledger.js');
 
 test('isDispatchTierOutlet: T1/T2 only, unregistered/junk excluded', () => {
   const outlets = {
@@ -30,6 +30,75 @@ test('classifyCell: state machine', () => {
   assert.equal(classifyCell({ clockAgeHours: 48 }), 'GAP', 'over 24h = gap');
   assert.equal(classifyCell({ clockAgeHours: null }), 'IN_FLIGHT', 'unmeasurable clock never counts as a GAP');
   assert.equal(classifyCell({ noReviewExpected: true, suppressed: true, clockAgeHours: 48 }), 'NO_REVIEW_EXPECTED', 'no-review-expected wins');
+});
+
+// --- B2: circuit-breaker state + rich semantics ---------------------------
+
+test('classifyCell: circuitOpen converts a GAP to CIRCUIT_OPEN, never an IN_FLIGHT cell', () => {
+  assert.equal(classifyCell({ clockAgeHours: 48, circuitOpen: true }), 'CIRCUIT_OPEN',
+    'grace spent + breaker open → CIRCUIT_OPEN, not GAP');
+  assert.equal(classifyCell({ clockAgeHours: 5, circuitOpen: true }), 'IN_FLIGHT',
+    'inside grace the breaker must NOT hide the cell — that is the cheap-fix window');
+  assert.equal(classifyCell({ clockAgeHours: null, circuitOpen: true }), 'IN_FLIGHT',
+    'unmeasurable clock still wins — no SLA claim without a clock');
+  assert.equal(classifyCell({ clockAgeHours: 48, circuitOpen: false }), 'GAP',
+    'breaker closed → unchanged pre-B2 behavior');
+  assert.equal(classifyCell({ clockAgeHours: 48 }), 'GAP',
+    'circuitOpen omitted entirely → unchanged pre-B2 behavior');
+});
+
+test('classifyCell: higher-precedence exclusions beat the breaker', () => {
+  assert.equal(classifyCell({ noReviewExpected: true, clockAgeHours: 99, circuitOpen: true }), 'NO_REVIEW_EXPECTED');
+  assert.equal(classifyCell({ suppressed: true, clockAgeHours: 99, circuitOpen: true }), 'SUPPRESSED',
+    'a hardcoded CI-unfetchable outlet keeps its more specific reason');
+});
+
+test('isActionableState: only GAP may drive a fetch/dispatch', () => {
+  assert.equal(isActionableState('GAP'), true);
+  assert.equal(isActionableState('IN_FLIGHT'), false, 'waiting, not actionable');
+  assert.equal(isActionableState('CIRCUIT_OPEN'), false, 'the whole point — no more spend');
+  assert.equal(isActionableState('SUPPRESSED'), false);
+  assert.equal(isActionableState('NO_REVIEW_EXPECTED'), false);
+  assert.equal(isActionableState('NONSENSE'), false, 'unknown state is never actionable (fail closed)');
+});
+
+test('classifyCellDetailed: disposition + reason enum + SLA clock survives unactionable states', () => {
+  const gap = classifyCellDetailed({ clockAgeHours: 48.4 });
+  assert.deepEqual(
+    { s: gap.state, d: gap.disposition, r: gap.reason, a: gap.actionable, c: gap.slaClockHours },
+    { s: 'GAP', d: 'actionable', r: 'sla-breach', a: true, c: 48 });
+
+  const broken = classifyCellDetailed({ clockAgeHours: 400, circuitOpen: true, attempts: 3, nextEligibleAt: '2026-08-01T00:00:00.000Z' });
+  assert.equal(broken.state, 'CIRCUIT_OPEN');
+  assert.equal(broken.disposition, 'unactionable');
+  assert.equal(broken.reason, 'outlet-circuit-open');
+  assert.equal(broken.actionable, false);
+  assert.equal(broken.slaClockHours, 400, 'clock keeps running even when we stop trying');
+  assert.equal(broken.attempts, 3);
+  assert.equal(broken.nextEligibleAt, '2026-08-01T00:00:00.000Z');
+
+  const excluded = classifyCellDetailed({ noReviewExpected: true, clockAgeHours: 99 });
+  assert.equal(excluded.disposition, 'excluded');
+  assert.equal(excluded.reason, 'outlet-skips-market');
+
+  const flight = classifyCellDetailed({ clockAgeHours: null });
+  assert.equal(flight.disposition, 'waiting');
+  assert.equal(flight.reason, 'within-grace');
+  assert.equal(flight.slaClockHours, null, 'no clock → no fabricated age');
+  assert.equal(flight.attempts, 0);
+});
+
+test('mergeLedger carries a CIRCUIT_OPEN cell and preserves its original firstSeenAt', () => {
+  // Regression guard for the breaker's whole value: when a GAP flips to
+  // CIRCUIT_OPEN the age must NOT reset, or "NYT stuck 400h" silently becomes
+  // "NYT stuck 0h" the moment we stop retrying it.
+  const prev = { shows: { s: { title: 'S', market: 'broadway', cells: {
+    nytimes: { state: 'GAP', firstSeenAt: '2026-06-01T00:00:00.000Z' } } } } };
+  const fresh = [{ showId: 's', title: 'S', market: 'broadway',
+    cells: [{ outletId: 'nytimes', state: 'CIRCUIT_OPEN' }] }];
+  const merged = mergeLedger(prev, fresh, '2026-07-30T00:00:00.000Z');
+  assert.equal(merged.shows.s.cells.nytimes.state, 'CIRCUIT_OPEN');
+  assert.equal(merged.shows.s.cells.nytimes.firstSeenAt, '2026-06-01T00:00:00.000Z', 'age preserved across the flip');
 });
 
 test('mergeLedger preserves firstSeenAt for an existing gap; stamps new ones', () => {
