@@ -92,3 +92,47 @@ test('market filter includes the off- sibling market', () => {
   assert.ok(bw.includes('ob-cold-open'));
   assert.ok(!bw.includes('we-trusted'));
 });
+
+// ── Sprint A (v2 reconciler plan): evidence-anchored selection arm ──
+// Golden fixture: the Broad Strokes miss (2026-07-29). openingDate null +
+// wrong stale previewsStartDate + status previews meant the show was NEVER
+// selected while 11 reviews sat published. With roundup evidence, selection
+// must fire; without it, the legacy gates still exclude it (parity).
+
+test('evidence-anchored arm: Broad Strokes class selected WITH evidence, not without', () => {
+  const broadStrokes = {
+    id: 'cat-cohen-broad-strokes-off-broadway-2026',
+    title: 'Cat Cohen: Broad Strokes',
+    category: 'off-broadway',
+    status: 'previews',
+    openingDate: null,
+    previewsStartDate: '2026-04-16', // wrong TodayTix stub date, outside lookback
+  };
+  const now = new Date('2026-07-29T12:00:00Z');
+  const evidence = {
+    'cat-cohen-broad-strokes-off-broadway-2026': {
+      latest: '2026-07-28',
+      items: [{ source: 'playbill-roundup', url: 'https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway', date: '2026-07-28' }],
+    },
+  };
+
+  // Without evidence: the historical blind spot (locks legacy behavior).
+  assert.equal(selectOpeningNightShows([broadStrokes], { market: 'broadway', now }).length, 0);
+  // With evidence: selected.
+  assert.deepEqual(
+    selectOpeningNightShows([broadStrokes], { market: 'broadway', now, evidence }).map(s => s.id),
+    ['cat-cohen-broad-strokes-off-broadway-2026']
+  );
+  // Market filter still applies under the evidence arm.
+  assert.equal(selectOpeningNightShows([broadStrokes], { market: 'west-end', now, evidence }).length, 0);
+});
+
+test('evidence-anchored arm: stale evidence and closed shows do not select', () => {
+  const now = new Date('2026-07-29T12:00:00Z');
+  const show = { id: 'old-show-2025', title: 'Old Show', category: 'off-broadway', status: 'previews', openingDate: null, previewsStartDate: null };
+  const staleEvidence = { 'old-show-2025': { latest: '2026-05-01', items: [] } };
+  assert.equal(selectOpeningNightShows([show], { market: 'broadway', now, evidence: staleEvidence }).length, 0, 'evidence outside lookback must not select');
+  const closed = { ...show, status: 'closed' };
+  const freshEvidence = { 'old-show-2025': { latest: '2026-07-28', items: [] } };
+  assert.equal(selectOpeningNightShows([closed], { market: 'broadway', now, evidence: freshEvidence }).length, 0, 'closed shows stay excluded');
+});

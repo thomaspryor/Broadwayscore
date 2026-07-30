@@ -7,14 +7,26 @@
 # WET review roundups (WE/OWE) and DTLI show-sitemap entries (BW/OB) whose
 # title matches nothing in shows.json are missing-show candidates.
 #
-# NEVER writes shows.json — commits data/audit/reverse-discovery-*.json.
+# Missing-show candidates are ALERT ONLY (never auto-added). Since Sprint A
+# (v2 reconciler plan) this workflow additionally:
+#   - writes data/audit/review-evidence.json — "roundup exists for catalogued
+#     show X" facts that anchor opening-night selection + the coverage ledger
+#     when openingDate is null/wrong (the Broad Strokes class)
+#   - backfills NULL show dates from roundup-article facts via
+#     backfill-dates-from-roundups.js (never overwrites non-null fields;
+#     validate-data.js gates the core-data push)
 # Candidates surface in the DAILY DIGEST via health-check.js
 # (reverseDiscoveryBacklogResults), same pattern as detect-ob-closings.
 name: Reverse Discovery Audit
 
 on:
   schedule:
-    - cron: '25 10 * * *'  # Daily 10:25 UTC (after 08:xx update-show-status discovery)
+    # Every 6h (was daily 10:25 UTC): this workflow now also writes
+    # data/audit/review-evidence.json — the evidence-anchored selection
+    # signal (v2 reconciler plan, Sprint A). Evidence freshness bounds how
+    # fast a Broad-Strokes-class show (null openingDate, roundup published)
+    # gets picked up by the opening-night orchestrator, so daily was too slow.
+    - cron: '25 4,10,16,22 * * *'
   workflow_dispatch:
     inputs:
       days:
@@ -65,10 +77,32 @@ jobs:
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
           node scripts/audit-reverse-discovery.js $ARGS
 
+      - name: Backfill null show dates from roundup evidence
+        if: inputs.dry_run != true
+        continue-on-error: true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: node scripts/backfill-dates-from-roundups.js
+
+      # ALWAYS validate before push-core-data (same gate scrape-new-aggregators
+      # uses) — a bad backfill must never reach the private repo.
+      - name: Validate core data
+        if: inputs.dry_run != true
+        run: node scripts/validate-data.js
+
+      - name: Push core data
+        if: inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Backfill show dates from roundup evidence'
+
       - name: Check for changes
         id: changes
         run: |
-          if git status --porcelain data/audit/reverse-discovery-candidates.json data/audit/reverse-discovery-state.json | grep -q .; then
+          if git status --porcelain data/audit/reverse-discovery-candidates.json data/audit/reverse-discovery-state.json data/audit/review-evidence.json | grep -q .; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
           else
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
@@ -81,6 +115,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           git add data/audit/reverse-discovery-candidates.json data/audit/reverse-discovery-state.json
+          if [ -f data/audit/review-evidence.json ]; then git add data/audit/review-evidence.json; fi
 
           SUMMARY=$(node -e "
             const r = require('./data/audit/reverse-discovery-candidates.json');

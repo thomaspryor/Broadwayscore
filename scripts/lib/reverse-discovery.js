@@ -120,6 +120,129 @@ function extractShowTitleFromBwwRoundup(rawTitle) {
 }
 
 /**
+ * Playbill review-roundup headlines: "Reviews: What Do (the) Critics Think of
+ * <Show> (Off-Broadway|on Broadway|…)?" (RSS <title> / article <h1> shape —
+ * live example 2026-07-28: "Reviews: What Do Critics Think of Cat Cohen's
+ * Broad Strokes Off-Broadway?"). Returns the show phrase with the market tail
+ * stripped, or null for non-roundup headlines. The phrase may carry a
+ * possessive lead-in ("Cat Cohen's Broad Strokes" for the show "Cat Cohen:
+ * Broad Strokes") — callers should match via titleCandidates(), which adds a
+ * possessive-stripped variant.
+ */
+const PLAYBILL_ROUNDUP_RE = /^Reviews?:\s*What\s+D(?:o|oes|id)\s+(?:the\s+)?Critics?\s+Think\s+of\s+(.+?)\s*\??$/i;
+const PLAYBILL_MARKET_TAIL_RE = /\s+(?:off[- ]broadway|on\s+broadway|off[- ]west\s+end|in\s+the\s+west\s+end|in\s+london)$/i;
+
+function extractShowTitleFromPlaybillRoundup(rawTitle) {
+  const decoded = decodeEntities(rawTitle).trim();
+  const m = decoded.match(PLAYBILL_ROUNDUP_RE);
+  if (!m) return null;
+  let rest = m[1].trim();
+  // Strip stacked market tails ("X Off-Broadway", "X on Broadway").
+  for (let i = 0; i < 2; i++) {
+    const next = rest.replace(PLAYBILL_MARKET_TAIL_RE, '').trim();
+    if (next === rest) break;
+    rest = next;
+  }
+  // "the New Musical X" / "the New Play X" lead-ins occasionally prefix titles.
+  rest = rest.replace(/^the\s+new\s+(?:musical|play|revival\s+of)\s+/i, '').trim();
+  return rest || null;
+}
+
+/**
+ * Match-candidate strings for a source-derived title. Adds a
+ * possessive-stripped variant ("Cat Cohen's Broad Strokes" → "Cat Cohens…" is
+ * handled by normalizeTitle, but "Cohen's" vs the catalogued "Cohen:" needs
+ * the apostrophe-s REMOVED, not folded). Both variants are tried by callers.
+ */
+function titleCandidates(title) {
+  const out = [title];
+  const stripped = String(title || '').replace(/[’'‘]s\b/g, '');
+  if (stripped !== title) out.push(stripped);
+  return out;
+}
+
+/**
+ * Resolve which catalogued show a source title refers to, for evidence
+ * recording (the inverse of findUnmatchedCandidates: MATCHED items carry the
+ * "this show has published reviews" signal that evidence-anchored selection
+ * needs — the Broad Strokes class, where a roundup exists but openingDate is
+ * null so date-driven selection never fires).
+ *
+ * Conservative by design: returns a single show id, or null when the title
+ * matches nothing, matches only closed productions (evidence would misattach
+ * to an old run), or matches MORE than one non-closed production (ambiguous —
+ * same-title twins; wrong attachment is worse than no evidence).
+ */
+function resolveMatchedShowId(title, index) {
+  const ids = new Set();
+  for (const cand of titleCandidates(title)) {
+    const n = normalizeTitle(cand);
+    if (!n) continue;
+    for (const v of titleVariants(n)) {
+      const entries = (index.statusByVariant && index.statusByVariant.get(v)) || [];
+      for (const e of entries) {
+        if (e.id && e.status && e.status !== 'closed') ids.add(e.id);
+      }
+    }
+  }
+  return ids.size === 1 ? [...ids][0] : null;
+}
+
+/**
+ * Parse opening-night facts from a Playbill roundup article's plain text.
+ * The standard Playbill sentence (verified live, Broad Strokes 2026-07-28):
+ *   "The production began previews July 14, officially opening July 27 at
+ *    the Lucille Lortel Theatre. Performances will continue an additional
+ *    three weeks through September 25."
+ * Returns { previewsStartDate, openingDate, closingDate } as ISO dates or
+ * null per field. Years are resolved against referenceDate (article publish
+ * date): the resolved date must fall within [-9 months, +15 months] of it.
+ */
+const MONTHS = {
+  january: 0, february: 1, march: 2, april: 3, may: 4, june: 5, july: 6,
+  august: 7, september: 8, october: 9, november: 10, december: 11,
+  'jan.': 0, 'feb.': 1, 'mar.': 2, 'apr.': 3, 'aug.': 7, 'sept.': 8, 'oct.': 9, 'nov.': 10, 'dec.': 11,
+};
+const MONTH_DAY = '((?:January|February|March|April|May|June|July|August|September|October|November|December|Jan\\.|Feb\\.|Mar\\.|Apr\\.|Aug\\.|Sept\\.|Oct\\.|Nov\\.|Dec\\.)\\s+\\d{1,2}(?:,?\\s+\\d{4})?)';
+
+function resolveDate(monthDayStr, referenceDate) {
+  const m = String(monthDayStr || '').match(/^([A-Za-z.]+)\s+(\d{1,2})(?:,?\s+(\d{4}))?$/);
+  if (!m) return null;
+  const month = MONTHS[m[1].toLowerCase()];
+  if (month === undefined) return null;
+  const day = parseInt(m[2], 10);
+  const ref = referenceDate instanceof Date ? referenceDate : new Date(referenceDate);
+  if (!Number.isFinite(ref.getTime())) return null;
+  if (m[3]) {
+    const d = new Date(Date.UTC(parseInt(m[3], 10), month, day));
+    return d.toISOString().split('T')[0];
+  }
+  // No explicit year: pick the candidate year closest to the reference, then
+  // require it inside [-9mo, +15mo] of the article date.
+  const candidates = [ref.getUTCFullYear() - 1, ref.getUTCFullYear(), ref.getUTCFullYear() + 1]
+    .map((y) => new Date(Date.UTC(y, month, day)))
+    .sort((a, b) => Math.abs(a - ref) - Math.abs(b - ref));
+  const best = candidates[0];
+  const diffMonths = (best - ref) / (30 * 86400000);
+  if (diffMonths < -9 || diffMonths > 15) return null;
+  return best.toISOString().split('T')[0];
+}
+
+function extractOpeningFactsFromArticle(text, referenceDate) {
+  const t = String(text || '').replace(/\s+/g, ' ');
+  const facts = { previewsStartDate: null, openingDate: null, closingDate: null };
+  const prev = t.match(new RegExp(`beg[ai]n(?:s)?\\s+previews\\s+(?:on\\s+)?${MONTH_DAY}`, 'i'));
+  if (prev) facts.previewsStartDate = resolveDate(prev[1], referenceDate);
+  const open = t.match(new RegExp(
+    `(?:officially\\s+open(?:s|ed|ing)?|open(?:s|ed)\\s+officially|opening\\s+(?:is\\s+set\\s+for|night\\s+(?:is|was)))\\s+(?:on\\s+)?${MONTH_DAY}`, 'i'
+  ));
+  if (open) facts.openingDate = resolveDate(open[1], referenceDate);
+  const close = t.match(new RegExp(`(?:continue|run(?:s|ning)?|performances)[^.]{0,80}?through\\s+${MONTH_DAY}`, 'i'));
+  if (close) facts.closingDate = resolveDate(close[1], referenceDate);
+  return facts;
+}
+
+/**
  * DTLI show-page slugs → display-ish title. Slugs carry SEO noise tails
  * ("-broadway-theater-review(s)") and WordPress collision suffixes
  * ("giant-2", "death-of-a-salesman-3") that aren't part of the show title.
@@ -205,7 +328,7 @@ function buildShowTitleIndex(shows, market = null) {
       for (const v of titleVariants(n)) {
         exact.add(v);
         if (!statusByVariant.has(v)) statusByVariant.set(v, []);
-        statusByVariant.get(v).push({ status: s.status || null, closingDate: s.closingDate || null });
+        statusByVariant.get(v).push({ id: s.id || s.slug || null, status: s.status || null, closingDate: s.closingDate || null });
       }
       if (n.includes(' ') && n.length >= 8) containment.add(n);
     }
@@ -226,6 +349,15 @@ const HEADLINE_WORD_THRESHOLD = 6;
  * production, so only sources confirmed roundup-shaped (BWW) opt in.
  */
 function titleMatchesIndex(title, index, opts = {}) {
+  // Possessive lead-ins ("Cat Cohen's Broad Strokes" for "Cat Cohen: Broad
+  // Strokes") only differ by an 's — try the stripped variant too, so a
+  // Playbill-style headline can't false-positive as a missing show.
+  const cands = titleCandidates(title);
+  if (cands.length > 1 && titleMatchesIndexSingle(cands[1], index, opts)) return true;
+  return titleMatchesIndexSingle(cands[0], index, opts);
+}
+
+function titleMatchesIndexSingle(title, index, opts = {}) {
   const { allowClosedRevival = false } = opts;
   const n = normalizeTitle(title);
   if (!n) return true; // unparseable → never a candidate
@@ -275,6 +407,11 @@ module.exports = {
   decodeEntities,
   extractShowTitleFromWetRoundup,
   extractShowTitleFromBwwRoundup,
+  extractShowTitleFromPlaybillRoundup,
+  titleCandidates,
+  resolveMatchedShowId,
+  extractOpeningFactsFromArticle,
+  resolveDate,
   isBwwNonStageTieIn,
   isBwwNonNycRoundup,
   titleFromDtliSlug,

@@ -41,7 +41,7 @@
 const USAGE = `audit-reverse-discovery.js — find reviewed-but-missing shows
 
 Usage:
-  node scripts/audit-reverse-discovery.js [--dry-run] [--days=N] [--source=wet|dtli|bww|all]
+  node scripts/audit-reverse-discovery.js [--dry-run] [--days=N] [--source=wet|dtli|bww|playbill|all]
 
 Options:
   --dry-run     Print candidates; skip state/audit writes and Discord alert
@@ -68,9 +68,11 @@ async function main(argv = process.argv.slice(2)) {
   const { fetchPage, fetchJSON } = require('./lib/scraper');
   const {
     extractShowTitleFromWetRoundup, titleFromDtliSlug, extractShowTitleFromBwwRoundup,
+    extractShowTitleFromPlaybillRoundup, resolveMatchedShowId,
     isBwwNonStageTieIn, isBwwNonNycRoundup,
     buildShowTitleIndex, findUnmatchedCandidates, candidateKey,
   } = require('./lib/reverse-discovery');
+  const { loadReviewEvidence, mergeEvidence, saveReviewEvidence } = require('./lib/review-evidence');
 
   const dryRun = argv.includes('--dry-run');
   const days = parseInt((argv.find(a => a.startsWith('--days=')) || '').split('=')[1] || '45', 10);
@@ -208,10 +210,61 @@ async function main(argv = process.argv.slice(2)) {
     }
   }
 
+  // ── Source 4: Playbill news RSS (BW/OB) ──
+  // Roundup headlines are "Reviews: What Do Critics Think of TITLE …?" —
+  // Playbill publishes one for essentially every notable NYC opening, same
+  // day the reviews drop (Broad Strokes, 2026-07-28). The RSS window is
+  // shallow (~25 items / a few days), so this source's value is FRESH
+  // openings — the sitemap-based sources carry the longer window.
+  if (sourceFilter === 'all' || sourceFilter === 'playbill') {
+    sourcesTried++;
+    try {
+      const xml = (await fetchPage('https://playbill.com/rss/news')).content;
+      const entries = [...xml.matchAll(
+        /<item>(?:(?!<\/item>)[\s\S])*?<title>([^<]+)<\/title>(?:(?!<\/item>)[\s\S])*?<link>([^<]+)<\/link>(?:(?!<\/item>)[\s\S])*?<dc:date>([^<]+)<\/dc:date>(?:(?!<\/item>)[\s\S])*?<\/item>/g
+      )];
+      if (entries.length === 0) throw new Error('Playbill RSS parsed to 0 <item> entries');
+      let parsed = 0, roundups = 0;
+      for (const [, rawTitle, url, pubDate] of entries) {
+        const ts = Date.parse(pubDate);
+        if (!Number.isFinite(ts) || ts < cutoff) continue;
+        if (/^Reviews?:/i.test(rawTitle)) roundups++;
+        const title = extractShowTitleFromPlaybillRoundup(rawTitle);
+        if (!title) continue;
+        parsed++;
+        items.push({ title, source: 'playbill-roundup', url: url.trim(), date: pubDate.trim(), market: 'nyc' });
+      }
+      // Same title-format drift guard as the other roundup sources.
+      if (roundups > 0 && parsed === 0) throw new Error(`Playbill title-format drift: ${roundups} "Reviews:" posts, 0 parsed`);
+      console.log(`Playbill: ${parsed} roundups within ${days}d (of ${entries.length} RSS items)`);
+      sourcesOk++;
+    } catch (e) {
+      console.error(`Playbill source failed: ${e.message}`);
+    }
+  }
+
   if (sourcesTried > 0 && sourcesOk === 0) {
     console.error('All sources failed — detector blind, failing the run.');
     return 1;
   }
+
+  // ── Evidence recording (Sprint A, v2 reconciler plan) ──
+  // The MATCHED complement of the missing-show candidates below: a roundup
+  // whose title resolves to exactly one non-closed catalogued show is proof
+  // that show has published reviews RIGHT NOW — recorded to
+  // data/audit/review-evidence.json so opening-night selection and the
+  // coverage ledger can anchor on it even when openingDate is null/wrong or
+  // status is stuck (the Broad Strokes class). DTLI is excluded: its lastmod
+  // can touch an old page for reasons unrelated to reviews.
+  const EVIDENCE_SOURCES = new Set(['wet-roundup', 'bww-roundup', 'playbill-roundup']);
+  const evidenceItems = [];
+  for (const it of items) {
+    if (!EVIDENCE_SOURCES.has(it.source)) continue;
+    const index = it.market === 'west-end' ? weIndex : nycIndex;
+    const showId = resolveMatchedShowId(it.title, index);
+    if (showId) evidenceItems.push({ showId, source: it.source, url: it.url, date: it.date.split('T')[0] });
+  }
+  console.log(`\nEvidence: ${evidenceItems.length} roundup item(s) matched to catalogued shows`);
 
   const candidates = [
     ...findUnmatchedCandidates(items.filter(i => i.market === 'west-end'), weIndex),
@@ -235,7 +288,14 @@ async function main(argv = process.argv.slice(2)) {
 
   if (dryRun) {
     console.log(`\n--dry-run: ${fresh.length} would be newly alerted; no writes.`);
+    for (const e of evidenceItems) console.log(`  evidence: ${e.showId} <- [${e.source}] ${e.url}`);
     return 0;
+  }
+
+  if (evidenceItems.length > 0) {
+    const merged = mergeEvidence(loadReviewEvidence(), evidenceItems);
+    saveReviewEvidence(merged);
+    console.log(`Wrote data/audit/review-evidence.json (${Object.keys(merged).length} show(s) with fresh evidence)`);
   }
 
   for (const c of fresh) state[candidateKey(c)] = { firstSeen: nowIso, title: c.title, source: c.source };

@@ -30,8 +30,21 @@ const { isTrustedPressNightSource } = require('./press-night-trust.js');
  * @param {boolean} [opts.ignoreStatus]     monitor-only: ignore the status gate
  *                                (announced/closed shows with a date in-window
  *                                still selected — the Sherlock Holmes class)
+ * @param {object} [opts.evidence] review-evidence `shows` map (see
+ *                                lib/review-evidence.js). A show with FRESH
+ *                                evidence — a roundup naming it published
+ *                                within the lookback window — is selected
+ *                                regardless of openingDate/status/trust gates
+ *                                (only the market filter applies). This is
+ *                                the evidence-anchored arm from the v2
+ *                                reconciler plan: Broad Strokes 2026-07-29
+ *                                had 11 published reviews and openingDate
+ *                                null, so every date-driven gate below said
+ *                                "not opening" while the world said "opened".
  * @returns {Array} matching show objects (not just ids)
  */
+const { hasFreshEvidence } = require('./review-evidence.js');
+
 function selectOpeningNightShows(shows, opts = {}) {
   const {
     market = '',
@@ -40,6 +53,7 @@ function selectOpeningNightShows(shows, opts = {}) {
     lookAheadHours = 6,
     includeUntrusted = false,
     ignoreStatus = false,
+    evidence = null,
   } = opts;
 
   const lookAhead = new Date(now.getTime() + lookAheadHours * 60 * 60 * 1000);
@@ -47,8 +61,23 @@ function selectOpeningNightShows(shows, opts = {}) {
   cutoff.setDate(cutoff.getDate() - lookbackDays);
   cutoff.setHours(0, 0, 0, 0);
 
+  const marketMatches = (s) => {
+    const cat = s.category || 'broadway';
+    if (market === 'broadway') return cat === 'broadway' || cat === 'off-broadway';
+    if (market === 'west-end') return cat === 'west-end' || cat === 'off-west-end';
+    return true;
+  };
+
   return shows.filter(s => {
     const cat = s.category || 'broadway';
+    // Evidence-anchored arm: published-roundup evidence trumps every
+    // catalogue-date gate. Closed shows stay excluded — a late roundup for a
+    // run that already closed is coverage work, not opening-night work, and
+    // it flows through the coverage ledger's own evidence arm instead.
+    if (evidence && s.status !== 'closed'
+        && hasFreshEvidence(evidence, s.id || s.slug, { now, lookbackDays })) {
+      return marketMatches(s);
+    }
     // OB/OWE shows frequently open "cold" with no formal press night, so
     // openingDate is often null — which would exclude them from discovery
     // entirely (Are You Now Or Have You Ever Been: 0 reviews despite 3+
@@ -66,8 +95,7 @@ function selectOpeningNightShows(shows, opts = {}) {
         (s.status === 'previews' && new Date(effectiveOpening) <= lookAhead);
       if (!validStatus) return false;
     }
-    if (market === 'broadway' && cat !== 'broadway' && cat !== 'off-broadway') return false;
-    if (market === 'west-end' && cat !== 'west-end' && cat !== 'off-west-end') return false;
+    if (!marketMatches(s)) return false;
     // WE shows with an UNTRUSTED openingDateSource (e.g. todaytix) may carry
     // a preview date rather than a real press night, so the orchestrator
     // doesn't poll them in the previews-anticipation window — but ONCE the
@@ -95,6 +123,10 @@ if (require.main === module) {
     .filter(a => a.startsWith('--'))
     .map(a => { const [k, v] = a.slice(2).split('='); return [k, v === undefined ? true : v]; }));
   const { shows } = require('../../data/shows.json');
-  const selected = selectOpeningNightShows(shows, { market: args.market || '' });
+  const { loadReviewEvidence } = require('./review-evidence.js');
+  const selected = selectOpeningNightShows(shows, {
+    market: args.market || '',
+    evidence: loadReviewEvidence(),
+  });
   if (selected.length > 0) console.log(selected.map(s => s.id).join(','));
 }
