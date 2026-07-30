@@ -102,11 +102,11 @@
       "disposition": "human",
       "title": "Opening Night SLA P0 — 4 review(s) stuck ≥60 min",
       "firstSeen": "2026-07-24T15:48:32.752Z",
-      "lastSeen": "2026-07-30T21:43:51.663Z",
+      "lastSeen": "2026-07-30T22:40:37.341Z",
       "lastNotifiedAt": "2026-07-26T17:39:13.740Z",
       "notifyCount": 2,
       "cardId": null,
-      "silentRefires": 87
+      "silentRefires": 88
     },
     "health-check:Workflow repeat-failure: Audit Aggregator Review Gap": {
       "status": "open",
@@ -130,7 +130,7 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -138,7 +138,8 @@
       "lastSeen": "2026-07-30T19:23:09.659Z",
       "lastNotifiedAt": "2026-07-30T19:23:09.659Z",
       "notifyCount": 4,
-      "cardId": null
+      "cardId": null,
+      "resolvedAt": "2026-07-30T22:19:15.074Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -232,22 +233,22 @@
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-07-30T21:23:01.096Z",
+      "lastSeen": "2026-07-30T22:21:47.271Z",
       "lastNotifiedAt": "2026-07-30T05:52:09.260Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 32
+      "silentRefires": 34
     },
     "deployed-coverage:stale": {
       "status": "open",
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-07-30T19:26:13.686Z",
+      "lastSeen": "2026-07-30T22:21:47.142Z",
       "lastNotifiedAt": "2026-07-30T06:51:16.731Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "ux-walkthrough:high-priority": {
       "status": "open",
