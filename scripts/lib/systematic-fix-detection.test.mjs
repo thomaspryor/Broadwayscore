@@ -51,6 +51,16 @@ test('combined creativeTeam roles still generalize via batch-transform', () => {
   assert.equal(result.actions[0].transform, 'split-comma-roles');
 });
 
+test('ADDING a credit (no split) does not trigger the batch transform', () => {
+  const plan = planWith({
+    showId: 'x',
+    field: 'creativeTeam',
+    oldValue: [{ name: 'Bob', role: 'Director' }],
+    newValue: [{ name: 'Bob', role: 'Director' }, { name: 'Alice', role: 'Producer' }],
+  });
+  assert.equal(detectSystematicIssue(plan, SHOWS), null);
+});
+
 test('non-data-edit actions and empty plans return null', () => {
   assert.equal(detectSystematicIssue({ actions: [] }, SHOWS), null);
   assert.equal(detectSystematicIssue({ actions: [{ type: 'run-script', script: 'validate-data.js' }] }, SHOWS), null);

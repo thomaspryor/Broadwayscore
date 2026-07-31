@@ -38,11 +38,14 @@ export async function GET(req: NextRequest): Promise<Response> {
   const token = searchParams.get('token');
   const expires = searchParams.get('expires');
   const action = searchParams.get('action');
+  // planId binds this link to the exact generated plan. Without it, a
+  // regenerated plan for the same issue would execute under an old link.
+  const planId = searchParams.get('plan');
 
   const html = (title: string, body: string, status = 200) =>
     new Response(htmlPage(title, body), { status, headers: { 'Content-Type': 'text/html' } });
 
-  if (!issue || !token || !expires) {
+  if (!issue || !token || !expires || !planId) {
     return html('Invalid Link',
       '<h1>Invalid Link</h1><p>This approval link is incomplete or malformed.</p>', 400);
   }
@@ -63,7 +66,7 @@ export async function GET(req: NextRequest): Promise<Response> {
   const actionType = action === 'reject' ? 'reject' : 'approve';
   const expected = crypto
     .createHmac('sha256', secret)
-    .update(`${actionType}:${issue}:${expires}`)
+    .update(`${actionType}:${issue}:${expires}:${planId}`)
     .digest('hex');
 
   let tokenValid = false;
@@ -97,6 +100,16 @@ export async function GET(req: NextRequest): Promise<Response> {
       } catch (err) {
         console.error('Failed to update issue:', (err as Error).message);
       }
+      // Also mark the persisted plan rejected — without this, an unexpired
+      // Approve link would still execute a plan the admin just rejected.
+      try {
+        await githubApi(`/repos/${repo}/actions/workflows/execute-approved-fix.yml/dispatches`, 'POST', {
+          ref: 'main',
+          inputs: { issue_number: String(issue), plan_id: planId, mode: 'reject' }
+        }, ghToken);
+      } catch (err) {
+        console.error('Failed to dispatch reject persistence:', (err as Error).message);
+      }
     }
     return html('Fix Rejected',
       '<h1>Fix Rejected</h1><p>The proposed fix has been cancelled. The issue will remain open for manual review.</p>' +
@@ -111,7 +124,7 @@ export async function GET(req: NextRequest): Promise<Response> {
   try {
     await githubApi(`/repos/${repo}/actions/workflows/execute-approved-fix.yml/dispatches`, 'POST', {
       ref: 'main',
-      inputs: { issue_number: String(issue) }
+      inputs: { issue_number: String(issue), plan_id: planId, mode: 'apply' }
     }, ghToken);
   } catch (err) {
     const msg = (err as Error).message;

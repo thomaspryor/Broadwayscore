@@ -27,11 +27,16 @@ function detectSystematicIssue(plan, shows) {
   for (const action of (plan.actions || [])) {
     if (action.type !== 'data-edit') continue;
 
-    // Pattern: combined roles in creativeTeam (comma-separated)
+    // Pattern: combined roles in creativeTeam (comma-separated). Trigger only
+    // when the spot fix actually SPLIT a comma-role — an old entry with a
+    // ", "-joined role whose count grew. A fix that merely ADDS a credit
+    // (also newRoles > oldRoles) is not a split and must not launch a
+    // dataset-wide transform.
     if (action.field === 'creativeTeam') {
-      const oldRoles = (action.oldValue || []).map(ct => ct.role);
-      const newRoles = (action.newValue || []).map(ct => ct.role);
-      if (newRoles.length > oldRoles.length) {
+      const oldEntries = action.oldValue || [];
+      const newEntries = action.newValue || [];
+      const hadCombinedRole = oldEntries.some(ct => ct.role && ct.role.includes(', '));
+      if (hadCombinedRole && newEntries.length > oldEntries.length) {
         return detectCombinedRoles(showsList, action.showId);
       }
     }

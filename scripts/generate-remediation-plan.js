@@ -61,14 +61,17 @@ function output(key, value) {
   }
 }
 
-function generateApprovalUrl(action, issueNumber, secret) {
-  // 7-day expiry
+function generateApprovalUrl(action, issueNumber, secret, planId) {
+  // 7-day expiry. planId binds the link to THIS generated plan: a rerun for
+  // the same issue overwrites {issue}.json, and without the binding an
+  // unexpired link for plan A would silently execute plan B. The executor
+  // refuses on planId mismatch.
   const expires = Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60);
   const token = crypto
     .createHmac('sha256', secret)
-    .update(`${action}:${issueNumber}:${expires}`)
+    .update(`${action}:${issueNumber}:${expires}:${planId}`)
     .digest('hex');
-  return `https://broadwayscorecard.com/api/approve-fix?issue=${issueNumber}&token=${token}&expires=${expires}&action=${action}`;
+  return `https://broadwayscorecard.com/api/approve-fix?issue=${issueNumber}&token=${token}&expires=${expires}&action=${action}&plan=${planId}`;
 }
 
 async function sendEmail(to, from, subject, html) {
@@ -477,13 +480,16 @@ ${diagnosis.originalMessage
 
   // 4. Save plan to data/pending-fixes/
   const planFile = path.join(ROOT, 'data/pending-fixes', `${issueNumber}.json`);
+  const planId = crypto.randomUUID();
   const planData = {
     issueNumber: parseInt(issueNumber),
+    planId,
     status: 'pending',
     createdAt: new Date().toISOString(),
+    // diagnosis.summary/whatsHappening are LLM paraphrases that routinely
+    // quote the reporter verbatim — they stay OUT of this PUBLIC-repo file
+    // (they live in the GitHub issue and the approval email).
     diagnosis: {
-      summary: diagnosis.summary,
-      whatsHappening: diagnosis.whatsHappening,
       fixType: diagnosis.fixType,
       confidence: diagnosis.confidence,
       showId: diagnosis.showId,
@@ -493,12 +499,13 @@ ${diagnosis.originalMessage
     // committed to the PUBLIC repo (it was gitignored 2026-03-08 for exactly
     // this reason, which silently broke plan persistence: every approval email
     // since then pointed at a plan file that was never committed, so the
-    // Approve button dispatched an executor that found nothing). The executor
-    // re-derives the submitter from the GitHub issue's DIAGNOSIS_JSON at
-    // execute time for the thank-you email. Email/message live only in the
-    // approval email itself (built from the in-memory diagnosis below).
+    // Approve button dispatched an executor that found nothing). Name, email
+    // and message are ALL redacted; the executor re-derives them from the
+    // GitHub issue's DIAGNOSIS_JSON at execute time for the thank-you email.
+    // They live only in the approval email itself (built from the in-memory
+    // diagnosis below).
     submitter: {
-      name: diagnosis.submitterName || 'Anonymous',
+      name: null,
       email: null,
       show: diagnosis.submitterShow || null,
       message: '',
@@ -541,9 +548,9 @@ ${diagnosis.originalMessage
     }
   }
 
-  // 6. Generate HMAC-signed approval URLs
-  const approveUrl = generateApprovalUrl('approve', issueNumber, secret);
-  const rejectUrl = generateApprovalUrl('reject', issueNumber, secret);
+  // 6. Generate HMAC-signed approval URLs (bound to this plan's planId)
+  const approveUrl = generateApprovalUrl('approve', issueNumber, secret, planId);
+  const rejectUrl = generateApprovalUrl('reject', issueNumber, secret, planId);
 
   // 7. Send approval email
   const ownerEmail = process.env.OWNER_EMAIL;
@@ -588,11 +595,14 @@ ${diagnosis.originalMessage
     if (systematic && systematic.totalMatches > 0) {
       console.log(`\nSystematic issue detected: ${systematic.totalMatches} similar entries across ${systematic.showCount} shows`);
 
-      // Save systematic plan
+      // Save systematic plan (its own planId — approving the spot plan must
+      // not be able to execute the systematic one, or vice versa)
       const sysPlanId = `${issueNumber}-systematic`;
+      const sysPlanUuid = crypto.randomUUID();
       const sysPlanFile = path.join(ROOT, 'data/pending-fixes', `${sysPlanId}.json`);
       const sysPlanData = {
         issueNumber: sysPlanId,
+        planId: sysPlanUuid,
         parentIssue: parseInt(issueNumber),
         status: 'pending',
         createdAt: new Date().toISOString(),
@@ -620,8 +630,8 @@ ${diagnosis.originalMessage
 
       // Send separate systematic email
       if (ownerEmail) {
-        const sysApproveUrl = generateApprovalUrl('approve', sysPlanId, secret);
-        const sysRejectUrl = generateApprovalUrl('reject', sysPlanId, secret);
+        const sysApproveUrl = generateApprovalUrl('approve', sysPlanId, secret, sysPlanUuid);
+        const sysRejectUrl = generateApprovalUrl('reject', sysPlanId, secret, sysPlanUuid);
 
         const { subject: sysSubject, html: sysHtml } = buildFixApprovalEmail({
           submitterName: 'System (auto-detected)',

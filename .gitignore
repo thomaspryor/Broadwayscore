@@ -60,12 +60,17 @@ data/subscribers.json
 data/subscribers-westend.json
 data/followers.json
 
-# data/pending-fixes/ WAS ignored here (2026-03-08, PII). That silently broke
-# the whole fix-approval chain: the plan-commit steps in
+# data/pending-fixes/ WAS fully ignored here (2026-03-08, PII). That silently
+# broke the whole fix-approval chain: the plan-commit steps in
 # auto-fix-feedback-bug.yml / execute-approved-fix.yml fail on `git add` of an
 # ignored path, so every Approve email since then pointed at a plan file that
-# never existed. Plans are now persisted PII-REDACTED (no submitter email or
-# message — see generate-remediation-plan.js), so they are safe to track again.
+# never existed. Plans are now persisted PII-REDACTED (no submitter
+# name/email/message — see generate-remediation-plan.js), so executor-shaped
+# files ({issue}.json, digit-leading) are trackable again; everything else in
+# the dir stays ignored so a stray `git add -A` can't stage arbitrary files.
+data/pending-fixes/*
+!data/pending-fixes/[0-9]*.json
+!data/pending-fixes/.gitkeep
 
 # Opening night broadcast dedup state (regenerated from Formspree sync + send receipts)
 data/opening-night-sent.json

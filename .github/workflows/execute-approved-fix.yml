@@ -7,6 +7,20 @@ on:
         description: 'Issue number to execute the approved fix for'
         required: true
         type: string
+      plan_id:
+        description: 'planId from the approval link — executor refuses on mismatch (stale-link guard)'
+        required: true
+        type: string
+      mode:
+        description: 'apply executes the plan; reject marks it rejected without executing'
+        required: false
+        default: 'apply'
+        type: choice
+        options: [apply, reject]
+
+permissions:
+  contents: write
+  issues: write
 
 concurrency:
   group: auto-fix-feedback-bug
@@ -51,6 +65,8 @@ jobs:
         id: exec
         env:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
+          PLAN_ID: ${{ inputs.plan_id }}
+          EXEC_MODE: ${{ inputs.mode }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -67,7 +83,7 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Execute Approved Fix — Commit and push changes"
       - name: Commit and push changes
-        if: always() && (steps.exec.outputs.result == 'fixed' || steps.exec.outputs.result == 'no-changes' || steps.exec.outputs.result == 'validation-failed')
+        if: always() && (steps.exec.outputs.result == 'fixed' || steps.exec.outputs.result == 'no-changes' || steps.exec.outputs.result == 'validation-failed' || steps.exec.outputs.result == 'rejected')
         env:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
         run: |

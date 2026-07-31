@@ -357,10 +357,34 @@ async function main() {
 
   const planData = JSON.parse(fs.readFileSync(planFile, 'utf8'));
 
+  // 1b. Stale-link guard: the approval URL is HMAC-bound to the planId that
+  // existed when the email was sent. A regenerated plan for the same issue
+  // overwrites {issue}.json; executing it under the OLD link would apply a
+  // plan nobody reviewed. Refuse on any mismatch.
+  const expectedPlanId = process.env.PLAN_ID || null;
+  if ((planData.planId || null) !== expectedPlanId) {
+    console.error(`Plan ID mismatch: link carries ${expectedPlanId || '(none)'}, ` +
+      `current plan is ${planData.planId || '(unversioned)'} — the plan was ` +
+      `regenerated after this link was issued. Refusing to execute.`);
+    output('result', 'error');
+    return;
+  }
+
   // 2. Check status
   if (planData.status !== 'pending') {
     console.log(`Plan already ${planData.status} — skipping`);
     output('result', 'already-applied');
+    return;
+  }
+
+  // 2b. Reject mode: the owner clicked Reject — persist the rejection so an
+  // unexpired Approve link for the same plan can no longer execute it.
+  if (process.env.EXEC_MODE === 'reject') {
+    planData.status = 'rejected';
+    planData.rejectedAt = new Date().toISOString();
+    fs.writeFileSync(planFile, JSON.stringify(planData, null, 2) + '\n');
+    console.log(`Plan for #${issueNumber} marked rejected — nothing executed`);
+    output('result', 'rejected');
     return;
   }
 
@@ -404,10 +428,13 @@ async function main() {
     }
   }
 
-  // 4. Validate if we made data changes
-  const hasDataEdits = planData.plan.actions.some(a => a.type === 'data-edit');
+  // 4. Validate if we made data changes. batch-transform mutates data files
+  // too — it must NOT bypass validation (it previously did, so a bad bulk
+  // transform had no rollback path).
+  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform');
+  const hasDataEdits = dataTouching.length > 0;
   if (hasDataEdits) {
-    const changedFiles = [...new Set(planData.plan.actions.filter(a => a.type === 'data-edit').map(a => a.file))];
+    const changedFiles = [...new Set(dataTouching.map(a => a.file).filter(Boolean))];
     console.log('\nRunning validation...');
     if (!runValidation(changedFiles)) {
       console.error('Validation failed — rolling back');
@@ -427,8 +454,9 @@ async function main() {
     console.log('Validation passed');
   }
 
-  // 5. Success — update plan
-  planData.status = 'applied';
+  // 5. Success — update plan. 'partial' (not 'applied') when any action
+  // failed, so the record doesn't claim the whole plan landed.
+  planData.status = failed.length > 0 ? 'partial' : 'applied';
   planData.executedAt = new Date().toISOString();
   planData.results = results;
   fs.writeFileSync(planFile, JSON.stringify(planData, null, 2) + '\n');
@@ -460,7 +488,13 @@ ${failed.length > 0 ? `<br><p style="margin:0;color:#c00;">Skipped: ${failed.joi
   // 7. Send thank-you to submitter. Persisted plans are PII-redacted
   // (submitter.email is null by construction — see generate-remediation-plan.js),
   // so recover the submitter from the GitHub issue's DIAGNOSIS_JSON at
-  // execute time. Best effort: no token / no match just skips the thank-you.
+  // execute time. Recovery MUST stay below the plan-file write above so the
+  // email never re-enters the committed JSON. Systematic plans skip the
+  // thank-you — the parent spot fix already sent one for the same report.
+  if (planData.isSystematic) {
+    console.log('Systematic plan — skipping submitter thank-you (parent plan covers it)');
+    return;
+  }
   if (!planData.submitter.email && applied.length > 0) {
     const recovered = await fetchSubmitterFromIssue(issueNumber);
     if (recovered) {
