@@ -85,11 +85,15 @@ function fetchStatus(url, timeout) {
  * first-party venue sites (they routinely bot-block plain GETs —
  * Marylebone/La Jolla confirmed — while the big platforms answer 200, so a
  * platform 403 is suspicious, not normal).
+ *
+ * fetchStatusFn is injectable so the unit tests can drive every branch
+ * deterministically (test-extraction rule: the tests exercise THIS function,
+ * not a copy).
  */
-async function probeUrl(url, timeout = 15000) {
+async function probeUrl(url, timeout = 15000, fetchStatusFn = fetchStatus) {
   let current = url;
   for (let hop = 0; hop < 4; hop++) {
-    const { status, location } = await fetchStatus(current, timeout);
+    const { status, location } = await fetchStatusFn(current, timeout);
     if (status >= 200 && status < 300) return platformForUrl(current) !== null;
     if (status === 403) return isVenueSiteHost(current);
     if (status >= 300 && status < 400 && location) {
@@ -170,7 +174,14 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error('Fatal:', err);
-  process.exit(1);
-});
+// Exported for the colocated test suite; the sweep only runs when invoked
+// directly (requiring this module must never trigger a live SERP run —
+// the cousin --help bug class, in require() form).
+module.exports = { probeUrl, isVenueSiteHost };
+
+if (require.main === module) {
+  main().catch((err) => {
+    console.error('Fatal:', err);
+    process.exit(1);
+  });
+}
