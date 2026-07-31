@@ -28,6 +28,8 @@ const path = require('path');
 const { compressImage } = require('./lib/compress-image');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { getMarketSearchKeyword } = require('./lib/market-label');
+const { imageOnDisk } = require('./lib/show-images');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
@@ -1625,10 +1627,10 @@ async function fetchFromGoogleImages(show) {
   // Query keyword must match the show's market — searching "Broadway" for an
   // Off-Broadway/West End production surfaces the wrong-production's art (or
   // nothing at all: the-gin-game-2026 at Housing Works found 0 candidates while
-  // the 2015 Broadway revival's images ranked).
-  const marketKw = show.category === 'off-broadway' ? 'Off-Broadway'
-    : show.category === 'west-end' ? 'West End'
-    : 'Broadway';
+  // the 2015 Broadway revival's images ranked). Central lookup, NOT another
+  // inline ternary with a bare Broadway fallback (that class is why
+  // scripts/lib/market-label.js exists).
+  const marketKw = getMarketSearchKeyword(show.category || show.market);
   const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
   const showDir = path.join(outputBase, show.id);
   fs.mkdirSync(showDir, { recursive: true });
@@ -2699,22 +2701,11 @@ async function main() {
       shows = shows.filter(s => s.status !== 'closed');
       console.log(`Excluding ${before - shows.length} closed shows (use --include-closed to override)`);
     }
-    shows = shows.filter(s => {
-      // Missing in JSON
-      if (!s.images?.poster || !s.images?.thumbnail) return true;
-      // JSON says images exist but local files are missing on disk
-      const poster = s.images.poster;
-      const thumb = s.images.thumbnail;
-      if (poster && poster.startsWith('/images/')) {
-        const posterPath = path.join(__dirname, '..', 'public', poster);
-        if (!fs.existsSync(posterPath) || isPlaceholderFile(posterPath)) return true;
-      }
-      if (thumb && thumb.startsWith('/images/')) {
-        const thumbPath = path.join(__dirname, '..', 'public', thumb);
-        if (!fs.existsSync(thumbPath) || isPlaceholderFile(thumbPath)) return true;
-      }
-      return false;
-    });
+    // imageOnDisk() is the shared predicate (scripts/lib/show-images.js): a path
+    // in shows.json counts only when the file exists AND is not a known
+    // placeholder. The monitors use the same helper so "covered" means the same
+    // thing everywhere (the-gin-game-2026 phantom-path class, 2026-07-31).
+    shows = shows.filter(s => !imageOnDisk(s.images?.poster) || !imageOnDisk(s.images?.thumbnail));
     console.log(`Processing only shows with missing images: ${shows.length}`);
   }
 

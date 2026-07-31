@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isValidSynopsis, classifyBadSynopsis } = require('./lib/synopsis-validation');
+const { imageOnDisk } = require('./lib/show-images');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
 const { isValidCreativeTeamName, lookupIBDBDates } = require('./lib/ibdb-dates');
 const { serpQuery } = require('./lib/url-discovery');
@@ -560,11 +561,16 @@ function fixTicketLinks(show) {
   return null;
 }
 
+// imageOnDisk(), not truthiness. This is the one that actually TRIGGERS
+// remediation (its result becomes needs_images → the image-fetch job in
+// check-show-freshness.yml), so a phantom /images/ path here doesn't just
+// mis-report — it withholds the re-fetch that would have fixed the show.
+// the-gin-game-2026 sat live with a placeholder for two weeks this way.
 function checkMissingImages(show) {
   const missing = [];
-  if (!show.images?.poster) missing.push('poster');
-  if (!show.images?.thumbnail) missing.push('thumbnail');
-  if (!show.images?.hero) missing.push('hero');
+  if (!imageOnDisk(show.images?.poster)) missing.push('poster');
+  if (!imageOnDisk(show.images?.thumbnail)) missing.push('thumbnail');
+  if (!imageOnDisk(show.images?.hero)) missing.push('hero');
   return missing;
 }
 

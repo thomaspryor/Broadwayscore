@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { classifyBadSynopsis } = require('./lib/synopsis-validation');
+const { imageOnDisk } = require('./lib/show-images');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -118,28 +119,22 @@ function daysUntil(dateStr) {
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
 
-// A local /images/ path in shows.json only counts if the file is actually on
-// disk — the-gin-game-2026 shipped live with phantom paths written at add-time,
-// which made every truthiness-based monitor (this one included) report it as
-// covered while the site rendered the emoji placeholder.
-function imagePresent(imgPath) {
-  if (!imgPath) return false;
-  if (!imgPath.startsWith('/images/')) return true; // external URL — assume live
-  return fs.existsSync(path.join(__dirname, '..', 'public', imgPath));
-}
-
 function checkShowCompleteness(show) {
   const issues = [];
   const isOpen = show.status === 'open';
 
-  // Images
-  if (!imagePresent(show.images?.poster)) {
+  // Images — imageOnDisk(), not truthiness. A phantom /images/ path (written at
+  // add-time with no file behind it) is truthy, which is how the-gin-game-2026
+  // stayed live for two weeks rendering the placeholder with this monitor
+  // reporting it covered (2026-07-31). Shared predicate so "covered" means the
+  // same thing here, in validate-data.js, and in fetch-show-images --missing.
+  if (!imageOnDisk(show.images?.poster)) {
     issues.push({ type: 'missing_poster', severity: 'high' });
   }
-  if (!imagePresent(show.images?.hero)) {
+  if (!imageOnDisk(show.images?.hero)) {
     issues.push({ type: 'missing_hero', severity: 'medium' });
   }
-  if (!imagePresent(show.images?.thumbnail)) {
+  if (!imageOnDisk(show.images?.thumbnail)) {
     issues.push({ type: 'missing_thumbnail', severity: 'low' });
   }
 
