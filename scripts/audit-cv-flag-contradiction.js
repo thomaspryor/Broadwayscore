@@ -92,7 +92,10 @@ function main() {
 
   console.log(`Flag-vs-CV contradiction sweep: ${recentShows.length} shows opened in the last ${args.window}d, ${hits.length} contradiction(s) found.`);
   for (const h of hits) {
-    console.log(`  [${h.flag}] ${h.showId}/${h.file} (${h.wordCount}w) — CV: ${h.cvReasoning.slice(0, 140)}`);
+    // No cvReasoning in stdout: this repo is public and CV reasoning often
+    // embeds verbatim quotes from copyrighted review text (CLAUDE.md §3) —
+    // this script runs in CI (public Actions logs), not just locally.
+    console.log(`  [${h.flag}] ${h.showId}/${h.file} (${h.wordCount}w)`);
   }
 
   if (args.gate && hits.length >= args.threshold) {
