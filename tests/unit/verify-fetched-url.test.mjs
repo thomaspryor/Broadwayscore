@@ -137,6 +137,58 @@ describe('verifyFetchedUrl', () => {
     });
   });
 
+  // Regressions for task #702 (audit: data/audit/url-mismatch-suspects.json,
+  // 7,114 entries, 6,301 across these two hosts burning the full provider chain).
+  describe('invisible Unicode and same-host suffix redirects (task #702)', () => {
+    test('theatre.reviews trailing U+200E LEFT-TO-RIGHT MARK → verified true', () => {
+      const html = '<html><head><link rel="canonical" href="https://theatre.reviews/reviews-roundup/the-truth-apollo-reviews/‎"></head></html>';
+      const url = 'https://theatre.reviews/reviews-roundup/the-truth-apollo-reviews/';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, true);
+    });
+
+    test('didtheylikeit.com short slug → full canonical slug suffix → verified true', () => {
+      const html = '<html><head><link rel="canonical" href="https://didtheylikeit.com/shows/the-gin-game-review/"></head></html>';
+      const url = 'https://didtheylikeit.com/shows/the-gin-game/';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, true);
+    });
+
+    test('didtheylikeit.com hamlet → hamlet-a-version-review → verified true', () => {
+      const html = '<html><head><link rel="canonical" href="https://didtheylikeit.com/shows/hamlet-a-version-review/"></head></html>';
+      const url = 'https://didtheylikeit.com/shows/hamlet/';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, true);
+    });
+
+    test('same-host but nested under an unrelated slug → still url_mismatch', () => {
+      // Real audit entry: /shows/well/ resolved to a page filed under a totally
+      // different show's directory ("its-only-a-play/..."). Different directory
+      // depth AND unrelated content — must NOT be treated as a suffix redirect.
+      const html = '<html><head><link rel="canonical" href="https://didtheylikeit.com/shows/its-only-a-play/well-did-whats-his-name-like-it/"></head></html>';
+      const url = 'https://didtheylikeit.com/shows/well/';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    test('genuine cross-host mismatch still rejected after normalization changes', () => {
+      const html = '<html><head><link rel="canonical" href="https://www.rottentomatoes.com/m/the-gin-game"></head></html>';
+      const url = 'https://didtheylikeit.com/shows/the-gin-game/';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    test('same-host shorter actual path (homepage-like) is still a mismatch, not a suffix', () => {
+      const html = '<html><head><link rel="canonical" href="https://didtheylikeit.com/shows/"></head></html>';
+      const url = 'https://didtheylikeit.com/shows/the-gin-game/';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+  });
+
   describe('edge cases', () => {
     test('missing input → not verified', () => {
       assert.equal(verifyFetchedUrl('', 'https://example.com/foo').verified, false);
