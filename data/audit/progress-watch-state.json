@@ -1,0 +1,23 @@
+{
+  "surfaces": {
+    "needsRescoreUnblocked": {
+      "label": "needsRescore queue (unblocked)",
+      "hint": "node scripts/audit-stuck-rescore-flags.js --json for a byReason breakdown; if this is pinned, confirm llm-ensemble-score.yml's \"Drain needsRescore backlog\" step actually ran (not just scheduled) and that markRescoreComplete/stampTerminalScoringFailure are being called on every scoring outcome.",
+      "cycles": 3,
+      "history": [
+        {
+          "value": 140,
+          "ts": "2026-07-31T06:08:55.967Z"
+        }
+      ],
+      "stalled": false,
+      "reason": "insufficient-history",
+      "direction": "down",
+      "value": 140
+    }
+  },
+  "lastRunAt": "2026-07-31T06:08:55.968Z",
+  "lastSummary": {
+    "needsRescoreUnblocked": 140
+  }
+}
