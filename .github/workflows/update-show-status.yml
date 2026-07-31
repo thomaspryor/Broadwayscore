@@ -263,8 +263,16 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          node scripts/validate-data.js 2>&1 | tee /tmp/post-validate-output.txt
-          echo $? > /tmp/post-validate-exitcode.txt
+          # GHA's default shell runs with `-e`, so a bare `echo $?` after a
+          # failing pipeline never executes — pipefail makes the pipeline
+          # itself the failing command and `-e` aborts the step right there,
+          # silently skipping the exit-code capture (verified locally: repro
+          # confirms the file is never written without the `|| EC=$?` guard).
+          # `|| EC=$?` makes the assignment itself the (succeeding) statement
+          # `-e` sees, so the step continues and $EC holds the real code.
+          EC=0
+          node scripts/validate-data.js 2>&1 | tee /tmp/post-validate-output.txt || EC=$?
+          echo "$EC" > /tmp/post-validate-exitcode.txt
 
       # Set-diff: did discovery/enrichment introduce a NEW validation error,
       # or is the only failure a pre-existing one it didn't cause? Only the
