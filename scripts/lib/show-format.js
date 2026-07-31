@@ -57,6 +57,7 @@ const UNKNOWN_FORMAT = {
   label: 'EVENT',
   title: 'Event',
   colorClass: 'border-gray-500/50 text-gray-400',
+  textClass: 'text-gray-400',
   emailColor: '#9ca3af',
 };
 

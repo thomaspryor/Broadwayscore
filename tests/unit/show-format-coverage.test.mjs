@@ -132,6 +132,39 @@ describe('show-format coverage', () => {
 });
 
 describe('show-format parity between src/ and scripts/', () => {
+  // The parity comparison used to enumerate a hardcoded field list, so any NEW
+  // field added to ShowFormat in TS was invisible to the guard. That hole was
+  // real and already hit: `textClass` shipped in the TS UNKNOWN_FORMAT but was
+  // missing from the JS mirror, making resolveShowFormat(unknown).textClass
+  // undefined in email/newsletter code. These two tests close it.
+  it('the TS interface declares no field the JS mirror omits', () => {
+    const iface = tsSource.split('export interface ShowFormat')[1].split('}')[0];
+    const declared = [...iface.matchAll(/^\s*(\w+):/gm)].map((m) => m[1]);
+    assert.ok(declared.length >= 4, `parsed too few interface fields: ${declared}`);
+    for (const key of Object.keys(js.SHOW_FORMATS)) {
+      for (const field of declared) {
+        assert.ok(
+          Object.prototype.hasOwnProperty.call(js.SHOW_FORMATS[key], field),
+          `scripts/lib/show-format.js "${key}" is missing field "${field}" declared on the TS ShowFormat interface`
+        );
+      }
+    }
+  });
+
+  it('the unknown-input fallback carries every declared field too', () => {
+    // resolveShowFormat(unknown) must be a complete ShowFormat — a missing
+    // field here surfaces as `undefined` in a className or email style.
+    const iface = tsSource.split('export interface ShowFormat')[1].split('}')[0];
+    const declared = [...iface.matchAll(/^\s*(\w+):/gm)].map((m) => m[1]);
+    const fallback = js.resolveShowFormat('a-type-that-does-not-exist');
+    for (const field of declared) {
+      assert.ok(
+        fallback[field] !== undefined,
+        `UNKNOWN_FORMAT is missing "${field}" — resolveShowFormat(unknown).${field} is undefined`
+      );
+    }
+  });
+
   it('the TS and JS maps define the same format keys', () => {
     const ts = parseTsFormats();
     assert.deepStrictEqual(
