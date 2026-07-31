@@ -1,34 +1,10 @@
 [
   {
-    "conditionKey": "ux-walkthrough:high-priority",
-    "title": "UX walkthrough: high-priority finding(s) filed",
-    "description": "- [2/3] Dead end on 'desktop__lists_tab'. No obvious next action for a user with no lists.\n- [2/3] A star rating control is enabled for a show in the 'NOT YET BOOKED' section of the watchlist, implying a user can rate a show they haven't seen.",
-    "severity": "info",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30551372971",
-    "queuedAt": "2026-07-30T14:31:18.009Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30595249824",
-    "queuedAt": "2026-07-31T01:14:50.457Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 81.8% (455/556)\noff-broadway: 47.8% (143/299)\nwest-end: 69.8% (382/547)\n\nOldest gaps:\n1536 — guardian (191h)\n1536 — independent (191h)\nA Midsummer Night's Dream - Globe — financialtimes (191h)\nA Midsummer Night's Dream - Globe — telegraph (191h)\nA Midsummer Night's Dream — financialtimes (191h)\n… 203 more open gap(s)",
-    "severity": "warning",
-    "url": null,
-    "queuedAt": "2026-07-31T02:51:42.260Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget: browserbase $22.5 > $4 (225 sessions); brightdata $9.72 > $2.5 (2735 serp + 3746 unlocker reqs)",
+    "description": "Day 2026-07-30. 2026-07-30 · Browserbase: $22.5 (225 sessions) · 2026-07-30 · Bright Data: $9.72 (2735 serp / 3746 unlocker) · ScrapingBee: baseline day (cycle 1000012) — day figure starts tomorrow · ScrapingDog: baseline day (cycle 435996) — day figure starts tomorrow. Verification streak reset to 0.",
     "severity": "error",
     "url": null,
-    "queuedAt": "2026-07-31T06:08:11.931Z"
+    "queuedAt": "2026-07-31T07:44:33.712Z"
   }
 ]

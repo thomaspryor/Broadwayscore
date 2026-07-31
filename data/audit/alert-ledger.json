@@ -36,11 +36,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Credits: ScrapingDog",
       "firstSeen": "2026-07-24T07:50:33.764Z",
-      "lastSeen": "2026-07-30T07:41:01.832Z",
+      "lastSeen": "2026-07-31T07:44:28.093Z",
       "lastNotifiedAt": "2026-07-24T07:50:33.764Z",
       "notifyCount": 1,
       "cardId": "3a7637c5-416f-813f-b4d9-ecbfd564ab6f",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "health-check:Workflow repeat-failure: Test Suite": {
       "status": "open",
@@ -69,33 +69,33 @@
       "disposition": "auto",
       "title": "BSC Daily: Audience coverage: open-show gaps",
       "firstSeen": "2026-07-24T07:50:35.242Z",
-      "lastSeen": "2026-07-30T07:41:01.831Z",
+      "lastSeen": "2026-07-31T07:44:28.092Z",
       "lastNotifiedAt": "2026-07-24T07:50:35.242Z",
       "notifyCount": 1,
       "cardId": "3a7637c5-416f-8183-90ff-d3b51e7be23d",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "health-check:Sync: baseline drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-07-30T07:41:01.831Z",
+      "lastSeen": "2026-07-31T07:44:28.092Z",
       "lastNotifiedAt": "2026-07-24T07:50:35.775Z",
       "notifyCount": 1,
       "cardId": "3a7637c5-416f-8145-a6b5-c8e39ea3e262",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-07-30T07:41:01.832Z",
+      "lastSeen": "2026-07-31T07:44:28.093Z",
       "lastNotifiedAt": "2026-07-24T07:50:36.268Z",
       "notifyCount": 1,
       "cardId": "3a7637c5-416f-81d3-909d-e97d2bd72154",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "opening-night-sla:pages-stuck": {
       "status": "open",
@@ -146,33 +146,33 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: star-vs-score mismatch",
       "firstSeen": "2026-07-27T08:00:24.727Z",
-      "lastSeen": "2026-07-30T07:41:01.831Z",
+      "lastSeen": "2026-07-31T07:44:28.093Z",
       "lastNotifiedAt": "2026-07-27T08:00:24.727Z",
       "notifyCount": 1,
       "cardId": "3aa637c5-416f-818d-a590-d33bd1655341",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "health-check:Credits: ScrapingBee": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Credits: ScrapingBee",
       "firstSeen": "2026-07-27T08:00:25.454Z",
-      "lastSeen": "2026-07-30T07:41:01.832Z",
+      "lastSeen": "2026-07-31T07:44:28.093Z",
       "lastNotifiedAt": "2026-07-27T08:00:25.454Z",
       "notifyCount": 1,
       "cardId": "3aa637c5-416f-81f1-985a-ce121eb8a558",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "health-check:Credits: Bright Data": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Credits: Bright Data",
       "firstSeen": "2026-07-27T08:00:25.944Z",
-      "lastSeen": "2026-07-30T07:41:01.833Z",
+      "lastSeen": "2026-07-31T07:44:28.094Z",
       "lastNotifiedAt": "2026-07-27T08:00:25.944Z",
       "notifyCount": 1,
       "cardId": "3aa637c5-416f-81c3-b4e4-e1b1fc273987",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "scheduled-email-count:2026-07-24": {
       "status": "open",
@@ -257,6 +257,26 @@
       "firstSeen": "2026-07-30T14:31:18.008Z",
       "lastSeen": "2026-07-30T14:31:18.008Z",
       "lastNotifiedAt": "2026-07-30T14:31:18.008Z",
+      "notifyCount": 1,
+      "cardId": null
+    },
+    "health-check:Sync: cast coverage": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Sync: cast coverage",
+      "firstSeen": "2026-07-31T07:44:25.517Z",
+      "lastSeen": "2026-07-31T07:44:25.517Z",
+      "lastNotifiedAt": "2026-07-31T07:44:25.517Z",
+      "notifyCount": 1,
+      "cardId": "3ae637c5-416f-819e-b7fd-e097b8705cd8"
+    },
+    "provider-spend:overspend": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Scraping spend over budget: browserbase $22.5 > $4 (225 sessions); brightdata $9.72 > $2.5 (2735 serp + 3746 unlocker reqs)",
+      "firstSeen": "2026-07-31T07:44:33.712Z",
+      "lastSeen": "2026-07-31T07:44:33.712Z",
+      "lastNotifiedAt": "2026-07-31T07:44:33.712Z",
       "notifyCount": 1,
       "cardId": null
     }

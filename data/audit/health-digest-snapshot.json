@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-30T07:41:01.834Z",
-  "subject": "BSC Daily: 1 known issue (unchanged, day 2)",
+  "generatedAt": "2026-07-31T07:44:28.095Z",
+  "subject": "BSC Daily: ACTION NEEDED — Sync: cast coverage",
   "bannerText": "1 error, 14 warnings",
-  "consecutiveErrorDays": 2,
+  "consecutiveErrorDays": 3,
   "errors": [
     {
       "name": "Sync: cast coverage",
@@ -16,11 +16,11 @@
     },
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 19223 vs baseline 19236"
+      "message": "Reviews dropped: 19248 vs baseline 19259"
     },
     {
       "name": "Quality: star-vs-score mismatch",
-      "message": "2 NEW review(s) whose explicit rating contradicts the score (worst: the-imaginary-invalid Theater Life 4.5/5 stars→90 vs LLM 41, gap 49)"
+      "message": "3 NEW review(s) whose explicit rating contradicts the score (worst: the-imaginary-invalid Theater Life 4.5/5 stars→90 vs LLM 41, gap 49)"
     },
     {
       "name": "Quality: corpus drift",
@@ -32,19 +32,19 @@
     },
     {
       "name": "Credits: ScrapingDog",
-      "message": "644k credits left (64%) · 51k/day burn · renews in 23d · exhausts in ~13d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
+      "message": "564k credits left (56%) · 54k/day burn · renews in 22d · exhausts in ~10d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
     },
     {
       "name": "Credits: Bright Data",
-      "message": "balance $42.44 · pending invoice $272.17 · month-to-date $268.77 (serp+unlocker)"
+      "message": "balance $29.83 · pending invoice $284.78 · month-to-date $278.49 (serp+unlocker)"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "3 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (5d); push-with-retry.sh PUSH_DEADLINE_SEC=240 too tight for large (4d); UX audit #326: watchlist-grid delete icon color fix blocked  (3d)"
+      "message": "5 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (6d); UX audit #326: watchlist-grid delete icon color fix blocked  (4d); Scraping v2: T4 was a yield regression — reviews.php is not  (0d)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "36 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Kill ScrapingBee premium_proxy direct calls (cost more than  (7d); Rebuild same-URL dedup: prefer a real criticName over 'Unkno (7d); Trainspotting: only 4 reviews on site + email said 7 (invest (7d)"
+      "message": "22 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (8d); Trainspotting: only 4 reviews on site + email said 7 (invest (8d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (7d)"
     },
     {
       "name": "Data: OB closing candidates awaiting review",
@@ -52,28 +52,40 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "3 discovered review(s) not reaching the composite score (2 T1). First: loves-labours-lost-globe-west-end-2026 — times-uk (empty-body)"
+      "message": "1 discovered review(s) not reaching the composite score (0 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
     },
     {
-      "name": "Data: reviewed shows missing from shows.json",
-      "message": "1 aggregator-reviewed show(s) not in the catalogue. First: \"LES MISERABLES: THE ARENA CONCERT SPECTACULAR\" (bww-roundup)"
+      "name": "Data: undispatchable backlog cards",
+      "message": "31 of 300 pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [P0 Now] Pull design and UX inspo from TodayTix predictions site"
     }
   ],
   "queued": [
     {
+      "title": "UX walkthrough: high-priority finding(s) filed",
+      "description": "- [2/3] Dead end on 'desktop__lists_tab'. No obvious next action for a user with no lists.\n- [2/3] A star rating control is enabled for a show in the 'NOT YET BOOKED' section of the watchlist, implying a user can rate a show they haven't seen.",
+      "severity": "info",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30551372971"
+    },
+    {
+      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+      "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+      "severity": "error",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30595249824"
+    },
+    {
       "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 78.4% (451/575)\noff-broadway: 47.8% (143/299)\nwest-end: 69.8% (382/547)\n\nOldest gaps:\n1536 — guardian (170h)\n1536 — independent (170h)\nA Midsummer Night's Dream - Globe — financialtimes (170h)\nA Midsummer Night's Dream - Globe — telegraph (170h)\nA Midsummer Night's Dream — financialtimes (170h)\n… 201 more open gap(s)",
+      "description": "broadway: 81.8% (455/556)\noff-broadway: 47.8% (143/299)\nwest-end: 69.8% (382/547)\n\nOldest gaps:\n1536 — guardian (191h)\n1536 — independent (191h)\nA Midsummer Night's Dream - Globe — financialtimes (191h)\nA Midsummer Night's Dream - Globe — telegraph (191h)\nA Midsummer Night's Dream — financialtimes (191h)\n… 203 more open gap(s)",
       "severity": "warning",
       "url": null
     },
     {
-      "title": "Deployed coverage — the site is serving stale coverage",
-      "description": "1/237 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nLove's Labour's Lost - Globe: score-drift",
+      "title": "T1 Coverage — new gaps past 24h",
+      "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
       "severity": "error",
       "url": null
     }
   ],
-  "autoFixedCount": 2,
-  "passedCount": 46,
-  "totalCount": 64
+  "autoFixedCount": 1,
+  "passedCount": 50,
+  "totalCount": 68
 }
