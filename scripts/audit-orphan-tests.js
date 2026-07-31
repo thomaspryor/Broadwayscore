@@ -37,6 +37,11 @@ const WORKFLOWS_DIR = path.join(ROOT, '.github', 'workflows');
 // list these in --json output as `exemptKnownBroken` so the existence is visible
 // but doesn't fail CI.
 const EXEMPT_KNOWN_BROKEN = {
+  // NOT broken — a deferred-effect acceptance probe (task #695, card
+  // 3ae637c5-416f-81bb): asserts a 7-day provider-spend streak, EXPECTED to
+  // fail until the ledger accumulates history. Run by
+  // autonomous-acceptance-recheck.js at its RECHECK-AFTER date, never by CI.
+  'verify-provider-spend-streak.test.mjs': '3ae637c5-416f-81bb',
   // 1/5 tests fails on assertion: 'ok' !== 'warning' — behavior drift in the
   // underlying bww-rr check. Either the test expectation is stale or the check
   // regressed. 4/5 pass.

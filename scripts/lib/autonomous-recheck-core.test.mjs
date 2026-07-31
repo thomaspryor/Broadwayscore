@@ -132,3 +132,76 @@ test('no completion stamps at all: falls back to creation age, still requiring a
 test('garbage timestamps do not crash and do not qualify', () => {
   assert.equal(doneWithinWindow({ completedDate: 'not-a-date', lastEditedAt: 'nope' }, 24, NOW), false);
 });
+
+// ── RECHECK-AFTER stamp (task #695): deferred-effect fixes ─────────────────
+
+const { parseRecheckAfter } = require('./autonomous-recheck-core.js');
+
+test('parseRecheckAfter reads the stamp, case-insensitively, ignoring garbage', () => {
+  assert.equal(parseRecheckAfter('RECHECK-AFTER: 2026-08-08'), Date.parse('2026-08-08T00:00:00Z'));
+  assert.equal(parseRecheckAfter('recheck-after: 2026-08-08\nmore notes'), Date.parse('2026-08-08T00:00:00Z'));
+  assert.equal(parseRecheckAfter('no stamp here'), null);
+  assert.equal(parseRecheckAfter(''), null);
+  assert.equal(parseRecheckAfter(null), null);
+});
+
+test('a RECHECK-AFTER stamp overrides the generic window entirely', () => {
+  const future = { notes: 'RECHECK-AFTER: 2026-08-08', status: 'Paused' };
+  assert.equal(doneWithinWindow(future, 24, Date.parse('2026-08-07T23:00:00Z')), false, 'not due yet');
+  assert.equal(doneWithinWindow(future, 24, Date.parse('2026-08-08T00:00:00Z')), true, 'due the instant the day starts');
+  assert.equal(doneWithinWindow(future, 24, Date.parse('2026-09-01T00:00:00Z')), true, 'stays due after, like the window does');
+});
+
+test('a Paused card with no RECHECK-AFTER stamp is never window-eligible', () => {
+  const paused = { status: 'Paused', ageDays: 0.1, completedDate: null, lastEditedAt: new Date(NOW).toISOString() };
+  assert.equal(doneWithinWindow(paused, 24, NOW), false);
+});
+
+test('selectRecheckTargets: Done cards with a RECHECK-AFTER stamp and no dispatch record still surface via the card notes fallback', () => {
+  const card = {
+    id: 'card-2', name: 'Scraping spend within thresholds', status: 'Paused',
+    notes: 'RECHECK-AFTER: 2026-08-08\n\n## Acceptance criteria\n`node --test scripts/verify-provider-spend-streak.test.mjs` passes',
+  };
+  const now = Date.parse('2026-08-08T06:00:00Z');
+  const out = selectRecheckTargets({ doneCards: [card], launchEntries: [], now });
+  assert.deepEqual(out, [{
+    cardId: 'card-2', name: 'Scraping spend within thresholds',
+    verifyCmd: 'node --test scripts/verify-provider-spend-streak.test.mjs', reason: null, skip: null,
+  }]);
+});
+
+// ── Coverage fallback (task #695): human-dispatched Done cards ─────────────
+
+test('selectRecheckTargets: a Done card never dispatched through bsc-next is still recheckable via its own notes', () => {
+  const card = {
+    id: 'human-card', name: 'Manual fix', status: 'Done', ageDays: 0.2,
+    notes: '## Acceptance criteria\n`npx tsc --noEmit` passes',
+  };
+  const out = selectRecheckTargets({ doneCards: [card], launchEntries: [], now: NOW });
+  assert.deepEqual(out, [{ cardId: 'human-card', name: 'Manual fix', verifyCmd: 'npx tsc --noEmit', reason: null, skip: null }]);
+});
+
+test('selectRecheckTargets: a Done card with no dispatch record AND no runnable notes command is still not invented work', () => {
+  const card = { id: 'no-cmd', name: 'Prose-only fix', status: 'Done', ageDays: 0.2, notes: 'this was fixed, trust me' };
+  assert.deepEqual(selectRecheckTargets({ doneCards: [card], launchEntries: [], now: NOW }), []);
+});
+
+test('selectRecheckTargets: the fallback path still respects isClaimed', () => {
+  const card = {
+    id: 'claimed-card', name: 'In-flight fix', status: 'Done', ageDays: 0.2,
+    notes: '## Acceptance criteria\n`npx tsc --noEmit` passes',
+  };
+  const out = selectRecheckTargets({
+    doneCards: [card], launchEntries: [], now: NOW, isClaimed: (id) => id === 'claimed-card',
+  });
+  assert.deepEqual(out, [{ cardId: 'claimed-card', name: 'In-flight fix', verifyCmd: null, reason: null, skip: 'someone is working this card right now' }]);
+});
+
+test('selectRecheckTargets: a dispatch-ledger launch entry still takes priority over the notes fallback', () => {
+  const card = {
+    id: 'card-1', name: 'Fix the thing', status: 'Done', ageDays: 0.2,
+    notes: '## Acceptance criteria\n`npx next lint` passes',
+  };
+  const out = selectRecheckTargets({ doneCards: [card], launchEntries: [launch()], now: NOW });
+  assert.equal(out[0].verifyCmd, 'node --test tests/unit/a.test.mjs');
+});

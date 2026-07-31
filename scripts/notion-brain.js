@@ -1010,6 +1010,15 @@ async function listCards(args) {
   // along because the acceptance recheck keys "Done recently" on explicit
   // completion stamps rather than the derived ageDays proxy (which is also
   // last_edited_time-based, but survives less scrutiny — 2026-07-26).
+  // --include-notes (task #695): the widened acceptance recheck reads
+  // RECHECK-AFTER stamps and fallback acceptance commands out of card.notes,
+  // which this compact table omits by default — without this flag every
+  // list-based caller silently sees notes: undefined and the stamp can never
+  // be detected (ship-check adversarial finding: this was the exact gap that
+  // made the whole widening a no-op end-to-end despite passing unit tests
+  // that inject notes directly). Opt-in because notes can be large and most
+  // callers of `list` don't need them.
+  const includeNotes = !!args['include-notes'];
   const table = results.map(c => ({
     name: c.name,
     status: c.status,
@@ -1020,6 +1029,7 @@ async function listCards(args) {
     lastEditedAt: c.lastEditedAt ?? null,
     tags: c.tags.join(', '),
     id: c.id,
+    ...(includeNotes ? { notes: c.notes } : {}),
   }));
 
   console.log(JSON.stringify(table, null, 2));
