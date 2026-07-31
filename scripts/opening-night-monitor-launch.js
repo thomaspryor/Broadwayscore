@@ -58,7 +58,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { selectOpeningNightShows } = require('./lib/opening-night-selection.js');
 const {
   activeWindows, nightKey, launchDecision, computeWindow,
-  claimLockGeneration, isLockGenerationOwner, MAX_ATTEMPTS_PER_NIGHT,
+  claimLockGeneration, isLockGenerationOwner,
 } = require('./lib/opening-night-windows.js');
 const { runMonitorPass } = require('./lib/opening-night-monitor.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
@@ -205,8 +205,18 @@ function authPing(extraEnv) {
   const r = spawnSync('claude', ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
     { encoding: 'utf8', timeout: 120000, env: { ...process.env, ...extraEnv } });
   if (r.status !== 0) return { ok: false, detail: (r.stderr || r.stdout || `exit ${r.status}`).slice(0, 300) };
-  if (/Not logged in/i.test(r.stdout || '')) return { ok: false, detail: 'Not logged in (stored login unreachable in this context)' };
-  return { ok: true };
+  // Positive validation (codex review 2026-07-31): require the envelope to
+  // actually contain the pong. The broken-auth CLI exits 0 with
+  // subtype:"success" and result:"Not logged in · Please run /login", and
+  // future CLI versions may reword that — so never grep for the error
+  // string, prove the success instead.
+  try {
+    const body = JSON.parse(r.stdout);
+    if (body.is_error === false && /pong/i.test(String(body.result || ''))) return { ok: true };
+    return { ok: false, detail: `ping returned no pong: ${String(body.result || r.stdout).slice(0, 200)}` };
+  } catch {
+    return { ok: false, detail: `unparseable ping output: ${String(r.stdout || r.stderr).slice(0, 200)}` };
+  }
 }
 
 // Pure decision, extracted for tests (CLAUDE.md rule 15): which auth mode
@@ -221,12 +231,16 @@ function preflightAuth() {
   // Probe 1: the pass's real env — API key cleared, stored login only.
   const stored = authPing({ ANTHROPIC_API_KEY: '' });
   if (stored.ok) return { ok: true, mode: 'oauth' };
-  const apiKeyPresent = Boolean(process.env.ANTHROPIC_API_KEY);
+  // Operator kill switch for the pay-per-token path specifically (the
+  // launcher-wide switches ON_MONITOR_DISABLED / KILL_FILE stop everything;
+  // this one says "OAuth or nothing").
+  const fallbackAllowed = process.env.ON_MONITOR_NO_API_FALLBACK !== '1';
+  const apiKeyPresent = fallbackAllowed && Boolean(process.env.ANTHROPIC_API_KEY);
   // Probe 2: only if a key exists — can the key path carry the pass?
-  const keyed = apiKeyPresent ? authPing({}) : { ok: false, detail: 'no ANTHROPIC_API_KEY in env' };
+  const keyed = apiKeyPresent ? authPing({}) : { ok: false, detail: fallbackAllowed ? 'no ANTHROPIC_API_KEY in env' : 'API fallback disabled (ON_MONITOR_NO_API_FALLBACK=1)' };
   const decision = resolvePassAuth({ storedLoginOk: false, apiKeyPresent, apiKeyPingOk: keyed.ok });
   if (decision.mode === 'api-key') {
-    log(`preflight: stored login unreachable (${stored.detail.slice(0, 120)}) — falling back to ANTHROPIC_API_KEY (pay-per-token, capped at ${MAX_ATTEMPTS_PER_NIGHT} passes x ${HEADLESS_MAX_WALL_MIN}min/night). Run \`claude setup-token\` + add CLAUDE_CODE_OAUTH_TOKEN to restore subscription billing.`);
+    log(`preflight: stored login unreachable (${stored.detail.slice(0, 120)}) — falling back to ANTHROPIC_API_KEY (pay-per-token; spend hard-capped by NIGHTLY_USD_CAP $${NIGHTLY_USD_CAP}/night, disable with ON_MONITOR_NO_API_FALLBACK=1). Run \`claude setup-token\` + add CLAUDE_CODE_OAUTH_TOKEN to restore subscription billing.`);
     return { ok: true, mode: 'api-key', storedDetail: stored.detail };
   }
   return { ok: false, detail: `stored-login: ${stored.detail} | api-key: ${keyed.detail}` };
