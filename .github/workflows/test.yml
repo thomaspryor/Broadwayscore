@@ -1003,6 +1003,13 @@ on:
       - 'scripts/lib/attempt-memory.js'
       - 'scripts/lib/attempt-memory.test.mjs'
       - 'scripts/autonomous-shadow-run.js'
+      # Pure slice selection for the shadow run (card #669) — notion-brain
+      # `list` sorts Priority-ascending and human-territory categories sort
+      # near the top, so picking the first --limit ids gave the shadow proof
+      # the same dead cards every night. Colocated *.test.mjs runs in the
+      # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/autonomous-shadow-slice.js'
+      - 'scripts/lib/autonomous-shadow-slice.test.mjs'
       # bsc-next model resolution (task #151) reuses pickModel() above —
       # colocated test runs in the lib-test glob; path-listed so a solo edit
       # triggers CI.
