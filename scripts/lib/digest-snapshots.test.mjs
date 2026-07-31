@@ -89,7 +89,7 @@ test('describeProblems names every non-fresh source; null when all fresh', () =>
 });
 
 test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; backlogDrain added #654)', () => {
-  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['backlogDrain', 'dailyDigest', 'health', 'redditDigest']);
+  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['backlogDrain', 'dailyDigest', 'health', 'providerSpend', 'redditDigest']);
 });
 
 // The contract the plan review flagged as a P0: the monitor's classifier and

@@ -108,12 +108,32 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/e2e-canary-alert-chain.js
 
+      # Scraping Cost System v2 truth layer (owner-approved 2026-07-30):
+      # daily billing-API reconciliation. continue-on-error because a crash
+      # here must not block the health snapshot commit below — a stuck
+      # producer surfaces via digest-snapshots.js's 36h staleness banner,
+      # and unreachable billing APIs are recorded as 'unknown' days by the
+      # script itself (fail-closed: unknown breaks the verification streak).
+      - name: Provider spend reconciliation
+        if: always()
+        continue-on-error: true
+        env:
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: node scripts/check-provider-spend.js
+
       - name: Commit health check + triage data
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/health-check-history.json
+          git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
+          git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
           # Card #364: without this the runner-local snapshot never leaves
           # the GitHub Actions filesystem — the Mac Studio (a different
           # machine) would never see it, and the whole merged-email feature
