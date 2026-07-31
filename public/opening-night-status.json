@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T12:34:20.474Z",
+  "generatedAt": "2026-07-31T12:46:54.635Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,24 +13,24 @@
       "slug": "tao-of-glass-west-end",
       "thumbnail": "/images/shows/tao-of-glass-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 82,
+      "liveScore": 81,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 1,
+      "total": 3,
       "t1": 0,
-      "t2": 1,
+      "t2": 3,
       "t3": 0,
-      "positive": 1,
+      "positive": 3,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "3/8 total",
           "T1:0/3",
-          "T2:0/2",
+          "T2:1/2",
           "hi-conf:1/6"
         ],
         "highConfidence": 1,
@@ -118,6 +118,18 @@
           "t2": 1,
           "t3": 0,
           "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-31T12:46:54.635Z",
+          "rc": 3,
+          "s": 81,
+          "t1": 0,
+          "t2": 3,
+          "t3": 0,
+          "p": 3,
           "m": 0,
           "n": 0,
           "bc": "waiting"
