@@ -32,7 +32,7 @@ Options:
   --show=ID    only attempt this show id
 `;
 
-if (hasHelpFlag(process.argv)) {
+if (hasHelpFlag(process.argv.slice(2))) {
   console.log(USAGE);
   process.exit(0);
 }

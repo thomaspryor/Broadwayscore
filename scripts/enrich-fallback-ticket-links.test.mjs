@@ -70,16 +70,7 @@ test('isVenueSiteHost matches venue domains and subdomains only', () => {
   assert.equal(isVenueSiteHost('https://evil-bam.org.attacker.com/x'), false);
 });
 
-// Live smoke test: real https redirect (todaytix.com 301s to www) through the
-// REAL fetchStatus. Network-dependent; skipped rather than failed when offline.
-test('probeUrl live: real redirect chain resolves to allowlisted 2xx', async (t) => {
-  const ok = await probeUrl('https://todaytix.com/', 15000);
-  if (!ok) {
-    // Distinguish "offline" from a genuine regression: a direct www hit
-    // failing too means no network — skip; www succeeding means the
-    // redirect-follow path really broke — fail.
-    const direct = await probeUrl('https://www.todaytix.com/', 15000);
-    if (!direct) return t.skip('network unavailable');
-  }
-  assert.equal(ok, true);
-});
+// The live-network smoke test lives in enrich-fallback-ticket-links-live.test.mjs,
+// which runs in test.yml's continue-on-error network-dependent step — never in
+// this blocking batch (second-opinion review: third-party flake must not gate
+// every push to main).

@@ -206,8 +206,11 @@ const PATTERNS = [
   // liamodell.com (WordPress.com) — entry-content; generic fallback got 122
   // chars on the 2026-07-31 Tao of Glass review (deaf culture + theatre
   // critic, cited in WE coverage). Same entry-content shape as NYSR below.
-  ['liamodell.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
+  // Chrome-aware pattern FIRST (first-match-wins loop; see newyorktheater.me
+  // note above — the loose fallback would otherwise pull Jetpack share/related
+  // chrome into the body).
   ['liamodell.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<div[^>]+(?:id="jp-post-flair"|class="[^"]*(?:sharedaddy|jp-relatedposts|sd-sharing|sd-like)[^"]*")/, 300],
+  ['liamodell.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
 
   // NYSR (WordPress) — entry-content
   ['nystagereview.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
