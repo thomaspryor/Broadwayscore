@@ -1026,6 +1026,10 @@ on:
       - 'scripts/lib/refetch-circuit-breaker.test.mjs'
       - 'scripts/lib/flag-contradiction.js'
       - 'scripts/lib/flag-contradiction.test.mjs'
+      # Standing CI check for the detector above (#676) — runs informational
+      # (no --gate) in the data-validation job below until the companion
+      # triage card drains the baseline under --threshold=4.
+      - 'scripts/audit-cv-flag-contradiction.js'
       # S3-T4: auto-clear shadow mode (would-clear decision + 48h/≥3-candidate
       # evidence gate) and its report CLI. Colocated *.test.mjs runs via the
       # lib-test glob; path-listed so a solo edit triggers CI.
@@ -2254,6 +2258,24 @@ jobs:
         # The FULL --strict triage runs daily in check-corpus-drift.yml (the
         # review-contamination audit), surfaced non-blocking in the digest. Decision
         # logic + tests: scripts/lib/contamination-gate.{js,test.mjs}.
+
+      - name: Audit flag-vs-CV contradictions
+        if: always()
+        continue-on-error: true
+        run: node scripts/audit-cv-flag-contradiction.js --window=30
+        # Standing check for the signal #651's pipeline-health audit found by
+        # hand (Notion 3ad637c5): an exclusion flag (wrongProduction/wrongShow/
+        # isRoundupArticle) sitting on a file whose own most recent full-text
+        # contentVerification pass affirms it (isValid, high confidence, >300
+        # words) — bait for a human look, not proof of a false positive.
+        #
+        # Informational only (no --gate) as of 2026-07-30 (#676): baseline is
+        # ~29 hits on the 30-day window, well above --threshold=4's default, so
+        # gating now would red the trunk immediately. The companion triage card
+        # (#675) is draining the backlog; once the real count is under 4, drop
+        # `continue-on-error: true` and add `--gate` to make this blocking, per
+        # #676's acceptance criteria. Script + threshold: scripts/audit-cv-flag-
+        # contradiction.js; detector: scripts/lib/flag-contradiction.js.
 
       - name: Audit cast contamination
         if: always()
