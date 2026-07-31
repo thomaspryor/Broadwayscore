@@ -55,29 +55,57 @@ function stripComments(source) {
     .join('\n');
 }
 
-// Matches the array-call style this repo's scripts use almost universally
-// (execFileSync-style `git(['reset', '--soft', ...])`) and, as a fallback,
-// a plain shell-string invocation (`git reset --soft ...`).
-const RESET_FLAG_RES = [
-  /git\(\s*\[\s*['"]reset['"]\s*,\s*['"](--\S+)['"]/g,
-  /\bgit\s+reset\s+(--\S+)/g,
-];
+// Matches a git subcommand array-call regardless of wrapper name — the
+// local `git(['reset', ...])` helper convention (2 files, bare `git(`
+// identifier immediately before the array) AND the more common
+// `execFileSync('git', ['reset', ...])` / `spawnSync('git', [...])`
+// convention (10+ files, quoted 'git' string within ~80 chars before the
+// array). Bounded lazy gap avoids runaway matches across unrelated code.
+function gitArrayCallRe(subcommand) {
+  return new RegExp(
+    `\\bgit\\b(?:\\(|['"\`][^\\n]{0,80}?)\\[\\s*(?:['"\`]-C['"\`]\\s*,\\s*[^,]+,\\s*)?['"\`]${subcommand}['"\`]\\s*,\\s*([^,\\]]+)`,
+    'g'
+  );
+}
 
-// Captures the raw second array argument (path literal OR bare
+// Reset: capture the raw first arg after 'reset' (may be a quoted flag like
+// '--soft', a quoted ref like 'HEAD', or a bare identifier/template like
+// `origin/${branch}`) so a bare (flagless) reset — a --mixed reset by git's
+// own default — can be told apart from an explicit --soft/--mixed/--hard.
+const RESET_ARG_RES = [gitArrayCallRe('reset'), /\bgit\s+(?:-C\s+\S+\s+)?reset\s+(\S+)/g];
+
+// Captures the raw first arg after 'add' (path literal OR bare
 // identifier/expression) so a variable like `LEDGER_REL_PATH` still counts
 // as a scoped add — only a literal `-A`/`.`/`--all`/`-a` is "broad".
-const ADD_ARG_RES = [
-  /git\(\s*\[\s*['"]add['"]\s*,\s*([^,\]]+)/g,
-  /\bgit\s+add\s+(\S+)/g,
-];
+const ADD_ARG_RES = [gitArrayCallRe('add'), /\bgit\s+add\s+(\S+)/g];
 
-const COMMIT_RES = [/git\(\s*\[\s*['"]commit['"]/g, /\bgit\s+commit\b/g];
+const COMMIT_RES = [
+  /\bgit\b(?:\(|['"`][^\n]{0,80}?)\[\s*(?:['"`]-C['"`]\s*,\s*[^,]+,\s*)?['"`]commit['"`]/g,
+  /\bgit\s+(?:-C\s+\S+\s+)?commit\b/g,
+];
 
 const BROAD_ADD_ARGS = new Set(['-A', '--all', '-a', '.']);
 
+// Strips wrapping quotes (', ", or `) so a value works the same whether it
+// came from a quoted literal or a bare identifier/template capture.
+function stripQuotes(rawArg) {
+  return rawArg.trim().replace(/^['"`]|['"`]$/g, '');
+}
+
 function isBroadAddArg(rawArg) {
-  const trimmed = rawArg.trim().replace(/^['"]|['"]$/g, '');
-  return BROAD_ADD_ARGS.has(trimmed);
+  return BROAD_ADD_ARGS.has(stripQuotes(rawArg));
+}
+
+// Classifies a captured reset argument: an explicit '--soft' is the risky
+// case; '--mixed'/'--hard' (or a BARE ref with no '--' flag at all — `git
+// reset <ref>` defaults to --mixed) fully resync the index and neutralize
+// prior risk; any other flag (e.g. '--quiet') is neither and is ignored.
+function classifyResetArg(rawArg) {
+  const value = stripQuotes(rawArg);
+  if (value === '--soft') return 'soft';
+  if (value === '--mixed' || value === '--hard') return 'full_sync';
+  if (value.startsWith('--')) return null;
+  return 'full_sync';
 }
 
 function collectEvents(source, regexes, classify) {
@@ -107,11 +135,9 @@ function lineOf(source, index) {
 function findResetSoftPartialCommitIssues(scriptSource) {
   const source = stripComments(scriptSource);
 
-  const resetEvents = collectEvents(source, RESET_FLAG_RES, m => {
-    const flag = m[1];
-    if (flag === '--soft') return { type: 'soft' };
-    if (flag === '--mixed' || flag === '--hard') return { type: 'full_sync' };
-    return null;
+  const resetEvents = collectEvents(source, RESET_ARG_RES, m => {
+    const type = classifyResetArg(m[1]);
+    return type ? { type } : null;
   });
 
   const addEvents = collectEvents(source, ADD_ARG_RES, m => {

@@ -109,6 +109,76 @@ function rewind(sha) {
 }
 `;
 
+// execFileSync('git', [...]) / spawnSync('git', [...]) is the DOMINANT
+// git-call convention in this repo's scripts/*.js (10+ files) vs the local
+// git([...]) helper (2 files) — must be caught, not just the rarer style.
+const EXECFILESYNC_STYLE_FIXTURE = `
+const { execFileSync } = require('child_process');
+function fastForward(ref) {
+  execFileSync('git', ['reset', '--soft', ref]);
+}
+function main() {
+  fastForward(originRef);
+  execFileSync('git', ['add', LEDGER_PATH]);
+  execFileSync('git', ['commit', '-m', 'x']);
+}
+`;
+
+const SPAWNSYNC_STYLE_FIXTURE = `
+function fastForward(ref) {
+  spawnSync('git', ['reset', '--soft', ref]);
+}
+function main() {
+  fastForward(originRef);
+  spawnSync('git', ['add', LEDGER_PATH]);
+  spawnSync('git', ['commit', '-m', 'x']);
+}
+`;
+
+// A leading '-C <dir>' pair in the array (common when a script operates on
+// a checkout outside the cwd) must not break the match.
+const DASH_C_STYLE_FIXTURE = `
+function fastForward(dir, ref) {
+  git(['-C', dir, 'reset', '--soft', ref]);
+}
+function main() {
+  fastForward(coreDataDir, originRef);
+  git(['-C', coreDataDir, 'add', LEDGER_PATH]);
+  git(['-C', coreDataDir, 'commit', '-m', 'x']);
+}
+`;
+
+// A bare (flagless) resync — \`git reset <ref>\` defaults to --mixed — must
+// clear pending risk exactly like an explicit --mixed/--hard would.
+const BARE_RESET_RESYNC_CLEARS_FIXTURE = `
+function main(branch) {
+  git(['reset', '--soft', preAttemptHead]);
+  git(['reset', \`origin/\${branch}\`]);
+  git(['add', LEDGER_REL_PATH]);
+  git(['commit', '-m', 'x']);
+}
+`;
+
+// A backtick-quoted flag (\`--soft\`) must classify the same as a
+// single/double-quoted one — no self-matching, no missed detection.
+const BACKTICK_FLAG_FIXTURE = `
+function main(ref) {
+  git(['reset', \`--soft\`, ref]);
+  git(['add', LEDGER_REL_PATH]);
+  git(['commit', '-m', 'x']);
+}
+`;
+
+// A backtick-quoted broad add arg (\`-A\`) must still be recognized as
+// broad, not treated as a scoped path.
+const BACKTICK_BROAD_ADD_FIXTURE = `
+function main(ref) {
+  git(['reset', '--soft', ref]);
+  git(['add', \`-A\`]);
+  git(['commit', '-m', 'x']);
+}
+`;
+
 test('flags record-push-ledger.js PRE-FIX shape (helper reset --soft, caller scoped add+commit)', () => {
   const violations = findResetSoftPartialCommitIssues(PRE_FIX_FIXTURE);
   assert.equal(violations.length, 1);
@@ -135,6 +205,34 @@ test('clean: a --mixed/--hard resync between --soft and the add+commit clears th
 
 test('clean: bare --soft reset with no add/commit anywhere', () => {
   assert.deepEqual(findResetSoftPartialCommitIssues(BARE_SOFT_RESET_FIXTURE), []);
+});
+
+test('flags execFileSync(\'git\', [...]) style — the dominant convention in this repo', () => {
+  const violations = findResetSoftPartialCommitIssues(EXECFILESYNC_STYLE_FIXTURE);
+  assert.equal(violations.length, 1);
+});
+
+test('flags spawnSync(\'git\', [...]) style', () => {
+  const violations = findResetSoftPartialCommitIssues(SPAWNSYNC_STYLE_FIXTURE);
+  assert.equal(violations.length, 1);
+});
+
+test('flags a leading \'-C <dir>\' array pair without breaking the match', () => {
+  const violations = findResetSoftPartialCommitIssues(DASH_C_STYLE_FIXTURE);
+  assert.equal(violations.length, 1);
+});
+
+test('clean: a bare (flagless) reset resync — defaults to --mixed — clears pending risk', () => {
+  assert.deepEqual(findResetSoftPartialCommitIssues(BARE_RESET_RESYNC_CLEARS_FIXTURE), []);
+});
+
+test('flags a backtick-quoted `--soft` flag same as quoted/single-quoted', () => {
+  const violations = findResetSoftPartialCommitIssues(BACKTICK_FLAG_FIXTURE);
+  assert.equal(violations.length, 1);
+});
+
+test('clean: a backtick-quoted `-A` broad add arg is still recognized as broad', () => {
+  assert.deepEqual(findResetSoftPartialCommitIssues(BACKTICK_BROAD_ADD_FIXTURE), []);
 });
 
 test('does not self-trigger on this check\'s own header comments/messages', () => {

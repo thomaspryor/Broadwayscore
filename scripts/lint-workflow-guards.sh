@@ -333,21 +333,20 @@ check_reset_soft_partial_commit() {
   # scripts/lib/reset-soft-partial-commit-check.test.mjs). Scans top-level
   # scripts/*.js (same scope as lint-write-routing.sh's writer checks) —
   # that's where every git-operating CI script in this repo lives.
-  local VIOLATIONS="" f name out
-  for f in scripts/*.js; do
-    [ -e "$f" ] || continue
-    name=$(basename "$f")
-    out=$(node -e "
-      const { findResetSoftPartialCommitIssues } = require('./scripts/lib/reset-soft-partial-commit-check.js');
-      const fs = require('fs');
-      const issues = findResetSoftPartialCommitIssues(fs.readFileSync(process.argv[1], 'utf8'));
-      issues.forEach(v => console.log(v));
-    " "$f")
-    if [ -n "$out" ]; then
-      VIOLATIONS="$VIOLATIONS\n$name: $out"
-    fi
-  done
+  # Single node process for the whole scripts/*.js set (not one spawn per
+  # file, ~200x faster) — this runs from the local pre-push hook on every
+  # push touching scripts/*.js, which promises "a few seconds total".
+  local VIOLATIONS
+  VIOLATIONS=$(node -e "
+    const { findResetSoftPartialCommitIssues } = require('./scripts/lib/reset-soft-partial-commit-check.js');
+    const fs = require('fs');
+    for (const f of process.argv.slice(1)) {
+      const issues = findResetSoftPartialCommitIssues(fs.readFileSync(f, 'utf8'));
+      if (issues.length) console.log(require('path').basename(f) + ': ' + issues.join('; '));
+    }
+  " scripts/*.js)
   if [ -n "$VIOLATIONS" ]; then
+    VIOLATIONS=$'\n'"$VIOLATIONS"
     echo "::error::Scripts use a dangerous reset --soft + scoped-add + commit pattern (phantom-staged-revert risk):"
     echo -e "$VIOLATIONS"
     echo "Fix: use 'git reset --mixed' instead of '--soft' before staging+committing a single path."
