@@ -21,6 +21,10 @@ const repo = path.resolve(__dirname, '..', '..');
 // Bridge to the canonical CJS email-templates lib. Imports use repo-relative
 // paths now (was hardcoded /Users/tompryor/... — broke on CI).
 const cjsRequire = createRequire(import.meta.url);
+// Shared show-format labels (mirror of src/lib/show-format.ts) so newsletter
+// pills agree with the site and the digest emails — `special` is EVENT, not
+// a raw uppercased type string.
+const { showFormatTitle, showFormatLabel, resolveShowFormat } = cjsRequire('../lib/show-format.js');
 const { buildUnsubscribeUrl, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
@@ -534,7 +538,7 @@ function showRow(show, opts = {}) {
   // Openings carries both west-end and off-west-end, and the gold cards must be
   // distinguishable from the off-west-end ones).
   const marketTag = opts.showMarket ? marketPill(show.category) : '';
-  const formatPill = show.type ? pill(show.type.toUpperCase(), '#c084fc', 'rgba(168,85,247,0.15)') : '';
+  const formatPill = show.type ? pill(showFormatLabel(show.type), resolveShowFormat(show.type).emailColor, 'rgba(168,85,247,0.15)') : '';
   const revivalPill = show.isRevival ? pill('REVIVAL', '#d4a574', 'rgba(212,165,116,0.15)') : '';
   const reopenPill = opts.isReopening ? pill('REOPENED', '#a78bfa', 'rgba(167,139,250,0.18)') : '';
   const venue = shortVenue(show.venue);
@@ -722,7 +726,7 @@ function upcomingOpeningsSection() {
   const rows = top.map((it, i, arr) => {
     const isLast = i === arr.length - 1;
     const s = it.show;
-    const formatPill = s.type ? pill(s.type.toUpperCase(), '#c084fc', 'rgba(168,85,247,0.15)') : '';
+    const formatPill = s.type ? pill(showFormatLabel(s.type), resolveShowFormat(s.type).emailColor, 'rgba(168,85,247,0.15)') : '';
     const revivalPill = s.isRevival ? pill('REVIVAL', '#d4a574', 'rgba(212,165,116,0.15)') : '';
     const venue = shortVenue(s.venue);
     return `<tr>
