@@ -47,6 +47,13 @@ const js = require('../../scripts/lib/show-format');
 // deliberately textual: it verifies the shipped TS file, not a re-implementation.
 const tsSource = fs.readFileSync(path.join(REPO, 'src/lib/show-format.ts'), 'utf8');
 
+function declaredFields() {
+  const iface = tsSource.split('export interface ShowFormat')[1].split('}')[0];
+  const fields = [...iface.matchAll(/^\s*(\w+):/gm)].map((m) => m[1]);
+  assert.ok(fields.length >= 4, `parsed too few interface fields: ${fields}`);
+  return fields;
+}
+
 function parseTsFormats() {
   const body = tsSource.split('export const SHOW_FORMATS')[1];
   assert.ok(body, 'SHOW_FORMATS not found in src/lib/show-format.ts');
@@ -60,13 +67,11 @@ function parseTsFormats() {
       const f = new RegExp(`${name}:\\s*'([^']*)'`).exec(fields);
       return f ? f[1] : undefined;
     };
-    map[key] = {
-      label: grab('label'),
-      title: grab('title'),
-      colorClass: grab('colorClass'),
-      textClass: grab('textClass'),
-      emailColor: grab('emailColor'),
-    };
+    // Derive the field list from the interface rather than hardcoding it. A
+    // hardcoded list silently ignores any NEW ShowFormat field, which is how
+    // `textClass` drifted between the two copies undetected — and it broke
+    // again the moment `plural` was added.
+    map[key] = Object.fromEntries(declaredFields().map((f) => [f, grab(f)]));
     if (Object.keys(map).length > 20) break; // runaway guard
   }
   return map;
@@ -84,13 +89,7 @@ function parseTsUnknown() {
     const f = new RegExp(`${name}:\\s*'([^']*)'`).exec(fields);
     return f ? f[1] : undefined;
   };
-  return {
-    label: grab('label'),
-    title: grab('title'),
-    colorClass: grab('colorClass'),
-    textClass: grab('textClass'),
-    emailColor: grab('emailColor'),
-  };
+  return Object.fromEntries(declaredFields().map((f) => [f, grab(f)]));
 }
 
 const SHOWS_PATH = path.join(REPO, 'data/shows.json');
@@ -244,6 +243,20 @@ describe('show-format resolution basics', () => {
         'EVENT',
         `Unknown input ${JSON.stringify(bad)} must not resolve to PLAY`
       );
+    }
+  });
+
+  it('never pluralises a non-play type as "Plays"', () => {
+    // The breadcrumb (visible AND the BreadcrumbList structured data Google
+    // reads) used `type === 'musical' ? 'Musicals' : 'Plays'`, so every concert,
+    // gala and opera told Google it was a Play. Codex caught this during
+    // ship-check on 2026-07-30, after the pill itself was already fixed.
+    assert.strictEqual(js.showFormatPlural('special'), 'Events');
+    assert.strictEqual(js.showFormatPlural('opera'), 'Operas');
+    assert.strictEqual(js.showFormatPlural('musical'), 'Musicals');
+    assert.strictEqual(js.showFormatPlural('play'), 'Plays');
+    for (const bad of [null, undefined, '', 'nonsense-type']) {
+      assert.notStrictEqual(js.showFormatPlural(bad), 'Plays');
     }
   });
 
