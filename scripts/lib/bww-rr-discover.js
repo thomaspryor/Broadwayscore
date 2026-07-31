@@ -53,6 +53,11 @@ const REVIEWS_PAGE_URL = 'https://www.broadwayworld.com/reviews.php';
 // url-verification guard rejects the redirect hop. See
 // _fetchReviewsPageAnchorsViaScraperUncached.
 const REVIEWS_PAGE_CANONICAL_URL = 'https://www.broadwayworld.com/reviews/';
+// Minimum /article/ links that must be present before we believe we actually got
+// the reviews listing (vs a CF interstitial / soft-404 that happens to mention
+// BroadwayWorld and "review"). The live page carries dozens; a challenge page
+// carries ~0. Deliberately low so a genuinely sparse listing still counts.
+const MIN_ARTICLE_LINKS_FOR_REAL_LISTING = 5;
 const BROWSERBASE_API = 'https://api.browserbase.com/v1/sessions';
 const NAV_TIMEOUT_MS = 30000;
 const SESSION_TIMEOUT_MS = 30000;
@@ -218,6 +223,17 @@ async function _fetchReviewsPageAnchorsViaScraperUncached() {
   if (!html || !/broadwayworld/i.test(html)) return null;
   const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
   if (!titleMatch || !/review/i.test(titleMatch[1])) return null;
+  // STRUCTURAL guard (ship-check finding, 2026-07-31): title + body checks alone
+  // cannot tell "real listing that happens to carry no roundups today" from
+  // "interstitial/soft-404 that merely mentions BroadwayWorld and the word review".
+  // That distinction matters because a genuine [] IS cached for 15 min, so a
+  // blocked page misread as [] becomes a sticky negative hiding the page for a
+  // whole TTL window. Require proof the article listing actually rendered — the
+  // real /reviews/ page carries many /article/ links. Too few means we did not get
+  // the listing, so return null (unusable → uncached → paid fallback still runs)
+  // rather than a cacheable empty answer.
+  const articleLinkCount = (html.match(/href="[^"]*\/article\//gi) || []).length;
+  if (articleLinkCount < MIN_ARTICLE_LINKS_FOR_REAL_LISTING) return null;
   const re = /href="(https:\/\/www\.broadwayworld\.com\/article\/[^"]*Review-Roundup[^"]*)"/gi;
   const found = new Set();
   let m;
@@ -459,8 +475,16 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
   //    call site like { skipReviewsPhp: show.status === 'closed' } can no longer
   //    silently disable the category default for every open show (the bug that made
   //    the hourly audit-aggregator-gap run bypass T4 entirely).
+  //    opts.forceReviewsPhp restores the control surface the OR-composition would
+  //    otherwise remove (ship-check finding): OR-ing means a caller can no longer
+  //    use `skipReviewsPhp: false` to demand the paid probe for a category the
+  //    heuristic skips. That capability is legitimate (manual recovery, a known
+  //    misclassified show), so it gets its own unambiguous opt instead of relying
+  //    on a falsy value that is indistinguishable from "I didn't set this".
   const explicitSkip = opts.skipReviewsPhp === true;
-  const skipReviewsPhp = explicitSkip || shouldSkipReviewsPhp(show);
+  const skipReviewsPhp = opts.forceReviewsPhp === true
+    ? false
+    : (explicitSkip || shouldSkipReviewsPhp(show));
   if (skipReviewsPhp) {
     return { url: null, candidates: [], via: 'section-only' };
   }
