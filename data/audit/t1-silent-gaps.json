@@ -1,29 +1,8 @@
 {
-  "generatedAt": "2026-07-31T17:27:36.128Z",
+  "generatedAt": "2026-07-31T18:25:34.829Z",
   "windowDays": 45,
   "showsScanned": 59,
   "gaps": [
-    {
-      "showId": "the-enormous-crocodile-west-end-2026",
-      "title": "The Enormous Crocodile",
-      "openingDate": "2026-07-28",
-      "file": "london-theatre--unknown.json",
-      "outletId": "london-theatre",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.londontheatre.co.uk/show/46222-the-enormous-crocodile",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-enormous-crocodile-west-end-2026 --url=https://www.londontheatre.co.uk/show/46222-the-enormous-crocodile --outlet=london-theatre   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-07-31T16:08:59.364Z",
-      "fileAgeHours": 1.31019,
-      "gapSeenAt": "2026-07-31T16:44:13.190Z",
-      "nonTerminalAgeHours": 0.7230380555555556
-    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -37,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 196.26656416666665,
+      "fileAgeHours": 197.2328736111111,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 155.5694975
+      "nonTerminalAgeHours": 156.5358036111111
     }
   ],
   "contradictions": []
