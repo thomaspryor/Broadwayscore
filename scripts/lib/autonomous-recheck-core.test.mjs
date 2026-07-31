@@ -205,3 +205,42 @@ test('selectRecheckTargets: a dispatch-ledger launch entry still takes priority 
   const out = selectRecheckTargets({ doneCards: [card], launchEntries: [launch()], now: NOW });
   assert.equal(out[0].verifyCmd, 'node --test tests/unit/a.test.mjs');
 });
+
+// ── Starvation guard (Codex ship-check finding, task #695) ─────────────────
+// A RECHECK-AFTER stamp stays due forever once its date passes; with a fixed
+// run limit downstream (the CLI's .slice(0, limit)) the same permanently-due
+// cards would win the slot every single night, starving any card newly due
+// after the limit fills. Never-yet-rechecked cards must sort first; among
+// already-rechecked cards, the longest-neglected goes next.
+
+test('selectRecheckTargets: a never-rechecked card sorts before an already-rechecked one, regardless of doneCards order', () => {
+  const stale = { id: 'stale-card', name: 'Rechecked ages ago', status: 'Paused', notes: 'RECHECK-AFTER: 2026-01-01' };
+  const fresh = { id: 'fresh-card', name: 'Never rechecked yet', status: 'Paused', notes: 'RECHECK-AFTER: 2026-01-01' };
+  const out = selectRecheckTargets({
+    doneCards: [stale, fresh], // stale listed FIRST — sort must still put fresh first
+    launchEntries: [launch({ notionId: 'stale-card' }), launch({ notionId: 'fresh-card' })],
+    now: Date.parse('2026-06-01T00:00:00Z'),
+    lastRecheckedAt: (id) => (id === 'stale-card' ? Date.parse('2026-05-01T00:00:00Z') : null),
+  });
+  assert.deepEqual(out.map(t => t.cardId), ['fresh-card', 'stale-card']);
+});
+
+test('selectRecheckTargets: among already-rechecked cards, the longest-neglected sorts first', () => {
+  const recentlyChecked = { id: 'recent-card', name: 'Checked yesterday', status: 'Paused', notes: 'RECHECK-AFTER: 2026-01-01' };
+  const longNeglected = { id: 'old-card', name: 'Checked a month ago', status: 'Paused', notes: 'RECHECK-AFTER: 2026-01-01' };
+  const now = Date.parse('2026-06-01T00:00:00Z');
+  const out = selectRecheckTargets({
+    doneCards: [recentlyChecked, longNeglected],
+    launchEntries: [launch({ notionId: 'recent-card' }), launch({ notionId: 'old-card' })],
+    now,
+    lastRecheckedAt: (id) => (id === 'recent-card' ? now - 24 * 3600 * 1000 : now - 30 * 24 * 3600 * 1000),
+  });
+  assert.deepEqual(out.map(t => t.cardId), ['old-card', 'recent-card']);
+});
+
+test('selectRecheckTargets: without a lastRecheckedAt lookup (the default), order is unaffected — every existing single-card caller stays correct', () => {
+  const card = { id: 'card-1', name: 'Fix the thing', status: 'Done', ageDays: 0.2, notes: '## Acceptance criteria\n`npx next lint` passes' };
+  const out = selectRecheckTargets({ doneCards: [card], launchEntries: [launch()], now: NOW });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].cardId, 'card-1');
+});

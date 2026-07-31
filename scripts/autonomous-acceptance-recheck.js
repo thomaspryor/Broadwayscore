@@ -221,6 +221,21 @@ function main(argv = process.argv.slice(2)) {
   const windowHours = Number(args['window-hours']) || DEFAULT_WINDOW_HOURS;
   const limit = Math.min(Number(args.limit) || MAX_CARDS, MAX_CARDS);
   const runId = `recheck-${new Date().toISOString().replace(/[:.]/g, '-')}`;
+  // Validated up front (ship-check finding): an unparseable/negative value
+  // must fail loudly, not silently become NaN — a NaN deadline makes every
+  // `Date.now() > deadline` check false forever, defeating the exact safety
+  // margin this flag exists to add (the job could then run past its host's
+  // timeout). Checked before any Notion I/O so a typo'd flag fails fast.
+  let timeBudgetMs = RUN_DEADLINE_MS;
+  if (args['time-budget-min'] !== undefined) {
+    const parsed = Number(args['time-budget-min']);
+    if (!Number.isFinite(parsed) || parsed <= 0) {
+      console.error(`Error: --time-budget-min must be a positive number, got ${JSON.stringify(args['time-budget-min'])}`);
+      process.exit(1);
+    }
+    timeBudgetMs = parsed * 60 * 1000;
+  }
+  const timeBudgetMinLabel = Math.round(timeBudgetMs / 60000);
 
   // 100 = Notion's page cap. Under --sort edited the page holds the NEWEST
   // 100 edits, so a burst day would have to edit >100 Done/Paused cards
@@ -255,11 +270,25 @@ function main(argv = process.argv.slice(2)) {
   }
 
   const taskState = loadSharedTaskState();
+  // Starvation guard (ship-check finding): a permanently-due RECHECK-AFTER
+  // card must not win the same slot every night forever once other cards
+  // are also due. Build a per-card "last actually rechecked" timestamp from
+  // this dedicated ledger's own history so selectRecheckTargets can put the
+  // longest-neglected card first.
+  const lastRecheckedByCard = new Map();
+  for (const e of ledger.readEntries(RECHECK_LEDGER_PATH).entries || []) {
+    if (e.event !== 'recheck' || !e.cardId) continue;
+    const t = Date.parse(e.ts || '');
+    if (!Number.isFinite(t)) continue;
+    const prev = lastRecheckedByCard.get(e.cardId);
+    if (prev === undefined || t > prev) lastRecheckedByCard.set(e.cardId, t);
+  }
   const targets = selectRecheckTargets({
     doneCards,
     launchEntries: dispatchLedger.readEntries(),
     windowHours,
     isClaimed: cardId => !!findClaimedTask(cardId, taskState),
+    lastRecheckedAt: cardId => lastRecheckedByCard.get(cardId) ?? null,
   }).slice(0, limit);
 
   console.error(`[recheck] ${targets.length} card(s) marked Done in the last ${windowHours}h have a dispatch record`);
@@ -282,18 +311,6 @@ function main(argv = process.argv.slice(2)) {
       return;
     }
   }
-
-  // --time-budget-min (task #695 ship-check finding): data-health-check.yml's
-  // job timeout is 10min total for EVERYTHING it does (health check, E2E
-  // canary, provider spend, this step, the commit). The script's own default
-  // 20min RUN_DEADLINE_MS was sized for the original nightly-loop host,
-  // which had no such neighbor budget — left at its default here, a single
-  // slow/flaky card retry (up to 2x5min) could blow the WHOLE JOB's timeout
-  // and lose every other step's commit, not just this one's. CI passes a
-  // much smaller override; the default stays 20min for any future host with
-  // more room (matches memory/feedback_cron_timeout_needs_script_budget.md).
-  const timeBudgetMs = args['time-budget-min'] ? Number(args['time-budget-min']) * 60 * 1000 : RUN_DEADLINE_MS;
-  const timeBudgetMinLabel = Math.round(timeBudgetMs / 60000);
 
   const results = [];
   const deadline = Date.now() + timeBudgetMs;

@@ -98,7 +98,7 @@ function doneWithinWindow(card, windowHours, now) {
  * @param {number} [o.now] - injectable clock for tests
  * @returns {{cardId:string,name:string,verifyCmd:string|null,reason:string|null,skip:string|null}[]}
  */
-function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_WINDOW_HOURS, isClaimed = () => false, now = Date.now() }) {
+function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_WINDOW_HOURS, isClaimed = () => false, now = Date.now(), lastRecheckedAt = () => null }) {
   // Latest launch per card wins: a card dispatched twice should be re-checked
   // with the command from its most recent dispatch, not a stale earlier one.
   const byCard = new Map();
@@ -146,6 +146,15 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
       skip: null,
     });
   }
+  // Starvation guard (Codex ship-check finding, task #695): a RECHECK-AFTER
+  // stamp stays due forever once its date passes, and with a fixed run limit
+  // the same permanently-due cards would win the slot every single night —
+  // any card newly due AFTER the limit fills up would never get a turn.
+  // Never-yet-rechecked cards (including brand-new ones) sort first; among
+  // already-rechecked cards, the longest-stale one goes next. A stable sort
+  // preserves doneCards order as the tiebreak, so single-card callers (every
+  // existing test) are unaffected.
+  out.sort((a, b) => (lastRecheckedAt(a.cardId) ?? -Infinity) - (lastRecheckedAt(b.cardId) ?? -Infinity));
   return out;
 }
 
