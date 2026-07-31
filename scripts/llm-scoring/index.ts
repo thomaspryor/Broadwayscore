@@ -1457,13 +1457,16 @@ async function main(): Promise<void> {
         // WE shows now get market+venue context in the prompt (2026-04-13), so the
         // LLM can correctly distinguish Broadway vs West End productions.
         const showInfo = showPriority.get(reviewFile.showId || '');
-        // Off-Broadway and regional productions both draw false wrong_production
-        // verdicts for the same reason: reviews legitimately describe a non-Broadway
-        // house the model does not expect. Regional joins the carve-out after the
-        // Family Album rejection (2026-07-30) — the prompt fix upstream is the real
-        // repair, this is the belt-and-suspenders layer if a prompt regresses.
-        const isExemptFromWrongProduction =
-          showInfo?.category === 'off-broadway' || showInfo?.category === 'regional';
+        // Regional was briefly added here alongside off-broadway (2026-07-30) and
+        // then deliberately removed. The real repair is upstream: the prompt used
+        // to call a regional tryout a Broadway production, so the model rejected
+        // it correctly (scripts/lib/market-label.js). With the label fixed, a
+        // blanket regional exemption would only convert a VISIBLE false positive
+        // into a SILENT false negative — a genuine mismatch (e.g. last season's
+        // different production at the same regional house) could never be
+        // flagged. Off-Broadway keeps its carve-out for the documented
+        // transfer-confusion reason; regional does not need one.
+        const isOffBroadway = showInfo?.category === 'off-broadway';
         if (rejection === 'wrong_show') {
           // Combined reviews are excluded from manuallyCleared above and
           // would normally hit this branch — but a joint review should NOT
@@ -1478,10 +1481,10 @@ async function main(): Promise<void> {
           } else {
             fileData.wrongShow = true;
           }
-        } else if (rejection === 'wrong_production' && !isExemptFromWrongProduction) {
+        } else if (rejection === 'wrong_production' && !isOffBroadway) {
           fileData.wrongProduction = true;
-        } else if (rejection === 'wrong_production' && isExemptFromWrongProduction) {
-          console.log(` (${showInfo?.category} exempt — skipping wrongProduction flag)`);
+        } else if (rejection === 'wrong_production' && isOffBroadway) {
+          console.log(` (OB exempt — skipping wrongProduction flag)`);
         } else if (rejection === 'not_a_review') {
           fileData.contentTier = 'invalid';
         } else if (rejection === 'garbage_text') {
