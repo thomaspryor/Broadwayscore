@@ -203,6 +203,12 @@ const PATTERNS = [
   ['variety.com', /<div[^>]+class="[^"]*c-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/div>\s*<\/article>/, 500],
   ['variety.com', /<div[^>]+class="[^"]*a-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 500],
 
+  // liamodell.com (WordPress.com) — entry-content; generic fallback got 122
+  // chars on the 2026-07-31 Tao of Glass review (deaf culture + theatre
+  // critic, cited in WE coverage). Same entry-content shape as NYSR below.
+  ['liamodell.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
+  ['liamodell.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<div[^>]+(?:id="jp-post-flair"|class="[^"]*(?:sharedaddy|jp-relatedposts|sd-sharing|sd-like)[^"]*")/, 300],
+
   // NYSR (WordPress) — entry-content
   ['nystagereview.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
 
