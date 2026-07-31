@@ -28,7 +28,17 @@
            launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.backlog-drain.plist
          Manual run (no launchd): node scripts/backlog-drain.js
          Manual tick via launchd: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.backlog-drain
-         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.backlog-drain -->
+         Kill (stops FUTURE ticks only):
+           launchctl bootout gui/$(id -u)/com.broadwayscore.backlog-drain
+
+         Rollback story (ship-check adversarial finding): bootout does not
+         touch an ALREADY-dispatched headless job — the drain script's own
+         spawn is detached and returns immediately. To find/stop a live
+         drain-dispatched job:
+           cat data/audit/job-leases/*/lease.json   # {jobId, pid, cwd} per live task
+           kill <pid>                               # bsc-runner's own lease already tracks this
+         Per-attempt stdout/stderr for debugging a refused/failed dispatch:
+           data/audit/backlog-drain-logs/<taskId>-<ts>.log -->
     <key>Label</key>
     <string>com.broadwayscore.backlog-drain</string>
     <key>ProgramArguments</key>
