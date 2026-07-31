@@ -136,14 +136,63 @@ function isInRoundupMissCooldown(show, lastMiss, now = Date.now()) {
   return missAgeMs < MISS_COOLDOWN_MS;
 }
 
+// How far back to look when counting misses for the digest (task #692). Wider
+// than the opening-window exemption itself so a burst of misses right at the
+// edge of the window is still visible the next time the digest runs.
+const MISS_SUMMARY_WINDOW_HOURS = 48;
+
+/**
+ * Pure decision: which shows have 2+ BWW-roundup discovery misses in the
+ * trailing MISS_SUMMARY_WINDOW_HOURS AND are currently inside their
+ * OPENING_WINDOW_DAYS opening window — the ledger only matters as a health
+ * signal there, since misses on long-closed shows are the expected, silently
+ * cooled-down case (see isInRoundupMissCooldown above).
+ *
+ * `entries` is the raw ledger (readRoundupMisses() output: {ts, showId}[]).
+ * `shows` is the shows.json shows array (only `id`/`openingDate` are read).
+ * Returns entries sorted by missCount desc, then most-recent-miss desc.
+ */
+function summarizeBwwRoundupMisses(entries, shows, now = Date.now()) {
+  const showsById = new Map((shows || []).filter(s => s && s.id).map(s => [s.id, s]));
+  const cutoff = now - MISS_SUMMARY_WINDOW_HOURS * 60 * 60 * 1000;
+  const byShow = new Map();
+  for (const e of entries || []) {
+    if (!e || !e.showId || !e.ts) continue;
+    const ts = new Date(e.ts).getTime();
+    if (!Number.isFinite(ts) || ts < cutoff || ts > now) continue; // ts > now: clock-skewed/corrupt entry, never counts
+    if (!byShow.has(e.showId)) byShow.set(e.showId, []);
+    byShow.get(e.showId).push(ts);
+  }
+  const results = [];
+  for (const [showId, timestamps] of byShow) {
+    if (timestamps.length < 2) continue;
+    const show = showsById.get(showId);
+    const openingMs = show && show.openingDate ? new Date(show.openingDate).getTime() : NaN;
+    if (!Number.isFinite(openingMs)) continue; // no opening date on record — can't confirm the window
+    const daysFromOpening = Math.abs(now - openingMs) / 86400000;
+    if (daysFromOpening >= OPENING_WINDOW_DAYS) continue; // outside opening window — expected cooldown territory
+    timestamps.sort((a, b) => a - b);
+    results.push({
+      showId,
+      missCount: timestamps.length,
+      firstMissTs: new Date(timestamps[0]).toISOString(),
+      lastMissTs: new Date(timestamps[timestamps.length - 1]).toISOString(),
+    });
+  }
+  results.sort((a, b) => b.missCount - a.missCount || new Date(b.lastMissTs) - new Date(a.lastMissTs));
+  return results;
+}
+
 module.exports = {
   MISS_LEDGER_PATH,
   MISS_COOLDOWN_MS,
   OPENING_WINDOW_DAYS,
+  MISS_SUMMARY_WINDOW_HOURS,
   persistBwwRoundupUrlIfMissing,
   clearStaleBwwRoundupUrl,
   recordRoundupMiss,
   readRoundupMisses,
   lastMissForShow,
   isInRoundupMissCooldown,
+  summarizeBwwRoundupMisses,
 };
