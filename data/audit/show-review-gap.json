@@ -1,22 +1,436 @@
 {
-  "generatedAt": "2026-07-31T18:25:34.543Z",
+  "generatedAt": "2026-07-31T20:27:43.378Z",
   "windowDays": 1095,
-  "targets": 9,
+  "targets": 33,
   "counts": {
-    "withGap": 4,
-    "totalMissing": 22,
-    "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 6,
+    "withGap": 10,
+    "totalMissing": 70,
+    "totalCitedNoUrl": 1,
+    "totalFlaggedMisses": 29,
     "totalRecoverable": 0,
-    "totalRecovered": 1
+    "totalRecovered": 0
   },
   "results": [
     {
-      "showId": "tao-of-glass-west-end-2026",
-      "title": "Tao of Glass",
-      "openingDate": "2026-07-30",
+      "showId": "the-saviors-off-broadway-2026",
+      "title": "The Saviors",
+      "openingDate": "2026-07-27",
       "status": "open",
-      "category": "west-end",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-were-critics-testify-for-bubba-weilers-the-saviors",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-SAVIORS-Opens-at-Atlantic-Theater-Company-20260727"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/The-Saviors/1387",
+        "https://culturesauce.com/saviors-bubba-weiler-off-broadway-review/",
+        "https://exeuntnyc.com/reviews/review-the-saviors-at-atlantic-theater-company/",
+        "https://thefrontrowcenter.com/2026/07/the-saviors/",
+        "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/",
+        "https://nystagereview.com/2026/07/27/the-saviors-what-would-jesus-do/",
+        "https://www.newyorktheatreguide.com/reviews/the-saviors-off-broadway-review",
+        "https://www.nytimes.com/2026/07/27/theater/the-saviors-review-childlike-faith-adult-betrayal.html",
+        "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
+        "https://www.theatrely.com/post/the-saviors-two-young-catholics-in-a-miraculous-new-play-review",
+        "https://www.thewrap.com/creative-content/reviews/the-saviors-off-broadway-review-altar-boys/",
+        "https://www.talkinbroadway.com/page/ob/07_27_26.html",
+        "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc",
+        "https://www.broadwayworld.com/reviews/the-saviors"
+      ],
+      "dirFiles": 20,
+      "dirClean": 10,
+      "inReviewsJson": 10,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "nysun.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/07_27_26.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "talkinbroadway--howard-miller.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.talkinbroadway.com/page/ob/07_27_26.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wsj--charles-isherwood.json",
+              "flag": "clean",
+              "urlInDir": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/reviews/the-saviors",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--helen-shaw.json",
+              "flag": "roundup",
+              "urlInDir": "https://www.broadwayworld.com/reviews/the-saviors"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Saviors\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "query": "\"The Saviors\" Off-Broadway review 2026",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"The Saviors\" review atlantic",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"The Saviors\" Blain-Cruz review",
+            "ok": true,
+            "results": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 3,
+        "resultCount": 5,
+        "error": null
+      }
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "title": "Cat Cohen: Broad Strokes",
+      "openingDate": "2026-07-27",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
+        "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
+        "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
+        "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
+        "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
+        "https://www.thewrap.com/creative-content/theater/broad-strokes-off-broadway-review-cat-cohen/",
+        "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
+        "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/",
+        "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/cat-cohen-broad-strokes_1847158/",
+        "https://seatplan.com/new-york/cat-cohen-broad-strokes-tickets/",
+        "https://www.nytimes.com/2026/07/20/theater/cat-cohen-broad-strokes-comedy.html",
+        "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
+      ],
+      "dirFiles": 16,
+      "dirClean": 11,
+      "inReviewsJson": 11,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://seatplan.com/new-york/cat-cohen-broad-strokes-tickets/",
+          "host": "seatplan.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "seatplan--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://seatplan.com/new-york/cat-cohen-broad-strokes-tickets/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
+          "host": "vanityfair.com",
+          "knownOutletId": "vanityfair",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vanityfair--kase-wickman.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Cat Cohen: Broad Strokes\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Cat Cohen: Broad Strokes\" Off-Broadway review 2026",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Cat Cohen: Broad Strokes\" review lucille",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Cat Cohen: Broad Strokes\" Cohen review",
+            "ok": true,
+            "results": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 3,
+        "resultCount": 8,
+        "error": null
+      }
+    },
+    {
+      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "title": "Les Misérables: The Arena Concert Spectacular",
+      "openingDate": "2026-07-28",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-the-les-miserables-arena-concert-spectacular-at-radio-city-music-hall",
+        "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-THE-ARENA-CONCERT-SPECTACULAR-Opens-At-Radio-City-Music-Hall-20260728"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/les-miserables-arena-concert-spectacular-review/",
+        "https://cititour.com/NYC_Broadway/Les-Miserables-The-Arena-Concert-Spectacular/1388",
+        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-still-breaking-hearts-and-triggering-tears/",
+        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
+        "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
+        "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/"
+      ],
+      "dirFiles": 14,
+      "dirClean": 10,
+      "inReviewsJson": 9,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "amny.com",
+          "count": 1
+        },
+        {
+          "host": "nydailynews.com",
+          "count": 1
+        },
+        {
+          "host": "nypost.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      }
+    },
+    {
+      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
+      "title": "The Wind in the Willows - Theatre On Kew",
+      "openingDate": "2026-07-25",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.thereviewshub.com/the-wind-in-the-willows-theatre-on-kew-london/",
+        "https://www.londontheatre.co.uk/show/23388-the-wind-in-the-willows---theatre-on-kew"
+      ],
+      "dirFiles": 3,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.londontheatre.co.uk/show/23388-the-wind-in-the-willows---theatre-on-kew",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.londontheatre.co.uk/show/23388-the-wind-in-the-willows---theatre-on-kew"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Wind in the Willows - Theatre On Kew\" West End review 2026",
+        "queryStatus": [
+          {
+            "query": "\"The Wind in the Willows - Theatre On Kew\" West End review 2026",
+            "ok": true,
+            "results": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 1,
+        "resultCount": 2,
+        "error": null
+      }
+    },
+    {
+      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
+      "title": "Rosie O'Donnell: Common Knowledge",
+      "openingDate": "2026-07-25",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Rosie-ODonnells-COMMON-KNOWLEDGE-20260731"
+      ],
+      "aggregatorListedUrls": [
+        "https://deadline.com/2026/07/rosie-odonnell-common-knowledge-off-broadway-1237003334/",
+        "https://www.newyorktheatreguide.com/reviews/common-knowledge-off-broadway-review-rosie-odonnell"
+      ],
+      "dirFiles": 5,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      }
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "title": "The Enormous Crocodile",
+      "openingDate": "2026-07-28",
+      "status": "open",
+      "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -63,32 +477,363 @@
       "serpCensus": {
         "ran": false,
         "reason": "cooldown"
+      }
+    },
+    {
+      "showId": "hungry-women-off-broadway-2026",
+      "title": "Hungry Women",
+      "openingDate": "2026-07-25",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/hungry-women-off-broadway-review-julia-lester",
+        "https://www.talkinbroadway.com/page/ob/07_25_26.html",
+        "https://www.offoffonline.com/offoffonline/2026/7/25/hungry-women",
+        "https://pagesonstages.com/2026/07/25/hungry-women/"
+      ],
+      "dirFiles": 5,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      }
+    },
+    {
+      "showId": "dog-man-the-musical-west-end-2026",
+      "title": "Dog Man - The Musical",
+      "openingDate": "2026-07-29",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
+        "https://www.timeout.com/london/theatre/the-truth-review",
+        "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
+        "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
+        "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner"
+      ],
+      "dirFiles": 2,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 5,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 2,
+          "weRefStarsSource": "theatre-reviews"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.timeout.com/london/theatre/the-truth-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--andrzej-lukowski.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.timeout.com/london/news/dog-man-the-musical-coming-to-london-in-summer-2026-120225"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews"
+        }
+      ],
+      "citedNoUrl": [
+        {
+          "outletId": "telegraph",
+          "outletName": "The Telegraph",
+          "stars": 4,
+          "source": "theatre-reviews",
+          "sourceArticleUrl": "https://theatre.reviews/reviews-roundup/the-truth-apollo-reviews/",
+          "priorRun": false,
+          "hasExcludedFiles": false
+        }
+      ],
+      "weReference": {
+        "rowCount": 6,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": true,
+            "rows": 6,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 6,
+        "corroborated": 0,
+        "perSource": {
+          "theatre-reviews": {
+            "cited": 1,
+            "corroborated": 0
+          }
+        }
+      },
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      },
+      "ingestResults": [
+        {
+          "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
+          "host": "standard.co.uk",
+          "outletId": "standard",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre",
+          "provisional": false,
+          "ok": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner",
+          "host": "thestage.co.uk",
+          "outletId": "thestage",
+          "provisional": false,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~60659/day) projects exhaustion in ~8d, before the 22d-out renewal — still usi"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "tao-of-glass-west-end-2026",
+      "title": "Tao of Glass",
+      "openingDate": "2026-07-30",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
+        "https://www.londontheatre.co.uk/reviews/tao-of-glass-review-soho-place",
+        "https://www.allthatdazzles.co.uk/post/review-tao-of-glass-sohoplace",
+        "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
+        "https://www.london-unattached.com/tao-of-glass-soho-place/",
+        "https://everything-theatre.co.uk/2026/07/review-tao-of-glass-sohoplace/",
+        "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
+        "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
+        "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt"
+      ],
+      "dirFiles": 25,
+      "dirClean": 13,
+      "inReviewsJson": 12,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "bachtrack.com",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "standard.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
+          "host": "liamodell.com",
+          "knownOutletId": "liamodell",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "liamodell--liam-odell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--richard-morrison-chief-culture-writer.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Tao of Glass\" West End review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Tao of Glass\" West End review 2026",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Tao of Glass\" review soho",
+            "ok": true,
+            "results": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 2,
+        "resultCount": 9,
+        "error": null
       },
       "recoveryResults": [
-        {
-          "url": "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
-          "host": "theguardian.com",
-          "file": "guardian--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/tao-of-glass-sohoplace/",
-          "host": "londontheatre1.com",
-          "file": "londontheatre1--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 1,
-          "uncited": true
-        },
         {
           "url": "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
           "host": "thestage.co.uk",
@@ -97,20 +842,8 @@
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "⚠️  Scrapingdog pace (~59603/day) projects exhaustion in ~9d, before the 22d-out renewal — still usi",
-          "recoveryCount": 1,
-          "uncited": true
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-tao-of-glass-sohoplace",
-          "host": "westendbestfriend.co.uk",
-          "file": "west-end-best-friend--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 1,
+          "reason": "⚠️  Scrapingdog pace (~60683/day) projects exhaustion in ~8d, before the 22d-out renewal — still usi",
+          "recoveryCount": 2,
           "uncited": true
         }
       ]
@@ -277,8 +1010,8 @@
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "⚠️  Scrapingdog pace (~59625/day) projects exhaustion in ~9d, before the 22d-out renewal — still usi",
-          "recoveryCount": 1,
+          "reason": "⚠️  Scrapingdog pace (~60699/day) projects exhaustion in ~8d, before the 22d-out renewal — still usi",
+          "recoveryCount": 2,
           "uncited": true
         }
       ]
@@ -290,13 +1023,61 @@
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/",
+        "https://www.skiddle.com/whats-on/London/Barbican-Centre/Death-Note-The-Musical/42605237/",
+        "https://www.shortlist.com/entertainment/death-note-the-musicals-limited-barbican-london-run-begins-next-week-all-the-details"
+      ],
+      "dirFiles": 8,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.skiddle.com/whats-on/London/Barbican-Centre/Death-Note-The-Musical/42605237/",
+          "host": "skiddle.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "westendtheatre--julianna-barnaby.json",
+              "flag": "clean",
+              "urlInDir": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.shortlist.com/entertainment/death-note-the-musicals-limited-barbican-london-run-begins-next-week-all-the-details",
+          "host": "shortlist.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "shortlist--andrew-williams.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.shortlist.com/entertainment/death-note-the-musicals-limited-barbican-london-run-begins-next-week-all-the-details"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -330,12 +1111,44 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
+        "ran": true,
+        "complete": true,
+        "query": "\"Death Note: The Musical\" West End review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Death Note: The Musical\" West End review 2026",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Death Note: The Musical\" review barbican",
+            "ok": true,
+            "results": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 2,
+        "resultCount": 3,
+        "error": null
+      },
+      "ingestResults": [
+        {
+          "url": "https://www.skiddle.com/whats-on/London/Barbican-Centre/Death-Note-The-Musical/42605237/",
+          "host": "skiddle.com",
+          "outletId": "skiddle",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~60725/day) projects exhaustion in ~8d, before the 22d-out renewal — still usi"
+        }
+      ],
+      "ingestSkippedByCap": []
     },
     {
       "showId": "the-vessel-off-broadway-2026",
@@ -350,7 +1163,8 @@
         "https://fonts.googleapis.com/css2",
         "https://maps.google.com/",
         "https://www.todaytixgroup.com/careers",
-        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+        "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards"
       ],
       "dirFiles": 1,
       "dirClean": 1,
@@ -385,6 +1199,12 @@
           "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
           "host": "google.com",
           "knownOutletId": null
+        },
+        {
+          "url": "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards",
+          "host": "empirehotelnyc.com",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -397,8 +1217,26 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Vessel\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "query": "\"The Vessel\" Off-Broadway review 2026",
+            "ok": true,
+            "results": 10,
+            "error": null
+          },
+          {
+            "query": "\"The Vessel\" review midtown",
+            "ok": true,
+            "results": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 2,
+        "resultCount": 1,
+        "error": null
       },
       "ingestResults": [
         {
@@ -407,7 +1245,7 @@
           "outletId": "cloudfront",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~59666/day) projects exhaustion in ~9d, before the 22d-out renewal — still usi"
+          "reason": "⚠️  Scrapingdog pace (~60729/day) projects exhaustion in ~8d, before the 22d-out renewal — still usi"
         },
         {
           "url": "https://fonts.gstatic.com",
@@ -415,7 +1253,7 @@
           "outletId": "gstatic",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~59673/day) projects exhaustion in ~9d, before the 22d-out renewal — still usi"
+          "reason": "⚠️  Scrapingdog pace (~60730/day) projects exhaustion in ~8d, before the 22d-out renewal — still usi"
         },
         {
           "url": "https://fonts.googleapis.com/css2",
@@ -423,7 +1261,7 @@
           "outletId": "googleapis",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~59679/day) projects exhaustion in ~9d, before the 22d-out renewal — still usi"
+          "reason": "⚠️  Scrapingdog pace (~60731/day) projects exhaustion in ~8d, before the 22d-out renewal — still usi"
         },
         {
           "url": "https://maps.google.com/",
@@ -431,7 +1269,7 @@
           "outletId": "google",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~59681/day) projects exhaustion in ~9d, before the 22d-out renewal — still usi"
+          "reason": "Fetch returned no usable HTML (got 442 chars)"
         },
         {
           "url": "https://www.todaytixgroup.com/careers",
@@ -439,7 +1277,7 @@
           "outletId": "todaytixgroup",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~59681/day) projects exhaustion in ~9d, before the 22d-out renewal — still usi"
+          "reason": "⚠️  Scrapingdog pace (~60731/day) projects exhaustion in ~8d, before the 22d-out renewal — still usi"
         }
       ],
       "ingestSkippedByCap": [
@@ -447,167 +1285,56 @@
           "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
           "host": "google.com",
           "outletId": "google"
+        },
+        {
+          "url": "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards",
+          "host": "empirehotelnyc.com",
+          "outletId": "empirehotelnyc"
         }
       ]
     },
     {
-      "showId": "the-oresteia-west-end-2026",
-      "title": "The Oresteia",
-      "openingDate": "2026-07-14",
+      "showId": "my-joy-is-heavy-off-broadway-2025",
+      "title": "My Joy Is Heavy",
+      "openingDate": "2026-03-17",
       "status": "open",
-      "category": "off-west-end",
+      "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-heres-what-critics-think-of-robert-ickes-oresteia-off-broadway"
+        "https://playbill.com/article/what-are-reviews-for-the-bengsons-my-joy-is-heavy-at-new-york-theatre-workshop"
       ],
       "aggregatorListedUrls": [
-        "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-        "https://newyorktheater.me/2022/07/27/oresteia-review/",
-        "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-        "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-        "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-        "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-        "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-        "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
-        "https://www.londontheatre.co.uk/reviews/the-oresteia-review-bridge-theatre",
-        "https://liamodell.com/2026/07/15/the-oresteia-review-bridge-theatre-london-simon-stone-david-morrissey-tom-glynn-carney-mary-louise-parker-rosie-sheehy-london-theatre-direct/",
-        "https://www.theguardian.com/stage/2026/jul/15/the-oresteia-review-bridge-theatre-london-david-morrissey-mary-louise-parker",
-        "https://www.thereviewshub.com/the-oresteia-bridge-theatre-london/",
-        "https://www.whatsonstage.com/news/the-oresteia-at-the-bridge-theatre-review_1727392/",
-        "https://theatreboard.com/thread/15088/oresteia-bridge-theatre",
-        "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
-        "https://theatreandtonic.co.uk/blog/the-oresteia-at-the-bridge-theatre-review",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david-morrissey-bg8qzzhhn",
-        "https://www.threads.com/@simon.read/post/DajFX_vDP53/saw-the-oresteia-at-the-bridge-theatre-it-was-three-and-a-half-hours-of-non/",
-        "https://everything-theatre.co.uk/2026/07/review-the-oresteia-bridge-theatre/",
-        "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-oresteia-review-david-morrissey-the-bridge-b3015202.html",
-        "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-oresteia-bridge-theatre-review/",
-        "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
-        "https://www.ft.com/content/72ed002f-cbf6-4a25-ab42-8f60cfec48a6"
+        "https://www.timeout.com/newyork/news/theater-review-the-bengsons-sing-of-a-pregnant-pause-in-my-joy-is-heavy-031726",
+        "https://www.newyorktheatreguide.com/reviews/my-joy-is-heavy-off-broadway-review",
+        "https://1minutecritic.com/my-joy-is-heavy-bengsons-review/",
+        "https://www.nytimes.com/2026/03/18/theater/my-joy-is-heavy-review-bengsons.html",
+        "https://www.theatermania.com/news/review-my-joy-is-heavy-asks-can-grief-and-happiness-coexist_1828198/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCF48I",
+        "https://www.talkinbroadway.com/page/ob/03_17_26.html",
+        "https://www.theatrereviews.com/off-broadway-review-my-joy-is-heavy-at-the-new-york-theatre-workshop-through-sunday-april-5-2026/"
       ],
-      "dirFiles": 41,
-      "dirClean": 24,
-      "inReviewsJson": 23,
-      "missing": [
-        {
-          "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://liamodell.com/2026/07/15/the-oresteia-review-bridge-theatre-london-simon-stone-david-morrissey-tom-glynn-carney-mary-louise-parker-rosie-sheehy-london-theatre-direct/",
-          "host": "liamodell.com",
-          "knownOutletId": "liamodell",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.threads.com/@simon.read/post/DajFX_vDP53/saw-the-oresteia-at-the-bridge-theatre-it-was-three-and-a-half-hours-of-non/",
-          "host": "threads.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://everything-theatre.co.uk/2026/07/review-the-oresteia-bridge-theatre/",
-          "host": "everything-theatre.co.uk",
-          "knownOutletId": "everything-theatre",
-          "serpCensus": true
-        }
-      ],
+      "dirFiles": 16,
+      "dirClean": 8,
+      "inReviewsJson": 9,
+      "missing": [],
       "dirOnly": [
         {
-          "host": "allthatdazzles.co.uk",
+          "host": "pagesonstages.com",
           "count": 1
         },
         {
-          "host": "theartsdesk.com",
+          "host": "theaterpizzazz.com",
           "count": 1
         },
         {
-          "host": "britishtheatreguide.info",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "london-unattached.com",
-          "count": 1
-        },
-        {
-          "host": "playsinternational.org.uk",
-          "count": 1
-        },
-        {
-          "host": "theatrevibe.co.uk",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
+          "host": "vulture.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCF48I",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -615,227 +1342,129 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "broadwayworld--alexander-cohen.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715"
-            },
-            {
-              "file": "broadwayworld--aliya-al-hassan.json",
-              "flag": "roundup",
-              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-Roundup-Simon-Stones-THE-ORESTEIA-Now-Open-At-The-Bridge-Theatre-20260715"
-            },
-            {
-              "file": "broadwayworld--persson-alexander-cohen.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715"
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCF48I"
             }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "theatre-reviews",
-          "serpCensus": true
+          ]
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/03_17_26.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "talkinbroadway--marc-miller.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.talkinbroadway.com/page/ob/03_17_26.html"
+            },
+            {
+              "file": "talkinbroadway--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2643876"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrereviews.com/off-broadway-review-my-joy-is-heavy-at-the-new-york-theatre-workshop-through-sunday-april-5-2026/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--david-roberts.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatrereviews.com/off-broadway-review-my-joy-is-heavy-at-the-new-york-theatre-workshop-through-sunday-april-5-2026/"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 17,
-        "sources": {
-          "westendtheatre": {
-            "found": true,
-            "rows": 6,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": true,
-            "rows": 11,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 17,
-        "corroborated": 10,
-        "perSource": {
-          "westendtheatre": {
-            "cited": 6,
-            "corroborated": 6
-          },
-          "theatre-reviews": {
-            "cited": 11,
-            "corroborated": 10
-          }
-        }
-      },
+      "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Oresteia\" West End review 2026",
-        "queryStatus": [
-          {
-            "query": "\"The Oresteia\" West End review 2026",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"The Oresteia\" review bridge",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"The Oresteia\" Stone review",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 11,
-        "error": null
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-heres-what-critics-think-of-robert-ickes-oresteia-off-broadway",
-          "publishDate": "2022-07-29"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
-          "host": "newyorktheater.me",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-          "host": "wsj.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://liamodell.com/2026/07/15/the-oresteia-review-bridge-theatre-london-simon-stone-david-morrissey-tom-glynn-carney-mary-louise-parker-rosie-sheehy-london-theatre-direct/",
-          "host": "liamodell.com",
-          "outletId": "liamodell",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.threads.com/@simon.read/post/DajFX_vDP53/saw-the-oresteia-at-the-bridge-theatre-it-was-three-and-a-half-hours-of-non/",
-          "host": "threads.com",
-          "outletId": "threads",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~59707/day) projects exhaustion in ~9d, before the 22d-out renewal — still usi"
-        },
-        {
-          "url": "https://everything-theatre.co.uk/2026/07/review-the-oresteia-bridge-theatre/",
-          "host": "everything-theatre.co.uk",
-          "outletId": "everything-theatre",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
+        "ran": false,
+        "reason": "out-of-window"
+      }
     },
     {
-      "showId": "the-whoopi-monologues-off-broadway-2026",
-      "title": "The Whoopi Monologues",
-      "openingDate": "2026-07-14",
+      "showId": "age-is-a-feeling-off-broadway-2024",
+      "title": "Age Is a Feeling",
+      "openingDate": "2024-09-11",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "birthright-off-broadway-2026",
+      "title": "Birthright",
+      "openingDate": "2026-06-24",
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-the-whoopi-monologues-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-WHOOPI-MONOLOGUES-Opens-Off-Broadway-20260714"
+        "https://playbill.com/article/read-the-reviews-for-birthright-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-BIRTHRIGHT-Opens-at-MCC-Theater-20260629"
       ],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/the-whoopi-monologues-review-kerry-washington/",
-        "https://cititour.com/NYC_Broadway/The-Whoopi-Monologues/1386",
-        "https://culturesauce.com/whoopi-goldberg-monologues-off-broadway-review/",
-        "https://exeuntnyc.com/reviews/review-the-whoopi-monologues-at-the-mitzi-e-newhouse-theater/",
-        "https://nystagereview.com/2026/07/13/the-whoopi-monologues-goldbergs-characters-still-charm-and-disarm/",
-        "https://nystagereview.com/2026/07/13/the-whoopi-monologues-five-whoopis-are-less-than-one/",
-        "https://www.newyorktheatreguide.com/reviews/the-whoopi-monologues-off-broadway-review-kerry-washington-kara-young-whoopi-goldberg",
-        "https://www.wsj.com/articles/the-whoopi-monologues-review-goldberg-variations-off-broadway-0ee39174",
-        "https://www.thewrap.com/creative-content/theater/the-whoopi-monologues-off-broadway-review-kerry-washington/",
-        "https://www.nytimes.com/2026/07/14/theater/the-whoopi-monologues-review-kerry-washington-kara-young.html",
-        "https://www.theatermania.com/news/review-the-whoopi-monologues-shines-even-without-whoopi-goldberg_1845713/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TIJLSX",
-        "https://www.talkinbroadway.com/page/ob/07_13_26.html",
-        "https://www.theaterscene.net/plays/offbway-plays/the-whoopi-monologues/victor-gluck/",
-        "https://newyorktheater.me/2026/07/19/the-whoopi-monologues-review/"
+        "https://1minutecritic.com/birthright-mcc-theater-review/",
+        "https://culturesauce.com/birthright-off-broadway-review/",
+        "https://nystagereview.com/2026/06/29/birthright-political-and-personal-issues-intersect-to-powerful-effect/",
+        "https://nystagereview.com/2026/06/29/birthright-six-characters-in-search-of-a-common-ground/",
+        "https://www.theatermania.com/news/review-birthright-is-a-safe-three-and-a-half-hour-play-about-israel-palestine-and-fractured-friendships_1844046/",
+        "https://www.thewrap.com/creative-content/theater/birthright-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/birthright-off-broadway-review-a-profound-exploration-of-judaism-and-friendship",
+        "https://www.nytimes.com/2026/06/30/theater/birthright-review-israel-spector.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=8LP3R9",
+        "https://pagesonstages.com/2026/06/29/birthright/"
       ],
-      "dirFiles": 30,
-      "dirClean": 23,
-      "inReviewsJson": 22,
+      "dirFiles": 26,
+      "dirClean": 21,
+      "inReviewsJson": 19,
       "missing": [],
       "dirOnly": [
+        {
+          "host": "amny.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
         {
           "host": "nysun.com",
           "count": 1
         },
         {
-          "host": "interestedbystander.com",
+          "host": "newyorker.com",
+          "count": 1
+        },
+        {
+          "host": "thecontending.com",
+          "count": 1
+        },
+        {
+          "host": "therecs.co.uk",
           "count": 1
         },
         {
@@ -847,15 +1476,11 @@
           "count": 1
         },
         {
-          "host": "theaterscene.org",
-          "count": 1
-        },
-        {
-          "host": "t2conline.com",
-          "count": 1
-        },
-        {
           "host": "vulture.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
           "count": 1
         }
       ],
@@ -863,54 +1488,16 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Whoopi Monologues\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"The Whoopi Monologues\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"The Whoopi Monologues\" review lincoln",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"The Whoopi Monologues\" Goldberg review",
-            "ok": true,
-            "results": 9,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 8,
-        "error": null
-      },
-      "recoveryResults": [
-        {
-          "url": "https://playbill.com/article/read-the-reviews-for-the-whoopi-monologues-off-broadway",
-          "host": "playbill.com",
-          "file": "playbill--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "⚠️  Scrapingdog pace (~59725/day) projects exhaustion in ~9d, before the 22d-out renewal — still usi",
-          "recoveryCount": 3,
-          "uncited": true
-        }
-      ]
+        "ran": false,
+        "reason": "out-of-window"
+      }
     },
     {
-      "showId": "drunk-romeo-and-juliet-off-broadway-2025",
-      "title": "Drunk Romeo & Juliet",
-      "openingDate": "2025-05-29",
+      "showId": "the-misanthrope-west-end-2026",
+      "title": "The Misanthrope",
+      "openingDate": "2026-06-23",
       "status": "open",
-      "category": "off-broadway",
+      "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -927,55 +1514,515 @@
       }
     },
     {
-      "showId": "masquerade-off-broadway-2025",
-      "title": "Masquerade",
-      "openingDate": "2025-09-29",
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "title": "To Kill a Mockingbird",
+      "openingDate": "2026-06-30",
       "status": "open",
-      "category": "off-broadway",
+      "category": "west-end",
       "aggregatorArticles": [
-        "https://playbill.com/article/what-do-the-critics-think-of-masquerade-the-immersive-phantom-of-the-opera-production",
-        "https://www.broadwayworld.com/article/Review-Roundup-MASQUERADE-Immersive-PHANTOM-Experience-Opens-Off-Broadway-20250929"
+        "https://playbill.com/article/read-the-reviews-for-broadways-to-kill-a-mockingbird",
+        "https://playbill.com/article/read-the-reviews-for-rafe-spall-in-to-kill-a-mockingbird-in-londons-west-end",
+        "https://www.broadwayworld.com/article/Review-Roundup-See-The-Critics-Verdict-On-TO-KILL-A-MOCKINGBIRD-On-Broadway-20181213",
+        "https://www.broadwayworld.com/article/Review-Roundup-TO-KILL-A-MOCKINGBIRD-Kicks-Off-First-National-Tour-What-Are-the-Critics-Saying-20220420"
       ],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/masquerade-phantom-of-the-opera-review/",
-        "https://www.thedailybeast.com/obsessed/masquerade-phantom-of-the-opera-like-youve-never-experienced-before/",
-        "https://culturesauce.com/2025/09/29/masquerade-phantom-opera-off-broadway-review/",
-        "https://www.theguardian.com/stage/2025/sep/29/masquerade-review-phantom-of-the-opera",
-        "https://www.nydailynews.com/2025/09/29/broadway-review-masquerade-immersive-phantom-of-the-opera-experience-review/",
-        "https://nystagereview.com/2025/09/29/masquerade-phantom-of-the-opera-immersive-style/",
-        "https://www.newyorktheatreguide.com/reviews/masquerade-off-broadway-review-immersive-phantom-of-the-opera",
-        "https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-opera.html",
-        "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-immersive-theater/",
-        "https://www.slantmagazine.com/theater/masquerade-review-the-phantom-of-the-opera/",
-        "https://www.theatermania.com/news/review-immersive-musical-masquerade-is-a-phantom-fever-dream_1805227/",
-        "https://www.timeout.com/newyork/theater/masquerade-review-phantom-opera-immersive-andrew-lloyd-webber",
-        "https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/",
-        "https://www.amny.com/entertainment/broadway/review-masquerade-phantom-of-the-opera-2025/",
-        "https://nypost.com/2025/09/29/entertainment/masquerade-review-secretive-off-broadway-phantom-of-the-opera-riff-is-a-sexy-hot-ticket/"
+        "https://www.amny.com/entertainment/to-kill-a-mockingbird-review-1.24536801",
+        "https://broadway.news/2018/12/13/review-to-kill-a-mockingbird-misses-out-on-theatricality/",
+        "https://www.thedailybeast.com/aaron-sorkins-to-kill-a-mockingbird-on-broadway-puts-atticus-finch-on-trial",
+        "https://deadline.com/2018/12/to-kill-a-mockingbird-broadway-review-aaron-sorkin-jeff-daniels-harper-lee-1202519134/",
+        "https://ew.com/theater-reviews/2018/12/13/to-kill-a-mockingbird-broadway-review/",
+        "https://www.theguardian.com/stage/2018/dec/13/to-kill-a-mockingbird-review-aaron-sorkin",
+        "http://www.philly.com/arts/theater/to-kill-a-mockingbird-shubert-theatre-broadway-jeff-daniels-aaron-sorkin-harper-lee-20181217.html",
+        "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-to-kill-mockingbird-broadway-review-20181213-story.html",
+        "https://www.nydailynews.com/entertainment/broadway/ny-ent-kill-mockingbird-broadway-review-1019-story.html",
+        "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-a-timeless-favorite-revered-and-reborn/",
+        "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-harper-lees-classic-makes-magnificent-theater/",
+        "https://www.newsday.com/entertainment/theater/to-kill-a-mockingbird-broadway-review-1.24451435",
+        "https://observer.com/2018/12/to-kill-a-mockingbird-review-jeff-daniels-rex-reed/",
+        "https://www.timeout.com/newyork/theater/to-kill-a-mockingbird-1",
+        "https://www.nytimes.com/2018/12/13/theater/to-kill-a-mockingbird-review-jeff-daniels.html",
+        "https://variety.com/2018/legit/reviews/to-kill-a-mockingbird-review-broadway-play-1203088941/",
+        "https://www.wsj.com/articles/harper-lees-to-kill-a-mockingbird-a-new-play-by-aaron-sorkin-and-a-childs-christmas-in-wales-reviews-perils-and-perks-of-reworking-classics-11544751000",
+        "https://www.thewrap.com/to-kill-a-mockingbird-broadway-review-aaron-sorkin-jeff-daniels-harper-lee/",
+        "https://www.standard.co.uk/culture/theatre/to-kill-a-mockingbird-gielgud-theatre-review-aaron-sorkin-rafe-spall-london-b991748.html",
+        "https://www.theguardian.com/stage/2022/mar/31/to-kill-a-mockingbird-review-aaron-sorkin-rafe-spall-gielgud-theatre",
+        "https://inews.co.uk/culture/arts/to-kill-a-mockingbird-gielgud-theatre-review-rafe-spall-plays-the-hero-in-a-tremendous-reimagining-1550710",
+        "https://www.thestage.co.uk/long-reviews/long-reviews/to-kill-a-mockingbird-review-gielgud-london-harper-lee-rafe-spall",
+        "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/",
+        "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+        "https://www.hollywoodreporter.com/review/kill-a-mockingbird-theater-review-1169085",
+        "http://www.amny.com/entertainment/to-kill-a-mockingbird-review-1.24536801",
+        "https://variety.com/t/to-kill-a-mockingbird/",
+        "https://www.vulture.com/2018/12/theater-sorkins-to-kill-a-mockingbird-walks-the-walk.html",
+        "https://buffalonews.com/entertainment/arts-and-theatre/an-a-plus-to-kill-a-mockingbird-finally-arrives-in-sheas/article_ff567652-b03d-11ec-a89c-5f6f673fc8eb.html",
+        "https://jewishchronicle.timesofisrael.com/aaron-sorkins-to-kill-a-mockingbird-a-21st-century-retelling-of-a-classic-story/",
+        "https://www.cleveland.com/entertainment/2022/04/theatrical-adaptation-of-to-kill-a-mockingbird-gives-powerful-new-voice-to-literary-classic.html",
+        "https://www.cleveland.com/entertainment/2022/04/leads-in-to-kill-a-mockingbird-invite-viewers-to-revisit-or-discover-a-classic-at-playhouse-square.html",
+        "https://www.clevescene.com/arts/brisk-dramatic-pace-of-to-kill-a-mockingbird-now-at-playhouse-square-enough-to-compensate-for-its-missteps-38834856",
+        "https://thirdcoastreview.com/2022/05/20/review-to-kill-a-mockingbird/",
+        "https://behindthecurtaincincy.com/2022/06/03/to-kill-a-mockingbird-quick-review/",
+        "https://www.timesunion.com/theater/article/To-Kill-a-Mockingbird-masterful-at-Proctors-17240262.php",
+        "https://theberkshireedge.com/theater-review-to-kill-a-mockingbird-at-proctors-theatre/",
+        "https://www.phillytrib.com/review-sorkin-takes-on-to-kill-a-mockingbird/article_724b4106-21b4-579a-943f-e2704736c707.html",
+        "https://datebook.sfchronicle.com/theater/review-aaron-sorkins-to-kill-a-mockingbird-shows-how-to-push-back-against-a-text",
+        "https://www.seattletimes.com/entertainment/theater/aaron-sorkins-to-kill-a-mockingbird-at-seattles-paramount-theatre-doesnt-feel-right/",
+        "https://www.portlandmercury.com/Theater/2022/10/21/46146233/even-at-three-hours-sorkins-to-kill-a-mockingbird-is-riveting",
+        "https://nerdreactor.com/2022/11/01/to-kill-a-mockingbird-pantages-theatre/",
+        "https://www.latimes.com/entertainment-arts/story/2022-10-28/to-kill-a-mockingbird-national-tour-pantages",
+        "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-12-01/review-updated-to-kill-a-mockingbird-play-makes-a-fierce-and-powerful-statement-against-racism",
+        "https://www.ocregister.com/2022/12/28/theater-review-to-kill-a-mockingbird-brings-literature-to-life-in-costa-mesa/",
+        "https://www.denverpost.com/2023/01/25/aaron-sorkin-to-kill-a-mockingbird-broadway-tour-denver/",
+        "https://twincitiesarts.com/2023/02/15/review-to-kill-a-mockingbird-orpheum/",
+        "https://www.postcrescent.com/story/entertainment/theater/2023/02/22/review-to-kill-a-mockingbird-at-fox-cities-performing-arts-center/69931243007/",
+        "https://www.laduenews.com/arts-and-culture/aaron-sorkin-s-version-of-to-kill-a-mockingbird-at-the-fabulous-fox-theatre-is/article_afca3caa-bc4d-11ed-9c18-af515220f6ae.html",
+        "https://www.riverfronttimes.com/arts/review-now-at-the-fox-to-kill-a-mockingbird-resonates-powerfully-39586377",
+        "https://mdtheatreguide.com/2023/03/theatre-review-to-kill-a-mockingbird-at-the-hippodrome-theatre/",
+        "https://www.orlandosentinel.com/entertainment/arts-and-theater/os-et-to-kill-a-mockingbird-dr-phillips-center-review-20230322-gp7jdfkwarfbhovxiwwgspftpm-story.html",
+        "https://www.sun-sentinel.com/entertainment/theater-and-arts/fl-et-broadway-review-to-kill-a-mockingbird-fort-lauderdale-broward-center-20230330-5lc2rqk5ifdi7iwag3btkvr2qu-story.html",
+        "https://www.houstonchronicle.com/entertainment/theater/article/to-kill-a-mockingbird-review-17920385.php",
+        "https://www.houstonpress.com/arts/review-to-kill-a-mockingbird-at-the-hobby-15564751",
+        "https://www.austinchronicle.com/daily/arts/2023-05-10/review-broadway-in-austins-to-kill-a-mockingbird/",
+        "https://redcarpetcrash.com/dallas-theater-review-to-kill-a-mockingbird/",
+        "https://dallasvoice.com/to-kill-a-mockingbird-is-superb/",
+        "https://columbusunderground.com/theater-review-to-kill-a-mockingbird-comes-to-broadway-in-columbus-s1/",
+        "https://patch.com/connecticut/hartford/theater-review-harper-lee-s-kill-mockingbird-tour",
+        "https://www.lansingcitypulse.com/stories/to-kill-a-mockingbird-at-wharton-offers-a-new-take-on-a-classic-story,73395",
+        "https://freepressokc.com/to-kill-a-mockingbird-at-civic-center-rises-to-the-challenge/",
+        "https://www.jsonline.com/story/entertainment/arts/2023/11/08/to-kill-a-mockingbird-richard-thomas-review/71486495007/",
+        "https://nextmag.ca/review-the-grand-scale-of-mirvishs-to-kill-a-mockingbird-is-entrancing/",
+        "https://www.spokesman.com/stories/2023/dec/07/stage-review-aaron-sorkins-to-kill-a-mockingbird-a/",
+        "https://www.palmbeachdailynews.com/story/entertainment/theater/2024/01/03/review-to-kill-a-mockingbird-is-a-must-see-show-of-the-season/72094228007/",
+        "https://www.pilotonline.com/2024/02/01/review-harper-lees-to-kill-a-mockingbird-by-aaron-sorkin-soars-at-chrysler-hall/",
+        "https://www.theoaklandpress.com/2024/03/07/to-kill-a-mockingbird-spreads-its-wings-on-stage-at-the-fisher-theatre/",
+        "https://www.tulsakids.com/to-kill-a-mockingbird-entertains-and-puts-new-twist-on-the-classic-novel/",
+        "https://artsknoxville.com/index.php/2024/04/04/review-to-kill-a-mockingbird-at-the-tennessee-theatre-timely-and-strong/",
+        "https://www.newyorker.com/magazine/2018/12/24/black-and-white-in-slave-play-and-to-kill-a-mockingbird"
       ],
-      "dirFiles": 24,
-      "dirClean": 13,
-      "inReviewsJson": 13,
-      "missing": [],
+      "dirFiles": 55,
+      "dirClean": 15,
+      "inReviewsJson": 20,
+      "missing": [
+        {
+          "url": "https://broadway.news/2018/12/13/review-to-kill-a-mockingbird-misses-out-on-theatricality/",
+          "host": "broadway.news",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2018/12/to-kill-a-mockingbird-broadway-review-aaron-sorkin-jeff-daniels-harper-lee-1202519134/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2018/12/13/to-kill-a-mockingbird-broadway-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-a-timeless-favorite-revered-and-reborn/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-harper-lees-classic-makes-magnificent-theater/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2018/12/to-kill-a-mockingbird-review-jeff-daniels-rex-reed/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2018/12/13/theater/to-kill-a-mockingbird-review-jeff-daniels.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2018/legit/reviews/to-kill-a-mockingbird-review-broadway-play-1203088941/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/long-reviews/to-kill-a-mockingbird-review-gielgud-london-harper-lee-rafe-spall",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/t/to-kill-a-mockingbird/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2018/12/theater-sorkins-to-kill-a-mockingbird-walks-the-walk.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://buffalonews.com/entertainment/arts-and-theatre/an-a-plus-to-kill-a-mockingbird-finally-arrives-in-sheas/article_ff567652-b03d-11ec-a89c-5f6f673fc8eb.html",
+          "host": "buffalonews.com",
+          "knownOutletId": "buffalo-news",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://jewishchronicle.timesofisrael.com/aaron-sorkins-to-kill-a-mockingbird-a-21st-century-retelling-of-a-classic-story/",
+          "host": "timesofisrael.com",
+          "knownOutletId": "the-times-of-israel",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2022/04/theatrical-adaptation-of-to-kill-a-mockingbird-gives-powerful-new-voice-to-literary-classic.html",
+          "host": "cleveland.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2022/04/leads-in-to-kill-a-mockingbird-invite-viewers-to-revisit-or-discover-a-classic-at-playhouse-square.html",
+          "host": "cleveland.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.clevescene.com/arts/brisk-dramatic-pace-of-to-kill-a-mockingbird-now-at-playhouse-square-enough-to-compensate-for-its-missteps-38834856",
+          "host": "clevescene.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://thirdcoastreview.com/2022/05/20/review-to-kill-a-mockingbird/",
+          "host": "thirdcoastreview.com",
+          "knownOutletId": "third-coast-review",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://behindthecurtaincincy.com/2022/06/03/to-kill-a-mockingbird-quick-review/",
+          "host": "behindthecurtaincincy.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timesunion.com/theater/article/To-Kill-a-Mockingbird-masterful-at-Proctors-17240262.php",
+          "host": "timesunion.com",
+          "knownOutletId": "albany-times-union",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theberkshireedge.com/theater-review-to-kill-a-mockingbird-at-proctors-theatre/",
+          "host": "theberkshireedge.com",
+          "knownOutletId": "berkshire-edge",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.phillytrib.com/review-sorkin-takes-on-to-kill-a-mockingbird/article_724b4106-21b4-579a-943f-e2704736c707.html",
+          "host": "phillytrib.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/theater/review-aaron-sorkins-to-kill-a-mockingbird-shows-how-to-push-back-against-a-text",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.seattletimes.com/entertainment/theater/aaron-sorkins-to-kill-a-mockingbird-at-seattles-paramount-theatre-doesnt-feel-right/",
+          "host": "seattletimes.com",
+          "knownOutletId": "seattle-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.portlandmercury.com/Theater/2022/10/21/46146233/even-at-three-hours-sorkins-to-kill-a-mockingbird-is-riveting",
+          "host": "portlandmercury.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nerdreactor.com/2022/11/01/to-kill-a-mockingbird-pantages-theatre/",
+          "host": "nerdreactor.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-12-01/review-updated-to-kill-a-mockingbird-play-makes-a-fierce-and-powerful-statement-against-racism",
+          "host": "sandiegouniontribune.com",
+          "knownOutletId": "san-diego-union-tribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.ocregister.com/2022/12/28/theater-review-to-kill-a-mockingbird-brings-literature-to-life-in-costa-mesa/",
+          "host": "ocregister.com",
+          "knownOutletId": "oc-register",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.denverpost.com/2023/01/25/aaron-sorkin-to-kill-a-mockingbird-broadway-tour-denver/",
+          "host": "denverpost.com",
+          "knownOutletId": "denver-post",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://twincitiesarts.com/2023/02/15/review-to-kill-a-mockingbird-orpheum/",
+          "host": "twincitiesarts.com",
+          "knownOutletId": "twin-cities-arts-reader",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.postcrescent.com/story/entertainment/theater/2023/02/22/review-to-kill-a-mockingbird-at-fox-cities-performing-arts-center/69931243007/",
+          "host": "postcrescent.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.laduenews.com/arts-and-culture/aaron-sorkin-s-version-of-to-kill-a-mockingbird-at-the-fabulous-fox-theatre-is/article_afca3caa-bc4d-11ed-9c18-af515220f6ae.html",
+          "host": "laduenews.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.riverfronttimes.com/arts/review-now-at-the-fox-to-kill-a-mockingbird-resonates-powerfully-39586377",
+          "host": "riverfronttimes.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2023/03/theatre-review-to-kill-a-mockingbird-at-the-hippodrome-theatre/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.orlandosentinel.com/entertainment/arts-and-theater/os-et-to-kill-a-mockingbird-dr-phillips-center-review-20230322-gp7jdfkwarfbhovxiwwgspftpm-story.html",
+          "host": "orlandosentinel.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.sun-sentinel.com/entertainment/theater-and-arts/fl-et-broadway-review-to-kill-a-mockingbird-fort-lauderdale-broward-center-20230330-5lc2rqk5ifdi7iwag3btkvr2qu-story.html",
+          "host": "sun-sentinel.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.houstonchronicle.com/entertainment/theater/article/to-kill-a-mockingbird-review-17920385.php",
+          "host": "houstonchronicle.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.houstonpress.com/arts/review-to-kill-a-mockingbird-at-the-hobby-15564751",
+          "host": "houstonpress.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.austinchronicle.com/daily/arts/2023-05-10/review-broadway-in-austins-to-kill-a-mockingbird/",
+          "host": "austinchronicle.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://redcarpetcrash.com/dallas-theater-review-to-kill-a-mockingbird/",
+          "host": "redcarpetcrash.com",
+          "knownOutletId": "red-carpet-crash",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://dallasvoice.com/to-kill-a-mockingbird-is-superb/",
+          "host": "dallasvoice.com",
+          "knownOutletId": "dallasvoice",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://columbusunderground.com/theater-review-to-kill-a-mockingbird-comes-to-broadway-in-columbus-s1/",
+          "host": "columbusunderground.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://patch.com/connecticut/hartford/theater-review-harper-lee-s-kill-mockingbird-tour",
+          "host": "patch.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.lansingcitypulse.com/stories/to-kill-a-mockingbird-at-wharton-offers-a-new-take-on-a-classic-story,73395",
+          "host": "lansingcitypulse.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://freepressokc.com/to-kill-a-mockingbird-at-civic-center-rises-to-the-challenge/",
+          "host": "freepressokc.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.jsonline.com/story/entertainment/arts/2023/11/08/to-kill-a-mockingbird-richard-thomas-review/71486495007/",
+          "host": "jsonline.com",
+          "knownOutletId": "milwaukee-journal-sentinel",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nextmag.ca/review-the-grand-scale-of-mirvishs-to-kill-a-mockingbird-is-entrancing/",
+          "host": "nextmag.ca",
+          "knownOutletId": "next-magazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.spokesman.com/stories/2023/dec/07/stage-review-aaron-sorkins-to-kill-a-mockingbird-a/",
+          "host": "spokesman.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.palmbeachdailynews.com/story/entertainment/theater/2024/01/03/review-to-kill-a-mockingbird-is-a-must-see-show-of-the-season/72094228007/",
+          "host": "palmbeachdailynews.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.pilotonline.com/2024/02/01/review-harper-lees-to-kill-a-mockingbird-by-aaron-sorkin-soars-at-chrysler-hall/",
+          "host": "pilotonline.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theoaklandpress.com/2024/03/07/to-kill-a-mockingbird-spreads-its-wings-on-stage-at-the-fisher-theatre/",
+          "host": "theoaklandpress.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.tulsakids.com/to-kill-a-mockingbird-entertains-and-puts-new-twist-on-the-classic-novel/",
+          "host": "tulsakids.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://artsknoxville.com/index.php/2024/04/04/review-to-kill-a-mockingbird-at-the-tennessee-theatre-timely-and-strong/",
+          "host": "artsknoxville.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorker.com/magazine/2018/12/24/black-and-white-in-slave-play-and-to-kill-a-mockingbird",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker"
+        }
+      ],
       "dirOnly": [
         {
-          "host": "chicagotribune.com",
+          "host": "afridiziak.com",
           "count": 1
         },
         {
-          "host": "pagesonstages.com",
+          "host": "allthatdazzles.co.uk",
           "count": 1
         },
         {
-          "host": "vulture.com",
+          "host": "britishtheatreguide.info",
           "count": 1
+        },
+        {
+          "host": "britishtheatre.com",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theupcoming.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thetimes.co.uk",
+          "count": 2
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://culturesauce.com/2025/09/29/masquerade-phantom-opera-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
+          "url": "https://www.amny.com/entertainment/to-kill-a-mockingbird-review-1.24536801",
+          "host": "amny.com",
+          "knownOutletId": "amny",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -983,14 +2030,78 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "culturesauce--thom-geier.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://culturesauce.com/2025/09/29/masquerade-phantom-opera-off-broadway-review/"
+              "file": "amny--matt-windman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.amny.com/entertainment/to-kill-a-mockingbird-review-1.24536801"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.nydailynews.com/2025/09/29/broadway-review-masquerade-immersive-phantom-of-the-opera-experience-review/",
+          "url": "https://www.thedailybeast.com/aaron-sorkins-to-kill-a-mockingbird-on-broadway-puts-atticus-finch-on-trial",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/aaron-sorkins-to-kill-a-mockingbird-on-broadway-puts-atticus-finch-on-trial"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.philly.com/arts/theater/to-kill-a-mockingbird-shubert-theatre-broadway-jeff-daniels-aaron-sorkin-harper-lee-20181217.html",
+          "host": "philly.com",
+          "knownOutletId": "philadelphia-inquirer",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "inquirer--toby-zinman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.philly.com/arts/theater/to-kill-a-mockingbird-shubert-theatre-broadway-jeff-daniels-aaron-sorkin-harper-lee-20181217.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-to-kill-mockingbird-broadway-review-20181213-story.html",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "latimes--charles-mcnulty.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-to-kill-mockingbird-broadway-review-20181213-story.html"
+            },
+            {
+              "file": "latimes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-to-kill-mockingbird-broadway-review-20181213-story.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-ent-kill-mockingbird-broadway-review-1019-story.html",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
           "recoverable": false,
@@ -1001,32 +2112,17 @@
           "dirFlags": [
             {
               "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2025/09/29/broadway-review-masquerade-immersive-phantom-of-the-opera-experience-review/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/masquerade-off-broadway-review-immersive-phantom-of-the-opera",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytg--gillian-russo.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/masquerade-off-broadway-review-immersive-phantom-of-the-opera"
+              "urlInDir": "https://www.nydailynews.com/entertainment/broadway/ny-ent-kill-mockingbird-broadway-review-1019-story.html"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.theatermania.com/news/review-immersive-musical-masquerade-is-a-phantom-fever-dream_1805227/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
+          "url": "https://www.newsday.com/entertainment/theater/to-kill-a-mockingbird-broadway-review-1.24451435",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1034,16 +2130,23 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatermania--meg-masseron.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-immersive-musical-masquerade-is-a-phantom-fever-dream_1805227/"
+              "file": "newsday--elisabeth-vincentelli.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newsday.com/entertainment/theater/to-kill-a-mockingbird-broadway-review-1.24451435"
+            },
+            {
+              "file": "newsday--elysa-gardner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newsday.com/entertainment/theater/to-kill-a-mockingbird-broadway-review-1.24451435"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
+          "url": "https://www.timeout.com/newyork/theater/to-kill-a-mockingbird-1",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1051,11 +2154,166 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "washpost--naveen-kumar.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/"
+              "file": "timeout--adam-feldman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/to-kill-a-mockingbird-1"
+            },
+            {
+              "file": "timeout-london--andrzej-lukowski.json",
+              "flag": "clean",
+              "urlInDir": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/harper-lees-to-kill-a-mockingbird-a-new-play-by-aaron-sorkin-and-a-childs-christmas-in-wales-reviews-perils-and-perks-of-reworking-classics-11544751000",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wsj--terry-teachout.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.wsj.com/articles/harper-lees-to-kill-a-mockingbird-a-new-play-by-aaron-sorkin-and-a-childs-christmas-in-wales-reviews-perils-and-perks-of-reworking-classics-11544751000"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/to-kill-a-mockingbird-broadway-review-aaron-sorkin-jeff-daniels-harper-lee/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--thom-geier.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/to-kill-a-mockingbird-broadway-review-aaron-sorkin-jeff-daniels-harper-lee/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--diane-snyder.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-broadway-review-aaron-sorkins-vigorous-version/"
+            },
+            {
+              "file": "telegraph--dominic-cavendish.json",
+              "flag": "clean",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/to-kill-a-mockingbird-1"
+            },
+            {
+              "file": "timeout-london--andrzej-lukowski.json",
+              "flag": "clean",
+              "urlInDir": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/kill-a-mockingbird-theater-review-1169085",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.hollywoodreporter.com/review/kill-a-mockingbird-theater-review-1169085"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/to-kill-a-mockingbird-review-1.24536801",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "amny--matt-windman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.amny.com/entertainment/to-kill-a-mockingbird-review-1.24536801"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2022-10-28/to-kill-a-mockingbird-national-tour-pantages",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "latimes--charles-mcnulty.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-to-kill-mockingbird-broadway-review-20181213-story.html"
+            },
+            {
+              "file": "latimes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-to-kill-mockingbird-broadway-review-20181213-story.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
@@ -1063,28 +2321,350 @@
       "serpCensus": {
         "ran": false,
         "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
-      "title": "La Breve y Maravillosa Vida de Oscar Wao",
-      "openingDate": "2024-02-17",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-broadways-to-kill-a-mockingbird",
+          "publishDate": "2018-12-13"
+        },
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-rafe-spall-in-to-kill-a-mockingbird-in-londons-west-end",
+          "publishDate": "2022-04-01"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-See-The-Critics-Verdict-On-TO-KILL-A-MOCKINGBIRD-On-Broadway-20181213",
+          "publishDate": "2018-12-13"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-TO-KILL-A-MOCKINGBIRD-Kicks-Off-First-National-Tour-What-Are-the-Critics-Saying-20220420",
+          "publishDate": "2022-04-20"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://broadway.news/2018/12/13/review-to-kill-a-mockingbird-misses-out-on-theatricality/",
+          "host": "broadway.news",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://deadline.com/2018/12/to-kill-a-mockingbird-broadway-review-aaron-sorkin-jeff-daniels-harper-lee-1202519134/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2018/12/13/to-kill-a-mockingbird-broadway-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-a-timeless-favorite-revered-and-reborn/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-harper-lees-classic-makes-magnificent-theater/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://observer.com/2018/12/to-kill-a-mockingbird-review-jeff-daniels-rex-reed/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2018/12/13/theater/to-kill-a-mockingbird-review-jeff-daniels.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://variety.com/2018/legit/reviews/to-kill-a-mockingbird-review-broadway-play-1203088941/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/long-reviews/to-kill-a-mockingbird-review-gielgud-london-harper-lee-rafe-spall",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://variety.com/t/to-kill-a-mockingbird/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.vulture.com/2018/12/theater-sorkins-to-kill-a-mockingbird-walks-the-walk.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://buffalonews.com/entertainment/arts-and-theatre/an-a-plus-to-kill-a-mockingbird-finally-arrives-in-sheas/article_ff567652-b03d-11ec-a89c-5f6f673fc8eb.html",
+          "host": "buffalonews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://jewishchronicle.timesofisrael.com/aaron-sorkins-to-kill-a-mockingbird-a-21st-century-retelling-of-a-classic-story/",
+          "host": "timesofisrael.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2022/04/theatrical-adaptation-of-to-kill-a-mockingbird-gives-powerful-new-voice-to-literary-classic.html",
+          "host": "cleveland.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2022/04/leads-in-to-kill-a-mockingbird-invite-viewers-to-revisit-or-discover-a-classic-at-playhouse-square.html",
+          "host": "cleveland.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.clevescene.com/arts/brisk-dramatic-pace-of-to-kill-a-mockingbird-now-at-playhouse-square-enough-to-compensate-for-its-missteps-38834856",
+          "host": "clevescene.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://thirdcoastreview.com/2022/05/20/review-to-kill-a-mockingbird/",
+          "host": "thirdcoastreview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://behindthecurtaincincy.com/2022/06/03/to-kill-a-mockingbird-quick-review/",
+          "host": "behindthecurtaincincy.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.timesunion.com/theater/article/To-Kill-a-Mockingbird-masterful-at-Proctors-17240262.php",
+          "host": "timesunion.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://theberkshireedge.com/theater-review-to-kill-a-mockingbird-at-proctors-theatre/",
+          "host": "theberkshireedge.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.phillytrib.com/review-sorkin-takes-on-to-kill-a-mockingbird/article_724b4106-21b4-579a-943f-e2704736c707.html",
+          "host": "phillytrib.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/theater/review-aaron-sorkins-to-kill-a-mockingbird-shows-how-to-push-back-against-a-text",
+          "host": "sfchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.seattletimes.com/entertainment/theater/aaron-sorkins-to-kill-a-mockingbird-at-seattles-paramount-theatre-doesnt-feel-right/",
+          "host": "seattletimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.portlandmercury.com/Theater/2022/10/21/46146233/even-at-three-hours-sorkins-to-kill-a-mockingbird-is-riveting",
+          "host": "portlandmercury.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nerdreactor.com/2022/11/01/to-kill-a-mockingbird-pantages-theatre/",
+          "host": "nerdreactor.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-12-01/review-updated-to-kill-a-mockingbird-play-makes-a-fierce-and-powerful-statement-against-racism",
+          "host": "sandiegouniontribune.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.ocregister.com/2022/12/28/theater-review-to-kill-a-mockingbird-brings-literature-to-life-in-costa-mesa/",
+          "host": "ocregister.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.denverpost.com/2023/01/25/aaron-sorkin-to-kill-a-mockingbird-broadway-tour-denver/",
+          "host": "denverpost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://twincitiesarts.com/2023/02/15/review-to-kill-a-mockingbird-orpheum/",
+          "host": "twincitiesarts.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.postcrescent.com/story/entertainment/theater/2023/02/22/review-to-kill-a-mockingbird-at-fox-cities-performing-arts-center/69931243007/",
+          "host": "postcrescent.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.laduenews.com/arts-and-culture/aaron-sorkin-s-version-of-to-kill-a-mockingbird-at-the-fabulous-fox-theatre-is/article_afca3caa-bc4d-11ed-9c18-af515220f6ae.html",
+          "host": "laduenews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.riverfronttimes.com/arts/review-now-at-the-fox-to-kill-a-mockingbird-resonates-powerfully-39586377",
+          "host": "riverfronttimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2023/03/theatre-review-to-kill-a-mockingbird-at-the-hippodrome-theatre/",
+          "host": "mdtheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.orlandosentinel.com/entertainment/arts-and-theater/os-et-to-kill-a-mockingbird-dr-phillips-center-review-20230322-gp7jdfkwarfbhovxiwwgspftpm-story.html",
+          "host": "orlandosentinel.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.sun-sentinel.com/entertainment/theater-and-arts/fl-et-broadway-review-to-kill-a-mockingbird-fort-lauderdale-broward-center-20230330-5lc2rqk5ifdi7iwag3btkvr2qu-story.html",
+          "host": "sun-sentinel.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.houstonchronicle.com/entertainment/theater/article/to-kill-a-mockingbird-review-17920385.php",
+          "host": "houstonchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.houstonpress.com/arts/review-to-kill-a-mockingbird-at-the-hobby-15564751",
+          "host": "houstonpress.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.austinchronicle.com/daily/arts/2023-05-10/review-broadway-in-austins-to-kill-a-mockingbird/",
+          "host": "austinchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://redcarpetcrash.com/dallas-theater-review-to-kill-a-mockingbird/",
+          "host": "redcarpetcrash.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://dallasvoice.com/to-kill-a-mockingbird-is-superb/",
+          "host": "dallasvoice.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://columbusunderground.com/theater-review-to-kill-a-mockingbird-comes-to-broadway-in-columbus-s1/",
+          "host": "columbusunderground.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://patch.com/connecticut/hartford/theater-review-harper-lee-s-kill-mockingbird-tour",
+          "host": "patch.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.lansingcitypulse.com/stories/to-kill-a-mockingbird-at-wharton-offers-a-new-take-on-a-classic-story,73395",
+          "host": "lansingcitypulse.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://freepressokc.com/to-kill-a-mockingbird-at-civic-center-rises-to-the-challenge/",
+          "host": "freepressokc.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.jsonline.com/story/entertainment/arts/2023/11/08/to-kill-a-mockingbird-richard-thomas-review/71486495007/",
+          "host": "jsonline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nextmag.ca/review-the-grand-scale-of-mirvishs-to-kill-a-mockingbird-is-entrancing/",
+          "host": "nextmag.ca",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.spokesman.com/stories/2023/dec/07/stage-review-aaron-sorkins-to-kill-a-mockingbird-a/",
+          "host": "spokesman.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.palmbeachdailynews.com/story/entertainment/theater/2024/01/03/review-to-kill-a-mockingbird-is-a-must-see-show-of-the-season/72094228007/",
+          "host": "palmbeachdailynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.pilotonline.com/2024/02/01/review-harper-lees-to-kill-a-mockingbird-by-aaron-sorkin-soars-at-chrysler-hall/",
+          "host": "pilotonline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theoaklandpress.com/2024/03/07/to-kill-a-mockingbird-spreads-its-wings-on-stage-at-the-fisher-theatre/",
+          "host": "theoaklandpress.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.tulsakids.com/to-kill-a-mockingbird-entertains-and-puts-new-twist-on-the-classic-novel/",
+          "host": "tulsakids.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://artsknoxville.com/index.php/2024/04/04/review-to-kill-a-mockingbird-at-the-tennessee-theatre-timely-and-strong/",
+          "host": "artsknoxville.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.newyorker.com/magazine/2018/12/24/black-and-white-in-slave-play-and-to-kill-a-mockingbird",
+          "host": "newyorker.com",
+          "outletId": "newyorker",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": []
     }
   ]
 }
