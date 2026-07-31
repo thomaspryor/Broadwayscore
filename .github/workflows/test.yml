@@ -711,6 +711,12 @@ on:
       - 'scripts/lib/digest-snapshots.js'
       - 'scripts/lib/digest-snapshots.test.mjs'
       - 'scripts/send-morning-digest.js'
+      # Digest content invariants (card #670) — asserts what the ASSEMBLED
+      # email contains (Fix-this button parity, signed-URL validity, no
+      # unrendered template artifacts, subject bounds), not just that a send
+      # happened; colocated test runs in the scripts/lib/*.test.mjs glob step.
+      - 'scripts/lib/digest-content-invariants.js'
+      - 'scripts/lib/digest-content-invariants.test.mjs'
       # Backlog drain engine (task #654) — pure selection/metric logic +
       # dispatcher CLI; colocated test runs in the scripts/lib/*.test.mjs
       # glob step, path-listed so a solo edit triggers CI.
