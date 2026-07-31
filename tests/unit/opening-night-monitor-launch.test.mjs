@@ -1,56 +1,39 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { createRequire } from 'node:module';
 import { launchDecision, activeWindows, LAUNCH_INFLIGHT_GRACE_SEC } from '../../scripts/lib/opening-night-windows.js';
 
-const require = createRequire(import.meta.url);
-const { shouldAdoptLateStart } = require('../../scripts/opening-night-monitor-launch.js');
-
-// Card #567: the fix replaced a bare claudeAliveIn(ref) call (single-signal,
-// same registry-desync false-negative as #559/#564) with
-// cmuxws.computeClaudeAlive(meta), which requires the independent
-// terminal-surface signal to ALSO agree "dead" (checkLiveness, card
-// #559/#564) before reporting the locked session not-alive. The lib-level
-// tests in scripts/lib/cmux-workspaces.test.mjs and
-// scripts/lib/opening-night-windows.test.mjs prove computeClaudeAlive's
-// logic is correct in isolation, but main()'s call to cmuxws.computeClaudeAlive
-// isn't independently exercised elsewhere — main() reads MON_DIR/monitor.lock
-// from the real repo path, so a full in-process integration test would have
-// to mutate real on-disk state to drive it. This source-level guard is the
-// cheap alternative: it fails if the call site ever regresses back to a bare
-// claudeAliveIn(...) — the exact silent-revert this class of bug keeps
-// recurring as (a different call site each time: #559 pruneDone, #564
-// checkDeadDispatch, #567 here).
-test('claudeAlive computation calls computeClaudeAlive, not a bare claudeAliveIn', () => {
+// Card #650: the launcher previously opened a cmux workspace to run the
+// monitor — cmux refuses connections from launchd-parented process ancestry
+// ("Access denied — only processes started inside cmux can connect" /
+// broken-pipe on list-workspaces/new-workspace), which is why the launcher
+// launched a session 0/344 times. The fix runs the monitor headless via
+// scripts/lib/opening-night-monitor.js (a thin wrapper around the shared
+// scripts/lib/claude-cli.js primitive already used by autonomous-run.js and
+// bsc-runner.js under this exact launchd ancestry) and never touches cmux at
+// all. This is a structural regression guard — it fails if the launcher ever
+// re-imports the ancestry-sensitive cmux path, not just if it's called.
+test('launcher never imports the cmux launch/workspace modules', () => {
   const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
-  const claudeAliveLine = src.split('\n').find(l => l.includes('claudeAlive:'));
-  assert.ok(claudeAliveLine, 'expected a `claudeAlive:` field in the state object literal');
-  assert.match(claudeAliveLine, /cmuxws\.computeClaudeAlive\(/, 'claudeAlive must go through computeClaudeAlive (both liveness signals), not claudeAliveIn alone');
-  assert.doesNotMatch(claudeAliveLine, /\bclaudeAliveIn\(/, 'claudeAlive must not call claudeAliveIn directly — that is the single-signal false-negative this card fixed');
+  assert.doesNotMatch(src, /require\(['"]\.\/lib\/cmux-launch\.js['"]\)/, 'launcher must not require cmux-launch.js — that is the ancestry-sensitive path card #650 removed');
+  assert.doesNotMatch(src, /require\(['"]\.\/lib\/cmux-workspaces\.js['"]\)/, 'launcher must not require cmux-workspaces.js — no cmux workspace exists to probe in the headless design');
+  assert.match(src, /require\(['"]\.\/lib\/opening-night-monitor\.js['"]\)/, 'launcher must run the pass through the headless wrapper');
 });
 
-// Regression for the 2026-07-24 false CRITICAL: a Fable session that comes
-// alive AFTER launchCmuxSession's verify window is healthy, not failed — the
-// launcher must adopt it (and NOT page + relaunch a duplicate).
-test('adopts a failed launch whose workspace is actually alive', () => {
-  const result = { ok: false, workspaceRef: 'workspace:272', reason: 'no running claude ... after 2 attempts' };
-  assert.equal(shouldAdoptLateStart(result, true), true);
-});
-
-test('does NOT adopt when the workspace never comes alive', () => {
-  const result = { ok: false, workspaceRef: 'workspace:272', reason: 'no running claude ... after 2 attempts' };
-  assert.equal(shouldAdoptLateStart(result, false), false);
-});
-
-test('does NOT adopt when there is no workspace to adopt', () => {
-  const result = { ok: false, reason: 'cmux CLI not found' };
-  assert.equal(shouldAdoptLateStart(result, true), false);
-});
-
-test('a genuine success is not an adoption case', () => {
-  const result = { ok: true, ref: 'workspace:272' };
-  assert.equal(shouldAdoptLateStart(result, true), false);
+// Adversarial ship-check finding (2026-07-30): a lock that needs reclaiming
+// means the PREVIOUS pass's node process died mid-flight (SIGKILL/OOM/sleep)
+// before it ever reached its own success/failure write. Without counting
+// that as a failure, a string of process-level crashes could reclaim forever
+// (every ~90 min, HEARTBEAT_STALE_MIN) without ever reaching
+// MAX_ATTEMPTS_PER_NIGHT and paging the owner — the exact silent-forever
+// failure mode this regression guard exists to catch.
+test('reclaim-and-launch counts the abandoned attempt as a consecutive failure', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const reclaimBlock = src.slice(src.indexOf("decision.action === 'reclaim-and-launch'"));
+  const nextBlockEnd = reclaimBlock.indexOf('\n  }\n');
+  const block = reclaimBlock.slice(0, nextBlockEnd);
+  assert.match(block, /consecutiveFailures:\s*\(nightState\.consecutiveFailures\s*\|\|\s*0\)\s*\+\s*1/, 'reclaim-and-launch must increment consecutiveFailures for the abandoned attempt');
+  assert.match(block, /writeNightState\(key,\s*nightState\)/, 'the incremented consecutiveFailures must be persisted before the new attempt proceeds');
 });
 
 // Card #568: LOCK_DIR is the atomic test-and-set (mkdir, before the launch
