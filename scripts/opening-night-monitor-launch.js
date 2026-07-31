@@ -239,7 +239,7 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   const key = nightKey(windows) || (windows[0] && `on-monitor-forced-${windows[0].showId}`);
-  const nightState = key ? readNightState(key) : { attempts: 0, consecutiveFailures: 0 };
+  let nightState = key ? readNightState(key) : { attempts: 0, consecutiveFailures: 0 };
   const meta = lockMeta();
   const state = {
     windows,
@@ -287,8 +287,18 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   if (decision.action === 'reclaim-and-launch') {
-    log(`reclaiming dead session lock (launched ${meta && meta.launchedAt}, no completion recorded)`);
+    // Adversarial ship-check finding: a lock that needs reclaiming means the
+    // PREVIOUS pass never reached its own success/failure write (the node
+    // process itself died — SIGKILL, OOM, machine sleep — not a normal
+    // runMonitorPass failure). Without this, consecutiveFailures never
+    // learns about it: a string of process-level crashes could reclaim
+    // forever, every ~90 min (HEARTBEAT_STALE_MIN), without ever reaching
+    // MAX_ATTEMPTS_PER_NIGHT and escalating to the owner. Count it as a
+    // failed pass so the escalate threshold still catches this failure mode.
+    log(`reclaiming dead session lock (launched ${meta && meta.launchedAt}, no completion recorded) — counting the abandoned attempt as a failure`);
     fs.rmSync(LOCK_DIR, { recursive: true, force: true });
+    nightState = { ...nightState, consecutiveFailures: (nightState.consecutiveFailures || 0) + 1 };
+    writeNightState(key, nightState);
   }
 
   const auth = preflightAuth();
