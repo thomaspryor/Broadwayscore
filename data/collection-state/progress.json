@@ -56,7 +56,10 @@
     "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
     "oh-mary-west-end-2025/nytg--olivia-rook.json",
     "oh-mary-west-end-2025/deadline--greg-evans.json",
-    "mercury-off-broadway-2026/independent--roisin-oconnor.json"
+    "mercury-off-broadway-2026/independent--roisin-oconnor.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/new-york-sun--simon-goldstein.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/amny--matt-windman.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/chicagotribune--chris-jones.json"
   ],
   "failed": [
     "death-note-the-musical-west-end-2026/thestage--unknown.json",
@@ -905,7 +908,31 @@
     "oh-mary-west-end-2025/nysr--bob-verini.json",
     "oh-mary-west-end-2025/nysr--michael-sommers.json",
     "oh-mary-west-end-2025/nysr--unknown.json",
-    "oh-mary-west-end-2025/usatoday--patrick-ryan.json"
+    "oh-mary-west-end-2025/usatoday--patrick-ryan.json",
+    "the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+    "shifters-off-broadway-2026/independent--alice-saville.json",
+    "shifters-off-broadway-2026/standard--nick-curtis.json",
+    "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+    "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "the-gin-game-2026/wsj--charles-isherwood.json",
+    "the-gin-game-2026/american-theater-web--andy-propst.json",
+    "the-gin-game-2026/ap--mark-kennedy.json",
+    "the-gin-game-2026/center-on-the-aisle--steve-schonberg.json",
+    "the-gin-game-2026/northjerseycom--robert-feldberg.json",
+    "sukkot-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
+    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -947,7 +974,8 @@
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
-      "oh-mary-west-end-2025/nytg--olivia-rook.json"
+      "oh-mary-west-end-2025/nytg--olivia-rook.json",
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/new-york-sun--simon-goldstein.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -972,13 +1000,18 @@
       "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
       "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
-      "mercury-off-broadway-2026/independent--roisin-oconnor.json"
+      "mercury-off-broadway-2026/independent--roisin-oconnor.json",
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/amny--matt-windman.json",
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/chicagotribune--chris-jones.json"
     ],
     "archiveToday": [
       "data/review-texts/tao-of-glass-west-end-2026/bachtrack--unknown.json",
       "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--dave-fargnoli.json",
       "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--dave-fargnoli.json",
-      "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/loves-labours-lost-globe-west-end-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -989,6 +1022,29 @@
     ]
   },
   "startTime": "2026-07-30T18:39:18.817Z",
-  "lastProcessed": "oh-mary-west-end-2025/usatoday--patrick-ryan.json",
-  "log": []
+  "lastProcessed": "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+  "log": [
+    {
+      "t": "2026-07-31T00:10:13.524Z",
+      "event": "bb-session",
+      "session": "693ee385",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-07-31T00:10:14.491Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-31T00:14:06.220Z",
+      "event": "bb-session",
+      "session": "ddd77eae",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-31T00:14:07.219Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
