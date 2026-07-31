@@ -43,25 +43,6 @@
  * Fails OPEN: any error leaves the file untouched and exits 0 — a
  * reconciliation problem must never block a push that would otherwise
  * succeed.
- *
- * JSONL FILES (task #698)
- * ------------------------
- * MANAGED entries with `format: 'jsonl'` (currently just the BWW roundup
- * miss-ledger) are read/written as one JSON value PER LINE instead of a
- * single JSON.parse'd document — same reconciliation pass, different
- * serialization. Their merge function takes/returns an ARRAY of parsed line
- * entries (see merge-bww-roundup-ledger.js), not the whole-document
- * ours/remote shape the JSON mergers use.
- *
- * CWD-INDEPENDENCE (task #698, ship-check finding)
- * -------------------------------------------------
- * MANAGED file paths are repo-root-relative, but this module's fs.* calls
- * resolve them against process.cwd() — every existing caller happens to
- * invoke push-with-retry.sh from repo root, so this was latent until
- * opening-night-poller.yml's commit step (which used to `cd data` first)
- * needed the flag. main() chdir's to the git toplevel up front so a future
- * caller with a non-root cwd degrades to a loud `::warning::` skip (via the
- * per-file try/catch below) instead of silently never reconciling.
  */
 'use strict';
 
@@ -69,18 +50,9 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-function repoRoot() {
-  try {
-    return execFileSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
-  } catch {
-    return null; // not a git repo, or git unavailable — fall through and use cwd as-is
-  }
-}
-
 const { mergeCommercialJson, mergePendingReview, mergeResearchQueue } = require('./merge-commercial-data');
 const { mergeDiaryShows } = require('./merge-diary-shows');
 const { mergeSocialPostHistory } = require('./merge-social-post-history');
-const { mergeBwwRoundupLedger } = require('./merge-bww-roundup-ledger');
 
 // Kept in sync with resolve_conflicts() in push-with-retry.sh. `newline: false`
 // matches diary-shows.json's producers, which write no trailing newline — so a
@@ -91,7 +63,6 @@ const MANAGED = [
   { file: 'data/commercial-research-queue.json', merge: mergeResearchQueue, newline: true },
   { file: 'data/diary-shows.json', merge: mergeDiaryShows, newline: false },
   { file: 'data/social-post-history.json', merge: mergeSocialPostHistory, newline: true },
-  { file: 'data/audit/bww-roundup-miss-ledger.jsonl', merge: mergeBwwRoundupLedger, format: 'jsonl' },
 ];
 
 /** Pure: pick the merger for a path (exported so the test does not shell out). */
@@ -99,42 +70,17 @@ function mergerFor(file) {
   return MANAGED.find((m) => file.endsWith(m.file.replace(/^data\//, ''))) || null;
 }
 
-/** Blank lines are skipped; a genuinely corrupt (non-blank, unparsable) line
- * THROWS — deliberately, unlike bww-roundup-persistence.js's own lenient
- * readRoundupMisses(). This function only feeds the reconciliation pass
- * below, whose per-file try/catch fails OPEN (skips that file, logs a
- * `::warning::`) on any error — the same fail-open behavior JSON.parse
- * already gives the 5 non-JSONL MANAGED files. A lenient skip-and-continue
- * here would silently drop the corrupt line from the parsed array and then
- * COMMIT that deletion when the reconciled file is written back (ship-check/
- * Opus review finding) — appendFileSync in recordRoundupMiss() isn't atomic
- * across a killed runner, so a torn last line is a realistic occurrence this
- * pass must never permanently erase. */
-function parseJsonlLines(text) {
-  const entries = [];
-  for (const line of text.split('\n')) {
-    const t = line.trim();
-    if (!t) continue;
-    entries.push(JSON.parse(t));
-  }
-  return entries;
-}
-
-function readRemote(ref, file, format) {
+function readRemote(ref, file) {
   try {
-    const text = execFileSync('git', ['show', `${ref}:${file}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
-    return format === 'jsonl' ? parseJsonlLines(text) : JSON.parse(text);
+    return JSON.parse(execFileSync('git', ['show', `${ref}:${file}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }));
   } catch {
-    return null; // absent on the remote side, or unparsable — nothing to reconcile against
+    return null; // absent on the remote side — nothing to reconcile against
   }
 }
 
 function main() {
   const [ref, ...only] = process.argv.slice(2);
   if (!ref) { console.error('reconcile-merged-json: missing <remote-ref>'); process.exit(0); }
-
-  const root = repoRoot();
-  if (root) { try { process.chdir(root); } catch { /* fall through, per-file try/catch below fails open */ } }
 
   const targets = only.length
     ? only.map((f) => ({ ...(mergerFor(f) || {}), file: f })).filter((t) => t.merge)
@@ -145,14 +91,12 @@ function main() {
     try {
       if (!fs.existsSync(t.file)) continue;
       const before = fs.readFileSync(t.file, 'utf8');
-      const ours = t.format === 'jsonl' ? parseJsonlLines(before) : JSON.parse(before);
-      const remote = readRemote(ref, t.file, t.format);
+      const ours = JSON.parse(before);
+      const remote = readRemote(ref, t.file);
       if (remote === null) continue;
 
       const result = t.merge(ours, remote);
-      const after = t.format === 'jsonl'
-        ? result.merged.map((e) => JSON.stringify(e)).join('\n') + (result.merged.length ? '\n' : '')
-        : JSON.stringify(result.merged, null, 2) + (t.newline ? '\n' : '');
+      const after = JSON.stringify(result.merged, null, 2) + (t.newline ? '\n' : '');
       if (after === before) continue;
 
       fs.writeFileSync(t.file, after);

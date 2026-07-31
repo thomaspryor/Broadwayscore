@@ -325,24 +325,12 @@ jobs:
       - name: Commit poller backoff state
         if: steps.find.outputs.has_shows == 'true' && always()
         continue-on-error: true
-        env:
-          # Concurrent poller runs (per-show_id concurrency group — different
-          # shows run in parallel) both append to the shared BWW roundup
-          # miss-ledger. `git rebase -X theirs` resolves that hunk silently
-          # (no reported conflict) in favour of whichever run rebases last,
-          # dropping the other run's appended miss (task #698). This opts the
-          # ledger into the same post-rebase union-reconcile pass #420/#574
-          # built for commercial.json et al. — see merge-bww-roundup-ledger.js.
-          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           # Backoff state + SERP-burst ledger live in the MAIN repo working tree under
-          # data/audit/ (tracked in the public repo, NOT the core-data overlay). Stays at
-          # repo root (no `cd data`, task #698) — reconcile-merged-json.js's PUSH_RECONCILE_
-          # MERGED_JSON pass above resolves MANAGED file paths (e.g.
-          # data/audit/bww-roundup-miss-ledger.jsonl) relative to repo root like every other
-          # push-with-retry.sh caller; a `cd data` cwd would make it look for a nonexistent
-          # data/data/audit/... path and silently no-op the reconciliation it's here for.
-          if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ]; then
+          # data/audit/ (tracked in the public repo, NOT the core-data overlay). `cd data`
+          # then git resolves the repo root .git and pushes these audit files to main.
+          cd data || exit 0
+          if [ ! -d audit/poller-backoff ] && [ ! -f audit/serp-burst-ledger.json ] && [ ! -f audit/serp-session-ledger.json ] && [ ! -f audit/bww-roundup-miss-ledger.jsonl ]; then
             echo "No backoff/ledger state to commit"
             exit 0
           fi
@@ -358,16 +346,16 @@ jobs:
           # never aborts this step under `bash -e` — staging is best-effort; the commit below
           # only fires if something actually got staged. (Ledgers are rewritten on UTC rollover,
           # never deleted, so the `-f` guard never needs to stage a deletion.)
-          git add data/audit/poller-backoff/ 2>/dev/null || true
-          { [ -f data/audit/serp-burst-ledger.json ] && git add data/audit/serp-burst-ledger.json; } || true
-          { [ -f data/audit/serp-session-ledger.json ] && git add data/audit/serp-session-ledger.json; } || true
+          git add audit/poller-backoff/ 2>/dev/null || true
+          { [ -f audit/serp-burst-ledger.json ] && git add audit/serp-burst-ledger.json; } || true
+          { [ -f audit/serp-session-ledger.json ] && git add audit/serp-session-ledger.json; } || true
           # T6 BWW roundup miss-ledger (Scraping v2 Sprint 1) — must persist across CI
           # checkouts for isInRoundupMissCooldown() to see prior misses at all; without
           # this commit every run starts from an empty ledger and the cooldown never fires.
-          { [ -f data/audit/bww-roundup-miss-ledger.jsonl ] && git add data/audit/bww-roundup-miss-ledger.jsonl; } || true
+          { [ -f audit/bww-roundup-miss-ledger.jsonl ] && git add audit/bww-roundup-miss-ledger.jsonl; } || true
           git diff --cached --quiet && { echo "No backoff/ledger changes"; exit 0; }
           git commit -m "audit: Opening night poller — backoff + SERP ledger state update [skip ci]"
-          bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff/ledger state push failed (non-critical)"
+          bash ../scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff/ledger state push failed (non-critical)"
 
       - name: Commit new review files
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
