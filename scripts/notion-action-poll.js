@@ -670,6 +670,30 @@ async function clearAction(card) {
   log(`Cleared Action for "${card.name}"`);
 }
 
+// A plan-only action leaving a priority-less card at "Not started" is how work
+// silently dies: nothing ever dispatches it (homepage-pills card 3a4637c5 sat
+// planned-but-unbuilt for 10 days, 2026-07-31). Auto-set Priority "P1 Next" so
+// the EXISTING pipeline surfaces it: notion-tasks-sync mirrors priority →
+// bsc-next --list prints pending P0/P1s in its always-visible tail → the
+// P0/P1 dispatch rule picks it up. Owner-set priorities are never touched;
+// clearing the Priority parks the card again.
+const { shouldMarkPlanReady } = require('./lib/plan-ready.js');
+async function markPlanReadyForDispatch(card) {
+  if (!shouldMarkPlanReady(card)) return;
+  try {
+    await withRetry(() => notion.pages.update({
+      page_id: card.id,
+      properties: { Priority: { select: { name: 'P1 Next' } } },
+    }), 'markPlanReady');
+    log(`Auto-set Priority "P1 Next" on plan-ready card "${card.name}"`);
+    await addInfoComment(card.id,
+      `⏭️ "${card.action}" finished but nothing was implemented, and this card had no Priority — set it to "P1 Next" so the plan gets dispatched for implementation instead of getting lost. Clear the Priority if you want to park it.`,
+      'planReadyComment');
+  } catch (err) {
+    log(`  markPlanReady failed (non-fatal): ${err.message}`);
+  }
+}
+
 // ── Comment-reply loop ───────────────────────────────────────────────
 // For every card the dispatcher has worked (state entry, ≤REPLY_WINDOW_DAYS old),
 // look for NEW owner comments and resume the card's Claude session with them.
@@ -948,6 +972,7 @@ async function main() {
       log(`Updated Outcome for "${card.name}"`);
       await addComment(card, run.result);
       await clearAction(card);
+      await markPlanReadyForDispatch(card);
       state.cards[card.id] = {
         name: card.name,
         action: card.action,
