@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-31T05:13:45.232Z",
+  "timestamp": "2026-07-31T06:28:25.832Z",
   "stats": {
-    "totalReviews": 40984,
-    "alreadyFlagged": 17906,
+    "totalReviews": 40991,
+    "alreadyFlagged": 17911,
     "dateGuardCatches": 79,
     "directorMismatch": 936,
     "tvFilmSignals": 1122,
-    "londonSignals": 771,
+    "londonSignals": 770,
     "offBroadwaySignals": 465,
     "yearMismatch": 86,
-    "noPublishDate": 3381
+    "noPublishDate": 3382
   },
   "findings": [
     {
@@ -5263,7 +5263,7 @@
     {
       "showId": "cyrano-de-bergerac-2007",
       "file": "whatsonstage--unknown.json",
-      "score": null,
+      "score": 94,
       "publishDate": null,
       "url": "https://www.whatsonstage.com/news/review-cyrano-de-bergerac-playhouse-theatre_50523/",
       "findings": [
@@ -33234,20 +33234,6 @@
       "score": 84,
       "publishDate": "2000-02-13",
       "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "frozen-2004",
-      "file": "whatsonstage--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/frozen-brighton-rock-and-napoleon-disrobed-make-our-top-openings-of-the-week_45819/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

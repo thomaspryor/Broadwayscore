@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T05:13:51.060Z",
+  "generatedAt": "2026-07-31T06:28:33.726Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,22 +13,22 @@
       "slug": "tao-of-glass-west-end",
       "thumbnail": "/images/shows/tao-of-glass-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 80,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 4,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
           "T2:0/2",
           "hi-conf:0/6"
@@ -99,6 +99,20 @@
         {
           "name": "WhatsOnStage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-07-31T06:28:33.726Z",
+          "rc": 1,
+          "s": 80,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -810,27 +824,27 @@
       "status": "open",
       "slug": "les-miserables-arena-concert-spectacular-off-broadway-2026",
       "thumbnail": "/images/shows/les-miserables-arena-concert-spectacular-off-broadway-2026/thumbnail.webp",
-      "siteScore": 79.46,
-      "liveScore": 79,
-      "scoreDrift": -0.45999999999999375,
+      "siteScore": 81.35,
+      "liveScore": 81,
+      "scoreDrift": -0.3499999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 8,
       "t1": 0,
-      "t2": 8,
+      "t2": 7,
       "t3": 1,
       "positive": 8,
-      "mixed": 1,
+      "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "9/12 total",
+          "8/12 total",
           "T1:0/3",
-          "hi-conf:5/8"
+          "hi-conf:4/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -843,10 +857,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Vulture",
           "isDualMarket": false
@@ -930,16 +940,8 @@
           "isDualMarket": true
         },
         {
-          "name": "Playbill",
-          "isDualMarket": false
-        },
-        {
           "name": "The Daily Beast",
           "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
         },
         {
           "name": "New York Theater",
@@ -1208,6 +1210,18 @@
           "t3": 1,
           "p": 8,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-31T06:28:33.726Z",
+          "rc": 8,
+          "s": 81.35,
+          "t1": 0,
+          "t2": 7,
+          "t3": 1,
+          "p": 8,
+          "m": 0,
           "n": 0,
           "bc": "waiting"
         }
