@@ -53,7 +53,7 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
   break;
 }
 
-const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity } = require('./lib/digest-snapshots.js');
+const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon } = require('./lib/digest-snapshots.js');
 const {
   esc,
   renderHealthDigestBlock,
@@ -168,10 +168,15 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // sit in the demoted-to-context box below — the whole point of this fix
   // is that these signals stop being easy to miss (second-opinion review).
   const freshnessCount = sections.freshness?.count || 0;
-  if (errs || stuckCount || freshnessCount) {
+  // Closing soon (task #690): only shows closing within summarizeClosingSoon's
+  // urgentDays (14) escalate the top verdict — same "count is the escalation
+  // signal, items/moreCount hold everything else" contract as freshnessCount.
+  const closingSoonCount = sections.closingSoon?.count || 0;
+  if (errs || stuckCount || freshnessCount || closingSoonCount) {
     const bits = [];
     if (errs) bits.push(`Fix needed: ${errNames.slice(0, 3).join('; ') || `${errs} site error${errs === 1 ? '' : 's'}`}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`);
     if (freshnessCount) bits.push(`${freshnessCount} open show${freshnessCount === 1 ? '' : 's'} missing tickets/poster/synopsis (see Data freshness below)`);
+    if (closingSoonCount) bits.push(`${closingSoonCount} show${closingSoonCount === 1 ? '' : 's'} closing within 2 weeks (see Closing soon below)`);
     if (stuckCount) bits.push(`${stuckCount} pipeline item${stuckCount === 1 ? '' : 's'} flagged "possibly stuck" below`);
     parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(bits.join(' · '))}</p>`);
     if (warns) parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${warns} routine warning${warns === 1 ? '' : 's'} below — being watched, no action needed unless new.</p>`);
@@ -195,6 +200,11 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // away. Same {generatedAt, bannerText, items, moreCount} shape as
   // backlogDrain/providerSpend below, so it reuses renderNamedDigestBlock.
   if (sections.freshness) blocks.push(renderNamedDigestBlock('Data freshness', sections.freshness));
+  // Closing soon (task #690) — report.closingSoon is a sibling field of the
+  // same freshness-report.json, same {generatedAt, bannerText, items,
+  // moreCount} shape, so it reuses renderNamedDigestBlock with no new
+  // render code.
+  if (sections.closingSoon) blocks.push(renderNamedDigestBlock('Closing soon', sections.closingSoon));
   if (changesHtml) blocks.push(changesHtml);
   if (sections.dailyDigest) blocks.push(renderDailyDigestBlock(sections.dailyDigest));
   if (sections.redditDigest) blocks.push(renderRedditDigestBlock(sections.redditDigest));
@@ -283,6 +293,17 @@ async function main() {
         sections.freshness = summarizeFreshnessHighSeverity(r.snapshot);
       } else {
         problems.push({ key: 'freshness', label: 'data freshness', status: 'invalid', generatedAt: r.generatedAt });
+      }
+      // Closing soon (task #690) — closingSoon is an independent sibling
+      // field of the same report, checked separately so a malformed
+      // dataQuality shape doesn't also suppress this section (and vice
+      // versa). Deliberately does NOT push a second 'freshness'-labeled
+      // problem for stale/missing reports — the outer else below already
+      // covers that single root cause once.
+      if (Array.isArray(r.snapshot?.closingSoon)) {
+        sections.closingSoon = summarizeClosingSoon(r.snapshot);
+      } else {
+        problems.push({ key: 'closingSoon', label: 'closing soon', status: 'invalid', generatedAt: r.generatedAt });
       }
     } else {
       problems.push({ key: 'freshness', label: 'data freshness', status: r.status, generatedAt: r.generatedAt });

@@ -178,7 +178,51 @@ function summarizeFreshnessHighSeverity(report, { maxItems = 8 } = {}) {
   };
 }
 
+// Flattens report.closingSoon (task #690) to the same {generatedAt,
+// bannerText, items, moreCount} shape renderNamedDigestBlock already knows
+// how to render — sibling field of the same freshness-report.json, same
+// "computed daily and thrown away" bug class summarizeFreshnessHighSeverity
+// above fixed for dataQuality.hasIssues (task #689). Only shows closing
+// within urgentDays escalate the top verdict — a 60-day-out closing is a
+// routine watch item, not something the owner needs to act on this morning.
+// Returns null when there's nothing to show (no open show closes within 60
+// days — the producer's own window).
+function summarizeClosingSoon(report, { maxItems = 8, urgentDays = 14 } = {}) {
+  if (!report || !Array.isArray(report.closingSoon)) return null;
+  const rows = [];
+  for (const show of report.closingSoon) {
+    // Same fail-soft contract as summarizeFreshnessHighSeverity: a malformed
+    // entry must degrade silently, not throw and kill the whole digest send,
+    // and must not render a literal "undefined" line. closingDate is
+    // validated here too (adversarial ship-check finding) — it's the one
+    // field summarizeFreshnessHighSeverity doesn't have an analog for, and
+    // without this guard a malformed producer row renders "closes undefined"
+    // straight into the owner's inbox.
+    if (!show || typeof show !== 'object' || !show.id || !show.title || !show.closingDate) continue;
+    const daysLeft = Number(show.daysLeft);
+    if (!Number.isFinite(daysLeft) || daysLeft <= 0) continue;
+    rows.push({ id: show.id, title: show.title, closingDate: show.closingDate, daysLeft });
+  }
+  if (!rows.length) return null;
+  rows.sort((a, b) => a.daysLeft - b.daysLeft);
+  const urgentCount = rows.filter((r) => r.daysLeft <= urgentDays).length;
+  return {
+    generatedAt: report.generatedAt,
+    // count: not part of renderNamedDigestBlock's own contract, but read by
+    // send-morning-digest.js's top-verdict line — only URGENT (<=urgentDays)
+    // closings escalate there, same convention as summarizeFreshnessHighSeverity's
+    // count field.
+    count: urgentCount,
+    bannerText: `${rows.length} open show${rows.length === 1 ? '' : 's'} closing within 60 days${urgentCount ? ` (${urgentCount} within ${urgentDays} days)` : ''}`,
+    items: rows.slice(0, maxItems).map((r) => ({
+      title: r.title,
+      detail: `${r.id} — closes ${r.closingDate} (${r.daysLeft} day${r.daysLeft === 1 ? '' : 's'} left)`,
+    })),
+    moreCount: Math.max(0, rows.length - maxItems),
+  };
+}
+
 module.exports = {
   SNAPSHOTS, readSnapshot, readAllSnapshots, describeProblems, DEFAULT_AUDIT_DIR,
-  DEFAULT_DATA_DIR, readFreshnessReport, summarizeFreshnessHighSeverity,
+  DEFAULT_DATA_DIR, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon,
 };

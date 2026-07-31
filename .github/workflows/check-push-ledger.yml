@@ -1,0 +1,74 @@
+name: Check Push Ledger
+
+# Delayed re-verification for CI-side pushes (task #677). Companion to task
+# #668's merge-worktree-to-main.sh mitigation, which only covers LOCAL
+# Claude Code sessions (it spawns a background process that outlives the
+# invoking script — impossible on a GitHub Actions runner, which terminates
+# the instant its job ends). scripts/lib/push-with-retry.sh's own
+# content-survival check (task #619) only proves a push landed AT THE
+# INSTANT it ran, inside the same job — so a push verified there, then
+# silently reverted minutes later by a concurrent operation (the #668
+# failure class), is otherwise unmitigated for the ~130 workflows that push
+# through push-with-retry.sh.
+#
+# scripts/record-push-ledger.js appends every successful push-with-retry.sh
+# push to data/audit/recent-pushes.jsonl. This workflow runs on a cadence
+# long enough for that revert class to have already happened, re-checks
+# recent entries' reachability via the GitHub compare API, files an 'auto'
+# alert-router card for anything reverted, and prunes the ledger back down.
+
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: check-push-ledger
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Check push ledger
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          # routeAlert(disposition:'auto') — files a Notion Action Queue card
+          # for any reverted push (see scripts/lib/owner-alert-router.js).
+        run: node scripts/check-push-ledger.js
+
+      - name: Commit ledger + alert state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/recent-pushes.jsonl 2>/dev/null || true
+          # routeAlert(disposition:'auto') callers must commit alert-ledger.json
+          # in the SAME job (card #618) — the dedup/cooldown state only exists
+          # on this job's ephemeral runner disk otherwise.
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No ledger changes to commit."
+          else
+            git commit -m "chore: push-ledger check state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Ledger state push failed after 5 attempts — next run re-derives from origin."
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Check Push Ledger Failed'
+          severity: 'warning'
