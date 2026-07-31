@@ -38,6 +38,7 @@ const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrap
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
+const { getSkippedTiers } = require('./domain-tier-skip');
 let _domainTierSkip = null;
 function _getDomainSkips(url) {
   if (!_domainTierSkip) {
@@ -48,7 +49,7 @@ function _getDomainSkips(url) {
   }
   try {
     const hostname = new URL(url).hostname.replace(/^www\./, '');
-    return new Set(_domainTierSkip[hostname] || []);
+    return getSkippedTiers(_domainTierSkip, hostname);
   } catch { return new Set(); }
 }
 

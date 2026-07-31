@@ -44,6 +44,7 @@ const {
 const { checkRSSFeeds } = require('./lib/rss-discovery');
 const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { serpNegativeCacheTtlMs } = require('./lib/serp-negative-cache-policy');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
@@ -673,20 +674,55 @@ async function runAggregators(show) {
       // poller falls through to SERP/URL-guessing which hits wrong/unpublished URLs.
       console.log('::warning::BWW reviews.php discovery SKIPPED — BROWSERBASE_API_KEY or BROWSERBASE_PROJECT_ID missing from env. Set secrets on this workflow.');
     } else {
+      // T6 negative-cache check: skip discovery entirely if this show is in
+      // miss cooldown (opening-window shows are always exempt — see
+      // bww-roundup-persistence.js). Wrapped so a ledger read failure never
+      // blocks discovery — worst case is a redundant fetch, not a missed one.
+      let skipViaCooldown = false;
       try {
-        const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover.js');
-        console.log('  Trying BWW roundup discovery (section scan → reviews.php)...');
-        const discovery = await discoverBwwRoundupUrl(show);
-        if (discovery.url) {
-          BWW_ROUNDUP_URL = discovery.url;
-          bwwResolvedVia = discovery.via || 'bww-discover';
-          console.log(`  BWW RR URL auto-discovered (${bwwResolvedVia}): ${BWW_ROUNDUP_URL}`);
-        } else {
-          const tried = (discovery.candidates || []).length;
-          console.log(`  BWW discovery: no matching RR (${tried} anchors seen, 0 matched show) — falling through to SERP/guessing`);
+        const { readRoundupMisses, lastMissForShow, isInRoundupMissCooldown } = require('./lib/bww-roundup-persistence.js');
+        const lastMiss = lastMissForShow(show.id, readRoundupMisses());
+        skipViaCooldown = isInRoundupMissCooldown(show, lastMiss);
+        if (skipViaCooldown) {
+          console.log(`  BWW discovery: skipped (miss cooldown active, last miss ${lastMiss.ts})`);
         }
-      } catch (err) {
-        console.log(`::warning::BWW discovery error (falling through to SERP): ${err.message}`);
+      } catch { /* never block discovery on a ledger read failure */ }
+
+      if (!skipViaCooldown) {
+        try {
+          const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover.js');
+          console.log('  Trying BWW roundup discovery (section scan → reviews.php)...');
+          const discovery = await discoverBwwRoundupUrl(show);
+          if (discovery.url) {
+            BWW_ROUNDUP_URL = discovery.url;
+            bwwResolvedVia = discovery.via || 'bww-discover';
+            console.log(`  BWW RR URL auto-discovered (${bwwResolvedVia}): ${BWW_ROUNDUP_URL}`);
+            // Persistence moved to AFTER the fetch+year-validate block below —
+            // discoverBwwRoundupUrl only title-token-scores anchors (score.js
+            // scoreCandidate), it never fetches the page. Persisting here would
+            // write an unverified candidate (e.g. a same-title different-
+            // production roundup) straight into shows.json before
+            // validateBWWRoundupYear gets a chance to reject it.
+          } else {
+            const tried = (discovery.candidates || []).length;
+            console.log(`  BWW discovery: no matching RR (${tried} anchors seen, 0 matched show) — falling through to SERP/guessing`);
+            // Only record a cooldown-worthy miss on a confident negative
+            // (via==='not-found': both section scan AND reviews.php were
+            // tried, nothing matched). 'cap-exhausted'/'provider-error' are
+            // transient — cooldown-ing those hides discovery for 24h after
+            // a temporary Browserbase/SD outage. 'section-only' means
+            // reviews.php was never even tried (skipReviewsPhp) — also not
+            // a confident answer. See discoverBwwRoundupUrl's via contract.
+            if (discovery.via === 'not-found') {
+              try {
+                const { recordRoundupMiss } = require('./lib/bww-roundup-persistence.js');
+                recordRoundupMiss(show.id);
+              } catch { /* ledger append failure is never fatal to discovery */ }
+            }
+          }
+        } catch (err) {
+          console.log(`::warning::BWW discovery error (falling through to SERP): ${err.message}`);
+        }
       }
     }
   }
@@ -709,8 +745,30 @@ async function runAggregators(show) {
         reviews = validateBWWRoundupYear(reviews, bww.html, show.openingDate, show.id, bww.url);
         console.log(`  BWW RR: ${reviews.length} reviews found`);
         results.push(...reviews);
+        // Persist only now: fetched, extracted, AND year-validated as this
+        // show's own roundup. bwwResolvedVia==='shows.json' means this run
+        // re-verified an already-persisted URL — nothing new to write.
+        if (BWW_ROUNDUP_URL && bwwResolvedVia !== 'shows.json' && reviews.length > 0) {
+          try {
+            const { persistBwwRoundupUrlIfMissing } = require('./lib/bww-roundup-persistence.js');
+            persistBwwRoundupUrlIfMissing(show.id, BWW_ROUNDUP_URL);
+          } catch (persistErr) {
+            console.log(`::warning::BWW roundup URL persistence failed (non-fatal): ${persistErr.message}`);
+          }
+        }
       } else {
         console.log('  BWW RR: not found');
+        // T6 revalidation: the URL fetch/verify came from a PERSISTED
+        // shows.json field (not a fresh discovery this run) and failed —
+        // most likely the page 404s now. Clear it so the next poll
+        // rediscovers instead of retrying a dead URL forever.
+        if (bwwResolvedVia === 'shows.json') {
+          try {
+            const { clearStaleBwwRoundupUrl } = require('./lib/bww-roundup-persistence.js');
+            clearStaleBwwRoundupUrl(show.id);
+            console.log('  BWW RR: cleared stale persisted bwwRoundupUrl for rediscovery');
+          } catch { /* revalidation failure is never fatal */ }
+        }
       }
     } catch (err) {
       console.log(`  BWW RR error: ${err.message}`);
@@ -1319,6 +1377,10 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
           // through to BD/SB rather than caching/accepting it as final
           // (task #213; see shouldAcceptEmptyScrapingdogSerp).
           emptyAuthoritative: false,
+          // T11: OB/WE shows opt into a 45-min negative cache on top of that —
+          // Broadway (serpNegativeCacheTtlMs returns null there) always re-asks
+          // fresh next tick; see serp-negative-cache-policy.js for why.
+          negativeCacheTtlMs: serpNegativeCacheTtlMs(show),
           dateRange: openingNightDateRange,
         }
       );

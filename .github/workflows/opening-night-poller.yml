@@ -173,13 +173,20 @@ jobs:
         with:
           node-version: 20
 
-      # Restore 24h SERP cache (scripts/lib/serp-cache.js). Cuts duplicate
-      # Bright Data SERP calls across poller/orchestrator dispatches.
-      - name: Restore SERP cache
+      # Restore 24h SERP cache (scripts/lib/serp-cache.js) + BWW anchor memo
+      # (scripts/lib/bww-rr-discover.js, T5) + 45min SERP negative-cache
+      # (scripts/lib/serp-negative-cache.js, T11). All three are disk-backed
+      # by design specifically so a fresh runner on the NEXT dispatch can
+      # reuse them — without this step they'd only dedup within a single
+      # run's shell loop over SHOW_ARRAY, not across separate workflow runs.
+      - name: Restore SERP + BWW anchor caches
         if: steps.find.outputs.has_shows == 'true'
         uses: actions/cache@v5
         with:
-          path: /tmp/bd-serp-cache
+          path: |
+            /tmp/bd-serp-cache
+            /tmp/bww-anchors
+            /tmp/bd-serp-negative-cache
           key: bd-serp-cache-${{ github.run_id }}
           restore-keys: |
             bd-serp-cache-
@@ -323,7 +330,7 @@ jobs:
           # data/audit/ (tracked in the public repo, NOT the core-data overlay). `cd data`
           # then git resolves the repo root .git and pushes these audit files to main.
           cd data || exit 0
-          if [ ! -d audit/poller-backoff ] && [ ! -f audit/serp-burst-ledger.json ] && [ ! -f audit/serp-session-ledger.json ]; then
+          if [ ! -d audit/poller-backoff ] && [ ! -f audit/serp-burst-ledger.json ] && [ ! -f audit/serp-session-ledger.json ] && [ ! -f audit/bww-roundup-miss-ledger.jsonl ]; then
             echo "No backoff/ledger state to commit"
             exit 0
           fi
@@ -342,6 +349,10 @@ jobs:
           git add audit/poller-backoff/ 2>/dev/null || true
           { [ -f audit/serp-burst-ledger.json ] && git add audit/serp-burst-ledger.json; } || true
           { [ -f audit/serp-session-ledger.json ] && git add audit/serp-session-ledger.json; } || true
+          # T6 BWW roundup miss-ledger (Scraping v2 Sprint 1) — must persist across CI
+          # checkouts for isInRoundupMissCooldown() to see prior misses at all; without
+          # this commit every run starts from an empty ledger and the cooldown never fires.
+          { [ -f audit/bww-roundup-miss-ledger.jsonl ] && git add audit/bww-roundup-miss-ledger.jsonl; } || true
           git diff --cached --quiet && { echo "No backoff/ledger changes"; exit 0; }
           git commit -m "audit: Opening night poller — backoff + SERP ledger state update [skip ci]"
           bash ../scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff/ledger state push failed (non-critical)"

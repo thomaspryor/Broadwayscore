@@ -15,6 +15,7 @@ const {
   scoreCandidate,
   slugMatchesShow,
   tokensFromTitle,
+  shouldSkipReviewsPhp,
 } = require('../../scripts/lib/bww-rr-discover.js');
 
 // Real anchors pulled from broadwayworld.com/reviews.php on 2026-04-16 — fixtures
@@ -182,9 +183,12 @@ describe('discoverBwwRoundupUrl — section-page discovery (off-Broadway)', () =
     assert.strictEqual(reviewsPhpCalled, false, 'section hit must short-circuit the Browserbase path');
   });
 
-  it('falls back to reviews.php when the section scan finds nothing', async () => {
+  it('falls back to reviews.php when the section scan finds nothing (explicit override)', async () => {
+    // Off-Broadway now defaults to skipping reviews.php (T4) — this test exercises
+    // the fallback path itself, so it must explicitly override the default.
     const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'off-broadway' };
     const result = await discoverBwwRoundupUrl(show, {
+      skipReviewsPhp: false,
       fetchSectionAnchors: async () => [],
       fetchAnchors: async () => OB_SECTION_ANCHORS,
     });
@@ -203,5 +207,92 @@ describe('discoverBwwRoundupUrl — section-page discovery (off-Broadway)', () =
     assert.strictEqual(result.via, 'section-only');
     assert.strictEqual(result.url, null);
     assert.strictEqual(reviewsPhpCalled, false, 'must NOT hit Browserbase reviews.php for a closed show');
+  });
+});
+
+describe('shouldSkipReviewsPhp — fail-open category gating (T4)', () => {
+  it('skips only on affirmative off-broadway category', () => {
+    assert.strictEqual(shouldSkipReviewsPhp({ category: 'off-broadway' }), true);
+    assert.strictEqual(shouldSkipReviewsPhp({ category: 'Off-Broadway' }), true, 'case-insensitive');
+  });
+
+  it('probes (does not skip) for every other category', () => {
+    assert.strictEqual(shouldSkipReviewsPhp({ category: 'broadway' }), false);
+    assert.strictEqual(shouldSkipReviewsPhp({ category: 'west-end' }), false);
+    assert.strictEqual(shouldSkipReviewsPhp({ category: 'off-west-end' }), false);
+    assert.strictEqual(shouldSkipReviewsPhp({ category: 'regional' }), false);
+  });
+
+  it('fails open on null/missing/unknown category — a misclassified Broadway show must still probe', () => {
+    assert.strictEqual(shouldSkipReviewsPhp({ category: null }), false);
+    assert.strictEqual(shouldSkipReviewsPhp({}), false);
+    assert.strictEqual(shouldSkipReviewsPhp({ category: undefined }), false);
+    assert.strictEqual(shouldSkipReviewsPhp({ category: 'some-unknown-value' }), false);
+    assert.strictEqual(shouldSkipReviewsPhp(null), false);
+  });
+});
+
+describe('discoverBwwRoundupUrl — default skip derived from category (T4)', () => {
+  it('off-Broadway shows skip reviews.php by default with no explicit opt', async () => {
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'off-broadway' };
+    let reviewsPhpCalled = false;
+    const result = await discoverBwwRoundupUrl(show, {
+      fetchSectionAnchors: async () => [],
+      fetchAnchors: async () => { reviewsPhpCalled = true; return []; },
+    });
+    assert.strictEqual(result.via, 'section-only');
+    assert.strictEqual(reviewsPhpCalled, false);
+  });
+
+  it('Broadway shows still probe reviews.php by default', async () => {
+    const show = { title: 'Titanique', openingDate: '2026-04-12', category: 'broadway' };
+    let reviewsPhpCalled = false;
+    const result = await discoverBwwRoundupUrl(show, {
+      fetchSectionAnchors: async () => [],
+      fetchAnchors: async () => { reviewsPhpCalled = true; return REAL_ANCHORS; },
+    });
+    assert.strictEqual(reviewsPhpCalled, true);
+    assert.strictEqual(result.url, REAL_ANCHORS[1]);
+  });
+
+  it('null-category shows still probe reviews.php (fail-open)', async () => {
+    const show = { title: 'Titanique', openingDate: '2026-04-12' };
+    let reviewsPhpCalled = false;
+    await discoverBwwRoundupUrl(show, {
+      fetchSectionAnchors: async () => [],
+      fetchAnchors: async () => { reviewsPhpCalled = true; return []; },
+    });
+    assert.strictEqual(reviewsPhpCalled, true);
+  });
+});
+
+describe('discoverBwwRoundupUrl — typed via reasons on reviews.php failure (T4)', () => {
+  const show = { title: 'Titanique', openingDate: '2026-04-12', category: 'broadway' };
+
+  it('types cap-exhausted from the Browserbase daily-cap error', async () => {
+    const result = await discoverBwwRoundupUrl(show, {
+      fetchSectionAnchors: async () => [],
+      fetchAnchors: async () => { throw new Error('Browserbase daily cap reached (250/250) — BWW RR discovery skipped'); },
+    });
+    assert.strictEqual(result.via, 'cap-exhausted');
+    assert.strictEqual(result.url, null);
+  });
+
+  it('types provider-error from any other thrown failure', async () => {
+    const result = await discoverBwwRoundupUrl(show, {
+      fetchSectionAnchors: async () => [],
+      fetchAnchors: async () => { throw new Error('BROWSERBASE_API_KEY + BROWSERBASE_PROJECT_ID required'); },
+    });
+    assert.strictEqual(result.via, 'provider-error');
+    assert.strictEqual(result.url, null);
+  });
+
+  it('types not-found when the page loads with no matching anchors', async () => {
+    const result = await discoverBwwRoundupUrl(show, {
+      fetchSectionAnchors: async () => [],
+      fetchAnchors: async () => [],
+    });
+    assert.strictEqual(result.via, 'not-found');
+    assert.strictEqual(result.url, null);
   });
 });
