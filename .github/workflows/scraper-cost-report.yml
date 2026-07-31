@@ -130,9 +130,10 @@ jobs:
 
           # --- ScrapingBee cap % direct from API (replaces log-scraping) ---
           # Outputs: pct_used | proj_pct_of_current_cap | used | cap | projected_absolute
-          SB_PCT="—"; SB_PROJECTED="—"; SB_PROJECTED_ABS=0; SB_CAP_NUM=0; SB_USED_NUM=0
+          SB_PCT="—"; SB_PROJECTED="—"; SB_PROJECTED_ABS=0; SB_CAP_NUM=0; SB_USED_NUM=0; SB_RENEWAL="unknown"
           if [ -n "$SCRAPINGBEE_API_KEY" ]; then
             SB_USAGE=$(curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=$SCRAPINGBEE_API_KEY" 2>/dev/null || echo "{}")
+            SB_RENEWAL=$(echo "$SB_USAGE" | python3 -c "import sys,json,datetime; d=json.load(sys.stdin); r=d.get('renewal_subscription_date',''); print(datetime.date.fromisoformat(r[:10]).strftime('%b %d') if r else 'unknown')" 2>/dev/null || echo "unknown")
             SB_PARSED=$(echo "$SB_USAGE" | python3 -c "import sys,json; from datetime import datetime,timezone; d=json.load(sys.stdin); used=d.get('used_api_credit',0); cap=d.get('max_api_credit',1) or 1; renewal=d.get('renewal_subscription_date',''); pct=used/cap*100; rdt=datetime.fromisoformat(renewal[:10]+'T00:00:00+00:00') if renewal else None; days_left=max((rdt-datetime.now(timezone.utc)).days,1) if rdt else 30; days_elapsed=max(31-days_left,1); projected=used/days_elapsed*31 if renewal else used; proj_pct=projected/cap*100; print(f'{pct:.1f}|{proj_pct:.0f}|{used}|{cap}|{projected:.0f}')" 2>/dev/null || echo "—|—|0|0|0")
             SB_PCT=$(echo "$SB_PARSED" | cut -d'|' -f1)
             SB_PROJECTED=$(echo "$SB_PARSED" | cut -d'|' -f2)
@@ -173,7 +174,7 @@ jobs:
           if [ -n "$HEALTH_RUN" ]; then
             SB_RAW=$(gh run view "$HEALTH_RUN" --log 2>&1 | grep -oP 'ScrapingBee: .*' | head -1 || echo "")
             if echo "$SB_RAW" | grep -qi "exhausted\|0%\|fail"; then
-              SB_STATUS="Exhausted — renews Apr 2"
+              SB_STATUS="Exhausted — renews $SB_RENEWAL"
               SB_COLOR="#dc2626"
             elif echo "$SB_RAW" | grep -qi "warn\|90%"; then
               SB_STATUS=$(echo "$SB_RAW" | sed 's/ScrapingBee: //')
@@ -266,7 +267,7 @@ jobs:
 
             <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">ScrapingBee Cycle Usage</h3>
             <p style="font-size:14px;margin:0 0 4px 0"><strong>${SB_PCT}% used</strong> ($SB_USED_NUM / $SB_CAP_NUM credits). Projected end-of-cycle: <strong>${SB_PROJECTED}%</strong> of current cap.</p>
-            <p style="font-size:13px;color:#6b7280;margin:0 0 8px 0">Post-downgrade cap (Startup plan): <strong>$SB_TARGET_CAP credits.</strong> Current trajectory will land at ~${SB_PROJECTED}% of <em>current</em> 3M cap = projected use vs new cap is what matters.</p>
+            <p style="font-size:13px;color:#6b7280;margin:0 0 8px 0">Target cap: <strong>$SB_TARGET_CAP credits.</strong> Projection compares trajectory ($SB_PROJECTED_ABS credits) against the target cap, not the current $SB_CAP_NUM-credit cap.</p>
             <p style="font-size:14px;margin:0"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:$SB_COLOR;margin-right:6px"></span>$SB_STATUS</p>
 
             <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Top SB Credit Consumers This Week</h3>
