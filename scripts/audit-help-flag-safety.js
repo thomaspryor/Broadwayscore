@@ -293,6 +293,21 @@ function checkOrdering(cleanSrc) {
   const mainMatch = MAIN_FN_RE.exec(cleanSrc);
   const windowStart = mainMatch ? mainMatch.index : 0;
 
+  // A top-level help gate placed BEFORE main() is declared gates everything
+  // that follows in module-load order — the window-scoped search below never
+  // sees it and flagged such scripts as "no --help check anywhere"
+  // (enrich-fallback-ticket-links.js, run 30658402896: gate at top, main()
+  // declared later). Recognize it, requiring only that no risky top-level
+  // call precedes the gate itself.
+  if (windowStart > 0) {
+    const topHelp = new RegExp(HELP_CHECK_RE, 'g').exec(cleanSrc.slice(0, windowStart));
+    if (topHelp) {
+      const beforeGate = stripNonInvokedFunctionBodies(cleanSrc.slice(0, topHelp.index));
+      const riskyIdx = firstIndex(RISKY_CALL_RE, beforeGate);
+      return { hasHelpCheck: true, riskyBeforeHelp: riskyIdx !== -1, riskyIdx };
+    }
+  }
+
   // Strip non-invoked function bodies before searching — a risky call INSIDE
   // a helper function defined lexically before main() is not "unconditional
   // top-level work" unless that helper is an IIFE (see
