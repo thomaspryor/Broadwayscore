@@ -115,7 +115,7 @@ async function main() {
       title: over
         ? `Scraping spend over budget: ${breaches.overspend.join('; ')}`
         : `Scraping spend unmeasurable for: ${breaches.unmeasured.join(', ')}`,
-      description: `Day ${DAY}. ${snapshot.items.join(' · ')}. Verification streak reset to ${streak}.`,
+      description: `Day ${DAY}. ${snapshot.items.map((i) => i.title).join(' · ')}. Verification streak reset to ${streak}.`,
       hint: over
         ? 'Attribute via data/audit/provider-spend-daily.jsonl trend + the Monday cost report top-consumer table; the v2 plan file lists the demand levers.'
         : 'Billing API unreachable — check the provider key/status in check-secrets-health before trusting any green day.',
