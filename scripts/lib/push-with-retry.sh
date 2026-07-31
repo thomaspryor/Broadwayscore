@@ -1082,3 +1082,21 @@ if [ "$pushed" != "true" ]; then
   restore_head_if_moved "retries-exhausted"
   exit 1
 fi
+
+# ── CI-side delayed re-verification ledger (task #677) ──────────────────────
+# The content-survival check above (task #619) only proves this push landed
+# AT THIS INSTANT. The #668 incident class — verified, then silently reverted
+# minutes later by a concurrent operation — is unmitigated here because this
+# CI runner terminates the moment the job ends; unlike a local Claude Code
+# session (scripts/verify-merge-landed.js), it cannot spawn a background
+# process to re-check after a delay. Recording the pushed sha to a durable
+# ledger lets a SEPARATE scheduled workflow (check-push-ledger.yml) do that
+# re-check later. Best-effort and fail-open by design (scripts/record-push-
+# ledger.js): never blocks or reports failure on this script — the caller's
+# actual push already succeeded by this point. Kill switch: PUSH_SKIP_LEDGER=1.
+if [ "${PUSH_SKIP_LEDGER:-}" != "1" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/../record-push-ledger.js" ]; then
+  _ledger_sha="$(git rev-parse HEAD 2>/dev/null || true)"
+  if [ -n "$_ledger_sha" ]; then
+    node "$SCRIPT_DIR/../record-push-ledger.js" --sha="$_ledger_sha" --branch="$PULL_BRANCH" || true
+  fi
+fi
