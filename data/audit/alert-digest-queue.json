@@ -1,13 +1,5 @@
 [
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 81.8% (455/556)\noff-broadway: 47.8% (143/299)\nwest-end: 69.8% (382/547)\n\nOldest gaps:\n1536 — guardian (191h)\n1536 — independent (191h)\nA Midsummer Night's Dream - Globe — financialtimes (191h)\nA Midsummer Night's Dream - Globe — telegraph (191h)\nA Midsummer Night's Dream — financialtimes (191h)\n… 203 more open gap(s)",
-    "severity": "warning",
-    "url": null,
-    "queuedAt": "2026-07-31T02:51:42.260Z"
-  },
-  {
     "conditionKey": "t1-coverage:new-gaps-24h",
     "title": "T1 Coverage — new gaps past 24h",
     "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
@@ -30,5 +22,13 @@
     "severity": "error",
     "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30659864244",
     "queuedAt": "2026-07-31T20:01:17.444Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 81.8% (455/556)\noff-broadway: 48.7% (147/302)\nwest-end: 69.8% (382/547)\n\nOldest gaps:\n1536 — guardian (211h)\n1536 — independent (211h)\nA Midsummer Night's Dream - Globe — financialtimes (211h)\nA Midsummer Night's Dream - Globe — telegraph (211h)\nA Midsummer Night's Dream — financialtimes (211h)\n… 202 more open gap(s)",
+    "severity": "warning",
+    "url": null,
+    "queuedAt": "2026-07-31T23:10:03.888Z"
   }
 ]
