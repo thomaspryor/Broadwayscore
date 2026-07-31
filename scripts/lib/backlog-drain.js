@@ -81,6 +81,17 @@ function computeParkedMap(tasks, ledgerEntries, opts = {}) {
 // non-refused tasks. The caller still live-verify-gate-checks each in turn
 // before dispatch (a card enriched an hour ago may not be in the static
 // card-verifiability.json report yet) — this only orders/pre-filters the scan.
+//
+// Known limitation (ship-check adversarial review): task ids are allocated
+// by notion-tasks-sync.js's nextId() as a strictly-increasing, never-reused
+// counter, so id order IS creation order ACROSS pulls. Within a single pull
+// batch, though, fetchCards() returns cards in Notion's priority-ascending
+// search order, not true creation-time order — so two cards created the
+// same day, synced in the same pull, can get ids in priority order rather
+// than the order they were actually created in Notion. Impact is small
+// (only affects ordering among same-batch, same-day cards) and a full fix
+// (stamping a real creation timestamp into the mirror) is out of scope here.
+// Documented, not fixed.
 function candidateOrder(tasks, opts = {}) {
   const parked = opts.parkedIds || new Map();
   const refused = opts.refusedNotionIds || new Set();
