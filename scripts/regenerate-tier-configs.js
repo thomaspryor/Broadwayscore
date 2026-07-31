@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { buildSkipConfig } = require('./lib/domain-tier-skip');
 
 // Parse args
 const args = process.argv.slice(2);
@@ -121,23 +122,19 @@ for (const [domain, tiers] of Object.entries(stats)) {
 const sortedOrder = {};
 for (const k of Object.keys(tierOrder).sort()) sortedOrder[k] = tierOrder[k];
 
-// Build skip list: domain+tier combos with sufficient failures and 0 successes
-const skipList = {};
-let skipCount = 0;
-
-for (const [domain, tiers] of Object.entries(stats)) {
-  for (const [tierId, s] of Object.entries(tiers)) {
-    if (s.failures >= SKIP_THRESHOLD && s.successes === 0) {
-      if (!skipList[domain]) skipList[domain] = [];
-      skipList[domain].push(tierId);
-      skipCount++;
-    }
-  }
-}
-
-// Sort for stable output
-const sortedSkip = {};
-for (const k of Object.keys(skipList).sort()) sortedSkip[k] = skipList[k].sort();
+// Build skip list: domain+tier combos with sufficient failures and 0 successes.
+// {skip, reason, addedAt} shape (Scraping v2 Sprint 1 T10) — addedAt is
+// preserved from the existing file across regenerations so a skip's age is
+// visible instead of resetting on every run (the missing provenance is why
+// stale skips like didtheylikeit.com/theatre.reviews' scrapingdog entries
+// went unreviewed for months after SD became a supported tier).
+let existingSkipConfig = {};
+try { existingSkipConfig = JSON.parse(fs.readFileSync(SKIP_PATH, 'utf8')); } catch {}
+const sortedSkip = buildSkipConfig(stats, existingSkipConfig, {
+  skipThreshold: SKIP_THRESHOLD,
+  now: new Date().toISOString().slice(0, 10),
+});
+const skipCount = Object.values(sortedSkip).reduce((n, tiers) => n + Object.keys(tiers).length, 0);
 
 console.log(`\nTier ordering: ${orderDomains} domains (min ${MIN_ATTEMPTS} attempts per tier)`);
 console.log(`Tier skip list: ${Object.keys(sortedSkip).length} domains, ${skipCount} skips (threshold: ${SKIP_THRESHOLD}+ failures, 0 successes)`);

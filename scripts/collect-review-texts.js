@@ -214,6 +214,7 @@ const DOMAIN_TIER_ORDER = (() => {
 
 // Domain-specific tier skip list — tiers with 3+ failures and 0 successes per domain.
 // These are proven dead ends. Skipping saves 15-30s per tier per review.
+const { getSkippedTiers } = require('./lib/domain-tier-skip');
 const DOMAIN_TIER_SKIP = (() => {
   try {
     return require('./config/domain-tier-skip.json');
@@ -3463,9 +3464,8 @@ async function fetchReviewText(review) {
   // Saves 15-30s per skipped tier per review.
   try {
     const urlDomain = new URL(url).hostname.replace('www.', '');
-    const skipTiers = DOMAIN_TIER_SKIP[urlDomain];
-    if (skipTiers && skipTiers.length > 0) {
-      const skipSet = new Set(skipTiers);
+    const skipSet = getSkippedTiers(DOMAIN_TIER_SKIP, urlDomain);
+    if (skipSet.size > 0) {
       chain = chain.filter(tier => !skipSet.has(tier.id));
     }
   } catch {}
