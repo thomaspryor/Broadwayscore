@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Guard: three workflow hygiene rules enforced at CI time.
+ * Guard: five workflow hygiene rules enforced at CI time.
  *
  * (a) NOTIFY-FAILURE: any workflow that runs on schedule/push/workflow_dispatch/
  *     workflow_run/pull_request must include the `notify-failure` composite action.
@@ -28,11 +28,26 @@
  *     these inline commits run. Without identity, `git commit` fails with
  *     "fatal: empty ident name" (task #659, discover-regional-serp-reviews.yml).
  *
+ * (e) PIPEFAIL-DEAD-ECHO: within a single `run:` block that sets `pipefail`
+ *     (e.g. `set -o pipefail`), a bare `echo $?` (or `echo "$?" >`) is dead
+ *     code. GHA's default shell is `bash -eo pipefail` — when a `set -o
+ *     pipefail` pipeline earlier in the SAME step fails, `-e` aborts the step
+ *     right there, so a bare `echo $?` on a later line never runs and the
+ *     exit-code file it was meant to write is never created (task #663
+ *     discover-historical-shows.yml, task #667 update-show-status.yml — both
+ *     shipped independently, caught only by manual review). The fix is to
+ *     guard the pipeline with `|| EC=$?` (making the assignment, not the
+ *     pipeline, the statement `-e` sees) and echo the captured variable
+ *     instead of `$?` directly. A bare `echo $?` immediately after `||` on
+ *     the SAME line (`cmd || echo $?`) is fine — that's reachable, since the
+ *     `||` already protects the statement from `-e`.
+ *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
- *   # hygiene-notify-ok: <reason>       — skip notify-failure check for this workflow
- *   # hygiene-playwright-ok: <reason>   — skip playwright check for this workflow
- *   # hygiene-push-ok: <reason>         — skip push-with-retry check for this workflow
- *   # hygiene-git-identity-ok: <reason> — skip git-identity check for this workflow
+ *   # hygiene-notify-ok: <reason>          — skip notify-failure check for this workflow
+ *   # hygiene-playwright-ok: <reason>      — skip playwright check for this workflow
+ *   # hygiene-push-ok: <reason>            — skip push-with-retry check for this workflow
+ *   # hygiene-git-identity-ok: <reason>    — skip git-identity check for this workflow
+ *   # hygiene-echo-exitcode-ok: <reason>   — skip pipefail-dead-echo check for this workflow
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
@@ -196,13 +211,98 @@ function findMissingGitIdentityCommits(raw) {
   return violations;
 }
 
+/**
+ * Split a workflow file into its `run:` block-scalar bodies (one entry per
+ * step's `run: |`/`run: >` block). Inline `run: <cmd>` steps are single
+ * commands and can never contain a `set -o pipefail` + later-line `echo $?`
+ * pair, so they're not tracked here.
+ */
+function extractRunBlocks(raw) {
+  const lines = raw.split('\n');
+  const blocks = [];
+  let inRunBlock = false;
+  let runIndent = -1;
+  let current = null;
+
+  const closeCurrent = () => {
+    if (current) blocks.push(current);
+    current = null;
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const stripped = line.trimStart();
+    const runMatch = stripped.match(/^run\s*:\s*(.*?)\s*$/);
+
+    if (runMatch) {
+      const content = runMatch[1];
+      const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
+      closeCurrent();
+      if (isBlockScalar) {
+        inRunBlock = true;
+        runIndent = indentOf(line);
+        current = { lines: [] };
+      } else {
+        inRunBlock = false;
+      }
+      continue;
+    }
+
+    if (inRunBlock) {
+      if (stripped !== '' && indentOf(line) <= runIndent) {
+        inRunBlock = false;
+        closeCurrent();
+        i--;
+        continue;
+      }
+      current.lines.push({ lineNum: i + 1, text: line });
+    }
+  }
+  closeCurrent();
+
+  return blocks;
+}
+
+/**
+ * Return violations of rule (e): a `run:` block that sets `pipefail` and
+ * also contains a bare `echo $?` (dead code — see header comment above).
+ * Exempt: `echo $?` immediately preceded by `|| ` on the same line, since
+ * that construct is reachable under `bash -e` (the `||` protects it).
+ */
+function findPipefailDeadExitCodeEcho(raw) {
+  const violations = [];
+
+  for (const block of extractRunBlocks(raw)) {
+    const hasPipefail = block.lines.some(
+      (l) => !l.text.trimStart().startsWith('#') && /\bpipefail\b/.test(l.text),
+    );
+    if (!hasPipefail) continue;
+
+    for (const l of block.lines) {
+      const stripped = l.text.trimStart();
+      if (stripped.startsWith('#')) continue;
+      if (!/echo\s+"?\$\?"?/.test(l.text)) continue;
+      if (/\|\|\s*echo\s+"?\$\?"?/.test(l.text)) continue; // guarded on the same line
+      violations.push({ lineNum: l.lineNum, text: l.text.trim() });
+    }
+  }
+
+  return violations;
+}
+
 function main() {
   const files = fs
     .readdirSync(WORKFLOW_DIR)
     .filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'))
     .sort();
 
-  const violations = { notifyFailure: [], playwright: [], pushRetry: [], gitIdentity: [] };
+  const violations = {
+    notifyFailure: [],
+    playwright: [],
+    pushRetry: [],
+    gitIdentity: [],
+    echoExitcode: [],
+  };
 
   for (const file of files) {
     const raw = fs.readFileSync(path.join(WORKFLOW_DIR, file), 'utf8');
@@ -243,13 +343,22 @@ function main() {
         violations.gitIdentity.push({ file, hits });
       }
     }
+
+    // ── Rule (e): pipefail + bare `echo $?` (dead exit-code capture) ──────────
+    if (!raw.includes('hygiene-echo-exitcode-ok:')) {
+      const hits = findPipefailDeadExitCodeEcho(raw);
+      if (hits.length > 0) {
+        violations.echoExitcode.push({ file, hits });
+      }
+    }
   }
 
   const total =
     violations.notifyFailure.length +
     violations.playwright.length +
     violations.pushRetry.length +
-    violations.gitIdentity.length;
+    violations.gitIdentity.length +
+    violations.echoExitcode.length;
 
   if (total === 0) {
     console.log(`✅ Workflow hygiene guard passed (${files.length} workflows checked).`);
@@ -317,6 +426,22 @@ function main() {
         with:
           configure-git: 'true'`);
     console.error("Exempt (legitimate): add  # hygiene-git-identity-ok: <reason>  anywhere in the file.\n");
+  }
+
+  if (violations.echoExitcode.length) {
+    console.error('── (e) pipefail + bare `echo $?` (dead exit-code capture) ────────────');
+    console.error('GHA runs `bash -eo pipefail`: if the pipefail\'d pipeline earlier in this');
+    console.error('step fails, `-e` aborts the step right there — a later bare `echo $?` never');
+    console.error('runs, so the exit-code file is never written (task #663, #667).\n');
+    for (const { file, hits } of violations.echoExitcode) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      line ${h.lineNum}: ${h.text}`);
+    }
+    console.error('\nFix: guard the pipeline with `|| EC=$?` and echo the captured variable:');
+    console.error(`      EC=0
+      cmd | tee /tmp/out.txt || EC=$?
+      echo "$EC" > /tmp/exitcode.txt`);
+    console.error("Exempt (legitimate): add  # hygiene-echo-exitcode-ok: <reason>  anywhere in the file.\n");
   }
 
   process.exit(1);

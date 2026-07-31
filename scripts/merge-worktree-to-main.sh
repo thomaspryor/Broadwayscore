@@ -232,4 +232,29 @@ if [ "${DRY_RUN:-0}" != "1" ] && [ ${#VERIFY_FILES[@]} -gt 0 ]; then
   [ "$MISSING" = 0 ] || die "some files did NOT land on origin — push reported success but work is missing"
 fi
 
+# --- Schedule a delayed re-verify (task #668) ────────────────────────────────
+# The verify block above proves the push landed at THIS INSTANT — it cannot
+# see a race that resolves after this script exits. #668's incident: this
+# exact verify passed (files ✓✓, ancestor check green), then ~10-15 min later
+# the merge commit was gone from origin (confirmed via GitHub's contents API,
+# not local git — local git state proved unreliable mid-incident). Fire a
+# detached background check that re-confirms via the GitHub compare API at
+# +2m/+8m/+15m and self-dispatches an alert card if the commit falls off —
+# doesn't block this script's exit, doesn't require the caller to babysit it.
+if [ "${DRY_RUN:-0}" != "1" ]; then
+  MERGE_SHA="$(g rev-parse HEAD 2>/dev/null || true)"
+  if [ -n "$MERGE_SHA" ] && command -v node >/dev/null 2>&1; then
+    VERIFY_LOG="$MAIN_DIR/data/audit/verify-merge-landed.log"
+    mkdir -p "$(dirname "$VERIFY_LOG")" 2>/dev/null || true
+    (
+      cd "$MAIN_DIR" 2>/dev/null || exit 0
+      nohup node scripts/verify-merge-landed.js \
+        --sha="$MERGE_SHA" --branch="$DEFAULT_BRANCH" \
+        --label="$BRANCH -> $DEFAULT_BRANCH" \
+        --delays=120,480,900 </dev/null >>"$VERIFY_LOG" 2>&1 &
+    )
+    log "delayed re-verify scheduled (+2m/+8m/+15m against $MERGE_SHA) — log: $VERIFY_LOG"
+  fi
+fi
+
 echo "✅ $BRANCH integrated into $DEFAULT_BRANCH and verified on origin."
