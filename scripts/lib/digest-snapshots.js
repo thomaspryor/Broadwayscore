@@ -25,6 +25,7 @@ const path = require('path');
 
 const REPO = path.join(__dirname, '..', '..');
 const DEFAULT_AUDIT_DIR = path.join(REPO, 'data', 'audit');
+const DEFAULT_DATA_DIR = path.join(REPO, 'data');
 
 // maxAgeH 36 everywhere: every producer runs at least daily, so a snapshot
 // older than 36h means the producer cron itself is stuck — the email must
@@ -114,4 +115,45 @@ function describeProblems(problems) {
   return `didn't update overnight: ${bits.join(', ')}`;
 }
 
-module.exports = { SNAPSHOTS, readSnapshot, readAllSnapshots, describeProblems, DEFAULT_AUDIT_DIR };
+// data/freshness-report.json (task #689) — check-show-freshness.js's daily
+// data-quality report, committed by the Auto-Maintain Show Data cron. It
+// lives in data/, not data/audit/, so it isn't a row in SNAPSHOTS above; read
+// it with its own small helper instead of bending readAllSnapshots' one
+// auditDir contract around a single outlier.
+function readFreshnessReport({ dataDir = DEFAULT_DATA_DIR, now = Date.now() } = {}) {
+  return readSnapshot(path.join(dataDir, 'freshness-report.json'), 36, now);
+}
+
+// Flattens the report to the {generatedAt, bannerText, items, moreCount}
+// shape renderNamedDigestBlock already knows how to render (same shape as
+// backlogDrain/providerSpend) — no new render code needed. Keeps only what
+// nobody read before this fix: 'high' severity issues (missing_poster,
+// missing_tickets, missing/placeholder/stale synopsis) on OPEN shows, by show
+// ID. report.dataQuality.byIssueType only lists titles, not IDs — this reads
+// dataQuality.hasIssues instead so the digest can name the actual show.
+// Returns null when there's nothing high-severity to show (quiet day).
+function summarizeFreshnessHighSeverity(report, { maxItems = 8 } = {}) {
+  if (!report || !Array.isArray(report.dataQuality?.hasIssues)) return null;
+  const rows = [];
+  for (const show of report.dataQuality.hasIssues) {
+    const highTypes = (show.issues || [])
+      .filter((i) => i && i.severity === 'high')
+      .map((i) => String(i.type || '').replace(/^missing_/, '').replace(/_/g, ' '));
+    if (highTypes.length) rows.push({ id: show.id, title: show.title, highTypes });
+  }
+  if (!rows.length) return null;
+  return {
+    generatedAt: report.generatedAt,
+    bannerText: `${rows.length} open show${rows.length === 1 ? '' : 's'} missing critical data (poster/tickets/synopsis)`,
+    items: rows.slice(0, maxItems).map((r) => ({
+      title: r.title,
+      detail: `${r.id} — ${r.highTypes.join(', ')}`,
+    })),
+    moreCount: Math.max(0, rows.length - maxItems),
+  };
+}
+
+module.exports = {
+  SNAPSHOTS, readSnapshot, readAllSnapshots, describeProblems, DEFAULT_AUDIT_DIR,
+  DEFAULT_DATA_DIR, readFreshnessReport, summarizeFreshnessHighSeverity,
+};

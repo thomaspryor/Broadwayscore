@@ -53,7 +53,7 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
   break;
 }
 
-const { readAllSnapshots, describeProblems } = require('./lib/digest-snapshots.js');
+const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity } = require('./lib/digest-snapshots.js');
 const {
   esc,
   renderHealthDigestBlock,
@@ -184,6 +184,11 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // 2026-07-30 — it's a standalone daily send again (send-opening-digest.js).
   const blocks = [];
   if (sections.health) blocks.push(renderHealthDigestBlock(sections.health));
+  // Data freshness (task #689) — high-severity data gaps (missing poster,
+  // missing tickets on open shows) that used to be computed daily and thrown
+  // away. Same {generatedAt, bannerText, items, moreCount} shape as
+  // backlogDrain/providerSpend below, so it reuses renderNamedDigestBlock.
+  if (sections.freshness) blocks.push(renderNamedDigestBlock('Data freshness', sections.freshness));
   if (changesHtml) blocks.push(changesHtml);
   if (sections.dailyDigest) blocks.push(renderDailyDigestBlock(sections.dailyDigest));
   if (sections.redditDigest) blocks.push(renderRedditDigestBlock(sections.redditDigest));
@@ -253,6 +258,21 @@ async function main() {
   }
 
   const { sections, problems } = readAllSnapshots();
+
+  // Data freshness (task #689) — separate file/dir from the SNAPSHOTS fold
+  // above, read directly. Fail-soft: a broken read degrades to one missing
+  // section, never blocks the send (same rule as every other section here).
+  try {
+    const r = readFreshnessReport();
+    if (r.status === 'fresh') {
+      sections.freshness = summarizeFreshnessHighSeverity(r.snapshot);
+    } else {
+      problems.push({ key: 'freshness', label: 'data freshness', status: r.status, generatedAt: r.generatedAt });
+    }
+  } catch (err) {
+    console.error(`[digest] WARN freshness-report read failed: ${String(err.message).slice(0, 120)}`);
+  }
+
   const problemsNote = describeProblems(problems);
 
   // "What changed while you slept" — fail-soft; a broken collector must

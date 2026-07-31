@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { readSnapshot, readAllSnapshots, describeProblems, SNAPSHOTS } from './digest-snapshots.js';
+import { readSnapshot, readAllSnapshots, describeProblems, SNAPSHOTS, readFreshnessReport, summarizeFreshnessHighSeverity } from './digest-snapshots.js';
 import { classifySubject } from './scheduled-email-count-rules.js';
 import digestSender from '../send-morning-digest.js';
 
@@ -128,6 +128,81 @@ test('buildHtml: top verdict NAMES the failing check; warnings demote to a routi
   assert.match(html, /2 routine warnings below/);
   assert.match(html, /didn't update overnight: Reddit engagement/);
   assert.doesNotMatch(html, /Nothing needs your attention/);
+});
+
+// ── data/freshness-report.json consumer (task #689) — the generator existed
+// and wrote high-severity signals (missing_poster, missing_tickets) daily
+// with zero readers. These tests cover the new reader + transform + render
+// wiring end to end. ───────────────────────────────────────────────────────
+test('readFreshnessReport: fresh / stale / missing, honors dataDir override', () => {
+  const dir = tmpAudit();
+  const freshAt = new Date(NOW - 2 * 3600e3).toISOString();
+  write(dir, 'freshness-report.json', { generatedAt: freshAt, dataQuality: { hasIssues: [] } });
+
+  assert.equal(readFreshnessReport({ dataDir: dir, now: NOW }).status, 'fresh');
+  assert.equal(readFreshnessReport({ dataDir: dir, now: NOW + 100 * 3600e3 }).status, 'stale');
+  assert.equal(readFreshnessReport({ dataDir: path.join(dir, 'nope'), now: NOW }).status, 'missing');
+});
+
+test('summarizeFreshnessHighSeverity: names show IDs for high-severity issues on open shows, ignores low/medium/info', () => {
+  const report = {
+    generatedAt: '2026-07-30T06:54:26.128Z',
+    dataQuality: {
+      hasIssues: [
+        {
+          id: 'les-mis-arena-2026', title: 'Les Mis Arena Concert',
+          issues: [
+            { type: 'missing_poster', severity: 'high' },
+            { type: 'missing_tickets', severity: 'high' },
+            { type: 'missing_runtime', severity: 'low' },
+          ],
+        },
+        {
+          id: 'quiet-show-2026', title: 'Quiet Show',
+          issues: [
+            { type: 'missing_thumbnail', severity: 'low' },
+            { type: 'no_closing_date', severity: 'info' },
+          ],
+        },
+      ],
+    },
+  };
+  const summary = summarizeFreshnessHighSeverity(report);
+  assert.ok(summary);
+  assert.equal(summary.bannerText, '1 open show missing critical data (poster/tickets/synopsis)');
+  assert.equal(summary.items.length, 1);
+  assert.match(summary.items[0].detail, /les-mis-arena-2026/);
+  assert.match(summary.items[0].detail, /poster/);
+  assert.match(summary.items[0].detail, /tickets/);
+});
+
+test('summarizeFreshnessHighSeverity: no high-severity issues -> null (quiet day renders no block)', () => {
+  const report = {
+    generatedAt: '2026-07-30T06:54:26.128Z',
+    dataQuality: { hasIssues: [{ id: 'x', title: 'X', issues: [{ type: 'missing_runtime', severity: 'low' }] }] },
+  };
+  assert.equal(summarizeFreshnessHighSeverity(report), null);
+  assert.equal(summarizeFreshnessHighSeverity(null), null);
+  assert.equal(summarizeFreshnessHighSeverity({}), null);
+});
+
+// Acceptance criterion 2 (task #689): a deliberately blanked ticketLinks on
+// one open show must appear in the next digest run, named by show ID — not
+// just a count.
+test('acceptance: a blanked-tickets open show appears in the rendered digest by show ID, not just a count', () => {
+  const report = {
+    generatedAt: '2026-07-30T06:54:26.128Z',
+    dataQuality: {
+      hasIssues: [{
+        id: 'les-mis-arena-concert-2026', title: 'Les Mis Arena Concert Spectacular',
+        issues: [{ type: 'missing_tickets', severity: 'high' }],
+      }],
+    },
+  };
+  const summary = summarizeFreshnessHighSeverity(report);
+  const html = buildHtml({ sections: { freshness: summary }, now: new Date('2026-07-30T12:00:00Z') });
+  assert.match(html, /les-mis-arena-concert-2026/);
+  assert.match(html, /tickets/);
 });
 
 test('buildHtml: warnings-only day reads calm ("Nothing urgent"), stuck signals escalate the verdict', () => {
