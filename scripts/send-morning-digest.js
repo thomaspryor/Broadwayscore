@@ -53,7 +53,7 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
   break;
 }
 
-const { readAllSnapshots, describeProblems } = require('./lib/digest-snapshots.js');
+const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity } = require('./lib/digest-snapshots.js');
 const {
   esc,
   renderHealthDigestBlock,
@@ -163,9 +163,15 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // Health snapshot items are {name, message} objects; tolerate bare strings.
   const errNames = (sections.health?.errors || []).filter(Boolean)
     .map((e) => (typeof e === 'string' ? e : e.name)).filter(Boolean);
-  if (errs || stuckCount) {
+  // Data freshness (task #689): revenue-impacting gaps (missing tickets,
+  // missing poster) on OPEN shows must escalate the top verdict, not just
+  // sit in the demoted-to-context box below — the whole point of this fix
+  // is that these signals stop being easy to miss (second-opinion review).
+  const freshnessCount = sections.freshness?.count || 0;
+  if (errs || stuckCount || freshnessCount) {
     const bits = [];
     if (errs) bits.push(`Fix needed: ${errNames.slice(0, 3).join('; ') || `${errs} site error${errs === 1 ? '' : 's'}`}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`);
+    if (freshnessCount) bits.push(`${freshnessCount} open show${freshnessCount === 1 ? '' : 's'} missing tickets/poster/synopsis (see Data freshness below)`);
     if (stuckCount) bits.push(`${stuckCount} pipeline item${stuckCount === 1 ? '' : 's'} flagged "possibly stuck" below`);
     parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(bits.join(' · '))}</p>`);
     if (warns) parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${warns} routine warning${warns === 1 ? '' : 's'} below — being watched, no action needed unless new.</p>`);
@@ -184,6 +190,11 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // 2026-07-30 — it's a standalone daily send again (send-opening-digest.js).
   const blocks = [];
   if (sections.health) blocks.push(renderHealthDigestBlock(sections.health));
+  // Data freshness (task #689) — high-severity data gaps (missing poster,
+  // missing tickets on open shows) that used to be computed daily and thrown
+  // away. Same {generatedAt, bannerText, items, moreCount} shape as
+  // backlogDrain/providerSpend below, so it reuses renderNamedDigestBlock.
+  if (sections.freshness) blocks.push(renderNamedDigestBlock('Data freshness', sections.freshness));
   if (changesHtml) blocks.push(changesHtml);
   if (sections.dailyDigest) blocks.push(renderDailyDigestBlock(sections.dailyDigest));
   if (sections.redditDigest) blocks.push(renderRedditDigestBlock(sections.redditDigest));
@@ -253,6 +264,30 @@ async function main() {
   }
 
   const { sections, problems } = readAllSnapshots();
+
+  // Data freshness (task #689) — separate file/dir from the SNAPSHOTS fold
+  // above, read directly. Fail-soft: a broken read degrades to one missing
+  // section, never blocks the send (same rule as every other section here).
+  try {
+    const r = readFreshnessReport();
+    if (r.status === 'fresh') {
+      // A valid-JSON, fresh-timestamped report whose dataQuality.hasIssues
+      // is missing or the wrong shape (e.g. the producer renames the field)
+      // must not read as a quiet "nothing to report" day — that's exactly
+      // the "stale silently vanishes" failure this file's SNAPSHOTS design
+      // already guards against for every other source (ship-check finding).
+      if (Array.isArray(r.snapshot?.dataQuality?.hasIssues)) {
+        sections.freshness = summarizeFreshnessHighSeverity(r.snapshot);
+      } else {
+        problems.push({ key: 'freshness', label: 'data freshness', status: 'invalid', generatedAt: r.generatedAt });
+      }
+    } else {
+      problems.push({ key: 'freshness', label: 'data freshness', status: r.status, generatedAt: r.generatedAt });
+    }
+  } catch (err) {
+    console.error(`[digest] WARN freshness-report read failed: ${String(err.message).slice(0, 120)}`);
+  }
+
   const problemsNote = describeProblems(problems);
 
   // "What changed while you slept" — fail-soft; a broken collector must

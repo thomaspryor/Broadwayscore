@@ -25,6 +25,7 @@ const path = require('path');
 
 const REPO = path.join(__dirname, '..', '..');
 const DEFAULT_AUDIT_DIR = path.join(REPO, 'data', 'audit');
+const DEFAULT_DATA_DIR = path.join(REPO, 'data');
 
 // maxAgeH 36 everywhere: every producer runs at least daily, so a snapshot
 // older than 36h means the producer cron itself is stuck — the email must
@@ -114,4 +115,65 @@ function describeProblems(problems) {
   return `didn't update overnight: ${bits.join(', ')}`;
 }
 
-module.exports = { SNAPSHOTS, readSnapshot, readAllSnapshots, describeProblems, DEFAULT_AUDIT_DIR };
+// data/freshness-report.json (task #689) — check-show-freshness.js's daily
+// data-quality report, committed by the Auto-Maintain Show Data cron. It
+// lives in data/, not data/audit/, so it isn't a row in SNAPSHOTS above; read
+// it with its own small helper instead of bending readAllSnapshots' one
+// auditDir contract around a single outlier.
+function readFreshnessReport({ dataDir = DEFAULT_DATA_DIR, now = Date.now() } = {}) {
+  return readSnapshot(path.join(dataDir, 'freshness-report.json'), 36, now);
+}
+
+// Flattens the report to the {generatedAt, bannerText, items, moreCount}
+// shape renderNamedDigestBlock already knows how to render (same shape as
+// backlogDrain/providerSpend) — no new render code needed. Keeps only what
+// nobody read before this fix: 'high' severity issues (missing_poster,
+// missing_tickets, missing/placeholder/stale synopsis) on OPEN shows, by show
+// ID. report.dataQuality.byIssueType only lists titles, not IDs — this reads
+// dataQuality.hasIssues instead so the digest can name the actual show.
+// Returns null when there's nothing high-severity to show (quiet day).
+function summarizeFreshnessHighSeverity(report, { maxItems = 8 } = {}) {
+  if (!report || !Array.isArray(report.dataQuality?.hasIssues)) return null;
+  const rows = [];
+  for (const show of report.dataQuality.hasIssues) {
+    // A malformed entry (null, issues not an array, or no id/title to
+    // display) must degrade this show silently, not throw and kill the
+    // whole digest send — same fail-soft contract as readSnapshot's
+    // null/array guards above. Requiring id+title also stops a bare
+    // "undefined — poster, tickets" line leaking into the owner's inbox
+    // (ship-check finding: the old guard let a missing id/title through).
+    if (!show || typeof show !== 'object' || !show.id || !show.title) continue;
+    const highTypes = (Array.isArray(show.issues) ? show.issues : [])
+      .filter((i) => i && i.severity === 'high')
+      .map((i) => String(i.type || '').replace(/^missing_/, '').replace(/_/g, ' '));
+    if (highTypes.length) rows.push({ id: show.id, title: show.title, highTypes });
+  }
+  if (!rows.length) return null;
+  // Ticket/poster gaps are revenue-impacting (the whole reason task #689
+  // exists); synopsis-only gaps are lower stakes. When the list is
+  // truncated to maxItems, the most actionable rows must survive the cut
+  // instead of being buried by source order (ship-check finding).
+  rows.sort((a, b) => {
+    const urgency = (r) => (r.highTypes.some((t) => t === 'tickets' || t === 'poster') ? 0 : 1);
+    return urgency(a) - urgency(b);
+  });
+  return {
+    generatedAt: report.generatedAt,
+    // count: not part of renderNamedDigestBlock's own contract, but read by
+    // send-morning-digest.js's top-verdict line so a real revenue-impacting
+    // gap (missing tickets/poster) escalates there, not just in the
+    // demoted-to-context box below (second-opinion design-blocker finding).
+    count: rows.length,
+    bannerText: `${rows.length} open show${rows.length === 1 ? '' : 's'} missing critical data (poster/tickets/synopsis)`,
+    items: rows.slice(0, maxItems).map((r) => ({
+      title: r.title,
+      detail: `${r.id} — ${r.highTypes.join(', ')}`,
+    })),
+    moreCount: Math.max(0, rows.length - maxItems),
+  };
+}
+
+module.exports = {
+  SNAPSHOTS, readSnapshot, readAllSnapshots, describeProblems, DEFAULT_AUDIT_DIR,
+  DEFAULT_DATA_DIR, readFreshnessReport, summarizeFreshnessHighSeverity,
+};
