@@ -1,9 +1,25 @@
 #!/usr/bin/env node
 /**
  * opening-night-monitor-launch — every-20-min launchd tick
- * (com.bwsc.opening-night-monitor) that opens ONE cmux Fable session per
- * opening night to babysit review coverage end-to-end: independent census →
- * gap diagnosis → fix → verify on prod → repeat until parity or window end.
+ * (com.bwsc.opening-night-monitor) that runs ONE bounded HEADLESS claude -p
+ * pass per tick to babysit review coverage end-to-end: independent census →
+ * gap diagnosis → fix → verify on prod. Each pass is capped at
+ * HEADLESS_MAX_WALL_MIN and picks up where the last pass left off via the
+ * session-state file — the recurring 20-min launchd tick IS the loop's
+ * cadence now, not a long-lived interactive session.
+ *
+ * Card #650 (2026-07-30): the previous cmux-launched design never launched a
+ * single session in 344 ticks — cmux refuses connections from
+ * launchd-parented process ancestry ("Access denied — only processes started
+ * inside cmux can connect" / broken-pipe on list-workspaces/new-workspace),
+ * proven with a double-fork+setsid orphan reproducing the exact failure. This
+ * file no longer touches cmux at all: scripts/lib/opening-night-monitor.js
+ * (a thin wrapper around the repo's shared scripts/lib/claude-cli.js headless
+ * primitive, already used by autonomous-run.js/bsc-runner.js under this same
+ * launchd ancestry every night) runs the pass instead. Ancestry-sensitivity
+ * simply doesn't apply to `claude -p` — it was verified live under the exact
+ * same double-fork+setsid orphan ancestry that breaks cmux.
+ *
  * Generalizes the disabled per-show com.bwsc.opening-night-monitor-phase1/2/3
  * pattern (hardcoded show/date per plist) into a dynamic launcher.
  *
@@ -18,8 +34,8 @@
  *   opening-night-monitor-launch --dry-run       print decision, launch nothing
  *   opening-night-monitor-launch --show <id>     force one show (ignores window)
  *   opening-night-monitor-launch --rehearsal     census+diagnosis only, no fixes
- *   opening-night-monitor-launch --active-shows  print in-window show ids (session loop re-derives its list)
- *   opening-night-monitor-launch --heartbeat     stamp the session heartbeat (session loop calls this every pass)
+ *   opening-night-monitor-launch --active-shows  print in-window show ids
+ *   opening-night-monitor-launch --heartbeat     stamp the heartbeat file manually
  *
  * Kill switch: create data/opening-night-monitor/DISABLED (or set
  * ON_MONITOR_DISABLED=1) — next tick exits without launching.
@@ -44,8 +60,7 @@ const {
   activeWindows, nightKey, launchDecision, computeWindow,
   claimLockGeneration, isLockGenerationOwner,
 } = require('./lib/opening-night-windows.js');
-const { launchCmuxSession, shouldAdoptLateStart } = require('./lib/cmux-launch.js');
-const cmuxws = require('./lib/cmux-workspaces.js');
+const { runMonitorPass } = require('./lib/opening-night-monitor.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 
 const MON_DIR = path.join(REPO, 'data', 'opening-night-monitor');
@@ -55,7 +70,19 @@ const HEARTBEAT = path.join(MON_DIR, 'heartbeat.json');
 const KILL_FILE = path.join(MON_DIR, 'DISABLED');
 const SEED_TEMPLATE = path.join(REPO, 'scripts', 'opening-night-prompts', 'monitor-v2.md');
 const SETTINGS_PATH = path.join(REPO, '.claude', 'opening-night-monitor-settings.json');
-const MODEL = process.env.ON_MONITOR_MODEL || 'fable'; // owner decision 2026-07-24 — Fable, with launcher-side external brakes
+// runClaudeCli (scripts/lib/claude-cli.js) hard-refuses fable/mythos for
+// unattended runs (task #459) — the cmux-era Fable default (owner decision
+// 2026-07-24, chosen for an INTERACTIVE session) cannot carry over. Opus for
+// the judgment this pass does (corroborating production identity before
+// clearing a flag, diagnosing which of 4 gap classes a miss falls into) —
+// override with ON_MONITOR_MODEL if the owner wants a cheaper tier.
+const MODEL = process.env.ON_MONITOR_MODEL || 'opus';
+// A pass is capped well under the 20-min (1200s) launchd StartInterval so a
+// normal pass always finishes — and releases the lock — before the next tick
+// fires; HEARTBEAT_STALE_MIN (90) is the backstop for a pass that hangs past
+// this cap anyway (killed by claude-cli's own SIGKILL timeout, or the whole
+// node process crashing).
+const HEADLESS_MAX_WALL_MIN = 15;
 
 const USAGE = `opening-night-monitor-launch — launch the opening-night monitor session (see header comment)
   --dry-run | --show <id> | --rehearsal | --active-shows | --heartbeat | --help`;
@@ -110,7 +137,8 @@ function gcStateFiles(now = Date.now()) {
   }
 }
 function readNightState(key) {
-  try { return JSON.parse(fs.readFileSync(nightStatePath(key), 'utf8')); } catch { return { attempts: 0 }; }
+  try { return { attempts: 0, consecutiveFailures: 0, ...JSON.parse(fs.readFileSync(nightStatePath(key), 'utf8')) }; }
+  catch { return { attempts: 0, consecutiveFailures: 0 }; }
 }
 function writeNightState(key, state) {
   fs.mkdirSync(MON_DIR, { recursive: true });
@@ -135,20 +163,6 @@ function lockAgeSec() {
 function lockMeta() {
   try { return JSON.parse(fs.readFileSync(LOCK_META, 'utf8')); } catch { return null; }
 }
-
-// launchCmuxSession reports failure when claude hasn't registered a live
-// process within its verify window — but Fable cold start + the heavy
-// session-start hooks routinely exceed that window under nightly-loop load
-// (the 04:36 2026-07-24 false CRITICAL for trainspotting: workspace:272
-// spawned, came alive after the window, got reported dead). The final-path
-// workspace is NOT closed, so if claude comes alive during a late-start grace
-// we ADOPT it instead of paging + re-launching a duplicate.
-//
-// The adoption itself now lives in cmux-launch.js (task #503): bsc-next.js hit
-// the identical false-failure class — 10 untracked live shells + duplicate
-// dispatches in one day — because the fix had only ever been applied here.
-// This file keeps the constant and re-exports the predicate for its own tests.
-const LATE_START_GRACE_SEC = 60;
 
 // Alert routing is lazy-required so a broken router dependency can never
 // stop a tick from at least logging (the launcher must fail toward "log +
@@ -225,7 +239,7 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   const key = nightKey(windows) || (windows[0] && `on-monitor-forced-${windows[0].showId}`);
-  const nightState = key ? readNightState(key) : { attempts: 0 };
+  const nightState = key ? readNightState(key) : { attempts: 0, consecutiveFailures: 0 };
   const meta = lockMeta();
   const state = {
     windows,
@@ -234,8 +248,14 @@ async function main(argv = process.argv.slice(2)) {
     lockAgeSec: lockAgeSec(),
     metaExists: meta !== null,
     heartbeatAgeMin: heartbeatAgeMin(),
-    claudeAlive: cmuxws.computeClaudeAlive(meta),
-    attemptsTonight: nightState.attempts,
+    // No cmux workspace exists to probe anymore — the heartbeat (seeded the
+    // instant a pass starts, below) is the ONLY liveness signal now, which is
+    // correct: a headless pass either finishes inside HEADLESS_MAX_WALL_MIN
+    // (well under HEARTBEAT_STALE_MIN) or claude-cli's own SIGKILL timeout
+    // ends it, so "heartbeat fresh" and "pass genuinely still running" never
+    // diverge the way a sleeping-between-passes interactive session could.
+    claudeAlive: false,
+    attemptsTonight: nightState.consecutiveFailures,
   };
   const decision = launchDecision(state);
 
@@ -255,8 +275,8 @@ async function main(argv = process.argv.slice(2)) {
     if (!nightState.escalated) {
       await alert({
         conditionKey: `on-monitor-attempts-exhausted-${key}`,
-        title: `Opening-night monitor: ${nightState.attempts} attempts exhausted for ${windows.map(w => w.showId).join(', ')}`,
-        description: `The monitor session died ${nightState.attempts}x tonight and the launcher will not start a 4th. ` +
+        title: `Opening-night monitor: ${nightState.consecutiveFailures} consecutive failed passes for ${windows.map(w => w.showId).join(', ')}`,
+        description: `The monitor pass failed ${nightState.consecutiveFailures}x in a row tonight (${nightState.attempts} total passes) and the launcher will not start another until a night boundary resets the counter. ` +
           `Ledger: data/audit/dispatch-ledger.jsonl. State: ${nightStatePath(key)}. ` +
           `Coverage falls back to the standing pipeline; check the show page(s) in the morning.`,
         severity: 'error', disposition: 'human',
@@ -267,7 +287,7 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   if (decision.action === 'reclaim-and-launch') {
-    log(`reclaiming dead session lock (workspace ${meta && meta.workspaceRef})`);
+    log(`reclaiming dead session lock (launched ${meta && meta.launchedAt}, no completion recorded)`);
     fs.rmSync(LOCK_DIR, { recursive: true, force: true });
   }
 
@@ -293,105 +313,90 @@ async function main(argv = process.argv.slice(2)) {
     return 0;
   }
   // Stamp our ownership token IMMEDIATELY — before any slow work (preflight
-  // auth, cmux launch) a later reclaimer could race past. Every later
-  // destructive write to this lock (meta.json, or the dir itself) must
+  // auth, the headless pass itself) a later reclaimer could race past. Every
+  // later destructive write to this lock (meta.json, or the dir itself) must
   // re-check this token is still current before touching it (#569): a
   // reclaim-and-launch on a later tick deletes+recreates LOCK_DIR based on a
   // stale in-memory decision, and if THIS process wasn't actually dead — just
   // slow — its eventual writes must not clobber the new owner.
   const myGenToken = claimLockGeneration(LOCK_DIR);
 
-  // Count the attempt BEFORE the side-effecting launch so a launch that dies
-  // mid-flight still consumed one.
-  writeNightState(key, { ...nightState, attempts: nightState.attempts + 1, lastLaunchAt: now.toISOString() });
-
+  const attemptNum = nightState.attempts + 1;
   const rehearsal = !!opts.rehearsal;
-  const seed = buildSeed(windows, { attempt: nightState.attempts + 1, rehearsal, key });
-  const title = `🎭🧠 ON monitor·${rehearsal ? 'REHEARSAL ' : ''}${windows.map(w => w.showId.replace(/-\d{4}$/, '')).join(' + ').slice(0, 60)}`;
-  const result = launchCmuxSession({
-    title, seed, seedKey: `${key}-a${nightState.attempts + 1}`,
-    cwd: REPO, model: MODEL,
-    // focus:false — a 23:00 auto-launch must never steal the owner's screen
-    // (plan-review user-impact finding).
-    focus: false, autoColor: true, settingsPath: SETTINGS_PATH,
-    // Fable + session-start hooks take well over the default 30s to register
-    // a live process (first live launch 2026-07-24: alive at ~45s, after the
-    // launcher had already close-and-retried it).
-    verifyTimeoutSec: 90,
-    // Late-start adoption: a Fable session that registered a live process AFTER
-    // the verify window is healthy, not failed — adopt it rather than page +
-    // relaunch a duplicate next tick (2026-07-24 false CRITICAL).
-    lateAdoptSec: LATE_START_GRACE_SEC,
+  const seed = buildSeed(windows, { attempt: attemptNum, rehearsal, key });
+
+  // meta.json + heartbeat are written BEFORE the blocking pass starts, not
+  // after it resolves: a headless pass runs up to HEADLESS_MAX_WALL_MIN
+  // (minutes), far longer than the cmux launch's old ~90-240s verify window
+  // that the in-flight grace period (opening-night-windows.js's
+  // LAUNCH_INFLIGHT_GRACE_SEC) was sized for. Without this, a concurrent
+  // tick landing mid-pass would see lockExists+!metaExists past that grace
+  // window and wrongly reclaim a pass that is still running.
+  fs.writeFileSync(LOCK_META, JSON.stringify({
+    nightKey: key, launchedAt: now.toISOString(),
+    attempt: attemptNum, shows: windows.map(w => w.showId), rehearsal, model: MODEL,
+  }, null, 2));
+  fs.writeFileSync(HEARTBEAT, JSON.stringify({ at: now.toISOString(), seededByLauncher: true }));
+  writeNightState(key, { ...nightState, attempts: attemptNum, lastLaunchAt: now.toISOString() });
+
+  log(`starting headless pass ${attemptNum} (model ${MODEL}, cap ${HEADLESS_MAX_WALL_MIN}min) for ${windows.map(w => w.showId).join(', ')}`);
+  const result = await runMonitorPass({
+    prompt: seed, cwd: REPO, model: MODEL, settingsPath: SETTINGS_PATH,
+    maxWallMin: HEADLESS_MAX_WALL_MIN,
+    logFile: path.join(MON_DIR, `session-log-${key}-a${attemptNum}.log`),
   });
 
-  const adoptedLate = !!result.adoptedLate;
-  if (adoptedLate) log(`adopted late-start session ${result.ref} for ${windows.map(w => w.showId).join(', ')} (alive after verify window)`);
-
-  if (!result.ok) {
-    // Genuinely dead — close the lingering workspace so it can't become an
-    // untracked orphan, drop the lock (only if we still own it — a later
-    // tick may have already reclaimed it out from under this slow failure),
-    // and page.
-    if (result.workspaceRef) { try { cmuxws.closeWorkspace(result.workspaceRef); } catch { /* already gone */ } }
-    if (isLockGenerationOwner(LOCK_DIR, myGenToken)) {
-      fs.rmSync(LOCK_DIR, { recursive: true, force: true });
-    } else {
-      log('lock generation changed while launching — another tick already reclaimed it; not touching its lock');
-    }
-    await alert({
-      conditionKey: `on-monitor-launch-failed-${key}`,
-      title: `Opening-night monitor launch FAILED for ${windows.map(w => w.showId).join(', ')}`,
-      description: `launchCmuxSession: ${result.reason}. Attempt ${nightState.attempts + 1}/3; next tick retries. Command: ${result.command}`,
-      severity: 'error', disposition: 'human', cooldownHours: 3,
-    });
-    return 1;
-  }
-
-  // #569: re-verify ownership right before writing meta.json — a slow
-  // launch (preflight auth + up to ~150s of cmux launch time) can finish
-  // AFTER a later tick reclaimed this lock as dead. Writing anyway would
-  // silently overwrite the new owner's meta.json with our stale
-  // workspaceRef, exactly the split-brain json-write-guard.js guards
-  // against for commercial.json/audience-buzz.json saves.
+  // #569: re-verify ownership before any further destructive write — a
+  // later tick may have reclaimed this lock as dead (past HEARTBEAT_STALE_MIN
+  // with no fresh heartbeat) while this pass was still finishing up.
   if (!isLockGenerationOwner(LOCK_DIR, myGenToken)) {
-    log(`lock generation changed before meta.json write — another tick reclaimed ${LOCK_DIR} while this launch (workspace ${result.ref}) was in flight; closing the orphaned workspace instead of clobbering the new owner's meta.json`);
-    try { cmuxws.closeWorkspace(result.ref); } catch { /* already gone */ }
+    log(`lock generation changed while pass ${attemptNum} was running — another tick already reclaimed ${LOCK_DIR}; not touching its lock or state`);
     await alert({
       conditionKey: `on-monitor-generation-lost-${key}`,
-      title: `Opening-night monitor: lock reclaimed mid-launch for ${windows.map(w => w.showId).join(', ')}`,
-      description: `This tick's launch (workspace ${result.ref}) finished after another tick reclaimed the lock as dead. Closed the orphaned workspace rather than overwrite the newer generation's meta.json.`,
+      title: `Opening-night monitor: lock reclaimed mid-pass for ${windows.map(w => w.showId).join(', ')}`,
+      description: `Pass ${attemptNum} finished (ok=${result.ok}) after another tick reclaimed the lock as dead. Not overwriting the newer generation's state.`,
       severity: 'warning', disposition: 'digest',
     });
     return 1;
   }
 
-  fs.writeFileSync(LOCK_META, JSON.stringify({
-    nightKey: key, workspaceRef: result.ref, launchedAt: now.toISOString(),
-    attempt: nightState.attempts + 1, shows: windows.map(w => w.showId), rehearsal, model: MODEL,
-    ...(adoptedLate ? { adoptedAfterLateStart: true } : {}),
-  }, null, 2));
-  // Seed the heartbeat at launch so the next tick (before the session's first
-  // loop pass finishes) reads a fresh heartbeat, not the stale-dead path.
-  fs.writeFileSync(HEARTBEAT, JSON.stringify({ at: now.toISOString(), seededByLauncher: true }));
-  // dispatch-ledger requires {event, taskId}; taskId carries the night key
-  // (the ledger is task-shaped — first live launch crashed here on a
-  // {type:...}-shaped entry, after the workspace was already up).
+  // The whole point of the blocking design: only one process is EVER "the
+  // session running" at a time, so the lock's job ends the moment this pass
+  // resolves — no adoption/late-start ambiguity like the old detached-cmux
+  // launch had.
+  fs.rmSync(LOCK_DIR, { recursive: true, force: true });
+
+  if (!result.ok) {
+    const consecutiveFailures = (nightState.consecutiveFailures || 0) + 1;
+    writeNightState(key, { ...nightState, attempts: attemptNum, consecutiveFailures, lastLaunchAt: now.toISOString(), lastFailure: { stage: result.stage, at: now.toISOString() } });
+    await alert({
+      conditionKey: `on-monitor-launch-failed-${key}`,
+      title: `Opening-night monitor pass FAILED for ${windows.map(w => w.showId).join(', ')}`,
+      description: `runMonitorPass: ${result.stage} — ${result.error}. Pass ${attemptNum}, ${consecutiveFailures} consecutive failure(s); next tick retries.`,
+      severity: 'error', disposition: 'human', cooldownHours: 3,
+    });
+    return 1;
+  }
+
+  writeNightState(key, { ...nightState, attempts: attemptNum, consecutiveFailures: 0, lastLaunchAt: now.toISOString() });
+  // dispatch-ledger requires {event, taskId}; taskId carries the night key.
   dispatchLedger.appendEntry({
     event: 'launch', taskId: key,
-    workspaceRef: result.ref, shows: windows.map(w => w.showId),
-    attempt: nightState.attempts + 1, model: MODEL, rehearsal, kind: 'on-monitor',
+    shows: windows.map(w => w.showId),
+    attempt: attemptNum, model: MODEL, rehearsal, kind: 'on-monitor',
+    wallMin: Math.round(result.wallMin * 10) / 10, usd: result.usd,
   });
   await alert({
     conditionKey: `on-monitor-launched-${key}`,
-    title: `Opening-night monitor launched: ${windows.map(w => w.showId).join(', ')}`,
-    description: `Workspace ${result.ref}, attempt ${nightState.attempts + 1}, model ${MODEL}${rehearsal ? ', REHEARSAL mode' : ''}${adoptedLate ? ' (adopted after late start)' : ''}.`,
+    title: `Opening-night monitor pass complete: ${windows.map(w => w.showId).join(', ')}`,
+    description: `Pass ${attemptNum}, model ${MODEL}${rehearsal ? ', REHEARSAL mode' : ''}, ${Math.round(result.wallMin)}min, $${result.usd.toFixed(2)}. ${result.resultText.slice(0, 800)}`,
     severity: 'info', disposition: 'digest',
   });
-  log(`launched ${result.ref} for ${windows.map(w => w.showId).join(', ')} (attempt ${nightState.attempts + 1})`);
+  log(`pass ${attemptNum} complete for ${windows.map(w => w.showId).join(', ')} (${Math.round(result.wallMin)}min, $${result.usd.toFixed(2)})`);
   return 0;
 }
 
-module.exports = { parseArgs, monitorCandidates, buildSeed, main, shouldAdoptLateStart };
+module.exports = { parseArgs, monitorCandidates, buildSeed, main };
 
 if (require.main === module) {
   main().then(code => process.exit(code)).catch(e => {

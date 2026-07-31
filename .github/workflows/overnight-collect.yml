@@ -106,6 +106,9 @@ jobs:
           WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
           IFS=',' read -ra SHOWS <<< "${{ steps.shows.outputs.list }}"
           TOTAL=${#SHOWS[@]}
           echo "Processing $TOTAL shows: ${SHOWS[*]}"

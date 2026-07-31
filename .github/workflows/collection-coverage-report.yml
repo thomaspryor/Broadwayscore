@@ -25,6 +25,8 @@ jobs:
       - name: Commit coverage data
         if: always()
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           bash scripts/lib/git-add-existing.sh data/audit/collection-coverage.json data/audit/collection-coverage-history.json
           git diff --staged --quiet && exit 0
           git commit -m "data: Update collection coverage report [skip ci]"
