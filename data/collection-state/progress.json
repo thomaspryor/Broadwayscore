@@ -942,7 +942,17 @@
     "the-enormous-crocodile-west-end-2026/west-end-best-friend--chris-abbott.json",
     "trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
     "trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
-    "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json"
+    "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+    "trainspotting-the-musical-west-end-2026/london-unattached--jeanne-horak.json",
+    "trainspotting-the-musical-west-end-2026/london-unattached--unknown.json",
+    "trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+    "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
+    "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+    "midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json",
+    "the-gruffalo-west-end-2026/daily-mail--jennifer-ruby.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -988,7 +998,10 @@
       "les-miserables-arena-concert-spectacular-off-broadway-2026/new-york-sun--simon-goldstein.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/times-uk--will-hodgkinson.json"
+    ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
@@ -1025,7 +1038,9 @@
       "data/review-texts/tao-of-glass-west-end-2026/bachtrack--unknown.json",
       "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
       "data/review-texts/trainspotting-the-musical-west-end-2026/click-liverpool--unknown.json",
-      "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json"
+      "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/midnight-at-the-never-get-west-end-2026/broadwayworld--persson-clementine-scott.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -1036,7 +1051,7 @@
     ]
   },
   "startTime": "2026-07-30T18:39:18.817Z",
-  "lastProcessed": "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+  "lastProcessed": "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
   "log": [
     {
       "t": "2026-07-31T00:10:13.524Z",
@@ -1071,6 +1086,28 @@
       "event": "bb-session",
       "session": "4bedaee1",
       "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735"
+    },
+    {
+      "t": "2026-07-31T00:43:15.990Z",
+      "event": "bb-session",
+      "session": "29532c61",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-31T00:43:16.428Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-31T00:44:41.276Z",
+      "event": "bb-session",
+      "session": "32520979",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-31T00:44:41.663Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

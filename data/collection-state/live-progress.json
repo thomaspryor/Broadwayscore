@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-31T00:40:37.573Z",
+  "updatedAt": "2026-07-31T00:44:57.324Z",
   "processed": 60,
-  "failed": 881,
-  "successRate": "6.4%",
+  "failed": 891,
+  "successRate": "6.3%",
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 4,
     "scrapingbee": 0,
     "brightdata": 16,
-    "archiveToday": 11,
+    "archiveToday": 13,
     "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-07-31T00:10:13.524Z",
@@ -48,6 +48,28 @@
       "event": "bb-session",
       "session": "4bedaee1",
       "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735"
+    },
+    {
+      "t": "2026-07-31T00:43:15.990Z",
+      "event": "bb-session",
+      "session": "29532c61",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-31T00:43:16.428Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-31T00:44:41.276Z",
+      "event": "bb-session",
+      "session": "32520979",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-intervie"
+    },
+    {
+      "t": "2026-07-31T00:44:41.663Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
