@@ -204,6 +204,37 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   return parts.join('\n');
 }
 
+// Composes the subject+html the SAME way the real send does: attach Fix-this
+// links, then build subject/html — pulled out of main() (CLAUDE.md §15) so
+// digest-content-invariants.test.mjs exercises this real caller-to-renderer
+// wire, including the attachHealthFixUrls call. Its ABSENCE was card #634's
+// root cause — a test that reconstructs this logic instead of calling it
+// would not have caught that, which is exactly what happened (renderer unit
+// tests fully covered attachHealthFixUrls's OUTPUT, never its caller).
+function composeDigestEmail({
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, now = new Date(),
+  dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
+}) {
+  // Card #634: sign a dispatch link per health ERROR so the owner can act
+  // from the phone. Fail-soft on purpose — a missing secret costs the
+  // buttons, never the email (rule: the digest must always send).
+  if (!dispatchSecret) {
+    console.error('[digest] WARN APPROVAL_HMAC_SECRET not set — sending without Fix-this buttons');
+  } else {
+    const cfg = (() => {
+      try { return JSON.parse(fs.readFileSync(dispatchConfigPath, 'utf8')); } catch { return {}; }
+    })();
+    const baseUrl = cfg.baseUrl || 'https://broadwayscorecard.com';
+    const exp = Math.floor(Date.now() / 1000) + DISPATCH_LINK_EXPIRY_H * 3600;
+    const attached = attachHealthFixUrls({ health: sections.health, exp, secret: dispatchSecret, baseUrl });
+    console.log(`[digest] Fix-this buttons attached to ${attached} health error row(s)`);
+  }
+
+  const subject = buildSubject({ health: sections.health, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, now });
+  return { subject, html };
+}
+
 async function main() {
   // --help must never fall through to a real send (bug class #260/#263/#264).
   const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -224,22 +255,6 @@ async function main() {
   const { sections, problems } = readAllSnapshots();
   const problemsNote = describeProblems(problems);
 
-  // Card #634: sign a dispatch link per health ERROR so the owner can act
-  // from the phone. Fail-soft on purpose — a missing secret costs the
-  // buttons, never the email (rule: the digest must always send).
-  const dispatchSecret = process.env.APPROVAL_HMAC_SECRET;
-  if (!dispatchSecret) {
-    console.error('[digest] WARN APPROVAL_HMAC_SECRET not set — sending without Fix-this buttons');
-  } else {
-    const cfg = (() => {
-      try { return JSON.parse(fs.readFileSync(DISPATCH_CONFIG_PATH, 'utf8')); } catch { return {}; }
-    })();
-    const baseUrl = cfg.baseUrl || 'https://broadwayscorecard.com';
-    const exp = Math.floor(Date.now() / 1000) + DISPATCH_LINK_EXPIRY_H * 3600;
-    const attached = attachHealthFixUrls({ health: sections.health, exp, secret: dispatchSecret, baseUrl });
-    console.log(`[digest] Fix-this buttons attached to ${attached} health error row(s)`);
-  }
-
   // "What changed while you slept" — fail-soft; a broken collector must
   // never block the digest itself.
   let changesHtml = null;
@@ -256,8 +271,20 @@ async function main() {
   }
 
   const now = new Date();
-  const subject = buildSubject({ health: sections.health, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, now });
+  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, now });
+
+  // Card #670: fail-soft pre-send content check — never blocks the send (the
+  // digest must always send), but a violation here means the CI test on
+  // composeDigestEmail() didn't catch a regression introduced somewhere else
+  // in the render chain, and that must be visible somewhere other than a
+  // silently-broken inbox.
+  try {
+    const { assertDigestInvariants } = require('./lib/digest-content-invariants.js');
+    const { ok, violations } = assertDigestInvariants(html, { health: sections.health, subject, verifySecret: process.env.APPROVAL_HMAC_SECRET });
+    if (!ok) console.error(`[digest] WARN content invariant violation(s): ${violations.join('; ')}`);
+  } catch (err) {
+    console.error(`[digest] WARN content invariant check failed to run: ${String(err.message).slice(0, 120)}`);
+  }
 
   if (dryRun) {
     const out = path.join(REPO, 'data', 'audit', 'morning-digest-preview.html');
@@ -289,4 +316,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs };
+module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail };

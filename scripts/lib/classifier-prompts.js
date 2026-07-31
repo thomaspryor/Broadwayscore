@@ -13,6 +13,7 @@ const {
   getOperaWrongProductionContext,
   getOperaWrongShowContext,
 } = require('./opera-prompt-context');
+const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext } = require('./market-label');
 
 /**
  * Build the wrong-PRODUCTION classifier user prompt.
@@ -52,11 +53,14 @@ function buildWrongProductionUserPrompt({ show, result, reviewData, revivals }) 
   // Derive the market label from show.market so the FILED-UNDER line names the
   // right house, and keep the candidate header market-neutral since revivals
   // span markets (Broadway revival, West End transfer, tour).
+  // Shared table (scripts/lib/market-label.js) rather than an inline ternary —
+  // the old chain fell through to 'Broadway' for any unnamed market, which told
+  // the classifier a regional tryout was a Broadway opening (2026-07-30).
   const market = (show && show.market) || 'broadway';
-  const marketLabel = market === 'west-end' ? 'West End'
-    : market === 'off-broadway' ? 'Off-Broadway'
-    : market === 'off-west-end' ? 'Off-West-End'
-    : 'Broadway';
+  const marketLabel = getMarketLabel(market);
+  const regionalNote = isNonMetroMarket(market)
+    ? `\n\n${getRegionalPromptContext(show && show.venue)}`
+    : '';
 
   // Opera-aware framing — see scripts/lib/opera-prompt-context.js for the
   // rationale. WRONG_PRODUCTION for opera means a different Met run, not
@@ -65,7 +69,7 @@ function buildWrongProductionUserPrompt({ show, result, reviewData, revivals }) 
     ? `FILED UNDER PRODUCTION: ${result.showId} (Metropolitan Opera run opening: ${showYear})
 
 ${getOperaWrongProductionContext()}`
-    : `FILED UNDER PRODUCTION: ${result.showId} (${marketLabel} opening: ${showYear})`;
+    : `FILED UNDER PRODUCTION: ${result.showId} (${marketLabel} opening: ${showYear})${regionalNote}`;
 
   return `SHOW: "${showTitle}"
 ${filedUnderLabel}
