@@ -10,14 +10,22 @@
  * Two things this proves, both logged to the shared ledger as `shadow-*`
  * events so they're inspectable after the run:
  *
- *   1. A REAL backlog slice (read-only Notion `list`/`get`, small --limit)
- *      run through the production triageCard() — same function the live
- *      loop uses — with attempt-memory wired in via opts.attemptMemory.
- *      Zero Notion writes (no Auto/Status stamp). The morning-of-2026-07-30
- *      backlog has no ledger lines carrying `contentHash` yet (the field is
- *      new), so no real card parks on this pass — that's the EXPECTED,
- *      correct behavior (a card without failure history is never parked)
- *      and is called out explicitly in the summary, not hidden.
+ *   1. A REAL backlog slice run through the production triageCard() — same
+ *      function the live loop uses — with attempt-memory wired in via
+ *      opts.attemptMemory. Zero Notion writes (no Auto/Status stamp).
+ *      notion-brain's `list` sorts Priority-ascending, and human-territory
+ *      categories (Marketing/Partnerships) sort near the top of "Not
+ *      started" — picking the first --limit ids would hand this proof the
+ *      SAME dead cards every night (card #669). So the pool is over-fetched
+ *      (read-only `list`/`get`, limit*8 capped) and scripts/lib/
+ *      autonomous-shadow-slice.js's selectShadowSlice() walks past
+ *      pre-filtered cards to the first --limit that actually reach the
+ *      decision stage; every skipped card is still logged with its reason.
+ *      The morning-of-2026-07-30 backlog has no ledger lines carrying
+ *      `contentHash` yet (the field is new), so no real card parks on this
+ *      pass — that's the EXPECTED, correct behavior (a card without failure
+ *      history is never parked) and is called out explicitly in the
+ *      summary, not hidden.
  *
  *   2. A SYNTHETIC probe card, entirely in-memory (no Notion call), seeded
  *      with two fabricated `card-fail` ledger entries at matching
@@ -37,9 +45,32 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { triageCard, decide } = require('./lib/autonomous-triage-core.js');
+const { loadSharedTaskState } = require('./autonomous-triage.js');
 const { computeContentHash, loadParkOverrides } = require('./lib/attempt-memory.js');
+const { isCardEligible } = require('./lib/autonomous-eligibility.js');
+const { selectShadowSlice } = require('./lib/autonomous-shadow-slice.js');
 const ledger = require('./lib/autonomous-ledger.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// Over-fetch multiplier for the real-card candidate pool (card #669):
+// notion-brain `list` sorts Priority-ascending, and human-territory
+// categories (Marketing/Partnerships) sort near the top of "Not started" —
+// picking the first `limit` ids hands the shadow run the SAME dead cards
+// every night. Fetching limit*8 (capped) gives selectShadowSlice() room to
+// walk past them to cards that actually reach triageCard's decision stage.
+const OVERFETCH_MULTIPLIER = 8;
+const OVERFETCH_CAP = 100;
+
+// Would this card reach triageCard's decision stage at all? Mirrors the two
+// gates the real loop applies before ever spending an LLM call: already
+// claimed (Auto state set) and the deterministic category/tag/title
+// pre-filter (isCardEligible). Returns a skip reason string, or null when
+// the card is a real candidate.
+function isHumanTerritory(card) {
+  if (card.auto) return `already in Auto state "${card.auto}"`;
+  const preFilter = isCardEligible(card);
+  return preFilter.eligible ? null : preFilter.reason;
+}
 
 const REPO = path.join(__dirname, '..');
 const MODEL = process.env.AUTONOMOUS_TRIAGE_MODEL || 'claude-sonnet-5';
@@ -59,7 +90,11 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
 const USAGE = `autonomous-shadow-run.js — proves attempt-memory park logic via the real triageCard() path. NO Notion writes, NO implementer spend.
 
 Usage:
-  node scripts/autonomous-shadow-run.js [--limit N]   N real backlog cards triaged in shadow (default 5)
+  node scripts/autonomous-shadow-run.js [--limit N] [--tier 1|3]
+    --limit N   N real backlog cards triaged in shadow (default 5)
+    --tier 1|3  scope override (default: tier3Enabled in .claude/autonomous-config.json,
+                same resolution as autonomous-triage.js — the shadow must match
+                whatever scope the loop would actually use)
   --help, -h    show this message, do nothing else
 `;
 
@@ -142,6 +177,20 @@ async function main() {
     process.exit(1);
   }
 
+  // Scope tier — MUST mirror autonomous-triage.js's own resolution (same
+  // config file, same fail-soft-to-1 default) or this proof triages against
+  // the wrong scope: hardcoding tier 1 here made every real backlog card
+  // triage as "ineligible" for src//scripts/ fixes even after the tier3Enabled
+  // config flag turned Tier 3 on for the production loop (card #669 follow-up
+  // — the slice-selection fix alone still produced 0 would-attempt because the
+  // shadow was silently narrower than what would actually run).
+  let tier = 1;
+  let cfg = {};
+  try { cfg = JSON.parse(fs.readFileSync(path.join(REPO, '.claude', 'autonomous-config.json'), 'utf8')); }
+  catch { /* cfg stays {} — fails soft to tier 1 */ }
+  if (args.tier) tier = parseInt(args.tier, 10) === 3 ? 3 : 1;
+  else if (cfg.tier3Enabled === true) tier = 3;
+
   const runId = `shadow-${new Date().toISOString().replace(/[:.]/g, '-')}`;
   ledger.appendEntry({ event: 'shadow-run-start', runId, note: `attempt-memory shadow proof — limit ${limit}, NO Notion writes, NO implementer` });
 
@@ -163,49 +212,66 @@ async function main() {
   }
 
   // ── Part 2: a real backlog slice through the production selection path ──
-  let ids = [];
+  // Over-fetch (card #669): notion-brain `list` sorts Priority-ascending and
+  // human-territory categories sort near the top, so picking the first
+  // `limit` ids hands the loop the same dead cards every night. Fetch a
+  // bigger pool, then let selectShadowSlice() walk past pre-filtered cards
+  // to ones that actually reach triageCard's decision stage.
+  const overfetchLimit = Math.min(limit * OVERFETCH_MULTIPLIER, OVERFETCH_CAP);
+  let candidateCards = [];
+  let fetchFailures = 0;
   try {
-    const table = notionBrain(['list', '--status', 'Not started', '--limit', String(limit)]);
-    ids = table.map(row => row.id);
+    const table = notionBrain(['list', '--status', 'Not started', '--limit', String(overfetchLimit)]);
+    for (const row of table) {
+      try {
+        candidateCards.push(notionBrain(['get', row.id]));
+      } catch (err) {
+        fetchFailures++;
+        ledger.appendEntry({ event: 'shadow-card', runId, cardId: row.id, note: `fetch failed: ${err.message.slice(0, 120)}` });
+      }
+    }
   } catch (err) {
     ledger.appendEntry({ event: 'shadow-run-end', runId, note: `real-card slice skipped: notion list failed (${err.message.slice(0, 150)})` });
     console.error(`[shadow] WARN could not fetch real backlog cards: ${err.message.slice(0, 150)} — probe result above still stands`);
     return;
   }
 
+  const { selected, skipped } = selectShadowSlice({ cards: candidateCards, limit, isHumanTerritory });
+  for (const { card, reason } of skipped) {
+    ledger.appendEntry({ event: 'shadow-card', runId, cardId: card.id, name: card.name, note: `skip — ${reason}` });
+    console.log(`[shadow] ${card.name} → pre-filtered (${reason.slice(0, 80)})`);
+  }
+
   const attemptMemoryLedgerEntries = ledger.readEntries().entries;
   const attemptMemoryOverrides = loadParkOverrides();
-  let parkedCount = 0, attemptCount = 0, skipCount = 0, otherCount = 0;
-  for (const id of ids) {
-    let card;
-    try { card = notionBrain(['get', id]); }
-    catch (err) {
-      ledger.appendEntry({ event: 'shadow-card', runId, cardId: id, note: `fetch failed: ${err.message.slice(0, 120)}` });
-      continue;
-    }
-    if (card.auto) {
-      ledger.appendEntry({ event: 'shadow-card', runId, cardId: id, name: card.name, note: `skip — already in Auto state "${card.auto}"` });
-      skipCount++;
-      continue;
-    }
+  // Claim-visibility parity with the real loop (autonomous-triage.js): a
+  // card someone is actively working on via the shared task list must not
+  // count as "would-attempt" evidence — triageCard()'s own findClaimedTask
+  // pre-filter needs opts.taskState to see it. Best-effort; a missing/empty
+  // shared task list just means no claims are visible, same as production.
+  const taskState = loadSharedTaskState();
+  let parkedCount = 0, attemptCount = 0, otherCount = 0;
+  for (const card of selected) {
     const result = await triageCard(card, callSonnet, {
+      tier,
+      taskState,
       attemptMemory: { ledgerEntries: attemptMemoryLedgerEntries, overrides: attemptMemoryOverrides },
     });
     const d = decide({ ...result, decision: undefined });
     if (result.preFilter && result.preFilter.eligible === false && /^parked:/.test(result.preFilter.reason || '')) {
       parkedCount++;
-      ledger.appendEntry({ event: 'shadow-card', runId, cardId: id, name: card.name, note: `would-park: ${result.preFilter.reason}` });
+      ledger.appendEntry({ event: 'shadow-card', runId, cardId: card.id, name: card.name, note: `would-park: ${result.preFilter.reason}` });
     } else if (d === 'attempt') {
       attemptCount++;
-      ledger.appendEntry({ event: 'shadow-card', runId, cardId: id, name: card.name, note: `would-attempt (size ${result.triage.size})` });
+      ledger.appendEntry({ event: 'shadow-card', runId, cardId: card.id, name: card.name, note: `would-attempt (size ${result.triage.size})` });
     } else {
       otherCount++;
-      ledger.appendEntry({ event: 'shadow-card', runId, cardId: id, name: card.name, note: `decision=${d}` });
+      ledger.appendEntry({ event: 'shadow-card', runId, cardId: card.id, name: card.name, note: `decision=${d}` });
     }
     console.log(`[shadow] ${card.name} → ${d}${result.preFilter && !result.preFilter.eligible ? ` (${result.preFilter.reason.slice(0, 80)})` : ''}`);
   }
 
-  const summary = `probe PASS · ${ids.length} real card(s): ${attemptCount} would-attempt, ${parkedCount} would-park, ${skipCount} auto-skip, ${otherCount} other — real-card parkedCount is expected to be 0 until ≥2 nights of contentHash-bearing card-fail ledger entries accumulate post-deploy`;
+  const summary = `probe PASS · tier ${tier} · pool ${candidateCards.length}/${overfetchLimit}${fetchFailures ? ` (${fetchFailures} fetch failure(s) — see shadow-card entries)` : ''} → ${selected.length} reached triage: ${attemptCount} would-attempt, ${parkedCount} would-park, ${otherCount} other; ${skipped.length} pre-filtered (human-territory/claimed) before reaching triage — real-card parkedCount is expected to be 0 until ≥2 nights of contentHash-bearing card-fail ledger entries accumulate post-deploy`;
   ledger.appendEntry({ event: 'shadow-run-end', runId, note: summary });
   console.log(`[shadow] done: ${summary}`);
 }
@@ -217,4 +283,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildParkProbe, main };
+module.exports = { buildParkProbe, isHumanTerritory, main };

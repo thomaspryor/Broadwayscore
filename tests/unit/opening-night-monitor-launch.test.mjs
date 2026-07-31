@@ -77,11 +77,15 @@ test('usdTonight accumulates across passes on both the success and failure write
 // of the Mac's subscription OAuth login (autonomous-run.js never hits this:
 // its launchd wrapper only greps a single field out of .env, never sources
 // the whole file).
-test('the headless pass explicitly clears ANTHROPIC_API_KEY so it bills the subscription login, not the API key', () => {
+test('the headless pass clears ANTHROPIC_API_KEY on the oauth path so it bills the subscription login, not the API key', () => {
   const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
   const callStart = src.indexOf('const result = await runMonitorPass({');
   const callBlock = src.slice(callStart, src.indexOf('logFile:', callStart) + 100);
-  assert.match(callBlock, /ANTHROPIC_API_KEY:\s*['"]{2}/, 'runMonitorPass must clear ANTHROPIC_API_KEY (empty string) to avoid the leaked .env key for this spawn only');
+  // #457 update: the clear is now conditional on auth.mode — 'oauth' still
+  // clears the leaked .env key (subscription billing), 'api-key' forwards it
+  // because the stored login is Keychain-only and unreachable under launchd.
+  assert.match(callBlock, /ANTHROPIC_API_KEY:\s*auth\.mode === 'api-key'\s*\?\s*\(process\.env\.ANTHROPIC_API_KEY \|\| ''\)\s*:\s*''/,
+    'runMonitorPass env must clear the key on the oauth path and forward it only under auth.mode api-key');
 });
 
 // monitor-v2.md instructs the IN-PASS session to send its own parity/
@@ -168,4 +172,33 @@ test('lockAgeSec is computed from birthtime, not mtime (mtime is reset by unrela
   const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
   const lockAgeFn = src.slice(src.indexOf('function lockAgeSec'), src.indexOf('function lockAgeSec') + 300);
   assert.match(lockAgeFn, /birthtimeMs/, 'lockAgeSec must use birthtimeMs, not mtimeMs');
+});
+
+// Task #457 (2026-07-31, tao-of-glass night): the login lives in the macOS
+// Keychain, which a launchd-parented claude cannot open — passes launched
+// with ANTHROPIC_API_KEY cleared died "Not logged in" while the preflight
+// (which inherited the .env API key) reported healthy. resolvePassAuth is
+// the extracted decision: stored login first, API-key fallback only when it
+// actually works, hard fail otherwise.
+test('resolvePassAuth: stored login wins even when an API key is present', async () => {
+  const { createRequire } = await import('node:module');
+  const { resolvePassAuth } = createRequire(import.meta.url)('../../scripts/opening-night-monitor-launch.js');
+  assert.deepEqual(resolvePassAuth({ storedLoginOk: true, apiKeyPresent: true, apiKeyPingOk: true }), { mode: 'oauth' });
+});
+
+test('resolvePassAuth: falls back to api-key only when the key ping actually succeeded', async () => {
+  const { createRequire } = await import('node:module');
+  const { resolvePassAuth } = createRequire(import.meta.url)('../../scripts/opening-night-monitor-launch.js');
+  assert.deepEqual(resolvePassAuth({ storedLoginOk: false, apiKeyPresent: true, apiKeyPingOk: true }), { mode: 'api-key' });
+  assert.deepEqual(resolvePassAuth({ storedLoginOk: false, apiKeyPresent: true, apiKeyPingOk: false }), { mode: 'fail' });
+  assert.deepEqual(resolvePassAuth({ storedLoginOk: false, apiKeyPresent: false, apiKeyPingOk: false }), { mode: 'fail' });
+});
+
+// Structural guard: the pass env must key off auth.mode — a regression back
+// to the unconditional ANTHROPIC_API_KEY:'' literal recreates the exact
+// always-fails-under-launchd pass this fix removed.
+test('pass env forwards the API key only under auth.mode api-key', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  assert.match(src, /ANTHROPIC_API_KEY:\s*auth\.mode === 'api-key'/, 'pass env must branch on auth.mode');
+  assert.match(src, /authPing\(\{ ANTHROPIC_API_KEY: '' \}\)/, 'preflight must probe the stored-login path in the pass\'s own env shape');
 });

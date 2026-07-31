@@ -1124,18 +1124,30 @@ function verifyFetchedUrl(html, expectedUrl) {
   // Only homepage-title detection (above) and explicit URL mismatch (below) should block.
   if (!actualUrl) return { verified: true, reason: 'no_canonical' };
 
+  // Strip invisible/bidi Unicode (zero-width spaces, LTR/RTL marks, BOM) that
+  // some sites (e.g. theatre.reviews) inject into canonical URLs, and NFC-normalize
+  // so visually-identical URLs with different codepoint decompositions compare equal.
+  // Confirmed 2026-07-30: theatre.reviews canonical URLs carry a trailing U+200E
+  // (LEFT-TO-RIGHT MARK) that byte-for-byte differs from the requested URL despite
+  // being visually and semantically identical — 1,412 wasted provider escalations.
+  const INVISIBLE_UNICODE_RE = /[\u200B-\u200F\u202A-\u202E\u2060-\u2064\uFEFF]/g;
+  function stripInvisibleUnicode(u) {
+    return u.normalize('NFC').replace(INVISIBLE_UNICODE_RE, '');
+  }
+
   // Normalize both URLs to hostname + pathname (drop scheme, query string, and hash).
   // Canonical URLs from <link rel="canonical"> are query-free by convention, so comparing
   // anything beyond host+path causes false mismatches whenever the request URL carries:
   //   - tracking params (utm_*, fbclid, gclid, SocialFlow, ref, etc.)
   //   - HTML-encoded `&amp;utm_*` keys that don't match the utm_ strip list
   //   - http:// vs https:// (e.g. old NYPost URLs stored as http but canonicalized to https)
+  //   - invisible/bidi Unicode marks (see stripInvisibleUnicode above)
   // Path-only comparison is robust: none of these change the article served.
   function normalizeForVerify(u) {
     try {
-      const parsed = new URL(u);
+      const parsed = new URL(stripInvisibleUnicode(u));
       return parsed.hostname.toLowerCase() + parsed.pathname.replace(/\/$/, '');
-    } catch { return u.toLowerCase().replace(/\/$/, ''); }
+    } catch { return stripInvisibleUnicode(u).toLowerCase().replace(/\/$/, ''); }
   }
 
   const normExpected = normalizeForVerify(expectedUrl);
@@ -1146,14 +1158,35 @@ function verifyFetchedUrl(html, expectedUrl) {
   // Allow if actual is a subdomain/alias of expected (e.g., amp. prefix) but only
   // when the domains actually differ — same-domain path differences are still mismatches.
   try {
-    const expHost = new URL(expectedUrl).hostname.replace(/^www\./, '');
-    const actHost = new URL(actualUrl).hostname.replace(/^www\./, '');
+    const expHost = new URL(stripInvisibleUnicode(expectedUrl)).hostname.replace(/^www\./, '');
+    const actHost = new URL(stripInvisibleUnicode(actualUrl)).hostname.replace(/^www\./, '');
     if (expHost !== actHost) {
       // Different domains: allow subdomain relationships and known alias groups
       if (actHost.endsWith('.' + expHost) || expHost.endsWith('.' + actHost)) {
         return { verified: true };
       }
       if (domainMatchesExpected(expHost, actHost)) return { verified: true };
+    } else {
+      // Same host: tolerate a path-suffix redirect, where the CMS resolves a short/
+      // partial slug to its full canonical article (e.g. didtheylikeit.com resolves
+      // /shows/the-gin-game/ to /shows/the-gin-game-review/). Requires same directory
+      // depth AND the actual last segment to extend the expected last segment AT A
+      // WORD BOUNDARY (next char is '-', '_', '.', or end-of-string) — this rejects
+      // unrelated pages nested under a different path, AND rejects a bare substring
+      // match against a different show sharing a prefix (e.g. requested /shows/proof/
+      // must NOT verify against actual /shows/proofs/ or /shows/proof-2/, both of
+      // which could be a genuinely different production). Confirmed 2026-07-30:
+      // didtheylikeit.com accounts for 4,889 of these, ~67% of its Bright Data spend.
+      const expSegments = new URL(stripInvisibleUnicode(expectedUrl)).pathname.replace(/\/$/, '').split('/');
+      const actSegments = new URL(stripInvisibleUnicode(actualUrl)).pathname.replace(/\/$/, '').split('/');
+      const expLast = expSegments.pop();
+      const actLast = actSegments.pop();
+      if (expLast && expSegments.join('/') === actSegments.join('/') && actLast.startsWith(expLast)) {
+        const nextChar = actLast.charAt(expLast.length);
+        if (nextChar === '' || /[-_.]/.test(nextChar)) {
+          return { verified: true, reason: 'suffix_redirect' };
+        }
+      }
     }
   } catch { /* fall through */ }
 
