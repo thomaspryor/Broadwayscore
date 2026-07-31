@@ -49,7 +49,7 @@ import { getShowRanks } from '@/lib/data-show-ranks';
 import { getBrowseSlug } from '@/lib/browse-slugs';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
 import { AwardsNavLink } from '@/components/AwardsNavLink';
-import { showFormatTitle, showFormatTextClass } from '@/lib/show-format';
+import { showFormatTitle, showFormatTextClass, showFormatPlural } from '@/lib/show-format';
 
 // Group A: personalized, auth-dependent — ssr:false so they don't block
 // the pre-rendered HTML, Suspense prevents hydration mismatch.
@@ -274,7 +274,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
       ])
     : generateBreadcrumbSchema([
         { name: 'Home', url: isWestEnd ? `${BASE_URL}/west-end` : isOffBroadway ? `${BASE_URL}/off-broadway` : BASE_URL },
-        { name: show.type === 'musical' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${getBrowseSlug(show.category, show.type)}` },
+        { name: showFormatPlural(show.type), url: `${BASE_URL}/browse/${getBrowseSlug(show.category, show.type)}` },
         { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
       ]);
   const faqSchema = generateShowFAQSchema(show, getCriticConsensus(show.id)?.text ?? null);
@@ -398,7 +398,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           { label: show.title },
         ] : [
           { label: 'Home', href: isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/' },
-          { label: show.type === 'musical' ? 'Musicals' : 'Plays', href: `/browse/${getBrowseSlug(show.category, show.type)}` },
+          { label: showFormatPlural(show.type), href: `/browse/${getBrowseSlug(show.category, show.type)}` },
           { label: show.title },
         ]} />
 

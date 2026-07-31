@@ -25,6 +25,7 @@ const SHOW_FORMATS = {
   musical: {
     label: 'MUSICAL',
     title: 'Musical',
+    plural: 'Musicals',
     colorClass: 'border-purple-500/50 text-purple-400',
     textClass: 'text-purple-400',
     emailColor: '#a78bfa',
@@ -32,6 +33,7 @@ const SHOW_FORMATS = {
   play: {
     label: 'PLAY',
     title: 'Play',
+    plural: 'Plays',
     colorClass: 'border-blue-500/50 text-blue-400',
     textClass: 'text-blue-400',
     emailColor: '#60a5fa',
@@ -39,6 +41,7 @@ const SHOW_FORMATS = {
   opera: {
     label: 'OPERA',
     title: 'Opera',
+    plural: 'Operas',
     colorClass: 'border-indigo-500/50 text-indigo-400',
     textClass: 'text-indigo-400',
     emailColor: '#818cf8',
@@ -46,6 +49,7 @@ const SHOW_FORMATS = {
   special: {
     label: 'EVENT',
     title: 'Event',
+    plural: 'Events',
     colorClass: 'border-amber-500/50 text-amber-400',
     textClass: 'text-amber-400',
     emailColor: '#fbbf24',
@@ -56,6 +60,7 @@ const SHOW_FORMATS = {
 const UNKNOWN_FORMAT = {
   label: 'EVENT',
   title: 'Event',
+  plural: 'Events',
   colorClass: 'border-white/10 text-gray-400',
   textClass: 'text-gray-400',
   emailColor: '#9ca3af',
@@ -81,10 +86,16 @@ function showFormatTitle(type) {
   return resolveShowFormat(type).title;
 }
 
+/** Title-case plural, e.g. 'Musicals' — breadcrumbs and list headings. */
+function showFormatPlural(type) {
+  return resolveShowFormat(type).plural;
+}
+
 module.exports = {
   KNOWN_SHOW_TYPES,
   SHOW_FORMATS,
   resolveShowFormat,
   showFormatLabel,
   showFormatTitle,
+  showFormatPlural,
 };

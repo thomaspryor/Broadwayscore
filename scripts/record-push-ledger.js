@@ -46,6 +46,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { buildLedgerEntry } = require('./lib/push-ledger');
+const { hasHelpFlag } = require('./lib/cli-help');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const LEDGER_REL_PATH = 'data/audit/recent-pushes.jsonl';
@@ -124,6 +125,11 @@ function fastForwardHeadToOrigin(branch) {
 }
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/record-push-ledger.js --sha=<sha> --branch=main');
+    process.exit(0);
+  }
+
   if (process.env.PUSH_SKIP_LEDGER === '1') {
     process.exit(0);
   }

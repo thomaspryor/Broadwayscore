@@ -13,6 +13,7 @@
  * Mounted by src/app/show/[slug]/page.tsx behind featureFlags.showRanks.
  */
 
+import { showFormatPlural } from '@/lib/show-format';
 import { useState } from 'react';
 import Link from 'next/link';
 import type { ComputedShow } from '@/lib/data-types';
@@ -184,7 +185,7 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
                 choice === 'own' ? 'bg-white/10 text-gray-50' : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              {show.type === 'musical' ? 'Musicals' : 'Plays'}
+              {showFormatPlural(show.type)}
             </button>
           </div>
         )}
