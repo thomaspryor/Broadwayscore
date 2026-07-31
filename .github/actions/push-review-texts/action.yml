@@ -111,6 +111,19 @@ runs:
             // wrong_content files. Belt-and-braces: protect them at push time.
             'serpRetryCount',
             'serpDiscoveryAbandoned',
+            // Head-of-line rescore block state (Notion 3ad637c5-416f-8169), same
+            // reasoning as the SERP fields above: clearFailureFlags() may clear
+            // them on success so they are not in the guard's PROTECTED_FIELDS,
+            // but losing them on rebase silently reverts the fix — the file
+            // un-blocks and re-enters the head of the needsRescore queue, which
+            // is exactly the pinned-at-131 state the stamp exists to prevent.
+            // isBlockedFromRescore() keys on ALL of these together (reason +
+            // text-length fingerprint + excerpt flag), so they must survive as a
+            // set or the fingerprint compares against a partially-restored record.
+            'rescoreBlockedReason',
+            'rescoreBlockedAt',
+            'rescoreBlockedTextLength',
+            'rescoreBlockedHadExcerpt',
           ];
           const PROTECTED = Array.from(new Set([...PROTECTED_FIELDS, ...ACTION_EXTRA]));
           const staged = execSync('git diff --cached --name-only', { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
