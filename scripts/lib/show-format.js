@@ -56,7 +56,7 @@ const SHOW_FORMATS = {
 const UNKNOWN_FORMAT = {
   label: 'EVENT',
   title: 'Event',
-  colorClass: 'border-gray-500/50 text-gray-400',
+  colorClass: 'border-white/10 text-gray-400',
   textClass: 'text-gray-400',
   emailColor: '#9ca3af',
 };
