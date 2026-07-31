@@ -69,6 +69,28 @@ test('statusLine grabs the LAST SAFE/NOT-SAFE line, prefers NOT SAFE when final'
   assert.equal(statusLine('I must end with a SAFE TO EXIT — <what finished> line per the hook.'), '');
 });
 
+test('statusLine handles the THIS SESSION format (2026-07-27 replacement — extractor was blind to it for 4 days)', () => {
+  assert.equal(
+    statusLine('DONE x\nTHIS SESSION: CLOSE ME — work merged and verified on main'),
+    'THIS SESSION: CLOSE ME — work merged and verified on main',
+  );
+  assert.equal(
+    statusLine('DONE x\nTHIS SESSION: KEEP OPEN — monitor fires here at 15:00 UTC'),
+    'THIS SESSION: KEEP OPEN — monitor fires here at 15:00 UTC',
+  );
+  assert.equal(
+    statusLine('nothing running\nTHIS SESSION: IDLE — keep only to continue this thread'),
+    'THIS SESSION: IDLE — keep only to continue this thread',
+  );
+  // Mixed legacy + new: the LAST verdict wins regardless of format.
+  assert.equal(
+    statusLine('SAFE TO EXIT — old phrasing quoted\nTHIS SESSION: CLOSE ME — real final verdict'),
+    'THIS SESSION: CLOSE ME — real final verdict',
+  );
+  // Template placeholders still disqualify the new format too.
+  assert.equal(statusLine('end with THIS SESSION: CLOSE ME — <what finished + where work continues>'), '');
+});
+
 test('workspaceVerdict decision table matches bsc-prune closability', () => {
   assert.equal(workspaceVerdict({ done: true, alive: false }), 'SAFE TO CLOSE');
   assert.match(workspaceVerdict({ done: true, alive: true }), /^DONE /);

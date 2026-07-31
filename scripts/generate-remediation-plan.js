@@ -28,6 +28,7 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { buildFixApprovalEmail } = require('./lib/email-templates.js');
 const { GPT4O_MINI, CLAUDE_SONNET } = require('./lib/models');
+const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -60,14 +61,17 @@ function output(key, value) {
   }
 }
 
-function generateApprovalUrl(action, issueNumber, secret) {
-  // 7-day expiry
+function generateApprovalUrl(action, issueNumber, secret, planId) {
+  // 7-day expiry. planId binds the link to THIS generated plan: a rerun for
+  // the same issue overwrites {issue}.json, and without the binding an
+  // unexpired link for plan A would silently execute plan B. The executor
+  // refuses on planId mismatch.
   const expires = Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60);
   const token = crypto
     .createHmac('sha256', secret)
-    .update(`${action}:${issueNumber}:${expires}`)
+    .update(`${action}:${issueNumber}:${expires}:${planId}`)
     .digest('hex');
-  return `https://broadwayscorecard.com/api/approve-fix?issue=${issueNumber}&token=${token}&expires=${expires}&action=${action}`;
+  return `https://broadwayscorecard.com/api/approve-fix?issue=${issueNumber}&token=${token}&expires=${expires}&action=${action}&plan=${planId}`;
 }
 
 async function sendEmail(to, from, subject, html) {
@@ -476,23 +480,35 @@ ${diagnosis.originalMessage
 
   // 4. Save plan to data/pending-fixes/
   const planFile = path.join(ROOT, 'data/pending-fixes', `${issueNumber}.json`);
+  const planId = crypto.randomUUID();
   const planData = {
     issueNumber: parseInt(issueNumber),
+    planId,
     status: 'pending',
     createdAt: new Date().toISOString(),
+    // diagnosis.summary/whatsHappening are LLM paraphrases that routinely
+    // quote the reporter verbatim — they stay OUT of this PUBLIC-repo file
+    // (they live in the GitHub issue and the approval email).
     diagnosis: {
-      summary: diagnosis.summary,
-      whatsHappening: diagnosis.whatsHappening,
       fixType: diagnosis.fixType,
       confidence: diagnosis.confidence,
       showId: diagnosis.showId,
       showSlug: diagnosis.showSlug,
     },
+    // PII stays OUT of the persisted plan file — data/pending-fixes/ is
+    // committed to the PUBLIC repo (it was gitignored 2026-03-08 for exactly
+    // this reason, which silently broke plan persistence: every approval email
+    // since then pointed at a plan file that was never committed, so the
+    // Approve button dispatched an executor that found nothing). Name, email
+    // and message are ALL redacted; the executor re-derives them from the
+    // GitHub issue's DIAGNOSIS_JSON at execute time for the thank-you email.
+    // They live only in the approval email itself (built from the in-memory
+    // diagnosis below).
     submitter: {
-      name: diagnosis.submitterName || 'Anonymous',
-      email: diagnosis.submitterEmail || null,
+      name: null,
+      email: null,
       show: diagnosis.submitterShow || null,
-      message: diagnosis.originalMessage || '',
+      message: '',
     },
     plan: {
       summary: plan.summary,
@@ -532,17 +548,19 @@ ${diagnosis.originalMessage
     }
   }
 
-  // 6. Generate HMAC-signed approval URLs
-  const approveUrl = generateApprovalUrl('approve', issueNumber, secret);
-  const rejectUrl = generateApprovalUrl('reject', issueNumber, secret);
+  // 6. Generate HMAC-signed approval URLs (bound to this plan's planId)
+  const approveUrl = generateApprovalUrl('approve', issueNumber, secret, planId);
+  const rejectUrl = generateApprovalUrl('reject', issueNumber, secret, planId);
 
   // 7. Send approval email
   const ownerEmail = process.env.OWNER_EMAIL;
   if (ownerEmail) {
     const { subject, html } = buildFixApprovalEmail({
-      submitterName: planData.submitter.name,
-      showTitle: planData.submitter.show,
-      originalMessage: planData.submitter.message,
+      // From the in-memory diagnosis, NOT planData.submitter — the persisted
+      // plan is PII-redacted but the email to the owner keeps the full text.
+      submitterName: diagnosis.submitterName || 'Anonymous',
+      showTitle: diagnosis.submitterShow || null,
+      originalMessage: diagnosis.originalMessage || '',
       planSummary: plan.summary,
       planSteps: plan.steps,
       riskLevel: plan.riskLevel,
@@ -577,11 +595,14 @@ ${diagnosis.originalMessage
     if (systematic && systematic.totalMatches > 0) {
       console.log(`\nSystematic issue detected: ${systematic.totalMatches} similar entries across ${systematic.showCount} shows`);
 
-      // Save systematic plan
+      // Save systematic plan (its own planId — approving the spot plan must
+      // not be able to execute the systematic one, or vice versa)
       const sysPlanId = `${issueNumber}-systematic`;
+      const sysPlanUuid = crypto.randomUUID();
       const sysPlanFile = path.join(ROOT, 'data/pending-fixes', `${sysPlanId}.json`);
       const sysPlanData = {
         issueNumber: sysPlanId,
+        planId: sysPlanUuid,
         parentIssue: parseInt(issueNumber),
         status: 'pending',
         createdAt: new Date().toISOString(),
@@ -609,8 +630,8 @@ ${diagnosis.originalMessage
 
       // Send separate systematic email
       if (ownerEmail) {
-        const sysApproveUrl = generateApprovalUrl('approve', sysPlanId, secret);
-        const sysRejectUrl = generateApprovalUrl('reject', sysPlanId, secret);
+        const sysApproveUrl = generateApprovalUrl('approve', sysPlanId, secret, sysPlanUuid);
+        const sysRejectUrl = generateApprovalUrl('reject', sysPlanId, secret, sysPlanUuid);
 
         const { subject: sysSubject, html: sysHtml } = buildFixApprovalEmail({
           submitterName: 'System (auto-detected)',
@@ -646,116 +667,9 @@ ${diagnosis.originalMessage
   }
 }
 
-// --- Systematic issue detection ---
-
-function detectSystematicIssue(plan, shows) {
-  const showsList = Array.isArray(shows) ? shows : Object.values(shows);
-
-  for (const action of (plan.actions || [])) {
-    if (action.type !== 'data-edit') continue;
-
-    // Pattern: combined roles in creativeTeam (comma-separated)
-    if (action.field === 'creativeTeam') {
-      const oldRoles = (action.oldValue || []).map(ct => ct.role);
-      const newRoles = (action.newValue || []).map(ct => ct.role);
-      if (newRoles.length > oldRoles.length) {
-        return detectCombinedRoles(showsList, action.showId);
-      }
-    }
-
-    // Pattern: field value correction that might apply to other shows
-    // (e.g., wrong venue name, typo in a recurring value)
-    if (action.field && action.oldValue && typeof action.oldValue === 'string') {
-      const fieldMatches = [];
-      for (const show of showsList) {
-        if (show.id === action.showId) continue;
-        if (show[action.field] === action.oldValue) {
-          fieldMatches.push({ showId: show.id, showTitle: show.title });
-        }
-      }
-      if (fieldMatches.length >= 2) {
-        return {
-          totalMatches: fieldMatches.length,
-          showCount: fieldMatches.length,
-          summary: `${fieldMatches.length} other shows have the same ${action.field} value "${action.oldValue}" that was corrected`,
-          description: `The spot fix corrected ${action.field} from "${action.oldValue}" to "${action.newValue}". ${fieldMatches.length} other shows have the same value.`,
-          steps: [
-            `Found ${fieldMatches.length} shows with ${action.field} = "${action.oldValue}"`,
-            `Apply the same correction to all matching shows`,
-          ],
-          riskLevel: fieldMatches.length > 20 ? 'Medium' : 'Low',
-          actions: fieldMatches.map(m => ({
-            type: 'data-edit',
-            file: action.file,
-            showId: m.showId,
-            field: action.field,
-            oldValue: action.oldValue,
-            newValue: action.newValue,
-            description: `Apply same ${action.field} fix to ${m.showTitle}`,
-          })),
-          sampleEntries: fieldMatches.slice(0, 5).map(m => ({
-            showTitle: m.showTitle, showId: m.showId,
-            field: action.field, currentValue: action.oldValue,
-            proposedChange: `Change to "${action.newValue}"`,
-          })),
-        };
-      }
-    }
-  }
-
-  return null;
-}
-
-function detectCombinedRoles(showsList, excludeShowId) {
-  const matches = [];
-  for (const show of showsList) {
-    if (!show.creativeTeam || show.id === excludeShowId) continue;
-    for (const ct of show.creativeTeam) {
-      if (ct.role && ct.role.includes(', ')) {
-        matches.push({
-          showId: show.id,
-          showTitle: show.title,
-          name: ct.name,
-          combinedRole: ct.role,
-          splitRoles: ct.role.split(', ').map(r => r.trim()),
-        });
-      }
-    }
-  }
-
-  if (matches.length === 0) return null;
-
-  const affectedShows = new Set(matches.map(m => m.showId));
-
-  return {
-    totalMatches: matches.length,
-    showCount: affectedShows.size,
-    summary: `${matches.length} combined creativeTeam roles across ${affectedShows.size} shows need splitting`,
-    description: `The spot fix split a combined role (e.g., "Director, Scenic Design") into separate entries. The same pattern exists in ${matches.length} other creativeTeam entries across ${affectedShows.size} shows.`,
-    steps: [
-      `Scan all shows for creativeTeam entries with comma-separated roles`,
-      `Split each combined role into separate entries (e.g., "Director, Scenic Design" → "Director" + "Scenic Design")`,
-      `${affectedShows.size} shows affected with ${matches.length} combined roles total`,
-    ],
-    riskLevel: matches.length > 50 ? 'Medium' : 'Low',
-    actions: [{
-      type: 'batch-transform',
-      file: 'shows.json',
-      field: 'creativeTeam',
-      transform: 'split-comma-roles',
-      affectedShows: affectedShows.size,
-      affectedEntries: matches.length,
-      description: `Split all ${matches.length} comma-separated creativeTeam roles into individual entries across ${affectedShows.size} shows`,
-    }],
-    sampleEntries: matches.slice(0, 5).map(m => ({
-      showTitle: m.showTitle,
-      showId: m.showId,
-      field: 'creativeTeam',
-      currentValue: `${m.name} (${m.combinedRole})`,
-      proposedChange: `Split into: ${m.splitRoles.map(r => `${m.name} (${r})`).join(' + ')}`,
-    })),
-  };
-}
+// Systematic issue detection lives in scripts/lib/systematic-fix-detection.js
+// (extracted 2026-07-31 with tests, after the inline version's same-value
+// generalization proposed closing all 147 open shows from one status flip).
 
 main().catch(err => {
   console.error('Fatal error:', err);

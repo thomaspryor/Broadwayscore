@@ -73,11 +73,14 @@ function finalAssistantText(entries) {
 }
 
 // The SESSION STATUS verdict line out of a wrap-up message. Every completion
-// message ends with a "SAFE TO EXIT — …" / "NOT SAFE TO EXIT — …" line
-// (exit-status-gate hook enforces); grab the LAST occurrence so quoted or
-// restated earlier ones don't win.
+// message ends with a "THIS SESSION: KEEP OPEN/CLOSE ME/IDLE — …" line
+// (format since 2026-07-27; legacy "SAFE TO EXIT — …" / "NOT SAFE TO EXIT — …"
+// accepted for older sessions — the exit-status-gate hook enforces both).
+// Grab the LAST occurrence so quoted or restated earlier ones don't win.
+// 2026-07-31: THIS SESSION variant added after the format change left this
+// extractor (and workspace-mark-done.js, fixed same day) matching nothing.
 function statusLine(text) {
-  const matches = String(text).match(/(?:NOT )?SAFE TO EXIT\s*—[^\n]*/g);
+  const matches = String(text).match(/(?:THIS SESSION\s*:\s*(?:KEEP OPEN|CLOSE ME|IDLE)|(?:NOT )?SAFE TO EXIT)\s*—[^\n]*/g);
   if (!matches) return '';
   const line = matches[matches.length - 1].trim();
   // A killed session's last message may merely QUOTE the required format
