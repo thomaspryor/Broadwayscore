@@ -2036,6 +2036,25 @@ function progressWatchResults(report) {
   }));
 }
 
+// Daily-digest surfacing for BWW-roundup discovery misses near opening (task
+// #692). data/audit/bww-roundup-miss-ledger.jsonl (Scraping v2 Sprint 1 T6)
+// is append-only and, until now, had exactly one reader — the write path's
+// own cooldown check. A show that keeps missing discovery INSIDE its
+// opening-window (where the miss-cooldown deliberately never suppresses
+// retries — see OPENING_WINDOW_DAYS in bww-roundup-persistence.js) is
+// exactly the case worth a human look: the roundup may genuinely not be
+// published yet, or discovery may be broken for that show.
+function bwwRoundupMissBacklogResults(summary) {
+  if (!summary || summary.length === 0) return [];
+  const first = summary[0];
+  return [{
+    name: 'Data: BWW roundup discovery misses near opening',
+    status: 'warn',
+    message: `${summary.length} show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. First: ${first.showId} (${first.missCount} misses, last ${first.lastMissTs}).`,
+    hint: 'Check data/audit/bww-roundup-miss-ledger.jsonl. Per CLAUDE.md rule 14, a pre-opening 404 is normal — confirm the roundup genuinely hasn\'t published before treating this as a discovery bug.',
+  }];
+}
+
 // Simple HTTPS GET that returns parsed JSON
 function fetchJSON(url, headers) {
   return new Promise((resolve, reject) => {
@@ -2947,6 +2966,16 @@ async function main() {
       const progressReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/progress-watch-state.json'), 'utf8'));
       allResults.push(...progressWatchResults(progressReport));
     } catch { /* report absent (monitor not yet run) — nothing to surface */ }
+
+    try {
+      const { readRoundupMisses, summarizeBwwRoundupMisses } = require('./lib/bww-roundup-persistence');
+      const misses = readRoundupMisses();
+      if (misses.length > 0) {
+        const { loadShows } = require('./lib/shows-write-guard');
+        const { shows } = loadShows();
+        allResults.push(...bwwRoundupMissBacklogResults(summarizeBwwRoundupMisses(misses, shows)));
+      }
+    } catch { /* ledger absent or unreadable — nothing to surface */ }
   }
 
   // Print console summary
@@ -3041,4 +3070,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState };
+module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState };
