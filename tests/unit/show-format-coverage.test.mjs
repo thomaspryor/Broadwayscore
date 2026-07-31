@@ -1,3 +1,9 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural only — reads shows.json solely to
+// enumerate the SET of distinct `type` values and assert each has a label
+// handler. It pins no fact about any show (no title, score, date or count) and
+// stays green no matter what an enricher changes, so it cannot re-assert a bug
+// in derived data. It fails only when a genuinely NEW type value appears —
+// which is the whole point.
 /**
  * Show-format label coverage + parity.
  *
