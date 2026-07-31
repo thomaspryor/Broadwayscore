@@ -1096,7 +1096,17 @@
     "sukkot-off-broadway-2026/theater-pizzazz--alix-cohen.json",
     "giulia-the-poison-queen-of-palermo-off-broadway-2026/cititour--brian-scott-lipton.json",
     "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--unknown.json",
-    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
+    "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+    "shifters-off-broadway-2026/independent--alice-saville.json",
+    "shifters-off-broadway-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1206,7 +1216,10 @@
       "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
       "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
-      "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json"
+      "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json",
+      "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -1217,7 +1230,7 @@
     ]
   },
   "startTime": "2026-07-30T18:39:18.817Z",
-  "lastProcessed": "hershey-felder-the-piano-and-me-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+  "lastProcessed": "shifters-off-broadway-2026/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-07-31T00:10:13.524Z",
@@ -1360,6 +1373,17 @@
     },
     {
       "t": "2026-07-31T03:48:44.677Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-31T03:52:29.811Z",
+      "event": "bb-session",
+      "session": "04d5d4a8",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-07-31T03:52:30.252Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
