@@ -171,6 +171,56 @@ async function fetchReviewsPageAnchors() {
   return _memoizedAnchors('reviews.php', _fetchReviewsPageAnchorsUncached);
 }
 
+/**
+ * CHEAP reviews.php anchor scan via the standard scraper chain (~$0.005/call via
+ * Bright Data) instead of Browserbase (~$0.10/call — 20x more).
+ *
+ * Why this exists (2026-07-31 billing audit): reviews.php was reachable ONLY via
+ * the paid Browserbase path, which made it look like an expensive Broadway-only
+ * luxury and led T4 to gate it off by category. Both halves of that were wrong —
+ * see shouldSkipReviewsPhp's docstring for the yield evidence. Routing it through
+ * fetchPage() first makes the page cheap enough that no show needs to be excluded
+ * for cost reasons, which is what restores the missed Off-Broadway roundups.
+ *
+ * Plain HTTPS is deliberately NOT used: tested 2026-04-25 (see
+ * watch-aggregator-urls.js discoverBwwRoundupFromHomepage) plain fetch works from
+ * a residential IP but 403s from GitHub Actions IPs. fetchPage's provider chain
+ * handles that transparently.
+ *
+ * @returns {Promise<string[]|null>} anchors, or null when the cheap tier could not
+ *   produce a usable page (caller falls back to the paid Browserbase path).
+ */
+async function _fetchReviewsPageAnchorsViaScraperUncached() {
+  let html = '';
+  try {
+    const { fetchPage } = require('./scraper');
+    const res = await fetchPage(REVIEWS_PAGE_URL, { renderJs: false });
+    html = (res && res.content) || '';
+  } catch {
+    return null;
+  }
+  // BWW soft-404s / Cloudflare interstitials return HTTP 200 with the wrong body
+  // (memory: feedback_aggregator_soft_404). Validate we got the real reviews page
+  // before trusting "zero anchors" as a genuine answer — otherwise a blocked
+  // fetch would masquerade as "no roundups published" and suppress the paid
+  // fallback that would have succeeded.
+  if (!html || !/broadwayworld/i.test(html)) return null;
+  const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
+  if (!titleMatch || !/review/i.test(titleMatch[1])) return null;
+  const re = /href="(https:\/\/www\.broadwayworld\.com\/article\/[^"]*Review-Roundup[^"]*)"/gi;
+  const found = new Set();
+  let m;
+  while ((m = re.exec(html)) !== null) found.add(m[1]);
+  // Relative hrefs (BWW mixes both forms across templates).
+  const reRel = /href="(\/article\/Review-Roundup-[^"]+)"/gi;
+  while ((m = reRel.exec(html)) !== null) found.add('https://www.broadwayworld.com' + m[1]);
+  return [...found];
+}
+
+async function fetchReviewsPageAnchorsCheap() {
+  return _memoizedAnchors('reviews.php:scraper', _fetchReviewsPageAnchorsViaScraperUncached);
+}
+
 async function _fetchReviewsPageAnchorsUncached() {
   const apiKey = process.env.BROWSERBASE_API_KEY;
   const projectId = process.env.BROWSERBASE_PROJECT_ID;
@@ -256,10 +306,24 @@ async function _fetchReviewsPageAnchorsUncached() {
  * unknown category always probes — a misclassified Broadway show must never
  * lose its fast (and free, non-Browserbase) discovery path.
  *
- * reviews.php only ever lists Broadway roundups (#312 audit: 0/12 sampled
- * Off-Broadway polls ever resolved a URL there), so an OB show burning a paid
- * Browserbase session on it is a guaranteed-miss cost — same rationale as the
- * existing closed-show skip callers pass via opts.skipReviewsPhp.
+ * SCOPE (corrected 2026-07-31): this gates ONLY the paid Browserbase fallback.
+ * The cheap fetchPage() reviews.php scan runs for every show regardless.
+ *
+ * The original T4 rationale — "reviews.php only ever lists Broadway roundups
+ * (#312 audit: 0/12 sampled Off-Broadway polls resolved a URL there)" — is
+ * empirically FALSE and was a yield regression. Measured against a live
+ * reviews.php fetch on 2026-07-31, three in-window OFF-Broadway shows had
+ * score-15 Review-Roundup matches sitting on that page while T4 skipped them:
+ *   the-saviors-off-broadway-2026            -> Review-Roundup-THE-SAVIORS-...
+ *   cat-cohen-broad-strokes-off-broadway-2026 -> Review-Roundup-Cat-Cohens-BROAD-STROKES-...
+ *   les-miserables-arena-...-off-broadway-2026 -> Review-Roundup-LES-MISERABLES-THE-ARENA-...
+ * (An off-west-end show, midnight-at-the-never-get, also matched.) The #312
+ * sample almost certainly measured the Browserbase path failing the Cloudflare
+ * wait, not reviews.php lacking OB content.
+ *
+ * So category is NOT a proxy for "reviews.php can't help this show". It is only
+ * a weak cost heuristic for whether a $0.10 session is worth spending when the
+ * cheap tier has already come back empty.
  *
  * @param {object} show - shows.json record; reads show.category
  * @returns {boolean}
@@ -324,12 +388,17 @@ async function _fetchSectionPageAnchorsUncached(url) {
  *
  * @param {object} show - shows.json record; needs { title, openingDate, category }
  * @param {object} [opts]
- * @param {function} [opts.fetchAnchors] - override the reviews.php fetch (testing)
+ * @param {function} [opts.fetchAnchors] - override the PAID reviews.php fetch
+ *   (testing). When supplied, the cheap tier is bypassed entirely so existing
+ *   tests exercise the paid path deterministically.
+ * @param {function} [opts.fetchCheapAnchors] - override the cheap reviews.php fetch (testing)
  * @param {function} [opts.fetchSectionAnchors] - override the section fetch (testing)
- * @param {boolean} [opts.skipReviewsPhp] - explicit override; defaults to
- *   shouldSkipReviewsPhp(show) when omitted (fail-open on category)
+ * @param {boolean} [opts.skipReviewsPhp] - caller's OWN cost guard for the paid
+ *   tier. OR'd with shouldSkipReviewsPhp(show); an explicit `false` does NOT
+ *   disable the category default.
  * @returns {Promise<{ url: string|null, candidates: Array<{url:string, score:number}>, via: string }>}
- *   via: 'section' | 'section-only' | 'reviews.php' | 'cap-exhausted' | 'provider-error' | 'not-found'
+ *   via: 'section' | 'reviews.php-cheap' | 'section-only' | 'reviews.php'
+ *      | 'cap-exhausted' | 'provider-error' | 'not-found'
  */
 async function discoverBwwRoundupUrl(show, opts = {}) {
   const score = (anchors) => anchors
@@ -348,13 +417,39 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
     return { url: candidates[0].url, candidates, via: 'section' };
   }
 
-  // 2. Fall back to reviews.php (Browserbase, ~$0.10/call). Skippable: reviews.php
-  //    only lists RECENT roundups, so for a closed/old show the section scan having
-  //    found nothing means reviews.php won't either — firing Browserbase there is a
-  //    guaranteed-miss cost (the back-catalogue grind would burn ~$0.10 × hundreds
-  //    of closed shows). Callers pass skipReviewsPhp explicitly (e.g. closed-show
-  //    cost guard) to override the shouldSkipReviewsPhp(show) category default.
-  const skipReviewsPhp = opts.skipReviewsPhp !== undefined ? opts.skipReviewsPhp : shouldSkipReviewsPhp(show);
+  // 2. CHEAP reviews.php scan via fetchPage (~$0.005). Runs for EVERY show — no
+  //    category or closed-show gate. This is the step that recovers the
+  //    Off-Broadway roundups T4 was skipping (see shouldSkipReviewsPhp docstring
+  //    for the three measured live misses). Only if this comes back empty or
+  //    unusable do we consider spending a $0.10 Browserbase session.
+  if (!opts.fetchAnchors) {
+    let cheapAnchors = null;
+    try {
+      const fetchCheap = opts.fetchCheapAnchors || fetchReviewsPageAnchorsCheap;
+      cheapAnchors = await fetchCheap();
+    } catch { cheapAnchors = null; }
+    if (cheapAnchors && cheapAnchors.length > 0) {
+      const cheapCandidates = score(cheapAnchors);
+      if (cheapCandidates.length > 0) {
+        return { url: cheapCandidates[0].url, candidates: cheapCandidates, via: 'reviews.php-cheap' };
+      }
+    }
+  }
+
+  // 3. Paid Browserbase reviews.php fallback (~$0.10/call). THIS is what the skip
+  //    gate protects — not discovery itself. Skippable for closed shows (reviews.php
+  //    lists only RECENT roundups, so the back-catalogue grind would burn ~$0.10 x
+  //    hundreds of closed shows) and, by category default, where a paid retry after
+  //    an empty cheap scan is judged not worth it. Callers pass skipReviewsPhp
+  //    explicitly to override the shouldSkipReviewsPhp(show) default.
+  //
+  //    Composition note: an explicit `false` from a caller means "don't apply MY
+  //    guard", not "override the category default" — the two guards are OR'd, so a
+  //    call site like { skipReviewsPhp: show.status === 'closed' } can no longer
+  //    silently disable the category default for every open show (the bug that made
+  //    the hourly audit-aggregator-gap run bypass T4 entirely).
+  const explicitSkip = opts.skipReviewsPhp === true;
+  const skipReviewsPhp = explicitSkip || shouldSkipReviewsPhp(show);
   if (skipReviewsPhp) {
     return { url: null, candidates: [], via: 'section-only' };
   }
@@ -376,6 +471,7 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
 module.exports = {
   discoverBwwRoundupUrl,
   fetchReviewsPageAnchors,
+  fetchReviewsPageAnchorsCheap,
   fetchSectionPageAnchors,
   sectionUrlForShow,
   scoreCandidate,
