@@ -1480,9 +1480,17 @@ function isJunkOutlet(outletName) {
   return false;
 }
 
+// Zero-width spaces, LTR/RTL marks, BOM -- some sites (e.g. theatre.reviews) inject
+// these into canonical URLs invisibly, breaking byte-for-byte comparison (see #702).
+const INVISIBLE_UNICODE_RE = /[​-‏‪-‮⁠-⁤﻿]/g;
+
+function stripInvisibleUnicode(url) {
+  return url.normalize('NFC').replace(INVISIBLE_UNICODE_RE, '');
+}
+
 /**
  * Normalize a URL for dedup comparison.
- * Strips protocol, www prefix, trailing slashes, fragments, and tracking params.
+ * Strips invisible Unicode, protocol, www prefix, trailing slashes, fragments, and tracking params.
  * Returns a canonical string for comparison (NOT a valid URL).
  *
  * Used by:
@@ -1492,7 +1500,7 @@ function isJunkOutlet(outletName) {
 function normalizeUrl(url) {
   if (!url) return '';
   try {
-    let u = url.toLowerCase().trim()
+    let u = stripInvisibleUnicode(url).toLowerCase().trim()
       .replace(/^https?:\/\//, '')
       .replace(/^www\./, '')
       .replace(/\/+$/, '')
