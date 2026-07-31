@@ -49,6 +49,10 @@ async function _memoizedAnchors(cacheKey, fetchFn) {
 }
 
 const REVIEWS_PAGE_URL = 'https://www.broadwayworld.com/reviews.php';
+// Where reviews.php actually 301s to. Used by the cheap fetchPage tier, whose
+// url-verification guard rejects the redirect hop. See
+// _fetchReviewsPageAnchorsViaScraperUncached.
+const REVIEWS_PAGE_CANONICAL_URL = 'https://www.broadwayworld.com/reviews/';
 const BROWSERBASE_API = 'https://api.browserbase.com/v1/sessions';
 const NAV_TIMEOUT_MS = 30000;
 const SESSION_TIMEOUT_MS = 30000;
@@ -194,7 +198,14 @@ async function _fetchReviewsPageAnchorsViaScraperUncached() {
   let html = '';
   try {
     const { fetchPage } = require('./scraper');
-    const res = await fetchPage(REVIEWS_PAGE_URL, { renderJs: false });
+    // Canonical URL, NOT reviews.php. /reviews.php 301-redirects to /reviews/, and
+    // fetchPage's verifyFetchedUrl rejects the result as `url_mismatch` — which is
+    // very likely the original reason this page was ever put on Browserbase at all
+    // (page.goto follows redirects silently, so the paid path never hit the guard).
+    // Measured 2026-07-31: requesting REVIEWS_PAGE_URL through fetchPage fails with
+    // "Bright Data returned wrong page (url_mismatch: .../reviews/)"; requesting
+    // REVIEWS_PAGE_CANONICAL_URL returns 183KB and 12 Review-Roundup anchors.
+    const res = await fetchPage(REVIEWS_PAGE_CANONICAL_URL, { renderJs: false });
     html = (res && res.content) || '';
   } catch {
     return null;
