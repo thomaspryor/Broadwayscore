@@ -58,7 +58,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { selectOpeningNightShows } = require('./lib/opening-night-selection.js');
 const {
   activeWindows, nightKey, launchDecision, computeWindow,
-  claimLockGeneration, isLockGenerationOwner,
+  claimLockGeneration, isLockGenerationOwner, MAX_ATTEMPTS_PER_NIGHT,
 } = require('./lib/opening-night-windows.js');
 const { runMonitorPass } = require('./lib/opening-night-monitor.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
@@ -191,11 +191,45 @@ async function alert(opts) {
 // preflightAuth pattern): distinguishes an OAuth-expiry night from N launch
 // failures, and an auth failure must NOT consume a launch attempt (plan
 // review: the attempt cap only counts tries that reached a side effect).
-function preflightAuth() {
+//
+// #457 root cause (2026-07-31, tao-of-glass night): the login lives in the
+// macOS Keychain (no ~/.claude/.credentials.json), which a launchd-parented
+// claude cannot open — so a pass launched with ANTHROPIC_API_KEY cleared
+// dies "Not logged in". The old preflight LIED about this: it inherited the
+// launcher's env, where load-env.js had already pulled the .env API key in,
+// so the ping billed through the key while the real pass then cleared it.
+// The preflight must probe the SAME env shape the pass will run with, and
+// when only the API key path works, the pass must be told to keep the key
+// (bounded spend: MAX_ATTEMPTS_PER_NIGHT passes, HEADLESS_MAX_WALL_MIN cap).
+function authPing(extraEnv) {
   const r = spawnSync('claude', ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
-    { encoding: 'utf8', timeout: 120000 });
+    { encoding: 'utf8', timeout: 120000, env: { ...process.env, ...extraEnv } });
   if (r.status !== 0) return { ok: false, detail: (r.stderr || r.stdout || `exit ${r.status}`).slice(0, 300) };
+  if (/Not logged in/i.test(r.stdout || '')) return { ok: false, detail: 'Not logged in (stored login unreachable in this context)' };
   return { ok: true };
+}
+
+// Pure decision, extracted for tests (CLAUDE.md rule 15): which auth mode
+// should the pass use given the two probe outcomes and key availability?
+function resolvePassAuth({ storedLoginOk, apiKeyPresent, apiKeyPingOk }) {
+  if (storedLoginOk) return { mode: 'oauth' };
+  if (apiKeyPresent && apiKeyPingOk) return { mode: 'api-key' };
+  return { mode: 'fail' };
+}
+
+function preflightAuth() {
+  // Probe 1: the pass's real env — API key cleared, stored login only.
+  const stored = authPing({ ANTHROPIC_API_KEY: '' });
+  if (stored.ok) return { ok: true, mode: 'oauth' };
+  const apiKeyPresent = Boolean(process.env.ANTHROPIC_API_KEY);
+  // Probe 2: only if a key exists — can the key path carry the pass?
+  const keyed = apiKeyPresent ? authPing({}) : { ok: false, detail: 'no ANTHROPIC_API_KEY in env' };
+  const decision = resolvePassAuth({ storedLoginOk: false, apiKeyPresent, apiKeyPingOk: keyed.ok });
+  if (decision.mode === 'api-key') {
+    log(`preflight: stored login unreachable (${stored.detail.slice(0, 120)}) — falling back to ANTHROPIC_API_KEY (pay-per-token, capped at ${MAX_ATTEMPTS_PER_NIGHT} passes x ${HEADLESS_MAX_WALL_MIN}min/night). Run \`claude setup-token\` + add CLAUDE_CODE_OAUTH_TOKEN to restore subscription billing.`);
+    return { ok: true, mode: 'api-key', storedDetail: stored.detail };
+  }
+  return { ok: false, detail: `stored-login: ${stored.detail} | api-key: ${keyed.detail}` };
 }
 
 function buildSeed(windows, { attempt, rehearsal, key }) {
@@ -324,7 +358,8 @@ async function main(argv = process.argv.slice(2)) {
       conditionKey: `on-monitor-auth-failed-${now.toISOString().slice(0, 10)}`,
       title: 'Opening-night monitor: claude auth preflight failed — no session launched',
       description: `Ping failed: ${auth.detail}. A show is in its opening-night window (${windows.map(w => w.showId).join(', ')}). ` +
-        'Re-auth claude on the Mac Studio; the next 20-min tick retries automatically.',
+        'Stored login is Keychain-only (unreachable from launchd) and no working ANTHROPIC_API_KEY fallback. ' +
+        'Fix: `claude setup-token` and put CLAUDE_CODE_OAUTH_TOKEN in .env; the next 20-min tick retries automatically.',
       severity: 'error', disposition: 'human', cooldownHours: 6,
     });
     return 1;
@@ -387,7 +422,15 @@ async function main(argv = process.argv.slice(2)) {
     // set, skipping email alert" failure this session's #457 fix (commit
     // 288e31efd69) already fixed for the LAUNCHER's own alerts, but never
     // extended to the pass it launches.
-    env: { ANTHROPIC_API_KEY: '', RESEND_API_KEY: process.env.RESEND_API_KEY || '', OWNER_EMAIL: process.env.OWNER_EMAIL || '' },
+    // #457: auth.mode comes from preflightAuth(), which probed this exact
+    // env shape. 'oauth' keeps the key cleared (subscription billing);
+    // 'api-key' forwards it because the stored login is unreachable from
+    // this (launchd) context — spend stays bounded by the attempt cap above.
+    env: {
+      ANTHROPIC_API_KEY: auth.mode === 'api-key' ? (process.env.ANTHROPIC_API_KEY || '') : '',
+      RESEND_API_KEY: process.env.RESEND_API_KEY || '',
+      OWNER_EMAIL: process.env.OWNER_EMAIL || '',
+    },
     logFile: path.join(MON_DIR, `session-log-${key}-a${attemptNum}.log`),
   });
 
@@ -452,7 +495,7 @@ async function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-module.exports = { parseArgs, monitorCandidates, buildSeed, main };
+module.exports = { parseArgs, monitorCandidates, buildSeed, resolvePassAuth, main };
 
 if (require.main === module) {
   main().then(code => process.exit(code)).catch(e => {
