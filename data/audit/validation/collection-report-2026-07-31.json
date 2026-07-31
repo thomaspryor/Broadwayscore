@@ -1,75 +1,71 @@
 {
-  "runDate": "2026-07-31T21:34:40.478Z",
+  "runDate": "2026-07-31T22:10:46.283Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "tao-of-glass-west-end-2026",
+    "showFilter": "space-dogs-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 5,
+    "processed": 1,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
+    "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 0,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 3,
+    "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 0,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 5,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "space-dogs-off-west-end-2026/all-that-dazzles-uk--unknown.json"
+  ],
   "failed": [
-    "tao-of-glass-west-end-2026/bachtrack--unknown.json",
-    "tao-of-glass-west-end-2026/broadwayworld--franco-milazzo.json",
-    "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
-    "tao-of-glass-west-end-2026/thestage--the-stage.json",
-    "tao-of-glass-west-end-2026/tribune--unknown.json"
+    "space-dogs-off-west-end-2026/thestage--the-stage.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "space-dogs-off-west-end-2026/all-that-dazzles-uk--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/tao-of-glass-west-end-2026/bachtrack--unknown.json",
-      "data/review-texts/tao-of-glass-west-end-2026/click-liverpool--unknown.json",
-      "data/review-texts/tao-of-glass-west-end-2026/thestage--the-stage.json"
-    ],
+    "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
