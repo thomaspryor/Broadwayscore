@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-31T12:46:48.817Z",
+  "timestamp": "2026-07-31T13:51:21.776Z",
   "stats": {
-    "totalReviews": 41025,
-    "alreadyFlagged": 17913,
+    "totalReviews": 41030,
+    "alreadyFlagged": 17914,
     "dateGuardCatches": 79,
     "directorMismatch": 936,
     "tvFilmSignals": 1122,
-    "londonSignals": 770,
+    "londonSignals": 771,
     "offBroadwaySignals": 465,
     "yearMismatch": 86,
-    "noPublishDate": 3404
+    "noPublishDate": 3405
   },
   "findings": [
     {
@@ -40910,6 +40910,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tao-of-glass-west-end-2026",
+      "file": "thereviewshub--unknown.json",
+      "score": 90,
+      "publishDate": "2026-07-31",
+      "url": "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
