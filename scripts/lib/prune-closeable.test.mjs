@@ -14,36 +14,36 @@ test('hasAutoDispatchMarker: detects the 🤖 glyph anywhere in the title', () =
 // Card #709 (owner-approved 2026-07-31): the four required cases.
 test('isCloseable: ✅🤖 + idle-at-prompt (live claude, not running) => close', () => {
   assert.equal(isCloseable({
-    title: `✅ ${AUTO_GLYPH}⚡ Infra·bsc-prune fix`,
     hasLiveClaude: true,
+    isAutoDispatched: true,
     isRunning: false,
   }), true);
 });
 
 test('isCloseable: ✅🤖 + mid-turn (live claude, running) => skip', () => {
   assert.equal(isCloseable({
-    title: `✅ ${AUTO_GLYPH}⚡ Infra·bsc-prune fix`,
     hasLiveClaude: true,
+    isAutoDispatched: true,
     isRunning: true,
   }), false);
 });
 
 test('isCloseable: ✅ non-🤖 + idle claude => skip (owner-driven tabs stay protected)', () => {
   assert.equal(isCloseable({
-    title: '✅ Redesign show pages',
     hasLiveClaude: true,
+    isAutoDispatched: false,
     isRunning: false,
   }), false);
 });
 
 test('isCloseable: ✅ + no claude at all => close, regardless of marker', () => {
   assert.equal(isCloseable({
-    title: '✅ Redesign show pages',
     hasLiveClaude: false,
+    isAutoDispatched: false,
     isRunning: true, // must be ignored when hasLiveClaude is false
   }), true);
   assert.equal(isCloseable({
-    title: `✅ ${AUTO_GLYPH}⚡ Infra·bsc-prune fix`,
     hasLiveClaude: false,
+    isAutoDispatched: true,
   }), true);
 });

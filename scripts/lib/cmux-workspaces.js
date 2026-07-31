@@ -99,6 +99,23 @@ function claudeRunningIn(ref) {
   }
 }
 
+// SAFE variant for the close-decision path (card #709 ship-check catch).
+// claudeRunningIn above is legacy pre-#559 logic that fails OPEN to "not
+// running" on any I/O error — the same unsafe direction the #559 fix
+// (claudeAliveIn) eliminated from the close path. Reusing claudeRunningIn
+// directly in pruneDone would reintroduce that exact false-negative into a
+// DESTRUCTIVE close decision: a transient cmux error would silently read as
+// "idle," pruneDone would treat that as "safe to close," and a live ✅🤖 tab
+// mid-turn could get closed on pure uncertainty. Fails safe to TRUE
+// (mid-turn/busy) instead — uncertainty must never look like idle.
+function claudeMidTurnIn(ref) {
+  try {
+    return hasRunningClaude(run(['top', '--workspace', ref, '--processes', '--format', 'tsv']));
+  } catch {
+    return true; // uncertain → treat as mid-turn → do not close
+  }
+}
+
 function claudeAliveIn(ref) {
   try {
     return hasLiveClaude(run(['top', '--workspace', ref, '--processes', '--format', 'tsv']));
@@ -256,7 +273,7 @@ function pruneDone(opts = {}) {
   // Seams are test-only (prove the skip/throw paths without a cmux socket).
   const aliveFn = opts.claudeAliveIn || claudeAliveIn;
   const surfaceAliveFn = opts.terminalSurfaceAliveIn || terminalSurfaceAliveIn;
-  const runningFn = opts.claudeRunningIn || claudeRunningIn;
+  const runningFn = opts.claudeMidTurnIn || claudeMidTurnIn;
   const listFn = opts.listWorkspaces || listWorkspaces;
   const closeFn = opts.closeWorkspace || closeWorkspace;
   const done = listFn().filter(w => isDoneTitle(w.title));
@@ -271,11 +288,12 @@ function pruneDone(opts = {}) {
     // spend an extra cmux call finding out whether it's busy. Any error
     // (or a non-auto title) defaults isRunning to true — fail-safe: never
     // treat uncertainty as "idle, close it."
+    const isAutoDispatched = hasAutoDispatchMarker(w.title);
     let isRunning = true;
-    if (!dead && hasAutoDispatchMarker(w.title)) {
+    if (!dead && isAutoDispatched) {
       try { isRunning = runningFn(w.ref); } catch { isRunning = true; }
     }
-    if (!isCloseable({ title: w.title, hasLiveClaude: !dead, isRunning })) { skipped.push(w); continue; }
+    if (!isCloseable({ hasLiveClaude: !dead, isAutoDispatched, isRunning })) { skipped.push(w); continue; }
     if (opts.dryRun) { closed.push(w); continue; }
     try { closeFn(w.ref); closed.push(w); }
     catch (e) { console.error(`[cmux-workspaces] failed to close ${w.ref}: ${e.message}`); }
@@ -287,6 +305,6 @@ module.exports = {
   CMUX, cmuxAvailable, run,
   parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude,
   hasClaudeChrome, isNotFoundError,
-  listWorkspaces, closeWorkspace, claudeRunningIn, claudeAliveIn,
+  listWorkspaces, closeWorkspace, claudeRunningIn, claudeMidTurnIn, claudeAliveIn,
   terminalSurfaceAliveIn, checkLiveness, computeClaudeAlive, pruneDone,
 };

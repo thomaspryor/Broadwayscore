@@ -31,12 +31,17 @@ function hasAutoDispatchMarker(title) {
 
 // hasLiveClaude: whether any claude_code process exists for this workspace
 // (false = fully dead — same "closeable regardless of marker" rule prune
-// already had). isRunning: whether that live claude is mid-turn (true) vs
-// idle-at-prompt (false) — irrelevant when hasLiveClaude is false, so
-// callers may pass anything (or omit it) in that case.
-function isCloseable({ title, hasLiveClaude, isRunning }) {
+// already had). isAutoDispatched: caller-computed hasAutoDispatchMarker(title)
+// result — taken as a bool rather than re-deriving from title here, since
+// pruneDone already needs that same fact itself (to decide whether it's
+// worth spending a cmux call finding out isRunning) and re-parsing the same
+// string twice for the same fact invites the two checks drifting apart.
+// isRunning: whether the live claude is mid-turn (true) vs idle-at-prompt
+// (false) — irrelevant when hasLiveClaude is false, so callers may pass
+// anything (or omit it) in that case.
+function isCloseable({ hasLiveClaude, isAutoDispatched, isRunning }) {
   if (!hasLiveClaude) return true;
-  if (!hasAutoDispatchMarker(title)) return false;
+  if (!isAutoDispatched) return false;
   return !isRunning;
 }
 
