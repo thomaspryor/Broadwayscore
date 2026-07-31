@@ -49,6 +49,7 @@ import { getShowRanks } from '@/lib/data-show-ranks';
 import { getBrowseSlug } from '@/lib/browse-slugs';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
 import { AwardsNavLink } from '@/components/AwardsNavLink';
+import { showFormatTitle, showFormatTextClass } from '@/lib/show-format';
 
 // Group A: personalized, auth-dependent — ssr:false so they don't block
 // the pre-rendered HTML, Suspense prevents hydration mismatch.
@@ -461,7 +462,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 {show.category && show.category !== 'broadway' && !isOpera && (
                   <span className={show.category === 'west-end' ? 'text-teal-400' : show.category === 'off-west-end' ? 'text-violet-400' : show.category === 'regional' ? 'text-emerald-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : show.category === 'off-west-end' ? 'Off-West End' : show.category === 'regional' ? 'Regional' : 'Off-Bway'}</span>
                 )}
-                <span className={isOpera ? 'text-indigo-400' : show.type === 'musical' ? 'text-purple-400' : 'text-blue-400'}>{isOpera ? 'Opera' : show.type === 'musical' ? 'Musical' : 'Play'}</span>
+                <span className={isOpera ? 'text-indigo-400' : showFormatTextClass(show.type)}>{isOpera ? 'Opera' : showFormatTitle(show.type)}</span>
                 <span className={show.isRevival ? 'text-gray-400' : 'text-amber-400'}>{show.isRevival ? 'Revival' : 'Original'}</span>
                 {show.limitedRun && <span className="text-red-400">Limited</span>}
               </div>

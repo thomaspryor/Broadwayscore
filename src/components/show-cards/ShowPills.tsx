@@ -1,3 +1,5 @@
+import { resolveShowFormat } from '@/lib/show-format';
+
 // Status pill - subtle background with accent color
 export function StatusBadge({ status }: { status: string }) {
   const label = {
@@ -23,17 +25,14 @@ export function StatusBadge({ status }: { status: string }) {
   );
 }
 
-// Format pill - outline style
-// Opera color: indigo, chosen to avoid collision with score-tier reds
-// and the musical-purple / play-blue palette.
-const FORMAT_PILL_CONFIG: Record<string, { label: string; colorClass: string }> = {
-  musical: { label: 'MUSICAL', colorClass: 'border-purple-500/50 text-purple-400' },
-  opera: { label: 'OPERA', colorClass: 'border-indigo-500/50 text-indigo-400' },
-  play: { label: 'PLAY', colorClass: 'border-blue-500/50 text-blue-400' },
-};
-
+// Format pill - outline style.
+// Labels live in src/lib/show-format.ts so the web app, the email templates and
+// the newsletter generator all agree. Do NOT reintroduce a local map here: the
+// previous local copy defaulted every unknown type to PLAY, which is how 43
+// `type: 'special'` shows (concerts, galas, immersive experiences) shipped
+// badged as plays.
 export function FormatPill({ type }: { type: string }) {
-  const cfg = FORMAT_PILL_CONFIG[type] || FORMAT_PILL_CONFIG.play;
+  const cfg = resolveShowFormat(type);
   return (
     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide border ${cfg.colorClass}`}>
       {cfg.label}

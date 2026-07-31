@@ -41,6 +41,7 @@ const { checkPreviewDedup } = require('./lib/preview-dedup');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { showFormatTitle } = require('./lib/show-format');
 
 const USAGE = `send-opening-night-broadcast.js — Creates a Resend DRAFT broadcast when a show opens and has enough reviews.
 
@@ -536,7 +537,7 @@ async function main() {
       mixed: stats.mixed,
       negative: stats.negative,
       consensusText,
-      showType: show.type === 'musical' ? 'Musical' : 'Play',
+      showType: showFormatTitle(show.type),
       venue: show.venue,
       showUrl: `https://broadwayscorecard.com/show/${show.slug || showId}`,
       imageUrl,

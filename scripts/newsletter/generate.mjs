@@ -1848,7 +1848,7 @@ function seasonStandingFor(openedShow) {
   if (scored.length < 3) return null;
   scored.sort((a, b) => b.agg.avg - a.agg.avg);
   // Category label
-  const typeWord = openedShow.type === 'musical' ? 'Musical' : 'Play';
+  const typeWord = showFormatTitle(openedShow.type);
   const seasonLabel = openedShow.isRevival ? `${typeWord} Revivals This Season` : `New ${typeWord}s This Season`;
   const rows = scored.slice(0, 8).map((x, i, arr) => {
     const isHighlight = x.s.id === openedShow.id;

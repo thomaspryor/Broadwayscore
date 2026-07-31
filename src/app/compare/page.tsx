@@ -7,6 +7,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import Breadcrumb from '@/components/Breadcrumb';
 import CompareShowPicker from '@/components/CompareShowPicker';
+import { showFormatTitle } from '@/lib/show-format';
 
 export const metadata: Metadata = {
   title: 'Broadway Show Comparisons - Which Show Should You See?',
@@ -70,7 +71,7 @@ function ComparisonCard({ showA, showB, slug }: {
             {showA.title} vs {showB.title}
           </h3>
           <p className="text-gray-400 text-xs sm:text-sm mt-1">
-            {showA.type === 'musical' ? 'Musical' : 'Play'} vs {showB.type === 'musical' ? 'Musical' : 'Play'}
+            {showFormatTitle(showA.type)} vs {showFormatTitle(showB.type)}
             {showA.criticScore?.score && showB.criticScore?.score && (
               <span className="ml-2">
                 • Scores: {Math.round(showA.criticScore.score)} vs {Math.round(showB.criticScore.score)}

@@ -10,6 +10,7 @@
 const https = require('https');
 const { isLondonMarket } = require('./venue-classification');
 const BRAND = require('./brand-colors');
+const { showFormatTitle } = require('./show-format');
 
 // Canonical brand values — see scripts/lib/brand-colors.js for full palette.
 // The hardcoded hex throughout this file (#d4a574, #0f0f14, etc.) must match
@@ -811,7 +812,7 @@ function buildDailyDigestHtml(changes, date) {
   if (changes.newShows.length > 0) {
     let html = sectionHeader(`New Shows (${changes.newShows.length})`);
     for (const s of changes.newShows) {
-      const typeLabel = s.type === 'musical' ? 'Musical' : 'Play';
+      const typeLabel = showFormatTitle(s.type);
       const statusLabel = s.status === 'previews' ? ' &middot; In Previews' : s.status === 'upcoming' ? ' &middot; Upcoming' : '';
       html += row(`${showLink(s.title, s.slug, s)} &mdash; ${typeLabel}${statusLabel}${s.venue ? ` &middot; ${escapeHtml(s.venue)}` : ''}`);
     }

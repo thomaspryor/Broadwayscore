@@ -3,6 +3,7 @@ import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass } from '@/lib/critic-page-utils';
 import { TrophyIcon } from '@/components/icons';
+import { showFormatTitle } from '@/lib/show-format';
 
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr);
@@ -76,7 +77,7 @@ export function CreativeShowCard({
                 ? 'bg-purple-500/20 text-purple-400 border-purple-500/30'
                 : 'bg-blue-500/20 text-blue-400 border-blue-500/30'
             }`}>
-              {show.type === 'musical' ? 'Musical' : 'Play'}
+              {showFormatTitle(show.type)}
             </span>
           )}
           {show.isRevival && (
