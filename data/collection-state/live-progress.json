@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-31T00:44:57.324Z",
+  "updatedAt": "2026-07-31T01:03:14.805Z",
   "processed": 60,
-  "failed": 891,
-  "successRate": "6.3%",
+  "failed": 901,
+  "successRate": "6.2%",
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 4,
     "scrapingbee": 0,
     "brightdata": 16,
-    "archiveToday": 13,
+    "archiveToday": 16,
     "archive": 5
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-31T00:10:13.524Z",
@@ -70,6 +70,17 @@
       "t": "2026-07-31T00:44:41.663Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-31T00:59:06.911Z",
+      "event": "bb-session",
+      "session": "36594951",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-07-31T00:59:07.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
