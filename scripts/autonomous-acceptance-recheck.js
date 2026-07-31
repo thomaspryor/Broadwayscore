@@ -51,6 +51,17 @@ const { selectRecheckTargets, summarize, describeResult, shouldExitShadow, SHADO
 
 const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
+// A DEDICATED ledger, never the shared data/audit/autonomous-ledger.jsonl
+// default (task #695 ship-check finding, verified live): com.broadwayscore.
+// autonomous-shadow is still loaded on the Mac Studio and appends shadow-*
+// events to that default path every night via a `git fetch && merge
+// --ff-only` update step. If this CI-hosted recheck shared that path, CI
+// would commit new lines to a file the Mac checkout also has uncommitted
+// local writes to — the shadow job's ff-only merge would start failing
+// silently every night (falling back to "running with local code" forever,
+// per its own plist comment) the first time the two diverged. This path is
+// exclusively CI-owned and un-gitignored for exactly that reason.
+const RECHECK_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'autonomous-recheck-ledger.jsonl');
 const MAX_CARDS = 10; // bounded work: this runs every night, not a backfill
 // The recheck now runs BEFORE the executor and therefore before the morning
 // email. 10 cards x 2 attempts x the 5-minute per-check cap is ~100 minutes of
@@ -62,9 +73,14 @@ const RUN_DEADLINE_MS = 20 * 60 * 1000;
 const USAGE = `autonomous-acceptance-recheck.js — re-verify recently-Done cards (shadow mode).
 
 Usage:
-  node scripts/autonomous-acceptance-recheck.js [--window-hours 24] [--limit 10]
+  node scripts/autonomous-acceptance-recheck.js [--window-hours 24] [--limit 10] [--time-budget-min 20]
   node scripts/autonomous-acceptance-recheck.js --dry-run   plan only — no checks run, no ledger write
   node scripts/autonomous-acceptance-recheck.js --help
+
+--time-budget-min caps this run's own wall clock (default 20). Set it below
+the HOST's remaining job budget minus margin for its other steps — this
+script's own deadline check cannot protect a job-level timeout-minutes that
+fires first and kills every step, not just this one.
 
 Re-runs each card's own acceptance-criteria command (captured at dispatch) against a
 fresh detached checkout of origin/main. Reports only: no card is ever reopened.`;
@@ -191,6 +207,15 @@ function enforcementState(cfg, entries) {
 
 function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+  // Kill switch (Codex ship-check finding, task #695): same pattern as
+  // BROWSERBASE_KILL_SWITCH — a repo/org Actions variable lets the owner turn
+  // this off instantly (a flaky check command wedging the health-check job,
+  // an unwanted Notion write pattern) without reverting code or waiting for
+  // a PR. `gh variable set ACCEPTANCE_RECHECK_KILL_SWITCH --body true`.
+  if (process.env.ACCEPTANCE_RECHECK_KILL_SWITCH === 'true') {
+    console.error('[recheck] ACCEPTANCE_RECHECK_KILL_SWITCH is set — skipping this run entirely');
+    return;
+  }
   const args = parseArgs(argv);
   const dryRun = !!args['dry-run'];
   const windowHours = Number(args['window-hours']) || DEFAULT_WINDOW_HOURS;
@@ -210,15 +235,15 @@ function main(argv = process.argv.slice(2)) {
   // stamp is due — selectRecheckTargets/doneWithinWindow refuse every Paused
   // card that lacks that stamp, so this widening never pulls in ordinary
   // paused backlog work.
-  try { doneCards = notionBrain(['list', '--status', 'Done,Paused', '--limit', String(DONE_LIST_LIMIT), '--sort', 'edited']); }
+  try { doneCards = notionBrain(['list', '--status', 'Done,Paused', '--limit', String(DONE_LIST_LIMIT), '--sort', 'edited', '--include-notes']); }
   catch (err) {
     console.error(`[recheck] could not list Done/Paused cards: ${String(err.message).slice(0, 200)}`);
-    if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Notion listing failed: ${String(err.message).slice(0, 200)}` });
+    if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Notion listing failed: ${String(err.message).slice(0, 200)}` }, RECHECK_LEDGER_PATH);
     return;
   }
 
   const cfg = (() => { try { return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')); } catch { return {}; } })();
-  const enforcement = enforcementState(cfg, ledger.readEntries().entries || []);
+  const enforcement = enforcementState(cfg, ledger.readEntries(RECHECK_LEDGER_PATH).entries || []);
   if (enforcement.requested && !enforcement.enforcing) console.error(`[recheck] ${enforcement.reason}`);
   if (enforcement.enforcing) console.error('[recheck] enforcement is ON — failures will still only be REPORTED until the reopen path ships (carry-forward)');
 
@@ -226,7 +251,7 @@ function main(argv = process.argv.slice(2)) {
   // reporting "nothing to re-check" from a truncated list (ship-check finding).
   if (doneCards.length >= DONE_LIST_LIMIT) {
     console.error(`[recheck] WARN the Done listing came back full (${DONE_LIST_LIMIT}) — older Done cards in the window may have been cut off`);
-    ledger.appendEntry({ event: 'recheck-truncated', runId, note: `Done listing hit the ${DONE_LIST_LIMIT}-card limit; coverage may be incomplete` });
+    ledger.appendEntry({ event: 'recheck-truncated', runId, note: `Done listing hit the ${DONE_LIST_LIMIT}-card limit; coverage may be incomplete` }, RECHECK_LEDGER_PATH);
   }
 
   const taskState = loadSharedTaskState();
@@ -239,7 +264,7 @@ function main(argv = process.argv.slice(2)) {
 
   console.error(`[recheck] ${targets.length} card(s) marked Done in the last ${windowHours}h have a dispatch record`);
   if (!targets.length) {
-    if (!dryRun) ledger.appendEntry({ event: 'recheck-summary', runId, note: 'nothing to re-check', counts: { pass: 0, fail: 0, unverifiable: 0, skipped: 0 } });
+    if (!dryRun) ledger.appendEntry({ event: 'recheck-summary', runId, note: 'nothing to re-check', counts: { pass: 0, fail: 0, unverifiable: 0, skipped: 0 } }, RECHECK_LEDGER_PATH);
     return;
   }
   if (dryRun) {
@@ -253,20 +278,32 @@ function main(argv = process.argv.slice(2)) {
     try { checkout = makeFreshCheckout(); }
     catch (err) {
       console.error(`[recheck] could not build a fresh main checkout: ${String(err.message).slice(0, 200)}`);
-      ledger.appendEntry({ event: 'recheck-skip', runId, note: `fresh checkout failed: ${String(err.message).slice(0, 200)}` });
+      ledger.appendEntry({ event: 'recheck-skip', runId, note: `fresh checkout failed: ${String(err.message).slice(0, 200)}` }, RECHECK_LEDGER_PATH);
       return;
     }
   }
 
+  // --time-budget-min (task #695 ship-check finding): data-health-check.yml's
+  // job timeout is 10min total for EVERYTHING it does (health check, E2E
+  // canary, provider spend, this step, the commit). The script's own default
+  // 20min RUN_DEADLINE_MS was sized for the original nightly-loop host,
+  // which had no such neighbor budget — left at its default here, a single
+  // slow/flaky card retry (up to 2x5min) could blow the WHOLE JOB's timeout
+  // and lose every other step's commit, not just this one's. CI passes a
+  // much smaller override; the default stays 20min for any future host with
+  // more room (matches memory/feedback_cron_timeout_needs_script_budget.md).
+  const timeBudgetMs = args['time-budget-min'] ? Number(args['time-budget-min']) * 60 * 1000 : RUN_DEADLINE_MS;
+  const timeBudgetMinLabel = Math.round(timeBudgetMs / 60000);
+
   const results = [];
-  const deadline = Date.now() + RUN_DEADLINE_MS;
+  const deadline = Date.now() + timeBudgetMs;
   try {
     for (const t of targets) {
       let r;
       if (Date.now() > deadline && !t.skip) {
         const deferred = targets.slice(targets.indexOf(t)).length;
-        console.error(`[recheck] ${RUN_DEADLINE_MS / 60000}min budget spent — deferring ${deferred} card(s) to tomorrow so the morning email is not held up`);
-        ledger.appendEntry({ event: 'recheck-deferred', runId, note: `${deferred} card(s) not re-checked: the run hit its ${RUN_DEADLINE_MS / 60000}min budget` });
+        console.error(`[recheck] ${timeBudgetMinLabel}min budget spent — deferring ${deferred} card(s) to tomorrow so the morning email is not held up`);
+        ledger.appendEntry({ event: 'recheck-deferred', runId, note: `${deferred} card(s) not re-checked: the run hit its ${timeBudgetMinLabel}min budget` }, RECHECK_LEDGER_PATH);
         break;
       }
       if (t.skip) r = { ...t, status: null };
@@ -285,7 +322,7 @@ function main(argv = process.argv.slice(2)) {
         note: `${r.skip ? `skipped: ${r.skip}` : r.status}${r.detail ? `: ${String(r.detail).slice(0, 300)}` : ''}`,
         verifyCmd: t.verifyCmd || null,
         shadow: true,
-      });
+      }, RECHECK_LEDGER_PATH);
       console.error(`[recheck] ${describeResult(r)}`);
     }
   } finally {
@@ -293,7 +330,7 @@ function main(argv = process.argv.slice(2)) {
   }
 
   const counts = summarize(results);
-  ledger.appendEntry({ event: 'recheck-summary', runId, counts, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable, ${counts.skipped} skipped` });
+  ledger.appendEntry({ event: 'recheck-summary', runId, counts, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable, ${counts.skipped} skipped` }, RECHECK_LEDGER_PATH);
   console.error(`[recheck] done: ${JSON.stringify(counts)}`);
 }
 
