@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-30T23:46:42.584Z",
+    "generatedAt": "2026-07-31T00:21:05.324Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 78,
+    "totalFlagged": 80,
     "highConfidence": 4,
-    "mediumConfidence": 74,
+    "mediumConfidence": 76,
     "lowConfidence": 0,
-    "reassignable": 32
+    "reassignable": 33
   },
   "results": [
     {
@@ -1172,6 +1172,23 @@
       "textSnippet": "Judging by the ubiquitous ads, Denzel Washington is the star attraction of “A Raisin in the Sun,” which has just opened for a 14-week run at the Barrymore Theatre. Perhaps so, but it’s the performance"
     },
     {
+      "showId": "frozen-2004",
+      "showTitle": "Frozen",
+      "showYear": 2004,
+      "file": "whatsonstage--unknown.json",
+      "outlet": "WhatsOnStage",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "frozen-2018",
+      "signals": [
+        "revival text signals: revival, fresh take",
+        "year 2018 in text matches revival frozen-2018",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Bryony Lavery opens two shows across the UK this week\n\nThe Bike Shed Theatre in Exeter announced the sad news last month that, given a lack of funding, it will be forced to close at the end of March. "
+    },
+    {
       "showId": "true-west-2000",
       "showTitle": "True West",
       "showYear": 2000,
@@ -1186,6 +1203,21 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "A mere 30 years or so after joining the front rank of American playwrights, Sam Shepard looks to have his first Broadway hit courtesy of Matthew Warchus’ blistering new revival of “True West.”\n\nMake t"
+    },
+    {
+      "showId": "jesus-christ-superstar-2000",
+      "showTitle": "Jesus Christ Superstar",
+      "showYear": 2000,
+      "file": "people--dave-quinn.json",
+      "outlet": "People",
+      "criticName": "Dave Quinn",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: twitter"
+      ],
+      "textSnippet": "'Like Magic': Fans Rave About Alice Cooper's Mic-Dropping Jesus Christ Superstar Performance\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n \n \n \n \n\n \n \n \n \n Karen Mizoguchi\n \n \n Apr"
     },
     {
       "showId": "jesus-christ-superstar-2000",

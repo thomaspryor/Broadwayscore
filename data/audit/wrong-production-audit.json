@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-30T23:50:12.052Z",
+  "timestamp": "2026-07-31T00:24:13.177Z",
   "stats": {
-    "totalReviews": 40978,
-    "alreadyFlagged": 17933,
+    "totalReviews": 40980,
+    "alreadyFlagged": 17934,
     "dateGuardCatches": 67,
-    "directorMismatch": 934,
+    "directorMismatch": 935,
     "tvFilmSignals": 1122,
-    "londonSignals": 767,
+    "londonSignals": 769,
     "offBroadwaySignals": 465,
-    "yearMismatch": 85,
-    "noPublishDate": 3378
+    "yearMismatch": 86,
+    "noPublishDate": 3377
   },
   "findings": [
     {
@@ -5257,6 +5257,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-2007",
+      "file": "whatsonstage--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/review-cyrano-de-bergerac-playhouse-theatre_50523/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
         }
       ]
     },
@@ -14366,6 +14380,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "file": "amny--matt-windman.json",
+      "score": 78,
+      "publishDate": "2026-07-28",
+      "url": "https://www.amny.com/entertainment/theater/review-les-miz-sounds-glorious-radio-city/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2014 (2x) more than 2026 (0x). 2014 matches production: les-miserables-2014"
         }
       ]
     },
@@ -33061,6 +33089,20 @@
       ]
     },
     {
+      "showId": "frozen-2004",
+      "file": "whatsonstage--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/frozen-brighton-rock-and-napoleon-disrobed-make-our-top-openings-of-the-week_45819/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "frozen-2018",
       "file": "broadwayworld--michael-dale.json",
       "score": 45,
@@ -36121,6 +36163,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 78,
+      "publishDate": "2026-07-29",
+      "url": "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
