@@ -762,7 +762,7 @@ async function fetchShowsFromLondonTheatre() {
         const titleLower = title.toLowerCase();
         if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
         if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
-  
+
         const rawVenue = (typeof data.location === 'object' ? data.location.name : data.location) || 'TBA';
         const venue = rawVenue.replace(/&apos;/g, "'").replace(/&amp;/g, '&');
         const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
@@ -965,6 +965,10 @@ async function fetchSingleVenuePage(venue) {
             closingDate: item.endDate === 'null' ? null : item.endDate || null,
             category: venue.category === 'off-broadway' ? 'off-broadway' : (isWestEndVenue(venue.name) ? 'west-end' : 'off-west-end'),
             description: (item.description || '').substring(0, 500),
+            // Venue-page adds have no cross-source corroboration — route through
+            // validate-show-venue.js --all-provisional (CLAUDE.md rule 3).
+            provisional: true,
+            discoverySource: `venue-page:${venue.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
           });
         }
       } catch {}
@@ -1003,6 +1007,10 @@ async function fetchSingleVenuePage(venue) {
       closingDate: null,
       category: isWestEndVenue(venue.name) ? 'west-end' : 'off-west-end',
       description: '',
+      // Venue-page adds have no cross-source corroboration — route through
+      // validate-show-venue.js --all-provisional (CLAUDE.md rule 3).
+      provisional: true,
+      discoverySource: `venue-page:${venue.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
     });
   }
 
