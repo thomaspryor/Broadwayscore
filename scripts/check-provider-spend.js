@@ -27,7 +27,7 @@ const {
   fetchBdZoneCostDay, fetchBbSessionCountForDay, fetchSbUsage, fetchSdAccount,
 } = require('./lib/provider-billing');
 const {
-  computeDayRecord, budgetBreaches, computeStreak, renderSnapshot,
+  computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday,
 } = require('./lib/provider-spend-core');
 
 const REPO = path.join(__dirname, '..');
@@ -38,13 +38,15 @@ const THRESHOLDS_PATH = path.join(REPO, 'scripts', 'config', 'provider-spend-thr
 if (hasHelpFlag(process.argv)) {
   console.log('Usage: node scripts/check-provider-spend.js [--dry-run] [--day=YYYY-MM-DD]\n'
     + 'Daily scraping-spend reconciliation against provider billing APIs.\n'
+    + 'Default day is YESTERDAY (UTC) — the last COMPLETE day. Reconciling the\n'
+    + 'in-progress day would permanently record a few-hours-old partial figure.\n'
     + 'Writes data/audit/provider-spend-daily.jsonl + provider-spend-snapshot.json.');
   process.exit(0);
 }
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const dayArg = (process.argv.find((a) => a.startsWith('--day=')) || '').slice(6);
-const DAY = /^\d{4}-\d{2}-\d{2}$/.test(dayArg) ? dayArg : new Date().toISOString().slice(0, 10);
+const DAY = /^\d{4}-\d{2}-\d{2}$/.test(dayArg) ? dayArg : utcYesterday();
 
 function readLedger() {
   let lines;
@@ -59,7 +61,14 @@ function readLedger() {
 }
 
 async function main() {
-  const thresholds = JSON.parse(fs.readFileSync(THRESHOLDS_PATH, 'utf8'));
+  let thresholds;
+  try {
+    thresholds = JSON.parse(fs.readFileSync(THRESHOLDS_PATH, 'utf8'));
+  } catch (err) {
+    // A broken thresholds file must be loud, not a silent green: crash with
+    // ::error:: — the stale snapshot then trips the digest 36h staleness banner.
+    throw new Error(`thresholds config unreadable at ${THRESHOLDS_PATH}: ${err.message}`);
+  }
   const ledger = readLedger();
   const prev = [...ledger].reverse().find((r) => r.day < DAY) || null;
 
@@ -87,7 +96,7 @@ async function main() {
   const snapshot = renderSnapshot({ record, streak, breaches, generatedAt: new Date().toISOString() });
 
   console.log(`[provider-spend] ${DAY}: ${snapshot.bannerText}`);
-  for (const item of snapshot.items) console.log(`  ${item}`);
+  for (const item of snapshot.items) console.log(`  ${item.title}`);
 
   if (DRY_RUN) {
     console.log('[provider-spend] --dry-run: no writes, no alerts');

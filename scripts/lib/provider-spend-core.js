@@ -14,17 +14,34 @@
 
 const BB_COST_PER_SESSION = 0.10;
 
+/** "YYYY-MM-DD" for the UTC day before `now`. The reconciliation target is
+ * always a COMPLETE day — recording the in-progress day would freeze a
+ * few-hours-old partial figure into the ledger forever (ship-check P0). */
+function utcYesterday(now = new Date()) {
+  return new Date(now.getTime() - 86400000).toISOString().slice(0, 10);
+}
+
+/** Is `day` exactly the calendar day after `prevDay` (both "YYYY-MM-DD" UTC)? */
+function isNextUtcDay(prevDay, day) {
+  if (!prevDay || !day) return false;
+  return new Date(`${day}T00:00:00Z`) - new Date(`${prevDay}T00:00:00Z`) === 86400000;
+}
+
 /**
- * Build today's spend record from raw provider readings (any of which may be
- * null = unmeasurable) and yesterday's record (for cycle-counter deltas).
+ * Build one COMPLETE day's spend record from raw provider readings (any of
+ * which may be null = unmeasurable) and the previous record (for
+ * cycle-counter deltas).
  *
  * SB and SD only expose cycle-cumulative counters, so a per-day figure is the
- * delta vs the previous record. A counter that went DOWN means the cycle
- * renewed — the day's usage is the new cycle's counter itself. With no prior
- * record the delta is unknowable: status 'baseline' (measured, but not
- * day-attributable; does not break the streak, does not count toward it).
+ * delta vs the previous record — valid ONLY when the previous record is the
+ * immediately preceding calendar day. Across a gap (cron outage) the delta
+ * spans multiple days and would false-breach a one-day threshold, so it
+ * degrades to 'baseline'. A counter that went DOWN means the cycle renewed —
+ * the day's usage is the new cycle's counter itself. 'baseline' = measured
+ * but not day-attributable; it neither breaks nor extends the streak.
  */
 function computeDayRecord({ day, bb, bd, sb, sd, prev }) {
+  const prevAdjacent = prev && isNextUtcDay(prev.day, day) ? prev : null;
   const rec = { day, providers: {} };
 
   rec.providers.browserbase = bb == null
@@ -42,8 +59,8 @@ function computeDayRecord({ day, bb, bd, sb, sd, prev }) {
     };
   }
 
-  rec.providers.scrapingbee = cycleDelta(sb, prev?.providers?.scrapingbee);
-  rec.providers.scrapingdog = cycleDelta(sd, prev?.providers?.scrapingdog);
+  rec.providers.scrapingbee = cycleDelta(sb, prevAdjacent?.providers?.scrapingbee);
+  rec.providers.scrapingdog = cycleDelta(sd, prevAdjacent?.providers?.scrapingdog);
   return rec;
 }
 
@@ -96,19 +113,21 @@ function budgetBreaches(record, thresholds) {
 }
 
 /**
- * Trailing consecutive fully-green days (no overspend, no unmeasured
- * provider). 'baseline' days are excluded from the streak but do not reset a
- * PRIOR streak — they simply cannot prove anything yet, so the streak counts
- * only proven days. Records must be day-ascending; duplicates by day are the
- * caller's bug.
+ * Trailing consecutive fully-green CALENDAR days (no overspend, no unmeasured
+ * provider, no missing day). A calendar gap — the cron simply didn't run —
+ * breaks the streak: an unrecorded day is an unproven day (ship-check P1;
+ * this is the invariant the whole file exists to protect). 'baseline' days
+ * also break it — they cannot prove anything yet. Records must be
+ * day-ascending; duplicates by day are the caller's bug.
  */
 function computeStreak(records, thresholds) {
   let streak = 0;
   for (let i = records.length - 1; i >= 0; i--) {
+    if (i < records.length - 1 && !isNextUtcDay(records[i].day, records[i + 1].day)) break;
     const { overspend, unmeasured } = budgetBreaches(records[i], thresholds);
     const hasBaseline = Object.values(records[i].providers || {}).some((e) => e?.status === 'baseline');
     if (overspend.length || unmeasured.length) break;
-    if (hasBaseline) break; // can't prove this day; streak restarts after it
+    if (hasBaseline) break;
     streak++;
   }
   return streak;
@@ -117,22 +136,24 @@ function computeStreak(records, thresholds) {
 /**
  * Snapshot for the morning digest — the {generatedAt, bannerText, items}
  * shape renderNamedDigestBlock already renders (backlog-drain precedent; no
- * new render code). Spend AND yield on one line each: a $0 day with a dead
- * pipeline must not read as green (plan-review consensus).
+ * new render code). Items must be {title} OBJECTS — the renderer reads
+ * it.title and silently drops bare strings (ship-check P0; see
+ * scripts/backlog-drain.js for the same wrapping). Spend AND yield on one
+ * line each: a $0 day with a dead pipeline must not read as green.
  */
 function renderSnapshot({ record, streak, breaches, generatedAt }) {
   const p = record.providers;
   const items = [];
   const fmt = (e, money, extra) => (e.status === 'ok' ? `${money}${extra || ''}` : e.status);
 
-  items.push(`Browserbase: ${fmt(p.browserbase, `$${p.browserbase.cost ?? '?'}`, ` (${p.browserbase.sessions} sessions)`)}`);
-  items.push(`Bright Data: ${fmt(p.brightdata, `$${p.brightdata.cost ?? '?'}`, ` (${p.brightdata.serpReqs} serp / ${p.brightdata.unlockerReqs} unlocker)`)}`);
+  items.push({ title: `${record.day} · Browserbase: ${fmt(p.browserbase, `$${p.browserbase.cost ?? '?'}`, ` (${p.browserbase.sessions} sessions)`)}` });
+  items.push({ title: `${record.day} · Bright Data: ${fmt(p.brightdata, `$${p.brightdata.cost ?? '?'}`, ` (${p.brightdata.serpReqs} serp / ${p.brightdata.unlockerReqs} unlocker)`)}` });
   for (const key of ['scrapingbee', 'scrapingdog']) {
     const e = p[key];
     const label = key === 'scrapingbee' ? 'ScrapingBee' : 'ScrapingDog';
-    if (e.status === 'ok' && e.dayCredits != null) items.push(`${label}: ${e.dayCredits} credits today (${e.cycleUsed} this cycle)`);
-    else if (e.status === 'baseline') items.push(`${label}: baseline day (cycle ${e.cycleUsed}) — day figure starts tomorrow`);
-    else items.push(`${label}: unknown — billing API unreachable`);
+    if (e.status === 'ok' && e.dayCredits != null) items.push({ title: `${label}: ${e.dayCredits} credits (${e.cycleUsed} this cycle)` });
+    else if (e.status === 'baseline') items.push({ title: `${label}: baseline day (cycle ${e.cycleUsed}) — day figure starts tomorrow` });
+    else items.push({ title: `${label}: unknown — billing API unreachable` });
   }
 
   let bannerText;
@@ -143,4 +164,7 @@ function renderSnapshot({ record, streak, breaches, generatedAt }) {
   return { generatedAt, bannerText, items, moreCount: 0 };
 }
 
-module.exports = { computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, BB_COST_PER_SESSION };
+module.exports = {
+  computeDayRecord, budgetBreaches, computeStreak, renderSnapshot,
+  utcYesterday, isNextUtcDay, BB_COST_PER_SESSION,
+};
