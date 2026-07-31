@@ -103,6 +103,7 @@ export interface TicketLink {
   platform: string;     // TodayTix, Telecharge, Official, etc.
   url: string;
   priceFrom?: number;   // Starting price in dollars
+  source?: string;      // Provenance, e.g. 'serp-fallback' (enrich-fallback-ticket-links.js)
 }
 
 export interface CreativeMember {

@@ -223,6 +223,21 @@ jobs:
         run: node scripts/enrich-ticket-platform-links.js
         continue-on-error: true
 
+      # Fallback for shows neither TodayTix nor the Broadway venue map covers
+      # (Off-Broadway / Off-West End / regional): SERP-discover an allowlisted
+      # ticketing-platform or first-party venue URL. Bounded to 10 shows/run.
+      - name: Enrich remaining shows with fallback ticket links (SERP)
+        if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: node scripts/enrich-fallback-ticket-links.js --limit=10
+        continue-on-error: true
+        timeout-minutes: 10
+
       - name: Enrich shows with Wikipedia synopses (Broadway/OB)
         if: ${{ inputs.skip_discovery != 'true' }}
         run: node scripts/enrich-wikipedia-synopsis.js --limit=20

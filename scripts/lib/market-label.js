@@ -18,6 +18,25 @@
  * can never again be silently relabelled as Broadway.
  */
 
+/**
+ * market/category slug → keyword used in web/image SEARCH QUERIES.
+ *
+ * Distinct from MARKET_LABELS because the prompt label for regional is a prose
+ * sentence ("Regional (US, outside New York)") that would poison a search
+ * query. Same failure mode as the prompt ternary though: fetch-show-images-auto
+ * hardcoded "Broadway" in its Google Images queries, so an Off-Broadway show at
+ * a 60-seat bookstore was searched as a Broadway production — 0 usable
+ * candidates for the-gin-game-2026, which then shipped with no image
+ * (2026-07-31).
+ */
+const MARKET_SEARCH_KEYWORDS = {
+  broadway: 'Broadway',
+  'off-broadway': 'Off-Broadway',
+  'west-end': 'West End',
+  'off-west-end': 'Off-West End',
+  regional: 'theater',
+};
+
 /** market/category slug → human label used in prompt text. */
 const MARKET_LABELS = {
   broadway: 'Broadway',
@@ -87,10 +106,27 @@ function getRegionalPromptContext(venue) {
   ].join(' ');
 }
 
+/**
+ * Map a shows.json `market`/`category` slug to the keyword to put in a search
+ * query. Unknown slugs fall back to 'theater' (neutral) rather than 'Broadway'
+ * (an active lie that returns the wrong production's art).
+ *
+ * @param {string|null|undefined} market
+ * @returns {string}
+ */
+function getMarketSearchKeyword(market) {
+  if (market === null || market === undefined || market === '') return MARKET_SEARCH_KEYWORDS.broadway;
+  const key = String(market).trim().toLowerCase();
+  if (Object.prototype.hasOwnProperty.call(MARKET_SEARCH_KEYWORDS, key)) return MARKET_SEARCH_KEYWORDS[key];
+  return 'theater';
+}
+
 module.exports = {
   MARKET_LABELS,
+  MARKET_SEARCH_KEYWORDS,
   NON_METRO_MARKETS,
   getMarketLabel,
+  getMarketSearchKeyword,
   isNonMetroMarket,
   getRegionalPromptContext,
 };

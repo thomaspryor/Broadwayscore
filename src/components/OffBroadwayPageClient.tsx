@@ -45,7 +45,7 @@ interface OffBroadwayPageClientProps {
   totalShows: number;
   totalReviews: number;
   /** Open-show counts for the market pills */
-  marketOpenCounts: { broadway: number; offBroadway: number };
+  marketOpenCounts: { broadway: number; broadwayPlus: number; offBroadway: number };
   awardWinnerSets?: AwardWinnerSets;
   /** Upcoming OB shows for the "Starting Soon" shelf (computed server-side). */
   startingSoonShows?: OffBroadwayShow[];
@@ -481,7 +481,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
         <MarketFilterBar
           pair="nyc"
           activeMarket="off-broadway"
-          primaryCount={marketOpenCounts.broadway}
+          primaryCount={marketOpenCounts.broadwayPlus}
           secondaryCount={marketOpenCounts.offBroadway}
           typeValue={type}
           onTypeChange={(t) => updateParams({ type: t })}

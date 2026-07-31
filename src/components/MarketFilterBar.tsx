@@ -18,6 +18,15 @@ interface MarketFilterBarProps {
   typeValue: TypeValue;
   /** Type-filter change handler */
   onTypeChange: (t: TypeValue) => void;
+  /**
+   * Homepage only: split the NYC primary pill into Broadway+ / Bway only
+   * buttons (client-side filter over the curated OB picks mixed into the
+   * grid). When absent, the primary renders as a single nav Link.
+   */
+  broadwayMode?: 'plus' | 'only';
+  onBroadwayModeChange?: (m: 'plus' | 'only') => void;
+  /** Count for the Bway-only pill when the primary is split */
+  broadwayOnlyCount?: number;
   className?: string;
 }
 
@@ -34,11 +43,15 @@ export default function MarketFilterBar({
   secondaryCount,
   typeValue,
   onTypeChange,
+  broadwayMode,
+  onBroadwayModeChange,
+  broadwayOnlyCount,
   className,
 }: MarketFilterBarProps) {
   const isNyc = pair === 'nyc';
+  // "Broadway+" because the homepage grid mixes in curated Off-Broadway picks
   const primary = isNyc
-    ? { label: 'Broadway', href: '/', key: 'broadway' as MarketKey }
+    ? { label: 'Broadway+', href: '/', key: 'broadway' as MarketKey }
     : { label: 'West End', href: '/west-end', key: 'west-end' as MarketKey };
   const secondary = isNyc
     ? { label: 'Off-Bway', href: '/off-broadway', key: 'off-broadway' as MarketKey }
@@ -50,7 +63,7 @@ export default function MarketFilterBar({
   const secondaryAccent = isNyc ? 'purple' : 'violet';
 
   const pillBase =
-    'min-h-[44px] sm:min-h-0 px-3 sm:px-4 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold leading-none inline-flex items-center gap-1.5 transition-all whitespace-nowrap';
+    'min-h-[44px] sm:min-h-0 px-3 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold leading-none inline-flex items-center gap-1.5 transition-all whitespace-nowrap';
 
   const primaryActiveClass = isNyc
     ? 'bg-brand text-gray-900 shadow-glow-sm font-bold'
@@ -85,38 +98,71 @@ export default function MarketFilterBar({
     <div
       role="group"
       aria-label="Market and type filters"
-      className={`flex items-center gap-2 overflow-x-auto flex-nowrap scrollbar-hide min-w-0 flex-1 [mask-image:linear-gradient(to_right,black_calc(100%-24px),transparent_100%)] sm:[mask-image:none] ${className ?? ''}`}
+      className={`flex items-center gap-1.5 overflow-x-auto flex-nowrap scrollbar-hide min-w-0 flex-1 [mask-image:linear-gradient(to_right,black_calc(100%-24px),transparent_100%)] sm:[mask-image:none] ${className ?? ''}`}
     >
-      {/* Primary market pill */}
-      <Link
-        href={primary.href}
-        aria-current={primaryActive ? 'page' : undefined}
-        className={`${pillBase} flex-shrink-0 ${primaryActive ? primaryActiveClass : primaryIdleClass}`}
-      >
-        {primary.label}
-        <span className={`text-[10px] font-medium tabular-nums ${countClass(primaryActive, 'dark')}`}>
-          {primaryCount}
-        </span>
-      </Link>
+      {/* Primary market pill — split into Broadway+ / Bway only on the homepage */}
+      {isNyc && broadwayMode ? (
+        <>
+          {/* No counts on the split buttons — the row is at width capacity and
+              they're a view toggle (like CRITICS/AUDIENCE), not a nav pill */}
+          <button
+            onClick={() => onBroadwayModeChange?.('plus')}
+            aria-pressed={broadwayMode === 'plus'}
+            title={`Broadway plus notable Off-Broadway picks (${primaryCount})`}
+            aria-label={`Broadway plus notable Off-Broadway picks, ${primaryCount} shows`}
+            className={`${pillBase} flex-shrink-0 ${broadwayMode === 'plus' ? primaryActiveClass : primaryIdleClass}`}
+          >
+            Broadway+
+          </button>
+          <button
+            onClick={() => onBroadwayModeChange?.('only')}
+            aria-pressed={broadwayMode === 'only'}
+            title={`Broadway shows only (${broadwayOnlyCount ?? primaryCount})`}
+            aria-label={`Broadway shows only, ${broadwayOnlyCount ?? primaryCount} shows`}
+            className={`${pillBase} flex-shrink-0 ${broadwayMode === 'only' ? primaryActiveClass : primaryIdleClass}`}
+          >
+            Bway only
+          </button>
+        </>
+      ) : (
+        <Link
+          href={primary.href}
+          aria-current={primaryActive ? 'page' : undefined}
+          className={`${pillBase} flex-shrink-0 ${primaryActive ? primaryActiveClass : primaryIdleClass}`}
+        >
+          {primary.label}
+          <span className={`text-[10px] font-medium tabular-nums ${countClass(primaryActive, 'dark')}`}>
+            {primaryCount}
+          </span>
+        </Link>
+      )}
 
-      {/* Secondary market pill */}
+      {/* Secondary market pill — in split mode it joins the three-pill filter
+          group, so the dot + count come off to keep the row inside its width
+          budget (count stays available in the tooltip) */}
       <Link
         href={secondary.href}
         aria-current={secondaryActive ? 'page' : undefined}
+        title={isNyc && broadwayMode ? `${secondary.label} (${secondaryCount})` : undefined}
+        aria-label={isNyc && broadwayMode ? `${secondary.label}, ${secondaryCount} shows` : undefined}
         className={`${pillBase} flex-shrink-0 ${secondaryActive ? secondaryActiveClass : secondaryIdleClass}`}
       >
-        <span
-          className={`w-1.5 h-1.5 rounded-full ${secondaryActive ? dotActiveClass : 'bg-gray-600'}`}
-          aria-hidden="true"
-        />
+        {!(isNyc && broadwayMode) && (
+          <span
+            className={`w-1.5 h-1.5 rounded-full ${secondaryActive ? dotActiveClass : 'bg-gray-600'}`}
+            aria-hidden="true"
+          />
+        )}
         {secondary.label}
-        <span className={`text-[10px] font-medium tabular-nums ${countClass(secondaryActive, secondaryAccent)}`}>
-          {secondaryCount}
-        </span>
+        {!(isNyc && broadwayMode) && (
+          <span className={`text-[10px] font-medium tabular-nums ${countClass(secondaryActive, secondaryAccent)}`}>
+            {secondaryCount}
+          </span>
+        )}
       </Link>
 
       {/* Divider */}
-      <div className="w-px h-5 bg-white/10 flex-shrink-0 mx-1" aria-hidden="true" />
+      <div className="w-px h-5 bg-white/10 flex-shrink-0 mx-0.5" aria-hidden="true" />
 
       {/* Type filter pills */}
       <div
