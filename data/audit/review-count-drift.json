@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-30T06:50:36.806Z",
+  "generatedAt": "2026-07-31T06:55:55.706Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-07-30T06:33:17.299Z",
-    "reviewsJsonAgeHours": 0.3,
+    "reviewsJsonLastUpdated": "2026-07-31T06:43:02.845Z",
+    "reviewsJsonAgeHours": 0.2,
     "freshnessBreach": false,
-    "showsScanned": 12,
-    "filesScanned": 122,
+    "showsScanned": 13,
+    "filesScanned": 144,
     "showsOverThreshold": 0,
     "orphanReviews": 0
   },
@@ -20,23 +20,54 @@
     {
       "showDir": "cat-cohen-broad-strokes-off-broadway-2026",
       "actual": 11,
-      "scanned": 14,
+      "scanned": 16,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "hungry-women-off-broadway-2026",
-      "actual": 3,
-      "scanned": 4,
+      "actual": 4,
+      "scanned": 5,
       "suppressedCount": 0,
       "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "actual": 8,
+      "scanned": 13,
+      "suppressedCount": 2,
+      "suppressed": [
+        {
+          "file": "nydailynews--chris-jones.json",
+          "outletId": "nydailynews",
+          "criticName": "Chris Jones",
+          "publishDate": "2026-07-29",
+          "url": "https://www.nydailynews.com/2026/07/28/les-miserables-radio-city-musical-hall-review/"
+        },
+        {
+          "file": "nytg--gillian-russo.json",
+          "outletId": "nytg",
+          "criticName": "Gillian Russo",
+          "publishDate": "2026-07-29",
+          "url": "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review"
+        }
+      ],
       "overThreshold": false
     },
     {
       "showDir": "rosie-odonnell-common-knowledge-off-broadway-2026",
       "actual": 1,
       "scanned": 5,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "tao-of-glass-west-end-2026",
+      "actual": 1,
+      "scanned": 7,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
