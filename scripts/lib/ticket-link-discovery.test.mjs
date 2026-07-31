@@ -29,6 +29,22 @@ test('platformForUrl rejects resale marketplaces and unknown domains', () => {
   assert.equal(platformForUrl('https://random-blog.com/tickets'), null);
 });
 
+test('titleMatches rejects stopword-only matches (The Guilty vs Book of Mormon)', () => {
+  assert.ok(!titleMatches('The Book of Mormon Tickets | Broadway', 'The Guilty'));
+  assert.ok(titleMatches('The Guilty | Donmar Warehouse', 'The Guilty', 'Donmar Warehouse'));
+});
+
+test('titleMatches rejects one-word-title collisions with unexplained content words', () => {
+  assert.ok(!titleMatches('Mercury: A Freddie Mercury Tribute | TodayTix', 'Mercury'));
+  assert.ok(titleMatches('Mercury Off-Broadway Tickets | TodayTix', 'Mercury'));
+  assert.ok(titleMatches('Dukes at Soho Playhouse — tickets', 'Dukes', 'Soho Playhouse'));
+});
+
+test('titleMatches requires ALL significant words for short titles', () => {
+  assert.ok(!titleMatches('Milk Bar NYC Tickets', 'Milk and Honey (AMT Theater)'));
+  assert.ok(!titleMatches('Guilty Pleasures Cabaret Tickets', 'The Guilty'));
+});
+
 test('titleMatches folds diacritics and ignores venue parentheticals', () => {
   assert.ok(titleMatches('Les Miserables Arena Concert Tickets | Ticketmaster', 'Les Misérables: The Arena Concert Spectacular'));
   assert.ok(titleMatches('Milk and Honey Off-Broadway Tickets', 'Milk and Honey (AMT Theater)'));

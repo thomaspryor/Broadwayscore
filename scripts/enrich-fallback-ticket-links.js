@@ -39,22 +39,26 @@ if (hasHelpFlag(process.argv)) {
 
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { serpQuery } = require('./lib/url-discovery');
-const { pickTicketUrl, buildTicketQuery } = require('./lib/ticket-link-discovery');
+const { pickTicketUrl, buildTicketQuery, platformForUrl, VENUE_SITES } = require('./lib/ticket-link-discovery');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const LIMIT = Number((process.argv.find((a) => a.startsWith('--limit=')) || '').split('=')[1]) || 10;
 const ONLY_SHOW = (process.argv.find((a) => a.startsWith('--show=')) || '').split('=')[1] || null;
 
-/**
- * Liveness probe: the candidate URL must answer with a non-error status.
- * 2xx/3xx pass; 403 also passes (ticketing sites routinely bot-block GETs —
- * Marylebone/La Jolla confirmed cases — and a SERP-indexed, title-matched 403
- * page is a live page). 404/410/5xx fail.
- */
-function probeUrl(url, timeout = 15000) {
+function isVenueSiteHost(url) {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+    return VENUE_SITES.some((v) => host === v || host.endsWith('.' + v));
+  } catch {
+    return false;
+  }
+}
+
+function fetchStatus(url, timeout) {
   return new Promise((resolve) => {
     let u;
-    try { u = new URL(url); } catch { return resolve(false); }
+    try { u = new URL(url); } catch { return resolve({ status: 0 }); }
+    if (u.protocol !== 'https:') return resolve({ status: 0 });
     const req = https.request(
       {
         hostname: u.hostname,
@@ -65,14 +69,36 @@ function probeUrl(url, timeout = 15000) {
       },
       (res) => {
         res.resume();
-        const s = res.statusCode || 0;
-        resolve((s >= 200 && s < 400) || s === 403);
+        resolve({ status: res.statusCode || 0, location: res.headers.location });
       }
     );
-    req.on('error', () => resolve(false));
-    req.on('timeout', () => { req.destroy(); resolve(false); });
+    req.on('error', () => resolve({ status: 0 }));
+    req.on('timeout', () => { req.destroy(); resolve({ status: 0 }); });
     req.end();
   });
+}
+
+/**
+ * Liveness probe. Follows up to 3 redirects to a final status. 2xx passes
+ * only if the final URL is still on an allowlisted host (a 302 to an
+ * unrelated landing page must not count as alive); 403 passes only for
+ * first-party venue sites (they routinely bot-block plain GETs —
+ * Marylebone/La Jolla confirmed — while the big platforms answer 200, so a
+ * platform 403 is suspicious, not normal).
+ */
+async function probeUrl(url, timeout = 15000) {
+  let current = url;
+  for (let hop = 0; hop < 4; hop++) {
+    const { status, location } = await fetchStatus(current, timeout);
+    if (status >= 200 && status < 300) return platformForUrl(current) !== null;
+    if (status === 403) return isVenueSiteHost(current);
+    if (status >= 300 && status < 400 && location) {
+      current = new URL(location, current).toString();
+      continue;
+    }
+    return false;
+  }
+  return false;
 }
 
 async function main() {
@@ -88,8 +114,12 @@ async function main() {
 
   console.log(`Open/previews shows without ticketLinks: ${targets.length}`);
   if (targets.length > LIMIT) {
-    console.log(`Attempting first ${LIMIT} this run (--limit); the daily cron drains the rest.`);
-    targets = targets.slice(0, LIMIT);
+    // Day-of-month rotation so permanently-unfindable shows at the head of
+    // the list can't starve the tail forever (every gap show gets attempts
+    // across successive daily runs).
+    const offset = (new Date().getUTCDate() * LIMIT) % targets.length;
+    targets = targets.slice(offset).concat(targets.slice(0, offset)).slice(0, LIMIT);
+    console.log(`Attempting ${LIMIT} this run (--limit, rotation offset ${offset}); the daily cron cycles the rest.`);
   }
 
   let added = 0;
@@ -122,7 +152,9 @@ async function main() {
     }
     console.log(`  ✓ ${pick.platform}: ${pick.url}`);
     if (!DRY_RUN) {
-      show.ticketLinks = [{ platform: pick.platform, url: pick.url, priceFrom: null }];
+      // source marks lower-confidence SERP-discovered links so a bad batch can
+      // be bulk-identified and rolled back without touching curated links.
+      show.ticketLinks = [{ platform: pick.platform, url: pick.url, priceFrom: null, source: 'serp-fallback' }];
     }
     added++;
     // Space SERP calls out — same 500ms pacing as enrich-ticket-platform-links.
