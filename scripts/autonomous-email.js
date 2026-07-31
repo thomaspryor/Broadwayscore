@@ -38,6 +38,12 @@ const { summarize: summarizeRecheck, describeResult } = require('./lib/autonomou
 const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
+// Ship-check finding (task #695): the widened acceptance recheck writes to a
+// DEDICATED path (never the shared autonomous-ledger.jsonl the Mac shadow-run
+// launchd job also writes to — see that script's own comment). Reading
+// `entries` below with no path arg would silently show zero recheck results
+// forever, since 'recheck'-event rows now live only here.
+const RECHECK_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'autonomous-recheck-ledger.jsonl');
 // Card #364 (owner merge decision 2026-07-26): health-check.js used to email
 // its own "BSC Daily"/"BSC URGENT" digest separately from this one. It now
 // writes its results here instead; this is the ONE place that reads it back
@@ -419,10 +425,15 @@ async function main() {
 
   // Acceptance recheck (S3-T4): last night's shadow results, straight off the
   // ledger. Fail-soft — a missing/short ledger just omits the section.
+  // Reads RECHECK_LEDGER_PATH (task #695), NOT the `entries` read above —
+  // the widened recheck's 'recheck' events live in the dedicated file, and
+  // `entries` (default LEDGER_PATH) only ever sees the Mac shadow job's
+  // unrelated shadow-* events under that same 'recheck-flavored' naming.
   let recheck = null;
   try {
     const since = Date.now() - 24 * 3600 * 1000;
-    const recent = entries.filter(e => e.event === 'recheck' && new Date(e.ts).getTime() >= since);
+    const { entries: recheckEntries } = ledger.readEntries(RECHECK_LEDGER_PATH);
+    const recent = recheckEntries.filter(e => e.event === 'recheck' && new Date(e.ts).getTime() >= since);
     if (recent.length) {
       const results = recent.map(e => {
         // Structured fields first (written since the ship-check fix); the
