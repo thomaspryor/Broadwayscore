@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-07-30T07:40:57.913Z",
+  "lastChecked": "2026-07-31T07:44:24.146Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,18 +13,18 @@
     },
     {
       "name": "Cron: Rebuild Reviews",
-      "status": "pass",
-      "message": "3h ago, success (newest run cancelled — superseded, not a failure)"
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
     },
     {
       "name": "Cron: Collect Review Texts",
-      "status": "warn",
-      "message": "Last run still running (started 2h ago)"
+      "status": "pass",
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
-      "status": "pass",
-      "message": "2h ago, success"
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
     },
     {
       "name": "Cron: Test Suite",
@@ -39,12 +39,12 @@
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "21h ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "16h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
@@ -59,22 +59,27 @@
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "22h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "1d ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Update Social Pulse",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
+    },
+    {
+      "name": "Cron: Reverse Discovery",
+      "status": "pass",
+      "message": "2h ago, success"
     }
   ]
 }
