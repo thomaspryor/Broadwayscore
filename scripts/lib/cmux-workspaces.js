@@ -91,23 +91,17 @@ function closeWorkspace(ref) {
   run(['close-workspace', '--workspace', ref]);
 }
 
-function claudeRunningIn(ref) {
-  try {
-    return hasRunningClaude(run(['top', '--workspace', ref, '--processes', '--format', 'tsv']));
-  } catch {
-    return false; // workspace vanished mid-check → not running
-  }
-}
-
 // SAFE variant for the close-decision path (card #709 ship-check catch).
-// claudeRunningIn above is legacy pre-#559 logic that fails OPEN to "not
-// running" on any I/O error — the same unsafe direction the #559 fix
-// (claudeAliveIn) eliminated from the close path. Reusing claudeRunningIn
-// directly in pruneDone would reintroduce that exact false-negative into a
-// DESTRUCTIVE close decision: a transient cmux error would silently read as
-// "idle," pruneDone would treat that as "safe to close," and a live ✅🤖 tab
-// mid-turn could get closed on pure uncertainty. Fails safe to TRUE
-// (mid-turn/busy) instead — uncertainty must never look like idle.
+// An earlier version of this reused a legacy helper that failed OPEN to
+// "not running" on any I/O error — the same unsafe direction the #559 fix
+// (claudeAliveIn) eliminated from the close path. That legacy helper is
+// deleted (what-else, card #709 follow-up) rather than kept around unused —
+// its name was an attractive nuisance for a future session to grab instead
+// of this one and reintroduce the exact false-negative it caused: a
+// transient cmux error silently reading as "idle," pruneDone treating that
+// as "safe to close," and a live ✅🤖 tab getting closed mid-turn on pure
+// uncertainty. Fails safe to TRUE (mid-turn/busy) instead — uncertainty
+// must never look like idle.
 function claudeMidTurnIn(ref) {
   try {
     return hasRunningClaude(run(['top', '--workspace', ref, '--processes', '--format', 'tsv']));
@@ -305,6 +299,6 @@ module.exports = {
   CMUX, cmuxAvailable, run,
   parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude,
   hasClaudeChrome, isNotFoundError,
-  listWorkspaces, closeWorkspace, claudeRunningIn, claudeMidTurnIn, claudeAliveIn,
+  listWorkspaces, closeWorkspace, claudeMidTurnIn, claudeAliveIn,
   terminalSurfaceAliveIn, checkLiveness, computeClaudeAlive, pruneDone,
 };

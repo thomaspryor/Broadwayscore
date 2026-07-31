@@ -1076,6 +1076,111 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   sleep "$WAIT"
 done
 
+# ── Git Data API fallback (task #707, generalizes the task #698 live fix) ───
+# The local flow above (git fetch + rebase/merge replay + push) has a floor
+# cost per attempt — a fetch, a rebase replay, a push. Under sustained high
+# main-branch churn that floor cost can be comparable to or slower than
+# origin's own advance interval, so the loop above can lose EVERY attempt
+# regardless of MAX_RETRIES/PUSH_DEADLINE_SEC (task #698: 20/20 non-fast-
+# forward losses across 2 runs). scripts/lib/push-via-git-api.sh never
+# checks out a working tree or rebases — it builds a small set of git
+# objects on top of whatever the remote tip currently is and attempts a
+# compare-and-swap ref update, so a lost race costs a few small git calls
+# instead of a full rebase. On the incident this generalizes, it won on the
+# FIRST attempt after 20 failed local-flow attempts.
+#
+# Opt-in (PUSH_VIA_API_FALLBACK=1), mirroring PUSH_RECONCILE_MERGED_JSON's
+# convention: this changes push semantics for the fallback attempt only —
+# every file OUR outgoing commit(s) touched wins outright over whatever's
+# on the remote tip (no per-line JSON merge; see the script's own header
+# for why that's the right call for the state/audit-ledger files this
+# targets). ~130 workflows push through this helper, so the fallback stays
+# opt-in until more callers have exercised it. Requires SCRIPT_ENTRY_BASE
+# (computed near the top of this script) to know what our outgoing diff is
+# relative to — skips silently if that's unavailable (e.g. no origin ref
+# resolvable at script start).
+_api_fallback_ok=false
+if [ "$pushed" != "true" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
+     && [ -n "$SCRIPT_ENTRY_BASE" ] && [ -f "$SCRIPT_DIR/push-via-git-api.sh" ]; then
+  _api_fallback_ok=true
+
+  # Force local HEAD back to the pristine original commit before diffing
+  # (ship-check/Codex adversarial-review finding). The retry loop above may
+  # have left HEAD at an INTERMEDIATE rebase/merge/cherry-pick result from
+  # its last failed attempt — not at SCRIPT_ENTRY_HEAD — since
+  # restore_head_if_moved is only called on the hard `exit 1` paths, not on
+  # ordinary loop exhaustion. Diffing SCRIPT_ENTRY_BASE..HEAD against a
+  # polluted HEAD would bundle in whatever an earlier iteration's "keep
+  # local" conflict resolution already absorbed from a THEN-current (now
+  # possibly stale) remote tip, and push-via-git-api.sh would replay that
+  # stale bundle — not just our own edits — onto the live tip. Resetting
+  # here guarantees the diff handed to the fallback is exactly our original
+  # commit(s), nothing an intermediate rebase attempt picked up along the way.
+  if ! git reset --hard "$SCRIPT_ENTRY_HEAD" 2>/dev/null; then
+    echo "::warning::push-with-retry: could not reset HEAD to $SCRIPT_ENTRY_HEAD before the Git Data API fallback — skipping fallback rather than diffing a possibly-polluted HEAD"
+    _api_fallback_ok=false
+  elif [ -f "$SCRIPT_DIR/reconcile-merged-json.js" ] && command -v node >/dev/null 2>&1; then
+    # Union-merge-MANAGED files (commercial*.json, diary-shows.json,
+    # social-post-history.json, bww-roundup-miss-ledger.jsonl) need a
+    # per-slug/per-line merge (reconcile-merged-json.js) — this fallback's
+    # coarse "our version wins outright" would silently discard a concurrent
+    # writer's entry for exactly these files, the #574/#692 class those
+    # mergers exist to prevent. Skip the fallback for them; PUSH_RECONCILE_
+    # MERGED_JSON=1 through the normal local flow is the safe path instead.
+    # Reuses the canonical MANAGED list (no second copy to drift out of
+    # sync). Fails OPEN (proceeds) if node/require breaks — a broken guard
+    # must never block an otherwise-legitimate push; push-via-git-api.sh's
+    # own semantics are the backstop for this narrow case.
+    # `cmd || rc=$?` (not `if ! cmd; then ... $? ...`) is load-bearing here
+    # under `set -euo pipefail`: (a) a bare failing command outside a
+    # conditional context would trip set -e before this line even finishes;
+    # (b) `$?` read from INSIDE an `if ! cmd; then` block is the exit status
+    # of the negated `!` expression (always 0), not node's actual exit code
+    # — that would make the "=1" check below permanently unreachable.
+    _managed_check_rc=0
+    node -e '
+        const { MANAGED } = require(process.argv[1]);
+        const changed = require("child_process")
+          .execFileSync("git", ["diff", "--name-only", process.argv[2], process.argv[3]], { encoding: "utf8" })
+          .split("\n").filter(Boolean);
+        const hit = changed.find((f) => MANAGED.some((m) => f.endsWith(m.file.replace(/^data\//, ""))));
+        process.exit(hit ? 1 : 0);
+      ' "$SCRIPT_DIR/reconcile-merged-json.js" "$SCRIPT_ENTRY_BASE" "$SCRIPT_ENTRY_HEAD" 2>/dev/null || _managed_check_rc=$?
+    if [ "$_managed_check_rc" = "1" ]; then
+      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file. See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for these files."
+      _api_fallback_ok=false
+    fi
+  fi
+fi
+if [ "$_api_fallback_ok" = "true" ]; then
+  echo "::warning::push-with-retry: local fetch+rebase+push exhausted $MAX_RETRIES attempts — trying the Git Data API fallback (task #707)"
+  # Command substitution only captures stdout — push-via-git-api.sh writes
+  # ONLY the new commit sha there on success, so API_NEW_SHA is clean.
+  # Its progress/diagnostic lines go to stderr, which flows through here
+  # uncaptured (this job's normal log output), matching how every other
+  # `node "$SCRIPT_DIR/..."` call in this file surfaces its own logging.
+  if API_NEW_SHA=$(bash "$SCRIPT_DIR/push-via-git-api.sh" "$PULL_BRANCH" "$SCRIPT_ENTRY_BASE" "${PUSH_API_MAX_RETRIES:-6}"); then
+    echo "  Git Data API fallback succeeded: $API_NEW_SHA"
+    git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" >/dev/null 2>&1 || true
+    if verify_content_survived; then
+      # The commit push-via-git-api.sh built has a DIFFERENT parent lineage
+      # than local HEAD (it was built on top of the remote tip via plumbing,
+      # not via a local rebase of our commits) — local main must be moved to
+      # match what's now actually on origin. Safe: its tree IS our content
+      # (that's what verify_content_survived just confirmed) merged onto the
+      # fetched tip, which is exactly what a successful local rebase+push
+      # would have left behind.
+      git reset --hard "origin/$PULL_BRANCH" 2>/dev/null || true
+      pushed=true
+    else
+      echo "::error::push-with-retry: Git Data API fallback push succeeded but our commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619 class) — treating the fallback as failed."
+      record_push_failure "api-fallback-content-dropped" "$MAX_RETRIES"
+    fi
+  else
+    echo "::warning::push-with-retry: Git Data API fallback also failed"
+  fi
+fi
+
 if [ "$pushed" != "true" ]; then
   record_push_failure "retries-exhausted" "$MAX_RETRIES"
   echo "::error::All push attempts failed after $MAX_RETRIES attempts"
