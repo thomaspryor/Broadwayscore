@@ -31,6 +31,19 @@
 const fs = require('fs');
 const path = require('path');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `unflag-wrong-production-fps.js — Unflag false-positive wrongProduction reviews
+
+Usage:
+  node scripts/unflag-wrong-production-fps.js --dry-run    # Preview changes
+  node scripts/unflag-wrong-production-fps.js              # Apply changes
+  node scripts/unflag-wrong-production-fps.js --verbose    # Show all skipped details
+  node scripts/unflag-wrong-production-fps.js --help, -h   # print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266/#498/#638/#545 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const VERBOSE = process.argv.includes('--verbose');
