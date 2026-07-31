@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-31T06:31:31.408Z",
+    "generatedAt": "2026-07-31T07:27:43.407Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -15,12 +15,12 @@
   },
   "flagged": [
     {
-      "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 265
+      "path": "data/audit/recent-pushes.jsonl",
+      "churn": 268
     },
     {
-      "path": "data/audit/recent-pushes.jsonl",
-      "churn": 226
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
+      "churn": 264
     },
     {
       "path": "data/audit/alert-ledger.json",
@@ -32,23 +32,23 @@
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 91
+      "churn": 90
     },
     {
       "path": "data/audit/autoclear-shadow-report.json",
-      "churn": 68
+      "churn": 67
     },
     {
       "path": "data/audit/t1-coverage-signals.json",
-      "churn": 68
+      "churn": 67
     },
     {
       "path": "data/audit/t1-silent-gaps.json",
-      "churn": 68
+      "churn": 67
     },
     {
       "path": "data/audit/we-gate-proving.json",
-      "churn": 65
+      "churn": 64
     },
     {
       "path": ".github/workflows/test.yml",
@@ -56,49 +56,49 @@
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 41
+      "churn": 40
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 37
+      "churn": 36
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 37
+      "churn": 36
     }
   ],
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 116
+      "churn": 117
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 109
+      "churn": 110
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 101
+      "churn": 102
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 100
+      "churn": 101
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 100
-    },
-    {
-      "path": "public/opening-night-status.json",
-      "churn": 71
+      "churn": 101
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 70
+      "churn": 72
+    },
+    {
+      "path": "public/opening-night-status.json",
+      "churn": 72
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 67
+      "churn": 68
     },
     {
       "path": "data/show-score-urls.json",
@@ -106,23 +106,23 @@
     },
     {
       "path": "public/data/shows/loves-labours-lost-globe-west-end-2026.json",
-      "churn": 34
+      "churn": 36
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1277,
+      "churn": 1234,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1239,
+      "churn": 1197,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 713,
+      "churn": 709,
       "mergeAttr": "ours"
     },
     {
@@ -132,12 +132,12 @@
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 265,
+      "churn": 264,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 265,
+      "churn": 264,
       "mergeAttr": "ours"
     },
     {
@@ -147,17 +147,17 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 167,
+      "churn": 168,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 104,
+      "churn": 106,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 100,
+      "churn": 101,
       "mergeAttr": "ours"
     },
     {
@@ -192,77 +192,77 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 71,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 71,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 71,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 68,
+      "churn": 67,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/show-review-gap.json",
-      "churn": 68,
+      "churn": 67,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 68,
+      "churn": 67,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-enormous-crocodile-west-end-2026.json",
-      "churn": 66,
+      "churn": 65,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/heathers-the-musical-off-west-end-2026.json",
-      "churn": 63,
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/loves-labours-lost-globe-west-end-2026.json",
-      "churn": 63,
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/midnight-at-the-never-get-west-end-2026.json",
-      "churn": 63,
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-oresteia-west-end-2026.json",
-      "churn": 63,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/allegra-west-end-2026.json",
-      "churn": 57,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/tender-off-west-end-2026.json",
-      "churn": 57,
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/drift-state.json",
-      "churn": 56,
+      "churn": 55,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/allegra-west-end-2026.json",
+      "churn": 55,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/tender-off-west-end-2026.json",
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 50,
+      "churn": 51,
       "mergeAttr": "ours"
     },
     {
@@ -277,7 +277,7 @@
     },
     {
       "path": "data/audit/orphan-unscored-tao-of-glass-west-end-2026.json",
-      "churn": 35,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
