@@ -885,5 +885,12 @@
       "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
       "addedAt": "2026-07-30"
     }
+  },
+  "broadwayworld.com": {
+    "playwright": {
+      "skip": true,
+      "reason": "BWW serves a Cloudflare interstitial to headless Chromium; page.goto never reaches networkidle and burns the full 30s timeout on EVERY BWW fetch before falling through to Bright Data (measured 2026-07-31 on /reviews/ and reviews.php). Already documented in bww-rr-discover.js fetchSectionPageAnchors. Skipping the tier removes 30s of dead latency from the opening-night fast path at zero yield cost.",
+      "addedAt": "2026-07-31"
+    }
   }
 }

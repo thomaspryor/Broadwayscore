@@ -183,17 +183,60 @@ describe('discoverBwwRoundupUrl — section-page discovery (off-Broadway)', () =
     assert.strictEqual(reviewsPhpCalled, false, 'section hit must short-circuit the Browserbase path');
   });
 
-  it('falls back to reviews.php when the section scan finds nothing (explicit override)', async () => {
-    // Off-Broadway now defaults to skipping reviews.php (T4) — this test exercises
-    // the fallback path itself, so it must explicitly override the default.
-    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'off-broadway' };
+  it('falls back to the paid reviews.php when the section scan finds nothing', async () => {
+    // Broadway category => shouldSkipReviewsPhp is false, so the paid fallback runs.
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'broadway' };
     const result = await discoverBwwRoundupUrl(show, {
-      skipReviewsPhp: false,
       fetchSectionAnchors: async () => [],
       fetchAnchors: async () => OB_SECTION_ANCHORS,
     });
     assert.strictEqual(result.via, 'reviews.php');
     assert.ok(result.url.includes('A-WOMAN-AMONG-WOMEN'), `got ${result.url}`);
+  });
+
+  it('an explicit skipReviewsPhp:false does NOT disable the category default', async () => {
+    // Regression: audit-show-review-gap.js passes { skipReviewsPhp: show.status === 'closed' },
+    // which is an explicit `false` for every OPEN show. Under the old
+    // `opts.skipReviewsPhp !== undefined` check that silently bypassed the T4
+    // category gate, making the hourly gap audit the one caller T4 never covered.
+    // The two guards are OR'd now, so the category default still applies.
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'off-broadway', status: 'open' };
+    let paidCalled = false;
+    const result = await discoverBwwRoundupUrl(show, {
+      skipReviewsPhp: show.status === 'closed', // => false
+      fetchSectionAnchors: async () => [],
+      fetchAnchors: async () => { paidCalled = true; return OB_SECTION_ANCHORS; },
+    });
+    assert.strictEqual(result.via, 'section-only');
+    assert.strictEqual(paidCalled, false, 'category default must still suppress the PAID reviews.php probe');
+  });
+
+  it('the CHEAP reviews.php tier runs for Off-Broadway and can resolve a roundup', async () => {
+    // The yield half of the 2026-07-31 regression: T4 skipped reviews.php entirely
+    // for Off-Broadway, but reviews.php demonstrably carries OB roundups (measured
+    // live: THE SAVIORS, Cat Cohen BROAD STROKES, LES MISERABLES ARENA). The cheap
+    // fetchPage tier must run for OB shows and must NOT be gated by category.
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'off-broadway' };
+    let paidCalled = false;
+    const result = await discoverBwwRoundupUrl(show, {
+      fetchSectionAnchors: async () => [],
+      fetchCheapAnchors: async () => OB_SECTION_ANCHORS,
+      // NOTE: no fetchAnchors override here — supplying one bypasses the cheap tier.
+    });
+    assert.strictEqual(result.via, 'reviews.php-cheap');
+    assert.ok(result.url.includes('A-WOMAN-AMONG-WOMEN'), `got ${result.url}`);
+    assert.strictEqual(paidCalled, false);
+  });
+
+  it('an empty cheap tier still falls through to the paid tier when not skipped', async () => {
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'broadway' };
+    const result = await discoverBwwRoundupUrl(show, {
+      fetchSectionAnchors: async () => [],
+      fetchCheapAnchors: async () => [],
+      fetchAnchors: async () => OB_SECTION_ANCHORS,
+    });
+    // fetchAnchors supplied => cheap tier bypassed; asserts the paid path still works.
+    assert.strictEqual(result.via, 'reviews.php');
   });
 
   it('skipReviewsPhp avoids the Browserbase fallback (closed-show cost guard)', async () => {
@@ -294,5 +337,48 @@ describe('discoverBwwRoundupUrl — typed via reasons on reviews.php failure (T4
     });
     assert.strictEqual(result.via, 'not-found');
     assert.strictEqual(result.url, null);
+  });
+});
+
+describe('ship-check hardening (2026-07-31)', () => {
+  // Local fixture — the PAID_ANCHORS const lives in another describe scope.
+  const PAID_ANCHORS = [
+    'https://www.broadwayworld.com/article/Review-Roundup-A-WOMAN-AMONG-WOMEN-Opens-Off-Broadway-20260604',
+  ];
+  it('forceReviewsPhp overrides the category default so the paid probe can be demanded', async () => {
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'off-broadway' };
+    let paidCalled = false;
+    const result = await discoverBwwRoundupUrl(show, {
+      forceReviewsPhp: true,
+      fetchSectionAnchors: async () => [],
+      fetchAnchors: async () => { paidCalled = true; return PAID_ANCHORS; },
+    });
+    assert.strictEqual(paidCalled, true, 'forceReviewsPhp must reach the paid tier');
+    assert.strictEqual(result.via, 'reviews.php');
+  });
+
+  it('forceReviewsPhp beats an explicit skipReviewsPhp:true', async () => {
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'off-broadway' };
+    let paidCalled = false;
+    const result = await discoverBwwRoundupUrl(show, {
+      skipReviewsPhp: true,
+      forceReviewsPhp: true,
+      fetchSectionAnchors: async () => [],
+      fetchAnchors: async () => { paidCalled = true; return PAID_ANCHORS; },
+    });
+    assert.strictEqual(paidCalled, true);
+    assert.strictEqual(result.via, 'reviews.php');
+  });
+
+  it('a cheap tier returning null (blocked page) still falls through to the paid tier', async () => {
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'broadway' };
+    let paidCalled = false;
+    const result = await discoverBwwRoundupUrl(show, {
+      fetchSectionAnchors: async () => [],
+      fetchCheapAnchors: async () => null, // unusable, e.g. soft-404 / CF interstitial
+      fetchAnchors: async () => { paidCalled = true; return PAID_ANCHORS; },
+    });
+    assert.strictEqual(paidCalled, true, 'an unusable cheap result must not suppress the paid probe');
+    assert.strictEqual(result.via, 'reviews.php');
   });
 });
