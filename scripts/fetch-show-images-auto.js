@@ -29,6 +29,8 @@ const { compressImage } = require('./lib/compress-image');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const scraper = require('./lib/scraper');
+const { fetchPage, checkScrapingBeeCredits } = scraper;
 
 const crypto = require('crypto');
 
@@ -169,86 +171,16 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
-function fetchViaScrapingBee(url, { premiumProxy = false } = {}) {
-  return new Promise((resolve, reject) => {
-    if (!SCRAPINGBEE_API_KEY) {
-      reject(new Error('SCRAPINGBEE_API_KEY not set'));
-      return;
-    }
-
-    let scrapingBeeUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
-    if (premiumProxy) scrapingBeeUrl += '&premium_proxy=true';
-
-    https.get(scrapingBeeUrl, (response) => {
-      if (response.statusCode !== 200) {
-        reject(new Error(`HTTP ${response.statusCode}`));
-        return;
-      }
-
-      let data = '';
-      response.on('data', chunk => data += chunk);
-      response.on('end', () => resolve(data));
-      response.on('error', reject);
-    }).on('error', reject);
-  });
-}
-
-// Fetch a page via Bright Data scraping browser (fallback when ScrapingBee is exhausted)
-function fetchViaBrightData(url) {
-  return new Promise((resolve, reject) => {
-    if (!BRIGHTDATA_TOKEN) {
-      reject(new Error('BRIGHTDATA_TOKEN not set'));
-      return;
-    }
-
-    const apiUrl = `https://api.brightdata.com/request`;
-    const postData = JSON.stringify({
-      zone: 'mcp_browser',
-      url: url,
-      format: 'raw',
-    });
-
-    const req = https.request(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(postData),
-      },
-    }, (response) => {
-      if (response.statusCode !== 200) {
-        let errData = '';
-        response.on('data', chunk => errData += chunk);
-        response.on('end', () => reject(new Error(`Bright Data HTTP ${response.statusCode}: ${errData.substring(0, 200)}`)));
-        return;
-      }
-      let data = '';
-      response.on('data', chunk => data += chunk);
-      response.on('end', () => resolve(data));
-      response.on('error', reject);
-    });
-    req.on('error', reject);
-    req.write(postData);
-    req.end();
-  });
-}
-
-// Fetch page with fallback: ScrapingBee → Bright Data
+// Fetch page HTML through the shared fallback chain (Bright Data → ScrapingBee →
+// Scrapingdog → Playwright — see scripts/lib/scraper.js). Replaces the former
+// private ScrapingBee/Bright Data-only implementation: that duplicate path
+// never got Scrapingdog's cheap tier or Playwright's free tier, and re-hit an
+// exhausted ScrapingBee key on every call instead of latching off after the
+// first 401 (task #688). Throws on total failure, same as the old fallback.
 async function fetchPageWithFallback(url, opts = {}) {
-  // Try ScrapingBee first
-  if (SCRAPINGBEE_API_KEY) {
-    try {
-      return await fetchViaScrapingBee(url, opts);
-    } catch (sbErr) {
-      if (BRIGHTDATA_TOKEN) {
-        console.log(`   ⚠ ScrapingBee failed (${sbErr.message}), trying Bright Data...`);
-      } else {
-        throw sbErr;
-      }
-    }
-  }
-  // Bright Data fallback
-  return await fetchViaBrightData(url);
+  if (!url) throw new Error('fetchPageWithFallback: no URL provided');
+  const result = await fetchPage(url, opts.renderJs != null ? { renderJs: opts.renderJs } : {});
+  return result.content;
 }
 
 // Download image directly from URL (no proxy needed for public CDN images)
@@ -834,6 +766,7 @@ async function fetchFromIBDB(show) {
   // redirect to homepage. Skip IBDB image search if no real URL is available.
   if (!ibdbUrl) {
     console.log(`   No IBDB URL available for "${show.title}" — skipping IBDB image search`);
+    return null;
   }
 
   await sleep(1500);
@@ -877,9 +810,6 @@ async function fetchFromIBDB(show) {
 // Fetch show poster from ShowScore (show-score.com)
 // ShowScore hosts poster images on CloudFront. We scrape the OG image or poster from the page.
 async function fetchFromShowScore(show) {
-  const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
-  if (!SCRAPINGBEE_KEY) return null;
-
   const category = show.category || 'broadway';
   const ssCategory = category === 'off-broadway' ? 'off-broadway-shows'
     : category === 'west-end' ? 'london-shows'
@@ -896,15 +826,7 @@ async function fetchFromShowScore(show) {
   console.log(`   Trying ShowScore: ${ssUrl}`);
 
   try {
-    const resp = await fetch(
-      `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(ssUrl)}&render_js=false`,
-      { signal: AbortSignal.timeout(20000) }
-    );
-    if (!resp.ok) {
-      console.log(`   ✗ ShowScore page not found (${resp.status})`);
-      return null;
-    }
-    const html = await resp.text();
+    const html = await fetchPageWithFallback(ssUrl);
 
     // Extract poster image from CloudFront CDN
     // Pattern: d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/NNNN/medium_...
@@ -1444,9 +1366,12 @@ async function fetchFromPlaybill(show) {
     await sleep(1000);
   }
 
-  // Last resort: Google search
+  // Last resort: Google search. The literal quotes around the title must be
+  // part of the encoded query — an unencoded `"` in the URL trips Bright
+  // Data's `"url" must be a valid uri` 400 (task #688).
   console.log(`   Trying Google search for Playbill page...`);
-  const searchUrl = `https://www.google.com/search?q=site:playbill.com/production+"${encodeURIComponent(show.title)}"+broadway`;
+  const searchQuery = `site:playbill.com/production "${show.title}" broadway`;
+  const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
 
   try {
     const searchHtml = await fetchPageWithFallback(searchUrl);
@@ -1600,11 +1525,12 @@ function searchGoogleImagesSB(query) {
   });
 }
 
-// Search Google Images via Bright Data (fallback — returns direct URLs, not base64)
+// Search Google Images via the shared fallback chain (fallback — returns
+// direct URLs, not base64). Plain HTML page fetch, so fetchPage() handles it
+// like any other page (Bright Data → ScrapingBee → Scrapingdog → Playwright).
 async function searchGoogleImagesBD(query) {
-  if (!BRIGHTDATA_TOKEN) throw new Error('BRIGHTDATA_TOKEN not set');
   const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&tbm=isch&num=20`;
-  const html = await fetchViaBrightData(googleUrl);
+  const html = await fetchPageWithFallback(googleUrl);
   const results = [];
   // Google embeds image metadata as JSON arrays: ["URL", width, height]
   const imgRegex = /\["(https?:\/\/[^"]+\.(?:jpg|jpeg|png|webp)[^"]*)",\s*(\d+),\s*(\d+)\]/gi;
@@ -1625,11 +1551,23 @@ async function searchGoogleImagesBD(query) {
 }
 
 // Unified Google Images search: ScrapingBee → Bright Data fallback
+// Latches off after the first ScrapingBee credit/auth failure so an exhausted
+// key logs ONE skip line instead of re-hitting the same 401 on every show
+// (task #688 — this endpoint is ScrapingBee's Google-Images SERP product,
+// which has no fetchPage() equivalent, so it can't inherit scraper.js's
+// shared _scrapingBeePageExhausted latch and needs its own).
+let _sbImagesExhausted = false;
+
 async function searchGoogleImages(query) {
-  if (SCRAPINGBEE_API_KEY) {
+  if (SCRAPINGBEE_API_KEY && !_sbImagesExhausted) {
     try {
       return await searchGoogleImagesSB(query);
     } catch (sbErr) {
+      const status = /HTTP (\d+)/.exec(sbErr.message)?.[1];
+      if ([401, 403, 429].includes(Number(status))) {
+        _sbImagesExhausted = true;
+        console.log(`   ⚠ ScrapingBee Images exhausted (HTTP ${status}) — skipping SB Images for the rest of this run`);
+      }
       if (BRIGHTDATA_TOKEN) {
         console.log(`   ⚠ ScrapingBee Images failed (${sbErr.message}), trying Bright Data...`);
       } else {
@@ -2564,6 +2502,22 @@ async function main() {
     console.log('Bright Data fallback: ENABLED');
   }
 
+  // Credit preflight — caches the ScrapingBee balance ONCE so fetchPage()
+  // skips a known-exhausted key from the first call instead of discovering
+  // it via a 401 on every show (task #688: 135 SB 401s in one run before
+  // this existed). A degraded provider isn't fatal — fetchPage() still has
+  // Bright Data/Scrapingdog/Playwright — so this only logs, never aborts.
+  if (!auditExisting && SCRAPINGBEE_API_KEY) {
+    try {
+      const sbOk = await checkScrapingBeeCredits();
+      console.log(sbOk
+        ? '  ScrapingBee credit preflight: OK'
+        : '  ⚠ ScrapingBee credit preflight: LOW/exhausted — fetchPage() will skip SB for this run');
+    } catch (e) {
+      console.log(`  ⚠ ScrapingBee credit preflight check failed (${e.message}) — continuing`);
+    }
+  }
+
   // Initialize LLM verification gate (on by default)
   let verifyCtx = null;
   if (verifyEnabled) {
@@ -2931,6 +2885,20 @@ async function main() {
         fs.appendFileSync(outputFile, `promotional_art=${verifyCtx.imageTypes.promotional_art || 0}\n`);
         fs.appendFileSync(outputFile, `production_stills=${verifyCtx.imageTypes.production_still || 0}\n`);
       }
+    }
+  }
+
+  // Success-rate gate — a run of 10+ shows where more than half fail (e.g. a
+  // ScrapingBee credit exhaustion nobody caught for 10 days, 6 runs, 5-15%
+  // success every time) must exit non-zero so CI's `if: failure()` step fires
+  // notify-failure. Below 10 shows the sample is too small to be meaningful
+  // (a single stubborn show failing shouldn't page anyone).
+  const totalAttempted = results.success.length + results.failed.length;
+  if (totalAttempted >= 10) {
+    const failureRate = results.failed.length / totalAttempted;
+    if (failureRate > 0.5) {
+      console.error(`\n❌ FAILURE RATE ${Math.round(failureRate * 100)}% (${results.failed.length}/${totalAttempted}) exceeds the 50% threshold — exiting non-zero.`);
+      process.exit(1);
     }
   }
 }
