@@ -1648,6 +1648,13 @@ jobs:
           # with the local pre-push hook.
           bash scripts/lint-workflow-guards.sh scraping-fallback
 
+      - name: Check scraping workflows have SCRAPINGDOG_API_KEY (Scraping v2 T9)
+        run: |
+          # fetchPage()'s cheapest tier only fires when the workflow actually
+          # carries the key. Logic lives in scripts/lint-workflow-guards.sh
+          # (EXEMPT list included) — shared with the local pre-push hook.
+          bash scripts/lint-workflow-guards.sh scrapingdog-pairing
+
       - name: Check Theatr token is not passed to unauthorized workflows
         run: |
           # Logic lives in scripts/lint-workflow-guards.sh — shared with the
