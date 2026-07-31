@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-31T01:04:27.583Z",
+  "updatedAt": "2026-07-31T01:18:29.396Z",
   "processed": 60,
-  "failed": 915,
-  "successRate": "6.2%",
+  "failed": 939,
+  "successRate": "6.0%",
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
@@ -10,7 +10,7 @@
     "directCookies": 4,
     "scrapingbee": 0,
     "brightdata": 16,
-    "archiveToday": 17,
+    "archiveToday": 21,
     "archive": 5
   },
   "browserbaseSessions": 2,
@@ -90,6 +90,28 @@
     },
     {
       "t": "2026-07-31T01:03:25.654Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-31T01:13:03.865Z",
+      "event": "bb-session",
+      "session": "273889d1",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-07-31T01:13:04.425Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-31T01:17:20.513Z",
+      "event": "bb-session",
+      "session": "56607b9f",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-31T01:17:21.104Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
