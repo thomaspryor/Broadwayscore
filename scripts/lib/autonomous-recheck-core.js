@@ -1,6 +1,6 @@
 /**
  * autonomous-recheck-core.js — pure decisions for the nightly acceptance
- * recheck (Sprint 3, S3-T2/T5). I/O lives in
+ * recheck (Sprint 3, S3-T2/T5; widened by task #695). I/O lives in
  * scripts/autonomous-acceptance-recheck.js; everything judgeable lives here so
  * it can be unit-tested without Notion, git, or a subprocess.
  *
@@ -11,14 +11,38 @@
  * finds. In SHADOW mode it only reports — it never reopens a card — because a
  * recheck that reopens work on a false positive burns owner trust faster than
  * an unverified Done ever did.
+ *
+ * Task #695 widened this for deferred-effect fixes (a fix whose result is
+ * only observable days out — next cron, next day's billing data, next
+ * opening night): a card can carry an explicit `RECHECK-AFTER: YYYY-MM-DD`
+ * stamp in its notes instead of relying on the 24h Done-window. Per the
+ * process rule in /wrap-up, such a card is left in Paused (not Done) until
+ * its stamp is reached, at which point this recheck is what has anything to
+ * say about it at all.
  */
 
 'use strict';
 
+const { evaluateVerifiability } = require('./verify-gate.js');
+
 // A card only recently marked Done is worth re-checking; anything older was
 // either already re-checked or has been true for long enough that a nightly
-// re-run adds nothing.
+// re-run adds nothing. Superseded per-card by an explicit RECHECK-AFTER stamp
+// (see parseRecheckAfter/doneWithinWindow below).
 const DEFAULT_WINDOW_HOURS = 24;
+
+// `RECHECK-AFTER: 2026-08-08` — case-insensitive, date-only (parsed as
+// midnight UTC, i.e. the START of that day: the recheck becomes due the
+// instant that UTC day begins, not at its end — a deferred-effect claim like
+// "7-day spend streak" names the day its OWN window already closes on).
+const RECHECK_AFTER_RE = /RECHECK-AFTER:\s*(\d{4}-\d{2}-\d{2})/i;
+
+function parseRecheckAfter(notes) {
+  const m = RECHECK_AFTER_RE.exec(String(notes || ''));
+  if (!m) return null;
+  const t = Date.parse(`${m[1]}T00:00:00Z`);
+  return Number.isFinite(t) ? t : null;
+}
 
 // Was the card marked Done inside the window? Keyed on explicit completion
 // signals: completedDate (date-only, parses as midnight UTC) and lastEditedAt
@@ -29,6 +53,21 @@ const DEFAULT_WINDOW_HOURS = 24;
 // recently-completed cards at all (see notion-brain --sort edited). Explicit
 // stamps also survive future changes to how ageDays is derived.
 function doneWithinWindow(card, windowHours, now) {
+  // An explicit per-card stamp always wins over the generic window — that's
+  // the whole point of RECHECK-AFTER: the card's own author decided when its
+  // deferred effect becomes checkable, which the blanket 24h Done-window
+  // cannot know. Due the instant `now` reaches the stamped day; stays due
+  // indefinitely after (same "still due" semantics the window itself has —
+  // a card is never un-selected just because a run was missed).
+  const recheckAfter = parseRecheckAfter(card.notes);
+  if (recheckAfter != null) return now >= recheckAfter;
+
+  // Without a stamp, only a Done card can be window-eligible — a Paused card
+  // (the status /wrap-up uses for a deferred-effect fix awaiting its stamp)
+  // has nothing "done" to verify yet and must never be picked up by the
+  // generic ageDays/completedDate fallback below.
+  if (card.status && card.status !== 'Done') return false;
+
   const cutoff = now - windowHours * 3600 * 1000;
   const stamps = [];
   // completedDate is date-only, so Date.parse gives midnight UTC — the START
@@ -48,10 +87,11 @@ function doneWithinWindow(card, windowHours, now) {
 }
 
 /**
- * Which Done cards should be re-checked tonight, and with what.
+ * Which Done (or Paused-with-RECHECK-AFTER) cards should be re-checked
+ * tonight, and with what.
  *
  * @param {object} o
- * @param {{id:string,name:string,ageDays:number,completedDate?:string|null,lastEditedAt?:string|null}[]} o.doneCards - notion-brain list --status Done --sort edited
+ * @param {{id:string,name:string,status?:string,notes?:string,ageDays:number,completedDate?:string|null,lastEditedAt?:string|null}[]} o.doneCards - notion-brain list --status Done,Paused --sort edited
  * @param {{event:string,taskId:string,notionId?:string,verifyCmd?:string|null,verifyReason?:string|null,subject?:string,ts?:string}[]} o.launchEntries - dispatch-ledger
  * @param {number} [o.windowHours]
  * @param {(cardId:string)=>boolean} [o.isClaimed] - a card someone is actively working RIGHT NOW is skipped
@@ -73,7 +113,25 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
     if (!card || !card.id) continue;
     if (!doneWithinWindow(card, windowHours, now)) continue;
     const launch = byCard.get(card.id);
-    if (!launch) continue; // never dispatched through bsc-next — nothing was captured to re-run
+
+    // No dispatch-ledger entry — most often a HUMAN session's card, which
+    // bsc-next never touched, so nothing was ever captured to re-run. Fall
+    // back to the card's OWN acceptance-criteria command (the same canonical
+    // predicate bsc-next's dispatch gate and notion-brain's arming warning
+    // already use) instead of leaving every human-shipped fix invisible to
+    // this recheck. Still never invents a command: a card with no runnable
+    // criteria in its notes is left alone exactly as before.
+    if (!launch) {
+      const gate = evaluateVerifiability(card.notes || '');
+      if (!gate.cmd) continue;
+      if (isClaimed(card.id)) {
+        out.push({ cardId: card.id, name: card.name || '(untitled)', verifyCmd: null, reason: null, skip: 'someone is working this card right now' });
+        continue;
+      }
+      out.push({ cardId: card.id, name: card.name || '(untitled)', verifyCmd: gate.cmd, reason: null, skip: null });
+      continue;
+    }
+
     if (isClaimed(card.id)) {
       out.push({ cardId: card.id, name: card.name || launch.subject || '(untitled)', verifyCmd: null, reason: null, skip: 'someone is working this card right now' });
       continue;
@@ -131,7 +189,9 @@ function describeResult(r) {
 
 module.exports = {
   DEFAULT_WINDOW_HOURS,
+  RECHECK_AFTER_RE,
   SHADOW_EXIT,
+  parseRecheckAfter,
   doneWithinWindow,
   selectRecheckTargets,
   summarize,

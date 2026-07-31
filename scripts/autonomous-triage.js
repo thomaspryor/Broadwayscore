@@ -445,4 +445,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { callSonnet, notionBrain, slim, buildDataPlan, capExceededCardIds, MODEL, QUEUE_PATH };
+module.exports = { callSonnet, notionBrain, slim, buildDataPlan, capExceededCardIds, loadSharedTaskState, MODEL, QUEUE_PATH };

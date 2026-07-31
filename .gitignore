@@ -274,6 +274,16 @@ tmp/
 /data/audit/autonomous-ledger.jsonl
 /data/audit/autonomous-run.pid
 /data/audit/autonomous-email-preview.html
+# data/audit/autonomous-recheck-ledger.jsonl is intentionally NOT listed here
+# (task #695): it's a DEDICATED, tracked path for
+# scripts/autonomous-acceptance-recheck.js, now hosted daily in
+# data-health-check.yml on an ephemeral CI runner, so its results must be
+# committed (like alert-ledger.json/provider-spend-daily.jsonl) to survive
+# past that job. Deliberately separate from autonomous-ledger.jsonl above,
+# which stays Mac-local — com.broadwayscore.autonomous-shadow is still loaded
+# and appends to that path nightly via a `git fetch && merge --ff-only`
+# update step; sharing the path would make that merge start failing silently
+# the first time CI and the Mac diverged on it (ship-check finding).
 # bsc-next/bsc-prune dispatch-attempt journal (task #334) — Mac-local
 /data/audit/dispatch-ledger.jsonl
 # CI-red claim ledger (task #584) — Mac-local, same append-only pattern
