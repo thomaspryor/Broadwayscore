@@ -1,242 +1,20 @@
 {
-  "generatedAt": "2026-07-31T01:31:36.296Z",
+  "generatedAt": "2026-07-31T02:51:37.384Z",
   "windowDays": 1095,
-  "targets": 33,
+  "targets": 31,
   "counts": {
     "withGap": 7,
-    "totalMissing": 68,
+    "totalMissing": 17,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 24,
+    "totalFlaggedMisses": 28,
     "totalRecoverable": 0,
     "totalRecovered": 0
   },
   "results": [
     {
-      "showId": "the-saviors-off-broadway-2026",
-      "title": "The Saviors",
-      "openingDate": "2026-07-27",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-were-critics-testify-for-bubba-weilers-the-saviors",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-SAVIORS-Opens-at-Atlantic-Theater-Company-20260727"
-      ],
-      "aggregatorListedUrls": [
-        "https://cititour.com/NYC_Broadway/The-Saviors/1387",
-        "https://culturesauce.com/saviors-bubba-weiler-off-broadway-review/",
-        "https://exeuntnyc.com/reviews/review-the-saviors-at-atlantic-theater-company/",
-        "https://thefrontrowcenter.com/2026/07/the-saviors/",
-        "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/",
-        "https://nystagereview.com/2026/07/27/the-saviors-what-would-jesus-do/",
-        "https://www.newyorktheatreguide.com/reviews/the-saviors-off-broadway-review",
-        "https://www.nytimes.com/2026/07/27/theater/the-saviors-review-childlike-faith-adult-betrayal.html",
-        "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
-        "https://www.theatrely.com/post/the-saviors-two-young-catholics-in-a-miraculous-new-play-review",
-        "https://www.thewrap.com/creative-content/reviews/the-saviors-off-broadway-review-altar-boys/",
-        "https://www.talkinbroadway.com/page/ob/07_27_26.html"
-      ],
-      "dirFiles": 20,
-      "dirClean": 10,
-      "inReviewsJson": 10,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "nysun.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.talkinbroadway.com/page/ob/07_27_26.html",
-          "host": "talkinbroadway.com",
-          "knownOutletId": "talkinbroadway",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "talkinbroadway--howard-miller.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.talkinbroadway.com/page/ob/07_27_26.html"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
-    },
-    {
-      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-      "title": "Cat Cohen: Broad Strokes",
-      "openingDate": "2026-07-27",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
-        "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
-        "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
-        "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
-        "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
-        "https://www.thewrap.com/creative-content/theater/broad-strokes-off-broadway-review-cat-cohen/",
-        "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
-        "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/"
-      ],
-      "dirFiles": 16,
-      "dirClean": 11,
-      "inReviewsJson": 11,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
-    },
-    {
-      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
-      "title": "Les Misérables: The Arena Concert Spectacular",
-      "openingDate": "2026-07-28",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-the-les-miserables-arena-concert-spectacular-at-radio-city-music-hall",
-        "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-THE-ARENA-CONCERT-SPECTACULAR-Opens-At-Radio-City-Music-Hall-20260728"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/les-miserables-arena-concert-spectacular-review/",
-        "https://cititour.com/NYC_Broadway/Les-Miserables-The-Arena-Concert-Spectacular/1388",
-        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-still-breaking-hearts-and-triggering-tears/",
-        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
-        "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
-        "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/",
-        "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-        "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review"
-      ],
-      "dirFiles": 10,
-      "dirClean": 10,
-      "inReviewsJson": 9,
-      "missing": [
-        {
-          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-          "host": "1minutecritic.substack.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "amny.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "nydailynews.com",
-          "count": 1
-        },
-        {
-          "host": "nypost.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Les Misérables: The Arena Concert Spectacular\" review radio",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Les Misérables: The Arena Concert Spectacular\" Boublil review",
-            "ok": true,
-            "results": 9,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 4,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-          "host": "1minutecritic.substack.com",
-          "outletId": "1minutecritic",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~51340/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
-      "title": "The Wind in the Willows - Theatre On Kew",
-      "openingDate": "2026-07-25",
+      "showId": "dog-man-the-musical-west-end-2026",
+      "title": "Dog Man - The Musical",
+      "openingDate": "2026-07-29",
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
@@ -263,7 +41,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 1
           },
           "lbo-roundup": {
             "found": false,
@@ -283,319 +61,27 @@
         "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
-    },
-    {
-      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
-      "title": "Rosie O'Donnell: Common Knowledge",
-      "openingDate": "2026-07-25",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/common-knowledge-off-broadway-review-rosie-odonnell",
-        "https://deadline.com/2026/07/rosie-odonnell-common-knowledge-off-broadway-1237003334/",
-        "https://www.theatermania.com/news/rosie-odonnell-discusses-her-new-off-broadway-show-common-knowledge_1845820/",
-        "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/",
-        "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons"
-      ],
-      "dirFiles": 5,
-      "dirClean": 1,
-      "inReviewsJson": 1,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/common-knowledge-off-broadway-review-rosie-odonnell",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytg--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.newyorktheatreguide.com/show/47210-common-knowledge"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/rosie-odonnell-discusses-her-new-off-broadway-show-common-knowledge_1845820/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatermania.com/news/rosie-odonnell-discusses-her-new-off-broadway-show-common-knowledge_1845820/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/",
-          "host": "darylroththeatre.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "darylroththeatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons",
-          "host": "sparkhamptons.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "sparkhamptons--angela-lagreca.json",
-              "flag": "clean",
-              "urlInDir": "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
         "ran": true,
         "complete": true,
-        "query": "\"Rosie O'Donnell: Common Knowledge\" Off-Broadway review 2026",
+        "query": "\"Dog Man - The Musical\" West End review 2026",
         "queryStatus": [
           {
-            "query": "\"Rosie O'Donnell: Common Knowledge\" Off-Broadway review 2026",
+            "query": "\"Dog Man - The Musical\" West End review 2026",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "error": null
           },
           {
-            "query": "\"Rosie O'Donnell: Common Knowledge\" review daryl",
+            "query": "\"Dog Man - The Musical\" review queen",
             "ok": true,
             "results": 10,
             "error": null
           }
         ],
         "queriesOk": 2,
-        "resultCount": 5,
+        "resultCount": 0,
         "error": null
       }
-    },
-    {
-      "showId": "the-enormous-crocodile-west-end-2026",
-      "title": "The Enormous Crocodile",
-      "openingDate": "2026-07-28",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
-        "https://www.mybaba.com/event/roald-dahls-the-enormous-crocodile-the-musical-returns-to-london/"
-      ],
-      "dirFiles": 8,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
-          "host": "threads.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.mybaba.com/event/roald-dahls-the-enormous-crocodile-the-musical-returns-to-london/",
-          "host": "mybaba.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
-      },
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Enormous Crocodile\" West End review 2026",
-        "queryStatus": [
-          {
-            "query": "\"The Enormous Crocodile\" West End review 2026",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"The Enormous Crocodile\" review lyric",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 2,
-        "resultCount": 2,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
-          "host": "threads.com",
-          "outletId": "threads",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~51398/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
-        },
-        {
-          "url": "https://www.mybaba.com/event/roald-dahls-the-enormous-crocodile-the-musical-returns-to-london/",
-          "host": "mybaba.com",
-          "outletId": "mybaba",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~51403/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "hungry-women-off-broadway-2026",
-      "title": "Hungry Women",
-      "openingDate": "2026-07-25",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/hungry-women-off-broadway-review-julia-lester",
-        "https://www.talkinbroadway.com/page/ob/07_25_26.html",
-        "https://pagesonstages.com/2026/07/25/hungry-women/",
-        "https://www.broadwayworld.com/reviews/hungry-women",
-        "https://www.offoffonline.com/offoffonline/2026/7/25/hungry-women"
-      ],
-      "dirFiles": 4,
-      "dirClean": 3,
-      "inReviewsJson": 3,
-      "missing": [
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/7/25/hungry-women",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online",
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.broadwayworld.com/reviews/hungry-women",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--unknown.json",
-              "flag": "roundup",
-              "urlInDir": "https://www.broadwayworld.com/reviews/hungry-women"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Hungry Women\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Hungry Women\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"Hungry Women\" review soho",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 2,
-        "resultCount": 3,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/7/25/hungry-women",
-          "host": "offoffonline.com",
-          "outletId": "off-off-online",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
@@ -716,7 +202,7 @@
           "outletId": "cloudfront",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~51440/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~52133/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
         },
         {
           "url": "https://fonts.gstatic.com",
@@ -724,7 +210,7 @@
           "outletId": "gstatic",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~51448/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~52139/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
         },
         {
           "url": "https://fonts.googleapis.com/css2",
@@ -732,7 +218,7 @@
           "outletId": "googleapis",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~51448/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~52141/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
         },
         {
           "url": "https://maps.google.com/",
@@ -740,7 +226,7 @@
           "outletId": "google",
           "provisional": true,
           "ok": false,
-          "reason": "Fetch returned no usable HTML (got 442 chars)"
+          "reason": "⚠️  Scrapingdog pace (~52141/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
         },
         {
           "url": "https://www.todaytixgroup.com/careers",
@@ -748,7 +234,7 @@
           "outletId": "todaytixgroup",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~51449/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~52141/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [
@@ -814,614 +300,114 @@
       }
     },
     {
-      "showId": "beetlejuice-west-end-2026",
-      "title": "Beetlejuice",
-      "openingDate": "2026-05-28",
+      "showId": "cats-the-jellicle-ball-2026",
+      "title": "CATS: The Jellicle Ball",
+      "openingDate": "2026-04-07",
       "status": "open",
-      "category": "west-end",
+      "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-beetlejuice-on-broadway",
-        "https://playbill.com/article/what-did-critics-think-of-the-beetlejuice-musicals-world-premiere",
-        "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
-        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Pre-Broadway-BEETLEJUICE-in-DC-Updating-Live-20181105",
-        "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-        "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-BEETLEJUICE--What-Do-Critics-Think-of-the-Long-Awaited-Sequel-20240828",
-        "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Opens-at-the-National-Theatre-in-DC-20230519"
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-cats-the-jellicle-ball-on-broadway",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-cats-the-jellicle-ball-at-perelman-performing-arts-center",
+        "https://www.broadwayworld.com/article/Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-Off-Broadway-20240620"
       ],
       "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/beetlejuice-review-1.30234785",
-        "https://broadway.news/2019/04/25/review-in-beetlejuice-death-comes-to-life/",
-        "https://www.thedailybeast.com/beetlejuice-on-broadway-it-was-a-horror-show-now-it-feels-like-a-hit",
-        "https://deadline.com/2019/04/beetlejuice-broadway-review-musical-theater-alex-brightman-sophia-anne-caruso-1202601783/",
-        "https://ew.com/theater-reviews/2019/04/25/beetlejuice-musical-review/",
-        "https://www.theguardian.com/stage/2019/apr/25/beetlejuice-broadway-tim-burton-adaptation-haunts",
-        "https://www.hollywoodreporter.com/review/beetlejuice-theater-review-1204616",
-        "https://www.newsday.com/entertainment/theater/beetlejuice-musical-1.30192947",
-        "https://www.nydailynews.com/entertainment/broadway/ny-review-broadway-chris-jones-beetlejuice-20190426-qufnjwcktvdajnjtwm4hdudipi-story.html",
-        "https://www.vulture.com/2019/04/review-beetlejuice-is-best-when-its-at-its-most-antic.html",
-        "https://nypost.com/2019/04/25/beetlejuice-review-musical-is-a-coke-snorting-f-bombing-disaster/",
-        "http://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/",
-        "http://nystagereview.com/2019/04/25/beetlejuice-tim-burtons-1988-cult-film-kinda-musicalized/",
-        "https://www.nytimes.com/2019/04/25/theater/beetlejuice-review-broadway.html",
-        "https://www.newyorktheatreguide.com/reviews/review-of-beetlejuice-starring-alex-brightman-on-broadway",
-        "https://www.ny1.com/nyc/all-boroughs/theater-reviews/2019/04/25/theater-review---beetlejuice-",
-        "https://observer.com/2019/04/beetlejuice-broadway-spring-2019-reivew-alex-timbers-rex-reed/",
-        "https://www.thestage.co.uk/reviews/2019/beetlejuice-musical-tim-burton-review-winter-garden-new-york/",
-        "https://www.timeout.com/newyork/theater/beetlejuice-review-broadway-musical",
-        "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/",
-        "https://www.washingtonpost.com/entertainment/theater_dance/beetlejuice-cleans-up-its-act-for-broadway-its-not-a-raging-success-but-itll-do/2019/04/25/cec14fa8-676b-11e9-8985-4cf30147bdca_story.html",
-        "https://www.thewrap.com/beetlejuice-broadway-review-tim-burtons-ghosts-turn-scarily-uncomic-in-musical-misfire/",
-        "https://news.iheart.com/featured/toby-knapp/content/2018-11-04-review-buckle-up-broadway-beetlejuice-is-coming/",
-        "https://www.metroweekly.com/2018/11/theater-review-beetlejuice-the-musical-at-national-theatre/",
-        "https://variety.com/2018/legit/reviews/pre-broadway-review-beetlejuice-1203019914/",
-        "https://www.washingtonpost.com/entertainment/theater_dance/the-new-beetlejuice-musical-is-overcaffeinated-overstuffed-and-virtually-charmless/2018/11/04/66b21146-dfe3-11e8-b732-3c72cbf131f2_story.html",
-        "https://theatrenerds.com/beetlejuice-the-musical-dc-review/",
-        "https://datebook.sfchronicle.com/theater/review-maybe-if-we-dont-say-his-name-three-times-beetlejuice-will-go-away",
-        "https://www.cleveland.com/entertainment/2023/01/beetlejuice-proves-its-more-than-a-viral-sensation-as-musical-opens-at-playhouse-square.html",
-        "https://www.clickondetroit.com/entertainment/2023/02/03/review-beetlejuice-at-the-detroit-opera-house-is-ghoulishly-delightful/",
-        "https://www.pghcitypaper.com/pittsburgh/beetlejuice-raises-the-dead-at-the-benedum-center/Content",
-        "https://buffalonews.com/entertainment/arts-and-theatre/loud-lewd-and-colorful-this-entertaining-beetlejuice-is-not-for-kids/article_e7fcd480-c8c2-11ed-aa12-8b6139dd2419.html",
-        "https://www.bostonglobe.com/2023/05/04/arts/beetlejuice-has-time-its-afterlife/",
-        "https://www.westendbestfriend.co.uk/news/review-beetlejuice-the-musical-kimmel-cultural-campus-us-national-tour",
-        "https://www.sun-sentinel.com/2023/06/14/review-broadways-beetlejuice-is-bawdy-musical-anarchy/",
-        "https://www.orlandoweekly.com/arts/broadway-in-orlando-beetlejuice-is-a-devilish-delight-despite-deviating-from-the-film-34517332",
-        "https://attractionsmagazine.com/theater-review-beetlejuice-musical/",
-        "https://gephardtdaily.com/local/review-title-character-steals-the-show-in-touring-production-of-beetlejuice/",
-        "https://www.sandiegouniontribune.com/entertainment/theater/story/2023-08-17/review-zany-wildly-entertaining-beetlejuice-musical-more-than-does-justice-to-the-original-film",
-        "https://www.denverpost.com/2023/09/06/review-broadway-beetlejuice-musical-denver-smart-romp-tim-burton/",
-        "https://www.memphisflyer.com/beetlejuice-the-musical",
-        "https://chicagoreader.com/arts-culture/theater-review/beetlejuice-is-a-demonic-good-time/",
-        "https://www.newcitystage.com/2023/11/14/ghost-of-a-show-a-review-of-beetlejuice-at-the-auditorium-theatre/",
-        "https://chicago.suntimes.com/2023/11/9/23954228/beetlejuice-stage-musical-review-chicago",
-        "https://tulsaworld.com/life-entertainment/local/art-theater/beetlejuice-the-musical-an-effective-and-fun-adaptation-of-beloved-movie-review/article_87817f18-88b9-11ee-a51b-ff188342e967.html",
-        "https://www.postcrescent.com/story/entertainment/theater/2023/12/07/beetlejuice-is-a-paranormal-spectacle-that-leaves-audiences-howling-with-laughter/71814411007/",
-        "https://www.pilotonline.com/2023/12/13/horror-meets-humor-at-chrysler-halls-loud-insistent-beetlejuice-musical/",
-        "https://www.palmbeachdailynews.com/story/entertainment/arts/2023/12/20/review-beetlejuice-is-like-stage-version-of-a-roller-coaster/71970801007/",
-        "https://www.telegram.com/story/entertainment/theater/2024/01/05/haunted-hilarious-and-heartfelt-beetlejuice-captivates-mortals/72118671007/",
-        "https://www.channel3000.com/madison-magazine/beetlejuice-neatly-captures-the-tim-burton-vibe/article_c725d35c-b191-11ee-be13-87e10da32c2b.html",
-        "https://austin.com/beetlejuice-the-musical-will-have-you-dying-laughing/",
-        "https://www.austinchronicle.com/daily/arts/2024-02-07/review-broadway-in-austins-beetlejuice/",
-        "https://paisano-online.com/38522/arts-life/beetlejuice-shakes-the-majestic-theatre/",
-        "https://www.houstonpress.com/arts/things-to-do-a-review-of-beetlejuice-at-broadway-at-the-hobby-center-17617622",
-        "https://hoodline.com/2024/03/atlanta-s-fox-theatre-transforms-into-death-s-doorway-with-beetlejuice-the-musical-spectacle/",
-        "https://www.abqjournal.com/lifestyle/national-tour-of-broadways-beetlejuice-takes-popejoy-audience-on-a-roller-coaster-of-emotions/article_dcaaf37c-0d00-11ef-8904-033a710ec94e.html",
-        "https://www.courant.com/2024/05/29/theater-review-a-different-kind-of-beetlejuice-has-its-own-odd-charms-at-the-bushnell/",
-        "https://artsknoxville.com/index.php/2024/06/13/review-broadways-beetlejuice-is-a-different-and-brash-wild-ride/",
-        "https://www.timesunion.com/theater/article/beetlejuice-proctors-review-19520004.php",
-        "https://www.dailygazette.com/life_and_arts/review-beetlejuice-at-proctors-will-scare-you-into-fits-of-hysterical-laughter/article_88cb7390-2f14-11ef-99cd-834ebfdeb4bc.html",
-        "https://spectrumnews1.com/wi/milwaukee/news/2024/10/01/beetlejuice-review-milwaukee-marcus-center",
-        "https://www.nwaonline.com/news/2024/oct/25/review-unexpected-lessons-of-beetlejuice-the/",
-        "https://freepressokc.com/okc-broadways-beetlejuice-has-fun-and-fear-in-city-debut/",
-        "https://www.elpasotimes.com/story/entertainment/things-to-do/2024/11/27/beetlejuice-thrills-el-paso-fans-plaza-theatre-get-tickets-performances-through-dec-1/76619764007/",
-        "https://www.theprospectordaily.com/2024/12/03/beetlejuice-musical-theatre-performance-art/",
-        "https://calgaryherald.com/entertainment/theatre/review-of-beetlejuice",
-        "https://www.toledoblade.com/a-e/music-theater-dance/2025/02/28/beetlejuice-grabs-attention-wont-let-go/stories/20250228038",
-        "https://www.postandcourier.com/charleston_scene/theater/beetlejuice-broadway-show-tickets-north-charleston/article_2aa56e42-00dd-11f0-8e32-2314f06e621f.html",
-        "https://apt613.ca/review-beetlejuice-at-nac-until-june-1/",
-        "https://variety.com/2024/film/reviews/beetlejuice-beetlejuice-review-tim-burton-jenna-ortega-winona-ryder-1236119595/",
-        "https://deadline.com/2024/08/beetlejuice-beetlejuice-2-review-jenna-ortega-tim-burton-1236058235/",
-        "https://www.ign.com/articles/beetlejuice-beetlejuice-review-tim-burton-michael-keaton-winona-ryder-jenna-ortega",
-        "https://www.theguardian.com/film/article/2024/aug/28/beetlejuice-beetlejuice-review-venice-film-festival",
-        "https://www.bbc.com/culture/article/20240828-beetlejuice-beetlejuice-review",
-        "https://time.com/7015514/beetlejuice-beetlejuice-review/",
-        "https://time.com/4325002/tim-burton-beetlejuice-2-rumors/",
-        "https://www.hollywoodreporter.com/movies/movie-reviews/beetlejuice-beetlejuice-review-winona-ryder-tim-burton-michael-keaton-jenna-ortega-1235985886/",
-        "https://www.empireonline.com/movies/reviews/beetlejuice-beetlejuice/",
-        "https://www.indiewire.com/criticism/movies/beetlejuice-beetlejuice-review-tim-burton-sequel-1235041019/",
-        "https://mdtheatreguide.com/2023/05/theatre-review-beetlejuice-at-the-national/",
-        "https://www.withashleyandco.com/2023/05/beetlejuice-the-musical-review-national-theatre/"
+        "https://1minutecritic.com/cats-jellicle-ball-broadway-review/",
+        "https://cititour.com/NYC_Broadway/CATS-The-Jellicle-Ball/1367",
+        "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-party-of-the-broadway-season_1831978/",
+        "https://culturesauce.com/2026/04/07/cats-jellicle-ball-broadway-andrew-lloyd-webber-review/",
+        "https://www.chicagotribune.com/2026/04/07/review-cats-jellicle-ball-broadway/",
+        "https://deadline.com/2026/04/cats-the-jellicle-ball-broadway-review-1236773077/",
+        "https://ew.com/cats-the-jellicle-ball-review-broadway-11944334",
+        "https://www.theguardian.com/stage/2026/apr/07/cats-the-jellicle-ball-musical-review",
+        "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic/",
+        "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/",
+        "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/",
+        "https://newyorktheater.me/2026/04/07/cats-the-jellicle-ball-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
+        "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html",
+        "https://therecs.co.uk/cats-the-jellicle-ball/",
+        "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/",
+        "https://www.theatrely.com/post/cats-the-jellicle-ball-pushes-us-towards-a-more-fabulous-future-review",
+        "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
+        "https://www.usatoday.com/story/entertainment/music/2026/04/07/cats-jellicle-ball-broadway-review/89488390007/",
+        "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical-ballroom-culture-1236709562/",
+        "https://www.thewrap.com/creative-content/theater/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber/",
+        "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/",
+        "https://cititour.com/NYC_News/Cats-The-Jellice-Ball-is-Practically-Purrfect/8448",
+        "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/",
+        "https://www.nydailynews.com/2024/06/20/theater-review-cats-the-jellicle-ball-is-an-inspired-reimagining-of-the-broadway-classic/",
+        "https://nypost.com/2024/06/20/entertainment/cats-the-jellicle-ball-review-the-most-fun-youll-have-this-summer/",
+        "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
+        "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-off-broadway-review-andrew-lloyd-webber",
+        "https://www.nytimes.com/2024/06/20/theater/cats-the-jellicle-ball-review.html",
+        "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620",
+        "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
+        "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
+        "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
+        "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
+        "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
+        "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TDLPLA"
       ],
-      "dirFiles": 63,
-      "dirClean": 34,
-      "inReviewsJson": 30,
-      "missing": [
-        {
-          "url": "https://broadway.news/2019/04/25/review-in-beetlejuice-death-comes-to-life/",
-          "host": "broadway.news",
-          "knownOutletId": "broadwaynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2019/04/25/beetlejuice-tim-burtons-1988-cult-film-kinda-musicalized/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.ny1.com/nyc/all-boroughs/theater-reviews/2019/04/25/theater-review---beetlejuice-",
-          "host": "ny1.com",
-          "knownOutletId": "ny1",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2019/04/beetlejuice-broadway-spring-2019-reivew-alex-timbers-rex-reed/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://news.iheart.com/featured/toby-knapp/content/2018-11-04-review-buckle-up-broadway-beetlejuice-is-coming/",
-          "host": "iheart.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.metroweekly.com/2018/11/theater-review-beetlejuice-the-musical-at-national-theatre/",
-          "host": "metroweekly.com",
-          "knownOutletId": "metro-weekly",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://theatrenerds.com/beetlejuice-the-musical-dc-review/",
-          "host": "theatrenerds.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/review-maybe-if-we-dont-say-his-name-three-times-beetlejuice-will-go-away",
-          "host": "sfchronicle.com",
-          "knownOutletId": "san-francisco-chronicle",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.cleveland.com/entertainment/2023/01/beetlejuice-proves-its-more-than-a-viral-sensation-as-musical-opens-at-playhouse-square.html",
-          "host": "cleveland.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.clickondetroit.com/entertainment/2023/02/03/review-beetlejuice-at-the-detroit-opera-house-is-ghoulishly-delightful/",
-          "host": "clickondetroit.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.pghcitypaper.com/pittsburgh/beetlejuice-raises-the-dead-at-the-benedum-center/Content",
-          "host": "pghcitypaper.com",
-          "knownOutletId": "pittsburgh-city-paper",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://buffalonews.com/entertainment/arts-and-theatre/loud-lewd-and-colorful-this-entertaining-beetlejuice-is-not-for-kids/article_e7fcd480-c8c2-11ed-aa12-8b6139dd2419.html",
-          "host": "buffalonews.com",
-          "knownOutletId": "buffalo-news",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.bostonglobe.com/2023/05/04/arts/beetlejuice-has-time-its-afterlife/",
-          "host": "bostonglobe.com",
-          "knownOutletId": "boston-globe",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.sun-sentinel.com/2023/06/14/review-broadways-beetlejuice-is-bawdy-musical-anarchy/",
-          "host": "sun-sentinel.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.orlandoweekly.com/arts/broadway-in-orlando-beetlejuice-is-a-devilish-delight-despite-deviating-from-the-film-34517332",
-          "host": "orlandoweekly.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://attractionsmagazine.com/theater-review-beetlejuice-musical/",
-          "host": "attractionsmagazine.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://gephardtdaily.com/local/review-title-character-steals-the-show-in-touring-production-of-beetlejuice/",
-          "host": "gephardtdaily.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2023-08-17/review-zany-wildly-entertaining-beetlejuice-musical-more-than-does-justice-to-the-original-film",
-          "host": "sandiegouniontribune.com",
-          "knownOutletId": "san-diego-union-tribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.denverpost.com/2023/09/06/review-broadway-beetlejuice-musical-denver-smart-romp-tim-burton/",
-          "host": "denverpost.com",
-          "knownOutletId": "denver-post",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.memphisflyer.com/beetlejuice-the-musical",
-          "host": "memphisflyer.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://chicagoreader.com/arts-culture/theater-review/beetlejuice-is-a-demonic-good-time/",
-          "host": "chicagoreader.com",
-          "knownOutletId": "chicago-reader",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newcitystage.com/2023/11/14/ghost-of-a-show-a-review-of-beetlejuice-at-the-auditorium-theatre/",
-          "host": "newcitystage.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://chicago.suntimes.com/2023/11/9/23954228/beetlejuice-stage-musical-review-chicago",
-          "host": "suntimes.com",
-          "knownOutletId": "suntimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://tulsaworld.com/life-entertainment/local/art-theater/beetlejuice-the-musical-an-effective-and-fun-adaptation-of-beloved-movie-review/article_87817f18-88b9-11ee-a51b-ff188342e967.html",
-          "host": "tulsaworld.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.postcrescent.com/story/entertainment/theater/2023/12/07/beetlejuice-is-a-paranormal-spectacle-that-leaves-audiences-howling-with-laughter/71814411007/",
-          "host": "postcrescent.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.pilotonline.com/2023/12/13/horror-meets-humor-at-chrysler-halls-loud-insistent-beetlejuice-musical/",
-          "host": "pilotonline.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.palmbeachdailynews.com/story/entertainment/arts/2023/12/20/review-beetlejuice-is-like-stage-version-of-a-roller-coaster/71970801007/",
-          "host": "palmbeachdailynews.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.telegram.com/story/entertainment/theater/2024/01/05/haunted-hilarious-and-heartfelt-beetlejuice-captivates-mortals/72118671007/",
-          "host": "telegram.com",
-          "knownOutletId": "telegram",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.channel3000.com/madison-magazine/beetlejuice-neatly-captures-the-tim-burton-vibe/article_c725d35c-b191-11ee-be13-87e10da32c2b.html",
-          "host": "channel3000.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://austin.com/beetlejuice-the-musical-will-have-you-dying-laughing/",
-          "host": "austin.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.austinchronicle.com/daily/arts/2024-02-07/review-broadway-in-austins-beetlejuice/",
-          "host": "austinchronicle.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://paisano-online.com/38522/arts-life/beetlejuice-shakes-the-majestic-theatre/",
-          "host": "paisano-online.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.houstonpress.com/arts/things-to-do-a-review-of-beetlejuice-at-broadway-at-the-hobby-center-17617622",
-          "host": "houstonpress.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://hoodline.com/2024/03/atlanta-s-fox-theatre-transforms-into-death-s-doorway-with-beetlejuice-the-musical-spectacle/",
-          "host": "hoodline.com",
-          "knownOutletId": "hoodline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.abqjournal.com/lifestyle/national-tour-of-broadways-beetlejuice-takes-popejoy-audience-on-a-roller-coaster-of-emotions/article_dcaaf37c-0d00-11ef-8904-033a710ec94e.html",
-          "host": "abqjournal.com",
-          "knownOutletId": "albuquerque-journal",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.courant.com/2024/05/29/theater-review-a-different-kind-of-beetlejuice-has-its-own-odd-charms-at-the-bushnell/",
-          "host": "courant.com",
-          "knownOutletId": "hartford-courant",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://artsknoxville.com/index.php/2024/06/13/review-broadways-beetlejuice-is-a-different-and-brash-wild-ride/",
-          "host": "artsknoxville.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timesunion.com/theater/article/beetlejuice-proctors-review-19520004.php",
-          "host": "timesunion.com",
-          "knownOutletId": "albany-times-union",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.dailygazette.com/life_and_arts/review-beetlejuice-at-proctors-will-scare-you-into-fits-of-hysterical-laughter/article_88cb7390-2f14-11ef-99cd-834ebfdeb4bc.html",
-          "host": "dailygazette.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://spectrumnews1.com/wi/milwaukee/news/2024/10/01/beetlejuice-review-milwaukee-marcus-center",
-          "host": "spectrumnews1.com",
-          "knownOutletId": "spectrum-news-1",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nwaonline.com/news/2024/oct/25/review-unexpected-lessons-of-beetlejuice-the/",
-          "host": "nwaonline.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://freepressokc.com/okc-broadways-beetlejuice-has-fun-and-fear-in-city-debut/",
-          "host": "freepressokc.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.elpasotimes.com/story/entertainment/things-to-do/2024/11/27/beetlejuice-thrills-el-paso-fans-plaza-theatre-get-tickets-performances-through-dec-1/76619764007/",
-          "host": "elpasotimes.com",
-          "knownOutletId": "el-paso-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theprospectordaily.com/2024/12/03/beetlejuice-musical-theatre-performance-art/",
-          "host": "theprospectordaily.com",
-          "knownOutletId": "the-prospector",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://calgaryherald.com/entertainment/theatre/review-of-beetlejuice",
-          "host": "calgaryherald.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.toledoblade.com/a-e/music-theater-dance/2025/02/28/beetlejuice-grabs-attention-wont-let-go/stories/20250228038",
-          "host": "toledoblade.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.postandcourier.com/charleston_scene/theater/beetlejuice-broadway-show-tickets-north-charleston/article_2aa56e42-00dd-11f0-8e32-2314f06e621f.html",
-          "host": "postandcourier.com",
-          "knownOutletId": "post-and-courier",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://apt613.ca/review-beetlejuice-at-nac-until-june-1/",
-          "host": "apt613.ca",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.ign.com/articles/beetlejuice-beetlejuice-review-tim-burton-michael-keaton-winona-ryder-jenna-ortega",
-          "host": "ign.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.bbc.com/culture/article/20240828-beetlejuice-beetlejuice-review",
-          "host": "bbc.com",
-          "knownOutletId": "bbc-news",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://time.com/7015514/beetlejuice-beetlejuice-review/",
-          "host": "time.com",
-          "knownOutletId": "time",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://time.com/4325002/tim-burton-beetlejuice-2-rumors/",
-          "host": "time.com",
-          "knownOutletId": "time",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.empireonline.com/movies/reviews/beetlejuice-beetlejuice/",
-          "host": "empireonline.com",
-          "knownOutletId": "empire",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.indiewire.com/criticism/movies/beetlejuice-beetlejuice-review-tim-burton-sequel-1235041019/",
-          "host": "indiewire.com",
-          "knownOutletId": "indiewire",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2023/05/theatre-review-beetlejuice-at-the-national/",
-          "host": "mdtheatreguide.com",
-          "knownOutletId": "maryland-theatre-guide",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.withashleyandco.com/2023/05/beetlejuice-the-musical-review-national-theatre/",
-          "host": "withashleyandco.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "dirFiles": 73,
+      "dirClean": 36,
+      "inReviewsJson": 33,
+      "missing": [],
       "dirOnly": [
         {
-          "host": "afridiziak.com",
+          "host": "latimes.com",
           "count": 1
         },
         {
-          "host": "theartsdesk.com",
-          "count": 2
-        },
-        {
-          "host": "broadwayworld.com",
+          "host": "nysun.com",
           "count": 1
         },
         {
-          "host": "cityam.com",
+          "host": "pagesonstages.com",
           "count": 1
         },
         {
-          "host": "express.co.uk",
+          "host": "talkinbroadway.com",
           "count": 1
         },
         {
-          "host": "ft.com",
+          "host": "thecontending.com",
           "count": 1
         },
         {
-          "host": "hamhigh.co.uk",
+          "host": "theaterlife.com",
           "count": 1
         },
         {
-          "host": "independent.co.uk",
+          "host": "theaterpizzazz.com",
           "count": 1
         },
         {
-          "host": "londonboxoffice.co.uk",
+          "host": "theaterscene.net",
           "count": 1
         },
         {
-          "host": "londontheatre.co.uk",
+          "host": "theatrereviews.com",
           "count": 1
         },
         {
-          "host": "londontheatre1.com",
+          "host": "t2conline.com",
           "count": 1
         },
         {
-          "host": "musicaltheatrereview.com",
+          "host": "vulture.com",
           "count": 1
         },
         {
-          "host": "playsinternational.org.uk",
-          "count": 1
-        },
-        {
-          "host": "radiotimes.com",
-          "count": 1
-        },
-        {
-          "host": "standard.co.uk",
-          "count": 1
-        },
-        {
-          "host": "telegraph.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatresoutheast.com",
-          "count": 1
-        },
-        {
-          "host": "theatrevibe.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "theatreandtonic.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "theupcoming.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thetimes.com",
-          "count": 3
-        },
-        {
-          "host": "westendwilma.com",
-          "count": 1
-        },
-        {
-          "host": "whatsonstage.com",
+          "host": "washingtonpost.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.amny.com/entertainment/beetlejuice-review-1.30234785",
-          "host": "amny.com",
-          "knownOutletId": "amny",
+          "url": "https://www.chicagotribune.com/2026/04/07/review-cats-jellicle-ball-broadway/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1429,18 +415,16 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "amny--matt-windman.json",
+              "file": "chicagotribune--chris-jones.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.amny.com/entertainment/beetlejuice-review-1.30234785"
+              "urlInDir": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://deadline.com/2019/04/beetlejuice-broadway-review-musical-theater-alex-brightman-sophia-anne-caruso-1202601783/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
+          "url": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1448,142 +432,26 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "deadline--greg-evans.json",
+              "file": "nysr--melissa-rose-bernardo.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://deadline.com/2019/04/beetlejuice-broadway-review-musical-theater-alex-brightman-sophia-anne-caruso-1202601783/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://ew.com/theater-reviews/2019/04/25/beetlejuice-musical-review/",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "ew--nick-romano.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://ew.com/theater/beetlejuice-musical-returning-to-broadway-2022/?srsltid=AfmBOoqDNSTtZsrPhtgn_D95armm48PR1OdtTtR9f6IT9nF-rZGn7qtn"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/beetlejuice-theater-review-1204616",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--david-rooney.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.hollywoodreporter.com/review/beetlejuice-theater-review-1204616"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newsday.com/entertainment/theater/beetlejuice-musical-1.30192947",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "newsday--barbara-schuler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newsday.com/entertainment/theater/beetlejuice-musical-1.30192947"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-review-broadway-chris-jones-beetlejuice-20190426-qufnjwcktvdajnjtwm4hdudipi-story.html",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nydailynews.com/entertainment/broadway/ny-review-broadway-chris-jones-beetlejuice-20190426-qufnjwcktvdajnjtwm4hdudipi-story.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2019/04/review-beetlejuice-is-best-when-its-at-its-most-antic.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--sara-holdren.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.vulture.com/2019/04/review-beetlejuice-is-best-when-its-at-its-most-antic.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2019/04/25/theater/beetlejuice-review-broadway.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--ben-brantley.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2019/04/25/theater/beetlejuice-review-broadway.html"
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
             },
             {
-              "file": "nytimes--sarah-bahr.json",
+              "file": "nysr--michael-sommers.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2023/01/09/theater/alex-brightman-beetlejuice-closing.html"
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/"
             },
             {
-              "file": "nytimes--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2025/06/03/theater/beetlejuice-broadway.html"
+              "file": "nysr--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/review-of-beetlejuice-starring-alex-brightman-on-broadway",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
+          "url": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1591,104 +459,26 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nytg--mark-shenton.json",
+              "file": "nysr--melissa-rose-bernardo.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/review-of-beetlejuice-starring-alex-brightman-on-broadway"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "variety--frank-rizzo.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/"
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
             },
             {
-              "file": "variety--owen-gleiberman.json",
+              "file": "nysr--michael-sommers.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://variety.com/2024/film/reviews/beetlejuice-beetlejuice-review-tim-burton-jenna-ortega-winona-ryder-1236119595/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater_dance/beetlejuice-cleans-up-its-act-for-broadway-its-not-a-raging-success-but-itll-do/2019/04/25/cec14fa8-676b-11e9-8985-4cf30147bdca_story.html",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "washpost--peter-marks.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.washingtonpost.com/entertainment/theater_dance/the-new-beetlejuice-musical-is-overcaffeinated-overstuffed-and-virtually-charmless/2018/11/04/66b21146-dfe3-11e8-b732-3c72cbf131f2_story.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/beetlejuice-broadway-review-tim-burtons-ghosts-turn-scarily-uncomic-in-musical-misfire/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewrap--robert-hofler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thewrap.com/beetlejuice-broadway-review-tim-burtons-ghosts-turn-scarily-uncomic-in-musical-misfire/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2018/legit/reviews/pre-broadway-review-beetlejuice-1203019914/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "variety--frank-rizzo.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/"
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/"
             },
             {
-              "file": "variety--owen-gleiberman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://variety.com/2024/film/reviews/beetlejuice-beetlejuice-review-tim-burton-jenna-ortega-winona-ryder-1236119595/"
+              "file": "nysr--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-new-beetlejuice-musical-is-overcaffeinated-overstuffed-and-virtually-charmless/2018/11/04/66b21146-dfe3-11e8-b732-3c72cbf131f2_story.html",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
+          "url": "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/",
+          "host": "slantmagazine.com",
+          "knownOutletId": "slantmagazine",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1696,18 +486,16 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "washpost--peter-marks.json",
+              "file": "slantmagazine--dan-rubins.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.washingtonpost.com/entertainment/theater_dance/the-new-beetlejuice-musical-is-overcaffeinated-overstuffed-and-virtually-charmless/2018/11/04/66b21146-dfe3-11e8-b732-3c72cbf131f2_story.html"
+              "urlInDir": "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://variety.com/2024/film/reviews/beetlejuice-beetlejuice-review-tim-burton-jenna-ortega-winona-ryder-1236119595/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
+          "url": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1715,23 +503,66 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "variety--frank-rizzo.json",
+              "file": "chicagotribune--chris-jones.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/"
+              "urlInDir": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "exeunt-magazine--lane-williamson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--melissa-rose-bernardo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
             },
             {
-              "file": "variety--owen-gleiberman.json",
+              "file": "nysr--michael-sommers.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://variety.com/2024/film/reviews/beetlejuice-beetlejuice-review-tim-burton-jenna-ortega-winona-ryder-1236119595/"
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://deadline.com/2024/08/beetlejuice-beetlejuice-2-review-jenna-ortega-tim-burton-1236058235/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
+          "url": "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620",
+          "host": "queerty.com",
+          "knownOutletId": "queerty",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1739,18 +570,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "deadline--greg-evans.json",
+              "file": "queerty--matthew-wexler.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://deadline.com/2019/04/beetlejuice-broadway-review-musical-theater-alex-brightman-sophia-anne-caruso-1202601783/"
+              "urlInDir": "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/beetlejuice-beetlejuice-review-winona-ryder-tim-burton-michael-keaton-jenna-ortega-1235985886/",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
+          "url": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1758,9 +589,19 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "hollywood-reporter--david-rooney.json",
+              "file": "newyorker--emily-nussbaum.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.hollywoodreporter.com/review/beetlejuice-theater-review-1204616"
+              "urlInDir": "https://www.newyorker.com/magazine/2026/04/27/becky-shaw-theatre-review-cats-the-jellicle-ball"
+            },
+            {
+              "file": "newyorker--helen-shaw-2024-bway.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review"
+            },
+            {
+              "file": "newyorker--helen-shaw.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorker.com/magazine/2026/04/27/becky-shaw-theatre-review-cats-the-jellicle-ball"
             }
           ],
           "priorRun": true,
@@ -1775,379 +616,997 @@
       },
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/read-reviews-for-beetlejuice-on-broadway",
-          "publishDate": "2019-04-25"
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cats-the-jellicle-ball-at-perelman-performing-arts-center",
+          "publishDate": "2024-06-20"
         },
         {
-          "url": "https://playbill.com/article/what-did-critics-think-of-the-beetlejuice-musicals-world-premiere",
-          "publishDate": "2018-11-05"
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-Off-Broadway-20240620",
+          "publishDate": "2024-06-20"
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "title": "Every Brilliant Thing",
+      "openingDate": "2026-03-12",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-every-brilliant-thing-starring-daniel-radcliffe",
+        "https://www.broadwayworld.com/article/Review-Roundup-Tony-Winner-Daniel-Radcliffe-Stars-in-EVERY-BRILLIANT-THING-on-Broadway-20260312"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/every-brilliant-thing-review-daniel-radcliffe/",
+        "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/",
+        "https://cititour.com/NYC_Broadway/Every-Brilliant-Thing/1359",
+        "https://culturesauce.com/2026/03/12/daniel-radcliffe-every-brilliant-thing-broadway-review/",
+        "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/",
+        "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+        "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829",
+        "https://exeuntnyc.com/reviews/review-every-brilliant-thing-at-the-hudson-theatre/",
+        "https://www.theguardian.com/stage/2026/mar/12/every-brilliant-thing-daniel-radcliffe-broadway",
+        "https://www.latimes.com/entertainment-arts/story/2026-03-12/every-brilliant-thing-review-daniel-radcliffe-broadway-theater",
+        "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
+        "https://nypost.com/2026/03/12/entertainment/every-brilliant-thing-review-daniel-radcliffe-schmoozes-with-the-audience-in-sweet-one-man-show/",
+        "https://nystagereview.com/2026/03/12/every-brilliant-thing-a-lustrous-evening-with-daniel-radcliffe/",
+        "https://nystagereview.com/2026/03/12/every-brilliant-thing-daniel-radcliffe-performs-magic-of-an-emotional-kind/",
+        "https://newyorktheater.me/2026/03/12/every-brilliant-thing-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/every-brilliant-thing-broadway-review-daniel-radcliffe",
+        "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-radcliffe.html",
+        "https://therecs.co.uk/every-brilliant-thing/",
+        "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
+        "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review",
+        "https://theaterpizzazz.com/daniel-radcliffe-shines-brightly-in-every-brilliant-thing/",
+        "https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
+        "https://variety.com/2026/legit/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
+        "https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spirited-solo-show-107f4d40",
+        "https://www.thewrap.com/creative-content/theater/every-brilliant-thing-broadway-review-daniel-radcliffe/",
+        "https://us.atgtickets.com/events/every-brilliant-thing/hudson-theatre-broadway/calendar",
+        "https://variety.com/2026/tv/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
+        "https://www.chicagotribune.com/2026/03/12/review-every-brilliant-thing-daniel-radcliffe/",
+        "https://thecontending.com/a-breathless-daniel-radcliffe-enchants-in-every-brilliant-thing-on-broadway/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TXVWEL"
+      ],
+      "dirFiles": 62,
+      "dirClean": 30,
+      "inReviewsJson": 30,
+      "missing": [
+        {
+          "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
+          "host": "open.substack.com",
+          "knownOutletId": null
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
-          "publishDate": "2019-04-25"
+          "url": "https://us.atgtickets.com/events/every-brilliant-thing/hudson-theatre-broadway/calendar",
+          "host": "atgtickets.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Pre-Broadway-BEETLEJUICE-in-DC-Updating-Live-20181105",
-          "publishDate": "2018-11-05"
+          "host": "nysun.com",
+          "count": 1
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-          "publishDate": "2022-12-21"
+          "host": "pagesonstages.com",
+          "count": 1
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-BEETLEJUICE--What-Do-Critics-Think-of-the-Long-Awaited-Sequel-20240828",
-          "publishDate": "2024-08-28"
+          "host": "slantmagazine.com",
+          "count": 1
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Opens-at-the-National-Theatre-in-DC-20230519",
-          "publishDate": "2023-05-19"
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.org",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "amny--matt-windman.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/"
+            }
+          ]
+        },
+        {
+          "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "deadline--greg-evans.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--hayley-levitt.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theatermania.com/new-york-city-theater/reviews/every-brilliant-thing-barrow-street-review_70976.html"
+            },
+            {
+              "file": "theatermania--kenji-fujishima.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review"
+            },
+            {
+              "file": "theatrely--juan-a-ramirez.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review"
+            },
+            {
+              "file": "theatrely--rachel-hsu.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/every-brilliant-thing-is-well-brilliant-review"
+            }
+          ]
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TXVWEL",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=TXVWEL"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "ingestResults": [
+        {
+          "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
+          "host": "open.substack.com",
+          "outletId": "open",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~52188/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://us.atgtickets.com/events/every-brilliant-thing/hudson-theatre-broadway/calendar",
+          "host": "atgtickets.com",
+          "outletId": "atgtickets",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~52195/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "title": "Two Strangers (Carry a Cake Across New York)",
+      "openingDate": "2025-11-20",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-the-reviews-of-broadways-two-strangers-carry-a-cake-across-new-york",
+        "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20251120",
+        "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-at-ART-20250602"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/two-strangers-carry-cake-broadway-review/",
+        "https://therecs.co.uk/two-strangers-carry-a-cake-across-new-york/",
+        "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344",
+        "https://culturesauce.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
+        "https://www.thedailybeast.com/obsessed/two-strangers-carry-a-cake-across-new-yorkand-onto-broadway/",
+        "https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800",
+        "https://frontmezzjunkies.com/2025/11/20/two-strangers-carry-a-cake-across-new-york/",
+        "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
+        "https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/",
+        "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting/",
+        "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-a-tasty-slice-of-cake/",
+        "https://www.newyorktheatreguide.com/reviews/two-strangers-carry-a-cake-across-new-york-broadway-review",
+        "https://newyorktheater.me/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
+        "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html",
+        "https://www.theatrely.com/post/two-strangers-carry-a-cake-across-new-york-the-great-british-millennial-off-review",
+        "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/",
+        "https://www.theatermania.com/news/review-broadway-transfer-of-west-end-hit-two-strangers-doesnt-quite-take-the-cake_1812663/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3"
+      ],
+      "dirFiles": 49,
+      "dirClean": 29,
+      "inReviewsJson": 27,
+      "missing": [
+        {
+          "url": "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "jitneybooks.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 2
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-at-ART-20250602",
+          "publishDate": "2025-06-02"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "sukkot-off-broadway-2026",
+      "title": "Sukkot",
+      "openingDate": "2026-07-11",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.talkinbroadway.com/page/ob/07_18_26.html",
+        "https://www.theaterscene.net/plays/offbway-plays/sukkot/tony-marinelli/",
+        "https://www.theatermania.com/news/review-dealing-with-jewish-grief-in-matthew-leavitts-sukkot_1846599/",
+        "http://www.theaterscene.net/plays/offbway-plays/sukkot/tony-marinelli/",
+        "https://www.eventticketscenter.com/sukkot-new-york-07-30-2026/8164588/t",
+        "https://broadwayscorecard.com/show/sukkot-off-broadway",
+        "https://prettykosher.com/sukkot-is-a-new-off-broadway-show-with-a-pretty-funny-premise/",
+        "https://www.tickpick.com/buy-sukkot-tickets-59e59-theaters-theater-b-7-31-26-7pm/8164589/"
+      ],
+      "dirFiles": 10,
+      "dirClean": 5,
+      "inReviewsJson": 5,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "blogcritics.org",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.eventticketscenter.com/sukkot-new-york-07-30-2026/8164588/t",
+          "host": "eventticketscenter.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "eventticketscenter--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.eventticketscenter.com/sukkot-new-york-07-31-2026/8164589/t"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwayscorecard.com/show/sukkot-off-broadway",
+          "host": "broadwayscorecard.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayscorecard--tony-marinelli.json",
+              "flag": "clean",
+              "urlInDir": "https://broadwayscorecard.com/show/sukkot-off-broadway"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://prettykosher.com/sukkot-is-a-new-off-broadway-show-with-a-pretty-funny-premise/",
+          "host": "prettykosher.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "prettykosher--anna-rahmanan.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://prettykosher.com/sukkot-is-a-new-off-broadway-show-with-a-pretty-funny-premise/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.tickpick.com/buy-sukkot-tickets-59e59-theaters-theater-b-7-31-26-7pm/8164589/",
+          "host": "tickpick.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "tickpick--tickpick.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.tickpick.com/buy-sukkot-tickets-59e59-theaters-theater-b-7-31-26-7pm/8164589/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Sukkot\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Sukkot\" Off-Broadway review 2026",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Sukkot\" review 59e59",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Sukkot\" Leavitt review",
+            "ok": true,
+            "results": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 3,
+        "resultCount": 6,
+        "error": null
+      }
+    },
+    {
+      "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
+      "title": "Are You Now or Have You Ever Been?",
+      "openingDate": "2026-06-10",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/06/16/theater/are-you-now-or-have-you-ever-been-review.html",
+        "https://www.newyorktheatreguide.com/reviews/are-you-now-or-have-you-ever-been-off-broadway-review",
+        "https://www.theatermania.com/news/review-are-you-now-or-have-you-ever-been-a-red-scare-docudrama_1841768/",
+        "https://www.theaterscene.net/plays/offbway-plays/are-you-now/victor-gluck/",
+        "https://newyorktheater.me/2026/07/08/are-you-now-or-have-you-ever-been-review/",
+        "https://culturesauce.com/are-you-now-or-have-you-ever-been-off-broadway-review/",
+        "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
+        "https://www.offoffonline.com/offoffonline/2026/6/11/are-you-now-or-have-you-ever-been-an-american-docudrama-DqUQv"
+      ],
+      "dirFiles": 14,
+      "dirClean": 11,
+      "inReviewsJson": 11,
+      "missing": [
+        {
+          "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "nystagereview.com",
+          "count": 2
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "ingestResults": [
+        {
+          "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~52234/day) projects exhaustion in ~11d, before the 22d-out renewal — still us"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-west-end-2026",
+      "title": "The Jonathan Larson Project",
+      "openingDate": "2026-07-13",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-the-critics-think-of-the-jonathan-larson-project-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-JONATHAN-LARSON-PROJECT-Opens-Off-Broadway-20250310"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/The-Jonathan-Larson-Project/1282",
+        "https://culturesauce.com/2025/03/10/jonathan-larson-project-off-broadway-review/",
+        "https://www.thedailybeast.com/the-new-jonathan-larson-musical-is-an-affront-to-the-rent-genius/",
+        "https://exeuntnyc.com/reviews/review-the-jonathan-larson-project-at-the-orpheum-theatre/",
+        "https://themusicaltheatrereport.com/2025/03/11/the-jonathan-larson-project-at-the-orpheum-theatre/",
+        "https://www.nydailynews.com/2025/03/10/theater-review-jonathan-larson-project-rent-composer-unheard-songs/",
+        "https://nystagereview.com/2025/03/11/the-jonathan-larson-project-seasoned-with-love/",
+        "https://newyorktheater.me/2025/03/10/the-jonathan-larson-project-review/",
+        "https://www.newyorktheatreguide.com/reviews/the-jonathan-larson-project-off-broadway-review",
+        "https://www.theatermania.com/news/review-the-jonathan-larson-project-a-taste-of-the-rent-composers-left-behinds_1766868/",
+        "https://www.theatrely.com/post/the-jonathan-larson-project-soars-off-broadway-review",
+        "https://t2conline.com/the-jonathan-larson-project-a-powerful-tribute-to-a-visionary-voice/",
+        "https://www.londontheatre.co.uk/reviews/the-jonathan-larson-project-review-southwark-playhouse",
+        "https://musicaltheatrereview.com/the-jonathan-larson-project-southwark-playhouse-borough/",
+        "https://www.theguardian.com/stage/2026/jul/14/the-jonathan-larson-project-review-rent-composer-lost-songs-southwark-playhouse-borough-london",
+        "https://www.thereviewshub.com/the-jonathan-larson-project-southwark-playhouse-borough-london/",
+        "https://theatresoutheast.com/the-jonathan-larson-project-southwark-playhouse-borough-review/",
+        "https://ayoungishperspective.co.uk/2026/07/14/review-the-jonathan-larson-project/",
+        "https://fairypoweredproductions.com/the-jonathan-larson-project-review/",
+        "https://www.broadwayworld.com/westend/article/Review-THE-JONATHAN-LARSON-PROJECT-Southwark-Playhouse-20260713",
+        "https://matineemouse.substack.com/p/the-jonathan-larson-project-review",
+        "https://lovelondonloveculture.com/2026/07/24/review-round-up-the-jonathan-larson-project-southwark-playhouse/",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-jonathan-larson-project-review-the-lost-songs-by-the-creator-of-rent-2h59bj3s2",
+        "https://www.jewishnews.co.uk/review-the-jonathan-larson-project/",
+        "https://www.londonbornandbred.co.uk/post/the-jonathan-larson-project-southwark-playhouse-borough",
+        "https://www.thestage.co.uk/reviews/the-jonathan-larson-project-review-southwark-playhouse-borough-london",
+        "https://www.whatsonstage.com/news/the-jonathan-larson-project-at-southwark-playhouse-borough-review_1727309/"
+      ],
+      "dirFiles": 36,
+      "dirClean": 21,
+      "inReviewsJson": 21,
+      "missing": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/The-Jonathan-Larson-Project/1282",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/2025/03/10/jonathan-larson-project-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/2025/03/10/theater-review-jonathan-larson-project-rent-composer-unheard-songs/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-jonathan-larson-project-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/the-jonathan-larson-project-soars-off-broadway-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://t2conline.com/the-jonathan-larson-project-a-powerful-tribute-to-a-visionary-voice/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.jewishnews.co.uk/review-the-jonathan-larson-project/",
+          "host": "jewishnews.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "britishtheatreguide.info",
+          "count": 1
+        },
+        {
+          "host": "everything-theatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatrereviews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "loureviews.blog",
+          "count": 1
+        },
+        {
+          "host": "stagedtheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.thedailybeast.com/the-new-jonathan-larson-musical-is-an-affront-to-the-rent-genius/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/the-new-jonathan-larson-musical-is-an-affront-to-the-rent-genius/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-the-jonathan-larson-project-at-the-orpheum-theatre/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "exeunt-magazine--lane-williamson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://exeuntnyc.com/reviews/review-the-jonathan-larson-project-at-the-orpheum-theatre/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://themusicaltheatrereport.com/2025/03/11/the-jonathan-larson-project-at-the-orpheum-theatre/",
+          "host": "themusicaltheatrereport.com",
+          "knownOutletId": "musical-theatre-report",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "musical-theatre-report--ben-west.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://themusicaltheatrereport.com/2025/03/11/the-jonathan-larson-project-at-the-orpheum-theatre/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/03/11/the-jonathan-larson-project-seasoned-with-love/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2025/03/11/the-jonathan-larson-project-seasoned-with-love/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2025/03/10/the-jonathan-larson-project-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://newyorktheater.me/2025/03/10/the-jonathan-larson-project-review/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-the-jonathan-larson-project-a-taste-of-the-rent-composers-left-behinds_1766868/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/review-the-jonathan-larson-project-a-taste-of-the-rent-composers-left-behinds_1766868/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://fairypoweredproductions.com/the-jonathan-larson-project-review/",
+          "host": "fairypoweredproductions.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "fairypoweredproductions--fairypoweredproductions.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://fairypoweredproductions.com/the-jonathan-larson-project-review/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://matineemouse.substack.com/p/the-jonathan-larson-project-review",
+          "host": "matineemouse.substack.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "matineemouse--oviya.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://matineemouse.substack.com/p/the-jonathan-larson-project-review"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://lovelondonloveculture.com/2026/07/24/review-round-up-the-jonathan-larson-project-southwark-playhouse/",
+          "host": "lovelondonloveculture.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lovelondonloveculture--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://lovelondonloveculture.com/2026/07/24/review-round-up-the-jonathan-larson-project-southwark-playhouse/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 6,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": true,
+            "rows": 6,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 6,
+        "corroborated": 6,
+        "perSource": {
+          "theatre-reviews": {
+            "cited": 6,
+            "corroborated": 6
+          }
+        }
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Jonathan Larson Project\" West End review 2026",
+        "queryStatus": [
+          {
+            "query": "\"The Jonathan Larson Project\" West End review 2026",
+            "ok": true,
+            "results": 10,
+            "error": null
+          },
+          {
+            "query": "\"The Jonathan Larson Project\" review southwark",
+            "ok": true,
+            "results": 10,
+            "error": null
+          },
+          {
+            "query": "\"The Jonathan Larson Project\" Simpkins review",
+            "ok": true,
+            "results": 10,
+            "error": null
+          }
+        ],
+        "queriesOk": 3,
+        "resultCount": 13,
+        "error": null
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/what-do-the-critics-think-of-the-jonathan-larson-project-off-broadway",
+          "publishDate": "2025-03-11"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-JONATHAN-LARSON-PROJECT-Opens-Off-Broadway-20250310",
+          "publishDate": "2025-03-10"
         }
       ],
       "weIngestBlocked": [
         {
-          "url": "https://broadway.news/2019/04/25/review-in-beetlejuice-death-comes-to-life/",
-          "host": "broadway.news",
+          "url": "https://cititour.com/NYC_Broadway/The-Jonathan-Larson-Project/1282",
+          "host": "cititour.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "http://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/",
-          "host": "nystagereview.com",
+          "url": "https://culturesauce.com/2025/03/10/jonathan-larson-project-off-broadway-review/",
+          "host": "culturesauce.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "http://nystagereview.com/2019/04/25/beetlejuice-tim-burtons-1988-cult-film-kinda-musicalized/",
-          "host": "nystagereview.com",
+          "url": "https://www.nydailynews.com/2025/03/10/theater-review-jonathan-larson-project-rent-composer-unheard-songs/",
+          "host": "nydailynews.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.ny1.com/nyc/all-boroughs/theater-reviews/2019/04/25/theater-review---beetlejuice-",
-          "host": "ny1.com",
+          "url": "https://www.newyorktheatreguide.com/reviews/the-jonathan-larson-project-off-broadway-review",
+          "host": "newyorktheatreguide.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://observer.com/2019/04/beetlejuice-broadway-spring-2019-reivew-alex-timbers-rex-reed/",
-          "host": "observer.com",
+          "url": "https://www.theatrely.com/post/the-jonathan-larson-project-soars-off-broadway-review",
+          "host": "theatrely.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://news.iheart.com/featured/toby-knapp/content/2018-11-04-review-buckle-up-broadway-beetlejuice-is-coming/",
-          "host": "iheart.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.metroweekly.com/2018/11/theater-review-beetlejuice-the-musical-at-national-theatre/",
-          "host": "metroweekly.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://theatrenerds.com/beetlejuice-the-musical-dc-review/",
-          "host": "theatrenerds.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/review-maybe-if-we-dont-say-his-name-three-times-beetlejuice-will-go-away",
-          "host": "sfchronicle.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.cleveland.com/entertainment/2023/01/beetlejuice-proves-its-more-than-a-viral-sensation-as-musical-opens-at-playhouse-square.html",
-          "host": "cleveland.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.clickondetroit.com/entertainment/2023/02/03/review-beetlejuice-at-the-detroit-opera-house-is-ghoulishly-delightful/",
-          "host": "clickondetroit.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.pghcitypaper.com/pittsburgh/beetlejuice-raises-the-dead-at-the-benedum-center/Content",
-          "host": "pghcitypaper.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://buffalonews.com/entertainment/arts-and-theatre/loud-lewd-and-colorful-this-entertaining-beetlejuice-is-not-for-kids/article_e7fcd480-c8c2-11ed-aa12-8b6139dd2419.html",
-          "host": "buffalonews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.bostonglobe.com/2023/05/04/arts/beetlejuice-has-time-its-afterlife/",
-          "host": "bostonglobe.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.sun-sentinel.com/2023/06/14/review-broadways-beetlejuice-is-bawdy-musical-anarchy/",
-          "host": "sun-sentinel.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.orlandoweekly.com/arts/broadway-in-orlando-beetlejuice-is-a-devilish-delight-despite-deviating-from-the-film-34517332",
-          "host": "orlandoweekly.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://attractionsmagazine.com/theater-review-beetlejuice-musical/",
-          "host": "attractionsmagazine.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://gephardtdaily.com/local/review-title-character-steals-the-show-in-touring-production-of-beetlejuice/",
-          "host": "gephardtdaily.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2023-08-17/review-zany-wildly-entertaining-beetlejuice-musical-more-than-does-justice-to-the-original-film",
-          "host": "sandiegouniontribune.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.denverpost.com/2023/09/06/review-broadway-beetlejuice-musical-denver-smart-romp-tim-burton/",
-          "host": "denverpost.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.memphisflyer.com/beetlejuice-the-musical",
-          "host": "memphisflyer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://chicagoreader.com/arts-culture/theater-review/beetlejuice-is-a-demonic-good-time/",
-          "host": "chicagoreader.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newcitystage.com/2023/11/14/ghost-of-a-show-a-review-of-beetlejuice-at-the-auditorium-theatre/",
-          "host": "newcitystage.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://chicago.suntimes.com/2023/11/9/23954228/beetlejuice-stage-musical-review-chicago",
-          "host": "suntimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://tulsaworld.com/life-entertainment/local/art-theater/beetlejuice-the-musical-an-effective-and-fun-adaptation-of-beloved-movie-review/article_87817f18-88b9-11ee-a51b-ff188342e967.html",
-          "host": "tulsaworld.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.postcrescent.com/story/entertainment/theater/2023/12/07/beetlejuice-is-a-paranormal-spectacle-that-leaves-audiences-howling-with-laughter/71814411007/",
-          "host": "postcrescent.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.pilotonline.com/2023/12/13/horror-meets-humor-at-chrysler-halls-loud-insistent-beetlejuice-musical/",
-          "host": "pilotonline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.palmbeachdailynews.com/story/entertainment/arts/2023/12/20/review-beetlejuice-is-like-stage-version-of-a-roller-coaster/71970801007/",
-          "host": "palmbeachdailynews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.telegram.com/story/entertainment/theater/2024/01/05/haunted-hilarious-and-heartfelt-beetlejuice-captivates-mortals/72118671007/",
-          "host": "telegram.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.channel3000.com/madison-magazine/beetlejuice-neatly-captures-the-tim-burton-vibe/article_c725d35c-b191-11ee-be13-87e10da32c2b.html",
-          "host": "channel3000.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://austin.com/beetlejuice-the-musical-will-have-you-dying-laughing/",
-          "host": "austin.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.austinchronicle.com/daily/arts/2024-02-07/review-broadway-in-austins-beetlejuice/",
-          "host": "austinchronicle.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://paisano-online.com/38522/arts-life/beetlejuice-shakes-the-majestic-theatre/",
-          "host": "paisano-online.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.houstonpress.com/arts/things-to-do-a-review-of-beetlejuice-at-broadway-at-the-hobby-center-17617622",
-          "host": "houstonpress.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://hoodline.com/2024/03/atlanta-s-fox-theatre-transforms-into-death-s-doorway-with-beetlejuice-the-musical-spectacle/",
-          "host": "hoodline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.abqjournal.com/lifestyle/national-tour-of-broadways-beetlejuice-takes-popejoy-audience-on-a-roller-coaster-of-emotions/article_dcaaf37c-0d00-11ef-8904-033a710ec94e.html",
-          "host": "abqjournal.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.courant.com/2024/05/29/theater-review-a-different-kind-of-beetlejuice-has-its-own-odd-charms-at-the-bushnell/",
-          "host": "courant.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://artsknoxville.com/index.php/2024/06/13/review-broadways-beetlejuice-is-a-different-and-brash-wild-ride/",
-          "host": "artsknoxville.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.timesunion.com/theater/article/beetlejuice-proctors-review-19520004.php",
-          "host": "timesunion.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.dailygazette.com/life_and_arts/review-beetlejuice-at-proctors-will-scare-you-into-fits-of-hysterical-laughter/article_88cb7390-2f14-11ef-99cd-834ebfdeb4bc.html",
-          "host": "dailygazette.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://spectrumnews1.com/wi/milwaukee/news/2024/10/01/beetlejuice-review-milwaukee-marcus-center",
-          "host": "spectrumnews1.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nwaonline.com/news/2024/oct/25/review-unexpected-lessons-of-beetlejuice-the/",
-          "host": "nwaonline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://freepressokc.com/okc-broadways-beetlejuice-has-fun-and-fear-in-city-debut/",
-          "host": "freepressokc.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.elpasotimes.com/story/entertainment/things-to-do/2024/11/27/beetlejuice-thrills-el-paso-fans-plaza-theatre-get-tickets-performances-through-dec-1/76619764007/",
-          "host": "elpasotimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theprospectordaily.com/2024/12/03/beetlejuice-musical-theatre-performance-art/",
-          "host": "theprospectordaily.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://calgaryherald.com/entertainment/theatre/review-of-beetlejuice",
-          "host": "calgaryherald.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.toledoblade.com/a-e/music-theater-dance/2025/02/28/beetlejuice-grabs-attention-wont-let-go/stories/20250228038",
-          "host": "toledoblade.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.postandcourier.com/charleston_scene/theater/beetlejuice-broadway-show-tickets-north-charleston/article_2aa56e42-00dd-11f0-8e32-2314f06e621f.html",
-          "host": "postandcourier.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://apt613.ca/review-beetlejuice-at-nac-until-june-1/",
-          "host": "apt613.ca",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.ign.com/articles/beetlejuice-beetlejuice-review-tim-burton-michael-keaton-winona-ryder-jenna-ortega",
-          "host": "ign.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.bbc.com/culture/article/20240828-beetlejuice-beetlejuice-review",
-          "host": "bbc.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://time.com/7015514/beetlejuice-beetlejuice-review/",
-          "host": "time.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://time.com/4325002/tim-burton-beetlejuice-2-rumors/",
-          "host": "time.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.empireonline.com/movies/reviews/beetlejuice-beetlejuice/",
-          "host": "empireonline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.indiewire.com/criticism/movies/beetlejuice-beetlejuice-review-tim-burton-sequel-1235041019/",
-          "host": "indiewire.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2023/05/theatre-review-beetlejuice-at-the-national/",
-          "host": "mdtheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.withashleyandco.com/2023/05/beetlejuice-the-musical-review-national-theatre/",
-          "host": "withashleyandco.com",
+          "url": "https://t2conline.com/the-jonathan-larson-project-a-powerful-tribute-to-a-visionary-voice/",
+          "host": "t2conline.com",
           "priorRun": true,
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://www.jewishnews.co.uk/review-the-jonathan-larson-project/",
+          "host": "jewishnews.co.uk",
+          "outletId": "jewishnews",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        }
+      ],
       "ingestSkippedByCap": []
     }
   ]
