@@ -223,6 +223,12 @@ fi
 if echo "$ALL_CHANGED_FILES" | grep -qE "^src/.*\.(ts|tsx)$"; then
   WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}demo-flags"
 fi
+# reset-soft-partial-commit scans scripts/*.js content (not workflow YAML),
+# so it needs its own scripts/-scoped trigger — same class of gap
+# lint-write-routing.sh's checks fixed above (card #687).
+if echo "$ALL_CHANGED_FILES" | grep -qE "^scripts/[^/]+\.js$|^scripts/lib/reset-soft-partial-commit-check\.js$"; then
+  WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}reset-soft-partial-commit"
+fi
 if [ -n "$WF_CHECKS" ] && [ -f scripts/lint-workflow-guards.sh ]; then
   GUARDS_OUT="/tmp/pre-push-wf-guards.$$.out"
   if ! bash scripts/lint-workflow-guards.sh "$WF_CHECKS" >"$GUARDS_OUT" 2>&1; then

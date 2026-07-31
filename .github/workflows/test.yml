@@ -916,6 +916,11 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/lib/alert-ledger-commit-check.js'
       - 'scripts/lib/alert-ledger-commit-check.test.mjs'
+      # Lint guard: reset --soft + scoped-add + commit phantom-staged-revert
+      # pattern (card #687). Colocated *.test.mjs runs via the lib-test glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/reset-soft-partial-commit-check.js'
+      - 'scripts/lib/reset-soft-partial-commit-check.test.mjs'
       # E2E canary for the alert→card→dispatch chain (card #374) — path-listed
       # for the same reason (feedback_test_yml_push_path_allowlist); it has no
       # colocated unit test (it deliberately exercises the REAL Notion API,
@@ -1636,6 +1641,15 @@ jobs:
           # fixed in audit-aggregator-gap.yml/test-ugc-roundtrip.yml/
           # ux-walkthrough.yml/check-cron-health.yml (card #618).
           bash scripts/lint-workflow-guards.sh alert-ledger-commit
+
+      - name: Check scripts avoid reset --soft + scoped-add + commit
+        run: |
+          # Phantom-staged-revert bug class (card #687, generalized from
+          # task #677's ship-check finding in record-push-ledger.js, fixed
+          # in commit 613c6bd8eeb). Logic lives in
+          # scripts/lint-workflow-guards.sh — shared with the local
+          # pre-push hook.
+          bash scripts/lint-workflow-guards.sh reset-soft-partial-commit
 
       - name: Check scripts route review-texts writes through safeWriteReview
         run: |
