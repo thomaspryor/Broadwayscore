@@ -136,16 +136,27 @@ function summarizeFreshnessHighSeverity(report, { maxItems = 8 } = {}) {
   if (!report || !Array.isArray(report.dataQuality?.hasIssues)) return null;
   const rows = [];
   for (const show of report.dataQuality.hasIssues) {
-    // A malformed entry (null, or issues not an array) must degrade this
-    // show silently, not throw and kill the whole digest send — same
-    // fail-soft contract as readSnapshot's null/array guards above.
-    if (!show || typeof show !== 'object') continue;
+    // A malformed entry (null, issues not an array, or no id/title to
+    // display) must degrade this show silently, not throw and kill the
+    // whole digest send — same fail-soft contract as readSnapshot's
+    // null/array guards above. Requiring id+title also stops a bare
+    // "undefined — poster, tickets" line leaking into the owner's inbox
+    // (ship-check finding: the old guard let a missing id/title through).
+    if (!show || typeof show !== 'object' || !show.id || !show.title) continue;
     const highTypes = (Array.isArray(show.issues) ? show.issues : [])
       .filter((i) => i && i.severity === 'high')
       .map((i) => String(i.type || '').replace(/^missing_/, '').replace(/_/g, ' '));
     if (highTypes.length) rows.push({ id: show.id, title: show.title, highTypes });
   }
   if (!rows.length) return null;
+  // Ticket/poster gaps are revenue-impacting (the whole reason task #689
+  // exists); synopsis-only gaps are lower stakes. When the list is
+  // truncated to maxItems, the most actionable rows must survive the cut
+  // instead of being buried by source order (ship-check finding).
+  rows.sort((a, b) => {
+    const urgency = (r) => (r.highTypes.some((t) => t === 'tickets' || t === 'poster') ? 0 : 1);
+    return urgency(a) - urgency(b);
+  });
   return {
     generatedAt: report.generatedAt,
     // count: not part of renderNamedDigestBlock's own contract, but read by

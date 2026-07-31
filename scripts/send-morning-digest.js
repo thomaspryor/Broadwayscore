@@ -271,7 +271,16 @@ async function main() {
   try {
     const r = readFreshnessReport();
     if (r.status === 'fresh') {
-      sections.freshness = summarizeFreshnessHighSeverity(r.snapshot);
+      // A valid-JSON, fresh-timestamped report whose dataQuality.hasIssues
+      // is missing or the wrong shape (e.g. the producer renames the field)
+      // must not read as a quiet "nothing to report" day — that's exactly
+      // the "stale silently vanishes" failure this file's SNAPSHOTS design
+      // already guards against for every other source (ship-check finding).
+      if (Array.isArray(r.snapshot?.dataQuality?.hasIssues)) {
+        sections.freshness = summarizeFreshnessHighSeverity(r.snapshot);
+      } else {
+        problems.push({ key: 'freshness', label: 'data freshness', status: 'invalid', generatedAt: r.generatedAt });
+      }
     } else {
       problems.push({ key: 'freshness', label: 'data freshness', status: r.status, generatedAt: r.generatedAt });
     }

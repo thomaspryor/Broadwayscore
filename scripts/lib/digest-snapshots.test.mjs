@@ -176,6 +176,43 @@ test('summarizeFreshnessHighSeverity: names show IDs for high-severity issues on
   assert.match(summary.items[0].detail, /tickets/);
 });
 
+// ship-check finding: a hasIssues entry missing id/title must not leak a
+// literal "undefined — poster, tickets" line into the owner's inbox.
+test('summarizeFreshnessHighSeverity: entries missing id or title are skipped, not rendered as "undefined"', () => {
+  const report = {
+    generatedAt: '2026-07-30T06:54:26.128Z',
+    dataQuality: {
+      hasIssues: [
+        { title: 'No ID', issues: [{ type: 'missing_tickets', severity: 'high' }] },
+        { id: 'no-title-2026', issues: [{ type: 'missing_tickets', severity: 'high' }] },
+        { id: 'good-2026', title: 'Good Show', issues: [{ type: 'missing_tickets', severity: 'high' }] },
+      ],
+    },
+  };
+  const summary = summarizeFreshnessHighSeverity(report);
+  assert.equal(summary.count, 1);
+  assert.match(summary.items[0].detail, /good-2026/);
+  assert.doesNotMatch(JSON.stringify(summary), /undefined/);
+});
+
+// ship-check finding: revenue-impacting gaps (tickets/poster) must survive
+// the maxItems truncation ahead of lower-stakes synopsis-only gaps, instead
+// of being buried by arbitrary source order.
+test('summarizeFreshnessHighSeverity: tickets/poster rows sort ahead of synopsis-only rows when truncating', () => {
+  const report = {
+    generatedAt: '2026-07-30T06:54:26.128Z',
+    dataQuality: {
+      hasIssues: [
+        { id: 'synopsis-only-2026', title: 'Synopsis Only', issues: [{ type: 'missing_synopsis', severity: 'high' }] },
+        { id: 'tickets-2026', title: 'Tickets Gap', issues: [{ type: 'missing_tickets', severity: 'high' }] },
+      ],
+    },
+  };
+  const summary = summarizeFreshnessHighSeverity(report, { maxItems: 1 });
+  assert.equal(summary.moreCount, 1);
+  assert.match(summary.items[0].detail, /tickets-2026/);
+});
+
 test('summarizeFreshnessHighSeverity: no high-severity issues -> null (quiet day renders no block)', () => {
   const report = {
     generatedAt: '2026-07-30T06:54:26.128Z',
