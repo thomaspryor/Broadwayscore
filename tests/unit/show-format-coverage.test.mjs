@@ -156,6 +156,10 @@ describe('show-format parity between src/ and scripts/', () => {
     // field here surfaces as `undefined` in a className or email style.
     const iface = tsSource.split('export interface ShowFormat')[1].split('}')[0];
     const declared = [...iface.matchAll(/^\s*(\w+):/gm)].map((m) => m[1]);
+    // Guard against a vacuous pass: if the interface parse yields nothing the
+    // loop below iterates zero times and the test would "pass" having checked
+    // nothing. (Flagged by the Codex reviewer on the sibling test.)
+    assert.ok(declared.length >= 4, `parsed too few interface fields: ${declared}`);
     const fallback = js.resolveShowFormat('a-type-that-does-not-exist');
     for (const field of declared) {
       assert.ok(
