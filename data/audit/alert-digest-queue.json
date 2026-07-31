@@ -1,13 +1,5 @@
 [
   {
-    "conditionKey": "ux-walkthrough:high-priority",
-    "title": "UX walkthrough: high-priority finding(s) filed",
-    "description": "- [2/3] Dead end on 'desktop__lists_tab'. No obvious next action for a user with no lists.\n- [2/3] A star rating control is enabled for a show in the 'NOT YET BOOKED' section of the watchlist, implying a user can rate a show they haven't seen.",
-    "severity": "info",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30551372971",
-    "queuedAt": "2026-07-30T14:31:18.009Z"
-  },
-  {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
@@ -30,5 +22,13 @@
     "severity": "error",
     "url": null,
     "queuedAt": "2026-07-31T06:08:11.931Z"
+  },
+  {
+    "conditionKey": "ux-walkthrough:high-priority",
+    "title": "UX walkthrough: high-priority finding(s) filed",
+    "description": "- [2/3] An impossible action is offered: the 'Not Yet Booked' watchlist item for 'The Outsiders' displays an empty star rating control, implying the user can rate a show they have not yet seen.",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30638313741",
+    "queuedAt": "2026-07-31T14:30:57.106Z"
   }
 ]
