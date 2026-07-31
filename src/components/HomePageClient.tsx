@@ -68,7 +68,7 @@ interface HomePageClientProps {
   skipFirstMusicals?: boolean;
   featuredRows?: FeaturedRowData[];
   /** Open-show counts for the market pills (stable across filter state) */
-  marketOpenCounts: { broadway: number; offBroadway: number };
+  marketOpenCounts: { broadway: number; broadwayPlus: number; offBroadway: number };
   /** Pre-computed award winner ID arrays (avoids client-side awards.json import) */
   awardWinnerSets?: AwardWinnerSets;
   /** Tony predictions track-record headline (server-computed for the FeaturedSpot promo) */
@@ -290,6 +290,9 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   const scoreMode = filters.scoreMode;
   const searchQuery = filters.q;
   const obPicks = filters.obPicks;
+  // Split Broadway+/Bway-only pills only render when curated OB picks are
+  // actually mixed into the grid — a split pill is a lie otherwise
+  const hasObPicks = useMemo(() => shows.some(s => s.category === 'off-broadway'), [shows]);
 
   // Internal status filter value
   const statusFilter = statusParamToFilter[status];
@@ -687,15 +690,19 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         resultCount={panel.filteredShows.length}
       />
 
-      {/* Market + Type Filter Row */}
+      {/* Market + Type Filter Row — Broadway+ / Bway only split replaces the old
+          OFF-BWAY PICKS: SHOWN/HIDDEN toggle row (it pushed all content down) */}
       <div className="flex items-center gap-2 sm:gap-4 mb-4">
         <MarketFilterBar
           pair="nyc"
           activeMarket="broadway"
-          primaryCount={marketOpenCounts.broadway}
+          primaryCount={hasObPicks ? marketOpenCounts.broadwayPlus : marketOpenCounts.broadway}
           secondaryCount={marketOpenCounts.offBroadway}
           typeValue={type}
           onTypeChange={(t) => updateParams({ type: t })}
+          broadwayMode={hasObPicks ? (obPicks === 'hidden' ? 'only' : 'plus') : undefined}
+          onBroadwayModeChange={(m) => updateParams({ obPicks: m === 'only' ? 'hidden' : null })}
+          broadwayOnlyCount={marketOpenCounts.broadway}
         />
 
         {/* Score Mode Picker (Right) */}
@@ -711,22 +718,6 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
           className="flex-shrink-0"
         />
       </div>
-
-      {/* Off-Broadway picks toggle — only when curated OB shows are mixed into the grid */}
-      {shows.some(s => s.category === 'off-broadway') && (
-        <div className="flex items-center gap-2 mb-3 text-sm">
-          <ToggleBar
-            label="OFF-BWAY PICKS:"
-            options={[
-              { value: 'shown' as const, label: 'SHOWN' },
-              { value: 'hidden' as const, label: 'HIDDEN' },
-            ]}
-            value={obPicks}
-            onChange={(v) => updateParams({ obPicks: v === 'shown' ? null : v })}
-            ariaLabel="Show or hide notable off-Broadway picks"
-          />
-        </div>
-      )}
 
       {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-4 sm:mb-6 text-sm">
