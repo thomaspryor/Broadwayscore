@@ -267,6 +267,15 @@ function buildSeed(task, card, project, model) {
     // unless the session re-reads the card before wrapping up.
     `Before wrap-up, RE-READ this card via notion-brain get — directives may have been added since launch. If the card instructs chaining, dispatch the next workspace yourself; never end by telling the user to paste a prompt.`,
     ``,
+    // Owner mandate (task #672, 2026-07-30): every review hook fires at
+    // Stop/push, AFTER the code already exists — sunk cost then argues for
+    // shipping instead of rethinking. The 17-day ledger showed second-opinion
+    // (cheap, pre-implementation) running ~5.5x less often than ship-check
+    // (post-hoc). Provenance for "is this self-discovered" only exists here,
+    // at dispatch time — a PreToolUse hook can't distinguish "user asked for
+    // X" from "agent noticed X" (reviewed and rejected, see card #672).
+    `REVIEW TIMING: the work on THIS card is pre-scoped — implement it per CLAUDE.md rules, no extra review gate needed before you start. But if this session discovers a NEW, nontrivial or risky follow-on beyond this card's scope, run /second-opinion (or /plan-review for genuinely complex/risky work) BEFORE implementing it, not after — don't let sunk cost in a half-built fix be the reason you skip the review.`,
+    ``,
     // Cheap human-in-loop escalation (task #151): sizing happens before any
     // code is read, so a mis-sized card should say so rather than silently
     // grinding on an under-powered model.
