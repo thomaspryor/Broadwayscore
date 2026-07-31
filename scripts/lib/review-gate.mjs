@@ -57,10 +57,14 @@ const require = createRequire(import.meta.url);
 let readClaims = null, CLAIM_TTL_MS = 0, evaluateCiRedClaim = null;
 try {
   ({ readClaims, CLAIM_TTL_MS } = require('./ci-red-claims.js'));
-} catch { /* optional — see above */ }
+} catch (e) {
+  process.stderr.write(`review-gate: ci-red-claims.js unavailable (${e.code || e.message}) — CI-red claim checks degraded to no-op\n`);
+}
 try {
   ({ evaluateCiRedClaim } = require('./duplicate-dispatch-guard.js'));
-} catch { /* optional — see above */ }
+} catch (e) {
+  process.stderr.write(`review-gate: duplicate-dispatch-guard.js unavailable (${e.code || e.message}) — CI-red claim checks degraded to no-op\n`);
+}
 
 // ── constants (exported for tests) ──────────────────────────────────────────
 
