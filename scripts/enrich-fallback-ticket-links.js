@@ -39,7 +39,7 @@ if (hasHelpFlag(process.argv)) {
 
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { serpQuery } = require('./lib/url-discovery');
-const { pickTicketUrl, buildTicketQuery, VENUE_SITES } = require('./lib/ticket-link-discovery');
+const { pickTicketUrl, buildTicketQuery, platformForUrl, VENUE_SITES } = require('./lib/ticket-link-discovery');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const LIMIT = Number((process.argv.find((a) => a.startsWith('--limit=')) || '').split('=')[1]) || 10;
@@ -79,17 +79,18 @@ function fetchStatus(url, timeout) {
 }
 
 /**
- * Liveness probe. Follows up to 3 redirects to a final status. 2xx passes;
- * 403 passes only for first-party venue sites (they routinely bot-block plain
- * GETs — Marylebone/La Jolla confirmed — while the big platforms answer 200,
- * so a platform 403 is suspicious, not normal). A redirect chain that never
- * lands on 2xx (e.g. 302 → expired-listing homepage loop) fails.
+ * Liveness probe. Follows up to 3 redirects to a final status. 2xx passes
+ * only if the final URL is still on an allowlisted host (a 302 to an
+ * unrelated landing page must not count as alive); 403 passes only for
+ * first-party venue sites (they routinely bot-block plain GETs —
+ * Marylebone/La Jolla confirmed — while the big platforms answer 200, so a
+ * platform 403 is suspicious, not normal).
  */
 async function probeUrl(url, timeout = 15000) {
   let current = url;
   for (let hop = 0; hop < 4; hop++) {
     const { status, location } = await fetchStatus(current, timeout);
-    if (status >= 200 && status < 300) return true;
+    if (status >= 200 && status < 300) return platformForUrl(current) !== null;
     if (status === 403) return isVenueSiteHost(current);
     if (status >= 300 && status < 400 && location) {
       current = new URL(location, current).toString();
@@ -113,8 +114,12 @@ async function main() {
 
   console.log(`Open/previews shows without ticketLinks: ${targets.length}`);
   if (targets.length > LIMIT) {
-    console.log(`Attempting first ${LIMIT} this run (--limit); the daily cron drains the rest.`);
-    targets = targets.slice(0, LIMIT);
+    // Day-of-month rotation so permanently-unfindable shows at the head of
+    // the list can't starve the tail forever (every gap show gets attempts
+    // across successive daily runs).
+    const offset = (new Date().getUTCDate() * LIMIT) % targets.length;
+    targets = targets.slice(offset).concat(targets.slice(0, offset)).slice(0, LIMIT);
+    console.log(`Attempting ${LIMIT} this run (--limit, rotation offset ${offset}); the daily cron cycles the rest.`);
   }
 
   let added = 0;
