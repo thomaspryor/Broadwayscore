@@ -34,6 +34,8 @@ export interface ShowFormat {
   label: string;
   /** Title-case inline label, e.g. 'Musical' — for prose and email rows. */
   title: string;
+  /** Title-case plural, e.g. 'Musicals' — for breadcrumbs and list headings. */
+  plural: string;
   /** Tailwind border+text classes for the outline pill. */
   colorClass: string;
   /** Tailwind text colour alone, for the borderless mobile pill row. */
@@ -59,6 +61,7 @@ export const SHOW_FORMATS: Record<ShowType, ShowFormat> = {
   musical: {
     label: 'MUSICAL',
     title: 'Musical',
+    plural: 'Musicals',
     colorClass: 'border-purple-500/50 text-purple-400',
     textClass: 'text-purple-400',
     emailColor: '#a78bfa',
@@ -66,6 +69,7 @@ export const SHOW_FORMATS: Record<ShowType, ShowFormat> = {
   play: {
     label: 'PLAY',
     title: 'Play',
+    plural: 'Plays',
     colorClass: 'border-blue-500/50 text-blue-400',
     textClass: 'text-blue-400',
     emailColor: '#60a5fa',
@@ -73,6 +77,7 @@ export const SHOW_FORMATS: Record<ShowType, ShowFormat> = {
   opera: {
     label: 'OPERA',
     title: 'Opera',
+    plural: 'Operas',
     colorClass: 'border-indigo-500/50 text-indigo-400',
     textClass: 'text-indigo-400',
     emailColor: '#818cf8',
@@ -80,6 +85,7 @@ export const SHOW_FORMATS: Record<ShowType, ShowFormat> = {
   special: {
     label: 'EVENT',
     title: 'Event',
+    plural: 'Events',
     colorClass: 'border-amber-500/50 text-amber-400',
     textClass: 'text-amber-400',
     emailColor: '#fbbf24',
@@ -90,6 +96,7 @@ export const SHOW_FORMATS: Record<ShowType, ShowFormat> = {
 const UNKNOWN_FORMAT: ShowFormat = {
   label: 'EVENT',
   title: 'Event',
+  plural: 'Events',
   colorClass: 'border-white/10 text-gray-400',
   textClass: 'text-gray-400',
   emailColor: '#9ca3af',
@@ -116,6 +123,16 @@ export function showFormatLabel(type?: string | null): string {
 /** Title-case inline label for a show type, e.g. 'Musical'. */
 export function showFormatTitle(type?: string | null): string {
   return resolveShowFormat(type).title;
+}
+
+/**
+ * Title-case plural, e.g. 'Musicals'. Used by breadcrumbs — including the
+ * BreadcrumbList structured data Google reads, where a hand-rolled
+ * `type === 'musical' ? 'Musicals' : 'Plays'` was telling Google that concerts
+ * and operas are Plays.
+ */
+export function showFormatPlural(type?: string | null): string {
+  return resolveShowFormat(type).plural;
 }
 
 /** Tailwind text-colour class alone, for the borderless mobile pill row. */
