@@ -37,6 +37,21 @@ bash scripts/lib/push-with-retry.sh [max_retries] [branch]
 ```
 Defaults: 7 retries, main branch. Handles cleanup, rebase -X theirs, random backoff, `::error::` + `exit 1` on failure. CI guard in `test.yml` enforces this; exempt with `# hygiene-push-ok: <reason>` (external remotes, custom retry loops).
 
+## Git Identity for Inline Commits
+
+Any job that runs an inline `git commit -m` on the ROOT checkout must configure git identity first — either via the shared composite action:
+```yaml
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+```
+or inline:
+```bash
+git config user.name "github-actions[bot]"
+git config user.email "github-actions[bot]@users.noreply.github.com"
+```
+`checkout-core-data`/`push-core-data`/`checkout-review-texts` composite actions do NOT satisfy this — they configure git only inside their own nested checkout dirs (`/tmp/core-data-checkout`, `data/review-texts`), never the root checkout where these inline commits run. Without identity, `git commit` fails with `fatal: empty ident name` (task #659). CI guard in `test.yml` (`audit-workflow-hygiene.js`) enforces this per-job; exempt with `# hygiene-git-identity-ok: <reason>`.
+
 ## Public Show JSON Safety
 
 **Only `rebuild-all-reviews.js` may write complete `public/data/shows/*.json` files.** Any other script that needs to update a single field (images, audience data, metadata) MUST do a surgical merge: read the existing public JSON, update only the field it owns, write back. **Never regenerate public show JSONs from core-data** — the core-data checkout may be stale, and regeneration wipes reviews added by concurrent sessions.

@@ -1072,6 +1072,8 @@ jobs:
           done
           # Commit updated playbill-urls.json if changed
           if ! git diff --quiet data/playbill-urls.json 2>/dev/null; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
             git add data/playbill-urls.json
             git commit -m "data: Add Playbill URLs for new shows [skip ci]" || true
             bash scripts/lib/push-with-retry.sh || echo "::warning::Push failed for playbill-urls"
