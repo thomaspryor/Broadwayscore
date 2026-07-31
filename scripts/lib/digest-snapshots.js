@@ -39,7 +39,15 @@ const SNAPSHOTS = [
   // the three above, which are CI-produced and pulled via git): both the
   // producer and this consumer run on the same Mac via launchd, so there is
   // no cross-machine gap to bridge with a git commit.
-  { key: 'backlogDrain', label: 'backlog drain', file: 'backlog-drain-metric.json', maxAgeH: 36 },
+  //
+  // optionalIfMissing (ship-check adversarial finding): the launchd plist
+  // ships DISABLED by default — until the owner enables it, this file never
+  // exists, and a plain "missing" would show up as a permanent false
+  // "didn't update overnight" banner line on every single morning digest.
+  // 'missing' is suppressed for this entry only; 'stale'/'invalid' still
+  // report — those mean the producer EXISTED and then broke, which is real
+  // signal worth flagging.
+  { key: 'backlogDrain', label: 'backlog drain', file: 'backlog-drain-metric.json', maxAgeH: 36, optionalIfMissing: true },
 ];
 
 /**
@@ -83,7 +91,7 @@ function readAllSnapshots({ auditDir = DEFAULT_AUDIT_DIR, now = Date.now() } = {
   for (const s of SNAPSHOTS) {
     const r = readSnapshot(path.join(auditDir, s.file), s.maxAgeH, now);
     sections[s.key] = r.snapshot;
-    if (r.status !== 'fresh') {
+    if (r.status !== 'fresh' && !(r.status === 'missing' && s.optionalIfMissing)) {
       problems.push({ key: s.key, label: s.label, status: r.status, generatedAt: r.generatedAt });
     }
   }
