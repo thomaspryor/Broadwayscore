@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-31T01:16:22.868Z",
+  "timestamp": "2026-07-31T05:13:45.232Z",
   "stats": {
-    "totalReviews": 40983,
+    "totalReviews": 40984,
     "alreadyFlagged": 17906,
     "dateGuardCatches": 79,
     "directorMismatch": 936,
     "tvFilmSignals": 1122,
-    "londonSignals": 770,
+    "londonSignals": 771,
     "offBroadwaySignals": 465,
     "yearMismatch": 86,
-    "noPublishDate": 3384
+    "noPublishDate": 3381
   },
   "findings": [
     {
@@ -42673,6 +42673,20 @@
       "score": 82,
       "publishDate": "November 17, 2019",
       "url": "https://variety.com/2019/legit/reviews/the-inheritance-review-broadway-1203406810/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-west-end-2026",
+      "file": "jewishnews--brigit-grant.json",
+      "score": 92,
+      "publishDate": "2026-07-19",
+      "url": "https://www.jewishnews.co.uk/review-the-jonathan-larson-project/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
