@@ -20,6 +20,22 @@ test('launcher never imports the cmux launch/workspace modules', () => {
   assert.match(src, /require\(['"]\.\/lib\/opening-night-monitor\.js['"]\)/, 'launcher must run the pass through the headless wrapper');
 });
 
+// Adversarial ship-check finding (2026-07-30): a lock that needs reclaiming
+// means the PREVIOUS pass's node process died mid-flight (SIGKILL/OOM/sleep)
+// before it ever reached its own success/failure write. Without counting
+// that as a failure, a string of process-level crashes could reclaim forever
+// (every ~90 min, HEARTBEAT_STALE_MIN) without ever reaching
+// MAX_ATTEMPTS_PER_NIGHT and paging the owner — the exact silent-forever
+// failure mode this regression guard exists to catch.
+test('reclaim-and-launch counts the abandoned attempt as a consecutive failure', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const reclaimBlock = src.slice(src.indexOf("decision.action === 'reclaim-and-launch'"));
+  const nextBlockEnd = reclaimBlock.indexOf('\n  }\n');
+  const block = reclaimBlock.slice(0, nextBlockEnd);
+  assert.match(block, /consecutiveFailures:\s*\(nightState\.consecutiveFailures\s*\|\|\s*0\)\s*\+\s*1/, 'reclaim-and-launch must increment consecutiveFailures for the abandoned attempt');
+  assert.match(block, /writeNightState\(key,\s*nightState\)/, 'the incremented consecutiveFailures must be persisted before the new attempt proceeds');
+});
+
 // Card #568: LOCK_DIR is the atomic test-and-set (mkdir, before the launch
 // even starts) but LOCK_META is only written AFTER launchCmuxSession()
 // resolves — up to verifyTimeoutSec(90) x 2 attempts + lateAdoptSec(60) =
