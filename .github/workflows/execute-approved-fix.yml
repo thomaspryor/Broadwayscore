@@ -54,6 +54,9 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Plans are PII-redacted; the submitter thank-you recovers contact
+          # info from the issue's DIAGNOSIS_JSON, which needs a token.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/execute-approved-fix.js
 
 

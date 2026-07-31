@@ -457,7 +457,17 @@ ${failed.length > 0 ? `<br><p style="margin:0;color:#c00;">Skipped: ${failed.joi
     } catch { /* best effort */ }
   }
 
-  // 7. Send thank-you to submitter
+  // 7. Send thank-you to submitter. Persisted plans are PII-redacted
+  // (submitter.email is null by construction — see generate-remediation-plan.js),
+  // so recover the submitter from the GitHub issue's DIAGNOSIS_JSON at
+  // execute time. Best effort: no token / no match just skips the thank-you.
+  if (!planData.submitter.email && applied.length > 0) {
+    const recovered = await fetchSubmitterFromIssue(issueNumber);
+    if (recovered) {
+      planData.submitter = { ...planData.submitter, ...recovered };
+      console.log('Submitter recovered from issue DIAGNOSIS_JSON');
+    }
+  }
   if (planData.submitter.email && applied.length > 0) {
     try {
       const { subject, html } = buildFeedbackThankYouEmail(
@@ -473,6 +483,49 @@ ${failed.length > 0 ? `<br><p style="margin:0;color:#c00;">Skipped: ${failed.joi
       );
       console.log(`Thank-you sent to ${planData.submitter.email}`);
     } catch { /* best effort */ }
+  }
+}
+
+// Recover submitter contact info from the GitHub issue's embedded
+// DIAGNOSIS_JSON. The persisted plan file is PII-redacted, so this is the
+// only source of the submitter's email at execute time. "504-systematic"
+// style ids resolve to their parent issue via parseInt.
+async function fetchSubmitterFromIssue(issueNumber) {
+  const ghIssue = parseInt(issueNumber);
+  const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  if (isNaN(ghIssue) || !token) return null;
+
+  const repo = process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore';
+  const body = await new Promise((resolve) => {
+    const req = https.request(`https://api.github.com/repos/${repo}/issues/${ghIssue}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `token ${token}`,
+        'User-Agent': 'BroadwayScorecard-Executor',
+        'Accept': 'application/vnd.github.v3+json',
+      },
+    }, (res) => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => resolve(res.statusCode === 200 ? data : null));
+    });
+    req.on('error', () => resolve(null));
+    req.end();
+  });
+  if (!body) return null;
+
+  try {
+    const issueBody = JSON.parse(body).body || '';
+    const m = issueBody.match(/<!-- DIAGNOSIS_JSON\n([\s\S]*?)\nDIAGNOSIS_JSON -->/);
+    if (!m) return null;
+    const diagnosis = JSON.parse(m[1]);
+    return {
+      name: diagnosis.submitterName || 'Anonymous',
+      email: diagnosis.submitterEmail || null,
+      show: diagnosis.submitterShow || null,
+    };
+  } catch {
+    return null;
   }
 }
 

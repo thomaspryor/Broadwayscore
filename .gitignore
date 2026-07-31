@@ -60,8 +60,12 @@ data/subscribers.json
 data/subscribers-westend.json
 data/followers.json
 
-# User-submitted feedback with PII
-data/pending-fixes/
+# data/pending-fixes/ WAS ignored here (2026-03-08, PII). That silently broke
+# the whole fix-approval chain: the plan-commit steps in
+# auto-fix-feedback-bug.yml / execute-approved-fix.yml fail on `git add` of an
+# ignored path, so every Approve email since then pointed at a plan file that
+# never existed. Plans are now persisted PII-REDACTED (no submitter email or
+# message — see generate-remediation-plan.js), so they are safe to track again.
 
 # Opening night broadcast dedup state (regenerated from Formspree sync + send receipts)
 data/opening-night-sent.json

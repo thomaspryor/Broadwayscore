@@ -22,6 +22,14 @@ on:
       - 'scripts/lib/creative-team-verify.test.mjs'
       - 'scripts/audit-creative-team-serp.js'
       - 'scripts/auto-fix-show-data.js'
+      # Systematic-fix detection: guards the feedback remediation pipeline
+      # against value-generalization (the 2026-07-31 close-all-147-open-shows
+      # proposal). Colocated *.test.mjs runs in the scripts/lib/*.test.mjs
+      # glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/systematic-fix-detection.js'
+      - 'scripts/lib/systematic-fix-detection.test.mjs'
+      - 'scripts/generate-remediation-plan.js'
+      - 'scripts/execute-approved-fix.js'
       # Finance tracker: pure matchers + P&L rollup + ingestion. Colocated
       # *.test.mjs run in the lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/finance-matchers.js'
