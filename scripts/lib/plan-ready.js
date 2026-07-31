@@ -7,13 +7,20 @@
 
 const PLAN_ONLY_ACTIONS = new Set(['Investigate', 'Plan', 'Review', 'Plan+Review']);
 
+// Only cards nobody is working escalate. In progress = someone owns it;
+// Done/Paused = owner deliberately closed or parked it.
+const ESCALATABLE_STATUSES = new Set(['Not started']);
+
 /**
- * @param {{action: string, priority: ?string}} card
+ * @param {{action: string, priority: ?string, status: string}} card
  * @returns {boolean} true when the card holds a finished plan but has no
- *   priority — i.e. nothing will ever dispatch it unless we escalate.
+ *   priority and sits at Not started — i.e. nothing will ever dispatch it
+ *   unless we escalate.
  */
 function shouldMarkPlanReady(card) {
-  return PLAN_ONLY_ACTIONS.has(card.action) && !card.priority;
+  return PLAN_ONLY_ACTIONS.has(card.action) &&
+    !card.priority &&
+    ESCALATABLE_STATUSES.has(card.status);
 }
 
-module.exports = { PLAN_ONLY_ACTIONS, shouldMarkPlanReady };
+module.exports = { PLAN_ONLY_ACTIONS, ESCALATABLE_STATUSES, shouldMarkPlanReady };

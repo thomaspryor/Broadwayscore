@@ -28,6 +28,8 @@ const path = require('path');
 const { compressImage } = require('./lib/compress-image');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { getMarketSearchKeyword } = require('./lib/market-label');
+const { imageOnDisk, isPlaceholderFile } = require('./lib/show-images');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
@@ -51,24 +53,11 @@ const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const DRY_RUN_DIR = path.join(__dirname, '..', 'data', 'audit', 'image-dry-run');
 const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
 
-// MD5 hashes of known "Coming Soon" placeholder images on disk.
-// These are the TodayTix placeholder graphics that were saved before URL-based filtering was added.
-const PLACEHOLDER_FILE_HASHES = new Set([
-  'b4d7d1bdb443e0a94e69ac8a5abd6f40', // poster.webp (19,118 bytes) — variant 1 (round-rect glow)
-  'ac3ea27f64c633474ad93fd826f614e7', // thumbnail.webp (11,664 bytes) — variant 1
-  '4aed489bb69c5c49be3315e3f85b342f', // hero.webp (28,998 bytes) — variant 1 (round-rect glow)
-  '52968e9f240e2db8d7523ac053d019fb', // hero.webp (28,808 bytes) — variant 2 (oval glow, different layout)
-  'da0408f33ffaff9c63baf108b53b1128', // hero.webp (25,372 bytes) — variant 3 (1440x580 landscape)
-  '9d1b34a4045d176b1856ab38a852d47b', // thumbnail.webp (32,372 bytes) — variant 2 (square format)
-]);
+// Placeholder-hash detection lives in scripts/lib/show-images.js — this file
+// used to carry its own copy of the Set + function. archive-show-images.js still
+// had a 3-hash copy while this one had 6, so three placeholder variants were
+// archived as valid art (2026-07-31 review). One source of truth now.
 
-function isPlaceholderFile(filePath) {
-  try {
-    const buf = fs.readFileSync(filePath);
-    const hash = crypto.createHash('md5').update(buf).digest('hex');
-    return PLACEHOLDER_FILE_HASHES.has(hash);
-  } catch { return false; }
-}
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 
@@ -1625,10 +1614,10 @@ async function fetchFromGoogleImages(show) {
   // Query keyword must match the show's market — searching "Broadway" for an
   // Off-Broadway/West End production surfaces the wrong-production's art (or
   // nothing at all: the-gin-game-2026 at Housing Works found 0 candidates while
-  // the 2015 Broadway revival's images ranked).
-  const marketKw = show.category === 'off-broadway' ? 'Off-Broadway'
-    : show.category === 'west-end' ? 'West End'
-    : 'Broadway';
+  // the 2015 Broadway revival's images ranked). Central lookup, NOT another
+  // inline ternary with a bare Broadway fallback (that class is why
+  // scripts/lib/market-label.js exists).
+  const marketKw = getMarketSearchKeyword(show.category || show.market);
   const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
   const showDir = path.join(outputBase, show.id);
   fs.mkdirSync(showDir, { recursive: true });
@@ -2699,22 +2688,11 @@ async function main() {
       shows = shows.filter(s => s.status !== 'closed');
       console.log(`Excluding ${before - shows.length} closed shows (use --include-closed to override)`);
     }
-    shows = shows.filter(s => {
-      // Missing in JSON
-      if (!s.images?.poster || !s.images?.thumbnail) return true;
-      // JSON says images exist but local files are missing on disk
-      const poster = s.images.poster;
-      const thumb = s.images.thumbnail;
-      if (poster && poster.startsWith('/images/')) {
-        const posterPath = path.join(__dirname, '..', 'public', poster);
-        if (!fs.existsSync(posterPath) || isPlaceholderFile(posterPath)) return true;
-      }
-      if (thumb && thumb.startsWith('/images/')) {
-        const thumbPath = path.join(__dirname, '..', 'public', thumb);
-        if (!fs.existsSync(thumbPath) || isPlaceholderFile(thumbPath)) return true;
-      }
-      return false;
-    });
+    // imageOnDisk() is the shared predicate (scripts/lib/show-images.js): a path
+    // in shows.json counts only when the file exists AND is not a known
+    // placeholder. The monitors use the same helper so "covered" means the same
+    // thing everywhere (the-gin-game-2026 phantom-path class, 2026-07-31).
+    shows = shows.filter(s => !imageOnDisk(s.images?.poster) || !imageOnDisk(s.images?.thumbnail));
     console.log(`Processing only shows with missing images: ${shows.length}`);
   }
 

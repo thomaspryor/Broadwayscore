@@ -291,8 +291,12 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   const searchQuery = filters.q;
   const obPicks = filters.obPicks;
   // Split Broadway+/Bway-only pills only render when curated OB picks are
-  // actually mixed into the grid — a split pill is a lie otherwise
-  const hasObPicks = useMemo(() => shows.some(s => s.category === 'off-broadway'), [shows]);
+  // actually IN the grid — a split pill is a lie otherwise. Previews/upcoming
+  // shows are excluded from the grid below, so exclude them here too.
+  const hasObPicks = useMemo(
+    () => shows.some(s => s.category === 'off-broadway' && s.status !== 'previews' && s.status !== 'upcoming'),
+    [shows],
+  );
 
   // Internal status filter value
   const statusFilter = statusParamToFilter[status];

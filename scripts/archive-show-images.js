@@ -63,21 +63,13 @@ async function checkAspect(filePath, role) {
   }
 }
 
-// MD5 hashes of known "Coming Soon" placeholder images.
-// Reject these after download to prevent overwriting real art with placeholders.
-const PLACEHOLDER_FILE_HASHES = new Set([
-  'b4d7d1bdb443e0a94e69ac8a5abd6f40', // poster.webp placeholder (19,118 bytes)
-  'ac3ea27f64c633474ad93fd826f614e7', // thumbnail.webp placeholder (11,664 bytes)
-  '4aed489bb69c5c49be3315e3f85b342f', // hero.webp placeholder (28,998 bytes)
-]);
+// Placeholder-hash detection is canonical in scripts/lib/show-images.js.
+// This file used to keep its own copy of the Set with only 3 hashes while
+// fetch-show-images-auto.js carried 6 — so three "Coming Soon" variants were
+// archived here as if they were real key art (2026-07-31 review). Import it,
+// never re-declare it.
+const { isPlaceholderFile } = require('./lib/show-images');
 
-function isPlaceholderFile(filePath) {
-  try {
-    const buf = fs.readFileSync(filePath);
-    const hash = crypto.createHash('md5').update(buf).digest('hex');
-    return PLACEHOLDER_FILE_HASHES.has(hash);
-  } catch { return false; }
-}
 const SOURCES_PATH = path.join(__dirname, '..', 'data', 'image-sources.json');
 
 const FORMATS = ['poster', 'thumbnail', 'hero'];
