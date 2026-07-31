@@ -1457,7 +1457,13 @@ async function main(): Promise<void> {
         // WE shows now get market+venue context in the prompt (2026-04-13), so the
         // LLM can correctly distinguish Broadway vs West End productions.
         const showInfo = showPriority.get(reviewFile.showId || '');
-        const isOffBroadway = showInfo?.category === 'off-broadway';
+        // Off-Broadway and regional productions both draw false wrong_production
+        // verdicts for the same reason: reviews legitimately describe a non-Broadway
+        // house the model does not expect. Regional joins the carve-out after the
+        // Family Album rejection (2026-07-30) — the prompt fix upstream is the real
+        // repair, this is the belt-and-suspenders layer if a prompt regresses.
+        const isExemptFromWrongProduction =
+          showInfo?.category === 'off-broadway' || showInfo?.category === 'regional';
         if (rejection === 'wrong_show') {
           // Combined reviews are excluded from manuallyCleared above and
           // would normally hit this branch — but a joint review should NOT
@@ -1472,10 +1478,10 @@ async function main(): Promise<void> {
           } else {
             fileData.wrongShow = true;
           }
-        } else if (rejection === 'wrong_production' && !isOffBroadway) {
+        } else if (rejection === 'wrong_production' && !isExemptFromWrongProduction) {
           fileData.wrongProduction = true;
-        } else if (rejection === 'wrong_production' && isOffBroadway) {
-          console.log(` (OB exempt — skipping wrongProduction flag)`);
+        } else if (rejection === 'wrong_production' && isExemptFromWrongProduction) {
+          console.log(` (${showInfo?.category} exempt — skipping wrongProduction flag)`);
         } else if (rejection === 'not_a_review') {
           fileData.contentTier = 'invalid';
         } else if (rejection === 'garbage_text') {
