@@ -32,6 +32,14 @@
 'use strict';
 
 const { execFileSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `Usage: verify-merge-landed.js --sha=<sha> --branch=<branch> [--label=<label>] [--delays=<sec,sec,...>]
+
+Delayed re-check that a merge pushed by merge-worktree-to-main.sh is still
+reachable from origin's tip minutes later (task #668). Intended to be
+launched fire-and-forget right after a successful push+verify; see the file
+header for the full incident context.`;
 
 function sh(cmd, args) {
   return execFileSync(cmd, args, { encoding: 'utf8' }).trim();
@@ -103,6 +111,7 @@ async function fileAlert(repoInfo, sha, branch, label, status) {
 }
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const args = parseArgs(process.argv.slice(2));
   const sha = args.sha;
   const branch = args.branch || 'main';
