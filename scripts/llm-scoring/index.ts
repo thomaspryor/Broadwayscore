@@ -1457,6 +1457,15 @@ async function main(): Promise<void> {
         // WE shows now get market+venue context in the prompt (2026-04-13), so the
         // LLM can correctly distinguish Broadway vs West End productions.
         const showInfo = showPriority.get(reviewFile.showId || '');
+        // Regional was briefly added here alongside off-broadway (2026-07-30) and
+        // then deliberately removed. The real repair is upstream: the prompt used
+        // to call a regional tryout a Broadway production, so the model rejected
+        // it correctly (scripts/lib/market-label.js). With the label fixed, a
+        // blanket regional exemption would only convert a VISIBLE false positive
+        // into a SILENT false negative — a genuine mismatch (e.g. last season's
+        // different production at the same regional house) could never be
+        // flagged. Off-Broadway keeps its carve-out for the documented
+        // transfer-confusion reason; regional does not need one.
         const isOffBroadway = showInfo?.category === 'off-broadway';
         if (rejection === 'wrong_show') {
           // Combined reviews are excluded from manuallyCleared above and

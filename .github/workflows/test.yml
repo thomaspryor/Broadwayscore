@@ -518,6 +518,13 @@ on:
       # isRetrieved / blocksRediscovery predicates. Colocated test runs in the
       # lib-test glob; path-listed so a solo edit triggers CI (allow-list gate).
       - 'scripts/lib/review-guards.test.mjs'
+      # Market label injected into every LLM scoring/classifier prompt. A bare
+      # `: 'Broadway'` fallback here told the ensemble a regional tryout was a
+      # Broadway show, so both legs rejected the review as wrong_production
+      # (The Family Album, 2026-07-30). Path-listed so a solo edit runs CI.
+      - 'scripts/lib/market-label.js'
+      - 'scripts/lib/market-label.test.mjs'
+      - 'scripts/lib/classifier-prompts.js'
       # Pre-window inclusion predicate + priorRuns window logic (card 386637c5).
       # These decide review inclusion exactly like review-guards.js — without
       # these entries an edit to them pushes with ZERO CI coverage.
@@ -875,7 +882,7 @@ on:
       - 'scripts/.human-caller-digest-baseline.json'
       - 'scripts/audit-alert-senders.test.mjs'
       - 'scripts/lib/exec-error-detail.js'
-      - 'scripts/lib/exec-error-detail.test.mjs'
+      - 'scripts/lib/market-label.test.mjs scripts/lib/exec-error-detail.test.mjs'
       - 'scripts/lib/workspace-naming.js'
       - 'scripts/lib/workspace-naming.test.mjs'
       - 'scripts/lib/cmux-workspaces.js'
