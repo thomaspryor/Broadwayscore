@@ -364,6 +364,11 @@ export default function HomePage() {
           featuredRows={featuredRows}
           marketOpenCounts={{
             broadway: getMarketStats().nyc.openShows,
+            // Broadway+ pill = Broadway plus the open curated OB picks in the grid
+            // (previews picks are excluded from the grid client-side, so count open only)
+            broadwayPlus:
+              getMarketStats().nyc.openShows +
+              notableOffBroadway.filter(s => s.status === 'open').length,
             offBroadway: getMarketStats().offBroadway?.openShows ?? 0,
           }}
           awardWinnerSets={getAwardWinnerSets()}

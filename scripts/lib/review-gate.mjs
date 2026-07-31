@@ -57,10 +57,14 @@ const require = createRequire(import.meta.url);
 let readClaims = null, CLAIM_TTL_MS = 0, evaluateCiRedClaim = null;
 try {
   ({ readClaims, CLAIM_TTL_MS } = require('./ci-red-claims.js'));
-} catch { /* optional — see above */ }
+} catch (e) {
+  process.stderr.write(`review-gate: ci-red-claims.js unavailable (${e.code || e.message}) — CI-red claim checks degraded to no-op\n`);
+}
 try {
   ({ evaluateCiRedClaim } = require('./duplicate-dispatch-guard.js'));
-} catch { /* optional — see above */ }
+} catch (e) {
+  process.stderr.write(`review-gate: duplicate-dispatch-guard.js unavailable (${e.code || e.message}) — CI-red claim checks degraded to no-op\n`);
+}
 
 // ── constants (exported for tests) ──────────────────────────────────────────
 
@@ -355,7 +359,10 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
 // has the literal values to search for (activeClaimsAsTasks only returns a
 // folded subject string, which is lossy when both symbol and runId are set).
 export function activeCiRedClaims({ now = Date.now(), excludeTaskId = null, claimsPath = undefined } = {}) {
-  if (!readClaims) return [];
+  // CLAIM_TTL_MS > 0 too: an older ci-red-claims.js revision without that
+  // export would leave readClaims truthy but TTL 0, silently expiring every
+  // claim — report degraded instead (reviewer P2, card 3ae637c5).
+  if (!readClaims || !(CLAIM_TTL_MS > 0)) return [];
   return readClaims(claimsPath)
     .filter(c => c && c.taskId && now - new Date(c.ts).getTime() < CLAIM_TTL_MS)
     .filter(c => excludeTaskId == null || String(c.taskId) !== String(excludeTaskId));
@@ -377,7 +384,7 @@ const MIN_NEEDLE_LEN = 4;
 // name won't be caught, same known limitation evaluateCiRedClaim already
 // has for task subjects.
 export function queryCiRedClaimConflict({ repoRoot, ref = 'HEAD', ownTaskId = null, claimsPath = undefined, now = Date.now() }) {
-  if (!readClaims || !evaluateCiRedClaim) {
+  if (!readClaims || !evaluateCiRedClaim || !(CLAIM_TTL_MS > 0)) {
     return { blocked: false, reason: 'ci-red claim libs unavailable in this checkout — check skipped' };
   }
   const base = resolveBase(repoRoot);
