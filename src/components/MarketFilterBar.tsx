@@ -109,6 +109,7 @@ export default function MarketFilterBar({
             onClick={() => onBroadwayModeChange?.('plus')}
             aria-pressed={broadwayMode === 'plus'}
             title={`Broadway plus notable Off-Broadway picks (${primaryCount})`}
+            aria-label={`Broadway plus notable Off-Broadway picks, ${primaryCount} shows`}
             className={`${pillBase} flex-shrink-0 ${broadwayMode === 'plus' ? primaryActiveClass : primaryIdleClass}`}
           >
             Broadway+
@@ -117,6 +118,7 @@ export default function MarketFilterBar({
             onClick={() => onBroadwayModeChange?.('only')}
             aria-pressed={broadwayMode === 'only'}
             title={`Broadway shows only (${broadwayOnlyCount ?? primaryCount})`}
+            aria-label={`Broadway shows only, ${broadwayOnlyCount ?? primaryCount} shows`}
             className={`${pillBase} flex-shrink-0 ${broadwayMode === 'only' ? primaryActiveClass : primaryIdleClass}`}
           >
             Bway only
@@ -142,6 +144,7 @@ export default function MarketFilterBar({
         href={secondary.href}
         aria-current={secondaryActive ? 'page' : undefined}
         title={isNyc && broadwayMode ? `${secondary.label} (${secondaryCount})` : undefined}
+        aria-label={isNyc && broadwayMode ? `${secondary.label}, ${secondaryCount} shows` : undefined}
         className={`${pillBase} flex-shrink-0 ${secondaryActive ? secondaryActiveClass : secondaryIdleClass}`}
       >
         {!(isNyc && broadwayMode) && (
