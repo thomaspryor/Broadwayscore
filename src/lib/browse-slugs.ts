@@ -70,6 +70,12 @@ export function getMarketLabel(category: ComputedShow['category'] | undefined): 
     case 'west-end': return 'West End';
     case 'off-broadway': return 'Off-Broadway';
     case 'off-west-end': return 'Off-West End';
+    // Regional was missing, so a regional show fell through to 'Broadway' —
+    // the same bare-fallback bug that made the LLM prompts reject regional
+    // reviews as wrong_production (scripts/lib/market-label.js, 2026-07-30).
+    // Latent today (WhereItRanks returns null for regional, which has no rank
+    // pools) but wrong the moment regional gets one.
+    case 'regional': return 'Regional';
     default: return 'Broadway';
   }
 }
