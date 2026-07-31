@@ -67,11 +67,23 @@ const AUDIT_DIR = path.join(REPO, 'data', 'audit');
 const DRAIN_LEDGER_PATH = path.join(AUDIT_DIR, 'backlog-drain-ledger.jsonl');
 const METRIC_PATH = path.join(AUDIT_DIR, 'backlog-drain-metric.json');
 const VERIFIABILITY_REPORT_PATH = path.join(AUDIT_DIR, 'card-verifiability.json');
+const LOG_DIR = path.join(AUDIT_DIR, 'backlog-drain-logs');
 
 // Cap live `notion-brain get` calls per tick (rate-limit friendliness) —
 // beyond this many unarmed/enrichment-needed candidates, stop scanning and
 // report "none found this scan" rather than walking the whole backlog.
 const MAX_CANDIDATE_SCAN = 20;
+
+// How long to wait for a dispatched detached child to reach bsc-runner's
+// job-spawned event before giving up on it (ship-check adversarial finding):
+// the detached `bsc-next.js --headless` spawn can be refused before ever
+// reaching bsc-runner (runner disabled, live cmux duplicate) with no
+// terminal ledger event at all — without a timeout, that drain-dispatch
+// entry would sit unresolved forever, permanently occupying a concurrency
+// slot and never reaching attempt-memory. 3h is generous: even the largest
+// (M) envelope's wall-clock cap is 120min; this only fires for a spawn that
+// never even started.
+const ORPHAN_TIMEOUT_H = 3;
 
 const USAGE = `backlog-drain.js — rate-limited whole-pool drain dispatcher (task #654).
 
@@ -132,6 +144,27 @@ function fetchCard(pageId) {
   } catch { return null; }
 }
 
+// Find the job THIS drain-dispatch actually caused (ship-check adversarial
+// finding): dispatch-ledger.foldJobs's "last event wins" merge overwrites a
+// job's `ts` field with its TERMINAL event's timestamp, so "the job with the
+// latest ts for this taskId" can silently match a job a manual `bsc-next
+// --headless` run started well after (or even before, on a stale read) this
+// drain-dispatch — crediting a drain pass/fail to someone else's dispatch.
+// Instead, scan the RAW ledger for job-SPAWNED events on this taskId at or
+// after the drain-dispatch's own timestamp (5s buffer for clock skew), take
+// the EARLIEST such spawn (the one this dispatch's child process caused),
+// then fold only that jobId's entries to read its current state.
+function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
+  const sinceMs = new Date(sinceTs).getTime() - 5000;
+  const spawns = dispatchLedgerEntries
+    .filter(e => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED && String(e.taskId) === String(taskId) && new Date(e.ts).getTime() >= sinceMs)
+    .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
+  if (!spawns.length) return null;
+  const jobId = spawns[0].jobId;
+  const jobs = dispatchLedger.foldJobs(dispatchLedgerEntries.filter(e => e.jobId === jobId));
+  return jobs.get(jobId) || null;
+}
+
 // Resolve prior 'drain-dispatch' ledger entries with no outcome yet into
 // card-pass/card-fail, by cross-referencing dispatch-ledger.jsonl's shared
 // job lifecycle (bsc-runner writes job-spawned/job-done/job-failed there,
@@ -142,33 +175,47 @@ function fetchCard(pageId) {
 // content failure — exactly the "burned money, card still not done" case
 // attempt-memory exists to stop. A job with no terminal event yet is left
 // unresolved for a later tick.
-function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries) {
+//
+// If NO job-spawned event ever appears within ORPHAN_TIMEOUT_H (ship-check
+// adversarial finding): the detached bsc-next.js --headless spawn can be
+// refused before it ever reaches bsc-runner (runner disabled, live cmux
+// duplicate) — that refusal happens silently inside the detached child
+// (see main()'s log-file redirect below), and without this timeout the
+// drain-dispatch entry would sit unresolved forever, permanently occupying
+// a concurrency slot while the digest keeps showing "Dispatched #N" for
+// work that never actually started.
+function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries, now = new Date()) {
   const resolvedTaskIds = new Set(
     drainLedgerEntries.filter(e => e.event === 'card-pass' || e.event === 'card-fail').map(e => String(e.cardId)));
-  const jobs = [...dispatchLedger.foldJobs(dispatchLedgerEntries).values()];
   const dispatches = drainLedgerEntries.filter(e => e.event === 'drain-dispatch');
   const newEntries = [];
   for (const d of dispatches) {
     const taskId = String(d.taskId);
     if (resolvedTaskIds.has(taskId)) continue;
-    let latest = null;
-    for (const job of jobs) {
-      if (String(job.taskId) !== taskId) continue;
-      if (!latest || new Date(job.ts) > new Date(latest.ts)) latest = job;
+    const job = findMyJob(dispatchLedgerEntries, taskId, d.ts);
+    if (!job) {
+      const ageH = (now.getTime() - new Date(d.ts).getTime()) / 3600e3;
+      if (ageH < ORPHAN_TIMEOUT_H) continue; // may still spawn — recheck next tick
+      newEntries.push({
+        event: 'card-fail', cardId: taskId, contentHash: d.contentHash, usd: 0,
+        note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
+      });
+      resolvedTaskIds.add(taskId);
+      continue;
     }
-    if (!latest || !dispatchLedger.TERMINAL_JOB_EVENTS.has(latest.event)) continue; // still running or not yet visible
+    if (!dispatchLedger.TERMINAL_JOB_EVENTS.has(job.event)) continue; // still running
     const task = tasksById.get(taskId);
     const completed = !!(task && task.status === 'completed');
-    const sessionOk = latest.event === dispatchLedger.JOB_EVENTS.DONE;
+    const sessionOk = job.event === dispatchLedger.JOB_EVENTS.DONE;
     const outcome = (sessionOk && completed) ? 'card-pass' : 'card-fail';
     newEntries.push({
       event: outcome,
       cardId: taskId,
       contentHash: d.contentHash,
-      usd: Number(latest.costUSD) || 0,
+      usd: Number(job.costUSD) || 0,
       note: outcome === 'card-pass'
         ? 'session finished, task marked completed'
-        : (sessionOk ? 'session finished but task still not completed' : `job ${latest.event}${latest.stage ? `: ${latest.stage}` : ''}`),
+        : (sessionOk ? 'session finished but task still not completed' : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`),
     });
     resolvedTaskIds.add(taskId);
   }
@@ -263,10 +310,24 @@ async function main(argv = process.argv.slice(2)) {
         event: 'drain-dispatch', taskId: String(dispatchedTask.id),
         subject: dispatchedTask.subject, contentHash: taskContentHash(dispatchedTask),
       });
+      // stdio 'ignore' (ship-check adversarial finding) swallowed the exact
+      // signal that explains a refusal (runner disabled, live cmux
+      // duplicate, lease-held) — capture to a log file instead so a refused
+      // dispatch is debuggable, not silent. Closing our own fd right after
+      // spawn is safe: the detached child holds its own duplicated fd.
+      fs.mkdirSync(LOG_DIR, { recursive: true });
+      const logPath = path.join(LOG_DIR, `${dispatchedTask.id}-${Date.now()}.log`);
+      const logFd = fs.openSync(logPath, 'a');
       const child = spawn('node', [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(dispatchedTask.id), '--headless'],
-        { cwd: REPO, detached: true, stdio: 'ignore' });
+        { cwd: REPO, detached: true, stdio: ['ignore', logFd, logFd] });
       child.unref();
-      console.log(`[backlog-drain] dispatched #${dispatchedTask.id}: ${dispatchedTask.subject} (headless, detached)`);
+      fs.closeSync(logFd);
+      // "dispatch attempted", not "dispatched" (ship-check adversarial
+      // finding): this log line fires the instant spawn() is called, before
+      // bsc-next's own verify-gate/duplicate/dead-dispatch guards have run —
+      // reconcileOutcomes (via the job-spawned correlation above) is the
+      // actual proof a dispatch succeeded, not this line.
+      console.log(`[backlog-drain] dispatch attempted for #${dispatchedTask.id}: ${dispatchedTask.subject} (headless, detached; log: ${logPath})`);
     }
   } else {
     console.log(`[backlog-drain] no dispatch this tick: ${skipReason}`);
@@ -276,7 +337,7 @@ async function main(argv = process.argv.slice(2)) {
     generatedAt: metric.generatedAt,
     bannerText: formatBannerText(metric),
     items: dispatchedTask
-      ? [{ title: `Dispatched #${dispatchedTask.id}: ${String(dispatchedTask.subject).slice(0, 90)}` }]
+      ? [{ title: `Dispatch attempted for #${dispatchedTask.id}: ${String(dispatchedTask.subject).slice(0, 90)}` }]
       : [],
     moreCount: 0,
     pending: metric.pending,
@@ -298,6 +359,7 @@ if (require.main === module) {
 
 module.exports = {
   parseArgs, readLedger, appendLedger, readJson, writeJsonAtomic, fetchCard,
-  reconcileOutcomes, main, USAGE,
-  AUDIT_DIR, DRAIN_LEDGER_PATH, METRIC_PATH, VERIFIABILITY_REPORT_PATH, MAX_CANDIDATE_SCAN,
+  findMyJob, reconcileOutcomes, main, USAGE,
+  AUDIT_DIR, DRAIN_LEDGER_PATH, METRIC_PATH, VERIFIABILITY_REPORT_PATH, LOG_DIR,
+  MAX_CANDIDATE_SCAN, ORPHAN_TIMEOUT_H,
 };
