@@ -13,6 +13,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -47,10 +48,33 @@ test('external URL is assumed live (we do not HEAD every CDN URL)', () => {
   assert.equal(imageOnDisk('https://cdn.example.com/poster.jpg', opts), true);
 });
 
+test('protocol-relative URL is external, not a local path', () => {
+  // `//cdn/x.jpg` starts with '/' but is a real external URL. Resolving it
+  // against public/ would report it permanently missing (2026-07-31 review).
+  assert.equal(imageOnDisk('//images.squarespace-cdn.com/x.png', opts), true);
+});
+
 test('a byte-identical known placeholder on disk is NOT a real image', () => {
-  // Reconstructing a real placeholder byte-for-byte isn't possible here, so
-  // assert the hash registry the predicate consults is non-empty and wired —
-  // an empty set would silently disable placeholder rejection.
+  // Write a file, register ITS hash as a placeholder, and assert the predicate
+  // rejects it — proving the hash check actually runs, not just that the
+  // registry is non-empty.
+  const body = Buffer.from('pretend-coming-soon-graphic');
+  const md5 = crypto.createHash('md5').update(body).digest('hex');
+  const p = path.join(realDir, 'fake-placeholder.webp');
+  fs.writeFileSync(p, body);
+  assert.equal(imageOnDisk('/images/shows/real-show/fake-placeholder.webp', opts), true,
+    'sanity: unregistered file counts as real');
+  PLACEHOLDER_FILE_HASHES.add(md5);
+  try {
+    assert.equal(imageOnDisk('/images/shows/real-show/fake-placeholder.webp', opts), false,
+      'a file whose hash is registered as a placeholder must NOT count as a real image');
+  } finally {
+    PLACEHOLDER_FILE_HASHES.delete(md5);
+    fs.unlinkSync(p);
+  }
+});
+
+test('the real placeholder registry stays populated', () => {
   assert.ok(PLACEHOLDER_FILE_HASHES.size >= 6, 'placeholder hash registry must stay populated');
 });
 
@@ -80,7 +104,7 @@ test('search keyword follows the market for every real category', () => {
   assert.equal(getMarketSearchKeyword('broadway'), 'Broadway');
   assert.equal(getMarketSearchKeyword('off-broadway'), 'Off-Broadway');
   assert.equal(getMarketSearchKeyword('west-end'), 'West End');
-  // 269 shows carry off-west-end; they were being searched as Broadway.
+  // 294 shows carry off-west-end; they were being searched as Broadway.
   assert.equal(getMarketSearchKeyword('off-west-end'), 'Off-West End');
   assert.equal(getMarketSearchKeyword('regional'), 'theater');
 });
