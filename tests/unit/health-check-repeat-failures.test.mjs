@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, cardVerifiabilityBacklogResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
+const { repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
   assert.deepEqual(repeatFailureResults({ skipped: true, repeatFailures: [{ name: 'x.yml', count: 9 }] }), []);
@@ -139,4 +139,38 @@ test('cardVerifiabilityBacklogResults: refused cards warn with count and first c
   assert.match(results[0].message, /2 of 42 pending\/in-progress card/);
   assert.match(results[0].message, /\[P1 Next\] Fix the widget/);
   assert.match(results[0].hint, /enrich-card-acceptance\.js/);
+});
+
+// --- progressWatchResults (task #597: liveness monitor for pipeline counters) ---
+
+test('progressWatchResults: no report, or a report with no surfaces, yields nothing', () => {
+  assert.deepEqual(progressWatchResults(null), []);
+  assert.deepEqual(progressWatchResults(undefined), []);
+  assert.deepEqual(progressWatchResults({ surfaces: {} }), []);
+});
+
+test('progressWatchResults: no stalled surfaces yields nothing', () => {
+  const report = { surfaces: { needsRescoreUnblocked: { label: 'needsRescore queue (unblocked)', value: 90, stalled: false, cycles: 3 } } };
+  assert.deepEqual(progressWatchResults(report), []);
+});
+
+test('progressWatchResults: a stalled surface warns with value, cycles, and hint', () => {
+  const report = {
+    surfaces: {
+      needsRescoreUnblocked: {
+        label: 'needsRescore queue (unblocked)',
+        value: 141,
+        stalled: true,
+        cycles: 3,
+        reason: 'unchanged for 3 consecutive cycles (value: 141)',
+        hint: 'node scripts/audit-stuck-rescore-flags.js --json for a byReason breakdown',
+      },
+    },
+  };
+  const results = progressWatchResults(report);
+  assert.equal(results.length, 1);
+  assert.equal(results[0].status, 'warn');
+  assert.equal(results[0].name, 'Progress watch: needsRescore queue (unblocked) stalled');
+  assert.match(results[0].message, /is at 141 and hasn't moved in 3 consecutive check/);
+  assert.match(results[0].hint, /audit-stuck-rescore-flags\.js/);
 });
