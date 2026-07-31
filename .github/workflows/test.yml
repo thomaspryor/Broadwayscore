@@ -148,6 +148,14 @@ on:
       - 'scripts/lib/unbounded-fetch-guard.js'
       - 'scripts/lib/unbounded-fetch-guard.test.mjs'
       - 'scripts/audit-unbounded-fetch.js'
+      # Fallback ticket-link discovery (2026-07-31): OB/off-WE/regional shows
+      # absent from TodayTix had no enrichment path and sat at ticketLinks: []
+      # forever (29 open shows). Acceptance predicate is pure + colocated-tested
+      # (lib-test glob); path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/ticket-link-discovery.js'
+      - 'scripts/lib/ticket-link-discovery.test.mjs'
+      - 'scripts/enrich-fallback-ticket-links.js'
       # Node wrapper every JS/TS caller now uses to reach push-with-retry.sh,
       # so the eighth push fix lands everywhere at once (task #420).
       - 'scripts/lib/push-with-retry.js'
