@@ -247,6 +247,74 @@ test('computeClaudeAlive: primary registry says alive → alive without consulti
   assert.equal(alive, true);
 });
 
+// Card #709 (owner-approved 2026-07-31): pruneDone integration for the
+// auto-dispatch idle-close exception. See scripts/lib/prune-closeable.js
+// for the pure predicate these cases exercise.
+test('pruneDone: closes ✅🤖 tab idle at the prompt (live claude, not mid-turn)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ 🤖⚡ Infra·bsc-prune fix' }],
+    claudeAliveIn: () => true, // live (waiting at prompt or running)
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false, // idle at the prompt, not mid-turn
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, ['workspace:1']);
+  assert.deepEqual(closed.map(w => w.ref), ['workspace:1']);
+  assert.deepEqual(skipped, []);
+});
+
+test('pruneDone: skips ✅🤖 tab that is mid-turn (running)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ 🤖⚡ Infra·bsc-prune fix' }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => true, // mid-turn
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+// ship-check catch (2026-07-31): a transient cmux error querying mid-turn
+// status must fail safe to "busy, don't close" — never silently read as
+// "idle" the way the legacy claudeRunningIn helper did (it swallowed errors
+// and returned false). This proves pruneDone's own catch treats a throw
+// from the seam as isRunning=true.
+test('pruneDone: skips ✅🤖 tab when claudeMidTurnIn throws (uncertainty must never look like idle)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ 🤖⚡ Infra·bsc-prune fix' }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => { throw new Error('socket busy'); },
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+test('pruneDone: non-🤖 ✅ tab with live claude stays skipped (owner-driven protection unchanged), and claudeMidTurnIn is never called', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ Redesign show pages' }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => { throw new Error('must not be called for non-auto titles'); },
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
 test('hasRunningClaude: column-exact — no substring false positives', () => {
   // Status other than exactly "Running" on the tag row
   const notRunning = `5.8\t1\t1\ttag\tworkspace:X:tag:claude_code\tworkspace:9\tNotRunning`;

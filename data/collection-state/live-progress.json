@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-31T03:55:54.634Z",
+  "updatedAt": "2026-07-31T04:46:03.912Z",
   "processed": 60,
-  "failed": 1059,
-  "successRate": "5.4%",
+  "failed": 1107,
+  "successRate": "5.1%",
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
@@ -10,33 +10,11 @@
     "directCookies": 4,
     "scrapingbee": 0,
     "brightdata": 16,
-    "archiveToday": 39,
+    "archiveToday": 45,
     "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
-    {
-      "t": "2026-07-31T00:59:06.911Z",
-      "event": "bb-session",
-      "session": "36594951",
-      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
-    },
-    {
-      "t": "2026-07-31T00:59:07.295Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-07-31T01:03:25.136Z",
-      "event": "bb-session",
-      "session": "c8f94ec7",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-07-31T01:03:25.654Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-07-31T01:13:03.865Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-07-31T03:54:20.071Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-31T04:37:27.261Z",
+      "event": "bb-session",
+      "session": "3f6f002a",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-07-31T04:37:28.093Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-31T04:39:04.877Z",
+      "event": "bb-session",
+      "session": "684d4608",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-07-31T04:39:05.590Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
