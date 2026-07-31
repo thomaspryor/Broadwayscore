@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-31T13:51:21.776Z",
+  "timestamp": "2026-07-31T17:57:14.732Z",
   "stats": {
-    "totalReviews": 41030,
-    "alreadyFlagged": 17914,
+    "totalReviews": 41046,
+    "alreadyFlagged": 17915,
     "dateGuardCatches": 79,
     "directorMismatch": 936,
     "tvFilmSignals": 1122,
-    "londonSignals": 771,
+    "londonSignals": 772,
     "offBroadwaySignals": 465,
     "yearMismatch": 86,
-    "noPublishDate": 3405
+    "noPublishDate": 3414
   },
   "findings": [
     {
@@ -40915,7 +40915,7 @@
     },
     {
       "showId": "tao-of-glass-west-end-2026",
-      "file": "thereviewshub--unknown.json",
+      "file": "thereviewshub--the-reviews-hub-london.json",
       "score": 90,
       "publishDate": "2026-07-31",
       "url": "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
@@ -40924,6 +40924,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "tao-of-glass-west-end-2026",
+      "file": "west-end-best-friend--diana-feng.json",
+      "score": 89,
+      "publishDate": "2026-07-31",
+      "url": "https://www.westendbestfriend.co.uk/news/review-tao-of-glass-sohoplace",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
