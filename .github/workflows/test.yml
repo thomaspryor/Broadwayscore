@@ -80,6 +80,11 @@ on:
       # T6: write-once shows.json persistence + miss-ledger cooldown decision fn.
       # scripts/opening-night-poller.js already path-listed elsewhere in this file.
       - 'scripts/lib/bww-roundup-persistence.js'
+      # T7: routed onto the shared url-discovery.js serpQuery() chain (deleted
+      # this file's private SB->BD-only SERP chain). No colocated test file
+      # (no test.mjs currently exists for this script) — path-listed so a
+      # solo edit still triggers CI's syntax/lint/build checks.
+      - 'scripts/discover-opening-night-reviews.js'
       # Count-label pluralizer, born from the "RECOUPED IN 1 WEEKS" newsletter
       # bug (2026-07-26). Colocated *.test.mjs runs in the lib-test glob;
       # path-listed so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
