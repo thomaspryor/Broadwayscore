@@ -13,7 +13,7 @@
 # Usage: lint-workflow-guards.sh <check>[,<check>...]
 #   Checks: prebuild | core-data-pairing | private-git-add | merge-drivers
 #         | scraping-fallback | theatr-token | demo-flags | snapshot-overwrite
-#         | alert-ledger-commit
+#         | alert-ledger-commit | reset-soft-partial-commit
 #   Groups: workflows (all .github/workflows-scoped checks) | all
 
 set -uo pipefail
@@ -319,6 +319,45 @@ check_alert_ledger_commit() {
   fi
 }
 
+check_reset_soft_partial_commit() {
+  # Flags the "phantom-staged-revert" bug class (card #687, generalized from
+  # task #677's ship-check finding, fixed in record-push-ledger.js commit
+  # 613c6bd8eeb): a script that does `git reset --soft <ref>` to fast-forward
+  # local HEAD, then stages ONLY a specific path (a scoped `git add`, not
+  # `-A`/`.`/`--all`) and commits. --soft leaves the INDEX frozen at the
+  # pre-reset tree, so if <ref> moved past that point (routine under
+  # concurrent CI pushes), the whole stale index — not just the one path
+  # actually `git add`ed — gets committed, silently reverting concurrent
+  # commits' real content. Pure-function detector lives in
+  # scripts/lib/reset-soft-partial-commit-check.js (colocated test:
+  # scripts/lib/reset-soft-partial-commit-check.test.mjs). Scans top-level
+  # scripts/*.js (same scope as lint-write-routing.sh's writer checks) —
+  # that's where every git-operating CI script in this repo lives.
+  local VIOLATIONS="" f name out
+  for f in scripts/*.js; do
+    [ -e "$f" ] || continue
+    name=$(basename "$f")
+    out=$(node -e "
+      const { findResetSoftPartialCommitIssues } = require('./scripts/lib/reset-soft-partial-commit-check.js');
+      const fs = require('fs');
+      const issues = findResetSoftPartialCommitIssues(fs.readFileSync(process.argv[1], 'utf8'));
+      issues.forEach(v => console.log(v));
+    " "$f")
+    if [ -n "$out" ]; then
+      VIOLATIONS="$VIOLATIONS\n$name: $out"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Scripts use a dangerous reset --soft + scoped-add + commit pattern (phantom-staged-revert risk):"
+    echo -e "$VIOLATIONS"
+    echo "Fix: use 'git reset --mixed' instead of '--soft' before staging+committing a single path."
+    echo "See fastForwardHeadToOrigin() in scripts/record-push-ledger.js for the fixed pattern."
+    FAILED=1
+  else
+    echo "No scripts use the reset --soft + scoped-add + commit phantom-staged-revert pattern"
+  fi
+}
+
 run_check() {
   case "$1" in
     prebuild)          check_prebuild ;;
@@ -330,6 +369,7 @@ run_check() {
     demo-flags)        check_demo_flags ;;
     snapshot-overwrite) check_snapshot_overwrite ;;
     alert-ledger-commit) check_alert_ledger_commit ;;
+    reset-soft-partial-commit) check_reset_soft_partial_commit ;;
     workflows)
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_theatr_token
@@ -337,8 +377,9 @@ run_check() {
     all)
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_theatr_token
-      check_demo_flags; check_snapshot_overwrite; check_alert_ledger_commit ;;
-    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|workflows|all>[,...]" >&2; exit 2 ;;
+      check_demo_flags; check_snapshot_overwrite; check_alert_ledger_commit
+      check_reset_soft_partial_commit ;;
+    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|reset-soft-partial-commit|workflows|all>[,...]" >&2; exit 2 ;;
   esac
 }
 

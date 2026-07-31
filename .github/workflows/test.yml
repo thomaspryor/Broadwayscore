@@ -1628,6 +1628,15 @@ jobs:
           # ux-walkthrough.yml/check-cron-health.yml (card #618).
           bash scripts/lint-workflow-guards.sh alert-ledger-commit
 
+      - name: Check scripts avoid reset --soft + scoped-add + commit
+        run: |
+          # Phantom-staged-revert bug class (card #687, generalized from
+          # task #677's ship-check finding in record-push-ledger.js, fixed
+          # in commit 613c6bd8eeb). Logic lives in
+          # scripts/lint-workflow-guards.sh — shared with the local
+          # pre-push hook.
+          bash scripts/lint-workflow-guards.sh reset-soft-partial-commit
+
       - name: Check scripts route review-texts writes through safeWriteReview
         run: |
           # Joe Turner postmortem P0 #2 (2026-04-26). Logic lives in
