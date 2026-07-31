@@ -47,8 +47,24 @@ import { createRequire } from 'node:module';
 // ESM conversion and are shared with scripts/claim-ci-red.js, so require()
 // rather than porting them to ESM.
 const require = createRequire(import.meta.url);
-const { readClaims, CLAIM_TTL_MS } = require('./ci-red-claims.js');
-const { evaluateCiRedClaim } = require('./duplicate-dispatch-guard.js');
+// The CI-red-claim libs (task #584) are optional enhancements: a checkout
+// that carries this file without its newer siblings (pre-#584 worktree
+// branch, the hook test suite's scratch repo, any partial copy) must degrade
+// to "CI-red claim checks skipped", NOT crash. An uncaught require error
+// here killed the whole module, and pre-push-review-gate.sh read the empty
+// output as "couldn't evaluate → allow" — silently disabling the entire push
+// gate in that checkout (found 2026-07-31, Notion card 3ae637c5).
+let readClaims = null, CLAIM_TTL_MS = 0, evaluateCiRedClaim = null;
+try {
+  ({ readClaims, CLAIM_TTL_MS } = require('./ci-red-claims.js'));
+} catch (e) {
+  process.stderr.write(`review-gate: ci-red-claims.js unavailable (${e.code || e.message}) — CI-red claim checks degraded to no-op\n`);
+}
+try {
+  ({ evaluateCiRedClaim } = require('./duplicate-dispatch-guard.js'));
+} catch (e) {
+  process.stderr.write(`review-gate: duplicate-dispatch-guard.js unavailable (${e.code || e.message}) — CI-red claim checks degraded to no-op\n`);
+}
 
 // ── constants (exported for tests) ──────────────────────────────────────────
 
@@ -343,6 +359,10 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
 // has the literal values to search for (activeClaimsAsTasks only returns a
 // folded subject string, which is lossy when both symbol and runId are set).
 export function activeCiRedClaims({ now = Date.now(), excludeTaskId = null, claimsPath = undefined } = {}) {
+  // CLAIM_TTL_MS > 0 too: an older ci-red-claims.js revision without that
+  // export would leave readClaims truthy but TTL 0, silently expiring every
+  // claim — report degraded instead (reviewer P2, card 3ae637c5).
+  if (!readClaims || !(CLAIM_TTL_MS > 0)) return [];
   return readClaims(claimsPath)
     .filter(c => c && c.taskId && now - new Date(c.ts).getTime() < CLAIM_TTL_MS)
     .filter(c => excludeTaskId == null || String(c.taskId) !== String(excludeTaskId));
@@ -364,6 +384,9 @@ const MIN_NEEDLE_LEN = 4;
 // name won't be caught, same known limitation evaluateCiRedClaim already
 // has for task subjects.
 export function queryCiRedClaimConflict({ repoRoot, ref = 'HEAD', ownTaskId = null, claimsPath = undefined, now = Date.now() }) {
+  if (!readClaims || !evaluateCiRedClaim || !(CLAIM_TTL_MS > 0)) {
+    return { blocked: false, reason: 'ci-red claim libs unavailable in this checkout — check skipped' };
+  }
   const base = resolveBase(repoRoot);
   if (!base) return { blocked: false, reason: 'no origin/main or main ref — fail open' };
   const patchText = gatedDiffPatchText(repoRoot, base, ref).toLowerCase();
