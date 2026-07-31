@@ -296,6 +296,16 @@ jobs:
         id: commit-gate
         if: always()
         run: |
+          # A required (non-continue-on-error) step before "Validate data" —
+          # Update show statuses, either Self-heal shared ibdbUrls step — can
+          # fail and leave that step 'skipped' rather than run. Without this
+          # check the missing post-validate file reads as "0 post errors" and
+          # this gate would wrongly pass — fail closed instead (same
+          # adversarial-review finding as task #663).
+          if [ "${{ steps.validate.outcome }}" = "skipped" ]; then
+            echo "::error::A required step failed before validation could run (steps.validate was skipped) — refusing to commit or push."
+            exit 1
+          fi
           if [ "${{ steps.setdiff.outputs.should_commit }}" != "true" ]; then
             echo "::error::Discovery/enrichment introduced ${{ steps.setdiff.outputs.new_error_count }} new validation error(s) — see data/audit/discovery-blocked/ (written by the next step) for the diff."
             exit 1
