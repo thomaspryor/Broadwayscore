@@ -66,6 +66,10 @@ function imageOnDisk(imgPath, opts = {}) {
   const trimmed = imgPath.trim();
   if (!trimmed) return false;
   // External URL: we can't cheaply prove liveness, so assume it renders.
+  // `//cdn.example.com/x.jpg` is protocol-relative — a valid external URL that
+  // starts with '/', so it must be caught BEFORE the local-path branch or it
+  // gets resolved against public/ and reported permanently missing.
+  if (trimmed.startsWith('//')) return true;
   if (!trimmed.startsWith('/')) return true;
   const abs = path.join(opts.publicDir || PUBLIC_DIR, trimmed);
   if (!fs.existsSync(abs)) return false;
