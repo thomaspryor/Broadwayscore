@@ -3,7 +3,7 @@ name: Parallel worktree sessions race on the same card
 description: When multiple sessions are handed the same multi-issue Notion card, they collide — no claim mechanism exists. Detect early by re-pulling main before Edit, not just before merge.
 type: feedback
 originSessionId: ea333588-eda7-4271-bbf8-49081b096e66
-modified: 2026-07-31T00:48:29.911Z
+modified: 2026-07-31T01:44:10.361Z
 ---
 Three parallel sessions worked on the same parent Notion card (WE long-runner CV hardening 34c637c5-416f-812b) on 2026-04-24. They all implemented the same issues (1-4) independently in their own worktrees. Only the first two to merge won; the third (this session) discarded ~600 lines of duplicate work after a 4-file merge conflict.
 
@@ -45,6 +45,11 @@ Task #674: after committing 2 commits on a worktree branch, `git rebase origin/m
 2. `git branch -f <your-branch> HEAD && git checkout <your-branch>` to make the rebase result the branch tip (the rebase leaves you in detached HEAD).
 3. Retry-push loop, entirely from the worktree: `git fetch origin; git merge-base --is-ancestor origin/main HEAD || git rebase origin/main; git push origin HEAD:main` — repeat on rejection (a busy repo can reject 2-3x in a row). Because step 1 already isolated just your file's diff, each retry's rebase is a no-conflict fast-replay, not a fresh merge.
 4. If a conflict DOES appear during a retry rebase in an unrelated file: that's someone else's live work colliding with your file, not yours to resolve — `git rebase --abort` and re-do step 1 with `--onto` again against the newer origin/main, don't try to resolve their side.
+
+## SHA-reachability is not proof your files landed — verify actual content (2026-07-31)
+Task #677: after `push-with-retry.sh` reported "Push succeeded" and `gh api compare <mySHA>...main` returned `identical`, the entire deliverable (6 new files, wiring in 2 modified files) was later found completely absent from origin/main. Root cause: `git reflog` showed a `reset: moving to origin/main` fired in the shared main checkout between two of THIS session's own merge/push cycles — it silently discarded the rebased commits containing the work before they were ever pushed, then a later merge landed cleanly from the now-work-free base. The pushed SHA I checked was real and reachable — it just didn't contain what I thought it did, because local HEAD had already been reset out from under it before I captured that SHA for verification.
+
+**Fix:** a `gh api compare A...B` returning `identical`/`ahead` only proves commit A is on origin — it does NOT prove A contains your work, if A itself could have been produced by a broken rebase/reset. After any push under high concurrent churn (multiple sessions merging to the same shared main checkout), verify actual FILE EXISTENCE/CONTENT on origin directly: `git cat-file -e origin/main:<path>` for every new file, `git show origin/main:<path> | grep -c <marker>` for wiring changes to modified files. Recovery when it's missing: `git reflog` usually still has the pre-reset commit (not yet gc'd) — `git checkout <reflog-sha> -- <paths>` restores the exact content to recommit on the current tip.
 
 ## test.yml unit-test batch is a merge-conflict magnet (2026-07-11)
 `.github/workflows/test.yml`'s unit-test batch is ONE giant `node --test <200 files>` line. When 2+ parallel worktree sessions each register a new `*.test.mjs`, that line conflicts on EVERY merge, and a careless conflict resolution silently DROPS a session's registration → the `orphan-test` audit (`Audit — no orphan unit tests`) fails main red on the next push, and/or the same file gets registered twice (harmless but runs twice). This session lost `we-gate-proving.test.mjs`'s registration in a merge and hit it. Fix pattern: after ANY merge that touched test.yml, re-grep `grep -c '<yourtest>.test.mjs' test.yml` (expect exactly 1) before pushing; resolve conflicts by taking origin's line and re-inserting your test next to a stable anchor (e.g. `bww-rr-discover.test.mjs`), never by picking one whole side.
