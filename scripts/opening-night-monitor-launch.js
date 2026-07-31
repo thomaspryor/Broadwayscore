@@ -378,7 +378,16 @@ async function main(argv = process.argv.slice(2)) {
     // it for THIS spawned process only (falsy, so claude's own has-a-key
     // check falls through to the stored login) without touching process.env
     // for anything else in this run that reads it (e.g. preflightAuth).
-    env: { ANTHROPIC_API_KEY: '' },
+    // RESEND_API_KEY/OWNER_EMAIL are forwarded explicitly: strippedEnv's
+    // fixed allowlist (PATH/HOME/TERM/LANG/LC_ALL/ANTHROPIC_API_KEY/
+    // CLAUDE_CODE_OAUTH_TOKEN) does not include them, so without this the
+    // in-pass session's own parity/escalation report (monitor-v2.md step 2-3,
+    // routeAlert via owner-alert-router.js) would silently no-op inside the
+    // spawned child every time — the exact "RESEND_API_KEY or OWNER_EMAIL not
+    // set, skipping email alert" failure this session's #457 fix (commit
+    // 288e31efd69) already fixed for the LAUNCHER's own alerts, but never
+    // extended to the pass it launches.
+    env: { ANTHROPIC_API_KEY: '', RESEND_API_KEY: process.env.RESEND_API_KEY || '', OWNER_EMAIL: process.env.OWNER_EMAIL || '' },
     logFile: path.join(MON_DIR, `session-log-${key}-a${attemptNum}.log`),
   });
 

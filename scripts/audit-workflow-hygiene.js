@@ -38,9 +38,17 @@
  *     shipped independently, caught only by manual review). The fix is to
  *     guard the pipeline with `|| EC=$?` (making the assignment, not the
  *     pipeline, the statement `-e` sees) and echo the captured variable
- *     instead of `$?` directly. A bare `echo $?` immediately after `||` on
- *     the SAME line (`cmd || echo $?`) is fine — that's reachable, since the
- *     `||` already protects the statement from `-e`.
+ *     instead of `$?` directly. A bare `echo $?` on the same line as an
+ *     earlier `||` (`cmd || echo $?`, `cmd || { echo $?; }`, `cmd ||
+ *     (echo $?)`) is fine — that's reachable, since the `||` already
+ *     protects the statement from `-e`.
+ *     Scope note: this only fires when the block sets `pipefail` explicitly
+ *     (matching both real incidents). GHA's shell already runs `-eo
+ *     pipefail` by default even without an explicit `set` line, so a bare
+ *     `echo $?` after an unguarded pipe can be dead code there too — but
+ *     firing on every implicit-default case would flag most `echo $?` in
+ *     the ~215 workflows here. Left as a known gap rather than a rule that
+ *     drowns real hits in noise.
  *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
  *   # hygiene-notify-ok: <reason>          — skip notify-failure check for this workflow
@@ -236,7 +244,9 @@ function extractRunBlocks(raw) {
 
     if (runMatch) {
       const content = runMatch[1];
-      const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
+      // Tolerates chomp/indent indicators in either order (|2, |2-, >+) and a
+      // trailing comment (rules a-d's isBlockScalar checks don't need this).
+      const isBlockScalar = /^[|>][0-9]?[-+]?(\s+#.*)?$/.test(content) || content === '';
       closeCurrent();
       if (isBlockScalar) {
         inRunBlock = true;
@@ -282,7 +292,9 @@ function findPipefailDeadExitCodeEcho(raw) {
       const stripped = l.text.trimStart();
       if (stripped.startsWith('#')) continue;
       if (!/echo\s+"?\$\?"?/.test(l.text)) continue;
-      if (/\|\|\s*echo\s+"?\$\?"?/.test(l.text)) continue; // guarded on the same line
+      // Guarded on the same line — covers `cmd || echo $?`, brace groups
+      // (`cmd || { echo $?; }`), and subshells (`cmd || (echo $?)`).
+      if (/\|\|.*echo\s+"?\$\?"?/.test(l.text)) continue;
       violations.push({ lineNum: l.lineNum, text: l.text.trim() });
     }
   }
