@@ -63,28 +63,23 @@ test('isNonTheaterContent still filters legacy excluded titles', () => {
   }
 });
 
-// shouldExcludeVenueShow: the WE solo-performer heuristic ("FirstName LastName"
-// two-word titles = concerts) must exempt determiner-led show titles. "The
-// Producers" at the Menier was silently dropped by this filter (2026-07-21,
-// found while adding Menier venue discovery after the Midnight at the Never
-// Get reader-reported miss).
+// shouldExcludeVenueShow: the WE solo-performer heuristic was REMOVED 2026-07-31
+// after a live TodayTix audit showed its "FirstName LastName" hits were real
+// productions (Space Dogs, Kimberly Akimbo, Jane Eyre, Twelfth Night…) — plays
+// are routinely titled after their protagonist. Two-word titles must pass;
+// scripts/discover-new-shows.test.mjs pins that direction with real show titles.
 const { shouldExcludeVenueShow } = require('../../scripts/discover-new-shows.js');
 
-test('shouldExcludeVenueShow keeps determiner-led two-word titles', () => {
+test('shouldExcludeVenueShow keeps two-word titles, determiner-led or not', () => {
   const keep = [
-    'The Producers',   // Menier 2026 — the real miss
+    'The Producers',   // Menier 2026 — the 2026-07-21 miss
     'A Number',        // Caryl Churchill
     'An Inspector',    // determiner + single noun
+    'Space Dogs',      // Other Palace 2026 — the 2026-07-31 miss
+    'Jane Eyre',       // protagonist-titled show, person-name-shaped
   ];
   for (const title of keep) {
     assert.equal(shouldExcludeVenueShow(title), false, `should NOT exclude: ${title}`);
-  }
-});
-
-test('shouldExcludeVenueShow still drops FirstName LastName concert listings', () => {
-  const reject = ['Barbara Streisand', 'Elton John', 'Ruthie Henshall'];
-  for (const title of reject) {
-    assert.equal(shouldExcludeVenueShow(title), true, `should exclude solo performer: ${title}`);
   }
 });
 

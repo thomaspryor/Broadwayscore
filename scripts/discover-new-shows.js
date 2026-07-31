@@ -131,14 +131,16 @@ const WE_EXTRA_PATTERNS = [
   'discovering dinosaurs', 'prehistoric planet',
   'classic penguins', // comedy fringe acts
 ];
-// Solo performer names (no show title) — likely concerts not theater.
-// Determiner-led titles ("The Producers", "A Number", "An Inspector") are never
-// performer names — the lookahead exempts them (The Producers at the Menier was
-// silently dropped by this filter, found 2026-07-21). Accepted tradeoff: a
-// determiner-led act name ("The Weeknd") now passes this filter; theatre venue
-// pages and WE aggregators don't list arena acts, and NON_THEATER_PATTERNS
-// remains the concert backstop.
-const WE_SOLO_PERFORMER_PATTERN = /^(?!(?:The|A|An) )[A-Z][a-z]+ [A-Z][a-z]+$/; // "FirstName LastName" only
+// REMOVED 2026-07-31: WE_SOLO_PERFORMER_PATTERN (/^(?!(?:The|A|An) )[A-Z][a-z]+ [A-Z][a-z]+$/,
+// "FirstName LastName" ⇒ skip as a presumed solo concert). Audited against the live
+// TodayTix London catalog (282 shows): every post-category-filter hit was a real
+// production — Space Dogs, Kimberly Akimbo, Miss Saigon, Jane Eyre, Twelfth Night,
+// Nine Night, Martin Guerre, Hay Fever… — because plays are routinely titled after
+// their protagonist, which is indistinguishable from a performer name. 9 of those
+// titles were absent from the catalog entirely (Space Dogs reached opening night
+// unlisted, owner-reported). Actual concerts are already excluded by the TodayTix
+// category filter, NON_THEATER_PATTERNS, and isOneNightShow. Do not reintroduce a
+// person-name-shaped title filter; see scripts/discover-new-shows.test.mjs.
 
 // Known non-show titles that TodayTix lists but aren't theatrical productions
 const EXCLUDED_TITLES = [
@@ -498,8 +500,6 @@ async function fetchShowsFromTodayTixLondon() {
 
     const titleLower = title.toLowerCase();
     if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
-    // Skip likely solo concerts (just a person's name)
-    if (WE_SOLO_PERFORMER_PATTERN.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
 
     seen.add(title);
     // TodayTix startDate is first preview for WE shows, NOT press night.
@@ -657,7 +657,6 @@ async function fetchShowsFromOfficialLondonTheatre() {
       const titleLower = title.toLowerCase();
       if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
       if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
-      if (WE_SOLO_PERFORMER_PATTERN.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
 
       const venue = (typeof data.location === 'object' ? data.location.name : data.location) || 'TBA';
       const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
@@ -763,7 +762,6 @@ async function fetchShowsFromLondonTheatre() {
         const titleLower = title.toLowerCase();
         if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
         if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
-        if (WE_SOLO_PERFORMER_PATTERN.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
 
         const rawVenue = (typeof data.location === 'object' ? data.location.name : data.location) || 'TBA';
         const venue = rawVenue.replace(/&apos;/g, "'").replace(/&amp;/g, '&');
@@ -839,6 +837,11 @@ const VENUE_LISTING_PAGES = [
   { name: 'Hampstead Theatre', url: 'https://www.hampsteadtheatre.com/whats-on/', linkPattern: /\/whats-on\/\d{4}\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   { name: 'Kiln Theatre', url: 'https://kilntheatre.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   { name: 'Southwark Playhouse', url: 'https://southwarkplayhouse.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
+  // Added 2026-07-31 (Space Dogs miss, owner-reported): short-run Studio shows never
+  // reach TodayTix/OLT/londontheatre, so the venue's own page is the only listing.
+  // Show links are absolute single-segment slugs (https://theotherpalace.co.uk/<slug>/);
+  // the lookahead excludes the site's utility pages, two-segment URLs self-exclude.
+  { name: 'The Other Palace', url: 'https://theotherpalace.co.uk/whats-on/', linkPattern: /^https:\/\/theotherpalace\.co\.uk\/(?!(?:about|access|basket|blog|careers|comments|contact|events|faq|feed|find-us|food-and-drink|get-involved|jobs|legal-privacy|my-account|news|press|shop|site-map|tickets|top-archive|venue-hire|whats-on|your-visit)\/?$)[a-z0-9-]+\/?$/, titleFromSlug: true, category: 'off-west-end' },
 
   // ── Off-Broadway non-profit subscription houses ──
   // Live OB venue extraction lives in scripts/lib/venue-listing-discover.js
@@ -858,7 +861,13 @@ const OWE_VENUE_PAGES = VENUE_LISTING_PAGES.filter(v => v.category === 'off-west
 const VENUE_PAGE_EXCLUDE_PATTERNS = [
   'masterclass', 'workshop', 'tour', 'walking tour', 'rapid write',
   'work in progress', 'scratch night', 'open mic', 'poetry slam',
-  'fundraiser', 'gala', 'in conversation', 'q&a', 'meet the',
+  // Bare 'gala' substring-matches "Via Galactica" (1972 Broadway show) — use the
+  // multi-word variants, matching the NON_THEATER_PATTERNS precedent above.
+  'fundraiser', 'spring gala', 'annual gala', 'gala benefit', 'gala fundraiser',
+  'in conversation', 'q&a', 'meet the',
+  // Other Palace Studio one-night tribute concerts ("Big Finish: A Celebration of
+  // Shaiman & Wittman", "Songs from the Musicals") — concerts, not productions.
+  'celebration of', 'songs from the musicals',
 ];
 
 async function fetchShowsFromVenueListings(category) {
@@ -959,6 +968,10 @@ async function fetchSingleVenuePage(venue) {
             closingDate: item.endDate === 'null' ? null : item.endDate || null,
             category: venue.category === 'off-broadway' ? 'off-broadway' : (isWestEndVenue(venue.name) ? 'west-end' : 'off-west-end'),
             description: (item.description || '').substring(0, 500),
+            // Venue-page adds have no cross-source corroboration — route through
+            // validate-show-venue.js --all-provisional (CLAUDE.md rule 3).
+            provisional: true,
+            discoverySource: `venue-page:${venue.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
           });
         }
       } catch {}
@@ -997,6 +1010,10 @@ async function fetchSingleVenuePage(venue) {
       closingDate: null,
       category: isWestEndVenue(venue.name) ? 'west-end' : 'off-west-end',
       description: '',
+      // Venue-page adds have no cross-source corroboration — route through
+      // validate-show-venue.js --all-provisional (CLAUDE.md rule 3).
+      provisional: true,
+      discoverySource: `venue-page:${venue.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
     });
   }
 
@@ -1040,7 +1057,6 @@ function shouldExcludeVenueShow(title) {
   if (NON_THEATER_PATTERNS.some(p => lower.includes(p))) return true;
   if (WE_EXTRA_PATTERNS.some(p => lower.includes(p))) return true;
   if (VENUE_PAGE_EXCLUDE_PATTERNS.some(p => lower.includes(p))) return true;
-  if (WE_SOLO_PERFORMER_PATTERN.test(title) && !lower.includes('musical') && !lower.includes('play')) return true;
   return false;
 }
 
