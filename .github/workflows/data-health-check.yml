@@ -126,6 +126,24 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
         run: node scripts/check-provider-spend.js
 
+      # Acceptance recheck (task #695): the only host for
+      # scripts/autonomous-acceptance-recheck.js was the Mac-local
+      # autonomous-nightly launchd job, retired 2026-07-27 — it currently
+      # NEVER RUNS, so nothing has re-verified a Done card's own acceptance
+      # command since then. SHADOW MODE ONLY: it reports to
+      # data/audit/autonomous-ledger.jsonl (committed below) and never
+      # reopens a card — enforcement stays off until shouldExitShadow's bar
+      # clears (scripts/lib/autonomous-recheck-core.js), which requires an
+      # explicit .claude/autonomous-config.json opt-in this repo does not
+      # have. continue-on-error: a crash here must not block the health
+      # snapshot commit.
+      - name: Acceptance recheck (shadow mode)
+        if: always()
+        continue-on-error: true
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        run: node scripts/autonomous-acceptance-recheck.js
+
       - name: Commit health check + triage data
         if: always()
         run: |
@@ -134,6 +152,7 @@ jobs:
           git add data/audit/health-check-history.json
           git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
           git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
+          git add data/audit/autonomous-ledger.jsonl 2>/dev/null || true
           # Card #364: without this the runner-local snapshot never leaves
           # the GitHub Actions filesystem — the Mac Studio (a different
           # machine) would never see it, and the whole merged-email feature

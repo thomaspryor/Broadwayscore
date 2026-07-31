@@ -271,9 +271,13 @@ tmp/
 
 # Autonomous nightly loop — generated queue artifact (rewritten every triage run)
 /data/audit/autonomous-queue.json
-/data/audit/autonomous-ledger.jsonl
 /data/audit/autonomous-run.pid
 /data/audit/autonomous-email-preview.html
+# autonomous-ledger.jsonl is NOT ignored (task #695): its only host was the
+# Mac-local autonomous-nightly launchd job, retired 2026-07-27; the acceptance
+# recheck now runs from data-health-check.yml on an ephemeral CI runner, so its
+# results must be committed (like alert-ledger.json/provider-spend-daily.jsonl)
+# to survive past that job.
 # bsc-next/bsc-prune dispatch-attempt journal (task #334) — Mac-local
 /data/audit/dispatch-ledger.jsonl
 # CI-red claim ledger (task #584) — Mac-local, same append-only pattern

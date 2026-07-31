@@ -198,16 +198,21 @@ function main(argv = process.argv.slice(2)) {
   const runId = `recheck-${new Date().toISOString().replace(/[:.]/g, '-')}`;
 
   // 100 = Notion's page cap. Under --sort edited the page holds the NEWEST
-  // 100 edits, so a burst day would have to edit >100 Done cards before
-  // anything in the window is cut off (Codex finding: 50 was lossier).
+  // 100 edits, so a burst day would have to edit >100 Done/Paused cards
+  // before anything in the window is cut off (Codex finding: 50 was lossier).
   const DONE_LIST_LIMIT = 100;
   let doneCards = [];
-  // --sort edited: most-recently-touched Done cards first. The default
-  // Priority sort returns the highest-priority Done cards EVER, so the cards
-  // completed last night were never in the page (2026-07-26 root cause).
-  try { doneCards = notionBrain(['list', '--status', 'Done', '--limit', String(DONE_LIST_LIMIT), '--sort', 'edited']); }
+  // --sort edited: most-recently-touched cards first. The default Priority
+  // sort returns the highest-priority cards EVER, so the cards completed
+  // last night were never in the page (2026-07-26 root cause). Paused is
+  // included alongside Done (task #695): a deferred-effect fix per /wrap-up's
+  // process rule sits in Paused with a RECHECK-AFTER stamp until its own
+  // stamp is due — selectRecheckTargets/doneWithinWindow refuse every Paused
+  // card that lacks that stamp, so this widening never pulls in ordinary
+  // paused backlog work.
+  try { doneCards = notionBrain(['list', '--status', 'Done,Paused', '--limit', String(DONE_LIST_LIMIT), '--sort', 'edited']); }
   catch (err) {
-    console.error(`[recheck] could not list Done cards: ${String(err.message).slice(0, 200)}`);
+    console.error(`[recheck] could not list Done/Paused cards: ${String(err.message).slice(0, 200)}`);
     if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Notion listing failed: ${String(err.message).slice(0, 200)}` });
     return;
   }

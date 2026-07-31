@@ -119,6 +119,14 @@ Check for:
 5. **Set Tags** — tag with relevant subsystems (scoring, scraping, opening-night, west-end, off-broadway, commercial, email, ios-app, infra, data-quality)
 6. **Set Completed Date** if marking as Done: `"date:Completed Date:start": "YYYY-MM-DD"`
 7. **Set Status** → "Done" or "Paused" (if paused, add reason to Notes explaining what's left and what's blocking it)
+7a. **RECHECK-AFTER rule (task #695): if the fix's effect is only observable later — next cron run, next day's billing/data, next opening night — it may NOT go Done.** Set Status="Paused" instead, and add to Notes:
+   ```
+   RECHECK-AFTER: YYYY-MM-DD
+
+   ## Acceptance criteria
+   `<safe-form command>` passes
+   ```
+   Pick RECHECK-AFTER as the earliest date the claim becomes checkable (e.g. "streak of N days" → N days out). The command MUST be one of the safe forms `scripts/lib/verify-gate.js` already accepts (`node --test <path>.test.mjs`, `npx tsc --noEmit`, `npx next lint`, `test -f <path>`) — write a real colocated test that asserts the live condition if no existing command covers it (see `scripts/verify-provider-spend-streak.test.mjs` for the pattern: a test that reads live repo data, not a fixture). `scripts/autonomous-acceptance-recheck.js` (hosted daily in `data-health-check.yml`) picks up Paused cards carrying this stamp once the date passes, re-runs the command against fresh `origin/main`, and reports pass/fail in shadow mode — it never auto-reopens or auto-completes the card; a passing recheck is your signal to come back and flip it to Done yourself (or the owner's, if it's their card).
 7.5. **If Status is "Done" and this session claimed a shared-task-list task** (via `TaskUpdate` at session start, per the startup seed prompt): mark that task `completed` via `TaskUpdate` now, in THIS still-live turn — not later. This is what lets the workspace-mark-done Stop hook (`~/.claude/hooks/workspace-mark-done.sh`) ✅-mark the workspace automatically on this session's own next Stop event; the hook only reads the local task-list mirror, and nothing else updates it on a normal timescale (Notion→local sync is on-demand, not cron'd). Skip if this session never claimed a task (ad hoc / non-dispatched sessions).
 8. **Create new cards** for any discovered work items (Status="Not started", appropriate Priority and Tags). Every item in "Discovered work" MUST have a card — don't just list them and forget.
    **CRITICAL — every new card must be a self-contained handoff.** Use the Notes field with this template:
