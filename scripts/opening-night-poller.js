@@ -673,20 +673,46 @@ async function runAggregators(show) {
       // poller falls through to SERP/URL-guessing which hits wrong/unpublished URLs.
       console.log('::warning::BWW reviews.php discovery SKIPPED — BROWSERBASE_API_KEY or BROWSERBASE_PROJECT_ID missing from env. Set secrets on this workflow.');
     } else {
+      // T6 negative-cache check: skip discovery entirely if this show is in
+      // miss cooldown (opening-window shows are always exempt — see
+      // bww-roundup-persistence.js). Wrapped so a ledger read failure never
+      // blocks discovery — worst case is a redundant fetch, not a missed one.
+      let skipViaCooldown = false;
       try {
-        const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover.js');
-        console.log('  Trying BWW roundup discovery (section scan → reviews.php)...');
-        const discovery = await discoverBwwRoundupUrl(show);
-        if (discovery.url) {
-          BWW_ROUNDUP_URL = discovery.url;
-          bwwResolvedVia = discovery.via || 'bww-discover';
-          console.log(`  BWW RR URL auto-discovered (${bwwResolvedVia}): ${BWW_ROUNDUP_URL}`);
-        } else {
-          const tried = (discovery.candidates || []).length;
-          console.log(`  BWW discovery: no matching RR (${tried} anchors seen, 0 matched show) — falling through to SERP/guessing`);
+        const { readRoundupMisses, lastMissForShow, isInRoundupMissCooldown } = require('./lib/bww-roundup-persistence.js');
+        const lastMiss = lastMissForShow(show.id, readRoundupMisses());
+        skipViaCooldown = isInRoundupMissCooldown(show, lastMiss);
+        if (skipViaCooldown) {
+          console.log(`  BWW discovery: skipped (miss cooldown active, last miss ${lastMiss.ts})`);
         }
-      } catch (err) {
-        console.log(`::warning::BWW discovery error (falling through to SERP): ${err.message}`);
+      } catch { /* never block discovery on a ledger read failure */ }
+
+      if (!skipViaCooldown) {
+        try {
+          const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover.js');
+          console.log('  Trying BWW roundup discovery (section scan → reviews.php)...');
+          const discovery = await discoverBwwRoundupUrl(show);
+          if (discovery.url) {
+            BWW_ROUNDUP_URL = discovery.url;
+            bwwResolvedVia = discovery.via || 'bww-discover';
+            console.log(`  BWW RR URL auto-discovered (${bwwResolvedVia}): ${BWW_ROUNDUP_URL}`);
+            try {
+              const { persistBwwRoundupUrlIfMissing } = require('./lib/bww-roundup-persistence.js');
+              persistBwwRoundupUrlIfMissing(show.id, BWW_ROUNDUP_URL);
+            } catch (persistErr) {
+              console.log(`::warning::BWW roundup URL persistence failed (non-fatal): ${persistErr.message}`);
+            }
+          } else {
+            const tried = (discovery.candidates || []).length;
+            console.log(`  BWW discovery: no matching RR (${tried} anchors seen, 0 matched show) — falling through to SERP/guessing`);
+            try {
+              const { recordRoundupMiss } = require('./lib/bww-roundup-persistence.js');
+              recordRoundupMiss(show.id);
+            } catch { /* ledger append failure is never fatal to discovery */ }
+          }
+        } catch (err) {
+          console.log(`::warning::BWW discovery error (falling through to SERP): ${err.message}`);
+        }
       }
     }
   }
@@ -711,6 +737,17 @@ async function runAggregators(show) {
         results.push(...reviews);
       } else {
         console.log('  BWW RR: not found');
+        // T6 revalidation: the URL fetch/verify came from a PERSISTED
+        // shows.json field (not a fresh discovery this run) and failed —
+        // most likely the page 404s now. Clear it so the next poll
+        // rediscovers instead of retrying a dead URL forever.
+        if (bwwResolvedVia === 'shows.json') {
+          try {
+            const { clearStaleBwwRoundupUrl } = require('./lib/bww-roundup-persistence.js');
+            clearStaleBwwRoundupUrl(show.id);
+            console.log('  BWW RR: cleared stale persisted bwwRoundupUrl for rediscovery');
+          } catch { /* revalidation failure is never fatal */ }
+        }
       }
     } catch (err) {
       console.log(`  BWW RR error: ${err.message}`);
