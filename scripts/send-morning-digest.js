@@ -163,9 +163,15 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // Health snapshot items are {name, message} objects; tolerate bare strings.
   const errNames = (sections.health?.errors || []).filter(Boolean)
     .map((e) => (typeof e === 'string' ? e : e.name)).filter(Boolean);
-  if (errs || stuckCount) {
+  // Data freshness (task #689): revenue-impacting gaps (missing tickets,
+  // missing poster) on OPEN shows must escalate the top verdict, not just
+  // sit in the demoted-to-context box below — the whole point of this fix
+  // is that these signals stop being easy to miss (second-opinion review).
+  const freshnessCount = sections.freshness?.count || 0;
+  if (errs || stuckCount || freshnessCount) {
     const bits = [];
     if (errs) bits.push(`Fix needed: ${errNames.slice(0, 3).join('; ') || `${errs} site error${errs === 1 ? '' : 's'}`}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`);
+    if (freshnessCount) bits.push(`${freshnessCount} open show${freshnessCount === 1 ? '' : 's'} missing tickets/poster/synopsis (see Data freshness below)`);
     if (stuckCount) bits.push(`${stuckCount} pipeline item${stuckCount === 1 ? '' : 's'} flagged "possibly stuck" below`);
     parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(bits.join(' · '))}</p>`);
     if (warns) parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${warns} routine warning${warns === 1 ? '' : 's'} below — being watched, no action needed unless new.</p>`);

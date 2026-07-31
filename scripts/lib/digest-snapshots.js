@@ -136,7 +136,11 @@ function summarizeFreshnessHighSeverity(report, { maxItems = 8 } = {}) {
   if (!report || !Array.isArray(report.dataQuality?.hasIssues)) return null;
   const rows = [];
   for (const show of report.dataQuality.hasIssues) {
-    const highTypes = (show.issues || [])
+    // A malformed entry (null, or issues not an array) must degrade this
+    // show silently, not throw and kill the whole digest send — same
+    // fail-soft contract as readSnapshot's null/array guards above.
+    if (!show || typeof show !== 'object') continue;
+    const highTypes = (Array.isArray(show.issues) ? show.issues : [])
       .filter((i) => i && i.severity === 'high')
       .map((i) => String(i.type || '').replace(/^missing_/, '').replace(/_/g, ' '));
     if (highTypes.length) rows.push({ id: show.id, title: show.title, highTypes });
@@ -144,6 +148,11 @@ function summarizeFreshnessHighSeverity(report, { maxItems = 8 } = {}) {
   if (!rows.length) return null;
   return {
     generatedAt: report.generatedAt,
+    // count: not part of renderNamedDigestBlock's own contract, but read by
+    // send-morning-digest.js's top-verdict line so a real revenue-impacting
+    // gap (missing tickets/poster) escalates there, not just in the
+    // demoted-to-context box below (second-opinion design-blocker finding).
+    count: rows.length,
     bannerText: `${rows.length} open show${rows.length === 1 ? '' : 's'} missing critical data (poster/tickets/synopsis)`,
     items: rows.slice(0, maxItems).map((r) => ({
       title: r.title,

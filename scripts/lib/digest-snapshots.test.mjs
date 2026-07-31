@@ -186,6 +186,39 @@ test('summarizeFreshnessHighSeverity: no high-severity issues -> null (quiet day
   assert.equal(summarizeFreshnessHighSeverity({}), null);
 });
 
+// second-opinion correctness warning: a malformed hasIssues entry (null, or
+// issues not an array) must degrade that one entry, not throw and kill the
+// whole digest send.
+test('summarizeFreshnessHighSeverity: malformed hasIssues entries degrade gracefully, real entries still surface', () => {
+  const report = {
+    generatedAt: '2026-07-30T06:54:26.128Z',
+    dataQuality: {
+      hasIssues: [
+        null,
+        { id: 'no-issues-array', title: 'Bad Entry', issues: 'not-an-array' },
+        { id: 'real-show-2026', title: 'Real Show', issues: [{ type: 'missing_tickets', severity: 'high' }] },
+      ],
+    },
+  };
+  assert.doesNotThrow(() => summarizeFreshnessHighSeverity(report));
+  const summary = summarizeFreshnessHighSeverity(report);
+  assert.equal(summary.count, 1);
+  assert.match(summary.items[0].detail, /real-show-2026/);
+});
+
+// second-opinion design blocker: high-severity freshness gaps (missing
+// tickets/poster — revenue-impacting) must escalate the top "2-second
+// verdict", not sit demoted in the context box below where the whole point
+// of this fix (task #689) is that they'd stay easy to miss.
+test('buildHtml: freshness high-severity count escalates the top verdict, not just the section below', () => {
+  const html = buildHtml({
+    sections: { freshness: { count: 2, bannerText: '2 open shows missing critical data', items: [], moreCount: 0 } },
+    now: new Date('2026-07-30T12:00:00Z'),
+  });
+  assert.match(html, /2 open shows missing tickets\/poster\/synopsis/);
+  assert.doesNotMatch(html, /Nothing needs your attention/);
+});
+
 // Acceptance criterion 2 (task #689): a deliberately blanked ticketLinks on
 // one open show must appear in the next digest run, named by show ID — not
 // just a count.
