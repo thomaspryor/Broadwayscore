@@ -53,7 +53,7 @@ test('recordProgress: caps history at maxHistory, dropping oldest first', () => 
   assert.deepEqual(history.map((o) => o.value), [2, 3, 4]);
 });
 
-test('assertProgress: records then evaluates in one call, direction is pass-through metadata only', () => {
+test('assertProgress: records then evaluates in one call, non-zero pinned value still stalls under direction:down', () => {
   let history = [];
   let result;
   for (const v of [10, 10, 10]) {
@@ -63,6 +63,26 @@ test('assertProgress: records then evaluates in one call, direction is pass-thro
   assert.equal(result.stalled, true);
   assert.equal(result.direction, 'down');
   assert.equal(result.value, 10);
+});
+
+// Second-opinion review finding (task #597, 2026-07-30): a naive stall
+// detector pages forever on every queue it successfully drains. A queue that
+// reaches 0 and STAYS at 0 is the surface working correctly, not stalled.
+test('isStalled: direction=down pinned at 0 is never a stall (drained queue, not a dead one)', () => {
+  const history = withValues([2, 1, 0, 0, 0, 0]);
+  assert.equal(isStalled(history, { cycles: 3, direction: 'down' }).stalled, false);
+  assert.match(isStalled(history, { cycles: 3, direction: 'down' }).reason, /drained-to-zero/);
+});
+
+test('isStalled: direction=down pinned at a NON-zero value still stalls', () => {
+  const history = withValues([5, 5, 5]);
+  assert.equal(isStalled(history, { cycles: 3, direction: 'down' }).stalled, true);
+});
+
+test('isStalled: without direction:down, pinned at 0 stalls like any other value (no implicit exception)', () => {
+  const history = withValues([0, 0, 0]);
+  assert.equal(isStalled(history, { cycles: 3 }).stalled, true);
+  assert.equal(isStalled(history, { cycles: 3, direction: 'up' }).stalled, true);
 });
 
 // Replay check (task #597 acceptance criteria): the real bw-v6-decompression

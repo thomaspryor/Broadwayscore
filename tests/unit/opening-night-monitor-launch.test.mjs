@@ -79,8 +79,24 @@ test('usdTonight accumulates across passes on both the success and failure write
 // the whole file).
 test('the headless pass explicitly clears ANTHROPIC_API_KEY so it bills the subscription login, not the API key', () => {
   const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
-  const callBlock = src.slice(src.indexOf('const result = await runMonitorPass({'), src.indexOf('const result = await runMonitorPass({') + 800);
-  assert.match(callBlock, /env:\s*\{\s*ANTHROPIC_API_KEY:\s*['"]{2}\s*\}/, 'runMonitorPass must be called with env: { ANTHROPIC_API_KEY: \'\' } to clear the leaked .env key for this spawn only');
+  const callStart = src.indexOf('const result = await runMonitorPass({');
+  const callBlock = src.slice(callStart, src.indexOf('logFile:', callStart) + 100);
+  assert.match(callBlock, /ANTHROPIC_API_KEY:\s*['"]{2}/, 'runMonitorPass must clear ANTHROPIC_API_KEY (empty string) to avoid the leaked .env key for this spawn only');
+});
+
+// monitor-v2.md instructs the IN-PASS session to send its own parity/
+// escalation report via routeAlert (owner-alert-router.js), which needs
+// RESEND_API_KEY/OWNER_EMAIL. strippedEnv's fixed allowlist in claude-cli.js
+// does not include either, so without explicit forwarding here the report
+// would silently no-op inside the spawned child on every real opening night
+// — the exact failure class #457 already fixed for the launcher's own
+// alerts (commit 288e31efd69), but not yet for the pass it launches.
+test('the headless pass forwards RESEND_API_KEY and OWNER_EMAIL so the in-pass report email can send', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const callStart = src.indexOf('const result = await runMonitorPass({');
+  const callBlock = src.slice(callStart, src.indexOf('logFile:', callStart) + 100);
+  assert.match(callBlock, /RESEND_API_KEY:\s*process\.env\.RESEND_API_KEY/, 'runMonitorPass must forward RESEND_API_KEY from the launcher process into the spawned child');
+  assert.match(callBlock, /OWNER_EMAIL:\s*process\.env\.OWNER_EMAIL/, 'runMonitorPass must forward OWNER_EMAIL from the launcher process into the spawned child');
 });
 
 // Card #568: LOCK_DIR is the atomic test-and-set (mkdir, before the launch

@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 3c151755-27a8-4c9e-b741-7bbf9a607b1b
-  modified: 2026-07-24T16:12:44.695Z
+  modified: 2026-07-31T00:26:23.146Z
 ---
 
 `git checkout main && git merge <worktree-branch>` in the main repo dir followed by a
@@ -47,3 +47,10 @@ worktree comes back empty, looking like the edit never landed. Fix: resolve the 
 already created a stale one, `git log --oneline -3` in it first — if it doesn't show your commit,
 abandon it (`ExitWorktree action:"remove" discard_changes:true`, nothing lost, it was empty) and
 re-`EnterWorktree` after the push succeeds.
+
+**Related trap (2026-07-30, card #670 digest-content-invariants):** `record` diffs COMMITTED
+state vs `origin/main`, not the working tree. Running `--query=record` right after finishing
+edits — before `git add`/`git commit` — silently records a false-positive pass: `diffHash:
+"empty"`, `gatedLines: 0`. The push-boundary hook would then trust a verdict that covers zero of
+the actual diff. Always commit first, then record — the tool gives no warning that it snapshotted
+nothing.
