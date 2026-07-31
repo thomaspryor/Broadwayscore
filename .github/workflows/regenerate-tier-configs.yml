@@ -75,7 +75,7 @@ jobs:
             echo "No changes to commit"
           else
             DOMAINS_ORDER=$(node -e "console.log(Object.keys(require('./scripts/config/domain-tier-order.json')).length)")
-            DOMAINS_SKIP=$(node -e "const s=require('./scripts/config/domain-tier-skip.json'); console.log(Object.keys(s).length + ' domains, ' + Object.values(s).reduce((a,b)=>a+b.length,0) + ' skips')")
+            DOMAINS_SKIP=$(node -e "const s=require('./scripts/config/domain-tier-skip.json'); console.log(Object.keys(s).length + ' domains, ' + Object.values(s).reduce((a,b)=>a+(Array.isArray(b)?b.length:Object.keys(b).length),0) + ' skips')")
             git commit -m "chore: Regenerate tier configs (ordering: ${DOMAINS_ORDER} domains, skip: ${DOMAINS_SKIP})"
             for i in 1 2 3 4 5; do
               git pull --rebase && git push && break || sleep $((i * 5))

@@ -697,19 +697,28 @@ async function runAggregators(show) {
             BWW_ROUNDUP_URL = discovery.url;
             bwwResolvedVia = discovery.via || 'bww-discover';
             console.log(`  BWW RR URL auto-discovered (${bwwResolvedVia}): ${BWW_ROUNDUP_URL}`);
-            try {
-              const { persistBwwRoundupUrlIfMissing } = require('./lib/bww-roundup-persistence.js');
-              persistBwwRoundupUrlIfMissing(show.id, BWW_ROUNDUP_URL);
-            } catch (persistErr) {
-              console.log(`::warning::BWW roundup URL persistence failed (non-fatal): ${persistErr.message}`);
-            }
+            // Persistence moved to AFTER the fetch+year-validate block below —
+            // discoverBwwRoundupUrl only title-token-scores anchors (score.js
+            // scoreCandidate), it never fetches the page. Persisting here would
+            // write an unverified candidate (e.g. a same-title different-
+            // production roundup) straight into shows.json before
+            // validateBWWRoundupYear gets a chance to reject it.
           } else {
             const tried = (discovery.candidates || []).length;
             console.log(`  BWW discovery: no matching RR (${tried} anchors seen, 0 matched show) — falling through to SERP/guessing`);
-            try {
-              const { recordRoundupMiss } = require('./lib/bww-roundup-persistence.js');
-              recordRoundupMiss(show.id);
-            } catch { /* ledger append failure is never fatal to discovery */ }
+            // Only record a cooldown-worthy miss on a confident negative
+            // (via==='not-found': both section scan AND reviews.php were
+            // tried, nothing matched). 'cap-exhausted'/'provider-error' are
+            // transient — cooldown-ing those hides discovery for 24h after
+            // a temporary Browserbase/SD outage. 'section-only' means
+            // reviews.php was never even tried (skipReviewsPhp) — also not
+            // a confident answer. See discoverBwwRoundupUrl's via contract.
+            if (discovery.via === 'not-found') {
+              try {
+                const { recordRoundupMiss } = require('./lib/bww-roundup-persistence.js');
+                recordRoundupMiss(show.id);
+              } catch { /* ledger append failure is never fatal to discovery */ }
+            }
           }
         } catch (err) {
           console.log(`::warning::BWW discovery error (falling through to SERP): ${err.message}`);
@@ -736,6 +745,17 @@ async function runAggregators(show) {
         reviews = validateBWWRoundupYear(reviews, bww.html, show.openingDate, show.id, bww.url);
         console.log(`  BWW RR: ${reviews.length} reviews found`);
         results.push(...reviews);
+        // Persist only now: fetched, extracted, AND year-validated as this
+        // show's own roundup. bwwResolvedVia==='shows.json' means this run
+        // re-verified an already-persisted URL — nothing new to write.
+        if (BWW_ROUNDUP_URL && bwwResolvedVia !== 'shows.json' && reviews.length > 0) {
+          try {
+            const { persistBwwRoundupUrlIfMissing } = require('./lib/bww-roundup-persistence.js');
+            persistBwwRoundupUrlIfMissing(show.id, BWW_ROUNDUP_URL);
+          } catch (persistErr) {
+            console.log(`::warning::BWW roundup URL persistence failed (non-fatal): ${persistErr.message}`);
+          }
+        }
       } else {
         console.log('  BWW RR: not found');
         // T6 revalidation: the URL fetch/verify came from a PERSISTED
