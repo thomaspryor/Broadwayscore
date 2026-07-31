@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import type { FantasyShow } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { showFormatTitle } from '@/lib/show-format';
 
 interface FantasyShowPickerProps {
   shows: Array<{ id: string } & FantasyShow>;
@@ -73,7 +74,7 @@ export default function FantasyShowPicker({
             )}
           </div>
           <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
-            <span>{selectedShow.type === 'musical' ? 'Musical' : 'Play'}</span>
+            <span>{showFormatTitle(selectedShow.type)}</span>
             {selectedShow.criticScore != null && (
               <span className="text-yellow-400">Score: {Math.round(selectedShow.criticScore)}</span>
             )}
@@ -171,7 +172,7 @@ export default function FantasyShowPicker({
                       )}
                     </div>
                     <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
-                      <span>{show.type === 'musical' ? 'Musical' : 'Play'}</span>
+                      <span>{showFormatTitle(show.type)}</span>
                       {show.criticScore != null && (
                         <span className="text-yellow-400">Score: {Math.round(show.criticScore)}</span>
                       )}

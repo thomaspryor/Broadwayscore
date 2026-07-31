@@ -25,7 +25,7 @@
  *   criticTier(score, market)  — { bg, fg, label, glow } for a critic score
  *   audienceGrade(score)       — { grade, label, color, textColor } (mirrors src/lib)
  *   audienceChip(audience)     — small Audience pill: "Audience: A+ · 87"
- *   formatPill(type)           — MUSICAL / PLAY / OPERA outline pill
+ *   formatPill(type)           — MUSICAL / PLAY / OPERA / EVENT outline pill
  *   productionPill(isRevival)  — REVIVAL / ORIGINAL muted-fill pill
  *   categoryBadge(market)      — OFF-BROADWAY / WEST END / Off-WE (Broadway returns '')
  *   statusPill(status)         — NOW PLAYING / CLOSED / IN PREVIEWS / UPCOMING
@@ -36,6 +36,8 @@
 // ---------------------------------------------------------------------------
 // Tokens — see memory/design-system.md. Mirrors src/app/globals.css :root.
 // ---------------------------------------------------------------------------
+
+const { resolveShowFormat } = require('./show-format');
 
 const TOKENS = {
   surface: '#0f0f14',
@@ -128,13 +130,15 @@ function audienceChip(audience) {
   return `<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:9999px;background:${g.color}33;color:${g.color};font-size:10px;font-weight:700;line-height:1;letter-spacing:0.02em;"><span style="opacity:0.6;font-weight:600;">Audience:</span><span>${esc(g.grade)} · ${audience.score}</span></span>`;
 }
 
-// FormatPill — outline. musical/play/opera.
+// FormatPill — outline. musical/play/opera/special.
+// Labels come from scripts/lib/show-format.js (mirror of src/lib/show-format.ts)
+// so email and web never disagree. The previous local map defaulted every
+// unknown type to PLAY, which shipped 43 `type: 'special'` shows — concerts,
+// galas, immersive experiences — labelled as plays, in digest email as well as
+// on the site.
 function formatPill(type) {
-  const cfg = {
-    musical: { label: 'MUSICAL', color: '#a78bfa' },
-    play:    { label: 'PLAY',    color: '#60a5fa' },
-    opera:   { label: 'OPERA',   color: '#818cf8' },
-  }[type] || { label: 'PLAY', color: '#60a5fa' };
+  const fmt = resolveShowFormat(type);
+  const cfg = { label: fmt.label, color: fmt.emailColor };
   return `<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:9999px;font-size:10px;line-height:1;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;border:1px solid ${cfg.color}80;color:${cfg.color};background:transparent;">${esc(cfg.label)}</span>`;
 }
 

@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { showFormatTitle } from '@/lib/show-format';
 
 type PreviewShow = {
   id: string;
@@ -332,7 +333,7 @@ function ReviewScreen({
               )}
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-bold truncate">{show.title}</div>
-                <div className="text-xs text-gray-500">{show.category === 'off-broadway' ? 'Off-Broadway' : show.type === 'musical' ? 'Musical' : 'Play'}</div>
+                <div className="text-xs text-gray-500">{show.category === 'off-broadway' ? 'Off-Broadway' : showFormatTitle(show.type)}</div>
               </div>
               <div className="text-brand font-bold text-sm">${show.price}</div>
               <button onClick={() => onRemove(show.id)} className="text-gray-600 hover:text-red-400 transition-colors p-1" aria-label="Remove">

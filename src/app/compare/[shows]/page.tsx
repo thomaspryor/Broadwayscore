@@ -17,6 +17,7 @@ import ShowImage from '@/components/ShowImage';
 import TicketLink from '@/components/TicketLink';
 import { sortTicketLinks, isPlatformHidden } from '@/lib/ticket-utils';
 import Breadcrumb from '@/components/Breadcrumb';
+import { showFormatTitle } from '@/lib/show-format';
 
 export function generateStaticParams() {
   return getAllComparisonSlugs().map((shows) => ({ shows }));
@@ -400,8 +401,8 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
           <SectionLabel>Show Details</SectionLabel>
           <Row
             label="Type"
-            valueA={<Link href={showA.type === 'musical' ? '/browse/best-broadway-musicals' : '/browse/best-broadway-dramas'} className="text-gray-300 hover:text-brand transition-colors">{showA.type === 'musical' ? 'Musical' : 'Play'}</Link>}
-            valueB={<Link href={showB.type === 'musical' ? '/browse/best-broadway-musicals' : '/browse/best-broadway-dramas'} className="text-gray-300 hover:text-brand transition-colors">{showB.type === 'musical' ? 'Musical' : 'Play'}</Link>}
+            valueA={<Link href={showA.type === 'musical' ? '/browse/best-broadway-musicals' : '/browse/best-broadway-dramas'} className="text-gray-300 hover:text-brand transition-colors">{showFormatTitle(showA.type)}</Link>}
+            valueB={<Link href={showB.type === 'musical' ? '/browse/best-broadway-musicals' : '/browse/best-broadway-dramas'} className="text-gray-300 hover:text-brand transition-colors">{showFormatTitle(showB.type)}</Link>}
           />
           <Row
             label="Production"
