@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T06:28:33.726Z",
+  "generatedAt": "2026-07-31T07:04:43.758Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,7 +13,7 @@
       "slug": "tao-of-glass-west-end",
       "thumbnail": "/images/shows/tao-of-glass-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 80,
+      "liveScore": 82,
       "scoreDrift": null,
       "belowThreshold": true,
       "reviewsNeeded": 4,
@@ -31,9 +31,9 @@
           "1/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -106,6 +106,18 @@
           "t": "2026-07-31T06:28:33.726Z",
           "rc": 1,
           "s": 80,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-31T07:04:43.758Z",
+          "rc": 1,
+          "s": 82,
           "t1": 0,
           "t2": 1,
           "t3": 0,
@@ -824,23 +836,23 @@
       "status": "open",
       "slug": "les-miserables-arena-concert-spectacular-off-broadway-2026",
       "thumbnail": "/images/shows/les-miserables-arena-concert-spectacular-off-broadway-2026/thumbnail.webp",
-      "siteScore": 81.35,
-      "liveScore": 81,
-      "scoreDrift": -0.3499999999999943,
+      "siteScore": 81.8,
+      "liveScore": 82,
+      "scoreDrift": 0.20000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 9,
       "t1": 0,
-      "t2": 7,
+      "t2": 8,
       "t3": 1,
-      "positive": 8,
+      "positive": 9,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "8/12 total",
+          "9/12 total",
           "T1:0/3",
           "hi-conf:4/8"
         ],
@@ -938,6 +950,10 @@
         {
           "name": "Observer",
           "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -1221,6 +1237,18 @@
           "t2": 7,
           "t3": 1,
           "p": 8,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-31T07:04:43.758Z",
+          "rc": 9,
+          "s": 81.8,
+          "t1": 0,
+          "t2": 8,
+          "t3": 1,
+          "p": 9,
           "m": 0,
           "n": 0,
           "bc": "waiting"
