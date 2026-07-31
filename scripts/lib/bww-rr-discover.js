@@ -20,6 +20,33 @@
 
 const axios = require('axios');
 const { fetchLiveBrowserbaseSessionsToday } = require('./browserbase-live-usage');
+const { createTtlCache } = require('./ttl-cache');
+
+// Per-run anchor memo (Scraping v2 Sprint 1 T5): the SAME reviews.php / market
+// section-page anchor listing was being fetched ~9-11x/run (one node process
+// per show, no memo) plus every 5-min watcher tick re-probing an identical
+// negative result (#312 audit: ~31 avoidable Browserbase sessions/day from
+// watch-aggregator-urls.js alone). 15-min TTL: short enough a freshly
+// published roundup surfaces within one poll cycle, long enough to collapse
+// the repeat-fetch waste. /tmp/bww-anchors restores via actions/cache@v4 in
+// CI, same pattern as scripts/lib/serp-cache.js's /tmp/bd-serp-cache.
+const ANCHOR_CACHE_DIR = process.env.BWW_ANCHOR_CACHE_DIR || '/tmp/bww-anchors';
+const ANCHOR_CACHE_TTL_MS = Number(process.env.BWW_ANCHOR_CACHE_TTL_MIN || 15) * 60 * 1000;
+const _anchorCache = createTtlCache({ dir: ANCHOR_CACHE_DIR, ttlMs: ANCHOR_CACHE_TTL_MS });
+
+/**
+ * Memoize an anchor-listing fetch under cacheKey. Only successful results
+ * (including a genuine empty array) are cached — a thrown error (missing
+ * creds, kill switch, daily cap) propagates uncached so every caller still
+ * sees the live failure.
+ */
+async function _memoizedAnchors(cacheKey, fetchFn) {
+  const cached = _anchorCache.get(cacheKey);
+  if (cached) return cached;
+  const anchors = await fetchFn();
+  _anchorCache.set(cacheKey, {}, anchors);
+  return anchors;
+}
 
 const REVIEWS_PAGE_URL = 'https://www.broadwayworld.com/reviews.php';
 const BROWSERBASE_API = 'https://api.browserbase.com/v1/sessions';
@@ -141,6 +168,10 @@ function scoreCandidate(url, show) {
  * Returns empty array if the page loaded but no Review-Roundup anchors were found.
  */
 async function fetchReviewsPageAnchors() {
+  return _memoizedAnchors('reviews.php', _fetchReviewsPageAnchorsUncached);
+}
+
+async function _fetchReviewsPageAnchorsUncached() {
   const apiKey = process.env.BROWSERBASE_API_KEY;
   const projectId = process.env.BROWSERBASE_PROJECT_ID;
   if (!apiKey || !projectId) {
@@ -220,6 +251,25 @@ async function fetchReviewsPageAnchors() {
 }
 
 /**
+ * Default policy for whether to skip the paid reviews.php (Browserbase) path.
+ * Fail-open: only an AFFIRMATIVE off-Broadway category skips it. Null/missing/
+ * unknown category always probes — a misclassified Broadway show must never
+ * lose its fast (and free, non-Browserbase) discovery path.
+ *
+ * reviews.php only ever lists Broadway roundups (#312 audit: 0/12 sampled
+ * Off-Broadway polls ever resolved a URL there), so an OB show burning a paid
+ * Browserbase session on it is a guaranteed-miss cost — same rationale as the
+ * existing closed-show skip callers pass via opts.skipReviewsPhp.
+ *
+ * @param {object} show - shows.json record; reads show.category
+ * @returns {boolean}
+ */
+function shouldSkipReviewsPhp(show) {
+  const category = String((show && show.category) || '').toLowerCase();
+  return category === 'off-broadway';
+}
+
+/**
  * Map a show to its BWW section listing page. BWW section pages carry a "Latest
  * Reviews" widget that links Review-Roundup articles within minutes of publish —
  * cheaper and more reliable than Google SERP, and (unlike reviews.php) reachable
@@ -241,6 +291,10 @@ function sectionUrlForShow(show) {
  */
 async function fetchSectionPageAnchors(show) {
   const url = sectionUrlForShow(show);
+  return _memoizedAnchors(url, () => _fetchSectionPageAnchorsUncached(url));
+}
+
+async function _fetchSectionPageAnchorsUncached(url) {
   let html = '';
   try {
     const { fetchWithScrapingBee } = require('./scraper');
@@ -272,7 +326,10 @@ async function fetchSectionPageAnchors(show) {
  * @param {object} [opts]
  * @param {function} [opts.fetchAnchors] - override the reviews.php fetch (testing)
  * @param {function} [opts.fetchSectionAnchors] - override the section fetch (testing)
+ * @param {boolean} [opts.skipReviewsPhp] - explicit override; defaults to
+ *   shouldSkipReviewsPhp(show) when omitted (fail-open on category)
  * @returns {Promise<{ url: string|null, candidates: Array<{url:string, score:number}>, via: string }>}
+ *   via: 'section' | 'section-only' | 'reviews.php' | 'cap-exhausted' | 'provider-error' | 'not-found'
  */
 async function discoverBwwRoundupUrl(show, opts = {}) {
   const score = (anchors) => anchors
@@ -295,16 +352,25 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
   //    only lists RECENT roundups, so for a closed/old show the section scan having
   //    found nothing means reviews.php won't either — firing Browserbase there is a
   //    guaranteed-miss cost (the back-catalogue grind would burn ~$0.10 × hundreds
-  //    of closed shows). Callers pass skipReviewsPhp:true for closed shows.
-  if (opts.skipReviewsPhp) {
+  //    of closed shows). Callers pass skipReviewsPhp explicitly (e.g. closed-show
+  //    cost guard) to override the shouldSkipReviewsPhp(show) category default.
+  const skipReviewsPhp = opts.skipReviewsPhp !== undefined ? opts.skipReviewsPhp : shouldSkipReviewsPhp(show);
+  if (skipReviewsPhp) {
     return { url: null, candidates: [], via: 'section-only' };
   }
   const fetchAnchors = opts.fetchAnchors || fetchReviewsPageAnchors;
   try {
     anchors = await fetchAnchors();
-  } catch { anchors = []; }
+  } catch (err) {
+    const msg = String((err && err.message) || '');
+    const via = /cap reached/i.test(msg) ? 'cap-exhausted' : 'provider-error';
+    return { url: null, candidates: [], via };
+  }
   candidates = score(anchors);
-  return { url: candidates[0]?.url || null, candidates, via: 'reviews.php' };
+  if (candidates.length === 0) {
+    return { url: null, candidates: [], via: 'not-found' };
+  }
+  return { url: candidates[0].url, candidates, via: 'reviews.php' };
 }
 
 module.exports = {
@@ -315,4 +381,5 @@ module.exports = {
   scoreCandidate,
   slugMatchesShow,
   tokensFromTitle,
+  shouldSkipReviewsPhp,
 };
