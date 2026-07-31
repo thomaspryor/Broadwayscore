@@ -2017,6 +2017,25 @@ function cardVerifiabilityBacklogResults(report) {
   }];
 }
 
+// Daily-digest surfacing for stalled pipeline surfaces (data/audit/
+// progress-watch-state.json, written by check-progress-stalls.js — task
+// #597). Existing audits (repeatFailureResults et al above) only ever assert
+// a SAFETY property (present / under threshold); this is the one LIVENESS
+// check — has a registered counter actually moved across recent runs, not
+// just stayed within bounds. A queue depth pinned at the same number for
+// days passes every other check in this file.
+function progressWatchResults(report) {
+  if (!report || !report.surfaces) return [];
+  const stalled = Object.values(report.surfaces).filter((s) => s.stalled);
+  if (stalled.length === 0) return [];
+  return stalled.map((s) => ({
+    name: `Progress watch: ${s.label} stalled`,
+    status: 'warn',
+    message: `${s.label} is at ${s.value} and hasn't moved in ${s.cycles} consecutive check(s).`,
+    hint: s.hint || 'Investigate whether the producer/consumer for this surface is actually running.',
+  }));
+}
+
 // Simple HTTPS GET that returns parsed JSON
 function fetchJSON(url, headers) {
   return new Promise((resolve, reject) => {
@@ -2923,6 +2942,11 @@ async function main() {
       const cvReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/card-verifiability.json'), 'utf8'));
       allResults.push(...cardVerifiabilityBacklogResults(cvReport));
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
+
+    try {
+      const progressReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/progress-watch-state.json'), 'utf8'));
+      allResults.push(...progressWatchResults(progressReport));
+    } catch { /* report absent (monitor not yet run) — nothing to surface */ }
   }
 
   // Print console summary
@@ -3017,4 +3041,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState };
+module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState };
