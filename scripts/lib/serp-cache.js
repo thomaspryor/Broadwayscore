@@ -1,5 +1,8 @@
 /**
- * Disk-backed cache for SERP query results.
+ * Disk-backed cache for SERP query results. Thin wrapper around the generic
+ * scripts/lib/ttl-cache.js (Scraping v2 Sprint 1 T5) — same behavior/env
+ * vars as before generalization, existing consumers (url-discovery.js,
+ * serp-slug-discovery.js) need no changes.
  *
  * Why: SERP is ~64% of the Bright Data bill ($193/mo on 128k calls). The same
  * "site:nytimes.com {show} review" query gets re-issued across orchestrator
@@ -14,74 +17,32 @@
  * answer). Not cached: nulls (provider failures — retry next time).
  */
 
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
+const { createTtlCache } = require('./ttl-cache');
 
 const CACHE_DIR = process.env.BD_SERP_CACHE_DIR || '/tmp/bd-serp-cache';
 const TTL_HOURS = Number(process.env.BD_SERP_CACHE_TTL_HOURS || 24);
-const TTL_MS = TTL_HOURS * 60 * 60 * 1000;
 const DISABLED = process.env.BD_SERP_CACHE_DISABLED === '1';
 
-let _hits = 0;
-let _misses = 0;
-let _writes = 0;
+const _cache = createTtlCache({ dir: CACHE_DIR, ttlMs: TTL_HOURS * 60 * 60 * 1000, disabled: DISABLED });
 
-function _ensureDir() {
-  try { fs.mkdirSync(CACHE_DIR, { recursive: true }); } catch { /* ignore */ }
-}
-
-function _keyFor(query, opts = {}) {
-  const norm = JSON.stringify({
-    q: String(query || '').trim().toLowerCase(),
-    geo: opts.geo || '',
-    dateMin: opts.dateMin || '',
-    dateMax: opts.dateMax || '',
-  });
-  return crypto.createHash('sha1').update(norm).digest('hex');
+function _normOpts(opts = {}) {
+  return { geo: opts.geo || '', dateMin: opts.dateMin || '', dateMax: opts.dateMax || '' };
 }
 
 function get(query, opts = {}) {
-  if (DISABLED) return null;
-  const key = _keyFor(query, opts);
-  const file = path.join(CACHE_DIR, `${key}.json`);
-  try {
-    const stat = fs.statSync(file);
-    if (Date.now() - stat.mtimeMs > TTL_MS) {
-      _misses++;
-      return null;
-    }
-    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
-    _hits++;
-    return data;
-  } catch {
-    _misses++;
-    return null;
-  }
+  return _cache.get(query, _normOpts(opts));
 }
 
 function set(query, opts, value) {
-  if (DISABLED) return;
-  if (value === null || value === undefined) return;
-  _ensureDir();
-  const key = _keyFor(query, opts);
-  const file = path.join(CACHE_DIR, `${key}.json`);
-  try {
-    fs.writeFileSync(file, JSON.stringify(value));
-    _writes++;
-  } catch { /* never crash the scrape */ }
+  _cache.set(query, _normOpts(opts), value);
 }
 
 function stats() {
-  const total = _hits + _misses;
-  const hitRate = total > 0 ? (_hits / total * 100).toFixed(1) : '0.0';
-  return { hits: _hits, misses: _misses, writes: _writes, hitRate: `${hitRate}%` };
+  return _cache.stats();
 }
 
 function logStats(log = console.log) {
-  const s = stats();
-  if (s.hits + s.misses === 0) return;
-  log(`  📦 SERP cache: ${s.hits} hits, ${s.misses} misses (${s.hitRate} hit rate), ${s.writes} writes`);
+  _cache.logStats(log, 'SERP cache');
 }
 
 module.exports = { get, set, stats, logStats };
