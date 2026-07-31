@@ -135,3 +135,9 @@ supabase-functions.yml
 # owner reviews before sending, so a missed run is caught at send time and is
 # never user-facing. Digest-only; paging here would add noise, not safety.
 newsletter-draft-refresh.yml
+# 2026-07-31: CI-side delayed re-verification for push-with-retry.sh pushes
+# (task #677) — every 20min re-check of recently-pushed SHAs via gh api
+# compare. A missed run just means the #668/#619 revert-class detection
+# window widens slightly; it's a low-stakes safety net atop push-with-retry.sh's
+# own push-time verify, not user-facing staleness. Digest-only.
+check-push-ledger.yml
