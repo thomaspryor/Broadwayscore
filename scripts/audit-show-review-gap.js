@@ -414,9 +414,16 @@ async function findAggregatorArticles(show) {
   // (2026-06). Cheap ScrapingBee scan; falls back internally to reviews.php.
   try {
     const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover');
-    // For closed shows skip the Browserbase reviews.php fallback — it only lists
-    // recent roundups, so it can't help an old show and would burn ~$0.10/show
-    // across the back-catalogue grind (the cheap section scan still runs).
+    // For closed shows skip the PAID Browserbase reviews.php fallback — it only
+    // lists recent roundups, so it can't help an old show and would burn ~$0.10/show
+    // across the back-catalogue grind. The cheap section scan and the cheap
+    // fetchPage reviews.php scan both still run.
+    //
+    // This is OR'd with the lib's shouldSkipReviewsPhp(show) default (2026-07-31):
+    // previously `show.status === 'closed'` evaluated to an explicit `false` for
+    // every OPEN show, which counted as "caller supplied a value" and disabled the
+    // category default entirely — so this hourly audit was the one caller that
+    // bypassed T4 completely.
     const bww = await discoverBwwRoundupUrl(show, { skipReviewsPhp: show.status === 'closed' });
     if (bww && bww.url) urls.add(bww.url.split('?')[0].split('#')[0]);
   } catch (e) {
