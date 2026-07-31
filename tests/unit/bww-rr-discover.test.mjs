@@ -339,3 +339,46 @@ describe('discoverBwwRoundupUrl — typed via reasons on reviews.php failure (T4
     assert.strictEqual(result.url, null);
   });
 });
+
+describe('ship-check hardening (2026-07-31)', () => {
+  // Local fixture — the PAID_ANCHORS const lives in another describe scope.
+  const PAID_ANCHORS = [
+    'https://www.broadwayworld.com/article/Review-Roundup-A-WOMAN-AMONG-WOMEN-Opens-Off-Broadway-20260604',
+  ];
+  it('forceReviewsPhp overrides the category default so the paid probe can be demanded', async () => {
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'off-broadway' };
+    let paidCalled = false;
+    const result = await discoverBwwRoundupUrl(show, {
+      forceReviewsPhp: true,
+      fetchSectionAnchors: async () => [],
+      fetchAnchors: async () => { paidCalled = true; return PAID_ANCHORS; },
+    });
+    assert.strictEqual(paidCalled, true, 'forceReviewsPhp must reach the paid tier');
+    assert.strictEqual(result.via, 'reviews.php');
+  });
+
+  it('forceReviewsPhp beats an explicit skipReviewsPhp:true', async () => {
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'off-broadway' };
+    let paidCalled = false;
+    const result = await discoverBwwRoundupUrl(show, {
+      skipReviewsPhp: true,
+      forceReviewsPhp: true,
+      fetchSectionAnchors: async () => [],
+      fetchAnchors: async () => { paidCalled = true; return PAID_ANCHORS; },
+    });
+    assert.strictEqual(paidCalled, true);
+    assert.strictEqual(result.via, 'reviews.php');
+  });
+
+  it('a cheap tier returning null (blocked page) still falls through to the paid tier', async () => {
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'broadway' };
+    let paidCalled = false;
+    const result = await discoverBwwRoundupUrl(show, {
+      fetchSectionAnchors: async () => [],
+      fetchCheapAnchors: async () => null, // unusable, e.g. soft-404 / CF interstitial
+      fetchAnchors: async () => { paidCalled = true; return PAID_ANCHORS; },
+    });
+    assert.strictEqual(paidCalled, true, 'an unusable cheap result must not suppress the paid probe');
+    assert.strictEqual(result.via, 'reviews.php');
+  });
+});
