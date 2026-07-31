@@ -22,7 +22,7 @@ const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(__dirname, '../..');
 
-const { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore } = require(path.join(REPO, 'scripts/lib/rescore-lifecycle.js'));
+const { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore, isDeterministicTextGateFailure } = require(path.join(REPO, 'scripts/lib/rescore-lifecycle.js'));
 // Detector lives with its sibling in the canonical stuck-flag lib, not here.
 const { isScoredButStillQueued } = require(path.join(REPO, 'scripts/lib/stuck-rescore-flag.js'));
 
@@ -100,6 +100,7 @@ test('stampTerminalScoringFailure records reason, attempt count, and text finger
   assert.equal(f.rescoreBlockedReason, 'input_validation_failed:body_too_short');
   assert.equal(f.rescoreBlockedAt, '2026-07-30T05:25:00.000Z');
   assert.equal(f.rescoreBlockedTextLength, 165);
+  assert.equal(f.rescoreBlockedHadExcerpt, false);
   // needsRescore is untouched — this is queued-but-unscoreable work, not done.
   assert.equal(f.needsRescore, true);
 
@@ -120,6 +121,57 @@ test('isBlockedFromRescore skips only when fullText is unchanged since the block
   // no producer needed to remember to clear the stamp.
   const recovered = { fullText: 'x'.repeat(1200), rescoreBlockedReason: 'input_validation_failed:body_too_short', rescoreBlockedTextLength: 165 };
   assert.equal(isBlockedFromRescore(recovered), false);
+});
+
+test('isBlockedFromRescore unblocks when an excerpt appears since the block (ship-check P1)', () => {
+  // Blocked with body_too_short — at the time, no excerpt existed, so the
+  // scorer's isExcerpt:true bypass didn't apply and the length gate fired.
+  const blockedNoExcerpt = {
+    fullText: 'x'.repeat(165),
+    rescoreBlockedReason: 'input_validation_failed:body_too_short',
+    rescoreBlockedTextLength: 165,
+    rescoreBlockedHadExcerpt: false,
+  };
+  assert.equal(isBlockedFromRescore(blockedNoExcerpt), true);
+
+  // An aggregator excerpt gets ingested afterward (bwwExcerpt populated) —
+  // fullText length is UNCHANGED, but the file is now scoreable via the
+  // excerpt path (isExcerpt:true skips body_too_short entirely). Trusting
+  // only the length fingerprint would keep this blocked forever.
+  const sameTextNowHasExcerpt = {
+    ...blockedNoExcerpt,
+    bwwExcerpt: 'A BroadwayWorld roundup excerpt describing the production.',
+  };
+  assert.equal(isBlockedFromRescore(sameTextNowHasExcerpt), false);
+
+  // Symmetric case: blocked while an excerpt existed (e.g. nav_chrome_majority
+  // on the excerpt itself), excerpt later removed/cleared — also re-evaluate.
+  const blockedWithExcerpt = {
+    fullText: 'x'.repeat(50),
+    rescoreBlockedReason: 'input_validation_failed:nav_chrome_majority',
+    rescoreBlockedTextLength: 50,
+    rescoreBlockedHadExcerpt: true,
+    bwwExcerpt: 'stale excerpt',
+  };
+  assert.equal(isBlockedFromRescore(blockedWithExcerpt), true);
+  const { bwwExcerpt, ...excerptCleared } = blockedWithExcerpt;
+  assert.equal(isBlockedFromRescore(excerptCleared), false);
+});
+
+test('isDeterministicTextGateFailure excludes hallucinated_score (ship-check P1)', () => {
+  // The two real deterministic gates (scorer.ts, ensemble-scorer.ts) both
+  // stamp this exact prefix.
+  assert.equal(isDeterministicTextGateFailure('input_validation_failed:body_too_short'), true);
+  assert.equal(isDeterministicTextGateFailure('input_validation_failed:nav_chrome_majority'), true);
+  // hallucinated_score is a POST-LLM refusal on text that already passed the
+  // gates — it's stochastic (depends on model reasoning), not a function of
+  // fullText, so it must NOT be treated as a permanent block. Regression
+  // guard for the P1 an adversarial review caught: gating on the
+  // inputValidationFailed boolean (which ensemble-scorer.ts also sets here)
+  // would permanently exclude these files from --needs-rescore.
+  assert.equal(isDeterministicTextGateFailure('hallucinated_score: LLM admitted scoring non-review content'), false);
+  assert.equal(isDeterministicTextGateFailure('Review text too short or missing'), false);
+  assert.equal(isDeterministicTextGateFailure(undefined), false);
 });
 
 test('every scoring success path in index.ts retires the rescore queue', () => {
