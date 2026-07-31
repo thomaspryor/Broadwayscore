@@ -29,11 +29,58 @@ test('launcher never imports the cmux launch/workspace modules', () => {
 // failure mode this regression guard exists to catch.
 test('reclaim-and-launch counts the abandoned attempt as a consecutive failure', () => {
   const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
-  const reclaimBlock = src.slice(src.indexOf("decision.action === 'reclaim-and-launch'"));
+  const reclaimBlock = src.slice(src.indexOf("if (decision.action === 'reclaim-and-launch') {"));
   const nextBlockEnd = reclaimBlock.indexOf('\n  }\n');
   const block = reclaimBlock.slice(0, nextBlockEnd);
   assert.match(block, /consecutiveFailures:\s*\(nightState\.consecutiveFailures\s*\|\|\s*0\)\s*\+\s*1/, 'reclaim-and-launch must increment consecutiveFailures for the abandoned attempt');
   assert.match(block, /writeNightState\(key,\s*nightState\)/, 'the incremented consecutiveFailures must be persisted before the new attempt proceeds');
+});
+
+// Adversarial ship-check finding (2026-07-30, independent Claude review): the
+// cmux-era design's ONLY total-spend cap was MAX_ATTEMPTS_PER_NIGHT (3 raw
+// launches, regardless of success) — an "external brake" its own comment in
+// opening-night-windows.js calls out because the session can't be trusted to
+// self-police $. Card #650's redesign passes consecutiveFailures (which
+// resets to 0 on every success) as attemptsTonight, so a mostly-successful
+// night has NO cap at all — up to ~90 opus passes across the ~31h window.
+// This guard fails if the launcher's own external $ brake is ever removed.
+test('a nightly USD spend cap overrides launch/reclaim-and-launch independently of launchDecision', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  assert.match(src, /const NIGHTLY_USD_CAP\s*=\s*\d/, 'expected a NIGHTLY_USD_CAP constant — the external spend brake');
+  const overrideBlock = src.slice(src.indexOf('let decision = launchDecision(state);'), src.indexOf("if (opts['dry-run'])"));
+  assert.match(overrideBlock, /decision\.action === 'launch' \|\| decision\.action === 'reclaim-and-launch'/, 'the spend cap must gate BOTH launch and reclaim-and-launch — either one starts a real pass');
+  assert.match(overrideBlock, /nightState\.usdTonight[\s\S]{0,40}>=\s*NIGHTLY_USD_CAP/, 'must compare accumulated usdTonight against the cap');
+  assert.match(overrideBlock, /action:\s*'escalate'/, 'exceeding the cap must escalate (page + stop), not silently skip');
+});
+
+test('usdTonight accumulates across passes on both the success and failure write-back paths', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const usdTonightLine = src.split('\n').find(l => l.includes('const usdTonight ='));
+  assert.ok(usdTonightLine, 'expected a usdTonight accumulator computed once before both outcome branches');
+  assert.match(usdTonightLine, /nightState\.usdTonight \|\| 0/, 'must add onto the running total, not overwrite it');
+  assert.match(usdTonightLine, /result\.usd \|\| 0/, "must add THIS pass's spend");
+  // Both writeNightState calls after the pass resolves must persist usdTonight.
+  const postPassSrc = src.slice(src.indexOf('const usdTonight ='));
+  const writeCallStarts = [...postPassSrc.matchAll(/writeNightState\(key,/g)];
+  assert.ok(writeCallStarts.length >= 2, `expected a writeNightState call on both the failure and success paths, found ${writeCallStarts.length}`);
+  for (const m of writeCallStarts) {
+    const snippet = postPassSrc.slice(m.index, m.index + 250);
+    assert.match(snippet, /usdTonight/, `writeNightState call must persist usdTonight: ${snippet.slice(0, 100)}...`);
+  }
+});
+
+// Independently verified live: .env has ANTHROPIC_API_KEY set, and
+// load-env.js (required at the top of this file for RESEND_API_KEY/
+// OWNER_EMAIL, task #457) pulls the WHOLE .env into process.env — including
+// that key. claude-cli.js's strippedEnv forwards ANTHROPIC_API_KEY if
+// present, which would silently bill headless passes pay-per-token instead
+// of the Mac's subscription OAuth login (autonomous-run.js never hits this:
+// its launchd wrapper only greps a single field out of .env, never sources
+// the whole file).
+test('the headless pass explicitly clears ANTHROPIC_API_KEY so it bills the subscription login, not the API key', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const callBlock = src.slice(src.indexOf('const result = await runMonitorPass({'), src.indexOf('const result = await runMonitorPass({') + 800);
+  assert.match(callBlock, /env:\s*\{\s*ANTHROPIC_API_KEY:\s*['"]{2}\s*\}/, 'runMonitorPass must be called with env: { ANTHROPIC_API_KEY: \'\' } to clear the leaked .env key for this spawn only');
 });
 
 // Card #568: LOCK_DIR is the atomic test-and-set (mkdir, before the launch

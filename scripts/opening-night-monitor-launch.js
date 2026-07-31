@@ -83,6 +83,16 @@ const MODEL = process.env.ON_MONITOR_MODEL || 'opus';
 // this cap anyway (killed by claude-cli's own SIGKILL timeout, or the whole
 // node process crashing).
 const HEADLESS_MAX_WALL_MIN = 15;
+// Adversarial ship-check finding (2026-07-30, Claude review): the cmux-era
+// design capped total launches at MAX_ATTEMPTS_PER_NIGHT (3) — an "external
+// brake" (opening-night-windows.js's own comment) because the session can't
+// be trusted to self-police its own $ spend. The new consecutiveFailures
+// bookkeeping resets that counter on every success, so a mostly-successful
+// night has NO cap at all: ~31h window / 20-min ticks ⇒ up to ~90 opus
+// passes. This is the actual external brake now — checked independently of
+// launchDecision (which still owns the separate "session looks dead"
+// question) so a long run of genuine successes still gets cut off too.
+const NIGHTLY_USD_CAP = 100;
 
 const USAGE = `opening-night-monitor-launch — launch the opening-night monitor session (see header comment)
   --dry-run | --show <id> | --rehearsal | --active-shows | --heartbeat | --help`;
@@ -137,8 +147,8 @@ function gcStateFiles(now = Date.now()) {
   }
 }
 function readNightState(key) {
-  try { return { attempts: 0, consecutiveFailures: 0, ...JSON.parse(fs.readFileSync(nightStatePath(key), 'utf8')) }; }
-  catch { return { attempts: 0, consecutiveFailures: 0 }; }
+  try { return { attempts: 0, consecutiveFailures: 0, usdTonight: 0, ...JSON.parse(fs.readFileSync(nightStatePath(key), 'utf8')) }; }
+  catch { return { attempts: 0, consecutiveFailures: 0, usdTonight: 0 }; }
 }
 function writeNightState(key, state) {
   fs.mkdirSync(MON_DIR, { recursive: true });
@@ -257,7 +267,14 @@ async function main(argv = process.argv.slice(2)) {
     claudeAlive: false,
     attemptsTonight: nightState.consecutiveFailures,
   };
-  const decision = launchDecision(state);
+  let decision = launchDecision(state);
+  // External spend brake (see NIGHTLY_USD_CAP comment above) — evaluated
+  // AFTER launchDecision, which only knows about liveness/failures, not $.
+  // Applies to both 'launch' and 'reclaim-and-launch': either one is about
+  // to start a real pass.
+  if ((decision.action === 'launch' || decision.action === 'reclaim-and-launch') && (nightState.usdTonight || 0) >= NIGHTLY_USD_CAP) {
+    decision = { action: 'escalate', reason: `nightly spend cap reached ($${(nightState.usdTonight || 0).toFixed(2)} >= $${NIGHTLY_USD_CAP})` };
+  }
 
   if (opts['dry-run']) {
     console.log(JSON.stringify({
@@ -275,8 +292,8 @@ async function main(argv = process.argv.slice(2)) {
     if (!nightState.escalated) {
       await alert({
         conditionKey: `on-monitor-attempts-exhausted-${key}`,
-        title: `Opening-night monitor: ${nightState.consecutiveFailures} consecutive failed passes for ${windows.map(w => w.showId).join(', ')}`,
-        description: `The monitor pass failed ${nightState.consecutiveFailures}x in a row tonight (${nightState.attempts} total passes) and the launcher will not start another until a night boundary resets the counter. ` +
+        title: `Opening-night monitor: escalating for ${windows.map(w => w.showId).join(', ')} — ${decision.reason}`,
+        description: `${decision.reason} (${nightState.attempts} total passes tonight, $${(nightState.usdTonight || 0).toFixed(2)} spent) and the launcher will not start another until a night boundary resets the counters. ` +
           `Ledger: data/audit/dispatch-ledger.jsonl. State: ${nightStatePath(key)}. ` +
           `Coverage falls back to the standing pipeline; check the show page(s) in the morning.`,
         severity: 'error', disposition: 'human',
@@ -353,6 +370,15 @@ async function main(argv = process.argv.slice(2)) {
   const result = await runMonitorPass({
     prompt: seed, cwd: REPO, model: MODEL, settingsPath: SETTINGS_PATH,
     maxWallMin: HEADLESS_MAX_WALL_MIN,
+    // load-env.js (line ~56, added for RESEND_API_KEY/OWNER_EMAIL) also pulls
+    // ANTHROPIC_API_KEY into process.env if .env has one set, and claude-cli.js's
+    // strippedEnv forwards it — which would bill this pass pay-per-token
+    // instead of the Mac's subscription OAuth login (autonomous-run.js never
+    // hits this: its launchd wrapper never sources .env). Empty string clears
+    // it for THIS spawned process only (falsy, so claude's own has-a-key
+    // check falls through to the stored login) without touching process.env
+    // for anything else in this run that reads it (e.g. preflightAuth).
+    env: { ANTHROPIC_API_KEY: '' },
     logFile: path.join(MON_DIR, `session-log-${key}-a${attemptNum}.log`),
   });
 
@@ -376,9 +402,20 @@ async function main(argv = process.argv.slice(2)) {
   // launch had.
   fs.rmSync(LOCK_DIR, { recursive: true, force: true });
 
+  const usdTonight = Math.round(((nightState.usdTonight || 0) + (result.usd || 0)) * 100) / 100;
+
   if (!result.ok) {
     const consecutiveFailures = (nightState.consecutiveFailures || 0) + 1;
-    writeNightState(key, { ...nightState, attempts: attemptNum, consecutiveFailures, lastLaunchAt: now.toISOString(), lastFailure: { stage: result.stage, at: now.toISOString() } });
+    writeNightState(key, { ...nightState, attempts: attemptNum, consecutiveFailures, usdTonight, lastLaunchAt: now.toISOString(), lastFailure: { stage: result.stage, at: now.toISOString() } });
+    // A failed pass still spent money and is exactly what the escalation
+    // email points the owner at this ledger to investigate — a failure that
+    // never lands here would be invisible in the one place meant to explain it.
+    dispatchLedger.appendEntry({
+      event: 'launch-failed', taskId: key,
+      shows: windows.map(w => w.showId),
+      attempt: attemptNum, model: MODEL, rehearsal, kind: 'on-monitor',
+      stage: result.stage, wallMin: Math.round(result.wallMin * 10) / 10, usd: result.usd,
+    });
     await alert({
       conditionKey: `on-monitor-launch-failed-${key}`,
       title: `Opening-night monitor pass FAILED for ${windows.map(w => w.showId).join(', ')}`,
@@ -388,7 +425,7 @@ async function main(argv = process.argv.slice(2)) {
     return 1;
   }
 
-  writeNightState(key, { ...nightState, attempts: attemptNum, consecutiveFailures: 0, lastLaunchAt: now.toISOString() });
+  writeNightState(key, { ...nightState, attempts: attemptNum, consecutiveFailures: 0, usdTonight, lastLaunchAt: now.toISOString() });
   // dispatch-ledger requires {event, taskId}; taskId carries the night key.
   dispatchLedger.appendEntry({
     event: 'launch', taskId: key,
