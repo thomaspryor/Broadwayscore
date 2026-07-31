@@ -45,6 +45,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { triageCard, decide } = require('./lib/autonomous-triage-core.js');
+const { loadSharedTaskState } = require('./autonomous-triage.js');
 const { computeContentHash, loadParkOverrides } = require('./lib/attempt-memory.js');
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
 const { selectShadowSlice } = require('./lib/autonomous-shadow-slice.js');
@@ -243,10 +244,17 @@ async function main() {
 
   const attemptMemoryLedgerEntries = ledger.readEntries().entries;
   const attemptMemoryOverrides = loadParkOverrides();
+  // Claim-visibility parity with the real loop (autonomous-triage.js): a
+  // card someone is actively working on via the shared task list must not
+  // count as "would-attempt" evidence — triageCard()'s own findClaimedTask
+  // pre-filter needs opts.taskState to see it. Best-effort; a missing/empty
+  // shared task list just means no claims are visible, same as production.
+  const taskState = loadSharedTaskState();
   let parkedCount = 0, attemptCount = 0, otherCount = 0;
   for (const card of selected) {
     const result = await triageCard(card, callSonnet, {
       tier,
+      taskState,
       attemptMemory: { ledgerEntries: attemptMemoryLedgerEntries, overrides: attemptMemoryOverrides },
     });
     const d = decide({ ...result, decision: undefined });
