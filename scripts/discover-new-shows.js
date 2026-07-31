@@ -861,7 +861,10 @@ const OWE_VENUE_PAGES = VENUE_LISTING_PAGES.filter(v => v.category === 'off-west
 const VENUE_PAGE_EXCLUDE_PATTERNS = [
   'masterclass', 'workshop', 'tour', 'walking tour', 'rapid write',
   'work in progress', 'scratch night', 'open mic', 'poetry slam',
-  'fundraiser', 'gala', 'in conversation', 'q&a', 'meet the',
+  // Bare 'gala' substring-matches "Via Galactica" (1972 Broadway show) — use the
+  // multi-word variants, matching the NON_THEATER_PATTERNS precedent above.
+  'fundraiser', 'spring gala', 'annual gala', 'gala benefit', 'gala fundraiser',
+  'in conversation', 'q&a', 'meet the',
   // Other Palace Studio one-night tribute concerts ("Big Finish: A Celebration of
   // Shaiman & Wittman", "Songs from the Musicals") — concerts, not productions.
   'celebration of', 'songs from the musicals',
