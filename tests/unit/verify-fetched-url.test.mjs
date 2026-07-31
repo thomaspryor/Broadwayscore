@@ -187,6 +187,24 @@ describe('verifyFetchedUrl', () => {
       assert.equal(result.verified, false);
       assert.equal(result.reason, 'url_mismatch');
     });
+
+    test('bare substring match against a DIFFERENT show is not accepted (no word boundary)', () => {
+      // "proof" is a string-prefix of "proofs" and "proof-2", but those could be a
+      // genuinely different production. Without a boundary requirement, this heuristic
+      // would misattribute reviews across shows — must stay a mismatch.
+      const html1 = '<html><head><link rel="canonical" href="https://didtheylikeit.com/shows/proofs/"></head></html>';
+      assert.equal(verifyFetchedUrl(html1, 'https://didtheylikeit.com/shows/proof/').verified, false);
+
+      const html2 = '<html><head><link rel="canonical" href="https://didtheylikeit.com/shows/proofread/"></head></html>';
+      assert.equal(verifyFetchedUrl(html2, 'https://didtheylikeit.com/shows/proof/').verified, false);
+    });
+
+    test('suffix redirect at a hyphen boundary is still accepted and tagged suffix_redirect', () => {
+      const html = '<html><head><link rel="canonical" href="https://didtheylikeit.com/shows/proof-2026-review/"></head></html>';
+      const result = verifyFetchedUrl(html, 'https://didtheylikeit.com/shows/proof-2026/');
+      assert.equal(result.verified, true);
+      assert.equal(result.reason, 'suffix_redirect');
+    });
   });
 
   describe('edge cases', () => {

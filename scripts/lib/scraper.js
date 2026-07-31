@@ -1170,16 +1170,22 @@ function verifyFetchedUrl(html, expectedUrl) {
       // Same host: tolerate a path-suffix redirect, where the CMS resolves a short/
       // partial slug to its full canonical article (e.g. didtheylikeit.com resolves
       // /shows/the-gin-game/ to /shows/the-gin-game-review/). Requires same directory
-      // depth AND the actual last segment to literally extend the expected last segment
-      // — this rejects unrelated pages nested under a different path (still a mismatch)
-      // while accepting the site's own slug-completion redirects. Confirmed 2026-07-30:
+      // depth AND the actual last segment to extend the expected last segment AT A
+      // WORD BOUNDARY (next char is '-', '_', '.', or end-of-string) — this rejects
+      // unrelated pages nested under a different path, AND rejects a bare substring
+      // match against a different show sharing a prefix (e.g. requested /shows/proof/
+      // must NOT verify against actual /shows/proofs/ or /shows/proof-2/, both of
+      // which could be a genuinely different production). Confirmed 2026-07-30:
       // didtheylikeit.com accounts for 4,889 of these, ~67% of its Bright Data spend.
       const expSegments = new URL(stripInvisibleUnicode(expectedUrl)).pathname.replace(/\/$/, '').split('/');
       const actSegments = new URL(stripInvisibleUnicode(actualUrl)).pathname.replace(/\/$/, '').split('/');
       const expLast = expSegments.pop();
       const actLast = actSegments.pop();
       if (expLast && expSegments.join('/') === actSegments.join('/') && actLast.startsWith(expLast)) {
-        return { verified: true };
+        const nextChar = actLast.charAt(expLast.length);
+        if (nextChar === '' || /[-_.]/.test(nextChar)) {
+          return { verified: true, reason: 'suffix_redirect' };
+        }
       }
     }
   } catch { /* fall through */ }
