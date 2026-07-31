@@ -118,18 +118,28 @@ function daysUntil(dateStr) {
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
 
+// A local /images/ path in shows.json only counts if the file is actually on
+// disk — the-gin-game-2026 shipped live with phantom paths written at add-time,
+// which made every truthiness-based monitor (this one included) report it as
+// covered while the site rendered the emoji placeholder.
+function imagePresent(imgPath) {
+  if (!imgPath) return false;
+  if (!imgPath.startsWith('/images/')) return true; // external URL — assume live
+  return fs.existsSync(path.join(__dirname, '..', 'public', imgPath));
+}
+
 function checkShowCompleteness(show) {
   const issues = [];
   const isOpen = show.status === 'open';
 
   // Images
-  if (!show.images?.poster) {
+  if (!imagePresent(show.images?.poster)) {
     issues.push({ type: 'missing_poster', severity: 'high' });
   }
-  if (!show.images?.hero) {
+  if (!imagePresent(show.images?.hero)) {
     issues.push({ type: 'missing_hero', severity: 'medium' });
   }
-  if (!show.images?.thumbnail) {
+  if (!imagePresent(show.images?.thumbnail)) {
     issues.push({ type: 'missing_thumbnail', severity: 'low' });
   }
 

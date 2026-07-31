@@ -488,9 +488,13 @@ function validateDates(shows) {
     // so the human sees the gap; force with:
     //   gh workflow run "Fetch Show Images" -f show_id=<id> -f only_missing=false
     if (['open', 'previews', 'upcoming'].includes(show.status)) {
-      const hasImage = show.images && (show.images.poster || show.images.thumbnail || show.images.hero);
+      // A local /images/ path only counts if the file exists — the-gin-game-2026
+      // went live with phantom add-time paths that satisfied a truthiness check
+      // while the site rendered the placeholder (never caught by this warn).
+      const imageLive = (p) => p && (!p.startsWith('/images/') || fs.existsSync(path.join(__dirname, '..', 'public', p)));
+      const hasImage = show.images && (imageLive(show.images.poster) || imageLive(show.images.thumbnail) || imageLive(show.images.hero));
       if (!hasImage) {
-        warn(`Show "${show.title}" (${show.id}, status=${show.status}) has no images — Mon/Thu fetch-show-images cron will pick it up; force now: gh workflow run "Fetch Show Images" -f show_id=${show.id} -f only_missing=false`);
+        warn(`Show "${show.title}" (${show.id}, status=${show.status}) has no images (or paths with no file behind them) — Mon/Thu fetch-show-images cron will pick it up; force now: gh workflow run "Fetch Show Images" -f show_id=${show.id} -f only_missing=false`);
       }
     }
 

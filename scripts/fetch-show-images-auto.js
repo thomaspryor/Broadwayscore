@@ -1622,6 +1622,13 @@ function filterGoogleCandidates(results, maxCount = 10) {
 async function fetchFromGoogleImages(show) {
   const year = show.openingDate ? show.openingDate.substring(0, 4) : '';
   const safeTitle = show.title.replace(/"/g, '');
+  // Query keyword must match the show's market — searching "Broadway" for an
+  // Off-Broadway/West End production surfaces the wrong-production's art (or
+  // nothing at all: the-gin-game-2026 at Housing Works found 0 candidates while
+  // the 2015 Broadway revival's images ranked).
+  const marketKw = show.category === 'off-broadway' ? 'Off-Broadway'
+    : show.category === 'west-end' ? 'West End'
+    : 'Broadway';
   const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
   const showDir = path.join(outputBase, show.id);
   fs.mkdirSync(showDir, { recursive: true });
@@ -1637,8 +1644,8 @@ async function fetchFromGoogleImages(show) {
   // Year-aware query with quoted title to prevent partial matches
   // ============================================================
   const squareQuery = year
-    ? `"${safeTitle}" ${year} Broadway square`
-    : `"${safeTitle}" Broadway square`;
+    ? `"${safeTitle}" ${year} ${marketKw} square`
+    : `"${safeTitle}" ${marketKw} square`;
   console.log(`   Trying Google Images (square): "${squareQuery}"`);
 
   try {
@@ -1663,7 +1670,7 @@ async function fetchFromGoogleImages(show) {
 
     // Fallback: retry without year if year query returned 0 candidates
     if (!thumbnailBuffer && year && squareCandidates.length === 0) {
-      const fallbackQuery = `"${safeTitle}" Broadway square`;
+      const fallbackQuery = `"${safeTitle}" ${marketKw} square`;
       console.log(`   Retrying square search without year: "${fallbackQuery}"`);
       const fallbackResults = await searchGoogleImages(fallbackQuery);
       const fallbackCandidates = filterGoogleCandidates(fallbackResults, 10);
@@ -1690,8 +1697,8 @@ async function fetchFromGoogleImages(show) {
   // Year-aware query with quoted title
   // ============================================================
   const posterQuery = year
-    ? `"${safeTitle}" ${year} Broadway poster`
-    : `"${safeTitle}" Broadway poster`;
+    ? `"${safeTitle}" ${year} ${marketKw} poster`
+    : `"${safeTitle}" ${marketKw} poster`;
   console.log(`   Trying Google Images (poster): "${posterQuery}"`);
 
   try {
@@ -1715,7 +1722,7 @@ async function fetchFromGoogleImages(show) {
 
     // Fallback: retry without year if year query returned 0 candidates
     if (!posterBuffer && year && posterCandidates.length === 0) {
-      const fallbackQuery = `"${safeTitle}" Broadway poster`;
+      const fallbackQuery = `"${safeTitle}" ${marketKw} poster`;
       console.log(`   Retrying poster search without year: "${fallbackQuery}"`);
       const fallbackResults = await searchGoogleImages(fallbackQuery);
       posterCandidates = filterGoogleCandidates(fallbackResults, 10);
