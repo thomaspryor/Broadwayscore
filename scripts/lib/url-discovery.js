@@ -616,6 +616,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride) {
  *   results=null means both providers are down; []=searched but nothing found.
  */
 const _serpCache = require('./serp-cache');
+const _serpNegativeCache = require('./serp-negative-cache');
 
 /**
  * Pure decision function: ordered BD/SB provider names for the SERP chain.
@@ -659,7 +660,7 @@ function _effectiveSerpSkips(skipProviders) {
   return skips;
 }
 
-async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride, skipProviders, emptyAuthoritative = true) {
+async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride, skipProviders, emptyAuthoritative = true, negativeCacheTtlMs = null) {
   const _skips = _effectiveSerpSkips(skipProviders);
   // 24h disk cache — same query within TTL returns cached results, no API call.
   // Cuts duplicate SERP spend across orchestrator iterations, poller dispatches,
@@ -686,6 +687,21 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   if (cached) {
     log(`    📦 SERP cache hit: "${query.slice(0, 60)}..."`);
     return { results: cached.results, provider: `${cached.provider}-cached` };
+  }
+
+  // Short negative-result cache (T11): opt-in only, via negativeCacheTtlMs from
+  // serp-negative-cache-policy.js. Distinct from the 24h cache above — this
+  // exists specifically for emptyAuthoritative:false callers (the poller's SERP
+  // backup layer), where a genuine empty result is normally never cached at all
+  // because "no results yet" often means "not published yet." OB/WE shows can
+  // tolerate a 45-min window of that risk to cut repeat BD/SB spend across
+  // consecutive poll ticks; Broadway never sets this (see policy file).
+  if (negativeCacheTtlMs) {
+    const negCached = _serpNegativeCache.get(query, cacheOpts);
+    if (negCached) {
+      log(`    📦 SERP negative-cache hit (45min): "${query.slice(0, 60)}..."`);
+      return { results: negCached.results, provider: `${negCached.provider}-negcached` };
+    }
   }
 
   // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). On a real fetch
@@ -764,6 +780,17 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     && !(_chainTruncated && results.length === 0);
   if (shouldCache) {
     _serpCache.set(query, cacheOpts, { results, provider });
+  } else if (
+    negativeCacheTtlMs
+    && results !== null
+    && results.length === 0
+    && emptyAuthoritative === false
+    && !_chainTruncated
+  ) {
+    // T11: the 24h cache above intentionally skipped this write (empty +
+    // emptyAuthoritative:false), but the caller opted into a short negative
+    // cache for this market — stash it there instead, on its own 45-min TTL.
+    _serpNegativeCache.set(query, cacheOpts, { results, provider });
   }
   return { results, provider };
 }
@@ -787,6 +814,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
  * @param {boolean} [options.preferSpeed] - If true, use ScrapingBee first (sync, ~1-3s) instead of BrightData (async, ~4-20s). Use for time-sensitive flows like opening night polling.
  * @param {boolean} [options.forceHistorical] - If true, skip date filter entirely from the first query (best for pre-2005 shows where Google date metadata is unreliable).
  * @param {boolean} [options.emptyAuthoritative] - Default true. If false, a Scrapingdog SERP success with 0 results does NOT short-circuit the BD/SB fallback and is never cached — use for flows where "no results yet" may mean "not published yet" (e.g. opening-night-poller.js).
+ * @param {number|null} [options.negativeCacheTtlMs] - Opt-in short negative-result cache for emptyAuthoritative:false callers (T11 — see scripts/lib/serp-negative-cache-policy.js). Default null (no negative caching, existing behavior).
  * @returns {string|null|'__SERP_UNAVAILABLE__'|{url: string, serpTitle: string}} - Discovered URL (or object if returnMetadata)
  */
 async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
@@ -797,6 +825,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const preferSpeed = options.preferSpeed || false;
   const forceHistorical = options.forceHistorical || false;
   const emptyAuthoritative = options.emptyAuthoritative !== false;
+  const negativeCacheTtlMs = options.negativeCacheTtlMs || null;
 
   if (!scrapingBeeKey && !brightDataKey) return '__SERP_UNAVAILABLE__';
 
@@ -853,7 +882,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   log(`  [URL Discovery] Searching: ${query}`);
 
   // Provider chain: BD first (cheap) unless preferSpeed (opening night → SB first)
-  let { results, provider } = await _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative);
+  let { results, provider } = await _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs);
 
   // Both providers down
   if (results === null) {
@@ -878,7 +907,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
         strippedQuery = `"${primaryTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
       }
       log(`    Retry with stripped title: ${strippedQuery}`);
-      ({ results, provider } = await _serpWithChain(strippedQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative));
+      ({ results, provider } = await _serpWithChain(strippedQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs));
       provider = provider ? provider + '-stripped' : null;
       if (results === null) {
         log('    ✗ All SERP providers unavailable');
@@ -893,7 +922,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     if (criticName && (domain || oldDomain)) {
       const fallbackQuery = `"${serpTitle}" "${outletName}" "${criticName}" ${marketTerm}${yearClause}`;
       log(`    Fallback search (no site:): ${fallbackQuery}`);
-      ({ results, provider } = await _serpWithChain(fallbackQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative));
+      ({ results, provider } = await _serpWithChain(fallbackQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs));
       provider = provider ? provider + '-fallback' : null;
       if (results === null) {
         log('    ✗ All SERP providers unavailable');
@@ -913,7 +942,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
           ? `${buildSiteClause(domain)} "${serpTitle}" ${marketTerm}${yearClause}${criticClause}`
           : `"${serpTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
         log(`    Fallback 3 (no date filter, historical show): ${noDateQuery}`);
-        ({ results, provider } = await _serpWithChain(noDateQuery, scrapingBeeKey, brightDataKey, log, null, preferSpeed, undefined, undefined, emptyAuthoritative));
+        ({ results, provider } = await _serpWithChain(noDateQuery, scrapingBeeKey, brightDataKey, log, null, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs));
         provider = provider ? provider + '-historical' : null;
         if (results === null) {
           log('    ✗ All SERP providers unavailable');
@@ -1163,6 +1192,7 @@ function validateUrlDomain(url, outletId) {
  * @param {{ dateMin: Date, dateMax: Date }} [options.dateRange] - Optional date range filter
  * @param {boolean} [options.preferSpeed] - If true, ScrapingBee first (for time-sensitive flows)
  * @param {boolean} [options.emptyAuthoritative] - Default true. Set false when "no results yet" may mean "not published yet" (see shouldAcceptEmptyScrapingdogSerp).
+ * @param {number|null} [options.negativeCacheTtlMs] - Opt-in short negative-result cache for emptyAuthoritative:false callers (T11 — see scripts/lib/serp-negative-cache-policy.js). Default null (no negative caching, existing behavior).
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if all providers unavailable
  */
 async function serpQuery(query, options = {}) {
@@ -1181,13 +1211,14 @@ async function serpQuery(query, options = {}) {
   // Default true. Set false for flows where "no results yet" may mean "not
   // published yet" rather than a genuine zero (see shouldAcceptEmptyScrapingdogSerp).
   const emptyAuthoritative = options.emptyAuthoritative !== false;
+  const negativeCacheTtlMs = options.negativeCacheTtlMs || null;
 
   if (!sbKey && !bdKey) {
     log('    ⚠ No SERP API keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN)');
     return null;
   }
 
-  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed, geo, skipProviders, emptyAuthoritative);
+  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed, geo, skipProviders, emptyAuthoritative, negativeCacheTtlMs);
   if (!results) return null;
 
   return results.slice(0, nbResults);
