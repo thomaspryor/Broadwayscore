@@ -44,6 +44,7 @@ const {
 const { checkRSSFeeds } = require('./lib/rss-discovery');
 const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { serpNegativeCacheTtlMs } = require('./lib/serp-negative-cache-policy');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
@@ -1356,6 +1357,10 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
           // through to BD/SB rather than caching/accepting it as final
           // (task #213; see shouldAcceptEmptyScrapingdogSerp).
           emptyAuthoritative: false,
+          // T11: OB/WE shows opt into a 45-min negative cache on top of that —
+          // Broadway (serpNegativeCacheTtlMs returns null there) always re-asks
+          // fresh next tick; see serp-negative-cache-policy.js for why.
+          negativeCacheTtlMs: serpNegativeCacheTtlMs(show),
           dateRange: openingNightDateRange,
         }
       );
