@@ -70,7 +70,7 @@ test('isVenueSiteHost matches venue domains and subdomains only', () => {
   assert.equal(isVenueSiteHost('https://evil-bam.org.attacker.com/x'), false);
 });
 
-// The live-network smoke test lives in enrich-fallback-ticket-links.live.test.mjs,
+// The live-network smoke test lives in enrich-fallback-ticket-links-live.test.mjs,
 // which runs in test.yml's continue-on-error network-dependent step — never in
 // this blocking batch (second-opinion review: third-party flake must not gate
 // every push to main).
