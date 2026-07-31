@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const { execFileSync } = require('child_process');
+const { isCloseable, hasAutoDispatchMarker } = require('./prune-closeable.js');
 
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
@@ -236,6 +237,17 @@ function computeClaudeAlive(meta, opts = {}) {
 // script's original charter, "sessions that died before self-closing" — are
 // closable. Skipped tabs are reported; the owner closes them by hand.
 //
+// EXCEPTION (card #709, owner-approved 2026-07-31): a ✅🤖 auto-dispatched
+// workspace whose claude is alive but IDLE AT THE PROMPT (not mid-turn) is
+// also closeable — every finished auto-dispatched session leaves its claude
+// idle at the prompt rather than exiting, so the live-claude skip above was
+// closing ~nothing autonomously and 21 finished tabs needed manual claude-
+// process kills before a sweep could touch them. Owner-driven (non-🤖) ✅
+// tabs keep the full protection from the 2026-07-21 incident regardless of
+// idle/running state — only the auto-dispatch class relaxes. See
+// scripts/lib/prune-closeable.js for the pure predicate + idle-vs-mid-turn
+// signal (hasLiveClaude && !hasRunningClaude).
+//
 // A "not alive" verdict from claudeAliveIn alone is not enough to close
 // (card #559) — see checkLiveness's header comment. Returns
 // { closed, skipped, disagreements }; failures to close one workspace don't
@@ -244,6 +256,7 @@ function pruneDone(opts = {}) {
   // Seams are test-only (prove the skip/throw paths without a cmux socket).
   const aliveFn = opts.claudeAliveIn || claudeAliveIn;
   const surfaceAliveFn = opts.terminalSurfaceAliveIn || terminalSurfaceAliveIn;
+  const runningFn = opts.claudeRunningIn || claudeRunningIn;
   const listFn = opts.listWorkspaces || listWorkspaces;
   const closeFn = opts.closeWorkspace || closeWorkspace;
   const done = listFn().filter(w => isDoneTitle(w.title));
@@ -253,7 +266,16 @@ function pruneDone(opts = {}) {
   for (const w of done) {
     const { dead, disagreement } = checkLiveness(w.ref, aliveFn, surfaceAliveFn);
     if (disagreement) disagreements.push(w);
-    if (!dead) { skipped.push(w); continue; }
+    // Only query mid-turn status for the auto-dispatch exception — an
+    // owner-driven live tab is skipped regardless, so there's no need to
+    // spend an extra cmux call finding out whether it's busy. Any error
+    // (or a non-auto title) defaults isRunning to true — fail-safe: never
+    // treat uncertainty as "idle, close it."
+    let isRunning = true;
+    if (!dead && hasAutoDispatchMarker(w.title)) {
+      try { isRunning = runningFn(w.ref); } catch { isRunning = true; }
+    }
+    if (!isCloseable({ title: w.title, hasLiveClaude: !dead, isRunning })) { skipped.push(w); continue; }
     if (opts.dryRun) { closed.push(w); continue; }
     try { closeFn(w.ref); closed.push(w); }
     catch (e) { console.error(`[cmux-workspaces] failed to close ${w.ref}: ${e.message}`); }
