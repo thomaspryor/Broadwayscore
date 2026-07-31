@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-31T00:38:27.125Z",
+  "timestamp": "2026-07-31T01:16:22.868Z",
   "stats": {
     "totalReviews": 40983,
-    "alreadyFlagged": 17935,
-    "dateGuardCatches": 67,
-    "directorMismatch": 935,
+    "alreadyFlagged": 17906,
+    "dateGuardCatches": 79,
+    "directorMismatch": 936,
     "tvFilmSignals": 1122,
-    "londonSignals": 769,
+    "londonSignals": 770,
     "offBroadwaySignals": 465,
     "yearMismatch": 86,
-    "noPublishDate": 3377
+    "noPublishDate": 3384
   },
   "findings": [
     {
@@ -14922,6 +14922,20 @@
     },
     {
       "showId": "little-bear-ridge-road-regional-2024",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "score": 90,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-LITTLE-BEAR-RIDGE-ROAD-at-Steppenwolf-Theatre-Company-20240624",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
       "file": "chicago-reader--dan-jakes.json",
       "score": 92,
       "publishDate": "2024-06-26",
@@ -16609,6 +16623,72 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "gay-times--chris-selman.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1423d before show (2022-10-24 vs 2026-09-16)"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "london-theatre--matt-wolf.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1423d before show (2022-10-24 vs 2026-09-16)"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "london-theatre-reviews--matt-wolf.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1423d before show (2022-10-24 vs 2026-09-16)"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1423d before show (2022-10-24 vs 2026-09-16)"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "telegraph--marianka-swain.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1423d before show (2022-10-24 vs 2026-09-16)"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1423d before show (2022-10-24 vs 2026-09-16)"
         }
       ]
     },
@@ -23775,6 +23855,80 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "i-paper--fiona-mountford.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 89,
+      "publishDate": "2025-05-13",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-comedy-about-spies",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 80,
+      "publishDate": "2025-05-14",
+      "url": "https://www.standard.co.uk/culture/theatre/the-comedy-about-spies-noel-coward-theatre-review-b1227551.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "thestage--holly-o.json",
+      "publishDate": "2025-05-14",
+      "url": "https://www.thestage.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre-mischief-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
         }
       ]
     },
@@ -41629,6 +41783,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "timeout-london--tom-wicker.json",
+      "score": 77,
+      "publishDate": "May 14th, 2025",
+      "url": "https://www.timeout.com/london/theatre/the-comedy-about-spies-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
