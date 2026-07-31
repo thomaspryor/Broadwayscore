@@ -33,6 +33,7 @@ const MEMORY_DIR = path.join(__dirname, 'agent-memory');
 const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { shouldMarkPlanReady } = require('./lib/plan-ready.js');
 
 const USAGE = `notion-action-poll.js — Notion Action Queue Poller.
 
@@ -677,10 +678,23 @@ async function clearAction(card) {
 // bsc-next --list prints pending P0/P1s in its always-visible tail → the
 // P0/P1 dispatch rule picks it up. Owner-set priorities are never touched;
 // clearing the Priority parks the card again.
-const { shouldMarkPlanReady } = require('./lib/plan-ready.js');
-async function markPlanReadyForDispatch(card) {
-  if (!shouldMarkPlanReady(card)) return;
+async function markPlanReadyForDispatch(card, entry) {
+  if (!shouldMarkPlanReady(card)) return false;
+  // Escalate at most once per card: if the owner cleared an earlier auto-set
+  // priority, that was a deliberate park — a later plan-only action must not
+  // re-escalate and re-comment (second-opinion blocker 2, 2026-07-31).
+  if (entry && entry.planReadyAt) return false;
   try {
+    // Pipelines can hold this process for hours; card properties were read at
+    // poll start. Re-read live Priority/Status so an owner-set priority (or a
+    // status change) mid-run is never clobbered (second-opinion blocker 1).
+    const page = await withRetry(() => notion.pages.retrieve({ page_id: card.id }), 'planReadyRefetch');
+    const live = {
+      action: card.action,
+      priority: getSelectValue(page.properties.Priority),
+      status: page.properties.Status?.status?.name || 'Unknown',
+    };
+    if (!shouldMarkPlanReady(live)) return false;
     await withRetry(() => notion.pages.update({
       page_id: card.id,
       properties: { Priority: { select: { name: 'P1 Next' } } },
@@ -689,8 +703,10 @@ async function markPlanReadyForDispatch(card) {
     await addInfoComment(card.id,
       `⏭️ "${card.action}" finished but nothing was implemented, and this card had no Priority — set it to "P1 Next" so the plan gets dispatched for implementation instead of getting lost. Clear the Priority if you want to park it.`,
       'planReadyComment');
+    return true;
   } catch (err) {
     log(`  markPlanReady failed (non-fatal): ${err.message}`);
+    return false;
   }
 }
 
@@ -972,7 +988,7 @@ async function main() {
       log(`Updated Outcome for "${card.name}"`);
       await addComment(card, run.result);
       await clearAction(card);
-      await markPlanReadyForDispatch(card);
+      const planReadyEscalated = await markPlanReadyForDispatch(card, entry);
       state.cards[card.id] = {
         name: card.name,
         action: card.action,
@@ -980,6 +996,9 @@ async function main() {
         runDir: (run.keptWorktree || run.runDir === REPO_DIR) ? run.runDir : null,
         attempts: 0,
         lastCommentCheck: startedAt,
+        // Once-per-card escalation breadcrumb — survives future success writes
+        // so a cleared priority stays cleared (deliberate park).
+        planReadyAt: planReadyEscalated ? new Date().toISOString() : (entry.planReadyAt || null),
         updatedAt: new Date().toISOString(),
       };
       saveState(state);

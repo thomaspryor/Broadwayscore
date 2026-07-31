@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getOffBroadwayShows, getMarketStats } from '@/lib/data-core';
+import { getOffBroadwayShows, getNotableOffBroadwayShows, getMarketStats } from '@/lib/data-core';
 import { getAwardWinnerSets } from '@/lib/data-awards';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
@@ -179,6 +179,11 @@ export default function OffBroadwayPage() {
           totalReviews={totalReviews}
           marketOpenCounts={{
             broadway: getMarketStats().nyc.openShows,
+            // The "Broadway+" pill links to / which mixes in open curated OB
+            // picks — count must match what that page actually shows
+            broadwayPlus:
+              getMarketStats().nyc.openShows +
+              getNotableOffBroadwayShows().filter(s => s.status === 'open').length,
             offBroadway: getMarketStats().offBroadway?.openShows ?? 0,
           }}
           awardWinnerSets={getAwardWinnerSets()}
