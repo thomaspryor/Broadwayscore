@@ -1,224 +1,20 @@
 {
-  "generatedAt": "2026-07-31T09:55:11.126Z",
+  "generatedAt": "2026-07-31T10:45:28.127Z",
   "windowDays": 1095,
-  "targets": 29,
+  "targets": 11,
   "counts": {
-    "withGap": 12,
-    "totalMissing": 16,
-    "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 27,
+    "withGap": 7,
+    "totalMissing": 33,
+    "totalCitedNoUrl": 0,
+    "totalFlaggedMisses": 4,
     "totalRecoverable": 0,
     "totalRecovered": 0
   },
   "results": [
     {
-      "showId": "the-saviors-off-broadway-2026",
-      "title": "The Saviors",
-      "openingDate": "2026-07-27",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-were-critics-testify-for-bubba-weilers-the-saviors",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-SAVIORS-Opens-at-Atlantic-Theater-Company-20260727"
-      ],
-      "aggregatorListedUrls": [
-        "https://cititour.com/NYC_Broadway/The-Saviors/1387",
-        "https://culturesauce.com/saviors-bubba-weiler-off-broadway-review/",
-        "https://exeuntnyc.com/reviews/review-the-saviors-at-atlantic-theater-company/",
-        "https://thefrontrowcenter.com/2026/07/the-saviors/",
-        "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/",
-        "https://nystagereview.com/2026/07/27/the-saviors-what-would-jesus-do/",
-        "https://www.newyorktheatreguide.com/reviews/the-saviors-off-broadway-review",
-        "https://www.nytimes.com/2026/07/27/theater/the-saviors-review-childlike-faith-adult-betrayal.html",
-        "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
-        "https://www.theatrely.com/post/the-saviors-two-young-catholics-in-a-miraculous-new-play-review",
-        "https://www.thewrap.com/creative-content/reviews/the-saviors-off-broadway-review-altar-boys/",
-        "https://www.talkinbroadway.com/page/ob/07_27_26.html"
-      ],
-      "dirFiles": 20,
-      "dirClean": 10,
-      "inReviewsJson": 10,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "nysun.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.talkinbroadway.com/page/ob/07_27_26.html",
-          "host": "talkinbroadway.com",
-          "knownOutletId": "talkinbroadway",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "talkinbroadway--howard-miller.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.talkinbroadway.com/page/ob/07_27_26.html"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
-    },
-    {
-      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-      "title": "Cat Cohen: Broad Strokes",
-      "openingDate": "2026-07-27",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
-        "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
-        "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
-        "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
-        "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
-        "https://www.thewrap.com/creative-content/theater/broad-strokes-off-broadway-review-cat-cohen/",
-        "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
-        "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/"
-      ],
-      "dirFiles": 16,
-      "dirClean": 11,
-      "inReviewsJson": 11,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
-    },
-    {
-      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
-      "title": "Les Misérables: The Arena Concert Spectacular",
-      "openingDate": "2026-07-28",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-the-les-miserables-arena-concert-spectacular-at-radio-city-music-hall",
-        "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-THE-ARENA-CONCERT-SPECTACULAR-Opens-At-Radio-City-Music-Hall-20260728"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/les-miserables-arena-concert-spectacular-review/",
-        "https://cititour.com/NYC_Broadway/Les-Miserables-The-Arena-Concert-Spectacular/1388",
-        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-still-breaking-hearts-and-triggering-tears/",
-        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
-        "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
-        "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/",
-        "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-        "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review"
-      ],
-      "dirFiles": 14,
-      "dirClean": 10,
-      "inReviewsJson": 9,
-      "missing": [
-        {
-          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-          "host": "1minutecritic.substack.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "amny.com",
-          "count": 1
-        },
-        {
-          "host": "nydailynews.com",
-          "count": 1
-        },
-        {
-          "host": "nypost.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Les Misérables: The Arena Concert Spectacular\" review radio",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Les Misérables: The Arena Concert Spectacular\" Boublil review",
-            "ok": true,
-            "results": 9,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 4,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-          "host": "1minutecritic.substack.com",
-          "outletId": "1minutecritic",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
-      "title": "The Wind in the Willows - Theatre On Kew",
-      "openingDate": "2026-07-25",
+      "showId": "chat-noir-off-west-end-2026",
+      "title": "CHAT NOIR!",
+      "openingDate": "2026-04-30",
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
@@ -230,314 +26,158 @@
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false
-      },
+      "weReference": null,
       "serpCensus": {
         "ran": false,
-        "reason": "cooldown"
+        "reason": "out-of-window"
       }
     },
     {
-      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
-      "title": "Rosie O'Donnell: Common Knowledge",
-      "openingDate": "2026-07-25",
+      "showId": "white-rabbit-red-rabbit-west-end-2026",
+      "title": "White Rabbit Red Rabbit",
+      "openingDate": "2026-06-09",
       "status": "open",
-      "category": "off-broadway",
+      "category": "west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/common-knowledge-off-broadway-review-rosie-odonnell",
-        "https://deadline.com/2026/07/rosie-odonnell-common-knowledge-off-broadway-1237003334/",
-        "https://www.theatermania.com/news/rosie-odonnell-discusses-her-new-off-broadway-show-common-knowledge_1845820/",
-        "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/",
-        "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons"
-      ],
-      "dirFiles": 5,
-      "dirClean": 2,
-      "inReviewsJson": 1,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatermania.com/news/rosie-odonnell-discusses-her-new-off-broadway-show-common-knowledge_1845820/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatermania.com/news/rosie-odonnell-discusses-her-new-off-broadway-show-common-knowledge_1845820/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/",
-          "host": "darylroththeatre.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "darylroththeatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons",
-          "host": "sparkhamptons.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "sparkhamptons--angela-lagreca.json",
-              "flag": "clean",
-              "urlInDir": "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Rosie O'Donnell: Common Knowledge\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Rosie O'Donnell: Common Knowledge\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"Rosie O'Donnell: Common Knowledge\" review daryl",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 2,
-        "resultCount": 5,
-        "error": null
-      }
-    },
-    {
-      "showId": "the-enormous-crocodile-west-end-2026",
-      "title": "The Enormous Crocodile",
-      "openingDate": "2026-07-28",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/show/46222-the-enormous-crocodile",
-        "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this",
-        "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
-        "https://www.mybaba.com/event/roald-dahls-the-enormous-crocodile-the-musical-returns-to-london/"
-      ],
-      "dirFiles": 8,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this",
-          "host": "threads.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
-          "host": "threads.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.mybaba.com/event/roald-dahls-the-enormous-crocodile-the-musical-returns-to-london/",
-          "host": "mybaba.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.londontheatre.co.uk/show/46222-the-enormous-crocodile",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--anya-ryan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londontheatre.co.uk/reviews/the-enormous-crocodile-review-regents-park-open-air-theatre"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
-      },
+      "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Enormous Crocodile\" West End review 2026",
-        "queryStatus": [
-          {
-            "query": "\"The Enormous Crocodile\" West End review 2026",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"The Enormous Crocodile\" review lyric",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 2,
-        "resultCount": 4,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this",
-          "host": "threads.com",
-          "outletId": "threads",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~56117/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
-        },
-        {
-          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
-          "host": "threads.com",
-          "outletId": "threads",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~56117/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
-        },
-        {
-          "url": "https://www.mybaba.com/event/roald-dahls-the-enormous-crocodile-the-musical-returns-to-london/",
-          "host": "mybaba.com",
-          "outletId": "mybaba",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~56122/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
-        }
-      ],
-      "ingestSkippedByCap": []
+        "ran": false,
+        "reason": "out-of-window"
+      }
     },
     {
-      "showId": "hungry-women-off-broadway-2026",
-      "title": "Hungry Women",
-      "openingDate": "2026-07-25",
+      "showId": "the-black-mirror-experience-off-broadway-2026",
+      "title": "The Black Mirror Experience",
+      "openingDate": "2026-06-22",
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/hungry-women-off-broadway-review-julia-lester",
-        "https://www.talkinbroadway.com/page/ob/07_25_26.html",
-        "https://pagesonstages.com/2026/07/25/hungry-women/",
-        "https://www.broadwayworld.com/reviews/hungry-women",
-        "https://www.offoffonline.com/offoffonline/2026/7/25/hungry-women"
+        "https://culturesauce.com/black-mirror-experience-off-broadway-review/"
       ],
       "dirFiles": 5,
-      "dirClean": 4,
-      "inReviewsJson": 4,
+      "dirClean": 5,
+      "inReviewsJson": 5,
       "missing": [],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "therecs.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "mercury-off-broadway-2026",
+      "title": "Mercury",
+      "openingDate": "2026-04-30",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-MERCURY-FUR-Opens-Off-Broadway-20150821"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html",
+        "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
+        "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/",
+        "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667",
+        "https://dalyklerwhmui.cloudfront.net",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://maps.google.com/",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+      ],
+      "dirFiles": 9,
+      "dirClean": 2,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "thestage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "washingtonpost.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
-          "url": "https://www.broadwayworld.com/reviews/hungry-women",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
+          "url": "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -545,108 +185,324 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "broadwayworld--unknown.json",
-              "flag": "roundup",
-              "urlInDir": "https://www.broadwayworld.com/reviews/hungry-women"
+              "file": "nytimes--ben-brantley.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html"
             }
           ],
-          "serpCensus": true
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nypost--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Hungry Women\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Hungry Women\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Hungry Women\" review soho",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 2,
-        "resultCount": 3,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-MERCURY-FUR-Opens-Off-Broadway-20150821",
+          "publishDate": "2015-08-21"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56818/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "outletId": "gstatic",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56823/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "outletId": "googleapis",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56824/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "outletId": "google",
+          "provisional": true,
+          "ok": false,
+          "reason": "Fetch returned no usable HTML (got 442 chars)"
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56825/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "outletId": "google"
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "title": "Heated Rivalry: The Unauthorized Musical Parody",
+      "openingDate": "2026-05-12",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-heated-rivalry-the-unauthorized-musical-parody",
+        "https://www.broadwayworld.com/article/Review-Roundup-HEATED-RIVALRY-THE-UNAUTHORIZED-MUSICAL-PARODY-Opens-Off-Broadway-20260526"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/heated-rivalry-parody-review/",
+        "https://gaycitynews.com/heated-rivalry-musical-parody-slap-shots-slapstick/",
+        "https://newyorktheater.me/2026/05/26/heated-rivalry-the-unauthorized-musical-parody-review/",
+        "https://www.newyorktheatreguide.com/reviews/heated-rivalry-the-unauthorized-musical-parody-off-broadway-review",
+        "https://stageandcinema.com/2026/05/26/heated-rivalry-unauthorized-musical-parody-review/",
+        "https://thequeerreview.com/2026/05/26/theatre-review-heated-rivalry-the-unauthorized-musical-parody-the-culture-club-off-broadway/",
+        "https://www.theatermania.com/news/review-a-heated-rivalry-musical-parody-comes-hard-for-the-worlds-wine-moms_1838355/"
+      ],
+      "dirFiles": 17,
+      "dirClean": 9,
+      "inReviewsJson": 8,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "offoffonline.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.org",
+          "count": 1
+        },
+        {
+          "host": "timeout.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/heated-rivalry-the-unauthorized-musical-parody-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--gillian-russo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/heated-rivalry-the-unauthorized-musical-parody-off-broadway-review"
+            },
+            {
+              "file": "nytg--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/heated-rivalry-the-unauthorized-musical-parody-off-broadway-review"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
       }
     },
     {
-      "showId": "dog-man-the-musical-west-end-2026",
-      "title": "Dog Man - The Musical",
-      "openingDate": "2026-07-29",
+      "showId": "milk-and-honey-amt-theater-off-broadway-2026",
+      "title": "Milk and Honey (AMT Theater)",
+      "openingDate": "2026-04-16",
       "status": "open",
-      "category": "off-west-end",
+      "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
-        "https://www.timeout.com/london/theatre/the-truth-review",
-        "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
-        "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
-        "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner"
+        "https://dalyklerwhmui.cloudfront.net",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://maps.google.com/",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
       ],
       "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 5,
-          "weRefStarsSource": "theatre-reviews"
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "knownOutletId": null
         },
         {
-          "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews"
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "knownOutletId": null
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "theatre-reviews"
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "knownOutletId": null
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 2,
-          "weRefStarsSource": "theatre-reviews"
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "knownOutletId": null
         }
       ],
       "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "ingestResults": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56835/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "outletId": "gstatic",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56835/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "outletId": "googleapis",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56835/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "outletId": "google",
+          "provisional": true,
+          "ok": false,
+          "reason": "Fetch returned no usable HTML (got 442 chars)"
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup",
+          "provisional": true,
+          "ok": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "outletId": "google"
+        }
+      ]
+    },
+    {
+      "showId": "loves-labours-lost-globe-west-end-2026",
+      "title": "Love's Labour's Lost - Globe",
+      "openingDate": "2026-07-17",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2026/jul/30/loves-labours-lost-review-shakespeares-globe-london",
+        "https://www.whatsonstage.com/news/loves-labours-lost-at-shakespeares-globe-review_1728330/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/loves-labours-lost-review-shakespeares-globe/",
+        "https://www.thestage.co.uk/reviews/loves-labours-lost-review-2026-indiana-lown-collins-shakespeares-globe",
+        "https://www.timeout.com/london/theatre/loves-labours-lost-7-review",
+        "https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review-shakespeare-ruined-by-puerile-knob-gags-wtr9x5xl9"
+      ],
+      "dirFiles": 22,
+      "dirClean": 13,
+      "inReviewsJson": 10,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
-          "url": "https://www.timeout.com/london/theatre/the-truth-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
+          "url": "https://www.thestage.co.uk/reviews/loves-labours-lost-review-2026-indiana-lown-collins-shakespeares-globe",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -654,43 +510,33 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "timeout--andrzej-lukowski.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.timeout.com/london/news/dog-man-the-musical-coming-to-london-in-summer-2026-120225"
+              "file": "thestage--dave-fargnoli.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thestage.co.uk/reviews/loves-labours-lost-review-2026-indiana-lown-collins-shakespeares-globe"
             }
           ],
           "weRef": true,
           "weRefSources": [
-            "theatre-reviews"
+            "westendtheatre"
           ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews"
+          "weRefStars": 3,
+          "weRefStarsSource": "westendtheatre"
         }
       ],
-      "citedNoUrl": [
-        {
-          "outletId": "telegraph",
-          "outletName": "The Telegraph",
-          "stars": 4,
-          "source": "theatre-reviews",
-          "sourceArticleUrl": "https://theatre.reviews/reviews-roundup/the-truth-apollo-reviews/",
-          "priorRun": false,
-          "hasExcludedFiles": false
-        }
-      ],
+      "citedNoUrl": [],
       "weReference": {
         "rowCount": 6,
         "sources": {
           "westendtheatre": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 6,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
           },
           "theatre-reviews": {
-            "found": true,
-            "rows": 6,
+            "found": false,
+            "rows": 0,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -712,130 +558,189 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 6,
-        "corroborated": 0,
+        "corroborated": 5,
         "perSource": {
-          "theatre-reviews": {
-            "cited": 1,
-            "corroborated": 0
+          "westendtheatre": {
+            "cited": 6,
+            "corroborated": 5
           }
         }
       },
       "serpCensus": {
         "ran": true,
         "complete": true,
-        "query": "\"Dog Man - The Musical\" West End review 2026",
+        "query": "\"Love's Labour's Lost - Globe\" West End review 2026",
         "queryStatus": [
           {
-            "query": "\"Dog Man - The Musical\" West End review 2026",
+            "query": "\"Love's Labour's Lost - Globe\" West End review 2026",
             "ok": true,
-            "results": 9,
+            "results": 5,
             "error": null
           },
           {
-            "query": "\"Dog Man - The Musical\" review queen",
+            "query": "\"Love's Labour's Lost - Globe\" review shakespeare",
             "ok": true,
-            "results": 10,
+            "results": 4,
+            "error": null
+          },
+          {
+            "query": "\"Love's Labour's Lost - Globe\" Shakespeare review",
+            "ok": true,
+            "results": 6,
             "error": null
           }
         ],
-        "queriesOk": 2,
+        "queriesOk": 3,
         "resultCount": 0,
         "error": null
       },
-      "ingestResults": [
+      "recoveryResults": [
         {
-          "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
-          "host": "theguardian.com",
-          "outletId": "guardian",
+          "url": "https://www.londontheatre1.com/reviews/loves-labours-lost-shakespeares-globe/",
+          "host": "londontheatre1.com",
+          "file": "londontheatre1--unknown.json",
+          "recovered": false,
+          "skipped": false,
           "provisional": false,
-          "ok": true,
-          "reason": null
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ]
+    },
+    {
+      "showId": "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026",
+      "title": "The Mystery of Edwin Drood (AMT Theater)",
+      "openingDate": "2026-05-14",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://dalyklerwhmui.cloudfront.net",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202607300101/gpt",
+        "https://maps.google.com/",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+      ],
+      "dirFiles": 6,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "knownOutletId": null
         },
         {
-          "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
-          "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": true,
-          "reason": null
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "knownOutletId": null
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "knownOutletId": null
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~56200/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+          "url": "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202607300101/gpt",
+          "host": "doubleclick.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "knownOutletId": null
         }
       ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "title": "Death Note: The Musical",
-      "openingDate": "2026-07-30",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "therecs.co.uk",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": true,
-            "rows": 0,
-            "emptyParse": true,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false
-      },
+      "weReference": null,
       "serpCensus": {
         "ran": false,
-        "reason": "cooldown"
-      }
+        "reason": "out-of-window"
+      },
+      "ingestResults": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56845/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "outletId": "gstatic",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56846/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "outletId": "googleapis",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56847/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202607300101/gpt",
+          "host": "doubleclick.net",
+          "outletId": "doubleclick",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56847/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "outletId": "google",
+          "provisional": true,
+          "ok": false,
+          "reason": "Fetch returned no usable HTML (got 442 chars)"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup"
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "outletId": "google"
+        }
+      ]
     },
     {
-      "showId": "the-vessel-off-broadway-2026",
-      "title": "The Vessel",
-      "openingDate": "2026-07-30",
+      "showId": "poet-on-a-string-off-broadway-2026",
+      "title": "Poet On A String",
+      "openingDate": "2026-05-27",
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
@@ -888,7 +793,7 @@
       "weReference": null,
       "serpCensus": {
         "ran": false,
-        "reason": "cooldown"
+        "reason": "out-of-window"
       },
       "ingestResults": [
         {
@@ -897,7 +802,7 @@
           "outletId": "cloudfront",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~56223/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~56850/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
         },
         {
           "url": "https://fonts.gstatic.com",
@@ -905,7 +810,7 @@
           "outletId": "gstatic",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~56229/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~56850/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
         },
         {
           "url": "https://fonts.googleapis.com/css2",
@@ -913,7 +818,115 @@
           "outletId": "googleapis",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~56233/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~56850/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "outletId": "google",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56851/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56851/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "outletId": "google"
+        }
+      ]
+    },
+    {
+      "showId": "fear-and-wonder-off-broadway-2026",
+      "title": "Fear & Wonder",
+      "openingDate": "2026-06-08",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://dalyklerwhmui.cloudfront.net",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://maps.google.com/",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "ingestResults": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56853/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "outletId": "gstatic",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56854/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "outletId": "googleapis",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~56855/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
         },
         {
           "url": "https://maps.google.com/",
@@ -929,7 +942,7 @@
           "outletId": "todaytixgroup",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~56235/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~56855/day) projects exhaustion in ~10d, before the 22d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [
@@ -941,87 +954,52 @@
       ]
     },
     {
-      "showId": "tao-of-glass-west-end-2026",
-      "title": "Tao of Glass",
-      "openingDate": "2026-07-30",
+      "showId": "the-lost-boys-2026",
+      "title": "The Lost Boys",
+      "openingDate": "2026-04-26",
       "status": "open",
-      "category": "west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false
-      },
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
-    },
-    {
-      "showId": "im-sorry-prime-minister-west-end-2026",
-      "title": "I’m Sorry, Prime Minister",
-      "openingDate": "2026-02-12",
-      "status": "closed",
-      "category": "west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/im-sorry-prime-minister-review-apollo-theatre",
-        "https://www.broadwayworld.com/westend/article/Review-IM-SORRY-PRIME-MINISTER-starring-Griff-Rhys-Jones-Apollo-Theatre-20260213",
-        "https://www.standard.co.uk/culture/theatre/i-m-sorry-prime-minister-review-apollo-theatre-b1270903.html",
-        "https://www.telegraph.co.uk/theatre/what-to-see/im-sorry-prime-minister-review-west-end/",
-        "https://www.thestage.co.uk/reviews/im-sorry-prime-minister-review-apollo-theatre-london-jonathan-lynn",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/im-sorry-prime-minister-yes-review-apollo-theatre-b2919769.html",
-        "https://www.timeout.com/london/theatre/im-sorry-prime-minister-review",
-        "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act"
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-lost-boys-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-LOST-BOYS-Arrives-on-Broadway-20260426"
       ],
-      "dirFiles": 23,
-      "dirClean": 13,
-      "inReviewsJson": 17,
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/lost-boys-broadway-review/",
+        "https://www.amny.com/news/review-musical-adaptation-of-the-lost-boys/",
+        "https://cititour.com/NYC_Broadway/The-Lost-Boys/1378",
+        "https://www.chicagotribune.com/2026/04/26/review-lost-boys-broadway/",
+        "https://davidcote1.substack.com/p/how-the-lost-boys-breaks-the-vampire",
+        "https://culturesauce.com/2026/04/26/the-lost-boys-broadway-review/",
+        "https://deadline.com/2026/04/lost-boys-broadway-review-1236870020/",
+        "https://ew.com/the-lost-boys-musical-review-singing-vampires-bite-into-broadway-11958889",
+        "https://gizmodo.com/the-lost-boys-broadway-musical-is-everything-this-fan-wanted-and-more-2000750965",
+        "https://www.newyorktheatreguide.com/reviews/the-lost-boys-broadway-review",
+        "https://nypost.com/2026/04/26/entertainment/the-lost-boys-review-vampire-show-is-best-new-musical-on-broadway/",
+        "https://www.nytimes.com/2026/04/26/theater/the-lost-boys-review.html",
+        "https://nystagereview.com/2026/04/26/the-lost-boys-vampire-musical-lacks-bite/",
+        "https://nystagereview.com/2026/04/26/the-lost-boys-bite-but-not-enough-blood/",
+        "https://people.com/the-lost-boys-broadway-review-11958855",
+        "https://www.slantmagazine.com/theater/the-lost-boys-broadway-review/",
+        "https://www.theatermania.com/news/review-the-lost-boys-breaks-the-curse-of-the-vampire-musical-on-broadway_1834562/",
+        "https://www.theatrely.com/post/the-lost-boys-is-one-bloody-good-time-review",
+        "https://www.timeout.com/newyork/news/broadway-review-the-lost-boys-a-musical-that-goes-for-blood-042726",
+        "https://www.truehollywoodtalk.com/the-lost-boys-musical-takes-flight-on-broadway/",
+        "https://variety.com/2026/legit/reviews/lost-boys-broadway-review-musical-teen-vampire-movie-spectacular-effects-1236730779/",
+        "https://www.thewrap.com/creative-content/theater/the-lost-boys-broadway-review/",
+        "https://www.nydailynews.com/2026/04/26/broadway-review-spectacle-of-lost-boys-nearly-makes-up-for-weak-score-book/",
+        "https://exeuntnyc.com/reviews/review-the-lost-boys-the-musical-at-the-palace-theatre/",
+        "https://www.newyorker.com/magazine/2026/05/11/the-lost-boys-theatre-review-schmigadoon",
+        "https://www.latimes.com/entertainment-arts/story/2026-05-01/broadway-musicals-cats-jellicle-ball-lost-boys-titanique",
+        "https://www.purewow.com/entertainment/the-lost-boys-broadway-review",
+        "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/"
+      ],
+      "dirFiles": 56,
+      "dirClean": 44,
+      "inReviewsJson": 39,
       "missing": [],
       "dirOnly": [
         {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "dailymail.co.uk",
+          "host": "artsfuse.org",
           "count": 1
         },
         {
@@ -1029,775 +1007,54 @@
           "count": 1
         },
         {
-          "host": "londonboxoffice.co.uk",
+          "host": "lightingandsoundamerica.com",
           "count": 1
         },
         {
-          "host": "westendbestfriend.co.uk",
+          "host": "mashable.com",
           "count": 1
         },
-        {
-          "host": "whatsonstage.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "artsdesk--helen-hawkins.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "the-gin-game-2026",
-      "title": "The Gin Game",
-      "openingDate": "2026-07-15",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-GIN-GAME-Starring-Debra-Winger-and-Arliss-Howard-20260724"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards-bad-hand-59068784",
-        "https://nystagereview.com/2026/07/20/the-gin-game-debra-winger-and-arliss-howard-deliver-a-winning-hand/",
-        "https://www.theatermania.com/news/review-the-gin-game-starring-debra-winger-and-arliss-howard_1846902/",
-        "https://www.nytimes.com/2026/07/24/theater/debra-winger-arliss-howard-gin-game.html",
-        "https://www.theatermania.com/shows/new-york-city-theater/off-off-broadway/the-gin-game_1846906/",
-        "https://stagebuddy.com/theater/theater-feature/the-gin-game",
-        "https://www.broadwayworld.com/reviews/the-gin-game"
-      ],
-      "dirFiles": 12,
-      "dirClean": 4,
-      "inReviewsJson": 4,
-      "missing": [
-        {
-          "url": "https://stagebuddy.com/theater/theater-feature/the-gin-game",
-          "host": "stagebuddy.com",
-          "knownOutletId": "stagebuddy",
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
         {
           "host": "nysun.com",
           "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.nytimes.com/2026/07/24/theater/debra-winger-arliss-howard-gin-game.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--laura-collins-hughes.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.nytimes.com/2026/07/24/theater/debra-winger-arliss-howard-gin-game.html"
-            }
-          ],
-          "serpCensus": true
         },
         {
-          "url": "https://www.broadwayworld.com/reviews/the-gin-game",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--unknown.json",
-              "flag": "roundup",
-              "urlInDir": "https://www.broadwayworld.com/reviews/the-gin-game"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Gin Game\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"The Gin Game\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"The Gin Game\" review housing",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"The Gin Game\" Coburn review",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 7,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://stagebuddy.com/theater/theater-feature/the-gin-game",
-          "host": "stagebuddy.com",
-          "outletId": "stagebuddy",
-          "provisional": false,
-          "ok": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "amaze-magic-off-broadway-2025",
-      "title": "AMAZE Magic",
-      "openingDate": "2025-07-20",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/amaze-off-broadway-review-jamie-allan",
-        "https://www.theatermania.com/news/review-jamie-allans-amaze-will-wow-kids-and-their-gen-xer-parents-too_1795840/",
-        "https://nystagereview.com/2025/08/13/amaze-magic-magical-storytelling/",
-        "https://www.theaterscene.net/plays/offbway-plays/amaze/victor-gluck/",
-        "https://theaterlife.com/jamie-allans-amaze/",
-        "https://www.hollywoodsoapbox.com/review-come-for-the-magic-stay-for-jamie-allans-story/",
-        "https://stageandcinema.com/2025/08/13/amaze-jamie-allan/",
-        "https://luxuryexperience.com/featured/jamie-allans-amaze-new-world-stages-nyc-ny-usa/"
-      ],
-      "dirFiles": 10,
-      "dirClean": 8,
-      "inReviewsJson": 8,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "burlesque-west-end-2026",
-      "title": "Burlesque",
-      "openingDate": "2025-07-22",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-BURLESQUE-THE-MUSICAL-Opens-in-London-20250722"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-review-explosive-energy-and-powerhouse-vocals-ctrrm7cbk",
-        "https://www.theguardian.com/stage/2025/jul/22/burlesque-the-musical-review-christina-aguilera",
-        "https://www.whatsonstage.com/news/burlesque-review-west-end-musical-is-a-frivolous-and-flimsy-frolic_1687704/",
-        "https://www.dailymail.co.uk/tvshowbiz/article-14930715/PATRICK-MARMION-reviews-Burlesque-Savoy-Theatre-laborious-theatrical-rehash-lamentable-film.html",
-        "https://www.cityam.com/burlesque-musical-review-christina-aquilera-show-is-quality-trash/",
-        "https://www.westendbestfriend.co.uk/news/review-burlesque-the-musical-savoy-theatre",
-        "https://www.londontheatre.co.uk/reviews/burlesque-the-musical-review-savoy-theatre",
-        "https://www.standard.co.uk/culture/theatre/burlesque-savoy-theatre-review-b1239600.html",
-        "https://www.timeout.com/london/news/review-burlesque-the-musical-savoy-theatre-072325",
-        "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christina-aguilera",
-        "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review"
-      ],
-      "dirFiles": 29,
-      "dirClean": 15,
-      "inReviewsJson": 17,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "theartsdesk.com",
+          "host": "newyorktheater.me",
           "count": 1
         },
         {
-          "host": "attitude.co.uk",
+          "host": "pagesonstages.com",
           "count": 1
         },
         {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "express.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "telegraph.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/burlesque-the-musical-review-savoy-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--anya-ryan.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.londontheatre.co.uk/reviews/burlesque-the-musical-review-savoy-theatre"
-            }
-          ]
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/burlesque-savoy-theatre-review-b1239600.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/burlesque-savoy-theatre-review-b1239600.html"
-            }
-          ]
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatreandtonic--emmie-newitt.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review"
-            },
-            {
-              "file": "theatreandtonic--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
-      "title": "Dear England (New Wimbledon Theatre)",
-      "openingDate": "2026-02-24",
-      "status": "announced",
-      "category": "west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-ladies-football-club-sheffield-crucible-review/",
-        "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour",
-        "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre",
-        "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre",
-        "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
-        "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
-        "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution",
-        "https://www.timeout.com/london/theatre/dear-england-review"
-      ],
-      "dirFiles": 19,
-      "dirClean": 1,
-      "inReviewsJson": 2,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-ladies-football-club-sheffield-crucible-review/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--dominic-cavendish.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "all-that-dazzles-uk--daz-gale.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre#:~:text=A%20beautiful%20production%20about%20the,would%20be%20very%20well%20deserved."
-            },
-            {
-              "file": "all-that-dazzles-uk--sam-waite.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour"
-            }
-          ]
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--aliya-al-hassan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre"
-            },
-            {
-              "file": "london-theatre--marianka-swain.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre"
-            }
-          ]
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--aliya-al-hassan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre"
-            },
-            {
-              "file": "london-theatre--marianka-swain.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre"
-            }
-          ]
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--arifa-akbar.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution"
-            },
-            {
-              "file": "guardian--mark-lawson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre"
-            }
-          ]
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/dear-england-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--andrzej-lukowski.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/dear-england-review-2"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "the-hunger-games-on-stage-west-end-2025",
-      "title": "The Hunger Games On Stage",
-      "openingDate": "2025-11-28",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Di-the-Critics-Think-of-THE-HUNGER-GAMES-ON-STAGE-20251113"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/hunger-games-on-stage-west-end/",
-        "https://www.theguardian.com/stage/2025/nov/13/the-hunger-games-on-stage-review-thundering-fight-to-the-death-in-a-dazzling-dystopia",
-        "https://www.thetimes.com/culture/theatre-dance/article/hunger-games-on-stage-review-zczllb0bj",
-        "https://www.thestage.co.uk/reviews/the-hunger-games-on-stage-review-troubadour-canary-wharf-theatre-london",
-        "https://www.timeout.com/london/news/review-the-hunger-games-on-stage-111225",
-        "https://inews.co.uk/culture/arts/hunger-games-stage-show-everything-wrong-4025669"
-      ],
-      "dirFiles": 29,
-      "dirClean": 17,
-      "inReviewsJson": 24,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "dailymail.co.uk",
-          "count": 1
-        },
-        {
-          "host": "ft.com",
-          "count": 1
-        },
-        {
-          "host": "independent.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "standard.co.uk",
+          "host": "talkinbroadway.com",
           "count": 1
         },
         {
           "host": "therecs.co.uk",
-          "count": 1
-        },
-        {
-          "host": "spectator.co.uk",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "dark-of-the-moon-west-end-2026",
-      "title": "Dark of the Moon",
-      "openingDate": "2026-05-26",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "gotta-dance-off-broadway-2026",
-      "title": "Gotta Dance!",
-      "openingDate": "2026-03-20",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-do-the-critics-think-of-gotta-dance-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-GOTTA-DANCE-Opens-Off-Broadway-at-the-York-Theatre-20251204"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/gotta-dance-york-theatre-review/",
-        "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
-        "https://nystagereview.com/2025/12/03/gotta-dance-gotta-dance-better-than-this/",
-        "https://therecs.co.uk/gotta-dance/",
-        "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
-        "https://www.talkinbroadway.com/page/ob/03_31_26.html",
-        "https://www.theaterscene.net/musicals/offbway/gotta-dance-2/christopher-caz/",
-        "https://theaterlife.com/gotta-dance-1-2/",
-        "https://pagesonstages.com/2026/03/31/gotta-dance/",
-        "https://www.theaterscene.net/dance/gotta-dance/victor-gluck/",
-        "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html"
-      ],
-      "dirFiles": 16,
-      "dirClean": 7,
-      "inReviewsJson": 6,
-      "missing": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "frontmezzjunkies.com",
           "count": 1
         },
         {
           "host": "theaterpizzazz.com",
           "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://1minutecritic.com/gotta-dance-york-theatre-review/",
-          "host": "1minutecritic.com",
-          "knownOutletId": "one-minute-critic",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "one-minute-critic--matthew-wexler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://1minutecritic.com/gotta-dance-york-theatre-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2025/12/03/gotta-dance-gotta-dance-better-than-this/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--david-finkle.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/12/03/gotta-dance-gotta-dance-better-than-this/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://therecs.co.uk/gotta-dance/",
-          "host": "therecs.co.uk",
-          "knownOutletId": "the-recs",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-recs--the-recs-rdc-randall-david-cook.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://therecs.co.uk/gotta-dance/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--linda-buchwald.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/gotta-dance-celebrating-classic-musicals-to-return-off-broadway_1826450/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-interested-bystander--cary-wong.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/what-do-the-critics-think-of-gotta-dance-off-broadway",
-          "publishDate": "2025-12-04"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-GOTTA-DANCE-Opens-Off-Broadway-at-the-York-Theatre-20251204",
-          "publishDate": "2025-12-04"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
-          "host": "cititour.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "sabrage-off-west-end-2026",
-      "title": "Sabrage",
-      "openingDate": "2026-05-08",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
