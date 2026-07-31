@@ -12,8 +12,8 @@
 #
 # Usage: lint-workflow-guards.sh <check>[,<check>...]
 #   Checks: prebuild | core-data-pairing | private-git-add | merge-drivers
-#         | scraping-fallback | theatr-token | demo-flags | snapshot-overwrite
-#         | alert-ledger-commit | reset-soft-partial-commit
+#         | scraping-fallback | scrapingdog-pairing | theatr-token | demo-flags
+#         | snapshot-overwrite | alert-ledger-commit | reset-soft-partial-commit
 #   Groups: workflows (all .github/workflows-scoped checks) | all
 
 set -uo pipefail
@@ -202,6 +202,41 @@ check_scraping_fallback() {
   fi
 }
 
+check_scrapingdog_pairing() {
+  # Scraping v2 Sprint 1 T9: fetchPage()'s SD tier is ~3x cheaper than BD and
+  # runs before it in the fallback chain, but only when SCRAPINGDOG_API_KEY is
+  # actually wired into the workflow's env block — 5 scraping workflows
+  # (discover-regional-serp-reviews, scrape-theatre-reviews, update-lbo,
+  # update-ltd, update-seatplan) were missing it entirely, silently paying BD
+  # rates for every fetch. Same pairing pattern as check_scraping_fallback:
+  # any workflow using BD or SB for real scraping must also carry SD.
+  local EXEMPT="
+    check-secrets-health.yml
+    check-cookie-health.yml
+    test.yml
+    verify-reviews.yml
+  "
+  # verify-reviews.yml: also exempt from check_scraping_fallback (SB-only by
+  # design, not a bulk fetchPage() scraper) — same rationale here.
+  local VIOLATIONS="" f name
+  for f in .github/workflows/*.yml; do
+    name=$(basename "$f")
+    if echo "$EXEMPT" | grep -qw "$name"; then continue; fi
+    if (grep -q "BRIGHTDATA_TOKEN" "$f" || grep -q "SCRAPINGBEE_API_KEY" "$f") && ! grep -q "SCRAPINGDOG_API_KEY" "$f"; then
+      VIOLATIONS="$VIOLATIONS $name"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Scraping workflows must also carry SCRAPINGDOG_API_KEY (fetchPage()'s cheapest tier, ~3x less than BD)."
+    echo "::error::Missing SCRAPINGDOG_API_KEY in:$VIOLATIONS"
+    echo "Fix: add SCRAPINGDOG_API_KEY: \${{ secrets.SCRAPINGDOG_API_KEY }} to the scraping step's env block."
+    echo "If this workflow legitimately never calls fetchPage() (health check, CI, etc), add it to the EXEMPT list in scripts/lint-workflow-guards.sh."
+    FAILED=1
+  else
+    echo "All scraping workflows have SCRAPINGDOG_API_KEY wired in"
+  fi
+}
+
 check_theatr_token() {
   # THEATR_REFRESH_TOKEN burns on use (Theatr rotates refresh tokens). Only
   # update-theatr.yml and rotate-theatr-token.yml may use it — any other
@@ -364,6 +399,7 @@ run_check() {
     private-git-add)   check_private_git_add ;;
     merge-drivers)     check_merge_drivers ;;
     scraping-fallback) check_scraping_fallback ;;
+    scrapingdog-pairing) check_scrapingdog_pairing ;;
     theatr-token)      check_theatr_token ;;
     demo-flags)        check_demo_flags ;;
     snapshot-overwrite) check_snapshot_overwrite ;;
@@ -371,14 +407,14 @@ run_check() {
     reset-soft-partial-commit) check_reset_soft_partial_commit ;;
     workflows)
       check_prebuild; check_core_data_pairing; check_private_git_add
-      check_merge_drivers; check_scraping_fallback; check_theatr_token
+      check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
       check_snapshot_overwrite; check_alert_ledger_commit ;;
     all)
       check_prebuild; check_core_data_pairing; check_private_git_add
-      check_merge_drivers; check_scraping_fallback; check_theatr_token
+      check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
       check_demo_flags; check_snapshot_overwrite; check_alert_ledger_commit
       check_reset_soft_partial_commit ;;
-    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|reset-soft-partial-commit|workflows|all>[,...]" >&2; exit 2 ;;
+    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|reset-soft-partial-commit|workflows|all>[,...]" >&2; exit 2 ;;
   esac
 }
 
