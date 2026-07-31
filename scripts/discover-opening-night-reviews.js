@@ -24,7 +24,7 @@ const path = require('path');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDisplayName } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
-const { OUTLET_DOMAINS: _OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { OUTLET_DOMAINS: _OUTLET_DOMAINS, serpQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -97,15 +97,25 @@ function slugifyHostname(str) {
 
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
+// Set by searchGoogle() when the shared serpQuery() chain reports no provider
+// could answer at all (both keys missing, or every provider in the chain
+// failed). Strategy 2b's own SERP-provider gate reads this — see T7 note below.
+let _serpUnavailable = false;
+// Strategy 2 (Google News) still hand-rolls its own direct ScrapingBee call
+// (serpQuery has no news search_type) and sets this independently on a 401/
+// 403/429 from THAT call. It no longer reflects Strategy 1/2b exhaustion —
+// those now route through the shared chain in url-discovery.js, which
+// doesn't expose per-provider exhaustion state. Acceptable narrowing per the
+// T7 scope (routing change only): Strategy 2 still self-detects its own
+// SB exhaustion; it just can't see Strategy 1's anymore.
 let _scrapingBeeExhausted = false;
-let _loggedNoProviders = false;
 
-// Per-run SERP call budget. searchGoogle() and the inline news/web queries hit
-// ScrapingBee SERP DIRECTLY, bypassing scraper.js's SB_CREDIT_BUDGET guard, so
-// without this a pathological run could spend unbounded credits (plan-review:
-// Codex). Counts every SERP call across Strategy 1 + 2 + 2b. The broad web
-// query (2b) is gated on remaining budget so it can never be the thing that
-// blows the cap. Override via OPENING_NIGHT_SERP_BUDGET.
+// Per-run SERP call budget. searchGoogle() and the inline news query hit
+// SERP APIs bypassing scraper.js's SB_CREDIT_BUDGET guard, so without this a
+// pathological run could spend unbounded credits (plan-review: Codex).
+// Counts every SERP call across Strategy 1 + 2 + 2b. The broad web query (2b)
+// is gated on remaining budget so it can never be the thing that blows the
+// cap. Override via OPENING_NIGHT_SERP_BUDGET.
 const SERP_CALL_BUDGET = parseInt(process.env.OPENING_NIGHT_SERP_BUDGET || '80', 10);
 let _serpCallsUsed = 0;
 function underSerpBudget() {
@@ -113,115 +123,21 @@ function underSerpBudget() {
 }
 
 /**
- * Search Google via ScrapingBee SERP API, with BrightData SERP fallback.
- * Falls back to BrightData when ScrapingBee returns 401/403/429 (credits exhausted).
+ * Search Google via the shared BD/SB/ScrapingDog SERP chain (Scraping v2
+ * Sprint 1 T7: scripts/lib/url-discovery.js's serpQuery — same chain
+ * url-discovery.js/opening-night-poller.js use). Replaces this file's former
+ * private ScrapingBee->BrightData-only chain; serpQuery gains a ScrapingDog
+ * tier, the 24h disk cache, and cost telemetry for free. Routing change
+ * only — call sites and budget accounting below are unchanged.
  */
-async function searchGoogle(query, apiKey, nbResults = 5) {
+async function searchGoogle(query, nbResults = 5) {
   _serpCallsUsed++;
-  // Try ScrapingBee first (unless already exhausted)
-  if (!_scrapingBeeExhausted && apiKey) {
-    const results = await _serpViaScrapingBee(query, apiKey, nbResults);
-    if (results !== null) return results;
-  }
-
-  // Fallback to BrightData SERP API
-  if (BRIGHTDATA_TOKEN) {
-    return await _serpViaBrightData(query);
-  }
-
-  if (!_loggedNoProviders) {
-    console.log('    ⚠ All SERP providers unavailable — no search results');
-    _loggedNoProviders = true;
-  }
-  return [];
-}
-
-async function _serpViaScrapingBee(query, apiKey, nbResults) {
-  const url = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}&nb_results=${nbResults}`;
-
-  for (let attempt = 0; attempt < 3; attempt++) {
-    try {
-      const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
-      if (!res.ok) {
-        const status = res.status;
-        if (status === 401 || status === 403 || status === 429) {
-          console.log(`    ⚠ ScrapingBee SERP exhausted (${status}) — falling back to BrightData`);
-          _scrapingBeeExhausted = true;
-          return null; // Signal to try BrightData
-        }
-        if (status >= 500 && attempt < 2) {
-          console.log(`    SERP ${status}, retrying in ${(attempt + 1) * 5}s...`);
-          await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
-          continue;
-        }
-        throw new Error(`SERP ${status}: ${(await res.text()).slice(0, 200)}`);
-      }
-      const data = await res.json();
-      return data.organic_results || data.results || [];
-    } catch (err) {
-      if (attempt < 2 && (err.name === 'TimeoutError' || err.message.includes('timeout') || err.message.includes('ECONNRESET'))) {
-        console.log(`    SERP timeout, retrying in ${(attempt + 1) * 5}s...`);
-        await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
-        continue;
-      }
-      throw err;
-    }
-  }
-  return [];
-}
-
-const BD_CUSTOMER = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
-const BD_ZONE = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
-
-async function _serpViaBrightData(query) {
-  try {
-    // Step 1: Submit async SERP request
-    const submitRes = await fetch(
-      `https://api.brightdata.com/serp/req?customer=${BD_CUSTOMER}&zone=${BD_ZONE}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
-        },
-        body: JSON.stringify({ query: { q: query, gl: 'us' } }),
-        signal: AbortSignal.timeout(15000),
-      }
-    );
-    if (!submitRes.ok) throw new Error(`BrightData submit ${submitRes.status}: ${(await submitRes.text()).slice(0, 200)}`);
-    const submitData = await submitRes.json();
-    const responseId = submitData.response_id;
-    if (!responseId) throw new Error('No response_id from BrightData');
-
-    // Step 2: Poll for results (max 20s)
-    for (let i = 0; i < 10; i++) {
-      await new Promise(r => setTimeout(r, 2000));
-      const pollRes = await fetch(
-        `https://api.brightdata.com/serp/get_result?response_id=${responseId}`,
-        {
-          headers: { 'Authorization': `Bearer ${BRIGHTDATA_TOKEN}` },
-          signal: AbortSignal.timeout(10000),
-        }
-      );
-      if (pollRes.status === 202) continue; // Still processing
-      if (!pollRes.ok) throw new Error(`BrightData poll ${pollRes.status}`);
-      const data = await pollRes.json();
-      if (data.organic) {
-        return data.organic.slice(0, 5).map(r => ({
-          url: r.link || r.url || '',
-          title: r.title || '',
-        }));
-      }
-      // If no organic results yet, keep polling
-      if (data.response_id) continue;
-      return []; // Empty results
-    }
-    console.log('    ⚠ BrightData SERP timeout (20s) — returning empty');
-    return [];
-  } catch (err) {
-    console.log(`    ✗ BrightData SERP error: ${err.message}`);
+  const results = await serpQuery(query, { nbResults });
+  if (results === null) {
+    _serpUnavailable = true;
     return [];
   }
+  return results;
 }
 
 /**
@@ -415,7 +331,7 @@ async function main() {
     const query = `site:${domain} "${showTitle}" ${reviewKeyword}${year ? ` ${year}` : ''}${dateFilter}`;
 
     try {
-      const results = await searchGoogle(query, SCRAPINGBEE_KEY, 3);
+      const results = await searchGoogle(query, 3);
       searched++;
 
       for (const result of results) {
@@ -691,7 +607,7 @@ async function main() {
   // the highest wrong-production risk for generic titles. Skip until day 1+
   // (ship-check: Claude). Mirrors the gather-side day-0 aggregators-only rule.
   const daysSinceOpening = opening ? Math.floor((Date.now() - opening.getTime()) / 86400000) : null;
-  if (_scrapingBeeExhausted && !BRIGHTDATA_TOKEN) {
+  if (_serpUnavailable) {
     console.log('  Skipping broad web search (no SERP provider available)');
   } else if (daysSinceOpening !== null && daysSinceOpening < 1) {
     console.log('  Skipping broad web search on opening day (SERP not indexed; avoids early wrong-production hits)');
@@ -700,7 +616,7 @@ async function main() {
   } else {
     const webQuery = `"${showTitle}" ${reviewKeyword}${dateFilter}`;
     try {
-      const results = await searchGoogle(webQuery, SCRAPINGBEE_KEY, 10);
+      const results = await searchGoogle(webQuery, 10);
       searched++;
       let gated = 0;
       for (const result of results) {
