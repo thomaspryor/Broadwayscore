@@ -60,8 +60,21 @@ test('readAllSnapshots: fresh sections render, everything else lands in problems
   assert.equal(sections.dailyDigest, null);
   assert.equal(sections.redditDigest, null);
   assert.equal(sections.backlogDrain, null);
-  assert.equal(problems.length, 3);
-  assert.deepEqual(problems.map((p) => p.status).sort(), ['missing', 'missing', 'stale']);
+  // backlogDrain is optionalIfMissing (disabled-by-default launchd plist) —
+  // its absence must NOT land in problems, only reddit's genuine gap does.
+  assert.equal(problems.length, 2);
+  assert.deepEqual(problems.map((p) => p.status).sort(), ['missing', 'stale']);
+  assert.ok(!problems.some((p) => p.key === 'backlogDrain'));
+});
+
+test('readAllSnapshots: an optionalIfMissing snapshot that EXISTS and goes stale still reports (producer broke, not just never-enabled)', () => {
+  const dir = tmpAudit();
+  write(dir, 'backlog-drain-metric.json', { generatedAt: new Date(NOW - 50 * 3600e3).toISOString() });
+
+  const { problems } = readAllSnapshots({ auditDir: dir, now: NOW });
+  const backlogProblem = problems.find((p) => p.key === 'backlogDrain');
+  assert.ok(backlogProblem, 'a stale (not missing) optionalIfMissing snapshot must still be reported');
+  assert.equal(backlogProblem.status, 'stale');
 });
 
 test('describeProblems names every non-fresh source; null when all fresh', () => {

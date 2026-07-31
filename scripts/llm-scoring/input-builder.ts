@@ -16,6 +16,7 @@ const textQuality = require('../lib/text-quality.js');
 // same thing but could drift on the first time someone broadens opera
 // detection (e.g. to non-Met houses).
 const { isOperaShow } = require('../lib/opera-prompt-context');
+const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext } = require('../lib/market-label');
 
 // ========================================
 // TYPES
@@ -167,13 +168,17 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
     // theater. Framing them as theater causes the ensemble's wrong_show gate
     // to reject every opera review as "not the specified venue/category".
     const isOpera = isOperaShow(review);
+    // Market label comes from the shared table (scripts/lib/market-label.js) —
+    // the old inline ternary ended in a bare `: 'Broadway'`, so regional
+    // tryouts were announced to the model as Broadway productions and both
+    // ensemble legs correctly rejected them as wrong_production (2026-07-30).
     const marketLabel = isOpera ? 'Opera (Metropolitan Opera)'
-      : review.category === 'west-end' ? 'West End'
-      : review.category === 'off-west-end' ? 'Off-West End'
-      : review.category === 'off-broadway' ? 'Off-Broadway'
-      : 'Broadway';
+      : getMarketLabel(review.category);
     const venueInfo = review.venue ? ` at ${review.venue}` : '';
     contextParts.push(`Show: ${review.showTitle}${venueInfo} (${marketLabel})`);
+    if (!isOpera && isNonMetroMarket(review.category)) {
+      contextParts.push(getRegionalPromptContext(review.venue));
+    }
     if (isOpera) {
       contextParts.push('NOTE: This is an opera production at the Metropolitan Opera. Reviews discussing opera, the Met, conductors, sopranos/tenors/bass voices, libretto, arias, and musical performance ARE valid for this show — do NOT flag the review as wrong_show or wrong_production for being about opera at the Met.');
     }

@@ -22,6 +22,8 @@
  * in scripts/lib/, required by both production and test).
  */
 
+const { hasExcerpt } = require('./excerpt-fields');
+
 /**
  * Retire the rescore queue entry on a scored review file.
  *
@@ -80,6 +82,28 @@ function markRescoreComplete(fileData, completedAt) {
  */
 
 /**
+ * True iff `error` is a deterministic text-gate rejection — i.e. safe to
+ * fingerprint against fullText length and permanently skip on repeat.
+ *
+ * Deliberately a string-prefix check, not the ensemble scorer's broader
+ * `inputValidationFailed` boolean. Both real gates (score-input-validator.js,
+ * called from scorer.ts and ensemble-scorer.ts) stamp their error as
+ * `input_validation_failed:${reason}` — a pure function of input text.
+ * ensemble-scorer.ts ALSO sets `inputValidationFailed: true` on its POST-LLM
+ * `hallucinated_score` refusal, which is NOT deterministic: it depends on
+ * stochastic model reasoning about text that already passed the length/
+ * nav-chrome gates, so a retry can legitimately succeed. Trusting the
+ * boolean there would permanently exclude those files from --needs-rescore
+ * (the fullText they'd be fingerprinted against never changes).
+ *
+ * @param {string|undefined} error
+ * @returns {boolean}
+ */
+function isDeterministicTextGateFailure(error) {
+  return typeof error === 'string' && error.startsWith('input_validation_failed:');
+}
+
+/**
  * Stamp a review file after a deterministic, text-driven scoring failure.
  * Mutates in place; returns the same object for saveReviewFile() inlining.
  *
@@ -94,6 +118,16 @@ function stampTerminalScoringFailure(fileData, reason, blockedAt) {
   fileData.rescoreBlockedReason = reason;
   fileData.rescoreBlockedAt = blockedAt || new Date().toISOString();
   fileData.rescoreBlockedTextLength = (fileData.fullText || '').length;
+  // Adversarial review (2026-07-30, two independent reviewers): the scorer
+  // validates whichever text getBestTextForScoring() selects, which can be
+  // an aggregator excerpt rather than fullText — and excerpts are EXEMPT
+  // from the body_too_short gate (score-input-validator.js isExcerpt:true).
+  // A file blocked with no excerpt (fullText too short, isExcerpt:false)
+  // becomes scoreable the moment ANY excerpt field is populated, even
+  // though fullText.length never changes. Track excerpt presence alongside
+  // the length fingerprint so isBlockedFromRescore() unblocks on that event
+  // too.
+  fileData.rescoreBlockedHadExcerpt = hasExcerpt(fileData);
   return fileData;
 }
 
@@ -109,7 +143,17 @@ function stampTerminalScoringFailure(fileData, reason, blockedAt) {
 function isBlockedFromRescore(data) {
   if (!data || !data.rescoreBlockedReason) return false;
   const currentLength = (data.fullText || '').length;
-  return currentLength === data.rescoreBlockedTextLength;
+  if (currentLength !== data.rescoreBlockedTextLength) return false;
+  // An excerpt appearing/disappearing since the block changes whether the
+  // scorer's isExcerpt:true bypass applies — re-evaluate rather than trust
+  // a stale fullText-only fingerprint. See stampTerminalScoringFailure().
+  if (hasExcerpt(data) !== !!data.rescoreBlockedHadExcerpt) return false;
+  return true;
 }
 
-module.exports = { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore };
+module.exports = {
+  markRescoreComplete,
+  stampTerminalScoringFailure,
+  isBlockedFromRescore,
+  isDeterministicTextGateFailure,
+};

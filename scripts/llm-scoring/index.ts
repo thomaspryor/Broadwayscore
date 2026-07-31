@@ -85,7 +85,7 @@ import { isScoreable } from './is-scoreable';
 const { emitStage } = require('../lib/stage-latency');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
 const { isInFallbackCooldown } = require('../lib/manual-clear-fallback-cooldown');
-const { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore } = require('../lib/rescore-lifecycle');
+const { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore, isDeterministicTextGateFailure } = require('../lib/rescore-lifecycle');
 const { pushWithRetry } = require('../lib/push-with-retry.js');
 // venue-classification import removed — market context now passed via input-builder
 
@@ -768,6 +768,31 @@ function saveReviewFile(filePath: string, data: any): void {
 }
 
 /**
+ * Stamp a file for the head-of-line blocking fix (Notion 3ad637c5-416f-8169)
+ * — shared by every failure path that can produce a deterministic text-gate
+ * rejection: the live scoring loop, --batch submission prep, and --batch
+ * resume prep.
+ *
+ * Deliberately gates on the error STRING PREFIX, not the inputValidationFailed
+ * boolean. Both real gate sites (scorer.ts, ensemble-scorer.ts) stamp their
+ * error as `input_validation_failed:${reason}` — a pure function of the text.
+ * ensemble-scorer.ts also sets inputValidationFailed:true on its POST-LLM
+ * hallucinated_score refusal (`error: 'hallucinated_score: ...'`), which is
+ * NOT deterministic — it depends on stochastic model reasoning about text
+ * that already passed the length/nav-chrome gates, so a retry can legitimately
+ * succeed. Gating on the boolean would permanently exclude those files from
+ * --needs-rescore (the text they'd be fingerprinted against never changes).
+ * The prefix check catches only the two real gates.
+ */
+function maybeStampBlockedRescore(filePath: string, error: string | undefined, dryRun: boolean): void {
+  if (dryRun) return;
+  if (!isDeterministicTextGateFailure(error)) return;
+  const fileData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  stampTerminalScoringFailure(fileData, error as string);
+  saveReviewFile(filePath, fileData);
+}
+
+/**
  * Persist a Haiku-fallback failure on a manually-cleared file. Without this,
  * a file whose fallback score fails leaves ZERO state on disk — the next run
  * (and every run after) re-attempts the full ensemble + fallback from
@@ -1432,6 +1457,15 @@ async function main(): Promise<void> {
         // WE shows now get market+venue context in the prompt (2026-04-13), so the
         // LLM can correctly distinguish Broadway vs West End productions.
         const showInfo = showPriority.get(reviewFile.showId || '');
+        // Regional was briefly added here alongside off-broadway (2026-07-30) and
+        // then deliberately removed. The real repair is upstream: the prompt used
+        // to call a regional tryout a Broadway production, so the model rejected
+        // it correctly (scripts/lib/market-label.js). With the label fixed, a
+        // blanket regional exemption would only convert a VISIBLE false positive
+        // into a SILENT false negative — a genuine mismatch (e.g. last season's
+        // different production at the same regional house) could never be
+        // flagged. Off-Broadway keeps its carve-out for the documented
+        // transfer-confusion reason; regional does not need one.
         const isOffBroadway = showInfo?.category === 'off-broadway';
         if (rejection === 'wrong_show') {
           // Combined reviews are excluded from manuallyCleared above and
@@ -1541,20 +1575,11 @@ async function main(): Promise<void> {
         outletId: reviewFile.outletId || '',
         error: result.error || 'Unknown error'
       });
-      // Head-of-line blocking fix (Notion 3ad637c5-416f-8169): an
-      // inputValidationFailed error (score-input-validator.js's body_too_short
-      // / nav_chrome_majority gates) is a pure function of fullText — the SAME
-      // file fails identically on every future attempt until the text itself
-      // changes. Stamp it so the --needs-rescore selector can skip past it
-      // next run instead of re-spending 3-model API cost on the same
-      // unscoreable head of the queue forever (112 of 181 flagged files
-      // observed 2026-07-30). Transient failures (timeouts, rate limits,
-      // vendor 5xx) are deliberately NOT stamped here — those deserve a retry.
-      if ((result as any).inputValidationFailed && !options.dryRun) {
-        const fileData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-        stampTerminalScoringFailure(fileData, result.error || 'input_validation_failed');
-        saveReviewFile(filePath, fileData);
-      }
+      // Head-of-line blocking fix (Notion 3ad637c5-416f-8169) — see
+      // maybeStampBlockedRescore() for why this checks the error prefix and
+      // not the inputValidationFailed boolean (the boolean also covers the
+      // non-deterministic hallucinated_score refusal).
+      maybeStampBlockedRescore(filePath, result.error, options.dryRun === true);
     }
     // Success and hard-failure both fell THROUGH in the original loop.
     return false;
@@ -1609,6 +1634,10 @@ async function main(): Promise<void> {
         if (!prepared.ok || !prepared.prep) {
           console.log(`   ⚠️ Resume prep failed for ${entry.showId}/${entry.outletId}: ${prepared.failure?.error}`);
           errorDetails.push({ showId: entry.showId, outletId: entry.outletId, error: `resume_prep_failed:${prepared.failure?.error || 'unknown'}` });
+          // Head-of-line blocking fix (Notion 3ad637c5-416f-8169): same class
+          // as the batch submission path — stamp deterministic text-gate
+          // failures here too so a resumed batch doesn't re-fail forever.
+          maybeStampBlockedRescore(absPath, prepared.failure?.error, options.dryRun === true);
           continue;
         }
         // The models scored the text as it was at SUBMIT time. If it changed
@@ -1977,6 +2006,11 @@ async function main(): Promise<void> {
           outletId: reviewFile.outletId || '',
           error: failure.error || 'Unknown error'
         });
+        // Head-of-line blocking fix (Notion 3ad637c5-416f-8169): --batch mode
+        // (the default for scheduled runs) rejects at this pre-submission
+        // prepare step and never reaches handleScoringResult, so it needs the
+        // same stamp the live-scoring FAILED branch gets.
+        maybeStampBlockedRescore(filePath, failure.error, options.dryRun === true);
         continue;
       }
       pendingBatchItems.push({
