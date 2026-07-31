@@ -49,6 +49,11 @@ const SNAPSHOTS = [
   // report — those mean the producer EXISTED and then broke, which is real
   // signal worth flagging.
   { key: 'backlogDrain', label: 'backlog drain', file: 'backlog-drain-metric.json', maxAgeH: 36, optionalIfMissing: true },
+  // scripts/check-provider-spend.js (Scraping Cost System v2 Sprint 0) —
+  // daily billing-API spend vs owner thresholds + 7-day verification streak.
+  // CI-produced in data-health-check.yml and committed, like health above.
+  // optionalIfMissing until the first daily run lands the file on main.
+  { key: 'providerSpend', label: 'scraping spend', file: 'provider-spend-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
 ];
 
 /**

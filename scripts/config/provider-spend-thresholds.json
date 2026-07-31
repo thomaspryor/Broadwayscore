@@ -1,0 +1,8 @@
+{
+  "_comment": "Daily ALERT thresholds for check-provider-spend.js — owner-approved 2026-07-30 (Scraping Cost System v2, Option A). These are alarm lines, NOT enforcement: enforcement stays in the env-var caps (BROWSERBASE_MAX_SESSIONS_PER_DAY etc). Changing a number here changes when the digest yells, nothing else.",
+  "browserbaseDailyUsd": 4,
+  "brightdataDailyUsd": 2.5,
+  "scrapingbeeDailyCredits": 35000,
+  "scrapingdogDailyCredits": 45000,
+  "streakTargetDays": 7
+}

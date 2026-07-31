@@ -53,6 +53,15 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/scrapingdog-ack.js'
       - 'scripts/lib/scrapingdog-ack.test.mjs'
+      # Scraping Cost System v2 truth layer (2026-07-30): billing-API parsers +
+      # daily spend reconciliation decision functions. Colocated *.test.mjs run
+      # in the lib-test glob; path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/provider-billing.js'
+      - 'scripts/lib/provider-billing.test.mjs'
+      - 'scripts/lib/provider-spend-core.js'
+      - 'scripts/lib/provider-spend-core.test.mjs'
+      - 'scripts/check-provider-spend.js'
       # IPv4/CIDR containment for the BD blacklist self-heal (2026-07-27:
       # Bright Data auto-blacklisted GitHub runner range 158.23.190.0/24).
       # Path-listed so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).

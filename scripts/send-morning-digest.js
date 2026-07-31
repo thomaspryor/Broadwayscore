@@ -203,6 +203,9 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // named digest uses, so it reuses renderNamedDigestBlock with no new
   // render code.
   if (sections.backlogDrain) blocks.push(renderNamedDigestBlock('Backlog drain', sections.backlogDrain));
+  // Scraping spend vs budget (check-provider-spend.js, Scraping Cost System
+  // v2) — same {generatedAt, bannerText, items} shape, no new render code.
+  if (sections.providerSpend) blocks.push(renderNamedDigestBlock('Scraping spend', sections.providerSpend));
 
   if (blocks.length) {
     parts.push(blocks.join('\n'));
