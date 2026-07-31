@@ -962,6 +962,36 @@ describe('normalizeUrl', () => {
       );
     });
   });
+
+  // Task #704 (cousin of #702's verifyFetchedUrl fix): theatre.reviews injects a
+  // trailing U+200E (LEFT-TO-RIGHT MARK) into canonical URLs that's invisible on
+  // the page but breaks byte-for-byte dedup comparison in this function's callers
+  // (gather-reviews.js write-time dedup, cleanup-dedup-comprehensive.js).
+  describe('invisible Unicode handling', () => {
+    test('theatre.reviews trailing U+200E strips and matches non-marked version', () => {
+      const withMark = 'https://theatre.reviews/the-gin-game-review/‎';
+      const withoutMark = 'https://theatre.reviews/the-gin-game-review/';
+      assert.strictEqual(normalizeUrl(withMark), normalizeUrl(withoutMark));
+    });
+
+    test('zero-width space mid-path strips', () => {
+      const withZwsp = 'https://example.com/re​view';
+      const clean = 'https://example.com/review';
+      assert.strictEqual(normalizeUrl(withZwsp), normalizeUrl(clean));
+    });
+
+    test('BOM prefix strips', () => {
+      const withBom = '﻿https://example.com/review';
+      const clean = 'https://example.com/review';
+      assert.strictEqual(normalizeUrl(withBom), normalizeUrl(clean));
+    });
+
+    test('invisible-Unicode strip composes with existing tracking-param + AMP strip', () => {
+      const withMarkAndUtm = 'https://theatre.reviews/the-gin-game-review/‎?utm_source=tw';
+      const clean = 'https://theatre.reviews/the-gin-game-review/';
+      assert.strictEqual(normalizeUrl(withMarkAndUtm), normalizeUrl(clean));
+    });
+  });
 });
 
 // ============================================================================
