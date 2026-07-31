@@ -18,14 +18,22 @@ function getDomain(url) {
   }
 }
 
+// Zero-width spaces, LTR/RTL marks, BOM -- some sites (e.g. theatre.reviews) inject
+// these into canonical URLs invisibly, breaking byte-for-byte comparison (see #702).
+const INVISIBLE_UNICODE_RE = /[​-‏‪-‮⁠-⁤﻿]/g;
+
+function stripInvisibleUnicode(url) {
+  return url.normalize('NFC').replace(INVISIBLE_UNICODE_RE, '');
+}
+
 /**
- * Normalize a URL for comparison: strip query params, lowercase, remove trailing slash
+ * Normalize a URL for comparison: strip invisible Unicode, query params, lowercase, remove trailing slash
  * @param {string} url
  * @returns {string}
  */
 function normalizeUrl(url) {
   try {
-    return url.split('?')[0].toLowerCase().replace(/\/$/, '');
+    return stripInvisibleUnicode(url).split('?')[0].toLowerCase().replace(/\/$/, '');
   } catch {
     return url;
   }
@@ -88,4 +96,5 @@ module.exports = {
   buildTodayTixUrl,
   buildTelechargeUrl,
   TELECHARGE_EXCEPTIONS,
+  stripInvisibleUnicode,
 };
