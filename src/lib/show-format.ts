@@ -90,7 +90,7 @@ export const SHOW_FORMATS: Record<ShowType, ShowFormat> = {
 const UNKNOWN_FORMAT: ShowFormat = {
   label: 'EVENT',
   title: 'Event',
-  colorClass: 'border-gray-500/50 text-gray-400',
+  colorClass: 'border-white/10 text-gray-400',
   textClass: 'text-gray-400',
   emailColor: '#9ca3af',
 };

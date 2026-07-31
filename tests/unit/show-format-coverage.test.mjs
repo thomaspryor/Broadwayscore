@@ -72,6 +72,27 @@ function parseTsFormats() {
   return map;
 }
 
+// UNKNOWN_FORMAT lives outside SHOW_FORMATS, so the map-parity test below never
+// sees it. Parse it separately — otherwise a one-sided edit to the fallback
+// drifts silently, which is exactly how `border-gray-500/50` survived in one
+// copy after the design-token lint forced it out of the other.
+function parseTsUnknown() {
+  const body = tsSource.split('const UNKNOWN_FORMAT')[1];
+  assert.ok(body, 'UNKNOWN_FORMAT not found in src/lib/show-format.ts');
+  const fields = body.split('};')[0];
+  const grab = (name) => {
+    const f = new RegExp(`${name}:\\s*'([^']*)'`).exec(fields);
+    return f ? f[1] : undefined;
+  };
+  return {
+    label: grab('label'),
+    title: grab('title'),
+    colorClass: grab('colorClass'),
+    textClass: grab('textClass'),
+    emailColor: grab('emailColor'),
+  };
+}
+
 const SHOWS_PATH = path.join(REPO, 'data/shows.json');
 
 // data/shows.json is private core data (CLAUDE.md §11): present in CI and the
@@ -173,6 +194,18 @@ describe('show-format parity between src/ and scripts/', () => {
         `UNKNOWN_FORMAT is missing "${field}" — resolveShowFormat(unknown).${field} is undefined`
       );
     }
+  });
+
+  it('the unknown-input fallback matches VALUE-for-value across the two copies', () => {
+    // Presence is not parity: the sibling test above only asserts each declared
+    // field is defined. This one catches a changed value in one copy only.
+    const ts = parseTsUnknown();
+    assert.ok(ts.label, 'failed to parse UNKNOWN_FORMAT from the TS source');
+    assert.deepStrictEqual(
+      ts,
+      js.resolveShowFormat('a-type-that-does-not-exist'),
+      'UNKNOWN_FORMAT differs between src/lib/show-format.ts and scripts/lib/show-format.js'
+    );
   });
 
   it('the TS and JS maps define the same format keys', () => {
