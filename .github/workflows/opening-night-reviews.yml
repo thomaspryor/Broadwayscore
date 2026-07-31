@@ -2,13 +2,24 @@ name: Opening Night Reviews
 
 on:
   schedule:
-    # 5 AM UTC = midnight EST — reviews published ~10-11 PM, aggregators indexed by midnight
+    # HEAVY ticks (2x daily, same spend as the old schedule): full pass —
+    # workflow-level SERP discovery, WE census scrapers, Reddit dispatch.
     - cron: '0 5 * * *'
-    # 15 UTC = 11 AM ET / 4 PM BST — same-day late-population sweep.
-    # DTLI/BWW RR frequently add reviews 6-12h after opening as outlets trickle in.
-    # The orchestrator's 6h window ends too early for these; this cron catches them
-    # on the same day before the next evening cron.
-    - cron: '0 15 * * *'
+    - cron: '0 17 * * *'
+    # LIGHT ticks (every 3h between heavies): only the cheap, per-show-deduped
+    # arms — gather-reviews dispatch (full gather re-runs its own discovery)
+    # and the census-anchored coverage audit with --dispatch self-heal.
+    # WHY: the old twice-daily schedule left a 13-hour blind window that
+    # landed exactly when critics publish. On 2026-07-31 the Guardian
+    # (~15:00 UTC), Telegraph (~16:20) and two more Tao of Glass reviews ALL
+    # published after the day's final 15:39 run — the 50th owner-observed
+    # instance of "Google has reviews the site lacks" the day after an
+    # opening. UK outlets publish 09:00–18:00 UTC, NYC 14:00–04:00 UTC; only
+    # a rolling cadence covers both. Light ticks skip the Reddit dispatch and
+    # uncached census scrapes (second-opinion review 2026-07-31: running those
+    # per-tick would 4x their spend), so extra ticks cost only a deduped
+    # gather per in-window show.
+    - cron: '0 2,8,11,14,20,23 * * *'
   workflow_dispatch:
     inputs:
       lookback_days:
@@ -26,10 +37,30 @@ permissions:
   contents: read
   actions: write
 
+# Overlapping ticks would double-run push-review-texts and the audit
+# --dispatch step (second-opinion review 2026-07-31). Queue, never cancel.
+concurrency:
+  group: opening-night-reviews
+  cancel-in-progress: false
+
 jobs:
   check-and-trigger:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
+      - name: Detect tick mode
+        id: mode
+        run: |
+          # Heavy = the two legacy daily crons or any manual dispatch. Keyed on
+          # github.event.schedule (NOT wall clock — GHA crons fire late and
+          # wall-clock keying misfires; see enrich-west-end-dates fix #649).
+          SCHED='${{ github.event.schedule }}'
+          if [ -z "$SCHED" ] || [ "$SCHED" = '0 5 * * *' ] || [ "$SCHED" = '0 17 * * *' ]; then
+            echo "heavy=true" >> $GITHUB_OUTPUT
+          else
+            echo "heavy=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Checkout
         uses: actions/checkout@v5
         with:
@@ -163,8 +194,8 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
-      - name: Discover reviews via SERP (scheduled days only)
-        if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != ''
+      - name: Discover reviews via SERP (scheduled days, heavy ticks only)
+        if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != '' && steps.mode.outputs.heavy == 'true'
         continue-on-error: true
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
@@ -187,7 +218,7 @@ jobs:
           done
 
       - name: Push review-texts (SERP discoveries)
-        if: steps.find.outputs.has_shows == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.mode.outputs.heavy == 'true'
         continue-on-error: true
         uses: ./.github/actions/push-review-texts
         with:
@@ -230,7 +261,7 @@ jobs:
           echo "Aggregators-only gather triggered for: $GATHER_SHOWS"
 
       - name: Trigger Reddit sentiment for recently opened shows
-        if: steps.find.outputs.has_shows == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.mode.outputs.heavy == 'true'
         continue-on-error: true
         uses: actions/github-script@v7
         with:
@@ -255,7 +286,7 @@ jobs:
       # step below) has data. Roundups publish slowly — a miss/404 is fine; the
       # audit then reads no-census-yet for that show (never falsely complete).
       - name: Refresh WE roundup archives (for census)
-        if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != ''
+        if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != '' && steps.mode.outputs.heavy == 'true'
         continue-on-error: true
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
@@ -274,7 +305,7 @@ jobs:
       # intentionally NOT persisted (aggregator-archive repo isn't checked out
       # here — the census reads it fresh in the audit step below).
       - name: Push review-texts (census discoveries)
-        if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != ''
+        if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != '' && steps.mode.outputs.heavy == 'true'
         continue-on-error: true
         uses: ./.github/actions/push-review-texts
         with:

@@ -204,7 +204,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Requires:** `DISCORD_WEBHOOK_ALERTS`, `REVIEW_TEXTS_TOKEN` (for checkout-core-data)
 
 ## `opening-night-reviews.yml`
-- **Runs:** Daily at 5 AM UTC (midnight EST), or manually
+- **Runs:** Heavy ticks 05:00 + 17:00 UTC (full pass: SERP discovery, WE census scrapers, Reddit dispatch) and LIGHT ticks every 3h between (02,08,11,14,20,23 UTC — only the per-show-deduped gather dispatch + census-anchored coverage audit). Rolling cadence added 2026-07-31: reviews publish continuously the day after opening (UK 09:00–18:00 UTC, NYC 14:00–04:00 UTC) and the old twice-daily schedule left a 13h blind window. Manually dispatchable (manual = heavy).
 - **Does:** Finds shows that opened in the last 2 days (by `openingDate`), triggers `gather-reviews.yml` to catch opening night reviews the same evening they're published
 - **Why:** The morning `update-show-status.yml` (8 AM UTC) fires before reviews exist (~10-11 PM EST). This evening workflow catches reviews after publication.
 - **Options:** `lookback_days` (default 2)
