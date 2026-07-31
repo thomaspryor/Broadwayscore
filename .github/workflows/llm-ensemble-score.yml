@@ -477,6 +477,18 @@ jobs:
         run: |
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ensemble --all --needs-rescore --limit=50 --verbose
 
+      # Liveness snapshot (task #597): the drain step above only tells you it
+      # RAN, not whether the backlog actually moved — a queue can sit at the
+      # same count across every green drain (bw-v6-decompression frozen at
+      # 141 for ~6 days, rescore-lifecycle.js header). Snapshots the unblocked
+      # needsRescore count every scheduled run regardless of whether the drain
+      # fired this cycle, so 3 flat samples surface in the daily digest
+      # (health-check.js's progressWatchResults). Never fails the job.
+      - name: Snapshot progress-watch state
+        if: always() && github.event_name == 'schedule'
+        continue-on-error: true
+        run: node scripts/check-progress-stalls.js
+
       - name: Check for changes
         id: check-changes
         if: always() && github.event.inputs.dry_run != 'true'
