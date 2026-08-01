@@ -29,6 +29,10 @@
  *    (add a missing show + a missing image on a different, already-catalogued
  *    show). One-issue-per-submission structurally could not represent that;
  *    the second ask was invisible even to a human reading the issue title.
+ *    Scope of that support today: N missing-image asks (one per show named in
+ *    an absence sentence) but at most ONE missing-show ask, because the
+ *    add-show signal is the form's single `show` field. A message asking for
+ *    two new shows at once yields only the one named in that field.
  *  - NOTHING FALLS OFF THE EDGE. Anything not confidently routable comes back
  *    as an `unroutable` action carrying a reason, so the caller still parks it
  *    for review. Silence is never an outcome.

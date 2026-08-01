@@ -430,7 +430,14 @@ async function main() {
         const showsRaw = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
         shows = showsRaw.shows || showsRaw;
       } catch (err) {
-        console.error(`Could not load shows.json for content routing: ${err.message}`);
+        // Degrading to an empty catalog makes EVERY request unroutable, which
+        // parks it — safe, but indistinguishable from "nothing was routable"
+        // unless we say so loudly. Without this the routing rate could drop to
+        // zero in a broken checkout and look like normal quiet.
+        console.error(
+          `::warning::Could not load shows.json for content routing (${err.message}) — ` +
+          `ALL content requests this run will park unrouted, not because they were unroutable.`
+        );
       }
       try {
         const dirs = new Set(fs.readdirSync(path.join(__dirname, '../public/images/shows')));
@@ -476,10 +483,17 @@ async function main() {
           contentActions = [{ kind: 'unroutable', reason: `router error: ${err.message}` }];
         }
         const dispatchable = contentActions.filter((a) => a.workflow);
+        // NOTE: this run PLANS only. The workflow step that actually calls
+        // createWorkflowDispatch is not built yet, so behaviour is still
+        // "park for review" for every submission. Say so literally — a log
+        // reading "dispatching 2" while nothing dispatches is how a half-wired
+        // pipeline gets mistaken for a working one.
         console.log(
           `Content request (no diagnosis): ${item.summary}\n` +
           `  actions: ${contentActions.map((a) => a.kind).join(', ') || 'none'}` +
-          (dispatchable.length ? ` → dispatching ${dispatchable.length}` : ' → parking for review')
+          (dispatchable.length
+            ? ` → ${dispatchable.length} dispatchable, PLANNED ONLY (no dispatcher wired yet; still parking)`
+            : ' → parking for review')
         );
         bugDiagnoses.push({ item, submission: sub, diagnosis: null, contentActions });
         continue;
