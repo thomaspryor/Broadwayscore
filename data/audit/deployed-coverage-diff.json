@@ -1,44 +1,11 @@
 {
-  "generatedAt": "2026-08-01T16:13:40.097Z",
+  "generatedAt": "2026-08-01T17:10:48.837Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 146,
-  "clean": 144,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "title": "The Comedy About Spies",
-      "openingDate": "2026-08-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.04 vs local 83.23 (Δ0.19)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 18
-    },
-    {
-      "showId": "hit-machine-off-west-end-2026",
-      "title": "Hit Machine",
-      "openingDate": "2026-07-15",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 68.64 vs local 67.99 (Δ0.65)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 10,
-      "deployedCount": 10
-    }
-  ]
+  "clean": 146,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
