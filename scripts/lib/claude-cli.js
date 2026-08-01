@@ -34,6 +34,7 @@ const { spawn, spawnSync } = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { readEnvKeys } = require('./load-env.js');
 
 // Same guard as autonomous-budget.js: checked on the OUTPUT of model choice so
 // no config edit can route an unattended run onto the interactive default tier.
@@ -49,12 +50,51 @@ const STAGES = Object.freeze({
   FORBIDDEN_MODEL: 'forbidden-model',
 });
 
+// The credential keys this primitive forwards to the child. Named constant so
+// the .env top-up and the forward allow-list below can never drift apart —
+// filling a key we don't forward, or forwarding one we never fill, both
+// reproduce task #713 silently.
+const AUTH_KEYS = ['ANTHROPIC_API_KEY', 'CLAUDE_CODE_OAUTH_TOKEN'];
+
+/**
+ * Resolve the auth credentials a spawned `claude` needs, WITHOUT mutating
+ * process.env.
+ *
+ * Task #713: under launchd, process.env carries only the plist's
+ * EnvironmentVariables block — no .env, no login shell. Both auth keys were
+ * therefore undefined, nothing got forwarded, and `claude` ran logged out. The
+ * child then exits 1 with a VALID envelope whose result text is
+ * "Not logged in · Please run /login" (reproduced 2026-08-01 under the drain
+ * plist's exact PATH), so every launchd-parented headless dispatch died in
+ * ~40ms at zero cost. Measured 2026-07-31: the first-ever backlog-drain tick
+ * dispatched card #5 and the job died exactly this way (5-ms98zoic, 48ms).
+ *
+ * readEnvKeys returns ONLY these two keys and never writes to process.env —
+ * loadEnv() would publish all 75 .env keys globally and leak Resend/Notion/
+ * scraper secrets into any later non-stripped spawn in the same process, which
+ * is precisely the containment strippedEnv exists to provide (Codex P0).
+ *
+ * @returns {Record<string,string>} the auth keys .env supplies that the
+ *   environment did not already carry — often empty (interactive shell, CI).
+ */
+function resolveAuthEnv() {
+  return readEnvKeys(AUTH_KEYS);
+}
+
 function strippedEnv(extra = {}) {
-  const keep = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', 'ANTHROPIC_API_KEY', 'CLAUDE_CODE_OAUTH_TOKEN'];
+  const keep = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', ...AUTH_KEYS];
   const env = {};
   for (const k of keep) { if (process.env[k] !== undefined) env[k] = process.env[k]; }
   env.HOME = env.HOME || os.homedir();
-  return { ...env, ...extra };
+  // Precedence, weakest first: process.env < .env top-up < caller's `extra`.
+  // The top-up sits ABOVE `env` on purpose: readEnvKeys only returns keys the
+  // environment left absent OR EMPTY, and an inherited `FOO=` empty string
+  // copied into `env` above would otherwise shadow the real .env value — the
+  // exact silent-no-credential shape #713 is about.
+  // `extra` still wins outright: preflightAuth proves the oauth path by
+  // spawning with ANTHROPIC_API_KEY:'' and the real spawn has to reproduce that
+  // exact shape, so a .env key can never re-populate it.
+  return { ...env, ...resolveAuthEnv(), ...extra };
 }
 
 // Auth preflight (task #713 — generalized from opening-night-monitor-launch.js's
@@ -67,7 +107,11 @@ function strippedEnv(extra = {}) {
 // so a doomed pass never silently "succeeds" with a login prompt as its output.
 function authPing(extraEnv) {
   const r = spawnSync('claude', ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
-    { encoding: 'utf8', timeout: 120000, env: { ...process.env, ...extraEnv } });
+    // resolveAuthEnv() sits above process.env for the same reason as in
+    // strippedEnv: under launchd the keys are absent, and the probe has to
+    // exercise the SAME credentials the real spawn will get or it proves
+    // nothing. extraEnv still wins so probe 1 can force the no-API-key shape.
+    { encoding: 'utf8', timeout: 120000, env: { ...process.env, ...resolveAuthEnv(), ...extraEnv } });
   if (r.status !== 0) return { ok: false, detail: (r.stderr || r.stdout || `exit ${r.status}`).slice(0, 300) };
   // Positive validation, never a grep for the error string (it may get reworded):
   // require the envelope to actually contain the pong.
@@ -100,7 +144,12 @@ function preflightAuth({ allowApiKeyFallback = true, log = () => {} } = {}) {
   // Probe 1: the real pass shape — API key cleared, stored login only.
   const stored = authPing({ ANTHROPIC_API_KEY: '' });
   if (stored.ok) return { ok: true, mode: 'oauth' };
-  const apiKeyPresent = allowApiKeyFallback && Boolean(process.env.ANTHROPIC_API_KEY);
+  // Must consult the SAME resolution the spawn uses, not process.env alone:
+  // under launchd the key lives only in .env, and reading process.env here
+  // reported "no ANTHROPIC_API_KEY in env" and failed the preflight closed
+  // even once the spawn path could have used it (task #713).
+  const apiKeyPresent = allowApiKeyFallback
+    && Boolean(process.env.ANTHROPIC_API_KEY || resolveAuthEnv().ANTHROPIC_API_KEY);
   // Probe 2: only if a key exists — can the key path carry the pass?
   const keyed = apiKeyPresent ? authPing({}) : { ok: false, detail: allowApiKeyFallback ? 'no ANTHROPIC_API_KEY in env' : 'API fallback disabled' };
   const decision = resolvePassAuth({ storedLoginOk: false, apiKeyPresent, apiKeyPingOk: keyed.ok });
@@ -249,5 +298,5 @@ function runClaudeCli(opts) {
 
 module.exports = {
   runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE,
-  authPing, resolvePassAuth, preflightAuth,
+  authPing, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
 };
