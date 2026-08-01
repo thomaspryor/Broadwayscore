@@ -2655,9 +2655,7 @@ function isIncludableForRebuild(data, show, filePath) {
     // Wayback snapshot of a Times subscription-lapsed page (correctly not_a_review), but
     // bwwExcerpt held a real review quote and aggregatorStars held Show-Score's 4/5.
     // Scoped to 'not_a_review' only — 'garbage_text' is a stronger, collector-time signal.
-    const hasIndependentExcerptScore = data.rejectionReason === 'not_a_review' &&
-      hasAggregatorExcerpt(data) && data.aggregatorStars != null;
-    if (!isJsonLdStarNotAReview && !hasIndependentExcerptScore) return false;
+    if (!isJsonLdStarNotAReview && !hasIndependentExcerptScore(data)) return false;
   }
   if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
   // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
@@ -2691,9 +2689,7 @@ function isIncludableForRebuild(data, show, filePath) {
     // Exception 4: matches the rejectionReason exception above (line ~2650) — an
     // independent aggregator excerpt + star rating clears the rejectedAt gate too, for
     // the same reason: the rejection was about the fullText fetch, not this content.
-    const hasIndependentExcerptScore = data.rejectionReason === 'not_a_review' &&
-      hasAggregatorExcerpt(data) && data.aggregatorStars != null;
-    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore) return false;
+    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data)) return false;
   }
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
@@ -3122,6 +3118,9 @@ function isRejectedNonReview(data) {
     (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
     require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
   if (isJsonLdStarNotAReview) return false;
+  // Same exception as isIncludableForRebuild's not_a_review carve-out — keeps this
+  // predicate in lock-step with the rebuild gate (see hasIndependentExcerptScore).
+  if (data.rejectionReason === 'not_a_review' && hasIndependentExcerptScore(data)) return false;
   if (NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
   const cv = data.contentVerification;
   // wrongArticle gated on high confidence to match isIncludableForRebuild's
@@ -3146,6 +3145,67 @@ function hasAggregatorExcerpt(data) {
     data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt ||
     data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt
   );
+}
+
+// The longest available aggregator excerpt field, or null. Picks the longest
+// (not just the first truthy) because some files carry more than one excerpt
+// field and a short one (a photo caption sitting in one field) shouldn't hide
+// a substantial one in another.
+function bestAggregatorExcerptText(data) {
+  const fields = [data.bwwExcerpt, data.dtliExcerpt, data.showScoreExcerpt,
+    data.nycTheatreExcerpt, data.stagedoorExcerpt, data.lboRoundupExcerpt];
+  const texts = fields.filter(t => typeof t === 'string' && t.trim().length > 0);
+  if (!texts.length) return null;
+  return texts.reduce((a, b) => (b.length > a.length ? b : a));
+}
+
+// Excerpt text shapes that are NOT a critic's evaluative content, even though
+// they're non-empty and sit in an "excerpt" field: photo captions, aggregator
+// disclaimer boilerplate. Caught 2 of 13 wrong flips in the corpus parity
+// check for the not_a_review excerpt-fallback exception below (task #734
+// ship-check, 2026-08-01) — e.g. "Oliver Savile ... in INTO THE WOODS ...
+// Photo by Johan Persson." and London Box Office's "Not every review
+// published by London Box Office includes a star rating..." disclaimer.
+const JUNK_EXCERPT_PATTERNS = [
+  /photo\s+(by|credit)\b/i,
+  /^photo:/i,
+  /not every review published by/i,
+];
+
+/**
+ * True when a review-text file has an aggregator excerpt substantial and
+ * clean enough to stand on its own as the scoring source, independent of a
+ * (possibly garbage) fullText fetch — used by the not_a_review rejectionReason
+ * exception below. Deliberately narrow: this is a fallback for "the FULLTEXT
+ * fetch failed, but we still hold real third-party-sourced content," not a
+ * general excerpt-is-good-enough gate.
+ *
+ * Requires ALL of:
+ *   - an aggregator excerpt field with 150+ chars of non-junk text (excludes
+ *     photo captions, aggregator disclaimer boilerplate — see
+ *     JUNK_EXCERPT_PATTERNS)
+ *   - aggregatorStars that actually parses to a rating (excludes "N/A" and
+ *     other unparseable strings masquerading as a score)
+ *   - no wrongProduction / wrongShow flag, unconditionally (this narrow path
+ *     does not defer to the manual-clear machinery the other gates use — if
+ *     either flag is set, the file stays excluded here regardless)
+ *
+ * Corpus parity check (all 41,455 review-text files, task #734 ship-check
+ * 2026-08-01): the earlier version of this exception (excerpt presence +
+ * aggregatorStars non-null) flipped 14 files from excluded to included; 13
+ * were wrong (photo captions, LBO disclaimers, wrong-URL content, forum
+ * threads, cookie banners, a file with wrongProduction:true). This tightened
+ * version is intentionally conservative.
+ */
+function hasIndependentExcerptScore(data) {
+  if (!data || data.rejectionReason !== 'not_a_review') return false;
+  if (data.wrongProduction === true || data.wrongShow === true) return false;
+  const excerpt = bestAggregatorExcerptText(data);
+  if (!excerpt || excerpt.trim().length < 150) return false;
+  if (JUNK_EXCERPT_PATTERNS.some(p => p.test(excerpt))) return false;
+  if (data.aggregatorStars == null) return false;
+  const { parseOriginalScore } = require('./score-parsers');
+  return parseOriginalScore(String(data.aggregatorStars)) != null;
 }
 
 /**
