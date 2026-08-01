@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-01T20:07:36.382Z",
+    "generatedAt": "2026-08-01T19:58:54.180Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,30 +9,30 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 19,
-    "exemptCount": 17,
+    "exemptCount": 16,
     "coveredCount": 38,
-    "highChurnTracked": 74
+    "highChurnTracked": 73
   },
   "flagged": [
     {
       "path": "data/audit/recent-pushes.jsonl",
-      "churn": 1959
+      "churn": 1949
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 320
+      "churn": 317
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 169
-    },
-    {
-      "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 116
+      "churn": 168
     },
     {
       "path": "data/audit/processed-feedback.json",
       "churn": 115
+    },
+    {
+      "path": "data/audit/pipeline-health/test.last-success",
+      "churn": 114
     },
     {
       "path": "data/audit/autoclear-shadow-report.json",
@@ -94,23 +94,23 @@
   "exempt": [
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 170
+      "churn": 167
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 169
+      "churn": 166
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 169
+      "churn": 166
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 124
+      "churn": 123
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 120
+      "churn": 117
     },
     {
       "path": "public/opening-night-status.json",
@@ -118,7 +118,7 @@
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 74
+      "churn": 73
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -145,16 +145,12 @@
       "churn": 38
     },
     {
-      "path": "public/data/shows/the-comedy-about-spies-west-end-2026.json",
-      "churn": 36
-    },
-    {
       "path": "public/data/shows/space-dogs-off-west-end-2026.json",
       "churn": 34
     },
     {
-      "path": "public/data/shows/the-importance-of-being-oscar-off-west-end-2026.json",
-      "churn": 32
+      "path": "public/data/shows/the-comedy-about-spies-west-end-2026.json",
+      "churn": 33
     },
     {
       "path": "public/data/shows/cat-cohen-broad-strokes-off-broadway-2026.json",
@@ -164,57 +160,57 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1383,
+      "churn": 1398,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1341,
+      "churn": 1356,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 774,
+      "churn": 772,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 701,
+      "churn": 699,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 320,
+      "churn": 317,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 320,
+      "churn": 317,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 246,
+      "churn": 243,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 205,
+      "churn": 204,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 176,
+      "churn": 173,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-tao-of-glass-west-end-2026.json",
-      "churn": 154,
+      "churn": 151,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 120,
+      "churn": 119,
       "mergeAttr": "ours"
     },
     {
@@ -234,7 +230,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 80,
+      "churn": 81,
       "mergeAttr": "ours"
     },
     {
@@ -279,7 +275,7 @@
     },
     {
       "path": "data/audit/drift-state.json",
-      "churn": 55,
+      "churn": 54,
       "mergeAttr": "ours"
     },
     {
@@ -329,7 +325,7 @@
     },
     {
       "path": "data/audit/orphan-unscored-the-comedy-about-spies-west-end-2026.json",
-      "churn": 43,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
