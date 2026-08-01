@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-07-31T07:44:24.145Z",
+  "lastChecked": "2026-08-01T07:38:33.695Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,12 +14,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.4% scored (19248/19562)"
+      "message": "98.4% scored (19301/19616)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "warn",
-      "message": "7 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+      "message": "10 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), cast-changes.json integrity — full --strict (gate = cross-show conflict / spike), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -34,7 +34,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "106 outlet×market rows checked, none NEW silent 2+ consecutive weeks (0 known/baselined, 4d ago)"
+      "message": "106 outlet×market rows checked, none NEW silent 2+ consecutive weeks (0 known/baselined, 5d ago)"
     }
   ]
 }
