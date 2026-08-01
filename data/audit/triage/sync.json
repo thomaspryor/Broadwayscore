@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "error",
-  "lastChecked": "2026-07-31T07:44:24.145Z",
+  "status": "warn",
+  "lastChecked": "2026-08-01T07:38:33.695Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "41242 files, 19248 reviews (surplus: 21994)"
+      "message": "41328 files, 19301 reviews (surplus: 22027)"
     },
     {
       "name": "Sync: open show coverage",
@@ -19,7 +19,7 @@
     {
       "name": "Sync: social-pulse per-show freshness",
       "status": "pass",
-      "message": "75 running BW/WE shows — no stale social-pulse files"
+      "message": "77 running BW/WE shows — no stale social-pulse files"
     },
     {
       "name": "Sync: phantom show detection",
@@ -28,18 +28,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "error",
-      "message": "29 empty cast: The Lost Boys, The Rocky Horror Show, Schmigadoon!"
+      "status": "pass",
+      "message": "29 active Broadway shows all have cast data"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 19248 vs baseline 19259"
+      "message": "Reviews dropped: 19301 vs baseline 19312"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 7/26/2026 (5d ago)"
+      "message": "weekEnding 7/26/2026 (6d ago)"
     }
   ]
 }
