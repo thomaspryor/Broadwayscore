@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-01T02:36:28.385Z",
+  "updatedAt": "2026-08-01T03:28:27.513Z",
   "processed": 8,
-  "failed": 85,
-  "successRate": "8.6%",
+  "failed": 95,
+  "successRate": "7.8%",
   "tierBreakdown": {
     "playwright": 6,
     "amp": 0,
@@ -10,44 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archiveToday": 17,
+    "archiveToday": 20,
     "archive": 0
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-08-01T01:32:15.477Z",
-      "event": "bb-session",
-      "session": "4e6119ca",
-      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
-    },
-    {
-      "t": "2026-08-01T01:32:16.470Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-01T01:34:22.989Z",
-      "event": "bb-session",
-      "session": "69ce7720",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-08-01T01:34:23.887Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-01T02:25:11.103Z",
-      "event": "bb-session",
-      "session": "3c5cb65d",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
-    },
-    {
-      "t": "2026-08-01T02:25:11.842Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-08-01T02:25:27.938Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-08-01T02:34:55.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-01T03:25:43.567Z",
+      "event": "bb-session",
+      "session": "4fb1110a",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T03:25:44.383Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T03:26:00.254Z",
+      "event": "bb-session",
+      "session": "3e913d2f",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T03:26:01.005Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T03:26:41.887Z",
+      "event": "bb-session",
+      "session": "bc2b6400",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-08-01T03:26:42.731Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
