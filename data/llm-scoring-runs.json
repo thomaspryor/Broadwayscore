@@ -539260,17 +539260,23 @@
     ]
   },
   {
-    "startedAt": "2026-08-01T21:39:38.005Z",
-    "completedAt": "2026-08-01T21:39:44.310Z",
-    "totalReviews": 31,
+    "startedAt": "2026-08-01T21:40:24.714Z",
+    "completedAt": "2026-08-01T21:40:24.917Z",
+    "totalReviews": 34,
     "processed": 0,
-    "skipped": 30,
-    "errors": 0,
+    "skipped": 33,
+    "errors": 1,
     "tokensUsed": {
-      "input": 3953,
-      "output": 207,
-      "total": 11534
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "tao-of-glass-west-end-2026",
+        "outletId": "guardian-uk",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
