@@ -42,7 +42,9 @@
     "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
     "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
     "allegra-west-end-2026/londongrip--julia-pascal.json",
-    "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
+    "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
+    "pride-west-end-2026/londontheatre1--terry-eastham.json",
+    "pride-west-end-2026/whatsonstage--editorial-staff.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -314,7 +316,15 @@
     "cyrano-de-bergerac-west-end-2026/thestage--dave-fargnoli.json",
     "cyrano-de-bergerac-west-end-2026/washpost--peter-marks.json",
     "pride-west-end-2026/artsdesk--unknown.json",
-    "pride-west-end-2026/broadwayworld--jay-irwin.json"
+    "pride-west-end-2026/broadwayworld--jay-irwin.json",
+    "pride-west-end-2026/frontmezzjunkies--unknown.json",
+    "pride-west-end-2026/latimes--erin-conley.json",
+    "pride-west-end-2026/operawire--unknown.json",
+    "pride-west-end-2026/people--unknown.json",
+    "pride-west-end-2026/seattle-times--misha-berson.json",
+    "pride-west-end-2026/talkinbroadway--unknown.json",
+    "pride-west-end-2026/times-uk--lucy-sweet.json",
+    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -348,14 +358,17 @@
       "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
       "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
       "allegra-west-end-2026/londongrip--julia-pascal.json",
-      "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
+      "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
+      "pride-west-end-2026/whatsonstage--editorial-staff.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/pride-west-end-2026/londontheatre1--terry-eastham.json",
+      "pride-west-end-2026/londontheatre1--terry-eastham.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -385,7 +398,7 @@
     ]
   },
   "startTime": "2026-08-01T10:11:22.808Z",
-  "lastProcessed": "pride-west-end-2026/broadwayworld--jay-irwin.json",
+  "lastProcessed": "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-08-01T10:15:35.873Z",
@@ -442,6 +455,12 @@
       "t": "2026-08-01T10:30:09.664Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-01T13:29:11.936Z",
+      "event": "bb-session",
+      "session": "af41cb71",
+      "url": "https://www.londontheatre1.com/reviews/pride-national-theatre/"
     }
   ]
 }
