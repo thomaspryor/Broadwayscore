@@ -128,7 +128,19 @@ function parseBwwSlugTitle(rawSlug) {
   let s = String(rawSlug || '')
     .replace(/^https?:\/\/[^/]+/, '')
     .replace(/^\/?article\//, '')
-    .replace(/^Review-Roundup-/i, '');
+    .replace(/^Review-Roundup-/i, '')
+    // Colon-less editorializing lead-ins some regional roundups use in place
+    // of "Review-Roundup-" (task #722, "Critics-Sound-Off-On-La-Jollas-3-
+    // SUMMERS-OF-LINCOLN"). Must mirror the headline strip in
+    // extractArticleFields — otherwise the slug-derived reference title and
+    // the body-extracted title diverge enough to trip classifyTitleDelta's
+    // mismatch guard on a real, correctly-parsed show.
+    .replace(/^(?:The-)?Critics-(?:Sound-Off-On|React-To|Weigh-In-On|Are-Talking-About|Rave-About)-/i, '')
+    .replace(/^The-Reviews-Are-In-For-/i, '')
+    // Same class: a leading feeder-city possessive ("La-Jollas-SHOW"). Only
+    // known regional feeder cities strip — never touches an unrelated title
+    // that happens to start with a capitalized word.
+    .replace(REGIONAL_CITY_SLUG_LEAD_RE, '');
   const placeholder = BWW_PLACEHOLDER_TAIL_RE.test(s);
   // Drop trailing date, then drop a venue/placeholder tail to isolate title.
   s = s.replace(/-\d{8}$/, '');
@@ -202,6 +214,14 @@ function extractArticleFields(html) {
   let headline = extractHeadline(doc);
   // Drop the "Review Roundup:" / "Reviews:" lead-in.
   headline = headline.replace(/^\s*(?:review\s+roundup|reviews?|first\s+look)\s*:\s*/i, '');
+  // Drop colon-less editorializing lead-ins some regional roundups use
+  // instead ("Critics Sound Off On X", not "Review Roundup: X") — task #722,
+  // "3 Summers of Lincoln". Without this the whole lead-in phrase becomes
+  // part of the extracted title.
+  headline = headline.replace(
+    /^\s*(?:the\s+)?critics\s+(?:sound\s+off\s+on|react\s+to|weigh\s+in\s+on|are\s+talking\s+about|rave\s+about)\s+/i,
+    ''
+  ).replace(/^\s*the\s+reviews\s+are\s+in\s+for\s+/i, '');
 
   const date = extractMetaDate(doc) || extractDateFromJsonLd(doc);
 
@@ -221,6 +241,20 @@ function extractArticleFields(html) {
   } else {
     venue = extractVenueFromBody(doc);
     title = extractTitleFromHeadline(headline);
+    // Regional roundups sometimes front-load the venue's city as a
+    // possessive instead of an "at VENUE" clause ("La Jolla's 3 SUMMERS OF
+    // LINCOLN" — task #722), which the boundary regex above doesn't strip
+    // since it isn't a verb/dash/comma. Only strip it when the independently
+    // -extracted venue confirms the leading word is a known feeder city, not
+    // part of the show title itself (e.g. never touches "Chicago The Musical").
+    if (venue && title) {
+      const city = feederVenueCity(venue);
+      const cityName = city ? city.split(',')[0].trim() : null;
+      if (cityName) {
+        const leadRe = new RegExp(`^${cityName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:'s|\u2019s)\\s+`, 'i');
+        if (leadRe.test(title)) title = title.replace(leadRe, '').trim();
+      }
+    }
   }
 
   if (title) title = titleCaseIfShout(title);
@@ -259,10 +293,23 @@ function extractMetaDate(doc) {
  */
 function extractVenueFromBody(doc) {
   const firstP = doc.querySelector('article p, p');
-  if (!firstP) return null;
-  const text = (firstP.textContent || '').replace(/\s+/g, ' ').slice(0, 400);
+  const text = firstP ? (firstP.textContent || '').replace(/\s+/g, ' ').slice(0, 400) : '';
   const hv = findVenueMatch(text, /* preferLast */ false);
-  return hv ? hv.venue : null;
+  if (hv) return hv.venue;
+
+  // Fallback: meta description. Some BWW templates (regional Review Roundups
+  // in particular — "3 Summers of Lincoln" / La Jolla Playhouse, task #722)
+  // don't wrap review content in a real <article>/<p> at all: the DOM's
+  // first <p> in document order is nav/breadcrumb chrome ("Broadway + NYC"),
+  // so the body-paragraph scan above finds nothing. The meta description is
+  // publisher-authored summary text that reliably states "...now playing at
+  // VENUE..." even when the visible markup doesn't.
+  const meta =
+    doc.querySelector('meta[name="description"]')?.getAttribute('content') ||
+    doc.querySelector('meta[property="og:description"]')?.getAttribute('content') ||
+    '';
+  const mv = findVenueMatch(meta, /* preferLast */ false);
+  return mv ? mv.venue : null;
 }
 
 function cleanVenue(raw) {
@@ -417,6 +464,16 @@ const REGIONAL_FEEDER_VENUES = [
   { re: /\balliance theatre\b/i, city: 'Atlanta, GA', domain: 'alliancetheatre.org' },
   { re: /\b(?:center theatre group|ahmanson|mark taper)\b/i, city: 'Los Angeles, CA', domain: 'centertheatregroup.org' },
 ];
+
+// Dash-joined city names from the table above, for stripping a leading
+// possessive in a BWW slug ("La-Jollas-3-SUMMERS-OF-LINCOLN" — task #722).
+// Multi-word cities first so "San-Diego" doesn't shadow-match "San-..." alone.
+const REGIONAL_CITY_SLUG_LEAD_RE = (() => {
+  const cities = [...new Set(REGIONAL_FEEDER_VENUES.map((v) => v.city.split(',')[0].trim()))]
+    .sort((a, b) => b.length - a.length)
+    .map((c) => c.replace(/\s+/g, '-'));
+  return new RegExp(`^(?:${cities.join('|')})s-`, 'i');
+})();
 
 /** City string for a Broadway-feeder regional venue, or null if not one. */
 function feederVenueCity(venue) {

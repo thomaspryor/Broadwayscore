@@ -483,16 +483,16 @@ async function main() {
           contentActions = [{ kind: 'unroutable', reason: `router error: ${err.message}` }];
         }
         const dispatchable = contentActions.filter((a) => a.workflow);
-        // NOTE: this run PLANS only. The workflow step that actually calls
-        // createWorkflowDispatch is not built yet, so behaviour is still
-        // "park for review" for every submission. Say so literally — a log
-        // reading "dispatching 2" while nothing dispatches is how a half-wired
-        // pipeline gets mistaken for a working one.
+        // The workflow step in process-feedback.yml drains `contentActions`
+        // from data/audit/pending-bug-diagnoses.json and calls
+        // createWorkflowDispatch per dispatchable action (task #722). This
+        // script only plans — it never dispatches directly, so it can't
+        // itself confirm the dispatch landed; say "will dispatch" not "did."
         console.log(
           `Content request (no diagnosis): ${item.summary}\n` +
           `  actions: ${contentActions.map((a) => a.kind).join(', ') || 'none'}` +
           (dispatchable.length
-            ? ` → ${dispatchable.length} dispatchable, PLANNED ONLY (no dispatcher wired yet; still parking)`
+            ? ` → ${dispatchable.length} action(s) will be dispatched by the workflow step`
             : ' → parking for review')
         );
         bugDiagnoses.push({ item, submission: sub, diagnosis: null, contentActions });
