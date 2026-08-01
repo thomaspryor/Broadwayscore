@@ -1,0 +1,30 @@
+{
+  "scripts/lib/scraper.js": {
+    "reason": "canonical implementation of fetchPage()/fetchJSON() — the thing every other caller should route through",
+    "addedAt": "2026-07-31"
+  },
+  "scripts/lib/url-discovery.js": {
+    "reason": "canonical shared serpQuery() lib (Scraping v2 Sprint 1 T7) — Google SERP is a different capability than page-content fetch, not covered by fetchPage()",
+    "addedAt": "2026-07-31"
+  },
+  "scripts/lib/site-search-discovery.js": {
+    "reason": "canonical outlet-site-search lib — searches an outlet's own search endpoint, a different capability than generic page fetch; has its own documented SB fallback tier",
+    "addedAt": "2026-07-31"
+  },
+  "scripts/lib/reddit-api.js": {
+    "reason": "Reddit JSON API accessed via provider-as-proxy (documented adaptive rate-limit design in file header) — not page-content scraping, fetchPage() doesn't fit this shape",
+    "addedAt": "2026-07-31"
+  },
+  "scripts/probe-scrapingdog-billing.js": {
+    "reason": "explicit Scrapingdog billing/credit probe tool — needs the raw provider response, not fetchPage()'s abstracted fallback chain",
+    "addedAt": "2026-07-31"
+  },
+  "scripts/scrapingdog-bakeoff.js": {
+    "reason": "explicit provider bake-off/comparison eval tool — by design calls providers directly to compare them",
+    "addedAt": "2026-07-31"
+  },
+  "scripts/check-cookie-health.js": {
+    "reason": "diagnostic tool validating cookie freshness PER PROVIDER — needs the raw per-provider response, not fetchPage()'s abstracted fallback/verification chain",
+    "addedAt": "2026-07-31"
+  }
+}

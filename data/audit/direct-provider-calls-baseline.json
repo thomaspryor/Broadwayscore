@@ -1,0 +1,140 @@
+{
+  "generatedAt": "2026-08-01",
+  "files": {
+    "scripts/backfill-cast-web.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/batch-commercial-research.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/collect-review-texts-v2.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": false
+    },
+    "scripts/collect-review-texts.js": {
+      "providers": [
+        "scrapingbee",
+        "brightdata"
+      ],
+      "cronReachable": true
+    },
+    "scripts/discover-historical-shows.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": false
+    },
+    "scripts/fetch-all-image-formats.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": false
+    },
+    "scripts/fetch-square-images.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": false
+    },
+    "scripts/gather-reviews.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/lib/ibdb-cast.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/lib/ibdb-dates.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/recollect-for-scores.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-broadway-com-audience.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-bww-reviews.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-cast-changes.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-lbo-audience.js": {
+      "providers": [
+        "brightdata"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-lottery-rush.js": {
+      "providers": [
+        "brightdata",
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-ltd-audience.js": {
+      "providers": [
+        "brightdata"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-nyc-theatre-roundups.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-seatplan-audience.js": {
+      "providers": [
+        "brightdata"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-show-score-audience.js": {
+      "providers": [
+        "scrapingbee",
+        "brightdata"
+      ],
+      "cronReachable": true
+    },
+    "scripts/sweep-we-aggregators.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/update-commercial-data.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    }
+  }
+}

@@ -12,7 +12,12 @@
  *   3. Clears the Action property LAST (prevents orphaned cards)
  *
  * Usage:
- *   node scripts/notion-action-poll.js [--dry-run]
+ *   node scripts/notion-action-poll.js [--dry-run] [--card <id>]
+ *
+ * --card <id>  restricts the run to one card (real API + real runClaude(),
+ *              scoped) so a dispatch fix can be verified end-to-end without
+ *              the poller sweeping every actionable card on the live
+ *              Roadmap. Combine with --dry-run for a fully safe preview.
  *
  * Env: NOTION_API_KEY (Internal Integration token with access to BWSC workspace)
  */
@@ -27,6 +32,21 @@ const fs = require('fs');
 require('./lib/load-env.js').loadEnv(path.join(__dirname, '..'));
 
 const DRY_RUN = process.argv.includes('--dry-run');
+// --card parsing supports both '--card <id>' and '--card=<id>' (matches the
+// --help/--help= convention in cli-help.js). CARD_FLAG_PRESENT is tracked
+// separately from CARD_ID_ARG so a malformed invocation (bare '--card' with
+// no value, or a value that's actually the next flag) fails closed instead
+// of silently falling through to the unscoped full sweep this flag exists
+// to prevent (ship-check finding, task #725).
+const CARD_FLAG_PRESENT = process.argv.some(a => a === '--card' || a.startsWith('--card='));
+const CARD_ID_ARG = (() => {
+  const eqArg = process.argv.find(a => a.startsWith('--card='));
+  if (eqArg) return eqArg.slice('--card='.length) || null;
+  const idx = process.argv.indexOf('--card');
+  if (idx === -1) return null;
+  const val = process.argv[idx + 1];
+  return (val && !val.startsWith('-')) ? val : null;
+})();
 const REPO_DIR = path.join(__dirname, '..');
 const LOG_DIR = path.join(require('os').homedir(), 'Library', 'Logs');
 const MEMORY_DIR = path.join(__dirname, 'agent-memory');
@@ -34,12 +54,16 @@ const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { shouldMarkPlanReady } = require('./lib/plan-ready.js');
+const { preflightAuth } = require('./lib/claude-cli.js');
+const { filterCardsByCardId } = require('./lib/notion-action-poll-card-scope.js');
 
 const USAGE = `notion-action-poll.js — Notion Action Queue Poller.
 
 Usage:
   node scripts/notion-action-poll.js [options]
   node scripts/notion-action-poll.js --help, -h    print this usage and exit
+  node scripts/notion-action-poll.js --card <id>   restrict the run to one card
+  node scripts/notion-action-poll.js --dry-run --card <id>   safe single-card preview
 `;
 // Reply-loop state: per-card session IDs + comment watermarks so owner comments
 // resume the SAME Claude session (conversation continuity from the Notion app).
@@ -515,6 +539,28 @@ function runClaude(prompt, card, opts = {}) {
   const logFile = path.join(LOG_DIR, `action-dispatcher-${cardSlug(card.id)}.log`);
   log(`Spawning Claude for "${card.name}" (${card.action}${opts.resumeSessionId ? ', resume' : ''}). Log: ${logFile}`);
 
+  // Auth preflight (task #713 — generalized fix from opening-night-monitor-launch.js
+  // ported to scripts/lib/claude-cli.js): a launchd-parented `claude` can't reach the
+  // macOS Keychain, so a bare inherited env dies "Not logged in" — but the CLI exits 0
+  // with a VALID envelope, so the code below (which only distinguishes failure by
+  // exit code) would have silently treated a login prompt as a completed Fix. Probe
+  // BEFORE spawning or provisioning a worktree, so a doomed pass never consumes an
+  // attempt or churns disk for nothing.
+  const auth = preflightAuth({ log });
+  if (!auth.ok) {
+    const errMsg = `Claude auth preflight failed: ${auth.detail}`;
+    log(errMsg);
+    fs.appendFileSync(logFile, `\n\nERROR: ${errMsg}`);
+    return {
+      result: `[Automated session error] ${errMsg}`,
+      memoryUpdate: null,
+      sessionId: opts.resumeSessionId || null,
+      runDir: opts.reuseRunDir || REPO_DIR,
+      failed: true,
+      get keptWorktree() { return false; },
+    };
+  }
+
   // Isolate the automated session in its own worktree (falls back to REPO_DIR).
   let wt = null;
   let runDir;
@@ -533,6 +579,18 @@ function runClaude(prompt, card, opts = {}) {
     // targets the claude process directly so the timeout actually stops it.
     const args = ['--print', '--output-format', 'json', '--dangerously-skip-permissions'];
     if (opts.resumeSessionId) args.push('--resume', opts.resumeSessionId);
+    // Env shape matches whichever mode the preflight actually proved works —
+    // 'oauth' clears ANTHROPIC_API_KEY so the pass uses the same stored-login
+    // path just verified (never a mix of both), 'api-key' keeps it.
+    const runEnv = {
+      ...process.env,
+      HOME: require('os').homedir(),
+      PATH: process.env.PATH,
+    };
+    // Empty string, not `delete` — matches the exact env shape preflightAuth
+    // just proved works (authPing probes with `ANTHROPIC_API_KEY: ''`), so
+    // the real spawn never diverges from the probed shape.
+    if (auth.mode === 'oauth') runEnv.ANTHROPIC_API_KEY = '';
     const raw = require('child_process').execFileSync('claude', args, {
       cwd: runDir,
       input: prompt,
@@ -540,11 +598,7 @@ function runClaude(prompt, card, opts = {}) {
       killSignal: 'SIGKILL',
       maxBuffer: 10 * 1024 * 1024, // 10 MB
       encoding: 'utf8',
-      env: {
-        ...process.env,
-        HOME: require('os').homedir(),
-        PATH: process.env.PATH,
-      },
+      env: runEnv,
     });
 
     // Write full output to log (append on resume so the card's history accumulates)
@@ -564,9 +618,29 @@ function runClaude(prompt, card, opts = {}) {
     // Extract result and memory update between markers (single pass)
     const resultMatch = text.match(/===ACTION_RESULT_START===([\s\S]*?)===ACTION_RESULT_END===/);
     const memoryMatch = text.match(/===MEMORY_UPDATE_START===([\s\S]*?)===MEMORY_UPDATE_END===/);
+    const resultText = resultMatch ? resultMatch[1].trim() : text.slice(-3000).trim();
+
+    // Exit 0 + parseable JSON is NOT success (claude-cli.js STAGES.EMPTY class):
+    // an auth-expired or otherwise silently-refusing CLI can still return a
+    // valid envelope with empty/near-empty result text. The preflight above
+    // catches the known auth case before spawning; this catches anything else
+    // that slips through the same shape, rather than reporting a card "done".
+    if (!resultText) {
+      const errMsg = 'Claude session returned an empty result (valid envelope, no output) — treating as failed rather than reporting the card done.';
+      log(errMsg);
+      fs.appendFileSync(logFile, `\n\nERROR: ${errMsg}`);
+      return {
+        result: `[Automated session error] ${errMsg}`,
+        memoryUpdate: null,
+        sessionId,
+        runDir,
+        failed: true,
+        get keptWorktree() { return keptWorktree; },
+      };
+    }
 
     return {
-      result: resultMatch ? resultMatch[1].trim() : text.slice(-3000),
+      result: resultText,
       memoryUpdate: memoryMatch ? memoryMatch[1].trim() : null,
       sessionId,
       runDir,
@@ -840,6 +914,13 @@ Respond helpfully. If they're asking a question, answer it from your existing co
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  // Fail closed on a malformed --card: a bare '--card' (missing value, or
+  // followed by another flag) must error out rather than silently fall
+  // through to the full unscoped sweep this flag exists to prevent.
+  if (CARD_FLAG_PRESENT && !CARD_ID_ARG) {
+    console.error('--card requires a value, e.g. --card 3af637c5-416f-8199-810c-e68f50c33b8d or --card=<id>');
+    process.exit(1);
+  }
   if (!process.env.NOTION_API_KEY) {
     console.error('NOTION_API_KEY not set in .env');
     process.exit(1);
@@ -855,7 +936,11 @@ async function main() {
 
   // Reply loop FIRST: replies are quick and a Fix pipeline can hold this
   // process for hours — the owner's follow-up comments must not wait for it.
-  if (!DRY_RUN) {
+  // Skipped entirely when --card is set: pollReplies() iterates every
+  // state-tracked card (not just the one requested) and can spawn Claude +
+  // post comments on unrelated real cards, which defeats the whole point of
+  // "restrict the run to one card" (ship-check finding, task #725).
+  if (!DRY_RUN && !CARD_ID_ARG) {
     try {
       const me = await withRetry(() => notion.users.me(), 'usersMe');
       // Test-only: lets an E2E test author "owner" comments with the bot token.
@@ -871,7 +956,21 @@ async function main() {
     }
   }
 
-  const cards = await getActionableCards();
+  let cards = await getActionableCards();
+  if (CARD_ID_ARG) {
+    cards = filterCardsByCardId(cards, CARD_ID_ARG);
+    // Fail closed on anything but exactly one match — a mistyped/stale ID
+    // (or a card whose Action was cleared concurrently) must not silently
+    // "verify" as a clean no-op with exit 0 (ship-check finding, task #725).
+    if (cards.length !== 1) {
+      log(cards.length === 0
+        ? `--card ${CARD_ID_ARG} matched no actionable card.`
+        : `--card ${CARD_ID_ARG} matched ${cards.length} cards (expected exactly 1): ${cards.map(c => c.name).join(', ')}`);
+      if (!DRY_RUN) releaseLock();
+      process.exit(1);
+    }
+    log(`--card scoped to: "${cards[0].name}" (${CARD_ID_ARG})`);
+  }
 
   if (cards.length > 0) {
     log(`Found ${cards.length} actionable card(s):`);

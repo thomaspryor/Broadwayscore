@@ -15,7 +15,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge, StatusBadge, FormatPill, getScoreTier } from '@/components/show-cards';
 import ShowImage from '@/components/ShowImage';
 import TicketLink from '@/components/TicketLink';
-import { sortTicketLinks, isPlatformHidden } from '@/lib/ticket-utils';
+import { sortTicketLinks, getVisibleTicketLinks } from '@/lib/ticket-utils';
 import Breadcrumb from '@/components/Breadcrumb';
 import { showFormatTitle } from '@/lib/show-format';
 
@@ -119,7 +119,7 @@ function formatDate(dateStr: string): string {
 function getMinPrice(show: ReturnType<typeof getShowBySlug>): number | null {
   if (!show?.ticketLinks?.length) return null;
   // Only price from platforms the user can actually see a button for
-  const prices = show.ticketLinks.filter(l => l.priceFrom && !isPlatformHidden(l.platform)).map(l => l.priceFrom!);
+  const prices = getVisibleTicketLinks(show.ticketLinks).filter(l => l.priceFrom).map(l => l.priceFrom!);
   return prices.length ? Math.min(...prices) : null;
 }
 
