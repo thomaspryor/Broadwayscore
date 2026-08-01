@@ -63,7 +63,9 @@
     "the-oresteia-west-end-2026/timeout-london--unknown.json",
     "are-you-now-or-have-you-ever-been-off-broadway-2026/talkinbroadway--unknown.json",
     "avenue-q-west-end-2026/telegraph--marianka-swain.json",
-    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "space-dogs-off-west-end-2026/thestage--the-stage.json",
@@ -595,7 +597,15 @@
     "cats-the-jellicle-ball-2026/newyorker--helen-shaw.json",
     "cats-the-jellicle-ball-2026/newsday--linda-winer.json",
     "cats-the-jellicle-ball-2026/huffpost--david-finkle.json",
-    "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json"
+    "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
+    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
+    "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -641,10 +651,14 @@
       "space-dogs-off-west-end-2026/london-box-office--unknown.json",
       "the-importance-of-being-oscar-off-west-end-2026/everything-theatre--unknown.json",
       "the-oresteia-west-end-2026/timeout-london--unknown.json",
-      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
+    ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
@@ -697,7 +711,7 @@
     ]
   },
   "startTime": "2026-08-01T04:31:57.323Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
+  "lastProcessed": "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
   "log": [
     {
       "t": "2026-08-01T04:36:35.506Z",
@@ -788,6 +802,12 @@
       "t": "2026-08-01T06:19:24.806Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-01T07:06:48.236Z",
+      "event": "bb-session",
+      "session": "2ab0f3a4",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }
