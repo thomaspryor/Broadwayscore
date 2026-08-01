@@ -1,3 +1,8 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural — asserts pure guard-function
+// behavior against hardcoded fixture strings; never reads data/reviews.json
+// at runtime (a header comment below documents that the fixture strings
+// were originally copied from reviews.json, which trips the audit's
+// textual pattern match, but no file I/O happens in this test file).
 /**
  * Unit tests for pull-quote-guards.js
  *
