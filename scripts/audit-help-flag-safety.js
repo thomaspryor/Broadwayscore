@@ -104,9 +104,17 @@ function loadBaseline() {
   }
 }
 
+// RISKY_CALL_RE is a /g regex shared across all 800 files in main()'s loop, so
+// lastIndex MUST be left at 0 on both sides of every use. Resetting only
+// BEFORE exec() left it advanced afterwards, and the next file's
+// `RISKY_CALL_RE.test(...)` in checkFile then resumed from that stale offset —
+// an order- and length-dependent false negative that could silently drop a
+// script out of Rule B entirely (caught by the unit test added in task #684:
+// a short Rule B fixture passed alone and failed after a Rule A case ran).
 function firstIndex(re, src) {
   re.lastIndex = 0;
   const m = re.exec(src);
+  re.lastIndex = 0;
   return m ? m.index : -1;
 }
 
@@ -178,6 +186,72 @@ function stripCommentsAndStrings(src) {
       continue;
     }
     out += ch;
+  }
+  return out;
+}
+
+/**
+ * Second view of the source, used ONLY for RISKY_CALL_RE scanning: blanks the
+ * CONTENT of every string/template literal (space-fill, preserving offsets and
+ * the quote characters themselves).
+ *
+ * stripCommentsAndStrings deliberately leaves string content intact because
+ * HELP_CHECK_RE/FLAG_STYLE_RE must see the literal '--help' text inside a
+ * quoted CLI-flag string. Its doc comment accepted the converse risk — a
+ * string whose plain text happens to contain a risky-looking function name —
+ * as "rare enough". It isn't: any script whose USAGE/log text DESCRIBES the
+ * scraping stack trips it. Reproduced live (run 30681490240, task #684):
+ * audit-direct-provider-calls.js's USAGE string reads "...bypassing
+ * fetchPage()/fetchJSON()..." and `fetchPage(` matched the risky-call regex
+ * verbatim at char 1753, failing Lint Workflows on main with a Rule A
+ * violation against a script that does no unconditional work at all.
+ *
+ * Splitting the views resolves the tension instead of trading one blind spot
+ * for the other: help-check detection keeps the intact strings, risky-call
+ * detection gets the blanked ones.
+ *
+ * Template-literal `${...}` substitutions are deliberately PRESERVED — those
+ * are real evaluated expressions, so `${execSync('x')}` is a genuine
+ * unconditional call and must stay visible to the scan.
+ *
+ * NEWLINE-SCOPED for '/" (not for `): this scanner has no regex-literal
+ * awareness, so a quote character inside a regex — `.replace(/&quot;/g, '"')`
+ * in adjudicate-seat-research.js — opens a phantom string. Unbounded, that
+ * phantom swallowed 4,800 chars of real code and hid a genuine
+ * `await fetchPage(url, {})` call, silently downgrading 5 scripts out of the
+ * Rule B set (caught by before/after parity on this corpus, task #684).
+ * Per the language, a '/"-quoted string cannot contain a raw newline, so
+ * bounding those at end-of-line makes any such desync self-healing: it can
+ * corrupt at most the rest of ONE line instead of the rest of the file.
+ * Template literals legitimately span lines, so ` keeps scanning.
+ */
+function blankStringContents(src) {
+  let out = '';
+  for (let i = 0; i < src.length; i++) {
+    const ch = src[i];
+    if (ch !== '`' && ch !== '"' && ch !== "'") { out += ch; continue; }
+
+    const quote = ch;
+    out += quote;
+    let j = i + 1;
+    while (j < src.length && src[j] !== quote) {
+      // A '/"-string can't span a raw newline — stop rather than run away.
+      if (quote !== '`' && src[j] === '\n') break;
+      // Escape: blank both the backslash and the character it escapes, so a
+      // `\'` inside the literal never reads as the closing quote.
+      if (src[j] === '\\') { out += ' '; if (j + 1 < src.length) out += src[j + 1] === '\n' ? '\n' : ' '; j += 2; continue; }
+      // Keep `${ ... }` expression text verbatim — it is evaluated code.
+      if (quote === '`' && src[j] === '$' && src[j + 1] === '{') {
+        const close = findMatching(src, j + 1, '{', '}');
+        if (close === null) { out += ' '; j++; continue; }
+        out += src.slice(j, close + 1);
+        j = close + 1;
+        continue;
+      }
+      out += src[j] === '\n' ? '\n' : ' ';
+      j++;
+    }
+    if (j < src.length && src[j] === quote) { out += quote; i = j; } else { i = j - 1; }
   }
   return out;
 }
@@ -288,7 +362,7 @@ function stripNonInvokedFunctionBodies(src) {
  * before an otherwise-correct `if (hasHelpFlag(...))` inside main() sailed
  * through the windowed check because the window started at main().
  */
-function checkOrdering(cleanSrc) {
+function checkOrdering(cleanSrc, riskySrc = blankStringContents(cleanSrc)) {
   const helpAnywhere = HELP_CHECK_RE.test(cleanSrc);
   const mainMatch = MAIN_FN_RE.exec(cleanSrc);
   const windowStart = mainMatch ? mainMatch.index : 0;
@@ -302,7 +376,10 @@ function checkOrdering(cleanSrc) {
   if (windowStart > 0) {
     const topHelp = new RegExp(HELP_CHECK_RE, 'g').exec(cleanSrc.slice(0, windowStart));
     if (topHelp) {
-      const beforeGate = stripNonInvokedFunctionBodies(cleanSrc.slice(0, topHelp.index));
+      // Gate position comes from cleanSrc (needs the intact '--help' string);
+      // the risky-call scan reads riskySrc at the SAME offsets (both views are
+      // length-preserving), so string CONTENT can't fake a call.
+      const beforeGate = stripNonInvokedFunctionBodies(riskySrc.slice(0, topHelp.index));
       const riskyIdx = firstIndex(RISKY_CALL_RE, beforeGate);
       return { hasHelpCheck: true, riskyBeforeHelp: riskyIdx !== -1, riskyIdx };
     }
@@ -312,7 +389,7 @@ function checkOrdering(cleanSrc) {
   // a helper function defined lexically before main() is not "unconditional
   // top-level work" unless that helper is an IIFE (see
   // stripNonInvokedFunctionBodies doc comment).
-  const topLevelRiskyIdx = firstIndex(RISKY_CALL_RE, stripNonInvokedFunctionBodies(cleanSrc.slice(0, windowStart)));
+  const topLevelRiskyIdx = firstIndex(RISKY_CALL_RE, stripNonInvokedFunctionBodies(riskySrc.slice(0, windowStart)));
   if (topLevelRiskyIdx !== -1) {
     return { hasHelpCheck: helpAnywhere, riskyBeforeHelp: true, riskyIdx: topLevelRiskyIdx };
   }
@@ -321,7 +398,7 @@ function checkOrdering(cleanSrc) {
   const helpMatch = new RegExp(HELP_CHECK_RE, 'g').exec(windowText);
   if (!helpMatch) return { hasHelpCheck: false };
 
-  const beforeGate = stripNonInvokedFunctionBodies(windowText.slice(0, helpMatch.index));
+  const beforeGate = stripNonInvokedFunctionBodies(riskySrc.slice(windowStart).slice(0, helpMatch.index));
   const riskyIdx = firstIndex(RISKY_CALL_RE, beforeGate);
   return { hasHelpCheck: true, riskyBeforeHelp: riskyIdx !== -1, riskyIdx: riskyIdx === -1 ? -1 : windowStart + riskyIdx };
 }
@@ -352,10 +429,16 @@ function checkFile(file, src) {
   // in a truly dead, never-invoked-by-anyone helper) has no instance in the
   // current corpus (verified) and is already covered by the
   // `// hygiene-help-flag-ok: <reason>` exemption if one ever appears.
-  const hasRiskyOp = RISKY_CALL_RE.test(cleanSrc);
+  // Risky-call scans read a SECOND view with string content blanked too — a
+  // USAGE/log string that merely NAMES a risky function is not a call
+  // (task #684; see blankStringContents).
+  const riskySrc = blankStringContents(cleanSrc);
+
+  RISKY_CALL_RE.lastIndex = 0; // defensive: /g state must not leak in either direction
+  const hasRiskyOp = RISKY_CALL_RE.test(riskySrc);
   RISKY_CALL_RE.lastIndex = 0;
 
-  const ordering = checkOrdering(cleanSrc);
+  const ordering = checkOrdering(cleanSrc, riskySrc);
 
   if (ordering.hasHelpCheck && ordering.riskyBeforeHelp) {
     return {
@@ -437,4 +520,15 @@ function main() {
   process.exitCode = 1;
 }
 
-main();
+// Only run the audit when executed directly — `require()`d from a unit test,
+// the module must expose its decision functions without scanning the repo
+// (CLAUDE.md §15: tests require() the real function, never a copy of it).
+if (require.main === module) main();
+
+module.exports = {
+  checkFile,
+  checkOrdering,
+  stripCommentsAndStrings,
+  blankStringContents,
+  RISKY_CALL_RE,
+};
