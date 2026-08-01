@@ -70,16 +70,19 @@ const { attachHealthFixUrls } = require('./lib/dispatch-link.js');
 // and ask the owner for no triage — they are the one tap that acts on an
 // error row this email already prints as "Fix needed: …".
 const DISPATCH_CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
-// 20h, NOT the loop's 48h linkExpiryHours (ship-check adversarial finding,
-// codex 2026-07-30). This email is sent DAILY at 07:30 ET, so a 48h link
-// outlives its own email by a full send cycle: the owner could tap
-// yesterday's "Fix this" for an error today's health check already cleared,
-// and handleDispatch — which dedups only against still-OPEN cards — would
-// happily file a card and burn a session on a non-issue. 20h expires each
-// link in the small hours before the next digest lands, so at most one live
-// email's buttons are ever tappable. Deliberately independent of the
-// approve/reject links' expiry, which is a different lifecycle.
-const DISPATCH_LINK_EXPIRY_H = 20;
+// 44h, NOT the loop's 48h linkExpiryHours, and NOT the original 20h (Digest
+// v2 Sprint 0c, owner-approved plan 2026-07-31: a day-old email must still
+// work — the owner reads on their own schedule, not the sender's, and a
+// same-day-only window meant Saturday's email was dead by Sunday morning).
+// 44h covers a full missed day plus buffer while still expiring before the
+// email TWO send cycles back would still be live (this email sends DAILY at
+// 07:30 ET, so 44h < 2×24h keeps at most "yesterday's + today's" tappable,
+// never three days of stale buttons stacking up). handleDispatch dedups only
+// against still-OPEN cards, so a stale-but-cleared error would file a fresh
+// card and burn a session on a non-issue — the expiry window is what bounds
+// that blast radius. Deliberately independent of the approve/reject links'
+// expiry, which is a different lifecycle.
+const DISPATCH_LINK_EXPIRY_H = 44;
 
 const USAGE = `send-morning-digest.js — the owner's single scheduled morning email.
 

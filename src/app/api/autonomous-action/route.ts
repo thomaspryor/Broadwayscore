@@ -316,6 +316,7 @@ interface DispatchCandidate {
   url: string;
   status: string | null;
   action: string | null;
+  createdTime: string;
 }
 
 // The exact substring written into a card's Notes to mark which condition it
@@ -340,6 +341,31 @@ function selectOpenDispatchCard(candidates: DispatchCandidate[]): DispatchCandid
   return candidates.find(c => (c.status !== null && OPEN.has(c.status)) || (c.action !== null && c.action !== '')) || null;
 }
 
+// Race-safe idempotency (Sprint 0d): two near-simultaneous taps (double-tap,
+// or the same link opened in two tabs) can both pass the pre-create dedup
+// check below before either card exists. Rather than a distributed lock
+// Notion doesn't offer, the caller creates unconditionally then re-queries —
+// this picks a single, deterministic winner so both racing requests converge
+// on the SAME card regardless of read/write order.
+//
+// createdTime alone is NOT sufficient (ship-check adversarial finding, codex
+// + codebase reviewer 2026-07-31): Notion's created_time granularity can tie
+// for two cards created milliseconds apart, and the two racing requests'
+// queries aren't guaranteed to return results in the same order. A strict
+// `<` comparison on a tie means EACH request can see the OTHER as earlier —
+// both archive themselves, and zero cards survive. Comparing `id` as a
+// secondary key makes the choice a pure function of the candidate SET, not
+// of scan order, so both requests compute the identical winner.
+function pickEarliestOpenCard(candidates: DispatchCandidate[]): DispatchCandidate | null {
+  const OPEN = new Set(['Not started', 'In progress']);
+  const open = candidates.filter(c => (c.status !== null && OPEN.has(c.status)) || (c.action !== null && c.action !== ''));
+  if (!open.length) return null;
+  return open.reduce((earliest, c) => {
+    if (c.createdTime !== earliest.createdTime) return c.createdTime < earliest.createdTime ? c : earliest;
+    return c.id < earliest.id ? c : earliest;
+  });
+}
+
 // Dedup query: any card whose Notes carry this condition's marker
 // (createDispatchCard below writes it, and dispatchCard() in
 // scripts/lib/owner-alert-router.js already writes the equivalent
@@ -349,23 +375,38 @@ function selectOpenDispatchCard(candidates: DispatchCandidate[]): DispatchCandid
 // instead of filing a duplicate). page_size 100 (Notion's max, not paginated
 // further) — plenty for a single-owner project's card volume; a real
 // pagination loop would be premature complexity here.
-async function findOpenDispatchCard(conditionKey: string, notionKey: string): Promise<DispatchCandidate | null> {
+async function queryDispatchCandidates(conditionKey: string, notionKey: string): Promise<DispatchCandidate[]> {
   const res = await notionApi(`/data_sources/${BRAIN_DATABASE_ID}/query`, 'POST', notionKey, {
     filter: { property: 'Notes', rich_text: { contains: conditionMarker(conditionKey) } },
+    sorts: [{ timestamp: 'created_time', direction: 'ascending' }],
     page_size: 100,
   }, DISPATCH_NOTION_VERSION);
   if (!res.ok) throw new Error(`Notion query failed: ${res.status}`);
   const results = Array.isArray(res.json.results) ? (res.json.results as Array<Record<string, unknown>>) : [];
-  const candidates: DispatchCandidate[] = results.map(page => {
+  return results.map(page => {
     const props = (page.properties || {}) as Record<string, { status?: { name?: string } | null; select?: { name?: string } | null }>;
     return {
       id: String(page.id),
       url: String(page.url || ''),
       status: props.Status?.status?.name ?? null,
       action: props.Action?.select?.name ?? null,
+      createdTime: String(page.created_time || ''),
     };
   });
+}
+
+async function findOpenDispatchCard(conditionKey: string, notionKey: string): Promise<DispatchCandidate | null> {
+  const candidates = await queryDispatchCandidates(conditionKey, notionKey);
   return selectOpenDispatchCard(candidates);
+}
+
+// Archives (Notion's soft-delete) the losing card from a create-time race —
+// "self-delete the loser" per the Sprint 0d design. Failure here is logged
+// but never surfaced to the owner: worst case is a harmless duplicate card
+// sitting in the brain, not a broken tap.
+async function archiveDispatchCard(pageId: string, notionKey: string): Promise<void> {
+  const res = await notionApi(`/pages/${pageId}`, 'PATCH', notionKey, { archived: true }, DISPATCH_NOTION_VERSION);
+  if (!res.ok) console.error(`Failed to archive duplicate dispatch card ${pageId}: ${res.status}`);
 }
 
 async function createDispatchCard(
@@ -503,8 +544,28 @@ async function handleDispatch(req: NextRequest, method: 'GET' | 'POST'): Promise
 
   try {
     const created = await createDispatchCard({ conditionKey, title, description }, notionKey);
-    return html('Dispatched',
-      '<h1>On it!</h1><p>A session will start on this within a few minutes — you\'ll see progress on the card.</p>' +
+
+    // Race-safe re-check (Sprint 0d): our own card now exists too, so a
+    // second concurrent tap that raced past the dedup query above would
+    // ALSO have created a card by now. Re-query and let createdTime decide a
+    // single winner — if ours lost, archive it and hand the owner the
+    // winning card instead of leaving two sessions dispatched on one issue.
+    try {
+      const candidates = await queryDispatchCandidates(conditionKey, notionKey);
+      const winner = pickEarliestOpenCard(candidates);
+      if (winner && winner.id !== created.id) {
+        await archiveDispatchCard(created.id, notionKey);
+        return html('Already Being Fixed',
+          '<h1>Already Being Fixed</h1><p>A session is already working on this (or waiting to start).</p>' +
+          (winner.url ? `<p><a href="${sanitize(winner.url, 300)}">Open the card</a></p>` : '') + backLink);
+      }
+    } catch (err) {
+      // Non-fatal: worst case is a harmless duplicate card, not a broken tap.
+      console.error('Post-create race recheck failed (non-fatal):', (err as Error).message);
+    }
+
+    return html('Queued',
+      '<h1>Queued</h1><p>A fix session will pick this up shortly. You\'ll get an email when it finishes, or if it needs you.</p>' +
       (created.url ? `<p><a href="${sanitize(created.url, 300)}">Watch the card</a></p>` : '') + backLink);
   } catch (err) {
     console.error('Dispatch card create failed:', (err as Error).message);

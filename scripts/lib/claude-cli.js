@@ -30,7 +30,7 @@
 
 'use strict';
 
-const { spawn } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -55,6 +55,60 @@ function strippedEnv(extra = {}) {
   for (const k of keep) { if (process.env[k] !== undefined) env[k] = process.env[k]; }
   env.HOME = env.HOME || os.homedir();
   return { ...env, ...extra };
+}
+
+// Auth preflight (task #713 — generalized from opening-night-monitor-launch.js's
+// authPing/resolvePassAuth/preflightAuth, task #457). Root cause: a launchd- or
+// cron-parented `claude` can't reach the macOS Keychain, so a pass that expects
+// stored OAuth login dies "Not logged in" — but the CLI exits 0 with a VALID
+// envelope (subtype:"success", result:"Not logged in · Please run /login"), so
+// callers that only check exit code + JSON-parseability treat it as a real,
+// successful run. Probe the actual auth shape BEFORE spawning the real session
+// so a doomed pass never silently "succeeds" with a login prompt as its output.
+function authPing(extraEnv) {
+  const r = spawnSync('claude', ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
+    { encoding: 'utf8', timeout: 120000, env: { ...process.env, ...extraEnv } });
+  if (r.status !== 0) return { ok: false, detail: (r.stderr || r.stdout || `exit ${r.status}`).slice(0, 300) };
+  // Positive validation, never a grep for the error string (it may get reworded):
+  // require the envelope to actually contain the pong.
+  try {
+    const body = JSON.parse(r.stdout);
+    if (body.is_error === false && /pong/i.test(String(body.result || ''))) return { ok: true };
+    return { ok: false, detail: `ping returned no pong: ${String(body.result || r.stdout).slice(0, 200)}` };
+  } catch {
+    return { ok: false, detail: `unparseable ping output: ${String(r.stdout || r.stderr).slice(0, 200)}` };
+  }
+}
+
+// Pure decision, extracted for tests (CLAUDE.md rule 15): which auth mode
+// should the pass use given the two probe outcomes and key availability?
+function resolvePassAuth({ storedLoginOk, apiKeyPresent, apiKeyPingOk }) {
+  if (storedLoginOk) return { mode: 'oauth' };
+  if (apiKeyPresent && apiKeyPingOk) return { mode: 'api-key' };
+  return { mode: 'fail' };
+}
+
+/**
+ * Probe which auth mode a headless spawn can actually use, before spending a
+ * real session attempt on a pass that's doomed to a silent "Not logged in".
+ * @param {object} [opts]
+ * @param {boolean} [opts.allowApiKeyFallback=true] set false to require OAuth only
+ * @param {(msg:string)=>void} [opts.log] optional logger for the fallback notice
+ * @returns {{ok:boolean, mode:'oauth'|'api-key'|'fail', detail?:string}}
+ */
+function preflightAuth({ allowApiKeyFallback = true, log = () => {} } = {}) {
+  // Probe 1: the real pass shape — API key cleared, stored login only.
+  const stored = authPing({ ANTHROPIC_API_KEY: '' });
+  if (stored.ok) return { ok: true, mode: 'oauth' };
+  const apiKeyPresent = allowApiKeyFallback && Boolean(process.env.ANTHROPIC_API_KEY);
+  // Probe 2: only if a key exists — can the key path carry the pass?
+  const keyed = apiKeyPresent ? authPing({}) : { ok: false, detail: allowApiKeyFallback ? 'no ANTHROPIC_API_KEY in env' : 'API fallback disabled' };
+  const decision = resolvePassAuth({ storedLoginOk: false, apiKeyPresent, apiKeyPingOk: keyed.ok });
+  if (decision.mode === 'api-key') {
+    log(`preflight: stored login unreachable (${stored.detail.slice(0, 120)}) — falling back to ANTHROPIC_API_KEY (pay-per-token). Run \`claude setup-token\` + add CLAUDE_CODE_OAUTH_TOKEN to restore subscription billing.`);
+    return { ok: true, mode: 'api-key', storedDetail: stored.detail };
+  }
+  return { ok: false, mode: 'fail', detail: `stored-login: ${stored.detail} | api-key: ${keyed.detail}` };
 }
 
 function parseEnvelope(raw) {
@@ -193,4 +247,7 @@ function runClaudeCli(opts) {
   });
 }
 
-module.exports = { runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE };
+module.exports = {
+  runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE,
+  authPing, resolvePassAuth, preflightAuth,
+};

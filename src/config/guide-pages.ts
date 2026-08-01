@@ -4,7 +4,7 @@
 
 import { ComputedShow } from '@/lib/engine';
 import { isAnnouncedCurrent } from '@/config/browse-pages';
-import { isPlatformHidden } from '@/lib/ticket-utils';
+import { getVisibleTicketLinks } from '@/lib/ticket-utils';
 
 export interface GuidePageConfig {
   slug: string;
@@ -317,7 +317,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     filter: (show) => {
       if (show.status !== 'open') return false;
       // Only price from platforms the user can actually see a button for
-      const minPrice = Math.min(...(show.ticketLinks?.filter(l => l.priceFrom && !isPlatformHidden(l.platform)).map(l => l.priceFrom!) || [Infinity]));
+      const minPrice = Math.min(...(getVisibleTicketLinks(show.ticketLinks || []).filter(l => l.priceFrom).map(l => l.priceFrom!) || [Infinity]), Infinity);
       return minPrice < 100;
     },
     sort: 'score',

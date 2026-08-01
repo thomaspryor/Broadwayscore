@@ -33,3 +33,23 @@ test('Ticketmaster+StubHub only: Ticketmaster renders, StubHub does not', () => 
   ]);
   assert.deepEqual(sorted.map(l => l.platform), ['Ticketmaster']);
 });
+
+import { getVisibleTicketLinks } from '../../src/lib/ticket-utils';
+
+// Parity: getVisibleTicketLinks (used by SEO schema / guide filters / compare
+// prices) must agree with sortTicketLinks on WHICH links are visible — the
+// drift between the two answered-questions is the class behind the original
+// zero-button incident.
+test('getVisibleTicketLinks parity with sortTicketLinks membership', () => {
+  const cases = [
+    [{ platform: 'Ticketmaster', url: 'https://tm.example/only' }],
+    [{ platform: 'Ticketmaster', url: 'https://tm.example/x' }, { platform: 'TodayTix', url: 'https://tt.example/x' }],
+    [{ platform: 'StubHub', url: 'https://sh.example/x' }],
+    [] as { platform: string; url: string }[],
+  ];
+  for (const links of cases) {
+    const a = getVisibleTicketLinks(links).map(l => l.url).sort();
+    const b = sortTicketLinks(links).map(l => l.url).sort();
+    assert.deepEqual(a, b);
+  }
+});
