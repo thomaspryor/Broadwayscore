@@ -113,7 +113,10 @@
     "the-car-man-west-end-2026/all-that-dazzles-uk--unknown.json",
     "the-car-man-west-end-2026/british-theatre--unknown.json",
     "the-car-man-west-end-2026/theatre-weekly--unknown.json",
-    "the-traitors-live-experience-off-west-end-2026/all-that-dazzles-uk--unknown.json"
+    "the-traitors-live-experience-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "miss-saigon-west-end-2026/hollywood-reporter--david-rooney.json",
+    "miss-saigon-west-end-2026/timeout--david-cote.json",
+    "miss-saigon-west-end-2026/broadwayworld--michael-dale.json"
   ],
   "failed": [
     "space-dogs-off-west-end-2026/thestage--the-stage.json",
@@ -1545,7 +1548,14 @@
     "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
     "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
     "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
-    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json"
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "miss-saigon-west-end-2026/newsday--linda-winer.json",
+    "miss-saigon-west-end-2026/nydailynews--joe-dziemianowicz.json",
+    "miss-saigon-west-end-2026/thewrap--robert-hofler.json",
+    "miss-saigon-west-end-2026/wsj--terry-teachout.json",
+    "miss-saigon-west-end-2026/amny--matt-windman.json",
+    "miss-saigon-west-end-2026/huffpost--david-finkle.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1617,7 +1627,8 @@
       "the-car-man-west-end-2026/all-that-dazzles-uk--unknown.json",
       "the-car-man-west-end-2026/british-theatre--unknown.json",
       "the-car-man-west-end-2026/theatre-weekly--unknown.json",
-      "the-traitors-live-experience-off-west-end-2026/all-that-dazzles-uk--unknown.json"
+      "the-traitors-live-experience-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+      "miss-saigon-west-end-2026/timeout--david-cote.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1630,7 +1641,9 @@
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
       "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oh-mary-west-end-2025/deadline--greg-evans.json"
+      "oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/miss-saigon-west-end-2026/hollywood-reporter--david-rooney.json",
+      "miss-saigon-west-end-2026/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -1658,7 +1671,8 @@
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "hamilton-west-end-2021/variety--matt-trueman.json",
       "the-book-of-mormon-west-end-2024/nydailynews--unknown.json",
-      "the-mousetrap-west-end-2021/broadwayworld--cary-ginell.json"
+      "the-mousetrap-west-end-2021/broadwayworld--cary-ginell.json",
+      "miss-saigon-west-end-2026/broadwayworld--michael-dale.json"
     ],
     "archiveToday": [
       "data/review-texts/space-dogs-off-west-end-2026/thestage--the-stage.json",
@@ -1709,7 +1723,7 @@
     ]
   },
   "startTime": "2026-08-01T04:31:57.323Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+  "lastProcessed": "miss-saigon-west-end-2026/huffpost--david-finkle.json",
   "log": [
     {
       "t": "2026-08-01T04:36:35.506Z",
@@ -1830,6 +1844,12 @@
       "event": "bb-session",
       "session": "40428f24",
       "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+    },
+    {
+      "t": "2026-08-01T08:45:08.705Z",
+      "event": "bb-session",
+      "session": "86e84971",
+      "url": "https://www.hollywoodreporter.com/news/general-news/miss-saigon-theater-review-9"
     }
   ]
 }
