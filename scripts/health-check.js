@@ -3001,10 +3001,41 @@ async function main() {
       allResults.push(...obClosingBacklogResults(obReport));
     } catch { /* report absent (detector not yet run) — nothing to surface */ }
 
+    // Never-run workflow coverage (task #737): computed HERE, not read from a
+    // file lint-workflows wrote — that CI job checks out code but has no
+    // commit step, so a snapshot written there would never leave the
+    // ephemeral runner (ship-check finding). This job already commits
+    // data/audit/* daily, so it's the one job that can actually persist the
+    // result for the digest to see on the NEXT run and for an operator to
+    // inspect directly.
     try {
-      const neverRunReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/workflow-run-coverage.json'), 'utf8'));
-      allResults.push(...neverRunWorkflowResults(neverRunReport));
-    } catch { /* report absent (lint-workflows hasn't run with a token yet) — nothing to surface */ }
+      const {
+        checkNeverRunWorkflowCoverage,
+        NEVER_RUN_MIN_AGE_DAYS,
+        NEVER_RUN_SNAPSHOT_PATH,
+      } = require('./audit-workflow-hygiene.js');
+      const workflowDir = path.join(__dirname, '../.github/workflows');
+      const workflowFiles = fs
+        .readdirSync(workflowDir)
+        .filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'));
+      const neverRun = await checkNeverRunWorkflowCoverage(workflowFiles);
+      if (neverRun.skipped) {
+        console.log(`[Workflow coverage] Skipped — ${neverRun.reason}`);
+      } else {
+        console.log(`[Workflow coverage] ${neverRun.offenders.length} never-run offender(s) among ${neverRun.totalChecked} checked`);
+        const neverRunReport = {
+          generatedAt: new Date().toISOString(),
+          minAgeDays: NEVER_RUN_MIN_AGE_DAYS,
+          totalChecked: neverRun.totalChecked,
+          offenders: neverRun.offenders,
+        };
+        fs.mkdirSync(path.dirname(NEVER_RUN_SNAPSHOT_PATH), { recursive: true });
+        fs.writeFileSync(NEVER_RUN_SNAPSHOT_PATH, JSON.stringify(neverRunReport, null, 2) + '\n');
+        allResults.push(...neverRunWorkflowResults(neverRunReport));
+      }
+    } catch (err) {
+      console.log(`[Workflow coverage] error: ${err.message}`);
+    }
 
     try {
       const gapReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/t1-silent-gaps.json'), 'utf8'));

@@ -33,6 +33,10 @@ const DRY_RUN = process.argv.includes('--dry-run');
 
 function loadJson(p, label) {
   if (!fs.existsSync(p)) {
+    if (DRY_RUN) {
+      console.log(`(dry run) Missing ${label} at ${p} — scoring with an empty ${label} set.`);
+      return {};
+    }
     console.error(`Missing ${label}: ${p}`);
     console.error('Create this file before running. See data/*.template.json for the format.');
     process.exit(1);
@@ -311,9 +315,13 @@ function main() {
   const criticPicksData = loadJson(CRITIC_PATH, 'critic picks');
   const allSubmissions = loadSubmissions();
 
-  // Validate winners are filled in
+  // Validate winners are filled in. Skipped under --dry-run (task #737): the
+  // smoke lane must prove the checkout/secrets/npm/score/render path works
+  // year-round, including the weeks before the Tonys when winners.json is
+  // still template-empty — the exact period an operator would want to
+  // verify this workflow before relying on it for real.
   const emptyCategories = Object.entries(winners).filter(([, v]) => !v);
-  if (emptyCategories.length > 0) {
+  if (emptyCategories.length > 0 && !DRY_RUN) {
     console.error(`ERROR: ${emptyCategories.length} categories have no winner set:`);
     for (const [cat] of emptyCategories) console.error(`  - ${cat}`);
     console.error('\nFill in data/beat-the-critics-winners.json before running preview.');
