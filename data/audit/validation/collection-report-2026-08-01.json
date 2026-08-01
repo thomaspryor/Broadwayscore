@@ -2,9 +2,9 @@
   "runDate": "2026-08-01T20:47:46.557Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 300,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "dog-man-the-musical-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -19,16 +19,16 @@
   "tierBreakdown": {
     "playwright": 34,
     "amp": 0,
-    "browserbase": 10,
-    "directCookies": 6,
+    "browserbase": 0,
+    "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 10,
     "archiveToday": 2,
     "archive": 5
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -993,26 +993,8 @@
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json",
-      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
-      "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
-      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
-      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
-      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oh-mary-west-end-2025/deadline--greg-evans.json"
-    ],
-    "directCookies": [
-      "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
-      "the-importance-of-being-oscar-off-west-end-2026/times-uk--dominic-maxwell.json",
-      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
-      "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
-      "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
-      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
-    ],
+    "browserbase": [],
+    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
       "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json",
