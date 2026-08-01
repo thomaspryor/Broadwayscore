@@ -5555,6 +5555,19 @@ function findReviewsToProcess() {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
+        // Skip duplicateOf tombstones: rebuild excludes them entirely, so
+        // collecting text is wasted fetch budget — and worse, the
+        // show-not-mentioned recovery can SERP-flip their URL, which clears
+        // duplicateOf via the url-change invariant (it's URL-derived) and
+        // resurrects the duplicate until the next write re-tombstones it
+        // (the-enormous-crocodile london-theatre--unknown weekly oscillation,
+        // 2026-08-01). Explicit --review targeting bypasses, for manual
+        // recovery of a wrongly tombstoned file.
+        if (data.duplicateOf && !CONFIG.reviewFilter.has(file)) {
+          logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedDuplicateOf', details: { url: data.url, duplicateOf: data.duplicateOf } });
+          continue;
+        }
+
         // Skip fabricated entries unless a reason_filter is active (enables targeted recovery)
         if (data.fabricatedEntry === true && CONFIG.incompleteReasonFilter.length === 0) {
           logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedFabricatedEntry', details: { url: data.url, outletId: data.outletId } });

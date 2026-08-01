@@ -1861,6 +1861,22 @@ async function getWorkflowRunSummary() {
       .filter(entry => entry.count >= 2)
       .sort((a, b) => b.count - a.count);
 
+    // Self-heal annotation: a repeat-failure whose workflow's LATEST completed
+    // run is green has likely already been fixed — the trailing-24h window
+    // just hasn't aged the failures out yet. The Aug 1 Test Suite streak ended
+    // 05:10 UTC but the digest fired a "likely broken" Fix-this card ~6.5h
+    // later, burning a session on an already-resolved condition. Annotate here
+    // (repeatFailureResults downgrades + notes it) so taps on self-healed
+    // conditions can be skipped.
+    for (const entry of repeatFailures) {
+      let latest = null;
+      for (const run of completed) {
+        if (run.name !== entry.name) continue;
+        if (!latest || run.created_at > latest.created_at) latest = run;
+      }
+      entry.latestRunGreen = !!latest && latest.conclusion === 'success';
+    }
+
     return {
       total: completed.length,
       failed: failed.length,
@@ -1893,8 +1909,14 @@ function repeatFailureResults(workflowSummary) {
   const repeats = workflowSummary.repeatFailures || [];
   return repeats.map(r => ({
     name: `Workflow repeat-failure: ${r.name}`,
-    status: r.count >= 3 ? 'error' : 'warn',
-    message: `${r.name} failed ${r.count} times in the last 24h — likely broken, not transient.`,
+    // A green latest run means the streak already ended — downgrade to warn so
+    // an already-self-healed condition doesn't drive ACTION NEEDED subjects or
+    // invite a Fix-this tap on a resolved streak.
+    status: r.latestRunGreen ? 'warn' : (r.count >= 3 ? 'error' : 'warn'),
+    message: `${r.name} failed ${r.count} times in the last 24h`
+      + (r.latestRunGreen
+        ? ' — latest run is green; likely self-healed, failures will age out of the window.'
+        : ' — likely broken, not transient.'),
     hint: 'Open the latest run from the Repeat Workflow Failures section of the digest and fix the root cause.',
   }));
 }
