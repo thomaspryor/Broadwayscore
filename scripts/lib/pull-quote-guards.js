@@ -193,6 +193,23 @@ function stripListingPrelude(text, opts = {}) {
   const end = m.index + m[0].length;
   if (m.index > maxPreludeChars) return text;
 
+  // The terminator alone is not enough. A critic could write "The programme's
+  // listing details and ticket info are more lucid than the production" — and
+  // stripping there would delete their opening verdict (Codex adversarial
+  // review, 2026-08-01). Require the text BEFORE the terminator to actually
+  // look like a listing block: run dates, a venue @handle, or credits-style
+  // prose with no sentence punctuation at all. Real criticism has periods.
+  // The no-punctuation branch additionally requires the prelude to be
+  // SUBSTANTIAL. A short lead-in like "The programme's " has no period either,
+  // but it is the start of a sentence, not a credits block. Real listing
+  // preludes carry a full credits + venue run (BTG's is ~110 chars).
+  const prelude = text.slice(0, m.index);
+  const preludeIsListing =
+    RUN_DATES_RE.test(prelude) ||
+    /@\w+\s*(theatre|theater)/i.test(prelude) ||
+    (prelude.length >= 60 && !/[.!?]/.test(prelude));
+  if (!preludeIsListing) return text;
+
   const remainder = text.slice(end).replace(/^[\s.…]+/, '');
   // Never strip everything — if the prelude is (almost) the whole text, the
   // caller is better off with the original than with a two-word husk.
@@ -269,6 +286,9 @@ function isTagCloudExcerpt(excerpt) {
 // false-positive surface by construction.
 // ---------------------------------------------------------------------------
 
+// Symbol key for the per-call normalized-sources cache (see isMidWordTruncation).
+const NORMALIZED_SOURCES = Symbol('normalizedSources');
+
 // Fold the punctuation that differs between an LLM's re-typing of a quote and
 // the scraped source (curly vs straight quotes, en/em dashes, NBSP runs).
 function normalizeForSourceMatch(s) {
@@ -299,9 +319,24 @@ function isMidWordTruncation(excerpt, sourceTexts) {
   // Ends in sentence punctuation → complete by construction.
   if (/[.!?]["']?$/.test(cleaned)) return false;
 
-  for (const src of sourceTexts) {
-    if (!src || typeof src !== 'string') continue;
-    const hay = normalizeForSourceMatch(src);
+  // Normalizing a 5,000-char fullText once per CANDIDATE (and there are up to
+  // ~9 candidates per review, across 19,309 reviews) was ~750MB of avoidable
+  // string churn per rebuild — flagged in the 2026-08-01 Codex review. Cache
+  // the normalized form on the caller's array so it is computed once per
+  // review. Non-enumerable so the array still serializes/iterates normally.
+  let normalized = sourceTexts[NORMALIZED_SOURCES];
+  if (!normalized) {
+    normalized = sourceTexts
+      .filter(s => s && typeof s === 'string')
+      .map(normalizeForSourceMatch);
+    try {
+      Object.defineProperty(sourceTexts, NORMALIZED_SOURCES, {
+        value: normalized, enumerable: false, writable: true, configurable: true,
+      });
+    } catch (_) { /* frozen array — fall through, just uncached */ }
+  }
+
+  for (const hay of normalized) {
     const at = hay.indexOf(cleaned);
     if (at === -1) continue;
     const next = hay[at + cleaned.length];
@@ -505,13 +540,20 @@ function pickExcerptCandidate({ accepted = null, deferred = [], rawSourceRank = 
     .filter(d => d && typeof d.excerpt === 'string' && d.excerpt)
     .slice()
     .sort((a, b) => a.rank - b.rank);
-  const bestSoftAboveRaw = soft.find(d => d.rank < rawSourceRank) || null;
+
+  // Only a HEDGE deferral may outrank an accepted raw-body slice. A hedge
+  // deferral is a complete critic sentence that merely opens with "But"/"Yet"
+  // or contains a ", but" pivot — still better prose than a page scrape.
+  //
+  // A LOWERCASE-FRAGMENT deferral is not: "and the score is sublime." reads as
+  // broken mid-sentence text on the card, which is worse than a clean body
+  // sentence that passed every guard (Codex adversarial review, 2026-08-01).
+  // Fragments therefore only win when nothing at all was accepted.
+  const bestHedgeAboveRaw = soft.find(d => d.rank < rawSourceRank && d.reason !== 'lowercase-fragment') || null;
 
   if (accepted && accepted.excerpt) {
     if (accepted.rank < rawSourceRank) return accepted.excerpt;
-    // Accepted candidate is a raw-body slice: prefer a curated/LLM candidate
-    // that was only soft-rejected.
-    return bestSoftAboveRaw ? bestSoftAboveRaw.excerpt : accepted.excerpt;
+    return bestHedgeAboveRaw ? bestHedgeAboveRaw.excerpt : accepted.excerpt;
   }
   return soft.length ? soft[0].excerpt : null;
 }

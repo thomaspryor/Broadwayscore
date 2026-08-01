@@ -225,10 +225,22 @@ jobs:
         # the in-pipeline guards surfaces here instead of on the live site.
         #
         # Advisory (continue-on-error) on purpose: a bad pull quote is a display
-        # defect, never a reason to block reviews.json from publishing. The
-        # count lands in the step log + the JSON report artifact.
+        # defect, never a reason to block reviews.json from publishing.
+        #
+        # Deliberately writes NO file. An earlier version emitted a dated JSON
+        # into data/audit/, but that only reaches anyone if a later commit step
+        # happens to stage it — on a no-op rebuild it is written and thrown away,
+        # which is the write-only-signal anti-pattern this repo keeps hitting
+        # (#641/#689). The findings go to the job log AND the run summary, where
+        # they are read. Use `--json=` locally when you want the full report.
         run: |
-          node scripts/audit-pull-quotes.js --json=data/audit/pull-quotes-$(date -u +%F).json
+          node scripts/audit-pull-quotes.js | tee /tmp/pull-quote-audit.txt
+          {
+            echo "### Pull-quote audit"
+            echo '```'
+            cat /tmp/pull-quote-audit.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
         continue-on-error: true
 
       - name: Analyze review drops and route alert
